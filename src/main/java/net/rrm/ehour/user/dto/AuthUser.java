@@ -97,6 +97,8 @@ public class AuthUser extends org.acegisecurity.userdetails.User
 	{
 		super(user.getUsername(), user.getPassword(), true, true, true, true, 
 				(GrantedAuthority[]) (user.getUserRoles().toArray(new GrantedAuthority[user.getUserRoles().size()])));
+		
+		this.user = user;
 	}
 
 	public User getUser()
@@ -108,4 +110,16 @@ public class AuthUser extends org.acegisecurity.userdetails.User
 	{
 		this.user = user;
 	}
+
+	// authentication taglib..
+	public String getFirstName()
+	{
+		return user.getFirstName();
+	}
+
+	public String getLastName()
+	{
+		return user.getLastName();
+	}
+
 }

@@ -12,7 +12,7 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/**=httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,exceptionTranslationFilter,filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,rememberMeProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -23,7 +23,7 @@
 		<constructor-arg value="/index.jsp"/> <!-- URL redirected to after logout -->
 		<constructor-arg>
 			<list>
-<!-- 				<ref bean="rememberMeServices"/>	-->
+				<ref bean="rememberMeServices"/>	
 				<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
 			</list>
 		</constructor-arg>
@@ -34,14 +34,14 @@
 		<property name="authenticationFailureUrl" value="/login.jsp?login_error=1"/>
 		<property name="defaultTargetUrl" value="/"/>
 		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
-<!-- 		<property name="rememberMeServices" ref="rememberMeServices"/> -->
+		<property name="rememberMeServices" ref="rememberMeServices"/> 
 	</bean>
    
 	<bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
 
 	<bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
-<!-- 		<property name="rememberMeServices" ref="rememberMeServices"/> -->
+		<property name="rememberMeServices" ref="rememberMeServices"/> 
 	</bean>
 
 <!-- 
@@ -88,12 +88,11 @@
 		</property>
 	</bean>
 
-<!-- 
 	<bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
-		<property name="userDetailsService" ref="userDetailsService"/>
+		<property name="userDetailsService" ref="userService"/>
 		<property name="key" value="changeThis"/>
 	</bean>
- -->
+
  
 	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
@@ -104,11 +103,10 @@
 					<property name="key" value="changeThis"/>
 				</bean>
  -->				
-<!-- 
 				<bean class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
 					<property name="key" value="changeThis"/>
 				</bean>
- -->				
+
 			</list>
 		</property>
 	</bean>

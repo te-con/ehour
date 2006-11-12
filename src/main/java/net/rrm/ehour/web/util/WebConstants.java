@@ -2,13 +2,15 @@ package net.rrm.ehour.web.util;
 
 public class WebConstants
 {
-	public final static String SESSION_USER = "user";
-	public final static String REQUEST_AUTHORISED = "authed";
+	public final static String	ROLE_CONSULTANT = "ROLE_CONSULTANT";
+	public final static String	ROLE_ADMIN = "ROLE_ADMIN";
+	
+	public final static String	SESSION_KEY_USER = "eHourUser";
 
-	/** @todo need to move */
-	public final static int USERTYPE_CONSULTANT = 1;
-	public final static int USERTYPE_ADMIN = 2;
-
+	public final static	String	CALENDAR_YEAR_KEY = "cps_year";
+	public final static	String	CALENDAR_MONTH_KEY = "cps_month";
+		
+	
 	public final static String REQUEST_NAVCAL_DATA = "navCalData";
 	public final static String SESSION_NAVCAL_VALID = "navCalValidity";
 

@@ -7,31 +7,23 @@
 	<action-mappings>
 
 		<!--  Reports Actions -->
-		<action path="/eh/index">
-			<forward name="success" path="/ok.jsp" />
+		<action path="/eh/timesheetOverview" type="net.rrm.ehour.web.action.TimesheetOverviewAction" >
+			<forward name="success" path=".ehour.timesheet.overview" />
 		</action>
 	</action-mappings>
 
-	<!-- tiles plugin
-		<plug-in className="org.apache.struts.tiles.TilesPlugin">
-		<set-property property="definitions-config"
-		value="/WEB-INF/tiles-defs.xml" />
-		<set-property property="definitions-parser-validate"
-		value="true" />
-		<set-property property="moduleAware" value="true" />
-		</plug-in>
-	-->
-	<!-- spring contexts  -->
+	<!-- spring tiles controller -->
+	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
 
-	<!-- spring controller -->
-	<controller>
-		<set-property property="processorClass" value="org.springframework.web.struts.DelegatingRequestProcessor" />
-	</controller>
 	<!-- spring contexts -->
-	<plug-in
-		className="org.springframework.web.struts.ContextLoaderPlugIn">
-		<set-property property="contextConfigLocation"
-			value="classpath:/applicationContext-web.xml" />
+	<plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation" value="classpath:/applicationContext-web.xml" />
+	</plug-in>
+
+	<!-- tiles plugin -->
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"	value="/WEB-INF/tiles-defs.xml" />
+		<set-property property="definitions-parser-validate" value="true" />
 	</plug-in>
 
 </struts-config>

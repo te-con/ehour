@@ -30,6 +30,8 @@ import net.rrm.ehour.timesheet.dto.BookedDayComparatorTest;
 import net.rrm.ehour.timesheet.service.TimesheetServiceTest;
 import net.rrm.ehour.user.service.UserServiceTest;
 import net.rrm.ehour.util.DateUtilTest;
+import net.rrm.ehour.web.calendar.CalendarUtilTest;
+import net.rrm.ehour.web.util.AuthUtilTest;
 
 public class ServiceTests
 {
@@ -43,6 +45,8 @@ public class ServiceTests
 		suite.addTestSuite(ReportServiceTest.class);
 		
 		suite.addTestSuite(DateUtilTest.class);
+		suite.addTestSuite(AuthUtilTest.class);
+		suite.addTestSuite(CalendarUtilTest.class);		
 		suite.addTestSuite(BookedDayComparatorTest.class);
 		//$JUnit-END$
 		return suite;

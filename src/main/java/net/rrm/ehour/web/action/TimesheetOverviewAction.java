@@ -39,6 +39,7 @@ import org.apache.struts.action.ActionMapping;
 public class TimesheetOverviewAction extends Action
 {
 	private	Logger		logger = Logger.getLogger(TimesheetOverviewAction.class);	
+	
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		logger.info("ff");

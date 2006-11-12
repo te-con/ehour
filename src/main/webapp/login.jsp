@@ -50,7 +50,7 @@
             <td><input name="j_username" size="20" class="normtxt" type="text" <c:if test="${not empty param.login_error}">value='<%= session.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY) %>'</c:if>></td>
 						<td colspan=2>&nbsp;</td>
         </tr>
-
+<input type="hidden" name="_acegi_security_remember_me" value="checked">
         <tr>
             <td>Password:</td>
             <td><input name="j_password" size="20" class="normtxt" type="password"></td>

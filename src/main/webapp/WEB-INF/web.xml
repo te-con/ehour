@@ -16,7 +16,10 @@
 		</param-value>
 	</context-param>
 
-
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+		<param-value>MessageResources</param-value>
+	</context-param>
 
 	<!-- FILTERS -->
 	<filter>
@@ -31,26 +34,22 @@
 			</param-value>
 		</init-param>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
 
-	<!-- 
-		<filter>
+	<filter>
 		<filter-name>CalendarFilter</filter-name>
 		<filter-class>
-		com.qualogy.qhour.web.filter.CalendarFilter
+			net.rrm.ehour.web.calendar.CalendarFilter
 		</filter-class>
-		</filter>
-		<filter-mapping>
+	</filter>
+	<filter-mapping>
 		<filter-name>CalendarFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
-		</filter-mapping>
-	-->
-
+	</filter-mapping>
 
 	<!--  spring  -->
 	<listener>

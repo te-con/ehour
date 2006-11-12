@@ -4,7 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"	
        default-autowire="byName">
 
-	<!-- <bean id="calendarFilter" class="net.rrm.ehour.web.calendar.CalendarFilter" />	 -->
-	
-	<bean name="/eh/index" class="net.rrm.ehour.web.action.TimesheetOverviewAction" />	
+	<!--  struts actions -->
+	<bean name="/eh/timesheetOverview" class="net.rrm.ehour.web.action.TimesheetOverviewAction" />	
 </beans>

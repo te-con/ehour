@@ -23,10 +23,20 @@
 
 package net.rrm.ehour.web.calendar;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
+
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.exception.UserNotFoundException;
+import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.util.DateUtil;
 
 /**
- * TODO 
+ *  
  **/
 
 public class CalendarUtil
@@ -41,5 +51,53 @@ public class CalendarUtil
 	public void setTimesheetService(TimesheetService ts)
 	{
 		timesheetService = ts;
+	}
+	
+	
+	/**
+	 * Get the month overview for the nav calendar
+	 * @param userId
+	 * @param requestedMonth
+	 * @return array of booleans each representing a day in the month. 
+	 * true = booked, false = not everything booked
+	 */
+	
+	public boolean[] getMonthNavCalendar(Integer userId, Calendar requestedMonth)
+	{
+		List		bookedDays;
+		boolean[]	monthOverview;
+		Iterator	iterator;
+		BookedDay	day;
+		Calendar	cal;
+		
+		try
+		{
+			bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
+		}
+		catch (UserNotFoundException e)
+		{
+			bookedDays = new ArrayList();
+		}
+		
+		monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
+
+		iterator = bookedDays.iterator();
+		
+		while (iterator.hasNext())
+		{
+			day = (BookedDay)iterator.next();
+			
+			cal = new GregorianCalendar();
+			cal.setTime(day.getDate());
+			
+			// just in case.. it shouldn't happen that the returned month
+			// is longer than the reserverd space for this month
+			if (cal.get(Calendar.DAY_OF_MONTH) <= monthOverview.length)
+			{
+				monthOverview[cal.get(Calendar.DAY_OF_MONTH) - 1] = true;
+			}
+		}
+		
+		return monthOverview;
 	}
 }

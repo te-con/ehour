@@ -52,5 +52,14 @@ public class DateUtilTest extends TestCase
 
 		assertEquals(4, cal.get(Calendar.DATE));
 	}
+	
+	public void testGetDaysInMonth()
+	{
+		Calendar cal = new GregorianCalendar(2006, 11 -1 , 4);
+		assertEquals(30, DateUtil.getDaysInMonth(cal));
+		
+		cal = new GregorianCalendar(2007, 2 - 1, 5);
+		assertEquals(28, DateUtil.getDaysInMonth(cal));
+	}
 
 }

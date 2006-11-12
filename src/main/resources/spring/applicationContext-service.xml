@@ -18,7 +18,12 @@
            </list>
          </property>
      </bean> 
+
      
+	<bean id="calendarUtil" class="net.rrm.ehour.web.calendar.CalendarUtil">
+		<property name="timesheetService" ref="timesheetService"/>
+	</bean>
+
      
      <!-- Report service -->
     <bean id="reportServiceTarget" class="net.rrm.ehour.report.service.ReportServiceImpl" /> 

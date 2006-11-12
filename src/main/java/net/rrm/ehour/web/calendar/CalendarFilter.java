@@ -24,6 +24,8 @@
 package net.rrm.ehour.web.calendar;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -36,9 +38,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.dto.AuthUser;
+import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
 
+import org.acegisecurity.Authentication;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * TODO 
@@ -46,7 +54,6 @@ import org.apache.log4j.Logger;
 
 public class CalendarFilter extends HttpServlet implements Filter
 {
-    private FilterConfig                filterConfig;
     private Logger                      logger;
 
     /**
@@ -55,28 +62,89 @@ public class CalendarFilter extends HttpServlet implements Filter
     
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
 	{
-        HttpSession         session;
         HttpServletRequest  httpRequest;
+        HttpSession			session;
         User                user = null;
-
+        ApplicationContext 	ctx;
+        CalendarUtil		calendarUtil;
+        boolean[]			monthOverview;
+        
         user = needToProcessRequest(request);
         
         if (user != null)
         {
         	httpRequest = (HttpServletRequest)request;
         	
-        	
         	if (user != null)
         	{
+        		session = httpRequest.getSession();
+        		ctx = WebApplicationContextUtils.getWebApplicationContext(session.getServletContext());
+        		calendarUtil = (CalendarUtil)ctx.getBean("calendarUtil");
         		
+        		monthOverview = calendarUtil.getMonthNavCalendar(user.getUserId(), getRequestedMonth(httpRequest));
+        		
+        		request.setAttribute(WebConstants.REQUEST_NAVCAL_DATA, monthOverview);
         	}
         }
         
+        chain.doFilter(request, response);
 	}
+	
+    /**
+    * Determine if we need the month stored in the session
+    * or if this is a new date
+    * @param request HttpServletRequest
+    * @return Calendar
+    */
+
+   public Calendar getRequestedMonth(HttpServletRequest request)
+   {
+       HttpSession 	session;
+       int 			year;
+       int			month;
+       String 		cps_year;
+       String		cps_month;
+       Calendar 	nowCalendar;
+
+       session = request.getSession();
+
+       nowCalendar = new GregorianCalendar();
+       cps_year = (String)request.getParameter(WebConstants.CALENDAR_YEAR_KEY);
+
+       if (cps_year != null)
+       {
+           year = Integer.parseInt(cps_year);
+       }
+       else if (session.getAttribute(WebConstants.CALENDAR_YEAR_KEY) != null)
+       {
+           year = ((Integer)session.getAttribute(WebConstants.CALENDAR_YEAR_KEY)).intValue();
+       }
+       else
+       {
+           year = nowCalendar.get(Calendar.YEAR);
+       }
+
+       cps_month = (String)request.getParameter(WebConstants.CALENDAR_MONTH_KEY);
+
+       if (cps_month != null)
+       {
+           month = Integer.parseInt(cps_month);
+       }
+       else if (session.getAttribute(WebConstants.CALENDAR_MONTH_KEY) != null)
+       {
+           month = ((Integer)session.getAttribute(WebConstants.CALENDAR_MONTH_KEY)).intValue();
+       }
+       else
+       {
+           month = nowCalendar.get(Calendar.MONTH);
+       }
+
+       return new GregorianCalendar(year, month, 1);
+   }	
 
 	/**
 	 * Process request? If it's not HTTP (unlikely), the URL is an admin URL or the user
-	 * does not have to book hours: ignore it
+	 * does not have to book hours (not have ROLE_CONSULTANT): ignore it
 	 * 
 	 * @param request
 	 * @return User object or null if the request is to be ignored
@@ -84,8 +152,8 @@ public class CalendarFilter extends HttpServlet implements Filter
 	private User needToProcessRequest(ServletRequest request)
 	{
 		HttpServletRequest	httpRequest;
-		HttpSession			session;
 		User				user = null;
+		Authentication		authUser;
 		
 		if (request instanceof HttpServletRequest)
 		{
@@ -95,20 +163,20 @@ public class CalendarFilter extends HttpServlet implements Filter
 			// @todo hardcore URL
 	        if (httpRequest.getRequestURI().indexOf("admin/") < 0)
 	        {
-	        	session = httpRequest.getSession();
-	        	user = (User)session.getAttribute(WebConstants.SESSION_USER);
-	        	
+				authUser = SecurityContextHolder.getContext().getAuthentication();
+				
+				user = ((AuthUser)authUser.getPrincipal()).getUser();
+				
 	        	// is user billable? if not, don't bother with the calendar data
-	        	// @todo hook up with asegi
-//	        	if (!AuthUtil.hasAuthorisation(user.getUserTypes(), EhourConstants.USERTYPE_CONSULTANT))
-//	        	{
-//	        		if (logger.isDebugEnabled())
-//	        		{
-//	        			logger.debug("User " + user.getUsername() + " is not billable, not fetching calendar data");
-//	        		}
-//
-//	        		user = null;
-//	        	}
+	        	if (!AuthUtil.hasRole(WebConstants.ROLE_CONSULTANT, authUser.getAuthorities()))
+	        	{
+	        		if (logger.isDebugEnabled())
+	        		{
+	        			logger.debug("User " + user.getUsername() + " is not billable, not fetching calendar data");
+	        		}
+
+	        		user = null;
+	        	}
 	        }			
 		}
 		else
@@ -125,7 +193,6 @@ public class CalendarFilter extends HttpServlet implements Filter
 	 */
 	public void init(FilterConfig filterConfig) throws ServletException
 	{
-        this.filterConfig = filterConfig;
         logger = Logger.getLogger(this.getClass().getName());
         
         if (logger.isDebugEnabled())

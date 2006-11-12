@@ -42,6 +42,25 @@ public class DateUtil
 	}
 	
 	/**
+	 * Get days in month
+	 * @param calendar
+	 * @return
+	 */
+	public static int getDaysInMonth(Calendar calendar)
+	{
+		Calendar	cal;
+		
+		cal = (Calendar)calendar.clone();
+		
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+        
+        return cal.get(Calendar.DATE);
+		
+	}
+	
+	/**
 	 * Converts a date to a range covering that month
 	 * @param date
 	 * @return first Calendar object is start of the month, last Calendar object is end of the month 
