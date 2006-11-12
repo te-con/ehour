@@ -1,0 +1,60 @@
+.print_weekday
+{
+	padding: 0px;
+	padding-left: 2px;
+	margin: 0px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 7pt;
+	font-weight: bold;
+	color: white;
+	background-color: #913023;
+	width: 16px;
+	border: #660000 1px solid;
+	border-width: 1px 1px 1px 0px;
+}
+
+.print_weekendday
+{
+	padding: 0px;
+	padding-left: 2px;
+	margin: 0px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 7pt;
+	font-weight: bold;
+	color: white;
+	background-color: #cccccc;
+	width: 16px;
+	border: #660000 1px solid;
+	border-width: 1px 1px 1px 0px;
+}
+
+.print_data
+{
+	padding: 0px;
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 7pt;
+	color: #220000;
+	text-align: center;
+	vertical-align: middle;
+	border: #660000 1px solid;
+	border-width: 0px 1px 1px 0px;
+}
+
+.print_dataweekend
+{
+	padding: 0px;
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 7pt;
+	color: #220000;
+	text-align: center;
+	vertical-align: middle;
+	border: #660000 1px solid;
+	border-width: 0px 1px 1px 0px;
+	background-color: #cccccc;
+}

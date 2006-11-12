@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.project.domain.ProjectAssignment" table="PROJECT_ASSIGNMENT">
+		<!--  <cache usage="read-write" /> -->
+		
+		<id name="assignmentId" column="ASSIGNMENT_ID" type="integer">
+			<generator class="identity" />
+       	</id>
+
+        <many-to-one name="user" class="net.rrm.ehour.user.domain.User" fetch="join">
+            <column name="USER_ID" not-null="true" />
+        </many-to-one>
+
+        <many-to-one name="project" class="net.rrm.ehour.project.domain.Project" fetch="join">
+            <column name="PROJECT_ID" not-null="true" />
+        </many-to-one>
+
+        <property name="hourlyRate" type="java.lang.Float">
+            <column name="HOURLY_RATE" precision="9" scale="3" />
+        </property>
+
+        <property name="dateStart" type="date">
+            <column name="DATE_START" length="10" not-null="true" />
+        </property>
+
+        <property name="dateEnd" type="date">
+            <column name="DATE_END" length="10" not-null="true" />
+        </property>
+
+        <property name="description" type="string">
+            <column name="DESCRIPTION" />
+        </property>
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+
+    <!-- Base layout -->
+    <definition name=".qhour.baseLayout" path="/tiles/base_layout.jsp">
+        <put name="pageTitle" value="Qhour" />
+        <put name="header" value="/tiles/header.jsp" />
+        <put name="calendar_small" value="/tiles/calendar_small.jsp" />
+        <put name="admin_calendar_small" value="/tiles/nothing.html" />
+    </definition>
+
+    <!-- Timesheet Overview page -->
+    <definition name=".qhour.overview" extends=".qhour.baseLayout">
+        <put name="content" value="/tiles/timesheet_layout.jsp" />
+        <put name="timesheet_overview" value="/jsp/overview/timesheet_overview.jsp" />
+    </definition>
+
+    <!-- Print Timesheet Selection page -->
+    <definition name=".qhour.print.selection" extends=".qhour.baseLayout">
+        <put name="content" value="/jsp/overview/timesheet_print_selection.jsp" />
+    </definition>
+
+    <!-- Project Overview page -->
+    <definition name=".qhour.project.overview" extends=".qhour.baseLayout">
+        <put name="pageTitle" value="Qhour - project overzicht" />
+        <put name="content" value="/jsp/overview/project_overview.jsp" />
+    </definition>
+
+    <!-- Week sheet -->
+    <definition name=".qhour.enter_weeksheet" extends=".qhour.baseLayout">
+        <put name="pageTitle" value="Qhour - week invoer" />
+        <put name="content" value="/jsp/timesheet/enter_sheet.jsp" />
+    </definition>
+
+    <!-- Photos (smoelenboek) overview -->
+    <definition name=".qhour.photos_overview" extends=".qhour.baseLayout">
+        <put name="pageTitle" value="Qhour - smoelenboek" />
+        <put name="content" value="/jsp/photos/overview.jsp" />
+    </definition>
+
+    <!-- Admin base -->
+    <definition name=".qhour.admin.base" extends=".qhour.baseLayout">
+        <put name="pageTitle" value="Qhour - admin" />
+        <put name="calendar_small" value="/tiles/admin_nav.jsp" />
+    </definition>
+
+    <!-- Admin index -->
+    <definition name=".qhour.admin.index" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - admin" />
+        <put name="content" value="/jsp/admin/index.jsp" />
+    </definition>
+
+    <!-- Admin consultants index -->
+    <definition name=".qhour.admin.consultants.index" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - admin consultants" />
+        <put name="content" value="/jsp/admin/consultants/index.jsp" />
+    </definition>
+
+    <!-- Admin consultants edit form -->
+    <definition name=".qhour.admin.consultants.form" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - wijzigen consultant" />
+        <put name="content" value="/jsp/admin/consultants/edit_consultant_form.jsp" />
+    </definition>
+
+    <!-- Admin consultants deleted page -->
+    <definition name=".qhour.admin.consultants.deleted" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - consultant verwijderd" />
+        <put name="content" value="/jsp/admin/consultants/consultant_deleted.jsp" />
+    </definition>
+
+    <!-- Admin customers index -->
+    <definition name=".qhour.admin.customers.index" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - admin klanten" />
+        <put name="content" value="/jsp/admin/customers/index.jsp" />
+    </definition>
+
+    <!-- Admin customers edit form -->
+    <definition name=".qhour.admin.customers.form" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - wijzigen klant" />
+        <put name="content" value="/jsp/admin/customers/edit_customer_form.jsp" />
+    </definition>
+
+    <!-- Admin projects index -->
+    <definition name=".qhour.admin.projects.index" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - admin projecten" />
+        <put name="content" value="/jsp/admin/projects/index.jsp" />
+    </definition>
+
+    <!-- Admin projects edit form -->
+    <definition name=".qhour.admin.projects.form" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - wijzigen project" />
+        <put name="content" value="/jsp/admin/projects/edit_project_form.jsp" />
+    </definition>
+
+    <!-- Admin assignments index -->
+    <definition name=".qhour.admin.assignments.index" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - admin assignments" />
+        <put name="content" value="/jsp/admin/assignments/index.jsp" />
+    </definition>
+
+    <!-- Admin assignments edit form -->
+    <definition name=".qhour.admin.assignments.form" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - wijzigen assignment" />
+        <put name="content" value="/jsp/admin/assignments/edit_assignment_form.jsp" />
+    </definition>
+
+    <!-- Admin edit timesheet index -->
+    <definition name=".qhour.admin.timesheet.index" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - wijzig timesheet" />
+        <put name="content" value="/jsp/admin/timesheet/index.jsp" />
+    </definition>
+
+    <!-- Admin edit timesheet form -->
+    <definition name=".qhour.admin.timesheet.form" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - wijzig timesheet" />
+        <put name="content" value="/jsp/timesheet/enter_sheet.jsp" />
+        <put name="admin_calendar_small" value="/tiles/calendar_small.jsp" />
+    </definition>
+
+    <!-- Admin check timesheet -->
+    <definition name=".qhour.admin.timesheet.check" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - check timesheets" />
+        <put name="content" value="/jsp/admin/timesheet/check.jsp" />
+        <put name="admin_calendar_small" value="/tiles/calendar_small.jsp" />
+    </definition>
+
+    <!-- Admin report index -->
+    <definition name=".qhour.admin.report.index" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - rapportage" />
+        <put name="content" value="/jsp/admin/report/index.jsp" />
+    </definition>
+
+    <!-- Admin report index -->
+    <definition name=".qhour.admin.timer.index" extends=".qhour.admin.base">
+        <put name="pageTitle" value="Qhour - mail timer" />
+        <put name="content" value="/jsp/admin/timer/index.jsp" />
+    </definition>
+
+</tiles-definitions>

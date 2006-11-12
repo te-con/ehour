@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.project.domain.Customer" table="CUSTOMER">
+		<!-- <cache usage="read-write" /> -->
+		
+		<id name="customerId" column="CUSTOMER_ID" type="integer">
+			<generator class="identity" />
+       	</id>
+
+		<property name="code" column="CODE" type="string"/>
+		<property name="name" column="NAME" type="string"/>
+		<property name="description" column="DESCRIPTION" type="string"/>
+	</class>
+</hibernate-mapping>

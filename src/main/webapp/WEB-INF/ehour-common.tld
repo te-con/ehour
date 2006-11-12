@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+"http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+    <tlibversion>1.0</tlibversion>
+    <jspversion>1.2</jspversion>
+    <shortname>commons</shortname>
+    <uri>http://qhour.qualogy.com/qhour-commons</uri>
+
+    <tag>
+        <name>authCheck</name>
+        <tagclass>com.qualogy.qhour.web.tag.AuthCheckTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+        <attribute>
+            <name>requiredUserTypeID</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>userTypes</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>timesheetEntry</name>
+        <tagclass>com.qualogy.qhour.web.tag.TimesheetEntryTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+        <attribute>
+            <name>assignmentID</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>dayPos</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>entryPos</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>entries</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+</taglib>

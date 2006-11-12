@@ -1,0 +1,33 @@
+#header
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 10;
+}
+
+
+.headerTable
+{
+	background-color:  #FFFdFd;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+}
+
+.headerTable TR
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.headerTable TD
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 8pt;
+	color: #660000;
+}

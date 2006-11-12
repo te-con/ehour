@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <query name="Timesheet.getEntriesBetweenDateForUserId">
+        <![CDATA[FROM TimesheetEntry entry
+                 WHERE entry.entryId.entryDate >= :dateStart AND
+                       entry.entryId.entryDate <= :dateEnd AND
+                       entry.entryId.projectAssignment.user.userId = :userId
+        ]]></query>
+        
+    <query name="Timesheet.getBookedDaysInRangeForUserId">
+        <![CDATA[SELECT new net.rrm.ehour.timesheet.dto.BookedDay(entry.entryId.entryDate, SUM(entry.hours))
+        		 FROM TimesheetEntry entry
+                 WHERE entry.entryId.entryDate >= :dateStart AND
+                       entry.entryId.entryDate <= :dateEnd AND
+                       entry.entryId.projectAssignment.user.userId = :userId
+				 GROUP BY entry.entryId.entryDate                       
+        ]]></query>          
+</hibernate-mapping>
+

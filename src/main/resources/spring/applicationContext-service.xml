@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       default-autowire="byName">
+
+     <!-- User service -->
+    <bean id="userServiceTarget" class="net.rrm.ehour.user.service.UserServiceImpl" /> 
+
+    <bean id="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
+         <property name="target"><ref bean="userServiceTarget"/></property>
+         <property name="proxyInterfaces">
+           <value>net.rrm.ehour.user.service.UserService</value>
+         </property>
+         <property name="interceptorNames">
+           <list>
+              <value>hibernateInterceptor</value>
+           </list>
+         </property>
+     </bean> 
+     
+     
+     <!-- Report service -->
+    <bean id="reportServiceTarget" class="net.rrm.ehour.report.service.ReportServiceImpl" /> 
+
+    <bean id="reportService" class="org.springframework.aop.framework.ProxyFactoryBean">
+         <property name="target"><ref bean="reportServiceTarget"/></property>
+         <property name="proxyInterfaces">
+           <value>net.rrm.ehour.report.service.ReportService</value>
+         </property>
+         <property name="interceptorNames">
+           <list>
+              <value>hibernateInterceptor</value>
+           </list>
+         </property>
+     </bean>       
+     
+     <!-- Timesheet service -->
+    <bean id="timesheetServiceTarget" class="net.rrm.ehour.timesheet.service.TimesheetServiceImpl" /> 
+
+    <bean id="timesheetService" class="org.springframework.aop.framework.ProxyFactoryBean">
+         <property name="target"><ref bean="timesheetServiceTarget"/></property>
+         <property name="proxyInterfaces">
+           <value>net.rrm.ehour.timesheet.service.TimesheetService</value>
+         </property>
+         <property name="interceptorNames">
+           <list>
+              <value>hibernateInterceptor</value>
+           </list>
+         </property>
+     </bean>      
+</beans>

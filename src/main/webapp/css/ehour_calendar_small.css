@@ -1,0 +1,111 @@
+#calenderPaneSmall
+{
+	position: absolute;
+	top: 45px;
+	left: 10px;
+	z-index: 10;
+}
+
+.cps_table
+{
+	background-color:  white;
+	padding: 0px;
+	margin: 0px;
+	BORDER: #660000 1px solid;
+}
+
+.cps_table TH
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+	text-align: center;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 7pt;
+	font-style: normal;
+	color: white;
+	background-color: #913023;
+	vertical-align: top;
+}
+
+.cps_table TR
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.cps_tableTROn
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+	background-color: #dddddd;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.cps_tableTROff
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.cps_table TD
+{
+	padding: 1px;
+	margin: 0px;
+	border-left: #660000 1px solid;
+	border-top: #660000 1px solid;
+	border-right: 0px;
+	border-bottom: 0px;
+}
+
+.cps_weekdayCell
+{
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 8pt;
+	color: #660000;
+	text-align: center;
+	border-left: #660000 1px solid;
+	border-top: #660000 1px solid;
+	border-right: 0px;
+	border-bottom: 0px;
+}
+.cps_dayData
+{
+	padding: 1px;
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 8pt;
+	color: #660000;
+	text-align: right;
+	border-left: #660000 1px solid;
+	border-top: #660000 1px solid;
+	border-right: 0px;
+	border-bottom: 0px;
+}
+
+.cps_weekdaysBG
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+	background-color: #EEEEEE;
+}
+
+.cps_dayNoData
+{
+	padding: 1px;
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 8pt;
+	color: #AAAAAA;
+	text-align: right;
+	border-left: #660000 5px solid;
+	border-top: #660000 1px solid;
+	border-right: 0px;
+	border-bottom: 0px;
+}

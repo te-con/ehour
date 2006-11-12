@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<!-- Action Mapping Definitions -->
+	<action-mappings>
+
+		<!--  Reports Actions -->
+		<action path="/eh/index">
+			<forward name="success" path="/ok.jsp" />
+		</action>
+	</action-mappings>
+
+	<!-- tiles plugin
+		<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+		value="/WEB-INF/tiles-defs.xml" />
+		<set-property property="definitions-parser-validate"
+		value="true" />
+		<set-property property="moduleAware" value="true" />
+		</plug-in>
+	-->
+	<!-- spring contexts  -->
+
+	<!-- spring controller -->
+	<controller>
+		<set-property property="processorClass" value="org.springframework.web.struts.DelegatingRequestProcessor" />
+	</controller>
+	<!-- spring contexts -->
+	<plug-in
+		className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation"
+			value="classpath:/applicationContext-web.xml" />
+	</plug-in>
+
+</struts-config>
+
