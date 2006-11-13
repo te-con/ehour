@@ -5,46 +5,20 @@
 <taglib>
     <tlibversion>1.0</tlibversion>
     <jspversion>1.2</jspversion>
-    <shortname>commons</shortname>
-    <uri>http://qhour.qualogy.com/qhour-commons</uri>
+    <shortname>eHour commons</shortname>
+    <uri>http://ehour.rrm.net/ehour-commons</uri>
 
     <tag>
-        <name>authCheck</name>
-        <tagclass>com.qualogy.qhour.web.tag.AuthCheckTag</tagclass>
+        <name>navCalendar</name>
+        <tagclass>net.rrm.ehour.web.calendar.NavCalendarTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
-            <name>requiredUserTypeID</name>
+            <name>calendar</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>userTypes</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-    </tag>
-
-    <tag>
-        <name>timesheetEntry</name>
-        <tagclass>com.qualogy.qhour.web.tag.TimesheetEntryTag</tagclass>
-        <bodycontent>JSP</bodycontent>
-        <attribute>
-            <name>assignmentID</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>dayPos</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>entryPos</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>entries</name>
+            <name>bookedDays</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

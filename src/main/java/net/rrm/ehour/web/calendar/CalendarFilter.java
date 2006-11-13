@@ -63,11 +63,11 @@ public class CalendarFilter extends HttpServlet implements Filter
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
 	{
         HttpServletRequest  httpRequest;
-        HttpSession			session;
         User                user = null;
-        ApplicationContext 	ctx;
-        CalendarUtil		calendarUtil;
-        boolean[]			monthOverview;
+        Calendar			requestedMonth;
+        // @todo 
+        String				URL = "/eh/enterTimesheet.do";
+        
         
         user = needToProcessRequest(request);
         
@@ -77,17 +77,76 @@ public class CalendarFilter extends HttpServlet implements Filter
         	
         	if (user != null)
         	{
-        		session = httpRequest.getSession();
-        		ctx = WebApplicationContextUtils.getWebApplicationContext(session.getServletContext());
-        		calendarUtil = (CalendarUtil)ctx.getBean("calendarUtil");
+        		// first fetch data
+        		requestedMonth = setCalendarData(user, httpRequest);
         		
-        		monthOverview = calendarUtil.getMonthNavCalendar(user.getUserId(), getRequestedMonth(httpRequest));
-        		
-        		request.setAttribute(WebConstants.REQUEST_NAVCAL_DATA, monthOverview);
+        		// determine next/prev URL's
+        		setNavURLs(httpRequest, requestedMonth, URL);
         	}
         }
         
         chain.doFilter(request, response);
+	}
+	
+	/**
+	 * Set calendar data in request context and return the requested month
+	 * @param user
+	 * @param request
+	 * @return
+	 */
+	
+	private Calendar setCalendarData(User user, HttpServletRequest request)
+	{
+		HttpSession			session;
+        ApplicationContext 	ctx;
+        CalendarUtil		calendarUtil;
+        boolean[]			monthOverview;
+        Calendar	requestedMonth;
+		
+		session = request.getSession();
+		ctx = WebApplicationContextUtils.getWebApplicationContext(session.getServletContext());
+		calendarUtil = (CalendarUtil)ctx.getBean("calendarUtil");
+		
+		requestedMonth = getRequestedMonth(request);
+		
+		monthOverview = calendarUtil.getMonthNavCalendar(user.getUserId(), requestedMonth);
+		request.setAttribute(WebConstants.REQUEST_NAVCAL_DATA, monthOverview);
+		
+		request.setAttribute(WebConstants.REQUEST_NAVCAL_CURCAL, requestedMonth);
+		request.setAttribute(WebConstants.REQUEST_NAVCAL_CUR, requestedMonth.getTime());
+		
+		return requestedMonth;
+	}
+
+	/**
+	 * Set next/previous month in request context
+	 * @param request
+	 * @param currentMonth
+	 */
+	private void setNavURLs(HttpServletRequest request, Calendar currentMonth, String URL)
+	{
+		Calendar	prevMonth;
+		Calendar	nextMonth;
+		String		prevMonthURL;
+		String		nextMonthURL;
+		
+		prevMonth = (Calendar)currentMonth.clone();
+		nextMonth = (Calendar)currentMonth.clone();
+		
+		prevMonth.set(Calendar.MONTH, -1);
+		nextMonth.set(Calendar.MONTH, 1);
+		
+		prevMonthURL = URL + "?" 
+						+ WebConstants.CALENDAR_MONTH_KEY + "=" + prevMonth.get(Calendar.MONTH) + "&" 
+						+ WebConstants.CALENDAR_YEAR_KEY + "=" + prevMonth.get(Calendar.YEAR);
+		
+		request.setAttribute(WebConstants.REQUEST_NAVCAL_PREV, prevMonthURL);
+
+		nextMonthURL = URL + "?" 
+						+ WebConstants.CALENDAR_MONTH_KEY + "=" + nextMonth.get(Calendar.MONTH) + "&" 
+						+ WebConstants.CALENDAR_YEAR_KEY + "=" + nextMonth.get(Calendar.YEAR);
+		
+		request.setAttribute(WebConstants.REQUEST_NAVCAL_NEXT, nextMonthURL);
 	}
 	
     /**
@@ -97,7 +156,7 @@ public class CalendarFilter extends HttpServlet implements Filter
     * @return Calendar
     */
 
-   public Calendar getRequestedMonth(HttpServletRequest request)
+   private Calendar getRequestedMonth(HttpServletRequest request)
    {
        HttpSession 	session;
        int 			year;
