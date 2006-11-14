@@ -33,7 +33,7 @@ public class User implements Serializable, Comparable
 
 	private Set userRoles = new HashSet(0);
 
-	private Organisation organisation;
+	private UserDepartment userDepartment;
 
 	// Constructors
 
@@ -43,9 +43,9 @@ public class User implements Serializable, Comparable
 	}
 
 	/** minimal constructor */
-	public User(Organisation organisation)
+	public User(UserDepartment userDepartment)
 	{
-		this.organisation = organisation;
+		this.userDepartment = userDepartment;
 	}
 
 	public User(String username, String password)
@@ -55,7 +55,7 @@ public class User implements Serializable, Comparable
 	}
 	
 	/** full constructor */
-	public User(String username, String password, String firstName, String lastName, String email, String mobilePhone, Set userRoles, Organisation organisation)
+	public User(String username, String password, String firstName, String lastName, String email, String mobilePhone, Set userRoles, UserDepartment userDepartment)
 	{
 		this.username = username;
 		this.password = password;
@@ -64,7 +64,7 @@ public class User implements Serializable, Comparable
 		this.email = email;
 		this.mobilePhone = mobilePhone;
 		this.userRoles = userRoles;
-		this.organisation = organisation;
+		this.userDepartment = userDepartment;
 	}
 
 	// Property accessors
@@ -148,14 +148,14 @@ public class User implements Serializable, Comparable
 		this.userRoles = userRoles;
 	}
 
-	public Organisation getOrganisation()
+	public UserDepartment getDepartment()
 	{
-		return this.organisation;
+		return this.userDepartment;
 	}
 
-	public void setOrganisation(Organisation organisation)
+	public void setDepartment(UserDepartment userDepartment)
 	{
-		this.organisation = organisation;
+		this.userDepartment = userDepartment;
 	}
 	
     public int compareTo(Object o)

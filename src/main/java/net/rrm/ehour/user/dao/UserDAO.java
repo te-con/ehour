@@ -32,15 +32,7 @@ public interface UserDAO
 	 * @return
 	 */
 	public User findById(Integer userId);
-	
-	/**
-	 * Find a user by username & password combination
-	 * @param username
-	 * @param password
-	 * @return
-	 */
-	public User findByUsernameAndPassword(String username, String password);
-	
+
 	/**
 	 * Find a user by username
 	 * @param username

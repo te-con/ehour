@@ -3,10 +3,10 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="net.rrm.ehour.user.domain.Organisation" table="ORGANISATION">
-		<!--  <cache usage="read-write" /> -->
-		<id name="organisationId" type="integer">
-			<column name="ORGANISATION_ID" />
+	<class name="net.rrm.ehour.user.domain.UserDepartment" table="USER_DEPARTMENT">
+		<!--  <cache usage="read-write" />  -->
+		<id name="departmentId" type="integer">
+			<column name="DEPARTMENT_ID" />
 			<generator class="identity" />
 		</id>
 		<property name="name" type="string">

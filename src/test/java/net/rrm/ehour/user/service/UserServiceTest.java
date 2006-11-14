@@ -46,26 +46,6 @@ public class UserServiceTest extends MockObjectTestCase
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.user.service.UserServiceImpl#getUser(java.lang.String, java.lang.String)}.
-	 */
-	public void testGetUserStringString()
-	{
-		Mock 	dao = new Mock(UserDAO.class);
-		User	user;
-		dao = new Mock(UserDAO.class);
-		dao.expects(once())
-		   .method("findByUsernameAndPassword")
-		   .with(eq("thies"), eq("pwd"))
-		   .will(returnValue(new User("thies", "pwd")));
-		
-		((UserServiceImpl)userService).setUserDAO((UserDAO) dao.proxy());
-		
-		user = userService.getUser("thies", "pwd");
-		
-		assertEquals("thies", user.getUsername());
-	}
-
-	/**
 	 * Test method for {@link net.rrm.ehour.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
 	 */
 	public void testGetUserInteger()

@@ -1,5 +1,5 @@
 /**
- * Created on Nov 9, 2006
+ * Created on Nov 14, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,10 +21,12 @@
  *
  */
 
-package net.rrm.ehour.web.action;
+package net.rrm.ehour.web.admin.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
@@ -33,16 +35,19 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * TODO
- */
+ * TODO 
+ **/
 
-public class TimesheetOverviewAction extends Action
+public class AdminEntryAction extends Action
 {
 	private	Logger		logger = Logger.getLogger(TimesheetOverviewAction.class);	
 	
+	/**
+	 * 
+	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		logger.info("ff");
+		// @todo do something useful
 		return mapping.findForward("success");
 	}
 }

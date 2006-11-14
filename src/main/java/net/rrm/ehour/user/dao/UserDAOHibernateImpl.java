@@ -42,32 +42,6 @@ public class UserDAOHibernateImpl extends HibernateDaoSupport implements UserDAO
 	}
 
 	/**
-	 * Find by username and password
-	 */
-	public User findByUsernameAndPassword(String username, String password) 
-	{
-		User		user = null;
-		List		l;
-		String[]	keys = new String[2];
-		Object[]	params = new Object[2];
-		
-		keys[0] = "username";
-		keys[1] = "password";
-		params[0] = username;
-		params[1] = password;
-		
-		l = getHibernateTemplate().findByNamedQueryAndNamedParam("User.findByUsernameAndPassword", keys, params);
-		
-		if (l.size() > 0)
-		{
-			user = (User)l.get(0);
-		}
-		
-		return user;
-		
-	}
-
-	/**
 	 * 
 	 */
 	public User findByUsername(String username)

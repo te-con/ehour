@@ -12,7 +12,7 @@
 				<a href="<c:url value="/eh/timesheetOverview.do" />"><fmt:message key="nav.timesheetOverview" /></a> |
 				<a href="<c:url value="/eh/printTimesheetSelection.do" />"><fmt:message key="nav.printTimesheet" /></a> |
 				<a HREF="<c:url value="/eh/projectOverview.do" />"><fmt:message key="nav.projectOverview" /></a>
-<authz:authorize ifAllGranted="ROLE_ADMIN">>| 
+<authz:authorize ifAllGranted="ROLE_ADMIN">| 
 				<a href="<c:url value="/eh/admin/index.do" />"><fmt:message key="nav.admin" /></a>
 </authz:authorize>				
             </TD>
@@ -28,7 +28,10 @@
 		</TR>
 
 		<TR>
-			<TD COLSPAN="3" align="right"><a href="<c:url value="/logoff.do" />"><fmt:message key="nav.logOff" /></a>&nbsp;&nbsp;</TD>
+			<TD COLSPAN="3" align="right">
+				<a href="<c:url value="/eh/logOff.do" />"><fmt:message key="nav.logOff" /></a>
+				&nbsp;&nbsp;
+			</TD>
 		</TR>
 
 

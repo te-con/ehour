@@ -3,7 +3,7 @@
 <%@ taglib uri="/WEB-INF/ehour-common.tld" prefix="ehour" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page import="java.util.*" %>
+<%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
 
 	<script>
 		function enterTimesheet(day, month, year)
@@ -12,6 +12,7 @@
 		}
 	</script>
 
+<authz:authorize ifAllGranted="ROLE_CONSULTANT">
 	<table CLASS="cps_table" CELLSPACING=0>
 		<TR>
             <TH style="vertical-align: middle"><a href="<c:out value="${navCalPrevMonth}" />"><img src="<c:url value="/img/left.gif" />" border=0></a></th>
@@ -20,6 +21,5 @@
 		</TR>
 
 		<ehour:navCalendar bookedDays="${navCalMonth}" calendar="${navCalCurCalMonth}" />
-
-
 	</TABLE>
+</authz:authorize>	

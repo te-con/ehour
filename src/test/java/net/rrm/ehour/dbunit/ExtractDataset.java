@@ -23,10 +23,10 @@ public class ExtractDataset
         QueryDataSet partialDataSet = new QueryDataSet(connection);
 
         // take note of the order to prevent FK constraint violation when re-inserting
-        partialDataSet.addTable("organisation");
+        partialDataSet.addTable("user_department");
         partialDataSet.addTable("user");
-        partialDataSet.addTable("user_type");
-        partialDataSet.addTable("user_to_usertype");
+        partialDataSet.addTable("user_role");
+        partialDataSet.addTable("user_to_userrole");
         partialDataSet.addTable("customer");
         partialDataSet.addTable("project");
         partialDataSet.addTable("project_assignment");

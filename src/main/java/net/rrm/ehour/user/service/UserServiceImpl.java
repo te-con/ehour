@@ -41,18 +41,7 @@ public class UserServiceImpl implements UserService
 	private	UserDAO		userDAO;
 	private	Logger		logger = Logger.getLogger(UserServiceImpl.class);
 
-	
-	/**
-	 * Get user by username and password
-	 * @param username
-	 * @param password
-	 * @return
-	 * @throws NoResultsException
-	 */
-	public User getUser(String username, String password) 
-	{
-		return userDAO.findByUsernameAndPassword(username, password);
-	}
+
 
 	/**
 	 * Get user by userID

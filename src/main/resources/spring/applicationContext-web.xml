@@ -5,5 +5,9 @@
        default-autowire="byName">
 
 	<!--  struts actions -->
-	<bean name="/eh/timesheetOverview" class="net.rrm.ehour.web.action.TimesheetOverviewAction" />	
+	<bean name="/eh/timesheetOverview" class="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" />	
+	
+	<bean name="/eh/logOff" class="net.rrm.ehour.web.action.LogOffAction" />	
+	
+	<bean name="/eh/admin/index" class="net.rrm.ehour.web.admin.action.AdminEntryAction" />		
 </beans>

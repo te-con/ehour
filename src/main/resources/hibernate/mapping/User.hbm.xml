@@ -23,8 +23,8 @@
            <many-to-many column="ROLE" class="net.rrm.ehour.user.domain.UserRole"/>
         </set>		
         
-        <many-to-one name="organisation" class="net.rrm.ehour.user.domain.Organisation" fetch="join">
-            <column name="ORGANISATION_ID" not-null="true" />
+        <many-to-one name="department" class="net.rrm.ehour.user.domain.UserDepartment" fetch="join">
+            <column name="DEPARTMENT_ID" not-null="true" />
         </many-to-one>        
 	</class>
 </hibernate-mapping>

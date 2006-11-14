@@ -1,5 +1,5 @@
 /**
- * Created on Nov 14, 2006
+ * Created on Nov 9, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,32 +21,28 @@
  *
  */
 
-package net.rrm.ehour.user.service;
+package net.rrm.ehour.web.timesheet.action;
 
-import net.rrm.ehour.exception.NoResultsException;
-import net.rrm.ehour.user.domain.User;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UserDetailsService;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
-import org.springframework.dao.DataAccessException;
+import org.apache.log4j.Logger;
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 
+/**
+ * TODO
+ */
 
-public interface UserService extends UserDetailsService
+public class TimesheetOverviewAction extends Action
 {
-
-	/**
-	 * Get user by username (acegi)
-	 * @param username
-	 */
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException;
+	private	Logger		logger = Logger.getLogger(TimesheetOverviewAction.class);	
 	
-	/**
-	 * Get user by userID
-	 * @param userID
-	 * @return
-	 * @throws NoResultsException
-	 */
-    public User getUser(Integer userID);
-
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
+		// @todo do something useful
+		return mapping.findForward("success");
+	}
 }
