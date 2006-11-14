@@ -12,11 +12,9 @@ public class WebConstants
 		
 	public final static String REQUEST_NAVCAL_DATA = "navCalData";
 	public final static String REQUEST_NAVCAL_CURCAL = "navCalCurCalMonth";
-	public final static String REQUEST_NAVCAL_CUR = "navCalCurMonth";
 	public final static String REQUEST_NAVCAL_PREV = "navCalPrevMonth";
 	public final static String REQUEST_NAVCAL_NEXT = "navCalNextMonth";
 	public final static String REQUEST_NAVCAL_URL = "navCalURL";
-	public final static String REQUEST_NAVCAL_DAY_OF_WEEK = "navCalDayOfWeek";
 	
 	
 	public final static String SESSION_NAVCAL_VALID = "navCalValidity";

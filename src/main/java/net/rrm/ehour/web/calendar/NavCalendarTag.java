@@ -63,8 +63,9 @@ public class NavCalendarTag extends TagSupport
 
 	public int doStartTag() throws JspException
 	{
-		JspWriter 	out;
-		int			currentColumn;
+		JspWriter 		out;
+		int				currentColumn;
+		StringBuffer	sb = new StringBuffer();
 
 		out = pageContext.getOut();
 
@@ -77,17 +78,27 @@ public class NavCalendarTag extends TagSupport
 			
 			calendar.setFirstDayOfWeek(Calendar.SUNDAY);
 			
-			currentColumn = prependPreviousMonthDays(out);
-			currentColumn = writeCalendar(currentColumn, out);
-			appendNextMonthDays(currentColumn, out);
+			currentColumn = prependPreviousMonthDays(sb);
+			currentColumn = writeCalendar(currentColumn, sb);
+			appendNextMonthDays(currentColumn, sb);
 			
-			out.write(HTML_ROW_CLOSE);
+			sb.append(HTML_ROW_CLOSE);
 			
-		} catch (IOException e)
+			out.write(sb.toString());
+			
+		} catch (Throwable t)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new JspException(e);
+			logger.error("Exception while creating nav calendar for month " + calendar.toString());
+			logger.error(t);
+			
+			// big chance this fails as well but at least we can try
+			
+			try
+			{
+				out.write("<tr><td colspan=3>Something went wrong..</td></tr>");
+			} catch (IOException e)
+			{
+			}
 		}
 		
 		return SKIP_BODY;
@@ -100,7 +111,7 @@ public class NavCalendarTag extends TagSupport
 	 * @param out
 	 * @throws IOException
 	 */
-	private void appendNextMonthDays(int currentColumn, JspWriter out) throws IOException
+	private void appendNextMonthDays(int currentColumn, StringBuffer out) 
 	{
 		if (currentColumn > 0)
 		{
@@ -108,9 +119,9 @@ public class NavCalendarTag extends TagSupport
 				 currentColumn <= 6;
 				 currentColumn++)
 			{
-				out.write(HTML_CELL_COMPLETE);
-				out.write(HTML_NBSP);
-				out.write(HTML_CELL_CLOSE);
+				out.append(HTML_CELL_COMPLETE);
+				out.append(HTML_NBSP);
+				out.append(HTML_CELL_CLOSE);
 			}
 		}
 		
@@ -120,7 +131,7 @@ public class NavCalendarTag extends TagSupport
 	 * @param out
 	 * @throws IOException
 	 */
-	private int writeCalendar(int currentColumn, JspWriter out) throws IOException
+	private int writeCalendar(int currentColumn, StringBuffer out) 
 	{
 		int	month = calendar.get(Calendar.MONTH);
 		int year = calendar.get(Calendar.YEAR);
@@ -133,30 +144,30 @@ public class NavCalendarTag extends TagSupport
 			if (currentColumn == 0)
 			{
 				// @todo row might not be closed by prependdays
-				out.write(HTML_NEW_ROW);
+				out.append(HTML_NEW_ROW);
 				
 				// sundays are always marked as complete
-				out.write(HTML_FIRST_CELL_COMPLETE);
+				out.append(HTML_FIRST_CELL_COMPLETE);
 			}
 			else if (currentColumn == 6 ||
 					(bookedDays != null && bookedDays[calendar.get(Calendar.DAY_OF_MONTH)]))
 			{
-				out.write(HTML_CELL_COMPLETE);
+				out.append(HTML_CELL_COMPLETE);
 			}
 			else
 			{
-				out.write(HTML_CELL_NOT_COMPLETE);
+				out.append(HTML_CELL_NOT_COMPLETE);
 			}
 			
 			// write the day of the month
-			out.write("" + calendar.get(Calendar.DAY_OF_MONTH));
-			out.write(HTML_CELL_CLOSE);
+			out.append("" + calendar.get(Calendar.DAY_OF_MONTH));
+			out.append(HTML_CELL_CLOSE);
 			
 			currentColumn++;
 			
 			if (currentColumn == 7)
 			{
-				out.write(HTML_ROW_CLOSE);
+				out.append(HTML_ROW_CLOSE);
 				currentColumn = 0;
 			}
 			
@@ -170,7 +181,7 @@ public class NavCalendarTag extends TagSupport
 	 * 
 	 * @param out
 	 */
-	private int prependPreviousMonthDays(JspWriter out) throws IOException
+	private int prependPreviousMonthDays(StringBuffer out) 
 	{
 		int i;
 		int	currentColumn;
@@ -182,16 +193,16 @@ public class NavCalendarTag extends TagSupport
 		if (currentColumn != Calendar.SUNDAY)
 		{
 			currentColumn--;
-			out.write(HTML_NEW_ROW);
-			out.write(HTML_FIRST_CELL);
-			out.write(HTML_NBSP);
-			out.write(HTML_CELL_CLOSE);
+			out.append(HTML_NEW_ROW);
+			out.append(HTML_FIRST_CELL);
+			out.append(HTML_NBSP);
+			out.append(HTML_CELL_CLOSE);
 
 			for (i = 1; i < currentColumn; i++)
 			{
-				out.write(HTML_CELL);
-				out.write(HTML_NBSP);
-				out.write(HTML_CELL_CLOSE);
+				out.append(HTML_CELL);
+				out.append(HTML_NBSP);
+				out.append(HTML_CELL_CLOSE);
 			}
 		}
 		

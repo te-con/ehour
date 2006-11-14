@@ -110,10 +110,9 @@ public class CalendarFilter extends HttpServlet implements Filter
 		requestedMonth = getRequestedMonth(request);
 		
 		monthOverview = calendarUtil.getMonthNavCalendar(user.getUserId(), requestedMonth);
-		request.setAttribute(WebConstants.REQUEST_NAVCAL_DATA, monthOverview);
 		
+		request.setAttribute(WebConstants.REQUEST_NAVCAL_DATA, monthOverview);
 		request.setAttribute(WebConstants.REQUEST_NAVCAL_CURCAL, requestedMonth);
-		request.setAttribute(WebConstants.REQUEST_NAVCAL_CUR, requestedMonth.getTime());
 		
 		return requestedMonth;
 	}
