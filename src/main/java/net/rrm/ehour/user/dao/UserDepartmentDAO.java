@@ -1,5 +1,5 @@
 /**
- * Created on Nov 4, 2006
+ * Created on Nov 15, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,28 +21,41 @@
  *
  */
 
-package net.rrm.ehour;
+package net.rrm.ehour.user.dao;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import net.rrm.ehour.report.dao.ReportDAOTest;
-import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
-import net.rrm.ehour.user.dao.UserDAOTest;
-import net.rrm.ehour.user.dao.UserDepartmentDAOTest;
+import java.util.List;
 
-public class DAOTests
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
+
+/**
+ * CRUD on UserDepartment domain object 
+ **/
+
+public interface UserDepartmentDAO
 {
-	public static Test suite()
-	{
-		TestSuite suite = new TestSuite("Integration tests for net.rrm.ehour");
-		
-		
-		//$JUnit-BEGIN$
-		suite.addTestSuite(UserDAOTest.class);
-		suite.addTestSuite(UserDepartmentDAOTest.class);
-		suite.addTestSuite(TimesheetDAOTest.class);
-		suite.addTestSuite(ReportDAOTest.class);
-		//$JUnit-END$
-		return suite;
-	}
+	/**
+	 * Get all departments, sorted by name
+	 * @return
+	 */
+	public List	getAllDepartments();
+	
+	/**
+	 * Find department by id
+	 * @param deptId
+	 * @return
+	 */
+	public UserDepartment findById(Integer deptId);
+
+	/**
+	 * Persist to the database
+	 * @param department
+	 */
+	public void persist(UserDepartment department);
+	
+	/**
+	 * Delete department
+	 * @param department
+	 */
+	public void delete(UserDepartment department);
 }

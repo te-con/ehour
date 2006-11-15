@@ -1,5 +1,5 @@
 /**
- * Created on Nov 4, 2006
+ * Created on Nov 15, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,28 +21,46 @@
  *
  */
 
-package net.rrm.ehour;
+package net.rrm.ehour.user.dao;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import net.rrm.ehour.report.dao.ReportDAOTest;
-import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
-import net.rrm.ehour.user.dao.UserDAOTest;
-import net.rrm.ehour.user.dao.UserDepartmentDAOTest;
+import java.util.List;
 
-public class DAOTests
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
+
+/**
+ * TODO 
+ **/
+
+public class UserDepartmentDAOHibernateImpl extends HibernateDaoSupport implements UserDepartmentDAO
 {
-	public static Test suite()
+
+	/**
+	 * 
+	 */
+	public void delete(UserDepartment department)
 	{
-		TestSuite suite = new TestSuite("Integration tests for net.rrm.ehour");
-		
-		
-		//$JUnit-BEGIN$
-		suite.addTestSuite(UserDAOTest.class);
-		suite.addTestSuite(UserDepartmentDAOTest.class);
-		suite.addTestSuite(TimesheetDAOTest.class);
-		suite.addTestSuite(ReportDAOTest.class);
-		//$JUnit-END$
-		return suite;
+		getHibernateTemplate().delete(department);
 	}
+
+	/**
+	 * 
+	 */
+	public UserDepartment findById(Integer deptId)
+	{
+		return (UserDepartment) getHibernateTemplate().get(UserDepartment.class, deptId);
+	}
+
+	public List getAllDepartments()
+	{
+		return getHibernateTemplate().loadAll(UserDepartment.class);
+	}
+
+	public void persist(UserDepartment department)
+	{
+		getHibernateTemplate().saveOrUpdate(department);
+	}
+
 }

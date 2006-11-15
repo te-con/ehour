@@ -7,7 +7,7 @@
 	<action-mappings>
 
 		<!--  Actions -->
-		
+
 		<!-- Timesheet overview, login entry for everyone -->
 		<action path="/eh/timesheetOverview" type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overview" />
@@ -15,27 +15,18 @@
 
 		<!-- Timesheet overview, login entry for everyone -->
 		<action path="/eh/logOff" type="net.rrm.ehour.web.action.LogOffAction" >
-			<forward name="success" path="/eh/timesheetOverview.do" />
-		</action>
-
-		<!-- Entry page for all administrators -->
-		<action path="/eh/admin/index" type="net.rrm.ehour.web.admin.action.AdminEntryAction" >
-			<forward name="success" path=".ehour.admin.index" />
+			<forward name="success" path="/" />
 		</action>
 	</action-mappings>
 
 	<!-- spring tiles controller -->
 	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
 
-	<!-- spring contexts -->
-	<plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
-		<set-property property="contextConfigLocation" value="classpath:/applicationContext-web.xml" />
-	</plug-in>
-
-	<!-- tiles plugin -->
+	<!-- tiles plugin. apparently tiles defs for other modules need to be loaded here as well,
+		 adding them to the other config files won't work.. -->
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
-		<set-property property="definitions-config"	value="/WEB-INF/tiles-defs-consultant.xml,
-															/WEB-INF/tiles-defs-admin.xml" />
+		<set-property property="definitions-config"	value="/WEB-INF/tiles/tiles-defs-default.xml,
+															/WEB-INF/tiles/tiles-defs-admin.xml" />
 		<set-property property="definitions-parser-validate" value="true" />
 	</plug-in>
 

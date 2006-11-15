@@ -10,4 +10,6 @@
 	<bean name="/eh/logOff" class="net.rrm.ehour.web.action.LogOffAction" />	
 	
 	<bean name="/eh/admin/index" class="net.rrm.ehour.web.admin.action.AdminEntryAction" />		
+	
+	<bean name="/eh/admin/dept/index" class="net.rrm.ehour.web.admin.action.AdminEntryAction" />			
 </beans>

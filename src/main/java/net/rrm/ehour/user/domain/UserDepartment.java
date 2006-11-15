@@ -61,9 +61,9 @@ public class UserDepartment implements java.io.Serializable
 	 * @param departmentId  the departmentId to set
 	 * @uml.property  name="departmentId"
 	 */
-	public void setDepartmentId(Integer organisationId)
+	public void setDepartmentId(Integer departmentId)
 	{
-		this.departmentId = organisationId;
+		this.departmentId = departmentId;
 	}
 
 	/**

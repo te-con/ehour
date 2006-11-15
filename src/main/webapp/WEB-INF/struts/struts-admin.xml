@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<!-- Action Mapping Definitions -->
+	<action-mappings>
+
+		<!--  Actions -->
+
+		<!-- Entry page for all administrators -->
+		<action path="/index" type="net.rrm.ehour.web.admin.action.AdminEntryAction" >
+			<forward name="success" path=".ehour.admin.index" />
+		</action>
+
+		<action path="/dept/index" type="net.rrm.ehour.web.admin.action.AdminEntryAction" >
+			<forward name="success" path=".ehour.admin.index" />
+		</action>
+	</action-mappings>
+	
+	<!-- spring tiles controller -->
+	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
+
+</struts-config>
+

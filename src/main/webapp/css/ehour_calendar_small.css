@@ -88,6 +88,20 @@
 	border-bottom: 0px;
 }
 
+.cps_admin
+{
+	padding: 1px;
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 8pt;
+	color: #660000;
+	text-align: right;
+	border-top: #660000 1px solid;
+	border-right: 0px;
+	border-left: 0px;
+	border-bottom: 0px;
+}
+
 .cps_weekdaysBG
 {
 	border: 0px;

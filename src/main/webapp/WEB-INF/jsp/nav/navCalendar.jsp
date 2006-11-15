@@ -16,7 +16,7 @@
 	<table CLASS="cps_table" CELLSPACING=0>
 		<TR>
             <TH style="vertical-align: middle"><a href="<c:out value="${navCalPrevMonth}" />"><img src="<c:url value="/img/left.gif" />" border=0></a></th>
-			<TH COLSPAN=5><fmt:formatDate value="${navCalCurMonth}" pattern="MMMMM yyyy" /></TH>
+			<TH COLSPAN=5><fmt:formatDate value="${navCalCurCalMonth.time}" pattern="MMMMM yyyy" /></TH>
             <TH style="vertical-align: middle"><a href="<c:out value="${navCalNextMonth}" />"><img src="<c:url value="/img/right.gif" />" border=0></a></th>
 		</TR>
 
