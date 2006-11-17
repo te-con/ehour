@@ -19,5 +19,10 @@
 				<comment></comment>
 			</column>
 		</property>
+		
+    <set name="users" inverse="true" lazy="true" cascade="none">
+    	<key column="DEPARTMENT_ID" />
+        <one-to-many class="net.rrm.ehour.user.domain.User"/>
+    </set>
 	</class>
 </hibernate-mapping>

@@ -23,8 +23,13 @@
 
 package net.rrm.ehour.user.service;
 
+import java.util.List;
+
 import net.rrm.ehour.exception.NoResultsException;
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
@@ -48,5 +53,31 @@ public interface UserService extends UserDetailsService
 	 * @throws NoResultsException
 	 */
     public User getUser(Integer userID);
+    
+    /**
+     * Get list of all user departments
+     * @return
+     */
+    public List getUserDepartments();
 
+    /**
+     * Persist user department to database
+     * @param department
+     * @return
+     */
+    public UserDepartment persistUserDepartment(UserDepartment department);
+    
+	/**
+	 * Delete user department on id
+	 * @param departmentId
+	 * @throws ParentChildConstraintException when there are still users attached to the department
+	 */
+    public void deleteUserDepartment(Integer  departmentId) throws ParentChildConstraintException;
+    
+    /**
+     * Get user department on id 
+     * @param departmentId
+     * @return
+     */
+    public UserDepartment getUserDepartment(Integer departmentId);
 }

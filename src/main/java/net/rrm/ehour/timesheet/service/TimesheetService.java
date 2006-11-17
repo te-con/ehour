@@ -26,7 +26,7 @@ package net.rrm.ehour.timesheet.service;
 import java.util.Calendar;
 import java.util.List;
 
-import net.rrm.ehour.exception.UserNotFoundException;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 
 /**
@@ -44,9 +44,9 @@ public interface TimesheetService
 	 * @param userId
 	 * @param requestedMonth only the month and year of the calendar is used
 	 * @return TimesheetOverviewAction
-	 * @throws UserNotFoundException
+	 * @throws ObjectNotFoundException
 	 */
-	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) throws UserNotFoundException;
+	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException;
 	
 	/**
 	 * Get a list with all day numbers in this month that has complete booked days (config defines the completion
@@ -54,7 +54,7 @@ public interface TimesheetService
 	 * @param userId
 	 * @param requestedMonth
 	 * @return List with Integers of complete booked days
-	 * @throws UserNotFoundException
+	 * @throws ObjectNotFoundException
 	 */
-	public List getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws UserNotFoundException;
+	public List getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException;
 }

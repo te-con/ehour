@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.exception.UserNotFoundException;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.util.DateUtil;
@@ -74,7 +74,7 @@ public class CalendarUtil
 		{
 			bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
 		}
-		catch (UserNotFoundException e)
+		catch (ObjectNotFoundException e)
 		{
 			bookedDays = new ArrayList();
 		}

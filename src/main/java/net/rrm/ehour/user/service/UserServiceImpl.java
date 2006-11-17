@@ -23,9 +23,15 @@
 
 package net.rrm.ehour.user.service;
 
+import java.util.List;
+
 import net.rrm.ehour.exception.NoResultsException;
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.dto.AuthUser;
 
 import org.acegisecurity.userdetails.UserDetails;
@@ -38,8 +44,9 @@ import org.springframework.dao.DataAccessException;
  */
 public class UserServiceImpl implements UserService
 {
-	private	UserDAO		userDAO;
-	private	Logger		logger = Logger.getLogger(UserServiceImpl.class);
+	private	UserDAO				userDAO;
+	private	UserDepartmentDAO	userDepartmentDAO;
+	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
 
 
 
@@ -54,16 +61,6 @@ public class UserServiceImpl implements UserService
 		return userDAO.findById(userId);
 	}
 
-	/**
-	 * Set the User DOA
-	 * @param  dao
-	 * @uml.property  name="userDAO"
-	 */
-	
-	public void setUserDAO(UserDAO dao)
-	{
-		userDAO = dao;
-	}
 
 	/**
 	 * 
@@ -78,6 +75,11 @@ public class UserServiceImpl implements UserService
 		
 		if (user == null)
 		{
+			if (logger.isDebugEnabled())
+			{
+				logger.debug("Load user by username for " + username + " but user unknown");
+			}
+			
 			throw new UsernameNotFoundException("User unknown");
 		}
 		else
@@ -87,4 +89,73 @@ public class UserServiceImpl implements UserService
 		
 		return authUser;
 	}
+
+	/**
+	 * 
+	 */
+	
+	public List getUserDepartments()
+	{
+		return userDepartmentDAO.getAllDepartments();
+	}
+	
+
+	/**
+	 * Set the User DOA
+	 * @param  dao
+	 * @uml.property  name="userDAO"
+	 */
+	
+	public void setUserDAO(UserDAO dao)
+	{
+		userDAO = dao;
+	}
+	
+	/**
+	 * Set the user dept dao
+	 * @param dao
+	 */
+	public void setUserDepartmentDAO(UserDepartmentDAO dao)
+	{
+		userDepartmentDAO = dao;
+	}
+
+
+	/**
+	 * Delete user department on id
+	 * @param departmentId
+	 * @throws parentChildConstraintException when there are still users attached to the department
+	 */
+	public void deleteUserDepartment(Integer departmentId) throws ParentChildConstraintException
+	{
+		UserDepartment department;
+		
+		department = userDepartmentDAO.findById(departmentId);
+		
+		if (department != null)
+		{
+			if (department.getUsers().size() > 0)
+			{
+				throw new ParentChildConstraintException("Users are still attached to this department");
+			}
+			else
+			{
+				userDepartmentDAO.delete(department);
+			}
+		}
+	}
+
+
+	public UserDepartment persistUserDepartment(UserDepartment department)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public UserDepartment getUserDepartment(Integer departmentId)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}	
 }

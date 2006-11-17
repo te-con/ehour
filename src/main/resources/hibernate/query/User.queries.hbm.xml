@@ -3,7 +3,9 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<query name="User.findByUsername"> 
-	<![CDATA[FROM User as user
-	       	   WHERE username = :username  ]]> </query>
+		FROM User as user
+		LEFT JOIN FETCH user.userRoles
+	    WHERE username = :username
+	</query>
 
 </hibernate-mapping>

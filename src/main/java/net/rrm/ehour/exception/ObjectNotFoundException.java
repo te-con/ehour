@@ -1,6 +1,6 @@
 package net.rrm.ehour.exception;
 
-public class UserNotFoundException extends Exception
+public class ObjectNotFoundException extends Exception
 {
     /**
 	 * 
@@ -10,17 +10,17 @@ public class UserNotFoundException extends Exception
 	/**
 	 * 
 	 */
-	public UserNotFoundException()
+	public ObjectNotFoundException()
     {
         super();
     }
 
-    public UserNotFoundException(Exception e)
+    public ObjectNotFoundException(Exception e)
     {
         super(e);
     }
 
-    public UserNotFoundException(String s)
+    public ObjectNotFoundException(String s)
     {
         super(s);
     }

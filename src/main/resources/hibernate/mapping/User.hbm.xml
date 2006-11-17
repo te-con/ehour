@@ -18,13 +18,13 @@
 		<property name="email" column="EMAIL" type="string"/>
 		<property name="mobilePhone" column="MOBILE_PHONE" type="string"/>
 		
-        <set name="userRoles" table="USER_TO_USERROLE" cascade="all" lazy="false">
+        <set name="userRoles" table="USER_TO_USERROLE" cascade="all" lazy="true">
            <key column="USER_ID"/>
            <many-to-many column="ROLE" class="net.rrm.ehour.user.domain.UserRole"/>
         </set>		
-        
-        <many-to-one name="department" class="net.rrm.ehour.user.domain.UserDepartment" fetch="join">
+
+        <many-to-one name="department" class="net.rrm.ehour.user.domain.UserDepartment" lazy="proxy">
             <column name="DEPARTMENT_ID" not-null="true" />
-        </many-to-one>        
+        </many-to-one>         
 	</class>
 </hibernate-mapping>

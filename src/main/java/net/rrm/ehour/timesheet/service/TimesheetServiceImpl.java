@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.exception.UserNotFoundException;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
@@ -63,10 +63,10 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param userId
 	 * @param requestedMonth only the month and year of the calendar is used
 	 * @return TimesheetOverviewAction
-	 * @throws UserNotFoundException
+	 * @throws ObjectNotFoundException
 	 */	
 
-	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) throws UserNotFoundException
+	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException
 	{
 		TimesheetOverview	overview = new TimesheetOverview();
 		DateRange			monthRange;
@@ -93,9 +93,9 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param userId
 	 * @param requestedMonth
 	 * @return List with Integers of complete booked days
-	 * @throws UserNotFoundException
+	 * @throws ObjectNotFoundException
 	 */
-	public List getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws UserNotFoundException
+	public List getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException
 	{
 		DateRange	monthRange;
 		List		bookedDays;

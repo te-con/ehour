@@ -13,8 +13,8 @@
 			<forward name="success" path=".ehour.admin.index" />
 		</action>
 
-		<action path="/dept/index" type="net.rrm.ehour.web.admin.action.AdminEntryAction" >
-			<forward name="success" path=".ehour.admin.index" />
+		<action path="/dept/index" type="net.rrm.ehour.web.admin.dept.action.ListUserDepartmentsAction" >
+			<forward name="success" path=".ehour.admin.dept.index" />
 		</action>
 	</action-mappings>
 	

@@ -14,7 +14,7 @@
         <put name="content" value="/WEB-INF/jsp/admin/index.jsp" />
     </definition>
 
-    <!-- Admin index -->
+    <!-- Admin department index -->
     <definition name=".ehour.admin.dept.index" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/dept/index.jsp" />
     </definition>

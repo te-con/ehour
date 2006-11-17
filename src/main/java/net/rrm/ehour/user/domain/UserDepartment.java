@@ -1,5 +1,7 @@
 package net.rrm.ehour.user.domain;
 
+import java.util.Set;
+
 // Generated Sep 26, 2006 11:58:17 PM by Hibernate Tools 3.2.0.beta7
 
 
@@ -30,6 +32,8 @@ public class UserDepartment implements java.io.Serializable
 	 * @uml.property  name="code"
 	 */
 	private String code;
+	
+	private Set		users;
 
 	// Constructors
 
@@ -46,6 +50,14 @@ public class UserDepartment implements java.io.Serializable
 		this.code = code;
 	}
 
+	/** full constructor */
+	public UserDepartment(Integer departmentId, String name, String code, Set users)
+	{
+		this.departmentId = departmentId;
+		this.name = name;
+		this.code = code;
+		this.users = users;
+	}
 
 	// Property accessors
 	/**
@@ -101,5 +113,17 @@ public class UserDepartment implements java.io.Serializable
 	{
 		this.code = code;
 	}
+
+	public Set getUsers()
+	{
+		return users;
+	}
+
+	public void setUsers(Set users)
+	{
+		this.users = users;
+	}
+	
+
 
 }

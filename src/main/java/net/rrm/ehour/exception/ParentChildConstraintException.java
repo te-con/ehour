@@ -1,5 +1,5 @@
 /**
- * Created on Nov 4, 2006
+ * Created on Nov 17, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,31 +21,26 @@
  *
  */
 
-package net.rrm.ehour;
+package net.rrm.ehour.exception;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import net.rrm.ehour.report.dao.ReportDAOTest;
-import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
-import net.rrm.ehour.user.dao.UserDAOTest;
-import net.rrm.ehour.user.dao.UserDepartmentDAOTest;
-import net.rrm.ehour.user.service.UserServiceIntegrationTest;
+/**
+ * Thrown when an db object would be deleted with attached children
+ **/
 
-public class DAOTests
+public class ParentChildConstraintException extends Exception
 {
-	public static Test suite()
-	{
-		TestSuite suite = new TestSuite("Integration tests for net.rrm.ehour");
-		
-		
-		//$JUnit-BEGIN$
-		suite.addTestSuite(UserDAOTest.class);
-		suite.addTestSuite(UserDepartmentDAOTest.class);
-		suite.addTestSuite(TimesheetDAOTest.class);
-		suite.addTestSuite(ReportDAOTest.class);
-		
-		suite.addTestSuite(UserServiceIntegrationTest.class);
-		//$JUnit-END$
-		return suite;
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5887208931656136792L;
+
+	public ParentChildConstraintException()
+    {
+        super();
+    }
+
+    public ParentChildConstraintException(String s)
+    {
+        super(s);
+    }
 }

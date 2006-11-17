@@ -11,5 +11,5 @@
 	
 	<bean name="/eh/admin/index" class="net.rrm.ehour.web.admin.action.AdminEntryAction" />		
 	
-	<bean name="/eh/admin/dept/index" class="net.rrm.ehour.web.admin.action.AdminEntryAction" />			
+	<bean name="/eh/admin/dept/index" class="net.rrm.ehour.web.admin.dept.action.ListUserDepartmentsAction" />			
 </beans>

@@ -18,7 +18,9 @@
 	</context-param>
 
 	<context-param>
-		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+		<param-name>
+			javax.servlet.jsp.jstl.fmt.localizationContext
+		</param-name>
 		<param-value>MessageResources</param-value>
 	</context-param>
 
@@ -52,6 +54,18 @@
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>hibernateFilter</filter-name>
+		<filter-class>
+			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
+		</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
 	<!--  spring  -->
 	<listener>
 		<listener-class>
@@ -67,7 +81,9 @@
 		</servlet-class>
 		<init-param>
 			<param-name>config</param-name>
-			<param-value>/WEB-INF/struts/struts-default.xml</param-value>
+			<param-value>
+				/WEB-INF/struts/struts-default.xml
+			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>config/eh/admin</param-name>
