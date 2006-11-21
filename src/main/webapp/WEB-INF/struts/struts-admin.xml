@@ -2,6 +2,10 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
 
 <struts-config>
+	<!-- Action forms -->
+	<form-beans>
+		<form-bean name="UserDepartmentForm" type="net.rrm.ehour.web.admin.dept.form.UserDepartmentForm" /> 
+	</form-beans>
 
 	<!-- Action Mapping Definitions -->
 	<action-mappings>
@@ -13,9 +17,22 @@
 			<forward name="success" path=".ehour.admin.index" />
 		</action>
 
+		<!-- List all user departments -->
 		<action path="/dept/index" type="net.rrm.ehour.web.admin.dept.action.ListUserDepartmentsAction" >
 			<forward name="success" path=".ehour.admin.dept.index" />
 		</action>
+
+		<!-- Get user department as XML  -->
+		<action name="UserDepartmentForm" 
+				path="/dept/getUserDepartment" 
+				type="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction" />
+
+		<!-- Get user department as XML  -->
+		<action name="UserDepartmentForm" 
+				path="/dept/getUserDepartment" 
+				type="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction" />
+
+
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

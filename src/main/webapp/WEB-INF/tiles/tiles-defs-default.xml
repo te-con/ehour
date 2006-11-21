@@ -4,6 +4,7 @@
 
     <!-- Base layout -->
     <definition name=".ehour.baseLayout" path="/WEB-INF/jsp/layout/layoutBase.jsp">
+    	<put name="headJs" value="/WEB-INF/jsp/nav/nothing.html" />
         <put name="pageTitle" value="eHour" />
         <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
         <put name="calendar_small" value="/WEB-INF/jsp/nav/navCalendar.jsp" />

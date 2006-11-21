@@ -16,6 +16,7 @@
 
     <!-- Admin department index -->
     <definition name=".ehour.admin.dept.index" extends=".ehour.admin.baseLayout">
+       	<put name="headJs" value="/js/dojo.jsp" />
         <put name="content" value="/WEB-INF/jsp/admin/dept/index.jsp" />
     </definition>
 </tiles-definitions>

@@ -8,6 +8,12 @@
 
 		<!--  Actions -->
 
+		<!-- entry point for all -->
+		<action path="/eh/index" type="net.rrm.ehour.web.action.EntranceAction" >
+			<forward name="adminOnly" path="/eh/admin/index.do" redirect="true" />
+			<forward name="billable" path="/eh/timesheetOverview.do" redirect="true" />
+		</action>
+		
 		<!-- Timesheet overview, login entry for everyone -->
 		<action path="/eh/timesheetOverview" type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overview" />

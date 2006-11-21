@@ -14,6 +14,8 @@
 	<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehour_calendar_small.css" />">
 	<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehour_overview.css" />">
 	<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehour_calendar.css" />">
+	
+	<tiles:insert attribute="headJs" />
 </HEAD>
 
 <BODY>
