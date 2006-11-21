@@ -34,6 +34,11 @@ import java.util.Date;
 public class BookedDayComparator implements Comparator, Serializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3811098485423672398L;
+
 	public int compare(Object a, Object b)
 	{
 		int			compare;

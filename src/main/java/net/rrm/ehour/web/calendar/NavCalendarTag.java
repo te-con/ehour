@@ -38,6 +38,10 @@ import org.apache.log4j.Logger;
 
 public class NavCalendarTag extends TagSupport
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2422922719761190399L;
 	private Calendar 	calendar;
 	private boolean[] bookedDays;
 

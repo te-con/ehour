@@ -26,7 +26,6 @@ package net.rrm.ehour.user.service;
 import java.util.List;
 
 import net.rrm.ehour.exception.NoResultsException;
-import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;

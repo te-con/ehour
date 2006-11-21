@@ -29,7 +29,6 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;

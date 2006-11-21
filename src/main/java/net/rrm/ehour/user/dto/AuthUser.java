@@ -23,13 +23,9 @@
 
 package net.rrm.ehour.user.dto;
 
-import java.util.Iterator;
-
 import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserRole;
 
 import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
 
 
 /**

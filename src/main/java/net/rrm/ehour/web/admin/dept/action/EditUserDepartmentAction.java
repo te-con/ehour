@@ -1,5 +1,5 @@
 /**
- * Created on Nov 15, 2006
+ * Created on Nov 20, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,40 +21,13 @@
  *
  */
 
-package net.rrm.ehour.user.dao;
-
-import java.util.List;
-
-import net.rrm.ehour.user.domain.UserDepartment;
+package net.rrm.ehour.web.admin.dept.action;
 
 /**
- * CRUD on UserDepartment domain object 
+ * TODO 
  **/
 
-public interface UserDepartmentDAO
+public class EditUserDepartmentAction
 {
-	/**
-	 * Get all departments, sorted by name
-	 * @return
-	 */
-	public List	getAllDepartments();
-	
-	/**
-	 * Find department by id
-	 * @param deptId
-	 * @return
-	 */
-	public UserDepartment findById(Integer deptId);
 
-	/**
-	 * Persist to the database
-	 * @param department
-	 */
-	public void persist(UserDepartment department);
-	
-	/**
-	 * Delete department
-	 * @param department
-	 */
-	public void delete(UserDepartment department);
 }

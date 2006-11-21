@@ -1,5 +1,5 @@
 /**
- * Created on Nov 15, 2006
+ * Created on Nov 19, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,40 +21,28 @@
  *
  */
 
-package net.rrm.ehour.user.dao;
+package net.rrm.ehour.web.util;
 
-import java.util.List;
+import javax.xml.transform.sax.TransformerHandler;
 
-import net.rrm.ehour.user.domain.UserDepartment;
+import org.xml.sax.SAXException;
 
 /**
- * CRUD on UserDepartment domain object 
+ * XML utility methods used for AJAX stuff
  **/
 
-public interface UserDepartmentDAO
+public class XmlUtil
 {
 	/**
-	 * Get all departments, sorted by name
-	 * @return
+	 * Add integer as chars to SAX transformerhandler
+	 * @param th
+	 * @param integer
+	 * @throws SAXException 
 	 */
-	public List	getAllDepartments();
-	
-	/**
-	 * Find department by id
-	 * @param deptId
-	 * @return
-	 */
-	public UserDepartment findById(Integer deptId);
-
-	/**
-	 * Persist to the database
-	 * @param department
-	 */
-	public void persist(UserDepartment department);
-	
-	/**
-	 * Delete department
-	 * @param department
-	 */
-	public void delete(UserDepartment department);
+	public static void addIntegerAsChars(TransformerHandler th, Integer integer) throws SAXException
+	{
+		String	intString = integer.toString();
+		
+		th.characters(intString.toCharArray(), 0, intString.length());
+	}
 }

@@ -54,7 +54,11 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class CalendarFilter extends HttpServlet implements Filter
 {
-    private Logger                      logger;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1342769682314496808L;
+	private Logger                      logger;
 
     /**
      * 

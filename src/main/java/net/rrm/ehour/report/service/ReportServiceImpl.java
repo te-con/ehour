@@ -51,7 +51,6 @@ public class ReportServiceImpl implements ReportService
 	public List getHoursPerAssignmentInMonth(Integer userId, Calendar requestedDate)
 	{
 		DateRange	monthRange;
-		List		results;
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedDate);
 

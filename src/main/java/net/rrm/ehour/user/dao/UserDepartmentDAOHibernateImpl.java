@@ -25,10 +25,9 @@ package net.rrm.ehour.user.dao;
 
 import java.util.List;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * TODO 

@@ -26,7 +26,6 @@ package net.rrm.ehour.user.service;
 import java.util.List;
 
 import net.rrm.ehour.exception.NoResultsException;
-import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
@@ -145,17 +144,21 @@ public class UserServiceImpl implements UserService
 		}
 	}
 
-
+	/**
+	 * 
+	 */
 	public UserDepartment persistUserDepartment(UserDepartment department)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		userDepartmentDAO.persist(department);
+		return department;
 	}
 
 
+	/**
+	 * Get user department by id
+	 */
 	public UserDepartment getUserDepartment(Integer departmentId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return userDepartmentDAO.findById(departmentId);
 	}	
 }

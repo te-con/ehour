@@ -63,4 +63,39 @@ public class DateRange
 	{
 		this.dateStart = dateStart;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((dateEnd == null) ? 0 : dateEnd.hashCode());
+		result = PRIME * result + ((dateStart == null) ? 0 : dateStart.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final DateRange other = (DateRange) obj;
+		if (dateEnd == null)
+		{
+			if (other.dateEnd != null)
+				return false;
+		} else if (!dateEnd.equals(other.dateEnd))
+			return false;
+		if (dateStart == null)
+		{
+			if (other.dateStart != null)
+				return false;
+		} else if (!dateStart.equals(other.dateStart))
+			return false;
+		return true;
+	}
 }
