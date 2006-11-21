@@ -23,24 +23,26 @@
 
 package net.rrm.ehour.report.service;
 
+import static org.easymock.EasyMock.*;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import junit.framework.TestCase;
 import net.rrm.ehour.report.dao.ReportDAO;
 import net.rrm.ehour.report.dto.ProjectReport;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import net.rrm.ehour.util.DateUtil;
 
 /**
  * TODO 
  **/
 
-public class ReportServiceTest extends MockObjectTestCase
+public class ReportServiceTest extends TestCase
 {
 	private	ReportService	reportService;
-	private	Mock			dao;
+	private	ReportDAO		reportDAO;
 	
 	/**
 	 * 
@@ -49,8 +51,8 @@ public class ReportServiceTest extends MockObjectTestCase
 	{
 		reportService = new ReportServiceImpl();
 
-		dao = new Mock(ReportDAO.class);
-		((ReportServiceImpl)reportService).setReportDAO((ReportDAO) dao.proxy());
+		reportDAO = createMock(ReportDAO.class);
+		((ReportServiceImpl)reportService).setReportDAO(reportDAO);
 	}
 	
 	/**
@@ -60,14 +62,20 @@ public class ReportServiceTest extends MockObjectTestCase
 	
 	public void testGetHoursPerAssignmentOnMonth()
 	{
-		List	results = new ArrayList();
+		List<ProjectReport>	results = new ArrayList<ProjectReport>();
+		Integer		userId = 1;
+		Calendar	cal = new GregorianCalendar();
+		
 		results.add(new ProjectReport());
 		
-		dao.expects(once())
-		   .method("getCumulatedHoursPerAssignmentForUser")
-		   .will(returnValue(results));
+		reportDAO.getCumulatedHoursPerAssignmentForUser(userId, DateUtil.calendarToMonthRange(cal));
+		expectLastCall().andReturn(results);
 		
-		reportService.getHoursPerAssignmentInMonth(new Integer(1), new GregorianCalendar());
+		replay();
+		
+		reportService.getHoursPerAssignmentInMonth(userId, cal);
+		
+		verify();
 	}
 
 }

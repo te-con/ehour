@@ -23,27 +23,30 @@
 
 package net.rrm.ehour.web.calendar;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import junit.framework.TestCase;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 /**
  * TODO 
  **/
 
-public class CalendarUtilTest extends MockObjectTestCase
+public class CalendarUtilTest extends TestCase
 {
-	public void testGetMonthNavCalendar()
+	public void testGetMonthNavCalendar() throws Exception
 	{
-		Mock			timesheetService;
+		TimesheetService timesheetService;
 		CalendarUtil	calendarUtil;
 		List			results = new ArrayList();
 		BookedDay		dayA, dayB;
@@ -56,18 +59,22 @@ public class CalendarUtilTest extends MockObjectTestCase
 		results.add(dayA);
 		results.add(dayB);
 		
-		timesheetService = new Mock(TimesheetService.class);
+		timesheetService = createMock(TimesheetService.class);
 		
 		calendarUtil = new CalendarUtil();
-		calendarUtil.setTimesheetService((TimesheetService) timesheetService.proxy());
-		
-		// @todo switch to easymock
-		timesheetService.expects(once())
-		   				.method("getBookedDaysMonthOverview")
-		   				.will(returnValue(results));
+		calendarUtil.setTimesheetService((TimesheetService) timesheetService);
 		
 		cal = new GregorianCalendar(2006, 11 - 1, 12);
+		// @todo switch to easymock
+		expect(timesheetService.getBookedDaysMonthOverview(1, cal))
+				.andReturn(results);
+		
+		replay(timesheetService);
+		
+		
 		monthOverview = calendarUtil.getMonthNavCalendar(new Integer(1), cal);
+		
+		verify(timesheetService);
 		
 		assertTrue(monthOverview[4]);
 		assertTrue(monthOverview[29]);

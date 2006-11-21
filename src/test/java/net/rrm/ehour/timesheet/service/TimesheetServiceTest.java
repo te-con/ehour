@@ -23,12 +23,18 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import junit.framework.TestCase;
 import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -36,16 +42,14 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
+import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConfig;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
-public class TimesheetServiceTest  extends MockObjectTestCase
+public class TimesheetServiceTest  extends TestCase
 {
 	private	TimesheetService	timesheetService;
-	private	Mock				dao;
-	private	Mock				reportService;
+	private	TimesheetDAO		timesheetDAO;
+	private	ReportService		reportService;
 	
 	/**
 	 * 
@@ -54,11 +58,16 @@ public class TimesheetServiceTest  extends MockObjectTestCase
 	{
 		timesheetService = new TimesheetServiceImpl();
 
-		dao = new Mock(TimesheetDAO.class);
-		reportService = new Mock(ReportService.class);
+		EhourConfig config = new EhourConfig();
+		config.setCompleteDayHours(8);
+		
+		timesheetDAO = createMock(TimesheetDAO.class);
+		
+		reportService = createMock(ReportService.class);
 	
-		((TimesheetServiceImpl)timesheetService).setTimesheetDAO((TimesheetDAO) dao.proxy());
-		((TimesheetServiceImpl)timesheetService).setReportService((ReportService) reportService.proxy());
+		((TimesheetServiceImpl)timesheetService).setTimesheetDAO(timesheetDAO);
+		((TimesheetServiceImpl)timesheetService).setReportService(reportService);
+		((TimesheetServiceImpl)timesheetService).setEhourConfiguration(config);
 	}
 	
 	/**
@@ -67,12 +76,12 @@ public class TimesheetServiceTest  extends MockObjectTestCase
 	 */
 	public void testGetBookedDaysMonthOverview() throws Exception
 	{
-		List		daoResults = new ArrayList();
+		List<BookedDay>		daoResults = new ArrayList<BookedDay>();
 		List		results;
 		BookedDay	bda, bdb,
 					bdResult;
 		Calendar	cal;
-		EhourConfig config = new EhourConfig();
+		cal = new GregorianCalendar(2006, 10, 5);
 		
 		bda = new BookedDay();
 		bda.setDate(new Date(2006 - 1900, 10, 1));
@@ -84,18 +93,16 @@ public class TimesheetServiceTest  extends MockObjectTestCase
 		
 		daoResults.add(bdb);	// test sort as well
 		daoResults.add(bda);
-		
-		config.setCompleteDayHours(8);
-		
-		dao.expects(once())
-		   .method("getBookedHoursperDayInRange")
-		   .will(returnValue(daoResults));		
 
-		((TimesheetServiceImpl)timesheetService).setEhourConfiguration(config);
+		expect(timesheetDAO.getBookedHoursperDayInRange(1, DateUtil.calendarToMonthRange(cal)))
+				.andReturn(daoResults);
 
-		cal = new GregorianCalendar(2006, 10, 5);
+		//
+		replay(timesheetDAO);
 		
-		results = timesheetService.getBookedDaysMonthOverview(new Integer(1), cal);
+		results = timesheetService.getBookedDaysMonthOverview(1, cal);
+		
+		verify(timesheetDAO);
 		
 		bdResult = (BookedDay)results.get(0);
 		
@@ -108,8 +115,10 @@ public class TimesheetServiceTest  extends MockObjectTestCase
 	 */
 	public void testGetTimesheetOverview() throws Exception
 	{
-		List	daoResults = new ArrayList();	
-		List	reportResults = new ArrayList();
+		List<TimesheetEntry>	daoResults = new ArrayList<TimesheetEntry>();	
+		List<ProjectReport>		reportResults = new ArrayList<ProjectReport>();
+		Calendar	cal = new GregorianCalendar();
+		
 		TimesheetOverview	retObj;
 		TimesheetEntry		entryA, entryB;
 		TimesheetEntryId	idA, idB;
@@ -128,15 +137,19 @@ public class TimesheetServiceTest  extends MockObjectTestCase
 		
 		reportResults.add(new ProjectReport());
 		
-		dao.expects(once())
-		   .method("getTimesheetEntriesInRange")
-		   .will(returnValue(daoResults));
+		expect(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal)))
+				.andReturn(daoResults);
 		
-		reportService.expects(once())
-					 .method("getHoursPerAssignmentInRange")
-					 .will(returnValue(reportResults));
+		expect(reportService.getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal)))
+				.andReturn(reportResults);
+
+		replay(timesheetDAO);
+		replay(reportService);
 		
-		retObj = timesheetService.getTimesheetOverview(new Integer(1), new GregorianCalendar());
+		retObj = timesheetService.getTimesheetOverview(1, cal);
+		
+		verify(timesheetDAO);
+		verify(reportService);
 		
 		List l = (List) retObj.getTimesheetEntries().get(new Integer(2));
 		TimesheetEntry e1 = (TimesheetEntry)l.get(0);

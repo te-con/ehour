@@ -22,27 +22,39 @@
  */
 package net.rrm.ehour.user.service;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import junit.framework.TestCase;
 import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.service.UserServiceImpl;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import net.rrm.ehour.user.domain.UserDepartment;
 
 
 /**
  * @author Thies
  *
  */
-public class UserServiceTest extends MockObjectTestCase 
+public class UserServiceTest extends TestCase 
 {
-	private	UserService	userService;
+	private	UserService			userService;
+	private	UserDAO				userDAO;
+	private	UserDepartmentDAO	userDepartmentDAO;
+	
 	/**
 	 * 
 	 */
 	protected void setUp()
 	{
 		userService = new UserServiceImpl();
+		userDAO = createMock(UserDAO.class);
+		userDepartmentDAO = createMock(UserDepartmentDAO.class);
+		
+		((UserServiceImpl)userService).setUserDAO(userDAO);
+		((UserServiceImpl)userService).setUserDepartmentDAO(userDepartmentDAO);
+		
 	}
 
 	/**
@@ -50,18 +62,39 @@ public class UserServiceTest extends MockObjectTestCase
 	 */
 	public void testGetUserInteger()
 	{
-		Mock 	dao = new Mock(UserDAO.class);
 		User	user;
-		dao = new Mock(UserDAO.class);
-		dao.expects(once())
-		   .method("findById")
-		   .with(eq(new Integer(1)))
-		   .will(returnValue(new User("thies", "pwd")));
 		
-		((UserServiceImpl)userService).setUserDAO((UserDAO) dao.proxy());
+		
+		expect(userDAO.findById(1))
+				.andReturn(new User("thies", "pwd"));
+		
+		replay(userDAO);
 		
 		user = userService.getUser(new Integer(1));
 		
-		assertEquals("thies", user.getUsername());	}
+		verify(userDAO);
+		
+		assertEquals("thies", user.getUsername());
+	}
+	
+	/**
+	 * 
+	 *
+	 */
+	public void testGetUserDepartment()
+	{
+		UserDepartment ud;
+
+		expect(userDepartmentDAO.findById(1))
+				.andReturn(new UserDepartment(new Integer(1), "bla", "ble"));
+		
+		replay(userDepartmentDAO);
+		
+		ud = userService.getUserDepartment(new Integer(1));
+		
+		verify(userDepartmentDAO);
+		
+		assertEquals("bla", ud.getName());
+	}
 
 }

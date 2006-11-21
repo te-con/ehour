@@ -44,6 +44,7 @@ public class ServiceTests
 		suite.addTestSuite(TimesheetServiceTest.class);
 		suite.addTestSuite(ReportServiceTest.class);
 		
+		suite.addTestSuite(CalendarUtilTest.class);
 		suite.addTestSuite(DateUtilTest.class);
 		suite.addTestSuite(AuthUtilTest.class);
 		suite.addTestSuite(CalendarUtilTest.class);		
