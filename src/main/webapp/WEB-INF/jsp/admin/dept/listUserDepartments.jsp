@@ -12,21 +12,37 @@
 	</tr>
 
 	<tr>
-		<td colspan="5"><img src="<c:url  value="/img/eh_pixel.gif" />"
+		<td colspan="6"><img src="<c:url  value="/img/eh_pixel.gif" />"
 			alt="pix" height="1" width="100%"><br>
 		</td>
 	</tr>
+
 	
 	<c:forEach items="${userDepartments}" var="userDept">
 		<tr>
 			<td><c:out value="${userDept.name}" /></td>
 			<td>&nbsp;</td>
 			<td><c:out value="${fn:length(userDept.users)}" /></td>
-			<td><c:if test="${fn:length(userDept.users) == 0}"><fmt:message key="general.delete" /></c:if></td>
+			<td><c:if test="${fn:length(userDept.users) == 0}">
+				<a href="" onClick="return deleteDepartment(<c:out value="${userDept.departmentId}" />)"><fmt:message key="general.delete" /></a></c:if></td>
 			<td>&nbsp;</td>			
 			<td><a href=""
 				onClick="return editDepartment(<c:out value="${userDept.departmentId}" />)"><fmt:message key="general.edit" /></a></td>
 		</tr>
 	</c:forEach>
+
+
+	<tr>
+		<td colspan="6"><img src="<c:url  value="/img/eh_pixel.gif" />"
+			alt="pix" height="1" width="100%"><br>
+		</td>
+	</tr>
+		
+		<tr>
+			<td colspan=6 align=right>
+				<a href="" onClick="return showAddForm()"><fmt:message key="admin.dept.addDepartment" /></a>
+			</td>
+		</tr>
+
 </table>
 	

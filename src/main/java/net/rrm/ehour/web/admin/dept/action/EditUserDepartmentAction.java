@@ -65,6 +65,8 @@ public class EditUserDepartmentAction extends Action
 		
 		userDepartment = DomainAssembler.getUserDepartment((UserDepartmentForm)form);
 	
+		System.out.println(((UserDepartmentForm)form).getDepartmentId());
+		
 		userService.persistUserDepartment(userDepartment);
 		userDepartments	= userService.getUserDepartments();
 		

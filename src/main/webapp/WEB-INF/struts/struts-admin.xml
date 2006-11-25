@@ -22,18 +22,30 @@
 			<forward name="success" path=".ehour.admin.dept.index" />
 		</action>
 
-		<!-- Get user department as XML  -->
+		<!-- Get user department for editing -->
 		<action name="UserDepartmentForm" 
 				path="/dept/getUserDepartment" 
-				type="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction" />
+				type="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction">
+			<forward name="success" path=".ehour.admin.dept.editForm" />
+		</action>
 
-		<!-- Get user department as XML  -->
+		<!-- Edit user department -->
 		<action name="UserDepartmentForm" 
 				path="/dept/editUserDepartment" 
-				type="net.rrm.ehour.web.admin.dept.action.EditserDepartmentAction">
+				type="net.rrm.ehour.web.admin.dept.action.EditUserDepartmentAction">
 			<forward  name="success" path=".ehour.admin.dept.list" />				
 		</action>
 
+		<!-- Delete user department -->
+		<action name="UserDepartmentForm" 
+				path="/dept/deleteUserDepartment" 
+				type="net.rrm.ehour.web.admin.dept.action.DeleteUserDepartmentAction">
+			<forward  name="success" path=".ehour.admin.dept.list" />				
+		</action>
+
+
+		<!-- Show add user department form -->
+		<action path="/dept/addUserDepartmentForm" forward=".ehour.admin.dept.addForm" />
 
 	</action-mappings>
 	

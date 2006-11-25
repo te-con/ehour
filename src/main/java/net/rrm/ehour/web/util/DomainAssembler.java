@@ -36,7 +36,11 @@ public class DomainAssembler
 	{
 		UserDepartment ud = new UserDepartment();
 		
-		ud.setDepartmentId(udf.getDepartmentId());
+		if (udf.getDepartmentId() > 0)
+		{
+			ud.setDepartmentId(udf.getDepartmentId());
+		}
+		
 		ud.setName(udf.getName());
 		ud.setCode(udf.getCode());
 		return ud;

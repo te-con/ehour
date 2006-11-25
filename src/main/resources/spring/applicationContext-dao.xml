@@ -78,7 +78,7 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<!-- Report DAO -->
+	<!-- User department DAO -->
 	<bean id="userDepartmentDAO" class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl">		
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>

@@ -18,4 +18,6 @@
 	<bean name="/eh/admin/dept/getUserDepartment" class="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction" />				
 
 	<bean name="/eh/admin/dept/editUserDepartment" class="net.rrm.ehour.web.admin.dept.action.EditUserDepartmentAction" />					
+	
+	<bean name="/eh/admin/dept/deleteUserDepartment" class="net.rrm.ehour.web.admin.dept.action.DeleteUserDepartmentAction" />
 </beans>
