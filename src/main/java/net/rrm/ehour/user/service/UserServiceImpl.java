@@ -150,7 +150,9 @@ public class UserServiceImpl implements UserService
 	public UserDepartment persistUserDepartment(UserDepartment department)
 	{
 		userDepartmentDAO.persist(department);
+		
 		return department;
+		
 	}
 
 

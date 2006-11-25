@@ -29,8 +29,10 @@
 
 		<!-- Get user department as XML  -->
 		<action name="UserDepartmentForm" 
-				path="/dept/getUserDepartment" 
-				type="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction" />
+				path="/dept/editUserDepartment" 
+				type="net.rrm.ehour.web.admin.dept.action.EditserDepartmentAction">
+			<forward  name="success" path=".ehour.admin.dept.list" />				
+		</action>
 
 
 	</action-mappings>

@@ -62,7 +62,7 @@ public interface UserService extends UserDetailsService
     /**
      * Persist user department to database
      * @param department
-     * @return
+     * @return List with userdepartments
      */
     public UserDepartment persistUserDepartment(UserDepartment department);
     

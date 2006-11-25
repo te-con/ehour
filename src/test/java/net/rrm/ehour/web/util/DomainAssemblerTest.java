@@ -1,5 +1,5 @@
 /**
- * Created on Nov 15, 2006
+ * Created on Nov 24, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,49 +21,36 @@
  *
  */
 
-package net.rrm.ehour.user.dao;
+package net.rrm.ehour.web.util;
 
-import java.util.List;
-
+import junit.framework.TestCase;
 import net.rrm.ehour.user.domain.UserDepartment;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 
 /**
  * TODO 
  **/
 
-public class UserDepartmentDAOHibernateImpl extends HibernateDaoSupport implements UserDepartmentDAO
+public class DomainAssemblerTest extends TestCase
 {
 
-	/**
-	 * 
-	 */
-	public void delete(UserDepartment department)
+	protected void setUp() throws Exception
 	{
-		getHibernateTemplate().delete(department);
+		super.setUp();
 	}
 
-	/**
-	 * 
-	 */
-	public UserDepartment findById(Integer deptId)
+	public void testGetUserDepartment()
 	{
-		return (UserDepartment) getHibernateTemplate().get(UserDepartment.class, deptId);
-	}
-
-	public List getAllDepartments()
-	{
-		List 	results = getHibernateTemplate().loadAll(UserDepartment.class); 
+		UserDepartmentForm udf = new UserDepartmentForm();
+		udf.setDepartmentId(1);
+		udf.setName("name");
+		udf.setCode("code");
 		
-		getHibernateTemplate().initialize(results);
+		UserDepartment ud = DomainAssembler.getUserDepartment(udf);
 		
-		return results;
-	}
-
-	public void persist(UserDepartment department)
-	{
-		getHibernateTemplate().saveOrUpdate(department);
+		assertEquals(new Integer(1), ud.getDepartmentId());
+		assertEquals("name", ud.getName());
+		assertEquals("code", ud.getCode());
 	}
 
 }

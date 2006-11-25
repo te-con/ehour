@@ -19,4 +19,7 @@
        	<put name="headJs" value="/js/dojo.jsp" />
         <put name="content" value="/WEB-INF/jsp/admin/dept/index.jsp" />
     </definition>
+
+    <!-- Admin department list index -->
+    <definition name=".ehour.admin.dept.list" path="/WEB-INF/jsp/admin/dept/listUserDepartments.jsp" />
 </tiles-definitions>

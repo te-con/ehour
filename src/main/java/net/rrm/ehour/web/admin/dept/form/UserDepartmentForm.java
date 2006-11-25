@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.web.admin.dept.form;
 
+import net.rrm.ehour.user.domain.UserDepartment;
+
 import org.apache.struts.action.ActionForm;
 
 /**
@@ -32,7 +34,10 @@ import org.apache.struts.action.ActionForm;
 public class UserDepartmentForm extends ActionForm
 {
 	private	Integer	departmentId;
+	private	String	name;
+	private	String	code;
 
+	
 	public Integer getDepartmentId()
 	{
 		return departmentId;
@@ -41,5 +46,25 @@ public class UserDepartmentForm extends ActionForm
 	public void setDepartmentId(Integer departmentId)
 	{
 		this.departmentId = departmentId;
+	}
+
+	public String getCode()
+	{
+		return code;
+	}
+
+	public void setCode(String code)
+	{
+		this.code = code;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 }

@@ -20,7 +20,7 @@
 			</column>
 		</property>
 		
-    <set name="users" inverse="true" lazy="true" cascade="none">
+    <set name="users" inverse="true" lazy="true">
     	<key column="DEPARTMENT_ID" />
         <one-to-many class="net.rrm.ehour.user.domain.User"/>
     </set>

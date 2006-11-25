@@ -16,5 +16,6 @@
 	<bean name="/eh/admin/dept/index" class="net.rrm.ehour.web.admin.dept.action.ListUserDepartmentsAction" />			
 
 	<bean name="/eh/admin/dept/getUserDepartment" class="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction" />				
+
 	<bean name="/eh/admin/dept/editUserDepartment" class="net.rrm.ehour.web.admin.dept.action.EditUserDepartmentAction" />					
 </beans>

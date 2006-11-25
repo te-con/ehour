@@ -19,12 +19,6 @@
 			<value>me</value>
 		</property>
 	</bean>
-	
-    <bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
-         <property name="sessionFactory">
-           <ref bean="sessionFactory"/>
-         </property>
-    </bean>	
 
 	<!-- Session factory definition -->
 	<bean id="sessionFactory"
