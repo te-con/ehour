@@ -42,19 +42,8 @@ import org.apache.struts.action.ActionMapping;
  * Edit user department and return all as a list  
  **/
 
-public class EditUserDepartmentAction extends Action
+public class EditUserDepartmentAction extends AdminUserDepartmentBaseAction
 {
-	private	UserService	userService;
-	
-	/**
-	 * 
-	 * @param userService
-	 */
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}
-	
 	/**
 	 * 
 	 */
@@ -65,8 +54,6 @@ public class EditUserDepartmentAction extends Action
 		
 		userDepartment = DomainAssembler.getUserDepartment((UserDepartmentForm)form);
 	
-		System.out.println(((UserDepartmentForm)form).getDepartmentId());
-		
 		userService.persistUserDepartment(userDepartment);
 		userDepartments	= userService.getUserDepartments();
 		

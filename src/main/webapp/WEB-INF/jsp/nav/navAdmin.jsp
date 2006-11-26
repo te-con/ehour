@@ -20,8 +20,8 @@
 	</tr>
 
 	<tr>
-		<td><a href="<c:url value="/eh/admin/customers/index.do" />"><fmt:message
-			key="admin.nav.clients" /></a></td>
+		<td><a href="<c:url value="/eh/admin/customer/index.do" />"><fmt:message
+			key="admin.nav.customers" /></a></td>
 	</tr>
 
 	<tr>

@@ -1,5 +1,5 @@
 /**
- * Created on Nov 14, 2006
+ * Created on Nov 25, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,56 +21,35 @@
  *
  */
 
-
-package net.rrm.ehour.web.action;
-
-import java.io.PrintWriter;
+package net.rrm.ehour.web.admin.customer.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts.action.Action;
+import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.web.admin.customer.form.CustomerForm;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-public abstract class BaseAjaxAction extends Action
-{
+/**
+ * TODO 
+ **/
 
+public class GetCustomerAction extends AdminCustomerBaseAction
+{
 	/**
 	 * 
 	 */
-	public final ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-
-		String xml = null;
+		CustomerForm customerForm = (CustomerForm)form;
 		
-		try
-		{
-			xml = getXmlContent(form, request);
-		} catch (Exception ex)
-		{
-			// Send back a 500 error code.
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Can not create response");
-			return null;
-		}
-
-		// Set content to xml
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter pw = response.getWriter();
-		pw.write(xml);
-		pw.close();
-
-		return null;
-	}
-
-	/**
-	 * Get XML content
-	 * @param form
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
-	public abstract String getXmlContent(ActionForm form, HttpServletRequest request) throws Exception;
+		Customer customer = projectService.getCustomer(customerForm.getCustomerId());
+		
+		request.setAttribute("customer", customer);
+			
+		return mapping.findForward("success");
+	}		
 }

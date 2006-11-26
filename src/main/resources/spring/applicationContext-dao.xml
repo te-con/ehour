@@ -79,7 +79,12 @@
 	</bean>
 
 	<!-- User department DAO -->
-	<bean id="userDepartmentDAO" class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl">		
+	<bean id="userDepartmentDAO" class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
+	<!-- Customer DAO -->
+	<bean id="customerDAO" class="net.rrm.ehour.project.dao.CustomerDAOHibernateImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 

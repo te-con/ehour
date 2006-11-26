@@ -1,5 +1,5 @@
 /**
- * Created on Nov 15, 2006
+ * Created on Nov 25, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,71 +21,62 @@
  *
  */
 
-package net.rrm.ehour.user.dao;
+package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.project.domain.Customer;
 
 /**
- *  
+ * TODO 
  **/
 
-public class UserDepartmentDAOTest extends BaseDAOTest 
+public class CustomerDAOTest  extends BaseDAOTest 
 {
-	private	UserDepartmentDAO	dao;
+	private	CustomerDAO	dao;
 
 	
-	public void setUserDepartmentDAO(UserDepartmentDAO dao)
+	public void setCustomerDAO(CustomerDAO dao)
 	{
 		this.dao = dao;
-	}
+	}	
 	
-
 	public void testDelete()
 	{
-		UserDepartment dept;
+		Customer customer;
 
-		dept = dao.findById(new Integer(2));
-		assertNotNull(dept);
+		customer = dao.findById(new Integer(2));
+		assertNotNull(customer);
 		
-		dao.delete(dept);
+		dao.delete(customer);
 		
-		dept = dao.findById(new Integer(2));
-		assertNull(dept);
+		customer = dao.findById(new Integer(2));
+		assertNull(customer);
 	}
 
-	/**
-	 * 
-	 *
-	 */
+	public void testFindAll()
+	{
+		List customers = dao.findAll();
+		assertEquals(2, customers.size());
+	}
+
 	public void testFindById()
 	{
-		UserDepartment dept = dao.findById(new Integer(2));
-		assertEquals("DUMMY DEPT", dept.getName());
-	}
-
-	/**
-	 * 
-	 *
-	 */
-	public void testGetAllDepartments()
-	{
-		List depts = dao.findAll();
-		assertEquals(2, depts.size());
+		Customer customer = dao.findById(2);
+		assertEquals("Tester", customer.getName());
 	}
 
 	public void testPersist()
 	{
-		UserDepartment dept = new UserDepartment();
-		dept.setDepartmentId(new Integer(3));
-		dept.setName("test dept");
-		dept.setCode("code");
-		dao.persist(dept);
+		Customer	customer = new Customer();
+		customer.setName("it's so real");
+		customer.setDescription("what you feel");
+		customer.setCode("oakenfold");
 		
-		dept =dao.findById(new Integer(3));
+		dao.persist(customer);
 		
-		assertEquals("test dept", dept.getName());
-	}	
+		assertNotNull(customer.getCustomerId());
+	}
+
 }

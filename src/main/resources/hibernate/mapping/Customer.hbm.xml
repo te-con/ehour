@@ -13,5 +13,10 @@
 		<property name="code" column="CODE" type="string"/>
 		<property name="name" column="NAME" type="string"/>
 		<property name="description" column="DESCRIPTION" type="string"/>
+		
+	   <set name="projects" inverse="true" lazy="true">
+	   	<key column="CUSTOMER_ID" />
+	       <one-to-many class="net.rrm.ehour.project.domain.Project"/>
+	   </set>		
 	</class>
 </hibernate-mapping>

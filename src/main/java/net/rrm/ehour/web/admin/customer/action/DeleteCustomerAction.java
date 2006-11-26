@@ -1,5 +1,5 @@
 /**
- * Created on Nov 16, 2006
+ * Created on Nov 26, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,35 +21,45 @@
  *
  */
 
-package net.rrm.ehour.web.admin.dept.action;
+package net.rrm.ehour.web.admin.customer.action;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.web.admin.customer.form.CustomerForm;
+import net.rrm.ehour.web.util.DomainAssembler;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * Get list of all user departments for editing
- * attributes set:
- * 	request - userDepartments - List UserDepartments
+ * TODO 
  **/
 
-public class ListUserDepartmentsAction extends AdminUserDepartmentBaseAction
+public class DeleteCustomerAction extends AdminCustomerBaseAction
 {
 	/**
 	 * 
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List	userDepartments = userService.getUserDepartments();
+		CustomerForm	customerForm;
+		List			customers;
 		
-		request.setAttribute("userDepartments", userDepartments);
+		customerForm = (CustomerForm)form;
+		projectService.deleteCustomer(customerForm.getCustomerId());
+
+		customers = projectService.getCustomers();
+		
+		request.setAttribute("customers", customers);
 			
+		response.setContentType("text/xml");
+		response.setHeader("Cache-Control", "no-cache");
+		
 		return mapping.findForward("success");
 	}
-
 }

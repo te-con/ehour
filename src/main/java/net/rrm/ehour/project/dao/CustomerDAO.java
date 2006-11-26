@@ -1,5 +1,5 @@
 /**
- * Created on Nov 16, 2006
+ * Created on Nov 25, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,35 +21,42 @@
  *
  */
 
-package net.rrm.ehour.web.admin.dept.action;
+package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import net.rrm.ehour.project.domain.Customer;
 
 /**
- * Get list of all user departments for editing
- * attributes set:
- * 	request - userDepartments - List UserDepartments
+ * CRUD on the Customer domain object 
  **/
 
-public class ListUserDepartmentsAction extends AdminUserDepartmentBaseAction
+public interface CustomerDAO
 {
 	/**
-	 * 
+	 * Get customer on id
+	 * @param customerId
+	 * @return customer
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
-	{
-		List	userDepartments = userService.getUserDepartments();
-		
-		request.setAttribute("userDepartments", userDepartments);
-			
-		return mapping.findForward("success");
-	}
-
+	public Customer findById(Integer customerId);
+	
+	/**
+	 * Get all customers
+	 * @return
+	 */
+	public List findAll();
+	
+	/**
+	 * Persist customer
+	 * @param customer
+	 * @return
+	 */
+	public Customer persist(Customer customer);
+	
+	/**
+	 * Delete customer
+	 * @param customerId
+	 */
+	public void delete(Customer customer);
+	
 }

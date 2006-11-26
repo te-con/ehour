@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService
 	
 	public List getUserDepartments()
 	{
-		return userDepartmentDAO.getAllDepartments();
+		return userDepartmentDAO.findAll();
 	}
 	
 

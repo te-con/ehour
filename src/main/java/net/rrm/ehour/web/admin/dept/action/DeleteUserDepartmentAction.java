@@ -1,5 +1,5 @@
 /**
- * Created on Nov 16, 2006
+ * Created on Nov 25, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -28,28 +28,34 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * Get list of all user departments for editing
- * attributes set:
- * 	request - userDepartments - List UserDepartments
+ * Delete user department
  **/
 
-public class ListUserDepartmentsAction extends AdminUserDepartmentBaseAction
+public class DeleteUserDepartmentAction extends AdminUserDepartmentBaseAction
 {
 	/**
 	 * 
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List	userDepartments = userService.getUserDepartments();
+		UserDepartmentForm	udf = (UserDepartmentForm)form;
+		List			userDepartments;
+	
+		userService.deleteUserDepartment(udf.getDepartmentId());
+		userDepartments	= userService.getUserDepartments();
 		
 		request.setAttribute("userDepartments", userDepartments);
 			
+		response.setContentType("text/xml");
+		response.setHeader("Cache-Control", "no-cache");
+		
 		return mapping.findForward("success");
 	}
-
 }

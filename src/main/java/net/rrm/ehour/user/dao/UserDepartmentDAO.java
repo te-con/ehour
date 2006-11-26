@@ -37,7 +37,7 @@ public interface UserDepartmentDAO
 	 * Get all departments, sorted by name
 	 * @return
 	 */
-	public List	getAllDepartments();
+	public List	findAll();
 	
 	/**
 	 * Find department by id

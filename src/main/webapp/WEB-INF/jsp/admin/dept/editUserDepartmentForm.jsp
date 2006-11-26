@@ -17,13 +17,13 @@
 	
 	<tr>
 		<td><fmt:message key="admin.dept.name" />:</td>
-		<td><input class="normtxt"  type="text" name="name" value="<c:out value="${department.name}" />"></td>
+		<td><input class="normtxt"  type="text" name="name" size="30" value="<c:out value="${department.name}" />"></td>
 
 		<td rowspan=2>
 			&nbsp;&nbsp;
 		</td>
 		
-		<td rowspan="3" valign="top">
+		<td rowspan="2" valign="top">
 			<b><fmt:message key="admin.dept.users" /></b>
 			<br>
 			
@@ -35,7 +35,7 @@
 
 	<tr>
 		<td><fmt:message key="admin.dept.code" />:</td>
-		<td><input class="normtxt"  type="text" name="code" value="<c:out value="${department.code}" />"></td>
+		<td><input class="normtxt"  type="text" name="code" value="<c:out value="${department.code}" />" size="30"></td>
 	</tr>
 	
 	<tr>

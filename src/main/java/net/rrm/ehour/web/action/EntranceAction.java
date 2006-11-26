@@ -26,8 +26,6 @@ package net.rrm.ehour.web.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.dto.AuthUser;
 import net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction;
 import net.rrm.ehour.web.util.AuthUtil;
 
@@ -40,7 +38,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * TODO 
+ *  
  **/
 
 public class EntranceAction extends Action

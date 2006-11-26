@@ -24,7 +24,9 @@
 package net.rrm.ehour.web.util;
 
 import junit.framework.TestCase;
+import net.rrm.ehour.project.domain.Customer;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 
 /**
@@ -51,6 +53,23 @@ public class DomainAssemblerTest extends TestCase
 		assertEquals(new Integer(1), ud.getDepartmentId());
 		assertEquals("name", ud.getName());
 		assertEquals("code", ud.getCode());
+	}
+	
+	public void testGetCustomer()
+	{
+		CustomerForm cf = new CustomerForm();
+		cf.setCustomerId(1);
+		cf.setName("name");
+		cf.setCode("code");
+		cf.setDescription("desc");
+		
+		Customer cust = DomainAssembler.getCustomer(cf);
+		
+		assertEquals(new Integer(1), cust.getCustomerId());
+		assertEquals("name", cust.getName());
+		assertEquals("code", cust.getCode());
+		assertEquals("desc", cust.getDescription());
+		
 	}
 
 }

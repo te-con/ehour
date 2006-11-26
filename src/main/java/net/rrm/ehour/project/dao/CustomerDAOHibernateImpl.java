@@ -1,5 +1,5 @@
 /**
- * Created on Nov 15, 2006
+ * Created on Nov 25, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,49 +21,53 @@
  *
  */
 
-package net.rrm.ehour.user.dao;
+package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.user.domain.UserDepartment;
-
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import net.rrm.ehour.project.domain.Customer;
+
 /**
- *  
+ * TODO 
  **/
 
-public class UserDepartmentDAOHibernateImpl extends HibernateDaoSupport implements UserDepartmentDAO
+public class CustomerDAOHibernateImpl extends HibernateDaoSupport  implements CustomerDAO
 {
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.project.dao.CustomerDAO#delete(java.lang.Integer)
 	 */
-	public void delete(UserDepartment department)
+	public void delete(Customer customer)
 	{
-		getHibernateTemplate().delete(department);
+		getHibernateTemplate().delete(customer);
 	}
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.project.dao.CustomerDAO#findAll()
 	 */
-	public UserDepartment findById(Integer deptId)
-	{
-		return (UserDepartment) getHibernateTemplate().get(UserDepartment.class, deptId);
-	}
-
 	public List findAll()
 	{
-		List 	results = getHibernateTemplate().loadAll(UserDepartment.class); 
-		
-//		getHibernateTemplate().initialize(results);
-		
-		return results;
+		return getHibernateTemplate().loadAll(Customer.class);
 	}
 
-	public void persist(UserDepartment department)
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.project.dao.CustomerDAO#findById(java.lang.Integer)
+	 */
+	public Customer findById(Integer customerId)
 	{
-		getHibernateTemplate().saveOrUpdate(department);
+		return (Customer)getHibernateTemplate().get(Customer.class, customerId);
+	}
+
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.project.dao.CustomerDAO#persist(net.rrm.ehour.project.domain.Customer)
+	 */
+	public Customer persist(Customer customer)
+	{
+		getHibernateTemplate().saveOrUpdate(customer);
+		
+		return customer;
 	}
 
 }

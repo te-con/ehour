@@ -27,11 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.user.domain.UserDepartment;
-import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 
-import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -40,19 +37,8 @@ import org.apache.struts.action.ActionMapping;
  * Get user department as XML
  **/
 
-public class GetUserDepartmentAction extends Action
+public class GetUserDepartmentAction extends AdminUserDepartmentBaseAction
 {
-	private	UserService	userService;
-	
-	/**
-	 * 
-	 * @param userService
-	 */
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}
-	
 	/**
 	 * 
 	 */

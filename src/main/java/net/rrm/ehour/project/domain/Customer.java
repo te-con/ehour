@@ -1,5 +1,7 @@
 package net.rrm.ehour.project.domain;
 
+import java.util.Set;
+
 public class Customer implements java.io.Serializable
 {
 
@@ -18,6 +20,8 @@ public class Customer implements java.io.Serializable
 
 	private String description;
 
+	private	Set		projects;
+	
 	// Constructors
 
 	/** default constructor */
@@ -72,6 +76,22 @@ public class Customer implements java.io.Serializable
 	public void setDescription(String description)
 	{
 		this.description = description;
+	}
+
+	/**
+	 * @return the projects
+	 */
+	public Set getProjects()
+	{
+		return projects;
+	}
+
+	/**
+	 * @param projects the projects to set
+	 */
+	public void setProjects(Set projects)
+	{
+		this.projects = projects;
 	}
 
 }

@@ -1,5 +1,5 @@
 /**
- * Created on Nov 16, 2006
+ * Created on Nov 25, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.admin.dept.action;
+package net.rrm.ehour.web.admin.customer.action;
 
 import java.util.List;
 
@@ -33,23 +33,20 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * Get list of all user departments for editing
- * attributes set:
- * 	request - userDepartments - List UserDepartments
+ * Returns list of customers 
  **/
 
-public class ListUserDepartmentsAction extends AdminUserDepartmentBaseAction
+public class ListCustomersAction extends AdminCustomerBaseAction
 {
 	/**
 	 * 
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List	userDepartments = userService.getUserDepartments();
+		List	customers = projectService.getCustomers();
 		
-		request.setAttribute("userDepartments", userDepartments);
+		request.setAttribute("customers", customers);
 			
 		return mapping.findForward("success");
-	}
-
+	}	
 }

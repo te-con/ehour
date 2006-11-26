@@ -23,7 +23,9 @@
 
 package net.rrm.ehour.web.util;
 
+import net.rrm.ehour.project.domain.Customer;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 
 /**
@@ -32,6 +34,11 @@ import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 
 public class DomainAssembler
 {
+	/**
+	 * UserDepartmentForm to UserDepartment
+	 * @param udf
+	 * @return
+	 */
 	public static UserDepartment getUserDepartment(UserDepartmentForm udf)
 	{
 		UserDepartment ud = new UserDepartment();
@@ -44,6 +51,27 @@ public class DomainAssembler
 		ud.setName(udf.getName());
 		ud.setCode(udf.getCode());
 		return ud;
+	}
+	
+	/**
+	 * CustomerForm to Customer
+	 * @param cf
+	 * @return
+	 */
+	public static Customer getCustomer(CustomerForm cf)
+	{
+		Customer cust = new Customer();
+		
+		if (cf.getCustomerId() > 0)
+		{
+			cust.setCustomerId(cf.getCustomerId());
+		}
+		
+		cust.setName(cf.getName());
+		cust.setDescription(cf.getDescription());
+		cust.setCode(cf.getCode());
+		
+		return cust;
 	}
 
 }

@@ -42,6 +42,21 @@ public class Project implements java.io.Serializable
 		this.customer = customer;
 	}
 
+	
+	public String getFullname()
+	{
+		if (projectCode != null && 
+			!projectCode.equals(""))
+		{
+			return projectCode + " - " + name;
+		}
+		else
+		{
+			return name;
+		}
+			
+	}	
+	
 	// Property accessors
 	public Integer getProjectId()
 	{

@@ -37,4 +37,8 @@
 
 	<!-- Timesheet service -->
 	<bean id="timesheetService" class="net.rrm.ehour.timesheet.service.TimesheetServiceImpl" />
+
+	<!-- Project service -->
+	<bean id="projectService" class="net.rrm.ehour.project.service.ProjectServiceImpl" />
+
 </beans>

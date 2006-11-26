@@ -5,7 +5,17 @@
 	<!-- Action forms -->
 	<form-beans>
 		<form-bean name="UserDepartmentForm" type="net.rrm.ehour.web.admin.dept.form.UserDepartmentForm" /> 
+		<form-bean name="CustomerForm" type="net.rrm.ehour.web.admin.customer.form.CustomerForm" /> 		
 	</form-beans>
+	
+	<!-- Global exceptions -->
+	<global-exceptions>
+		<exception	handler="net.rrm.ehour.web.exception.GlobalExceptionHandler"
+					type="java.lang.Exception"
+					key="generic"
+					path="/exceptions.jsp"/>
+	</global-exceptions>	
+	
 
 	<!-- Action Mapping Definitions -->
 	<action-mappings>
@@ -43,9 +53,37 @@
 			<forward  name="success" path=".ehour.admin.dept.list" />				
 		</action>
 
-
 		<!-- Show add user department form -->
 		<action path="/dept/addUserDepartmentForm" forward=".ehour.admin.dept.addForm" />
+
+		<!-- List all customers -->
+		<action path="/customer/index" type="net.rrm.ehour.web.admin.customer.action.ListCustomersAction" >
+			<forward name="success" path=".ehour.admin.customer.index" />
+		</action>
+
+		<!-- Get customer for editing-->
+		<action name="CustomerForm"
+				path="/customer/getCustomer" 
+				type="net.rrm.ehour.web.admin.customer.action.GetCustomerAction" >
+			<forward name="success" path=".ehour.admin.customer.editForm" />
+		</action>
+
+		<!-- Show add customer form -->
+		<action path="/customer/addCustomerForm" forward=".ehour.admin.customer.addForm" />
+
+		<!-- Edit customer-->
+		<action name="CustomerForm" 
+				path="/customer/editCustomer" 
+				type="net.rrm.ehour.web.admin.customer.action.EditCustomerAction">
+			<forward  name="success" path=".ehour.admin.customer.list" />
+		</action>
+
+		<!-- Delete customer -->
+		<action name="CustomerForm" 
+				path="/customer/deleteCustomer" 
+				type="net.rrm.ehour.web.admin.customer.action.DeleteCustomerAction">
+			<forward  name="success" path=".ehour.admin.customer.list" />				
+		</action>
 
 	</action-mappings>
 	

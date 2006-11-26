@@ -1,5 +1,5 @@
 /**
- * Created on Nov 18, 2006
+ * Created on Nov 25, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,46 +21,72 @@
  *
  */
 
-package net.rrm.ehour.web.admin.dept.form;
+package net.rrm.ehour.web.admin.customer.form;
 
 import org.apache.struts.action.ActionForm;
 
 /**
- * UserDepartment struts form 
+ * TODO 
  **/
 
-public class UserDepartmentForm extends ActionForm
+public class CustomerForm extends ActionForm
 {
-	private	Integer	departmentId;
+	private	Integer	customerId;
 	private	String	name;
+	private	String	description;
 	private	String	code;
-
-	
-	public Integer getDepartmentId()
-	{
-		return departmentId;
-	}
-
-	public void setDepartmentId(Integer departmentId)
-	{
-		this.departmentId = departmentId;
-	}
-
+	/**
+	 * @return the code
+	 */
 	public String getCode()
 	{
 		return code;
 	}
-
+	/**
+	 * @param code the code to set
+	 */
 	public void setCode(String code)
 	{
 		this.code = code;
 	}
-
+	/**
+	 * @return the customerId
+	 */
+	public Integer getCustomerId()
+	{
+		return customerId;
+	}
+	/**
+	 * @param customerId the customerId to set
+	 */
+	public void setCustomerId(Integer customerId)
+	{
+		this.customerId = customerId;
+	}
+	/**
+	 * @return the description
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+	/**
+	 * @return the name
+	 */
 	public String getName()
 	{
 		return name;
 	}
-
+	/**
+	 * @param name the name to set
+	 */
 	public void setName(String name)
 	{
 		this.name = name;
