@@ -15,7 +15,7 @@
 
 
 	<tr>
-		<td><a href="<c:url value="/eh/admin/users/index.do" />"><fmt:message
+		<td><a href="<c:url value="/eh/admin/user/index.do" />"><fmt:message
 			key="admin.nav.users" /></a></td>
 	</tr>
 

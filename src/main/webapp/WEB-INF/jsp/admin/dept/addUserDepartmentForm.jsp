@@ -18,12 +18,12 @@
 	
 	<tr>
 		<td><fmt:message key="admin.dept.name" />:</td>
-		<td><input class="normtxt"  type="text" name="name"></td>
+		<td><input class="normtxt"  type="text" name="name" size="30"></td>
 	</tr>
 
 	<tr>
 		<td><fmt:message key="admin.dept.code" />:</td>
-		<td><input class="normtxt"  type="text" name="code"></td>
+		<td><input class="normtxt"  type="text" name="code" size="30"></td>
 	</tr>
 	
 	<tr>

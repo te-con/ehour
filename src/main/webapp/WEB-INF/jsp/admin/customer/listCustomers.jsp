@@ -20,14 +20,14 @@
 	
 	<c:forEach items="${customers}" var="customer">
 		<tr>
-			<td><c:out value="${customer.name}" /></td>
+			<td>${customer.name}</td>
 			<td>&nbsp;</td>
-			<td><c:out value="${fn:length(customer.projects)}" /></td>
+			<td>${fn:length(customer.projects)}</td>
 			<td><c:if test="${fn:length(customer.projects) == 0}">
-				<a href="" onClick="return deleteCustomer(<c:out value="${customer.customerId}" />)"><fmt:message key="general.delete" /></a></c:if></td>
+				<a href="" onClick="return deleteCustomer(${customer.customerId})"><fmt:message key="general.delete" /></a></c:if></td>
 			<td>&nbsp;</td>			
 			<td><a href=""
-				onClick="return editCustomer(<c:out value="${customer.customerId}" />)"><fmt:message key="general.edit" /></a></td>
+				onClick="return editCustomer(${customer.customerId})"><fmt:message key="general.edit" /></a></td>
 		</tr>
 	</c:forEach>
 

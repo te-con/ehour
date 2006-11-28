@@ -23,25 +23,11 @@
 
 package net.rrm.ehour.web.exception;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.ExceptionHandler;
-import org.apache.struts.config.ExceptionConfig;
 
 public class GlobalExceptionHandler extends ExceptionHandler 
 {

@@ -29,8 +29,10 @@ import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
+import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.dto.AuthUser;
 
 import org.acegisecurity.userdetails.UserDetails;
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService
 {
 	private	UserDAO				userDAO;
 	private	UserDepartmentDAO	userDepartmentDAO;
+	private	UserRoleDAO			userRoleDAO;
 	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
 
 
@@ -119,6 +122,10 @@ public class UserServiceImpl implements UserService
 		userDepartmentDAO = dao;
 	}
 
+	public void setUserRoleDAO(UserRoleDAO dao)
+	{
+		userRoleDAO = dao;
+	}
 
 	/**
 	 * Delete user department on id
@@ -162,5 +169,52 @@ public class UserServiceImpl implements UserService
 	public UserDepartment getUserDepartment(Integer departmentId)
 	{
 		return userDepartmentDAO.findById(departmentId);
+	}
+
+
+	/**
+	 * 
+	 */
+	public List getUsersByNameMatch(String match)
+	{
+		List	results;
+		
+		if (match == null || match.equals(""))
+		{
+			logger.debug("Empty match pattern");
+			results = userDAO.findUsers();
+		}
+		else
+		{
+			results = userDAO.findUsersByNameMatch(match);
+		}
+		
+		return results;
 	}	
+	
+	/**
+	 * 
+	 */
+	public List getUsers()
+	{
+		return userDAO.findUsers();
+	}
+
+
+	/**
+	 * 
+	 */
+	public UserRole getUserRole(String userRoleId)
+	{
+		return userRoleDAO.findById(userRoleId);
+	}
+
+
+	/**
+	 * 
+	 */
+	public List getUserRoles()
+	{
+		return userRoleDAO.findUserRoles();
+	}
 }

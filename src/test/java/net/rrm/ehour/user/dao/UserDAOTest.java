@@ -1,8 +1,10 @@
 package net.rrm.ehour.user.dao;
 
+import java.util.List;
+
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 
 public class UserDAOTest extends BaseDAOTest 
 {
@@ -12,6 +14,28 @@ public class UserDAOTest extends BaseDAOTest
 	public void setUserDAO(UserDAO dao)
 	{
 		this.dao = dao;
+	}
+	
+	public void testFindUsersByPattern()
+	{
+		List<User>	results;
+		
+		results = dao.findUsersByNameMatch("thies");
+		assertEquals(1, results.size());
+		
+		results = dao.findUsersByNameMatch("ede");
+		assertEquals(2, results.size());
+
+		results = dao.findUsersByNameMatch("zed");
+		assertEquals(2, results.size());
+	}
+	
+	public void testFindUsers()
+	{
+		List<User>	results;
+		
+		results = dao.findUsers();
+		assertEquals(3, results.size());
 	}
 	
 	/**

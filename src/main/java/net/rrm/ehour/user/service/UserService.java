@@ -29,6 +29,7 @@ import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
 
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
@@ -52,6 +53,20 @@ public interface UserService extends UserDetailsService
 	 * @throws NoResultsException
 	 */
     public User getUser(Integer userID);
+    
+
+    /**
+     * Get users where first name or last name matches
+     * @param match
+     * @return
+     */
+    public List getUsersByNameMatch(String match);
+    
+    /**
+     * Get all users
+     * @return
+     */
+    public List getUsers();
     
     /**
      * Get list of all user departments
@@ -79,4 +94,17 @@ public interface UserService extends UserDetailsService
      * @return
      */
     public UserDepartment getUserDepartment(Integer departmentId);
+    
+    /**
+     * Get userrole on Id
+     * @param userRoleId
+     * @return
+     */
+    public UserRole getUserRole(String userRoleId);
+    
+    /**
+     * Get all user roles
+     * @return
+     */
+    public List getUserRoles();
 }

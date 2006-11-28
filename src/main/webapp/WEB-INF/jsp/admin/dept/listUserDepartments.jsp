@@ -20,14 +20,14 @@
 	
 	<c:forEach items="${userDepartments}" var="userDept">
 		<tr>
-			<td><c:out value="${userDept.name}" /></td>
+			<td>${userDept.name}</td>
 			<td>&nbsp;</td>
-			<td><c:out value="${fn:length(userDept.users)}" /></td>
+			<td>${fn:length(userDept.users)}</td>
 			<td><c:if test="${fn:length(userDept.users) == 0}">
-				<a href="" onClick="return deleteDepartment(<c:out value="${userDept.departmentId}" />)"><fmt:message key="general.delete" /></a></c:if></td>
+				<a href="" onClick="return deleteDepartment(${userDept.departmentId})"><fmt:message key="general.delete" /></a></c:if></td>
 			<td>&nbsp;</td>			
 			<td><a href=""
-				onClick="return editDepartment(<c:out value="${userDept.departmentId}" />)"><fmt:message key="general.edit" /></a></td>
+				onClick="return editDepartment(${userDept.departmentId})"><fmt:message key="general.edit" /></a></td>
 		</tr>
 	</c:forEach>
 

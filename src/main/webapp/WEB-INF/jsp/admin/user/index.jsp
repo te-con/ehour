@@ -10,11 +10,11 @@
 	{ 
 		new dojo.io.FormBind({
     						formNode: dojo.byId('CustomerForm'),
-    						handler: customerListReceived
+    						handler: userListReceived
 							});
 	}
 	
-	function customerListReceived(type, xml, evt)
+	function userListReceived(type, xml, evt)
 	{
 		if (type == 'error')
 		{	
@@ -22,9 +22,9 @@
 		}
 		else
 		{
-			dojo.byId('listCustomersSpan').innerHTML = xml;
-			
-			showAddForm();
+			dojo.byId('listUsersSpan').innerHTML = xml;
+			dojo.byId('filterInput').focus();
+//			showAddForm();
 		}
 	}
 	
@@ -79,17 +79,54 @@
 		}
     }
 
-	dojo.addOnLoad(submitForm);
+	function init()
+	{
+		dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");
+	}
+	
+	function filterKeyUp(evt)
+	{
+		var filterInput = dojo.byId('filterInput').value;
+		
+		dojo.io.bind({url: 'index.do',
+					  handler: userListReceived,
+                      content: {filterPattern: filterInput,
+                      			fromForm: '1'}
+                      });		
+	}
+
+	dojo.addOnLoad(init);
 </script>
 
-
-	<span id="listCustomersSpan">
-		<tiles:insert page="listCustomers.jsp" />
-	</span>
+<table CLASS="contentTable" CELLSPACING=2>
+	<tr>
+		<td rowspan="3" valign="top"><fmt:message key="admin.user.filter" />:</td>
+		<td><form><input class="normtxt" type="text" name="filter"
+					size="30" id="filterInput"></form>
+		</td>
+		<td rowspan=3>&nbsp;&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
 	
-<br>
-<br>
-
-<span id="customerFormSpan">
-	<tiles:insert page="addCustomerForm.jsp" />
-</span>
+	<tr>
+		<td>
+			<div class="userScroll">
+			<span id="listUsersSpan">
+				<tiles:insert page="listUsers.jsp" />
+			</span>
+			</div>
+		</td>
+		
+		<td  valign="top" rowspan="2">
+			<span id="userFormSpan">
+				<tiles:insert page="/eh/admin/user/addUserForm.do" />
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td align=right>
+			<a href="" onClick="return showAddForm()"><fmt:message key="admin.user.addUser" /></a>
+		</td>
+		
+	</tr>
+</table>

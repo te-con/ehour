@@ -1,5 +1,5 @@
 /**
- * Created on Nov 11, 2006
+ * Created on Nov 28, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -20,46 +20,30 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  *
  */
+
 package net.rrm.ehour.user.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserRole;
 
-public interface UserDAO
+/**
+ * CRUD on UserRole domain object
+ **/
+
+public interface UserRoleDAO
 {
 	/**
 	 * Find by Id
-	 * @param userId
+	 * @param userRole
 	 * @return
 	 */
-	public User findById(Integer userId);
+	public UserRole findById(String userRole);
 
 	/**
-	 * Find a user by username
-	 * @param username
+	 * Find all user roles
 	 * @return
 	 */
-	public User findByUsername(String username);
+	public List findUserRoles();
 	
-	/**
-	 * Persist a user
-	 * @param user
-	 * @return
-	 */
-	public void persist(User user);
-	
-	/**
-	 * Find users where pattern matches either first name or last name
-	 * @param pattern
-	 * @return
-	 */
-	public List findUsersByNameMatch(String pattern);
-	
-	
-	/**
-	 * Find all users
-	 * @return
-	 */
-	public List findUsers();
 }

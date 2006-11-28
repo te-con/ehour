@@ -229,3 +229,12 @@ H3
 	text-decoration: none;
 	color: #FF0000;
 }
+
+div.userScroll
+{
+	height:	200px;
+
+	overflow: auto;
+	border: 1px solid #913023;
+	padding: 8px;
+}	

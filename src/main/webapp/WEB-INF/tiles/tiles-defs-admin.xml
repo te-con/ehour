@@ -20,7 +20,7 @@
         <put name="content" value="/WEB-INF/jsp/admin/dept/index.jsp" />
     </definition>
 
-    <!-- Admin department list index (because the spring DelegatingTilesRequestProcessor is used this is here -->
+    <!-- Admin department list (because the spring DelegatingTilesRequestProcessor is used this is here -->
     <definition name=".ehour.admin.dept.list" path="/WEB-INF/jsp/admin/dept/listUserDepartments.jsp" />
 
     <!-- Admin department edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
@@ -29,12 +29,14 @@
     <!-- Admin department edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
     <definition name=".ehour.admin.dept.addForm" path="/WEB-INF/jsp/admin/dept/addUserDepartmentForm.jsp" />
 
+
+
     <!-- Admin customer index -->
     <definition name=".ehour.admin.customer.index" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/customer/index.jsp" />
     </definition>
 
-    <!-- Admin customer list index (because the spring DelegatingTilesRequestProcessor is used this is here -->
+    <!-- Admin customer list (because the spring DelegatingTilesRequestProcessor is used this is here -->
     <definition name=".ehour.admin.customer.list" path="/WEB-INF/jsp/admin/customer/listCustomers.jsp" />
 
     <!-- Admin customer edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
@@ -44,5 +46,17 @@
     <definition name=".ehour.admin.customer.addForm" path="/WEB-INF/jsp/admin/customer/addCustomerForm.jsp" />
 
 
+
+    <!-- Admin user index -->
+    <definition name=".ehour.admin.user.fullList" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/user/index.jsp" />
+    </definition>
+
+    <!-- Admin user filtered list (because the spring DelegatingTilesRequestProcessor is used this is here -->
+    <definition name=".ehour.admin.user.filteredList"
+    			path="/WEB-INF/jsp/admin/user/listUsers.jsp" />
+
+    <!-- Admin user add form (because the spring DelegatingTilesRequestProcessor is used this is here -->
+    <definition name=".ehour.admin.user.addForm" path="/WEB-INF/jsp/admin/user/addUserForm.jsp" />
 
 </tiles-definitions>

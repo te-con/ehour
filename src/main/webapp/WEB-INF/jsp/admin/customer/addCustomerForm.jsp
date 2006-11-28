@@ -4,11 +4,11 @@
 
 <form id="CustomerForm" method="post" action="editCustomer.do">
 
-<input type="hidden" name="customerId" value="">
+<input type="hidden" name="userId" value="">
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>
-		<td colspan="2"><fmt:message key="admin.customer.addCustomer" /></td>
+		<td colspan="2"><fmt:message key="admin.user.addUser" /></td>
 	</tr>
 
 	<tr>

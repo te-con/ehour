@@ -26,11 +26,16 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+
+import java.util.ArrayList;
+
 import junit.framework.TestCase;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
+import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
 
 
 /**
@@ -42,6 +47,7 @@ public class UserServiceTest extends TestCase
 	private	UserService			userService;
 	private	UserDAO				userDAO;
 	private	UserDepartmentDAO	userDepartmentDAO;
+	private	UserRoleDAO			userRoleDAO;
 	
 	/**
 	 * 
@@ -51,12 +57,26 @@ public class UserServiceTest extends TestCase
 		userService = new UserServiceImpl();
 		userDAO = createMock(UserDAO.class);
 		userDepartmentDAO = createMock(UserDepartmentDAO.class);
+		userRoleDAO = createMock(UserRoleDAO.class);
 		
 		((UserServiceImpl)userService).setUserDAO(userDAO);
 		((UserServiceImpl)userService).setUserDepartmentDAO(userDepartmentDAO);
+		((UserServiceImpl)userService).setUserRoleDAO(userRoleDAO);
 		
 	}
 
+	
+	public void testGetUsersByNameMatch()
+	{
+		expect(userDAO.findUsersByNameMatch("test"))
+				.andReturn(null);
+		
+		replay(userDAO);
+		
+		userService.getUsersByNameMatch("test");
+		
+		verify(userDAO);
+	}
 	/**
 	 * Test method for {@link net.rrm.ehour.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
 	 */
@@ -96,5 +116,33 @@ public class UserServiceTest extends TestCase
 		
 		assertEquals("bla", ud.getName());
 	}
+	
+	public void testGetUserRole()
+	{
+		String	role = "ROLE_CONSULTANT";
+		expect(userRoleDAO.findById(role))
+			.andReturn(new UserRole(role));
+		
+		replay(userRoleDAO);
+		
+		UserRole ur = userService.getUserRole(role);
+		
+		verify(userRoleDAO);
+		
+		assertEquals(role, ur.getRole());
+	}
+	
+	public void testGetUserRoles()
+	{
+		expect(userRoleDAO.findUserRoles())
+			.andReturn(new ArrayList());
+		
+		replay(userRoleDAO);
+		
+		userService.getUserRoles();
+		
+		verify(userRoleDAO);
+	}
+	
 
 }

@@ -1,5 +1,5 @@
 /**
- * Created on Nov 25, 2006
+ * Created on Nov 26, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,38 +21,61 @@
  *
  */
 
-package net.rrm.ehour.web.admin.customer.action;
+package net.rrm.ehour.web.admin.user.form;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.rrm.ehour.project.domain.Customer;
-import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
  **/
 
-public class GetCustomerAction extends AdminCustomerBaseAction
+public class UserForm extends ActionForm
 {
 	/**
 	 * 
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	private static final long serialVersionUID = -726486176963963693L;
+	private	boolean	fromForm = false;
+	private	String	filterPattern;
+
+	/**
+	 * 
+	 *
+	 */
+	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
-		CustomerForm customerForm = (CustomerForm)form;
-		
-		Customer customer = projectService.getCustomer(customerForm.getCustomerId());
-		
-		request.setAttribute("customer", customer);
-		
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		return mapping.findForward("success");
-	}		
+		fromForm = false;
+	}
+	/**
+	 * @return the filterPattern
+	 */
+	public String getFilterPattern()
+	{
+		return filterPattern;
+	}
+
+	/**
+	 * @param filterPattern the filterPattern to set
+	 */
+	public void setFilterPattern(String filterPattern)
+	{
+		this.filterPattern = filterPattern;
+	}
+	/**
+	 * @return the fromForm
+	 */
+	public boolean isFromForm()
+	{
+		return fromForm;
+	}
+	/**
+	 * @param fromForm the fromForm to set
+	 */
+	public void setFromForm(boolean fromForm)
+	{
+		this.fromForm = fromForm;
+	}
 }

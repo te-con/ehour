@@ -4,7 +4,7 @@
 
 <form id="CustomerForm" method="post" action="editCustomer.do">
 
-<input type="hidden" id="customerId" name="customerId" value="<c:out value="${customer.customerId}" />">
+<input type="hidden" id="customerId" name="customerId" value="${customer.customerId}">
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>
@@ -18,7 +18,7 @@
 	
 	<tr>
 		<td><fmt:message key="admin.customer.name" />:</td>
-		<td><input class="normtxt"  type="text" name="name" size="30" value="<c:out value="${customer.name}" />"></td>
+		<td><input class="normtxt"  type="text" name="name" size="30" value="${customer.name}"></td>
 		
 
 		<td rowspan=3>
@@ -30,19 +30,19 @@
 			<br>
 			
 			<c:forEach var="project" items="${customer.projects}">
-				<c:out value="${project.fullname}" />
+				${project.fullname}
 			</c:forEach>
 		</td>		
 	</tr>
 
 	<tr>
 		<td><fmt:message key="admin.customer.code" />:</td>
-		<td><input class="normtxt"  type="text" name="code" size="30" value="<c:out value="${customer.code}" />"></td>
+		<td><input class="normtxt"  type="text" name="code" size="30" value="${customer.code}"></td>
 	</tr>
 
 	<tr>
 		<td valign="top"><fmt:message key="admin.customer.description" />:</td>
-		<td><textarea class="normtxt" name="description" cols="27" rows="3" wrap="virtual"><c:out value="${customer.description}" /></textarea></td>
+		<td><textarea class="normtxt" name="description" cols="27" rows="3" wrap="virtual">${customer.description}</textarea></td>
 	</tr>
 
 	

@@ -28,4 +28,16 @@
 	<bean name="/eh/admin/customer/editCustomer" class="net.rrm.ehour.web.admin.customer.action.EditCustomerAction" />
 	
 	<bean name="/eh/admin/customer/deleteCustomer" class="net.rrm.ehour.web.admin.customer.action.DeleteCustomerAction" />			
+
+	<bean name="/eh/admin/user/index" class="net.rrm.ehour.web.admin.user.action.ListUsersAction" />
+	
+	<bean name="/eh/admin/user/addUserForm" class="net.rrm.ehour.web.admin.user.action.GetUserAction" />
+	
+	<bean name="/eh/admin/user/getUser" class="net.rrm.ehour.web.admin.user.action.GetUserAction" />
+	
+	<bean name="/eh/admin/user/editUser" class="net.rrm.ehour.web.admin.user.action.EditUserAction" />
+	
+	<bean name="/eh/admin/user/deleteUser" class="net.rrm.ehour.web.admin.user.action.DeleteUserAction" />			
+
+
 </beans>

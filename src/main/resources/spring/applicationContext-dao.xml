@@ -88,5 +88,10 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
+	<!-- UserRole DAO -->
+	<bean id="userRoleDAO" class="net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
 
 </beans>

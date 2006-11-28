@@ -1,5 +1,5 @@
 /**
- * Created on Nov 11, 2006
+ * Created on Nov 26, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -20,46 +20,14 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  *
  */
-package net.rrm.ehour.user.dao;
 
-import java.util.List;
+package net.rrm.ehour.web.admin.user.action;
 
-import net.rrm.ehour.user.domain.User;
+/**
+ * TODO 
+ **/
 
-public interface UserDAO
+public class EditUserAction
 {
-	/**
-	 * Find by Id
-	 * @param userId
-	 * @return
-	 */
-	public User findById(Integer userId);
 
-	/**
-	 * Find a user by username
-	 * @param username
-	 * @return
-	 */
-	public User findByUsername(String username);
-	
-	/**
-	 * Persist a user
-	 * @param user
-	 * @return
-	 */
-	public void persist(User user);
-	
-	/**
-	 * Find users where pattern matches either first name or last name
-	 * @param pattern
-	 * @return
-	 */
-	public List findUsersByNameMatch(String pattern);
-	
-	
-	/**
-	 * Find all users
-	 * @return
-	 */
-	public List findUsers();
 }

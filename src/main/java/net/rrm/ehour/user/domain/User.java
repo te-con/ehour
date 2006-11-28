@@ -29,8 +29,6 @@ public class User implements Serializable, Comparable
 
 	private String email;
 
-	private String mobilePhone;
-
 	private Set userRoles = new HashSet(0);
 
 	private UserDepartment userDepartment;
@@ -55,14 +53,13 @@ public class User implements Serializable, Comparable
 	}
 	
 	/** full constructor */
-	public User(String username, String password, String firstName, String lastName, String email, String mobilePhone, Set userRoles, UserDepartment userDepartment)
+	public User(String username, String password, String firstName, String lastName, String email, Set userRoles, UserDepartment userDepartment)
 	{
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.mobilePhone = mobilePhone;
 		this.userRoles = userRoles;
 		this.userDepartment = userDepartment;
 	}
@@ -126,16 +123,6 @@ public class User implements Serializable, Comparable
 	public void setEmail(String email)
 	{
 		this.email = email;
-	}
-
-	public String getMobilePhone()
-	{
-		return this.mobilePhone;
-	}
-
-	public void setMobilePhone(String mobilePhone)
-	{
-		this.mobilePhone = mobilePhone;
 	}
 
 	public Set getUserRoles()

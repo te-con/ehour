@@ -1,5 +1,5 @@
 /**
- * Created on Nov 25, 2006
+ * Created on Nov 26, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,13 +21,14 @@
  *
  */
 
-package net.rrm.ehour.web.admin.customer.action;
+package net.rrm.ehour.web.admin.user.action;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.project.domain.Customer;
-import net.rrm.ehour.web.admin.customer.form.CustomerForm;
+import net.rrm.ehour.web.admin.user.form.UserForm;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -37,22 +38,36 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class GetCustomerAction extends AdminCustomerBaseAction
+public class GetUserAction extends AdminUserBaseAction
 {
 	/**
 	 * 
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
+								HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		CustomerForm customerForm = (CustomerForm)form;
+		List 			users;
+		ActionForward	fwd = mapping.findForward("success");
+		UserForm		userForm = (UserForm)form;
+		String			param;
+		List			userDepartments;
+		List			userRoles;
 		
-		Customer customer = projectService.getCustomer(customerForm.getCustomerId());
-		
-		request.setAttribute("customer", customer);
-		
-		response.setContentType("text/xml");
 		response.setHeader("Cache-Control", "no-cache");
 		
-		return mapping.findForward("success");
-	}		
+		param = mapping.getParameter();
+		
+		userDepartments = userService.getUserDepartments();
+		userRoles = userService.getUserRoles();
+		
+		request.setAttribute("userDepartments", userDepartments);
+		request.setAttribute("userRoles", userRoles);
+		
+		if (!"addOnly".equals(param))
+		{
+			// jaja
+		}
+			
+		return fwd;
+	}
 }

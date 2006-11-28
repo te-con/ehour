@@ -16,7 +16,6 @@
 		<property name="firstName" column="first_name" type="string"/>
 		<property name="lastName" column="last_name" type="string"/>
 		<property name="email" column="EMAIL" type="string"/>
-		<property name="mobilePhone" column="MOBILE_PHONE" type="string"/>
 		
         <set name="userRoles" table="USER_TO_USERROLE" cascade="all" lazy="true">
            <key column="USER_ID"/>

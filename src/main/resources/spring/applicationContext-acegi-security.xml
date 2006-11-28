@@ -109,7 +109,11 @@
 
 			</list>
 		</property>
+		
+<!--  		<property name="passwordEncoder"><ref local="passwordEncoder"/></property>-->
 	</bean>
+	
+<!--	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.Md5PasswordEncoder"/>-->
 
 	<bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService" ref="userService"/>

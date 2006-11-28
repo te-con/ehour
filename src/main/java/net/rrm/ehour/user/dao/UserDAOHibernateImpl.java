@@ -68,6 +68,25 @@ public class UserDAOHibernateImpl extends HibernateDaoSupport implements UserDAO
 		getHibernateTemplate().saveOrUpdate(user);
 	}
 
+	
+	/**
+	 * 
+	 */
+	public List findUsersByNameMatch(String pattern)
+	{
+		pattern = pattern.toLowerCase();
+		
+		pattern = "%" + pattern + "%";
+		
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("User.findByUsernamePattern",
+																"pattern", pattern);
+	}
 
-
+	/**
+	 * 
+	 */
+	public List findUsers()
+	{
+		return getHibernateTemplate().loadAll(User.class);
+	}
 }

@@ -1,5 +1,5 @@
 /**
- * Created on Nov 11, 2006
+ * Created on Nov 28, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -20,46 +20,45 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  *
  */
+
 package net.rrm.ehour.user.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.user.domain.UserRole;
 
-public interface UserDAO
+/**
+ * TODO 
+ **/
+
+public class UserRoleDAOTest extends BaseDAOTest 
 {
-	/**
-	 * Find by Id
-	 * @param userId
-	 * @return
-	 */
-	public User findById(Integer userId);
+	private	UserRoleDAO	userRoleDAO;
+	
+	public void setUserRoleDAO(UserRoleDAO dao)
+	{
+		userRoleDAO = dao;
+	}
+	
+
 
 	/**
-	 * Find a user by username
-	 * @param username
-	 * @return
+	 * Test method for {@link net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl#findById(java.lang.Integer)}.
 	 */
-	public User findByUsername(String username);
-	
+	public void testFindById()
+	{
+		UserRole role = userRoleDAO.findById("ROLE_ADMIN");
+		assertEquals("Administrator", role.getRoleName());
+	}
+
 	/**
-	 * Persist a user
-	 * @param user
-	 * @return
+	 * Test method for {@link net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl#findUserRoles()}.
 	 */
-	public void persist(User user);
-	
-	/**
-	 * Find users where pattern matches either first name or last name
-	 * @param pattern
-	 * @return
-	 */
-	public List findUsersByNameMatch(String pattern);
-	
-	
-	/**
-	 * Find all users
-	 * @return
-	 */
-	public List findUsers();
+	public void testFindUserRoles()
+	{
+		List list = userRoleDAO.findUserRoles();
+		assertEquals(3, list.size());
+	}
+
 }
