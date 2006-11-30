@@ -28,6 +28,7 @@ import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * TODO 
@@ -68,6 +69,15 @@ public class CustomerDAOHibernateImpl extends HibernateDaoSupport  implements Cu
 		getHibernateTemplate().saveOrUpdate(customer);
 		
 		return customer;
+	}
+
+	public List findAll(boolean active)
+	{
+		List	l;
+		
+		l = getHibernateTemplate().findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", new Boolean(active));
+		
+		return l;	
 	}
 
 }

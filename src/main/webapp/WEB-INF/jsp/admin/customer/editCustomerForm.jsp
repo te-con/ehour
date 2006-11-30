@@ -45,6 +45,11 @@
 		<td><textarea class="normtxt" name="description" cols="27" rows="3" wrap="virtual">${customer.description}</textarea></td>
 	</tr>
 
+	<tr>
+		<td valign="top"><fmt:message key="general.active" />:</td>
+		<td><input class="normtxt" type="checkbox" name="active" <c:if test="${customer.active}">checked</c:if>></td>
+	</tr>
+
 	
 	<tr>
 		<td colspan="2" align="right">

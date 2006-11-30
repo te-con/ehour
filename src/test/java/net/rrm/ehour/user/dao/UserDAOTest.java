@@ -20,14 +20,21 @@ public class UserDAOTest extends BaseDAOTest
 	{
 		List<User>	results;
 		
-		results = dao.findUsersByNameMatch("thies");
+		results = dao.findUsersByNameMatch("thies", true);
 		assertEquals(1, results.size());
 		
-		results = dao.findUsersByNameMatch("ede");
+		results = dao.findUsersByNameMatch("ede", true);
 		assertEquals(2, results.size());
 
-		results = dao.findUsersByNameMatch("zed");
+		results = dao.findUsersByNameMatch("zed", false);
+		assertEquals(3, results.size());
+
+		results = dao.findUsersByNameMatch("in", false);
 		assertEquals(2, results.size());
+
+		results = dao.findUsersByNameMatch("zed", true);
+		assertEquals(2, results.size());
+
 	}
 	
 	public void testFindUsers()
@@ -35,7 +42,7 @@ public class UserDAOTest extends BaseDAOTest
 		List<User>	results;
 		
 		results = dao.findUsers();
-		assertEquals(3, results.size());
+		assertEquals(4, results.size());
 	}
 	
 	/**
@@ -66,7 +73,7 @@ public class UserDAOTest extends BaseDAOTest
 		user.setPassword("in the cave");
 		user.setFirstName("ollie");
 		user.setLastName("doerak chief");
-		user.setDepartment(org);
+		user.setUserDepartment(org);
 		dao.persist(user);
 		
 		assertNotNull(user.getUserId());

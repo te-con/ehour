@@ -1,5 +1,5 @@
 /**
- * Created on Nov 11, 2006
+ * Created on Nov 30, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -20,47 +20,33 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  *
  */
-package net.rrm.ehour.user.dao;
 
-import java.util.List;
+package net.rrm.ehour.util;
 
-import net.rrm.ehour.user.domain.User;
+import java.security.MessageDigest;
 
-public interface UserDAO
+/**
+ * TODO 
+ **/
+
+public class EhourUtil
 {
-	/**
-	 * Find by Id
-	 * @param userId
-	 * @return
-	 */
-	public User findById(Integer userId);
+	public static String encrypt(String original)
+	{
+		MessageDigest md = null;
+	      try
+	      {
+	         md = MessageDigest.getInstance("MD5");
+	      }
+	      catch(Exception e)
+	      {
+	         e.printStackTrace();
+	      }
+	      byte[] passwordBytes = original.getBytes();
+	      byte[] hash = md.digest(passwordBytes);
+	      String base64Hash = Base64.encode(hash);	
+	      
+	      return base64Hash;
+	}
 
-	/**
-	 * Find a user by username
-	 * @param username
-	 * @return
-	 */
-	public User findByUsername(String username);
-	
-	/**
-	 * Persist a user
-	 * @param user
-	 * @return
-	 */
-	public void persist(User user);
-	
-	/**
-	 * Find users where pattern matches either first name or last name
-	 * @param pattern
-	 * @param onlyActive -> include only active users
-	 * @return
-	 */
-	public List findUsersByNameMatch(String pattern, boolean onlyActive);
-	
-	
-	/**
-	 * Find all users
-	 * @return
-	 */
-	public List findUsers();
 }

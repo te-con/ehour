@@ -41,10 +41,17 @@ public interface CustomerDAO
 	public Customer findById(Integer customerId);
 	
 	/**
-	 * Get all customers
+	 * Get all customers (ignoring active flag)
 	 * @return
 	 */
 	public List findAll();
+	
+	/**
+	 * Get all customers
+	 * @param active
+	 * @return
+	 */
+	public List findAll(boolean active);
 	
 	/**
 	 * Persist customer

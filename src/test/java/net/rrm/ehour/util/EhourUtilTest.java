@@ -1,5 +1,5 @@
 /**
- * Created on Nov 11, 2006
+ * Created on Nov 30, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -20,47 +20,38 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  *
  */
-package net.rrm.ehour.user.dao;
 
-import java.util.List;
+package net.rrm.ehour.util;
 
-import net.rrm.ehour.user.domain.User;
+import java.security.Provider;
+import java.security.Security;
+import java.util.Iterator;
+import java.util.Set;
 
-public interface UserDAO
+import junit.framework.TestCase;
+
+/**
+ * TODO 
+ **/
+
+public class EhourUtilTest extends TestCase
 {
-	/**
-	 * Find by Id
-	 * @param userId
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#setUp()
 	 */
-	public User findById(Integer userId);
+	protected void setUp() throws Exception
+	{
+		super.setUp();
+	}
 
 	/**
-	 * Find a user by username
-	 * @param username
-	 * @return
+	 * Test method for {@link net.rrm.ehour.util.EhourUtil#encrypt(java.lang.String)}.
 	 */
-	public User findByUsername(String username);
-	
-	/**
-	 * Persist a user
-	 * @param user
-	 * @return
-	 */
-	public void persist(User user);
-	
-	/**
-	 * Find users where pattern matches either first name or last name
-	 * @param pattern
-	 * @param onlyActive -> include only active users
-	 * @return
-	 */
-	public List findUsersByNameMatch(String pattern, boolean onlyActive);
-	
-	
-	/**
-	 * Find all users
-	 * @return
-	 */
-	public List findUsers();
+	public void testEncrypt() throws Exception
+	{
+		String enc = EhourUtil.encrypt("thies");
+		assertTrue(enc.length() > 0);
+	}
+
 }

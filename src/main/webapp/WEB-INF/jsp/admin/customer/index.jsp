@@ -30,7 +30,7 @@
 	
 	function deleteCustomer(customerId)
 	{
-		if (confirm('<fmt:message key="admin.customer.deleteConfirm" />'))
+		if (confirm("<fmt:message key="admin.customer.deleteConfirm" />"))
 		{
 			dojo.io.bind({url: 'deleteCustomer.do',
 						  handler: customerListReceived,

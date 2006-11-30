@@ -28,6 +28,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.admin.user.form.UserForm;
 
 import org.apache.struts.action.ActionForm;
@@ -46,12 +47,12 @@ public class GetUserAction extends AdminUserBaseAction
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 								HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List 			users;
 		ActionForward	fwd = mapping.findForward("success");
 		UserForm		userForm = (UserForm)form;
 		String			param;
 		List			userDepartments;
 		List			userRoles;
+		User			user;
 		
 		response.setHeader("Cache-Control", "no-cache");
 		
@@ -65,7 +66,8 @@ public class GetUserAction extends AdminUserBaseAction
 		
 		if (!"addOnly".equals(param))
 		{
-			// jaja
+			user = userService.getUser(userForm.getUserId());
+			request.setAttribute("user", user);
 		}
 			
 		return fwd;

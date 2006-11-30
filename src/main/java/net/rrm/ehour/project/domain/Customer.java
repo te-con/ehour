@@ -19,6 +19,8 @@ public class Customer implements java.io.Serializable
 	private String name;
 
 	private String description;
+	
+	private	boolean	active;
 
 	private	Set		projects;
 	
@@ -30,11 +32,12 @@ public class Customer implements java.io.Serializable
 	}
 
 	/** full constructor */
-	public Customer(String code, String name, String description)
+	public Customer(String code, String name, String description, boolean active)
 	{
 		this.code = code;
 		this.name = name;
 		this.description = description;
+		this.active = active;
 	}
 
 	// Property accessors
@@ -92,6 +95,22 @@ public class Customer implements java.io.Serializable
 	public void setProjects(Set projects)
 	{
 		this.projects = projects;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive()
+	{
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active)
+	{
+		this.active = active;
 	}
 
 }

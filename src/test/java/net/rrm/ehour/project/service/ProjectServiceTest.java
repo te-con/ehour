@@ -128,6 +128,18 @@ public class ProjectServiceTest extends TestCase
 		verify(customerDAO);
 	}
 
+	public void testGetActiveCustomers()
+	{
+		customerDAO.findAll(true);
+		expectLastCall().andReturn(null);
+		
+		replay(customerDAO);
+		
+		projectService.getCustomers(true);
+		
+		verify(customerDAO);
+	}	
+	
 	public void testPersistCustomer()
 	{
 		Customer cust = new Customer();

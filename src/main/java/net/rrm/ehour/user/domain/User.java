@@ -28,6 +28,8 @@ public class User implements Serializable, Comparable
 	private String lastName;
 
 	private String email;
+	
+	private	boolean	active;
 
 	private Set userRoles = new HashSet(0);
 
@@ -53,13 +55,14 @@ public class User implements Serializable, Comparable
 	}
 	
 	/** full constructor */
-	public User(String username, String password, String firstName, String lastName, String email, Set userRoles, UserDepartment userDepartment)
+	public User(String username, String password, String firstName, String lastName, String email, boolean active, Set userRoles, UserDepartment userDepartment)
 	{
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.active = active;
 		this.userRoles = userRoles;
 		this.userDepartment = userDepartment;
 	}
@@ -135,15 +138,6 @@ public class User implements Serializable, Comparable
 		this.userRoles = userRoles;
 	}
 
-	public UserDepartment getDepartment()
-	{
-		return this.userDepartment;
-	}
-
-	public void setDepartment(UserDepartment userDepartment)
-	{
-		this.userDepartment = userDepartment;
-	}
 	
     public int compareTo(Object o)
     {
@@ -160,4 +154,36 @@ public class User implements Serializable, Comparable
             return -1;
         }
     }
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive()
+	{
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active)
+	{
+		this.active = active;
+	}
+
+	/**
+	 * @return the userDepartment
+	 */
+	public UserDepartment getUserDepartment()
+	{
+		return userDepartment;
+	}
+
+	/**
+	 * @param userDepartment the userDepartment to set
+	 */
+	public void setUserDepartment(UserDepartment userDepartment)
+	{
+		this.userDepartment = userDepartment;
+	}
 }

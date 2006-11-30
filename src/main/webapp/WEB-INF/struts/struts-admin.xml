@@ -105,6 +105,19 @@
 			<forward name="success" path=".ehour.admin.user.addForm" />
 		</action>
 
+		<!-- Show edit user form -->
+		<action name="UserForm"
+				path="/user/getUser" 
+				type="net.rrm.ehour.web.admin.user.action.GetUserAction">
+			<forward name="success" path=".ehour.admin.user.editForm" />
+		</action>
+
+		<!-- Show edit user form -->
+		<action name="UserForm"
+				path="/user/editUser" 
+				type="net.rrm.ehour.web.admin.customer.action.EditCustomerAction">
+			<forward name="success" path=".ehour.admin.user.filteredList" />
+		</action>
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

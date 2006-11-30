@@ -8,11 +8,13 @@
 		<td>&nbsp;</td>
 		<td><fmt:message key="admin.customer.projects" /></td>
 		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 		<td colspan=2></td>
 	</tr>
 
 	<tr>
-		<td colspan="6"><img src="<c:url  value="/img/eh_pixel.gif" />"
+		<td colspan="9"><img src="<c:url  value="/img/eh_pixel.gif" />"
 			alt="pix" height="1" width="100%"><br>
 		</td>
 	</tr>
@@ -23,6 +25,17 @@
 			<td>${customer.name}</td>
 			<td>&nbsp;</td>
 			<td>${fn:length(customer.projects)}</td>
+			<td>&nbsp;</td>
+			<td><c:choose>
+					<c:when test="${customer.active}">
+						<fmt:message key="general.active" />
+					</c:when>
+					<c:otherwise>
+						<fmt:message key="general.inactive" />
+					</c:otherwise>
+				</c:choose>
+			</td>
+			<td>&nbsp;</td>	
 			<td><c:if test="${fn:length(customer.projects) == 0}">
 				<a href="" onClick="return deleteCustomer(${customer.customerId})"><fmt:message key="general.delete" /></a></c:if></td>
 			<td>&nbsp;</td>			
@@ -33,13 +46,13 @@
 
 
 	<tr>
-		<td colspan="6"><img src="<c:url  value="/img/eh_pixel.gif" />"
+		<td colspan="9"><img src="<c:url  value="/img/eh_pixel.gif" />"
 			alt="pix" height="1" width="100%"><br>
 		</td>
 	</tr>
 		
 		<tr>
-			<td colspan=6 align=right>
+			<td colspan=9 align=right>
 				<a href="" onClick="return showAddForm()"><fmt:message key="admin.customer.addCustomer" /></a>
 			</td>
 		</tr>

@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
@@ -34,6 +35,7 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.dto.AuthUser;
+import net.rrm.ehour.util.EhourUtil;
 
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
@@ -175,7 +177,7 @@ public class UserServiceImpl implements UserService
 	/**
 	 * 
 	 */
-	public List getUsersByNameMatch(String match)
+	public List getUsersByNameMatch(String match, boolean inclInactive)
 	{
 		List	results;
 		
@@ -186,7 +188,7 @@ public class UserServiceImpl implements UserService
 		}
 		else
 		{
-			results = userDAO.findUsersByNameMatch(match);
+			results = userDAO.findUsersByNameMatch(match, inclInactive);
 		}
 		
 		return results;
@@ -216,5 +218,45 @@ public class UserServiceImpl implements UserService
 	public List getUserRoles()
 	{
 		return userRoleDAO.findUserRoles();
+	}
+
+	/**
+	 * Persist user
+	 */
+
+	public User persistUser(User user) throws PasswordEmptyException
+	{
+		User	dbUser;
+		String	encodedPass;
+		
+		if (user.getPassword() == null || user.getPassword().equals(""))
+		{
+			// if password is empty and user is new we have a problem
+			if (user.getUserId() == null)
+			{
+				throw new PasswordEmptyException("New users need a password");
+			}
+			
+			dbUser = userDAO.findById(user.getUserId());
+			
+			dbUser.setEmail(user.getEmail());
+			dbUser.setFirstName(user.getFirstName());
+			dbUser.setLastName(user.getLastName());
+			dbUser.setUserDepartment(user.getUserDepartment());
+			dbUser.setUsername(user.getUsername());
+			dbUser.setUserRoles(user.getUserRoles());
+			
+			userDAO.persist(dbUser);
+
+			return dbUser;
+		}
+		else
+		{
+			encodedPass = EhourUtil.encrypt(user.getPassword());
+			user.setPassword(encodedPass);
+			userDAO.persist(user);
+			
+			return user;
+		}
 	}
 }

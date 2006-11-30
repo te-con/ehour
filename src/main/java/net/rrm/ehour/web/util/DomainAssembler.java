@@ -23,10 +23,16 @@
 
 package net.rrm.ehour.web.util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
+import net.rrm.ehour.web.admin.user.form.UserForm;
 
 /**
  * Various form to domain assemblers
@@ -70,8 +76,53 @@ public class DomainAssembler
 		cust.setName(cf.getName());
 		cust.setDescription(cf.getDescription());
 		cust.setCode(cf.getCode());
+		cust.setActive(cf.isActive());
 		
 		return cust;
 	}
+	
+	/**
+	 * UserForm to User
+	 * @param uf
+	 * @return
+	 */
 
+	public static User getUser(UserForm uf)
+	{
+		User	user = new User();
+		UserDepartment dept;
+		UserRole	role;
+		Set			roles;
+		int			i;
+		
+		if (uf.getUserId() > 0)
+		{
+			user.setUserId(uf.getUserId());
+		}
+		
+		user.setActive(uf.isActive());
+		user.setEmail(uf.getEmail());
+		user.setFirstName(uf.getFirstName());
+		user.setLastName(uf.getLastName());
+		user.setPassword(uf.getPassword());
+		user.setUsername(uf.getUsername());
+
+		dept = new UserDepartment();
+		dept.setDepartmentId(uf.getDepartmentId());
+		user.setUserDepartment(dept);
+		
+		roles = new HashSet();
+		
+		for (i = 0;
+			 i < uf.getRoles().length;
+			 i++)
+		{
+			role = new UserRole(uf.getRoles()[i]);
+			roles.add(role);
+		}
+		
+		user.setUserRoles(roles);
+
+		return user;
+	}
 }

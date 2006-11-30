@@ -2,16 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<table CLASS="contentTable" CELLSPACING=2>
 	<c:forEach items="${users}" var="user">
-		<tr>
-			<td>
-				<a href="">
-					<c:out value="${user.lastName}" />, <c:out value="${user.firstName}" />
-				</a>
-			</td>
-		</tr>
+		<a href="" onClick="return editUser(${user.userId})">
+					${user.lastName}, ${user.firstName}
+		</a>
+		<br>
 	</c:forEach>
-
-</table>
-	

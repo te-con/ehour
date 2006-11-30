@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -54,13 +55,20 @@ public interface UserService extends UserDetailsService
 	 */
     public User getUser(Integer userID);
     
-
+    /**
+     * Persist a user
+     * @param user
+     * @return
+     */
+    public User persistUser(User user)  throws PasswordEmptyException;
+    
     /**
      * Get users where first name or last name matches
      * @param match
+     * @param inclInactive incl inactive users?
      * @return
      */
-    public List getUsersByNameMatch(String match);
+    public List getUsersByNameMatch(String match, boolean inclInactive);
     
     /**
      * Get all users

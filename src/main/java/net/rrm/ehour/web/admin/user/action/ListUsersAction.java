@@ -56,7 +56,7 @@ public class ListUsersAction extends AdminUserBaseAction
 			response.setContentType("text/xml");
 			fwd = mapping.findForward("filteredList");
 			
-			users = userService.getUsersByNameMatch(userForm.getFilterPattern());
+			users = userService.getUsersByNameMatch(userForm.getFilterPattern(), userForm.isHideInactive());
 		}
 		else
 		{

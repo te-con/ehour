@@ -68,12 +68,12 @@ public class UserServiceTest extends TestCase
 	
 	public void testGetUsersByNameMatch()
 	{
-		expect(userDAO.findUsersByNameMatch("test"))
-				.andReturn(null);
+		expect(userDAO.findUsersByNameMatch("test", true))
+				.andReturn(new ArrayList());
 		
 		replay(userDAO);
 		
-		userService.getUsersByNameMatch("test");
+		userService.getUsersByNameMatch("test", true);
 		
 		verify(userDAO);
 	}

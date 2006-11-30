@@ -95,6 +95,12 @@ public class ProjectServiceImpl implements ProjectService
 		return customer;
 	}
 
+	public List getCustomers(boolean active)
+	{
+		return customerDAO.findAll(active);
+	}
+
+	
 	/**
 	 * @param customerDAO the customerDAO to set
 	 */
@@ -102,5 +108,6 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		this.customerDAO = customerDAO;
 	}
+
 
 }

@@ -32,10 +32,17 @@ import net.rrm.ehour.project.domain.Customer;
 public interface ProjectService
 {
 	/**
-	 * Get all customers
+	 * Get all customers regardless whether they are active or not
 	 * @return
 	 */
 	public List getCustomers();
+	
+	/**
+	 * Get customers respecting their active flag
+	 * @param active
+	 * @return
+	 */
+	public List getCustomers(boolean active);
 	
 	/**
 	 * Get customer on id

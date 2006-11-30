@@ -23,11 +23,47 @@
 
 package net.rrm.ehour.web.admin.user.action;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.web.admin.user.form.UserForm;
+import net.rrm.ehour.web.util.DomainAssembler;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
 /**
- * TODO 
+ * Edits the user
  **/
 
-public class EditUserAction
+public class EditUserAction extends AdminUserBaseAction
 {
-
+	/**
+	 * 
+	 */
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
+								HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
+		ActionForward	fwd;
+		UserForm		userForm = (UserForm)form;
+		User			user;
+		List			users;
+		
+		user = DomainAssembler.getUser(userForm);
+		
+		userService.persistUser(user);
+		
+		response.setContentType("text/xml");
+		
+		users = userService.getUsersByNameMatch(userForm.getFilterPattern(), userForm.isHideInactive());
+		request.setAttribute("users", users);
+		
+		fwd = mapping.findForward("success");
+		
+		return fwd;
+	}
 }

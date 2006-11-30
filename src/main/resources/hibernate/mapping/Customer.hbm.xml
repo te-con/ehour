@@ -14,6 +14,8 @@
 		<property name="name" column="NAME" type="string"/>
 		<property name="description" column="DESCRIPTION" type="string"/>
 		
+		<property name="active" column="ACTIVE" type="yes_no"/>
+		
 	   <set name="projects" inverse="true" lazy="true">
 	   	<key column="CUSTOMER_ID" />
 	       <one-to-many class="net.rrm.ehour.project.domain.Project"/>

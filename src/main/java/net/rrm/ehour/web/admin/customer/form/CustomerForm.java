@@ -23,7 +23,10 @@
 
 package net.rrm.ehour.web.admin.customer.form;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
@@ -35,6 +38,17 @@ public class CustomerForm extends ActionForm
 	private	String	name;
 	private	String	description;
 	private	String	code;
+	private	boolean	active = false;
+	
+	/**
+	 * 
+	 *
+	 */
+	public void reset(ActionMapping mapping, HttpServletRequest request)
+	{
+		active = false;
+	}	
+	
 	/**
 	 * @return the code
 	 */
@@ -90,5 +104,21 @@ public class CustomerForm extends ActionForm
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive()
+	{
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active)
+	{
+		this.active = active;
 	}
 }

@@ -6,15 +6,15 @@
 
 <script>
 	
-	function submitForm()
+	function bindSubmitForm()
 	{ 
 		new dojo.io.FormBind({
-    						formNode: dojo.byId('CustomerForm'),
+    						formNode: dojo.byId('bindSubmitForm'),
     						handler: userListReceived
 							});
 	}
 	
-	function userListReceived(type, xml, evt)
+	function userListReceivedFromFilter(type, xml, evt)
 	{
 		if (type == 'error')
 		{	
@@ -24,30 +24,24 @@
 		{
 			dojo.byId('listUsersSpan').innerHTML = xml;
 			dojo.byId('filterInput').focus();
-//			showAddForm();
+
 		}
 	}
-	
-	function deleteCustomer(customerId)
+
+	function userListReceived(type, xml, evt)
 	{
-		if (confirm('<fmt:message key="admin.customer.deleteConfirm" />'))
-		{
-			dojo.io.bind({url: 'deleteCustomer.do',
-						  handler: customerListReceived,
-                       content: {customerId: customerId}
-                       });
-		}
+		userListReceivedFromFilter(type, xml, evt);
 		
-		return false;
+		showAddForm();
 	}
 
 
-	function editCustomer(editId)
+	function editUser(editId)
 	{
         dojo.io.bind({
-                       url: 'getCustomer.do',
+                       url: 'getUser.do',
                        handler: formChanged,
-                       content: {customerId: editId}
+                       content: {userId: editId}
                     });  
                     
 		return false;    
@@ -56,7 +50,7 @@
 	function showAddForm()
 	{
         dojo.io.bind({
-                       url: 'addCustomerForm.do',
+                       url: 'addUserForm.do',
                        handler: formChanged
                     });  
                     
@@ -72,25 +66,34 @@
     	}
     	else
     	{
-			dojo.byId('customerFormSpan').innerHTML = xml;
+			dojo.byId('userFormSpan').innerHTML = xml;
+
+			dojo.byId("filterForm").value = dojo.byId('filterInput').value;
+			dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
 			
 			// rebind
-			submitForm();
+			bindSubmitForm();
 		}
     }
 
 	function init()
 	{
 		dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");
+		dojo.event.connect(dojo.byId('hideInactive'), "onclick", "filterKeyUp");
+		bindSubmitForm();
 	}
 	
 	function filterKeyUp(evt)
 	{
 		var filterInput = dojo.byId('filterInput').value;
 		
+		dojo.byId("filterForm").value = dojo.byId('filterInput').value;
+		dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
+		
 		dojo.io.bind({url: 'index.do',
-					  handler: userListReceived,
+					  handler: userListReceivedFromFilter,
                       content: {filterPattern: filterInput,
+                      			hideInactive: dojo.byId('hideInactive').checked,
                       			fromForm: '1'}
                       });		
 	}
@@ -100,24 +103,40 @@
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>
-		<td rowspan="3" valign="top"><fmt:message key="admin.user.filter" />:</td>
-		<td><form><input class="normtxt" type="text" name="filter"
-					size="30" id="filterInput"></form>
+		<td>
+			<table CLASS="contentTable" CELLSPACING=2 width="100%">
+				<tr>
+					<Td>&nbsp;</Td>					<Td>&nbsp;</Td>					<Td>&nbsp;</Td>
+				</tr>
+				<tr>
+					<td valign="top"><fmt:message key="admin.user.filter" />:</td>
+					<td><form><input class="normtxt" type="text" name="filter"
+								size="30" id="filterInput"></form>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2" valign="top"><fmt:message key="admin.user.hideInactive" />:
+					<input class="normtxt" type="checkbox" id="hideInactive" name="hideInactive" checked></td>
+				</tr>
+			</table>
 		</td>
-		<td rowspan=3>&nbsp;&nbsp;</td>
-		<td>&nbsp;</td>
+		
+		<td>
+			&nbsp;
+		</td>
 	</tr>
 	
 	<tr>
 		<td>
 			<div class="userScroll">
-			<span id="listUsersSpan">
-				<tiles:insert page="listUsers.jsp" />
-			</span>
+				<span id="listUsersSpan">
+					<tiles:insert page="listUsers.jsp" />
+				</span>
 			</div>
 		</td>
 		
-		<td  valign="top" rowspan="2">
+		<td valign="top" rowspan="2">
 			<span id="userFormSpan">
 				<tiles:insert page="/eh/admin/user/addUserForm.do" />
 			</span>
@@ -127,6 +146,5 @@
 		<td align=right>
 			<a href="" onClick="return showAddForm()"><fmt:message key="admin.user.addUser" /></a>
 		</td>
-		
 	</tr>
 </table>

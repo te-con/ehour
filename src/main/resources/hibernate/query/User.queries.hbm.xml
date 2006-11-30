@@ -13,5 +13,11 @@
 		FROM User as user
 	    WHERE lcase(firstName) like  :pattern OR lcase(lastName) like :pattern
 	</query>
+	
+	<query name="User.findActiveByUsernamePattern"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like  :pattern OR lcase(lastName) like :pattern) AND active = true
+	</query>	
 
 </hibernate-mapping>

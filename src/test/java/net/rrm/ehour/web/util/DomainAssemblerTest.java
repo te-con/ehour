@@ -25,9 +25,12 @@ package net.rrm.ehour.web.util;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
+import net.rrm.ehour.web.admin.user.form.UserForm;
 
 /**
  * TODO 
@@ -62,6 +65,7 @@ public class DomainAssemblerTest extends TestCase
 		cf.setName("name");
 		cf.setCode("code");
 		cf.setDescription("desc");
+		cf.setActive(true);
 		
 		Customer cust = DomainAssembler.getCustomer(cf);
 		
@@ -69,7 +73,32 @@ public class DomainAssemblerTest extends TestCase
 		assertEquals("name", cust.getName());
 		assertEquals("code", cust.getCode());
 		assertEquals("desc", cust.getDescription());
-		
+		assertTrue(cust.isActive());
 	}
+	
+	public void testGetUser()
+	{
+		UserForm uf = new UserForm();
+		uf.setUserId(1);
+		uf.setEmail("thies@rrm.net");
+		uf.setFirstName("Thies");
+		uf.setLastName("Edeling");
+		uf.setPassword("password");
+		uf.setDepartmentId(1);
+		uf.setRoles(new String[]{"gustas", "viajar"});
+		uf.setUsername("thies");
+		uf.setActive(false);
+		
+		User user = DomainAssembler.getUser(uf);
 
+		assertEquals(new Integer(1), user.getUserId());
+		assertEquals("thies@rrm.net", user.getEmail());
+		assertEquals("Thies", user.getFirstName());
+		assertEquals("Edeling", user.getLastName());
+		assertEquals("password", user.getPassword());
+		assertEquals(new Integer(1), user.getUserDepartment().getDepartmentId());
+		assertEquals("thies", user.getUsername());
+		assertFalse(user.isActive());
+		assertEquals("viajar", ((UserRole)user.getUserRoles().iterator().next()).getRole());
+	}
 }

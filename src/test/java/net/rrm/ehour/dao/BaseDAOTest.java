@@ -41,7 +41,7 @@ public abstract class BaseDAOTest extends AbstractTransactionalDataSourceSpringC
 	
 	protected String[] getConfigLocations()
 	{
-		return new String[] { "classpath:/applicationContext-dao.xml"};	
+		return new String[] { "classpath:applicationContext-dao.xml"};	
 	}	
 	
 	protected void onSetUpInTransaction() throws Exception
@@ -60,7 +60,7 @@ public abstract class BaseDAOTest extends AbstractTransactionalDataSourceSpringC
 		try
 		{
 			DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
-			System.out.println("db set up");
+//			System.out.println("db set up");
 		} finally
 		{
 			connection.close();
