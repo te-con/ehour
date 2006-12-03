@@ -1,5 +1,5 @@
 /**
- * Created on Nov 26, 2006
+ * Created on Dec 1, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -23,14 +23,16 @@
 
 package net.rrm.ehour.web.admin.user.action;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.admin.user.form.UserForm;
 
+import org.acegisecurity.userdetails.UserDetails;
+import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -39,38 +41,41 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class GetUserAction extends AdminUserBaseAction
+public class UserExistsAction extends AdminUserBaseAction
 {
 	/**
 	 * 
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
-								HttpServletRequest request, HttpServletResponse response) throws Exception
+								HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		ActionForward	fwd = mapping.findForward("success");
 		UserForm		userForm = (UserForm)form;
-		String			param;
-		List			userDepartments;
-		List			userRoles;
-		User			user;
+		UserDetails	 	userDetails;
+		boolean			userExists;
+		PrintWriter		writer;
+		String			xmlResponse;
 		
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		param = mapping.getParameter();
-		
-		userDepartments = userService.getUserDepartments();
-		userRoles = userService.getUserRoles();
-		
-		request.setAttribute("userDepartments", userDepartments);
-		request.setAttribute("userRoles", userRoles);
-		
-		if (!"addOnly".equals(param))
+		try
 		{
-			user = userService.getUser(userForm.getUserId());
-			request.setAttribute("user", user);
+			userDetails = userService.loadUserByUsername(userForm.getUsername());
+			userExists = (userDetails != null);
 		}
-			
-		return fwd;
+		// @todo acegi dependency
+		catch (UsernameNotFoundException unfe)
+		{
+			userExists = false;
+		}
+		
+		System.out.println(userForm.getUsername());
+		
+	    response.setContentType("text/xml; charset=UTF-8");
+	    response.setHeader("Cache-Control", "no-cache");		
+		writer = response.getWriter();
+		
+		xmlResponse = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<userExists>" + userExists + "</userExists>\n";
+		writer.append(xmlResponse);
+		writer.close();
+		
+		return null;
 	}
 }

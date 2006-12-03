@@ -74,7 +74,6 @@ public class UserDAOHibernateImpl extends HibernateDaoSupport implements UserDAO
 	 */
 	public List findUsersByNameMatch(String pattern, boolean onlyActive)
 	{
-		List	results;
 		String	hql;
 		
 		pattern = pattern.toLowerCase();
@@ -93,6 +92,6 @@ public class UserDAOHibernateImpl extends HibernateDaoSupport implements UserDAO
 	 */
 	public List findUsers()
 	{
-		return getHibernateTemplate().loadAll(User.class);
+		return getHibernateTemplate().findByNamedQuery("User.findAllUsers");
 	}
 }

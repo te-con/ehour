@@ -37,6 +37,8 @@
 	
 	<bean name="/eh/admin/user/editUser" class="net.rrm.ehour.web.admin.user.action.EditUserAction" />
 	
+	<bean name="/eh/admin/user/userExistsCheck" class="net.rrm.ehour.web.admin.user.action.UserExistsAction" />
+	
 	<bean name="/eh/admin/user/deleteUser" class="net.rrm.ehour.web.admin.user.action.DeleteUserAction" />			
 
 

@@ -2,9 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<form id="CustomerForm" method="post" action="editUser.do">
+<form id="UserForm" method="post" action="editUser.do" onSubmit="return validateForm('UserForm')">
 
 <input type="hidden" name="userId" value="${user.userId}">
+<input type="hidden" id="filterForm" name="filter" value="">
+<input type="hidden" id="inActiveForm" name="hideInactive" value="">
+
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>

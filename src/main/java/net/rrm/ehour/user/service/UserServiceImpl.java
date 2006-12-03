@@ -245,6 +245,7 @@ public class UserServiceImpl implements UserService
 			dbUser.setUserDepartment(user.getUserDepartment());
 			dbUser.setUsername(user.getUsername());
 			dbUser.setUserRoles(user.getUserRoles());
+			dbUser.setActive(user.isActive());
 			
 			userDAO.persist(dbUser);
 
@@ -252,11 +253,20 @@ public class UserServiceImpl implements UserService
 		}
 		else
 		{
+//			user.setUserRoles(null);
+			System.out.println("y:" + user.getUserId());
 			encodedPass = EhourUtil.encrypt(user.getPassword());
 			user.setPassword(encodedPass);
 			userDAO.persist(user);
 			
 			return user;
 		}
+	}
+
+
+	public boolean doesUsernameExist(String username)
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

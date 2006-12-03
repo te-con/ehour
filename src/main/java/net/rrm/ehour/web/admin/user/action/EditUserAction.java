@@ -58,6 +58,7 @@ public class EditUserAction extends AdminUserBaseAction
 		userService.persistUser(user);
 		
 		response.setContentType("text/xml");
+		response.setHeader("Cache-Control", "no-cache");
 		
 		users = userService.getUsersByNameMatch(userForm.getFilterPattern(), userForm.isHideInactive());
 		request.setAttribute("users", users);

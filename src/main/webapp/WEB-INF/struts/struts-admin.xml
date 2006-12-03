@@ -2,6 +2,7 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
 
 <struts-config>
+
 	<!-- Action forms -->
 	<form-beans>
 		<form-bean name="UserDepartmentForm" type="net.rrm.ehour.web.admin.dept.form.UserDepartmentForm" /> 
@@ -24,7 +25,7 @@
 		<!--  Actions -->
 
 		<!-- Entry page for all administrators -->
-		<action path="/index" type="net.rrm.ehour.web.admin.action.AdminEntryAction" >
+		<action path="/index" type="net.rrm.ehour.web.admin.action.AdminEntryAction" input="">
 			<forward name="success" path=".ehour.admin.index" />
 		</action>
 
@@ -93,7 +94,8 @@
 		<!-- List all users -->
 		<action name="UserForm"
 				path="/user/index" 
-				type="net.rrm.ehour.web.admin.user.action.ListUsersAction" >
+				type="net.rrm.ehour.web.admin.user.action.ListUsersAction" 
+				>
 			<forward name="fullList" path=".ehour.admin.user.fullList" />
 			<forward name="filteredList" path=".ehour.admin.user.filteredList" />			
 		</action>
@@ -118,10 +120,14 @@
 				type="net.rrm.ehour.web.admin.customer.action.EditCustomerAction">
 			<forward name="success" path=".ehour.admin.user.filteredList" />
 		</action>
+
+		<!-- Check if user exists -->
+		<action name="UserForm"
+				path="/user/userExistsCheck" 
+				type="net.rrm.ehour.web.admin.user.action.UserExistsAction" />
 	</action-mappings>
 	
 	<!-- spring tiles controller -->
 	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
-
 </struts-config>
 

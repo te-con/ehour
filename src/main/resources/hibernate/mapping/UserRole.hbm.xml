@@ -11,7 +11,7 @@
         </id>
         
         <property name="roleName" type="string">
-            <column name="NAME" length="128" not-null="true">
+            <column name="NAME" length="128">
                 <comment></comment>
             </column>
         </property>

@@ -1,105 +1,23 @@
 <%@ page contentType="text/html; charset=ASCII"%>
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <script>
-	
-	function bindSubmitForm()
-	{ 
-		new dojo.io.FormBind({
-    						formNode: dojo.byId('bindSubmitForm'),
-    						handler: userListReceived
-							});
-	}
-	
-	function userListReceivedFromFilter(type, xml, evt)
-	{
-		if (type == 'error')
-		{	
-    		alert("<fmt:message key="errors.ajax.general" />");
-		}
-		else
-		{
-			dojo.byId('listUsersSpan').innerHTML = xml;
-			dojo.byId('filterInput').focus();
-
-		}
-	}
-
-	function userListReceived(type, xml, evt)
-	{
-		userListReceivedFromFilter(type, xml, evt);
-		
-		showAddForm();
-	}
-
-
-	function editUser(editId)
-	{
-        dojo.io.bind({
-                       url: 'getUser.do',
-                       handler: formChanged,
-                       content: {userId: editId}
-                    });  
-                    
-		return false;    
-	}
-	
-	function showAddForm()
-	{
-        dojo.io.bind({
-                       url: 'addUserForm.do',
-                       handler: formChanged
-                    });  
-                    
-		return false;    
-	}		
-		
-    function formChanged(type, xml, evt)
-    {
-    	if (type == 'error')
-    	{
-    		alert("<fmt:message key="errors.ajax.general" />");
-    		return;
-    	}
-    	else
-    	{
-			dojo.byId('userFormSpan').innerHTML = xml;
-
-			dojo.byId("filterForm").value = dojo.byId('filterInput').value;
-			dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
-			
-			// rebind
-			bindSubmitForm();
-		}
-    }
-
-	function init()
-	{
-		dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");
-		dojo.event.connect(dojo.byId('hideInactive'), "onclick", "filterKeyUp");
-		bindSubmitForm();
-	}
-	
-	function filterKeyUp(evt)
-	{
-		var filterInput = dojo.byId('filterInput').value;
-		
-		dojo.byId("filterForm").value = dojo.byId('filterInput').value;
-		dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
-		
-		dojo.io.bind({url: 'index.do',
-					  handler: userListReceivedFromFilter,
-                      content: {filterPattern: filterInput,
-                      			hideInactive: dojo.byId('hideInactive').checked,
-                      			fromForm: '1'}
-                      });		
-	}
-
-	dojo.addOnLoad(init);
+	var ajaxError = "<fmt:message key="errors.ajax.general" />";
+	var userExistError = "<fmt:message key="admin.user.errorUsernameExists" />";
+	var usernameRequired = "<fmt:message key="admin.user.errorUsernameNotNull" />";	
+	var passwordRequired = "<fmt:message key="admin.user.errorPasswordNotNull" />";		
+	var lastNameRequired = "<fmt:message key="admin.user.errorLastNameNotNull" />";			
+	var userRoleRequired = "<fmt:message key="admin.user.errorUserRoleNotNull" />";				
+	var emailNotValid = "<fmt:message key="admin.user.errorMailNotValid" />";				
+	var noPasswordMatch=  "<fmt:message key="admin.user.errorConfirmPassNeeded" />";
 </script>
+
+<script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/user/userAdmin.js" />" type="text/javascript"></script>
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>

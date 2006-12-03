@@ -81,6 +81,16 @@ H3
 	color: #220000;
 }
 
+.errorCell
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	font-size: 8pt;
+	color: #ff00ff;
+}
+
 .normtxt
 {
 	font-family: Verdana;

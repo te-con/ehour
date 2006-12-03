@@ -228,6 +228,7 @@ public class UserForm extends ActionForm
 	 */
 	public void setRoles(String[] roles)
 	{
+		System.out.println("xx: " + roles);
 		this.roles = roles;
 	}
 	/**
