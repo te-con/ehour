@@ -1,19 +1,46 @@
 // onChange is fired when the user switches from add to edit user, cancel if necc.
 var	cancelUserCheck = false;
 var formBind;
+var timer;
 
+// extend FormBind to add the validation call
+dojo.lang.extend(dojo.io.FormBind, {
+	onSubmit: function(/*DOMNode*/form)
+	{
+		return validateForm('UserForm');
+	}});
+
+// display and trigger fade in status message
+function setStatusMessage(statusMsg)
+{
+	document.getElementById('statusMessage').innerHTML = statusMsg;
+	dojo.html.setOpacity(dojo.byId('statusMessage'), 1);
+	
+	setTimeout("dojo.lfx.html.fadeOut('statusMessage', 800).play()", 1000);
+}
+
+
+
+// validate form
 function validateForm(formId)
 {
-	isValid = validateRequired(formId, new Array(new Array("username", "userNameError", usernameRequired),
-												 new Array("password", "passwordError", passwordRequired),
+	form = document.getElementById(formId);
+	
+	var validationRules = new Array(new Array("username", "userNameError", usernameRequired),
 												 new Array("lastName", "lastNameError", lastNameRequired),
 												 new Array("roles", "userRoleError", userRoleRequired)		 												 
-												));
+												);
+	
+	// edit user doesn't require password
+	if (form.userId.value == "")
+	{
+		validationRules[3] =  new Array("password", "passwordError", passwordRequired);
+	}
+
+	isValid = validateRequired(formId, validationRules);
 
 	isValid = isValid && validateEmail(formId, new Array(new Array("email", "emailError", emailNotValid)
 													));
-	
-	form = document.getElementById(formId);
 	
 	if (form.password.value != form.confirmPassword.value)
 	{	
@@ -23,32 +50,39 @@ function validateForm(formId)
 	else
 	{
 		document.getElementById('confirmPasswordError').innerHTML = "";
-		isValid = isValid && true;
 	}
-	
-	// bit crappy but can't cancel an existing formbind
+
 	if (isValid)
 	{
-		new dojo.io.FormBind({	formNode: dojo.byId('UserForm'),
-   								handler: userListReceived
-								});
-		form.submit();
+		document.getElementById('statusMessage').innerHTML = sendingData;
 	}
-	else
-	{
-		return false;
-	}
+
+	return isValid;
+}
+
+// bind UserForm to validation and ajax submit
+function bindUserForm()
+{
+	new dojo.io.FormBind({	formNode: dojo.byId('UserForm'),
+  								handler: userListReceivedWithMessage
+							});
 }
 
 // check if user exists
-function checkUserExists(username)
+// orgUsername is the orignal username when editing an existing user
+// of course if the value is the original username, don't bother to check
+function checkUserExists(username, orgUsername)
 {
-	if (!cancelUserCheck && username != "")
+	if (username == orgUsername)
+	{
+		dojo.byId('userNameError').innerHTML =  "&nbsp;";	
+	}
+	else if (!cancelUserCheck && username != "")
 	{
         dojo.io.bind({
                        url: 'userExistsCheck.do',
                        handler: userCheckDone,
-                        mimetype: "text/xml",
+                       mimetype: "text/xml",
                        content: {username: username}
                     }); 
 	}
@@ -76,6 +110,20 @@ function userCheckDone(type, xml, evt)
 			dojo.byId('userNameError').innerHTML =  "&nbsp;";
 		}
 		
+	}
+}
+
+// received after form submit, display message
+function userListReceivedWithMessage(type, xml, evt)
+{
+	if (type == 'error')
+	{
+		alert(ajaxError);
+	}
+	else
+	{
+		setStatusMessage(formSuccess);
+		userListReceived(type, xml, evt);
 	}
 }
 
@@ -125,6 +173,7 @@ function showAddForm()
 	return false;    
 }		
 	
+// form changed	
   function formChanged(type, xml, evt)
   {
   	if (type == 'error')
@@ -140,6 +189,9 @@ function showAddForm()
 	
 		dojo.byId("filterForm").value = dojo.byId('filterInput').value;
 		dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
+		
+		// DOM changed, rebind
+		bindUserForm();
 	}
   }
 
@@ -147,6 +199,8 @@ function init()
 {
 	dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");
 	dojo.event.connect(dojo.byId('hideInactive'), "onclick", "filterKeyUp");
+	
+	bindUserForm();
 }
 
 function filterKeyUp(evt)

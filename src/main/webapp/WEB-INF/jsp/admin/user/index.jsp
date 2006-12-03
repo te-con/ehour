@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=ASCII"%>
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -14,10 +13,14 @@
 	var userRoleRequired = "<fmt:message key="admin.user.errorUserRoleNotNull" />";				
 	var emailNotValid = "<fmt:message key="admin.user.errorMailNotValid" />";				
 	var noPasswordMatch=  "<fmt:message key="admin.user.errorConfirmPassNeeded" />";
+	var formSuccess = "<fmt:message key="admin.general.formSuccess" />";
+	var sendingData = "<fmt:message key="general.submitting" />";
+
 </script>
 
 <script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/user/userAdmin.js" />" type="text/javascript"></script>
+
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>
@@ -40,7 +43,7 @@
 			</table>
 		</td>
 		
-		<td>
+		<td valign="top" align="right" style="color: #913023" id="statusMessage">
 			&nbsp;
 		</td>
 	</tr>

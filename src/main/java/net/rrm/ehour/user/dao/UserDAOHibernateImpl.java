@@ -76,9 +76,15 @@ public class UserDAOHibernateImpl extends HibernateDaoSupport implements UserDAO
 	{
 		String	hql;
 		
-		pattern = pattern.toLowerCase();
-		
-		pattern = "%" + pattern + "%";
+		if (pattern != null)
+		{
+			pattern = pattern.toLowerCase();
+			pattern = "%" + pattern + "%";
+		}
+		else
+		{
+			pattern = "%";
+		}
 		
 		hql = (onlyActive) ? "User.findActiveByUsernamePattern" :
 							  "User.findByUsernamePattern";

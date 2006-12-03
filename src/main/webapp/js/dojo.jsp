@@ -5,5 +5,6 @@
 <script type="text/javascript">
 	dojo.require("dojo.io.*");
     dojo.require("dojo.event.*");
+    dojo.require("dojo.lfx.*");
 //    dojo.require("dojo.debug.console");
 </script>
