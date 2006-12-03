@@ -85,7 +85,7 @@ public class DomainAssemblerTest extends TestCase
 		uf.setLastName("Edeling");
 		uf.setPassword("password");
 		uf.setDepartmentId(1);
-		uf.setRoles(new String[]{"gustas", "viajar"});
+		uf.setRoles(new String[]{"gustas"});
 		uf.setUsername("thies");
 		uf.setActive(false);
 		
@@ -99,6 +99,6 @@ public class DomainAssemblerTest extends TestCase
 		assertEquals(new Integer(1), user.getUserDepartment().getDepartmentId());
 		assertEquals("thies", user.getUsername());
 		assertFalse(user.isActive());
-		assertEquals("viajar", ((UserRole)user.getUserRoles().iterator().next()).getRole());
+		assertEquals("gustas", ((UserRole)user.getUserRoles().iterator().next()).getRole());
 	}
 }

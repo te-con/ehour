@@ -181,15 +181,15 @@ public class UserServiceImpl implements UserService
 	{
 		List	results;
 		
-		if (match == null || match.equals(""))
-		{
-			logger.debug("Empty match pattern");
-			results = userDAO.findUsers();
-		}
-		else
-		{
+//		if (match == null || match.equals(""))
+//		{
+//			logger.debug("Empty match pattern");
+//			results = userDAO.findUsers();
+//		}
+//		else
+//		{
 			results = userDAO.findUsersByNameMatch(match, inclInactive);
-		}
+//		}
 		
 		return results;
 	}	
@@ -253,8 +253,6 @@ public class UserServiceImpl implements UserService
 		}
 		else
 		{
-//			user.setUserRoles(null);
-			System.out.println("y:" + user.getUserId());
 			encodedPass = EhourUtil.encrypt(user.getPassword());
 			user.setPassword(encodedPass);
 			userDAO.persist(user);

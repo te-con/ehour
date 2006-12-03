@@ -6,5 +6,6 @@
 		<a href="" onClick="return editUser(${user.userId})">
 					${user.lastName}, ${user.firstName}
 		</a>
+			<c:if test="${!user.active}">*</c:if>
 		<br>
 	</c:forEach>

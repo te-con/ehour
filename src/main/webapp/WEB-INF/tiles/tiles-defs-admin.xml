@@ -56,10 +56,6 @@
     <definition name=".ehour.admin.user.filteredList"
     			path="/WEB-INF/jsp/admin/user/listUsers.jsp" />
 
-    <!-- Admin user add form  -->
-    <definition name=".ehour.admin.user.addForm" path="/WEB-INF/jsp/admin/user/addUserForm.jsp" />
-
-    <!-- Admin user edit form  -->
-    <definition name=".ehour.admin.user.editForm" path="/WEB-INF/jsp/admin/user/editUserForm.jsp" />
-
+    <!-- Admin user form  -->
+    <definition name=".ehour.admin.user.userForm" path="/WEB-INF/jsp/admin/user/userForm.jsp" />
 </tiles-definitions>

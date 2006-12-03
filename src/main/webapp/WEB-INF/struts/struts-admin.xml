@@ -104,20 +104,20 @@
 		<action path="/user/addUserForm" 
 				type="net.rrm.ehour.web.admin.user.action.GetUserAction"
 				parameter="addOnly">
-			<forward name="success" path=".ehour.admin.user.addForm" />
+			<forward name="success" path=".ehour.admin.user.userForm" />
 		</action>
 
 		<!-- Show edit user form -->
 		<action name="UserForm"
 				path="/user/getUser" 
 				type="net.rrm.ehour.web.admin.user.action.GetUserAction">
-			<forward name="success" path=".ehour.admin.user.editForm" />
+			<forward name="success" path=".ehour.admin.user.userForm" />
 		</action>
 
-		<!-- Show edit user form -->
+		<!-- Edit User -->
 		<action name="UserForm"
 				path="/user/editUser" 
-				type="net.rrm.ehour.web.admin.customer.action.EditCustomerAction">
+				type="net.rrm.ehour.web.admin.user.action.EditUserAction">
 			<forward name="success" path=".ehour.admin.user.filteredList" />
 		</action>
 

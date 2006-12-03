@@ -1,15 +1,16 @@
 <?xml version="1.0"?><project>
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>eHour</groupId>
   <artifactId>eHour</artifactId>
   <packaging>war</packaging>
   <name>eHour</name>
   <version>1.0-SNAPSHOT</version>
-  <description>eHour - timesheet registration for the masses</description>
-  <url>http://ehour.sourceforge.orgn</url>
+  <description>eHour - web-based time registration for consultancy companies and other project based businesses</description>
+  <url>http://ehour.rrm.net/</url>
   <issueManagement>
     <system>Sourceforge bugtracker</system>
-    <url>http://sourceforge.net/tracker/?group_id=167867&amp;atid=844648/</url>
+    <url><![CDATA[http://sourceforge.net/tracker/?group_id=167867&atid=844648/]]></url>
   </issueManagement>
   <developers>
     <developer>
@@ -23,8 +24,8 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:https://svn.sourceforge.net/svnroot/ehour/</connection>
-    <developerConnection>scm:svn:https://svn.sourceforge.net/svnroot/ehour/</developerConnection>
+    <connection>scm:svn:https://ehour.svn.sourceforge.net/svnroot/ehour/</connection>
+    <developerConnection>scm:svn:https://ehour.svn.sourceforge.net/svnroot/ehour/</developerConnection>
     <url>http://svn.sourceforge.net/ehour/</url>
   </scm>
   <build>
@@ -68,7 +69,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -186,7 +186,9 @@
         <configuration>
           <instrumentation>
           	<excludes>
+	            <exclude>net/rrm/ehour/**/**/**Exception.class</exclude>
 	            <exclude>net/rrm/ehour/**/**/**Test.class</exclude>
+	            <exclude>net/rrm/ehour/**/**/**Tests.class</exclude>	            
 	        </excludes>
           </instrumentation>
         </configuration>

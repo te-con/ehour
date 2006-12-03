@@ -42,7 +42,7 @@ public class UserDAOTest extends BaseDAOTest
 		List<User>	results;
 		
 		results = dao.findUsers();
-		assertEquals(4, results.size());
+		assertEquals(3, results.size());
 	}
 	
 	/**

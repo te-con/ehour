@@ -23,12 +23,15 @@
 
 package net.rrm.ehour.web.admin.user.action;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.web.admin.user.form.UserForm;
 
 import org.apache.struts.action.ActionForm;
@@ -69,8 +72,34 @@ public class GetUserAction extends AdminUserBaseAction
 		{
 			user = userService.getUser(userForm.getUserId());
 			request.setAttribute("user", user);
+			
+			request.setAttribute("userRolesString", rolesToString(user.getUserRoles()));
 		}
 			
 		return fwd;
+	}
+	
+	/**
+	 *	Put all roles in one long string since JSTL can't do a contains on a Set 
+	 * @param roles
+	 * @return
+	 */
+	private String rolesToString(Set roles)
+	{
+		StringBuffer	roleString = new StringBuffer();
+		UserRole		role;
+		Iterator		i;
+		
+		i = roles.iterator();
+		
+		while (i.hasNext())
+		{
+			role = (UserRole)i.next();
+			roleString.append("-");
+			roleString.append(role.getRole());
+			roleString.append("-");
+		}
+		
+		return roleString.toString();
 	}
 }
