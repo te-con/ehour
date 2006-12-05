@@ -23,27 +23,13 @@
 
 package net.rrm.ehour.user.dao;
 
-import java.util.List;
-
+import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.user.domain.UserRole;
 
 /**
  * CRUD on UserRole domain object
  **/
 
-public interface UserRoleDAO
+public interface UserRoleDAO  extends GenericDAO<UserRole, String>
 {
-	/**
-	 * Find by Id
-	 * @param userRole
-	 * @return
-	 */
-	public UserRole findById(String userRole);
-
-	/**
-	 * Find all user roles
-	 * @return
-	 */
-	public List findUserRoles();
-	
 }

@@ -23,38 +23,13 @@
 
 package net.rrm.ehour.user.dao;
 
-import java.util.List;
-
+import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.user.domain.UserDepartment;
 
 /**
  * CRUD on UserDepartment domain object 
  **/
 
-public interface UserDepartmentDAO
+public interface UserDepartmentDAO extends GenericDAO<UserDepartment, Integer>
 {
-	/**
-	 * Get all departments, sorted by name
-	 * @return
-	 */
-	public List	findAll();
-	
-	/**
-	 * Find department by id
-	 * @param deptId
-	 * @return
-	 */
-	public UserDepartment findById(Integer deptId);
-
-	/**
-	 * Persist to the database
-	 * @param department
-	 */
-	public void persist(UserDepartment department);
-	
-	/**
-	 * Delete department
-	 * @param department
-	 */
-	public void delete(UserDepartment department);
 }

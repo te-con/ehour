@@ -15,8 +15,14 @@
 		<property name="description" column="DESCRIPTION" type="string"/>
 		<property name="name" column="NAME" type="string"/>
 		<property name="defaultProject" column="DEFAULT_PROJECT" type="yes_no"/>
-
+		<property name="active" column="ACTIVE" type="yes_no"/>
+		
         <many-to-one name="customer" outer-join="auto" fetch="join"
-                class="net.rrm.ehour.project.domain.Customer" column="CUSTOMER_ID"/>
+                class="net.rrm.ehour.customer.domain.Customer" column="CUSTOMER_ID"/>
+                
+		<set name="projectAssignments" inverse="true" lazy="true">
+			<key column="PROJECT_ID" />
+	       	<one-to-many class="net.rrm.ehour.project.domain.ProjectAssignment"/>
+	   </set>                
 	</class>	
 </hibernate-mapping>

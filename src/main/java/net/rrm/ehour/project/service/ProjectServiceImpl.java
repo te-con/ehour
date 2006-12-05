@@ -27,8 +27,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.dao.CustomerDAO;
-import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.domain.Project;
 
 /**
  * TODO 
@@ -36,78 +36,78 @@ import net.rrm.ehour.project.domain.Customer;
 
 public class ProjectServiceImpl implements ProjectService
 {
-	private	CustomerDAO	customerDAO;
+	private	ProjectDAO	projectDAO;
 	
-	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#deleteCustomer(java.lang.Integer)
-	 */
-	public void deleteCustomer(Integer customerId) throws ParentChildConstraintException
+	public void setProjectDAO(ProjectDAO dao)
 	{
-		Customer customer = customerDAO.findById(customerId);
+		this.projectDAO = dao;
 		
-		if (customer != null)
-		{
-			if (customer.getProjects() != null &&
-				customer.getProjects().size() > 0)
-			{
-				throw new ParentChildConstraintException(customer.getProjects().size() + " projects attached to customer");
-			}
-			else
-			{
-				customerDAO.delete(customer);
-			}
-		}
 	}
-
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getActiveProjectsForUser(java.lang.Integer, java.util.Calendar, java.util.Calendar)
 	 */
-	public List getActiveProjectsForUser(Integer userId, Calendar dateStart, Calendar dateEnd)
+	public List<Project> getActiveProjectsForUser(Integer userId, Calendar dateStart, Calendar dateEnd)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getCustomer(java.lang.Integer)
-	 */
-	public Customer getCustomer(Integer customerId)
-	{
-		return customerDAO.findById(customerId);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getCustomers()
-	 */
-	public List getCustomers()
-	{
-		return customerDAO.findAll();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#persistCustomer(net.rrm.ehour.project.domain.Customer)
-	 */
-	public Customer persistCustomer(Customer customer)
-	{
-		customerDAO.persist(customer);
-		
-		return customer;
-	}
-
-	public List getCustomers(boolean active)
-	{
-		return customerDAO.findAll(active);
-	}
-
+	
+	
 	
 	/**
-	 * @param customerDAO the customerDAO to set
+	 * 
 	 */
-	public void setCustomerDAO(CustomerDAO customerDAO)
+	public List<Project> getAllProjects(boolean hideInactive)
 	{
-		this.customerDAO = customerDAO;
+		List<Project>	res;
+		
+		if (hideInactive)
+		{
+			res = projectDAO.findAll(true);
+		}
+		else
+		{
+			res = projectDAO.findAll();
+		}
+
+		return res;
+	}
+	
+	/**
+	 * 
+	 */
+	public Project getProject(Integer projectId)
+	{
+		return projectDAO.findById(projectId);
+	}
+	
+	/**
+	 * 
+	 */
+	
+	public Project persistProject(Project project)
+	{
+		projectDAO.persist(project);
+		return project;
 	}
 
-
+	/**
+	 * 
+	 */
+	public void deleteProject(Integer projectId) throws ParentChildConstraintException
+	{
+		Project	project;
+		
+		project = projectDAO.findById(projectId);
+		
+		if (project.getProjectAssignments() != null &&
+			project.getProjectAssignments().size() > 0)
+		{
+			throw new ParentChildConstraintException("Project assignments still attached");
+		}
+		else
+		{
+			projectDAO.delete(project);
+		}
+	}
 }

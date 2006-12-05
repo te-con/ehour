@@ -27,43 +27,44 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.project.domain.Project;
 
 public interface ProjectService
 {
 	/**
-	 * Get all customers regardless whether they are active or not
+	 * Get all projects
+	 * @param hideInactive 
 	 * @return
 	 */
-	public List getCustomers();
+	public List<Project> getAllProjects(boolean hideInactive);
 	
 	/**
-	 * Get customers respecting their active flag
-	 * @param active
+	 * Get project
+	 * @param projectId
 	 * @return
 	 */
-	public List getCustomers(boolean active);
+	public Project getProject(Integer projectId);
 	
 	/**
-	 * Get customer on id
-	 * @param customerId
+	 * Persist the project
+	 * @param project
 	 * @return
 	 */
-	public Customer getCustomer(Integer customerId);
+	public Project persistProject(Project project);
 	
 	/**
-	 * Delete customer
-	 * @param customerId
-	 */
-	public void deleteCustomer(Integer customerId) throws ParentChildConstraintException;
-	
-	/**
-	 * Persist customer
-	 * @param customer
+	 * Delete the project
+	 * @param projectId
 	 * @return
 	 */
-	public Customer persistCustomer(Customer customer);
+	public void deleteProject(Integer projectId) throws ParentChildConstraintException;
 	
-	
-	public List getActiveProjectsForUser(Integer userId, Calendar dateStart, Calendar dateEnd);
+	/**
+	 * Get active projects for user
+	 * @param userId
+	 * @param dateStart
+	 * @param dateEnd
+	 * @return
+	 */
+	public List<Project> getActiveProjectsForUser(Integer userId, Calendar dateStart, Calendar dateEnd);
 }

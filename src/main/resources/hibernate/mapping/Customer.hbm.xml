@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="net.rrm.ehour.project.domain.Customer" table="CUSTOMER">
+	<class name="net.rrm.ehour.customer.domain.Customer" table="CUSTOMER">
 		<!-- <cache usage="read-write" /> -->
 		
 		<id name="customerId" column="CUSTOMER_ID" type="integer">
@@ -17,8 +17,8 @@
 		<property name="active" column="ACTIVE" type="yes_no"/>
 		
 	   <set name="projects" inverse="true" lazy="true">
-	   	<key column="CUSTOMER_ID" />
-	       <one-to-many class="net.rrm.ehour.project.domain.Project"/>
+			<key column="CUSTOMER_ID" />
+	       	<one-to-many class="net.rrm.ehour.project.domain.Project"/>
 	   </set>		
 	</class>
 </hibernate-mapping>

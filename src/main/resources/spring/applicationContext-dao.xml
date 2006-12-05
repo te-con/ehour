@@ -63,10 +63,13 @@
 		</property>
 	</bean>
 	
-	<!--  UserDAO -->
-	<bean id="userDAO" class="net.rrm.ehour.user.dao.UserDAOHibernateImpl">	
+	<!-- Generic DAO -->
+    <bean id="abstractDAOTarget" class="net.rrm.ehour.dao.GenericDAOHibernateImpl" abstract="true">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
+    </bean>	
+	
+	<!--  UserDAO -->
+	<bean id="userDAO" class="net.rrm.ehour.user.dao.UserDAOHibernateImpl" parent="abstractDAOTarget" />
 
 	<!-- Timesheet DAO -->
 	<bean id="timesheetDAO" class="net.rrm.ehour.timesheet.dao.TimesheetDAOHibernateImpl">
@@ -74,24 +77,19 @@
 	</bean>
 	
 	<!-- Report DAO -->
-	<bean id="reportDAO" class="net.rrm.ehour.report.dao.ReportDAOHibernateImpl">		
+	<bean id="reportDAO" class="net.rrm.ehour.report.dao.ReportDAOHibernateImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
 	<!-- User department DAO -->
-	<bean id="userDepartmentDAO" class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
+	<bean id="userDepartmentDAO" class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl" parent="abstractDAOTarget" />
 
 	<!-- Customer DAO -->
-	<bean id="customerDAO" class="net.rrm.ehour.project.dao.CustomerDAOHibernateImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
-
+	<bean id="customerDAO" class="net.rrm.ehour.customer.dao.CustomerDAOHibernateImpl" parent="abstractDAOTarget" />
+	
 	<!-- UserRole DAO -->
-	<bean id="userRoleDAO" class="net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
+	<bean id="userRoleDAO" class="net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl" parent="abstractDAOTarget" />
 
-
+	<!-- Project DAO -->
+	<bean id="projectDAO" class="net.rrm.ehour.project.dao.ProjectDAOHibernateImpl" parent="abstractDAOTarget" />
 </beans>

@@ -8,6 +8,7 @@
 		<form-bean name="UserDepartmentForm" type="net.rrm.ehour.web.admin.dept.form.UserDepartmentForm" /> 
 		<form-bean name="CustomerForm" type="net.rrm.ehour.web.admin.customer.form.CustomerForm" /> 		
 		<form-bean name="UserForm" type="net.rrm.ehour.web.admin.user.form.UserForm" />		
+		<form-bean name="ProjectForm" type="net.rrm.ehour.web.admin.project.form.ProjectForm" />				
 	</form-beans>
 	
 	<!-- Global exceptions -->
@@ -125,6 +126,18 @@
 		<action name="UserForm"
 				path="/user/userExistsCheck" 
 				type="net.rrm.ehour.web.admin.user.action.UserExistsAction" />
+				
+				
+				
+		<!-- List all projects -->
+		<action name="ProjectForm"
+				path="/project/index" 
+				type="net.rrm.ehour.web.admin.project.action.ListProjectsAction" 
+				>
+			<forward name="fullList" path=".ehour.admin.project.fullList" />
+			<forward name="filteredList" path=".ehour.admin.project.filteredList" />			
+		</action>				
+				
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

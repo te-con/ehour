@@ -27,9 +27,6 @@
 		<td>
 			<table CLASS="contentTable" CELLSPACING=2 width="100%">
 				<tr>
-					<Td>&nbsp;</Td>					<Td>&nbsp;</Td>					<Td>&nbsp;</Td>
-				</tr>
-				<tr>
 					<td valign="top"><fmt:message key="admin.user.filter" />:</td>
 					<td><form><input class="normtxt" type="text" name="filter"
 								size="30" id="filterInput"></form>
@@ -37,7 +34,7 @@
 				</tr>
 
 				<tr>
-					<td colspan="2" valign="top"><fmt:message key="admin.user.hideInactive" />:
+					<td valign="top"><fmt:message key="admin.user.hideInactive" />:
 					<input class="normtxt" type="checkbox" id="hideInactive" name="hideInactive" checked></td>
 				</tr>
 			</table>

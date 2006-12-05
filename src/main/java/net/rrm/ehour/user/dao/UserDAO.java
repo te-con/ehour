@@ -24,17 +24,11 @@ package net.rrm.ehour.user.dao;
 
 import java.util.List;
 
+import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.user.domain.User;
 
-public interface UserDAO
+public interface UserDAO extends GenericDAO<User, Integer>
 {
-	/**
-	 * Find by Id
-	 * @param userId
-	 * @return
-	 */
-	public User findById(Integer userId);
-
 	/**
 	 * Find a user by username
 	 * @param username
@@ -43,24 +37,16 @@ public interface UserDAO
 	public User findByUsername(String username);
 	
 	/**
-	 * Persist a user
-	 * @param user
-	 * @return
-	 */
-	public void persist(User user);
-	
-	/**
 	 * Find users where pattern matches either first name or last name
 	 * @param pattern
 	 * @param onlyActive -> include only active users
 	 * @return
 	 */
-	public List findUsersByNameMatch(String pattern, boolean onlyActive);
-	
+	public List<User> findUsersByNameMatch(String pattern, boolean onlyActive);
 	
 	/**
 	 * Find all users
 	 * @return
 	 */
-	public List findUsers();
+	public List<User> findUsers();
 }

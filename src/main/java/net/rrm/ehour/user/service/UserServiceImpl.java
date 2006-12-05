@@ -217,7 +217,7 @@ public class UserServiceImpl implements UserService
 	 */
 	public List getUserRoles()
 	{
-		return userRoleDAO.findUserRoles();
+		return userRoleDAO.findAll();
 	}
 
 	/**

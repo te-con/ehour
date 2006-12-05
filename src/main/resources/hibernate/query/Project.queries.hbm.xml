@@ -6,4 +6,16 @@
 		FROM Customer customer
 	    WHERE active = :active
 	</query>
+	
+	<query name="Project.findAll">
+		FROM Project project
+	    ORDER BY name
+	</query>	
+
+	
+	<query name="Project.findAllWithActive">
+		FROM Project project
+	    WHERE active = :active
+	    ORDER BY name
+	</query>	
 </hibernate-mapping>

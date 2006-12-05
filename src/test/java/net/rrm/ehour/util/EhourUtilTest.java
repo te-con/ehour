@@ -23,11 +23,6 @@
 
 package net.rrm.ehour.util;
 
-import java.security.Provider;
-import java.security.Security;
-import java.util.Iterator;
-import java.util.Set;
-
 import junit.framework.TestCase;
 
 /**
@@ -53,5 +48,4 @@ public class EhourUtilTest extends TestCase
 		String enc = EhourUtil.encrypt("thies");
 		assertTrue(enc.length() > 0);
 	}
-
 }

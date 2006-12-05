@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.util;
 
-import java.io.*;
 
 /**
  * This class contains two static methods for Base64 encoding and decoding.

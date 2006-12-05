@@ -1,8 +1,10 @@
-package net.rrm.ehour.project.domain;
+package net.rrm.ehour.customer.domain;
 
 import java.util.Set;
 
-public class Customer implements java.io.Serializable
+import net.rrm.ehour.domain.DomainObject;
+
+public class Customer extends DomainObject
 {
 
 	// Fields

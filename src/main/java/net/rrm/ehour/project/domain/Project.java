@@ -1,6 +1,11 @@
 package net.rrm.ehour.project.domain;
 
-public class Project implements java.io.Serializable
+import java.util.Set;
+
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.domain.DomainObject;
+
+public class Project extends DomainObject
 {
 
 	// Fields    
@@ -21,25 +26,14 @@ public class Project implements java.io.Serializable
 	private String name;
 
 	private Boolean defaultProject;
-
+	private	boolean	active;
 	private Customer customer;
-
+	private	Set		projectAssignments;
 	// Constructors
 
 	/** default constructor */
 	public Project()
 	{
-	}
-
-	/** full constructor */
-	public Project(String projectCode, String contact, String description, String name, Boolean defaultProject, Customer customer)
-	{
-		this.projectCode = projectCode;
-		this.contact = contact;
-		this.description = description;
-		this.name = name;
-		this.defaultProject = defaultProject;
-		this.customer = customer;
 	}
 
 	
@@ -126,6 +120,38 @@ public class Project implements java.io.Serializable
 	public void setCustomer(Customer customer)
 	{
 		this.customer = customer;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive()
+	{
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active)
+	{
+		this.active = active;
+	}
+
+	/**
+	 * @return the projectAssignments
+	 */
+	public Set getProjectAssignments()
+	{
+		return projectAssignments;
+	}
+
+	/**
+	 * @param projectAssignments the projectAssignments to set
+	 */
+	public void setProjectAssignments(Set projectAssignments)
+	{
+		this.projectAssignments = projectAssignments;
 	}
 
 }

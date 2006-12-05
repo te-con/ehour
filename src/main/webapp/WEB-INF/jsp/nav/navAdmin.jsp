@@ -25,7 +25,7 @@
 	</tr>
 
 	<tr>
-		<td><a href="<c:url value="/eh/admin/projects/index.do" />"><fmt:message
+		<td><a href="<c:url value="/eh/admin/project/index.do" />"><fmt:message
 			key="admin.nav.projects" /></a></td>
 	</tr>
 

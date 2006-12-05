@@ -1,5 +1,5 @@
 /**
- * Created on Nov 25, 2006
+ * Created on Dec 5, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,49 +21,26 @@
  *
  */
 
-package net.rrm.ehour.project.dao;
+package net.rrm.ehour.web.admin.project.action;
 
-import java.util.List;
+import net.rrm.ehour.project.service.ProjectService;
 
-import net.rrm.ehour.project.domain.Customer;
+import org.apache.struts.action.Action;
 
 /**
- * CRUD on the Customer domain object 
+ * TODO 
  **/
 
-public interface CustomerDAO
+public class AdminProjectBaseAction extends Action
 {
-	/**
-	 * Get customer on id
-	 * @param customerId
-	 * @return customer
-	 */
-	public Customer findById(Integer customerId);
+	protected ProjectService	projectService;
 	
 	/**
-	 * Get all customers (ignoring active flag)
-	 * @return
+	 * 
+	 * @param projectService
 	 */
-	public List findAll();
-	
-	/**
-	 * Get all customers
-	 * @param active
-	 * @return
-	 */
-	public List findAll(boolean active);
-	
-	/**
-	 * Persist customer
-	 * @param customer
-	 * @return
-	 */
-	public Customer persist(Customer customer);
-	
-	/**
-	 * Delete customer
-	 * @param customerId
-	 */
-	public void delete(Customer customer);
-	
+	public void setProjectService(ProjectService projectService)
+	{
+		this.projectService = projectService;
+	}
 }

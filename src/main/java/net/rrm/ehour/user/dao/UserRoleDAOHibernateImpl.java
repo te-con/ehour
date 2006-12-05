@@ -23,33 +23,17 @@
 
 package net.rrm.ehour.user.dao;
 
-import java.util.List;
-
+import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.user.domain.UserRole;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * 
  **/
 
-public class UserRoleDAOHibernateImpl extends HibernateDaoSupport implements UserRoleDAO
+public class UserRoleDAOHibernateImpl  extends GenericDAOHibernateImpl<UserRole, String> implements UserRoleDAO
 {
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.user.dao.UserRoleDAO#findById(java.lang.String)
-	 */
-	public UserRole findById(String userRoleId)
+	public UserRoleDAOHibernateImpl()
 	{
-		return (UserRole)getHibernateTemplate().get(UserRole.class, userRoleId);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.user.dao.UserRoleDAO#findUserRoles()
-	 */
-	public List findUserRoles()
-	{
-		return getHibernateTemplate().loadAll(UserRole.class);
-	}
-
+		super(UserRole.class);
+	}	
 }

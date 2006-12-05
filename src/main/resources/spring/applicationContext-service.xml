@@ -40,5 +40,8 @@
 
 	<!-- Project service -->
 	<bean id="projectService" class="net.rrm.ehour.project.service.ProjectServiceImpl" />
+	
+	<!-- Customer service -->
+	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl" />
 
 </beans>

@@ -23,47 +23,18 @@
 
 package net.rrm.ehour.user.dao;
 
-import java.util.List;
-
+import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.user.domain.UserDepartment;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  *  
  **/
 
-public class UserDepartmentDAOHibernateImpl extends HibernateDaoSupport implements UserDepartmentDAO
+public class UserDepartmentDAOHibernateImpl 
+	extends GenericDAOHibernateImpl<UserDepartment, Integer> implements UserDepartmentDAO
 {
-
-	/**
-	 * 
-	 */
-	public void delete(UserDepartment department)
+	public UserDepartmentDAOHibernateImpl()
 	{
-		getHibernateTemplate().delete(department);
-	}
-
-	/**
-	 * 
-	 */
-	public UserDepartment findById(Integer deptId)
-	{
-		return (UserDepartment) getHibernateTemplate().get(UserDepartment.class, deptId);
-	}
-
-	public List findAll()
-	{
-		List 	results = getHibernateTemplate().loadAll(UserDepartment.class); 
-		
-//		getHibernateTemplate().initialize(results);
-		
-		return results;
-	}
-
-	public void persist(UserDepartment department)
-	{
-		getHibernateTemplate().saveOrUpdate(department);
-	}
-
+		super(UserDepartment.class);
+	}	
 }

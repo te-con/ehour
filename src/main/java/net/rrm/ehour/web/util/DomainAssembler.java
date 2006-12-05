@@ -26,7 +26,7 @@ package net.rrm.ehour.web.util;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;

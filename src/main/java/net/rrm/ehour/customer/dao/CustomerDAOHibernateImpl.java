@@ -21,57 +21,30 @@
  *
  */
 
-package net.rrm.ehour.project.dao;
+package net.rrm.ehour.customer.dao;
 
 import java.util.List;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
-import net.rrm.ehour.project.domain.Customer;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 
 /**
  * TODO 
  **/
 
-public class CustomerDAOHibernateImpl extends HibernateDaoSupport  implements CustomerDAO
+public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, Integer> implements CustomerDAO
 {
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.dao.CustomerDAO#delete(java.lang.Integer)
+	/**
+	 * @todo fix this a bit better
 	 */
-	public void delete(Customer customer)
+	public CustomerDAOHibernateImpl()
 	{
-		getHibernateTemplate().delete(customer);
+		super(Customer.class);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.dao.CustomerDAO#findAll()
-	 */
-	public List findAll()
-	{
-		return getHibernateTemplate().loadAll(Customer.class);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.dao.CustomerDAO#findById(java.lang.Integer)
-	 */
-	public Customer findById(Integer customerId)
-	{
-		return (Customer)getHibernateTemplate().get(Customer.class, customerId);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.dao.CustomerDAO#persist(net.rrm.ehour.project.domain.Customer)
-	 */
-	public Customer persist(Customer customer)
-	{
-		getHibernateTemplate().saveOrUpdate(customer);
-		
-		return customer;
-	}
-
-	public List findAll(boolean active)
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Customer> findAll(boolean active)
 	{
 		List	l;
 		

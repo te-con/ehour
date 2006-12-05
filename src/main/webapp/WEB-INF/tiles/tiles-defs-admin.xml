@@ -58,4 +58,12 @@
 
     <!-- Admin user form  -->
     <definition name=".ehour.admin.user.userForm" path="/WEB-INF/jsp/admin/user/userForm.jsp" />
+    
+
+    
+    <!-- Admin project index -->
+    <definition name=".ehour.admin.project.fullList" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/project/index.jsp" />
+    </definition>    
+    
 </tiles-definitions>

@@ -28,9 +28,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.project.domain.Customer;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
-import net.rrm.ehour.web.util.DomainAssembler;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -51,9 +49,9 @@ public class DeleteCustomerAction extends AdminCustomerBaseAction
 		List			customers;
 		
 		customerForm = (CustomerForm)form;
-		projectService.deleteCustomer(customerForm.getCustomerId());
+		customerService.deleteCustomer(customerForm.getCustomerId());
 
-		customers = projectService.getCustomers();
+		customers = customerService.getCustomers();
 		
 		request.setAttribute("customers", customers);
 			

@@ -28,7 +28,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.util.DomainAssembler;
 
@@ -53,8 +53,8 @@ public class EditCustomerAction extends AdminCustomerBaseAction
 		
 		customer = DomainAssembler.getCustomer((CustomerForm)form);
 	
-		projectService.persistCustomer(customer);
-		customers = projectService.getCustomers();
+		customerService.persistCustomer(customer);
+		customers = customerService.getCustomers();
 		
 		request.setAttribute("customers", customers);
 			

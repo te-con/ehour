@@ -1,13 +1,14 @@
 package net.rrm.ehour.user.domain;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import net.rrm.ehour.domain.DomainObject;
 
 /**
  * @author  Thies
  */
-public class User implements Serializable, Comparable
+public class User  extends DomainObject implements Comparable
 {
 
 	// Fields    

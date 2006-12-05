@@ -26,7 +26,7 @@ package net.rrm.ehour.web.admin.customer.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 
 import org.apache.struts.action.ActionForm;
@@ -46,7 +46,7 @@ public class GetCustomerAction extends AdminCustomerBaseAction
 	{
 		CustomerForm customerForm = (CustomerForm)form;
 		
-		Customer customer = projectService.getCustomer(customerForm.getCustomerId());
+		Customer customer = customerService.getCustomer(customerForm.getCustomerId());
 		
 		request.setAttribute("customer", customer);
 		

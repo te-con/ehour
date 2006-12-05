@@ -60,6 +60,7 @@ public class UserForm extends ActionForm
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
 		fromForm = false;
+		active = false;
 	}
 	/**
 	 * @return the filterPattern

@@ -134,8 +134,8 @@ public class UserServiceTest extends TestCase
 	
 	public void testGetUserRoles()
 	{
-		expect(userRoleDAO.findUserRoles())
-			.andReturn(new ArrayList());
+		expect(userRoleDAO.findAll())
+			.andReturn(new ArrayList<UserRole>());
 		
 		replay(userRoleDAO);
 		

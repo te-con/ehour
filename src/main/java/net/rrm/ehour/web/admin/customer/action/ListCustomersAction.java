@@ -43,7 +43,7 @@ public class ListCustomersAction extends AdminCustomerBaseAction
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List	customers = projectService.getCustomers();
+		List	customers = customerService.getCustomers();
 		
 		request.setAttribute("customers", customers);
 			

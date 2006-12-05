@@ -25,6 +25,7 @@ package net.rrm.ehour;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import net.rrm.ehour.customer.service.CustomerServiceTest;
 import net.rrm.ehour.project.service.ProjectServiceTest;
 import net.rrm.ehour.report.service.ReportServiceTest;
 import net.rrm.ehour.timesheet.dto.BookedDayComparatorTest;
@@ -47,6 +48,7 @@ public class ServiceTests
 		suite.addTestSuite(TimesheetServiceTest.class);
 		suite.addTestSuite(ReportServiceTest.class);
 		suite.addTestSuite(ProjectServiceTest.class);
+		suite.addTestSuite(CustomerServiceTest.class);
 
 		suite.addTestSuite(CalendarUtilTest.class);
 		suite.addTestSuite(DateUtilTest.class);

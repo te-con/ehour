@@ -25,22 +25,17 @@ package net.rrm.ehour.user.dao;
 
 import java.util.List;
 
+import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.user.domain.User;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-
-public class UserDAOHibernateImpl extends HibernateDaoSupport implements UserDAO
+public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer> implements UserDAO
 {
-
-	/**
-	 * Find by ID
-	 */
-	public User findById(Integer userId)
+	public UserDAOHibernateImpl()
 	{
-		return (User) getHibernateTemplate().get(User.class, userId);
-	}
-
+		super(User.class);
+	}	
+	
 	/**
 	 * 
 	 */
@@ -58,21 +53,12 @@ public class UserDAOHibernateImpl extends HibernateDaoSupport implements UserDAO
 		
 		return user;	
 	}
-	
-	/**
-	 * 
-	 */
-	
-	public void persist(User user)
-	{
-		getHibernateTemplate().saveOrUpdate(user);
-	}
 
-	
 	/**
 	 * 
 	 */
-	public List findUsersByNameMatch(String pattern, boolean onlyActive)
+	@SuppressWarnings("unchecked")
+	public List<User> findUsersByNameMatch(String pattern, boolean onlyActive)
 	{
 		String	hql;
 		
@@ -96,7 +82,8 @@ public class UserDAOHibernateImpl extends HibernateDaoSupport implements UserDAO
 	/**
 	 * 
 	 */
-	public List findUsers()
+	@SuppressWarnings("unchecked")
+	public List<User> findUsers()
 	{
 		return getHibernateTemplate().findByNamedQuery("User.findAllUsers");
 	}

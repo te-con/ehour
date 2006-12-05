@@ -24,18 +24,19 @@
 package net.rrm.ehour.project.service;
 
 import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.dao.CustomerDAO;
-import net.rrm.ehour.project.domain.Customer;
+import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 
 /**
  *  
@@ -44,7 +45,7 @@ import net.rrm.ehour.project.domain.Project;
 public class ProjectServiceTest extends TestCase
 {
 	private	ProjectService	projectService;
-	private	CustomerDAO		customerDAO;
+	private	ProjectDAO		projectDAO;
 	
 	/**
 	 * 
@@ -53,106 +54,120 @@ public class ProjectServiceTest extends TestCase
 	{
 		projectService = new ProjectServiceImpl();
 
-		customerDAO = createMock(CustomerDAO.class);
-		((ProjectServiceImpl)projectService).setCustomerDAO(customerDAO);
-	}
-
-
-	public void testDeleteCustomerWithConstraintViolation()
-	{
-		Customer cust = new Customer();
-		Project	proj = new Project();
-		Set	projs = new HashSet();
-		proj.setProjectId(1);
-		cust.setCustomerId(1);
-		
-		projs.add(proj);
-		cust.setProjects(projs);
-		
-		customerDAO.findById(1);
-		expectLastCall().andReturn(cust);
-		
-		replay(customerDAO);
-
-		try
-		{
-			projectService.deleteCustomer(1);
-			fail("no ParentChildConstraintException thrown");
-			
-		} catch (ParentChildConstraintException e)
-		{
-		}
-		
-		verify(customerDAO);
+		projectDAO = createMock(ProjectDAO.class);
+		((ProjectServiceImpl)projectService).setProjectDAO(projectDAO);
 	}
 	
-	public void testDeleteCustomer() throws ParentChildConstraintException
+	public void testGetAllProjects()
 	{
-		Customer cust = new Customer();
-		cust.setCustomerId(1);
+		expect(projectDAO.findAll(true))
+			.andReturn(new ArrayList<Project>());
+
+		replay(projectDAO);
 		
-		customerDAO.findById(1);
-		expectLastCall().andReturn(cust);
+		projectService.getAllProjects(true);
 		
-		customerDAO.delete(cust);
-		
-		replay(customerDAO);
-		
-		projectService.deleteCustomer(1);
-		
-		verify(customerDAO);
+		verify(projectDAO);
 	}
 	
-
-	public void testGetCustomer()
+	
+	public void testGetAllProjectsInactive()
 	{
-		customerDAO.findById(1);
-		expectLastCall().andReturn(null);
-		
-		replay(customerDAO);
-		
-		projectService.getCustomer(1);
-		
-		verify(customerDAO);
-	}
+		expect(projectDAO.findAll())
+			.andReturn(new ArrayList<Project>());
 
-	public void testGetCustomers()
-	{
-		customerDAO.findAll();
-		expectLastCall().andReturn(null);
+		replay(projectDAO);
 		
-		replay(customerDAO);
+		projectService.getAllProjects(false);
 		
-		projectService.getCustomers();
-		
-		verify(customerDAO);
-	}
-
-	public void testGetActiveCustomers()
-	{
-		customerDAO.findAll(true);
-		expectLastCall().andReturn(null);
-		
-		replay(customerDAO);
-		
-		projectService.getCustomers(true);
-		
-		verify(customerDAO);
+		verify(projectDAO);
 	}	
 	
-	public void testPersistCustomer()
+	/**
+	 * Get project
+	 * @param projectId
+	 * @return
+	 */
+	public void testGetProject()
 	{
-		Customer cust = new Customer();
-		cust.setCustomerId(1);
+		expect(projectDAO.findById(new Integer(1)))
+			.andReturn(new Project());
 		
-		customerDAO.persist(cust);
-		expectLastCall().andReturn(cust);
-		
-		replay(customerDAO);
-		
-		projectService.persistCustomer(cust);
-		
-		verify(customerDAO);
+		replay(projectDAO);
+	
+		projectService.getProject(1);
+	
+		verify(projectDAO);
 	}
+	
+	/**
+	 * Persist the project
+	 * @param project
+	 * @return
+	 */
+	public void testPersistProject()
+	{
+		Project prj = new Project();
+		
+		expect(projectDAO.persist(prj))
+			.andReturn(prj);
+	
+		replay(projectDAO);
+	
+		projectService.persistProject(prj);
+	
+		verify(projectDAO);
+	}
+	
+	/**
+	 * 
+	 *
+	 */
+	public void testDeleteProjectConstraint()
+	{
+		Project prj = new Project();
+		ProjectAssignment pa = new ProjectAssignment();
+		Set pas = new HashSet();
+		pas.add(pa);
+		prj.setProjectAssignments(pas);
+		
+		expect(projectDAO.findById(new Integer(1)))
+			.andReturn(prj);
 
+		replay(projectDAO);
+		
+		try
+		{
+			projectService.deleteProject(1);
+			fail("No constraint thrown");
+		} catch (ParentChildConstraintException e)
+		{
+			verify(projectDAO);
+			// ok
+		}
+	}
+	
+	public void testDeleteProject()
+	{
+		Project prj = new Project();
+		ProjectAssignment pa = new ProjectAssignment();
+		Set pas = new HashSet();
+		prj.setProjectAssignments(pas);
+		
+		expect(projectDAO.findById(new Integer(1)))
+			.andReturn(prj);
+		
+		projectDAO.delete(prj);
+
+		replay(projectDAO);
+		
+		try
+		{
+			projectService.deleteProject(1);
+			verify(projectDAO);
+		} catch (ParentChildConstraintException e)
+		{
+			fail("Constraint thrown");
+		}
+	}	
 }
