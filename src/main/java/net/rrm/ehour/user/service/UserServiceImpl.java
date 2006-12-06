@@ -35,10 +35,11 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.dto.AuthUser;
-import net.rrm.ehour.util.EhourUtil;
 
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 
@@ -74,6 +75,8 @@ public class UserServiceImpl implements UserService
 	{
 		User		user = null;
 		AuthUser	authUser;
+		
+		logger.debug("Finding user " + username);
 		
 		user = userDAO.findByUsername(username);
 		
@@ -227,7 +230,7 @@ public class UserServiceImpl implements UserService
 	public User persistUser(User user) throws PasswordEmptyException
 	{
 		User	dbUser;
-		String	encodedPass;
+		byte[]	shaPass;
 		
 		if (user.getPassword() == null || user.getPassword().equals(""))
 		{
@@ -253,8 +256,8 @@ public class UserServiceImpl implements UserService
 		}
 		else
 		{
-			encodedPass = EhourUtil.encrypt(user.getPassword());
-			user.setPassword(encodedPass);
+			shaPass = DigestUtils.sha(user.getPassword());
+			user.setPassword(new String(Hex.encodeHex(shaPass)));
 			userDAO.persist(user);
 			
 			return user;
