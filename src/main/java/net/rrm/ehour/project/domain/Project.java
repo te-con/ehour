@@ -25,7 +25,7 @@ public class Project extends DomainObject
 
 	private String name;
 
-	private Boolean defaultProject;
+	private boolean defaultProject;
 	private	boolean	active;
 	private Customer customer;
 	private	Set		projectAssignments;
@@ -102,7 +102,7 @@ public class Project extends DomainObject
 		this.name = name;
 	}
 
-	public Boolean getDefaultProject()
+	public boolean isDefaultProject()
 	{
 		return this.defaultProject;
 	}

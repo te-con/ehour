@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 
 /**
  * @author  Thies
@@ -32,9 +33,12 @@ public class User  extends DomainObject implements Comparable
 	
 	private	boolean	active;
 
-	private Set userRoles = new HashSet(0);
+	private Set<UserRole> userRoles = new HashSet<UserRole>();
 
 	private UserDepartment userDepartment;
+	
+	private	Set<ProjectAssignment>	projectAssignments;
+	private	Set<ProjectAssignment>	inactiveProjectAssignments;
 
 	// Constructors
 
@@ -56,7 +60,7 @@ public class User  extends DomainObject implements Comparable
 	}
 	
 	/** full constructor */
-	public User(String username, String password, String firstName, String lastName, String email, boolean active, Set userRoles, UserDepartment userDepartment)
+	public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment)
 	{
 		this.username = username;
 		this.password = password;
@@ -134,7 +138,7 @@ public class User  extends DomainObject implements Comparable
 		return this.userRoles;
 	}
 
-	public void setUserRoles(Set userRoles)
+	public void setUserRoles(Set<UserRole> userRoles)
 	{
 		this.userRoles = userRoles;
 	}
@@ -186,5 +190,37 @@ public class User  extends DomainObject implements Comparable
 	public void setUserDepartment(UserDepartment userDepartment)
 	{
 		this.userDepartment = userDepartment;
+	}
+
+	/**
+	 * @return the projectAssignments
+	 */
+	public Set<ProjectAssignment> getProjectAssignments()
+	{
+		return projectAssignments;
+	}
+
+	/**
+	 * @param projectAssignments the projectAssignments to set
+	 */
+	public void setProjectAssignments(Set<ProjectAssignment> projectAssignments)
+	{
+		this.projectAssignments = projectAssignments;
+	}
+
+	/**
+	 * @return the inactiveProjectAssignments
+	 */
+	public Set<ProjectAssignment> getInactiveProjectAssignments()
+	{
+		return inactiveProjectAssignments;
+	}
+
+	/**
+	 * @param inactiveProjectAssignments the inactiveProjectAssignments to set
+	 */
+	public void setInactiveProjectAssignments(Set<ProjectAssignment> inactiveProjectAssignments)
+	{
+		this.inactiveProjectAssignments = inactiveProjectAssignments;
 	}
 }

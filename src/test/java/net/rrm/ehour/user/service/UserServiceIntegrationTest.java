@@ -62,6 +62,8 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 	
 	protected String[] getConfigLocations()
 	{
-		return new String[] { "classpath:/applicationContext-dao.xml", "classpath:/applicationContext-service.xml"};	
+		return new String[] { "classpath:/applicationContext-datasource.xml",
+							  "classpath:/applicationContext-dao.xml", 
+							  "classpath:/applicationContext-service.xml"};	
 	}		
 }

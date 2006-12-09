@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.web.admin.project.action;
 
+import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.service.ProjectService;
 
 import org.apache.struts.action.Action;
@@ -34,6 +35,7 @@ import org.apache.struts.action.Action;
 public class AdminProjectBaseAction extends Action
 {
 	protected ProjectService	projectService;
+	protected CustomerService	customerService;
 	
 	/**
 	 * 
@@ -42,5 +44,10 @@ public class AdminProjectBaseAction extends Action
 	public void setProjectService(ProjectService projectService)
 	{
 		this.projectService = projectService;
+	}
+	
+	public void setCustomerService(CustomerService customerService)
+	{
+		this.customerService = customerService;
 	}
 }

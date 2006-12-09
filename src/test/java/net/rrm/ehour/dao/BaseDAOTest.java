@@ -41,7 +41,8 @@ public abstract class BaseDAOTest extends AbstractTransactionalDataSourceSpringC
 	
 	protected String[] getConfigLocations()
 	{
-		return new String[] { "classpath:applicationContext-dao.xml"};	
+		return new String[] { "classpath:applicationContext-dao.xml",
+								"classpath:applicationContext-datasource.xml"};	
 	}	
 	
 	protected void onSetUpInTransaction() throws Exception

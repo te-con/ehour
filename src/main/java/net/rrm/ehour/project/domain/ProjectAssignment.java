@@ -111,6 +111,15 @@ public class ProjectAssignment extends DomainObject
 		this.hourlyRate = hourlyRate;
 	}
 
+	/**
+	 * get start & end date as range
+	 * @return
+	 */
+	public DateRange getDateRange()
+	{
+		return new DateRange(dateStart, dateEnd);
+	}
+	
 	public Date getDateStart()
 	{
 		return this.dateStart;
@@ -156,6 +165,17 @@ public class ProjectAssignment extends DomainObject
 		if (!(other instanceof ProjectAssignment))
 			return false;
 		ProjectAssignment castOther = (ProjectAssignment) other;
+		
+		if (castOther.getAssignmentId() == null)
+		{
+			return false;
+		}
+		
+		if (this.getAssignmentId() == null)
+		{
+			return false;
+		}
+		
 		return new EqualsBuilder().append(this.getAssignmentId(), castOther.getAssignmentId()).isEquals();
 	}
 

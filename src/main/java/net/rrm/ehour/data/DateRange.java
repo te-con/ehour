@@ -23,10 +23,14 @@
 
 package net.rrm.ehour.data;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
- * Object containing a range of dates 
+ * Object containing a range of dates.
+ * Time is set to 00:00 for the start date and 23:59 for the date end therefore
+ * including the start & the end 
  **/
 
 public class DateRange
@@ -49,9 +53,21 @@ public class DateRange
 		return dateEnd;
 	}
 
+
+	/**
+	 * Set the date end, time is set to 23:59
+	 * @param dateEnd
+	 */
 	public void setDateEnd(Date dateEnd)
 	{
-		this.dateEnd = dateEnd;
+		Calendar	cal;
+		
+		cal = new GregorianCalendar();
+		cal.setTime(dateEnd);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		
+		this.dateEnd = cal.getTime();
 	}
 
 	public Date getDateStart()
@@ -59,11 +75,24 @@ public class DateRange
 		return dateStart;
 	}
 
+	/**
+	 * Set the date start, time is set to 00:00
+	 * @param dateStart
+	 */
 	public void setDateStart(Date dateStart)
 	{
-		this.dateStart = dateStart;
+		Calendar	cal;
+		
+		cal = new GregorianCalendar();
+		cal.setTime(dateStart);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+			
+		this.dateStart = cal.getTime();
 	}
 
+	
+	
 	@Override
 	public int hashCode()
 	{
@@ -97,5 +126,10 @@ public class DateRange
 		} else if (!dateStart.equals(other.dateStart))
 			return false;
 		return true;
+	}
+	
+	public String toString()
+	{
+		return "date start: " + dateStart.toString() + ", date end: " + dateEnd.toString();
 	}
 }

@@ -138,6 +138,27 @@
 			<forward name="filteredList" path=".ehour.admin.project.filteredList" />			
 		</action>				
 				
+		<!-- Show add project form -->
+		<action path="/project/addProjectForm" 
+				type="net.rrm.ehour.web.admin.project.action.GetProjectAction"
+				parameter="addOnly">
+			<forward name="success" path=".ehour.admin.project.projectForm" />
+		</action>	
+		
+		<!-- Show get project form -->
+		<action name="ProjectForm"
+				path="/project/getProject" 
+				type="net.rrm.ehour.web.admin.project.action.GetProjectAction">
+			<forward name="success" path=".ehour.admin.project.projectForm" />
+		</action>						
+			
+		<!-- Edit project form -->
+		<action name="ProjectForm"
+				path="/project/editProject" 
+				type="net.rrm.ehour.web.admin.project.action.EditAction">
+			<forward name="success" path=".ehour.admin.project.filteredList" />
+		</action>				
+				
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

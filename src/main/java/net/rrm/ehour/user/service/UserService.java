@@ -48,7 +48,9 @@ public interface UserService extends UserDetailsService
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException;
 	
 	/**
-	 * Get user by userID
+	 * Get user by userId
+	 * User.inactiveProjectAssignments is populated with project 
+	 * assignments ending before or starting after the current date
 	 * @param userID
 	 * @return
 	 * @throws NoResultsException

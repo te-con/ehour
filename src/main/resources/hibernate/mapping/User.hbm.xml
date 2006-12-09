@@ -27,5 +27,10 @@
         <many-to-one name="userDepartment" class="net.rrm.ehour.user.domain.UserDepartment" lazy="proxy">
             <column name="DEPARTMENT_ID" not-null="true" />
         </many-to-one>         
+
+		<set name="projectAssignments" inverse="true" lazy="true">
+			<key column="USER_ID" />
+	       	<one-to-many class="net.rrm.ehour.project.domain.ProjectAssignment"/>
+	   </set>         
 	</class>
 </hibernate-mapping>

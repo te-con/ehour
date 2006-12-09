@@ -42,7 +42,7 @@ public interface CustomerService
 	
 	/**
 	 * Get customers respecting their active flag
-	 * @param active
+	 * @param active to true for active, false for inactive
 	 * @return
 	 */
 	public List<Customer> getCustomers(boolean active);

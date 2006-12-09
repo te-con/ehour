@@ -25,11 +25,13 @@ package net.rrm.ehour.web.util;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
+import net.rrm.ehour.web.admin.project.form.ProjectForm;
 import net.rrm.ehour.web.admin.user.form.UserForm;
 
 /**
@@ -100,5 +102,29 @@ public class DomainAssemblerTest extends TestCase
 		assertEquals("thies", user.getUsername());
 		assertFalse(user.isActive());
 		assertEquals("gustas", ((UserRole)user.getUserRoles().iterator().next()).getRole());
+	}
+	
+	public void testGetProject()
+	{
+		ProjectForm pf = new ProjectForm();
+		pf.setActive(false);
+		pf.setContact("contact");
+		pf.setCustomerId(2);
+		pf.setDefaultProject(true);
+		pf.setDescription("description");
+		pf.setName("name");
+		pf.setProjectCode("projectcode");
+		pf.setProjectId(2);
+		
+		Project prj = DomainAssembler.getProject(pf);
+		
+		assertFalse(prj.isActive());
+		assertEquals("contact", prj.getContact());
+		assertEquals(new Integer(2), prj.getCustomer().getCustomerId());
+		assertTrue(prj.isDefaultProject());
+		assertEquals("description", prj.getDescription());
+		assertEquals("name", prj.getName());
+		assertEquals("projectcode", prj.getProjectCode());
+		assertEquals(new Integer(2), prj.getProjectId());
 	}
 }

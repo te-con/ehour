@@ -28,7 +28,10 @@
     <developerConnection>scm:svn:https://ehour.svn.sourceforge.net/svnroot/ehour/</developerConnection>
     <url>http://svn.sourceforge.net/ehour/</url>
   </scm>
+  
+  <!-- BUILD -->
   <build>
+	  <finalName>ehour</finalName>
     <resources>
       <resource>
         <directory>src/main/resources/i18n</directory>
@@ -62,8 +65,54 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warName>ehour-${env}</warName>
+        </configuration>
+      </plugin>      
     </plugins>
   </build>
+  
+  <!-- PROFILES -->
+  <profiles>
+  
+    <profile>
+      <id>env-test</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>test</value>
+        </property>
+      </activation>
+      <build>
+	    <resources>
+          <resource>
+            <directory>src/main/profiles/test/resources/spring</directory>
+          </resource>
+        </resources>
+      </build>
+    </profile>
+  
+    <profile>
+      <id>env-dev</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>dev</value>
+        </property>
+      </activation>
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/profiles/dev/resources/spring</directory>
+          </resource>
+        </resources>
+      		</build>
+    	</profile>
+	</profiles>  
+  
+  <!-- DEPENDENCIES -->
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -72,9 +121,15 @@
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
       <artifactId>jsp-api</artifactId>
       <version>2.0</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>taglibs</groupId>
@@ -179,6 +234,11 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+        	<printSummary>
+        		false
+        	</printSummary>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

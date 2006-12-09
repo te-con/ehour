@@ -24,6 +24,7 @@
 package net.rrm.ehour.util;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import net.rrm.ehour.data.DateRange;
 
@@ -61,7 +62,7 @@ public class DateUtil
 	}
 	
 	/**
-	 * Converts a date to a range covering that month
+	 * Converts a calendar to a range covering that month
 	 * @param date
 	 * @return first Calendar object is start of the month, last Calendar object is end of the month 
 	 */
@@ -81,5 +82,23 @@ public class DateUtil
         dateRange.setDateEnd(cal.getTime());		
 		
         return dateRange;
+	}
+	
+	/**
+	 * Check whether a date is within range
+	 * @param the date
+	 * @param the range the date must be in
+	 * @return
+	 */
+	
+	public static boolean isDateWithinRange(Date date, DateRange dateRange)
+	{
+		boolean	withinRange = false;
+//		Date	date = cal.getTime();
+		
+		withinRange =  !(dateRange.getDateStart().after(date) ||
+						 dateRange.getDateEnd().before(date));
+		
+		return withinRange;
 	}
 }

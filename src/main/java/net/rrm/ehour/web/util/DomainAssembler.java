@@ -27,11 +27,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
+import net.rrm.ehour.web.admin.project.form.ProjectForm;
 import net.rrm.ehour.web.admin.user.form.UserForm;
 
 /**
@@ -92,7 +94,7 @@ public class DomainAssembler
 		User	user = new User();
 		UserDepartment dept;
 		UserRole	role;
-		Set			roles;
+		Set<UserRole>	roles;
 		int			i;
 		
 		if (uf.getUserId() > 0)
@@ -111,7 +113,7 @@ public class DomainAssembler
 		dept.setDepartmentId(uf.getDepartmentId());
 		user.setUserDepartment(dept);
 		
-		roles = new HashSet();
+		roles = new HashSet<UserRole>();
 		
 		for (i = 0;
 			 i < uf.getRoles().length;
@@ -124,5 +126,31 @@ public class DomainAssembler
 		user.setUserRoles(roles);
 
 		return user;
+	}
+	
+	/**
+	 * ProjectForm to Project
+	 * @param pf
+	 * @return
+	 */
+	
+	public static Project getProject(ProjectForm pf)
+	{
+		Project		prj = new Project();
+		
+		if (pf.getProjectId() > 0)
+		{
+			prj.setProjectId(pf.getProjectId());
+		}		
+		
+		prj.setActive(pf.isActive());
+		prj.setContact(pf.getContact());
+		prj.setCustomer(new Customer(pf.getCustomerId()));
+		prj.setDefaultProject(pf.isDefaultProject());
+		prj.setDescription(pf.getDescription());
+		prj.setName(pf.getName());
+		prj.setProjectCode(pf.getProjectCode());
+
+		return prj;
 	}
 }

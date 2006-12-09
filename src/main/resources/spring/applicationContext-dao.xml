@@ -3,28 +3,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-<!-- @todo use spring 2.0 aop -->
-	<bean id="dataSource"
-		class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName">
-			<value>com.mysql.jdbc.Driver</value>
-		</property>
-		<property name="url">
-			<value>jdbc:mysql://192.168.1.10/ehour</value>
-		</property>
-		<property name="username">
-			<value>test</value>
-		</property>
-		<property name="password">
-			<value>me</value>
-		</property>
-	</bean>
-
 	<!-- Session factory definition -->
+	<!-- datasource is defined in profiles/../resources/spring/ -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource">
-			<ref bean="dataSource" />
+			<ref bean="eHourDataSource" />
 		</property>
 
 		<property name="mappingDirectoryLocations">
@@ -47,6 +31,8 @@
 			</props>
 		</property>
 	</bean>
+	
+	<!-- transaction manager -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory">

@@ -23,11 +23,15 @@
 
 package net.rrm.ehour.user.service;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
@@ -35,6 +39,7 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.dto.AuthUser;
+import net.rrm.ehour.util.DateUtil;
 
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
@@ -56,14 +61,34 @@ public class UserServiceImpl implements UserService
 
 
 	/**
-	 * Get user by userID
+	 * Get user by userId 
 	 * @param userID
 	 * @return
 	 * @throws NoResultsException
 	 */	
 	public User getUser(Integer userId) 
 	{
-		return userDAO.findById(userId);
+		User 					user = userDAO.findById(userId);
+		Set<ProjectAssignment>	inactiveAssignments = new HashSet<ProjectAssignment>();
+		Date					currentDate = new Date();
+		
+		if (user != null && user.getProjectAssignments() != null)
+		{
+			for (ProjectAssignment assignment : user.getProjectAssignments())
+			{
+				if ((!DateUtil.isDateWithinRange(currentDate , assignment.getDateRange())) ||
+					 (assignment.getProject() == null || !assignment.getProject().isActive()))
+				{
+					inactiveAssignments.add(assignment);
+				}
+			}
+		}
+		
+		user.getProjectAssignments().removeAll(inactiveAssignments);
+		
+		user.setInactiveProjectAssignments(inactiveAssignments);
+		
+		return user;
 	}
 
 
@@ -80,11 +105,11 @@ public class UserServiceImpl implements UserService
 		
 		user = userDAO.findByUsername(username);
 		
-		if (user == null)
+		if (user == null || !user.isActive())
 		{
 			if (logger.isDebugEnabled())
 			{
-				logger.debug("Load user by username for " + username + " but user unknown");
+				logger.debug("Load user by username for " + username + " but user unknown or inactive");
 			}
 			
 			throw new UsernameNotFoundException("User unknown");

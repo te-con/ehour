@@ -52,9 +52,8 @@
         <put name="content" value="/WEB-INF/jsp/admin/user/index.jsp" />
     </definition>
 
-    <!-- Admin user filtered list (because the spring DelegatingTilesRequestProcessor is used this is here -->
-    <definition name=".ehour.admin.user.filteredList"
-    			path="/WEB-INF/jsp/admin/user/listUsers.jsp" />
+    <!-- Admin user filtered list -->
+    <definition name=".ehour.admin.user.filteredList" path="/WEB-INF/jsp/admin/user/listUsers.jsp" />
 
     <!-- Admin user form  -->
     <definition name=".ehour.admin.user.userForm" path="/WEB-INF/jsp/admin/user/userForm.jsp" />
@@ -65,5 +64,12 @@
     <definition name=".ehour.admin.project.fullList" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/project/index.jsp" />
     </definition>    
+
+    <!-- Admin project filtered list -->
+    <definition name=".ehour.admin.project.filteredList" path="/WEB-INF/jsp/admin/project/listProjects.jsp" />
+
+    <!-- Admin project form  -->
+    <definition name=".ehour.admin.project.projectForm" path="/WEB-INF/jsp/admin/project/projectForm.jsp" />
+
     
 </tiles-definitions>

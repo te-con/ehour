@@ -1,8 +1,11 @@
 package net.rrm.ehour.user.dao;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 
@@ -68,12 +71,18 @@ public class UserDAOTest extends BaseDAOTest
 		UserDepartment org = new UserDepartment();
 		org.setDepartmentId(new Integer(1));
 		
+		ProjectAssignment pa = new ProjectAssignment();
+		pa.setAssignmentId(1);
+		Set pas = new HashSet();
+		pas.add(pa);
+		
 		User user = new User();
 		user.setUsername("freggle");
 		user.setPassword("in the cave");
 		user.setFirstName("ollie");
 		user.setLastName("doerak chief");
 		user.setUserDepartment(org);
+		user.setProjectAssignments(pas);
 		dao.persist(user);
 		
 		assertNotNull(user.getUserId());

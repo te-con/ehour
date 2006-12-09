@@ -42,4 +42,10 @@
 	<bean name="/eh/admin/user/deleteUser" class="net.rrm.ehour.web.admin.user.action.DeleteUserAction" />			
 
 	<bean name="/eh/admin/project/index" class="net.rrm.ehour.web.admin.project.action.ListProjectsAction" />
+
+	<bean name="/eh/admin/project/addProjectForm" class="net.rrm.ehour.web.admin.project.action.GetProjectAction" />	
+
+	<bean name="/eh/admin/project/getProject" class="net.rrm.ehour.web.admin.project.action.GetProjectAction" />		
+	
+	<bean name="/eh/admin/project/editProject" class="net.rrm.ehour.web.admin.project.action.EditProjectAction" />
 </beans>

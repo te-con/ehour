@@ -24,6 +24,7 @@
 package net.rrm.ehour.util;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
@@ -62,4 +63,35 @@ public class DateUtilTest extends TestCase
 		assertEquals(28, DateUtil.getDaysInMonth(cal));
 	}
 
+	public void testIsDateWithinRange()
+	{
+		boolean	inRange;
+		DateRange dr = new DateRange(new GregorianCalendar(2006, 5, 5).getTime(),
+						 			new GregorianCalendar(2006, 6, 5).getTime());
+		
+		Date testCal = new GregorianCalendar(2006, 5, 10).getTime();
+		inRange = DateUtil.isDateWithinRange(testCal, dr);
+		assertTrue(inRange);
+
+		testCal = new GregorianCalendar(2006, 4, 10).getTime();
+		inRange = DateUtil.isDateWithinRange(testCal, dr);
+		assertFalse(inRange);
+
+		testCal = new GregorianCalendar(2006, 5, 5).getTime();
+		inRange = DateUtil.isDateWithinRange(testCal, dr);
+		assertTrue(inRange);
+
+		testCal = new GregorianCalendar(2006, 6, 5).getTime();
+		inRange = DateUtil.isDateWithinRange(testCal, dr);
+		assertTrue(inRange);
+
+		testCal = new GregorianCalendar(2006, 6, 6).getTime();
+		inRange = DateUtil.isDateWithinRange(testCal, dr);
+		assertFalse(inRange);
+
+		testCal = new GregorianCalendar(2006, 5, 4).getTime();
+		inRange = DateUtil.isDateWithinRange(testCal, dr);
+		assertFalse(inRange);
+		
+	}
 }

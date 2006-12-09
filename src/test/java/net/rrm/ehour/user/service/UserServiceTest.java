@@ -28,14 +28,22 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.TestCase;
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
+
+import org.acegisecurity.userdetails.UsernameNotFoundException;
 
 
 /**
@@ -62,10 +70,39 @@ public class UserServiceTest extends TestCase
 		((UserServiceImpl)userService).setUserDAO(userDAO);
 		((UserServiceImpl)userService).setUserDepartmentDAO(userDepartmentDAO);
 		((UserServiceImpl)userService).setUserRoleDAO(userRoleDAO);
-		
 	}
 
 	
+	/**
+	 * 
+	 *
+	 */
+	public void testLoadUserByUsername()
+	{
+		User	user;
+		user = new User();
+		user.setActive(false);
+		
+		expect(userDAO.findByUsername("test"))
+			.andReturn(user);
+		
+		replay(userDAO);
+		
+		try
+		{
+			userService.loadUserByUsername("test");
+			fail("No exception thrown");
+		}
+		catch (UsernameNotFoundException unne)
+		{
+			verify(userDAO);	
+		}
+	}
+	
+	/**
+	 * 
+	 *
+	 */
 	public void testGetUsersByNameMatch()
 	{
 		expect(userDAO.findUsersByNameMatch("test", true))
@@ -80,13 +117,47 @@ public class UserServiceTest extends TestCase
 	/**
 	 * Test method for {@link net.rrm.ehour.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
 	 */
-	public void testGetUserInteger()
+	public void testGetUser()
 	{
-		User	user;
+		User				user;
+		ProjectAssignment	paA, paB;
+		Project				prA, prB;
+		Set					pas = new HashSet();
+		Calendar			calA, calB;
 		
+		
+		user = new User("thies", "pwd");
+
+		prA = new Project();
+		prA.setActive(true);
+		paA = new ProjectAssignment();
+		paA.setAssignmentId(1);
+		calA = new GregorianCalendar();
+		calA.add(Calendar.MONTH, -5);
+		paA.setDateStart(calA.getTime());
+		calA.add(Calendar.MONTH, 1);
+		paA.setDateEnd(calA.getTime());
+		paA.setProject(prA);
+		pas.add(paA);
+		
+		prB = new Project();
+		prB.setActive(true);
+
+		paB = new ProjectAssignment();
+		paB.setAssignmentId(2);
+		calB = new GregorianCalendar();
+		calB.add(Calendar.MONTH, -2);
+		paB.setDateStart(calB.getTime());
+		calB = new GregorianCalendar();
+		calB.add(Calendar.MONTH, 1);
+		paB.setDateEnd(calB.getTime());
+		paB.setProject(prB);
+		pas.add(paB);
+		
+		user.setProjectAssignments(pas);
 		
 		expect(userDAO.findById(1))
-				.andReturn(new User("thies", "pwd"));
+				.andReturn(user);
 		
 		replay(userDAO);
 		
@@ -95,6 +166,8 @@ public class UserServiceTest extends TestCase
 		verify(userDAO);
 		
 		assertEquals("thies", user.getUsername());
+		assertEquals(1, user.getProjectAssignments().size());
+		assertEquals(1, user.getInactiveProjectAssignments().size());
 	}
 	
 	/**
