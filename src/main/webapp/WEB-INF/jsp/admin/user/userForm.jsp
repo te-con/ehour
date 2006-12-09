@@ -21,10 +21,25 @@
 					<fmt:message key="admin.user.editUser" />
 				</c:otherwise>
 			</c:choose>
+		</td>
+		
+		<td>&nbsp;</td>
+		
+		<c:if test="${user != null}">
+			<td>
+				<fmt:message key="admin.user.projects" />		
+			</td>
+		</c:if>
 	</tr>
 
 	<tr>
     	<td colspan="2"><img src="<c:url  value="/img/eh_pixel.gif" />" alt="pix" height="1" width="100%"><br></td>
+		<td>&nbsp;</td>
+		<c:if test="${user != null}">
+			<td>
+				<img src="<c:url  value="/img/eh_pixel.gif" />" alt="pix" height="1" width="100%"><br>
+			</td>
+		</c:if>		
 	</tr>
 
 	
@@ -32,6 +47,26 @@
 		<td><fmt:message key="admin.user.username" />:</td>
 		<td><input class="normtxt" type="text" name="username" size="30" value="${user.username}" onChange="return checkUserExists(this.value, '${user.username}')"></td>
 		<td id="userNameError" style="color: red"></td>
+		
+		<c:if test="${user != null}">
+			<td rowspan="10" valign="top">
+				<c:forEach items="${user.projectAssignments}" var="pa">
+					${pa.project.name}
+					
+					<c:if test="${!pa.project.defaultProject}">
+						&nbsp;[${pa.description}]
+					</c:if>
+					<br>
+				</c:forEach>
+				<br>
+				Inactive:<br>
+				<c:forEach items="${user.inactiveProjectAssignments}" var="pa">
+					${pa.project.name}<br>
+				</c:forEach>
+
+			</td>
+		</c:if>
+		
 	</tr>
 
 	<tr>
