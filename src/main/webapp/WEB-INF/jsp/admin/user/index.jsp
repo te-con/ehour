@@ -19,7 +19,7 @@
 </script>
 
 <script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
-<script src="<c:url value="/js/admin/user/userAdmin.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/userAdmin.js" />" type="text/javascript"></script>
 
 
 <table CLASS="contentTable" CELLSPACING=2>
@@ -47,7 +47,7 @@
 	
 	<tr>
 		<td>
-			<div class="userScroll">
+			<div class="adminListScroll">
 				<span id="listUsersSpan">
 					<tiles:insert page="listUsers.jsp" />
 				</span>
