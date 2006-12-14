@@ -11,11 +11,31 @@
 		FROM Project project
 	    ORDER BY name
 	</query>	
-
 	
 	<query name="Project.findAllWithActive">
 		FROM Project project
 	    WHERE active = :active
 	    ORDER BY name
 	</query>	
+
+	<query name="Project.findAllActiveDefault">
+		FROM Project project
+	    WHERE active = true AND defaultProject = true
+	</query>	
+	
+	<query name="ProjectAssignment.findProjectForUser">
+		FROM ProjectAssignment pa
+		WHERE pa.project.active = true AND
+			  pa.project.projectId = :projectId AND
+			  pa.user.userId = :userId
+	</query>	
+
+	<query name="ProjectAssignment.findProjectsForUser">
+		FROM ProjectAssignment pa
+		WHERE pa.project.active = true AND
+			  pa.user.userId = :userId
+		ORDER BY pa.dateStart, pa.project.name
+	</query>	
+
+
 </hibernate-mapping>

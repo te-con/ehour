@@ -94,4 +94,47 @@ public class DateUtilTest extends TestCase
 		assertFalse(inRange);
 		
 	}
+	
+	public void testIsDateRangeOverlaps()
+	{
+		DateRange rangeA = new DateRange(new GregorianCalendar(2006, 5, 5).getTime(),
+	 									new GregorianCalendar(2006, 6, 5).getTime());
+		
+		DateRange rangeB = new DateRange(new GregorianCalendar(2007, 5, 5).getTime(),
+	 									new GregorianCalendar(2007, 6, 5).getTime());
+		
+		// rangeB after rangeA
+		assertFalse(DateUtil.isDateRangeOverlaps(rangeA, rangeB));
+		
+		// rangeB overlaps after rangeA
+		rangeB = new DateRange(new GregorianCalendar(2006, 5, 20).getTime(),
+								new GregorianCalendar(2007, 6, 5).getTime());
+		assertTrue(DateUtil.isDateRangeOverlaps(rangeA, rangeB));
+		assertTrue(DateUtil.isDateRangeOverlaps(rangeB, rangeA));
+
+		// rangeB in between rangeA
+		rangeB = new DateRange(new GregorianCalendar(2006, 5, 20).getTime(),
+								new GregorianCalendar(2006, 5, 25).getTime());
+		assertTrue(DateUtil.isDateRangeOverlaps(rangeA, rangeB));
+		assertTrue(DateUtil.isDateRangeOverlaps(rangeB, rangeA));
+		
+		// rangeB overlaps before rangeA
+		rangeB = new DateRange(new GregorianCalendar(2006, 4, 20).getTime(),
+								new GregorianCalendar(2006, 5, 25).getTime());
+		assertTrue(DateUtil.isDateRangeOverlaps(rangeA, rangeB));
+		assertTrue(DateUtil.isDateRangeOverlaps(rangeB, rangeA));
+
+		// rangeB before rangeA
+		rangeB = new DateRange(new GregorianCalendar(2006, 4, 20).getTime(),
+								new GregorianCalendar(2006, 4, 30).getTime());
+		assertFalse(DateUtil.isDateRangeOverlaps(rangeA, rangeB));
+		assertFalse(DateUtil.isDateRangeOverlaps(rangeB, rangeA));
+
+		// rangeB overlaps on date
+		rangeB = new DateRange(new GregorianCalendar(2006, 4, 20).getTime(),
+								new GregorianCalendar(2006, 5, 5).getTime());
+		assertTrue(DateUtil.isDateRangeOverlaps(rangeA, rangeB));
+		assertTrue(DateUtil.isDateRangeOverlaps(rangeB, rangeA));
+
+	}
 }

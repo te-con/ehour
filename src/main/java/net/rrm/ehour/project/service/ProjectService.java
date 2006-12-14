@@ -23,11 +23,14 @@
 
 package net.rrm.ehour.project.service;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 
 public interface ProjectService
 {
@@ -60,11 +63,39 @@ public interface ProjectService
 	public void deleteProject(Integer projectId) throws ParentChildConstraintException;
 	
 	/**
-	 * Get active projects for user
+	 * Assign user to project
+	 * @param projectAssignment
+	 */
+	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException;
+	
+	/**
+	 * Get active projects for user on date
 	 * @param userId
-	 * @param dateStart
-	 * @param dateEnd
+	 * @param date
 	 * @return
 	 */
-	public List<Project> getActiveProjectsForUser(Integer userId, Calendar dateStart, Calendar dateEnd);
+	public List<ProjectAssignment> getProjectsForUser(Integer userId, Date date);
+	
+	/**
+	 * Get active projects for user in date range 
+	 * @param userId
+	 * @param dateRange
+	 * @return
+	 */
+	public List<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange);
+	
+	/**
+	 * Get all projects for user where project itself is still active
+	 * @param userId
+	 * @return
+	 */
+	public List<ProjectAssignment> getAllProjectsForUser(Integer userId);
+	
+	
+	/**
+	 * Get project assignment
+	 * @param assignmentId
+	 * @return
+	 */
+	public ProjectAssignment getProjectAssignment(Integer assignmentId);
 }

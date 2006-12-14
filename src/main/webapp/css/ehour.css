@@ -71,6 +71,19 @@ H3
 	margin: 0px;
 }
 
+.contentTable TH
+{
+	padding: 0px;
+	margin: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica;
+	border: 0px;
+	border-bottom: #660000 1px solid;
+	font-size: 9pt;
+	text-align: left;
+	color: #220000;
+}
+
+
 .contentTable TD
 {
 	border: 0px;

@@ -26,7 +26,9 @@ package net.rrm.ehour;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import net.rrm.ehour.customer.dao.CustomerDAOTest;
+import net.rrm.ehour.project.dao.ProjectAssignmentDAOTest;
 import net.rrm.ehour.project.dao.ProjectDAOTest;
+import net.rrm.ehour.project.service.ProjectServiceIntegrationTest;
 import net.rrm.ehour.report.dao.ReportDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
 import net.rrm.ehour.user.dao.UserDAOTest;
@@ -42,6 +44,9 @@ public class DAOTests
 		
 		
 		//$JUnit-BEGIN$
+		suite.addTestSuite(UserServiceIntegrationTest.class);
+		suite.addTestSuite(ProjectServiceIntegrationTest.class);
+
 		suite.addTestSuite(UserDAOTest.class);
 		suite.addTestSuite(UserDepartmentDAOTest.class);
 		suite.addTestSuite(TimesheetDAOTest.class);
@@ -49,8 +54,8 @@ public class DAOTests
 		suite.addTestSuite(CustomerDAOTest.class);
 		suite.addTestSuite(UserRoleDAOTest.class);
 		suite.addTestSuite(ProjectDAOTest.class);
+		suite.addTestSuite(ProjectAssignmentDAOTest.class);
 		
-		suite.addTestSuite(UserServiceIntegrationTest.class);
 		//$JUnit-END$
 		return suite;
 	}

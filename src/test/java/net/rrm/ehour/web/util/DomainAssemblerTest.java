@@ -23,12 +23,16 @@
 
 package net.rrm.ehour.web.util;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 import net.rrm.ehour.web.admin.project.form.ProjectForm;
@@ -126,5 +130,27 @@ public class DomainAssemblerTest extends TestCase
 		assertEquals("name", prj.getName());
 		assertEquals("projectcode", prj.getProjectCode());
 		assertEquals(new Integer(2), prj.getProjectId());
+	}
+	
+	public void testGetProjectAssignment()
+	{
+		ProjectAssignmentForm paf = new ProjectAssignmentForm();
+		Date date = new Date();
+		
+		paf.setAssignmentId(1);
+		paf.setDateEnd(date);
+		paf.setDateStart(date);
+		paf.setHourlyRate(90f);
+		paf.setProjectId(2);
+		paf.setUserId(3);
+		
+		ProjectAssignment pa = DomainAssembler.getProjectAssignment(paf);
+		
+		assertEquals(new Integer(3), pa.getUser().getUserId());
+		assertEquals(new Integer(2), pa.getProject().getProjectId());
+		assertEquals(90f, pa.getHourlyRate());
+		assertEquals(date, pa.getDateStart());
+		assertEquals(date, pa.getDateEnd());
+		assertEquals(new Integer(1), pa.getAssignmentId());
 	}
 }

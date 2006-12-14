@@ -3,27 +3,10 @@ var	cancelProjectCheck = false;
 var formBind;
 var timer;
 
-// extend FormBind to add the validation call
-dojo.lang.extend(dojo.io.FormBind, {
-	onSubmit: function(/*DOMNode*/form)
-	{
-		return validateForm('ProjectForm');
-	}});
-
-// display and trigger fade in status message
-function setStatusMessage(statusMsg)
-{
-	document.getElementById('statusMessage').innerHTML = statusMsg;
-	dojo.html.setOpacity(dojo.byId('statusMessage'), 1);
-	
-	setTimeout("dojo.lfx.html.fadeOut('statusMessage', 800).play()", 1000);
-}
-
-
-
 // validate form
 function validateForm(formId)
 {
+	formId = 'ProjectForm';
 	form = document.getElementById(formId);
 	
 	var validationRules = new Array(new Array("name", "projectNameError", nameRequired),
@@ -34,7 +17,7 @@ function validateForm(formId)
 	
 	if (isValid)
 	{
-		document.getElementById('statusMessage').innerHTML = sendingData;
+		showLoadingData();
 	}
 
 	return isValid;
@@ -82,6 +65,7 @@ function projectListReceived(type, xml, evt)
 function editProject(editId)
 {
 	cancelProjectCheck = true;
+	showLoadingData();
 	
     dojo.io.bind({
                    url: 'getProject.do',
@@ -94,6 +78,7 @@ function editProject(editId)
 
 function showAddForm()
 {
+	showLoadingData();
        dojo.io.bind({
                       url: 'addProjectForm.do',
                       handler: formChanged
@@ -105,6 +90,8 @@ function showAddForm()
 // form changed	
   function formChanged(type, xml, evt)
   {
+	hideLoadingData();
+	
   	if (type == 'error')
   	{
   		alert(ajaxError);

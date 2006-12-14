@@ -49,6 +49,12 @@ public interface GenericDAO <T extends DomainObject, PK extends Serializable>
 	public void delete(T domObj);
 	
 	/**
+	 * Delete on primary key
+	 * @param pk
+	 */
+	public void delete(PK pk);
+	
+	/**
 	 * Persist domain object
 	 * @param domObj
 	 * @return

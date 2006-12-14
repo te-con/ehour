@@ -29,6 +29,11 @@ package net.rrm.ehour.exception;
 
 public class PasswordEmptyException extends Exception
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2937843539835891288L;
+
 	public PasswordEmptyException()
     {
         super();

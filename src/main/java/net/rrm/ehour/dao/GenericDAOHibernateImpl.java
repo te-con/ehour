@@ -78,6 +78,15 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	}
 	
 	/**
+	 * 
+	 */
+	public void delete(PK id)
+	{
+		T dom = findById(id);
+		delete(dom);
+	}
+	
+	/**
 	 * Persist domain object
 	 * @param domObj
 	 * @return

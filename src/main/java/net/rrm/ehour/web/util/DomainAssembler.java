@@ -28,9 +28,11 @@ import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 import net.rrm.ehour.web.admin.project.form.ProjectForm;
@@ -152,5 +154,33 @@ public class DomainAssembler
 		prj.setProjectCode(pf.getProjectCode());
 
 		return prj;
+	}
+	
+	/**
+	 * ProjectAssignmentForm to ProjectAssignment
+	 * @param paf
+	 * @return
+	 */
+	
+	public static ProjectAssignment getProjectAssignment(ProjectAssignmentForm paf)
+	{
+		ProjectAssignment pa = new ProjectAssignment();
+
+		if (paf.getAssignmentId() > 0)
+		{
+			pa.setAssignmentId(paf.getAssignmentId());
+		}		
+		
+		pa.setDateStart(paf.getDateStart());
+		pa.setDateEnd(paf.getDateEnd());
+		pa.setHourlyRate(paf.getHourlyRate());
+		
+		User user = new User(paf.getUserId());
+		pa.setUser(user);
+		
+		Project prj = new Project(paf.getProjectId());
+		pa.setProject(prj);
+
+		return pa;
 	}
 }

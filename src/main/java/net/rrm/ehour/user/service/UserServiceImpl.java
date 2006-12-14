@@ -31,6 +31,7 @@ import java.util.Set;
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
@@ -57,7 +58,6 @@ public class UserServiceImpl implements UserService
 	private	UserDepartmentDAO	userDepartmentDAO;
 	private	UserRoleDAO			userRoleDAO;
 	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
-
 
 
 	/**
@@ -283,16 +283,25 @@ public class UserServiceImpl implements UserService
 		{
 			shaPass = DigestUtils.sha(user.getPassword());
 			user.setPassword(new String(Hex.encodeHex(shaPass)));
+			
+			// new users
+			if (user.getUserId() == null)
+			{
+				addDefaultProjects(user);
+			}
+			
 			userDAO.persist(user);
 			
 			return user;
 		}
 	}
 
-
-	public boolean doesUsernameExist(String username)
+	/**
+	 * Add default projects to user
+	 * @param user
+	 */
+	private void addDefaultProjects(User user)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		// @todo
 	}
 }

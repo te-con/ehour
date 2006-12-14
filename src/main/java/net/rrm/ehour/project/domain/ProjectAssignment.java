@@ -120,10 +120,17 @@ public class ProjectAssignment extends DomainObject
 		return new DateRange(dateStart, dateEnd);
 	}
 	
+	public void setDateRange(DateRange dateRange)
+	{
+		setDateStart(dateRange.getDateStart());
+		setDateEnd(dateRange.getDateEnd());
+	}
+	
 	public Date getDateStart()
 	{
 		return this.dateStart;
 	}
+	
 
 	public void setDateStart(Date dateStart)
 	{

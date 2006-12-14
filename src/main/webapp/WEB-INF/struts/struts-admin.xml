@@ -5,10 +5,11 @@
 
 	<!-- Action forms -->
 	<form-beans>
-		<form-bean name="UserDepartmentForm" type="net.rrm.ehour.web.admin.dept.form.UserDepartmentForm" /> 
-		<form-bean name="CustomerForm" type="net.rrm.ehour.web.admin.customer.form.CustomerForm" /> 		
-		<form-bean name="UserForm" type="net.rrm.ehour.web.admin.user.form.UserForm" />		
-		<form-bean name="ProjectForm" type="net.rrm.ehour.web.admin.project.form.ProjectForm" />				
+		<form-bean name="UserDepartmentForm" type="net.rrm.ehour.web.admin.dept.form.UserDepartmentForm" />
+		<form-bean name="CustomerForm" type="net.rrm.ehour.web.admin.customer.form.CustomerForm" />
+		<form-bean name="UserForm" type="net.rrm.ehour.web.admin.user.form.UserForm" />
+		<form-bean name="ProjectForm" type="net.rrm.ehour.web.admin.project.form.ProjectForm" />
+		<form-bean name="ProjectAssignmentForm" type="net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm" />
 	</form-beans>
 	
 	<!-- Global exceptions -->
@@ -158,6 +159,41 @@
 				type="net.rrm.ehour.web.admin.project.action.EditAction">
 			<forward name="success" path=".ehour.admin.project.filteredList" />
 		</action>				
+				
+				
+				
+
+
+		<!-- List all users for project assignments -->
+		<action name="UserForm"
+				path="/assignment/index" 
+				type="net.rrm.ehour.web.admin.user.action.ListUsersAction" 
+				>
+			<forward name="fullList" path=".ehour.admin.assignment.fullList" />
+			<forward name="filteredList" path=".ehour.admin.user.filteredList" />			
+		</action>
+				
+		<!-- Show add project assignment form -->
+		<action name="ProjectAssignmentForm"
+				path="/assignment/getAssignmentsForUser" 
+				type="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction"
+				parameter="addOnly">
+			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
+		</action>
+				
+		<!-- Show edit project assignment form -->
+		<action name="ProjectAssignmentForm"
+				path="/assignment/getAssignment" 
+				type="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction">
+			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
+		</action>
+
+		<!-- Edit project assignment -->
+		<action name="ProjectAssignmentForm"
+				path="/assignment/editAssignment" 
+				type="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction">
+			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
+		</action>
 				
 	</action-mappings>
 	

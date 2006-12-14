@@ -35,7 +35,7 @@
 
 		<img src="<c:url value="/img/ehour.gif" />" alt="eHour">
 		<table class="login_table" cellspacing="0">
-			<form name="loginForm" method="post" action="<c:url value='j_acegi_security_check'/>">
+			<form name="loginForm" method="post" action="<c:url value="/security_check.jsp"/>">
 
     <c:if test="${not empty param.login_error}">
 		<tr>

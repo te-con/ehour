@@ -25,4 +25,10 @@ public interface ProjectDAO extends GenericDAO<Project, Integer>
 	 * @return
 	 */
 	public List<Project> findAll(boolean active);
+	
+	/**
+	 * Get all active default projects
+	 * @return
+	 */
+	public List<Project> findDefaultProjects();
 }

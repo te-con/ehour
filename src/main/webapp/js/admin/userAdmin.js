@@ -3,27 +3,11 @@ var	cancelUserCheck = false;
 var formBind;
 var timer;
 
-// extend FormBind to add the validation call
-dojo.lang.extend(dojo.io.FormBind, {
-	onSubmit: function(/*DOMNode*/form)
-	{
-		return validateForm('UserForm');
-	}});
-
-// display and trigger fade in status message
-function setStatusMessage(statusMsg)
-{
-	document.getElementById('statusMessage').innerHTML = statusMsg;
-	dojo.html.setOpacity(dojo.byId('statusMessage'), 1);
-	
-	setTimeout("dojo.lfx.html.fadeOut('statusMessage', 800).play()", 1000);
-}
-
-
 
 // validate form
-function validateForm(formId)
+function validateForm()
 {
+	formId = 'UserForm';
 	form = document.getElementById(formId);
 	
 	var validationRules = new Array(new Array("username", "userNameError", usernameRequired),
@@ -54,7 +38,7 @@ function validateForm(formId)
 
 	if (isValid)
 	{
-		document.getElementById('statusMessage').innerHTML = sendingData;
+		showLoadingData();
 	}
 
 	return isValid;
@@ -153,7 +137,7 @@ function userListReceived(type, xml, evt)
 function editUser(editId)
 {
 	cancelUserCheck = true;
-	
+	showLoadingData();
     dojo.io.bind({
                    url: 'getUser.do',
                    handler: formChanged,
@@ -165,9 +149,10 @@ function editUser(editId)
 
 function showAddForm()
 {
-       dojo.io.bind({
-                      url: 'addUserForm.do',
-                      handler: formChanged
+	showLoadingData();
+	
+    dojo.io.bind({url: 'addUserForm.do',
+                  handler: formChanged
                    });  
                    
 	return false;    
@@ -176,6 +161,7 @@ function showAddForm()
 // form changed	
   function formChanged(type, xml, evt)
   {
+  	hideLoadingData();
   	if (type == 'error')
   	{
   		alert(ajaxError);

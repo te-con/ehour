@@ -9,28 +9,23 @@
 
 	<tr>
 		<td rowspan=5>&nbsp;&nbsp;</td>
-		<td><a href="<c:url value="/eh/admin/dept/index.do" />"><fmt:message
-			key="admin.nav.departments" /></a></td>
+		<td><a href="<c:url value="/eh/admin/dept/index.do" />"><fmt:message key="admin.nav.departments" /></a></td>
 	</tr>
 
 
 	<tr>
-		<td><a href="<c:url value="/eh/admin/user/index.do" />"><fmt:message
-			key="admin.nav.users" /></a></td>
+		<td><a href="<c:url value="/eh/admin/user/index.do" />"><fmt:message key="admin.nav.users" /></a></td>
 	</tr>
 
 	<tr>
-		<td><a href="<c:url value="/eh/admin/customer/index.do" />"><fmt:message
-			key="admin.nav.customers" /></a></td>
+		<td><a href="<c:url value="/eh/admin/customer/index.do" />"><fmt:message key="admin.nav.customers" /></a></td>
 	</tr>
 
 	<tr>
-		<td><a href="<c:url value="/eh/admin/project/index.do" />"><fmt:message
-			key="admin.nav.projects" /></a></td>
+		<td><a href="<c:url value="/eh/admin/project/index.do" />"><fmt:message key="admin.nav.projects" /></a></td>
 	</tr>
 
 	<tr>
-		<td><a href="<c:url value="/eh/admin/assignments/index.do" />"><fmt:message
-			key="admin.nav.assignments" /></a></td>
+		<td><a href="<c:url value="/eh/admin/assignment/index.do" />"><fmt:message key="admin.nav.assignments" /></a></td>
 	</tr>
 </table>

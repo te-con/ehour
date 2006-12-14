@@ -94,11 +94,26 @@ public class DateUtil
 	public static boolean isDateWithinRange(Date date, DateRange dateRange)
 	{
 		boolean	withinRange = false;
-//		Date	date = cal.getTime();
 		
 		withinRange =  !(dateRange.getDateStart().after(date) ||
 						 dateRange.getDateEnd().before(date));
 		
 		return withinRange;
+	}
+	
+	/**
+	 * Check whether two dateranges overlap eachother
+	 * @param rangeA
+	 * @param rangeB
+	 * @return
+	 */
+	public static boolean isDateRangeOverlaps(DateRange rangeA, DateRange rangeB)
+	{
+		boolean	overlaps = false;
+		
+		overlaps = rangeA.getDateEnd().after(rangeB.getDateStart()) &&
+				   rangeA.getDateStart().before(rangeB.getDateEnd());
+		
+		return overlaps;
 	}
 }

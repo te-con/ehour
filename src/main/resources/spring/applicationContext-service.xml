@@ -8,13 +8,14 @@
 						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
 	default-autowire="byName">
 
-	<!-- the transactional advice (i.e. what 'happens'; see the <aop:advisor/> bean below) -->
+	<!-- the transactional advice  -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<!-- the transactional semantics... -->
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
 			<tx:method name="persist*" propagation="REQUIRED" />
-			<tx:method name="delete*" />			
+			<tx:method name="delete*" propagation="REQUIRED" />			
+			<tx:method name="assign*" propagation="REQUIRED" />						
 		</tx:attributes>
 	</tx:advice>
 

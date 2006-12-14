@@ -33,7 +33,7 @@
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="authenticationFailureUrl" value="/login.jsp?login_error=1"/>
 		<property name="defaultTargetUrl" value="/"/>
-		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
+		<property name="filterProcessesUrl" value="/security_check.jsp"/>
 		<property name="rememberMeServices" ref="rememberMeServices"/> 
 	</bean>
    

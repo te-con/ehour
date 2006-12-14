@@ -55,7 +55,9 @@
     </bean>	
 	
 	<!--  UserDAO -->
-	<bean id="userDAO" class="net.rrm.ehour.user.dao.UserDAOHibernateImpl" parent="abstractDAOTarget" />
+	<bean id="userDAO" 
+			class="net.rrm.ehour.user.dao.UserDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
 
 	<!-- Timesheet DAO -->
 	<bean id="timesheetDAO" class="net.rrm.ehour.timesheet.dao.TimesheetDAOHibernateImpl">
@@ -68,14 +70,28 @@
 	</bean>
 
 	<!-- User department DAO -->
-	<bean id="userDepartmentDAO" class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl" parent="abstractDAOTarget" />
+	<bean id="userDepartmentDAO" 
+			class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
 
 	<!-- Customer DAO -->
-	<bean id="customerDAO" class="net.rrm.ehour.customer.dao.CustomerDAOHibernateImpl" parent="abstractDAOTarget" />
+	<bean id="customerDAO" 
+			class="net.rrm.ehour.customer.dao.CustomerDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
 	
 	<!-- UserRole DAO -->
-	<bean id="userRoleDAO" class="net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl" parent="abstractDAOTarget" />
+	<bean id="userRoleDAO" 
+			class="net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
 
 	<!-- Project DAO -->
-	<bean id="projectDAO" class="net.rrm.ehour.project.dao.ProjectDAOHibernateImpl" parent="abstractDAOTarget" />
+	<bean id="projectDAO" 
+			class="net.rrm.ehour.project.dao.ProjectDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
+
+	<!-- ProjectAssignment DAO -->
+	<bean id="projectAssignmentDAO"
+		 	class="net.rrm.ehour.project.dao.ProjectAssignmentDAOHibernateImpl" 
+		 	parent="abstractDAOTarget" />
+
 </beans>

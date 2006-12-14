@@ -48,4 +48,13 @@
 	<bean name="/eh/admin/project/getProject" class="net.rrm.ehour.web.admin.project.action.GetProjectAction" />		
 	
 	<bean name="/eh/admin/project/editProject" class="net.rrm.ehour.web.admin.project.action.EditProjectAction" />
+	
+	<bean name="/eh/admin/assignment/index" class="net.rrm.ehour.web.admin.user.action.ListUsersAction" />
+	
+	<bean name="/eh/admin/assignment/getAssignmentsForUser" class="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction" />
+	
+	<bean name="/eh/admin/assignment/getAssignment" class="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction" />
+	
+	<bean name="/eh/admin/assignment/editAssignment" class="net.rrm.ehour.web.admin.assignment.action.EditAssignmentAction" />
+
 </beans>

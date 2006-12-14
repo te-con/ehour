@@ -36,6 +36,10 @@ public class Project extends DomainObject
 	{
 	}
 
+	public Project(Integer projectId)
+	{
+		this.projectId = projectId;
+	}
 	
 	public String getFullname()
 	{

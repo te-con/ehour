@@ -10,10 +10,15 @@
 	var codeRequired = "<fmt:message key="admin.project.errorCodeNotNull" />";
 	var formSuccess = "<fmt:message key="admin.general.formSuccess" />";
 	var sendingData = "<fmt:message key="general.submitting" />";
+	var loadingMsg = "<fmt:message key="general.loading" />";	
 </script>
 
+<script src="../../../js/dojo.js" type="text/javascript"></script>
 <script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/projectAdmin.js" />" type="text/javascript"></script>
+
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>

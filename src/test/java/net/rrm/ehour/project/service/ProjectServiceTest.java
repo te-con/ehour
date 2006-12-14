@@ -30,13 +30,17 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
+import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.user.domain.User;
 
 /**
  *  
@@ -45,7 +49,8 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 public class ProjectServiceTest extends TestCase
 {
 	private	ProjectService	projectService;
-	private	ProjectDAO		projectDAO;
+	private	ProjectDAO				projectDAO;
+	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	
 	/**
 	 * 
@@ -56,8 +61,13 @@ public class ProjectServiceTest extends TestCase
 
 		projectDAO = createMock(ProjectDAO.class);
 		((ProjectServiceImpl)projectService).setProjectDAO(projectDAO);
+		
+		projectAssignmentDAO = createMock(ProjectAssignmentDAO.class);
+		((ProjectServiceImpl)projectService).setProjectAssignmentDAO(projectAssignmentDAO);
 	}
+
 	
+	//
 	public void testGetAllProjects()
 	{
 		expect(projectDAO.findAll(true))
@@ -127,7 +137,7 @@ public class ProjectServiceTest extends TestCase
 	{
 		Project prj = new Project();
 		ProjectAssignment pa = new ProjectAssignment();
-		Set pas = new HashSet();
+		Set<ProjectAssignment> pas = new HashSet();
 		pas.add(pa);
 		prj.setProjectAssignments(pas);
 		
@@ -147,27 +157,15 @@ public class ProjectServiceTest extends TestCase
 		}
 	}
 	
-	public void testDeleteProject()
+	public void testGetProjectAssignment()
 	{
-		Project prj = new Project();
-		ProjectAssignment pa = new ProjectAssignment();
-		Set pas = new HashSet();
-		prj.setProjectAssignments(pas);
-		
-		expect(projectDAO.findById(new Integer(1)))
-			.andReturn(prj);
-		
-		projectDAO.delete(prj);
+		expect(projectAssignmentDAO.findById(new Integer(1)))
+			.andReturn(null);
 
-		replay(projectDAO);
+		replay(projectAssignmentDAO);
 		
-		try
-		{
-			projectService.deleteProject(1);
-			verify(projectDAO);
-		} catch (ParentChildConstraintException e)
-		{
-			fail("Constraint thrown");
-		}
+		projectService.getProjectAssignment(1);
+		
+		verify(projectAssignmentDAO);
 	}	
 }

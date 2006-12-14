@@ -15,11 +15,15 @@
 	var noPasswordMatch=  "<fmt:message key="admin.user.errorConfirmPassNeeded" />";
 	var formSuccess = "<fmt:message key="admin.general.formSuccess" />";
 	var sendingData = "<fmt:message key="general.submitting" />";
-
+	var loadingMsg = "<fmt:message key="general.loading" />";	
 </script>
 
+<script src="../../../js/dojo.js" type="text/javascript"></script>
 <script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/userAdmin.js" />" type="text/javascript"></script>
+
 
 
 <table CLASS="contentTable" CELLSPACING=2>
@@ -28,13 +32,13 @@
 			<table CLASS="contentTable" CELLSPACING=2 width="100%">
 				<tr>
 					<td valign="top"><fmt:message key="admin.user.filter" />:</td>
-					<td><form><input class="normtxt" type="text" name="filter"
+					<td><form onSubmit="return false;"><input class="normtxt" type="text" name="filter"
 								size="30" id="filterInput"></form>
 					</td>
 				</tr>
 
 				<tr>
-					<td valign="top"><fmt:message key="admin.user.hideInactive" />:
+					<td colspan="2" valign="top"><fmt:message key="admin.user.hideInactive" />:
 					<input class="normtxt" type="checkbox" id="hideInactive" name="hideInactive" checked></td>
 				</tr>
 			</table>
@@ -49,7 +53,7 @@
 		<td>
 			<div class="adminListScroll">
 				<span id="listUsersSpan">
-					<tiles:insert page="listUsers.jsp" />
+					<tiles:insert page="../user/listUsers.jsp" />
 				</span>
 			</div>
 		</td>

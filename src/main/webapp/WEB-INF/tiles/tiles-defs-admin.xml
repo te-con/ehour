@@ -4,7 +4,6 @@
 
     <!-- Admin base layout -->
     <definition name=".ehour.admin.baseLayout" extends=".ehour.baseLayout">
-       	<put name="headJs" value="/js/dojo.jsp" />
         <put name="pageTitle" value="eHour - admin" />
         <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
         <put name="calendar_small" value="/WEB-INF/jsp/nav/navAdmin.jsp" />
@@ -71,5 +70,15 @@
     <!-- Admin project form  -->
     <definition name=".ehour.admin.project.projectForm" path="/WEB-INF/jsp/admin/project/projectForm.jsp" />
 
+
+
+
+    <!-- Admin assignment index -->
+    <definition name=".ehour.admin.assignment.fullList" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/assignment/index.jsp" />
+    </definition>
+
+    <!-- Admin assignment form  -->
+    <definition name=".ehour.admin.assignment.assignmentForm" path="/WEB-INF/jsp/admin/assignment/assignmentForm.jsp" />
     
 </tiles-definitions>

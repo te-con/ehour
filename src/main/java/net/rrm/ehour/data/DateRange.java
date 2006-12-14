@@ -44,8 +44,8 @@ public class DateRange
 	
 	public DateRange(Date dateStart, Date dateEnd)
 	{
-		this.dateStart = dateStart;
-		this.dateEnd = dateEnd;
+		setDateStart(dateStart);
+		setDateEnd(dateEnd);
 	}
 
 	public Date getDateEnd()

@@ -47,10 +47,15 @@ public class User  extends DomainObject implements Comparable
 	{
 	}
 
-	/** minimal constructor */
+	/** minimal constructors */
 	public User(UserDepartment userDepartment)
 	{
 		this.userDepartment = userDepartment;
+	}
+	
+	public User(Integer userId)
+	{
+		this.userId = userId;
 	}
 
 	public User(String username, String password)
@@ -133,7 +138,7 @@ public class User  extends DomainObject implements Comparable
 		this.email = email;
 	}
 
-	public Set getUserRoles()
+	public Set<UserRole> getUserRoles()
 	{
 		return this.userRoles;
 	}
