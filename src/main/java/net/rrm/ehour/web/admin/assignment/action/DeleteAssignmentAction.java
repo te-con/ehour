@@ -1,5 +1,5 @@
 /**
- * Created on 14-dec-2006
+ * Created on 15-dec-2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -30,13 +30,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
-import net.rrm.ehour.web.util.DomainAssembler;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -46,7 +46,7 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
+public class DeleteAssignmentAction extends AdminProjectAssignmentBaseAction
 {
 	/**
 	 * 
@@ -56,20 +56,10 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 	{
 		ActionForward fwd = mapping.findForward("success");
 		ProjectAssignmentForm paf = (ProjectAssignmentForm)form;
-		ProjectAssignment	pa;
 		User				user;
 		List<Project>		allProjects;
+		ProjectAssignment	pa;
 		List<ProjectAssignment>	assignments;
-		
-		try
-		{
-			pa = DomainAssembler.getProjectAssignment(paf);
-		} catch (ParseException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			throw e1;
-		}
 		
 		response.setContentType("text/xml");
 		response.setHeader("Cache-Control", "no-cache");
@@ -79,16 +69,18 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 		
 		try
 		{
-			projectService.assignUserToProject(pa);
+			projectService.deleteProjectAssignment(paf.getAssignmentId());
 			
 			// upon success, display new assignment form
 			pa = new ProjectAssignment();
 			pa.setDateRange(DateUtil.calendarToMonthRange(new GregorianCalendar()));
 		}
-		catch (ProjectAlreadyAssignedException e)
+		catch (ParentChildConstraintException e)
 		{
 			request.setAttribute("error", e.getMessage());
 			e.printStackTrace();
+			
+			pa = projectService.getProjectAssignment(paf.getAssignmentId());
 		}
 
 		assignments = projectService.getAllProjectsForUser(paf.getUserId());

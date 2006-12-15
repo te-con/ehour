@@ -108,4 +108,13 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	{
 		return (T)getHibernateTemplate().get(type, id);
 	}	
+	
+	/**
+	 * Merge
+	 * @param domobj
+	 */
+	public void merge(T domobj)
+	{
+		getHibernateTemplate().merge(domobj);
+	}
 }

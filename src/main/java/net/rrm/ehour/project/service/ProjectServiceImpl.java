@@ -34,6 +34,7 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
@@ -46,6 +47,7 @@ public class ProjectServiceImpl implements ProjectService
 {
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
+	private	TimesheetDAO			timesheetDAO;
 	private	Logger					logger = Logger.getLogger(ProjectServiceImpl.class);
 	
 	public void setProjectAssignmentDAO(ProjectAssignmentDAO dao)
@@ -56,8 +58,13 @@ public class ProjectServiceImpl implements ProjectService
 	public void setProjectDAO(ProjectDAO dao)
 	{
 		this.projectDAO = dao;
-		
 	}
+	
+	public void setTimesheetDAO(TimesheetDAO dao)
+	{
+		this.timesheetDAO = dao;
+	}
+	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getActiveProjectsForUser(java.lang.Integer, java.util.Calendar, java.util.Calendar)
 	 */
@@ -136,8 +143,16 @@ public class ProjectServiceImpl implements ProjectService
 		{
 			throw new ProjectAlreadyAssignedException("Project already assigned for date range");
 		}
-		
-		projectAssignmentDAO.persist(projectAssignment);
+
+		// use merge as the session already contains an attached PA with the same id when checking for dupes
+		if (projectAssignment.getAssignmentId() != null)
+		{
+			projectAssignmentDAO.merge(projectAssignment);
+		}
+		else
+		{
+			projectAssignmentDAO.persist(projectAssignment);
+		}
 		
 		return projectAssignment;
 	}
@@ -160,7 +175,7 @@ public class ProjectServiceImpl implements ProjectService
 		for (ProjectAssignment assignment : assignments)
 		{
 			// if this is an update and the assignment is the same, skip it
-			if (assignment.equals(projectAssignment.getAssignmentId()))
+			if (assignment.getAssignmentId().equals(projectAssignment.getAssignmentId()))
 			{
 				alreadyAssigned = false;
 				continue;
@@ -207,9 +222,36 @@ public class ProjectServiceImpl implements ProjectService
 
 	/**
 	 * Get project assignment on id
+	 * 
 	 */
 	public ProjectAssignment getProjectAssignment(Integer assignmentId)
 	{
-		return projectAssignmentDAO.findById(assignmentId);
+		ProjectAssignment 	assignment;
+		int					timesheetEntries;
+		
+		assignment = projectAssignmentDAO.findById(assignmentId);
+		timesheetEntries = timesheetDAO.getTimesheetEntryCountForAssignment(assignmentId);
+		
+		assignment.setDeletable(timesheetEntries == 0);
+		
+		return assignment;
+	}
+
+	/**
+	 * 
+	 */
+	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException
+	{
+		ProjectAssignment pa = getProjectAssignment(assignmentId);
+		
+		if (pa.isDeletable())
+		{
+			projectAssignmentDAO.delete(pa);
+		}
+		else
+		{
+			throw new ParentChildConstraintException("Timesheet entries booked on assignment.");
+		}
+		
 	}
 }

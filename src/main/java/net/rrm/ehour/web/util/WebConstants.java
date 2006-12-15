@@ -10,8 +10,6 @@ public class WebConstants
 	public final static	String	CALENDAR_YEAR_KEY = "cps_year";
 	public final static	String	CALENDAR_MONTH_KEY = "cps_month";
 		
-	public final static String REQUEST_NAVCAL_DATA = "navCalData";
-	public final static String REQUEST_NAVCAL_CURCAL = "navCalCurCalMonth";
 	public final static String REQUEST_NAVCAL_PREV = "navCalPrevMonth";
 	public final static String REQUEST_NAVCAL_NEXT = "navCalNextMonth";
 	public final static String REQUEST_NAVCAL_URL = "navCalURL";

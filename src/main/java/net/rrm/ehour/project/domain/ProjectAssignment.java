@@ -33,6 +33,9 @@ public class ProjectAssignment extends DomainObject
 	private Date dateEnd;
 
 	private String description;
+	
+	// @todo move to a VO - someday..
+	private	boolean deletable;
 
 	// Constructors
 
@@ -190,5 +193,14 @@ public class ProjectAssignment extends DomainObject
 	{
 		return new HashCodeBuilder().append(getAssignmentId()).toHashCode();
 	}
-	
+
+	public boolean isDeletable()
+	{
+		return deletable;
+	}
+
+	public void setDeletable(boolean deletable)
+	{
+		this.deletable = deletable;
+	}
 }

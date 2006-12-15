@@ -40,10 +40,11 @@ public class ProjectAssignmentForm extends ActionForm
 	
 	private	Integer	userId;
 	private	Integer	assignmentId;
-	private	Date	dateStart;
-	private	Date	dateEnd;
+	private	String	dateStart;
+	private	String	dateEnd;
 	private	Integer	projectId;
 	private	Float	hourlyRate;
+	private	String	description;
 
 	/**
 	 * @return the userId
@@ -71,25 +72,6 @@ public class ProjectAssignmentForm extends ActionForm
 		this.assignmentId = assignmentId;
 	}
 
-	public Date getDateEnd()
-	{
-		return dateEnd;
-	}
-
-	public void setDateEnd(Date dateEnd)
-	{
-		this.dateEnd = dateEnd;
-	}
-
-	public Date getDateStart()
-	{
-		return dateStart;
-	}
-
-	public void setDateStart(Date dateStart)
-	{
-		this.dateStart = dateStart;
-	}
 
 	public Integer getProjectId()
 	{
@@ -109,6 +91,36 @@ public class ProjectAssignmentForm extends ActionForm
 	public void setHourlyRate(Float hourlyRate)
 	{
 		this.hourlyRate = hourlyRate;
+	}
+
+	public String getDateEnd()
+	{
+		return dateEnd;
+	}
+
+	public void setDateEnd(String dateEnd)
+	{
+		this.dateEnd = dateEnd;
+	}
+
+	public String getDateStart()
+	{
+		return dateStart;
+	}
+
+	public void setDateStart(String dateStart)
+	{
+		this.dateStart = dateStart;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
 	}
 	
 }

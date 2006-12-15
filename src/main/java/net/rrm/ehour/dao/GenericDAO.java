@@ -68,4 +68,5 @@ public interface GenericDAO <T extends DomainObject, PK extends Serializable>
 	 */
 	public T findById(PK id);
 	
+	public void merge(T domoj);
 }

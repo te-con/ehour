@@ -31,7 +31,6 @@ import java.util.Set;
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;

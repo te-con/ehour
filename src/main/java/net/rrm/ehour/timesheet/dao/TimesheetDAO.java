@@ -26,6 +26,8 @@ package net.rrm.ehour.timesheet.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.dto.BookedDay;
 
 public interface TimesheetDAO
 {
@@ -36,7 +38,14 @@ public interface TimesheetDAO
 	 * @param dateEnd
 	 * @return List with TimesheetEntry domain objects
 	 */
-	public List getTimesheetEntriesInRange(Integer userId, DateRange dateRange);
+	public List<TimesheetEntry> getTimesheetEntriesInRange(Integer userId, DateRange dateRange);
+	
+	/**
+	 * Get timesheet entry count for an assignment
+	 * @param assignmentId
+	 * @return
+	 */
+	public int getTimesheetEntryCountForAssignment(Integer assignmentId);
 	
 	/**
 	 * Get cumulated hours per day for a date range
@@ -44,5 +53,5 @@ public interface TimesheetDAO
 	 * @param dateRange
 	 * @return List with key values -> key = date, value = hours booked
 	 */	
-	public List getBookedHoursperDayInRange(Integer userId, DateRange dateRange);
+	public List<BookedDay> getBookedHoursperDayInRange(Integer userId, DateRange dateRange);
 }

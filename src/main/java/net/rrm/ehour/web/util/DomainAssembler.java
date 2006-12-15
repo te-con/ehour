@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.web.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -160,20 +162,23 @@ public class DomainAssembler
 	 * ProjectAssignmentForm to ProjectAssignment
 	 * @param paf
 	 * @return
+	 * @throws ParseException 
 	 */
 	
-	public static ProjectAssignment getProjectAssignment(ProjectAssignmentForm paf)
+	public static ProjectAssignment getProjectAssignment(ProjectAssignmentForm paf) throws ParseException
 	{
-		ProjectAssignment pa = new ProjectAssignment();
+		ProjectAssignment 	pa = new ProjectAssignment();
+		SimpleDateFormat	dateParser = new SimpleDateFormat("yyyy-MM-dd");
 
 		if (paf.getAssignmentId() > 0)
 		{
 			pa.setAssignmentId(paf.getAssignmentId());
 		}		
 		
-		pa.setDateStart(paf.getDateStart());
-		pa.setDateEnd(paf.getDateEnd());
+		pa.setDateStart(dateParser.parse(paf.getDateStart()));
+		pa.setDateEnd(dateParser.parse(paf.getDateEnd()));
 		pa.setHourlyRate(paf.getHourlyRate());
+		pa.setDescription(paf.getDescription());
 		
 		User user = new User(paf.getUserId());
 		pa.setUser(user);

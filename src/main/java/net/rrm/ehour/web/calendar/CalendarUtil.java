@@ -29,10 +29,14 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.web.util.WebConstants;
 
 /**
  *  
@@ -40,8 +44,7 @@ import net.rrm.ehour.util.DateUtil;
 
 public class CalendarUtil
 {
-	private TimesheetService	timesheetService;
-
+	private TimesheetService timesheetService;
 
 	/**
 	 * Set timesheet service
@@ -51,8 +54,7 @@ public class CalendarUtil
 	{
 		timesheetService = ts;
 	}
-	
-	
+
 	/**
 	 * Get the month overview for the nav calendar
 	 * @param userId
@@ -60,35 +62,34 @@ public class CalendarUtil
 	 * @return array of booleans each representing a day in the month. 
 	 * true = booked, false = not everything booked
 	 */
-	
+
 	public boolean[] getMonthNavCalendar(Integer userId, Calendar requestedMonth)
 	{
-		List		bookedDays;
-		boolean[]	monthOverview;
-		Iterator	iterator;
-		BookedDay	day;
-		Calendar	cal;
-		
+		List bookedDays;
+		boolean[] monthOverview;
+		Iterator iterator;
+		BookedDay day;
+		Calendar cal;
+
 		try
 		{
 			bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
-		}
-		catch (ObjectNotFoundException e)
+		} catch (ObjectNotFoundException e)
 		{
 			bookedDays = new ArrayList();
 		}
-		
+
 		monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
 
 		iterator = bookedDays.iterator();
-		
+
 		while (iterator.hasNext())
 		{
-			day = (BookedDay)iterator.next();
-			
+			day = (BookedDay) iterator.next();
+
 			cal = new GregorianCalendar();
 			cal.setTime(day.getDate());
-			
+
 			// just in case.. it shouldn't happen that the returned month
 			// is longer than the reserverd space for this month
 			if (cal.get(Calendar.DAY_OF_MONTH) <= monthOverview.length)
@@ -96,7 +97,7 @@ public class CalendarUtil
 				monthOverview[cal.get(Calendar.DAY_OF_MONTH) - 1] = true;
 			}
 		}
-		
+
 		return monthOverview;
 	}
 }

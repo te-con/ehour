@@ -91,11 +91,17 @@ public interface ProjectService
 	 */
 	public List<ProjectAssignment> getAllProjectsForUser(Integer userId);
 	
-	
 	/**
-	 * Get project assignment
+	 * Get project assignment and mark it as deletable or not
 	 * @param assignmentId
 	 * @return
 	 */
 	public ProjectAssignment getProjectAssignment(Integer assignmentId);
+	
+	
+	/**
+	 * Delete project assignment
+	 * @param assignmentId
+	 */
+	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException;
 }

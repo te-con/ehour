@@ -26,6 +26,8 @@ package net.rrm.ehour.timesheet.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.dto.BookedDay;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -38,9 +40,10 @@ public class TimesheetDAOHibernateImpl extends HibernateDaoSupport implements Ti
 	 * @param dateEnd
 	 * @return List with TimesheetEntry domain objects
 	 */
-	public List getTimesheetEntriesInRange(Integer userId, DateRange dateRange)
+	@SuppressWarnings("unchecked")
+	public List<TimesheetEntry> getTimesheetEntriesInRange(Integer userId, DateRange dateRange)
 	{
-		List		results;
+		List<TimesheetEntry>		results;
 		String[]	keys = new String[3];
 		Object[]	params = new Object[3];
 		
@@ -65,9 +68,10 @@ public class TimesheetDAOHibernateImpl extends HibernateDaoSupport implements Ti
 	 * @param dateRange
 	 * @return List with key values -> key = date, value = hours booked
 	 */	
-	public List getBookedHoursperDayInRange(Integer userId, DateRange dateRange)
+	@SuppressWarnings("unchecked")
+	public List<BookedDay> getBookedHoursperDayInRange(Integer userId, DateRange dateRange)
 	{
-		List		results;
+		List<BookedDay>		results;
 		String[]	keys = new String[3];
 		Object[]	params = new Object[3];
 		
@@ -83,5 +87,21 @@ public class TimesheetDAOHibernateImpl extends HibernateDaoSupport implements Ti
 																		, keys, params);
 		
 		return results;			
+	}
+
+
+	/**
+	 * Get timesheet entry count for an assignment
+	 */
+	@SuppressWarnings("unchecked")
+	public int getTimesheetEntryCountForAssignment(Integer assignmentId)
+	{
+		List	results;
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntryCountForAssignmentId",
+																		"assignmentId",
+																		assignmentId);
+		
+		return ((Long)results.get(0)).intValue();
+		
 	}
 }
