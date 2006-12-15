@@ -81,7 +81,7 @@ function init()
 </table>
 
 <br><br>
-${request.error}
+<c:out value="${request.error}" />
 <form id="AssignmentForm" method="post" action="editAssignment.do">
 
 <input type="hidden" name="assignmentId"  value="${assignment.assignmentId}">
@@ -166,11 +166,18 @@ ${request.error}
 		<input class="normtxt" type="text" name="hourlyRate" value="${assignment.hourlyRate}">
 	</td>
 	
-	<td></td>
+	<td id="hourlyRateError" style="color: red"></td>
 </tr>
 
 <tr>
-	<td colspan="2" align="right">
+	<td>
+		<c:if test="${assignment.assignmentId != null && assignment.deletable}">
+			<a href="" onClick="return deleteAssignment(${assignment.assignmentId})"><fmt:message key="general.delete" /></a>	
+		</c:if>
+		&nbsp;
+	</td>
+	
+	<td align="right">
 		<c:choose>
 			<c:when test="${assignment.assignmentId == null}">
 				<input type="submit" class="redSubmit" value="<fmt:message key="general.add" />">
@@ -182,6 +189,16 @@ ${request.error}
 		</c:choose>		
 	</td>	
 </tr>
+
+<c:if test="${assignment.assignmentId != null && !assignment.deletable}">
+<tr>
+	<td colspan="2">
+		<br>
+		<fmt:message key="admin.assignment.noDelete" />
+	</td>
+</tr>
+</c:if>		
+
 
 </table>
 

@@ -7,13 +7,17 @@
     	<put name="headJs" value="/WEB-INF/jsp/nav/nothing.html" />
         <put name="pageTitle" value="eHour" />
         <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
-        <put name="calendar_small" value="/WEB-INF/jsp/nav/navCalendar.jsp" />
+		<put name="calendar_small" value="/WEB-INF/jsp/nav/nothing.html" />
         <put name="admin_calendar_small" value="/WEB-INF/jsp/nav/nothing.html" />
     </definition>
 
     <!-- Timesheet Overview page -->
     <definition name=".ehour.timesheet.overview" extends=".ehour.baseLayout">
+        <put name="calendar_small" value="/eh/cal/NavCalendar.do" />
         <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
     </definition>
+
+    <!-- NavCalendar -->
+    <definition name=".ehour.calendar.navCalendar" path="/WEB-INF/nav/navCalendar.jsp" />
 
 </tiles-definitions>

@@ -194,7 +194,13 @@
 				type="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction">
 			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
 		</action>
-				
+
+		<!-- Delete project assignment -->
+		<action name="ProjectAssignmentForm"
+				path="/assignment/deleteAssignment" 
+				type="net.rrm.ehour.web.admin.assignment.action.DeleteAction">
+			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
+		</action>				
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

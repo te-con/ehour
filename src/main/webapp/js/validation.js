@@ -715,15 +715,15 @@
     * <p>
     * @param form The form validation is taking place on.
     */
-    function validateFloat(form) {
+    function validateFloat(formId, oFloat) {
         var bValid = true;
         var focusField = null;
         var i = 0;
         var fields = new Array();
-         var formName = form.getAttributeNode("name");
+        var form = document.getElementById(formId);
 
-        oFloat = eval('new ' + formName.value + '_FloatValidations()');
-        for (x in oFloat) {
+        for (x in oFloat)
+        {
         	var field = form[oFloat[x][0]];
         	
             if ((field.type == 'hidden' ||
@@ -760,24 +760,27 @@
                         if (i == 0) {
                             focusField = field;
                         }
-                        fields[i++] = oFloat[x][1];
-
+						document.getElementById(oFloat[x][1]).innerHTML = oFloat[x][2];
+						i++;
+        	            bValid = false;
                     } else {
 	                var iValue = parseFloat(value);
 	                if (isNaN(iValue)) {
 	                    if (i == 0) {
 	                        focusField = field;
 	                    }
-	                    fields[i++] = oFloat[x][1];
-	                    bValid = false;
+	                    
+						document.getElementById(oFloat[x][1]).innerHTML = oFloat[x][2];
+						i++;
+        	            bValid = false;
 	                }
                     }
                 }
             }
         }
-        if (fields.length > 0) {
+        if (!bValid)
+        {
            focusField.focus();
-           alert(fields.join('\n'));
         }
         return bValid;
     }

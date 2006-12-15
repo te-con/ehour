@@ -3,24 +3,39 @@
 
 <struts-config>
 
+	<!-- Action forms -->
+	<form-beans>
+		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.NavCalendarForm" />
+	</form-beans>
+
 	<!-- Action Mapping Definitions -->
 	<action-mappings>
 
 		<!--  Actions -->
 
 		<!-- entry point for all -->
-		<action path="/eh/index" type="net.rrm.ehour.web.action.EntranceAction" >
+		<action path="/eh/index"
+				type="net.rrm.ehour.web.action.EntranceAction" >
 			<forward name="adminOnly" path="/eh/admin/index.do" redirect="true" />
 			<forward name="billable" path="/eh/timesheetOverview.do" redirect="true" />
 		</action>
 		
 		<!-- Timesheet overview, login entry for everyone -->
-		<action path="/eh/timesheetOverview" type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
+		<action path="/eh/timesheetOverview"
+				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overview" />
 		</action>
 
-		<!-- Timesheet overview, login entry for everyone -->
-		<action path="/eh/logOff" type="net.rrm.ehour.web.action.LogOffAction" >
+		<!-- Navigation Calendar -->
+		<action name="NavCalendarForm"
+				path="/eh/cal/NavCalendar"
+				type="net.rrm.ehour.web.calendar.GetNavCalendarAction" >
+			<forward name="success" path=".ehour.calendar.navCalendar" />
+		</action>
+
+		<!-- Logoff action -->
+		<action path="/eh/logOff"
+			type="net.rrm.ehour.web.action.LogOffAction" >
 			<forward name="success" path="/" />
 		</action>
 	</action-mappings>

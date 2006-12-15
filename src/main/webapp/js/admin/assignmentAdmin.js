@@ -2,12 +2,40 @@
 var formBind;
 
 
-// validate form (but nothing to validate)
+// validate form 
 function validateForm(formId)
 {
+	formId = 'AssignmentForm';
+	
+	var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", rateNotValid)
+											);
+	
+	isValid = validateFloat(formId, validationRules);
+	
+	if (isValid)
+	{
+		showLoadingData();
+	}
+
 	document.getElementById('statusMessage').innerHTML = sendingData;
 
-	return true;
+	return isValid;
+}
+
+// delete event, ask for confirm and whistle off
+function deleteAssignment(assignmentId)
+{
+	if (confirm(noDeleteMessage))
+	{
+		showLoadingData();	
+	    dojo.io.bind({
+	                   url: 'deleteAssignment.do',
+	                   handler: formChanged,
+	                   content: {assignmentId: assignmentId}
+	                });  		
+	}
+	
+	return false;
 }
 
 // bind AssignmentForm to validation and ajax submit
