@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"	
+       default-autowire="byName">
+
+	<!--  struts actions -->
+	<bean name="/eh/index" class="net.rrm.ehour.web.action.EntranceAction" />	
+	
+	<bean name="/eh/timesheetOverview" class="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" />	
+	
+	<bean name="/eh/cal/NavCalendar" class="net.rrm.ehour.web.calendar.GetNavCalendarAction" />	
+	
+	<bean name="/eh/logOff" class="net.rrm.ehour.web.action.LogOffAction" />	
+	
+</beans>

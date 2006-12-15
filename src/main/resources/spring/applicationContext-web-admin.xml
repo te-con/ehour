@@ -5,12 +5,6 @@
        default-autowire="byName">
 
 	<!--  struts actions -->
-	<bean name="/eh/index" class="net.rrm.ehour.web.action.EntranceAction" />	
-	
-	<bean name="/eh/timesheetOverview" class="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" />	
-	
-	<bean name="/eh/logOff" class="net.rrm.ehour.web.action.LogOffAction" />	
-	
 	<bean name="/eh/admin/index" class="net.rrm.ehour.web.admin.action.AdminEntryAction" />		
 	
 	<bean name="/eh/admin/dept/index" class="net.rrm.ehour.web.admin.dept.action.ListUserDepartmentsAction" />			
@@ -57,4 +51,5 @@
 	
 	<bean name="/eh/admin/assignment/editAssignment" class="net.rrm.ehour.web.admin.assignment.action.EditAssignmentAction" />
 
+	<bean name="/eh/admin/assignment/deleteAssignment" class="net.rrm.ehour.web.admin.assignment.action.DeleteAssignmentAction" />	
 </beans>

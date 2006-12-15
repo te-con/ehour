@@ -16,6 +16,14 @@
                        entry.entryId.entryDate <= :dateEnd AND
                        entry.entryId.projectAssignment.user.userId = :userId
 				 GROUP BY entry.entryId.entryDate                       
-        ]]></query>          
+        ]]></query>   
+
+    <query name="Timesheet.getEntryCountForAssignmentId">
+    	SELECT COUNT(entry.entryId.entryDate)
+    	FROM TimesheetEntry entry
+    	WHERE entry.entryId.projectAssignment.assignmentId = :assignmentId
+	</query>   
+        
+               
 </hibernate-mapping>
 
