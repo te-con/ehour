@@ -65,7 +65,7 @@ public class CalendarUtilTest extends TestCase
 		calendarUtil.setTimesheetService((TimesheetService) timesheetService);
 		
 		cal = new GregorianCalendar(2006, 11 - 1, 12);
-		// @todo switch to easymock
+
 		expect(timesheetService.getBookedDaysMonthOverview(1, cal))
 				.andReturn(results);
 		

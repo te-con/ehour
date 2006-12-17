@@ -24,11 +24,15 @@
 package net.rrm.ehour.web.calendar;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Calendar;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
+
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 
@@ -93,7 +97,9 @@ public class NavCalendarTag extends TagSupport
 		} catch (Throwable t)
 		{
 			logger.error("Exception while creating nav calendar for month " + calendar.toString());
-			logger.error(t);
+	        StringWriter sw = new StringWriter();
+	        t.printStackTrace(new PrintWriter(sw));
+	        logger.error(t.toString());
 			
 			// big chance this fails as well but at least we can try
 			
@@ -138,11 +144,11 @@ public class NavCalendarTag extends TagSupport
 	private int writeCalendar(int currentColumn, StringBuffer out) 
 	{
 		int	month = calendar.get(Calendar.MONTH);
-		int year = calendar.get(Calendar.YEAR);
 		int days = 0;
+		int daysInMonth = DateUtil.getDaysInMonth(calendar);
 		
 		while (calendar.get(Calendar.MONTH) == month 
-				&& days++ < 31)
+				&& days++ < daysInMonth)
 		{
 			// first determine if this calendar entry should be marked as completely booked or not
 			if (currentColumn == 0)
@@ -154,7 +160,7 @@ public class NavCalendarTag extends TagSupport
 				out.append(HTML_FIRST_CELL_COMPLETE);
 			}
 			else if (currentColumn == 6 ||
-					(bookedDays != null && bookedDays[calendar.get(Calendar.DAY_OF_MONTH)]))
+					(bookedDays != null && bookedDays[calendar.get(Calendar.DAY_OF_MONTH) - 1]))
 			{
 				out.append(HTML_CELL_COMPLETE);
 			}
@@ -209,6 +215,12 @@ public class NavCalendarTag extends TagSupport
 				out.append(HTML_CELL_CLOSE);
 			}
 		}
+		else
+		{
+			// sunday should be 0
+			currentColumn --;
+		}
+		
 		
 		return currentColumn;
 	}

@@ -6,7 +6,7 @@
 <form id="ProjectForm" method="post" action="editProject.do">
 
 <input type="hidden" name="projectId"  value="${project.projectId}">
-<input type="hidden" id="inActiveForm" name="hideInactive" value="">
+<input type="hidden" id="inActiveForm" name="hideInactive" value="true">
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>

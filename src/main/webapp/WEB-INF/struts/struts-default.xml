@@ -8,6 +8,15 @@
 		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.NavCalendarForm" />
 	</form-beans>
 
+	<!-- Global exceptions -->
+	<global-exceptions>
+		<exception	handler="net.rrm.ehour.web.exception.GlobalExceptionHandler"
+					type="java.lang.Exception"
+					key="generic"
+					path="/exceptions.jsp"/>
+	</global-exceptions>	
+	
+
 	<!-- Action Mapping Definitions -->
 	<action-mappings>
 
@@ -28,7 +37,7 @@
 
 		<!-- Navigation Calendar -->
 		<action name="NavCalendarForm"
-				path="/eh/cal/NavCalendar"
+				path="/eh/cal/navCalendar"
 				type="net.rrm.ehour.web.calendar.GetNavCalendarAction" >
 			<forward name="success" path=".ehour.calendar.navCalendar" />
 		</action>

@@ -67,7 +67,7 @@ public class TimesheetServiceTest  extends TestCase
 	
 		((TimesheetServiceImpl)timesheetService).setTimesheetDAO(timesheetDAO);
 		((TimesheetServiceImpl)timesheetService).setReportService(reportService);
-		((TimesheetServiceImpl)timesheetService).setEhourConfiguration(config);
+		((TimesheetServiceImpl)timesheetService).setEhourConfig(config);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class TimesheetServiceTest  extends TestCase
 	public void testGetBookedDaysMonthOverview() throws Exception
 	{
 		List<BookedDay>		daoResults = new ArrayList<BookedDay>();
-		List		results;
+		List<BookedDay>		results;
 		BookedDay	bda, bdb,
 					bdResult;
 		Calendar	cal;
@@ -104,9 +104,7 @@ public class TimesheetServiceTest  extends TestCase
 		
 		verify(timesheetDAO);
 		
-		bdResult = (BookedDay)results.get(0);
-		
-		assertEquals(1, bdResult.getDate().getDate());
+		assertEquals(2, results.get(0).getDate().getDate());
 	}
 	
 	/**

@@ -95,33 +95,27 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @return List with Integers of complete booked days
 	 * @throws ObjectNotFoundException
 	 */
-	public List getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException
+	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException
 	{
-		DateRange	monthRange;
-		List		bookedDays;
-		List		bookedDaysReturn = new ArrayList();
-		Iterator	iterator;
-		BookedDay	bookedDay;
+		DateRange		monthRange;
+		List<BookedDay>	bookedDays;
+		List<BookedDay>	bookedDaysReturn = new ArrayList<BookedDay>();
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
 		
 		bookedDays = timesheetDAO.getBookedHoursperDayInRange(userId, monthRange);
 		
-		iterator = bookedDays.iterator();
-		
-		while (iterator.hasNext())
+		for (BookedDay bookedDay : bookedDays)
 		{
-			bookedDay = (BookedDay)iterator.next();
-			
 			if (bookedDay.getHours().doubleValue() >= configuration.getCompleteDayHours())
 			{
 				bookedDaysReturn.add(bookedDay);
 			}
 		}
 		
-		Collections.sort(bookedDays, new BookedDayComparator());
+		Collections.sort(bookedDaysReturn, new BookedDayComparator());
 		
-		return bookedDays;
+		return bookedDaysReturn;
 	}		
 	
 	/**
@@ -193,7 +187,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * Setter for the config
 	 * @param config
 	 */
-	public void setEhourConfiguration(EhourConfig config)
+	public void setEhourConfig(EhourConfig config)
 	{
 		this.configuration = config;
 	}

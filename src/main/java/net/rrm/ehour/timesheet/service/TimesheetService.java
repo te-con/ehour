@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 
 /**
@@ -56,5 +57,5 @@ public interface TimesheetService
 	 * @return List with Integers of complete booked days
 	 * @throws ObjectNotFoundException
 	 */
-	public List getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException;
+	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException;
 }

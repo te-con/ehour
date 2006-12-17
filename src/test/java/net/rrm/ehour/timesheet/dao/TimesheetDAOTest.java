@@ -55,7 +55,7 @@ public class TimesheetDAOTest  extends BaseDAOTest
 		
 		results = dao.getTimesheetEntriesInRange(new Integer(1), dateRange);
 		
-		assertEquals(6, results.size());
+		assertEquals(7, results.size());
 	}
 	
 	/**
@@ -68,18 +68,23 @@ public class TimesheetDAOTest  extends BaseDAOTest
 		Calendar 	dateEnd = new GregorianCalendar(2006, 11 - 1, 1);
 		DateRange	dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
 		List		results;
-		Iterator	iterator;
 		BookedDay	bookedDay;
 		
 		results = dao.getBookedHoursperDayInRange(new Integer(1), dateRange);
 		
-		assertEquals(4, results.size());
+		assertEquals(5, results.size());
 		
 		bookedDay = (BookedDay)results.get(3);
 		assertEquals(6.5, bookedDay.getHours().doubleValue(), 0.01);
 
 		bookedDay = (BookedDay)results.get(2);
 		assertEquals(5, bookedDay.getHours().doubleValue(), 0.01);
-
+	}
+	
+	public void testGetTimesheetEntryCountForAssignment()
+	{
+		int count = dao.getTimesheetEntryCountForAssignment(1);
+		
+		assertEquals(5, count);
 	}
 }

@@ -32,6 +32,13 @@
 		<property name="timesheetService" ref="timesheetService" />
 	</bean>
 
+	<!-- @todo use props -->
+	<bean id="ehourConfig"
+			class="net.rrm.ehour.util.EhourConfig">
+		<property name="completeDayHours" value="8" />
+	</bean>
+	
+
 
 	<!-- Report service -->
 	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl" />

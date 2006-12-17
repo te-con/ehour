@@ -26,17 +26,12 @@ package net.rrm.ehour.web.calendar;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.util.DateUtil;
-import net.rrm.ehour.web.util.WebConstants;
 
 /**
  *  
@@ -65,28 +60,22 @@ public class CalendarUtil
 
 	public boolean[] getMonthNavCalendar(Integer userId, Calendar requestedMonth)
 	{
-		List bookedDays;
-		boolean[] monthOverview;
-		Iterator iterator;
-		BookedDay day;
-		Calendar cal;
+		List<BookedDay> bookedDays;
+		boolean[] 		monthOverview;
+		Calendar 		cal;
 
 		try
 		{
 			bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
 		} catch (ObjectNotFoundException e)
 		{
-			bookedDays = new ArrayList();
+			bookedDays = new ArrayList<BookedDay>();
 		}
 
 		monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
 
-		iterator = bookedDays.iterator();
-
-		while (iterator.hasNext())
+		for (BookedDay day : bookedDays)
 		{
-			day = (BookedDay) iterator.next();
-
 			cal = new GregorianCalendar();
 			cal.setTime(day.getDate());
 

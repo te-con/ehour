@@ -49,6 +49,7 @@ public class ProjectServiceIntegrationTest extends BaseDAOTest
 	{
 		ProjectAssignment pa = new ProjectAssignment();
 		
+		pa.setAssignmentId(1);
 		Project prj = new Project(1);
 		User user = new User(1);
 		

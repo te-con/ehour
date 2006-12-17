@@ -30,17 +30,15 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 
 /**
  *  
@@ -51,6 +49,7 @@ public class ProjectServiceTest extends TestCase
 	private	ProjectService	projectService;
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
+	private	TimesheetDAO 			timesheetDAO;
 	
 	/**
 	 * 
@@ -64,6 +63,9 @@ public class ProjectServiceTest extends TestCase
 		
 		projectAssignmentDAO = createMock(ProjectAssignmentDAO.class);
 		((ProjectServiceImpl)projectService).setProjectAssignmentDAO(projectAssignmentDAO);
+		
+		timesheetDAO = createMock(TimesheetDAO.class);
+		((ProjectServiceImpl)projectService).setTimesheetDAO(timesheetDAO);
 	}
 
 	
@@ -159,13 +161,20 @@ public class ProjectServiceTest extends TestCase
 	
 	public void testGetProjectAssignment()
 	{
+		ProjectAssignment pa = new ProjectAssignment();
+		
 		expect(projectAssignmentDAO.findById(new Integer(1)))
-			.andReturn(null);
+			.andReturn(pa);
+		
+		expect(timesheetDAO.getTimesheetEntryCountForAssignment(1))
+			.andReturn(0);
 
 		replay(projectAssignmentDAO);
+		replay(timesheetDAO);
 		
 		projectService.getProjectAssignment(1);
 		
 		verify(projectAssignmentDAO);
+		verify(timesheetDAO);		
 	}	
 }

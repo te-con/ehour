@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.web.util;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -132,25 +133,30 @@ public class DomainAssemblerTest extends TestCase
 		assertEquals(new Integer(2), prj.getProjectId());
 	}
 	
-	public void testGetProjectAssignment()
+	public void testGetProjectAssignment() throws ParseException
 	{
 		ProjectAssignmentForm paf = new ProjectAssignmentForm();
-		Date date = new Date();
+		String strA = "2006-10-3";
+		String strB = "2006-10-1";
 		
 		paf.setAssignmentId(1);
-		paf.setDateEnd(date);
-		paf.setDateStart(date);
+		paf.setDateEnd(strB);
+		paf.setDateStart(strA);
 		paf.setHourlyRate(90f);
 		paf.setProjectId(2);
 		paf.setUserId(3);
+		paf.setDescription("d");
 		
 		ProjectAssignment pa = DomainAssembler.getProjectAssignment(paf);
 		
 		assertEquals(new Integer(3), pa.getUser().getUserId());
 		assertEquals(new Integer(2), pa.getProject().getProjectId());
+
 		assertEquals(90f, pa.getHourlyRate());
-		assertEquals(date, pa.getDateStart());
-		assertEquals(date, pa.getDateEnd());
+		assertEquals(106, pa.getDateStart().getYear() );
+		assertEquals(9, pa.getDateStart().getMonth() );
+		assertEquals(3, pa.getDateStart().getDate());
 		assertEquals(new Integer(1), pa.getAssignmentId());
+		assertEquals("d", pa.getDescription());
 	}
 }

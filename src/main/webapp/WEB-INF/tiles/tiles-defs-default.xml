@@ -13,11 +13,11 @@
 
     <!-- Timesheet Overview page -->
     <definition name=".ehour.timesheet.overview" extends=".ehour.baseLayout">
-        <put name="calendar_small" value="/eh/cal/NavCalendar.do" />
+        <put name="calendar_small" value="/eh/cal/navCalendar.do" />
         <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
     </definition>
 
     <!-- NavCalendar -->
-    <definition name=".ehour.calendar.navCalendar" path="/WEB-INF/nav/navCalendar.jsp" />
+    <definition name=".ehour.calendar.navCalendar" path="/WEB-INF/jsp/nav/navCalendar.jsp" />
 
 </tiles-definitions>

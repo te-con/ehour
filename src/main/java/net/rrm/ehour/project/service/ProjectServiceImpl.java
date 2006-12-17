@@ -62,7 +62,7 @@ public class ProjectServiceImpl implements ProjectService
 	
 	public void setTimesheetDAO(TimesheetDAO dao)
 	{
-		this.timesheetDAO = dao;
+		timesheetDAO = dao;
 	}
 	
 	/* (non-Javadoc)
