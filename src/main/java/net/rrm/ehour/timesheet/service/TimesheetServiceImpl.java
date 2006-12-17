@@ -34,11 +34,11 @@ import java.util.Map;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
-import net.rrm.ehour.timesheet.dto.BookedDayComparator;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConfig;
@@ -70,18 +70,18 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		TimesheetOverview	overview = new TimesheetOverview();
 		DateRange			monthRange;
-		List				assignHours;
-		List				timesheetEntries;
-		Map					calendarMap;
+		List<ProjectReport>	projectReports;
+		List<TimesheetEntry> timesheetEntries;
+		Map<Integer, List<TimesheetEntry>>	calendarMap;
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
 		
-		assignHours = reportService.getHoursPerAssignmentInRange(userId, monthRange);
+		projectReports = reportService.getHoursPerAssignmentInRange(userId, monthRange);
 
 		timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(userId, monthRange);
 		calendarMap = entriesToCalendarMap(timesheetEntries);
 		
-		overview.setProjectHours(assignHours);
+		overview.setProjectHours(projectReports);
 		overview.setTimesheetEntries(calendarMap);
 		
 		return overview;
@@ -124,24 +124,17 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param timesheetEntries
 	 * @return
 	 */
-	private Map entriesToCalendarMap(List timesheetEntries)
+	private Map<Integer, List<TimesheetEntry>> entriesToCalendarMap(List<TimesheetEntry> timesheetEntries)
 	{
-		Map				calendarMap;
-		Iterator		i;
-		TimesheetEntry	entry;
-		Calendar		cal;
-		Integer			dayKey;
-		List			dayEntries;
+		Map<Integer, List<TimesheetEntry>>	calendarMap;
+		Calendar							cal;
+		Integer								dayKey;
+		List<TimesheetEntry> 				dayEntries;
 		
-		i = timesheetEntries.iterator();
-		calendarMap = new HashMap();
+		calendarMap = new HashMap<Integer, List<TimesheetEntry>>();
 		
-        i = timesheetEntries.iterator();
-
-        while (i.hasNext())
-        {
-           entry = (TimesheetEntry)i.next();
-           
+		for (TimesheetEntry entry: timesheetEntries)
+		{
            cal = new GregorianCalendar();
            cal.setTime(entry.getEntryId().getEntryDate());
            
@@ -149,11 +142,11 @@ public class TimesheetServiceImpl implements TimesheetService
 
            if (calendarMap.containsKey(dayKey))
            {
-               dayEntries = (List)calendarMap.get(dayKey);
+               dayEntries = calendarMap.get(dayKey);
            }
            else
            {
-               dayEntries = new ArrayList();
+               dayEntries = new ArrayList<TimesheetEntry>();
            }
 
            dayEntries.add(entry);

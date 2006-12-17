@@ -33,6 +33,7 @@ public class ProjectReport
 {
 	private	ProjectAssignment	projectAssignment;
 	private	Number				hours;
+	private	Number				turnOver;
 	
 	/**
 	 * empty constructor
@@ -48,10 +49,11 @@ public class ProjectReport
 	 * @param projectAssignment
 	 * @param hours
 	 */
-	public ProjectReport(ProjectAssignment projectAssignment, Number hours)
+	public ProjectReport(ProjectAssignment projectAssignment, Number hours, Number turnOver)
 	{
 		this.hours = hours;
-		this.projectAssignment = projectAssignment; 
+		this.projectAssignment = projectAssignment;
+		this.turnOver = turnOver;
 	}
 
 	public Number getHours()
@@ -72,6 +74,22 @@ public class ProjectReport
 	public void setProjectAssignment(ProjectAssignment projectAssignment)
 	{
 		this.projectAssignment = projectAssignment;
+	}
+
+	/**
+	 * @return the turnOver
+	 */
+	public Number getTurnOver()
+	{
+		return turnOver;
+	}
+
+	/**
+	 * @param turnOver the turnOver to set
+	 */
+	public void setTurnOver(Number turnOver)
+	{
+		this.turnOver = turnOver;
 	}
 	
 	

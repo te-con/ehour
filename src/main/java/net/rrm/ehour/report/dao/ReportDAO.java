@@ -24,7 +24,9 @@
 package net.rrm.ehour.report.dao;
 
 import java.util.List;
+
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.dto.ProjectReport;
 
 /**
  * Reporting data operations 
@@ -40,5 +42,5 @@ public interface ReportDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List getCumulatedHoursPerAssignmentForUser(Integer userId, DateRange dateRange);
+	public List<ProjectReport> getCumulatedHoursPerAssignmentForUser(Integer userId, DateRange dateRange);
 }

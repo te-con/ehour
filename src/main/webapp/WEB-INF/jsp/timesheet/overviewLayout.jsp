@@ -21,7 +21,7 @@
 <script src="<c:url value="/js/navCalendar.jsp" />" type="text/javascript"></script>
 
 
-<tiles:insert page="/WEB-INF/jsp/timesheet/overviewProjects.jsp" />
+<tiles:insert page="overviewProjects.jsp" />
 
 <br><br><br>
 

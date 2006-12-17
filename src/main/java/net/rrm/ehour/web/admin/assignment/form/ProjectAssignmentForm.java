@@ -23,8 +23,6 @@
 
 package net.rrm.ehour.web.admin.assignment.form;
 
-import java.util.Date;
-
 import org.apache.struts.action.ActionForm;
 
 /**

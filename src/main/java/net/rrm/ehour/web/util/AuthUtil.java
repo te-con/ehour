@@ -23,7 +23,16 @@
 
 package net.rrm.ehour.web.util;
 
+import javax.servlet.http.HttpServletRequest;
+
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.dto.AuthUser;
+import net.rrm.ehour.web.form.UserIdForm;
+
+import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.log4j.Logger;
 
 /**
  * TODO 
@@ -31,6 +40,7 @@ import org.acegisecurity.GrantedAuthority;
 
 public class AuthUtil
 {
+	public static Logger logger = Logger.getLogger(AuthUtil.class);
 
 	/**
 	 * Check whether a role is in the array of roles 
@@ -55,5 +65,45 @@ public class AuthUtil
 		}
 		
 		return hasRole;
+	}
+	
+	/**
+	 * Get the user Id either from the supplied form if the authenticated user is authorized to
+	 * operate on other users or return the user Id from the logged in user
+	 * @param request
+	 * @param form
+	 * @return
+	 */
+	public static Integer getUserId(HttpServletRequest request, UserIdForm form)
+	{
+		Integer				userId;
+		Authentication		authUser;
+		User				user;
+		
+		authUser = SecurityContextHolder.getContext().getAuthentication();
+		user = ((AuthUser)authUser.getPrincipal()).getUser();
+		
+		if (form.getUserId() == null)
+		{
+			userId = user.getUserId();
+		}
+		else
+		{
+			if (AuthUtil.hasRole(WebConstants.ROLE_ADMIN, authUser.getAuthorities()))	
+			{
+				userId = form.getUserId();	
+			}
+			else
+			{
+				if (!user.getUserId().equals(form.getUserId()))
+				{
+					logger.warn("User " + user.getUsername() + " tried to access someone else's calendar");
+				}
+				
+				userId = user.getUserId();
+			}
+		}
+		
+		return userId;		
 	}
 }

@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForUserId">
-         <![CDATA[SELECT new net.rrm.ehour.report.dto.ProjectReport(entry.entryId.projectAssignment, SUM(entry.hours))
+         <![CDATA[SELECT new net.rrm.ehour.report.dto.ProjectReport(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND

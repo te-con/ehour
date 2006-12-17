@@ -55,7 +55,7 @@ public class TimesheetDAOTest  extends BaseDAOTest
 		
 		results = dao.getTimesheetEntriesInRange(new Integer(1), dateRange);
 		
-		assertEquals(7, results.size());
+		assertEquals(8, results.size());
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class TimesheetDAOTest  extends BaseDAOTest
 		
 		results = dao.getBookedHoursperDayInRange(new Integer(1), dateRange);
 		
-		assertEquals(5, results.size());
+		assertEquals(6, results.size());
 		
 		bookedDay = (BookedDay)results.get(3);
 		assertEquals(6.5, bookedDay.getHours().doubleValue(), 0.01);
@@ -85,6 +85,6 @@ public class TimesheetDAOTest  extends BaseDAOTest
 	{
 		int count = dao.getTimesheetEntryCountForAssignment(1);
 		
-		assertEquals(5, count);
+		assertEquals(6, count);
 	}
 }

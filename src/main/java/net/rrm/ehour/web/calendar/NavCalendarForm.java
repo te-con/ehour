@@ -23,38 +23,21 @@
 
 package net.rrm.ehour.web.calendar;
 
-import org.apache.struts.action.ActionForm;
+import net.rrm.ehour.web.form.UserIdForm;
 
 /**
  * TODO 
  **/
 
-public class NavCalendarForm extends ActionForm
+public class NavCalendarForm extends UserIdForm
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8575001571840906825L;
 	
-	private	Integer	userId;
 	private	Integer	year;
 	private	Integer	month;
-
-	/**
-	 * @return the userId
-	 */
-	public Integer getUserId()
-	{
-		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(Integer userId)
-	{
-		this.userId = userId;
-	}
 
 	/**
 	 * @return the month

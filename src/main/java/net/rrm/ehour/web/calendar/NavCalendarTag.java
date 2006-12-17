@@ -72,9 +72,8 @@ public class NavCalendarTag extends TagSupport
 	public int doStartTag() throws JspException
 	{
 		JspWriter 		out;
-		int				currentColumn;
-		StringBuffer	sb = new StringBuffer();
-
+		StringBuffer	sb;
+		
 		out = pageContext.getOut();
 
 		try
@@ -84,13 +83,7 @@ public class NavCalendarTag extends TagSupport
 				logger.debug("Writing nav calendar for " + calendar.toString());
 			}
 			
-			calendar.setFirstDayOfWeek(Calendar.SUNDAY);
-			
-			currentColumn = prependPreviousMonthDays(sb);
-			currentColumn = writeCalendar(currentColumn, sb);
-			appendNextMonthDays(currentColumn, sb);
-			
-			sb.append(HTML_ROW_CLOSE);
+			sb = createCalendar(calendar);
 			
 			out.write(sb.toString());
 			
@@ -114,6 +107,27 @@ public class NavCalendarTag extends TagSupport
 		return SKIP_BODY;
 	}
 	
+	/**
+	 * Create calendar (protected for junit)
+	 * @param calendar
+	 * @return
+	 */
+	
+	protected StringBuffer createCalendar(Calendar calendar)
+	{
+		int				currentColumn;
+		StringBuffer	sb = new StringBuffer();
+		
+		calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+		
+		currentColumn = prependPreviousMonthDays(calendar, sb);
+		currentColumn = writeCalendar(currentColumn, sb);
+		appendNextMonthDays(currentColumn, sb);
+		
+		sb.append(HTML_ROW_CLOSE);
+		
+		return sb;
+	}
 	
 	/**
 	 * 
@@ -121,7 +135,7 @@ public class NavCalendarTag extends TagSupport
 	 * @param out
 	 * @throws IOException
 	 */
-	private void appendNextMonthDays(int currentColumn, StringBuffer out) 
+	protected void appendNextMonthDays(int currentColumn, StringBuffer out) 
 	{
 		if (currentColumn > 0)
 		{
@@ -148,7 +162,7 @@ public class NavCalendarTag extends TagSupport
 		int daysInMonth = DateUtil.getDaysInMonth(calendar);
 		
 		while (calendar.get(Calendar.MONTH) == month 
-				&& days++ < daysInMonth)
+				&& days++ <= daysInMonth)
 		{
 			// first determine if this calendar entry should be marked as completely booked or not
 			if (currentColumn == 0)
@@ -191,7 +205,7 @@ public class NavCalendarTag extends TagSupport
 	 * 
 	 * @param out
 	 */
-	private int prependPreviousMonthDays(StringBuffer out) 
+	protected int prependPreviousMonthDays(Calendar calendar, StringBuffer out) 
 	{
 		int i;
 		int	currentColumn;

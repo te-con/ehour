@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.dao.ReportDAO;
+import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.util.DateUtil;
 
 /**
@@ -48,7 +49,7 @@ public class ReportServiceImpl implements ReportService
 	 * @return SortedMap with ProjectAssignment on key and a Float representation of the booked hours as value
 	 */	
 	
-	public List getHoursPerAssignmentInMonth(Integer userId, Calendar requestedDate)
+	public List<ProjectReport> getHoursPerAssignmentInMonth(Integer userId, Calendar requestedDate)
 	{
 		DateRange	monthRange;
 		
@@ -61,16 +62,16 @@ public class ReportServiceImpl implements ReportService
 	 * Get the booked hours per project assignment for a date range
 	 * @param userId
 	 * @param calendar
-	 * @return SortedMap with ProjectAssignment on key and a Float representation of the booked hours as value
+	 * @return 
 	 */		
-	
-	public List getHoursPerAssignmentInRange(Integer userId, DateRange dateRange)
+	public List<ProjectReport> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange)
 	{
-		List 	results;
-		
-		results = reportDAO.getCumulatedHoursPerAssignmentForUser(userId, dateRange);
-		
-		return results;	}	
+		List<ProjectReport>	projectReports;
+
+		projectReports = reportDAO.getCumulatedHoursPerAssignmentForUser(userId, dateRange);
+
+		return projectReports;
+	}	
 	
 	/**
 	 *  

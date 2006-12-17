@@ -23,26 +23,47 @@
 
 package net.rrm.ehour.web.timesheet.action;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
+import net.rrm.ehour.timesheet.dto.TimesheetOverview;
+import net.rrm.ehour.web.timesheet.form.TimesheetForm;
+import net.rrm.ehour.web.util.AuthUtil;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * TODO
+ * 
  */
 
-public class TimesheetOverviewAction extends Action
+public class TimesheetOverviewAction extends BaseTimesheetAction
 {
-	private	Logger		logger = Logger.getLogger(TimesheetOverviewAction.class);	
-	
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		// @todo do something useful
+		TimesheetForm	timesheetForm = (TimesheetForm)form;
+		Calendar		requestedMonth;
+		Integer			userId;
+		TimesheetOverview	timesheetOverview;
+		
+		requestedMonth = timesheetForm.getCalendar();
+		
+		// if none supplied, use the current date
+		if (requestedMonth == null)
+		{
+			requestedMonth = new GregorianCalendar();
+		}
+		
+		userId = AuthUtil.getUserId(request, timesheetForm);
+		
+		timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
+		
+		request.setAttribute("timesheetOverview", timesheetOverview);
+
 		return mapping.findForward("success");
 	}
 }

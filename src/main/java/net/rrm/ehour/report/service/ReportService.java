@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.dto.ProjectReport;
 
 
 /**
@@ -45,7 +46,7 @@ public interface ReportService
 	 * @param calendar
 	 * @return List with projectReport objects
 	 */
-	public List getHoursPerAssignmentInMonth(Integer userId, Calendar calendar);
+	public List<ProjectReport> getHoursPerAssignmentInMonth(Integer userId, Calendar calendar);
 
 	/**
 	 * Get the booked hours per project assignment for a date range
@@ -54,5 +55,5 @@ public interface ReportService
 	 * @return List with projectReport objects
 	 */
 
-	public List getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);	
+	public List<ProjectReport> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);	
 }

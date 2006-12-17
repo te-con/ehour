@@ -1,5 +1,5 @@
 /**
- * Created on Nov 4, 2006
+ * Created on Nov 6, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,47 +21,47 @@
  *
  */
 
-package net.rrm.ehour.report.dao;
+package net.rrm.ehour.timesheet.service;
 
+import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
-import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.timesheet.dto.BookedDay;
 
 /**
  * TODO 
  **/
 
-public class ReportDAOTest extends BaseDAOTest
+public class BookedDayComparator implements Comparator, Serializable
 {
-	private	ReportDAO	dao;
 
-	
-	public void setReportDAO(ReportDAO dao)
-	{
-		this.dao = dao;
-	}
-	
 	/**
 	 * 
-	 *
 	 */
-	public void testGetCumulatedHoursPerAssignmentForUser()
-	{
-		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
-										    new Date(2006 - 1900, 10, 30));
-		
-		List<ProjectReport> results = dao.getCumulatedHoursPerAssignmentForUser(new Integer(1), dateRange);
+	private static final long serialVersionUID = 3811098485423672398L;
 
-		// test if collection is properly initialized
-		ProjectReport rep = results.get(0);
-		assertEquals("Days off", rep.getProjectAssignment().getProject().getName());
+	public int compare(Object a, Object b)
+	{
+		int			compare;
+		Date		bda,
+					bdb;
 		
-		rep = results.get(1);
-		assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
-		
-		assertEquals(2, results.size());
+        if (a instanceof BookedDay && b instanceof BookedDay)
+        {
+        	bda = ((BookedDay)a).getDate();
+        	bdb = ((BookedDay)b).getDate();
+        	
+        	compare = bda.equals(bdb) ? 0 :
+        			  bda.before(bdb) ? - 1 : 1; 
+        }
+        else
+        {
+        	compare = -1;
+
+        }	
+        
+        return compare;
 	}
+
 }

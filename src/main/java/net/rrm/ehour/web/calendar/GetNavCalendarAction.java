@@ -30,13 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.dto.AuthUser;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -49,7 +45,6 @@ import org.apache.struts.action.ActionMapping;
 
 public class GetNavCalendarAction extends Action
 {
-	private	Logger			logger = Logger.getLogger(GetNavCalendarAction.class);
 	private	CalendarUtil	calendarUtil;
 	
 	/**
@@ -65,7 +60,7 @@ public class GetNavCalendarAction extends Action
 		boolean[]		monthOverview;
 		
 		// get the requested userId
-		userId = getUserId(request, ncForm);
+		userId = AuthUtil.getUserId(request, ncForm);
 		
 		// get requested month, either from session or request
 		requestedMonth = getRequestedMonth(request, ncForm);
@@ -81,42 +76,7 @@ public class GetNavCalendarAction extends Action
 		
 		return fwd;
 	}
-	
-	/**
-	 * Get the user id, either from the request if the authenticated user is an admin
-	 * or if none supplied use the authenticated user
-	 * @param request
-	 * @param form
-	 * @return
-	 */
-	private Integer getUserId(HttpServletRequest request, NavCalendarForm form)
-	{
-		Integer				userId;
-		Authentication		authUser;
-		User				user;
-		
-		authUser = SecurityContextHolder.getContext().getAuthentication();
-		user = ((AuthUser)authUser.getPrincipal()).getUser();
-		
-		if (form.getUserId() == null)
-		{
-			userId = user.getUserId();
-		}
-		else
-		{
-			if (AuthUtil.hasRole(WebConstants.ROLE_ADMIN, authUser.getAuthorities()))	
-			{
-				userId = form.getUserId();	
-			}
-			else
-			{
-				logger.warn("User " + user.getUsername() + " tried to access someone else's calendar");
-				userId = user.getUserId();
-			}
-		}
-		
-		return userId;
-	}
+
 	
 	/**
 	 * Determine if we need the month stored in the session or the one in the request

@@ -34,6 +34,10 @@ import org.apache.struts.action.ActionMapping;
 
 public class ProjectForm extends ActionForm
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7445831308497127835L;
 	private	Integer	projectId;
 	private	Integer	customerId;
 	private	String	name;

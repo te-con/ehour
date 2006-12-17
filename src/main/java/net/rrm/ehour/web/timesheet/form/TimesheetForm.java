@@ -1,5 +1,5 @@
 /**
- * Created on Nov 6, 2006
+ * Created on Dec 17, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,45 +21,68 @@
  *
  */
 
-package net.rrm.ehour.timesheet.dto;
+package net.rrm.ehour.web.timesheet.form;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import net.rrm.ehour.web.form.UserIdForm;
 
 /**
  * TODO 
  **/
 
-public class BookedDayComparator implements Comparator, Serializable
+public class TimesheetForm extends UserIdForm
 {
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3811098485423672398L;
+	private static final long serialVersionUID = 1L;
+	
+	private	Integer	year;
+	private	Integer	month;
 
-	public int compare(Object a, Object b)
+	/**
+	 * @return the month
+	 */
+	public Integer getMonth()
 	{
-		int			compare;
-		Date		bda,
-					bdb;
-		
-        if (a instanceof BookedDay && b instanceof BookedDay)
-        {
-        	bda = ((BookedDay)a).getDate();
-        	bdb = ((BookedDay)b).getDate();
-        	
-        	compare = bda.equals(bdb) ? 0 :
-        			  bda.before(bdb) ? - 1 : 1; 
-        }
-        else
-        {
-        	compare = -1;
-
-        }	
-        
-        return compare;
+		return month;
 	}
 
+	/**
+	 * @param month the month to set
+	 */
+	public void setMonth(Integer month)
+	{
+		this.month = month;
+	}
+
+	/**
+	 * @return the year
+	 */
+	public Integer getYear()
+	{
+		return year;
+	}
+
+	/**
+	 * @param year the year to set
+	 */
+	public void setYear(Integer year)
+	{
+		this.year = year;
+	}
+	
+	public Calendar getCalendar()
+	{
+		Calendar	cal = null;
+		
+		if (year != null && month != null)
+		{
+			cal = new GregorianCalendar(year.intValue(), month.intValue(), 1);
+		}
+		
+		return cal;
+	}
 }

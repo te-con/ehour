@@ -25,14 +25,15 @@ package net.rrm.ehour.web.admin.user.form;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionForm;
+import net.rrm.ehour.web.form.UserIdForm;
+
 import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
  **/
 
-public class UserForm extends ActionForm
+public class UserForm extends UserIdForm
 {
 	/**
 	 * 
@@ -42,7 +43,6 @@ public class UserForm extends ActionForm
 	private	String	filterPattern;
 	private	boolean	hideInactive;
 	
-	private	Integer	userId;
 	private	String	username;
 	private	String	password;
 	private	String	confirmPassword;
@@ -160,20 +160,6 @@ public class UserForm extends ActionForm
 	public void setPassword(String password)
 	{
 		this.password = password;
-	}
-	/**
-	 * @return the userId
-	 */
-	public Integer getUserId()
-	{
-		return userId;
-	}
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(Integer userId)
-	{
-		this.userId = userId;
 	}
 	/**
 	 * @return the username

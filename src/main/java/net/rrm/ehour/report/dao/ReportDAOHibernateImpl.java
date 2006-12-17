@@ -26,6 +26,7 @@ package net.rrm.ehour.report.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.dto.ProjectReport;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -43,8 +44,8 @@ public class ReportDAOHibernateImpl extends HibernateDaoSupport implements Repor
 	 * @param dateRange
 	 * @return
 	 */
-	
-	public List getCumulatedHoursPerAssignmentForUser(Integer userId, DateRange dateRange)
+	@SuppressWarnings("unchecked")
+	public List<ProjectReport> getCumulatedHoursPerAssignmentForUser(Integer userId, DateRange dateRange)
 	{
 		List		results;
 		String[]	keys = new String[3];

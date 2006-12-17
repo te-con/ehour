@@ -6,6 +6,7 @@
 	<!-- Action forms -->
 	<form-beans>
 		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.NavCalendarForm" />
+		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
 	</form-beans>
 
 	<!-- Global exceptions -->
@@ -30,7 +31,8 @@
 		</action>
 		
 		<!-- Timesheet overview, login entry for everyone -->
-		<action path="/eh/timesheetOverview"
+		<action name="TimesheetForm"
+				path="/eh/timesheetOverview"
 				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overview" />
 		</action>

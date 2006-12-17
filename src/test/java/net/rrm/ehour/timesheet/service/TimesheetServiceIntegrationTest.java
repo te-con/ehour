@@ -51,6 +51,7 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 		
 		assertEquals(8.0, res.get(0).getHours());
 		assertEquals(9.0, res.get(2).getHours());
+		assertEquals(9.2f, res.get(3).getHours().floatValue(), 0.1f);
 	}
 
 

@@ -1,5 +1,5 @@
 /**
- * Created on Nov 6, 2006
+ * Created on Dec 17, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,42 +21,25 @@
  *
  */
 
-package net.rrm.ehour.timesheet.dto;
+package net.rrm.ehour.web.timesheet.action;
 
-import java.util.Date;
+import net.rrm.ehour.timesheet.service.TimesheetService;
 
-import net.rrm.ehour.timesheet.service.BookedDayComparator;
-
-import junit.framework.TestCase;
+import org.apache.struts.action.Action;
 
 /**
  * TODO 
  **/
 
-public class BookedDayComparatorTest extends TestCase
+public class BaseTimesheetAction extends Action
 {
+	protected	TimesheetService	timesheetService;
 
-	public void testCompare()
+	/**
+	 * @param timesheetService the timesheetService to set
+	 */
+	public void setTimesheetService(TimesheetService timesheetService)
 	{
-		BookedDayComparator comp = new BookedDayComparator();
-		
-		BookedDay bda, bdb;
-		
-		bda = new BookedDay();
-		bdb = new BookedDay();
-		
-		bda.setDate(new Date(2006 - 1900, 10, 1));
-		bdb.setDate(new Date(2006 - 1900, 10, 1));
-		
-		assertEquals(0, comp.compare(bda, bdb));
-
-		bdb.setDate(new Date(2006 - 1900, 10, 2));
-		
-		assertEquals(-1, comp.compare(bda, bdb));
-
-		bdb.setDate(new Date(2006 - 1900, 9, 1));
-		
-		assertEquals(1, comp.compare(bda, bdb));
+		this.timesheetService = timesheetService;
 	}
-
 }
