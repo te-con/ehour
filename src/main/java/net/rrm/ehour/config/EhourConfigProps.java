@@ -1,5 +1,5 @@
 /**
- * Created on Nov 5, 2006
+ * Created on 18-dec-2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,23 +21,25 @@
  *
  */
 
-package net.rrm.ehour.util;
+package net.rrm.ehour.config;
+
+import java.util.Properties;
 
 /**
  * TODO 
  **/
 
-public class EhourConfig
+public class EhourConfigProps implements EhourConfig
 {
-	private	int	completeDayHours;
+	private	Properties	props;
 
+	public void setPropertiesConfig(Properties props)
+	{
+		this.props = props;
+	}
+	
 	public int getCompleteDayHours()
 	{
-		return completeDayHours;
-	}
-
-	public void setCompleteDayHours(int completeDayHours)
-	{
-		this.completeDayHours = completeDayHours;
+		return Integer.parseInt(props.getProperty("completeDayHours"));
 	}
 }

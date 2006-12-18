@@ -3,8 +3,8 @@
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<script src="../js/dojo.js" type="text/javascript"></script>
-<script src="../js/base.js" type="text/javascript"></script>
+<script src="../../js/dojo.js" type="text/javascript"></script>
+<script src="../../js/base.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 	dojo.require("dojo.io.*");	
@@ -21,7 +21,9 @@
 <script src="<c:url value="/js/navCalendar.jsp" />" type="text/javascript"></script>
 
 
-<tiles:insert page="overviewProjects.jsp" />
+<span id="projectsOverviewSpan">
+	<tiles:insert page="overviewProjects.jsp" />
+</span>
 
 <br><br><br>
 

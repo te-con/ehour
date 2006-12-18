@@ -27,15 +27,25 @@
 		<action path="/eh/index"
 				type="net.rrm.ehour.web.action.EntranceAction" >
 			<forward name="adminOnly" path="/eh/admin/index.do" redirect="true" />
-			<forward name="billable" path="/eh/timesheetOverview.do" redirect="true" />
+			<forward name="billable" path="/eh/timesheet/overview.do" redirect="true" />
 		</action>
 		
-		<!-- Timesheet overview, login entry for everyone -->
+		<!-- Timesheet overview, login entry for consultants -->
 		<action name="TimesheetForm"
-				path="/eh/timesheetOverview"
+				path="/eh/timesheet/overview"
 				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overview" />
 		</action>
+
+		<!-- Timesheet overview, projects only-->
+		<action name="TimesheetForm"
+				path="/eh/timesheet/projectsOverview"
+				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" 
+				parameter="projectsOnly"
+				>
+			<forward name="success" path=".ehour.timesheet.projectsOverview" />
+		</action>
+
 
 		<!-- Navigation Calendar -->
 		<action name="NavCalendarForm"

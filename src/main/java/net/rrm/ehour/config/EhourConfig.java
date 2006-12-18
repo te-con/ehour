@@ -1,5 +1,5 @@
 /**
- * Created on Dec 17, 2006
+ * Created on Nov 5, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,35 +21,15 @@
  *
  */
 
-package net.rrm.ehour.web.timesheet.action;
+package net.rrm.ehour.config;
 
-import net.rrm.ehour.report.service.ReportService;
-import net.rrm.ehour.timesheet.service.TimesheetService;
-
-import org.apache.struts.action.Action;
+import java.util.Properties;
 
 /**
  * TODO 
  **/
 
-public class BaseTimesheetAction extends Action
+public interface EhourConfig
 {
-	protected TimesheetService	timesheetService;
-	protected ReportService		reportService;
-	
-	/**
-	 * @param timesheetService the timesheetService to set
-	 */
-	public void setTimesheetService(TimesheetService timesheetService)
-	{
-		this.timesheetService = timesheetService;
-	}
-
-	/**
-	 * @param reportService the reportService to set
-	 */
-	public void setReportService(ReportService reportService)
-	{
-		this.reportService = reportService;
-	}
+	public int getCompleteDayHours();
 }

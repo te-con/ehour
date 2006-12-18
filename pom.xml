@@ -45,6 +45,9 @@
       <resource>
         <directory>src/main/resources/hibernate</directory>
       </resource>
+      <resource>
+        <directory>src/main/resources/ehour</directory>
+      </resource>
     </resources>
     <plugins>
 		<plugin>
@@ -224,6 +227,8 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <!-- REPORTING STUFF -->
   <reporting>
     <plugins>
       <plugin>

@@ -17,6 +17,9 @@
         <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
     </definition>
 
+    <!-- Timesheet Projects Overview page -->
+    <definition name=".ehour.timesheet.projectsOverview" path="/WEB-INF/jsp/timesheet/overviewProjects.jsp" />
+
     <!-- NavCalendar -->
     <definition name=".ehour.calendar.navCalendar" path="/WEB-INF/jsp/nav/navCalendar.jsp" />
 

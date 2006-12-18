@@ -23,9 +23,8 @@
 
 package net.rrm.ehour.timesheet.service;
 
-import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -43,12 +43,12 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.util.DateUtil;
-import net.rrm.ehour.util.EhourConfig;
 
 public class TimesheetServiceTest  extends TestCase
 {
 	private	TimesheetService	timesheetService;
 	private	TimesheetDAO		timesheetDAO;
+	private	EhourConfig			config;
 	private	ReportService		reportService;
 	
 	/**
@@ -58,13 +58,10 @@ public class TimesheetServiceTest  extends TestCase
 	{
 		timesheetService = new TimesheetServiceImpl();
 
-		EhourConfig config = new EhourConfig();
-		config.setCompleteDayHours(8);
-		
+		config = createMock(EhourConfig.class);
 		timesheetDAO = createMock(TimesheetDAO.class);
-		
 		reportService = createMock(ReportService.class);
-	
+		
 		((TimesheetServiceImpl)timesheetService).setTimesheetDAO(timesheetDAO);
 		((TimesheetServiceImpl)timesheetService).setReportService(reportService);
 		((TimesheetServiceImpl)timesheetService).setEhourConfig(config);
@@ -96,13 +93,18 @@ public class TimesheetServiceTest  extends TestCase
 
 		expect(timesheetDAO.getBookedHoursperDayInRange(1, DateUtil.calendarToMonthRange(cal)))
 				.andReturn(daoResults);
-
-		//
+		expect(config.getCompleteDayHours())
+				.andReturn(8)
+				.times(2);
+		
+		replay(config);
+	
 		replay(timesheetDAO);
 		
 		results = timesheetService.getBookedDaysMonthOverview(1, cal);
 		
 		verify(timesheetDAO);
+		verify(config);
 		
 		assertEquals(2, results.get(0).getDate().getDate());
 	}
@@ -156,5 +158,35 @@ public class TimesheetServiceTest  extends TestCase
 		l = (List) retObj.getTimesheetEntries().get(new Integer(6));
 		TimesheetEntry e2 = (TimesheetEntry)l.get(0);
 		assertEquals(3f, e2.getHours().floatValue(), 0.01);
+		
+		// projects only
+		reset(timesheetDAO);
+		reset(reportService);
+		
+		expect(reportService.getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal)))
+			.andReturn(reportResults);
+		
+		replay(timesheetDAO);
+		replay(reportService);
+
+		timesheetService.getTimesheetOverview(1, cal, true);
+		
+		verify(timesheetDAO);
+		verify(reportService);
+
+		// timesheet entries only
+		reset(timesheetDAO);
+		reset(reportService);
+		
+		expect(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal)))
+			.andReturn(daoResults);
+		
+		replay(timesheetDAO);
+		replay(reportService);
+
+		timesheetService.getTimesheetOverview(1, cal, false, true);
+		
+		verify(timesheetDAO);
+		verify(reportService);		
 	}
 }

@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"	
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 	default-autowire="byName">
 
 	<!-- the transactional advice  -->
@@ -23,7 +25,7 @@
 		<aop:pointcut id="serviceOperation" expression="execution(* net.rrm.ehour.*.service.*Service.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config>
-
+	
 	<!-- User service -->
 	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl" />
 
@@ -32,13 +34,11 @@
 		<property name="timesheetService" ref="timesheetService" />
 	</bean>
 
-	<!-- @todo use props -->
-	<bean id="ehourConfig"
-			class="net.rrm.ehour.util.EhourConfig">
-		<property name="completeDayHours" value="8" />
-	</bean>
-	
+	<util:properties id="ehourPropertiesConfig" location="classpath:/ehourConfig.properties" />
 
+	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigProps">
+		<property name="propertiesConfig" ref="ehourPropertiesConfig" />
+	</bean>
 
 	<!-- Report service -->
 	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl" />

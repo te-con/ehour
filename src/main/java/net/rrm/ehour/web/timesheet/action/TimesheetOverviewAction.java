@@ -25,10 +25,12 @@ package net.rrm.ehour.web.timesheet.action;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.web.timesheet.form.TimesheetForm;
 import net.rrm.ehour.web.util.AuthUtil;
@@ -48,6 +50,7 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		TimesheetForm	timesheetForm = (TimesheetForm)form;
 		Calendar		requestedMonth;
 		Integer			userId;
+		String			parameter = mapping.getParameter();
 		TimesheetOverview	timesheetOverview;
 		
 		requestedMonth = timesheetForm.getCalendar();
@@ -60,10 +63,22 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		
 		userId = AuthUtil.getUserId(request, timesheetForm);
 		
-		timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
+		// determine which data we need to pull in
+		if ("projectsOnly".equals(parameter))
+		{
+			timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth, true);
+		}
+		else if ("timesheetEntriesOnly".equals(parameter))
+		{
+			timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth, false, true);
+		}
+		else
+		{
+			timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
+		}
 		
 		request.setAttribute("timesheetOverview", timesheetOverview);
-
+		request.setAttribute("timesheetOverviewMonth", requestedMonth);
 		return mapping.findForward("success");
 	}
 }

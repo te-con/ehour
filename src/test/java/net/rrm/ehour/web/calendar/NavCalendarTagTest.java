@@ -88,7 +88,7 @@ public class NavCalendarTagTest extends TestCase
 	{
 		assertEquals(0, tag.prependPreviousMonthDays(cal31, sb));
 		assertEquals(5, tag.prependPreviousMonthDays(cal29, sb));
-		assertEquals(1, tag.prependPreviousMonthDays(cal30, sb));
+		assertEquals(3, tag.prependPreviousMonthDays(cal30, sb));
 	}
 	
 

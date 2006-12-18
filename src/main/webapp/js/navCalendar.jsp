@@ -6,15 +6,21 @@ function changeCalMonth(month, year, userId)
 {
 	dojo.io.bind({
 	               url: '<c:url value="/eh/cal/navCalendar.do" />',
-	               handler: formChanged,
+	               handler: navCalChanged,
+	               content: {month: month, year: year, userId: userId}
+	            });  		
+
+	dojo.io.bind({
+	               url: '<c:url value="/eh/timesheet/projectsOverview.do" />',
+	               handler: projectsOverviewChanged,
 	               content: {month: month, year: year, userId: userId}
 	            });  		
 	
 	return false;
 }
 
-// form changed	
-function formChanged(type, xml, evt)
+// navigation calendar changed	
+function navCalChanged(type, xml, evt)
 {
 	if (type == 'error')
  	{
@@ -24,5 +30,20 @@ function formChanged(type, xml, evt)
  	else
  	{
 		dojo.byId('navCalendarSpan').innerHTML = xml;
+	}
+}
+
+
+// projects overview changed	
+function projectsOverviewChanged(type, xml, evt)
+{
+	if (type == 'error')
+ 	{
+ 		alert("<fmt:message key="errors.ajax.general" />");
+ 		return;
+ 	}
+ 	else
+ 	{
+		dojo.byId('projectsOverviewSpan').innerHTML = xml;
 	}
 }

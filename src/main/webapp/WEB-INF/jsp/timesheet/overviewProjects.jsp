@@ -8,15 +8,20 @@
 
 	<tr>
 		<td colspan="3">
-			Bla bla
+			<h1>Project overview for <fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="MMMMM yyyy" /></h1>
+			<br><br>
 		</td>
 	</tr>
 	
 	<tr>
-		<th>Project</th>
-		<th>Booked hours</th>
-		<th>Turnover</th>
+		<td>Project</td>
+		<td>Booked hours</td>
+		<td>Turnover</td>
 	</tr>
+	
+			<tr>
+				<td colspan="3"><img src="<c:url  value="/img/eh_pix.gif" />" width="100%" height="1" alt="pixel"><br></td>
+			</tr>	
 	
 	<c:forEach items="${timesheetOverview.projectHours}" var="projectReport">
 	

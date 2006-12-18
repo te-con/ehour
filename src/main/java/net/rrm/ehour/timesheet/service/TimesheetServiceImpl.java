@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.report.dto.ProjectReport;
@@ -41,7 +42,6 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.util.DateUtil;
-import net.rrm.ehour.util.EhourConfig;
 
 /**
  * Provides services for displaying and manipulating timesheets.
@@ -66,20 +66,40 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @throws ObjectNotFoundException
 	 */	
 
-	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException
+	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth, boolean... switches) throws ObjectNotFoundException
 	{
 		TimesheetOverview	overview = new TimesheetOverview();
 		DateRange			monthRange;
-		List<ProjectReport>	projectReports;
-		List<TimesheetEntry> timesheetEntries;
-		Map<Integer, List<TimesheetEntry>>	calendarMap;
+		List<ProjectReport>	projectReports = null;
+		List<TimesheetEntry> timesheetEntries = null;
+		Map<Integer, List<TimesheetEntry>>	calendarMap = null;
+		boolean				projectSwitch = true;
+		boolean				timesheetEntriesSwitch = true;
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
 		
-		projectReports = reportService.getHoursPerAssignmentInRange(userId, monthRange);
-
-		timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(userId, monthRange);
-		calendarMap = entriesToCalendarMap(timesheetEntries);
+		switch (switches.length)
+		{
+			case(1):
+				projectSwitch = switches[0];
+				timesheetEntriesSwitch = false;
+				break;
+			case(2):
+				projectSwitch = switches[0];
+				timesheetEntriesSwitch = switches[1];
+				break;
+		}
+		
+		if (projectSwitch)
+		{
+			projectReports = reportService.getHoursPerAssignmentInRange(userId, monthRange);
+		}
+		
+		if (timesheetEntriesSwitch)
+		{
+			timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(userId, monthRange);
+			calendarMap = entriesToCalendarMap(timesheetEntries);
+		}
 		
 		overview.setProjectHours(projectReports);
 		overview.setTimesheetEntries(calendarMap);

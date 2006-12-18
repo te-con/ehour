@@ -44,10 +44,12 @@ public interface TimesheetService
 	 * requested month and a list with all timesheet entries for that month.
 	 * @param userId
 	 * @param requestedMonth only the month and year of the calendar is used
+	 * @param switches [0] projectOnly
+	 * @param switches [0] timesheetEntriesOnly
 	 * @return TimesheetOverviewAction
 	 * @throws ObjectNotFoundException
 	 */
-	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException;
+	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth, boolean... switches) throws ObjectNotFoundException;
 	
 	/**
 	 * Get a list with all day numbers in this month that has complete booked days (config defines the completion
