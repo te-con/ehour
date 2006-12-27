@@ -7,20 +7,18 @@
 	    WHERE active = :active
 	</query>
 	
-	<query name="Project.findAll">
+	<query name="Project.findAllActive">
 		FROM Project project
+		WHERE project.active = true AND
+			  project.customer.active = true
 	    ORDER BY name
 	</query>	
 	
-	<query name="Project.findAllWithActive">
-		FROM Project project
-	    WHERE active = :active
-	    ORDER BY name
-	</query>	
-
 	<query name="Project.findAllActiveDefault">
 		FROM Project project
-	    WHERE active = true AND defaultProject = true
+	    WHERE active = true AND 
+	    	  project.customer.active=true AND 
+	    	  defaultProject = true
 	</query>	
 	
 	<query name="ProjectAssignment.findProjectForUser">
@@ -33,6 +31,7 @@
 	<query name="ProjectAssignment.findProjectsForUser">
 		FROM ProjectAssignment pa
 		WHERE pa.project.active = true AND
+			  pa.project.customer.active = true AND 
 			  pa.user.userId = :userId
 		ORDER BY pa.dateStart, pa.project.name
 	</query>	

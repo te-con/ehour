@@ -33,5 +33,9 @@
         <property name="description" type="string">
             <column name="DESCRIPTION" />
         </property>
+        
+		<property name="defaultAssignment" column="DEFAULT_ASSIGNMENT" type="yes_no"/>        
+		
+		<property name="active" column="ACTIVE" type="yes_no"/>        		
 	</class>	
 </hibernate-mapping>

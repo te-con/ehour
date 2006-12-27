@@ -71,24 +71,26 @@
 		<action name="CustomerForm"
 				path="/customer/getCustomer" 
 				type="net.rrm.ehour.web.admin.customer.action.GetCustomerAction" >
-			<forward name="success" path=".ehour.admin.customer.editForm" />
+			<forward name="success" path=".ehour.admin.customer.customerForm" />
 		</action>
 
 		<!-- Show add customer form -->
-		<action path="/customer/addCustomerForm" forward=".ehour.admin.customer.addForm" />
+		<action path="/customer/addCustomerForm" forward=".ehour.admin.customer.customerForm" />
 
 		<!-- Edit customer-->
 		<action name="CustomerForm" 
 				path="/customer/editCustomer" 
 				type="net.rrm.ehour.web.admin.customer.action.EditCustomerAction">
 			<forward  name="success" path=".ehour.admin.customer.list" />
+			<forward  name="failure" path=".ehour.admin.customer.customerForm" />			
 		</action>
 
 		<!-- Delete customer -->
 		<action name="CustomerForm" 
 				path="/customer/deleteCustomer" 
 				type="net.rrm.ehour.web.admin.customer.action.DeleteCustomerAction">
-			<forward  name="success" path=".ehour.admin.customer.list" />				
+			<forward  name="success" path=".ehour.admin.customer.list" />	
+			<forward  name="failure" path=".ehour.admin.customer.customerForm" />						
 		</action>
 
 
@@ -205,5 +207,10 @@
 	
 	<!-- spring tiles controller -->
 	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
+	
+	<!-- i18n message resources (only used for html:error) -->
+	<message-resources parameter="MessageResources" />
+
+	
 </struts-config>
 

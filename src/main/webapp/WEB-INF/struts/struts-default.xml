@@ -61,8 +61,13 @@
 		</action>
 	</action-mappings>
 
+
 	<!-- spring tiles controller -->
 	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
+
+
+	<!-- i18n message resources (only used for html:error) -->
+	<message-resources parameter="MessageResources" />
 
 	<!-- tiles plugin. apparently tiles defs for other modules need to be loaded here as well,
 		 adding them to the other config files won't work.. -->

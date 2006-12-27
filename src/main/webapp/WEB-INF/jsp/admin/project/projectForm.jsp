@@ -20,6 +20,7 @@
 					<fmt:message key="admin.project.editProject" />
 				</c:otherwise>
 			</c:choose>
+		</td>
 	</tr>
 
 	<tr>

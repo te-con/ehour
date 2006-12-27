@@ -127,16 +127,15 @@
     *  weakens security, we suggest using it only when modifying a password.</p>
     * @param form The form validation is taking place on.
     */
-    function validateMaxLength(form) {
+    function validateMaxLength(formId, oMaxLength) {
         var isValid = true;
         var focusField = null;
         var i = 0;
-        var fields = new Array();
-        var formName = form.getAttributeNode("name"); 
-
-        oMaxLength = eval('new ' + formName.value + '_maxlength()');        
+        var form = document.getElementById(formId);
+        
         for (x in oMaxLength) {
             var field = form[oMaxLength[x][0]];
+   			document.getElementById(oMaxLength[x][1]).innerHTML = "";            
 
             if ((field.type == 'hidden' ||
                 field.type == 'text' ||
@@ -144,19 +143,19 @@
                 field.type == 'textarea') &&
                 field.disabled == false) {
 
-                var iMax = parseInt(oMaxLength[x][2]("maxlength"));
+                var iMax = parseInt(oMaxLength[x][2]);
                 if (field.value.length > iMax) {
                     if (i == 0) {
                         focusField = field;
                     }
-                    fields[i++] = oMaxLength[x][1];
+					i++;
+   					document.getElementById(oMaxLength[x][1]).innerHTML = oMaxLength[x][3];
                     isValid = false;
                 }
             }
         }
-        if (fields.length > 0) {
+        if (i > 0) {
            focusField.focus();
-           alert(fields.join('\n'));
         }
         return isValid;
     }

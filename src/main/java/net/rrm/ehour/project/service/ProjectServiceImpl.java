@@ -35,6 +35,7 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
@@ -85,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService
 		
 		if (hideInactive)
 		{
-			res = projectDAO.findAll(true);
+			res = projectDAO.findAllActive();
 		}
 		else
 		{
@@ -157,6 +158,31 @@ public class ProjectServiceImpl implements ProjectService
 		return projectAssignment;
 	}
 	
+	/**
+	 * Assign user to default projects
+	 */
+	public void assignUserToDefaultProjects(User user)
+	{
+		List<Project>		defaultProjects;
+		ProjectAssignment	assignment;
+		
+		defaultProjects = projectDAO.findDefaultProjects();
+		
+		for (Project project : defaultProjects)
+		{
+			assignment = new ProjectAssignment();
+			assignment.setDefaultAssignment(true);
+			assignment.setProject(project);
+			assignment.setUser(user);
+			
+			if (!isAssignmentDuplicate(assignment))
+			{
+				logger.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
+				projectAssignmentDAO.persist(assignment);
+			}
+		}
+	}
+	
 	
 	/**
 	 * Check if the project is already assigned and the date overlaps
@@ -169,7 +195,7 @@ public class ProjectServiceImpl implements ProjectService
 		List<ProjectAssignment>	assignments;
 		DateRange				range = projectAssignment.getDateRange();
 		
-		assignments = projectAssignmentDAO.findProjectForUser(projectAssignment.getProject().getProjectId(),
+		assignments = projectAssignmentDAO.findProjectAssignmentForUser(projectAssignment.getProject().getProjectId(),
 															 	projectAssignment.getUser().getUserId());
 
 		for (ProjectAssignment assignment : assignments)
@@ -181,7 +207,8 @@ public class ProjectServiceImpl implements ProjectService
 				continue;
 			}
 			
-			if (DateUtil.isDateRangeOverlaps(assignment.getDateRange(), range))
+			if (assignment.isDefaultAssignment() ||
+				DateUtil.isDateRangeOverlaps(assignment.getDateRange(), range))
 			{
 				if (logger.isDebugEnabled())
 				{
@@ -203,7 +230,7 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		List<ProjectAssignment>	results;
 		
-		results = projectAssignmentDAO.findProjectsForUser(userId);
+		results = projectAssignmentDAO.findProjectAssignmentsForUser(userId);
 		
 		return results;
 	}

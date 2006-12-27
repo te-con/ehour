@@ -34,6 +34,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.domain.Project;
 
@@ -62,7 +63,7 @@ public class CustomerServiceTest extends TestCase
 	{
 		Customer cust = new Customer();
 		Project	proj = new Project();
-		Set	projs = new HashSet();
+		Set<Project>	projs = new HashSet<Project>();
 		proj.setProjectId(1);
 		cust.setCustomerId(1);
 		
@@ -140,7 +141,7 @@ public class CustomerServiceTest extends TestCase
 		verify(customerDAO);
 	}	
 	
-	public void testPersistCustomer()
+	public void testPersistCustomer() throws ObjectNotUniqueException
 	{
 		Customer cust = new Customer();
 		cust.setCustomerId(1);

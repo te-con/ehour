@@ -51,7 +51,7 @@ public class ProjectAssignmentDAOHibernateImpl
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignment> findProjectForUser(Integer projectId, Integer userId)
+	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId)
 	{
 		String[]	names = new String[]{"projectId", "userId"};
 		Integer[]	values = new Integer[]{projectId, userId};
@@ -69,7 +69,7 @@ public class ProjectAssignmentDAOHibernateImpl
 	 * @return
 	 */	
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignment> findProjectsForUser(Integer userId)
+	public List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId)
 	{
 		List<ProjectAssignment>		results;
 		
@@ -77,6 +77,5 @@ public class ProjectAssignmentDAOHibernateImpl
 																		"userId", userId);
 		
 		return results;
-		
 	}
 }

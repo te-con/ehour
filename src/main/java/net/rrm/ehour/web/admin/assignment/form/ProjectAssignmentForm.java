@@ -88,7 +88,14 @@ public class ProjectAssignmentForm extends ActionForm
 
 	public void setHourlyRate(Float hourlyRate)
 	{
-		this.hourlyRate = hourlyRate;
+		if (hourlyRate.floatValue() > 0)
+		{
+			this.hourlyRate = hourlyRate;
+		}
+		else
+		{
+			this.hourlyRate = null;
+		}
 	}
 
 	public String getDateEnd()
@@ -118,7 +125,14 @@ public class ProjectAssignmentForm extends ActionForm
 
 	public void setDescription(String description)
 	{
-		this.description = description;
+		if (description.equals(""))
+		{
+			this.description = null;
+		}
+		else
+		{
+			this.description = description;
+		}
 	}
 	
 }

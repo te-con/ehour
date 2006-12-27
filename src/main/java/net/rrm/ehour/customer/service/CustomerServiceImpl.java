@@ -27,7 +27,10 @@ import java.util.List;
 
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  * TODO 
@@ -54,7 +57,14 @@ public class CustomerServiceImpl implements CustomerService
 			}
 			else
 			{
-				customerDAO.delete(customer);
+				try
+				{
+					customerDAO.delete(customer);
+				}
+				catch (DataIntegrityViolationException cve)
+				{
+					throw new ParentChildConstraintException(cve);
+				}				
 			}
 		}
 	}
@@ -79,9 +89,16 @@ public class CustomerServiceImpl implements CustomerService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#persistCustomer(net.rrm.ehour.project.domain.Customer)
 	 */
-	public Customer persistCustomer(Customer customer)
+	public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException
 	{
-		customerDAO.persist(customer);
+		try
+		{
+			customerDAO.persist(customer);
+		}
+		catch (DataIntegrityViolationException cve)
+		{
+			throw new ObjectNotUniqueException(cve);
+		}
 		
 		return customer;
 	}

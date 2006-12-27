@@ -34,6 +34,10 @@ public class ProjectAssignment extends DomainObject
 
 	private String description;
 	
+	private	boolean	defaultAssignment;
+	
+	private boolean active;
+	
 	// @todo move to a VO - someday..
 	private	boolean deletable;
 
@@ -202,5 +206,31 @@ public class ProjectAssignment extends DomainObject
 	public void setDeletable(boolean deletable)
 	{
 		this.deletable = deletable;
+	}
+
+	public boolean isDefaultAssignment()
+	{
+		return defaultAssignment;
+	}
+
+	public void setDefaultAssignment(boolean defaultAssignment)
+	{
+		this.defaultAssignment = defaultAssignment;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive()
+	{
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active)
+	{
+		this.active = active;
 	}
 }

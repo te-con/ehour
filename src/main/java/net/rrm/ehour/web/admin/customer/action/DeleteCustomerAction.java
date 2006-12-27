@@ -28,11 +28,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 /**
  * TODO 
@@ -43,21 +47,39 @@ public class DeleteCustomerAction extends AdminCustomerBaseAction
 	/**
 	 * 
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) 
 	{
 		CustomerForm	customerForm;
-		List			customers;
+		List<Customer>	customers;
+		Customer		customer;
+		ActionMessages	messages = new ActionMessages();
+		ActionForward	fwd;
 		
 		customerForm = (CustomerForm)form;
-		customerService.deleteCustomer(customerForm.getCustomerId());
+		try
+		{
+			customerService.deleteCustomer(customerForm.getCustomerId());
 
-		customers = customerService.getCustomers();
-		
-		request.setAttribute("customers", customers);
+			customers = customerService.getCustomers();
+			request.setAttribute("customers", customers);
 			
+			fwd = mapping.findForward("success");
+			
+		} catch (ParentChildConstraintException e)
+		{
+			messages.add("delete", new ActionMessage("admin.customer.errorProjectsAssigned"));
+
+			customer = customerService.getCustomer(customerForm.getCustomerId());
+			request.setAttribute("customer", customer);
+			
+			fwd = mapping.findForward("failure");
+		}
+
 		response.setContentType("text/xml");
 		response.setHeader("Cache-Control", "no-cache");
+
+		saveErrors(request, messages);
 		
-		return mapping.findForward("success");
+		return fwd;
 	}
 }

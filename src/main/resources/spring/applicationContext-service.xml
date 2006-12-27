@@ -15,7 +15,7 @@
 		<!-- the transactional semantics... -->
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
-			<tx:method name="persist*" propagation="REQUIRED" />
+			<tx:method name="persist*" propagation="REQUIRED" rollback-for="net.rrm.ehour.exception.ObjectNotUniqueException,net.rrm.ehour.exception.ParentChildConstraintException" />
 			<tx:method name="delete*" propagation="REQUIRED" />			
 			<tx:method name="assign*" propagation="REQUIRED" />						
 		</tx:attributes>

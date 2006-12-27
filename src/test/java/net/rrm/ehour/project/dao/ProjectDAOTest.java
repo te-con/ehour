@@ -65,18 +65,9 @@ public class ProjectDAOTest extends BaseDAOTest
 	{
 		List projects = dao.findAll();
 		
-		assertEquals(3, projects.size());
+		assertEquals(5, projects.size());
 	}
 
-	/**
-	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#findAll(boolean)}.
-	 */
-	public void testFindAllInactive()
-	{
-		List<Project> projects = dao.findAll(false);
-		
-		assertEquals(1, projects.size());
-	}
 
 	/**
 	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#findById(java.lang.Integer)}.
@@ -108,4 +99,10 @@ public class ProjectDAOTest extends BaseDAOTest
 		assertNotNull(prj.getProjectId());
 	}
 
+	public void testFindAllActive()
+	{
+		List r = dao.findAllActive();
+		
+		assertEquals(3, r.size());
+	}
 }

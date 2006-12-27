@@ -39,10 +39,7 @@
     <definition name=".ehour.admin.customer.list" path="/WEB-INF/jsp/admin/customer/listCustomers.jsp" />
 
     <!-- Admin customer edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
-    <definition name=".ehour.admin.customer.editForm" path="/WEB-INF/jsp/admin/customer/editCustomerForm.jsp" />
-
-    <!-- Admin customer edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
-    <definition name=".ehour.admin.customer.addForm" path="/WEB-INF/jsp/admin/customer/addCustomerForm.jsp" />
+    <definition name=".ehour.admin.customer.customerForm" path="/WEB-INF/jsp/admin/customer/customerForm.jsp" />
 
 
 

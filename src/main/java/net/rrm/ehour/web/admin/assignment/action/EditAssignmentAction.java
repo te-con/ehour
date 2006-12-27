@@ -41,7 +41,8 @@ import net.rrm.ehour.web.util.DomainAssembler;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 /**
  * TODO 
  **/
@@ -56,41 +57,49 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 	{
 		ActionForward fwd = mapping.findForward("success");
 		ProjectAssignmentForm paf = (ProjectAssignmentForm)form;
-		ProjectAssignment	pa;
+		ProjectAssignment	pa = null;
 		User				user;
 		List<Project>		allProjects;
 		List<ProjectAssignment>	assignments;
+		ActionMessages		messages = new ActionMessages();
+
+		response.setHeader("Cache-Control", "no-cache");
 		
 		try
 		{
 			pa = DomainAssembler.getProjectAssignment(paf);
+			
+			if (pa.getDateStart().after(pa.getDateEnd()))
+			{
+				messages.add("dateStart", new ActionMessage("admin.assignment.errorStartAfterEnd"));
+			}
+			else
+			{
+				projectService.assignUserToProject(pa);
+				
+				// upon success, display new assignment form
+				pa = new ProjectAssignment();
+				pa.setDateRange(DateUtil.calendarToMonthRange(new GregorianCalendar()));
+			}
+
 		} catch (ParseException e1)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			throw e1;
-		}
-		
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
-		
-		allProjects = projectService.getAllProjects(true);
-		request.setAttribute("allProjects", allProjects);
-		
-		try
-		{
-			projectService.assignUserToProject(pa);
+			// @todo - could be dateEnd as well. quite unlikely this will happen though
+			messages.add("dateStart", new ActionMessage("errors.invalidDate"));
 			
-			// upon success, display new assignment form
+			// we couldn't parse it so init
 			pa = new ProjectAssignment();
 			pa.setDateRange(DateUtil.calendarToMonthRange(new GregorianCalendar()));
 		}
 		catch (ProjectAlreadyAssignedException e)
 		{
-			request.setAttribute("error", e.getMessage());
-			e.printStackTrace();
+			messages.add("project", new ActionMessage("admin.assignment.errorAlreadyAssigned"));
 		}
 
+		// retrieve info
+		allProjects = projectService.getAllProjects(true);
+		request.setAttribute("allProjects", allProjects);
+		
 		assignments = projectService.getAllProjectsForUser(paf.getUserId());
 		request.setAttribute("assignments", assignments);		
 		
@@ -98,6 +107,9 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 		
 		user = userService.getUser(paf.getUserId());
 		request.setAttribute("user", user);
+		
+		//
+		saveErrors(request, messages);
 		
 		return fwd;
 	}

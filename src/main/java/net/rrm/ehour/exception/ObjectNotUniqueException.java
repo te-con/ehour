@@ -1,5 +1,5 @@
 /**
- * Created on Dec 4, 2006
+ * Created on Dec 25, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,42 +21,34 @@
  *
  */
 
-package net.rrm.ehour.project.dao;
-
-import java.util.List;
-
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
-import net.rrm.ehour.project.domain.Project;
+package net.rrm.ehour.exception;
 
 /**
- *  
- **/
+ * TODO
+ */
 
-public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, Integer> implements ProjectDAO
+public class ObjectNotUniqueException extends Exception
 {
-	/**
-	 * @todo fix this a bit better
+    /**
+	 * 
 	 */
-	public ProjectDAOHibernateImpl()
-	{
-		super(Project.class);
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.dao.ProjectDAO#findAll(boolean)
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Project> findAllActive()
-	{
-		return getHibernateTemplate().findByNamedQuery("Project.findAllActive");
-	}
-	
+	private static final long serialVersionUID = 7136651575349812016L;
+
 	/**
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Project> findDefaultProjects()
-	{
-		return getHibernateTemplate().findByNamedQuery("Project.findAllActiveDefault");
-	}
+	public ObjectNotUniqueException()
+    {
+        super();
+    }
+
+    public ObjectNotUniqueException(Exception e)
+    {
+        super(e);
+    }
+
+    public ObjectNotUniqueException(String s)
+    {
+        super(s);
+    }
 }

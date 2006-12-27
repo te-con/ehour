@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <script type="text/javascript">
@@ -81,7 +82,7 @@ function init()
 </table>
 
 <br><br>
-<c:out value="${request.error}" />
+
 <form id="AssignmentForm" method="post" action="editAssignment.do">
 
 <input type="hidden" name="assignmentId"  value="${assignment.assignmentId}">
@@ -130,6 +131,10 @@ function init()
 </c:forEach>
 		</select>
 	</td>
+	
+	<td style="color: red">
+		<html:errors property="project" />
+	</td>
 </tr>
 
 <tr>
@@ -141,7 +146,9 @@ function init()
 		<div id="dateStartDiv"></div>
 	</td>
 	
-	<td></td>
+	<td style="color: red">
+		<html:errors property="dateStart" />
+	</td>
 </tr>
 
 <tr>

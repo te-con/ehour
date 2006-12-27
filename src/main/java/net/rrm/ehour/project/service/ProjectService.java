@@ -31,6 +31,7 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.user.domain.User;
 
 public interface ProjectService
 {
@@ -69,6 +70,13 @@ public interface ProjectService
 	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException;
 	
 	/**
+	 * Assign user to default projects
+	 * @param user
+	 * @return
+	 */
+	public void assignUserToDefaultProjects(User user);
+	
+	/**
 	 * Get active projects for user on date
 	 * @param userId
 	 * @param date
@@ -97,7 +105,6 @@ public interface ProjectService
 	 * @return
 	 */
 	public ProjectAssignment getProjectAssignment(Integer assignmentId);
-	
 	
 	/**
 	 * Delete project assignment

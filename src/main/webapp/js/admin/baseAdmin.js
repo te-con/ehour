@@ -3,6 +3,87 @@ dojo.require("dojo.io.*");
 dojo.require("dojo.event.*");
 dojo.require("dojo.lfx.*");
 
+// bindAdminForm
+function bindAdminForm()
+{ 
+	new dojo.io.FormBind({
+   						formNode: dojo.byId(adminForm),
+   						handler: responseReceived
+						});
+}
+
+// handler for bindAdminForm
+function responseReceived(type, xml, evt)
+{
+	hideLoadingData();
+	
+	if (type == 'error')
+	{	
+   		alert(ajaxError);
+	}
+	else
+	{
+		var spanTarget = parseSpanTarget(xml);
+
+		if (spanTarget == 'form')
+		{
+			changeForm(xml);
+		}
+		else
+		{
+			listReceived(xml);
+		}		
+	}
+}
+
+// change the form span
+function changeForm(htmlSnippet)
+{
+	dojo.byId(adminFormSpan).innerHTML = htmlSnippet;
+	
+	// rebind
+	bindAdminForm();
+}
+
+// list received
+function listReceived(htmlSnippet)
+{
+	dojo.byId(adminListReceivedSpan).innerHTML = htmlSnippet;
+		
+	showAddForm();
+}
+
+// show add form
+function showAddForm()
+{
+	showLoadingData();
+	
+    dojo.io.bind({
+                   url: adminFormUrl,
+                   handler: responseReceived
+                });  
+                   
+	return false;    
+}
+
+// parse the span target out of the html (<!-- spanTarget: xxx -->)
+function parseSpanTarget(html)
+{
+	var spanTarget;
+
+	var regexp = /<\!-- spanTarget: *([\w\W]*?) -->/g;
+	
+	
+	html.replace(regexp,
+			 		function(match, attributes, script)
+			 		{
+						spanTarget = attributes;
+					}
+				);	
+	
+	return spanTarget;
+}
+
 // display and trigger fade in status message
 function setStatusMessage(statusMsg)
 {
@@ -31,4 +112,5 @@ dojo.lang.extend(dojo.io.FormBind, {onSubmit: function(/*DOMNode*/form)
 									}});
 
 
+dojo.addOnLoad(bindAdminForm);
 

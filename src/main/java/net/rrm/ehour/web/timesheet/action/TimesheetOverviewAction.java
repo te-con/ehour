@@ -25,12 +25,10 @@ package net.rrm.ehour.web.timesheet.action;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.web.timesheet.form.TimesheetForm;
 import net.rrm.ehour.web.util.AuthUtil;

@@ -72,7 +72,7 @@ public class ProjectServiceTest extends TestCase
 	//
 	public void testGetAllProjects()
 	{
-		expect(projectDAO.findAll(true))
+		expect(projectDAO.findAllActive())
 			.andReturn(new ArrayList<Project>());
 
 		replay(projectDAO);

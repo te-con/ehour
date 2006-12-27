@@ -4,92 +4,45 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<script>
-	
-	function submitForm()
-	{ 
-		new dojo.io.FormBind({
-    						formNode: dojo.byId('CustomerForm'),
-    						handler: customerListReceived
-							});
-	}
-	
-	function customerListReceived(type, xml, evt)
-	{
-		if (type == 'error')
-		{	
-    		alert("<fmt:message key="errors.ajax.general" />");
-		}
-		else
-		{
-			dojo.byId('listCustomersSpan').innerHTML = xml;
-			
-			showAddForm();
-		}
-	}
-	
-	function deleteCustomer(customerId)
-	{
-		if (confirm("<fmt:message key="admin.customer.deleteConfirm" />"))
-		{
-			dojo.io.bind({url: 'deleteCustomer.do',
-						  handler: customerListReceived,
-                       content: {customerId: customerId}
-                       });
-		}
+<script src="../../../js/dojo.js" type="text/javascript"></script>
+
+<script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/customerAdmin.jsp" />" type="text/javascript"></script>
+
+
+<table CLASS="contentTable" CELLSPACING=2>
+	<tr>	
+		<td>
+			<div class="adminListScroll">
+				<span id="listCustomersSpan">
+					<tiles:insert page="listCustomers.jsp" />
+				</span>
+			</div>
+		</td>
 		
-		return false;
-	}
-
-
-	function editCustomer(editId)
-	{
-        dojo.io.bind({
-                       url: 'getCustomer.do',
-                       handler: formChanged,
-                       content: {customerId: editId}
-                    });  
-                    
-		return false;    
-	}
-	
-	function showAddForm()
-	{
-        dojo.io.bind({
-                       url: 'addCustomerForm.do',
-                       handler: formChanged
-                    });  
-                    
-		return false;    
-	}		
+		<td>
+			&nbsp;
+		</td>
 		
-    function formChanged(type, xml, evt)
-    {
-    	if (type == 'error')
-    	{
-    		alert("<fmt:message key="errors.ajax.general" />");
-    		return;
-    	}
-    	else
-    	{
-			dojo.byId('customerFormSpan').innerHTML = xml;
-			
-			// rebind
-			submitForm();
-		}
-    }
-
-	dojo.addOnLoad(submitForm);
-</script>
-
-
-	<span id="listCustomersSpan">
-		<tiles:insert page="listCustomers.jsp" />
-	</span>
+		<td valign="top">
+			<span id="customerFormSpan">
+				<tiles:insert page="customerForm.jsp" />
+			</span>
+		</td>		
+	</tr>
+	
+	<tr>
+		<td colspan="1" align="right">
+			<a href="" onClick="return showAddForm()"><fmt:message key="admin.customer.addCustomer" /></a>
+		</td>
+		
+		<td valign="top" align="right" colspan="2" style="color: #913023" id="statusMessage">
+			&nbsp;
+		</td>
+	</tr>
+</table>
 	
 <br>
 <br>
-
-<span id="customerFormSpan">
-	<tiles:insert page="addCustomerForm.jsp" />
-</span>

@@ -49,16 +49,16 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 	/**
 	 * Test method for {@link net.rrm.ehour.project.dao.ProjectAssignmentDAOHibernateImpl#findProjectsForUser(java.lang.Integer, java.lang.Integer)}.
 	 */
-	public void testFindProjectForUser()
+	public void testFindProjectAssignmentForUser()
 	{
-		List<ProjectAssignment> pas = dao.findProjectForUser(1, 1);
+		List<ProjectAssignment> pas = dao.findProjectAssignmentForUser(1, 1);
 		
 		assertEquals(1, pas.size());
 	}
 
-	public void testFindProjectsForUser()
+	public void testFindProjectAssignmentsForUser()
 	{
-		List<ProjectAssignment> pas = dao.findProjectsForUser(1);
+		List<ProjectAssignment> pas = dao.findProjectAssignmentsForUser(1);
 		
 		assertEquals(2, pas.size());
 	}

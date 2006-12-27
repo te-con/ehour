@@ -29,12 +29,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.util.DomainAssembler;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 
 /**
@@ -46,21 +49,39 @@ public class EditCustomerAction extends AdminCustomerBaseAction
 	/**
 	 * 
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) 
 	{
-		Customer	customer;
-		List		customers;
+		Customer		customer;
+		List<Customer>	customers;
+		ActionMessages	messages = new ActionMessages();
+		ActionForward	fwd;
 		
 		customer = DomainAssembler.getCustomer((CustomerForm)form);
 	
-		customerService.persistCustomer(customer);
-		customers = customerService.getCustomers();
-		
-		request.setAttribute("customers", customers);
+		try
+		{
+			customerService.persistCustomer(customer);
+
+			// get list data
+			customers = customerService.getCustomers();
 			
+			request.setAttribute("customers", customers);
+			
+			fwd = mapping.findForward("success");
+		}
+		catch (ObjectNotUniqueException e)
+		{
+			messages.add("name", new ActionMessage("admin.customer.errorNotUnique"));
+			request.setAttribute("customer", customer);
+			
+			fwd = mapping.findForward("failure");
+		}
+
 		response.setContentType("text/xml");
 		response.setHeader("Cache-Control", "no-cache");
-		
-		return mapping.findForward("success");
+
+		saveErrors(request, messages);
+
+		return fwd;
 	}
 }

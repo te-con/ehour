@@ -26,6 +26,7 @@ package net.rrm.ehour.customer.service;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
 /**
@@ -65,6 +66,6 @@ public interface CustomerService
 	 * @param customer
 	 * @return
 	 */
-	public Customer persistCustomer(Customer customer);
+	public Customer persistCustomer(Customer customer)  throws ObjectNotUniqueException;
 	
 }

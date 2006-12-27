@@ -32,6 +32,7 @@ import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService
 	private	UserDepartmentDAO	userDepartmentDAO;
 	private	UserRoleDAO			userRoleDAO;
 	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
-
+	private	ProjectService		projectService;
 
 	/**
 	 * Get user by userId 
@@ -286,7 +287,7 @@ public class UserServiceImpl implements UserService
 			// new users
 			if (user.getUserId() == null)
 			{
-				addDefaultProjects(user);
+				projectService.assignUserToDefaultProjects(user);
 			}
 			
 			userDAO.persist(user);
@@ -296,11 +297,10 @@ public class UserServiceImpl implements UserService
 	}
 
 	/**
-	 * Add default projects to user
-	 * @param user
+	 * @param projectService the projectService to set
 	 */
-	private void addDefaultProjects(User user)
+	public void setProjectService(ProjectService projectService)
 	{
-		// @todo
+		this.projectService = projectService;
 	}
 }

@@ -43,4 +43,9 @@ public class ParentChildConstraintException extends Exception
     {
         super(s);
     }
+    
+    public ParentChildConstraintException(Throwable t)
+    {
+        super(t);
+    }    
 }
