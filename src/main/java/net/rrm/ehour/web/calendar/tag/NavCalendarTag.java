@@ -191,7 +191,7 @@ public class NavCalendarTag extends CalendarTag
 	 * 
 	 * @param out
 	 */
-	private int prependPreviousMonthDays(Calendar calendar, StringBuffer out) 
+	protected int prependPreviousMonthDays(Calendar calendar, StringBuffer out) 
 	{
 		int i;
 		int	currentColumn;

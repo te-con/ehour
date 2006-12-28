@@ -33,7 +33,7 @@ import net.rrm.ehour.timesheet.service.TimesheetServiceTest;
 import net.rrm.ehour.user.service.UserServiceTest;
 import net.rrm.ehour.util.DateUtilTest;
 import net.rrm.ehour.web.calendar.CalendarUtilTest;
-import net.rrm.ehour.web.calendar.NavCalendarTagTest;
+import net.rrm.ehour.web.calendar.tag.NavCalendarTagTest;
 import net.rrm.ehour.web.util.AuthUtilTest;
 import net.rrm.ehour.web.util.DomainAssemblerTest;
 

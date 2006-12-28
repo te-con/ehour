@@ -93,5 +93,10 @@
 	<bean id="projectAssignmentDAO"
 		 	class="net.rrm.ehour.project.dao.ProjectAssignmentDAOHibernateImpl" 
 		 	parent="abstractDAOTarget" />
+		 	
+	<!-- TimesheetComment DAO -->
+	<bean id="timesheetCommentDAO"
+		 	class="net.rrm.ehour.timesheet.dao.TimesheetCommentDAOHibernateImpl" 
+		 	parent="abstractDAOTarget" />		 	
 
 </beans>

@@ -48,7 +48,6 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		TimesheetForm	timesheetForm = (TimesheetForm)form;
 		Calendar		requestedMonth;
 		Integer			userId;
-		String			parameter = mapping.getParameter();
 		TimesheetOverview	timesheetOverview;
 		
 		requestedMonth = timesheetForm.getCalendar();
@@ -62,20 +61,8 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		
 		userId = AuthUtil.getUserId(request, timesheetForm);
 		
-		// determine which data we need to pull in
-		if ("projectsOnly".equals(parameter))
-		{
-			timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth, true);
-		}
-		else if ("timesheetEntriesOnly".equals(parameter))
-		{
-			timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth, false, true);
-		}
-		else
-		{
-			timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
-		}
-		
+		timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
+
 		request.setAttribute("timesheetOverview", timesheetOverview);
 		request.setAttribute("timesheetOverviewMonth", requestedMonth);
 		

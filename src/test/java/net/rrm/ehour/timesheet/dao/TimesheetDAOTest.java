@@ -25,14 +25,13 @@ package net.rrm.ehour.timesheet.dao;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
-public class TimesheetDAOTest  extends BaseDAOTest 
+public class TimesheetDAOTest extends BaseDAOTest 
 {
 	private	TimesheetDAO	dao;
 

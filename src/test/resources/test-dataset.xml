@@ -32,5 +32,8 @@
   <TIMESHEET_ENTRY ASSIGNMENT_ID="1" ENTRY_DATE="2006-10-10" HOURS="9.0"/>
   <TIMESHEET_ENTRY ASSIGNMENT_ID="1" ENTRY_DATE="2006-10-31" HOURS="9.2"/>  
   <TIMESHEET_COMMENT USER_ID="1" COMMENT_DATE="2006-10-03" COMMENT="Had to go to the dentist"/>
+  <TIMESHEET_COMMENT USER_ID="1" COMMENT_DATE="2006-10-04" COMMENT="Had to go to the dentist again"/>
+  <TIMESHEET_COMMENT USER_ID="2" COMMENT_DATE="2006-10-05" COMMENT="Had to go to the dentist as well"/>    
+  <TIMESHEET_COMMENT USER_ID="3" COMMENT_DATE="2006-10-06" COMMENT="There is an infectious dentist thing going on!"/>      
 </dataset>
  

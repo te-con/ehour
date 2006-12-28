@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.calendar;
+package net.rrm.ehour.web.calendar.tag;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

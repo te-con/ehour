@@ -291,44 +291,6 @@ public class OverviewCalendarTag extends CalendarTag
 				    + HTML_NBSP
 				    + HTML_CELL_CLOSE);
 	}
-	
-	/**
-	 * Get HTML cell tag
-	 * @param currentColumn
-	 * @param date
-	 * @param row
-	 * @return
-	 */
-	private String getHtmlCell(int currentColumn, Calendar date, int row)
-	{
-		String	cellTag = null;
-		
-		if (currentColumn == 0)
-		{
-			// indeed, I'm not believing anymore that StringBuffer performs better than concatenating seperate
-			// string objects
-			cellTag = HTML_FIRST_CELL;
-			cellTag += "&nbsp;&nbsp;Week " + date.get(Calendar.WEEK_OF_YEAR) + "&nbsp;</td>";
-			
-			if (row == 0)
-			{
-				cellTag += HTML_FIRST_CELL_FIRST_ROW;
-			}
-			else
-			{
-				cellTag += HTML_FIRST_CELL;
-			}
-		}
-		else
-		{
-			if (row == 0)
-			{
-				
-			}
-		}
-		
-		return cellTag;
-	}
 
 	/**
 	 * @return the timesheetEntries
