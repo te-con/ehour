@@ -32,7 +32,7 @@ import net.rrm.ehour.web.form.UserIdForm;
  * TODO 
  **/
 
-public class TimesheetForm extends UserIdForm
+public class TimesheetViewForm extends UserIdForm
 {
 	/**
 	 * 
