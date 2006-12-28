@@ -26,6 +26,8 @@ package net.rrm.ehour.web.calendar;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import net.rrm.ehour.web.calendar.tag.NavCalendarTag;
+
 import junit.framework.TestCase;
 
 /**

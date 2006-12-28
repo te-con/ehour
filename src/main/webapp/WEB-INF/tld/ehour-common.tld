@@ -10,7 +10,7 @@
 
 	<tag>
 		<name>navCalendar</name>
-		<tagclass>net.rrm.ehour.web.calendar.NavCalendarTag</tagclass>
+		<tagclass>net.rrm.ehour.web.calendar.tag.NavCalendarTag</tagclass>
 		<bodycontent>JSP</bodycontent>
 		<attribute>
 			<name>calendar</name>
@@ -19,6 +19,22 @@
 		</attribute>
 		<attribute>
 			<name>bookedDays</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>overviewCalendar</name>
+		<tagclass>net.rrm.ehour.web.calendar.tag.OverviewCalendarTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>calendar</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>timesheetEntries</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

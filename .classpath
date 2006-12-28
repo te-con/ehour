@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources/ehour"/>
 	<classpathentry kind="src" path="src/main/profiles/dev/resources/spring"/>
 	<classpathentry kind="src" path="src/main/resources/i18n"/>
 	<classpathentry kind="src" path="src/main/resources/log4j"/>

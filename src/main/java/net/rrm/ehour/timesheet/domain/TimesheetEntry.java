@@ -22,14 +22,10 @@ public class TimesheetEntry implements Serializable {
     /** nullable persistent field */
     private Float hours;
 
-    /** nullable persistent field */
-    private ProjectAssignment projectAssignment;
-
     /** full constructor */
-    public TimesheetEntry(TimesheetEntryId entryId, Float hours, ProjectAssignment projectAssignment) {
+    public TimesheetEntry(TimesheetEntryId entryId, Float hours) {
         this.entryId = entryId;
         this.hours = hours;
-        this.projectAssignment = projectAssignment;
     }
 
     /** default constructor */
@@ -55,14 +51,6 @@ public class TimesheetEntry implements Serializable {
 
     public void setHours(Float hours) {
         this.hours = hours;
-    }
-
-    public ProjectAssignment getProjectAssignment() {
-        return this.projectAssignment;
-    }
-
-    public void setProjectAssignment(ProjectAssignment projectAssignment) {
-        this.projectAssignment = projectAssignment;
     }
 
     public String toString() {

@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.calendar;
+package net.rrm.ehour.web.calendar.tag;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,36 +30,30 @@ import java.util.Calendar;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
 
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 
+
+
 /**
  * TODO 
  **/
 
-public class NavCalendarTag extends TagSupport
+public class NavCalendarTag extends CalendarTag
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2422922719761190399L;
-	private Calendar 	calendar;
-	private boolean[] bookedDays;
 
 	// HTML constants
-	private	final	String	HTML_FIRST_CELL = "<TD class=\"cps_dayData\" style=\"border-left: 0px\">";
-	private	final	String	HTML_CELL = "<TD class=\"cps_dayData\">";
-	private	final	String	HTML_FIRST_CELL_COMPLETE = "<TD class=\"cps_dayData\" style=\"border-left: 0px\">";
-	private	final	String	HTML_CELL_COMPLETE = "<TD class=\"cps_dayData\">";
-	private	final	String	HTML_CELL_NOT_COMPLETE = "<TD class=\"cps_dayNoData\">";	
-	private	final	String	HTML_NEW_ROW = "<TR onmouseover=\"this.className='cps_tableTROn';\" " +
-	   								 "onmouseout=\"this.className='cps_tableTROff';\"  onclick=\"\">";
-	private	final	String	HTML_NBSP = "&nbsp;";
-	private	final	String	HTML_CELL_CLOSE = "</TD>";
-	private	final	String	HTML_ROW_CLOSE = "</TR>";
+	private String	HTML_NEW_ROW = "<TR onmouseover=\"this.className='cps_tableTROn';\" " +
+		 								"onmouseout=\"this.className='cps_tableTROff';\"  onclick=\"\">";
+
+	private String	HTML_FIRST_CELL = "<TD class=\"cps_dayData\" style=\"border-left: 0px\">";
+	private String	HTML_CELL_COMPLETE = "<TD class=\"cps_dayData\">";
+	private String	HTML_CELL_NOT_COMPLETE = "<TD class=\"cps_dayNoData\">";	
+	
+	private boolean[] 	bookedDays;
 	
 	private Logger	logger = Logger.getLogger(NavCalendarTag.class);
 	
@@ -68,7 +62,7 @@ public class NavCalendarTag extends TagSupport
 	 * @return int
 	 * @throws JspException
 	 */
-
+	@Override
 	public int doStartTag() throws JspException
 	{
 		JspWriter 		out;
@@ -80,7 +74,7 @@ public class NavCalendarTag extends TagSupport
 		{
 			if (logger.isDebugEnabled())
 			{
-				logger.debug("Writing nav calendar for " + calendar.toString());
+				logger.debug("Creating nav calendar for " + calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1));
 			}
 			
 			sb = createCalendar(calendar);
@@ -89,13 +83,12 @@ public class NavCalendarTag extends TagSupport
 			
 		} catch (Throwable t)
 		{
-			logger.error("Exception while creating nav calendar for month " + calendar.toString());
+			logger.error("Exception while creating calendar for month " + calendar.toString());
 	        StringWriter sw = new StringWriter();
 	        t.printStackTrace(new PrintWriter(sw));
 	        logger.error(t.toString());
 			
 			// big chance this fails as well but at least we can try
-			
 			try
 			{
 				out.write("<tr><td colspan=3>Something went wrong..</td></tr>");
@@ -113,7 +106,7 @@ public class NavCalendarTag extends TagSupport
 	 * @return
 	 */
 	
-	protected StringBuffer createCalendar(Calendar calendar)
+	private StringBuffer createCalendar(Calendar calendar)
 	{
 		int				currentColumn;
 		StringBuffer	sb = new StringBuffer();
@@ -135,7 +128,7 @@ public class NavCalendarTag extends TagSupport
 	 * @param out
 	 * @throws IOException
 	 */
-	protected void appendNextMonthDays(int currentColumn, StringBuffer out) 
+	private void appendNextMonthDays(int currentColumn, StringBuffer out) 
 	{
 		if (currentColumn > 0)
 		{
@@ -143,7 +136,7 @@ public class NavCalendarTag extends TagSupport
 				 currentColumn <= 6;
 				 currentColumn++)
 			{
-				out.append(HTML_CELL_COMPLETE);
+				out.append(getHtmlCell(currentColumn, null));
 				out.append(HTML_NBSP);
 				out.append(HTML_CELL_CLOSE);
 			}
@@ -160,6 +153,7 @@ public class NavCalendarTag extends TagSupport
 		int	month = calendar.get(Calendar.MONTH);
 		int days = 0;
 		int daysInMonth = DateUtil.getDaysInMonth(calendar);
+		int row = 0;
 		
 		while (calendar.get(Calendar.MONTH) == month 
 				&& days++ <= daysInMonth)
@@ -170,18 +164,10 @@ public class NavCalendarTag extends TagSupport
 				// @todo row might not be closed by prependdays
 				out.append(HTML_NEW_ROW);
 				
-				// sundays are always marked as complete
-				out.append(HTML_FIRST_CELL_COMPLETE);
+				row++;
 			}
-			else if (currentColumn == 6 ||
-					(bookedDays != null && bookedDays[calendar.get(Calendar.DAY_OF_MONTH) - 1]))
-			{
-				out.append(HTML_CELL_COMPLETE);
-			}
-			else
-			{
-				out.append(HTML_CELL_NOT_COMPLETE);
-			}
+			
+			out.append(getHtmlCell(currentColumn, calendar));
 			
 			// write the day of the month
 			out.append("" + calendar.get(Calendar.DAY_OF_MONTH));
@@ -205,7 +191,7 @@ public class NavCalendarTag extends TagSupport
 	 * 
 	 * @param out
 	 */
-	protected int prependPreviousMonthDays(Calendar calendar, StringBuffer out) 
+	private int prependPreviousMonthDays(Calendar calendar, StringBuffer out) 
 	{
 		int i;
 		int	currentColumn;
@@ -218,13 +204,13 @@ public class NavCalendarTag extends TagSupport
 		{
 			currentColumn--;
 			out.append(HTML_NEW_ROW);
-			out.append(HTML_FIRST_CELL);
+			out.append(getHtmlCell(currentColumn, null));
 			out.append(HTML_NBSP);
 			out.append(HTML_CELL_CLOSE);
 
 			for (i = 1; i < currentColumn; i++)
 			{
-				out.append(HTML_CELL);
+				out.append(getHtmlCell(currentColumn, null));
 				out.append(HTML_NBSP);
 				out.append(HTML_CELL_CLOSE);
 			}
@@ -235,37 +221,64 @@ public class NavCalendarTag extends TagSupport
 			currentColumn --;
 		}
 		
-		
 		return currentColumn;
-	}
-	
+	}	
+
+
 	/**
 	 * 
-	 * @return int
-	 * @throws JspException
+	 * @return
 	 */
-	public int doEndTag() throws JspException
-	{
-		return EVAL_PAGE;
-	}
-
 	public boolean[] getBookedDays()
 	{
 		return bookedDays;
 	}
-
+	
+	/**
+	 * 
+	 * @param bookedDays
+	 */
 	public void setBookedDays(boolean[] bookedDays)
 	{
 		this.bookedDays = bookedDays;
 	}
 
-	public Calendar getCalendar()
+	/**
+	 * Determine what style to apply to a cell
+	 * Prepended days are always complete
+	 * Sundays & saturdays are styled as complete
+	 * Completely booked days are style as complete (doh)
+	 * rest is not complete 
+	 */
+	private String getHtmlCell(int currentColumn, Calendar date)
 	{
-		return calendar;
+		String	cellTag;
+		
+		// sundays are always marked as complete (@todo make it configurable?)
+		if (currentColumn == 0)
+		{
+			cellTag = HTML_FIRST_CELL;
+		}
+		// saturdays, prepended days and complete days are styled as complete
+		else if (currentColumn == 6 || date == null || dayComplete(date.get(Calendar.DAY_OF_MONTH)))
+		{
+			cellTag = HTML_CELL_COMPLETE;
+		}
+		else
+		{
+			cellTag = HTML_CELL_NOT_COMPLETE;
+		}
+
+		return cellTag;
+	}	
+
+	
+	/**
+	 * Check if a day is complete
+	 */
+	private boolean dayComplete(int dayOfMonth)
+	{
+		return bookedDays != null && bookedDays[dayOfMonth - 1];
 	}
 
-	public void setCalendar(Calendar calendar)
-	{
-		this.calendar = calendar;
-	}
 }

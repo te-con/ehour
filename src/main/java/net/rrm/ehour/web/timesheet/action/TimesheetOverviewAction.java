@@ -57,6 +57,7 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		if (requestedMonth == null)
 		{
 			requestedMonth = new GregorianCalendar();
+			requestedMonth.set(Calendar.DAY_OF_MONTH, 1);
 		}
 		
 		userId = AuthUtil.getUserId(request, timesheetForm);
@@ -77,6 +78,7 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		
 		request.setAttribute("timesheetOverview", timesheetOverview);
 		request.setAttribute("timesheetOverviewMonth", requestedMonth);
+		
 		return mapping.findForward("success");
 	}
 }

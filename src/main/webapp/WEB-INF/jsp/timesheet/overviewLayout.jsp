@@ -1,8 +1,6 @@
 <%@ page contentType="text/html; charset=ASCII" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script src="../../js/dojo.js" type="text/javascript"></script>
 <script src="../../js/base.js" type="text/javascript"></script>
 
@@ -18,13 +16,10 @@
 </script>
 
 
-<script src="<c:url value="/js/navCalendar.jsp" />" type="text/javascript"></script>
+<script src="<c:url value="/js/navCalendarOverview.jsp" />" type="text/javascript"></script>
 
 
-<span id="projectsOverviewSpan">
-	<tiles:insert page="overviewProjects.jsp" />
-</span>
+<div id="overviewSpan">
+	<tiles:insert page="overview.jsp" />
+</div>
 
-<br><br><br>
-
-<tiles:insert page="/WEB-INF/jsp/timesheet/overviewMonth.jsp" />

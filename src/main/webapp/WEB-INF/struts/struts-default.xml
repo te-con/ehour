@@ -34,16 +34,14 @@
 		<action name="TimesheetForm"
 				path="/eh/timesheet/overview"
 				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
-			<forward name="success" path=".ehour.timesheet.overview" />
+			<forward name="success" path=".ehour.timesheet.overviewFull" />
 		</action>
 
-		<!-- Timesheet overview, projects only-->
+		<!-- Timesheet overview -->
 		<action name="TimesheetForm"
-				path="/eh/timesheet/projectsOverview"
-				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" 
-				parameter="projectsOnly"
-				>
-			<forward name="success" path=".ehour.timesheet.projectsOverview" />
+				path="/eh/timesheet/overviewSnippet"
+				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
+			<forward name="success" path=".ehour.timesheet.overview" />
 		</action>
 
 

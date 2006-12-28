@@ -7,12 +7,14 @@ function changeCalMonth(month, year, userId)
 	dojo.io.bind({
 	               url: '<c:url value="/eh/cal/navCalendar.do" />',
 	               handler: navCalChanged,
-	               content: {month: month, year: year, userId: userId}
+	               content: {month: month,
+	               			 year: year,
+	               			 userId: userId}
 	            });  		
 
 	dojo.io.bind({
-	               url: '<c:url value="/eh/timesheet/projectsOverview.do" />',
-	               handler: projectsOverviewChanged,
+	               url: '<c:url value="/eh/timesheet/overviewSnippet.do" />',
+	               handler: overviewChanged,
 	               content: {month: month, year: year, userId: userId}
 	            });  		
 	
@@ -34,8 +36,8 @@ function navCalChanged(type, xml, evt)
 }
 
 
-// projects overview changed	
-function projectsOverviewChanged(type, xml, evt)
+// overview changed	
+function overviewChanged(type, xml, evt)
 {
 	if (type == 'error')
  	{
@@ -44,6 +46,6 @@ function projectsOverviewChanged(type, xml, evt)
  	}
  	else
  	{
-		dojo.byId('projectsOverviewSpan').innerHTML = xml;
+		dojo.byId('overviewSpan').innerHTML = xml;
 	}
 }
