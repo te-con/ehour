@@ -37,9 +37,6 @@
         <directory>src/main/resources/i18n</directory>
       </resource>
       <resource>
-        <directory>src/main/resources/log4j</directory>
-      </resource>
-      <resource>
         <directory>src/main/resources/spring</directory>
       </resource>
       <resource>
@@ -93,6 +90,9 @@
           <resource>
             <directory>src/main/profiles/test/resources/spring</directory>
           </resource>
+          <resource>
+            <directory>src/main/profiles/test/resources/log4j</directory>
+          </resource>
         </resources>
       </build>
     </profile>
@@ -110,8 +110,11 @@
           <resource>
             <directory>src/main/profiles/dev/resources/spring</directory>
           </resource>
-        </resources>
-      		</build>
+          <resource>
+            <directory>src/main/profiles/dev/resources/log4j</directory>
+          </resource>     
+          </resources>
+      	</build>
     	</profile>
 	</profiles>  
   

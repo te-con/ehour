@@ -43,7 +43,7 @@ public class TimesheetForm extends UserIdForm
 	private	Integer day;
 	private	Integer year;
 	private	Integer month;
-	private	Logger	logger = Logger.getLogger(TimesheetForm.class);
+	private	transient Logger	logger = Logger.getLogger(TimesheetForm.class);
 	
 	/**
 	 * Get supplied date as calendar or current date if none given
