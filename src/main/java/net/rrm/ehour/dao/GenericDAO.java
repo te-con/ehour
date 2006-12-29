@@ -29,7 +29,7 @@ import java.util.List;
 import net.rrm.ehour.domain.DomainObject;
 
 /**
- * Inspired by http://www-128.ibm.com/developerworks/java/library/j-genericdao.html
+ * GenericDAO interface for CRUD on domain objects
  * 
  **/
 

@@ -31,7 +31,7 @@ import net.rrm.ehour.domain.DomainObject;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
- * Generic dao stuff
+ * GenericDAO interface for CRUD on domain objects
  **/
 
 public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extends Serializable>
@@ -39,14 +39,6 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 			implements GenericDAO<T, PK>
 {
 	private Class<T>	type;
-
-	/**
-	 * 1.4 aware dao's
-	 * @todo remove 1.4 dao's
-	 */
-	public GenericDAOHibernateImpl()
-	{
-	}
 
 	/**
 	 * 1.5 aware dao's
