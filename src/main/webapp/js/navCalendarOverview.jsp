@@ -1,10 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+dojo.require("dojo.event.*");
+dojo.require("dojo.lfx.*");
+
 var inSheetForm = false;
 
 function changeCalMonth(month, year, userId)
 {
+	showLoadingData();
+	
 	dojo.io.bind({
 	               url: '<c:url value="/eh/cal/navCalendar.do" />',
 	               handler: navCalChanged,
@@ -38,15 +43,17 @@ function enterSheet(year, month, day, userId)
 	               			 userId: userId}
 	            });  		
 
+	showLoadingData();
 }
 
 // navigation calendar changed	
 function navCalChanged(type, xml, evt)
 {
+	hideLoadingData();
+	
 	if (type == 'error')
  	{
  		alert("<fmt:message key="errors.ajax.general" />");
- 		return;
  	}
  	else
  	{
@@ -58,13 +65,25 @@ function navCalChanged(type, xml, evt)
 // overview changed	
 function overviewChanged(type, xml, evt)
 {
+	hideLoadingData();
+	
 	if (type == 'error')
  	{
  		alert("<fmt:message key="errors.ajax.general" />");
- 		return;
  	}
  	else
  	{
 		dojo.byId('overviewSpan').innerHTML = xml;
 	}
+}
+
+function showLoadingData()
+{
+//	dojo.html.setOpacity(dojo.byId('statusMessage'), 100);
+//	document.getElementById('statusMessage').innerHTML = '<fmt:message key="general.loading" />';
+}
+
+function hideLoadingData()
+{
+//	dojo.lfx.html.fadeOut('statusMessage', 300).play();
 }

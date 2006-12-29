@@ -37,6 +37,8 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
@@ -55,6 +57,7 @@ public class TimesheetServiceTest  extends TestCase
 	private TimesheetCommentDAO	timesheetCommentDAO;
 	private	EhourConfig			config;
 	private	ReportService		reportService;
+	private	ProjectService		projectService;
 	
 	/**
 	 * 
@@ -67,11 +70,13 @@ public class TimesheetServiceTest  extends TestCase
 		timesheetDAO = createMock(TimesheetDAO.class);
 		reportService = createMock(ReportService.class);
 		timesheetCommentDAO = createMock(TimesheetCommentDAO.class);
+		projectService = createMock(ProjectService.class);
 		
 		((TimesheetServiceImpl)timesheetService).setTimesheetDAO(timesheetDAO);
 		((TimesheetServiceImpl)timesheetService).setReportService(reportService);
 		((TimesheetServiceImpl)timesheetService).setEhourConfig(config);
 		((TimesheetServiceImpl)timesheetService).setTimesheetCommentDAO(timesheetCommentDAO);
+		((TimesheetServiceImpl)timesheetService).setProjectService(projectService);
 	}
 	
 	/**
@@ -171,12 +176,17 @@ public class TimesheetServiceTest  extends TestCase
 		expect(timesheetCommentDAO.findForUserInRage(1, range))
 			.andReturn(new ArrayList<TimesheetComment>());
 		
+		expect(projectService.getProjectAssignmentsForUser(1, range))
+				.andReturn(new ArrayList<ProjectAssignment>());
+		
 		replay(timesheetDAO);
 		replay(timesheetCommentDAO);
+		replay(projectService);
 		
 		timesheetService.getWeekOverview(1, new GregorianCalendar(2007, 1 - 1, 1));
 		
 		verify(timesheetDAO);
 		verify(timesheetCommentDAO);
+		verify(projectService);
 	}
 }

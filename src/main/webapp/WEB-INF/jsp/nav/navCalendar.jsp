@@ -4,8 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<span id="navCalendarSpan">
-
+<div id="navCalendarSpan" style="height: 100px">
 <table CLASS="cps_table" CELLSPACING=0>
 	<TR>
 		<TH style="vertical-align: middle"><a href="" onClick="return changeCalMonth(${navCalPrevMonth})"><img src="<c:url value="/img/left.gif" />" border=0></a></th>
@@ -16,4 +15,11 @@
 	<ehour:navCalendar bookedDays="${navCalData}" calendar="${navCalCurCalMonth}" userId="${navCalUserId}" />
 </TABLE>
 
+</div>
+
+
+<br>
+
+<span id="statusMessage">
+&nbsp;
 </span>

@@ -50,6 +50,7 @@ public class NavCalendarTagTest extends TestCase
 		tag = new NavCalendarTag();
 		sb = new StringBuffer();
 
+		tag.setUserId(1);
 		// october 2006, 1 oct is a sunday, 31 days length
 		cal31 = new GregorianCalendar(2006, 9, 1);
 		cal31.setFirstDayOfWeek(Calendar.SUNDAY);

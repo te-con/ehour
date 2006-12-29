@@ -220,7 +220,7 @@ public class NavCalendarTag extends CalendarTag
 		{
 			currentColumn--;
 			out.append(getNewRowTag(calendar));
-			out.append(getHtmlCell(currentColumn, null));
+			out.append(getHtmlCell(0, null));
 			out.append(HTML_NBSP);
 			out.append(HTML_CELL_CLOSE);
 
