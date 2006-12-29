@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
-import net.rrm.ehour.web.timesheet.form.TimesheetForm;
+import net.rrm.ehour.web.timesheet.form.TimesheetViewForm;
 import net.rrm.ehour.web.util.AuthUtil;
 
 import org.apache.struts.action.ActionForm;
@@ -43,14 +43,14 @@ import org.apache.struts.action.ActionMapping;
 
 public class TimesheetOverviewAction extends BaseTimesheetAction
 {
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) 
 	{
-		TimesheetForm	timesheetForm = (TimesheetForm)form;
-		Calendar		requestedMonth;
-		Integer			userId;
+		TimesheetViewForm	timesheetViewForm = (TimesheetViewForm)form;
+		Calendar			requestedMonth;
+		Integer				userId;
 		TimesheetOverview	timesheetOverview;
 		
-		requestedMonth = timesheetForm.getCalendar();
+		requestedMonth = timesheetViewForm.getCalendar();
 		
 		// if none supplied, use the current date
 		if (requestedMonth == null)
@@ -59,7 +59,7 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 			requestedMonth.set(Calendar.DAY_OF_MONTH, 1);
 		}
 		
-		userId = AuthUtil.getUserId(request, timesheetForm);
+		userId = AuthUtil.getUserId(request, timesheetViewForm);
 		
 		timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
 

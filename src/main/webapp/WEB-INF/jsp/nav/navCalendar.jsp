@@ -13,7 +13,7 @@
 		<TH style="vertical-align: middle"><a href="" onClick="return changeCalMonth(${navCalNextMonth})"><img src="<c:url value="/img/right.gif" />" border=0></a></th>
 	</TR>
 
-	<ehour:navCalendar bookedDays="${navCalData}" calendar="${navCalCurCalMonth}" />
+	<ehour:navCalendar bookedDays="${navCalData}" calendar="${navCalCurCalMonth}" userId="${navCalUserId}" />
 </TABLE>
 
 </span>

@@ -9,7 +9,7 @@
 			<TD STYLE="padding-left: 10px; padding-top: 10px" width="145"><img SRC="<c:url value="/img/ehour.gif" />" width="64" alt="eHour v0.1"><br></TD>
 
 			<TD valign="bottom">
-				<a href="<c:url value="/eh/timesheetOverview.do" />"><fmt:message key="nav.timesheetOverview" /></a> |
+				<a href="<c:url value="/eh/timesheet/overview.do" />"><fmt:message key="nav.timesheetOverview" /></a> |
 				<a href="<c:url value="/eh/printTimesheetSelection.do" />"><fmt:message key="nav.printTimesheet" /></a> |
 				<a HREF="<c:url value="/eh/projectOverview.do" />"><fmt:message key="nav.projectOverview" /></a>
 <authz:authorize ifAllGranted="ROLE_ADMIN">| 

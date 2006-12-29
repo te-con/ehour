@@ -34,6 +34,7 @@ import java.util.Map;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
@@ -43,6 +44,8 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
+
+import org.apache.log4j.Logger;
 
 /**
  * Provides services for displaying and manipulating timesheets.
@@ -57,7 +60,9 @@ public class TimesheetServiceImpl implements TimesheetService
 	private	TimesheetDAO		timesheetDAO;
 	private TimesheetCommentDAO	timesheetCommentDAO;
 	private	ReportService		reportService;
+	private	ProjectService		projectService;
 	private	EhourConfig			configuration;
+	private	Logger				logger = Logger.getLogger(TimesheetServiceImpl.class);
 	
 	/**
 	 * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
@@ -68,7 +73,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @throws ObjectNotFoundException
 	 */	
 
-	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException
+	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) 
 	{
 		TimesheetOverview	overview = new TimesheetOverview();
 		DateRange			monthRange;
@@ -77,10 +82,14 @@ public class TimesheetServiceImpl implements TimesheetService
 		Map<Integer, List<TimesheetEntry>>	calendarMap = null;
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
+		logger.debug("Getting timesheet overview for userId " + userId + " in range " + monthRange);
 		
 		projectReports = reportService.getHoursPerAssignmentInRange(userId, monthRange);
-
+		logger.debug("Project reports found for userId " + userId + ": " + projectReports.size());
+		
 		timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(userId, monthRange);
+		logger.debug("Timesheet entries found for userId " + userId + " in range " + monthRange + ": " + timesheetEntries.size());
+		
 		calendarMap = entriesToCalendarMap(timesheetEntries);
 		
 		overview.setProjectHours(projectReports);
@@ -97,13 +106,14 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @return List with Integers of complete booked days
 	 * @throws ObjectNotFoundException
 	 */
-	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException
+	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth)
 	{
 		DateRange		monthRange;
 		List<BookedDay>	bookedDays;
 		List<BookedDay>	bookedDaysReturn = new ArrayList<BookedDay>();
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
+		logger.debug("Getting booked days overview for userId " + userId + " in range " + monthRange);
 		
 		bookedDays = timesheetDAO.getBookedHoursperDayInRange(userId, monthRange);
 		
@@ -114,6 +124,9 @@ public class TimesheetServiceImpl implements TimesheetService
 				bookedDaysReturn.add(bookedDay);
 			}
 		}
+		
+		logger.debug("Booked days found for userId " + userId + ": " + bookedDaysReturn.size());
+		logger.debug("Total booked days found for userId " + userId + ": " + bookedDays.size());
 		
 		Collections.sort(bookedDaysReturn, new BookedDayComparator());
 		
@@ -160,20 +173,32 @@ public class TimesheetServiceImpl implements TimesheetService
 	}
 	
 	/**
-	 * Get timesheet entries for a daterange
+	 * Get week overview for a date. Week number of supplied requested week is used
 	 * @param userId
-	 * @param range
+	 * @param requestedWeek
 	 * @return
-	 */	
-	
-	public WeekOverview getWeekOverview(Integer userId, DateRange range)
+	 */
+	public WeekOverview getWeekOverview(Integer userId, Calendar requestedWeek)
 	{
 		WeekOverview	weekOverview;
+		DateRange		range;
 		
 		weekOverview = new WeekOverview();
-		weekOverview.setTimesheetEntries(timesheetDAO.getTimesheetEntriesInRange(userId, range));
 		
+		// @todo assuming the week starts on sunday. configurable?
+		requestedWeek.setFirstDayOfWeek(Calendar.SUNDAY);
+		range = DateUtil.getDateRangeForWeek(requestedWeek);
+		
+		weekOverview.setWeekRange(range);
+		
+		weekOverview.setTimesheetEntries(timesheetDAO.getTimesheetEntriesInRange(userId, range));
+		logger.debug("Week overview: timesheet entries found for userId " + userId + ": " + weekOverview.getTimesheetEntries().size());
+
 		weekOverview.setComments(timesheetCommentDAO.findForUserInRage(userId, range));
+		logger.debug("Week overview: comments found for userId " + userId + ": " + weekOverview.getComments().size());
+		
+		weekOverview.setProjectAssignments(projectService.getProjectAssignmentsForUser(userId, range));
+		logger.debug("Week overview: project assignments found for userId " + userId + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
 		
 		return weekOverview;
 	}	
@@ -212,6 +237,14 @@ public class TimesheetServiceImpl implements TimesheetService
 	public void setTimesheetCommentDAO(TimesheetCommentDAO timesheetCommentDAO)
 	{
 		this.timesheetCommentDAO = timesheetCommentDAO;
+	}
+
+	/**
+	 * @param projectService the projectService to set
+	 */
+	public void setProjectService(ProjectService projectService)
+	{
+		this.projectService = projectService;
 	}
 
 

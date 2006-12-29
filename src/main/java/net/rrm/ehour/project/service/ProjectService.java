@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.project.service;
 
-import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -77,20 +76,12 @@ public interface ProjectService
 	public void assignUserToDefaultProjects(User user);
 	
 	/**
-	 * Get active projects for user on date
-	 * @param userId
-	 * @param date
-	 * @return
-	 */
-	public List<ProjectAssignment> getProjectsForUser(Integer userId, Date date);
-	
-	/**
 	 * Get active projects for user in date range 
 	 * @param userId
 	 * @param dateRange
 	 * @return
 	 */
-	public List<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange);
+	public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange);
 	
 	/**
 	 * Get all projects for user where project itself is still active

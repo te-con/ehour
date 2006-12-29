@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.config;
 
-import java.util.Properties;
 
 /**
  * TODO 

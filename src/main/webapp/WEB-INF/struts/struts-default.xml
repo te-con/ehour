@@ -6,6 +6,7 @@
 	<!-- Action forms -->
 	<form-beans>
 		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.NavCalendarForm" />
+		<form-bean name="TimesheetViewForm" type="net.rrm.ehour.web.timesheet.form.TimesheetViewForm" />
 		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
 	</form-beans>
 
@@ -31,17 +32,24 @@
 		</action>
 		
 		<!-- Timesheet overview, login entry for consultants -->
-		<action name="TimesheetForm"
+		<action name="TimesheetViewForm"
 				path="/eh/timesheet/overview"
 				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overviewFull" />
 		</action>
 
 		<!-- Timesheet overview -->
-		<action name="TimesheetForm"
+		<action name="TimesheetViewForm"
 				path="/eh/timesheet/overviewSnippet"
 				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overview" />
+		</action>
+
+		<!-- Timesheet enter week form -->
+		<action name="TimesheetForm"
+				path="/eh/timesheet/getTimesheetForm"
+				type="net.rrm.ehour.web.timesheet.action.GetTimesheetFormAction" >
+			<forward name="success" path=".ehour.timesheet.timesheet" />
 		</action>
 
 
@@ -76,4 +84,3 @@
 	</plug-in>
 
 </struts-config>
-

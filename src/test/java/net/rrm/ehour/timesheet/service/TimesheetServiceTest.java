@@ -161,8 +161,8 @@ public class TimesheetServiceTest  extends TestCase
 	
 	public void testGetTimesheetEntries()
 	{
-		Date da = new Date(2006 - 1900, 1, 1);
-		Date db = new Date(2006 - 1900, 2, 1);
+		Date da = new Date(2006 - 1900, 12 - 1, 31);
+		Date db = new Date(2007 - 1900, 1 - 1, 6);
 		DateRange range = new DateRange(da, db);
 		
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, range))
@@ -174,7 +174,7 @@ public class TimesheetServiceTest  extends TestCase
 		replay(timesheetDAO);
 		replay(timesheetCommentDAO);
 		
-		timesheetService.getWeekOverview(1, range);
+		timesheetService.getWeekOverview(1, new GregorianCalendar(2007, 1 - 1, 1));
 		
 		verify(timesheetDAO);
 		verify(timesheetCommentDAO);

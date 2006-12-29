@@ -1,5 +1,5 @@
 /**
- * Created on Dec 10, 2006
+ * Created on Dec 29, 2006
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,40 +21,46 @@
  *
  */
 
-package net.rrm.ehour.project.dao;
+package net.rrm.ehour.web.timesheet.util;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Comparator;
 
-import net.rrm.ehour.dao.GenericDAO;
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.web.timesheet.dto.TimesheetRow;
 
 /**
- * CRUD on ProjectAssignment domain object
+ * Compare two timesheet rows
+ * Default assignments go first, otherwise sort it on the project's fullname
  **/
 
-public interface ProjectAssignmentDAO  extends GenericDAO<ProjectAssignment, Integer>
+public class TimesheetRowComparator implements Comparator<TimesheetRow>, Serializable
 {
+
 	/**
-	 * Find assigned (active) project for user
-	 * @param projectId
-	 * @param userId
-	 * @return
+	 * 
 	 */
-	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId);
-	
+	private static final long serialVersionUID = 7649730355810739633L;
+
 	/**
-	 * Find (active) projects for user
-	 * @param userId
-	 * @return
+	 * Compare two timesheet rows
+	 * 
 	 */
-	public List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId);
-	
-	/**
-	 * Find (active) projects for user in date range
-	 * @param userId
-	 * @param range
-	 * @return
-	 */
-	public List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId, DateRange range);
+	public int compare(TimesheetRow o1, TimesheetRow o2)
+	{
+		int	compare;
+		
+		boolean b = o1.getProjectAssignment().isDefaultAssignment() ^ o2.getProjectAssignment().isDefaultAssignment();
+
+		if (b)
+		{
+			compare = o1.getProjectAssignment().isDefaultAssignment() ? -1 : 1;
+		}
+		else
+		{
+			compare = o1.getProjectAssignment().getProject().getFullname().compareTo(o2.getProjectAssignment().getProject().getFullname());
+		}
+		
+		return compare;
+	}
+
 }

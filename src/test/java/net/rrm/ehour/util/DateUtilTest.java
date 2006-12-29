@@ -135,6 +135,24 @@ public class DateUtilTest extends TestCase
 								new GregorianCalendar(2006, 5, 5).getTime());
 		assertTrue(DateUtil.isDateRangeOverlaps(rangeA, rangeB));
 		assertTrue(DateUtil.isDateRangeOverlaps(rangeB, rangeA));
+	}
+	
+	/**
+	 * 
+	 *
+	 */
+	public void testGetDateRangeForWeek()
+	{
+		Calendar cal = new GregorianCalendar(2007, 1 - 1, 1);
+		DateRange range = DateUtil.getDateRangeForWeek(cal);
+		
+		assertEquals(2006 - 1900, range.getDateStart().getYear());
+		assertEquals(12 - 1, range.getDateStart().getMonth());
+		assertEquals(31, range.getDateStart().getDate());
+
+		assertEquals(2007 - 1900, range.getDateEnd().getYear());
+		assertEquals(1 - 1, range.getDateEnd().getMonth());
+		assertEquals(6, range.getDateEnd().getDate());
 
 	}
 }

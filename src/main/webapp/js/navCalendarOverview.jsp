@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+var inSheetForm = false;
 
 function changeCalMonth(month, year, userId)
 {
@@ -12,13 +13,31 @@ function changeCalMonth(month, year, userId)
 	               			 userId: userId}
 	            });  		
 
-	dojo.io.bind({
-	               url: '<c:url value="/eh/timesheet/overviewSnippet.do" />',
-	               handler: overviewChanged,
-	               content: {month: month, year: year, userId: userId}
-	            });  		
-	
+	if (!inSheetForm)
+	{
+		dojo.io.bind({
+		               url: '<c:url value="/eh/timesheet/overviewSnippet.do" />',
+		               handler: overviewChanged,
+		               content: {month: month, year: year, userId: userId}
+		            });  		
+	}
+		
 	return false;
+}
+
+// week clicked in the calendar
+function enterSheet(year, month, day, userId)
+{
+	inSheetForm = true;
+	dojo.io.bind({
+	               url: 'getTimesheetForm.do',
+	               handler: overviewChanged,
+	               content: {month: month,
+	               			 year: year,
+	               			 day: day,
+	               			 userId: userId}
+	            });  		
+
 }
 
 // navigation calendar changed	

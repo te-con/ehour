@@ -30,10 +30,10 @@ import java.util.Date;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
 /**
- * TODO 
+ * Date comparator of booked days
  **/
 
-public class BookedDayComparator implements Comparator, Serializable
+public class BookedDayComparator implements Comparator<BookedDay>, Serializable
 {
 
 	/**
@@ -41,25 +41,17 @@ public class BookedDayComparator implements Comparator, Serializable
 	 */
 	private static final long serialVersionUID = 3811098485423672398L;
 
-	public int compare(Object a, Object b)
+	public int compare(BookedDay a, BookedDay b)
 	{
 		int			compare;
 		Date		bda,
 					bdb;
 		
-        if (a instanceof BookedDay && b instanceof BookedDay)
-        {
-        	bda = ((BookedDay)a).getDate();
-        	bdb = ((BookedDay)b).getDate();
-        	
-        	compare = bda.equals(bdb) ? 0 :
-        			  bda.before(bdb) ? - 1 : 1; 
-        }
-        else
-        {
-        	compare = -1;
-
-        }	
+    	bda = ((BookedDay)a).getDate();
+    	bdb = ((BookedDay)b).getDate();
+    	
+    	compare = bda.equals(bdb) ? 0 :
+    			  bda.before(bdb) ? - 1 : 1; 
         
         return compare;
 	}

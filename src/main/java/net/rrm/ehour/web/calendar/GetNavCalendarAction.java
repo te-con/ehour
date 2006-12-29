@@ -69,6 +69,7 @@ public class GetNavCalendarAction extends Action
 		
 		request.setAttribute("navCalData", monthOverview);
 		request.setAttribute("navCalCurCalMonth", requestedMonth);
+		request.setAttribute("navCalUserId", userId);
 		
 		// set the navigation urls
 		setNavParams(request, requestedMonth, userId);

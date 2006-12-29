@@ -26,6 +26,8 @@ package net.rrm.ehour.timesheet.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
@@ -41,6 +43,9 @@ public class WeekOverview implements Serializable
 	private static final long serialVersionUID = -3281374385102106958L;
 	private List<TimesheetEntry>	timesheetEntries;
 	private List<TimesheetComment>	comments;
+	private	List<ProjectAssignment>	projectAssignments;
+	private	DateRange				weekRange;
+	
 	/**
 	 * @return the comments
 	 */
@@ -68,5 +73,33 @@ public class WeekOverview implements Serializable
 	public void setTimesheetEntries(List<TimesheetEntry> timesheetEntries)
 	{
 		this.timesheetEntries = timesheetEntries;
+	}
+	/**
+	 * @return the projectAssignments
+	 */
+	public List<ProjectAssignment> getProjectAssignments()
+	{
+		return projectAssignments;
+	}
+	/**
+	 * @param projectAssignments the projectAssignments to set
+	 */
+	public void setProjectAssignments(List<ProjectAssignment> projectAssignments)
+	{
+		this.projectAssignments = projectAssignments;
+	}
+	/**
+	 * @return the weekRange
+	 */
+	public DateRange getWeekRange()
+	{
+		return weekRange;
+	}
+	/**
+	 * @param weekRange the weekRange to set
+	 */
+	public void setWeekRange(DateRange weekRange)
+	{
+		this.weekRange = weekRange;
 	}
 }

@@ -11,6 +11,8 @@
 	
 	<bean name="/eh/timesheet/overviewSnippet" class="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" />		
 	
+	<bean name="/eh/timesheet/getTimesheetForm" class="net.rrm.ehour.web.timesheet.action.GetTimesheetFormAction" />
+	
 	<bean name="/eh/cal/navCalendar" class="net.rrm.ehour.web.calendar.GetNavCalendarAction" />	
 	
 	<bean name="/eh/logOff" class="net.rrm.ehour.web.action.LogOffAction" />	

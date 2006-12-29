@@ -29,6 +29,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
@@ -71,7 +72,7 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 	{
 		List<ProjectAssignment> pas = dao.findAll();
 		
-		assertEquals(3, pas.size());
+		assertEquals(4, pas.size());
 	}
 
 	/**
@@ -119,4 +120,13 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 		assertEquals("eHour", pa.getProject().getName());
 	}
 
+	public void testFindProjectAssignmentsForUserInRange()
+	{
+		List<ProjectAssignment> results;
+		DateRange range = new DateRange(new Date(2006 - 1900, 10 - 1, 5), new Date(2006 - 1900, 10 - 1, 10));
+		
+		results = dao.findProjectAssignmentsForUser(1, range);
+
+		assertEquals(3, results.size());
+	}
 }

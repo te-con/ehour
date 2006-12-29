@@ -47,8 +47,6 @@ public class OverviewCalendarTag extends CalendarTag
 	private static final long serialVersionUID = 3917279643583195331L;
 	// HTML constants
 	private String HTML_NEW_ROW = "<TR>";
-	private String HTML_FIRST_CELL_FIRST_ROW = "<td style='border-left-width: 1px' class='overview_notThisMonthFirst'>";
-	private String HTML_FIRST_CELL = "<td style='border-left-width: 1px' class='overview_notThisMonth'>";
 
 	private	Map<Integer, List<TimesheetEntry>>	timesheetEntries;
 	private Logger	logger = Logger.getLogger(OverviewCalendarTag.class);

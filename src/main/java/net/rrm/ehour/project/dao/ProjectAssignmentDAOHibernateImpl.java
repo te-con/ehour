@@ -26,6 +26,7 @@ package net.rrm.ehour.project.dao;
 import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 
 /**
@@ -42,7 +43,28 @@ public class ProjectAssignmentDAOHibernateImpl
 	public ProjectAssignmentDAOHibernateImpl()
 	{
 		super(ProjectAssignment.class);
-	}	
+	}
+	
+	/**
+	 * Find (active) projects for user in date range
+	 * @param userId
+	 * @param range
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId, DateRange range)
+	{
+		List<ProjectAssignment>		results;
+
+		String[]	keys = new String[]{"dateStart", "dateEnd", "userId"};
+		Object[]	params = new Object[]{range.getDateStart(), range.getDateEnd(), userId}; 
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectsForUserInRange"
+																		, keys, params);		
+	
+		return results;
+	}
+	
 	
 	/**
 	 * Find assigned (active) projects for user

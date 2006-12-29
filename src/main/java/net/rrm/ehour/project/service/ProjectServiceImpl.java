@@ -24,7 +24,6 @@
 package net.rrm.ehour.project.service;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -234,17 +233,17 @@ public class ProjectServiceImpl implements ProjectService
 		
 		return results;
 	}
-
-	public List<ProjectAssignment> getProjectsForUser(Integer userId, Date date)
+	
+	/**
+	 * Get active projects for user in date range 
+	 * @param userId
+	 * @param dateRange
+	 * @return
+	 */	
+	
+	public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange)
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange)
-	{
-		// TODO Auto-generated method stub
-		return null;
+		return projectAssignmentDAO.findProjectAssignmentsForUser(userId, dateRange);
 	}
 
 	/**

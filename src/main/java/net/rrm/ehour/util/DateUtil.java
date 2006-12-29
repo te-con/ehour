@@ -116,4 +116,26 @@ public class DateUtil
 		
 		return overlaps;
 	}
+	
+	/**
+	 * Get a date range covering the week the supplied calendar is in
+	 * @param calendar
+	 * @return
+	 */
+	public static DateRange getDateRangeForWeek(Calendar calendar)
+	{
+		DateRange	weekRange = new DateRange();
+		
+		Calendar	calClone = (Calendar)calendar.clone();
+		
+		// @todo assuming the week starts on sunday. configurable?
+		calClone.add(Calendar.DAY_OF_MONTH, Calendar.SUNDAY - calClone.get(Calendar.DAY_OF_WEEK));
+		weekRange.setDateStart(calClone.getTime());
+		
+		calClone.add(Calendar.DAY_OF_MONTH, +6);
+		weekRange.setDateEnd(calClone.getTime());
+		
+		return weekRange;
+		
+	}
 }

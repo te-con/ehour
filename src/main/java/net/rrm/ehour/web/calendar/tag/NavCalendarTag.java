@@ -46,14 +46,12 @@ public class NavCalendarTag extends CalendarTag
 	private static final long serialVersionUID = 2422922719761190399L;
 
 	// HTML constants
-	private String	HTML_NEW_ROW = "<TR onmouseover=\"this.className='cps_tableTROn';\" " +
-		 								"onmouseout=\"this.className='cps_tableTROff';\"  onclick=\"\">";
-
 	private String	HTML_FIRST_CELL = "<TD class=\"cps_dayData\" style=\"border-left: 0px\">";
 	private String	HTML_CELL_COMPLETE = "<TD class=\"cps_dayData\">";
 	private String	HTML_CELL_NOT_COMPLETE = "<TD class=\"cps_dayNoData\">";	
 	
 	private boolean[] 	bookedDays;
+	private	Integer		userId;
 	
 	private Logger	logger = Logger.getLogger(NavCalendarTag.class);
 	
@@ -143,6 +141,24 @@ public class NavCalendarTag extends CalendarTag
 		}
 		
 	}
+	
+	/**
+	 * Get new row tag
+	 * @param cal
+	 * @return
+	 */
+	private String getNewRowTag(Calendar cal)
+	{
+		String str = "<TR onmouseover=\"this.className='cps_tableTROn';\" " +
+						"onmouseout=\"this.className='cps_tableTROff';\"  onclick=\"enterSheet(" +
+						cal.get(Calendar.YEAR) + "," +
+						(cal.get(Calendar.MONTH) + 1) + "," +
+						cal.get(Calendar.DAY_OF_MONTH) + "," +
+						userId.toString() + ")\">";
+		
+		return str;
+	}
+	
 	/**
 	 * 
 	 * @param out
@@ -162,7 +178,7 @@ public class NavCalendarTag extends CalendarTag
 			if (currentColumn == 0)
 			{
 				// @todo row might not be closed by prependdays
-				out.append(HTML_NEW_ROW);
+				out.append(getNewRowTag(calendar));
 				
 				row++;
 			}
@@ -203,7 +219,7 @@ public class NavCalendarTag extends CalendarTag
 		if (currentColumn != Calendar.SUNDAY)
 		{
 			currentColumn--;
-			out.append(HTML_NEW_ROW);
+			out.append(getNewRowTag(calendar));
 			out.append(getHtmlCell(currentColumn, null));
 			out.append(HTML_NBSP);
 			out.append(HTML_CELL_CLOSE);
@@ -279,6 +295,22 @@ public class NavCalendarTag extends CalendarTag
 	private boolean dayComplete(int dayOfMonth)
 	{
 		return bookedDays != null && bookedDays[dayOfMonth - 1];
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public Integer getUserId()
+	{
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(Integer userId)
+	{
+		this.userId = userId;
 	}
 
 }

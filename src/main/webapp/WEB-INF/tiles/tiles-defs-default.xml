@@ -11,14 +11,18 @@
         <put name="admin_calendar_small" value="/WEB-INF/jsp/nav/nothing.html" />
     </definition>
 
-    <!-- Timesheet Overview page -->
+    <!-- Timesheet Overview layout page -->
     <definition name=".ehour.timesheet.overviewFull" extends=".ehour.baseLayout">
         <put name="calendar_small" value="/eh/cal/navCalendar.do" />
         <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
     </definition>
 
-    <!-- Timesheet Projects Overview page -->
+    <!-- Timesheet Month Overview page -->
     <definition name=".ehour.timesheet.overview" path="/WEB-INF/jsp/timesheet/overview.jsp" />
+
+    <!-- Timesheet Timesheet form page -->
+    <definition name=".ehour.timesheet.timesheet" path="/WEB-INF/jsp/timesheet/timesheet.jsp" />
+
 
 
     <!-- NavCalendar -->

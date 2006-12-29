@@ -26,7 +26,6 @@ package net.rrm.ehour.timesheet.service;
 import java.util.Calendar;
 import java.util.List;
 
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
@@ -47,9 +46,8 @@ public interface TimesheetService
 	 * @param userId
 	 * @param requestedMonth only the month and year of the calendar is used
 	 * @return TimesheetOverviewAction
-	 * @throws ObjectNotFoundException
 	 */
-	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException;
+	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth);
 	
 	/**
 	 * Get a list with all day numbers in this month that has complete booked days (config defines the completion
@@ -59,13 +57,13 @@ public interface TimesheetService
 	 * @return List with Integers of complete booked days
 	 * @throws ObjectNotFoundException
 	 */
-	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth) throws ObjectNotFoundException;
+	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth);
 	
 	/**
-	 * Get timesheet entries for a daterange
+	 * Get week overview for a date. Weeknumber of supplied requested week is used
 	 * @param userId
-	 * @param range
+	 * @param requestedWeek
 	 * @return
 	 */
-	public WeekOverview getWeekOverview(Integer userId, DateRange range);
+	public WeekOverview getWeekOverview(Integer userId, Calendar requestedWeek);
 }

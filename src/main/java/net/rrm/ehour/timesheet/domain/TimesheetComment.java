@@ -35,6 +35,10 @@ import net.rrm.ehour.domain.DomainObject;
 
 public class TimesheetComment extends DomainObject
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7067367393719500506L;
 	private TimesheetCommentId	commentId;
 	private	String				comment;
 	

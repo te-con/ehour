@@ -29,7 +29,6 @@ import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
 /**
  * CRUD on timesheetComment domain obj 

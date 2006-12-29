@@ -23,12 +23,10 @@
 
 package net.rrm.ehour.web.calendar;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.util.DateUtil;
@@ -64,13 +62,7 @@ public class CalendarUtil
 		boolean[] 		monthOverview;
 		Calendar 		cal;
 
-		try
-		{
-			bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
-		} catch (ObjectNotFoundException e)
-		{
-			bookedDays = new ArrayList<BookedDay>();
-		}
+		bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
 
 		monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
 
