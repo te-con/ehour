@@ -50,6 +50,7 @@
 				
 				<c:otherwise>
 						&nbsp;
+						<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>
 				</c:otherwise>
 			</c:choose>
 			

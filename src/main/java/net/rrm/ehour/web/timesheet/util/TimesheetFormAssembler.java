@@ -103,7 +103,14 @@ public class TimesheetFormAssembler
 		TimesheetCell	cell = new TimesheetCell();
 		
 		cell.setTimesheetEntry(entry);
-		cell.setValid(assignment.isDefaultAssignment() || DateUtil.isDateWithinRange(date, assignment.getDateRange()));
+		
+		// although the active filters are done on db level there's still
+		// the possibility that hours were booked on a project and afterwards
+		// the assignment/project/customer was deactivated; hence the checks here 
+		cell.setValid(assignment.isActive() && assignment.getProject().isActive() &&
+					  assignment.getProject().getCustomer().isActive() &&
+					  (assignment.isDefaultAssignment() || 
+					   DateUtil.isDateWithinRange(date, assignment.getDateRange())));
 		cell.setCellDate(date);
 		
 		return cell;

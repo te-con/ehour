@@ -79,11 +79,11 @@ function overviewChanged(type, xml, evt)
 
 function showLoadingData()
 {
-//	dojo.html.setOpacity(dojo.byId('statusMessage'), 100);
-//	document.getElementById('statusMessage').innerHTML = '<fmt:message key="general.loading" />';
+	dojo.html.setOpacity(dojo.byId('statusMessage'), 100);
+	document.getElementById('statusMessage').innerHTML = '<fmt:message key="general.loading" />';
 }
 
 function hideLoadingData()
 {
-//	dojo.lfx.html.fadeOut('statusMessage', 300).play();
+	dojo.lfx.html.fadeOut('statusMessage', 300).play();
 }
