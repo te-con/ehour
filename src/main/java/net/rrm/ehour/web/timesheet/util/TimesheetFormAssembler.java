@@ -66,7 +66,7 @@ public class TimesheetFormAssembler
 	 * @param dateSequence
 	 * @return
 	 */
-	private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<Date, TimesheetEntry>> assignmentMap, 
+	protected List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<Date, TimesheetEntry>> assignmentMap, 
 													List<Date> dateSequence)
 	{
 		List<TimesheetRow> 	timesheetRows = new ArrayList<TimesheetRow>();
@@ -98,7 +98,7 @@ public class TimesheetFormAssembler
 	 * @param date
 	 * @return
 	 */
-	private TimesheetCell createTimesheetCell(ProjectAssignment assignment, TimesheetEntry entry, Date date)
+	protected TimesheetCell createTimesheetCell(ProjectAssignment assignment, TimesheetEntry entry, Date date)
 	{
 		TimesheetCell	cell = new TimesheetCell();
 		
@@ -121,7 +121,7 @@ public class TimesheetFormAssembler
 	 * @param weekOverview
 	 * @return
 	 */
-	private void mergeUnbookedAssignments(WeekOverview weekOverview,
+	protected void mergeUnbookedAssignments(WeekOverview weekOverview,
 											Map<ProjectAssignment, Map<Date, TimesheetEntry>> assignmentMap)
 	{
 		for (ProjectAssignment assignment : weekOverview.getProjectAssignments())
@@ -138,7 +138,7 @@ public class TimesheetFormAssembler
 	 * @param weekOverview
 	 * @return
 	 */
-	private Map<ProjectAssignment, Map<Date, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
+	protected Map<ProjectAssignment, Map<Date, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
 	{
 		ProjectAssignment assignment;
 		Map<Date, TimesheetEntry>	entryDateMap;	
@@ -158,13 +158,14 @@ public class TimesheetFormAssembler
 			else
 			{
 				entryDateMap = new HashMap<Date, TimesheetEntry>();
-			
-				// as it's used as the key, make sure it's a java.util.Date and not a java.sql.Date
-				cal = new GregorianCalendar();
-				cal.setTime(entry.getEntryId().getEntryDate());
-
-				entryDateMap.put(cal.getTime(), entry);
 			}
+			
+			// as it's used as the key, make sure it's a java.util.Date and not a java.sql.Date
+			cal = new GregorianCalendar();
+			cal.setTime(entry.getEntryId().getEntryDate());
+			
+
+			entryDateMap.put(cal.getTime(), entry);
 			
 			assignmentMap.put(assignment, entryDateMap);
 		}
