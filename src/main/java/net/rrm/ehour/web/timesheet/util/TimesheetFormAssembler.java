@@ -32,10 +32,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.web.timesheet.dto.Timesheet;
 import net.rrm.ehour.web.timesheet.dto.TimesheetCell;
 import net.rrm.ehour.web.timesheet.dto.TimesheetRow;
 
@@ -45,10 +47,14 @@ import net.rrm.ehour.web.timesheet.dto.TimesheetRow;
 
 public class TimesheetFormAssembler
 {
-	public List<TimesheetRow> createTimesheetForm(WeekOverview weekOverview, List<Date> dateSequence)
+	public Timesheet createTimesheetForm(WeekOverview weekOverview)
 	{
 		Map<ProjectAssignment, Map<Date, TimesheetEntry>>	assignmentMap;
-		List<TimesheetRow>	timesheetRows = null;
+		List<Date> 											dateSequence;
+		List<TimesheetRow>									timesheetRows = null;
+		Timesheet											timesheet;
+		
+		dateSequence = createDateSequence(weekOverview);
 		
 		assignmentMap = createAssignmentMap(weekOverview);
 		mergeUnbookedAssignments(weekOverview, assignmentMap);
@@ -57,7 +63,12 @@ public class TimesheetFormAssembler
 		
 		Collections.sort(timesheetRows, new TimesheetRowComparator());
 		
-		return timesheetRows;
+		timesheet = new Timesheet();
+		timesheet.setTimesheetRows(timesheetRows);
+		timesheet.setDateSequence(dateSequence);
+		timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());		
+		
+		return timesheet;
 	}
 	
 	/**
@@ -172,4 +183,30 @@ public class TimesheetFormAssembler
 		
 		return assignmentMap;
 	}
+	
+
+	/**
+	 * Create a sequence of dates from the date range
+	 * @param weekOverview
+	 * @return
+	 */
+	private List<Date> createDateSequence(WeekOverview weekOverview)
+	{
+		List<Date>	dateSequence = new ArrayList<Date>();
+		DateRange	weekRange;
+		Calendar	calendar;
+		
+		weekRange = weekOverview.getWeekRange();
+		
+		calendar = new GregorianCalendar();
+		calendar.setTime(weekRange.getDateStart());
+		
+		while (calendar.getTime().before(weekRange.getDateEnd()))
+		{
+			dateSequence.add(calendar.getTime());
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		
+		return dateSequence;
+	}	
 }

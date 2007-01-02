@@ -3,18 +3,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!-- spanTarget: overview -->
+
 <form method="post" action="postTimesheet.do" id="timesheetFormId" name="timesheetForm">
 
-<input type="hidden" name="userId" value="${timesheetUserId}" />
+<input type="hidden" id="sheetDay" name="sheetDay" value="<fmt:formatDate value="${timesheet.weekStart}" pattern="dd" />">
+<input type="hidden" id="sheetMonth" name="sheetMonth" value="<fmt:formatDate value="${timesheet.weekStart}" pattern="MM" />">
+<input type="hidden" id="sheetYear" name="sheetYear" value="<fmt:formatDate value="${timesheet.weekStart}" pattern="yyyy" />">
+<input type="hidden" id="userId" value="${timesheet.userId}">
 
 <table class="cal_table" cellspacing="0" width="500">
 
 <tr>
 	<th style="text-align: left; padding-bottom: 2px">
-		&nbsp;<fmt:message key="user.overview.week" /> <fmt:formatDate value="${weekDate}" pattern="w, MMMMM yyyy" />
+		&nbsp;<fmt:message key="user.overview.week" /> <fmt:formatDate value="${timesheet.weekStart}" pattern="w, MMMMM yyyy" />
 	</th>
 
-	<c:forEach items="${dateSeq}" var="date">
+	<c:forEach items="${timesheet.dateSequence}" var="date">
 		<th>
 			<fmt:formatDate value="${date}" pattern="E" />
 			<br>
@@ -23,7 +27,7 @@
 	</c:forEach>
 </tr>
 
-<c:forEach items="${timesheetRows}" var="row">
+<c:forEach items="${timesheet.timesheetRows}" var="row">
 	<tr>
 		<td class="cal_projCell">
 			&nbsp;

@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
+import net.rrm.ehour.web.timesheet.dto.Timesheet;
 import net.rrm.ehour.web.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.web.timesheet.form.TimesheetForm;
 import net.rrm.ehour.web.timesheet.util.TimesheetFormAssembler;
@@ -59,53 +60,25 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 		TimesheetForm 		timesheetForm = (TimesheetForm)form;
 		Calendar	  		requestedWeek;
 		WeekOverview		weekOverview;
-		List<TimesheetRow>	timesheetRows;
-		List<Date>			dateSequence;
 		Integer				userId;
+		Timesheet			timesheet;
 		
 		TimesheetFormAssembler	timesheetFormAssembler = new TimesheetFormAssembler();
-		
-		requestedWeek = timesheetForm.getCalendar();
-		
+
 		userId = AuthUtil.getUserId(request, timesheetForm);
-		
+
+		requestedWeek = timesheetForm.getCalendar();
 		weekOverview = timesheetService.getWeekOverview(userId, requestedWeek);
 		
-		dateSequence = createDateSequence(weekOverview);
-		timesheetRows = timesheetFormAssembler.createTimesheetForm(weekOverview, dateSequence);
+		timesheet = timesheetFormAssembler.createTimesheetForm(weekOverview);
+
+		timesheet.setUserId(userId);
 		
-		request.setAttribute("timesheetRows", timesheetRows);
-		request.setAttribute("dateSeq", dateSequence);
-		request.setAttribute("weekDate", weekOverview.getWeekRange().getDateStart());
-		request.setAttribute("timesheetUserId", userId);
+		request.setAttribute("timesheet", timesheet);
 
 		fwd = mapping.findForward("success");
 		
 		return fwd;
 	}
 
-	/**
-	 * Create a sequence of dates from the date range
-	 * @param weekOverview
-	 * @return
-	 */
-	private List<Date> createDateSequence(WeekOverview weekOverview)
-	{
-		List<Date>	dateSequence = new ArrayList<Date>();
-		DateRange	weekRange;
-		Calendar	calendar;
-		
-		weekRange = weekOverview.getWeekRange();
-		
-		calendar = new GregorianCalendar();
-		calendar.setTime(weekRange.getDateStart());
-		
-		while (calendar.getTime().before(weekRange.getDateEnd()))
-		{
-			dateSequence.add(calendar.getTime());
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-		}
-		
-		return dateSequence;
-	}
 }

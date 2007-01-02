@@ -43,6 +43,9 @@ public class TimesheetForm extends UserIdForm
 	private	Integer day;
 	private	Integer year;
 	private	Integer month;
+	private	Integer	sheetDay;
+	private	Integer	sheetMonth;
+	private	Integer	sheetYear;
 	private	transient Logger	logger = Logger.getLogger(TimesheetForm.class);
 	
 	/**
@@ -60,7 +63,7 @@ public class TimesheetForm extends UserIdForm
 		}
 		else
 		{
-			cal = new GregorianCalendar(year, month - 1, day);
+			cal = new GregorianCalendar(year, month, day);
 		}
 		
 		return cal;
@@ -112,6 +115,54 @@ public class TimesheetForm extends UserIdForm
 	public void setYear(Integer year)
 	{
 		this.year = year;
+	}
+
+	/**
+	 * @return the sheetMonth
+	 */
+	public Integer getSheetMonth()
+	{
+		return sheetMonth;
+	}
+
+	/**
+	 * @param sheetMonth the sheetMonth to set
+	 */
+	public void setSheetMonth(Integer sheetMonth)
+	{
+		this.sheetMonth = sheetMonth;
+	}
+
+	/**
+	 * @return the sheetYear
+	 */
+	public Integer getSheetYear()
+	{
+		return sheetYear;
+	}
+
+	/**
+	 * @param sheetYear the sheetYear to set
+	 */
+	public void setSheetYear(Integer sheetYear)
+	{
+		this.sheetYear = sheetYear;
+	}
+
+	/**
+	 * @return the sheetDay
+	 */
+	public Integer getSheetDay()
+	{
+		return sheetDay;
+	}
+
+	/**
+	 * @param sheetDay the sheetDay to set
+	 */
+	public void setSheetDay(Integer sheetDay)
+	{
+		this.sheetDay = sheetDay;
 	}
 
 }

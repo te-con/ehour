@@ -25,8 +25,10 @@ package net.rrm.ehour.web.timesheet.action;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.GregorianCalendar;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -34,8 +36,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.web.timesheet.dto.Timesheet;
 import net.rrm.ehour.web.timesheet.form.TimesheetForm;
+import net.rrm.ehour.web.timesheet.util.TimesheetFormAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.DomainAssembler;
 
@@ -61,14 +66,45 @@ public class PostTimesheetFormAction extends BaseTimesheetAction
 		TimesheetForm			timesheetForm = (TimesheetForm)form;
 		Integer					userId;
 		SortedSet<TimesheetEntry>	entries;
+		WeekOverview			weekOverview;
+		Timesheet				timesheet;
+		TimesheetFormAssembler	timesheetFormAssembler = new TimesheetFormAssembler();
+		Calendar				requestedWeek;
 		
 		userId = AuthUtil.getUserId(request, timesheetForm);
 		
+		// first persist
 		entries = getTimesheetEntries(request);
-		
 		timesheetService.persistTimesheetEntries(entries);
 		
-		return null;
+		// and then return the next week
+		requestedWeek = new GregorianCalendar();
+		
+		if (!entries.isEmpty())
+		{
+			requestedWeek.setTime(entries.first().getEntryId().getEntryDate());
+			requestedWeek.add(Calendar.DAY_OF_MONTH, 7);
+		}
+		else
+		{
+			logger.debug("Submitted but no entries given");
+			// no entries given, use the form date
+			requestedWeek = new GregorianCalendar(timesheetForm.getSheetYear(), 	
+													timesheetForm.getSheetMonth() - 1,
+													timesheetForm.getSheetDay());
+			requestedWeek.add(Calendar.DAY_OF_MONTH, 7);
+		}
+		
+		logger.debug("Next week is " + requestedWeek.getTime());
+
+		weekOverview = timesheetService.getWeekOverview(userId, requestedWeek);
+		
+		timesheet = timesheetFormAssembler.createTimesheetForm(weekOverview);
+		timesheet.setUserId(userId);
+		
+		request.setAttribute("timesheet", timesheet);
+		
+		return mapping.findForward("success");
 	}
 	
 	/**
@@ -76,7 +112,6 @@ public class PostTimesheetFormAction extends BaseTimesheetAction
 	 * @param userId
 	 * @param request
 	 */
-	@SuppressWarnings("unchecked")
 	private SortedSet<TimesheetEntry> getTimesheetEntries(HttpServletRequest request)
 	{
 		SortedSet<TimesheetEntry>	timesheetEntries = new TreeSet<TimesheetEntry>();

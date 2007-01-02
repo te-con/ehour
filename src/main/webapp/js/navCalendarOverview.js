@@ -3,11 +3,16 @@ dojo.require("dojo.lfx.*");
 
 var inSheetForm = false;
 var doNotSubmitTimesheet = true;
+var currentCalMonth;
+var currentCalYear;
 
 // calendar month changed
 function changeCalMonth(month, year, userId)
 {
 	showLoadingData();
+	
+	currentCalMonth = month;
+	currentCalYear = year;
 	
 	dojo.io.bind({
 	               url: contextRoot + "eh/cal/navCalendar.do",
@@ -49,9 +54,6 @@ function enterSheet(year, month, day, userId)
 
 	showLoadingData();
 }
-
-
-
 
 // navigation calendar changed	
 function navCalChanged(type, xml, evt)
@@ -99,7 +101,28 @@ function timesheetSubmitted(type, xml, evt)
 {
 	doNotSubmitTimesheet = true;
 	
-	alert('hello');
+	weekChanged(type, xml, evt);
+
+	currentCalMonth = document.getElementById("sheetMonth").value * 1;
+	currentCalMonth--;
+	
+	currentCalYear = document.getElementById("sheetYear").value * 1;
+
+	// darn calendar being zero based..	
+	if (currentCalMonth < 0)
+	{
+		currentCalMonth = 11;
+		currentCalYear--;
+	}
+	
+	var userId = document.getElementById("userId").value;
+	
+	dojo.io.bind({
+	               url: contextRoot + "eh/cal/navCalendar.do",
+	               handler: navCalChanged,
+	               content: {month: currentCalMonth,
+	               			 year: currentCalYear,
+	               			 userId: userId}});
 }
 
 //
@@ -132,5 +155,10 @@ function makeFormSubmittable()
 // prevent the FormBind to submit when the cancel flag is set
 function validateForm()
 {
+	if (!doNotSubmitTimesheet)
+	{
+		showLoadingData();
+	}
+	
 	return !doNotSubmitTimesheet;
 }

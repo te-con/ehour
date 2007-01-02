@@ -152,7 +152,7 @@ public class NavCalendarTag extends CalendarTag
 		String str = "<TR onmouseover=\"this.className='cps_tableTROn';\" " +
 						"onmouseout=\"this.className='cps_tableTROff';\"  onclick=\"enterSheet(" +
 						cal.get(Calendar.YEAR) + "," +
-						(cal.get(Calendar.MONTH) + 1) + "," +
+						cal.get(Calendar.MONTH) + "," +
 						cal.get(Calendar.DAY_OF_MONTH) + "," +
 						userId.toString() + ")\">";
 		

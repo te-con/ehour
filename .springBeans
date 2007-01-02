@@ -8,7 +8,6 @@
 		<config>src/main/resources/spring/applicationContext-acegi-security.xml</config>
 		<config>src/main/resources/spring/applicationContext-web-default.xml</config>
 		<config>src/main/resources/spring/applicationContext-dao.xml</config>
-		<config>src/main/profiles/dev/resources/spring/applicationContext-datasource.xml</config>
 		<config>src/main/resources/spring/applicationContext-web-admin.xml</config>
 	</configs>
 	<configSets>
