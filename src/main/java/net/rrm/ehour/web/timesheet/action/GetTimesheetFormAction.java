@@ -37,6 +37,7 @@ import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.web.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.web.timesheet.form.TimesheetForm;
 import net.rrm.ehour.web.timesheet.util.TimesheetFormAssembler;
+import net.rrm.ehour.web.util.AuthUtil;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -60,18 +61,23 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 		WeekOverview		weekOverview;
 		List<TimesheetRow>	timesheetRows;
 		List<Date>			dateSequence;
+		Integer				userId;
+		
 		TimesheetFormAssembler	timesheetFormAssembler = new TimesheetFormAssembler();
 		
 		requestedWeek = timesheetForm.getCalendar();
 		
-		weekOverview = timesheetService.getWeekOverview(timesheetForm.getUserId(), requestedWeek);
+		userId = AuthUtil.getUserId(request, timesheetForm);
+		
+		weekOverview = timesheetService.getWeekOverview(userId, requestedWeek);
 		
 		dateSequence = createDateSequence(weekOverview);
 		timesheetRows = timesheetFormAssembler.createTimesheetForm(weekOverview, dateSequence);
 		
 		request.setAttribute("timesheetRows", timesheetRows);
-		request.setAttribute("dateSeq", createDateSequence(weekOverview));
+		request.setAttribute("dateSeq", dateSequence);
 		request.setAttribute("weekDate", weekOverview.getWeekRange().getDateStart());
+		request.setAttribute("timesheetUserId", userId);
 
 		fwd = mapping.findForward("success");
 		

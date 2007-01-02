@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomcatProjectProperties>
+    <rootDir>/src/main/webapp</rootDir>
+    <exportSource>false</exportSource>
+    <reloadable>true</reloadable>
+    <redirectLogger>false</redirectLogger>
+    <updateXml>true</updateXml>
+    <warLocation></warLocation>
+    <extraInfo></extraInfo>
+    <webPath>/ehour</webPath>
+    <webClassPathEntries>
+        <webClassPathEntry>/eHour/target/classes</webClassPathEntry>
+        <webClassPathEntry>org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER</webClassPathEntry>
+    </webClassPathEntries>
+</tomcatProjectProperties>

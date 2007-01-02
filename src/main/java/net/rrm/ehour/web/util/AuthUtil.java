@@ -97,7 +97,7 @@ public class AuthUtil
 			{
 				if (!user.getUserId().equals(form.getUserId()))
 				{
-					logger.warn("User " + user.getUsername() + " tried to access someone else's calendar");
+					logger.warn("User " + user.getUsername() + " tried to access someone else's data without appropiate rights");
 				}
 				
 				userId = user.getUserId();

@@ -34,9 +34,10 @@ function changeCalMonth(month, year, userId)
 function enterSheet(year, month, day, userId)
 {
 	inSheetForm = true;
+	
 	dojo.io.bind({
 	               url: 'getTimesheetForm.do',
-	               handler: overviewChanged,
+	               handler: weekChanged,
 	               content: {month: month,
 	               			 year: year,
 	               			 day: day,
@@ -45,6 +46,9 @@ function enterSheet(year, month, day, userId)
 
 	showLoadingData();
 }
+
+
+
 
 // navigation calendar changed	
 function navCalChanged(type, xml, evt)
@@ -74,7 +78,18 @@ function overviewChanged(type, xml, evt)
  	else
  	{
 		dojo.byId('overviewSpan').innerHTML = xml;
+	 	evalScript(xml);
 	}
+}
+
+// week changed	
+function weekChanged(type, xml, evt)
+{
+	overviewChanged(type, xml, evt);
+
+	new dojo.io.FormBind({	formNode: dojo.byId('timesheetForm'),
+  							handler: weekChanged
+							});
 }
 
 function showLoadingData()

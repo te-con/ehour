@@ -52,6 +52,12 @@
 			<forward name="success" path=".ehour.timesheet.timesheet" />
 		</action>
 
+		<!-- Timesheet submit week form -->
+		<action name="TimesheetForm"
+				path="/eh/timesheet/postTimesheet"
+				type="net.rrm.ehour.web.timesheet.action.PostTimesheetFormAction" >
+			<forward name="success" path=".ehour.timesheet.timesheet" />
+		</action>
 
 		<!-- Navigation Calendar -->
 		<action name="NavCalendarForm"

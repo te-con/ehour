@@ -64,7 +64,6 @@ public abstract class CalendarTag extends TagSupport
 
 	public void setCalendar(Calendar calendar)
 	{
-		System.out.println("cal:" + calendar);
 		this.calendar = calendar;
 	}
 }

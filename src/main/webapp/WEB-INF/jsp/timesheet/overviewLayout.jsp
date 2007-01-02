@@ -12,12 +12,11 @@
 	{
 		location.href = '<c:url value="/eh/enterTimesheet.do" />?mutable=1&day=' + day + '&month=' + month + '&year=' + year;
 	}
-	
 </script>
 
-
+<script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/navCalendarOverview.jsp" />" type="text/javascript"></script>
-
+<script src="<c:url value="/js/timesheet.js" />" type="text/javascript"></script>
 
 <div id="overviewSpan">
 	<tiles:insert page="overview.jsp" />

@@ -1,144 +1,148 @@
-// validate form
-    function validateForm()
+// validate field
+function validateField(field)
+{
+	var value = field.value;
+	var inError = false;
+
+	value = value.replace(",", "\.");
+
+    floatValue = parseFloat(value);
+
+    if (isNaN(floatValue))
     {
-        var elements = calForm.elements;
-        var i;
-        var	key;
-        var	value;
-        var	floatValue;
-        var	inError = false;
-
-        for (i = 0;
-             i < elements.length;
-             i++)
-         {
-            if (elements[i].name.substr(0, 3) == "qh_" &&
-            		elements[i].value != "")
-            {
-            	key = elements[i].name;
-                value = elements[i].value;
-
-                value = value.replace(",", "\.");
-
-                floatValue = parseFloat(value);
-
-                if (isNaN(floatValue))
-                {
-                	alert(value + " is geen getal");
-                	value = "";
-                	inError = true;
-                }
-              	else if (floatValue > 24)
-              	{
-              		alert("In dit zonnestelsel kan max. 24u op een dag geboekt worden");
-              		floatValue = 24;
-              	}
-              	else if (floatValue < 0)
-              	{
-              		value = 0;
-              		floatValue = 0;
-              	}
-
-              	if (!inError)
-              	{
-              		if (Math.round(floatValue) != floatValue)
-              		{
-              			value = floatValue.toFixed(2);
-              		}
-              		else
-              		{
-              			value = floatValue.toFixed(0);
-              		}
-              	}
-
-                calForm.elements[key].value = value;
-
-            }
-         }
+    	alert(value + " " + errorNotValidNumber);
+        field.value = "";
+        inError = true;
+	}
+    else if (floatValue > 24)
+    {
+    	alert(error24HoursMax);
+		floatValue = 24;
+	}
+	else if (floatValue < 0)
+    {
+    	value = 0;
+       	floatValue = 0;
 	}
 
-// book all hours to a project
-    function bookToProject(assignmentID)
+    if (!inError)
     {
-        var bookedHours = new Array(7);
-        var elements = calForm.elements;
-        var	qh;
-        var	value;
-        var	i;
-        var oldVal;
+		if (Math.round(floatValue) != floatValue)
+       	{
+       		value = floatValue.toFixed(2);
+       	}
+       	else
+       	{
+       		value = floatValue.toFixed(0);
+       	}
 
-        for (i = 0; i < 7;i++)
+		field.value = value;
+		
+		updateTotal();
+	}	
+}
+
+// book all remaining hours to a project
+function bookToProject(assignmentId)
+{
+	var bookedHours = new Array();
+    var elements = document.getElementById('timesheetForm').elements;
+    var	rowId;
+    var	value;
+    var oldVal;
+    var assIdKey = "ehts_" + assignmentId;
+
+    // get values on other project assignments
+    for (i = 0;
+         i < elements.length;
+         i++)
+    {
+        if (elements[i].name.indexOf("ehts_") == 0 ||
+	        elements[i].name.indexOf("inactive_") == 0)
         {
-            bookedHours[i] = 0;
+        	// rowId: ehts_<assignmentId>_<date>_<dayInWeek>
+        	value = elements[i].value * 1;
+        	rowId = elements[i].name.split("_");
+
+        	if (rowId[1] != assignmentId)
+        	{
+        		if (isNaN(bookedHours[rowId[2]]))
+        		{
+        			bookedHours[rowId[2]] = 0;
+        		}
+        		
+        		bookedHours[rowId[2]] += value;
+        	}
         }
+    }
 
-        // get values on other projects
-        for (i = 0;
-             i < elements.length;
-             i++)
-        {
-            if (elements[i].name.substr(0, 3) == "qh_")
-            {
-            	value = elements[i].value * 1;
-            	qh = elements[i].name.split("_");
+	// go through each date of the clicked assignment id and check
+	// if other projects got values for them
+    for (i = 0;
+         i < elements.length;
+         i++)
+    {
+		if (elements[i].name.indexOf(assIdKey) == 0)
+		{
+	       	rowId = elements[i].name.split("_");
 
-            	if (qh[1] != assignmentID)
-            	{
-            		bookedHours[qh[2]] += value;
-            	}
-            }
+			// exclude sat & sun@todo config?
+			// also exclude days which have more hours booked than max. defined
+			if (rowId[3] != 1
+				&& rowId[3] != 7
+				&& elements[i].value < maxHoursPerDay)
+			{
+				if (!isNaN(bookedHours[rowId[2]]))
+				{
+					value = maxHoursPerDay - (1 * bookedHours[rowId[2]]);
+				}
+				else
+				{
+					value = maxHoursPerDay;
+				}
+				
+				if (value < 0)
+				{
+					value = 0;
+				}
+	
+	            elements[i].value = value;
+			}	        
         }
+    }
 
-        for (i = 1;
-        	 i < bookedHours.length - 1;
-        	 i++)
-        {
-        	value = 8 - (1 * bookedHours[i]);
-
-            if (value < 0)
-            {
-                value = 0;
-            }
-
-            if (calForm.elements[("qh_" + assignmentID + "_" + i)] != null)
-            {
-                calForm.elements[("qh_" + assignmentID + "_" + i)].value = value;
-            }
-            else
-            {
-                bookedHours[i] = 0;
-            }
-        }
-
-        updateTotal();
-	}
+    updateTotal();
+    
+    return false;
+}
 
 
 
 // count all booked hours and update the total
-    function updateTotal()
-    {
-    	validateForm();
+function updateTotal()
+{
+	var form = document.getElementById('timesheetForm');
+    var elements = form.elements;
+    var i;
+    var totalHours = 0;
 
-        var elements = calForm.elements;
-        var i;
-        var totalHours = 0;
+    for (i = 0;
+         i < elements.length;
+         i++)
+     {
+        if (elements[i].name.substr(0, 5) == "ehts_" ||
+	        elements[i].name.substr(0, 9) == "inactive_")
+        {
+            totalHours += elements[i].value * 1;
+        }
+     }
 
-        for (i = 0;
-             i < elements.length;
-             i++)
-         {
-            if (elements[i].name.substr(0, 3) == "qh_")
-            {
-                totalHours += elements[i].value * 1;
-            }
-         }
+    document.getElementById("totalHours").innerHTML = totalHours;
+}
 
-        document.getElementById("totalHours").innerHTML = totalHours;
-    }
-
-    function resetTotal()
-    {
-        calForm.reset();
-        updateTotal();
-    }
+// reset the form and recalc total
+function resetTotal()
+{
+	document.getElementById('timesheetForm').reset();
+    updateTotal();
+}
