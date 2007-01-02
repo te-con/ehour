@@ -5,7 +5,7 @@
 <%@ page import="org.acegisecurity.ui.AbstractProcessingFilter" %>
 <%@ page import="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter" %>
 
-
+<!-- spanTarget: loginForm -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 

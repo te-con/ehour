@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/ehour-common.tld" prefix="ehour" %>
 
+<!-- spanTarget: overview -->
 <!-- project overview -->
 	<table class="contentTable">
 	

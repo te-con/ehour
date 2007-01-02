@@ -25,6 +25,7 @@ package net.rrm.ehour.util;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import net.rrm.ehour.data.DateRange;
 
@@ -136,6 +137,24 @@ public class DateUtil
 		weekRange.setDateEnd(calClone.getTime());
 		
 		return weekRange;
+	}
+	
+	/**
+	 * Set the time of a date to 00:00.00 (up to the ms)
+	 * @param date
+	 * @return
+	 */
+	
+	public static Date nullifyTime(Date date)
+	{
+		Calendar	cal = new GregorianCalendar();
+		cal.setTime(date);
 		
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		
+		return cal.getTime();
 	}
 }

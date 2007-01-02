@@ -25,11 +25,13 @@ package net.rrm.ehour.timesheet.dao;
 
 import java.util.List;
 
+import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
-public interface TimesheetDAO
+public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryId>
 {
 	/**
 	 * Get timesheet entries within date range for a user

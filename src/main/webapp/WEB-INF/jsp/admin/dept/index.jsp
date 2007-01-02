@@ -4,89 +4,43 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<script>
-	
-	function submitDepartmentForm()
-	{ 
-		new dojo.io.FormBind({
-    						formNode: dojo.byId('UserDepartmentForm'),
-    						handler: departmentListReceived
-							});
-	}
-	
-	function departmentListReceived(type, xml, evt)
-	{
-		if (type == 'error')
-		{	
-    		alert("<fmt:message key="errors.ajax.general" />");
-		}
-		else
-		{
-			dojo.byId('listDeptsSpan').innerHTML = xml;
-		}
-	}
-	
-	function deleteDepartment(departmentId)
-	{
-		if (confirm('<fmt:message key="admin.dept.deleteConfirm" />'))
-		{
-			dojo.io.bind({url: 'deleteUserDepartment.do',
-						  handler: departmentListReceived,
-                       content: {departmentId: departmentId}
-                       });
-		}
+<script src="../../../js/dojo.js" type="text/javascript"></script>
+
+<script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/departmentAdmin.jsp" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
+
+<table CLASS="contentTable" CELLSPACING=2>
+	<tr>	
+		<td>
+			<div class="adminListScroll">
+				<span id="listDepartmentsSpan">
+					<tiles:insert page="listUserDepartments.jsp" />
+				</span>
+			</div>
+		</td>
 		
-		return false;
-	}
-
-
-	function editDepartment(editId)
-	{
-        dojo.io.bind({
-                       url: 'getUserDepartment.do',
-                       handler: formChanged,
-                       content: {departmentId: editId}
-                    });  
-                    
-		return false;    
-	}
-	
-	function showAddForm()
-	{
-        dojo.io.bind({
-                       url: 'addUserDepartmentForm.do',
-                       handler: formChanged
-                    });  
-                    
-		return false;    
-	}		
+		<td>
+			&nbsp;
+		</td>
 		
-    function formChanged(type, xml, evt)
-    {
-    	if (type == 'error')
-    	{
-    		alert("<fmt:message key="errors.ajax.general" />");
-    		return;
-    	}
-    	else
-    	{
-			dojo.byId('departmentFormSpan').innerHTML = xml;
-			
-			// rebind
-			submitDepartmentForm();
-		}
-    }
-
-	dojo.addOnLoad(submitDepartmentForm);
-</script>
-
-<span id="listDeptsSpan">
-	<tiles:insert page="listUserDepartments.jsp" />
-</span>
-
+		<td valign="top">
+			<span id="userDepartmentFormSpan">
+				<tiles:insert page="userDepartmentForm.jsp" />
+			</span>
+		</td>		
+	</tr>
+	
+	<tr>
+		<td align="right">
+			<a href="" onClick="return showAddForm()"><fmt:message key="admin.dept.addDepartment" /></a>
+		</td>
+		
+		<td valign="top" align="right" colspan="2" style="color: #913023" id="statusMessage">
+			&nbsp;
+		</td>
+	</tr>
+</table>
+	
 <br>
 <br>
-
-<span id="departmentFormSpan">
-	<tiles:insert page="addUserDepartmentForm.jsp" />
-</span>

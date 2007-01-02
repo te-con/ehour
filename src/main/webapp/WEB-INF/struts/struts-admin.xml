@@ -40,7 +40,7 @@
 		<action name="UserDepartmentForm" 
 				path="/dept/getUserDepartment" 
 				type="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction">
-			<forward name="success" path=".ehour.admin.dept.editForm" />
+			<forward name="success" path=".ehour.admin.dept.userDepartmentForm" />
 		</action>
 
 		<!-- Edit user department -->
@@ -58,7 +58,7 @@
 		</action>
 
 		<!-- Show add user department form -->
-		<action path="/dept/addUserDepartmentForm" forward=".ehour.admin.dept.addForm" />
+		<action path="/dept/addUserDepartmentForm" forward=".ehour.admin.dept.userDepartmentForm" />
 
 
 

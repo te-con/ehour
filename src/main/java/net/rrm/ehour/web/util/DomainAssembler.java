@@ -25,12 +25,15 @@ package net.rrm.ehour.web.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -187,5 +190,33 @@ public class DomainAssembler
 		pa.setProject(prj);
 
 		return pa;
+	}
+
+	/**
+	 * Create timesheet entry
+	 * @param assignmentId
+	 * @param entryDate
+	 * @param hour
+	 * @return
+	 */
+	
+	public static TimesheetEntry getTimesheetEntry(Integer assignmentId, Date entryDate, Float hours)
+	{
+		TimesheetEntryId 	timesheetEntryId;
+		TimesheetEntry		timesheetEntry;
+		ProjectAssignment	assignment;
+		
+		assignment = new ProjectAssignment();
+		assignment.setAssignmentId(assignmentId);
+		
+		timesheetEntryId = new TimesheetEntryId();
+		timesheetEntryId.setEntryDate(entryDate);
+		timesheetEntryId.setProjectAssignment(assignment);
+		
+		timesheetEntry = new TimesheetEntry();
+		timesheetEntry.setEntryId(timesheetEntryId);
+		timesheetEntry.setHours(hours);
+		
+		return timesheetEntry;
 	}
 }

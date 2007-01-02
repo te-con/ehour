@@ -9,7 +9,7 @@
 	<tr>
 		<td><a href=""
 			onClick="return editCustomer(${customer.customerId})">${customer.name}</a></td>
-		<td>&nbsp;</td>
+		<td>&nbsp;&nbsp;&nbsp;</td>
 		<td align="right">${fn:length(customer.projects)} <fmt:message key="admin.customer.projects" /></td>
 	</tr>
 </c:forEach>

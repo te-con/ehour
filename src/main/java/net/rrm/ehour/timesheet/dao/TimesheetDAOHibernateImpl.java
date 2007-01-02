@@ -25,14 +25,24 @@ package net.rrm.ehour.timesheet.dao;
 
 import java.util.List;
 
+import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
-public class TimesheetDAOHibernateImpl extends HibernateDaoSupport implements TimesheetDAO
+public class TimesheetDAOHibernateImpl 
+		extends GenericDAOHibernateImpl<TimesheetEntry, TimesheetEntryId>
+		implements TimesheetDAO
 {
+	/**
+	 * @todo fix this a bit better
+	 */
+	public TimesheetDAOHibernateImpl()
+	{
+		super(TimesheetEntry.class);
+	}	
+	
 	/**
 	 * Get timesheet entries within date range for a user
 	 * @param userId

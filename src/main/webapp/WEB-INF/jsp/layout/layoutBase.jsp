@@ -19,8 +19,12 @@
 	var ajaxError = "<fmt:message key="errors.ajax.general" />";
 	var formSuccess = "<fmt:message key="admin.general.formSuccess" />";
 	var sendingData = "<fmt:message key="general.submitting" />";
-	var loadingMsg = "<fmt:message key="general.loading" />";	
+	var loadingMsg = "<fmt:message key="general.loading" />";
+	var contextRoot = "<c:url value="/" />";	
 </script>
+
+<script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
+
 	<tiles:insert attribute="headJs" />
 </HEAD>
 

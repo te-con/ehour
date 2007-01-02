@@ -23,11 +23,7 @@
     <definition name=".ehour.admin.dept.list" path="/WEB-INF/jsp/admin/dept/listUserDepartments.jsp" />
 
     <!-- Admin department edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
-    <definition name=".ehour.admin.dept.editForm" path="/WEB-INF/jsp/admin/dept/editUserDepartmentForm.jsp" />
-
-    <!-- Admin department edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
-    <definition name=".ehour.admin.dept.addForm" path="/WEB-INF/jsp/admin/dept/addUserDepartmentForm.jsp" />
-
+    <definition name=".ehour.admin.dept.userDepartmentForm" path="/WEB-INF/jsp/admin/dept/userDepartmentForm.jsp" />
 
 
     <!-- Admin customer index -->

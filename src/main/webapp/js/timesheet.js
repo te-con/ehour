@@ -46,7 +46,7 @@ function validateField(field)
 function bookToProject(assignmentId)
 {
 	var bookedHours = new Array();
-    var elements = document.getElementById('timesheetForm').elements;
+    var elements = document.getElementById('timesheetFormId').elements;
     var	rowId;
     var	value;
     var oldVal;
@@ -121,7 +121,7 @@ function bookToProject(assignmentId)
 // count all booked hours and update the total
 function updateTotal()
 {
-	var form = document.getElementById('timesheetForm');
+	var form = document.getElementById('timesheetFormId');
     var elements = form.elements;
     var i;
     var totalHours = 0;
@@ -143,6 +143,9 @@ function updateTotal()
 // reset the form and recalc total
 function resetTotal()
 {
-	document.getElementById('timesheetForm').reset();
+	// from navCalenderOverview.js
+	doNotSubmitTimesheet = true;
+	
+	document.getElementById('timesheetFormId').reset();
     updateTotal();
 }

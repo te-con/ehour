@@ -25,8 +25,10 @@ package net.rrm.ehour.timesheet.service;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
@@ -66,4 +68,10 @@ public interface TimesheetService
 	 * @return
 	 */
 	public WeekOverview getWeekOverview(Integer userId, Calendar requestedWeek);
+	
+	/**
+	 * Persist timesheet entries
+	 * @param timesheetEntries
+	 */
+	public void persistTimesheetEntries(Set<TimesheetEntry> timesheetEntries);
 }

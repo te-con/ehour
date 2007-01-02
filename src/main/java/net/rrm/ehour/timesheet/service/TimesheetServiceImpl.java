@@ -30,6 +30,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
@@ -204,6 +205,20 @@ public class TimesheetServiceImpl implements TimesheetService
 	}	
 
 	/**
+	 * Persist timesheet entries
+	 */
+	public void persistTimesheetEntries(Set<TimesheetEntry> timesheetEntries)
+	{
+		for (TimesheetEntry entry : timesheetEntries)
+		{
+			logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+			
+			timesheetDAO.persist(entry);
+		}
+	}
+	
+	/**
 	 * DAO setter (Spring)
 	 * @param dao
 	 */
@@ -246,6 +261,4 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		this.projectService = projectService;
 	}
-
-
 }

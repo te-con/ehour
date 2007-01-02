@@ -159,8 +159,4 @@ public class GetNavCalendarAction extends Action
 	{
 		this.calendarUtil = calUtil;
 	}
-	
-	
-	
-	
 }

@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<form method="post" action="postTimesheet.do" id="timesheetForm" name="timesheetForm">
+<!-- spanTarget: overview -->
+<form method="post" action="postTimesheet.do" id="timesheetFormId" name="timesheetForm">
 
 <input type="hidden" name="userId" value="${timesheetUserId}" />
 
@@ -48,7 +49,9 @@
 				<c:when test="${cell.valid}">
 					<input type="text" class="dataEntry" size="2"
 						   name="ehts_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />_${status.count}"
-						   value="<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>"
+						   <c:if test="${cell.timesheetEntry.hours != null && cell.timesheetEntry.hours  > 0}">
+							   value="<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>"
+							</c:if>							  
 						   onChange="validateField(this)"
 							>
 				</c:when>
@@ -77,7 +80,7 @@
 <table cellspacing="0" width="500">
 	<tr>
 		<td><input type="submit" class="redSubmit" value="reset" onClick="return resetTotal();"></td>
-		<td align="right"><input type="submit" class="redSubmit" value="<fmt:message key="user.timesheet.storeAndNext" />" onClick="return resetTotal();"></td>
+		<td align="right"><input type="submit" class="redSubmit" value="<fmt:message key="user.timesheet.storeAndNext" />" onClick="return makeFormSubmittable();"></td>
 	</tr>
 </table>
 	

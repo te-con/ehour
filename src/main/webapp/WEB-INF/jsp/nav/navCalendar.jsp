@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-
+<!-- spanTarget:navCalendar -->
 <div id="navCalendarSpan" style="height: 100px">
 <table CLASS="cps_table" CELLSPACING=0>
 	<TR>

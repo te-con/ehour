@@ -44,7 +44,7 @@
 				<br>
 				
 				<c:forEach var="project" items="${customer.projects}">
-					${project.fullname}
+					${project.fullname}<br>
 				</c:forEach>
 			</c:if>
 		</td>		

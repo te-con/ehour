@@ -25,7 +25,10 @@ function responseReceived(type, xml, evt)
 	{
 		var spanTarget = parseSpanTarget(xml);
 
-		if (spanTarget == 'form')
+		if (spanTarget == 'loginForm')
+		{
+			location.href = contextRoot;
+		} else if (spanTarget == 'form')
 		{
 			changeForm(xml);
 		}
@@ -66,23 +69,6 @@ function showAddForm()
 	return false;    
 }
 
-// parse the span target out of the html (<!-- spanTarget: xxx -->)
-function parseSpanTarget(html)
-{
-	var spanTarget;
-
-	var regexp = /<\!-- spanTarget: *([\w\W]*?) -->/g;
-	
-	
-	html.replace(regexp,
-			 		function(match, attributes, script)
-			 		{
-						spanTarget = attributes;
-					}
-				);	
-	
-	return spanTarget;
-}
 
 // display and trigger fade in status message
 function setStatusMessage(statusMsg)

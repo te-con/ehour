@@ -7,7 +7,6 @@
 <script src="../../../js/dojo.js" type="text/javascript"></script>
 
 <script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
-<script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/customerAdmin.jsp" />" type="text/javascript"></script>
 
@@ -34,7 +33,7 @@
 	</tr>
 	
 	<tr>
-		<td colspan="1" align="right">
+		<td align="right">
 			<a href="" onClick="return showAddForm()"><fmt:message key="admin.customer.addCustomer" /></a>
 		</td>
 		
