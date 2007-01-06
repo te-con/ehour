@@ -74,6 +74,8 @@ public class GetNavCalendarAction extends Action
 		// set the navigation urls
 		setNavParams(request, requestedMonth, userId);
 		
+		response.setHeader("Cache-Control", "no-cache");
+		
 		return fwd;
 	}
 

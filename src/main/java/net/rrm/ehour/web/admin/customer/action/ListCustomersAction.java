@@ -46,7 +46,9 @@ public class ListCustomersAction extends AdminCustomerBaseAction
 		List	customers = customerService.getCustomers();
 		
 		request.setAttribute("customers", customers);
-			
+		
+		response.setHeader("Cache-Control", "no-cache");
+		
 		return mapping.findForward("success");
 	}	
 }

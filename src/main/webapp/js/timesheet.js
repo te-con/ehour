@@ -137,7 +137,7 @@ function updateTotal()
         }
      }
 
-    document.getElementById("totalHours").innerHTML = totalHours;
+    document.getElementById("totalHours").innerHTML = totalHours.toFixed(2);
 }
 
 // reset the form and recalc total

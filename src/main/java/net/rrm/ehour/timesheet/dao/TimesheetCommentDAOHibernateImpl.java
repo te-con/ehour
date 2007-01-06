@@ -45,28 +45,5 @@ public class TimesheetCommentDAOHibernateImpl
 	{
 		super(TimesheetComment.class);
 	}	
-	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.timesheet.dao.TimesheetCommentDAO#findForUserInRage(java.lang.Integer, net.rrm.ehour.data.DateRange)
-	 */
-	@SuppressWarnings("unchecked")
-	public List<TimesheetComment> findForUserInRage(Integer userId, DateRange dateRange)
-	{
-		List<TimesheetComment> comments;
-		String[]	keys = new String[3];
-		Object[]	params = new Object[3];
-		
-		keys[0] = "dateStart";
-		keys[1] = "dateEnd";
-		keys[2] = "userId";
-		
-		params[0] = dateRange.getDateStart();
-		params[1] = dateRange.getDateEnd();
-		params[2] = userId;
-		
-		comments = getHibernateTemplate().findByNamedQueryAndNamedParam("TimesheetComment.getCommentsForUserIdInRange"
-																		, keys, params);
-		
-		return comments;			
-	}
+
 }

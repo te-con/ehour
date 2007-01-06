@@ -42,25 +42,11 @@ public class WeekOverview implements Serializable
 	 */
 	private static final long serialVersionUID = -3281374385102106958L;
 	private List<TimesheetEntry>	timesheetEntries;
-	private List<TimesheetComment>	comments;
+	private TimesheetComment		comment;
 	private	List<ProjectAssignment>	projectAssignments;
 	private	DateRange				weekRange;
 	
-	/**
-	 * @return the comments
-	 */
-	public List<TimesheetComment> getComments()
-	{
-		return comments;
-	}
-	/**
-	 * @param comments the comments to set
-	 */
-	public void setComments(List<TimesheetComment> comments)
-	{
-		this.comments = comments;
-	}
-	/**
+/**
 	 * @return the timesheetEntries
 	 */
 	public List<TimesheetEntry> getTimesheetEntries()
@@ -101,5 +87,19 @@ public class WeekOverview implements Serializable
 	public void setWeekRange(DateRange weekRange)
 	{
 		this.weekRange = weekRange;
+	}
+	/**
+	 * @return the comment
+	 */
+	public TimesheetComment getComment()
+	{
+		return comment;
+	}
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(TimesheetComment comment)
+	{
+		this.comment = comment;
 	}
 }

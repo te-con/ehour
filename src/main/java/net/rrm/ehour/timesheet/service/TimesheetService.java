@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
@@ -70,8 +71,9 @@ public interface TimesheetService
 	public WeekOverview getWeekOverview(Integer userId, Calendar requestedWeek);
 	
 	/**
-	 * Persist timesheet entries
+	 * Persist timesheet entries and comment
 	 * @param timesheetEntries
+	 * @param timesheetComment
 	 */
-	public void persistTimesheetEntries(Set<TimesheetEntry> timesheetEntries);
+	public void persistTimesheet(Set<TimesheetEntry> timesheetEntries, TimesheetComment timesheetComment);
 }

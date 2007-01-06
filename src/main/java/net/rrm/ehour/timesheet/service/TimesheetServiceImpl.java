@@ -40,6 +40,8 @@ import net.rrm.ehour.report.dto.ProjectReport;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.timesheet.domain.TimesheetComment;
+import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
@@ -195,8 +197,8 @@ public class TimesheetServiceImpl implements TimesheetService
 		weekOverview.setTimesheetEntries(timesheetDAO.getTimesheetEntriesInRange(userId, range));
 		logger.debug("Week overview: timesheet entries found for userId " + userId + ": " + weekOverview.getTimesheetEntries().size());
 
-		weekOverview.setComments(timesheetCommentDAO.findForUserInRage(userId, range));
-		logger.debug("Week overview: comments found for userId " + userId + ": " + weekOverview.getComments().size());
+		weekOverview.setComment(timesheetCommentDAO.findById(new TimesheetCommentId(userId, range.getDateStart())));
+		logger.debug("Week overview: comments found for userId " + userId + ": " + weekOverview.getComment() != null);
 		
 		weekOverview.setProjectAssignments(projectService.getProjectAssignmentsForUser(userId, range));
 		logger.debug("Week overview: project assignments found for userId " + userId + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
@@ -205,9 +207,9 @@ public class TimesheetServiceImpl implements TimesheetService
 	}	
 
 	/**
-	 * Persist timesheet entries
+	 * Persist timesheet & comment
 	 */
-	public void persistTimesheetEntries(Set<TimesheetEntry> timesheetEntries)
+	public void persistTimesheet(Set<TimesheetEntry> timesheetEntries, TimesheetComment comment)
 	{
 		for (TimesheetEntry entry : timesheetEntries)
 		{
@@ -216,6 +218,15 @@ public class TimesheetServiceImpl implements TimesheetService
 			
 			timesheetDAO.persist(entry);
 		}
+		
+		if (comment != null 
+			&& comment.getComment() != null
+			&& comment.getComment().trim().length() > 0)
+		{
+			logger.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
+			timesheetCommentDAO.persist(comment);
+		}
+				
 	}
 	
 	/**

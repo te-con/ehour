@@ -44,6 +44,7 @@ import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
+import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
@@ -173,8 +174,8 @@ public class TimesheetServiceTest  extends TestCase
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, range))
 				.andReturn(new ArrayList<TimesheetEntry>());
 		
-		expect(timesheetCommentDAO.findForUserInRage(1, range))
-			.andReturn(new ArrayList<TimesheetComment>());
+		expect(timesheetCommentDAO.findById(new TimesheetCommentId(1, range.getDateStart())))
+			.andReturn(new TimesheetComment());
 		
 		expect(projectService.getProjectAssignmentsForUser(1, range))
 				.andReturn(new ArrayList<ProjectAssignment>());

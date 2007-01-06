@@ -25,23 +25,29 @@ package net.rrm.ehour.web.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.timesheet.domain.TimesheetComment;
+import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
 import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 import net.rrm.ehour.web.admin.project.form.ProjectForm;
 import net.rrm.ehour.web.admin.user.form.UserForm;
+import net.rrm.ehour.web.timesheet.form.TimesheetForm;
 
 /**
  * Various form to domain assemblers
@@ -218,5 +224,41 @@ public class DomainAssembler
 		timesheetEntry.setHours(hours);
 		
 		return timesheetEntry;
+	}
+	
+	/**
+	 * Get timesheet comment
+	 * @param userId
+	 * @param form
+	 * @return
+	 */
+	public static TimesheetComment getTimesheetComment(Integer userId, TimesheetForm form)
+	{
+		TimesheetComment 	comment = null;
+		TimesheetCommentId	id = null;
+		Calendar			cal;
+		
+		if (form.getComment() != null 
+			&& form.getComment() != null 
+			&& form.getComment().trim().length() > 0)
+		{
+			comment = new TimesheetComment();
+			
+			id = new TimesheetCommentId();
+			id.setUserId(userId);
+			
+			cal = new GregorianCalendar(form.getSheetYear(),
+										form.getSheetMonth() - 1,
+										form.getSheetDay());
+			cal = DateUtil.nullifyTime(cal);
+			
+			id.setCommentDate(cal.getTime());
+			
+			comment.setCommentId(id);
+			
+			comment.setComment(form.getComment().trim());
+		}
+		
+		return comment;
 	}
 }

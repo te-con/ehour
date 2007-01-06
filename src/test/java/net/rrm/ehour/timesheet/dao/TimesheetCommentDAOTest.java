@@ -29,6 +29,7 @@ import java.util.List;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
+import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 
 /**
  * TODO 
@@ -52,14 +53,11 @@ public class TimesheetCommentDAOTest extends BaseDAOTest
 	 */
 	public void testGetTimesheetEntriesInRange()
 	{
-		DateRange	range;
-		List<TimesheetComment> comments;
+		DateRange			range;
+		TimesheetComment	comment;
 		
-		range = new DateRange(new Date(2006 - 1900, 10 - 1, 1),
-							  new Date(2006 - 1900, 10 - 1, 8));
+		comment = dao.findById(new TimesheetCommentId(1, new Date(2006 - 1900, 1 - 1, 7)));
 		
-		comments = dao.findForUserInRage(1, range);
-		
-		assertEquals(2, comments.size());
+		assertNotNull(comment);
 	}
 }

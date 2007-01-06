@@ -66,6 +66,8 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		request.setAttribute("timesheetOverview", timesheetOverview);
 		request.setAttribute("timesheetOverviewMonth", requestedMonth);
 		
+		response.setHeader("Cache-Control", "no-cache");
+		
 		return mapping.findForward("success");
 	}
 }

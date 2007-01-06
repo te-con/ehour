@@ -12,11 +12,11 @@
 		<td colspan="3">
 			<c:choose>
 				<c:when test="${department == null || department.departmentId == null}">
-					<fmt:message key="admin.customer.addDepartment" />
+					<fmt:message key="admin.dept.addDepartment" />
 				</c:when>
 				
 				<c:otherwise>
-					<fmt:message key="admin.customer.editDepartment" />
+					<fmt:message key="admin.dept.editDepartment" />
 				</c:otherwise>
 			</c:choose>
 		</td>	
@@ -29,11 +29,10 @@
 	
 	<tr>
 		<td height="20"><fmt:message key="admin.dept.name" />:</td>
-		<td><input class="normtxt"  type="text" name="name" size="30" value="${department.name}"></td>
+		<td><input class="normtxt"  type="text" name="name" maxlength="128" size="30" value="${department.name}"></td>
 
-		<td rowspan=2>
-			&nbsp;&nbsp;
-		</td>
+
+		<td id="departmentNameError" style="color: red"><html:errors property="name" /></td>
 		
 		<td rowspan="4" valign="top">
 			<c:if test="${department != null && department.departmentId != null}">		
@@ -62,19 +61,20 @@
 
 	<tr>
 		<td height="20"><fmt:message key="admin.dept.code" />:</td>
-		<td><input class="normtxt"  type="text" name="code" value="${department.code}" size="30"></td>
+		<td><input class="normtxt"  type="text" maxlength="32" name="code" value="${department.code}" size="30"></td>
+		<td id="departmentCodeError" style="color: red"><html:errors property="code" /></td>
 	</tr>
 	
 	<tr>
 		<td>
-			<c:if test="${customer != null && customer.customerId != null}">
-				<a href="" onClick="return deleteCustomer(${customer.customerId})"><fmt:message key="general.delete" /></a>
+			<c:if test="${department != null && department.departmentId != null}">
+				<a href="" onClick="return deleteDepartment(${department.departmentId})"><fmt:message key="general.delete" /></a>
 			</c:if>
 		</td>
 
 		<td align="right">
 			<c:choose>
-				<c:when test="${customer == null || customer.customerId == null}">
+				<c:when test="${department == null || department.departmentId == null}">
 					<input type="submit" class="redSubmit" value="<fmt:message key="general.add" />">
 				</c:when>
 				

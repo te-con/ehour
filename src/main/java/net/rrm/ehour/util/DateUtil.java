@@ -150,11 +150,21 @@ public class DateUtil
 		Calendar	cal = new GregorianCalendar();
 		cal.setTime(date);
 		
+		return nullifyTime(cal).getTime();
+	}
+	
+	/**
+	 * Set the time of a calendar to 00:00.00 (up to the ms)
+	 * @param cal
+	 * @return
+	 */
+	public static Calendar nullifyTime(Calendar cal)
+	{
 		cal.set(Calendar.HOUR, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 		
-		return cal.getTime();
+		return cal;
 	}
 }

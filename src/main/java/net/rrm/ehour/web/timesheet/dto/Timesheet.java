@@ -27,6 +27,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.timesheet.domain.TimesheetComment;
+
 /**
  * Representation of a timesheet form
  **/
@@ -41,6 +43,8 @@ public class Timesheet implements Serializable
 	private	List<Date>			dateSequence;
 	private	Date				weekStart;
 	private	Integer				userId;
+	private	TimesheetComment	comment;
+	
 	/**
 	 * @return the dateSequence
 	 */
@@ -96,5 +100,19 @@ public class Timesheet implements Serializable
 	public void setWeekStart(Date weekStart)
 	{
 		this.weekStart = weekStart;
+	}
+	/**
+	 * @return the comment
+	 */
+	public TimesheetComment getComment()
+	{
+		return comment;
+	}
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(TimesheetComment comment)
+	{
+		this.comment = comment;
 	}
 }

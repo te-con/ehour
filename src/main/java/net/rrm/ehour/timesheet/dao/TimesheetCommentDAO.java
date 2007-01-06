@@ -23,10 +23,7 @@
 
 package net.rrm.ehour.timesheet.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.dao.GenericDAO;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 
@@ -36,11 +33,4 @@ import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 
 public interface TimesheetCommentDAO  extends GenericDAO<TimesheetComment, TimesheetCommentId>
 {
-	/**
-	 * Find comments for user in a date range
-	 * @param userId
-	 * @param dateRange
-	 * @return
-	 */
-	public List<TimesheetComment> findForUserInRage(Integer userId, DateRange dateRange);
 }

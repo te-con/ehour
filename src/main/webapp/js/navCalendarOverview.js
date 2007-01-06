@@ -157,6 +157,14 @@ function validateForm()
 {
 	if (!doNotSubmitTimesheet)
 	{
+		if (document.getElementById("comment").value.length > 1023)
+		{
+			// move to timesheet.js
+			alert(errorCommentTooLong);
+			
+			return false;
+		}
+		
 		showLoadingData();
 	}
 	

@@ -46,6 +46,7 @@ public class TimesheetForm extends UserIdForm
 	private	Integer	sheetDay;
 	private	Integer	sheetMonth;
 	private	Integer	sheetYear;
+	private	String	comment;
 	private	transient Logger	logger = Logger.getLogger(TimesheetForm.class);
 	
 	/**
@@ -163,6 +164,22 @@ public class TimesheetForm extends UserIdForm
 	public void setSheetDay(Integer sheetDay)
 	{
 		this.sheetDay = sheetDay;
+	}
+
+	/**
+	 * @return the comment
+	 */
+	public String getComment()
+	{
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment)
+	{
+		this.comment = comment;
 	}
 
 }

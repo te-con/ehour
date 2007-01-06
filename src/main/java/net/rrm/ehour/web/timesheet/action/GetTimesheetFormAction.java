@@ -23,19 +23,13 @@
 
 package net.rrm.ehour.web.timesheet.action;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.web.timesheet.dto.Timesheet;
-import net.rrm.ehour.web.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.web.timesheet.form.TimesheetForm;
 import net.rrm.ehour.web.timesheet.util.TimesheetFormAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
@@ -77,6 +71,8 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 		request.setAttribute("timesheet", timesheet);
 
 		fwd = mapping.findForward("success");
+		
+		response.setHeader("Cache-Control", "no-cache");
 		
 		return fwd;
 	}

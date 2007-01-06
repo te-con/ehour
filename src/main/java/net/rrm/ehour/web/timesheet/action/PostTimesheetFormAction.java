@@ -35,6 +35,7 @@ import java.util.TreeSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
@@ -70,29 +71,45 @@ public class PostTimesheetFormAction extends BaseTimesheetAction
 		Timesheet				timesheet;
 		TimesheetFormAssembler	timesheetFormAssembler = new TimesheetFormAssembler();
 		Calendar				requestedWeek;
+		TimesheetComment		comment;
 		
 		userId = AuthUtil.getUserId(request, timesheetForm);
 		
-		// first persist
-		entries = getTimesheetEntries(request);
-		timesheetService.persistTimesheetEntries(entries);
+		// first persist entries
+		comment = DomainAssembler.getTimesheetComment(userId, timesheetForm);
 		
-		// and then return the next week
-		requestedWeek = new GregorianCalendar();
-		
-		if (!entries.isEmpty())
+		if (comment == null || comment.getComment().length() <= 1023)
 		{
-			requestedWeek.setTime(entries.first().getEntryId().getEntryDate());
-			requestedWeek.add(Calendar.DAY_OF_MONTH, 7);
+			entries = getTimesheetEntries(request);
+			timesheetService.persistTimesheet(entries, comment);
+			
+			// second return the next week
+			requestedWeek = new GregorianCalendar();
+			
+			if (!entries.isEmpty())
+			{
+				requestedWeek.setTime(entries.first().getEntryId().getEntryDate());
+				requestedWeek.add(Calendar.DAY_OF_MONTH, 7);
+			}
+			else
+			{
+				logger.debug("Submitted but no entries given");
+				// no entries given, use the form date
+				requestedWeek = new GregorianCalendar(timesheetForm.getSheetYear(), 	
+														timesheetForm.getSheetMonth() - 1,
+														timesheetForm.getSheetDay());
+				requestedWeek.add(Calendar.DAY_OF_MONTH, 7);
+			}
 		}
 		else
 		{
-			logger.debug("Submitted but no entries given");
-			// no entries given, use the form date
+			logger.warn("Timesheet comments too long (should be checked by required javascript??. UserID " + userId);
+
 			requestedWeek = new GregorianCalendar(timesheetForm.getSheetYear(), 	
-													timesheetForm.getSheetMonth() - 1,
-													timesheetForm.getSheetDay());
-			requestedWeek.add(Calendar.DAY_OF_MONTH, 7);
+								timesheetForm.getSheetMonth() - 1,
+								timesheetForm.getSheetDay());
+
+			request.setAttribute("errorCommentTooLong", true);
 		}
 		
 		logger.debug("Next week is " + requestedWeek.getTime());
@@ -103,6 +120,8 @@ public class PostTimesheetFormAction extends BaseTimesheetAction
 		timesheet.setUserId(userId);
 		
 		request.setAttribute("timesheet", timesheet);
+		
+		response.setHeader("Cache-Control", "no-cache");
 		
 		return mapping.findForward("success");
 	}

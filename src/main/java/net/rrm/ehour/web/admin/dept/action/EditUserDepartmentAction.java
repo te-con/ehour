@@ -28,6 +28,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 import net.rrm.ehour.web.util.DomainAssembler;
@@ -35,6 +36,8 @@ import net.rrm.ehour.web.util.DomainAssembler;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 /**
  * Edit user department and return all as a list  
@@ -45,21 +48,37 @@ public class EditUserDepartmentAction extends AdminUserDepartmentBaseAction
 	/**
 	 * 
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	{
 		UserDepartment 	userDepartment;
 		List			userDepartments;
+		ActionMessages	messages = new ActionMessages();
+		ActionForward	fwd;
 		
 		userDepartment = DomainAssembler.getUserDepartment((UserDepartmentForm)form);
 	
-		userService.persistUserDepartment(userDepartment);
-		userDepartments	= userService.getUserDepartments();
-		
-		request.setAttribute("userDepartments", userDepartments);
+		try
+		{
+			userService.persistUserDepartment(userDepartment);
+
+			userDepartments	= userService.getUserDepartments();
 			
+			request.setAttribute("userDepartments", userDepartments);
+			
+			fwd = mapping.findForward("success");
+		} catch (Throwable t)
+		{
+			messages.add("name", new ActionMessage("admin.dept.errorNotUnique"));
+			request.setAttribute("department", userDepartment);
+			
+			fwd = mapping.findForward("failure");
+		}
+			
+		saveErrors(request, messages);
+		
 		response.setContentType("text/xml");
 		response.setHeader("Cache-Control", "no-cache");
 		
-		return mapping.findForward("success");
+		return fwd;
 	}
 }

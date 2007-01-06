@@ -26,6 +26,7 @@ package net.rrm.ehour.user.service;
 import java.util.List;
 
 import net.rrm.ehour.exception.NoResultsException;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.domain.User;
@@ -89,7 +90,7 @@ public interface UserService extends UserDetailsService
      * @param department
      * @return List with userdepartments
      */
-    public UserDepartment persistUserDepartment(UserDepartment department);
+    public UserDepartment persistUserDepartment(UserDepartment department) throws ObjectNotUniqueException;
     
 	/**
 	 * Delete user department on id

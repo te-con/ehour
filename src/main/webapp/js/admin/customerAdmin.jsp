@@ -7,10 +7,9 @@ var adminFormUrl = 'addCustomerForm.do';
 var adminListReceivedSpan = 'listCustomersSpan';
 
 // validate form
-function validateForm(formId)
+function validateForm()
 {
-	formId = 'CustomerForm';
-	form = document.getElementById(formId);
+	form = document.getElementById(adminForm);
 	
 	var validationRules = new Array(new Array("name", "customerNameError", '<fmt:message key="admin.customer.errorNameRequired" />'),
 									new Array("code", "customerCodeError", '<fmt:message key="admin.customer.errorCodeRequired" />')
@@ -18,9 +17,9 @@ function validateForm(formId)
 	var validationLengthRules = new Array(new Array("name", "customerNameError", 255, '<fmt:message key="admin.customer.errorNameTooLong" />'),
 											new Array("code", "customerCodeError", 32, '<fmt:message key="admin.customer.errorCodeTooLong" />')										
 											);
-	isValid = validateRequired(formId, validationRules);
+	isValid = validateRequired(adminForm, validationRules);
 	
-	isValid = isValid && validateMaxLength(formId, validationLengthRules);
+	isValid = isValid && validateMaxLength(adminForm, validationLengthRules);
 	
 	if (isValid)
 	{

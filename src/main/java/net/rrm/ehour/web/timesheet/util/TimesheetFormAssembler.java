@@ -67,9 +67,11 @@ public class TimesheetFormAssembler
 		timesheet.setTimesheetRows(timesheetRows);
 		timesheet.setDateSequence(dateSequence);
 		timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());		
-		
+	
+		timesheet.setComment(weekOverview.getComment());
 		return timesheet;
 	}
+	
 	
 	/**
 	 * Create the timesheet rows

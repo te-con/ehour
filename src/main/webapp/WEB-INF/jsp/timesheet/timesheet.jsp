@@ -80,6 +80,20 @@
 	</tr>
 	
 </table>
+<br>
+<table class="cal_table" cellspacing="0" width="500">
+	<tr>
+		<th style="text-align: left; padding-bottom: 2px">&nbsp;<fmt:message key="user.timesheet.weekComments" /></th>
+	</tr>
+	
+	<tr>
+		<td style="border-bottom: #66000 1px solid;">
+			<textarea name="comment" id="comment"
+						rows="3" cols="40" class="dataEntry" style="width: 495px" wrap="virtual">${timesheet.comment.comment}</textarea>
+		</td>
+	</tr>
+</table>
+
 
 <table cellspacing="0" width="500">
 	<tr>
@@ -91,9 +105,9 @@
 </form>
 
 <script>
-	var maxHoursPerDay = 8;
-	var errorNotValidNumber = '<fmt:message key="user.timesheet.errorNotValidNumber" />';
-	var error24HoursMax = '<fmt:message key="user.timesheet.error24HoursMax" />';
-
 	updateTotal();
+	
+	<c:if test="${errorCommentTooLong}">
+		alert(errorCommentTooLong);
+	</c:if>	
 </script>

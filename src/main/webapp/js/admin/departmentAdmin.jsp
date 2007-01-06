@@ -7,20 +7,19 @@ var adminFormUrl = 'addUserDepartmentForm.do';
 var adminListReceivedSpan = 'listDepartmentsSpan';
 
 // validate form
-function validateForm(formId)
+function validateForm()
 {
-	formId = 'CustomerForm';
-	form = document.getElementById(formId);
+	form = document.getElementById(adminForm);
 	
-	var validationRules = new Array(new Array("name", "customerNameError", '<fmt:message key="admin.customer.errorNameRequired" />'),
-									new Array("code", "customerCodeError", '<fmt:message key="admin.customer.errorCodeRequired" />')
+	var validationRules = new Array(new Array("name", "departmentNameError", '<fmt:message key="admin.dept.errorNameRequired" />'),
+									new Array("code", "departmentCodeError", '<fmt:message key="admin.dept.errorCodeRequired" />')
 												);
-	var validationLengthRules = new Array(new Array("name", "customerNameError", 255, '<fmt:message key="admin.customer.errorNameTooLong" />'),
-											new Array("code", "customerCodeError", 32, '<fmt:message key="admin.customer.errorCodeTooLong" />')										
+	var validationLengthRules = new Array(new Array("name", "departmentNameError", 128, '<fmt:message key="admin.dept.errorNameTooLong" />'),
+											new Array("code", "departmentCodeError", 32, '<fmt:message key="admin.dept.errorCodeTooLong" />')										
 											);
-	isValid = validateRequired(formId, validationRules);
+	isValid = validateRequired(adminForm, validationRules);
 	
-	isValid = isValid && validateMaxLength(formId, validationLengthRules);
+	isValid = isValid && validateMaxLength(adminForm, validationLengthRules);
 	
 	if (isValid)
 	{
@@ -30,16 +29,16 @@ function validateForm(formId)
 	return isValid;
 }
 
-// delete customer event
-function deleteCustomer(customerId)
+// delete department event
+function deleteDepartment(departmentId)
 {
-	if (confirm("<fmt:message key="admin.customer.deleteConfirm" />"))
+	if (confirm("<fmt:message key="admin.department.deleteConfirm" />"))
 	{
 		showLoadingData();
 		
-		dojo.io.bind({url: 'deleteCustomer.do',
+		dojo.io.bind({url: 'deleteDepartment.do',
 					  handler: responseReceived,
-                      content: {customerId: customerId}
+                      content: {departmentId: departmentId}
                       });
 	}
 	

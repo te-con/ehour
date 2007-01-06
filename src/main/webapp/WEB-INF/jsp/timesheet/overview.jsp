@@ -28,7 +28,7 @@
 		
 		<tr>
 			<td>${projectReport.projectAssignment.project.name}</td>
-			<td>${projectReport.hours}</td>
+			<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /> </td>
 			<td><fmt:formatNumber type="currency" value="${projectReport.turnOver}" /></td>
 		</tr>
 		</c:forEach>

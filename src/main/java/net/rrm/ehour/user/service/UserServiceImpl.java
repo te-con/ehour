@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.exception.NoResultsException;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
@@ -48,6 +49,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  * @author   Thies
@@ -182,11 +184,19 @@ public class UserServiceImpl implements UserService
 	}
 
 	/**
+	 * @throws ObjectNotUniqueException 
 	 * 
 	 */
-	public UserDepartment persistUserDepartment(UserDepartment department)
+	public UserDepartment persistUserDepartment(UserDepartment department) throws ObjectNotUniqueException
 	{
-		userDepartmentDAO.persist(department);
+		try
+		{
+			userDepartmentDAO.persist(department);
+		}
+		catch (DataIntegrityViolationException cve)
+		{
+			throw new ObjectNotUniqueException(cve);
+		}		
 		
 		return department;
 		
