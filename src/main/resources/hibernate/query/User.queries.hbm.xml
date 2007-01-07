@@ -28,4 +28,10 @@
 		WHERE active = true
 	    ORDER BY lastName, firstName	    
 	</query>	
+
+	<query name="UserDepartment.findByNameAndCode"> 
+		FROM UserDepartment as userDepartment
+	    WHERE lcase(name) like  :name AND lcase(code) LIKE :code
+	</query>	
+
 </hibernate-mapping>

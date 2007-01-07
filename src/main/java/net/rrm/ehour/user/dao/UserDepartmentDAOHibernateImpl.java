@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.user.dao;
 
+import java.util.List;
+
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.user.domain.UserDepartment;
 
@@ -36,5 +38,22 @@ public class UserDepartmentDAOHibernateImpl
 	public UserDepartmentDAOHibernateImpl()
 	{
 		super(UserDepartment.class);
+	}
+
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public UserDepartment findOnNameAndCode(String name, String code)
+	{
+		List<UserDepartment>		results;
+
+		String[]	keys = new String[]{"name", "code"};
+		Object[]	params = new Object[]{name, code}; 
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("UserDepartment.findByNameAndCode"
+																		, keys, params);		
+		
+		return (results.size() > 0) ? results.get(0) : null;
 	}	
 }

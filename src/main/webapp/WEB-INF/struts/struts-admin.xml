@@ -48,13 +48,15 @@
 				path="/dept/editUserDepartment" 
 				type="net.rrm.ehour.web.admin.dept.action.EditUserDepartmentAction">
 			<forward  name="success" path=".ehour.admin.dept.list" />				
+			<forward name="failure" path=".ehour.admin.dept.userDepartmentForm" />			
 		</action>
 
 		<!-- Delete user department -->
 		<action name="UserDepartmentForm" 
 				path="/dept/deleteUserDepartment" 
 				type="net.rrm.ehour.web.admin.dept.action.DeleteUserDepartmentAction">
-			<forward  name="success" path=".ehour.admin.dept.list" />				
+			<forward name="success" path=".ehour.admin.dept.list" />	
+			<forward name="failure" path=".ehour.admin.dept.userDepartmentForm" />									
 		</action>
 
 		<!-- Show add user department form -->

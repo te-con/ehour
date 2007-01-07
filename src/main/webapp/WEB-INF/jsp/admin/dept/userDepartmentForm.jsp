@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 
 <!-- spanTarget:form -->
 
@@ -85,9 +86,10 @@
 		</td>
 	</tr>
 	
+	
 	<tr>
-		<td colspan="2" height="100%">
-			&nbsp;
+		<td colspan="2" style="color: red">
+			<html:errors property="delete" />
 		</td>
 	</tr>
 </table>

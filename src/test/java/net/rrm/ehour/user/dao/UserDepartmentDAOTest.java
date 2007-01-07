@@ -87,5 +87,10 @@ public class UserDepartmentDAOTest extends BaseDAOTest
 		dept =dao.findById(new Integer(3));
 		
 		assertEquals("test dept", dept.getName());
-	}	
+	}
+	
+	public void testFindByNameAndCode()
+	{
+		assertNotNull(dao.findOnNameAndCode("TE-CON", "TEC"));
+	}
 }

@@ -32,11 +32,11 @@ function validateForm()
 // delete department event
 function deleteDepartment(departmentId)
 {
-	if (confirm("<fmt:message key="admin.department.deleteConfirm" />"))
+	if (confirm("<fmt:message key="admin.dept.deleteConfirm" />"))
 	{
 		showLoadingData();
 		
-		dojo.io.bind({url: 'deleteDepartment.do',
+		dojo.io.bind({url: 'deleteUserDepartment.do',
 					  handler: responseReceived,
                       content: {departmentId: departmentId}
                       });

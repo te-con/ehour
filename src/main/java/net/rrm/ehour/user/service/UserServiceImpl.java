@@ -49,7 +49,6 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  * @author   Thies
@@ -128,7 +127,7 @@ public class UserServiceImpl implements UserService
 	 * 
 	 */
 	
-	public List getUserDepartments()
+	public List<UserDepartment> getUserDepartments()
 	{
 		return userDepartmentDAO.findAll();
 	}
@@ -189,14 +188,22 @@ public class UserServiceImpl implements UserService
 	 */
 	public UserDepartment persistUserDepartment(UserDepartment department) throws ObjectNotUniqueException
 	{
-		try
+		UserDepartment	otherDept;
+		
+		otherDept = userDepartmentDAO.findOnNameAndCode(department.getName(), department.getCode());
+		
+		if (otherDept == null)
 		{
 			userDepartmentDAO.persist(department);
 		}
-		catch (DataIntegrityViolationException cve)
+		else if (otherDept.getDepartmentId().equals(department.getDepartmentId()))
 		{
-			throw new ObjectNotUniqueException(cve);
-		}		
+			userDepartmentDAO.merge(department);
+		}
+		else
+		{
+			throw new ObjectNotUniqueException("name/code not unique");
+		}
 		
 		return department;
 		

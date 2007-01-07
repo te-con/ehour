@@ -66,7 +66,7 @@ public class EditUserDepartmentAction extends AdminUserDepartmentBaseAction
 			request.setAttribute("userDepartments", userDepartments);
 			
 			fwd = mapping.findForward("success");
-		} catch (Throwable t)
+		} catch (ObjectNotUniqueException t)
 		{
 			messages.add("name", new ActionMessage("admin.dept.errorNotUnique"));
 			request.setAttribute("department", userDepartment);

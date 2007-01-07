@@ -23,10 +23,7 @@
 
 package net.rrm.ehour.timesheet.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 

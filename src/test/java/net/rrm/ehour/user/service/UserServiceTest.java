@@ -22,7 +22,7 @@
  */
 package net.rrm.ehour.user.service;
 
-import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.dao.UserDAO;
@@ -217,5 +218,47 @@ public class UserServiceTest extends TestCase
 		verify(userRoleDAO);
 	}
 	
+	public void testPersistUserDepartment() throws ObjectNotUniqueException
+	{
+		UserDepartment ud = new UserDepartment();
+		ud.setDepartmentId(1);
+		ud.setName("t1");
+		ud.setCode("t2");
+		
+		UserDepartment ud2 = new UserDepartment();
+		ud2.setDepartmentId(1);
+		ud2.setName("t3");
+		ud2.setCode("t4");
+		
+		expect(userDepartmentDAO.findOnNameAndCode("t3", "t4"))
+			.andReturn(ud);
+		
+		userDepartmentDAO.merge(ud2);
+		
+		replay(userDepartmentDAO);
+		
+		userService.persistUserDepartment(ud2);
+		
+		verify(userDepartmentDAO);
+		
+		reset(userDepartmentDAO);
+		
+		ud2.setDepartmentId(2);
+		
 
+		expect(userDepartmentDAO.findOnNameAndCode("t3", "t4"))
+			.andReturn(ud);
+		
+		replay(userDepartmentDAO);
+		
+		try
+		{
+			userService.persistUserDepartment(ud2);
+			fail();
+		}
+		catch (ObjectNotUniqueException onue)
+		{
+			verify(userDepartmentDAO);
+		}
+	}
 }

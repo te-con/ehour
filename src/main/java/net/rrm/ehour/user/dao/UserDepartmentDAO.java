@@ -32,4 +32,5 @@ import net.rrm.ehour.user.domain.UserDepartment;
 
 public interface UserDepartmentDAO extends GenericDAO<UserDepartment, Integer>
 {
+	public UserDepartment findOnNameAndCode(String name, String code);
 }

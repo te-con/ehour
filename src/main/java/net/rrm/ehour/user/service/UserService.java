@@ -83,7 +83,7 @@ public interface UserService extends UserDetailsService
      * Get list of all user departments
      * @return
      */
-    public List getUserDepartments();
+    public List<UserDepartment> getUserDepartments();
 
     /**
      * Persist user department to database

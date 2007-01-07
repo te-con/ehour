@@ -28,11 +28,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 /**
  * Delete user department
@@ -43,19 +47,38 @@ public class DeleteUserDepartmentAction extends AdminUserDepartmentBaseAction
 	/**
 	 * 
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	{
 		UserDepartmentForm	udf = (UserDepartmentForm)form;
-		List			userDepartments;
-	
-		userService.deleteUserDepartment(udf.getDepartmentId());
-		userDepartments	= userService.getUserDepartments();
-		
-		request.setAttribute("userDepartments", userDepartments);
+		List<UserDepartment> userDepartments;
+		ActionForward	fwd = null;
+		ActionMessages	messages = new ActionMessages();
+		UserDepartment	dep;
+		try
+		{
+			userService.deleteUserDepartment(udf.getDepartmentId());
+			
+			fwd = mapping.findForward("success");
+
+			userDepartments	= userService.getUserDepartments();
+			
+			request.setAttribute("userDepartments", userDepartments);
+
+		} catch (ParentChildConstraintException e)
+		{
+			messages.add("delete", new ActionMessage("admin.dept.errorUsersStillAttached"));
+			
+			dep = userService.getUserDepartment(udf.getDepartmentId());
+			request.setAttribute("department", dep);
+			
+			fwd = mapping.findForward("failure");
+		}
 			
 		response.setContentType("text/xml");
 		response.setHeader("Cache-Control", "no-cache");
-		
-		return mapping.findForward("success");
+
+		saveErrors(request, messages);
+
+		return fwd;
 	}
 }

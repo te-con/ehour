@@ -24,7 +24,6 @@
 package net.rrm.ehour.timesheet.dao;
 
 import java.util.Date;
-import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
@@ -56,7 +55,7 @@ public class TimesheetCommentDAOTest extends BaseDAOTest
 		DateRange			range;
 		TimesheetComment	comment;
 		
-		comment = dao.findById(new TimesheetCommentId(1, new Date(2006 - 1900, 1 - 1, 7)));
+		comment = dao.findById(new TimesheetCommentId(1, new Date(2007 - 1900, 1 - 1, 7)));
 		
 		assertNotNull(comment);
 	}
