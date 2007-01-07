@@ -222,9 +222,9 @@ public class UserServiceImpl implements UserService
 	/**
 	 * 
 	 */
-	public List getUsersByNameMatch(String match, boolean inclInactive)
+	public List<User> getUsersByNameMatch(String match, boolean inclInactive)
 	{
-		List	results;
+		List<User>	results;
 		
 //		if (match == null || match.equals(""))
 //		{
@@ -242,7 +242,7 @@ public class UserServiceImpl implements UserService
 	/**
 	 * 
 	 */
-	public List getUsers()
+	public List<User> getUsers()
 	{
 		return userDAO.findUsers();
 	}
@@ -269,12 +269,21 @@ public class UserServiceImpl implements UserService
 	 * Persist user
 	 */
 
-	public User persistUser(User user) throws PasswordEmptyException
+	public User persistUser(User user) throws PasswordEmptyException, ObjectNotUniqueException
 	{
 		User	dbUser;
+		User	nameUser;
 		byte[]	shaPass;
+
+		nameUser = userDAO.findByUsername(user.getUsername());
 		
-		if (user.getPassword() == null || user.getPassword().equals(""))
+		if (nameUser != null && !nameUser.getUserId().equals(user.getUserId()))
+		{
+			throw new ObjectNotUniqueException("Username already in use");
+		}
+		
+		
+		if (user.getPassword() == null || user.getPassword().trim().equals(""))
 		{
 			// if password is empty and user is new we have a problem
 			if (user.getUserId() == null)

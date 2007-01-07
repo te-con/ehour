@@ -125,6 +125,7 @@
 				path="/user/editUser" 
 				type="net.rrm.ehour.web.admin.user.action.EditUserAction">
 			<forward name="success" path=".ehour.admin.user.filteredList" />
+			<forward name="failure" path=".ehour.admin.user.userForm" />			
 		</action>
 
 		<!-- Check if user exists -->

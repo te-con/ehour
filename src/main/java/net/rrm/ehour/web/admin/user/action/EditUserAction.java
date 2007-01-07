@@ -28,6 +28,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.admin.user.form.UserForm;
 import net.rrm.ehour.web.util.DomainAssembler;
@@ -35,6 +37,8 @@ import net.rrm.ehour.web.util.DomainAssembler;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 /**
  * Edits the user
@@ -46,24 +50,40 @@ public class EditUserAction extends AdminUserBaseAction
 	 * 
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
-								HttpServletRequest request, HttpServletResponse response) throws Exception
+								HttpServletRequest request, HttpServletResponse response)
 	{
 		ActionForward	fwd;
 		UserForm		userForm = (UserForm)form;
 		User			user;
-		List			users;
-		
+		List<User>		users;
+		ActionMessages	messages = new ActionMessages();
+
 		user = DomainAssembler.getUser(userForm);
 		
-		userService.persistUser(user);
+		try
+		{
+			userService.persistUser(user);
+
+			users = userService.getUsersByNameMatch(userForm.getFilterPattern(), userForm.isHideInactive());
+			request.setAttribute("users", users);
+
+			fwd = mapping.findForward("success");
+		} catch (PasswordEmptyException e)
+		{
+			messages.add("password", new ActionMessage("admin.user.errorPasswordNotNull"));
+			
+			request.setAttribute("user", user);
+			fwd = mapping.findForward("failure");
+		} catch (ObjectNotUniqueException e)
+		{
+			messages.add("username", new ActionMessage("admin.user.errorUsernameExists"));
+			
+			request.setAttribute("user", user);
+			fwd = mapping.findForward("failure");
+		}
 		
 		response.setContentType("text/xml");
 		response.setHeader("Cache-Control", "no-cache");
-		
-		users = userService.getUsersByNameMatch(userForm.getFilterPattern(), userForm.isHideInactive());
-		request.setAttribute("users", users);
-		
-		fwd = mapping.findForward("success");
 		
 		return fwd;
 	}

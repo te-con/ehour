@@ -1,7 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 
+<!-- spanTarget:form -->
 
 <form id="UserForm" method="post" action="editUser.do">
 
@@ -45,8 +47,14 @@
 	
 	<tr>
 		<td><fmt:message key="admin.user.username" />:</td>
-		<td><input class="normtxt" type="text" name="username" size="30" value="${user.username}" onChange="return checkUserExists(this.value, '${user.username}')"></td>
-		<td id="userNameError" style="color: red"></td>
+		<td><input class="normtxt"
+					type="text" 
+					name="username" 
+					size="30" 
+					maxlength="48"
+					value="${user.username}" 
+					onChange="return checkUserExists(this.value, '${user.username}')"></td>
+		<td id="userNameError" style="color: red"><html:errors property="username" /></td>
 		
 		<c:if test="${user != null}">
 			<td rowspan="10" valign="top">
@@ -71,31 +79,46 @@
 
 	<tr>
 		<td><fmt:message key="admin.user.password" />:</td>
-		<td><input class="normtxt"  type="password" name="password" size="30"></td>
-		<td id="passwordError" style="color: red"></td>
+		<td><input class="normtxt"  type="password" name="password" size="30" maxlength="30"></td>
+		<td id="passwordError" style="color: red"><html:errors property="password" /></td>
 	</tr>
 
 	<tr>
 		<td><fmt:message key="admin.user.confirmPassword" />:</td>
-		<td><input class="normtxt"  type="password" name="confirmPassword" size="30"></td>
+		<td><input class="normtxt"  type="password" name="confirmPassword" size="30" maxlength="30"></td>
 		<td id="confirmPasswordError" style="color: red"></td>
 	</tr>	
 
 	<tr>
 		<td><fmt:message key="admin.user.firstName" />:</td>
-		<td><input class="normtxt"  type="text" name="firstName" size="30" value="${user.firstName}"></td>
+		<td><input class="normtxt"
+					type="text" 
+					name="firstName" 
+					size="30" 
+					maxlength="60"
+					value="${user.firstName}"></td>
 		<td></td>		
 	</tr>
 
 	<tr>
 		<td><fmt:message key="admin.user.lastName" />:</td>
-		<td><input class="normtxt"  type="text" name="lastName" size="30" value="${user.lastName}"></td>
+		<td><input class="normtxt"
+					type="text" 
+					name="lastName" 
+					size="30" 
+					maxlength="60"
+					value="${user.lastName}"></td>
 		<td id="lastNameError" style="color: red"></td>
 	</tr>
 	
 	<tr>
 		<td><fmt:message key="admin.user.email" />:</td>
-		<td><input class="normtxt"  type="text" name="email" size="30" value="${user.email}"></td>
+		<td><input class="normtxt"
+					type="text" 
+					name="email" 
+					size="30" 
+					maxlength="120"
+					value="${user.email}"></td>
 		<td id="emailError" style="color: red"></td>
 	</tr>
 

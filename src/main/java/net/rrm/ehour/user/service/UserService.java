@@ -63,7 +63,7 @@ public interface UserService extends UserDetailsService
      * @param user
      * @return
      */
-    public User persistUser(User user)  throws PasswordEmptyException;
+    public User persistUser(User user)  throws PasswordEmptyException, ObjectNotUniqueException;
     
     /**
      * Get users where first name or last name matches
@@ -71,13 +71,13 @@ public interface UserService extends UserDetailsService
      * @param inclInactive incl inactive users?
      * @return
      */
-    public List getUsersByNameMatch(String match, boolean inclInactive);
+    public List<User> getUsersByNameMatch(String match, boolean inclInactive);
     
     /**
      * Get all users
      * @return
      */
-    public List getUsers();
+    public List<User> getUsers();
     
     /**
      * Get list of all user departments
