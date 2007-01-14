@@ -3,6 +3,11 @@ var	cancelProjectCheck = false;
 var formBind;
 var timer;
 
+var adminForm = 'ProjectForm';
+var adminFormSpan = 'projectFormSpan';
+var adminFormUrl = 'addProjectForm.do';
+var adminListReceivedSpan = 'listProjectsSpan';
+
 // validate form
 function validateForm(formId)
 {
@@ -23,13 +28,6 @@ function validateForm(formId)
 	return isValid;
 }
 
-// bind ProjectForm to validation and ajax submit
-function bindProjectForm()
-{
-	new dojo.io.FormBind({	formNode: dojo.byId('ProjectForm'),
-  								handler: projectListWithMessage
-							});
-}
 
 // received after form submit, display message
 function projectListWithMessage(type, xml, evt)
@@ -46,20 +44,6 @@ function projectListWithMessage(type, xml, evt)
 }
 
 
-// projectlist received
-function projectListReceived(type, xml, evt)
-{
-	if (type == 'error')
-	{	
-   		alert(ajaxError);
-	}
-	else
-	{
-		dojo.byId('listProjectsSpan').innerHTML = xml;
-	}
-
-	showAddForm();
-}
 
 
 function editProject(editId)
@@ -75,17 +59,7 @@ function editProject(editId)
                    
 	return false;    
 }
-
-function showAddForm()
-{
-	showLoadingData();
-       dojo.io.bind({
-                      url: 'addProjectForm.do',
-                      handler: formChanged
-                   });  
-                   
-	return false;    
-}		
+		
 	
 // form changed	
   function formChanged(type, xml, evt)
@@ -101,20 +75,18 @@ function showAddForm()
   	{
   		cancelProjectCheck = false;
   		
-		dojo.byId('projectFormSpan').innerHTML = xml;
+		responseReceived(type, xml, evt);
 	
 		dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
 		
 		// DOM changed, rebind
-		bindProjectForm();
+		bindAdminForm();
 	}
   }
 
-function init()
+function initFilter()
 {
 	dojo.event.connect(dojo.byId('hideInactive'), "onclick", "filterKeyUp");
-	
-	bindProjectForm();
 }
 
 function filterKeyUp(evt)
@@ -129,4 +101,4 @@ function filterKeyUp(evt)
 }
 
 
-dojo.addOnLoad(init);
+dojo.addOnLoad(initFilter);

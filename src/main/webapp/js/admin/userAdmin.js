@@ -1,14 +1,15 @@
 // onChange is fired when the user switches from add to edit user, cancel if necc.
 var	cancelUserCheck = false;
-var formBind;
-var timer;
 
+var adminForm = 'UserForm';
+var adminFormSpan = 'userFormSpan';
+var adminFormUrl = 'addUserForm.do';
+var adminListReceivedSpan = 'listUsersSpan';
 
 // validate form
 function validateForm()
 {
-	formId = 'UserForm';
-	form = document.getElementById(formId);
+	form = document.getElementById(adminForm);
 	
 	var validationRules = new Array(new Array("username", "userNameError", usernameRequired),
 												 new Array("lastName", "lastNameError", lastNameRequired),
@@ -21,9 +22,9 @@ function validateForm()
 		validationRules[3] =  new Array("password", "passwordError", passwordRequired);
 	}
 
-	isValid = validateRequired(formId, validationRules);
+	isValid = validateRequired(adminForm, validationRules);
 
-	isValid = isValid && validateEmail(formId, new Array(new Array("email", "emailError", emailNotValid)
+	isValid = isValid && validateEmail(adminForm, new Array(new Array("email", "emailError", emailNotValid)
 													));
 	
 	if (form.password.value != form.confirmPassword.value)
@@ -42,14 +43,6 @@ function validateForm()
 	}
 
 	return isValid;
-}
-
-// bind UserForm to validation and ajax submit
-function bindUserForm()
-{
-	new dojo.io.FormBind({	formNode: dojo.byId('UserForm'),
-  								handler: userListReceivedWithMessage
-							});
 }
 
 // check if user exists
@@ -171,22 +164,17 @@ function showAddForm()
   	{
   		cancelUserCheck = false;
   		
-		dojo.byId('userFormSpan').innerHTML = xml;
-	
+  		responseReceived(type, xml, evt);
+  		
 		dojo.byId("filterForm").value = dojo.byId('filterInput').value;
 		dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
-		
-		// DOM changed, rebind
-		bindUserForm();
 	}
   }
 
-function init()
+function initUserAdmin()
 {
 	dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");
 	dojo.event.connect(dojo.byId('hideInactive'), "onclick", "filterKeyUp");
-	
-	bindUserForm();
 }
 
 function filterKeyUp(evt)
@@ -205,4 +193,4 @@ function filterKeyUp(evt)
 }
 
 
-dojo.addOnLoad(init);
+dojo.addOnLoad(initUserAdmin);

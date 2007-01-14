@@ -11,6 +11,7 @@
 	var loadingMsg = "<fmt:message key="general.loading" />";	
 	var rateNotValid = "<fmt:message key="admin.assignment.errorRateNotValid" />";	
 	var noDeleteMessage = "<fmt:message key="admin.assignment.noDelete" />";		
+
 </script>
 
 <script src="../../../js/dojo.js" type="text/javascript"></script>
@@ -22,8 +23,8 @@
 
 <script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
-<script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/assignmentAdmin.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>

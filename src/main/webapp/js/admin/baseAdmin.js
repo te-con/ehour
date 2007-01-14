@@ -6,10 +6,13 @@ dojo.require("dojo.lfx.*");
 // bindAdminForm
 function bindAdminForm()
 { 
-	new dojo.io.FormBind({
-   						formNode: dojo.byId(adminForm),
-   						handler: responseReceived
-						});
+	if (adminForm != "")
+	{
+		new dojo.io.FormBind({
+	   						formNode: dojo.byId(adminForm),
+	   						handler: responseReceived
+							});
+	}
 }
 
 // handler for bindAdminForm
@@ -61,10 +64,10 @@ function showAddForm()
 {
 	showLoadingData();
 	
-    dojo.io.bind({
-                   url: adminFormUrl,
-                   handler: responseReceived
-                });  
+	    dojo.io.bind({
+	                   url: adminFormUrl,
+	                   handler: responseReceived
+	                });  
                    
 	return false;    
 }

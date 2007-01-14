@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.rrm.ehour.web.form.UserIdForm;
 
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
 /**
@@ -53,6 +54,20 @@ public class UserForm extends UserIdForm
 	private	String	email;
 	private	String[]	roles;
 
+	/**
+	 * Validate
+	 * @return
+	 */
+	public ActionErrors validate()
+	{
+		ActionErrors	errors = new ActionErrors();
+		
+		//@todo
+		
+		return errors;
+		
+	}
+	
 	/**
 	 * 
 	 *

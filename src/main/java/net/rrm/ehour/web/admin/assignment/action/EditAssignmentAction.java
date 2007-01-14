@@ -53,7 +53,7 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 	 * 
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
-								HttpServletRequest request, HttpServletResponse response) throws ParseException
+								HttpServletRequest request, HttpServletResponse response) 
 	{
 		ActionForward fwd = mapping.findForward("success");
 		ProjectAssignmentForm paf = (ProjectAssignmentForm)form;

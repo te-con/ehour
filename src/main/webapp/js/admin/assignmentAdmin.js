@@ -1,6 +1,7 @@
 // Dojo dropdown widget
 var formBind;
 
+var adminForm = '';
 
 // validate form 
 function validateForm(formId)

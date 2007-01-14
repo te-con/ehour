@@ -124,7 +124,14 @@ public class ProjectAssignment extends DomainObject
 	 */
 	public DateRange getDateRange()
 	{
-		return new DateRange(dateStart, dateEnd);
+		if (dateStart != null && dateEnd != null)
+		{
+			return new DateRange(dateStart, dateEnd);
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public void setDateRange(DateRange dateRange)

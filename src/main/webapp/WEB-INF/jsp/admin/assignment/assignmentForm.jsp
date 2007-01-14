@@ -4,11 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <script type="text/javascript">
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.DropdownDatePicker");
-</script>
-
-<script type="text/javascript">
 
 function init()
 {
@@ -32,6 +27,8 @@ function init()
 										 
 }
 </script>
+
+<!-- spanTarget:form -->
 
 <table CLASS="contentTable" CELLSPACING=2>
 	<tr>
