@@ -23,11 +23,11 @@
         </property>
 
         <property name="dateStart" type="date">
-            <column name="DATE_START" length="10" not-null="true" />
+            <column name="DATE_START" length="10" />
         </property>
 
         <property name="dateEnd" type="date">
-            <column name="DATE_END" length="10" not-null="true" />
+            <column name="DATE_END" length="10"/>
         </property>
 
         <property name="description" type="string">

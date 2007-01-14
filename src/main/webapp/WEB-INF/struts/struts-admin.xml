@@ -205,7 +205,16 @@
 				path="/assignment/deleteAssignment" 
 				type="net.rrm.ehour.web.admin.assignment.action.DeleteAction">
 			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
-		</action>				
+		</action>
+
+
+		<!-- Report -->
+		<action path="/report/index" 
+				type="net.rrm.ehour.web.report.action.ReportCriteriaAction">
+		</action>
+		
+				
+						
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

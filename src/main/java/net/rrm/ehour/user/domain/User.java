@@ -64,6 +64,13 @@ public class User  extends DomainObject implements Comparable
 		this.password = password;
 	}
 	
+	public User(Integer userId, String firstName, String lastName)
+	{
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
 	/** full constructor */
 	public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment)
 	{
@@ -219,6 +226,16 @@ public class User  extends DomainObject implements Comparable
 	public Set<ProjectAssignment> getInactiveProjectAssignments()
 	{
 		return inactiveProjectAssignments;
+	}
+	
+	public void addProjectAssignment(ProjectAssignment projectAssignment)
+	{
+		if (projectAssignments == null)
+		{
+			projectAssignments = new HashSet<ProjectAssignment>();
+		}
+		
+		projectAssignments.add(projectAssignment);
 	}
 
 	/**

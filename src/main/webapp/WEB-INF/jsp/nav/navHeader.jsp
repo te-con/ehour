@@ -2,8 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
-<%@ page import="org.acegisecurity.ui.AbstractProcessingFilter" %>
-<%@ page import="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter" %>
 	<TABLE CLASS="headerTable" CELLSPACING=0>
 		<TR>
 			<TD STYLE="padding-left: 10px; padding-top: 10px" width="145"><img SRC="<c:url value="/img/ehour.gif" />" width="64" alt="eHour v0.1"><br></TD>
@@ -12,8 +10,11 @@
 				<a href="<c:url value="/eh/timesheet/overview.do" />"><fmt:message key="nav.timesheetOverview" /></a> |
 				<a href="<c:url value="/eh/printTimesheetSelection.do" />"><fmt:message key="nav.printTimesheet" /></a> |
 				<a HREF="<c:url value="/eh/projectOverview.do" />"><fmt:message key="nav.projectOverview" /></a>
-<authz:authorize ifAllGranted="ROLE_ADMIN">| 
+<authz:authorize ifAllGranted="ROLE_ADMIN"> | 
 				<a href="<c:url value="/eh/admin/index.do" />"><fmt:message key="nav.admin" /></a>
+</authz:authorize>				
+<authz:authorize ifAllGranted="ROLE_REPORT"> | 
+				<a href="<c:url value="/eh/report/index.do" />"><fmt:message key="nav.report" /></a>
 </authz:authorize>				
             </TD>
 

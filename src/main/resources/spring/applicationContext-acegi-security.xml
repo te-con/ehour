@@ -83,7 +83,8 @@
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
 				/eh/admin/**=ROLE_ADMIN
-				/eh/**=ROLE_ADMIN,ROLE_CONSULTANT
+				/eh/report/**=ROLE_REPORT
+				/eh/**=ROLE_REPORT,ROLE_ADMIN,ROLE_CONSULTANT
 			</value>
 		</property>
 	</bean>

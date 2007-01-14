@@ -52,4 +52,11 @@
 	<!-- Customer service -->
 	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl" />
 
+	<!-- Avai -->
+	<bean id="availReportCriteria"
+			class="net.rrm.ehour.report.dto.AvailReportCriteria"
+			scope="session">
+		<aop:scoped-proxy/>			
+	</bean>
+	
 </beans>

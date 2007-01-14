@@ -26,9 +26,18 @@ package net.rrm.ehour.report.service;
 import java.util.Calendar;
 import java.util.List;
 
+import net.rrm.ehour.customer.dao.CustomerDAO;
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.dao.ReportDAO;
+import net.rrm.ehour.report.dto.AvailReportCriteria;
 import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.dto.ReportCriteria;
+import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.dao.UserDepartmentDAO;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 /**
@@ -40,8 +49,12 @@ import net.rrm.ehour.util.DateUtil;
 
 public class ReportServiceImpl implements ReportService
 {
-	private	ReportDAO	reportDAO;
-
+	private	ReportDAO			reportDAO;
+	private	UserDAO				userDAO;
+	private	UserDepartmentDAO	userDepartmentDAO;
+	private	CustomerDAO			customerDAO;
+	private	ProjectDAO			projectDAO;
+	
 	/**
 	 * Get the booked hours per project assignment for a month
 	 * @param userId
@@ -73,6 +86,63 @@ public class ReportServiceImpl implements ReportService
 		return projectReports;
 	}	
 	
+
+	/**
+	 * Get available report criteria
+	 */
+	
+	public AvailReportCriteria getAvailableReportCriteria(ReportCriteria reportCriteria)
+	{
+		AvailReportCriteria availCriteria = new AvailReportCriteria();
+		List<User>			users;
+		List<Customer>		customers;
+		List<Project>		projects;
+		DateRange			reportRange;
+		
+		// determine users
+		if (reportCriteria.isOnlyActiveUsers())
+		{
+			users = userDAO.findAllActiveUsers();
+		}
+		else
+		{
+			users = userDAO.findAll();
+		}
+		
+		availCriteria.setUsers(users);
+		
+		// user departments
+		availCriteria.setUserDepartments(userDepartmentDAO.findAll());
+		
+		// customers
+		if (reportCriteria.isOnlyActiveCustomers())
+		{
+			customers = customerDAO.findAll(true);
+		}
+		else
+		{
+			customers = customerDAO.findAll();
+		}
+		
+		availCriteria.setCustomers(customers);
+		
+		// projects
+		if (reportCriteria.isOnlyActiveProjects())
+		{
+			projects = projectDAO.findAllActive();
+		}
+		else
+		{
+			projects = projectDAO.findAll();
+		}
+		
+		availCriteria.setProjects(projects);
+		
+//		availCriteria.s
+		
+		return availCriteria;
+	}	
+	
 	/**
 	 *  
 	 *
@@ -82,6 +152,37 @@ public class ReportServiceImpl implements ReportService
 		this.reportDAO = reportDAO;
 	}
 
+	/**
+	 * @param userDAO the userDAO to set
+	 */
+	public void setUserDAO(UserDAO userDAO)
+	{
+		this.userDAO = userDAO;
+	}
+
+	/**
+	 * @param customerDAO the customerDAO to set
+	 */
+	public void setCustomerDAO(CustomerDAO customerDAO)
+	{
+		this.customerDAO = customerDAO;
+	}
+
+	/**
+	 * @param projectDAO the projectDAO to set
+	 */
+	public void setProjectDAO(ProjectDAO projectDAO)
+	{
+		this.projectDAO = projectDAO;
+	}
+
+	/**
+	 * @param userDepartmentDAO the userDepartmentDAO to set
+	 */
+	public void setUserDepartmentDAO(UserDepartmentDAO userDepartmentDAO)
+	{
+		this.userDepartmentDAO = userDepartmentDAO;
+	}
 
 
 }

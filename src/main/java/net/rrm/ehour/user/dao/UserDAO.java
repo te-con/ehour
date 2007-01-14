@@ -48,5 +48,5 @@ public interface UserDAO extends GenericDAO<User, Integer>
 	 * Find all users
 	 * @return
 	 */
-	public List<User> findUsers();
+	public List<User> findAllActiveUsers();
 }

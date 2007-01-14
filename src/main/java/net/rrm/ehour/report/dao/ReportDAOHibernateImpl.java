@@ -65,4 +65,15 @@ public class ReportDAOHibernateImpl extends HibernateDaoSupport implements Repor
 		return results;		
 	}
 
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public DateRange getMinMaxDateTimesheetEntry()
+	{
+		List<DateRange>	results;
+		results = getHibernateTemplate().findByNamedQuery("Report.getMinMaxTimesheetEntryDate");
+		return results.get(0);
+	}
+
 }

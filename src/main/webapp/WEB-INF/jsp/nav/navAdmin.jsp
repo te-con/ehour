@@ -4,7 +4,7 @@
 
 <table CLASS="admin_nav_table" CELLSPACING=0>
 	<tr>
-		<td colspan=2><fmt:message key="admin.nav.userAdmin" />&nbsp;&nbsp;</th>
+		<td colspan=2><fmt:message key="admin.nav.userAdmin" />&nbsp;&nbsp;</td>
 	</tr>
 
 	<tr>

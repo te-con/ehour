@@ -155,6 +155,7 @@ function showAddForm()
   function formChanged(type, xml, evt)
   {
   	hideLoadingData();
+  	
   	if (type == 'error')
   	{
   		alert(ajaxError);

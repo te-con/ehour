@@ -11,4 +11,14 @@
                 GROUP BY entry.entryId.projectAssignment.assignmentId
 				ORDER BY entry.entryId.projectAssignment.project.projectCode
         ]]></query>
+        
+    <query name="Report.getMinMaxTimesheetEntryDate">
+        SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
+		FROM TimesheetEntry entry
+	</query>     
+	
+	<query name="Report.getAvailReportCriteria">
+	   	SELECT new net.rrm.ehour.user.domain.User(user.userId, user.firstName, user.lastName)
+	   	FROM User user
+	</query>
 </hibernate-mapping>

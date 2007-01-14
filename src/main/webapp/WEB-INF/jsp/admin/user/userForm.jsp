@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 
-<!-- spanTarget:form -->
+<!-- spanTarget: form -->
 
 <form id="UserForm" method="post" action="editUser.do">
 

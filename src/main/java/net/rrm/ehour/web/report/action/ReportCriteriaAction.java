@@ -1,5 +1,5 @@
 /**
- * Created on Nov 4, 2006
+ * Created on Jan 14, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,32 +21,43 @@
  *
  */
 
-package net.rrm.ehour.report.dao;
+package net.rrm.ehour.web.report.action;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.dto.AvailReportCriteria;
+
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 
 /**
- * Reporting data operations 
- * @author Thies
- *
+ * TODO
  */
 
-public interface ReportDAO
+public class ReportCriteriaAction extends Action
 {
+	private AvailReportCriteria availReportCriteria;
+
 	/**
-	 * Get cumulated hours per project assignment for a user between a date range
-	 * @param userId
-	 * @param dateRange
-	 * @return
+	 * 
 	 */
-	public List<ProjectReport> getCumulatedHoursPerAssignmentForUser(Integer userId, DateRange dateRange);
-	
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception
+	{
+		
+		return mapping.findForward("success");
+	}
+
 	/**
-	 * Get the min/max timesheet date
-	 * @return
+	 * @param availReportCriteria
+	 *            the availReportCriteria to set
 	 */
-	public DateRange getMinMaxDateTimesheetEntry();
+	public void setAvailReportCriteria(AvailReportCriteria availReportCriteria)
+	{
+		this.availReportCriteria = availReportCriteria;
+	}
 }

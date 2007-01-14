@@ -22,7 +22,7 @@
 	    ORDER BY lastName, firstName	    
 	</query>	
 
-	<query name="User.findAllUsers"> 
+	<query name="User.findAllActiveUsers"> 
 		SELECT user
 		FROM User as user
 		WHERE active = true

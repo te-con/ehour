@@ -44,7 +44,7 @@ public class UserDAOTest extends BaseDAOTest
 	{
 		List<User>	results;
 		
-		results = dao.findUsers();
+		results = dao.findAllActiveUsers();
 		assertEquals(3, results.size());
 	}
 	

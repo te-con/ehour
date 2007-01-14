@@ -64,6 +64,10 @@ public class EntranceAction extends Action
 			logger.debug("User on entrance with admin only rights");
 			fwd = mapping.findForward("adminOnly");
 		}
+		else if (AuthUtil.hasRole("ROLE_REPORT", authUser.getAuthorities()))
+		{
+			fwd = mapping.findForward("report");
+		}
 		else
 		{
 			fwd = mapping.findForward("billable");

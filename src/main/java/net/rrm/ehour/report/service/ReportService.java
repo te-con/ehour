@@ -27,7 +27,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.dto.AvailReportCriteria;
 import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.dto.ReportCriteria;
 
 
 /**
@@ -55,5 +57,13 @@ public interface ReportService
 	 * @return List with projectReport objects
 	 */
 
-	public List<ProjectReport> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);	
+	public List<ProjectReport> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
+	
+	
+	/**
+	 * Get available report criteria (users, departments, customers, etc)
+	 * @param bookedOnly to list only criteria which have entries booked 
+	 * @return
+	 */
+	public AvailReportCriteria getAvailableReportCriteria(ReportCriteria reportCriteria);
 }

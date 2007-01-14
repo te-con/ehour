@@ -83,8 +83,8 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> findUsers()
+	public List<User> findAllActiveUsers()
 	{
-		return getHibernateTemplate().findByNamedQuery("User.findAllUsers");
+		return getHibernateTemplate().findByNamedQuery("User.findAllActiveUsers");
 	}
 }

@@ -23,7 +23,9 @@
 
 package net.rrm.ehour.report.dao;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
@@ -63,5 +65,17 @@ public class ReportDAOTest extends BaseDAOTest
 		assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
 		
 		assertEquals(2, results.size());
+	}
+	
+	public void testGetMinMaxDateTimesheetEntry()
+	{
+		DateRange	range = dao.getMinMaxDateTimesheetEntry();
+		Calendar cal = new GregorianCalendar(2006, 10 - 1, 31);
+		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
+		assertEquals(cal.getTime(), range.getDateEnd());
+
 	}
 }

@@ -24,6 +24,7 @@
 package net.rrm.ehour.project.service;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -160,7 +161,7 @@ public class ProjectServiceImpl implements ProjectService
 	/**
 	 * Assign user to default projects
 	 */
-	public void assignUserToDefaultProjects(User user)
+	public User assignUserToDefaultProjects(User user)
 	{
 		List<Project>		defaultProjects;
 		ProjectAssignment	assignment;
@@ -174,29 +175,35 @@ public class ProjectServiceImpl implements ProjectService
 			assignment.setProject(project);
 			assignment.setUser(user);
 			
-			if (!isAssignmentDuplicate(assignment))
+			if (!isAssignmentDuplicate(assignment, user.getProjectAssignments()))
 			{
 				logger.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
-				projectAssignmentDAO.persist(assignment);
+				user.addProjectAssignment(assignment);
+//				projectAssignmentDAO.persist(assignment);
 			}
 		}
+		
+		return user;
 	}
 	
 	
 	/**
 	 * Check if the project is already assigned and the date overlaps
+	 * 
 	 * @param projectAssignment
+	 * @param user
 	 * @return
 	 */
-	private boolean isAssignmentDuplicate(ProjectAssignment projectAssignment)
+	private boolean isAssignmentDuplicate(ProjectAssignment projectAssignment, Collection<ProjectAssignment> assignments)
 	{
-		boolean					alreadyAssigned = false;
-		List<ProjectAssignment>	assignments;
-		DateRange				range = projectAssignment.getDateRange();
+		boolean		alreadyAssigned = false;
+		DateRange	range = projectAssignment.getDateRange();
 		
-		assignments = projectAssignmentDAO.findProjectAssignmentForUser(projectAssignment.getProject().getProjectId(),
-															 	projectAssignment.getUser().getUserId());
-
+		if (assignments == null)
+		{
+			return false;
+		}
+		
 		for (ProjectAssignment assignment : assignments)
 		{
 			// if this is an update and the assignment is the same, skip it
@@ -220,6 +227,21 @@ public class ProjectServiceImpl implements ProjectService
 		}
 			
 		return alreadyAssigned;
+	}
+	
+	/**
+	 * Check if the project is already assigned and the date overlaps
+	 * @param projectAssignment
+	 * @return
+	 */
+	private boolean isAssignmentDuplicate(ProjectAssignment projectAssignment)
+	{
+		List<ProjectAssignment> assignments;
+		
+		assignments = projectAssignmentDAO.findProjectAssignmentForUser(projectAssignment.getProject().getProjectId(),
+															 	projectAssignment.getUser().getUserId());
+
+		return isAssignmentDuplicate(projectAssignment, assignments);
 	}
 
 	/**

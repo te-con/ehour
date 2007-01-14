@@ -28,6 +28,7 @@
 		<action path="/eh/index"
 				type="net.rrm.ehour.web.action.EntranceAction" >
 			<forward name="adminOnly" path="/eh/admin/index.do" redirect="true" />
+			<forward name="report" path="/eh/report/index.do" redirect="true" />			
 			<forward name="billable" path="/eh/timesheet/overview.do" redirect="true" />
 		</action>
 		
@@ -85,7 +86,8 @@
 		 adding them to the other config files won't work.. -->
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"	value="/WEB-INF/tiles/tiles-defs-default.xml,
-															/WEB-INF/tiles/tiles-defs-admin.xml" />
+															/WEB-INF/tiles/tiles-defs-admin.xml,
+															/WEB-INF/tiles/tiles-defs-report.xml" />
 		<set-property property="definitions-parser-validate" value="true" />
 	</plug-in>
 

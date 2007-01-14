@@ -15,6 +15,7 @@
 			classpath:/applicationContext-service.xml,
 			classpath:/applicationContext-acegi-security.xml,
 			classpath:/applicationContext-web-admin.xml,
+			classpath:/applicationContext-web-report.xml,			
 			classpath:/applicationContext-web-default.xml			
 		</param-value>
 	</context-param>
@@ -78,6 +79,10 @@
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
+	
+ 	<listener>
+    	<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  	</listener>	
 
 	<!-- STRUTS SERVLET DEF -->
 	<servlet>
@@ -96,6 +101,10 @@
 			<param-value>/WEB-INF/struts/struts-admin.xml</param-value>
 		</init-param>
 		<init-param>
+			<param-name>config/eh/report</param-name>
+			<param-value>/WEB-INF/struts/struts-report.xml</param-value>
+		</init-param>
+		<init-param>
 			<param-name>debug</param-name>
 			<param-value>2</param-value>
 		</init-param>
@@ -109,11 +118,7 @@
 	</servlet-mapping>
 
 
-	<listener>
-		<listener-class>
-			org.springframework.web.context.request.RequestContextListener
-		</listener-class>
-	</listener>
+
 
 	<!-- TAGLIBS -->
 	<taglib>

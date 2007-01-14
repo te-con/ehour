@@ -73,7 +73,7 @@ public interface ProjectService
 	 * @param user
 	 * @return
 	 */
-	public void assignUserToDefaultProjects(User user);
+	public User assignUserToDefaultProjects(User user);
 	
 	/**
 	 * Get active projects for user in date range 
