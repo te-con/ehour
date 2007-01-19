@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+
+    <!-- Report base layout -->
+    <definition name=".ehour.report.baseLayout" extends=".ehour.baseLayout">
+        <put name="pageTitle" value="eHour - reporting" />
+        <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
+    </definition>
+
+
+    <!-- Report index -->
+    <definition name=".ehour.report.index" extends=".ehour.report.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/report/index.jsp" />
+    </definition>
+
+</tiles-definitions>

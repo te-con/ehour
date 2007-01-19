@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+	<!-- Action Mapping Definitions -->
+	<action-mappings>
+		<!-- Report -->
+		<action path="/index" 
+				type="net.rrm.ehour.web.report.action.ReportCriteriaAction">
+			<forward name="success" path=".ehour.report.index" />	
+		</action>
+	</action-mappings>
+	
+	<!-- spring tiles controller -->
+	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
+	
+	<!-- i18n message resources (only used for html:error) -->
+	<message-resources parameter="MessageResources" />
+
+	
+</struts-config>
+
