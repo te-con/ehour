@@ -1,5 +1,5 @@
 /**
- * Created on 18-dec-2006
+ * Created on Jan 27, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -23,28 +23,34 @@
 
 package net.rrm.ehour.config;
 
-import java.util.Properties;
+import javax.sql.DataSource;
+
+import org.apache.commons.configuration.DatabaseConfiguration;
+import org.apache.log4j.Logger;
 
 /**
  * TODO 
  **/
 
-public class EhourConfigProps implements EhourConfig
+public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfig
 {
-	private	Properties	props;
-
-	public void setPropertiesConfig(Properties props)
+	private	Logger	logger = Logger.getLogger(this.getClass());
+	
+	public EhourConfigJdbc(DataSource datasource, String table, String keyColumn, String valueColumn)
 	{
-		this.props = props;
+		super(datasource, table, keyColumn, valueColumn);
+	
+		logger.info("Configuration loaded from database");
 	}
 	
 	public int getCompleteDayHours()
 	{
-		return Integer.parseInt(props.getProperty("completeDayHours"));
+		return this.getInt("completeDayHours");
 	}
 
 	public boolean showTurnover()
 	{
-		return new Boolean(props.getProperty("showTurnOver"));
+		return this.getBoolean("showTurnOver");
 	}
+
 }

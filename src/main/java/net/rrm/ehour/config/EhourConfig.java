@@ -31,4 +31,6 @@ package net.rrm.ehour.config;
 public interface EhourConfig
 {
 	public int getCompleteDayHours();
+	
+	public boolean showTurnover();
 }

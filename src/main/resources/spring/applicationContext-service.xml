@@ -34,11 +34,23 @@
 		<property name="timesheetService" ref="timesheetService" />
 	</bean>
 
+<!--
 	<util:properties id="ehourPropertiesConfig" location="classpath:/ehourConfig.properties" />
+
 
 	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigProps">
 		<property name="propertiesConfig" ref="ehourPropertiesConfig" />
 	</bean>
+-->
+	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigJdbc">
+		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
+		<constructor-arg value="configuration" />
+		<constructor-arg value="config_key" />		
+		<constructor-arg value="config_value" />		
+	</bean>
+
+
+
 
 	<!-- Report service -->
 	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl" />
