@@ -8,6 +8,7 @@
 		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.NavCalendarForm" />
 		<form-bean name="TimesheetViewForm" type="net.rrm.ehour.web.timesheet.form.TimesheetViewForm" />
 		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
+		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
 	</form-beans>
 
 	<!-- Global exceptions -->
@@ -72,6 +73,14 @@
 			type="net.rrm.ehour.web.action.LogOffAction" >
 			<forward name="success" path="/" />
 		</action>
+		
+
+		<!-- Logoff action -->
+		<action name="ReportCriteriaForm"
+				path="/eh/userReport/index"
+				type="net.rrm.ehour.web.report.action.UserReportCriteriaAction" >
+			<forward name="success" path=".ehour.userreport.overview" />
+		</action>		
 	</action-mappings>
 
 

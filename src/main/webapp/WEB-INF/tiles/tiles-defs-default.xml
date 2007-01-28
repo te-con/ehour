@@ -23,6 +23,12 @@
     <!-- Timesheet Timesheet form page -->
     <definition name=".ehour.timesheet.timesheet" path="/WEB-INF/jsp/timesheet/timesheet.jsp" />
 
+    <!-- User report Overview page -->
+    <definition name=".ehour.userreport.overview" extends=".ehour.baseLayout">
+        <put name="calendar_small" value="/WEB-INF/jsp/nav/nothing.html" />
+        <put name="content" value="/WEB-INF/jsp/userReport/index.jsp" />
+    </definition>
+
 
 
     <!-- NavCalendar -->
