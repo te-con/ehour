@@ -29,6 +29,7 @@ import java.util.GregorianCalendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.web.timesheet.form.TimesheetViewForm;
 import net.rrm.ehour.web.util.AuthUtil;
@@ -43,6 +44,11 @@ import org.apache.struts.action.ActionMapping;
 
 public class TimesheetOverviewAction extends BaseTimesheetAction
 {
+	private EhourConfig	config;
+	
+	/**
+	 * 
+	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) 
 	{
 		TimesheetViewForm	timesheetViewForm = (TimesheetViewForm)form;
@@ -65,9 +71,28 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 
 		request.setAttribute("timesheetOverview", timesheetOverview);
 		request.setAttribute("timesheetOverviewMonth", requestedMonth);
+		request.setAttribute("config", config);
 		
 		response.setHeader("Cache-Control", "no-cache");
 		
 		return mapping.findForward("success");
 	}
+
+	/**
+	 * @return the config
+	 */
+	public EhourConfig getConfig()
+	{
+		return config;
+	}
+
+	/**
+	 * @param config the config to set
+	 */
+	public void setConfig(EhourConfig config)
+	{
+		this.config = config;
+	}
+	
+	
 }

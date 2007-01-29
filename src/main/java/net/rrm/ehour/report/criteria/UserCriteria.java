@@ -1,5 +1,5 @@
 /**
- * Created on Jan 14, 2007
+ * Created on 24-jan-2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,62 +21,56 @@
  *
  */
 
-package net.rrm.ehour.report.dto;
+package net.rrm.ehour.report.criteria;
 
-import java.util.List;
-
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
 
 /**
- * Report Criteria
- * Contains input as well as output
+ * TODO 
  **/
 
-public class AvailReportCriteria
+public class UserCriteria
 {
-	private List<User>			users;
-	private List<UserDepartment>	userDepartments;
-	private List<Customer>		customers;
-	private List<Project>		projects;
-	private DateRange			reportRange;
+	public final static int	ALL_USERS = 1;
+	public final static int	ACTIVE_USERS = 2;
+	public final static int	SINGLE_USER = 3;
 	
-	public AvailReportCriteria()
-	{
-		System.out.println("instanced");
-	}
+	private DateRange	reportRange;
+	private	int			userFilter;
+	private	boolean		onlyActiveProjects;
+	private	boolean		onlyActiveCustomers;
+	private	User		reportForUser;
 	
 	/**
-	 * @return the customers
+	 * @return the onlyActiveCustomers
 	 */
-	public List<Customer> getCustomers()
+	public boolean isOnlyActiveCustomers()
 	{
-		return customers;
+		return onlyActiveCustomers;
 	}
 	/**
-	 * @param customers the customers to set
+	 * @param onlyActiveCustomers the onlyActiveCustomers to set
 	 */
-	public void setCustomers(List<Customer> customers)
+	public void setOnlyActiveCustomers(boolean onlyActiveCustomers)
 	{
-		this.customers = customers;
+		this.onlyActiveCustomers = onlyActiveCustomers;
 	}
 	/**
-	 * @return the projects
+	 * @return the onlyActiveProjects
 	 */
-	public List<Project> getProjects()
+	public boolean isOnlyActiveProjects()
 	{
-		return projects;
+		return onlyActiveProjects;
 	}
 	/**
-	 * @param projects the projects to set
+	 * @param onlyActiveProjects the onlyActiveProjects to set
 	 */
-	public void setProjects(List<Project> projects)
+	public void setOnlyActiveProjects(boolean onlyActiveProjects)
 	{
-		this.projects = projects;
+		this.onlyActiveProjects = onlyActiveProjects;
 	}
+
 	/**
 	 * @return the reportRange
 	 */
@@ -91,32 +85,35 @@ public class AvailReportCriteria
 	{
 		this.reportRange = reportRange;
 	}
+
 	/**
-	 * @return the userDepartments
+	 * @return the userFilter
 	 */
-	public List<UserDepartment> getUserDepartments()
+	public int getUserFilter()
 	{
-		return userDepartments;
+		return userFilter;
 	}
 	/**
-	 * @param userDepartments the userDepartments to set
+	 * @param userFilter the userFilter to set
 	 */
-	public void setUserDepartments(List<UserDepartment> userDepartments)
+	public void setUserFilter(int userFilter)
 	{
-		this.userDepartments = userDepartments;
+		this.userFilter = userFilter;
 	}
 	/**
-	 * @return the users
+	 * @return the reportForUser
 	 */
-	public List<User> getUsers()
+	public User getReportForUser()
 	{
-		return users;
+		return reportForUser;
 	}
 	/**
-	 * @param users the users to set
+	 * @param reportForUser the reportForUser to set
 	 */
-	public void setUsers(List<User> users)
+	public void setReportForUser(User reportForUser)
 	{
-		this.users = users;
+		userFilter = UserCriteria.SINGLE_USER;
+		this.reportForUser = reportForUser;
 	}
+
 }

@@ -44,13 +44,10 @@
 -->
 	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigJdbc">
 		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
-		<constructor-arg value="configuration" />
+		<constructor-arg value="CONFIGURATION" />
 		<constructor-arg value="config_key" />		
 		<constructor-arg value="config_value" />		
 	</bean>
-
-
-
 
 	<!-- Report service -->
 	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl" />
@@ -65,8 +62,8 @@
 	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl" />
 
 	<!-- Avai -->
-	<bean id="availReportCriteria"
-			class="net.rrm.ehour.report.dto.AvailReportCriteria"
+	<bean id="reportCriteria"
+			class="net.rrm.ehour.report.criteria.ReportCriteria"
 			scope="session">
 		<aop:scoped-proxy/>			
 	</bean>

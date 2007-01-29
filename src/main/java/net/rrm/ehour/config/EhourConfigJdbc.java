@@ -48,7 +48,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getInt("completeDayHours");
 	}
 
-	public boolean showTurnover()
+	public boolean isShowTurnover()
 	{
 		return this.getBoolean("showTurnOver");
 	}

@@ -61,14 +61,16 @@ public class DateRange
 	public void setDateEnd(Date dateEnd)
 	{
 		Calendar	cal;
-		
-		cal = new GregorianCalendar();
-		cal.setTime(dateEnd);
-		cal.set(Calendar.HOUR_OF_DAY, 23);
-		cal.set(Calendar.MINUTE, 59);
-		cal.set(Calendar.SECOND, 59);
-		
-		this.dateEnd = cal.getTime();
+		if (dateEnd != null)
+		{
+			cal = new GregorianCalendar();
+			cal.setTime(dateEnd);
+			cal.set(Calendar.HOUR_OF_DAY, 23);
+			cal.set(Calendar.MINUTE, 59);
+			cal.set(Calendar.SECOND, 59);
+			
+			this.dateEnd = cal.getTime();
+		}
 	}
 
 	public Date getDateStart()
@@ -83,14 +85,17 @@ public class DateRange
 	public void setDateStart(Date dateStart)
 	{
 		Calendar	cal;
+		if (dateStart != null)
+		{
+			cal = new GregorianCalendar();
+			cal.setTime(dateStart);
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+				
+			this.dateStart = cal.getTime();
+		}
 		
-		cal = new GregorianCalendar();
-		cal.setTime(dateStart);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-			
-		this.dateStart = cal.getTime();
 	}
 
 	

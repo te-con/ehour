@@ -27,9 +27,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.dto.AvailReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.dto.ProjectReport;
-import net.rrm.ehour.report.dto.ReportCriteria;
 
 
 /**
@@ -61,9 +60,9 @@ public interface ReportService
 	
 	
 	/**
-	 * Get available report criteria (users, departments, customers, etc)
+	 * Sync the user 
 	 * @param bookedOnly to list only criteria which have entries booked 
 	 * @return
 	 */
-	public AvailReportCriteria getAvailableReportCriteria(ReportCriteria reportCriteria);
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria);
 }

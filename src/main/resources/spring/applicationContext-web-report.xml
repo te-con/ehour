@@ -6,7 +6,7 @@
 
 	<!--  struts actions -->
 	<bean name="/eh/report/index" class="net.rrm.ehour.web.report.action.ReportCriteriaAction">
-		<property name="availReportCriteria" ref="availReportCriteria" />
+		<property name="reportCriteria" ref="reportCriteria" />
 	</bean>
 	
 </beans>

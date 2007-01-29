@@ -23,10 +23,13 @@
 
 package net.rrm.ehour.web.report.action;
 
+import java.util.Collection;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.report.dto.AvailReportCriteria;
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -39,7 +42,7 @@ import org.apache.struts.action.ActionMapping;
 
 public class ReportCriteriaAction extends Action
 {
-	private AvailReportCriteria availReportCriteria;
+	private ReportCriteria reportCriteria;
 
 	/**
 	 * 
@@ -48,6 +51,12 @@ public class ReportCriteriaAction extends Action
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception
 	{
+		Collection<Customer> c = reportCriteria.getAvailableCriteria().getCustomers();
+		
+		for (Customer customer : c)
+		{
+			System.out.println(customer.getName());
+		}
 		
 		return mapping.findForward("success");
 	}
@@ -56,8 +65,8 @@ public class ReportCriteriaAction extends Action
 	 * @param availReportCriteria
 	 *            the availReportCriteria to set
 	 */
-	public void setAvailReportCriteria(AvailReportCriteria availReportCriteria)
+	public void setReportCriteria(ReportCriteria reportCriteria)
 	{
-		this.availReportCriteria = availReportCriteria;
+		this.reportCriteria = reportCriteria;
 	}
 }

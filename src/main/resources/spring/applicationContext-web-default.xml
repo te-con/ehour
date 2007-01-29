@@ -7,9 +7,13 @@
 	<!--  struts actions -->
 	<bean name="/eh/index" class="net.rrm.ehour.web.action.EntranceAction" />	
 	
-	<bean name="/eh/timesheet/overview" class="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" />	
+	<bean name="/eh/timesheet/overview" class="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction">
+		<property name="config" ref="ehourConfig" />
+	</bean>	
 	
-	<bean name="/eh/timesheet/overviewSnippet" class="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" />		
+	<bean name="/eh/timesheet/overviewSnippet" class="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction">
+		<property name="config" ref="ehourConfig" />
+	</bean>
 	
 	<bean name="/eh/timesheet/getTimesheetForm" class="net.rrm.ehour.web.timesheet.action.GetTimesheetFormAction" />
 

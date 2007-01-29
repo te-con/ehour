@@ -32,5 +32,5 @@ public interface EhourConfig
 {
 	public int getCompleteDayHours();
 	
-	public boolean showTurnover();
+	public boolean isShowTurnover();
 }

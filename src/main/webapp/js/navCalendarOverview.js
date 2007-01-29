@@ -66,7 +66,7 @@ function navCalChanged(type, xml, evt)
  	}
  	else
  	{
- 		ajaxEventReceived(xml, true, {navCalendar: "navCalendarSpan"});
+ 		ajaxEventReceived(xml, true, {navCalendar: "NavCalTarget"});
 	}
 }
 

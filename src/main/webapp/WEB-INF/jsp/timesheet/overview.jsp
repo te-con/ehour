@@ -6,53 +6,92 @@
 
 <!-- spanTarget: overview -->
 <!-- project overview -->
-	<table class="contentTable">
+<div class="MonthAggregate">
+	<h1><fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="MMMMM yyyy" />: <fmt:message key="user.overview.aggregatedProject" /></h1>
+</div>
+
+<div class="MonthAggregateFrame">
+	<h3>&nbsp;</h3>
 	
+	<div class="MonthAggregateBody">
+		<table cellpadding="0" cellspacing="10">
 		<tr>
-			<td colspan="3">
-				<h1><fmt:message key="user.overview.projectOverviewFor" /> <fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="MMMMM yyyy" /></h1>
-			</td>
+			<th class="firstCell"><fmt:message key="user.overview.project" /></th>
+<c:if test="${config.showTurnover}">			
+			<th><fmt:message key="user.overview.rate" /></th>
+</c:if>
+			<th><fmt:message key="user.overview.bookedHours" /></th>
+<c:if test="${config.showTurnover}">			
+			<th><fmt:message key="user.overview.turnover" /></th>
+</c:if>
 		</tr>
-		
-		<tr>
-			<td><fmt:message key="user.overview.project" /></td>
-			<td><fmt:message key="user.overview.bookedHours" /></td>
-			<td><fmt:message key="user.overview.turnover" /></td>
-		</tr>
-		
-				<tr>
-					<td colspan="3"><img src="<c:url  value="/img/eh_pix.gif" />" width="100%" height="1" alt="pixel"><br></td>
-				</tr>	
 		
 		<c:forEach items="${timesheetOverview.projectHours}" var="projectReport">
 		
 		<tr>
 			<td>${projectReport.projectAssignment.project.name}</td>
+<c:if test="${config.showTurnover}">
+			<td><fmt:formatNumber type="currency" value="${projectReport.projectAssignment.hourlyRate}" /></td>
+</c:if>			
 			<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /> </td>
+<c:if test="${config.showTurnover}">
 			<td><fmt:formatNumber type="currency" value="${projectReport.turnOver}" /></td>
+</c:if>
 		</tr>
+		
 		</c:forEach>
 	</table>
+	</div>
+	
+	<div class="MonthAggregateFrameFooter">
+		<p>
+		</p>
+	</div>	
+</div>
 
-	<br><br><br>
+<br><br>
+
+<div class="MonthAggregate">	
+	<h1><fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="MMMMM yyyy" />: <fmt:message key="user.overview.monthOverview" /></h1>
+</div>
+
+<div class="MonthOverviewFrame">
+	<h3>&nbsp;</h3>
 	
-	<table CLASS="overview_table" name="overview_daydata" CELLSPACING=0>
-	
-	    <tr>
-	        <td colspan="7">
-	            <h1><fmt:message key="user.overview.monthOverview" /> <fmt:formatDate value="${calendar.date}" pattern="MMMMM yyyy" /></h1>
-	        </td>
-	        
-	        <td align=right>
-				<a href="" onClick="this.blur()" target="_blank">
-					<img src="<c:url value="/img/print_off.gif" />" alt="print maandstaat" border=0
-						onMouseover="this.src='<c:url value="/img/print_on.gif" />'"
-						onMouseout="this.src='<c:url value="/img/print_off.gif" />'">
-				</a>
-	        </td>
-	        
-	    </tr>
-	
+	<div class="MOBlueFrame">
+		<div class="MOBLueLeftTop">
+			<div class="MOBLueRightTop">
+				&nbsp;
+			</div>
+		</div>	
+
+		<table class="month" cellpadding="0" cellspacing="0">
+			<tr class="weekColumnRow">
+				<td class="weekNumber">&nbsp;</td>
+				<td>S</td>
+				<td>M</td>
+				<td>T</td>
+				<td>W</td>
+				<td>T</td>
+				<td>F</td>
+				<td class="lastChild">S</td>
+			</tr>	
+			
 		<ehour:overviewCalendar calendar="${timesheetOverviewMonth}"
 								timesheetEntries="${timesheetOverview.timesheetEntries}" />
 	</table>
+	
+		<div class="MOBLueLeftBottom">
+			<div class="MOBLueRightBottom">
+				&nbsp;
+			</div>
+		</div>			
+	</div>
+
+	<br>
+	
+	<div class="MonthOverviewFrameFooter">
+		<p>
+		</p>
+	</div>				
+</div>	

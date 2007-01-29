@@ -43,7 +43,7 @@ public class EhourConfigProps implements EhourConfig
 		return Integer.parseInt(props.getProperty("completeDayHours"));
 	}
 
-	public boolean showTurnover()
+	public boolean isShowTurnover()
 	{
 		return new Boolean(props.getProperty("showTurnOver"));
 	}

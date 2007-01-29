@@ -46,7 +46,8 @@ public class OverviewCalendarTag extends CalendarTag
 {
 	private static final long serialVersionUID = 3917279643583195331L;
 	// HTML constants
-	private String HTML_NEW_ROW = "<TR>";
+	private String HTML_NEW_ROW_DATES = "<tr class='dateRow'>";
+	private String HTML_NEW_ROW_HOURS = "<tr class='hourRow'>";
 
 	private	Map<Integer, List<TimesheetEntry>>	timesheetEntries;
 	private Logger	logger = Logger.getLogger(OverviewCalendarTag.class);
@@ -102,21 +103,22 @@ public class OverviewCalendarTag extends CalendarTag
 	    int currentColumn = calendar.get(Calendar.DAY_OF_WEEK) - 1;
 	    int row = 0;
 
-	    logger.debug("Creating cal");
+	    logger.debug("Creating month overview calendar for " + month + "/" + year);
 	    calendar.add(Calendar.DATE, -1 * currentColumn);
 	    
-	    while ((calendar.get(Calendar.YEAR) == year) && (calendar.get(Calendar.MONTH) <= month) ||
-	            calendar.get(Calendar.YEAR) < year)
+	    while ((calendar.get(Calendar.YEAR) == year) &&
+	    		(calendar.get(Calendar.MONTH) <= month) || calendar.get(Calendar.YEAR) < year)
 	    {
 	    	// row with day numbers
-	    	sb.append(HTML_NEW_ROW);
-	    	addWeekCell(sb, calendar);
-	    	addDayNumberRow(sb, calendar, month, row);
+	    	sb.append(HTML_NEW_ROW_DATES);
+	    	addWeekCell(sb, null);
+	    	addDayNumberRow(sb, calendar, month, year);
 	    	sb.append(HTML_ROW_CLOSE);
 	    	
 	    	// row with values
-	    	sb.append(HTML_NEW_ROW);
-	    	addDayValueRow(sb, calendar, month, monthEntries);
+	    	sb.append(HTML_NEW_ROW_HOURS);
+	    	addWeekCell(sb, calendar);
+	    	addDayValueRow(sb, calendar, month, year, monthEntries);
 	    	sb.append(HTML_ROW_CLOSE);
 	    	row++;
 	    }
@@ -134,6 +136,7 @@ public class OverviewCalendarTag extends CalendarTag
 	private void addDayValueRow(StringBuffer sb,
 								Calendar calendar,
 								int thisMonth,
+								int thisYear,
 								Map<Integer, List<TimesheetEntry>> monthEntries)
 	{
 		int 					currentColumn;
@@ -142,56 +145,60 @@ public class OverviewCalendarTag extends CalendarTag
 		DecimalFormat			df = new DecimalFormat();
 		df.setMaximumFractionDigits(2);
 		
+		sb.append("<!-- hours -->");
+		
 		for (currentColumn = 0;
 			 currentColumn < 7;
 			 currentColumn++,
 			 	calendar.add(Calendar.DATE, 1))
 		{
-	        if (currentColumn == 0)
-	        {
-	        	sb.append("<td style='border-left-width: 1px' class='overview_data'>");
-	        }
-	        else
-	        {
-	        	sb.append("<td class='overview_data' valign='top'>");
-	        }
-
 	        if (calendar.get(Calendar.MONTH) == thisMonth)
 	        {
+				switch (currentColumn)
+				{
+					case 0:
+						sb.append("<td class='sunday'>");
+						break;
+					case 6:
+						sb.append("<td class='saturday'>");
+						break;
+					default:
+						sb.append(HTML_CELL_OPEN);
+					break;
+				}
+
 	        	timesheetEntries = monthEntries.get(calendar.get(Calendar.DAY_OF_MONTH));
 
 	            if (timesheetEntries != null
 	            		&& timesheetEntries.size() > 0)
 	            {
-	            	sb.append("<table class='overview_daydata' width='100%' cellpadding='0' cellspacing='0'>");
+	            	sb.append("<div class='bookedHours'>");
 	            	
 	            	for (TimesheetEntry entry : timesheetEntries)
 					{
-	            		sb.append("<tr id='"
-	            					+ entry.getEntryId().getProjectAssignment().getProject().getProjectCode()
-	            					+ "'>");
+	            		// @todo cut-off at fixed length with <br>'s to prevent layout mayhem
+//	            		sb.append("<tr id='"
+//	            					+ entry.getEntryId().getProjectAssignment().getProject().getProjectCode()
+//	            					+ "'>");
+//	            		
+//	            		sb.append("<td title='"
+//	            					+ entry.getEntryId().getProjectAssignment().getProject().getFullname()
+//	            					+ "'>");
 	            		
-	            		sb.append("<td title='"
-	            					+ entry.getEntryId().getProjectAssignment().getProject().getFullname()
-	            					+ "'>");
-	            		
-	            		sb.append(HTML_NBSP);
-	            		
-	            		sb.append(entry.getEntryId().getProjectAssignment().getProject().getProjectCode() 
-	            					+ ": "
-	            					+ HTML_CELL_CLOSE);
-
-	            		sb.append("<td align='right'>");
-	            		
-	            		sb.append(HTML_NBSP);
-	            		
-	            		// @todo make ML
-	            		sb.append(df.format(entry.getHours()) + "u");
-	            		sb.append(HTML_NBSP);
-	            		sb.append(HTML_CELL_CLOSE);
-	            		sb.append(HTML_ROW_CLOSE);
+	            		if (entry.getHours().intValue() != 0)
+	            		{
+		            		sb.append(entry.getEntryId().getProjectAssignment().getProject().getName() 
+		            					+ ":");
+	
+		            		sb.append("<div class='bookedHourValue'>");
+		            		
+		            		// @todo make ML
+		            		sb.append(df.format(entry.getHours()) + "hr");
+		            		sb.append(HTML_DIV_CLOSE);
+		            		sb.append(HTML_BR);
+	            		}
 					}
-            		sb.append("</table>");
+            		sb.append(HTML_DIV_CLOSE);
 	            }
 	            else
 	            {
@@ -200,11 +207,17 @@ public class OverviewCalendarTag extends CalendarTag
 	        }
 	        else
 	        {
-	        	sb.append(HTML_NBSP);
-
+            	if (monthIsBeforeCurrent(calendar, thisMonth, thisYear))
+            	{
+            		sb.append("<td class='noMonthBefore'>" );
+            	}
+            	else
+            	{
+            		sb.append("<td class='noMonthAfter'>" );
+            	}
+            	
+            	sb.append(HTML_NBSP + HTML_CELL_CLOSE);
 	        }
-
-	        sb.append(HTML_CELL_CLOSE);
 	    }
 	}
 	
@@ -213,58 +226,48 @@ public class OverviewCalendarTag extends CalendarTag
 	 * @param sb
 	 * @param calendar
 	 * @param thisMonth
-	 * @param row
 	 */
-	private void addDayNumberRow(StringBuffer sb, Calendar calendar, int thisMonth, int row)
+	private void addDayNumberRow(StringBuffer sb, Calendar calendar, int thisMonth, int thisYear)
 	{
 		for (int currentColumn = 0;
 			 currentColumn < 7;
 			 currentColumn++)
 	    {
-			// @todo sun & sat are styled as out of scope, make it configurable
-	        if (calendar.get(Calendar.MONTH) != thisMonth
-	        		|| currentColumn == 0
-	        		|| currentColumn == 6)
-	        {
-            	// sunday needs a border-left
-	        	if (currentColumn == 0)
-	            {
-	        		// and the first row an upper border
-	        		// @todo fix this in css
-	                if (row == 0)
-	                {
-	                    sb.append("<td style='border-left-width: 1px' class='overview_notThisMonthFirst'>");
-	                }
-	                else
-	                {
-	                	sb.append("<td style='border-left-width: 1px' class='overview_notThisMonth'>");
-	                }
-	            }
+			if (calendar.get(Calendar.MONTH) == thisMonth)
+			{
+				if (currentColumn == 6)
+				{
+					sb.append("<td class='lastChild'>");
+				}
 	            else
 	            {
-	                if (row == 0)
-	                {
-	                	sb.append("<td class='overview_notThisMonthFirst'>");
-	                }
-	                else
-	                {
-	                	sb.append("<td class='overview_notThisMonth'>");
-	                }
+	            	sb.append(HTML_CELL_OPEN);
 	            }
-
-	        	sb.append(calendar.get(Calendar.DAY_OF_MONTH) + "</td>");
-	        }
-	        else
-	        {
-	            if (row == 0)
-	            {
-	            	sb.append("<td class='overview_headerFirst'>" + calendar.get(Calendar.DAY_OF_MONTH) + "</td>");
-	            }
-	            else
-	            {
-	            	sb.append("<th>" + calendar.get(Calendar.DAY_OF_MONTH) + "</th>");
-	            }
-	        }
+	
+				if (calendar.get(Calendar.MONTH) == thisMonth)
+				{
+					sb.append(calendar.get(Calendar.DAY_OF_MONTH));
+				}
+				else
+				{
+					sb.append(HTML_NBSP);
+				}
+			}
+			else
+			{
+				if (monthIsBeforeCurrent(calendar, thisMonth, thisYear))
+				{
+					sb.append(HTML_CELL_OPEN);
+				}
+				else
+				{
+					sb.append("<td class='noMonth'>");
+				}
+				
+				sb.append(HTML_NBSP);
+			}
+        	
+        	sb.append(HTML_CELL_CLOSE);
 
 	        calendar.add(Calendar.DATE, 1);
 	    }
@@ -281,13 +284,34 @@ public class OverviewCalendarTag extends CalendarTag
 	private void addWeekCell(StringBuffer sb, Calendar calendar)
 	{
 		// @todo use i18n
-		sb.append("<td class='overview_unbordered' rowspan=2 valign='bottom'>"
-					+ HTML_NBSP
-					+ HTML_NBSP 
-				    + "Week "
-				    + calendar.get(Calendar.WEEK_OF_YEAR)
-				    + HTML_NBSP
-				    + HTML_CELL_CLOSE);
+		sb.append("<td class='weekNumber'>");
+		
+		if (calendar == null)
+		{
+			sb.append(HTML_NBSP);
+		}
+		else
+		{
+			sb.append("Week " + calendar.get(Calendar.WEEK_OF_YEAR));
+		}
+		
+		sb.append(HTML_CELL_CLOSE);
+	}
+	
+	/**
+	 * 
+	 * @param calendar
+	 * @param thisMonth
+	 * @param thisYear
+	 * @return
+	 */
+	private boolean monthIsBeforeCurrent(Calendar calendar, int thisMonth, int thisYear)
+	{
+		int	year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		
+		return month < thisMonth && year == thisYear ||
+			   year < thisYear;
 	}
 
 	/**

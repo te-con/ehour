@@ -4,17 +4,18 @@
 
     <!-- Base layout -->
     <definition name=".ehour.baseLayout" path="/WEB-INF/jsp/layout/layoutBase.jsp">
-    	<put name="headJs" value="/WEB-INF/jsp/nav/nothing.html" />
         <put name="pageTitle" value="eHour" />
         <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
-		<put name="calendar_small" value="/WEB-INF/jsp/nav/nothing.html" />
-        <put name="admin_calendar_small" value="/WEB-INF/jsp/nav/nothing.html" />
+		<put name="navCalendar" value="/WEB-INF/jsp/nav/nothing.html" />
+		<put name="contextHelp" value="/WEB-INF/jsp/help/help.jsp" />		
+		<put name="extraCss" value="" />
     </definition>
 
     <!-- Timesheet Overview layout page -->
     <definition name=".ehour.timesheet.overviewFull" extends=".ehour.baseLayout">
-        <put name="calendar_small" value="/eh/cal/navCalendar.do" />
+        <put name="navCalendar" value="/eh/cal/navCalendar.do" />
         <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
+    	<put name="extraCss" value="/css/ehourMonthOverview.jsp" />
     </definition>
 
     <!-- Timesheet Month Overview page -->
@@ -25,7 +26,7 @@
 
     <!-- User report Overview page -->
     <definition name=".ehour.userreport.overview" extends=".ehour.baseLayout">
-        <put name="calendar_small" value="/WEB-INF/jsp/nav/nothing.html" />
+        <put name="navCalendar" value="/WEB-INF/jsp/nav/nothing.html" />
         <put name="content" value="/WEB-INF/jsp/userReport/index.jsp" />
     </definition>
 

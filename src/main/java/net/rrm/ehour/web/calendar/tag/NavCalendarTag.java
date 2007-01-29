@@ -46,9 +46,9 @@ public class NavCalendarTag extends CalendarTag
 	private static final long serialVersionUID = 2422922719761190399L;
 
 	// HTML constants
-	private String	HTML_FIRST_CELL = "<TD class=\"cps_dayData\" style=\"border-left: 0px\">";
-	private String	HTML_CELL_COMPLETE = "<TD class=\"cps_dayData\">";
-	private String	HTML_CELL_NOT_COMPLETE = "<TD class=\"cps_dayNoData\">";	
+	private String	HTML_FIRST_CELL = "<td class='weekendDayCell'>";
+	private String	HTML_CELL_COMPLETE = "<td class='filled'>";
+	private String	HTML_CELL_NOT_COMPLETE = "<td>";	
 	
 	private boolean[] 	bookedDays;
 	private	Integer		userId;
@@ -89,7 +89,7 @@ public class NavCalendarTag extends CalendarTag
 			// big chance this fails as well but at least we can try
 			try
 			{
-				out.write("<tr><td colspan=3>Something went wrong..</td></tr>");
+				out.write("<tr><td colspan=7>Something went wrong..</td></tr>");
 			} catch (IOException e)
 			{
 			}
@@ -149,8 +149,8 @@ public class NavCalendarTag extends CalendarTag
 	 */
 	private String getNewRowTag(Calendar cal)
 	{
-		String str = "<TR onmouseover=\"this.className='cps_tableTROn';\" " +
-						"onmouseout=\"this.className='cps_tableTROff';\"  onclick=\"enterSheet(" +
+		String str = "<tr class='hoverable' " +
+						"onclick=\"enterSheet(" +
 						cal.get(Calendar.YEAR) + "," +
 						cal.get(Calendar.MONTH) + "," +
 						cal.get(Calendar.DAY_OF_MONTH) + "," +
@@ -271,12 +271,12 @@ public class NavCalendarTag extends CalendarTag
 		String	cellTag;
 		
 		// sundays are always marked as complete (@todo make it configurable?)
-		if (currentColumn == 0)
+		if (currentColumn == 0 || currentColumn == 6) 
 		{
 			cellTag = HTML_FIRST_CELL;
 		}
 		// saturdays, prepended days and complete days are styled as complete
-		else if (currentColumn == 6 || date == null || dayComplete(date.get(Calendar.DAY_OF_MONTH)))
+		else if (date == null || dayComplete(date.get(Calendar.DAY_OF_MONTH)))
 		{
 			cellTag = HTML_CELL_COMPLETE;
 		}

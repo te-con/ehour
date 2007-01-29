@@ -4,22 +4,29 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!-- spanTarget:navCalendar -->
-<div id="navCalendarSpan" style="height: 100px">
-<table CLASS="cps_table" CELLSPACING=0>
-	<TR>
-		<TH style="vertical-align: middle"><a href="" onClick="return changeCalMonth(${navCalPrevMonth})"><img src="<c:url value="/img/left.gif" />" border=0></a></th>
-		<TH COLSPAN=5><fmt:formatDate value="${navCalCurCalMonth.time}" pattern="MMMMM yyyy" /></TH>
-		<TH style="vertical-align: middle"><a href="" onClick="return changeCalMonth(${navCalNextMonth})"><img src="<c:url value="/img/right.gif" />" border=0></a></th>
-	</TR>
+<div id="NavCalTarget">
+<div class="NavCalFrame">
+	<div class="NavCalFrameLeftTop">
+		<div class="NavCalFrameRightTop">
+			&nbsp;
+		</div>
+	</div>
 
-	<ehour:navCalendar bookedDays="${navCalData}" calendar="${navCalCurCalMonth}" userId="${navCalUserId}" />
-</TABLE>
+	<table cellpadding="0" cellspacing="1">
+		<tr>
+			<th style="vertical-align: middle"><a href="" onClick="return changeCalMonth(${navCalPrevMonth})"><img src="<c:url value="/img/left.gif" />" border=0></a></th>
+			<th colspan="5"><fmt:formatDate value="${navCalCurCalMonth.time}" pattern="MMMMM yyyy" /></th>
+			<th style="vertical-align: middle"><a href="" onClick="return changeCalMonth(${navCalNextMonth})"><img src="<c:url value="/img/right.gif" />" border=0></a></th>
+		</tr>
 
+		<ehour:navCalendar bookedDays="${navCalData}" calendar="${navCalCurCalMonth}" userId="${navCalUserId}" />
+	</table>
+	
+
+	<div class="NavCalFrameLeftBottom">
+		<div class="NavCalFrameRightBottom">
+			&nbsp;
+		</div>
+	</div>		
 </div>
-
-
-<br>
-
-<span id="statusMessage">
-&nbsp;
-</span>
+</div>

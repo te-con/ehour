@@ -42,8 +42,11 @@ public abstract class CalendarTag extends TagSupport
 
 	// HTML constants
 	protected String	HTML_NBSP = "&nbsp;";
-	protected String	HTML_CELL_CLOSE = "</TD>";
-	protected String	HTML_ROW_CLOSE = "</TR>";
+	protected String	HTML_CELL_OPEN = "<td>";
+	protected String	HTML_CELL_CLOSE = "</td>\r\n";
+	protected String	HTML_ROW_CLOSE = "</tr>";
+	protected String	HTML_DIV_CLOSE = "</div>";
+	protected String	HTML_BR = "<br>\r\n";
 	
 	/**
 	 * 

@@ -24,17 +24,22 @@
 package net.rrm.ehour.report.service;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportDAO;
-import net.rrm.ehour.report.dto.AvailReportCriteria;
 import net.rrm.ehour.report.dto.ProjectReport;
-import net.rrm.ehour.report.dto.ReportCriteria;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
@@ -49,11 +54,12 @@ import net.rrm.ehour.util.DateUtil;
 
 public class ReportServiceImpl implements ReportService
 {
-	private	ReportDAO			reportDAO;
-	private	UserDAO				userDAO;
-	private	UserDepartmentDAO	userDepartmentDAO;
-	private	CustomerDAO			customerDAO;
-	private	ProjectDAO			projectDAO;
+	private	ReportDAO				reportDAO;
+	private	UserDAO					userDAO;
+	private	UserDepartmentDAO		userDepartmentDAO;
+	private	CustomerDAO				customerDAO;
+	private	ProjectDAO				projectDAO;
+	private	ProjectAssignmentDAO	projectAssignmentDAO;	
 	
 	/**
 	 * Get the booked hours per project assignment for a month
@@ -88,60 +94,100 @@ public class ReportServiceImpl implements ReportService
 	
 
 	/**
-	 * Get available report criteria
+	 * Update available report criteria 
 	 */
 	
-	public AvailReportCriteria getAvailableReportCriteria(ReportCriteria reportCriteria)
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria)
 	{
-		AvailReportCriteria availCriteria = new AvailReportCriteria();
 		List<User>			users;
 		List<Customer>		customers;
 		List<Project>		projects;
-		DateRange			reportRange;
+		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
+		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
 		
 		// determine users
-		if (reportCriteria.isOnlyActiveUsers())
+		if (userCriteria.getUserFilter() == UserCriteria.SINGLE_USER)
 		{
-			users = userDAO.findAllActiveUsers();
+			syncCriteriaForUsers(reportCriteria);
 		}
 		else
 		{
-			users = userDAO.findAll();
+			switch (userCriteria.getUserFilter())
+			{
+//				case UserCriteria.SINGLE_USER:
+//					users = userCriteria.getUsers();
+//					syncCriteriaForUsers(reportCriteria);
+//					break;
+				case UserCriteria.ALL_USERS:
+					users = userDAO.findAll();
+					break;
+				case UserCriteria.ACTIVE_USERS:
+					users = userDAO.findAllActiveUsers();
+					break;
+				default:
+					users = null;
+					break;
+			}
+		
+			availCriteria.setUsers(users);
+			
+			// user departments
+			availCriteria.setUserDepartments(userDepartmentDAO.findAll());
+			
+			// customers
+			if (userCriteria.isOnlyActiveCustomers())
+			{
+				customers = customerDAO.findAll(true);
+			}
+			else
+			{
+				customers = customerDAO.findAll();
+			}
+			
+			availCriteria.setCustomers(customers);
+			
+			// projects
+			if (userCriteria.isOnlyActiveProjects())
+			{
+				projects = projectDAO.findAllActive();
+			}
+			else
+			{
+				projects = projectDAO.findAll();
+			}
+			
+			availCriteria.setProjects(projects);
+			
+			// not entirely useful but for clarity
+			reportCriteria.setAvailableCriteria(availCriteria);
 		}
 		
-		availCriteria.setUsers(users);
+		return reportCriteria;
+	}
+	
+	/**
+	 * Sync criteria for users, only customers & projects
+	 * are displayed for users in this list
+	 * @param reportCriteria
+	 */
+	private void syncCriteriaForUsers(ReportCriteria reportCriteria)
+	{
+		List<ProjectAssignment>	assignments;
+		Set<Customer>			customers = new HashSet<Customer>();
+		Set<Project>			projects = new HashSet<Project>();
+		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
 		
-		// user departments
-		availCriteria.setUserDepartments(userDepartmentDAO.findAll());
+		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(reportCriteria.getUserCriteria().getReportForUser().getUserId());
 		
-		// customers
-		if (reportCriteria.isOnlyActiveCustomers())
+		for (ProjectAssignment assignment : assignments)
 		{
-			customers = customerDAO.findAll(true);
-		}
-		else
-		{
-			customers = customerDAO.findAll();
+			customers.add(assignment.getProject().getCustomer());
+			projects.add(assignment.getProject());
 		}
 		
 		availCriteria.setCustomers(customers);
-		
-		// projects
-		if (reportCriteria.isOnlyActiveProjects())
-		{
-			projects = projectDAO.findAllActive();
-		}
-		else
-		{
-			projects = projectDAO.findAll();
-		}
-		
 		availCriteria.setProjects(projects);
-		
-//		availCriteria.s
-		
-		return availCriteria;
-	}	
+	}
 	
 	/**
 	 *  
@@ -182,6 +228,14 @@ public class ReportServiceImpl implements ReportService
 	public void setUserDepartmentDAO(UserDepartmentDAO userDepartmentDAO)
 	{
 		this.userDepartmentDAO = userDepartmentDAO;
+	}
+
+	/**
+	 * @param projectAssignmentDAO the projectAssignmentDAO to set
+	 */
+	public void setProjectAssignmentDAO(ProjectAssignmentDAO projectAssignmentDAO)
+	{
+		this.projectAssignmentDAO = projectAssignmentDAO;
 	}
 
 

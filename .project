@@ -25,8 +25,23 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<!-- 
+		<buildCommand>
+			<name>com.genuitec.eclipse.hibernate.HibernateBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		 -->
+		<buildCommand>
+			<name>org.eclipse.wst.validation.validationbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+	<!-- 
+		<nature>com.genuitec.eclipse.hibernate.hibernatenature</nature>
+ -->		
 		<nature>org.springframework.ide.eclipse.core.springnature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.maven.ide.eclipse.maven2Nature</nature>
