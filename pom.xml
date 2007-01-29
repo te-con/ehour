@@ -30,10 +30,10 @@
 	</developers>
 	<scm>
 		<connection>
-			scm:svn:http://ehour.svn.sourceforge.net/svnroot/ehour/
+			scm:svn:http://ehour.svn.sourceforge.net/svnroot/ehour/eHour
 		</connection>
 		<developerConnection>
-			scm:svn:https://ehour.svn.sourceforge.net/svnroot/ehour/
+			scm:svn:https://ehour.svn.sourceforge.net/svnroot/ehour/eHour
 		</developerConnection>
 		<url>http://svn.sourceforge.net/ehour/</url>
 	</scm>
