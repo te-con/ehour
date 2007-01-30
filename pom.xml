@@ -37,6 +37,20 @@
 		</developerConnection>
 		<url>http://svn.sourceforge.net/ehour/</url>
 	</scm>
+  <ciManagement>
+    <system>continuum</system>
+    <url>http://www.ehour.nl/continuum/</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>true</sendOnSuccess>
+        <sendOnWarning>true</sendOnWarning>
+        <configuration><address>thies@rrm.net</address></configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
 	<build>
 		<resources>
 			<resource>
