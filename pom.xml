@@ -13,9 +13,7 @@
 	<url>http://ehour.rrm.net/</url>
 	<issueManagement>
 		<system>Sourceforge bugtracker</system>
-		<url>
-			http://sourceforge.net/tracker/?group_id=167867&amp;atid=844648/
-		</url>
+		<url><![CDATA[http://sourceforge.net/tracker/?group_id=167867&atid=844648/]]></url>
 	</issueManagement>
 	<developers>
 		<developer>
@@ -142,39 +140,6 @@
 			</build>
 		</profile>
 	</profiles>
-	<repositories>
-		<repository>
-			<id>central</id>
-			<name>Maven Central Repository</name>
-			<url>http://www.ibiblio.org/maven2</url>
-		</repository>
-		<repository>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots />
-			<id>maven-snapshots</id>
-			<name>Maven Snapshot Development Repository</name>
-			<url>http://snapshots.maven.codehaus.org/maven2</url>
-		</repository>
-		<repository>
-			<id>tlc-snapshots</id>
-			<name>TLC Snapshot Development Repository</name>
-			<url>http://commons.ucalgary.ca/pub/m2-snapshots</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Codehaus Snapshots</id>
-			<url>http://snapshots.repository.codehaus.org/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
