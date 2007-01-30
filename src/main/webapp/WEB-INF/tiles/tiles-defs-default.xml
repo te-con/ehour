@@ -15,7 +15,7 @@
     <definition name=".ehour.timesheet.overviewFull" extends=".ehour.baseLayout">
         <put name="navCalendar" value="/eh/cal/navCalendar.do" />
         <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
-    	<put name="extraCss" value="/css/ehourMonthOverview.jsp" />
+    	<put name="extraCss" value="/css/ehourTimesheet.jsp" />
     </definition>
 
     <!-- Timesheet Month Overview page -->

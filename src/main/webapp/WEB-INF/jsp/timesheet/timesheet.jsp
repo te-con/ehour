@@ -11,25 +11,46 @@
 <input type="hidden" id="sheetYear" name="sheetYear" value="<fmt:formatDate value="${timesheet.weekStart}" pattern="yyyy" />">
 <input type="hidden" id="userId" value="${timesheet.userId}">
 
-<table class="cal_table" cellspacing="0" width="500">
 
-<tr>
-	<th style="text-align: left; padding-bottom: 2px">
+<div class="TimesheetFrame">
+	<h3>&nbsp;</h3>
+	
+	<div class="TimesheetBody">
+	<div class="MOBlueFrame">
+		<div class="MOBLueLeftTop">
+			<div class="MOBLueRightTop">
+				&nbsp;
+			</div>
+		</div>
+
+
+		<table class="timesheet" cellpadding="0" cellspacing="0">
+
+<tr class="weekColumnRow">
+	<td class="project" style="text-align: left; padding-bottom: 2px">
 		&nbsp;<fmt:message key="user.overview.week" /> <fmt:formatDate value="${timesheet.weekStart}" pattern="w, MMMMM yyyy" />
-	</th>
+	</td>
 
-	<c:forEach items="${timesheet.dateSequence}" var="date">
-		<th>
+	<c:forEach items="${timesheet.dateSequence}" var="date" varStatus="status">
+		<c:choose>
+			<c:when test="${status.count == 7}">
+				<td class="lastChild">
+			</c:when>
+			
+			<c:otherwise>
+				<td>
+			</c:otherwise>
+		</c:choose>		
 			<fmt:formatDate value="${date}" pattern="E" />
 			<br>
 			<fmt:formatDate value="${date}" pattern="dd" />
-		</th>
+		</td>
 	</c:forEach>
 </tr>
 
 <c:forEach items="${timesheet.timesheetRows}" var="row">
-	<tr>
-		<td class="cal_projCell">
+	<tr class="projectRow">
+		<td class="project">
 			&nbsp;
 			<a href="" onClick="return bookToProject(${row.projectAssignment.assignmentId})"
 					   title="<fmt:message key="user.timesheet.bookWeekOnProject" />">
@@ -40,12 +61,16 @@
 		<c:forEach items="${row.timesheetCells}" var="cell" varStatus="status">
 <%-- @todo sunday & saturday as marked as grey, configurable? --%>
 			<c:choose>
-				<c:when test="${status.count == 1 || status.count == 7}">
-					<td class="cal_dataCell" style="background-color: #cccccc">
+				<c:when test="${status.count == 1}">
+					<td class="sunday">
+				</c:when>
+
+				<c:when test="${status.count == 7}">
+					<td class="saturday">
 				</c:when>
 				
 				<c:otherwise>
-					<td class="cal_dataCell">
+					<td class="weekday">
 				</c:otherwise>
 			</c:choose>
 
@@ -80,10 +105,38 @@
 	</tr>
 	
 </table>
+
+		<div class="MOBLueLeftBottom">
+			<div class="MOBLueRightBottom">
+				&nbsp;
+			</div>
+		</div>			
+	</div>
+
+	<div class="TimesheetFrameFooter">
+		<p>
+			&nbsp;
+		</p>
+	</div>	
+</div>
+</div>
+
 <br>
-<table class="cal_table" cellspacing="0" width="500">
+
+<div class="TimesheetFrame">
+	<h3>&nbsp;</h3>
+	
+	<div class="TimesheetBody">
+	<div class="MOBlueFrame">
+		<div class="MOBLueLeftTop">
+			<div class="MOBLueRightTop">
+				&nbsp;
+			</div>
+		</div>
+
+<table class="cal_table" cellspacing="0">
 	<tr>
-		<th style="text-align: left; padding-bottom: 2px">&nbsp;<fmt:message key="user.timesheet.weekComments" /></th>
+		<th style="text-align: left; padding-bottom: 2px"><fmt:message key="user.timesheet.weekComments" /></th>
 	</tr>
 	
 	<tr>
@@ -101,7 +154,20 @@
 		<td align="right"><input type="submit" class="redSubmit" value="<fmt:message key="user.timesheet.storeAndNext" />" onClick="return makeFormSubmittable();"></td>
 	</tr>
 </table>
+		<div class="MOBLueLeftBottom">
+			<div class="MOBLueRightBottom">
+				&nbsp;
+			</div>
+		</div>			
+	</div>
+
+	<br>
 	
+	<div class="MonthOverviewFrameFooter">
+		<p>
+		</p>
+	</div>				
+</div>	
 </form>
 
 <script>

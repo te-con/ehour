@@ -40,11 +40,11 @@
 
 <table width="100%">
 	<tr>
-		<td style="padding-left: 35px; padding-top: 20px; padding-bottom: 0.5em;">
+		<td style="padding-left: 35px; padding-top: 20px; padding-bottom: 1.0em;">
 			<img SRC="<c:url value="/img/ehour.gif" />" alt="eHour v0.1" />
 		</td>
 		
-		<td style="padding-left: 25px" valign="bottom">
+		<td style="padding-left: 25px; padding-bottom: 0.65em" valign="bottom">
 			<div class="Header">
 				<tiles:insert attribute="header" />
 			</div>
@@ -52,8 +52,17 @@
 	</tr>
 
 	<tr>
-		<td valign="top" width="220" style="padding-left: 20px">
+		<td valign="top" width="220" style="padding-left: 20px" height="200">
 		    <tiles:insert attribute="navCalendar" />
+		</td>
+		
+		<td rowspan="2" valign="top" style="padding-left: 20px">
+			<tiles:insert attribute="content" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td style="padding-left: 20px" valign="top">
 		    <span id="statusMessage">
 				&nbsp;
 			</span>
@@ -61,11 +70,6 @@
     		<br>
 
 		    <tiles:insert attribute="contextHelp" />
-			
-		</td>
-		
-		<td valign="top" style="padding-left: 20px">
-			<tiles:insert attribute="content" />
 		</td>
 	</tr>
 </table>

@@ -6,6 +6,7 @@ body
 	background: white;
 	font: 0.8em/1.5 Geneva, Arial, Helvetica, sans-serif;
 	color: black;
+	margin-top: 0;
 }
 
 div.wrap
@@ -68,7 +69,7 @@ div.NavCalFrame table tr.hoverable:hover
 
 div.NavCalFrame table th
 {
-	background-color: #fefeff;
+	background-color: #d1e5f9;
 	color: #536e87;
 	font: bold 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
 }
@@ -98,47 +99,50 @@ div.NavCalFrame table td.filled
 	font: bold 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
 }
 
+
 div.HelpFrame
 {
-  background: url(<c:url value="/img/grey/pixel_grey.gif" />);
-  max-height: 258px;
-  width: 230px;
-}
+	background: url(<c:url value="/img/grey/corner_left_top.gif" />) top left no-repeat;
+	max-height: 258px;
+  	width: 230px;
+} 
 
-div.HelpFrameLeftTop
+div.HelpFrame h3
 {
-  background: url(<c:url value="/img/help/left_top.gif" />) top left no-repeat;
-}
-
-div.HelpFrameRightTop
-{
-  background: url(<c:url value="/img/help/right_top.gif" />) top right no-repeat;
-  padding-left: 20px;
-  padding-right: 20px;
+  background: 	url(<c:url value="/img/grey/corner_right_top.gif" />) top right no-repeat;
+  line-height:	11px;
+  padding:		0;
   margin: 0;
   font: bold 1.2em/1.5 Geneva, Arial, Helvetica, sans-serif;
   color: #536e87;
-  text-align: center;
+  text-align: center;  
 }
 
-div.HelpFrameRightBottom
+div.HelpBody
 {
-  background: url(<c:url value="/img/help/right_bottom.gif" />) bottom right no-repeat;
-}
-
-div.HelpFrameLeftBottom
-{
-  background: url(<c:url value="/img/help/left_bottom.gif" />) bottom left no-repeat;
-}
-
-div.HelpFrameBody
-{
+	background: url(<c:url value="/img/grey/pixel_grey.gif" />);
+  	margin-top: 0em;
+  	padding:0;
 	height: 200px;
 	overflow: auto;
 	margin-left: 5px;
 	margin-right: 5px;
 	color: #536e87;
 	font: 0.75em/1.5 Geneva, Arial, Helvetica, sans-serif;
+  
+}
+
+div.HelpFrameFooter
+{
+  background: url(<c:url value="/img/grey/corner_left_bottom.gif" />) bottom left no-repeat;
+}
+
+div.HelpFrameFooter p
+{
+  background: url(<c:url value="/img/grey/corner_right_bottom.gif" />) bottom right no-repeat;
+  padding:20px;
+  display:block;
+  margin:-2em 0 0 0;
 }
 
 div.Header table 
