@@ -29,7 +29,7 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
  * TODO 
  **/
 
-public class ProjectReport
+public class ProjectAssignmentAggregate
 {
 	private	ProjectAssignment	projectAssignment;
 	private	Number				hours;
@@ -39,7 +39,7 @@ public class ProjectReport
 	 * empty constructor
 	 *
 	 */
-	public ProjectReport()
+	public ProjectAssignmentAggregate()
 	{
 		
 	}
@@ -49,7 +49,7 @@ public class ProjectReport
 	 * @param projectAssignment
 	 * @param hours
 	 */
-	public ProjectReport(ProjectAssignment projectAssignment, Number hours, Number turnOver)
+	public ProjectAssignmentAggregate(ProjectAssignment projectAssignment, Number hours, Number turnOver)
 	{
 		this.hours = hours;
 		this.projectAssignment = projectAssignment;
