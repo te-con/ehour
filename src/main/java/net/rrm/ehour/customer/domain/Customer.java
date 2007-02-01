@@ -56,6 +56,16 @@ public class Customer extends DomainObject implements Comparable<Customer>
 		this.active = active;
 	}
 
+	/** full constructor */
+	public Customer(Customer customer)
+	{
+		this.customerId = customer.getCustomerId();
+		this.code = customer.getCode();
+		this.name = customer.getName();
+		this.description = customer.getDescription();
+		this.active = customer.isActive();
+	}	
+
 	// Property accessors
 	public Integer getCustomerId()
 	{
@@ -150,6 +160,7 @@ public class Customer extends DomainObject implements Comparable<Customer>
 		}
 	}	
 	
+	@Override
 	public int hashCode()
 	{
 		return new HashCodeBuilder().append(getCustomerId()).toHashCode();
