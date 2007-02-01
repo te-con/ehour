@@ -2,9 +2,13 @@ package net.rrm.ehour.customer.domain;
 
 import java.util.Set;
 
-import net.rrm.ehour.domain.DomainObject;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
-public class Customer extends DomainObject
+import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.project.domain.ProjectAssignment;
+
+public class Customer extends DomainObject implements Comparable<Customer>
 {
 
 	// Fields
@@ -28,6 +32,12 @@ public class Customer extends DomainObject
 	
 	// Constructors
 
+	@Override
+	public String toString()
+	{
+		return customerId.intValue() + ", name: " + name;
+	}
+	
 	/** default constructor */
 	public Customer()
 	{
@@ -119,5 +129,31 @@ public class Customer extends DomainObject
 	{
 		this.active = active;
 	}
+
+	public int compareTo(Customer o)
+	{
+		return customerId.intValue() - o.getCustomerId().intValue();
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		Customer 	castOther;
+		
+		if (other instanceof Customer)
+		{
+			castOther = (Customer)other;
+			return new EqualsBuilder().append(this.getCustomerId(), castOther.getCustomerId()).isEquals();
+		}
+		else
+		{
+			return false;
+		}
+	}	
+	
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(getCustomerId()).toHashCode();
+	}	
 
 }

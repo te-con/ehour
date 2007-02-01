@@ -39,7 +39,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -129,7 +129,7 @@ public class TimesheetServiceTest  extends TestCase
 	public void testGetTimesheetOverview() throws Exception
 	{
 		List<TimesheetEntry>	daoResults = new ArrayList<TimesheetEntry>();	
-		List<ProjectReport>		reportResults = new ArrayList<ProjectReport>();
+		List<ProjectAssignmentAggregate>		reportResults = new ArrayList<ProjectAssignmentAggregate>();
 		Calendar	cal = new GregorianCalendar();
 		
 		TimesheetOverview	retObj;
@@ -148,7 +148,7 @@ public class TimesheetServiceTest  extends TestCase
 		entryB.setHours(new Float(3));
 		daoResults.add(entryB);
 		
-		reportResults.add(new ProjectReport());
+		reportResults.add(new ProjectAssignmentAggregate());
 		
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal)))
 				.andReturn(daoResults);

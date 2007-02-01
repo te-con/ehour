@@ -24,7 +24,6 @@
 package net.rrm.ehour.report.criteria;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.user.domain.User;
 
 /**
  * TODO 
@@ -32,15 +31,17 @@ import net.rrm.ehour.user.domain.User;
 
 public class UserCriteria
 {
-	public final static int	ALL_USERS = 1;
-	public final static int	ACTIVE_USERS = 2;
-	public final static int	SINGLE_USER = 3;
+	public final static int	USER_ACTIVE = 1;
+	public final static int	USER_ALL = 2;
+	public final static int	USER_SINGLE = 3;
 	
 	private DateRange	reportRange;
-	private	int			userFilter;
 	private	boolean		onlyActiveProjects;
 	private	boolean		onlyActiveCustomers;
-	private	User		reportForUser;
+	private	int			userFilter;
+	private	Integer[]	userIds;
+	private	Integer[]	projectIds;
+	private	boolean		singleUser;
 	
 	/**
 	 * @return the onlyActiveCustomers
@@ -85,7 +86,48 @@ public class UserCriteria
 	{
 		this.reportRange = reportRange;
 	}
-
+	/**
+	 * @return the projectIds
+	 */
+	public Integer[] getProjectIds()
+	{
+		return projectIds;
+	}
+	/**
+	 * @param projectIds the projectIds to set
+	 */
+	public void setProjectIds(Integer[] projectIds)
+	{
+		this.projectIds = projectIds;
+	}
+	/**
+	 * @return the userIds
+	 */
+	public Integer[] getUserIds()
+	{
+		return userIds;
+	}
+	/**
+	 * @param userIds the userIds to set
+	 */
+	public void setUserIds(Integer[] userIds)
+	{
+		this.userIds = userIds;
+	}
+	/**
+	 * @return the singleUser
+	 */
+	public boolean isSingleUser()
+	{
+		return singleUser;
+	}
+	/**
+	 * @param singleUser the singleUser to set
+	 */
+	public void setSingleUser(boolean singleUser)
+	{
+		this.singleUser = singleUser;
+	}
 	/**
 	 * @return the userFilter
 	 */
@@ -100,20 +142,4 @@ public class UserCriteria
 	{
 		this.userFilter = userFilter;
 	}
-	/**
-	 * @return the reportForUser
-	 */
-	public User getReportForUser()
-	{
-		return reportForUser;
-	}
-	/**
-	 * @param reportForUser the reportForUser to set
-	 */
-	public void setReportForUser(User reportForUser)
-	{
-		userFilter = UserCriteria.SINGLE_USER;
-		this.reportForUser = reportForUser;
-	}
-
 }

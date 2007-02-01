@@ -39,7 +39,8 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportDAO;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.project.ProjectReport;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
@@ -68,7 +69,7 @@ public class ReportServiceImpl implements ReportService
 	 * @return SortedMap with ProjectAssignment on key and a Float representation of the booked hours as value
 	 */	
 	
-	public List<ProjectReport> getHoursPerAssignmentInMonth(Integer userId, Calendar requestedDate)
+	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInMonth(Integer userId, Calendar requestedDate)
 	{
 		DateRange	monthRange;
 		
@@ -83,13 +84,13 @@ public class ReportServiceImpl implements ReportService
 	 * @param calendar
 	 * @return 
 	 */		
-	public List<ProjectReport> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange)
+	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange)
 	{
-		List<ProjectReport>	projectReports;
+		List<ProjectAssignmentAggregate>	projectAssignmentAggregates;
 
-		projectReports = reportDAO.getCumulatedHoursPerAssignmentForUser(userId, dateRange);
+		projectAssignmentAggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(new Integer[]{userId}, dateRange);
 
-		return projectReports;
+		return projectAssignmentAggregates;
 	}	
 	
 
@@ -105,35 +106,34 @@ public class ReportServiceImpl implements ReportService
 		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
 		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
 		
-		// determine users
-		if (userCriteria.getUserFilter() == UserCriteria.SINGLE_USER)
+		if (userCriteria.getUserFilter() == UserCriteria.USER_SINGLE)
 		{
 			syncCriteriaForUsers(reportCriteria);
 		}
 		else
 		{
+			// determine users
 			switch (userCriteria.getUserFilter())
 			{
-//				case UserCriteria.SINGLE_USER:
-//					users = userCriteria.getUsers();
-//					syncCriteriaForUsers(reportCriteria);
-//					break;
-				case UserCriteria.ALL_USERS:
+	//			case UserCriteria.USER_SINGLE:
+	//				users = new ArrayList<User>();
+	//				users.add(new User(userCriteria.getUserIds()[0]));
+	//				break;
+				case UserCriteria.USER_ALL:
 					users = userDAO.findAll();
 					break;
-				case UserCriteria.ACTIVE_USERS:
+				case UserCriteria.USER_ACTIVE:
 					users = userDAO.findAllActiveUsers();
 					break;
 				default:
 					users = null;
 					break;
 			}
-		
+			
 			availCriteria.setUsers(users);
-			
-			// user departments
+				
 			availCriteria.setUserDepartments(userDepartmentDAO.findAll());
-			
+
 			// customers
 			if (userCriteria.isOnlyActiveCustomers())
 			{
@@ -143,9 +143,9 @@ public class ReportServiceImpl implements ReportService
 			{
 				customers = customerDAO.findAll();
 			}
-			
+				
 			availCriteria.setCustomers(customers);
-			
+				
 			// projects
 			if (userCriteria.isOnlyActiveProjects())
 			{
@@ -160,7 +160,7 @@ public class ReportServiceImpl implements ReportService
 			
 			// not entirely useful but for clarity
 			reportCriteria.setAvailableCriteria(availCriteria);
-		}
+		}	
 		
 		return reportCriteria;
 	}
@@ -172,12 +172,12 @@ public class ReportServiceImpl implements ReportService
 	 */
 	private void syncCriteriaForUsers(ReportCriteria reportCriteria)
 	{
-		List<ProjectAssignment>	assignments;
+		List<ProjectAssignment>	assignments = null;
 		Set<Customer>			customers = new HashSet<Customer>();
 		Set<Project>			projects = new HashSet<Project>();
 		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
 		
-		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(reportCriteria.getUserCriteria().getReportForUser().getUserId());
+		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(reportCriteria.getUserCriteria().getUserIds()[0]);
 		
 		for (ProjectAssignment assignment : assignments)
 		{
@@ -188,6 +188,24 @@ public class ReportServiceImpl implements ReportService
 		availCriteria.setCustomers(customers);
 		availCriteria.setProjects(projects);
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ProjectReport createProjectReport(UserCriteria criteria)
+	{
+		ProjectReport						projectReport = new ProjectReport();
+		List<ProjectAssignmentAggregate>	aggregates;
+		
+		aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(criteria.getUserIds(),
+																		criteria.getProjectIds(),
+																		criteria.getReportRange());
+		projectReport.setUserCriteria(criteria);
+		projectReport.initialize(aggregates);
+		
+		return projectReport;
+	}	
 	
 	/**
 	 *  

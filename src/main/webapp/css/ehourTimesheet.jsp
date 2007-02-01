@@ -388,6 +388,7 @@ div.MOBlueFrame table.timesheet tr.projectRow td.project
 	width: 290px;
 	border-width: 0;
 	text-align: left;
+	color: white;
 }
 
 div.MOBlueFrame table.timesheet tr.projectRow td
@@ -403,7 +404,7 @@ div.MOBlueFrame table.timesheet tr.projectRow td
 div.MOBlueFrame table.timesheet tr.projectRow td a:visited
 {
 	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
-	color: #536e87;
+	color: white;
 	text-decoration: none;
 }
 

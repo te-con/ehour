@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
 import net.rrm.ehour.web.util.AuthUtil;
 
@@ -58,7 +57,8 @@ public class UserReportCriteriaAction extends Action
 
 		userId = AuthUtil.getUserId(request, rcForm);
 		uc = reportCriteria.getUserCriteria();
-		uc.setReportForUser(new User(userId));
+		uc.setUserIds(new Integer[]{userId});
+		uc.setUserFilter(UserCriteria.USER_SINGLE);
 		
 		// reportCriteria syncs itself when updated
 		reportCriteria.setUserCriteria(uc);

@@ -3,13 +3,13 @@ package net.rrm.ehour.timesheet.dto;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
 
 public class TimesheetOverview
 {
-	private	List<ProjectReport>	projectHours;
+	private	List<ProjectAssignmentAggregate>	projectHours;
 	private	Map<Integer, List<TimesheetEntry>>	timesheetEntries;
 
 
@@ -28,12 +28,12 @@ public class TimesheetOverview
 		this.timesheetEntries = timesheetEntries;
 	}
 
-	public List<ProjectReport> getProjectHours()
+	public List<ProjectAssignmentAggregate> getProjectHours()
 	{
 		return projectHours;
 	}
 
-	public void setProjectHours(List<ProjectReport> projectHours)
+	public void setProjectHours(List<ProjectAssignmentAggregate> projectHours)
 	{
 		this.projectHours = projectHours;
 	}

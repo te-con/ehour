@@ -32,7 +32,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.report.dao.ReportDAO;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.util.DateUtil;
 
 /**
@@ -62,13 +62,13 @@ public class ReportServiceTest extends TestCase
 	
 	public void testGetHoursPerAssignmentOnMonth()
 	{
-		List<ProjectReport>	results = new ArrayList<ProjectReport>();
+		List<ProjectAssignmentAggregate>	results = new ArrayList<ProjectAssignmentAggregate>();
 		Integer		userId = 1;
 		Calendar	cal = new GregorianCalendar();
 		
-		results.add(new ProjectReport());
+		results.add(new ProjectAssignmentAggregate());
 		
-		reportDAO.getCumulatedHoursPerAssignmentForUser(userId, DateUtil.calendarToMonthRange(cal));
+		reportDAO.getCumulatedHoursPerAssignmentForUsers(new Integer[]{userId}, DateUtil.calendarToMonthRange(cal));
 		expectLastCall().andReturn(results);
 		
 		replay();

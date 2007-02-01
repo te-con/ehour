@@ -49,6 +49,14 @@ public class ProjectAssignment extends DomainObject
 	}
 
 	/** minimal constructor */
+	public ProjectAssignment(User user, Project project)
+	{
+		this.user = user;
+		this.project = project;
+	}
+	
+	
+	/** minimal constructor */
 	public ProjectAssignment(User user, Project project, Date dateStart, Date dateEnd)
 	{
 		this.user = user;
@@ -62,6 +70,7 @@ public class ProjectAssignment extends DomainObject
 	{
 		this.user = user;
 		this.project = project;
+		
 		this.dateStart = dateRange.getDateStart();
 		this.dateEnd = dateRange.getDateEnd();
 	}	

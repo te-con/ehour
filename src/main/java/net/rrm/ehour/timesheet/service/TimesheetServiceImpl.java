@@ -36,7 +36,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -80,22 +80,22 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		TimesheetOverview	overview = new TimesheetOverview();
 		DateRange			monthRange;
-		List<ProjectReport>	projectReports = null;
+		List<ProjectAssignmentAggregate>	projectAssignmentAggregates = null;
 		List<TimesheetEntry> timesheetEntries = null;
 		Map<Integer, List<TimesheetEntry>>	calendarMap = null;
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
 		logger.debug("Getting timesheet overview for userId " + userId + " in range " + monthRange);
 		
-		projectReports = reportService.getHoursPerAssignmentInRange(userId, monthRange);
-		logger.debug("Project reports found for userId " + userId + ": " + projectReports.size());
+		projectAssignmentAggregates = reportService.getHoursPerAssignmentInRange(userId, monthRange);
+		logger.debug("Project reports found for userId " + userId + ": " + projectAssignmentAggregates.size());
 		
 		timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(userId, monthRange);
 		logger.debug("Timesheet entries found for userId " + userId + " in range " + monthRange + ": " + timesheetEntries.size());
 		
 		calendarMap = entriesToCalendarMap(timesheetEntries);
 		
-		overview.setProjectHours(projectReports);
+		overview.setProjectHours(projectAssignmentAggregates);
 		overview.setTimesheetEntries(calendarMap);
 		
 		return overview;

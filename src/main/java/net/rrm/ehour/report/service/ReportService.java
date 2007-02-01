@@ -28,7 +28,9 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.project.ProjectReport;
 
 
 /**
@@ -47,7 +49,7 @@ public interface ReportService
 	 * @param calendar
 	 * @return List with projectReport objects
 	 */
-	public List<ProjectReport> getHoursPerAssignmentInMonth(Integer userId, Calendar calendar);
+	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInMonth(Integer userId, Calendar calendar);
 
 	/**
 	 * Get the booked hours per project assignment for a date range
@@ -56,7 +58,7 @@ public interface ReportService
 	 * @return List with projectReport objects
 	 */
 
-	public List<ProjectReport> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
+	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
 	
 	
 	/**
@@ -65,4 +67,11 @@ public interface ReportService
 	 * @return
 	 */
 	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria);
+	
+	/**
+	 * Get project report
+	 * @param criteria
+	 * @return
+	 */
+	public ProjectReport createProjectReport(UserCriteria criteria);
 }

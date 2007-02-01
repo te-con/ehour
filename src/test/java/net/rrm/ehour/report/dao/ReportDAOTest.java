@@ -26,11 +26,12 @@ package net.rrm.ehour.report.dao;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 
 /**
  * TODO 
@@ -46,26 +47,6 @@ public class ReportDAOTest extends BaseDAOTest
 		this.dao = dao;
 	}
 	
-	/**
-	 * 
-	 *
-	 */
-	public void testGetCumulatedHoursPerAssignmentForUser()
-	{
-		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
-										    new Date(2006 - 1900, 10, 30));
-		
-		List<ProjectReport> results = dao.getCumulatedHoursPerAssignmentForUser(new Integer(1), dateRange);
-
-		// test if collection is properly initialized
-		ProjectReport rep = results.get(0);
-		assertEquals("Days off", rep.getProjectAssignment().getProject().getName());
-		
-		rep = results.get(1);
-		assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
-		
-		assertEquals(2, results.size());
-	}
 	
 	public void testGetMinMaxDateTimesheetEntry()
 	{
@@ -77,5 +58,82 @@ public class ReportDAOTest extends BaseDAOTest
 		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
 		assertEquals(cal.getTime(), range.getDateEnd());
 
+	}	
+	
+	/**
+	 * 
+	 *
+	 */
+	public void testGetCumulatedHoursPerAssignmentForUserAndDate()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
+										    new Date(2006 - 1900, 10, 30));
+		
+		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(new Integer[]{1}, dateRange);
+
+		// test if collection is properly initialized
+		ProjectAssignmentAggregate rep = results.get(0);
+		assertEquals("Days off", rep.getProjectAssignment().getProject().getName());
+		
+		rep = results.get(1);
+		assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
+		
+		assertEquals(2, results.size());
 	}
+	
+	/**
+	 * 
+	 *
+	 */
+	public void testGetCumulatedHoursPerAssignmentForUser()
+	{
+		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(new Integer[]{1, 2});
+
+		// test if collection is properly initialized
+		ProjectAssignmentAggregate rep = results.get(0);
+		assertEquals("Days off", rep.getProjectAssignment().getProject().getName());
+		
+		assertEquals(7f, rep.getHours().floatValue(), 0.1);
+		
+		assertEquals(3, results.size());
+	}
+	
+	
+	/**
+	 * 
+	 *
+	 */
+	public void testGetCumulatedHoursPerAssignmentForUserProject()
+	{
+		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(new Integer[]{1},
+																								new Integer[]{1});
+
+		// test if collection is properly initialized
+		ProjectAssignmentAggregate rep = results.get(0);
+		assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
+		
+		assertEquals(1, results.size());
+	}	
+	
+	/**
+	 * 
+	 *
+	 */
+	public void testGetCumulatedHoursPerAssignmentForUserProjectDate()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2006 - 1900, 10 - 1, 4));
+		
+		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(new Integer[]{2},
+																								new Integer[]{1},
+																								dateRange);
+
+		// test if collection is properly initialized
+		ProjectAssignmentAggregate rep = results.get(0);
+		assertEquals(9.2f, rep.getHours().floatValue(), 0.1);
+		
+		assertEquals(1, results.size());
+	}	
+
+
 }

@@ -26,7 +26,7 @@ package net.rrm.ehour.report.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.dto.ProjectReport;
+import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 
 /**
  * Reporting data operations 
@@ -37,12 +37,37 @@ import net.rrm.ehour.report.dto.ProjectReport;
 public interface ReportDAO
 {
 	/**
-	 * Get cumulated hours per project assignment for a user between a date range
+	 * Get cumulated hours per project assignment for user in a date range
 	 * @param userId
 	 * @param dateRange
 	 * @return
 	 */
-	public List<ProjectReport> getCumulatedHoursPerAssignmentForUser(Integer userId, DateRange dateRange);
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer userId[], DateRange dateRange);
+
+	/**
+	 * Get cumulated hours per project assignment for users
+	 * @param userId
+	 * @param dateRange
+	 * @return
+	 */
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer userId[]);
+
+	/**
+	 * Get cumulated hours per project assignment for users, projects
+	 * @param userId
+	 * @param projectId
+	 * @return
+	 */
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer userId[], Integer projectId[]);
+
+	/**
+	 * Get cumulated hours per project assignment for users, projects in a date range
+	 * @param userId
+	 * @param projectId
+	 * @param dateRange
+	 * @return
+	 */
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer userId[], Integer projectId[], DateRange dateRange);
 	
 	/**
 	 * Get the min/max timesheet date
