@@ -23,12 +23,11 @@
 
 package net.rrm.ehour.report.project;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -43,7 +42,7 @@ public class ProjectReport
 {
 	private	UserCriteria	userCriteria;
 	private	Logger			logger = Logger.getLogger(this.getClass());
-	private	SortedMap<Customer, SortedSet<ProjectAssignmentAggregate>>	reportMap;
+	private	Map<Customer, List<ProjectAssignmentAggregate>>	reportMap;
 	
 	/**
 	 * Initialize the report based on the supplied aggregates
@@ -51,30 +50,36 @@ public class ProjectReport
 	 */
 	public void initialize(List<ProjectAssignmentAggregate> aggregates)
 	{
-		Customer	customer;
-		SortedSet<ProjectAssignmentAggregate>	aggregateSet;
+		Customer							customer;
+		CustomerTotal						customerTotal;
+		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
 		
 		logger.debug("Initializing project report");
 		
-		reportMap = new TreeMap<Customer, SortedSet<ProjectAssignmentAggregate>>();
+		reportMap = new HashMap<Customer, List<ProjectAssignmentAggregate>>();
 		
 		for (ProjectAssignmentAggregate aggregate : aggregates)
 		{
+			logger.debug("Found aggregate : " + aggregate);
 			customer = aggregate.getProjectAssignment().getProject().getCustomer();
 			
 			if (reportMap.containsKey(customer))
 			{
-				aggregateSet = reportMap.get(customer);
+				aggregatesPerCustomer = reportMap.get(customer);
+//				customerTotal = (CustomerTotal)reportMap. 
 			}
 			else
 			{
 				logger.debug("Adding customer " + customer + " to report");
-				aggregateSet = new TreeSet<ProjectAssignmentAggregate>();
+				aggregatesPerCustomer = new ArrayList<ProjectAssignmentAggregate>();
 			}
 			
-			aggregateSet.add(aggregate);
+			aggregatesPerCustomer.add(aggregate);
 			
-			reportMap.put(customer, aggregateSet);
+			customerTotal = (CustomerTotal)customer;
+			customerTotal.addAggregate(aggregate);
+			
+			reportMap.put(customer, aggregatesPerCustomer);
 		}
 	}
 
@@ -83,7 +88,7 @@ public class ProjectReport
 	 * Get the report values
 	 * @return
 	 */
-	public SortedMap<Customer, SortedSet<ProjectAssignmentAggregate>> getReportValues()
+	public Map<Customer, List<ProjectAssignmentAggregate>> getReportValues()
 	{
 		return reportMap;
 	}

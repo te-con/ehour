@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.report.project;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import net.rrm.ehour.project.domain.ProjectAssignment;
 
 /**
@@ -96,8 +98,17 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 	 */
 	public int compareTo(ProjectAssignmentAggregate pagO)
 	{
-		// TODO Auto-generated method stub
+		// TODO
 		return 0;
+	}
+	
+	public String toString()
+	{
+		return new ToStringBuilder(this)
+			.append("ProjectAssignment", projectAssignment)
+			.append("hours", hours)
+			.append("turnOver", turnOver)
+			.toString();		
 	}
 
 }
