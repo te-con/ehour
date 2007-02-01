@@ -221,6 +221,8 @@ public class ReportServiceImpl implements ReportService
 			reportRange = criteria.getReportRange();
 		}
 		
+		logger.debug("Using range " + reportRange);
+		
 		if (criteria.getProjectIds() == null)
 		{
 			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(criteria.getUserIds(),
