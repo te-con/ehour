@@ -26,12 +26,18 @@
 
     <!-- User report Overview page -->
     <definition name=".ehour.userreport.overview" extends=".ehour.baseLayout">
-        <put name="navCalendar" value="/WEB-INF/jsp/nav/nothing.html" />
-        <put name="content" value="/WEB-INF/jsp/userReport/index.jsp" />
+        <put name="navCalendar" value="/WEB-INF/jsp/userReport/criteria.jsp" />
+        <put name="content" value="/eh/userReport/projectReport.do" />
+    	<put name="extraCss" value="/css/ehourUserReport.jsp" />        
     </definition>
 
-
-
+    <!-- User report projectReport -->    
+    <definition name=".ehour.userreport.projectReport" path="/WEB-INF/jsp/userReport/reportLayout.jsp">
+        <put name="report" value="/WEB-INF/jsp/userReport/projectReport.jsp" />
+    	<put name="chart" value="/WEB-INF/jsp/nav/nothing.html" />        
+    </definition>
+    
+    
     <!-- NavCalendar -->
     <definition name=".ehour.calendar.navCalendar" path="/WEB-INF/jsp/nav/navCalendar.jsp" />
 

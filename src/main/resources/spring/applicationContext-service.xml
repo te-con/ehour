@@ -64,7 +64,8 @@
 	<!-- Avai -->
 	<bean id="reportCriteria"
 			class="net.rrm.ehour.report.criteria.ReportCriteria"
-			scope="session">
+			scope="session"
+			init-method="initialize">
 		<aop:scoped-proxy/>			
 	</bean>
 	

@@ -150,4 +150,17 @@ public class ReportDAOHibernateImpl extends HibernateDaoSupport implements Repor
 																		, keys, params);
 		return results;
 	}
+
+	/**
+	 * Get the min/max timesheet date for a user
+	 */
+	@SuppressWarnings("unchecked")
+	public DateRange getMinMaxDateTimesheetEntry(Integer userId)
+	{
+		List<DateRange>	results;
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getMinMaxTimesheetEntryDateForUser"
+																		, "userId",
+																		userId);
+		return results.get(0);
+	}
 }

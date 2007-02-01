@@ -2,11 +2,10 @@ package net.rrm.ehour.customer.domain;
 
 import java.util.Set;
 
+import net.rrm.ehour.domain.DomainObject;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-
-import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.project.domain.ProjectAssignment;
 
 public class Customer extends DomainObject implements Comparable<Customer>
 {
@@ -132,7 +131,7 @@ public class Customer extends DomainObject implements Comparable<Customer>
 
 	public int compareTo(Customer o)
 	{
-		return customerId.intValue() - o.getCustomerId().intValue();
+		return name.compareTo(o.getName());
 	}
 	
 	@Override

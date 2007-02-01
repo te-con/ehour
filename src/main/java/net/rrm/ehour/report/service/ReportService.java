@@ -73,5 +73,5 @@ public interface ReportService
 	 * @param criteria
 	 * @return
 	 */
-	public ProjectReport createProjectReport(UserCriteria criteria);
+	public ProjectReport createProjectReport(ReportCriteria criteria);
 }

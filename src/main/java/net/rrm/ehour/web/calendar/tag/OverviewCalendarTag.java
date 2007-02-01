@@ -50,7 +50,7 @@ public class OverviewCalendarTag extends CalendarTag
 	private String HTML_NEW_ROW_HOURS = "<tr class='hourRow'>";
 
 	private	Map<Integer, List<TimesheetEntry>>	timesheetEntries;
-	private Logger	logger = Logger.getLogger(OverviewCalendarTag.class);
+	private transient Logger	logger = Logger.getLogger(OverviewCalendarTag.class);
 	
 	/**
 	 *

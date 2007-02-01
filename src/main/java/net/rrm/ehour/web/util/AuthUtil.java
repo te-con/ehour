@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
 
 public class AuthUtil
 {
-	public static Logger logger = Logger.getLogger(AuthUtil.class);
+	public static transient Logger logger = Logger.getLogger(AuthUtil.class);
 
 	/**
 	 * Check whether a role is in the array of roles 

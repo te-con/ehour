@@ -24,6 +24,7 @@
 package net.rrm.ehour.report.project;
 
 import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -85,6 +86,15 @@ public class ProjectReport
 	public SortedMap<Customer, SortedSet<ProjectAssignmentAggregate>> getReportValues()
 	{
 		return reportMap;
+	}
+	
+	/**
+	 * Get the customers in the map
+	 * @return
+	 */
+	public Set<Customer> getCustomers()
+	{
+		return reportMap.keySet();
 	}
 
 

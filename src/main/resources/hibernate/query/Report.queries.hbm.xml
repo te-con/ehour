@@ -44,7 +44,12 @@
         SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
 		FROM TimesheetEntry entry
 	</query>     
-	
+
+    <query name="Report.getMinMaxTimesheetEntryDateForUser">
+        SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
+		FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.user.userId = :userId
+	</query> 	
 	<query name="Report.getAvailReportCriteria">
 	   	SELECT new net.rrm.ehour.user.domain.User(user.userId, user.firstName, user.lastName)
 	   	FROM User user

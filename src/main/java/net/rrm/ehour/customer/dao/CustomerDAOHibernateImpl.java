@@ -48,7 +48,7 @@ public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, 
 	{
 		List	l;
 		
-		l = getHibernateTemplate().findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", new Boolean(active));
+		l = getHibernateTemplate().findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", active);
 		
 		return l;	
 	}

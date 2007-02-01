@@ -75,12 +75,20 @@
 		</action>
 		
 
-		<!-- Logoff action -->
+		<!-- User report criteria -->
 		<action name="ReportCriteriaForm"
 				path="/eh/userReport/index"
 				type="net.rrm.ehour.web.report.action.UserReportCriteriaAction" >
 			<forward name="success" path=".ehour.userreport.overview" />
 		</action>		
+
+		<!-- User report criteria -->
+		<action name="ReportCriteriaForm"
+				path="/eh/userReport/projectReport"
+				type="net.rrm.ehour.web.report.action.UserProjectReportAction" >
+			<forward name="success" path=".ehour.userreport.projectReport" />
+		</action>		
+
 	</action-mappings>
 
 

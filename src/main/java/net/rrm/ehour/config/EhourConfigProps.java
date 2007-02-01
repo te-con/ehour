@@ -45,6 +45,6 @@ public class EhourConfigProps implements EhourConfig
 
 	public boolean isShowTurnover()
 	{
-		return new Boolean(props.getProperty("showTurnOver"));
+		return Boolean.valueOf(props.getProperty("showTurnOver"));
 	}
 }

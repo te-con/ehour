@@ -29,21 +29,20 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
  * TODO 
  **/
 
-public class ProjectAssignmentAggregate
+public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentAggregate>
 {
-	private	ProjectAssignment	projectAssignment;
-	private	Number				hours;
-	private	Number				turnOver;
-	
+	private ProjectAssignment 	projectAssignment;
+	private Number 				hours;
+	private Number 				turnOver;
+
 	/**
 	 * empty constructor
 	 *
 	 */
 	public ProjectAssignmentAggregate()
 	{
-		
 	}
-	
+
 	/**
 	 * full constructor
 	 * @param projectAssignment
@@ -91,6 +90,14 @@ public class ProjectAssignmentAggregate
 	{
 		this.turnOver = turnOver;
 	}
-	
-	
+
+	/**
+	 * 
+	 */
+	public int compareTo(ProjectAssignmentAggregate pagO)
+	{
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
+}

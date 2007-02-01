@@ -184,3 +184,25 @@ div.Header table th a:active
 	font: 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
 	text-decoration: none
 }
+
+#submitButton
+{
+	background-color: #a3bed9;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: white;
+	border: 0;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #cde4fd;
+}
+
+#submitButton:hover
+{
+	background-color: #a3bed9;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #576d83;
+}

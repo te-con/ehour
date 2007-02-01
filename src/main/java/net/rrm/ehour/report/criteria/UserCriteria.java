@@ -25,6 +25,8 @@ package net.rrm.ehour.report.criteria;
 
 import net.rrm.ehour.data.DateRange;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * TODO 
  **/
@@ -42,6 +44,19 @@ public class UserCriteria
 	private	Integer[]	userIds;
 	private	Integer[]	projectIds;
 	private	boolean		singleUser;
+	
+	/**
+	 * 
+	 */
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this)
+			.append("reportRange", reportRange)
+			.append("userIds", userIds)
+			.append("projectIds", projectIds)
+			.toString();
+	}
 	
 	/**
 	 * @return the onlyActiveCustomers

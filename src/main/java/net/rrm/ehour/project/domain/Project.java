@@ -5,7 +5,7 @@ import java.util.Set;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.domain.DomainObject;
 
-public class Project extends DomainObject
+public class Project extends DomainObject implements Comparable<Project>
 {
 
 	// Fields    
@@ -156,6 +156,18 @@ public class Project extends DomainObject
 	public void setProjectAssignments(Set projectAssignments)
 	{
 		this.projectAssignments = projectAssignments;
+	}
+
+	public int compareTo(Project o)
+	{
+		int	customerCompare = customer.compareTo(o.getCustomer());
+		
+		if (customerCompare == 0)
+		{
+			return name.compareTo(o.getName());
+		}
+		
+		return customerCompare;
 	}
 
 }

@@ -35,6 +35,10 @@ import net.rrm.ehour.web.form.UserIdForm;
 
 public class ReportCriteriaForm extends UserIdForm
 {
+	private	Integer	projectId[];
+	private	String	dateStart;
+	private	String	dateEnd;
+	
 	/**
 	 * 
 	 */
@@ -63,5 +67,53 @@ public class ReportCriteriaForm extends UserIdForm
 	public void setFromForm(boolean fromForm)
 	{
 		this.fromForm = fromForm;
+	}
+
+	/**
+	 * @return the projectId
+	 */
+	public Integer[] getProjectId()
+	{
+		return projectId;
+	}
+
+	/**
+	 * @param projectId the projectId to set
+	 */
+	public void setProjectId(Integer[] projectId)
+	{
+		this.projectId = projectId;
+	}
+
+	/**
+	 * @return the dateEnd
+	 */
+	public String getDateEnd()
+	{
+		return dateEnd;
+	}
+
+	/**
+	 * @param dateEnd the dateEnd to set
+	 */
+	public void setDateEnd(String dateEnd)
+	{
+		this.dateEnd = dateEnd;
+	}
+
+	/**
+	 * @return the dateStart
+	 */
+	public String getDateStart()
+	{
+		return dateStart;
+	}
+
+	/**
+	 * @param dateStart the dateStart to set
+	 */
+	public void setDateStart(String dateStart)
+	{
+		this.dateStart = dateStart;
 	}
 }

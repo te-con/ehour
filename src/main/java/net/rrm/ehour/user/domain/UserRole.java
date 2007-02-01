@@ -26,6 +26,7 @@ package net.rrm.ehour.user.domain;
 import net.rrm.ehour.domain.DomainObject;
 
 import org.acegisecurity.GrantedAuthority;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 
 /**
@@ -109,6 +110,14 @@ public class UserRole  extends DomainObject implements GrantedAuthority
 
         return isEqual;
     }	
+    
+    /**
+     * 
+     */
+    public int hashCode()
+    {
+    	return new HashCodeBuilder().append(role).append(roleName).toHashCode();
+    }
 	
     public String toString()
     {

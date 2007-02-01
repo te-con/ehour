@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.data;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -33,8 +34,12 @@ import java.util.GregorianCalendar;
  * including the start & the end 
  **/
 
-public class DateRange
+public class DateRange implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4901436851703213753L;
 	private Date	dateStart;
 	private	Date	dateEnd;
 

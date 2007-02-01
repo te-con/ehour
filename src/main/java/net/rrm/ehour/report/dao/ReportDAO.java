@@ -74,4 +74,10 @@ public interface ReportDAO
 	 * @return
 	 */
 	public DateRange getMinMaxDateTimesheetEntry();
+	
+	/**
+	 * Get the min/max timesheet date for a user
+	 * @return
+	 */
+	public DateRange getMinMaxDateTimesheetEntry(Integer userId);
 }

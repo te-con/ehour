@@ -156,7 +156,7 @@ public class TimesheetServiceImpl implements TimesheetService
            cal = new GregorianCalendar();
            cal.setTime(entry.getEntryId().getEntryDate());
            
-           dayKey = new Integer(cal.get(Calendar.DAY_OF_MONTH));
+           dayKey = Integer.valueOf(cal.get(Calendar.DAY_OF_MONTH));
 
            if (calendarMap.containsKey(dayKey))
            {
