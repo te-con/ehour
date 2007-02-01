@@ -9,7 +9,6 @@
                       entry.entryId.entryDate <= :dateEnd AND
                       entry.entryId.projectAssignment.user.userId IN (:userIds)
                 GROUP BY entry.entryId.projectAssignment.assignmentId
-				ORDER BY entry.entryId.projectAssignment.project.projectCode
         ]]></query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUserIds">
@@ -17,7 +16,6 @@
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.projectAssignment.user.userId IN (:userIds)
                 GROUP BY entry.entryId.projectAssignment.assignmentId
-				ORDER BY entry.entryId.projectAssignment.project.projectCode
         ]]></query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUserIdsAndProjectIds">
@@ -26,7 +24,6 @@
                 WHERE entry.entryId.projectAssignment.user.userId IN (:userIds) AND
                 	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
                 GROUP BY entry.entryId.projectAssignment.assignmentId
-				ORDER BY entry.entryId.projectAssignment.project.projectCode
         ]]></query>
 
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForUserIdsAndProjectIds">
@@ -37,7 +34,6 @@
                       entry.entryId.projectAssignment.user.userId IN (:userIds) AND
                 	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
                 GROUP BY entry.entryId.projectAssignment.assignmentId
-				ORDER BY entry.entryId.projectAssignment.project.projectCode
         ]]></query>
         
     <query name="Report.getMinMaxTimesheetEntryDate">

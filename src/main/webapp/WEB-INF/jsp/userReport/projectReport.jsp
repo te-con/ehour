@@ -7,7 +7,7 @@
 	${customer.name}<br>
 	
 	<c:forEach items="${report.reportValues[customer]}" var="pag">
-		&nbsp;${pag.projectAssignment.project.name}-${pag.hours}<Br>
+		&nbsp;${pag.projectAssignment.project.name}-${pag.hours}--${pag.turnOver}<Br>
 	</c:forEach>
 	
 </c:forEach>
