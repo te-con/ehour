@@ -60,7 +60,7 @@ public class ProjectReportTest extends TestCase
 		ProjectAssignmentAggregate pag1 = new ProjectAssignmentAggregate(pa1, 1, 1);
 		ProjectAssignmentAggregate pag2 = new ProjectAssignmentAggregate(pa2, 1, 1);
 		
-		List<ProjectAssignmentAggregate> pags = new ArrayList();
+		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		
 		pags.add(pag1);
 		pags.add(pag2);

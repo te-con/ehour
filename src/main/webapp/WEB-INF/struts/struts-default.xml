@@ -82,12 +82,16 @@
 			<forward name="success" path=".ehour.userreport.overview" />
 		</action>		
 
-		<!-- User report criteria -->
+		<!-- User project report -->
 		<action name="ReportCriteriaForm"
 				path="/eh/userReport/projectReport"
 				type="net.rrm.ehour.web.report.action.UserProjectReportAction" >
 			<forward name="success" path=".ehour.userreport.projectReport" />
 		</action>		
+
+		<!-- User project report chart -->
+		<action path="/eh/userReport/projectChart"
+				type="net.rrm.ehour.web.report.action.UserProjectReportChartAction" />
 
 	</action-mappings>
 

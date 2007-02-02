@@ -6,6 +6,7 @@ import net.rrm.ehour.domain.DomainObject;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Customer extends DomainObject implements Comparable<Customer>
 {
@@ -34,7 +35,12 @@ public class Customer extends DomainObject implements Comparable<Customer>
 	@Override
 	public String toString()
 	{
-		return customerId.intValue() + ", name: " + name;
+		return new ToStringBuilder(this)
+			.append("customerId", customerId)
+			.append("code", code)
+			.append("name", name)
+			.append("active", active)
+			.toString();		
 	}
 	
 	/** default constructor */

@@ -73,9 +73,9 @@ public class ReportDAOTest extends BaseDAOTest
 
 		// test if collection is properly initialized
 		ProjectAssignmentAggregate rep = results.get(0);
-		assertEquals("Days off", rep.getProjectAssignment().getProject().getName());
+		assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
 		
-		rep = results.get(1);
+		rep = results.get(0);
 		assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
 		
 		assertEquals(2, results.size());
@@ -91,9 +91,9 @@ public class ReportDAOTest extends BaseDAOTest
 
 		// test if collection is properly initialized
 		ProjectAssignmentAggregate rep = results.get(0);
-		assertEquals("Days off", rep.getProjectAssignment().getProject().getName());
+		assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
 		
-		assertEquals(7f, rep.getHours().floatValue(), 0.1);
+		assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
 		
 		assertEquals(3, results.size());
 	}

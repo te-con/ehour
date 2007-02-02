@@ -32,11 +32,7 @@
     </definition>
 
     <!-- User report projectReport -->    
-    <definition name=".ehour.userreport.projectReport" path="/WEB-INF/jsp/userReport/reportLayout.jsp">
-        <put name="report" value="/WEB-INF/jsp/userReport/projectReport.jsp" />
-    	<put name="chart" value="/WEB-INF/jsp/nav/nothing.html" />        
-    </definition>
-    
+    <definition name=".ehour.userreport.projectReport" path="/WEB-INF/jsp/userReport/projectReport.jsp" />
     
     <!-- NavCalendar -->
     <definition name=".ehour.calendar.navCalendar" path="/WEB-INF/jsp/nav/navCalendar.jsp" />

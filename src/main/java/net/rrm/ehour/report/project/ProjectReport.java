@@ -40,9 +40,14 @@ import org.apache.log4j.Logger;
 
 public class ProjectReport
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6365903846883586472L;
+	
 	private	UserCriteria	userCriteria;
 	private	Logger			logger = Logger.getLogger(this.getClass());
-	private	Map<Customer, List<ProjectAssignmentAggregate>>	reportMap;
+	private	Map<Customer, List<ProjectAssignmentAggregate>>	report;
 	
 	/**
 	 * Initialize the report based on the supplied aggregates
@@ -51,22 +56,20 @@ public class ProjectReport
 	public void initialize(List<ProjectAssignmentAggregate> aggregates)
 	{
 		Customer							customer;
-		CustomerTotal						customerTotal;
 		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
 		
-		logger.debug("Initializing project report");
+		report = new HashMap<Customer, List<ProjectAssignmentAggregate>>();
 		
-		reportMap = new HashMap<Customer, List<ProjectAssignmentAggregate>>();
+		logger.debug("Initializing project report");
 		
 		for (ProjectAssignmentAggregate aggregate : aggregates)
 		{
 			logger.debug("Found aggregate : " + aggregate);
 			customer = aggregate.getProjectAssignment().getProject().getCustomer();
 			
-			if (reportMap.containsKey(customer))
+			if (report.containsKey(customer))
 			{
-				aggregatesPerCustomer = reportMap.get(customer);
-//				customerTotal = (CustomerTotal)reportMap. 
+				aggregatesPerCustomer = report.get(customer);
 			}
 			else
 			{
@@ -76,32 +79,65 @@ public class ProjectReport
 			
 			aggregatesPerCustomer.add(aggregate);
 			
-			customerTotal = (CustomerTotal)customer;
-			customerTotal.addAggregate(aggregate);
-			
-			reportMap.put(customer, aggregatesPerCustomer);
+			report.put(customer, aggregatesPerCustomer);
 		}
 	}
 
-
 	/**
-	 * Get the report values
+	 * Get total hours for a key
+	 * @param key
 	 * @return
 	 */
-	public Map<Customer, List<ProjectAssignmentAggregate>> getReportValues()
+	public float getHourTotal(Customer key)
 	{
-		return reportMap;
+		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
+		float								totalHours = 0f;
+		aggregatesPerCustomer = report.get(key);
+		
+		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
+		{
+			totalHours += aggregate.getHours().floatValue();
+		}
+		
+		return totalHours;
 	}
 	
 	/**
-	 * Get the customers in the map
+	 * Get total turn over for key
+	 * @param key
+	 * @return
+	 */
+	public float getTurnOverTotal(Customer key)
+	{
+		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
+		float								totalTurnOver = 0f;
+		aggregatesPerCustomer = report.get(key);
+		
+		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
+		{
+			totalTurnOver += aggregate.getTurnOver().floatValue();
+		}
+		
+		return totalTurnOver;
+	}
+	
+	/**
+	 * Get customers in this report 
 	 * @return
 	 */
 	public Set<Customer> getCustomers()
 	{
-		return reportMap.keySet();
+		return report.keySet();
 	}
-
+	
+	/**
+	 * Get values
+	 * @return
+	 */
+	public Map<Customer, List<ProjectAssignmentAggregate>> getReportValues()
+	{
+		return report;
+	}
 
 	/**
 	 * @return the userCriteria

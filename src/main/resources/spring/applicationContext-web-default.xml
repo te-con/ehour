@@ -27,7 +27,10 @@
 		<property name="reportCriteria" ref="reportCriteria" />
 		<property name="reportService" ref="reportService" />
 	</bean>
-	
+
+	<bean name="/eh/userReport/projectChart" class="net.rrm.ehour.web.report.action.ProjectChartReportAction">
+	</bean>
+		
 	<bean name="/eh/cal/navCalendar" class="net.rrm.ehour.web.calendar.GetNavCalendarAction" />	
 	
 	<bean name="/eh/logOff" class="net.rrm.ehour.web.action.LogOffAction" />	

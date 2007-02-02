@@ -23,8 +23,11 @@
 
 package net.rrm.ehour.web.report.action;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -33,6 +36,7 @@ import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
 import net.rrm.ehour.web.util.AuthUtil;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -46,6 +50,7 @@ public class UserProjectReportAction extends Action
 {
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
+	private	Logger			logger = Logger.getLogger(this.getClass());
 
 	/**
 	 * 
@@ -58,6 +63,8 @@ public class UserProjectReportAction extends Action
 		Integer				userId;
 		UserCriteria		uc;
 		ProjectReport		report;
+		String				sessionKey;
+		HttpSession			session = request.getSession();
 		
 		// sanity check to prevent abuse
 		userId = AuthUtil.getUserId(request, rcForm);
@@ -66,11 +73,31 @@ public class UserProjectReportAction extends Action
 		uc.setUserFilter(UserCriteria.USER_SINGLE);
 		
 		report = reportService.createProjectReport(reportCriteria);
+		sessionKey = generateSessionKey();
+		session.setAttribute(sessionKey, report);
 		request.setAttribute("report", report);
-		
+		request.setAttribute("reportSessionKey", sessionKey);
+
 		return mapping.findForward("success");
 	}
 
+	/**
+	 * Generate session key for this report 
+	 * @param userId
+	 * @return
+	 */
+	private String generateSessionKey()
+	{
+		StringBuffer 	sessionKey = new StringBuffer("report_");
+		
+		sessionKey.append(new Date().getTime());
+		
+		logger.debug("generated session key for report: " + sessionKey);
+		
+		return sessionKey.toString();
+	}
+	
+	
 	/**
 	 * @param reportCriteria the reportCriteria to set
 	 */
