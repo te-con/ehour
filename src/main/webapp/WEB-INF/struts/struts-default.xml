@@ -89,9 +89,14 @@
 			<forward name="success" path=".ehour.userreport.projectReport" />
 		</action>		
 
-		<!-- User project report chart -->
-		<action path="/eh/userReport/projectChart"
-				type="net.rrm.ehour.web.report.action.UserProjectReportChartAction" />
+		<!-- User project total hours chart -->
+		<action path="/eh/userReport/projectReportTotalHoursChart"
+				type="net.rrm.ehour.web.report.action.ProjectReportTotalHoursChartAction" />
+
+
+		<!-- User project total turnover chart -->
+		<action path="/eh/userReport/projectReportTotalTurnoverChart"
+				type="net.rrm.ehour.web.report.action.ProjectReportTotalTurnOverChartAction" />
 
 	</action-mappings>
 

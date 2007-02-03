@@ -3,7 +3,7 @@
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-
+<!-- spanTarget: reportContent -->
 <div class="GreyFrame">
 	<h3>&nbsp;</h3>
 	
@@ -18,7 +18,7 @@
 			</div>
 		</div>	
 
-		<table class="reportTable">
+		<table class="reportTable" cellpadding="0" cellspacing="0">
 			<tr>
 				<th>Customer</th>
 				<th>Project</th>
@@ -51,7 +51,8 @@
 		</div>			
 	</div>
 	</td><td valign="top" width="270">
-	<img style="float: right; margin-right: 5px;" src="projectChart.do?key=${reportSessionKey}">
+	<img style="float: right; margin-right: 5px;" src="projectReportTotalHoursChart.do?key=${reportSessionKey}"><br>
+	<img style="float: right; margin-right: 5px;" src="projectReportTotalTurnoverChart.do?key=${reportSessionKey}">
 </td></tr></table>
 	<br>
 	

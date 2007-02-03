@@ -6,6 +6,7 @@
 
 <!-- spanTarget:navCalendar -->
 <script src="../../js/dojo.js" type="text/javascript"></script>
+<script src="../../js/userReport.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 	dojo.require("dojo.widget.*");
@@ -30,7 +31,8 @@ function init()
 											 name: "dateEnd",
 											 containerToggle: "fade"
 										 }, replacedNode);  
-										 
+		
+	bindCriteriaForm();										 
 }
 </script>
 
@@ -42,7 +44,7 @@ function init()
 		</div>
 	</div>
 
-<form method="post" action="projectReport.do" name="criteriaForm">
+<form method="post" action="projectReport.do" id="criteriaForm">
 
 <table class="criteriaTable">
 	<tr>
@@ -73,6 +75,7 @@ function init()
 		
 		<td>
 			<select name="projectId" multiple="multiple">
+				<option value="-1">(All)
 				<c:forEach items="${criteria.availableCriteria.projects}" var="project">
 					<option value="${project.projectId}">${project.name}
 				</c:forEach>

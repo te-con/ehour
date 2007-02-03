@@ -34,6 +34,7 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.project.ProjectReport;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
+import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
 
 import org.apache.log4j.Logger;
@@ -66,11 +67,14 @@ public class UserProjectReportAction extends Action
 		String				sessionKey;
 		HttpSession			session = request.getSession();
 		
+		uc = UserCriteriaAssembler.getUserCriteria(rcForm);
+		
 		// sanity check to prevent abuse
 		userId = AuthUtil.getUserId(request, rcForm);
-		uc = reportCriteria.getUserCriteria();
+//		uc = reportCriteria.getUserCriteria();
 		uc.setUserIds(new Integer[]{userId});
 		uc.setUserFilter(UserCriteria.USER_SINGLE);
+		reportCriteria.setUserCriteria(uc);
 		
 		report = reportService.createProjectReport(reportCriteria);
 		sessionKey = generateSessionKey();

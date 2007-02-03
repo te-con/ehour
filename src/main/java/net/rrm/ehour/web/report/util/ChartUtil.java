@@ -25,14 +25,9 @@ package net.rrm.ehour.web.report.util;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.AxisSpace;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.title.TextTitle;
-import org.jfree.ui.RectangleInsets;
 
 /**
  * TODO 
@@ -51,25 +46,5 @@ public class ChartUtil
 		title.setFont(chartTitleFont);
 		title.setPaint(new Color(0x536e87));
 		chart.setTitle(title);
-		
-		CategoryPlot plot;
-		AxisSpace space;
-		RectangleInsets insets;
-		Rectangle2D rect;
-		rect = new Rectangle(0, 0, 2, 2);
-		
-//		rect2D = new Rectangle2D(0);
-		
-		plot = chart.getCategoryPlot();
-		insets = new RectangleInsets(0, 0, 0, 0);
-//		plot.setAxisOffset(insets);
-//		insets = plot.getAxisOffset();
-//		insets.createInsetRectangle(rect);
-		
-//		System.out.println(insets..);
-//		insets.
-//		space.setLeft(0);
-		
-//		System.out.println(chart.getCategoryPlot());
 	}
 }

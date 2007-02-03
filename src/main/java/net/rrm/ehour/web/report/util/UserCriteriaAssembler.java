@@ -74,6 +74,29 @@ public class UserCriteriaAssembler
 		{
 			uc.setReportRange(reportRange);
 		}
+
+		// project id's
+		if (rcf.getProjectId() != null &&
+			rcf.getProjectId().length > 0)
+		{
+			boolean	allSelected = false;
+			
+			// check if 'All' is clicked
+			for (int i = 0;
+				 i < rcf.getProjectId().length;
+				 i++)
+			{
+				if (rcf.getProjectId()[i] == -1)
+				{
+					allSelected = true;	
+				}
+			}
+			
+			if (!allSelected)
+			{
+				uc.setProjectIds(rcf.getProjectId());
+			}
+		}
 		
 		return uc;
 	}

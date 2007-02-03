@@ -18,13 +18,6 @@
 	<link rel="stylesheet" type="text/css" href="<c:url value="${extraCss}" />" media="screen">
 </c:if>
 
-<!-- 
-	<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehour.css" />">
-	<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehour_header.css" />">
-	<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehour_calendar_small.css" />">
-	<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehour_overview.css" />">
-	<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehour_calendar.css" />">
--->		
 <script>
 	var ajaxError = "<fmt:message key="errors.ajax.general" />";
 	var formSuccess = "<fmt:message key="admin.general.formSuccess" />";

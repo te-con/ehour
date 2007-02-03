@@ -21,18 +21,6 @@ function reportReceived(type, xml, evt)
 	}
 	else
 	{
-		var spanTarget = parseSpanTarget(xml);
-
-		if (spanTarget == 'loginForm')
-		{
-			location.href = contextRoot;
-		} else if (spanTarget == 'form')
-		{
-			changeForm(xml);
-		}
-		else
-		{
-			listReceived(xml);
-		}		
+		ajaxEventReceived(xml, true, {reportContent: "reportContent"});
 	}
 }

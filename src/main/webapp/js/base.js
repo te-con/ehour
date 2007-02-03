@@ -19,7 +19,7 @@ function evalScript(html)
 function ajaxEventReceived(html, postParseJS, spanTargets)
 {
 	var spanTarget;
-	
+
 	if (!postParseJS)
 	{
 		evalScript(html);

@@ -27,7 +27,7 @@
     <!-- User report Overview page -->
     <definition name=".ehour.userreport.overview" extends=".ehour.baseLayout">
         <put name="navCalendar" value="/WEB-INF/jsp/userReport/criteria.jsp" />
-        <put name="content" value="/eh/userReport/projectReport.do" />
+        <put name="content" value="/WEB-INF/jsp/userReport/reportLayout.jsp" />
     	<put name="extraCss" value="/css/ehourUserReport.jsp" />        
     </definition>
 
