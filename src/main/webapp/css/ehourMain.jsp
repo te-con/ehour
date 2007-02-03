@@ -185,6 +185,73 @@ div.Header table th a:active
 	text-decoration: none
 }
 
+div.GreyFrame
+{
+  	background: url(<c:url value="/img/grey/corner_left_top.gif" />) top left no-repeat;
+	max-width: 710px;
+ } 
+
+div.GreyFrame h3
+{
+  background: 	url(<c:url value="/img/grey/corner_right_top.gif" />) top right no-repeat;
+  line-height:	11px;
+  padding:		0;
+  margin:		0 0 0px 75px;
+}
+
+div.GreyFrameBody
+{
+  background: url(<c:url value="/img/grey/pixel_grey.gif" />);
+  margin:0px;
+  margin-top: 0em;
+  padding:0;
+}
+
+div.GreyFrameFooter
+{
+  background: url(<c:url value="/img/grey/corner_left_bottom.gif" />) bottom left no-repeat;
+}
+
+div.GreyFrameFooter p
+{
+  background: url(<c:url value="/img/grey/corner_right_bottom.gif" />) bottom right no-repeat;
+  padding:15px;
+  display:block;
+  margin:-2em 0 0 0;
+}
+
+
+div.BlueFrame
+{
+  background: url(<c:url value="/img/ovw/gradient_blue.gif" />) top left repeat-x;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+div.BlueLeftTop
+{
+  background: url(<c:url value="/img/ovw/left_top.gif" />) top left no-repeat;
+}
+
+div.BlueRightTop
+{
+  background: url(<c:url value="/img/ovw/right_top.gif" />) top right no-repeat;
+ 	font:  bold 1.0em/1.5em Geneva, Arial, Helvetica, sans-serif;	
+ 		color: #536e87;
+}
+
+div.BlueRightBottom
+{
+  background: url(<c:url value="/img/ovw/right_bottom.gif" />) bottom right no-repeat;
+}
+
+div.BlueLeftBottom
+{
+  background: url(<c:url value="/img/ovw/left_bottom.gif" />) bottom left no-repeat;
+}
+
+
+
 #submitButton
 {
 	background-color: #a3bed9;

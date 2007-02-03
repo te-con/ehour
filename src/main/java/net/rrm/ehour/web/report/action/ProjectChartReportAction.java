@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.web.report.action;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.project.ProjectReport;
+import net.rrm.ehour.web.report.util.ChartUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
@@ -44,7 +43,6 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-
 /**
  * TODO 
  **/
@@ -65,15 +63,27 @@ public class ProjectChartReportAction extends Action
 		ProjectReport	report;
 		JFreeChart		chart;
 		
+		response.setContentType("image/png");
+
 		session = request.getSession();
 		sessionKey = request.getParameter("key");
 
 		report = (ProjectReport)session.getAttribute(sessionKey);
 		
-		chart = getChart(report);
-
-		response.setContentType("image/jpeg");
-		ChartUtilities.writeChartAsJPEG(response.getOutputStream(), 0.95f, chart, 400, 300);
+		if (report != null)
+		{
+			chart = getChart(report);
+			ChartUtil.changeChartStyle(chart);
+			
+			ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 250, 120);
+			
+//			session.setAttribute(sessionKey, null);
+		}
+		else
+		{
+			logger.error("No report in session found for key " + sessionKey);
+		}
+		
 		return null;
 	}
 	
@@ -87,22 +97,19 @@ public class ProjectChartReportAction extends Action
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		
 		Set<Customer>						customers;
-		List<ProjectAssignmentAggregate>	aggregates;
+		
 		customers = report.getCustomers();
+		String s = "Hours";
 		
 		for (Customer customer : customers)
 		{
-			aggregates = report.getReportValues().get(customer);
-			
-			for (ProjectAssignmentAggregate aggregate : aggregates)
-			{
-				dataset.setValue(aggregate.getHours(), "Hours", customer.getName());
-			}
+			dataset.addValue(report.getHourTotal(customer), s, customer.getName());
+//			dataset.addValue(report.getTurnOverTotal(customer), "Turn over", customer.getName());
 		}
 		
-		JFreeChart chart = ChartFactory.createBarChart("Hours",
-				"Customer", "Hours", dataset, PlotOrientation.VERTICAL,
-				false, true, false);
+		JFreeChart chart = ChartFactory.createBarChart("Booked hours per customer",
+				"Customer", "Hours", dataset, PlotOrientation.HORIZONTAL,
+				false, true, true);
 		
 		return chart;
 	}

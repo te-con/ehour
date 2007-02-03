@@ -28,7 +28,6 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.project.ProjectReport;
 

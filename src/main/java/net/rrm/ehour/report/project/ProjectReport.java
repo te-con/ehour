@@ -115,7 +115,10 @@ public class ProjectReport
 		
 		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
 		{
-			totalTurnOver += aggregate.getTurnOver().floatValue();
+			if (aggregate.getTurnOver() != null)
+			{
+				totalTurnOver += aggregate.getTurnOver().floatValue();
+			}
 		}
 		
 		return totalTurnOver;

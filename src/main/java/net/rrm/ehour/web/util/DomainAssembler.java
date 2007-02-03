@@ -189,6 +189,9 @@ public class DomainAssembler
 		pa.setHourlyRate(paf.getHourlyRate());
 		pa.setDescription(paf.getDescription());
 		
+		// TODO quickfix..
+		pa.setActive(true);
+		
 		User user = new User(paf.getUserId());
 		pa.setUser(user);
 		

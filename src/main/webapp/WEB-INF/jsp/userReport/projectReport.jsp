@@ -4,15 +4,62 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-
-<c:forEach items="${report.customers}" var="customer">
-	${customer.name}<br>
-
-	<c:forEach items="${report.reportValues[customer]}" var="pag">
-		&nbsp;${pag.projectAssignment.project.name}-${pag.hours}--${pag.turnOver}<Br>
-	</c:forEach>
+<div class="GreyFrame">
+	<h3>&nbsp;</h3>
 	
-</c:forEach>
+	<table width="100%">
+		<tr>
+			<td valign="top">
+	
+	<div class="BlueFrame">
+		<div class="BlueLeftTop">
+			<div class="BlueRightTop">
+				&nbsp;&nbsp;Project report: <fmt:formatDate pattern="dd MMM yyyy" value="${report.userCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${report.userCriteria.reportRange.dateEnd}" />
+			</div>
+		</div>	
 
-<img src="projectChart.do?key=${reportSessionKey}">
+		<table class="reportTable">
+			<tr>
+				<th>Customer</th>
+				<th>Project</th>
+				<th>Hours booked</th>
+				<th>Turn over</th>
+			</tr>
+
+		<c:forEach items="${report.customers}" var="customer">
+			<tr>
+				<td>${customer.name}</td>
+				
+			<c:forEach items="${report.reportValues[customer]}" var="pag">
+				<td>${pag.projectAssignment.project.name}</td>
+				<td><fmt:formatNumber value="${pag.hours}" maxFractionDigits="2" /></td>
+				<td><fmt:formatNumber  maxFractionDigits="2" value="${pag.turnOver}" type="currency" /> </td>
+				</tr>
+				<tr><td>&nbsp;</td>
+			</c:forEach>
+				<td colspan="3">
+					&nbsp;
+				</td>
+			</tr>
+		</c:forEach>
+		</table>
+
+		<div class="BlueLeftBottom">
+			<div class="BlueRightBottom">
+				&nbsp;
+			</div>
+		</div>			
+	</div>
+	</td><td valign="top" width="270">
+	<img style="float: right; margin-right: 5px;" src="projectChart.do?key=${reportSessionKey}">
+</td></tr></table>
+	<br>
+	
+	<div class="GreyFrameFooter">
+		<p>
+		</p>
+	</div>				
+</div>			
+		
+		
 

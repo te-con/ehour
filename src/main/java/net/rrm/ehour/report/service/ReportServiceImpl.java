@@ -215,6 +215,7 @@ public class ReportServiceImpl implements ReportService
 		if (criteria.getReportRange() == null)
 		{
 			reportRange = reportCriteria.getAvailableCriteria().getReportRange();
+			criteria.setReportRange(reportRange);
 		}
 		else
 		{

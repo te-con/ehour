@@ -42,7 +42,7 @@ function init()
 		</div>
 	</div>
 
-<form method="post" action="projectReport.do">
+<form method="post" action="projectReport.do" name="criteriaForm">
 
 <table class="criteriaTable">
 	<tr>
