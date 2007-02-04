@@ -30,6 +30,7 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAOTest;
 import net.rrm.ehour.project.dao.ProjectDAOTest;
 import net.rrm.ehour.project.service.ProjectServiceIntegrationTest;
 import net.rrm.ehour.report.dao.ReportDAOTest;
+import net.rrm.ehour.report.dao.ReportPerMonthDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
 import net.rrm.ehour.timesheet.service.TimesheetServiceIntegrationTest;
@@ -59,7 +60,7 @@ public class DAOTests
 		suite.addTestSuite(ProjectDAOTest.class);
 		suite.addTestSuite(ProjectAssignmentDAOTest.class);
 		suite.addTestSuite(TimesheetCommentDAOTest.class);
-		
+		suite.addTestSuite(ReportPerMonthDAOTest.class);
 		//$JUnit-END$
 		return suite;
 	}

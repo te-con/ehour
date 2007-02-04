@@ -26,7 +26,6 @@ package net.rrm.ehour.report.dao;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
@@ -56,7 +55,7 @@ public class ReportDAOTest extends BaseDAOTest
 		cal.set(Calendar.MINUTE, 59);
 		cal.set(Calendar.SECOND, 59);
 		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
-		assertEquals(cal.getTime(), range.getDateEnd());
+		assertEquals(new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59), range.getDateEnd());
 
 	}	
 	
@@ -67,7 +66,7 @@ public class ReportDAOTest extends BaseDAOTest
 	public void testGetCumulatedHoursPerAssignmentForUserAndDate()
 	{
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
-										    new Date(2006 - 1900, 10, 30));
+										    new Date(2007 - 1900, 10, 30));
 		
 		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(new Integer[]{1}, dateRange);
 
@@ -134,6 +133,26 @@ public class ReportDAOTest extends BaseDAOTest
 		
 		assertEquals(1, results.size());
 	}	
+//	
+//	/**
+//	 * 
+//	 *
+//	 */
+//	public void testGetHoursPerMonthPerAssignmentForUsers()
+//	{
+//		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
+//			    new Date(2006 - 1900, 10 - 1, 4));
+//		
+//		List<ProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(new Integer[]{2},
+//																								new Integer[]{1},
+//																								dateRange);
+//
+//		// test if collection is properly initialized
+//		ProjectAssignmentAggregate rep = results.get(0);
+//		assertEquals(9.2f, rep.getHours().floatValue(), 0.1);
+//		
+//		assertEquals(1, results.size());
+//	}		
 
 
 }
