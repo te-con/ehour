@@ -99,4 +99,9 @@
 		 	class="net.rrm.ehour.timesheet.dao.TimesheetCommentDAOHibernateImpl" 
 		 	parent="abstractDAOTarget" />		 	
 
+	<!-- ReportPerMonth DAO -->
+	<bean id="reportPerMonthDAO"
+			class="net.rrm.ehour.report.dao.ReportPerMonthMySQL5JdbcImpl">
+		<property name="dataSource" ref="eHourDataSource" />
+	</bean>
 </beans>

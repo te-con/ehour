@@ -163,4 +163,52 @@ public class ReportDAOHibernateImpl extends HibernateDaoSupport implements Repor
 																		userId);
 		return results.get(0);
 	}
+
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(Integer[] userIds, DateRange dateRange)
+	{
+		List		results;
+		String[]	keys = new String[3];
+		Object[]	params = new Object[3];
+		
+		keys[0] = "dateStart";
+		keys[1] = "dateEnd";
+		keys[2] = "userIds";
+		
+		params[0] = dateRange.getDateStart();
+		params[1] = dateRange.getDateEnd();
+		params[2] = userIds;
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getHoursPerMonthPerAssignmentOnDateForUserIds"
+																		, keys, params);
+		
+		return results;	
+	}
+
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(Integer[] userIds, Integer[] projectId, DateRange dateRange)
+	{
+		List		results;
+		String[]	keys = new String[3];
+		Object[]	params = new Object[3];
+		
+		keys[0] = "dateStart";
+		keys[1] = "dateEnd";
+		keys[2] = "userIds";
+		
+		params[0] = dateRange.getDateStart();
+		params[1] = dateRange.getDateEnd();
+		params[2] = userIds;
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUserIds"
+																		, keys, params);
+		
+		return results;		
+	}
 }

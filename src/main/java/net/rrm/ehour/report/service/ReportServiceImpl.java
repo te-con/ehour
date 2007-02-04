@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.report.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -39,13 +40,16 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportDAO;
+import net.rrm.ehour.report.dao.ReportPerMonthDAO;
 import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.project.ProjectReport;
+import net.rrm.ehour.report.project.WeeklyProjectAssignmentAggregate;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -58,6 +62,7 @@ import org.apache.log4j.Logger;
 public class ReportServiceImpl implements ReportService
 {
 	private	ReportDAO				reportDAO;
+	private	ReportPerMonthDAO		reportPerMonthDAO;
 	private	UserDAO					userDAO;
 	private	UserDepartmentDAO		userDepartmentDAO;
 	private	CustomerDAO				customerDAO;
@@ -205,42 +210,55 @@ public class ReportServiceImpl implements ReportService
 	{
 		ProjectReport						projectReport = new ProjectReport();
 		List<ProjectAssignmentAggregate>	aggregates;
-		DateRange							reportRange;
-		UserCriteria						criteria;
+		UserCriteria						userCriteria;
 		
-		criteria = reportCriteria.getUserCriteria();
+		userCriteria = reportCriteria.getUserCriteria();
 		
-		logger.debug("Creating project report for " + criteria);
-		
-		if (criteria.getReportRange() == null)
+		logger.debug("Creating project report for " + userCriteria);
+	
+		if (userCriteria.getProjectIds() == null)
 		{
-			reportRange = reportCriteria.getAvailableCriteria().getReportRange();
-			criteria.setReportRange(reportRange);
+			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userCriteria.getUserIds(),
+																			reportCriteria.getReportRange());
 		}
 		else
 		{
-			reportRange = criteria.getReportRange();
+			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userCriteria.getUserIds(),
+					userCriteria.getProjectIds(),
+					reportCriteria.getReportRange());
 		}
 		
-		logger.debug("Using range " + reportRange);
-		
-		if (criteria.getProjectIds() == null)
-		{
-			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(criteria.getUserIds(),
-																			reportRange);
-		}
-		else
-		{
-			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(criteria.getUserIds(),
-					criteria.getProjectIds(),
-					reportRange);
-		}
-		
-		projectReport.setUserCriteria(criteria);
+		// TODO use reportCriteria
+		projectReport.setUserCriteria(userCriteria);
 		projectReport.initialize(aggregates);
 		
 		return projectReport;
 	}	
+	
+	/**
+	 * Get weekly project report
+	 * @param criteria
+	 * @return
+	 */
+	public List<WeeklyProjectAssignmentAggregate> createWeeklyProjectReport(ReportCriteria reportCriteria)
+	{
+		UserCriteria userCriteria = reportCriteria.getUserCriteria();
+		List<WeeklyProjectAssignmentAggregate> aggregates = null;
+		
+		if (userCriteria.getProjectIds() == null)
+		{
+//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(new ArrayList<Integer>(), 
+//																					reportCriteria.getReportRange());
+		}
+		else
+		{
+//			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userCriteria.getUserIds(),
+//					userCriteria.getProjectIds(),
+//					reportCriteria.getReportRange());
+		}	
+		
+		return aggregates;
+	}
 	
 	/**
 	 *  
@@ -291,5 +309,11 @@ public class ReportServiceImpl implements ReportService
 		this.projectAssignmentDAO = projectAssignmentDAO;
 	}
 
-
+	/**
+	 * @param reportPerMonthDAO the reportPerMonthDAO to set
+	 */
+	public void setReportPerMonthDAO(ReportPerMonthDAO reportPerMonthDAO)
+	{
+		this.reportPerMonthDAO = reportPerMonthDAO;
+	}
 }

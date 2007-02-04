@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.report.criteria;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.service.ReportService;
 
 import org.apache.log4j.Logger;
@@ -52,6 +53,30 @@ public class ReportCriteria
 		userCriteria = new UserCriteria();
 		
 		updateAvailableCriteria();
+	}
+	
+	/**
+	 * Get report range, use the available criteria if the user didn't supply any (yet)
+	 * @return
+	 */
+	
+	public DateRange getReportRange()
+	{
+		DateRange	reportRange;
+		
+		if (userCriteria.getReportRange() == null)
+		{
+			reportRange = availableCriteria.getReportRange();
+			userCriteria.setReportRange(reportRange);
+		}
+		else
+		{
+			reportRange = userCriteria.getReportRange();
+		}
+		
+		logger.debug("Using report range " + reportRange);
+		
+		return reportRange;
 	}
 	
 	/**
