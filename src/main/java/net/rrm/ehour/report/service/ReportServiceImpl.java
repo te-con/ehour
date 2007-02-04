@@ -23,7 +23,7 @@
 
 package net.rrm.ehour.report.service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +49,6 @@ import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -247,14 +246,14 @@ public class ReportServiceImpl implements ReportService
 		
 		if (userCriteria.getProjectIds() == null)
 		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(new ArrayList<Integer>(), 
-//																					reportCriteria.getReportRange());
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(Arrays.asList(userCriteria.getUserIds()), 
+																					reportCriteria.getReportRange());
 		}
 		else
 		{
-//			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userCriteria.getUserIds(),
-//					userCriteria.getProjectIds(),
-//					reportCriteria.getReportRange());
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(Arrays.asList(userCriteria.getUserIds()),
+																					Arrays.asList(userCriteria.getProjectIds()),
+																					reportCriteria.getReportRange());
 		}	
 		
 		return aggregates;

@@ -9,6 +9,7 @@
 		<form-bean name="TimesheetViewForm" type="net.rrm.ehour.web.timesheet.form.TimesheetViewForm" />
 		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
 		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
+		<form-bean name="ReportChartForm" type="net.rrm.ehour.web.report.form.ReportChartForm" />		
 	</form-beans>
 
 	<!-- Global exceptions -->
@@ -90,12 +91,14 @@
 		</action>		
 
 		<!-- User project total hours chart -->
-		<action path="/eh/userReport/projectReportTotalHoursChart"
+		<action name="ReportChartForm"
+				path="/eh/userReport/projectReportTotalHoursChart"
 				type="net.rrm.ehour.web.report.action.ProjectReportTotalHoursChartAction" />
 
 
 		<!-- User project total turnover chart -->
-		<action path="/eh/userReport/projectReportTotalTurnoverChart"
+		<action name="ReportChartForm"
+				path="/eh/userReport/projectReportTotalTurnoverChart"
 				type="net.rrm.ehour.web.report.action.ProjectReportTotalTurnOverChartAction" />
 
 	</action-mappings>

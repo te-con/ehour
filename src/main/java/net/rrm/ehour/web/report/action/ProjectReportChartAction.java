@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.report.project.ProjectReport;
+import net.rrm.ehour.web.report.form.ReportChartForm;
 import net.rrm.ehour.web.report.util.ChartUtil;
 
 import org.apache.log4j.Logger;
@@ -56,12 +57,18 @@ public abstract class ProjectReportChartAction extends Action
 		HttpSession		session;
 		ProjectReport	report;
 		JFreeChart		chart;
+		ReportChartForm	chartForm = (ReportChartForm)form;
+		int				chartWidth;
+		int				chartHeight;
 		
 		response.setContentType("image/png");
 
 		session = request.getSession();
-		sessionKey = request.getParameter("key");
+		sessionKey = chartForm.getSessionKey();
 
+		chartWidth = (chartForm.getChartWidth() == 0) ? 250 : chartForm.getChartWidth();
+		chartHeight = (chartForm.getChartHeight() == 0) ? 120 : chartForm.getChartHeight();
+		
 		report = (ProjectReport)session.getAttribute(sessionKey);
 		
 		if (report != null)
@@ -69,7 +76,7 @@ public abstract class ProjectReportChartAction extends Action
 			chart = getChart(report);
 			ChartUtil.changeChartStyle(chart);
 			
-			ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, 250, 120);
+			ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, chartWidth, chartHeight);
 		}
 		else
 		{
