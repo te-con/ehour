@@ -23,7 +23,10 @@
 
 package net.rrm.ehour.web.report.form;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
@@ -35,9 +38,17 @@ public class ReportChartForm extends ActionForm
 	 * 
 	 */
 	private static final long serialVersionUID = 4650287107802113182L;
-	private	String	sessionKey;
+	private	String	key;
 	private	int		chartWidth;
 	private	int		chartHeight;
+	
+	public void reset(ActionMapping mapping, HttpServletRequest request)
+	{
+		chartWidth = 0;
+		chartHeight = 0;
+	
+	
+	}
 	/**
 	 * @return the chartHeight
 	 */
@@ -67,17 +78,17 @@ public class ReportChartForm extends ActionForm
 		this.chartWidth = chartWidth;
 	}
 	/**
-	 * @return the sessionKey
+	 * @return the key
 	 */
-	public String getSessionKey()
+	public String getKey()
 	{
-		return sessionKey;
+		return key;
 	}
 	/**
-	 * @param sessionKey the sessionKey to set
+	 * @param key the key to set
 	 */
-	public void setSessionKey(String sessionKey)
+	public void setKey(String sessionKey)
 	{
-		this.sessionKey = sessionKey;
+		this.key = sessionKey;
 	}
 }

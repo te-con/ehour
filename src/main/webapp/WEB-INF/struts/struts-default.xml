@@ -95,6 +95,11 @@
 				path="/eh/userReport/projectReportTotalHoursChart"
 				type="net.rrm.ehour.web.report.action.ProjectReportTotalHoursChartAction" />
 
+		<!-- User project total hours per customer per week chart -->
+		<action name="ReportChartForm"
+				path="/eh/userReport/projectReportPerWeekChart"
+				type="net.rrm.ehour.web.report.action.ProjectReportOverviewChartAction" />
+
 
 		<!-- User project total turnover chart -->
 		<action name="ReportChartForm"

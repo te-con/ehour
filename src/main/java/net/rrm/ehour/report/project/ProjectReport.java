@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 
 import org.apache.log4j.Logger;
 
@@ -45,7 +45,7 @@ public class ProjectReport
 	 */
 	private static final long serialVersionUID = 6365903846883586472L;
 	
-	private	UserCriteria	userCriteria;
+	private	ReportCriteria	reportCriteria;
 	private	Logger			logger = Logger.getLogger(this.getClass());
 	private	Map<Customer, List<ProjectAssignmentAggregate>>	report;
 	
@@ -143,19 +143,19 @@ public class ProjectReport
 	}
 
 	/**
-	 * @return the userCriteria
+	 * @return the reportCriteria
 	 */
-	public UserCriteria getUserCriteria()
+	public ReportCriteria getReportCriteria()
 	{
-		return userCriteria;
+		return reportCriteria;
 	}
-
 
 	/**
-	 * @param userCriteria the userCriteria to set
+	 * @param reportCriteria the reportCriteria to set
 	 */
-	public void setUserCriteria(UserCriteria userCriteria)
+	public void setReportCriteria(ReportCriteria reportCriteria)
 	{
-		this.userCriteria = userCriteria;
+		this.reportCriteria = reportCriteria;
 	}
+
 }

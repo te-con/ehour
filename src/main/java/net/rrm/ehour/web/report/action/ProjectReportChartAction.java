@@ -44,7 +44,7 @@ import org.jfree.chart.JFreeChart;
 
 public abstract class ProjectReportChartAction extends Action
 {
-	private	Logger			logger = Logger.getLogger(this.getClass());
+	protected	Logger			logger = Logger.getLogger(this.getClass());
 	
 	/**
 	 * 
@@ -64,7 +64,7 @@ public abstract class ProjectReportChartAction extends Action
 		response.setContentType("image/png");
 
 		session = request.getSession();
-		sessionKey = chartForm.getSessionKey();
+		sessionKey = chartForm.getKey();
 
 		chartWidth = (chartForm.getChartWidth() == 0) ? 250 : chartForm.getChartWidth();
 		chartHeight = (chartForm.getChartHeight() == 0) ? 120 : chartForm.getChartHeight();

@@ -31,6 +31,8 @@
 	<bean name="/eh/userReport/projectChartTotalHours" class="net.rrm.ehour.web.report.action.ProjectReportTotalHoursChartAction" />
 	
 	<bean name="/eh/userReport/projectChartTotalTurnOver" class="net.rrm.ehour.web.report.action.ProjectReportTotalTurnOverChartAction" />
+
+	<bean name="/eh/userReport/projectReportPerWeekChart" class="net.rrm.ehour.web.report.action.ProjectReportOverviewChartAction" />	
 		
 	<bean name="/eh/cal/navCalendar" class="net.rrm.ehour.web.calendar.GetNavCalendarAction" />	
 	

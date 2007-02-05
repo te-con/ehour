@@ -14,7 +14,7 @@
 	<div class="BlueFrame">
 		<div class="BlueLeftTop">
 			<div class="BlueRightTop">
-				&nbsp;&nbsp;Project report: <fmt:formatDate pattern="dd MMM yyyy" value="${report.userCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${report.userCriteria.reportRange.dateEnd}" />
+				&nbsp;&nbsp;Project report: <fmt:formatDate pattern="dd MMM yyyy" value="${report.reportCriteria.userCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${report.reportCriteria.userCriteria.reportRange.dateEnd}" />
 			</div>
 		</div>	
 
@@ -55,6 +55,8 @@
 	<img style="float: right; margin-right: 5px;" src="projectReportTotalTurnoverChart.do?key=${reportSessionKey}">
 </td></tr></table>
 	<br>
+	
+	<img src="projectReportPerWeekChart.do?chartWidth=700&chartHeight=200" />
 	
 	<div class="GreyFrameFooter">
 		<p>

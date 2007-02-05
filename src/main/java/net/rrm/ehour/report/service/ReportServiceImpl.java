@@ -227,8 +227,7 @@ public class ReportServiceImpl implements ReportService
 					reportCriteria.getReportRange());
 		}
 		
-		// TODO use reportCriteria
-		projectReport.setUserCriteria(userCriteria);
+		projectReport.setReportCriteria(reportCriteria);
 		projectReport.initialize(aggregates);
 		
 		return projectReport;
