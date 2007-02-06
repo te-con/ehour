@@ -19,20 +19,20 @@
 
 	<bean name="/eh/timesheet/postTimesheet" class="net.rrm.ehour.web.timesheet.action.PostTimesheetFormAction" />	
 	
-	<bean name="/eh/userReport/index" class="net.rrm.ehour.web.report.action.UserReportCriteriaAction">	
+	<bean name="/eh/userReport/index" class="net.rrm.ehour.web.userreport.action.UserReportCriteriaAction">	
 		<property name="reportCriteria" ref="reportCriteria" />
 	</bean>
 
-	<bean name="/eh/userReport/projectReport" class="net.rrm.ehour.web.report.action.UserProjectReportAction">	
+	<bean name="/eh/userReport/projectReport" class="net.rrm.ehour.web.userreport.action.UserProjectReportAction">	
 		<property name="reportCriteria" ref="reportCriteria" />
 		<property name="reportService" ref="reportService" />
 	</bean>
 
-	<bean name="/eh/userReport/projectChartTotalHours" class="net.rrm.ehour.web.report.action.ProjectReportTotalHoursChartAction" />
+	<bean name="/eh/userReport/projectChartTotalHours" class="net.rrm.ehour.web.userreport.action.ProjectReportTotalHoursChartAction" />
 	
-	<bean name="/eh/userReport/projectChartTotalTurnOver" class="net.rrm.ehour.web.report.action.ProjectReportTotalTurnOverChartAction" />
+	<bean name="/eh/userReport/projectChartTotalTurnOver" class="net.rrm.ehour.web.userreport.action.ProjectReportTotalTurnOverChartAction" />
 
-	<bean name="/eh/userReport/projectReportPerWeekChart" class="net.rrm.ehour.web.report.action.ProjectReportOverviewChartAction" />	
+	<bean name="/eh/userReport/projectReportPerWeekChart" class="net.rrm.ehour.web.userreport.action.ProjectReportOverviewChartAction" />	
 		
 	<bean name="/eh/cal/navCalendar" class="net.rrm.ehour.web.calendar.GetNavCalendarAction" />	
 	

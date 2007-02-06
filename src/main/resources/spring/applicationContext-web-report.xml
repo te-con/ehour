@@ -5,7 +5,7 @@
        default-autowire="byName">
 
 	<!--  struts actions -->
-	<bean name="/eh/report/index" class="net.rrm.ehour.web.report.action.ReportCriteriaAction">
+	<bean name="/eh/report/index" class="net.rrm.ehour.web.userreport.action.ReportCriteriaAction">
 		<property name="reportCriteria" ref="reportCriteria" />
 	</bean>
 	

@@ -1,5 +1,5 @@
 /**
- * Created on Feb 4, 2007
+ * Created on 26-jan-2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.report.action;
+package net.rrm.ehour.web.userreport.action;
 
 import java.util.Set;
 
@@ -32,12 +32,11 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-
 /**
  * TODO 
  **/
 
-public class ProjectReportTotalTurnOverChartAction extends ProjectReportChartAction
+public class ProjectReportTotalHoursChartAction extends ProjectReportChartAction
 {
 	/**
 	 * Create chart
@@ -51,15 +50,15 @@ public class ProjectReportTotalTurnOverChartAction extends ProjectReportChartAct
 		Set<Customer>						customers;
 		
 		customers = report.getCustomers();
-		String s = "Turnover";
+		String s = "Hours";
 		
 		for (Customer customer : customers)
 		{
-			dataset.addValue(report.getTurnOverTotal(customer), s, customer.getName());
+			dataset.addValue(report.getHourTotal(customer), s, customer.getName());
 		}
 		
-		JFreeChart chart = ChartFactory.createBarChart("Turnover per customer",
-				"Customer", "Turnover", dataset, PlotOrientation.HORIZONTAL,
+		JFreeChart chart = ChartFactory.createBarChart("Booked hours per customer",
+				"Customer", "Hours", dataset, PlotOrientation.HORIZONTAL,
 				false, true, true);
 		
 		return chart;

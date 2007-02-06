@@ -6,7 +6,7 @@
 	<action-mappings>
 		<!-- Report -->
 		<action path="/index" 
-				type="net.rrm.ehour.web.report.action.ReportCriteriaAction">
+				type="net.rrm.ehour.web.userreport.action.ReportCriteriaAction">
 			<forward name="success" path=".ehour.report.index" />	
 		</action>
 	</action-mappings>

@@ -79,32 +79,32 @@
 		<!-- User report criteria -->
 		<action name="ReportCriteriaForm"
 				path="/eh/userReport/index"
-				type="net.rrm.ehour.web.report.action.UserReportCriteriaAction" >
+				type="net.rrm.ehour.web.userreport.action.UserReportCriteriaAction" >
 			<forward name="success" path=".ehour.userreport.overview" />
 		</action>		
 
 		<!-- User project report -->
 		<action name="ReportCriteriaForm"
 				path="/eh/userReport/projectReport"
-				type="net.rrm.ehour.web.report.action.UserProjectReportAction" >
+				type="net.rrm.ehour.web.userreport.action.UserProjectReportAction" >
 			<forward name="success" path=".ehour.userreport.projectReport" />
 		</action>		
 
 		<!-- User project total hours chart -->
 		<action name="ReportChartForm"
 				path="/eh/userReport/projectReportTotalHoursChart"
-				type="net.rrm.ehour.web.report.action.ProjectReportTotalHoursChartAction" />
+				type="net.rrm.ehour.web.userreport.action.ProjectReportTotalHoursChartAction" />
 
 		<!-- User project total hours per customer per week chart -->
 		<action name="ReportChartForm"
 				path="/eh/userReport/projectReportPerWeekChart"
-				type="net.rrm.ehour.web.report.action.ProjectReportOverviewChartAction" />
+				type="net.rrm.ehour.web.userreport.action.ProjectReportOverviewChartAction" />
 
 
 		<!-- User project total turnover chart -->
 		<action name="ReportChartForm"
 				path="/eh/userReport/projectReportTotalTurnoverChart"
-				type="net.rrm.ehour.web.report.action.ProjectReportTotalTurnOverChartAction" />
+				type="net.rrm.ehour.web.userreport.action.ProjectReportTotalTurnOverChartAction" />
 
 	</action-mappings>
 

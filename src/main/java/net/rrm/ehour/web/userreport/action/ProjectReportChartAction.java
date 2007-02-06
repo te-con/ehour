@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.report.action;
+package net.rrm.ehour.web.userreport.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

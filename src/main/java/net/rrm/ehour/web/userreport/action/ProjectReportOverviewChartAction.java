@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.report.action;
+package net.rrm.ehour.web.userreport.action;
 
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +87,10 @@ public class ProjectReportOverviewChartAction extends ProjectReportChartAction
 		
 		for (Integer customerId: seriesMap.keySet())
 		{
-			seriesCollection.addSeries(seriesMap.get(customerId));
+//			if (customerId.intValue() == 24)
+			{
+				seriesCollection.addSeries(seriesMap.get(customerId));
+			}
 		}
 		
 		JFreeChart chart = ChartFactory.createTimeSeriesChart("Hours per customer", "Week", "Hours", 
