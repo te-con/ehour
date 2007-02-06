@@ -66,6 +66,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
+	<version>2.0</version>
         <executions>
           <execution>
             <goals>
@@ -265,15 +266,23 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <configuration>
-          <instrumentation>
-            <excludes>
-              <exclude>net/rrm/ehour/**/**/**Exception.class</exclude>
-              <exclude>net/rrm/ehour/**/**/**Test.class</exclude>
-              <exclude>net/rrm/ehour/**/**/**Tests.class</exclude>
-            </excludes>
-          </instrumentation>
-        </configuration>
+	<version>2.0</version>
+                                <configuration>
+                                        <instrumentation>
+                                                <excludes>
+                                                        <exclude>
+                                                                net/rrm/ehour/**/**/**Exception.class
+                                                        </exclude>
+                                                        <exclude>
+                                                                net/rrm/ehour/**/**/**Test.class
+                                                        </exclude>
+                                                        <exclude>
+                                                                net/rrm/ehour/**/**/**Tests.class
+                                                        </exclude>
+                                                </excludes>
+                                        </instrumentation>
+                                </configuration>
+
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
