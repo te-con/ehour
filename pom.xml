@@ -76,7 +76,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
-			          <licenseLocation>clover.license</licenseLocation>
+			          <licenseLocation>etc/clover-eHour.license</licenseLocation>
 					<excludes>
 						<exclude>**/*Test</exclude>
 					</excludes>
@@ -299,10 +299,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
 				
-		        <configuration>
-			          <licenseLocation>clover.license</licenseLocation>
-          <generateHtml>true</generateHtml>
-        </configuration>				
+				<configuration>
+			          <licenseLocation>etc/clover-eHour.license</licenseLocation>
+					  <generateHtml>true</generateHtml>
+				</configuration>				
 			</plugin>
 		</plugins>
 	</reporting>
