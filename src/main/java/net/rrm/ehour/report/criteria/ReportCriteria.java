@@ -102,7 +102,6 @@ public class ReportCriteria
 	public void setUserCriteria(UserCriteria userCriteria)
 	{
 		this.userCriteria = userCriteria;
-		updateAvailableCriteria();
 	}
 
 	/**

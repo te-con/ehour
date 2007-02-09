@@ -36,16 +36,6 @@
                 GROUP BY entry.entryId.projectAssignment.assignmentId
         ]]></query>
         
-    <query name="Report.getHoursPerMonthPerAssignmentOnDateForUserIdsAndProjectIds">
-         <![CDATA[SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
-                FROM TimesheetEntry entry
-                WHERE entry.entryId.entryDate >= :dateStart AND
-                      entry.entryId.entryDate <= :dateEnd AND
-                      entry.entryId.projectAssignment.user.userId IN (:userIds) AND
-                	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
-                GROUP BY date_format(entry.entryId.entryDate, '%m%Y')
-        ]]></query>        
-        
     <query name="Report.getMinMaxTimesheetEntryDate">
         SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
 		FROM TimesheetEntry entry

@@ -24,11 +24,17 @@
 package net.rrm.ehour.timesheet.service;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
 /**
@@ -38,7 +44,7 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 public class TimesheetServiceIntegrationTest extends BaseDAOTest
 {
 	private TimesheetService	timesheetService;
-	
+	private	ReportService		reportService;
 	
 
 	/**
@@ -70,5 +76,29 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 		return new String[] { "classpath:/applicationContext-datasource.xml",
 							  "classpath:/applicationContext-dao.xml", 
 							  "classpath:/applicationContext-service.xml"};	
+	}
+
+
+	public void testReport()
+	{
+		ReportCriteria criteria = new ReportCriteria();
+		UserCriteria	uc = new UserCriteria();
+		uc.setUserFilter(UserCriteria.USER_SINGLE);
+		uc.setUserIds(new Integer[]{1});
+		criteria.setUserCriteria(uc);
+		
+		AvailableCriteria ac = new AvailableCriteria();
+		ac.setReportRange(new DateRange(new Date(2006 - 1900, 2 - 1, 1), new Date(2008 - 1900, 1, 1)));
+		criteria.setAvailableCriteria(ac);
+		
+		reportService.createProjectReport(criteria);
+	}
+	
+	/**
+	 * @param reportService the reportService to set
+	 */
+	public void setReportService(ReportService reportService)
+	{
+		this.reportService = reportService;
 	}
 }

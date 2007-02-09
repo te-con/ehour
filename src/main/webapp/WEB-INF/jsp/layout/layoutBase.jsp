@@ -6,7 +6,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-
 <head>
 	<title><tiles:getAsString name="pageTitle" /></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -31,38 +30,38 @@
 
 <body>
 
-<table width="100%">
-	<tr>
-		<td style="padding-left: 35px; padding-top: 20px; padding-bottom: 1.0em;">
-			<img SRC="<c:url value="/img/ehour.gif" />" alt="eHour v0.1" />
-		</td>
-		
-		<td style="padding-left: 25px; padding-bottom: 0.65em" valign="bottom">
-			<div class="Header">
-				<tiles:insert attribute="header" />
-			</div>
-		</td>
-	</tr>
+<div class="NavHeader">
+	<table>
+		<tr>
+			<td width="260" align="bottom">
+				<img src="<c:url value="/img/ehour.gif" />" alt="eHour v0.1" />
+			</td>
 
+			<td align="bottom">
+				<div class="MainNav">
+					<tiles:insert attribute="header" />
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="LoggedInAs">
+	Logged in as Thies Edeling&nbsp;
+</div>
+
+<table>
 	<tr>
-		<td valign="top" width="220" style="padding-left: 20px" height="200">
+		<td valign="top" width="260" style="padding-left: 12px" height="200">
 		    <tiles:insert attribute="navCalendar" />
-		</td>
-		
-		<td rowspan="2" valign="top" style="padding-left: 20px">
-			<tiles:insert attribute="content" />
-		</td>
-	</tr>
-	
-	<tr>
-		<td style="padding-left: 20px" valign="top">
 		    <span id="statusMessage">
 				&nbsp;
 			</span>
-		    
-    		<br>
-
-		    <tiles:insert attribute="contextHelp" />
+   		    <tiles:insert attribute="contextHelp" />
+		</td>
+		
+		<td valign="top" style="padding-left: 12px">
+			<tiles:insert attribute="content" />
 		</td>
 	</tr>
 </table>

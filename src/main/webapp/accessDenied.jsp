@@ -1,9 +1,6 @@
 <%@ page contentType="text/html; charset=ASCII" %>
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="org.acegisecurity.AuthenticationException" %>
-<%@ page import="org.acegisecurity.ui.AbstractProcessingFilter" %>
-<%@ page import="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter" %>
 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

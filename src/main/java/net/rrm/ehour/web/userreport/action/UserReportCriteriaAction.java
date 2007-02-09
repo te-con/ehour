@@ -64,6 +64,7 @@ public class UserReportCriteriaAction extends Action
 		
 		// reportCriteria syncs itself when updated
 		reportCriteria.setUserCriteria(uc);
+		reportCriteria.updateAvailableCriteria();
 		request.setAttribute("criteria", reportCriteria);
 
 		return mapping.findForward("success");
