@@ -38,6 +38,9 @@ public class UserDAOTest extends BaseDAOTest
 		results = dao.findUsersByNameMatch("zed", true);
 		assertEquals(2, results.size());
 
+		results = dao.findUsersByNameMatch(null, true);
+		assertEquals(3, results.size());
+
 	}
 	
 	public void testFindUsers()

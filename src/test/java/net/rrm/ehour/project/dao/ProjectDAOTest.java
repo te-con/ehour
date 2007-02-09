@@ -105,4 +105,9 @@ public class ProjectDAOTest extends BaseDAOTest
 		
 		assertEquals(3, r.size());
 	}
+	
+	public void testFindDefaultProjects()
+	{
+		assertEquals(2, dao.findDefaultProjects().size());
+	}
 }

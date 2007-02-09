@@ -142,6 +142,7 @@ public class DateRange implements Serializable
 	
 	public String toString()
 	{
-		return "date start: " + dateStart.toString() + ", date end: " + dateEnd.toString();
+		return "date start: " + ((dateStart != null) ? dateStart.toString() : "null") 
+				+ ", date end: " + ((dateEnd != null) ? dateEnd.toString() : "null");
 	}
 }

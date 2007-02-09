@@ -27,6 +27,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import net.rrm.ehour.customer.service.CustomerServiceTest;
 import net.rrm.ehour.project.service.ProjectServiceTest;
+import net.rrm.ehour.report.criteria.ReportCriteriaTest;
 import net.rrm.ehour.report.project.ProjectReportTest;
 import net.rrm.ehour.report.service.ReportServiceTest;
 import net.rrm.ehour.timesheet.dto.BookedDayComparatorTest;
@@ -59,6 +60,7 @@ public class ServiceTests
 		suite.addTestSuite(DomainAssemblerTest.class);
 		suite.addTestSuite(NavCalendarTagTest.class);
 		suite.addTestSuite(ProjectReportTest.class);
+		suite.addTestSuite(ReportCriteriaTest.class);
 		//$JUnit-END$
 		return suite;
 	}

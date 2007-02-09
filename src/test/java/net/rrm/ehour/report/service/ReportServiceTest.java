@@ -23,7 +23,11 @@
 
 package net.rrm.ehour.report.service;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,8 +35,23 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.rrm.ehour.DummyDataGenerator;
+import net.rrm.ehour.customer.dao.CustomerDAO;
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
+import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportDAO;
 import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
+import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.dao.UserDepartmentDAO;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.util.DateUtil;
 
 /**
@@ -42,7 +61,13 @@ import net.rrm.ehour.util.DateUtil;
 public class ReportServiceTest extends TestCase
 {
 	private	ReportService	reportService;
+	
 	private	ReportDAO		reportDAO;
+	private	UserDAO			userDAO;
+	private	ProjectAssignmentDAO	prjAssignmentDAO;
+	private	CustomerDAO		customerDAO;
+	private	ProjectDAO		projectDAO;
+	private UserDepartmentDAO userDepartmentDAO;
 	
 	/**
 	 * 
@@ -53,6 +78,21 @@ public class ReportServiceTest extends TestCase
 
 		reportDAO = createMock(ReportDAO.class);
 		((ReportServiceImpl)reportService).setReportDAO(reportDAO);
+		
+		prjAssignmentDAO = createMock(ProjectAssignmentDAO.class);
+		((ReportServiceImpl)reportService).setProjectAssignmentDAO(prjAssignmentDAO);
+
+		userDAO = createMock(UserDAO.class);
+		((ReportServiceImpl)reportService).setUserDAO(userDAO);
+
+		customerDAO = createMock(CustomerDAO.class);
+		((ReportServiceImpl)reportService).setCustomerDAO(customerDAO);
+
+		projectDAO = createMock(ProjectDAO.class);
+		((ReportServiceImpl)reportService).setProjectDAO(projectDAO);
+
+		userDepartmentDAO = createMock(UserDepartmentDAO.class);
+		((ReportServiceImpl)reportService).setUserDepartmentDAO(userDepartmentDAO);
 	}
 	
 	/**
@@ -77,5 +117,126 @@ public class ReportServiceTest extends TestCase
 		
 		verify();
 	}
+	
+	public void testSyncUserReportCriteriaUserSingle()
+	{
+		ReportCriteria		reportCriteria;
+		UserCriteria		userCriteria;
+		AvailableCriteria	availCriteria;
+		
+		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
+		
+		
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
+		
+		reportCriteria = new ReportCriteria();
+		// bit odd but otherwise unnecc. stuff is called
+		ReportService rsMock = createMock(ReportService.class);
+		reportCriteria.setReportService(rsMock);
+		
+		userCriteria = new UserCriteria();
+		userCriteria.setUserFilter(UserCriteria.USER_SINGLE);
+		userCriteria.setUserIds(new Integer[]{1});
+		reportCriteria.setUserCriteria(userCriteria);
+		
+		availCriteria = new AvailableCriteria();
+		reportCriteria.setAvailableCriteria(availCriteria);
+		
+		prjAssignmentDAO.findProjectAssignmentsForUser(1);
+		expectLastCall().andReturn(prjAsgs);
 
+		reportDAO.getMinMaxDateTimesheetEntry(1);
+		expectLastCall().andReturn(null);
+		
+		replay(prjAssignmentDAO);
+		replay(reportDAO);
+		
+		reportService.syncUserReportCriteria(reportCriteria);
+		
+		verify(reportDAO);
+		verify(prjAssignmentDAO);
+		
+		assertEquals(2, availCriteria.getCustomers().size());
+	}
+
+
+	/**
+	 * 
+	 *
+	 */
+	public void testSyncUserReportCriteriaUserAll()
+	{
+		ReportCriteria		reportCriteria;
+		UserCriteria		userCriteria;
+		AvailableCriteria	availCriteria;
+		
+		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
+		
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
+		
+		reportCriteria = new ReportCriteria();
+		// bit odd but otherwise unnecc. stuff is called
+		ReportService rsMock = createMock(ReportService.class);
+		reportCriteria.setReportService(rsMock);
+		
+		userCriteria = new UserCriteria();
+		userCriteria.setUserFilter(UserCriteria.USER_ALL);
+		userCriteria.setOnlyActiveCustomers(true);
+		userCriteria.setOnlyActiveProjects(false);
+		reportCriteria.setUserCriteria(userCriteria);
+		
+		availCriteria = new AvailableCriteria();
+		reportCriteria.setAvailableCriteria(availCriteria);
+		
+		expect(userDAO.findAll()).andReturn(new ArrayList<User>());
+		replay(userDAO);
+		
+		expect(customerDAO.findAll(true)).andReturn(new ArrayList<Customer>());
+		replay(customerDAO);
+		
+		expect(projectDAO.findAll()).andReturn(new ArrayList<Project>());
+		replay(projectDAO);
+
+		expect(userDepartmentDAO.findAll()).andReturn(new ArrayList<UserDepartment>());
+		replay(userDepartmentDAO);
+
+		reportDAO.getMinMaxDateTimesheetEntry();
+		expectLastCall().andReturn(null);
+		replay(reportDAO);
+		
+		reportService.syncUserReportCriteria(reportCriteria);
+		
+		verify(reportDAO);
+		verify(projectDAO);
+		verify(customerDAO);
+		verify(userDAO);
+	}
+	
+	public void testCreateProjectReport()
+	{
+		ReportCriteria rc = new ReportCriteria();
+		ReportService rsMock = createMock(ReportService.class);
+		rc.setReportService(rsMock);
+		Integer[] userID = new Integer[]{1};
+
+		DateRange dr = new DateRange();
+		UserCriteria uc = new UserCriteria();
+		uc.setReportRange(dr);
+		uc.setUserIds(userID);
+		rc.setUserCriteria(uc);
+		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3));
+		
+		
+		expect(reportDAO.getCumulatedHoursPerAssignmentForUsers(userID, dr))
+			.andReturn(pags);
+		replay(reportDAO);
+		reportService.createProjectReport(rc);
+		verify(reportDAO);
+	}
 }

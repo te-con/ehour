@@ -122,10 +122,6 @@ public class ReportServiceImpl implements ReportService
 			// determine users
 			switch (userCriteria.getUserFilter())
 			{
-	//			case UserCriteria.USER_SINGLE:
-	//				users = new ArrayList<User>();
-	//				users.add(new User(userCriteria.getUserIds()[0]));
-	//				break;
 				case UserCriteria.USER_ALL:
 					users = userDAO.findAll();
 					break;
@@ -164,6 +160,8 @@ public class ReportServiceImpl implements ReportService
 			}
 			
 			availCriteria.setProjects(projects);
+			
+			availCriteria.setReportRange(reportDAO.getMinMaxDateTimesheetEntry());
 			
 			// not entirely useful but for clarity
 			reportCriteria.setAvailableCriteria(availCriteria);

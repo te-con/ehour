@@ -50,14 +50,20 @@ public class ReportDAOTest extends BaseDAOTest
 	public void testGetMinMaxDateTimesheetEntry()
 	{
 		DateRange	range = dao.getMinMaxDateTimesheetEntry();
-		Calendar cal = new GregorianCalendar(2006, 10 - 1, 31);
-		cal.set(Calendar.HOUR, 23);
-		cal.set(Calendar.MINUTE, 59);
-		cal.set(Calendar.SECOND, 59);
 		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
 		assertEquals(new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59), range.getDateEnd());
 
 	}	
+	
+	public void testGetMinMaxDateTimesheetEntryForUser()
+	{
+		DateRange range = dao.getMinMaxDateTimesheetEntry(2);
+
+		Calendar cal = new GregorianCalendar(2006, 10 - 1, 31);
+
+		assertEquals(new Date(2006 - 1900, 10 - 1, 3), range.getDateStart());
+		assertEquals(new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59), range.getDateEnd());
+	}
 	
 	/**
 	 * 
@@ -132,27 +138,8 @@ public class ReportDAOTest extends BaseDAOTest
 		assertEquals(9.2f, rep.getHours().floatValue(), 0.1);
 		
 		assertEquals(1, results.size());
-	}	
-//	
-//	/**
-//	 * 
-//	 *
-//	 */
-//	public void testGetHoursPerMonthPerAssignmentForUsers()
-//	{
-//		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
-//			    new Date(2006 - 1900, 10 - 1, 4));
-//		
-//		List<ProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(new Integer[]{2},
-//																								new Integer[]{1},
-//																								dateRange);
-//
-//		// test if collection is properly initialized
-//		ProjectAssignmentAggregate rep = results.get(0);
-//		assertEquals(9.2f, rep.getHours().floatValue(), 0.1);
-//		
-//		assertEquals(1, results.size());
-//	}		
+	}
+	
 
 
 }
