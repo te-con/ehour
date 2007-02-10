@@ -70,7 +70,7 @@ public class UserProjectReportAction extends Action
 		uc = UserCriteriaAssembler.getUserCriteria(rcForm);
 		
 		// sanity check to prevent abuse
-		userId = AuthUtil.getUserId(request, rcForm);
+		userId = AuthUtil.getUserId(rcForm);
 //		uc = reportCriteria.getUserCriteria();
 		uc.setUserIds(new Integer[]{userId});
 		uc.setUserFilter(UserCriteria.USER_SINGLE);

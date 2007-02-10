@@ -59,7 +59,7 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 		
 		TimesheetFormAssembler	timesheetFormAssembler = new TimesheetFormAssembler();
 
-		userId = AuthUtil.getUserId(request, timesheetForm);
+		userId = AuthUtil.getUserId(timesheetForm);
 
 		requestedWeek = timesheetForm.getCalendar();
 		weekOverview = timesheetService.getWeekOverview(userId, requestedWeek);

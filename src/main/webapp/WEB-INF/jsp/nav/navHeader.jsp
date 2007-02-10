@@ -5,9 +5,10 @@
 <TABLE CELLSPACING=0>
 	<TR>
 		<th valign="bottom">
-			<a href="<c:url value="/eh/timesheet/overview.do" />"><fmt:message key="nav.timesheetOverview" /></a> |
+			<a href="<c:url value="/eh/timesheet/enterTimesheet.do" />"><fmt:message key="nav.enterTimesheet" /></a> |		
 			<a onClick="alert('under construction');return false" href="<c:url value="/eh/printTimesheetSelection.do" />"><fmt:message key="nav.printTimesheet" /></a> |
-			<a HREF="<c:url value="/eh/userReport/index.do" />"><fmt:message key="nav.projectOverview" /></a>
+			<a href="<c:url value="/eh/timesheet/overview.do" />"><fmt:message key="nav.monthOverview" /></a> |
+			<a HREF="<c:url value="/eh/userReport/index.do" />"><fmt:message key="nav.reporting" /></a>
 <authz:authorize ifAllGranted="ROLE_ADMIN"> | 
 			<a href="<c:url value="/eh/admin/index.do" />"><fmt:message key="nav.admin" /></a>
 </authz:authorize>				

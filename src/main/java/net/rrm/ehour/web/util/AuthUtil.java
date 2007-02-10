@@ -23,8 +23,6 @@
 
 package net.rrm.ehour.web.util;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.dto.AuthUser;
 import net.rrm.ehour.web.form.UserIdForm;
@@ -74,7 +72,7 @@ public class AuthUtil
 	 * @param form
 	 * @return
 	 */
-	public static Integer getUserId(HttpServletRequest request, UserIdForm form)
+	public static Integer getUserId(UserIdForm form)
 	{
 		Integer				userId;
 		Authentication		authUser;

@@ -1,6 +1,3 @@
-dojo.require("dojo.event.*");
-dojo.require("dojo.lfx.*");
-
 var inSheetForm = false;
 var doNotSubmitTimesheet = true;
 var currentCalMonth;
@@ -126,16 +123,7 @@ function timesheetSubmitted(type, xml, evt)
 }
 
 //
-function showLoadingData()
-{
-	dojo.html.setOpacity(dojo.byId('statusMessage'), 100);
-	document.getElementById('statusMessage').innerHTML = loadingMsg;
-}
 
-function hideLoadingData()
-{
-	dojo.lfx.html.fadeOut('statusMessage', 300).play();
-}
 
 
 // extend FormBind to add the validation call

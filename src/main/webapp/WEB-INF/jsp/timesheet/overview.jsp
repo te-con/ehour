@@ -8,54 +8,61 @@
 <!-- project overview -->
 <div class="MonthAggregate">
 	<h1><fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="MMMMM yyyy" />: <fmt:message key="user.overview.aggregatedProject" /></h1>
-</div>
-
-<div class="MonthAggregateFrame">
-	<h3>&nbsp;</h3>
 	
-	<div class="MonthAggregateBody">
-		<table cellpadding="0" cellspacing="10">
-		<tr>
-			<th class="firstCell"><fmt:message key="user.overview.project" /></th>
-<c:if test="${config.showTurnover}">			
-			<th><fmt:message key="user.overview.rate" /></th>
-</c:if>
-			<th><fmt:message key="user.overview.bookedHours" /></th>
-<c:if test="${config.showTurnover}">			
-			<th><fmt:message key="user.overview.turnover" /></th>
-</c:if>
-		</tr>
+	<div class="GreyFrame">
+		<h3>&nbsp;</h3>
 		
-		<c:forEach items="${timesheetOverview.projectHours}" var="projectReport">
+		<div class="GreyFrameBody">
+			<table class="MonthAggregateTable" cellpadding="0" cellspacing="0">
+			<tr>
+				<th class="firstCell"><fmt:message key="user.overview.project" /></th>
+	<c:if test="${config.showTurnover}">			
+				<th><fmt:message key="user.overview.rate" /></th>
+	</c:if>
+				<th><fmt:message key="user.overview.bookedHours" /></th>
+	<c:if test="${config.showTurnover}">			
+				<th><fmt:message key="user.overview.turnover" /></th>
+	</c:if>
+			</tr>
+			
+<!-- TODO: fix IE boxing
+			<tr>
+				<td colspan="4" height="1" style="height: 1px;padding: 0; margin: 0; background: #c1c1c1">
+
+				</td>
+			</tr>
+ -->						
+			<c:forEach items="${timesheetOverview.projectHours}" var="projectReport">
+			
+			<tr>
+				<td>${projectReport.projectAssignment.project.name}</td>
+	<c:if test="${config.showTurnover}">
+				<td><fmt:formatNumber type="currency" value="${projectReport.projectAssignment.hourlyRate}" /></td>
+	</c:if>			
+				<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /> </td>
+	<c:if test="${config.showTurnover}">
+				<td><fmt:formatNumber type="currency" value="${projectReport.turnOver}" /></td>
+	</c:if>
+			</tr>
+			
+			</c:forEach>
+		</table>
 		
-		<tr>
-			<td>${projectReport.projectAssignment.project.name}</td>
-<c:if test="${config.showTurnover}">
-			<td><fmt:formatNumber type="currency" value="${projectReport.projectAssignment.hourlyRate}" /></td>
-</c:if>			
-			<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /> </td>
-<c:if test="${config.showTurnover}">
-			<td><fmt:formatNumber type="currency" value="${projectReport.turnOver}" /></td>
-</c:if>
-		</tr>
+		<br>
+		</div>
 		
-		</c:forEach>
-	</table>
+		<div class="GreyFrameFooter">
+			<p />
+		</div>	
 	</div>
-	
-	<div class="MonthAggregateFrameFooter">
-		<p>
-		</p>
-	</div>	
 </div>
-
 <br><br>
 
 <div class="MonthAggregate">	
 	<h1><fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="MMMMM yyyy" />: <fmt:message key="user.overview.monthOverview" /></h1>
 </div>
 
-<div class="MonthOverviewFrame">
+<div class="GreyFrame">
 	<h3>&nbsp;</h3>
 	
 	<div class="MOBlueFrame">
@@ -65,7 +72,7 @@
 			</div>
 		</div>	
 
-		<table class="month" cellpadding="0" cellspacing="0">
+		<table class="month" cellpadding="0" cellspacing="0" style="padding-right: 5px;">
 			<tr class="weekColumnRow">
 				<td class="weekNumber">&nbsp;</td>
 				<td>S</td>
@@ -79,7 +86,7 @@
 			
 		<ehour:overviewCalendar calendar="${timesheetOverviewMonth}"
 								timesheetEntries="${timesheetOverview.timesheetEntries}" />
-	</table>
+		</table>
 	
 		<div class="MOBLueLeftBottom">
 			<div class="MOBLueRightBottom">
@@ -90,7 +97,7 @@
 
 	<br>
 	
-	<div class="MonthOverviewFrameFooter">
+	<div class="GreyFrameFooter">
 		<p>
 		</p>
 	</div>				

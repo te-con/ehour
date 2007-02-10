@@ -73,7 +73,7 @@ public class PostTimesheetFormAction extends BaseTimesheetAction
 		Calendar				requestedWeek;
 		TimesheetComment		comment;
 		
-		userId = AuthUtil.getUserId(request, timesheetForm);
+		userId = AuthUtil.getUserId(timesheetForm);
 		
 		// first persist entries
 		comment = DomainAssembler.getTimesheetComment(userId, timesheetForm);

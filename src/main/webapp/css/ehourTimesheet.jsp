@@ -6,51 +6,48 @@ div.MonthAggregate
 	text-align: left;
 	width: 100%;
 	min-width: 500px;
-	max-width: 710px;
+	max-width: 780px;
 	margin: 0;
+	padding: 0;
 	background-color: white;
 }
 
 div.MonthAggregate h1
 {
 	text-align: left;
-	font:  bold 1.0em/1.5em Geneva, Arial, Helvetica, sans-serif;	
+	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
-	margin: 0 0 -5px 11px;
+	margin: 0 0 0 11px;
 	padding: 0;
 }
 
-div.MonthAggregateFrame table
+.MonthAggregateTable 
 {
 	margin: 0 1em 0 1em;
-	border-collapse: collapse;
-	width: 100%;
+	width: inherit;
 }
 
-div.MonthAggregateFrame table th
+.MonthAggregateTable th
 {
-	font:  bold 0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;	
+	font:  bold 0.9em Geneva, Arial, Helvetica, sans-serif;	
 	color: #233e55;
 	border: 0;
 	width: 20%;
 	text-align: left;
-	border-bottom-width: 1px;
-	border-bottom-color: #233e55;
-	border-bottom-style: solid;
 }
 
-div.MonthAggregateFrame table th.firstCell
+.MonthAggregateTable th.firstCell
 {
 	width: 40%;
 }
 
-div.MonthAggregateFrame table td
+.MonthAggregateTable td
 {
-	font:  0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;	
+	font:  0.9em Geneva, Arial, Helvetica, sans-serif;	
 	color: #233e55;
 }
 
-div.MonthAggregateFrame table td.result
+.MonthAggregateTable td.result
 {
 	border-top-width: 1px;
 	border-top-color: #233e55;
@@ -58,40 +55,8 @@ div.MonthAggregateFrame table td.result
 	font-weight: bold;
 }
 
-div.MonthAggregateFrame
-{
-	background: url(<c:url value="/img/grey/corner_left_top.gif" />) top left no-repeat;
-	max-width: 710px;
-} 
 
-div.MonthAggregateFrame h3
-{
-  background: 	url(<c:url value="/img/grey/corner_right_top.gif" />) top right no-repeat;
-  line-height:	11px;
-  padding:		0;
-  margin:		0 0 0px 75px;
-}
-
-div.MonthAggregateBody
-{
-  background: url(<c:url value="/img/grey/pixel_grey.gif" />);
-  margin:0px;
-  margin-top: 0em;
-  padding:0;
-}
-
-div.MonthAggregateFrameFooter
-{
-  background: url(<c:url value="/img/grey/corner_left_bottom.gif" />) bottom left no-repeat;
-}
-
-div.MonthAggregateFrameFooter p
-{
-  background: url(<c:url value="/img/grey/corner_right_bottom.gif" />) bottom right no-repeat;
-  padding:15px;
-  display:block;
-  margin:-2em 0 0 0;
-}
+//
 
 div.MonthOverviewFrame
 {

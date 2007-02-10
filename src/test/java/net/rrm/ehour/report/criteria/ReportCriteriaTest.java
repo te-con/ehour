@@ -83,6 +83,7 @@ public class ReportCriteriaTest extends TestCase
 		replay(reportService);
 		
 		reportCriteria.setUserCriteria(new UserCriteria());
+		reportCriteria.updateAvailableCriteria();
 		
 		verify(reportService);
 	}

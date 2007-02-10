@@ -56,7 +56,7 @@ public class UserReportCriteriaAction extends Action
 		Integer				userId;
 		UserCriteria		uc;
 
-		userId = AuthUtil.getUserId(request, rcForm);
+		userId = AuthUtil.getUserId(rcForm);
 		
 		uc = UserCriteriaAssembler.getUserCriteria(rcForm);
 		uc.setUserIds(new Integer[]{userId});

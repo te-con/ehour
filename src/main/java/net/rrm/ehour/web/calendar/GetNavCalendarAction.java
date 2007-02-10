@@ -59,7 +59,7 @@ public class GetNavCalendarAction extends Action
 		boolean[]		monthOverview;
 		
 		// get the requested userId
-		userId = AuthUtil.getUserId(request, ncForm);
+		userId = AuthUtil.getUserId(ncForm);
 		
 		// get requested month, either from session or request
 		requestedMonth = getRequestedMonth(request, ncForm);

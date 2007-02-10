@@ -7,7 +7,9 @@
         <put name="pageTitle" value="eHour" />
         <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
 		<put name="navCalendar" value="/WEB-INF/jsp/nav/nothing.html" />
-		<put name="contextHelp" value="/WEB-INF/jsp/help/help.jsp" />		
+		<put name="contextHelp" value="/WEB-INF/jsp/help/help.jsp" />
+		<put name="helpHeader" value="" />		
+		<put name="helpBody" value="" />		
 		<put name="extraCss" value="" />
     </definition>
 
@@ -16,6 +18,8 @@
         <put name="navCalendar" value="/eh/cal/navCalendar.do" />
         <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
     	<put name="extraCss" value="/css/ehourTimesheet.jsp" />
+    	<put name="helpHeader" value="overview.header" />    	
+    	<put name="helpBody" value="overview.body" /> 
     </definition>
 
     <!-- Timesheet Month Overview page -->

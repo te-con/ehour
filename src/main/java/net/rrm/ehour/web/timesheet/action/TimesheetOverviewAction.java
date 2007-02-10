@@ -65,7 +65,7 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 			requestedMonth.set(Calendar.DAY_OF_MONTH, 1);
 		}
 		
-		userId = AuthUtil.getUserId(request, timesheetViewForm);
+		userId = AuthUtil.getUserId(timesheetViewForm);
 		
 		timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
 

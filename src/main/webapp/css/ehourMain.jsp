@@ -9,12 +9,6 @@ body
 	margin: 0px;
 }
 
-div.wrap
-{
-	margin-left: 50px;
-
-}
-
 div.NavHeader
 {
 	background-color: #a9c4e0;
@@ -104,29 +98,29 @@ table
 
 div.NavCalFrame
 {
-  background: url(<c:url value="/img/ovw/gradient_blue.gif" />) top left repeat-x;
+  background: url(<c:url value="/img/bg_blue_white/gradient_blue.gif" />) top left repeat-x;
   max-height: 200px;
   width: 230px;
 }
 
 div.NavCalFrameLeftTop
 {
-    background: url(<c:url value="/img/ovw/left_top.gif" />) top left no-repeat;
+    background: url(<c:url value="/img/bg_blue_white/left_top.gif" />) top left no-repeat;
 }
 
 div.NavCalFrameRightTop
 {
-  background: url(<c:url value="/img/ovw/right_top.gif" />) top right no-repeat;
+  background: url(<c:url value="/img/bg_blue_white/right_top.gif" />) top right no-repeat;
 }
 
 div.NavCalFrameRightBottom
 {
-  background: url(<c:url value="/img/ovw/right_bottom.gif" />) bottom right no-repeat;
+  background: url(<c:url value="/img/bg_blue_white/right_bottom.gif" />) bottom right no-repeat;
 }
 
 div.NavCalFrameLeftBottom
 {
-  background: url(<c:url value="/img/ovw/left_bottom.gif" />) bottom left no-repeat;
+  background: url(<c:url value="/img/bg_blue_white/left_bottom.gif" />) bottom left no-repeat;
 }
 
 div.NavCalFrame table 
@@ -145,7 +139,7 @@ div.NavCalFrame table tr.hoverable
 
 div.NavCalFrame table tr.hoverable:hover
 {
-	background-color: #c2daf5;
+	background-color: #edf5fe;
     cursor: pointer;
     cursor: hand;
 }
@@ -226,11 +220,10 @@ div.HelpFrameFooter p
 }
 
 
-
 div.GreyFrame
 {
   	background: url(<c:url value="/img/grey/corner_left_top.gif" />) top left no-repeat;
-	max-width: 710px;
+	max-width: 730px;
  } 
 
 div.GreyFrame h3
@@ -245,8 +238,8 @@ div.GreyFrameBody
 {
   background: url(<c:url value="/img/grey/pixel_grey.gif" />);
   margin:0px;
-  margin-top: 0em;
   padding:0;
+  width: 100%;
 }
 
 div.GreyFrameFooter
