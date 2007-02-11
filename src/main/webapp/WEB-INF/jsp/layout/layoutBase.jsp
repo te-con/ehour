@@ -55,11 +55,9 @@
 
 <table>
 	<tr>
-		<td valign="top" width="248" style="padding-left: 12px" height="200">
+		<td valign="top" width="248" style="padding-left: 12px">
 		    <tiles:insert attribute="navCalendar" />
-		    <span id="statusMessage">
-				&nbsp;
-			</span>
+		    <br><br>
    		    <tiles:insert attribute="contextHelp" />
 		</td>
 		

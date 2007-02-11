@@ -6,9 +6,8 @@
 
 <!-- spanTarget: overview -->
 <!-- project overview -->
-<div class="MonthAggregate">
-	<h1><fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="MMMMM yyyy" />: <fmt:message key="user.overview.aggregatedProject" /></h1>
-	
+<div class="ContentFrame">
+	<h1><fmt:message key="user.overview.aggregatedProject" /></h1>
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>
 		
@@ -58,38 +57,43 @@
 </div>
 <br><br>
 
-<div class="MonthAggregate">	
-	<h1><fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="MMMMM yyyy" />: <fmt:message key="user.overview.monthOverview" /></h1>
+<div class="ContentFrame">	
+	<h1><fmt:message key="user.overview.monthOverview" /></h1>
 </div>
 
 <div class="GreyFrame">
 	<h3>&nbsp;</h3>
 	
-	<div class="MOBlueFrame">
-		<div class="MOBLueLeftTop">
-			<div class="MOBLueRightTop">
+	<div class="BlueFrame">
+		<div class="BlueLeftTop">
+			<div class="BlueRightTop">
 				&nbsp;
 			</div>
 		</div>	
 
-		<table class="month" cellpadding="0" cellspacing="0" style="padding-right: 5px;">
-			<tr class="weekColumnRow">
-				<td class="weekNumber">&nbsp;</td>
-				<td>S</td>
-				<td>M</td>
-				<td>T</td>
-				<td>W</td>
-				<td>T</td>
-				<td>F</td>
-				<td class="lastChild">S</td>
-			</tr>	
-			
-		<ehour:overviewCalendar calendar="${timesheetOverviewMonth}"
-								timesheetEntries="${timesheetOverview.timesheetEntries}" />
+		<table cellpadding="0" cellspacing="0" class="MonthOverviewIEWorkAround">
+			<tr>
+				<td>
+				<table class="MonthOverviewMonthTable" cellpadding="0" cellspacing="0">
+					<tr class="weekColumnRow">
+						<td class="weekNumber">&nbsp;</td>
+						<td><fmt:message key="user.overview.sun" /></td>
+						<td><fmt:message key="user.overview.mon" /></td>
+						<td><fmt:message key="user.overview.tue" /></td>
+						<td><fmt:message key="user.overview.wed" /></td>
+						<td><fmt:message key="user.overview.thu" /></td>
+						<td><fmt:message key="user.overview.fri" /></td>
+						<td class="lastChild"><fmt:message key="user.overview.sat" /></td>
+					</tr>	
+					
+				<ehour:overviewCalendar calendar="${timesheetOverviewMonth}"
+										timesheetEntries="${timesheetOverview.timesheetEntries}" />
+				</table>
+				<td width="5">&nbsp</td>
+			</tr>
 		</table>
-	
-		<div class="MOBLueLeftBottom">
-			<div class="MOBLueRightBottom">
+		<div class="BlueLeftBottom">
+			<div class="BlueRightBottom">
 				&nbsp;
 			</div>
 		</div>			

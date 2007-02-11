@@ -101,6 +101,7 @@ div.NavCalFrame
   background: url(<c:url value="/img/bg_blue_white/gradient_blue.gif" />) top left repeat-x;
   max-height: 200px;
   width: 230px;
+  margin-top: 1em;
 }
 
 div.NavCalFrameLeftTop
@@ -177,7 +178,7 @@ div.NavCalFrame table td.filled
 div.HelpFrame
 {
 	background: url(<c:url value="/img/grey/corner_left_top.gif" />) top left no-repeat;
-	max-height: 258px;
+	max-height: 500px;
   	width: 230px;
 } 
 
@@ -197,7 +198,7 @@ div.HelpBody
 	background: url(<c:url value="/img/grey/pixel_grey.gif" />);
   	margin-top: 0em;
   	padding:0;
-	height: 200px;
+	max-height: 300px;
 	overflow: auto;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -231,7 +232,9 @@ div.GreyFrame h3
   background: 	url(<c:url value="/img/grey/corner_right_top.gif" />) top right no-repeat;
   line-height:	11px;
   padding:		0;
-  margin:		0 0 0px 75px;
+	  margin:		0 0 0px 11px;
+	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
 }
 
 div.GreyFrameBody
@@ -255,34 +258,55 @@ div.GreyFrameFooter p
   margin:-2em 0 0 0;
 }
 
+div.ContentFrame
+{
+	text-align: left;
+	width: 100%;
+	min-width: 500px;
+	max-width: 780px;
+	margin: 0;
+	padding: 0;
+	background-color: white;
+}
+
+div.ContentFrame h1
+{
+	text-align: left;
+	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0 0 0 11px;
+	padding: 0;
+}
+
+
 
 div.BlueFrame
 {
-  background: url(<c:url value="/img/ovw/gradient_blue.gif" />) top left repeat-x;
-  margin-left: 20px;
-  margin-right: 20px;
+	background: url(<c:url value="/img/bg_blue_grey/gradient_blue.gif" />) top left repeat-x;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 div.BlueLeftTop
 {
-  background: url(<c:url value="/img/ovw/left_top.gif" />) top left no-repeat;
+	background: url(<c:url value="/img/bg_blue_grey/left_top.gif" />) top left no-repeat;
 }
 
 div.BlueRightTop
 {
-  background: url(<c:url value="/img/ovw/right_top.gif" />) top right no-repeat;
- 	font:  bold 1.0em/1.5em Geneva, Arial, Helvetica, sans-serif;	
- 		color: #536e87;
+  	background: url(<c:url value="/img/bg_blue_grey/right_top.gif" />) top right no-repeat;
+	font:  bold 1.0em/1.5em Geneva, Arial, Helvetica, sans-serif;	
+ 	color: #536e87;
 }
 
 div.BlueRightBottom
 {
-  background: url(<c:url value="/img/ovw/right_bottom.gif" />) bottom right no-repeat;
+	background: url(<c:url value="/img/bg_blue_grey/right_bottom.gif" />) bottom right no-repeat;
 }
 
 div.BlueLeftBottom
 {
-  background: url(<c:url value="/img/ovw/left_bottom.gif" />) bottom left no-repeat;
+	background: url(<c:url value="/img/bg_blue_grey/left_bottom.gif" />) bottom left no-repeat;
 }
 
 

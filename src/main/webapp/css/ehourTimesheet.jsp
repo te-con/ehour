@@ -1,26 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/css;" %>
 
-div.MonthAggregate
-{
-	text-align: left;
-	width: 100%;
-	min-width: 500px;
-	max-width: 780px;
-	margin: 0;
-	padding: 0;
-	background-color: white;
-}
-
-div.MonthAggregate h1
-{
-	text-align: left;
-	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
-	color: #536e87;
-	margin: 0 0 0 11px;
-	padding: 0;
-}
-
 .MonthAggregateTable 
 {
 	margin: 0 1em 0 1em;
@@ -56,120 +36,57 @@ div.MonthAggregate h1
 }
 
 
-//
-
-div.MonthOverviewFrame
+.MonthOverviewIEWorkAround
 {
-  background: url(<c:url value="/img/grey/corner_left_top.gif" />) top left no-repeat;
-	max-width: 710px;
- } 
-
-div.MonthOverviewFrame h3
-{
-  background: 	url(<c:url value="/img/grey/corner_right_top.gif" />) top right no-repeat;
-  line-height:	11px;
-  padding:		0;
-  margin:		0 0 0px 75px;
-}
-
-div.MonthOverviewFrameBody
-{
-  background: url(<c:url value="/img/grey/pixel_grey.gif" />);
-  margin:0px;
-  margin-top: 0em;
-  padding:0;
-}
-
-div.MonthOverviewFrameFooter
-{
-  background: url(<c:url value="/img/grey/corner_left_bottom.gif" />) bottom left no-repeat;
-}
-
-div.MonthOverviewFrameFooter p
-{
-  background: url(<c:url value="/img/grey/corner_right_bottom.gif" />) bottom right no-repeat;
-  padding:15px;
-  display:block;
-  margin:-2em 0 0 0;
-}
-
-
-div.MOBlueFrame
-{
-  background: url(<c:url value="/img/ovw/gradient_blue.gif" />) top left repeat-x;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-div.MOBLueLeftTop
-{
-  background: url(<c:url value="/img/ovw/left_top.gif" />) top left no-repeat;
-}
-
-div.MOBLueRightTop
-{
-  background: url(<c:url value="/img/ovw/right_top.gif" />) top right no-repeat;
-}
-
-div.MOBLueRightBottom
-{
-  background: url(<c:url value="/img/ovw/right_bottom.gif" />) bottom right no-repeat;
-}
-
-div.MOBLueLeftBottom
-{
-  background: url(<c:url value="/img/ovw/left_bottom.gif" />) bottom left no-repeat;
-}
-
-div.MOBlueFrame table.month
-{
-	margin-top: -15px;
+	margin: -15px 0 0 0;
 	padding: 0;
 }
 
-div.MOBlueFrame table.month td
+.MonthOverviewMonthTable
+{
+}
+
+.MonthOverviewMonthTable td
 {
 	color:	#536e87;
 	height:	18px;
-	width: 80px;
+	width: 90px;
 	border-right-style: solid;
 	border-right-color:#a1bcd7;
 	border-right-width: 1px;
 }
 	
-div.MOBlueFrame table.month tr.weekColumnRow
+.MonthOverviewMonthTable tr.weekColumnRow
 {
 }
 
-div.MOBlueFrame table.month tr.weekColumnRow td
+.MonthOverviewMonthTable tr.weekColumnRow td
 {
-	font:  1.5em/1.5 Geneva, Arial, Helvetica, sans-serif;	
+	font:  1.3em/1.3 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
+	padding: 0 0 0 3px;
 	margin: 0;
-	padding: 0;
 }
 
-div.MOBlueFrame table.month tr.weekColumnRow td.lastChild
+.MonthOverviewMonthTable tr.weekColumnRow td.lastChild
 {
 	border: 0;
 }
 
-div.MOBlueFrame table.month tr.weekColumnRow td.weekNumber
+.MonthOverviewMonthTable tr.weekColumnRow td.weekNumber
 {
 	width: 50px;
-	border-width: 0;
+	border: 0;
 }
 
-div.MOBlueFrame table.month tr.dateRow
+.MonthOverviewMonthTable tr.dateRow
 {
-	border-bottom-style: solid;
-	border-bottom-color: red;
-	border-bottom-width: 1px;
+	border: 0;
 }
 
-div.MOBlueFrame table.month tr.dateRow td
+.MonthOverviewMonthTable tr.dateRow td
 {
-	font:  0.8em/1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  0.8em/0.8 Geneva, Arial, Helvetica, sans-serif;	
 	text-align:	right;
 	margin: 0;
 	padding: 0 0 2px 0;
@@ -177,30 +94,30 @@ div.MOBlueFrame table.month tr.dateRow td
 }
 
 
-div.MOBlueFrame table.month tr.dateRow td.lastChild
+.MonthOverviewMonthTable tr.dateRow td.lastChild
 {
 	border-right-width: 0;
 }
 
 
-div.MOBlueFrame table.month tr.dateRow td.noMonth
+.MonthOverviewMonthTable tr.dateRow td.noMonth
 {
 	border: 0;
 }
 
 
-div.MOBlueFrame table.month tr.dateRow td.weekNumber
+.MonthOverviewMonthTable tr.dateRow td.weekNumber
 {
 	border-width: 0;
 	width: 50px;
 }
 
 
-div.MOBlueFrame table.month tr.hourRow
+.MonthOverviewMonthTable tr.hourRow
 {
 }
 
-div.MOBlueFrame table.month tr.hourRow td
+.MonthOverviewMonthTable tr.hourRow td
 {
 	height: 45px;
 	font:  0.8em/1 Geneva, Arial, Helvetica, sans-serif;	
@@ -210,8 +127,10 @@ div.MOBlueFrame table.month tr.hourRow td
 	border-bottom-style: solid;
 	border-bottom-color:#a1bcd7;
 	border-bottom-width: 1px;
+	width: inherit;
 }
-div.MOBlueFrame table.month tr.hourRow td.weekNumber
+
+.MonthOverviewMonthTable tr.hourRow td.weekNumber
 {
 	background-color: transparent;
 	vertical-align: bottom;
@@ -221,13 +140,13 @@ div.MOBlueFrame table.month tr.hourRow td.weekNumber
 	border-right-width: 0;
 }
 
-div.MOBlueFrame table.month tr.hourRow td.sunday
+.MonthOverviewMonthTable tr.hourRow td.sunday
 {
 	background-color: transparent;
 	background: url(<c:url value="/img/ovw/sunday_back.gif" />) left top no-repeat;
 }
 
-div.MOBlueFrame table.month tr.hourRow td.saturday
+.MonthOverviewMonthTable tr.hourRow td.saturday
 {
 	background-color: transparent;
 	background: url(<c:url value="/img/ovw/saturday_back.gif" />) right top no-repeat;
@@ -235,12 +154,12 @@ div.MOBlueFrame table.month tr.hourRow td.saturday
 }
 
 
-div.MOBlueFrame table.hourContentTable td
+.MonthOverviewTable hourContentTable td
 {
 	border: 0;
 }
 
-div.MOBlueFrame table tr.hourRow td.noMonthBefore
+.MonthOverviewMonthTable tr.hourRow td.noMonthBefore
 {
 	background-color: transparent;
 	border-bottom-style: solid;
@@ -248,7 +167,7 @@ div.MOBlueFrame table tr.hourRow td.noMonthBefore
 	border-bottom-width: 1px;
 }
 
-div.MOBlueFrame table tr.hourRow td.noMonthAfter
+.MonthOverviewMonthTable tr.hourRow td.noMonthAfter
 {
 	background-color: transparent;
 	border: 0;
@@ -257,7 +176,6 @@ div.MOBlueFrame table tr.hourRow td.noMonthAfter
 
 .bookedHours
 {
-	width:		98%;
 	overflow:	hidden;
 	margin: 0 0 2px 2px;
 	padding: 0;
@@ -270,6 +188,8 @@ div.MOBlueFrame table tr.hourRow td.noMonthAfter
 	float: 	right;
 	margin: -1em 2px 0 0;
 }
+
+// 
 
 div.TimesheetFrame
 {
