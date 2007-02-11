@@ -66,6 +66,20 @@ function parseSpanTarget(html)
 	return spanTarget;
 }
 
+
+// help returned from server
+function helpChanged(type, xml, evt)
+{
+	if (type == 'error')
+ 	{
+ 		alert(ajaxError);
+ 	}
+ 	else
+ 	{
+ 		ajaxEventReceived(xml, true, {HelpTarget: 'HelpTarget'}); 	
+	}
+}
+
 // had a nice fade but pages load too fast so it's annoying... :D
 function showLoadingData()
 {

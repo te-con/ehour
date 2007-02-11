@@ -274,7 +274,7 @@ div.ContentFrame h1
 	text-align: left;
 	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
-	margin: 0 0 0 11px;
+	margin: 0 0 0 1px;
 	padding: 0;
 }
 
@@ -313,20 +313,17 @@ div.BlueLeftBottom
 
 #submitButton
 {
-	background-color: #a3bed9;
+	background-color: transparent;
 	margin: 0;
 	padding: 0;
 	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
 	color: white;
 	border: 0;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #cde4fd;
 }
 
 #submitButton:hover
 {
-	background-color: #a3bed9;
+	background-color: transparent;
 	margin: 0;
 	padding: 0;
 	font: bold 1em Geneva, Arial, Helvetica, sans-serif;

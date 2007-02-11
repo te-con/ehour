@@ -12,162 +12,160 @@
 <input type="hidden" id="userId" value="${timesheet.userId}">
 
 
-<div class="TimesheetFrame">
-	<h3>&nbsp;</h3>
+<div class="ContentFrame">
+	<h1><fmt:message key="user.overview.week" /> <fmt:formatDate value="${timesheet.weekStart}" pattern="w, MMMMM yyyy" /></h1>
 	
-	<div class="TimesheetBody">
-	<div class="MOBlueFrame">
-		<div class="MOBLueLeftTop">
-			<div class="MOBLueRightTop">
-				&nbsp;
-			</div>
-		</div>
-
-
-		<table class="timesheet" cellpadding="0" cellspacing="0">
-
-<tr class="weekColumnRow">
-	<td class="project" style="text-align: left; padding-bottom: 2px">
-		&nbsp;<fmt:message key="user.overview.week" /> <fmt:formatDate value="${timesheet.weekStart}" pattern="w, MMMMM yyyy" />
-	</td>
-
-	<c:forEach items="${timesheet.dateSequence}" var="date" varStatus="status">
-		<c:choose>
-			<c:when test="${status.count == 7}">
-				<td class="lastChild">
-			</c:when>
-			
-			<c:otherwise>
-				<td>
-			</c:otherwise>
-		</c:choose>		
-			<fmt:formatDate value="${date}" pattern="E" />
-			<br>
-			<fmt:formatDate value="${date}" pattern="dd" />
-		</td>
-	</c:forEach>
-</tr>
-
-<c:forEach items="${timesheet.timesheetRows}" var="row">
-	<tr class="projectRow">
-		<td class="project">
-			&nbsp;
-			<a href="" onClick="return bookToProject(${row.projectAssignment.assignmentId})"
-					   title="<fmt:message key="user.timesheet.bookWeekOnProject" />">
-				${row.projectAssignment.project.fullname}:
-			</a>
-		</td>
+	<div class="GreyFrame">
+		<h3>&nbsp;</h3>
 		
-		<c:forEach items="${row.timesheetCells}" var="cell" varStatus="status">
-<%-- @todo sunday & saturday as marked as grey, configurable? --%>
-			<c:choose>
-				<c:when test="${status.count == 1}">
-					<td class="sunday">
-				</c:when>
+		<div class="BlueFrame">
+			<div class="BlueLeftTop">
+				<div class="BlueRightTop">
+					&nbsp;
+				</div>
+			</div>	
 
-				<c:when test="${status.count == 7}">
-					<td class="saturday">
-				</c:when>
-				
-				<c:otherwise>
-					<td class="weekday">
-				</c:otherwise>
-			</c:choose>
+		<table class="timesheetTableIEPaddingHack">
+			<tr>
+				<td width="5">&nbsp;</td>
+				<td>
+		<table class="timesheetTable" cellpadding="0" cellspacing="0">
 
-			<c:choose>
-				<c:when test="${cell.valid}">
-					<input type="text" class="dataEntry" size="2"
-						   name="ehts_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />_${status.count}"
-						   <c:if test="${cell.timesheetEntry.hours != null && cell.timesheetEntry.hours  > 0}">
-							   value="<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>"
-							</c:if>							  
-						   onChange="validateField(this)"
-							>
-				</c:when>
+		<tr class="weekColumnRow">
+			<td class="project">&nbsp;</td>
+			<c:forEach items="${timesheet.dateSequence}" var="date" varStatus="status">
+				<c:choose>
+					<c:when test="${status.count == 7}">
+						<td class="lastChild">
+					</c:when>
+					
+					<c:otherwise>
+						<td>
+					</c:otherwise>
+				</c:choose>		
+					<fmt:formatDate value="${date}" pattern="E" />
+					<br>
+					<fmt:formatDate value="${date}" pattern="dd" />
+				</td>
+			</c:forEach>
+		</tr>
+
+		<c:forEach items="${timesheet.timesheetRows}" var="row" varStatus="status">
+		<tr class="projectRow" 	<c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+				<td class="project">
+					&nbsp;
+					<a href="" onClick="return bookToProject(${row.projectAssignment.assignmentId})"
+							   title="<fmt:message key="user.timesheet.bookWeekOnProject" />">
+						${row.projectAssignment.project.fullname}:
+					</a>
+				</td>
 				
-				<c:otherwise>
-						&nbsp;
-						<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>
-						<input type="hidden"
-							   name="inactive_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />" 
-							   value="${cell.timesheetEntry.hours}">
-				</c:otherwise>
-			</c:choose>
-			
-			</td>
+				<c:forEach items="${row.timesheetCells}" var="cell" varStatus="status">
+		<%-- @todo sunday & saturday as marked as grey, configurable? --%>
+					<c:choose>
+						<c:when test="${status.count == 1}">
+							<td class="sunday">
+						</c:when>
+		
+						<c:when test="${status.count == 7}">
+							<td class="saturday">
+						</c:when>
+						
+						<c:otherwise>
+							<td class="weekday">
+						</c:otherwise>
+					</c:choose>
+		
+					<c:choose>
+						<c:when test="${cell.valid}">
+							<input type="text" class="dataEntry" size="2"
+								   name="ehts_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />_${status.count}"
+								   <c:if test="${cell.timesheetEntry.hours != null && cell.timesheetEntry.hours  > 0}">
+									   value="<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>"
+									</c:if>							  
+								   onChange="validateField(this)"
+									>
+						</c:when>
+						
+						<c:otherwise>
+								&nbsp;
+								<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>
+								<input type="hidden"
+									   name="inactive_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />" 
+									   value="${cell.timesheetEntry.hours}">
+						</c:otherwise>
+					</c:choose>
+					
+					</td>
+				</c:forEach>
+			</tr>						 
 		</c:forEach>
-	</tr>						 
-</c:forEach>
 
-	<tr>
-		<th colspan="5" style="text-align: left">&nbsp;<fmt:message key="user.timesheet.total" />:</th>
-		<th colspan="3" id="totalHours" style="text-align: right;padding-right: 7px">0</th>
-	</tr>
+		<tr class="totalRow">
+			<td colspan="7">&nbsp;<fmt:message key="user.timesheet.total" />:</th>
+			<td colspan="3" id="totalHours" style="text-align: right;padding-right: 7px">0</th>
+		</tr>
+		
+		</table>
+		
+		</td><td width="5">&nbsp;</td></tr></table>
+
+			<div class="BlueLeftBottom">
+				<div class="BlueRightBottom">
+					&nbsp;
+				</div>
+			</div>			
+		</div>
 	
-</table>
-
-		<div class="MOBLueLeftBottom">
-			<div class="MOBLueRightBottom">
-				&nbsp;
+		<br>
+		
+		<div class="BlueFrame">
+			<div class="BlueLeftTop">
+				<div class="BlueRightTop">
+					&nbsp;
+				</div>
 			</div>
-		</div>			
-	</div>
 
-	<div class="TimesheetFrameFooter">
-		<p>
-			&nbsp;
-		</p>
+			<table class="timesheetCommentsTable" cellpadding="0" cellspacing="0">
+
+			<tr>
+				<td style="width: 12px" rowspan="2">&nbsp;</td>
+
+				<td valign="top">
+					<fmt:message key="user.timesheet.weekComments" />:
+				</td>
+				
+				<td align="right">
+					<textarea name="comment" id="comment"
+								rows="3" cols="40"
+								wrap="virtual">${timesheet.comment.comment}</textarea>
+				</td>
+
+				<td style="width: 12px" rowspan="2">&nbsp;</td>
+			</tr>
+
+			<tr>
+				<td><input type="submit" id="submitButton" value="reset" onClick="return resetTotal();"></td>
+				<td align="right"><input type="submit" id="submitButton" value="<fmt:message key="user.timesheet.storeAndNext" />" onClick="return makeFormSubmittable();"></td>
+			</tr>
+
+		</table>
+
+			<div class="BlueLeftBottom">
+				<div class="BlueRightBottom">
+					&nbsp;
+				</div>
+			</div>			
+		</div>
+	
+		<br>
+		
+		<div class="GreyFrameFooter">
+			<p>
+			</p>
+		</div>				
 	</div>	
 </div>
-</div>
-
-<br>
-
-<div class="TimesheetFrame">
-	<h3>&nbsp;</h3>
-	
-	<div class="TimesheetBody">
-	<div class="MOBlueFrame">
-		<div class="MOBLueLeftTop">
-			<div class="MOBLueRightTop">
-				&nbsp;
-			</div>
-		</div>
-
-<table class="cal_table" cellspacing="0">
-	<tr>
-		<th style="text-align: left; padding-bottom: 2px"><fmt:message key="user.timesheet.weekComments" /></th>
-	</tr>
-	
-	<tr>
-		<td style="border-bottom: #66000 1px solid;">
-			<textarea name="comment" id="comment"
-						rows="3" cols="40" class="dataEntry" style="width: 495px" wrap="virtual">${timesheet.comment.comment}</textarea>
-		</td>
-	</tr>
-</table>
-
-
-<table cellspacing="0" width="500">
-	<tr>
-		<td><input type="submit" class="redSubmit" value="reset" onClick="return resetTotal();"></td>
-		<td align="right"><input type="submit" class="redSubmit" value="<fmt:message key="user.timesheet.storeAndNext" />" onClick="return makeFormSubmittable();"></td>
-	</tr>
-</table>
-		<div class="MOBLueLeftBottom">
-			<div class="MOBLueRightBottom">
-				&nbsp;
-			</div>
-		</div>			
-	</div>
-
-	<br>
-	
-	<div class="MonthOverviewFrameFooter">
-		<p>
-		</p>
-	</div>				
-</div>	
 </form>
 
 <script>

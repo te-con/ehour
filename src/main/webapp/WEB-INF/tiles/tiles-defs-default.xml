@@ -28,6 +28,12 @@
     <!-- Timesheet Timesheet form page -->
     <definition name=".ehour.timesheet.timesheet" path="/WEB-INF/jsp/timesheet/timesheet.jsp" />
 
+    <!-- Timesheet contextual help -->
+    <definition name=".ehour.timesheet.help" path="/WEB-INF/jsp/help/help.jsp">
+		<put name="helpHeader" value="timesheet.header" />		
+		<put name="helpBody" value="timesheet.body" />		
+    </definition>
+
     <!-- User report Overview page -->
     <definition name=".ehour.userreport.overview" extends=".ehour.baseLayout">
         <put name="navCalendar" value="/WEB-INF/jsp/userReport/criteria.jsp" />

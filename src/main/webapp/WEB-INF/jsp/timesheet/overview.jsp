@@ -5,6 +5,7 @@
 <%@ taglib uri="/WEB-INF/ehour-common.tld" prefix="ehour" %>
 
 <!-- spanTarget: overview -->
+
 <!-- project overview -->
 <div class="ContentFrame">
 	<h1><fmt:message key="user.overview.aggregatedProject" /></h1>
@@ -59,50 +60,50 @@
 
 <div class="ContentFrame">	
 	<h1><fmt:message key="user.overview.monthOverview" /></h1>
+
+	<div class="GreyFrame">
+		<h3>&nbsp;</h3>
+		
+		<div class="BlueFrame">
+			<div class="BlueLeftTop">
+				<div class="BlueRightTop">
+					&nbsp;
+				</div>
+			</div>	
+	
+			<table cellpadding="0" cellspacing="0" class="MonthOverviewIEWorkAround">
+				<tr>
+					<td>
+					<table class="MonthOverviewMonthTable" cellpadding="0" cellspacing="0">
+						<tr class="weekColumnRow">
+							<td class="weekNumber">&nbsp;</td>
+							<td><fmt:message key="user.overview.sun" /></td>
+							<td><fmt:message key="user.overview.mon" /></td>
+							<td><fmt:message key="user.overview.tue" /></td>
+							<td><fmt:message key="user.overview.wed" /></td>
+							<td><fmt:message key="user.overview.thu" /></td>
+							<td><fmt:message key="user.overview.fri" /></td>
+							<td class="lastChild"><fmt:message key="user.overview.sat" /></td>
+						</tr>	
+						
+					<ehour:overviewCalendar calendar="${timesheetOverviewMonth}"
+											timesheetEntries="${timesheetOverview.timesheetEntries}" />
+					</table>
+					<td width="5">&nbsp</td>
+				</tr>
+			</table>
+			<div class="BlueLeftBottom">
+				<div class="BlueRightBottom">
+					&nbsp;
+				</div>
+			</div>			
+		</div>
+	
+		<br>
+		
+		<div class="GreyFrameFooter">
+			<p>
+			</p>
+		</div>				
+	</div>	
 </div>
-
-<div class="GreyFrame">
-	<h3>&nbsp;</h3>
-	
-	<div class="BlueFrame">
-		<div class="BlueLeftTop">
-			<div class="BlueRightTop">
-				&nbsp;
-			</div>
-		</div>	
-
-		<table cellpadding="0" cellspacing="0" class="MonthOverviewIEWorkAround">
-			<tr>
-				<td>
-				<table class="MonthOverviewMonthTable" cellpadding="0" cellspacing="0">
-					<tr class="weekColumnRow">
-						<td class="weekNumber">&nbsp;</td>
-						<td><fmt:message key="user.overview.sun" /></td>
-						<td><fmt:message key="user.overview.mon" /></td>
-						<td><fmt:message key="user.overview.tue" /></td>
-						<td><fmt:message key="user.overview.wed" /></td>
-						<td><fmt:message key="user.overview.thu" /></td>
-						<td><fmt:message key="user.overview.fri" /></td>
-						<td class="lastChild"><fmt:message key="user.overview.sat" /></td>
-					</tr>	
-					
-				<ehour:overviewCalendar calendar="${timesheetOverviewMonth}"
-										timesheetEntries="${timesheetOverview.timesheetEntries}" />
-				</table>
-				<td width="5">&nbsp</td>
-			</tr>
-		</table>
-		<div class="BlueLeftBottom">
-			<div class="BlueRightBottom">
-				&nbsp;
-			</div>
-		</div>			
-	</div>
-
-	<br>
-	
-	<div class="GreyFrameFooter">
-		<p>
-		</p>
-	</div>				
-</div>	

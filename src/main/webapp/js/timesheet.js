@@ -145,7 +145,6 @@ function resetTotal()
 {
 	// from navCalenderOverview.js
 	doNotSubmitTimesheet = true;
-	
 	document.getElementById('timesheetFormId').reset();
     updateTotal();
 }

@@ -36,8 +36,6 @@ function changeCalMonth(month, year, userId)
 // week clicked in the calendar
 function enterSheet(year, month, day, userId)
 {
-	inSheetForm = true;
-	
 	doNotSubmitTimesheet = true;
 	
 	dojo.io.bind({
@@ -91,7 +89,20 @@ function weekChanged(type, xml, evt)
 	new dojo.io.FormBind({	formNode: dojo.byId('timesheetFormId'),
   							handler: timesheetSubmitted
 							});
+			
+	// update contextual help?							
+	if (!inSheetForm)
+	{
+		inSheetForm = true;
+
+		// helpChanged method is in base.js
+		dojo.io.bind({
+		               url: contextRoot + "eh/timesheet/timesheetHelp.do",
+		               handler: helpChanged
+		            });
+	}
 }
+
 
 // timesheet was submitted
 function timesheetSubmitted(type, xml, evt)

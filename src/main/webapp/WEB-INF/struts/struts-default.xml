@@ -62,6 +62,10 @@
 			<forward name="success" path=".ehour.timesheet.timesheet" />
 		</action>
 
+		<!-- Timesheet help -->
+		<action path="/eh/timesheet/timesheetHelp"
+				forward=".ehour.timesheet.help" />
+
 		<!-- Navigation Calendar -->
 		<action name="NavCalendarForm"
 				path="/eh/cal/navCalendar"
