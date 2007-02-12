@@ -3,7 +3,7 @@ eHour summary
   eHour is a webbased time registration tool for consultancy companies and other project based businesses.
   The primary objective is to keep time registration as simple as needed while still being very effective at measuring and reporting the amount of time your team spends on a project.
 
-Technical environment
-
-  Java
- 
+  Currently no beta version has been released yet but you can browse through an {{{http://www.ehour.nl/ehour-test/}in-progress version}} on my development server.
+  To login use thies as the username and test as the password.
+  Mind that my development server is always out of bandwidth, lag is likely caused by this.
+   
