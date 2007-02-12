@@ -5,6 +5,27 @@
     <src>http://www.ehour.nl/img/ehour.gif</src>
     <href>http://www.ehour.nl/</href>
   </bannerLeft>
+	<skin>
+         <groupId>org.apache.maven.skins</groupId>
+         <artifactId>maven-stylus-skin</artifactId>
+         <version>1.0</version>
+     </skin>
+     <poweredBy>
+         <logo
+           name="Code Coverage by Clover"
+           href="http://www.cenqua.com/clover/"
+           img="http://www.cenqua.com/images/clovered.gif"/>
+         <logo
+            name="Hosted on SourceForge.net"
+            href="http://sourceforge.net"
+		 img="http://sflogo.sourceforge.net/sflogo.php?group_id=167867&amp;type=1"/>
+         <logo
+            name="Build with Maven 2"
+            href="http://maven.apache.org"
+            img="images/logos/maven-feather.png"/>
+     </poweredBy>
+
+
   <body>
     <links>
       <item name="eHour" href="http://www.ehour.nl/"/>
