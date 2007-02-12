@@ -59,8 +59,8 @@ public class ProjectReportTotalHoursChartAction extends ProjectReportChartAction
 		
 		JFreeChart chart = ChartFactory.createBarChart("Booked hours per customer",
 				"Customer", "Hours", dataset, PlotOrientation.HORIZONTAL,
-				false, true, true);
-		
+				false, false, false);
+		chart.removeLegend();
 		return chart;
 	}
 }

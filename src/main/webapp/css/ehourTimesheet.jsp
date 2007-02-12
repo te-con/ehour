@@ -336,15 +336,6 @@
 	border: 0;
 }
 
-.timesheetTable input
-{
-	border-style: solid;
-	border-width: 1px;
-	border-color: #cfdbe6;
-	margin: 5px 0 5px 0;
-	font: 0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;
-	color: #233e55;
-}
 
 .timesheetCommentsTable
 {

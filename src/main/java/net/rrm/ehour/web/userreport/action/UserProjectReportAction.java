@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.project.ProjectReport;
@@ -52,7 +53,8 @@ public class UserProjectReportAction extends Action
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
 	private	Logger			logger = Logger.getLogger(this.getClass());
-
+	private EhourConfig		config;
+	
 	/**
 	 * 
 	 */
@@ -81,7 +83,8 @@ public class UserProjectReportAction extends Action
 		session.setAttribute(sessionKey, report);
 		request.setAttribute("report", report);
 		request.setAttribute("reportSessionKey", sessionKey);
-
+		request.setAttribute("config", config);
+		
 		return mapping.findForward("success");
 	}
 
@@ -116,5 +119,13 @@ public class UserProjectReportAction extends Action
 	public void setReportService(ReportService reportService)
 	{
 		this.reportService = reportService;
+	}
+
+	/**
+	 * @param config the config to set
+	 */
+	public void setConfig(EhourConfig config)
+	{
+		this.config = config;
 	}
 }

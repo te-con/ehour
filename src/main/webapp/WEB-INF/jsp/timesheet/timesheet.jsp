@@ -51,7 +51,7 @@
 		</tr>
 
 		<c:forEach items="${timesheet.timesheetRows}" var="row" varStatus="status">
-		<tr class="projectRow" 	<c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+		<tr class="projectRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
 				<td class="project">
 					&nbsp;
 					<a href="" onClick="return bookToProject(${row.projectAssignment.assignmentId})"
@@ -78,7 +78,7 @@
 		
 					<c:choose>
 						<c:when test="${cell.valid}">
-							<input type="text" class="dataEntry" size="2"
+							<input type="text" size="2" class="textInput"
 								   name="ehts_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />_${status.count}"
 								   <c:if test="${cell.timesheetEntry.hours != null && cell.timesheetEntry.hours  > 0}">
 									   value="<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>"

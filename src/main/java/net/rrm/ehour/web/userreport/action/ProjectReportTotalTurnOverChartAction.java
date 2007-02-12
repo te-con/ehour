@@ -60,7 +60,7 @@ public class ProjectReportTotalTurnOverChartAction extends ProjectReportChartAct
 		
 		JFreeChart chart = ChartFactory.createBarChart("Turnover per customer",
 				"Customer", "Turnover", dataset, PlotOrientation.HORIZONTAL,
-				false, true, true);
+				false, false, false);
 		
 		return chart;
 	}

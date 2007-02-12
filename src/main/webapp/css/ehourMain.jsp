@@ -34,7 +34,7 @@ div.NavHeader table td
 
 div.NavHeader img
 {
-	margin: 0 0 0 50px;
+	margin: 0 0 5px 50px;
 	padding: 0;
 	vertical-align: bottom;
 }
@@ -274,7 +274,7 @@ div.ContentFrame h1
 	text-align: left;
 	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
-	margin: 0 0 0 1px;
+	margin: 0 0 0 11px;
 	padding: 0;
 }
 
@@ -309,8 +309,6 @@ div.BlueLeftBottom
 	background: url(<c:url value="/img/bg_blue_grey/left_bottom.gif" />) bottom left no-repeat;
 }
 
-
-
 #submitButton
 {
 	background-color: transparent;
@@ -328,4 +326,14 @@ div.BlueLeftBottom
 	padding: 0;
 	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #576d83;
+}
+
+.textInput
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #cfdbe6;
+	margin: 5px 0 5px 0;
+	font: 0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
 }

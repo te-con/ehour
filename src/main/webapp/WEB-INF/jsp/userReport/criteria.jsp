@@ -44,52 +44,43 @@ function init()
 		</div>
 	</div>
 
-<form method="post" action="projectReport.do" id="criteriaForm">
-
-<table class="criteriaTable">
-	<tr>
-		<td>
-			<fmt:message key="admin.assignment.dateStart" />:
-		</td>
-		
-		<td>
-			<div id="dateStartDiv"></div>
-		</td>
-	</tr>	
-
-	<tr>
-		<td>
-			<fmt:message key="admin.assignment.dateEnd" />:
-		</td>
-		
-		<td>
-			<div id="dateEndDiv"></div>
-		</td>
-	</tr>	
-
-
-	<tr>	
-		<td valign="top">
-			Project:
-		</td>
-		
-		<td>
-			<select name="projectId" multiple="multiple">
-				<option value="-1">(All)
-				<c:forEach items="${criteria.availableCriteria.projects}" var="project">
-					<option value="${project.projectId}">${project.name}
-				</c:forEach>
-			</select>
-		</td>
-	</tr>
+	<form method="post" action="projectReport.do" id="criteriaForm">
 	
-	<tr>
-		<td colspan="2" align="right">
-			<input type="submit" value="submit" id="submitButton">
-		</td>
-	</tr>
-</table>
-</form>
+	<table class="criteriaTable" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>
+				<fmt:message key="admin.assignment.dateStart" />:
+				<div id="dateStartDiv"></div>
+			</td>
+		</tr>	
+	
+		<tr>
+			<td>
+				<fmt:message key="admin.assignment.dateEnd" />:
+				<div id="dateEndDiv"></div>
+			</td>
+		</tr>	
+	
+	
+		<tr>	
+			<td valign="top">
+				Project:
+				<select size="2" name="projectId" multiple="multiple" class="textInput">
+					<option value="-1">(All)
+					<c:forEach items="${criteria.availableCriteria.projects}" var="project">
+						<option value="${project.projectId}">${project.name}
+					</c:forEach>
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="2" align="right">
+				<input type="submit" value="submit" id="submitButton">
+			</td>
+		</tr>
+	</table>
+	</form>
 
 	<div class="NavCalFrameLeftBottom">
 		<div class="NavCalFrameRightBottom">
@@ -98,8 +89,6 @@ function init()
 	</div>		
 </div>
 </div>
-
-
 
 <script type="text/javascript">
 	init();
