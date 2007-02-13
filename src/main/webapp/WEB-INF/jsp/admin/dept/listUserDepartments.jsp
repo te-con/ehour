@@ -4,14 +4,13 @@
 
 <!-- spanTarget: list -->
 
-<table CLASS="contentTable" CELLSPACING=0>
+<table CLASS="contentTable" CELLSPACING="0" style="width: 200px; margin: 0px; padding: 0px">
 <c:forEach items="${userDepartments}" var="userDept">
 	<tr>
 		<td><a href=""
 			onClick="return editUserDepartment(${userDept.departmentId})">${userDept.name}</a>
 		</td>
-		<td>&nbsp;&nbsp;&nbsp;</td>			
-		<td align="right">
+		<td style="text-align: right">
 			${fn:length(userDept.users)} <fmt:message key="admin.dept.users" />
 		</td>
 	</tr>

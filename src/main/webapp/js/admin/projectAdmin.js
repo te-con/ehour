@@ -39,7 +39,7 @@ function projectListWithMessage(type, xml, evt)
 	else
 	{
 		setStatusMessage(formSuccess);
-		projectListReceived(type, xml, evt);
+//		ajaxEventReceived(xml, true, {list: "list"});
 	}
 }
 
@@ -94,7 +94,7 @@ function filterKeyUp(evt)
 	dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
 	
 	dojo.io.bind({url: 'index.do',
-				  handler: projectListReceived,
+				  handler: responseReceived,
                   content: {hideInactive: dojo.byId('hideInactive').checked,
                      		fromForm: '1'}
                      });		

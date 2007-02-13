@@ -26,33 +26,66 @@
 <script src="<c:url value="/js/admin/assignmentAdmin.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 
-<table CLASS="contentTable" CELLSPACING=2>
-	<tr>
-		<td valign="top"><fmt:message key="admin.user.filter" />:</td>
-		<td><form onSubmit="return false;"><input class="normtxt" type="text" name="filter"
-					size="30" id="filterInput"></form>
-		</td>
-		<td valign="top" align="left" style="color: #913023" id="statusMessage">
-			&nbsp;
-		</td>
-	</tr>
-	
-	<tr>
-		<td valign="top" colspan="2">
-			<div class="adminListScroll">
-				<span id="listUsersSpan">
-					<tiles:insert page="../user/listUsers.jsp" />
+<div class="ContentFrame" style="max-width: 1200px">
+	<table class="contentTable" cellspacing="2">
+		<tr>
+			<td valign="top" width="270">
+				<h1><fmt:message key="admin.assignment.title" /></h1>
+				<div class="GreyFrame" style="width: 260px;">
+					<h3>&nbsp;</h3>
+
+					<div class="GreyFrameBody">
+						<form onSubmit="return false;">
+							<p>
+								<fmt:message key="admin.user.filter" />:<input style="margin-bottom: 0" class="textInput" type="text" name="filter" size="30" id="filterInput"><br>
+								<fmt:message key="admin.user.hideInactive" />: <input style="margin-bottom: 0" type="checkbox" id="hideInactive" name="hideInactive" checked><br>
+							</p>
+						</form>
+						
+						<div class="BlueFrame" style="width: 220px; padding-top: 0; margin-top: 10px">
+							<div class="BlueLeftTop">
+								<div class="BlueRightTop">
+									&nbsp;
+								</div>
+							</div>											
+
+							<div class="adminListScroll">
+								<span id="listUsersSpan">
+									<tiles:insert page="../user/listUsers.jsp" />
+								</span>
+							</div>
+							
+							<div class="BlueLeftBottom">
+								<div class="BlueRightBottom">
+									&nbsp;
+								</div>
+							</div>			
+						</div>									
+
+				
+					<br>
+					
+					<div class="GreyFrameFooter">
+						<p>
+						</p>
+					</div>				
+				</div>	
+			</td>
+			
+			<td valign="top">
+				<span id="assignmentFormSpan">
+					&nbsp;	
 				</span>
-			</div>
-		</td>
+			</td>
+		</tr>
 		
-		<td valign="top">
-			<span id="assignmentFormSpan">
-				&nbsp;	
-			</span>
-		</td>
-	</tr>
-</table>
+		<tr>
+			<td colspan="2" align="right" style="text-align: right; margin-right: 20px; color: #233e55" id="statusMessage">
+				&nbsp;
+			</td>
+		</tr>
+	</table>
+</div>
 
 <c:if test="${param.assignmentId != null}">
 <script>

@@ -4,13 +4,12 @@
 
 <!-- spanTarget: list -->
 
-<table class="contentTable" cellspacing="0">
+<table CLASS="contentTable" CELLSPACING="0" style="width: 200px; margin: 0px; padding: 0px">
 <c:forEach items="${customers}" var="customer">
 	<tr>
 		<td><a href=""
 			onClick="return editCustomer(${customer.customerId})">${customer.name}</a></td>
-		<td>&nbsp;&nbsp;&nbsp;</td>
-		<td align="right">${fn:length(customer.projects)} <fmt:message key="admin.customer.projects" /></td>
+		<td style="text-align: right">${fn:length(customer.projects)} <fmt:message key="admin.customer.projects" /></td>
 	</tr>
 </c:forEach>
 </table>

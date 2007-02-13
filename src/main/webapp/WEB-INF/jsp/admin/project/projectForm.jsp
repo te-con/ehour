@@ -9,41 +9,38 @@
 <input type="hidden" name="projectId"  value="${project.projectId}">
 <input type="hidden" id="inActiveForm" name="hideInactive" value="true">
 
-<table CLASS="contentTable" CELLSPACING=2>
-	<tr>
-		<td colspan="2">
-			<c:choose>
-				<c:when test="${project == null || project == ''}">
-					<fmt:message key="admin.project.addProject" />
-				</c:when>
-				
-				<c:otherwise>
-					<fmt:message key="admin.project.editProject" />
-				</c:otherwise>
-			</c:choose>
-		</td>
-	</tr>
+<h1><c:choose>
+		<c:when test="${project == null || project == ''}">
+			<fmt:message key="admin.project.addProject" />
+		</c:when>
+		
+		<c:otherwise>
+			<fmt:message key="admin.project.editProject" />
+		</c:otherwise>
+	</c:choose></h1>
 
+<div class="GreyFrame">
+	<h3>&nbsp;</h3>
+
+	<div class="GreyFrameBody">			
+
+<table class="contentTable" cellspacing="2">
 	<tr>
-    	<td colspan="2"><img src="<c:url  value="/img/eh_pixel.gif" />" alt="pix" height="1" width="100%"><br></td>
-	</tr>
-	
-	<tr>
-		<td><fmt:message key="admin.project.name" />:</td>
-		<td><input class="normtxt" type="text" name="name" size="30" value="${project.name}"></td>
+		<td width="20%"><fmt:message key="admin.project.name" />:</td>
+		<td><input class="textInputSmall" type="text" name="name" size="30" value="${project.name}"></td>
 		<td id="projectNameError" style="color: red"></td>
 	</tr>
 
 	<tr>
 		<td><fmt:message key="admin.project.code" />:</td>
-		<td><input class="normtxt" type="text" name="projectCode" size="30" value="${project.projectCode}"></td>
+		<td><input class="textInputSmall" type="text" name="projectCode" size="30" value="${project.projectCode}"></td>
 		<td id="projectCodeError" style="color: red"></td>
 	</tr>
 
 	<tr>
 		<td><fmt:message key="admin.project.customer" />:</td>
 		<td>
-			<select class="normtxt" name="customerId">
+			<select class="textInputSmall" name="customerId">
 <c:forEach items="${customers}" var="customer">
 	<option value="${customer.customerId}" 
 		<c:if test="${customer.customerId== project.customer.customerId}">
@@ -58,37 +55,37 @@
 
 	<tr>
 		<td valign="top"><fmt:message key="admin.project.description" />:</td>
-		<td><textarea name="description" class="normtxt" wrap="virtual" cols="40" rows="2">${project.description}</textarea>
+		<td><textarea name="description" class="textInputSmall" wrap="virtual" cols="40" rows="2">${project.description}</textarea>
 		</td>
 		<td></td>
 	</tr>
 	
 	<tr>
 		<td><fmt:message key="admin.project.contact" />:</td>
-		<td><input class="normtxt" type="text" name="contact" size="30" value="${project.contact}"></td>
+		<td><input class="textInputSmall" type="text" name="contact" size="30" value="${project.contact}"></td>
 		<td></td>
 	</tr>	
 
 	<tr>
 		<td valign="top"><fmt:message key="admin.project.defaultProject" />:</td>
-		<td><input class="normtxt" type="checkbox" name="defaultProject" <c:if test="${project != null && project.defaultProject}">checked</c:if>></td>
+		<td><input class="textInputSmall" type="checkbox" name="defaultProject" <c:if test="${project != null && project.defaultProject}">checked</c:if>></td>
 	</tr>	
 
 
 	<tr>
 		<td valign="top"><fmt:message key="general.active" />:</td>
-		<td><input class="normtxt" type="checkbox" name="active" <c:if test="${project == null || project.active}">checked</c:if>></td>
+		<td><input class="textInputSmall" type="checkbox" name="active" <c:if test="${project == null || project.active}">checked</c:if>></td>
 	</tr>	
 	
 	<tr>
-		<td colspan="2" align="right">
+		<td colspan="2" style="text-align: right">
 			<c:choose>
 				<c:when test="${project == null || project == ''}">
-					<input type="submit" class="redSubmit" value="<fmt:message key="general.add" />">
+					<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.add" />">
 				</c:when>
 				
 				<c:otherwise>
-					<input type="submit" class="redSubmit" value="<fmt:message key="general.edit" />">
+					<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.edit" />">
 				</c:otherwise>
 			</c:choose>		
 		</td>
@@ -98,3 +95,11 @@
 </table>
 
 </form>
+
+	</div>
+						
+	<div class="GreyFrameFooter">
+		<p>
+		</p>
+	</div>				
+</div>						

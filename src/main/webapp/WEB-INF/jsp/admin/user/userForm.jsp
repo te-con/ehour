@@ -10,11 +10,7 @@
 <input type="hidden" name="userId"  value="${user.userId}">
 <input type="hidden" id="filterForm" name="filter" value="">
 <input type="hidden" id="inActiveForm" name="hideInactive" value="">
-
-<table CLASS="contentTable" CELLSPACING=2>
-	<tr>
-		<td colspan="2">
-			<c:choose>
+<h1><c:choose>
 				<c:when test="${user == null || user == ''}">
 					<fmt:message key="admin.user.addUser" />
 				</c:when>
@@ -22,32 +18,28 @@
 				<c:otherwise>
 					<fmt:message key="admin.user.editUser" />
 				</c:otherwise>
-			</c:choose>
-		</td>
-		
-		<td>&nbsp;</td>
-		
-		<c:if test="${user != null}">
-			<td>
-				<fmt:message key="admin.user.projects" />		
-			</td>
-		</c:if>
-	</tr>
+			</c:choose></h1>
+			
+<div class="GreyFrame">
+	<h3>&nbsp;</h3>
 
+	<div class="GreyFrameBody">			
+
+
+<table class="contentTable" cellspacing="2">
 	<tr>
-    	<td colspan="2"><img src="<c:url  value="/img/eh_pixel.gif" />" alt="pix" height="1" width="100%"><br></td>
-		<td>&nbsp;</td>
-		<c:if test="${user != null}">
-			<td>
-				<img src="<c:url  value="/img/eh_pixel.gif" />" alt="pix" height="1" width="100%"><br>
-			</td>
-		</c:if>		
+		<td colspan="3">&nbsp;</td>
+		
+		<td>
+			<c:if test="${user != null}">
+				<fmt:message key="admin.user.projects" />:		
+			</c:if>
+		</td>
 	</tr>
-
 	
 	<tr>
-		<td><fmt:message key="admin.user.username" />:</td>
-		<td><input class="normtxt"
+		<td width="20%"><fmt:message key="admin.user.username" />:</td>
+		<td><input class="textInputSmall"
 					type="text" 
 					name="username" 
 					size="30" 
@@ -86,19 +78,19 @@
 
 	<tr>
 		<td><fmt:message key="admin.user.password" />:</td>
-		<td><input class="normtxt"  type="password" name="password" size="30" maxlength="30"></td>
+		<td><input class="textInputSmall"  type="password" name="password" size="30" maxlength="30"></td>
 		<td id="passwordError" style="color: red"><html:errors property="password" /></td>
 	</tr>
 
 	<tr>
 		<td><fmt:message key="admin.user.confirmPassword" />:</td>
-		<td><input class="normtxt"  type="password" name="confirmPassword" size="30" maxlength="30"></td>
+		<td><input class="textInputSmall"  type="password" name="confirmPassword" size="30" maxlength="30"></td>
 		<td id="confirmPasswordError" style="color: red"></td>
 	</tr>	
 
 	<tr>
 		<td><fmt:message key="admin.user.firstName" />:</td>
-		<td><input class="normtxt"
+		<td><input class="textInputSmall"
 					type="text" 
 					name="firstName" 
 					size="30" 
@@ -109,7 +101,7 @@
 
 	<tr>
 		<td><fmt:message key="admin.user.lastName" />:</td>
-		<td><input class="normtxt"
+		<td><input class="textInputSmall"
 					type="text" 
 					name="lastName" 
 					size="30" 
@@ -120,7 +112,7 @@
 	
 	<tr>
 		<td><fmt:message key="admin.user.email" />:</td>
-		<td><input class="normtxt"
+		<td><input class="textInputSmall"
 					type="text" 
 					name="email" 
 					size="30" 
@@ -132,7 +124,7 @@
 	<tr>
 		<td><fmt:message key="admin.user.department" />:</td>
 		<td>
-			<select class="normtxt" name="departmentId">
+			<select class="textInputSmall" name="departmentId">
 <c:forEach items="${userDepartments}" var="userDepartment">
 	<option value="${userDepartment.departmentId}" 
 		<c:if test="${userDepartment.departmentId == user.userDepartment.departmentId}">
@@ -148,7 +140,7 @@
 	<tr>
 		<td valign="top"><fmt:message key="admin.user.roles" />:</td>
 		<td>
-			<select class="normtxt" name="roles" multiple="true">
+			<select class="textInputSmall" name="roles" multiple="true">
 <c:forEach items="${userRoles}" var="role">
 	<option value="${role.role}"
 		<c:if test="${fn:contains(userRolesString, role.role)}">
@@ -164,18 +156,18 @@
 	
 	<tr>
 		<td valign="top"><fmt:message key="general.active" />:</td>
-		<td><input class="normtxt" type="checkbox" name="active" <c:if test="${user == null || user.active}">checked</c:if>></td>
+		<td><input type="checkbox" name="active" <c:if test="${user == null || user.active}">checked</c:if>></td>
 	</tr>	
 	
 	<tr>
-		<td colspan="2" align="right">
+		<td colspan="2" style="text-align: right">
 			<c:choose>
 				<c:when test="${user == null || user == ''}">
-					<input type="submit" class="redSubmit" value="<fmt:message key="general.add" />">
+					<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.add" /> >>">
 				</c:when>
 				
 				<c:otherwise>
-					<input type="submit" class="redSubmit" value="<fmt:message key="general.edit" />">
+					<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.edit" /> >>">
 				</c:otherwise>
 			</c:choose>		
 		</td>
@@ -185,3 +177,12 @@
 </table>
 
 </form>
+
+	</div>
+						
+	<div class="GreyFrameFooter">
+		<p>
+		</p>
+	</div>				
+</div>						
+

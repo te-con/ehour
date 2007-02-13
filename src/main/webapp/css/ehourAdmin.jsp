@@ -3,14 +3,14 @@
 
 a:link
 {
-	color: #536e87;
+	color: #233e55;
 	font-weight: normal;
 	text-decoration: none;
 }
 
 a:visited
 {
-	color: #536e87;
+	color: #233e55;
 	font-weight: normal;	
 	text-decoration: none;
 }
@@ -28,7 +28,7 @@ a:active
 .contentTable
 {
 	padding: 0px;
-	margin: 0px;
+	margin: 0 0 0 10px;
 	spacing: 0px;
 }
 
@@ -58,7 +58,7 @@ a:active
 	font:  1em Verdana Geneva, Arial, Helvetica, sans-serif;
 	border: 0px;
 	text-align: left;
-	color: #233e55;
+	color: #536e87;
 }
 
 .errorCell
@@ -78,4 +78,29 @@ div.adminListScroll
 	padding: 0px;
 	width: 210px;
 	font:  1em Geneva, Arial, Helvetica, sans-serif;
+}
+
+div.GreyNavBody li a:link
+{
+	text-decoration: none;
+	font: 1em Verdana, Geneva, Arial, Helvetica;
+}
+
+div.GreyNavBody li a:visited
+{
+	text-decoration: none;
+	font: 1em Verdana, Geneva, Arial, Helvetica;
+}
+
+div.GreyNavBody li a:hover
+{
+	text-decoration: underline;
+	font: 1em Verdana, Geneva, Arial, Helvetica;
+	color: #233e55;
+}
+
+div.GreyNavBody li a:active
+{
+	text-decoration: underline;
+	font: 1em Verdana, Geneva, Arial, Helvetica;
 }

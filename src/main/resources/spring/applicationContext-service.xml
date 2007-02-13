@@ -43,7 +43,7 @@
 	</bean>
 -->
 	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigJdbc">
-		<constructor-arg><ref bean="dataSource" /></constructor-arg>
+		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
 		<constructor-arg value="CONFIGURATION" />
 		<constructor-arg value="config_key" />		
 		<constructor-arg value="config_value" />		

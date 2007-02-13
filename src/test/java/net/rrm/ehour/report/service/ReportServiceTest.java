@@ -233,7 +233,7 @@ public class ReportServiceTest extends TestCase
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3));
 		
 		
-		expect(reportDAO.getCumulatedHoursPerAssignmentForUsers(userID, dr))
+		expect(reportDAO.getCumulatedHoursPerAssignmentForUsers(userID, rc.getReportRange()))
 			.andReturn(pags);
 		replay(reportDAO);
 		reportService.createProjectReport(rc);

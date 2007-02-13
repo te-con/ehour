@@ -19,41 +19,66 @@
 <script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/projectAdmin.js" />" type="text/javascript"></script>
 
+<div class="ContentFrame" style="max-width: 1200px">
+	<table class="contentTable" cellspacing="2">
+		<tr>
+			<td valign="top" width="270">
+				<h1><fmt:message key="admin.project.title" /></h1>
+				<div class="GreyFrame" style="width: 260px;">
+					<h3>&nbsp;</h3>
 
-<table CLASS="contentTable" CELLSPACING=2>
-	<tr>
-		<td>
-			<table CLASS="contentTable" CELLSPACING=2 width="100%">
-				<tr>
-					<td colspan="2" valign="top"><fmt:message key="admin.project.hideInactive" />:
-					<input class="normtxt" type="checkbox" id="hideInactive" name="hideInactive" checked></td>
-				</tr>
-			</table>
-		</td>
+					<div class="GreyFrameBody">
+					
+					<p>
+						<fmt:message key="admin.project.hideInactive" />:
+						<input type="checkbox" id="hideInactive" name="hideInactive" checked>
+					</p>
+
+					<div class="BlueFrame" style="width: 220px; padding-top: 0; margin-top: 10px">
+						<div class="BlueLeftTop">
+							<div class="BlueRightTop">
+								&nbsp;
+							</div>
+						</div>	
+
+						<div class="adminListScroll">
+							<span id="listProjectsSpan">
+								<tiles:insert page="listProjects.jsp" />
+							</span>
+						</div>						
+						
+							<div class="BlueLeftBottom">
+								<div class="BlueRightBottom">
+									&nbsp;
+								</div>
+							</div>			
+						</div>									
+
+						<p style="text-align: right;margin: 5px 20px 0 0">						
+							<a href="" onClick="return showAddForm()"><fmt:message key="admin.project.addProject" /></a>
+							</p>
+					</div>
+					
+					<br>
+					
+					<div class="GreyFrameFooter">
+						<p>
+						</p>
+					</div>				
+				</div>	
+			</td>
+			
+			<td valign="top">
+				<span id="projectFormSpan">
+					<tiles:insert page="/eh/admin/project/addProjectForm.do" />
+				</span>								
+			</td>
+		</tr>
 		
-		<td valign="top" align="right" style="color: #913023" id="statusMessage">
-			&nbsp;
-		</td>
-	</tr>
-
-	<tr>
-		<td>
-			<div class="adminListScroll">
-				<span id="listProjectsSpan">
-					<tiles:insert page="listProjects.jsp" />
-				</span>
-			</div>
-		</td>
-
-		<td valign="top" rowspan="2">
-			<span id="projectFormSpan">
-				<tiles:insert page="/eh/admin/project/addProjectForm.do" />
-			</span>
-		</td>
-	</tr>
-	<tr>
-		<td align=right>
-			<a href="" onClick="return showAddForm()"><fmt:message key="admin.project.addProject" /></a>
-		</td>
-	</tr>
-</table>
+		<tr>
+			<td colspan="2" align="right" style="text-align: right; margin-right: 20px; color: #233e55" id="statusMessage">
+				&nbsp;
+			</td>
+		</tr>
+	</table>
+</div>

@@ -8,30 +8,30 @@
 
 <input type="hidden" id="departmentId" name="departmentId" value="${department.departmentId}">
 
-<table CLASS="contentTable" CELLSPACING=2>
-	<tr>
-		<td colspan="3">
-			<c:choose>
-				<c:when test="${department == null || department.departmentId == null}">
-					<fmt:message key="admin.dept.addDepartment" />
-				</c:when>
-				
-				<c:otherwise>
-					<fmt:message key="admin.dept.editDepartment" />
-				</c:otherwise>
-			</c:choose>
-		</td>	
-	</tr>
+<h1><c:choose>
+		<c:when test="${department == null || department.departmentId == null}">
+			<fmt:message key="admin.dept.addDepartment" />
+		</c:when>
+		
+		<c:otherwise>
+			<fmt:message key="admin.dept.editDepartment" />
+		</c:otherwise>
+	</c:choose></h1>
+
+<div class="GreyFrame">
+	<h3>&nbsp;</h3>
+
+	<div class="GreyFrameBody">	
+
+	<table class="contentTable" cellspacing="2">
+		<tr>
+			<td colspan="3">
+			</td>	
+		</tr>
 
 	<tr>
-    	<td colspan="3"><img src="<c:url  value="/img/eh_pixel.gif" />" alt="pix" height="1" width="100%"><br></td>
-	</tr>
-
-	
-	<tr>
-		<td height="20"><fmt:message key="admin.dept.name" />:</td>
-		<td><input class="normtxt"  type="text" name="name" maxlength="128" size="30" value="${department.name}"></td>
-
+		<td width="20%" height="20"><fmt:message key="admin.dept.name" />:</td>
+		<td><input class="textInputSmall"  type="text" name="name" maxlength="128" size="30" value="${department.name}"></td>
 
 		<td id="departmentNameError" style="color: red"><html:errors property="name" /></td>
 		
@@ -62,7 +62,7 @@
 
 	<tr>
 		<td height="20"><fmt:message key="admin.dept.code" />:</td>
-		<td><input class="normtxt"  type="text" maxlength="32" name="code" value="${department.code}" size="30"></td>
+		<td><input class="textInputSmall"  type="text" maxlength="32" name="code" value="${department.code}" size="30"></td>
 		<td id="departmentCodeError" style="color: red"><html:errors property="code" /></td>
 	</tr>
 	
@@ -73,14 +73,14 @@
 			</c:if>
 		</td>
 
-		<td align="right">
+		<td align="right" style="text-align: right">
 			<c:choose>
 				<c:when test="${department == null || department.departmentId == null}">
-					<input type="submit" class="redSubmit" value="<fmt:message key="general.add" />">
+					<input type="submit" class="submitButtonBlue"  value="<fmt:message key="general.add" />">
 				</c:when>
 				
 				<c:otherwise>
-					<input type="submit" class="redSubmit" value="<fmt:message key="general.edit" />">
+					<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.edit" />">
 				</c:otherwise>
 			</c:choose>
 		</td>
@@ -94,3 +94,13 @@
 	</tr>
 </table>
 </form>
+
+
+	</div>
+						
+	<div class="GreyFrameFooter">
+		<p>
+		</p>
+	</div>				
+</div>						
+

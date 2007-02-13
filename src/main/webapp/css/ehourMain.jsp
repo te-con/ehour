@@ -249,6 +249,7 @@ div.GreyFrame
 {
   	background: url(<c:url value="/img/grey/corner_left_top.gif" />) top left no-repeat;
 	max-width: 730px;
+	margin-right: 5px;
  } 
 
 div.GreyFrame h3
@@ -267,6 +268,14 @@ div.GreyFrameBody
   margin:0px;
   padding:0;
   width: 100%;
+}
+
+div.GreyFrameBody p
+{
+	margin: 0 0 0 20px;
+	padding: 0;
+	font:  1.0em/0.9 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
 }
 
 div.GreyFrameFooter
@@ -352,12 +361,42 @@ div.BlueLeftBottom
 	color: #576d83;
 }
 
+.submitButtonBlue
+{
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
+	border: 0;
+}
+
+.submitButtonBlue:hover
+{
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #576d83;
+	text-decoration: underline;
+}
+
 .textInput
 {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #cfdbe6;
 	margin: 5px 0 5px 0;
+	font: 0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
+}
+
+.textInputSmall
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #cfdbe6;
+	margin: 0;
 	font: 0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
 }

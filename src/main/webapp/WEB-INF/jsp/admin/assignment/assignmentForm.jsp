@@ -30,13 +30,15 @@ function init()
 
 <!-- spanTarget:form -->
 
-<table CLASS="contentTable" CELLSPACING=2>
-	<tr>
-		<td colspan="4">
-			<fmt:message key="admin.assignment.assignmentsFor" /> ${user.firstName} ${user.lastName}
-		</td>
-	</tr>
-	
+<h1><fmt:message key="admin.assignment.assignmentsFor" /> ${user.firstName} ${user.lastName}</h1>
+
+
+<div class="GreyFrame">
+	<h3>&nbsp;</h3>
+
+	<div class="GreyFrameBody">			
+
+<table class="contentTable" cellspacing="2">
 	<tr>
 		<th><fmt:message key="admin.assignment.projectHeader" /></th>
 
@@ -106,7 +108,7 @@ function init()
 	</td>
 	
 	<td>
-		<input class="normtxt" type="text" name="description" value="${assignment.description}">
+		<input class="textInputSmall" type="text" name="description" value="${assignment.description}">
 	</td>
 	
 	<td></td>
@@ -118,7 +120,7 @@ function init()
 	</td>
 
 	<td>
-		<select class="normtxt" name="projectId">
+		<select class="textInputSmall" name="projectId">
 <c:forEach items="${allProjects}" var="project">
 <option value="${project.projectId}" 
 	<c:if test="${project.projectId== assignment.project.projectId}">
@@ -167,7 +169,7 @@ function init()
 	</td>
 	
 	<td>
-		<input class="normtxt" type="text" name="hourlyRate" value="${assignment.hourlyRate}">
+		<input class="textInputSmall" type="text" name="hourlyRate" value="${assignment.hourlyRate}">
 	</td>
 	
 	<td id="hourlyRateError" style="color: red"></td>
@@ -184,11 +186,11 @@ function init()
 	<td align="right">
 		<c:choose>
 			<c:when test="${assignment.assignmentId == null}">
-				<input type="submit" class="redSubmit" value="<fmt:message key="general.add" />">
+				<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.add" />">
 			</c:when>
 			
 			<c:otherwise>
-				<input type="submit" class="redSubmit" value="<fmt:message key="general.edit" />">
+				<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.edit" />">
 			</c:otherwise>
 		</c:choose>		
 	</td>	
@@ -208,6 +210,14 @@ function init()
 
 
 </form>
+
+	</div>
+						
+	<div class="GreyFrameFooter">
+		<p>
+		</p>
+	</div>				
+</div>						
 
 
 <script type="text/javascript">

@@ -4,7 +4,7 @@
 
 
 <!-- spanTarget:navCalendar -->
-<div class="GreyNavFrame">
+<div class="GreyNavFrame" style="margin-top: 1em;">
 	<h3><fmt:message key="admin.nav.userAdmin" /></h3>
 
 	<div class="GreyNavBody">
