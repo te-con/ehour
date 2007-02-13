@@ -2,6 +2,9 @@
 var formBind;
 
 var adminForm = '';
+var adminFormSpan = 'assignmentFormSpan';
+var adminFormUrl = 'getAssignmentsForUser.do';
+var adminListReceivedSpan = 'listUsersSpan';
 
 // validate form 
 function validateForm(formId)
@@ -88,18 +91,6 @@ function editAssignment(editId, assignmentId)
                    
 	return false;    
 }
-
-function showAddForm()
-{
-	showLoadingData();
-	
-    dojo.io.bind({
-                      url: 'getAssignmentsForUser.do',
-                      handler: formChanged
-                   });  
-                   
-	return false;    
-}		
 	
 // form changed	
   function formChanged(type, xml, evt)

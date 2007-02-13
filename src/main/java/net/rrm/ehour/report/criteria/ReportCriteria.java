@@ -23,8 +23,11 @@
 
 package net.rrm.ehour.report.criteria;
 
+import java.util.GregorianCalendar;
+
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 
@@ -72,6 +75,13 @@ public class ReportCriteria
 		else
 		{
 			reportRange = userCriteria.getReportRange();
+		}
+		
+		
+		// if no timesheets were specified, use the current month as the range
+		if (reportRange == null || reportRange.isEmpty())
+		{
+			reportRange = DateUtil.calendarToMonthRange(new GregorianCalendar());
 		}
 		
 		logger.debug("Using report range " + reportRange);

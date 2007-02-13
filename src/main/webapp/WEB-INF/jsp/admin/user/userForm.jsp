@@ -59,7 +59,10 @@
 		<c:if test="${user != null}">
 			<td rowspan="10" valign="top">
 				<c:forEach items="${user.projectAssignments}" var="pa">
-					${pa.project.name}
+					<a href="<c:url value="../assignment/index.do">
+								<c:param name="assignmentId" value="${pa.assignmentId}" />
+								<c:param name="userId" value="${user.userId}" />
+							</c:url>">${pa.project.name}</a>
 					
 					<c:if test="${!pa.project.defaultProject}">
 						&nbsp;[${pa.description}]
@@ -69,7 +72,11 @@
 				<br>
 				Inactive:<br>
 				<c:forEach items="${user.inactiveProjectAssignments}" var="pa">
-					${pa.project.name}<br>
+					<a href="<c:url value="../assignment/index.do">
+								<c:param name="assignmentId" value="${pa.assignmentId}" />
+								<c:param name="userId" value="${user.userId}" />								
+							</c:url>">${pa.project.name}</a>
+					<br>
 				</c:forEach>
 
 			</td>

@@ -25,48 +25,74 @@
 <script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 
 
-
-<table CLASS="contentTable" CELLSPACING=2>
-	<tr>
-		<td>
-			<table CLASS="contentTable" CELLSPACING=2 width="100%">
-				<tr>
-					<td valign="top"><fmt:message key="admin.user.filter" />:</td>
-					<td><form onSubmit="return false;"><input class="normtxt" type="text" name="filter"
-								size="30" id="filterInput"></form>
-					</td>
-				</tr>
-
-				<tr>
-					<td colspan="2" valign="top"><fmt:message key="admin.user.hideInactive" />:
-					<input class="normtxt" type="checkbox" id="hideInactive" name="hideInactive" checked></td>
-				</tr>
-			</table>
-		</td>
-		
-		<td valign="top" align="right" style="color: #913023" id="statusMessage">
-			&nbsp;
-		</td>
-	</tr>
+<div class="ContentFrame">
+	<h1><fmt:message key="admin.user.title" /></h1>
 	
-	<tr>
-		<td>
-			<div class="adminListScroll">
-				<span id="listUsersSpan">
-					<tiles:insert page="../user/listUsers.jsp" />
-				</span>
-			</div>
-		</td>
+	<div class="GreyFrame">
+		<h3>&nbsp;</h3>
+
+		<div class="GreyFrameBody">
+
+		<table class="contentTable" cellspacing="2">
+		<tr>
+			<td>
+				<table CLASS="contentTable" CELLSPACING=2 width="100%">
+					<tr>
+						<td valign="top"><fmt:message key="admin.user.filter" />:</td>
+						<td><form onSubmit="return false;"><input class="normtxt" type="text" name="filter"
+								size="30" id="filterInput"></form>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="2" valign="top"><fmt:message key="admin.user.hideInactive" />:
+							<input class="normtxt" type="checkbox" id="hideInactive" name="hideInactive" checked>
+						</td>
+					</tr>
+				</table>
+			</td>
 		
-		<td valign="top" rowspan="2">
-			<span id="userFormSpan">
-				<tiles:insert page="/eh/admin/user/addUserForm.do" />
-			</span>
-		</td>
-	</tr>
-	<tr>
-		<td align=right>
-			<a href="" onClick="return showAddForm()"><fmt:message key="admin.user.addUser" /></a>
-		</td>
-	</tr>
-</table>
+			<td valign="top" align="right" style="color: #913023" id="statusMessage">
+				&nbsp;
+			</td>
+		</tr>
+	
+		<tr>
+			<td>
+				<div class="BlueFrame" style="width: 220px">
+					<div class="BlueLeftTop">
+						<div class="BlueRightTop">
+							&nbsp;
+						</div>
+					</div>				
+					
+					<div class="adminListScroll">
+						<span id="listUsersSpan">
+							<tiles:insert page="../user/listUsers.jsp" />
+						</span>
+					</div>
+					
+					<div class="BlueLeftBottom">
+						<div class="BlueRightBottom">
+							&nbsp;
+						</div>
+					</div>			
+				</div>					
+			</td>
+		
+			<td valign="top" rowspan="2">
+				<span id="userFormSpan">
+					<tiles:insert page="/eh/admin/user/addUserForm.do" />
+				</span>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align=right>
+				<a href="" onClick="return showAddForm()"><fmt:message key="admin.user.addUser" /></a>
+			</td>
+		</tr>
+	</table>
+
+	</div>
+</div>

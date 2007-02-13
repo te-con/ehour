@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!-- spanTarget:navCalendar -->
-<div id="NavCalTarget">
 <div class="NavCalFrame">
 	<div class="NavCalFrameLeftTop">
 		<div class="NavCalFrameRightTop">
@@ -28,5 +27,4 @@
 			&nbsp;
 		</div>
 	</div>		
-</div>
 </div>

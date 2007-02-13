@@ -175,25 +175,25 @@ div.NavCalFrame table td.filled
 }
 
 
-div.HelpFrame
+div.GreyNavFrame
 {
 	background: url(<c:url value="/img/grey/corner_left_top.gif" />) top left no-repeat;
 	max-height: 500px;
   	width: 230px;
 } 
 
-div.HelpFrame h3
+div.GreyNavFrame h3
 {
   background: 	url(<c:url value="/img/grey/corner_right_top.gif" />) top right no-repeat;
   line-height:	11px;
   padding:		0;
   margin: 0;
-  font: bold 1.2em/1.5 Geneva, Arial, Helvetica, sans-serif;
+  font: 		bold 1.1em/1.5 Geneva, Arial, Helvetica, sans-serif;
   color: #536e87;
   text-align: center;  
 }
 
-div.HelpBody
+div.GreyNavBody
 {
 	background: url(<c:url value="/img/grey/pixel_grey.gif" />);
   	margin-top: 0em;
@@ -204,15 +204,39 @@ div.HelpBody
 	margin-right: 5px;
 	color: #536e87;
 	font: 0.75em/1.5 Geneva, Arial, Helvetica, sans-serif;
-  
 }
 
-div.HelpFrameFooter
+div.GreyNavBody a:link
+{
+	color: #536e87;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+div.GreyNavBody a:visited
+{
+	color: #536e87;
+	font-weight: normal;	
+	text-decoration: none;
+}
+
+div.GreyNavBody a:hover
+{
+	text-decoration: underline;
+}
+
+div.GreyNavBody a:active
+{
+	text-decoration: none
+}
+
+
+div.GreyNavFrameFooter
 {
   background: url(<c:url value="/img/grey/corner_left_bottom.gif" />) bottom left no-repeat;
 }
 
-div.HelpFrameFooter p
+div.GreyNavFrameFooter p
 {
   background: url(<c:url value="/img/grey/corner_right_bottom.gif" />) bottom right no-repeat;
   padding:20px;

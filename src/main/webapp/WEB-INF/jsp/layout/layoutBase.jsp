@@ -56,7 +56,9 @@
 <table>
 	<tr>
 		<td valign="top" width="248" style="padding-left: 12px">
-		    <tiles:insert attribute="navCalendar" />
+			<div id="NavCalTarget">
+			    <tiles:insert attribute="navCalendar" />
+			</div>
 		    <br><br>
 			<div id="HelpTarget">
    		    	<tiles:insert attribute="contextHelp" />

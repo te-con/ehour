@@ -15,13 +15,13 @@
 </c:if>
 
 <c:if test="${helpHeader != ''}">
-	<div class="HelpFrame">
+	<div class="GreyNavFrame">
 		<h3><fmt:message bundle="${help}" key="${helpHeader}"/></h3>
 	
-		<div class="HelpBody">
+		<div class="GreyNavBody">
 			<fmt:message bundle="${help}" key="${helpBody}"/>
 		</div>
-		<div class="HelpFrameFooter">
+		<div class="GreyNavFrameFooter">
 			<p>
 			</p>
 		</div>	

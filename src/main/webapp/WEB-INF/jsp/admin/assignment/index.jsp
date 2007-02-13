@@ -54,4 +54,8 @@
 	</tr>
 </table>
 
-
+<c:if test="${param.assignmentId != null}">
+<script>
+	editAssignment(${param.userId}, ${param.assignmentId});
+</script>
+</c:if>

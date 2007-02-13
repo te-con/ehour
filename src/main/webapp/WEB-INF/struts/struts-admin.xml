@@ -207,7 +207,6 @@
 			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
 		</action>
 
-
 		<!-- Report -->
 		<action path="/report/index" 
 				type="net.rrm.ehour.web.userreport.action.ReportCriteriaAction">

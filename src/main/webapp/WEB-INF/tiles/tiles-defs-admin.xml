@@ -7,6 +7,7 @@
         <put name="pageTitle" value="eHour - admin" />
         <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
         <put name="navCalendar" value="/WEB-INF/jsp/nav/navAdmin.jsp" />
+		<put name="extraCss" value="/css/ehourAdmin.jsp" />        
     </definition>
 
     <!-- Admin index -->

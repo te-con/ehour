@@ -7,6 +7,7 @@
 <script src="../../../js/dojo.js" type="text/javascript"></script>
 
 <script src="<c:url value="/js/validation.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/baseAdmin.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/admin/customerAdmin.jsp" />" type="text/javascript"></script>
 

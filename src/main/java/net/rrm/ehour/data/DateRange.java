@@ -60,6 +60,15 @@ public class DateRange implements Serializable
 
 
 	/**
+	 * Is DateRange empty?
+	 * @return
+	 */
+	public boolean isEmpty()
+	{
+		return dateStart == null && dateEnd == null;
+	}
+	
+	/**
 	 * Set the date end, time is set to 23:59
 	 * @param dateEnd
 	 */
@@ -78,6 +87,10 @@ public class DateRange implements Serializable
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Date getDateStart()
 	{
 		return dateStart;
