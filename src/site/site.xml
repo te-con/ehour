@@ -2,14 +2,14 @@
 <project name="eHour">
 	<bannerLeft>
 		<name>eHour</name>
-		<src>http://www.ehour.nl/img/ehour.gif</src>
+		<src>http://www.ehour.nl/ehour.gif</src>
 		<href>http://www.ehour.nl/</href>
 	</bannerLeft>
 	
 	<skin>
-		<groupId>org.apache.maven.skins</groupId>
-		<artifactId>maven-stylus-skin</artifactId>
-		<version>1.0</version>
+		<groupId>net.rrm.ehour</groupId>
+		<artifactId>maven-ehour-skin</artifactId>
+		<version>1.0-SNAPSHOT</version>
 	</skin>
 	<poweredBy>
 		<logo name="Code Coverage by Clover"

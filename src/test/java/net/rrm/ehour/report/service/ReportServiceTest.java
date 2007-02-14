@@ -28,6 +28,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.isA;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -232,9 +233,8 @@ public class ReportServiceTest extends TestCase
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3));
 		
-		
-		expect(reportDAO.getCumulatedHoursPerAssignmentForUsers(userID, rc.getReportRange()))
-			.andReturn(pags);
+		expect(reportDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
+					.andReturn(pags);
 		replay(reportDAO);
 		reportService.createProjectReport(rc);
 		verify(reportDAO);
