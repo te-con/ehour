@@ -93,7 +93,7 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warName>ehour-${env}</warName>
+					<warName>ehour-${version}-${env}</warName>
 				</configuration>
 			</plugin>
 			<plugin>
