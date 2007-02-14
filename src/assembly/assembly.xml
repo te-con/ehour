@@ -1,11 +1,13 @@
 <assembly>
-	<id>bin</id>
+	<id>${version}-bin</id>
 	<formats>
+<!-- 
 		<format>tar.gz</format>
 		<format>tar.bz2</format>
+ -->			
 		<format>zip</format>
 	</formats>
-
+  <includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
 			<includes>
@@ -17,17 +19,31 @@
 
 		<fileSet>
 			<directory>src/conf</directory>
-			<outputDirectory>conf</outputDirectory>	
+			<outputDirectory>conf</outputDirectory>
 			<lineEnding>dos</lineEnding>
+		</fileSet>
+
+		<fileSet>
+			<directory>sql</directory>
+			<outputDirectory>sql</outputDirectory>
+			<lineEnding>dos</lineEnding>
+		</fileSet>
+
+		<fileSet>
+          <directory>target</directory>
+          <outputDirectory></outputDirectory>
+          <includes>
+            <include>*.war</include>
+          </includes>		
 		</fileSet>
 	</fileSets>
 
-  <dependencySets>
-    <dependencySet>
-      <includes>
-        <include>*:war</include>
-      </includes>
-    </dependencySet>
-  </dependencySets>
+	<dependencySets>
+		<dependencySet>
+			<includes>
+				<include>*:war</include>
+			</includes>
+		</dependencySet>
+	</dependencySets>
 
 </assembly>
