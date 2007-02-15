@@ -1,0 +1,101 @@
+Installation instructions
+
+	eHour requires a Java JDK, the Apache Tomcat servlet container and a MySQL database to be installed.
+	
+* Java 1.5+
+
+	eHour is built in Java so you'll need a Java JDK, 1.5 or newer, before anything can happen.
+	
+	Download and install the latest version from {{{http://java.sun.com/javase/downloads/index.jsp}http://java.sun.com/javase/downloads/index.jsp}}.
+
+* MySQL 5+ installation and configuration	
+
+	For now only MySQL is supported as the back-end database.
+	If you don't have MySQL, version 5 or better, installed download it from  {{{http://dev.mysql.com/downloads/mysql/5.0.html#downloads}http://dev.mysql.com/downloads/mysql/5.0.html#downloads}}
+	and follow the installation instructions.
+	Windows users, the Essentials package is sufficient if you're not afraid of the DOS command prompt.
+	
+** Create database
+
+	First create a MySQL database named <<eHour>>:
+
++--	
+	mysqladmin create ehour -u user -p
++--
+	Replace <<user>> with a database user that has enough priviliges to create a new database.
+	
+	Windows users, change the current directory to the MySQL install directory first as mysqladmin isn't in your path.
+	
+** Install eHour database
+
+	With the ehour database created it's time to fill it. See the <<sql>> directory for a script containing the
+	table definition and initial data for MySQL
+	
++--
+	mysql ehour -u user -p < ehour.mysql.sql
++--
+	Again replace <<user>> with the appropiate MySQL user.
+	
+	Now that the database is set up it's time to set up the final part, Apache Tomcat
+	
+* Apache Tomcat 5.5 installation and configuration
+
+** Install Tomcat
+
+	Apache Tomcat acts as the container server which runs all things. As of now eHour was only tested with Tomcat 5.5
+	
+	If you don't have Tomcat installed yet, download it at {{{http://tomcat.apache.org/download-55.cgi#5.5.20}http://tomcat.apache.org/download-55.cgi#5.5.20}}.
+	
+	Windows users can download the Windows Service Installer.
+	
+** Install the MySQL JDBC connector
+
+	To allow Tomcat to access the MySQL database you need to download an install the MySQL JDBC connector.
+	
+	Download it from {{{http://dev.mysql.com/downloads/connector/j/5.0.html}http://dev.mysql.com/downloads/connector/j/5.0.html}}.
+	
+	Locate the common/lib directory in your Tomcat install directory and copy <<mysql-connector-5.x.x-bin.jar>> from the 
+	downloaded archive there.
+	
+** Hook up eHour to Tomcat
+
+	First make sure that Tomcat isn't running. When you're running Windows, navigate to the bin directory
+	in your Tomcat and install and run <<tomcat5w.exe>> to check the status.
+
+	In the <<conf/tomcat>> directory of the eHour distribution you can find the file <<ehour-tomcat.xml>>.
+	
+	Edit this file in your favourite text-editor and replace the following:
+	
+*-----*------*
+ @ehour.db.username | the MySQL username
+*-----*------*
+ @ehour.db.password | the MySQL password
+*-----*------*
+ @ehour.db.hostname | the hostname/IP address of your MySQL server
+*-----*------*
+ @ehour.db.name | the eHour MySQL database
+*-----*------*
+
+	After editing copy this file to the <<conf/Catalina/localhost>> directory in your Tomcat install directory
+	
+** Install eHour in Tomcat
+
+	In the install directory of Tomcat create a directory named <<deploy>>
+	
+	From the eHour distribution copy the <<ehour-0.1.war>> into this directory.
+	
+* Start it all up !
+
+	MySQL is probably already running, otherwise you wouldn't be able to install the database in a previous step.
+	
+	Start Tomcat by running <<tomcat5.exe>> or <<startup.sh>> in the bin directory of the Tomcat installation directory.
+	
+	Now proceed with the {{{first_time_usage.html}usage instructions}}.
+		
+	
+	
+	
+
+	
+	
+

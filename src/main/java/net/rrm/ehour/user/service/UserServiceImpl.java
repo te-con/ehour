@@ -317,7 +317,7 @@ public class UserServiceImpl implements UserService
 				projectService.assignUserToDefaultProjects(user);
 			}
 			
-			userDAO.persist(user);
+			userDAO.merge(user);
 			
 			return user;
 		}

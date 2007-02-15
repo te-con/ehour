@@ -9,7 +9,7 @@
 	<skin>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>maven-ehour-skin</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</skin>
 	<poweredBy>
 		<logo name="Code Coverage by Clover"
@@ -26,14 +26,25 @@
 	<body>
 		<links>
 			<item name="eHour" href="http://www.ehour.nl/" />
-			<item name="Tech. doc" href="http://www.ehour.nl/tech/" />
-			<item name="Demo" href="http://www.ehour.nl/ehour-test/" />
+			<item name="Demo" href="demo.html" />
 		</links>
 
 		<menu name="eHour">
 			<item name="Introduction" href="index.html" />
+			<item name="License" href="license.html" />
+			<item name="Release Notes" href="release_notes.html" />
+			<item name="Screenshots" href="screenshots.html" />
+			<item name="Online demo" href="demo.html" />						
+		</menu>
+
+		<menu name="Install">
 			<item name="Download" href="download.html" />
-			<item name="Release Notes" href="release-notes.html" />
+			<item name="Instructions" href="install.html" />
+		</menu>
+
+		<menu name="Usage">
+			<item name="eHour structure" href="ehour_structure.html" />
+			<item name="First time usage" href="first_time_usage.html" />			
 		</menu>
 
 		${reports}

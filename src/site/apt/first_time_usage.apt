@@ -1,0 +1,15 @@
+eHour first usage
+
+* eHour structure
+
+	Read about how eHour project's structure is organized {{{ehour_structure.html}here}}.
+
+* First time login
+
+	After installing eHour fire up your browser and go to {{{http://localhost:8080/ehour/}http://localhost:8080/ehour/}}.
+	
+	Replace <<localhost>> with the servername where you installed Tomcat.
+	
+	Login with username <<admin>> and password <<admin>>.
+
+	Now that you're in the administration section, first create some {{{usage_departments.html}user departments}}.

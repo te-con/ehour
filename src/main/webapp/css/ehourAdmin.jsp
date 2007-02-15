@@ -43,9 +43,7 @@ a:active
 {
 	padding: 0px;
 	margin: 0px;
-	font:  0.9em/1em Geneva, Arial, Helvetica, sans-serif;
-	border: 0px;
-	border-bottom: #660000 1px solid;
+	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;
 	text-align: left;
 	color: #233e55;
 }
