@@ -17,6 +17,21 @@
 			http://sourceforge.net/tracker/?group_id=167867&amp;atid=844648/
 		</url>
 	</issueManagement>
+	<licenses>
+		<license>
+			<name>GPL</name>
+			<url>LICENSE.txt</url>
+		</license>
+	</licenses>
+
+   <mailingLists>
+     <mailingList>
+       <name>eHour user support mailing list</name>
+      <post>ehour-users@lists.sourceforge.net</post>
+      <archive>https://lists.sourceforge.net/lists/listinfo/ehour-users</archive>
+     </mailingList>
+   </mailingLists>	
+
 	<ciManagement>
 		<system>continuum</system>
 		<url>http://www.ehour.nl/continuum/</url>
@@ -93,7 +108,7 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warName>ehour-${version}-${env}</warName>
+					<warName>ehour-${version}</warName>
 				</configuration>
 			</plugin>
 			<plugin>
