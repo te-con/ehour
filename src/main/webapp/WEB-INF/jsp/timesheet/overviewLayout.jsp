@@ -10,7 +10,7 @@
 	dojo.require("dojo.io.*");	
 	dojo.require("dojo.event.*");		
 	
-	var maxHoursPerDay = ${configWrapper.completeDayHours};
+	var maxHoursPerDay = ${config.completeDayHours};
 	var errorNotValidNumber = '<fmt:message key="user.timesheet.errorNotValidNumber" />';
 	var error24HoursMax = '<fmt:message key="user.timesheet.error24HoursMax" />';
 	var errorCommentTooLong= '<fmt:message key="user.timesheet.errorCommentTooLong" />';
