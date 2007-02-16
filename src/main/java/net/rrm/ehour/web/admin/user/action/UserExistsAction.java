@@ -66,8 +66,6 @@ public class UserExistsAction extends AdminUserBaseAction
 			userExists = false;
 		}
 		
-		System.out.println(userForm.getUsername());
-		
 	    response.setContentType("text/xml; charset=UTF-8");
 	    response.setHeader("Cache-Control", "no-cache");		
 		writer = response.getWriter();
