@@ -24,10 +24,12 @@
 package net.rrm.ehour.web.timesheet.action;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.web.timesheet.dto.Timesheet;
 import net.rrm.ehour.web.timesheet.form.TimesheetForm;
@@ -44,6 +46,8 @@ import org.apache.struts.action.ActionMapping;
 
 public class GetTimesheetFormAction extends BaseTimesheetAction
 {
+	private EhourConfig	config;
+	
 	/**
 	 * 
 	 */
@@ -62,6 +66,13 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 		userId = AuthUtil.getUserId(timesheetForm);
 
 		requestedWeek = timesheetForm.getCalendar();
+		
+		// if accessed directly, display the current week as it's not provided
+		if (requestedWeek == null)
+		{
+			requestedWeek = new GregorianCalendar();
+		}
+		
 		weekOverview = timesheetService.getWeekOverview(userId, requestedWeek);
 		
 		timesheet = timesheetFormAssembler.createTimesheetForm(weekOverview);
@@ -69,12 +80,28 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 		timesheet.setUserId(userId);
 		
 		request.setAttribute("timesheet", timesheet);
+		
+		// needed when ran standalone
+		// TODO move wrapped config to session
+		if (config != null)
+		{
+			request.setAttribute("config", config);
+		}
+		
 
 		fwd = mapping.findForward("success");
 		
 		response.setHeader("Cache-Control", "no-cache");
 		
 		return fwd;
+	}
+
+	/**
+	 * @param config the config to set
+	 */
+	public void setConfig(EhourConfig config)
+	{
+		this.config = config;
 	}
 
 }

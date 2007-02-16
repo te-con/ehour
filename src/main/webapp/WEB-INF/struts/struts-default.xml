@@ -61,6 +61,13 @@
 				type="net.rrm.ehour.web.timesheet.action.PostTimesheetFormAction" >
 			<forward name="success" path=".ehour.timesheet.timesheet" />
 		</action>
+		
+		<!-- Timesheet view sheet standalone -->
+		<action name="TimesheetForm"
+				path="/eh/timesheet/viewTimesheet"
+				type="net.rrm.ehour.web.timesheet.action.GetTimesheetFormAction" >
+			<forward name="success" path=".ehour.timesheet.timesheet.standalone" />
+		</action>		
 
 		<!-- Timesheet help -->
 		<action path="/eh/timesheet/timesheetHelp"

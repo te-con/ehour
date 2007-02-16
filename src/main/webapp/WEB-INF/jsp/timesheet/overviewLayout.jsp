@@ -10,7 +10,7 @@
 	dojo.require("dojo.io.*");	
 	dojo.require("dojo.event.*");		
 	
-	var maxHoursPerDay = ${config.completeDayHours};
+	var maxHoursPerDay = ${configWrapper.completeDayHours};
 	var errorNotValidNumber = '<fmt:message key="user.timesheet.errorNotValidNumber" />';
 	var error24HoursMax = '<fmt:message key="user.timesheet.error24HoursMax" />';
 	var errorCommentTooLong= '<fmt:message key="user.timesheet.errorCommentTooLong" />';
@@ -20,6 +20,6 @@
 <script src="<c:url value="/js/timesheet.js" />" type="text/javascript"></script>
 
 <div id="overviewSpan">
-	<tiles:insert page="overview.jsp" />
+	<tiles:insert page="${subContent}" />
 </div>
 

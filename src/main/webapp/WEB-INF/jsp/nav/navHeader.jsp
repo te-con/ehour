@@ -6,7 +6,7 @@
 	<TR>
 		<th valign="bottom">
 			<a href="<c:url value="/eh/timesheet/overview.do" />"><fmt:message key="nav.monthOverview" /></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-			<a href="" onClick="alert('under construction.\nfor now go to the overview and click on a week in the calendar');return false"><fmt:message key="nav.enterTimesheet" /></a>&nbsp;&nbsp;|&nbsp;&nbsp;		
+			<a href="<c:url value="/eh/timesheet/viewTimesheet.do" />"><fmt:message key="nav.enterTimesheet" /></a>&nbsp;&nbsp;|&nbsp;&nbsp;		
 			<a HREF="<c:url value="/eh/userReport/index.do" />"><fmt:message key="nav.reporting" /></a>
 <authz:authorize ifAllGranted="ROLE_ADMIN">&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="<c:url value="/eh/admin/index.do" />"><fmt:message key="nav.admin" /></a>

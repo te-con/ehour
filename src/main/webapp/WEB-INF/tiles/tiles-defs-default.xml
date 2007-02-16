@@ -17,6 +17,7 @@
     <definition name=".ehour.timesheet.overviewFull" extends=".ehour.baseLayout">
         <put name="navCalendar" value="/eh/cal/navCalendar.do" />
         <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
+        <put name="subContent" value="/WEB-INF/jsp/timesheet/overview.jsp" />        
     	<put name="extraCss" value="/css/ehourTimesheet.jsp" />
     	<put name="helpHeader" value="overview.header" />    	
     	<put name="helpBody" value="overview.body" /> 
@@ -27,6 +28,16 @@
 
     <!-- Timesheet Timesheet form page -->
     <definition name=".ehour.timesheet.timesheet" path="/WEB-INF/jsp/timesheet/timesheet.jsp" />
+
+    <!-- Timesheet Timesheet form page - standalone -->
+    <definition name=".ehour.timesheet.timesheet.standalone" extends=".ehour.baseLayout">
+        <put name="navCalendar" value="/eh/cal/navCalendar.do" />
+        <put name="content" value="/WEB-INF/jsp/timesheet/overviewLayout.jsp" />
+        <put name="subContent" value="/WEB-INF/jsp/timesheet/timesheet.jsp" />
+    	<put name="extraCss" value="/css/ehourTimesheet.jsp" />
+    	<put name="helpHeader" value="timesheet.header" />    	
+    	<put name="helpBody" value="timesheet.body" /> 
+    </definition>
 
     <!-- Timesheet contextual help -->
     <definition name=".ehour.timesheet.help" path="/WEB-INF/jsp/help/help.jsp">

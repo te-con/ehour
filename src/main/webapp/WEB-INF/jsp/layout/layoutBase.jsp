@@ -15,6 +15,7 @@
 <tiles:importAttribute name="extraCss" scope="page" />
 <tiles:importAttribute name="helpHeader" scope="request"/>
 <tiles:importAttribute name="helpBody" scope="request"/>
+<tiles:importAttribute scope="request" /> 
 
 <c:if test='${extraCss != ""}'>
 	<link rel="stylesheet" type="text/css" href="<c:url value="${extraCss}" />" media="screen">
