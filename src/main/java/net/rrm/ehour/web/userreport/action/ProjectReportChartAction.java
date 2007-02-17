@@ -69,18 +69,26 @@ public abstract class ProjectReportChartAction extends Action
 		chartWidth = (chartForm.getChartWidth() == 0) ? 250 : chartForm.getChartWidth();
 		chartHeight = (chartForm.getChartHeight() == 0) ? 120 : chartForm.getChartHeight();
 		
-		report = (ProjectReport)session.getAttribute(sessionKey);
-		
-		if (report != null)
+		// TODO find out how sessionKey can be null ?
+		if (sessionKey != null)
 		{
-			chart = getChart(report);
-			ChartUtil.changeChartStyle(chart);
+			report = (ProjectReport)session.getAttribute(sessionKey);
 			
-			ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, chartWidth, chartHeight);
+			if (report != null)
+			{
+				chart = getChart(report);
+				ChartUtil.changeChartStyle(chart);
+				
+				ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, chartWidth, chartHeight);
+			}
+			else
+			{
+				logger.error("No report in session found for key " + sessionKey);
+			}
 		}
 		else
 		{
-			logger.error("No report in session found for key " + sessionKey);
+			logger.error("No session key provided while creating chart?");
 		}
 		
 		return null;
