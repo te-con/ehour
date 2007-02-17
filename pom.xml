@@ -5,7 +5,7 @@
 	<artifactId>eHour</artifactId>
 	<packaging>war</packaging>
 	<name>eHour</name>
-	<version>0.1</version>
+	<version>0.2-SNAPSHOT</version>
 	<description>
 		eHour - web-based time registration for consultancy companies
 		and other project based businesses
