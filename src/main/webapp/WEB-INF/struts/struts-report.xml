@@ -2,11 +2,18 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
 
 <struts-config>
+	<!-- Action forms -->
+	<form-beans>
+		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
+		<form-bean name="ReportChartForm" type="net.rrm.ehour.web.report.form.ReportChartForm" />		
+	</form-beans>
+
 	<!-- Action Mapping Definitions -->
 	<action-mappings>
 		<!-- Report -->
-		<action path="/index" 
-				type="net.rrm.ehour.web.userreport.action.ReportCriteriaAction">
+		<action name="ReportCriteriaForm"
+				path="/index" 
+				type="net.rrm.ehour.web.report.action.ReportCriteriaAction">
 			<forward name="success" path=".ehour.report.index" />	
 		</action>
 	</action-mappings>

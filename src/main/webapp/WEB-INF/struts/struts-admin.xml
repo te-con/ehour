@@ -209,7 +209,7 @@
 
 		<!-- Report -->
 		<action path="/report/index" 
-				type="net.rrm.ehour.web.userreport.action.ReportCriteriaAction">
+				type="net.rrm.ehour.web.report.action.ReportCriteriaAction">
 		</action>
 		
 				

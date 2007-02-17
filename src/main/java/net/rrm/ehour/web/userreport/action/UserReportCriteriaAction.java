@@ -62,9 +62,9 @@ public class UserReportCriteriaAction extends Action
 		uc.setUserIds(new Integer[]{userId});
 		uc.setUserFilter(UserCriteria.USER_SINGLE);
 		
-		// reportCriteria syncs itself when updated
 		reportCriteria.setUserCriteria(uc);
 		reportCriteria.updateAvailableCriteria();
+		
 		request.setAttribute("criteria", reportCriteria);
 
 		return mapping.findForward("success");

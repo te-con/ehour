@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.userreport.action;
+package net.rrm.ehour.web.report.action;
 
 import java.util.Collection;
 
@@ -51,12 +51,7 @@ public class ReportCriteriaAction extends Action
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception
 	{
-		Collection<Customer> c = reportCriteria.getAvailableCriteria().getCustomers();
-		
-		for (Customer customer : c)
-		{
-			System.out.println(customer.getName());
-		}
+		request.setAttribute("criteria", reportCriteria);
 		
 		return mapping.findForward("success");
 	}
