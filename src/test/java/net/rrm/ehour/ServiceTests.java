@@ -36,6 +36,7 @@ import net.rrm.ehour.user.service.UserServiceTest;
 import net.rrm.ehour.util.DateUtilTest;
 import net.rrm.ehour.web.calendar.CalendarUtilTest;
 import net.rrm.ehour.web.calendar.tag.NavCalendarTagTest;
+import net.rrm.ehour.web.report.util.UserCriteriaAssemblerTest;
 import net.rrm.ehour.web.util.AuthUtilTest;
 import net.rrm.ehour.web.util.DomainAssemblerTest;
 
@@ -61,6 +62,7 @@ public class ServiceTests
 		suite.addTestSuite(NavCalendarTagTest.class);
 		suite.addTestSuite(ProjectReportTest.class);
 		suite.addTestSuite(ReportCriteriaTest.class);
+		suite.addTestSuite(UserCriteriaAssemblerTest.class);
 		//$JUnit-END$
 		return suite;
 	}

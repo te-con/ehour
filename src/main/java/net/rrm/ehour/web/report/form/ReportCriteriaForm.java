@@ -35,15 +35,18 @@ import net.rrm.ehour.web.form.UserIdForm;
 
 public class ReportCriteriaForm extends UserIdForm
 {
+	private static final long serialVersionUID = -208431579864236722L;
+	private	boolean	fromForm;
+
 	private	Integer	projectId[];
+	private	Integer	customerId[];
 	private	String	dateStart;
 	private	String	dateEnd;
+	private	boolean	onlyActiveCustomers;	
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -208431579864236722L;
-	private	boolean	fromForm;
 	
 	/**
 	 * 
@@ -51,6 +54,7 @@ public class ReportCriteriaForm extends UserIdForm
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
 		fromForm = false;
+		onlyActiveCustomers= false;
 	}
 
 	/**
@@ -115,5 +119,37 @@ public class ReportCriteriaForm extends UserIdForm
 	public void setDateStart(String dateStart)
 	{
 		this.dateStart = dateStart;
+	}
+
+	/**
+	 * @return the customerId
+	 */
+	public Integer[] getCustomerId()
+	{
+		return customerId;
+	}
+
+	/**
+	 * @param customerId the customerId to set
+	 */
+	public void setCustomerId(Integer[] customerId)
+	{
+		this.customerId = customerId;
+	}
+
+	/**
+	 * @return the onlyActiveCustomers
+	 */
+	public boolean isOnlyActiveCustomers()
+	{
+		return onlyActiveCustomers;
+	}
+
+	/**
+	 * @param onlyActiveCustomers the onlyActiveCustomers to set
+	 */
+	public void setOnlyActiveCustomers(boolean onlyActiveCustomers)
+	{
+		this.onlyActiveCustomers = onlyActiveCustomers;
 	}
 }

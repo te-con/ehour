@@ -39,10 +39,11 @@ public class UserCriteria
 	
 	private DateRange	reportRange;
 	private	boolean		onlyActiveProjects;
-	private	boolean		onlyActiveCustomers;
+	private	boolean		onlyActiveCustomers = true;
 	private	int			userFilter;
 	private	Integer[]	userIds;
 	private	Integer[]	projectIds;
+	private	Integer[]	customerIds;
 	private	boolean		singleUser;
 	
 	/**
@@ -55,7 +56,30 @@ public class UserCriteria
 			.append("reportRange", reportRange)
 			.append("userIds", userIds)
 			.append("projectIds", projectIds)
+			.append("customerIds", customerIds)			
 			.toString();
+	}
+	
+	/**
+	 * Get customers as string (needed for JSTL)
+	 * @return
+	 */
+	public String getCustomersAsString()
+	{
+		StringBuffer	ids = new StringBuffer();
+		int				i;
+		
+		if (customerIds != null)
+		{
+			for (i = 0;
+				 i < customerIds.length;
+				 i++)
+			{
+				ids.append("-" + customerIds[i].toString() + "-");
+			}
+		}
+		
+		return ids.toString();
 	}
 	
 	/**
@@ -156,5 +180,21 @@ public class UserCriteria
 	public void setUserFilter(int userFilter)
 	{
 		this.userFilter = userFilter;
+	}
+
+	/**
+	 * @return the customerIds
+	 */
+	public Integer[] getCustomerIds()
+	{
+		return customerIds;
+	}
+
+	/**
+	 * @param customerIds the customerIds to set
+	 */
+	public void setCustomerIds(Integer[] customerIds)
+	{
+		this.customerIds = customerIds;
 	}
 }

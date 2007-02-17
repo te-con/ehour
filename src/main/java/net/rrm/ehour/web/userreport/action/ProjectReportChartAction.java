@@ -62,6 +62,7 @@ public abstract class ProjectReportChartAction extends Action
 		int				chartHeight;
 		
 		response.setContentType("image/png");
+		response.setHeader("Cache-Control", "no-cache");
 
 		session = request.getSession();
 		sessionKey = chartForm.getKey();

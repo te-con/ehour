@@ -14,7 +14,11 @@
 <script src="<c:url value="/js/navCalendarOverview.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/timesheet.js" />" type="text/javascript"></script>
 
-<div id="overviewSpan">
-	<tiles:insert page="${criteria}" />
+<div id="criteriaTarget">
+	<tiles:insert page="${criteriaTile}" />
+</div>
+
+<div id="reportTarget">
+	<tiles:insert page="${reportTile}" />
 </div>
 

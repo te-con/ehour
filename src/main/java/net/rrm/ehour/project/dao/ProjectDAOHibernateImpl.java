@@ -59,4 +59,30 @@ public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, In
 	{
 		return getHibernateTemplate().findByNamedQuery("Project.findAllActiveDefault");
 	}
+
+	/**
+	 * Get projects for customer respecting the active flag
+	 * @param customerIds
+	 * @param active
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Project> findProjectForCustomers(Integer[] customerIds, boolean onlyActive)
+	{
+		List	results;
+		String	hqlName;
+		
+		if (!onlyActive)
+		{
+			hqlName = "Project.findAllProjectsForCustomers";
+		}
+		else
+		{
+			hqlName = "Project.findActiveProjectsForCustomers";
+		}
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam(hqlName , "customerIds", customerIds);
+		
+		return results;			
+	}
 }

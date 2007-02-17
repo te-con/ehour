@@ -47,5 +47,16 @@
     		 ]]>
 	</query>	
 
+	<query name="Project.findAllProjectsForCustomers">
+		FROM Project prj
+		WHERE prj.customer.customerId IN (:customerIds)
+	</query>	
+
+	<query name="Project.findActiveProjectsForCustomers">
+		FROM Project prj
+		WHERE prj.customer.customerId IN (:customerIds) AND
+			  prj.active is true
+	</query>	
+
 
 </hibernate-mapping>

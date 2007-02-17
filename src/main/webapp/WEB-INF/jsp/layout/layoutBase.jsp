@@ -36,7 +36,7 @@
 	<table>
 		<tr>
 			<td width="260" align="bottom">
-				<img src="<c:url value="/img/ehour.gif" />" alt="eHour v0.1" />
+				<img src="<c:url value="/img/ehour.gif" />" alt="eHour v0.2" />
 			</td>
 
 			<td align="bottom" style="padding-left: 11px">

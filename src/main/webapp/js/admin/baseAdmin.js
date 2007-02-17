@@ -16,6 +16,7 @@ function bindAdminForm()
 }
 
 // handler for bindAdminForm
+// TODO merge this with ajaxEventReceived
 function responseReceived(type, xml, evt)
 {
 	hideLoadingData();

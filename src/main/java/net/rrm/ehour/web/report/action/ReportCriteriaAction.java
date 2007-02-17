@@ -23,14 +23,17 @@
 
 package net.rrm.ehour.web.report.action;
 
-import java.util.Collection;
+import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.web.report.form.ReportCriteriaForm;
+import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -42,8 +45,9 @@ import org.apache.struts.action.ActionMapping;
 
 public class ReportCriteriaAction extends Action
 {
-	private ReportCriteria reportCriteria;
-
+	private ReportCriteria 	reportCriteria;
+	private	Logger			logger = Logger.getLogger(this.getClass());
+	
 	/**
 	 * 
 	 */
@@ -51,11 +55,42 @@ public class ReportCriteriaAction extends Action
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception
 	{
+		ReportCriteriaForm criteriaForm = (ReportCriteriaForm)form;
+		
+		if (criteriaForm.isFromForm())
+		{
+			updateCriteria(criteriaForm);
+		}
+		
 		request.setAttribute("criteria", reportCriteria);
 		
+		response.setHeader("Cache-Control", "no-cache");
 		return mapping.findForward("success");
 	}
 
+	/**
+	 * Update criteria
+	 * @param criteriaForm
+	 */
+	private void updateCriteria(ReportCriteriaForm criteriaForm)
+	{
+		UserCriteria	uc;
+		
+		logger.debug("Updating UserCriteria");
+		
+		try
+		{
+			uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
+		} catch (ParseException e)
+		{
+			logger.error("Invalid date format specified when creating report", e);
+			uc = new UserCriteria();
+		}
+
+		reportCriteria.setUserCriteria(uc);
+		reportCriteria.updateAvailableCriteria();
+	}
+	
 	/**
 	 * @param availReportCriteria
 	 *            the availReportCriteria to set

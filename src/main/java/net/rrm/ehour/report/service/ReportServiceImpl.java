@@ -107,9 +107,6 @@ public class ReportServiceImpl implements ReportService
 	
 	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria)
 	{
-		List<User>			users;
-		List<Customer>		customers;
-		List<Project>		projects;
 		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
 		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
 		
@@ -119,47 +116,12 @@ public class ReportServiceImpl implements ReportService
 		}
 		else
 		{
-			// determine users
-			switch (userCriteria.getUserFilter())
-			{
-				case UserCriteria.USER_ALL:
-					users = userDAO.findAll();
-					break;
-				case UserCriteria.USER_ACTIVE:
-					users = userDAO.findAllActiveUsers();
-					break;
-				default:
-					users = null;
-					break;
-			}
-			
-			availCriteria.setUsers(users);
+			availCriteria.setUsers(getAvailableUsers(userCriteria));
 				
 			availCriteria.setUserDepartments(userDepartmentDAO.findAll());
 
-			// customers
-			if (userCriteria.isOnlyActiveCustomers())
-			{
-				customers = customerDAO.findAll(true);
-			}
-			else
-			{
-				customers = customerDAO.findAll();
-			}
-				
-			availCriteria.setCustomers(customers);
-				
-			// projects
-			if (userCriteria.isOnlyActiveProjects())
-			{
-				projects = projectDAO.findAllActive();
-			}
-			else
-			{
-				projects = projectDAO.findAll();
-			}
-			
-			availCriteria.setProjects(projects);
+			availCriteria.setCustomers(getAvailableCustomers(userCriteria));
+			availCriteria.setProjects(getAvailableProjects(userCriteria));
 			
 			availCriteria.setReportRange(reportDAO.getMinMaxDateTimesheetEntry());
 			
@@ -170,6 +132,88 @@ public class ReportServiceImpl implements ReportService
 		return reportCriteria;
 	}
 	
+	/**
+	 * Get available users
+	 * @param userCriteria
+	 * @return
+	 */
+	
+	private List<User> getAvailableUsers(UserCriteria userCriteria)
+	{
+		List<User> users;
+		
+		switch (userCriteria.getUserFilter())
+		{
+			case UserCriteria.USER_ALL:
+				users = userDAO.findAll();
+				break;
+			case UserCriteria.USER_ACTIVE:
+				users = userDAO.findAllActiveUsers();
+				break;
+			default:
+				users = null;
+				break;
+		}
+		
+		return users;
+	}
+	
+	/**
+	 * Get available customers
+	 * @param userCriteria
+	 * @return
+	 */
+	private List<Customer> getAvailableCustomers(UserCriteria userCriteria)
+	{
+		List<Customer> customers;
+		
+		if (userCriteria.isOnlyActiveCustomers())
+		{
+			customers = customerDAO.findAll(true);
+		}
+		else
+		{
+			customers = customerDAO.findAll();
+		}
+		
+		return customers;
+	}
+	
+	/**
+	 * Get available projects depended on the userCriteria
+	 * @param userCriteria
+	 * @return
+	 */
+	private List<Project> getAvailableProjects(UserCriteria userCriteria)
+	{
+		List<Project>	projects;
+		
+		if (userCriteria.getCustomerIds() == null || 
+			userCriteria.getCustomerIds().length == 0)
+		{
+			if (userCriteria.isOnlyActiveProjects())
+			{
+				logger.debug("Fetching only active projects");
+
+				projects = projectDAO.findAllActive();
+			}
+			else
+			{
+				logger.debug("Fetching all projects");
+				
+				projects = projectDAO.findAll();
+			}
+		}
+		else
+		{
+			logger.debug("Fetching projects for selected customers");
+			
+			projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(), userCriteria.isOnlyActiveProjects());
+		}
+		
+		return projects;
+	}
+		
 	/**
 	 * Sync criteria for users, only customers & projects
 	 * are displayed for users in this list

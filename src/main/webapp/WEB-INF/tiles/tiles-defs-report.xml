@@ -14,8 +14,11 @@
     <!-- Report index -->
     <definition name=".ehour.report.index" extends=".ehour.report.baseLayout">
         <put name="content" value="/WEB-INF/jsp/report/reportLayout.jsp" />
-        <put name="criteria" value="/WEB-INF/jsp/report/criteria.jsp" />
-        <put name="report" value="/WEB-INF/jsp/report/report.jsp" />
+        <put name="criteriaTile" value="/WEB-INF/jsp/report/criteria.jsp" />
+        <put name="reportTile" value="/WEB-INF/jsp/report/report.jsp" />
     </definition>
 
+	<!-- Report criteria update -->
+    <definition name=".ehour.report.criteria" path="/WEB-INF/jsp/report/criteria.jsp" />	
+	
 </tiles-definitions>

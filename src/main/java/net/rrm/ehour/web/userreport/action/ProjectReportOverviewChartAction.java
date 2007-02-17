@@ -87,10 +87,7 @@ public class ProjectReportOverviewChartAction extends ProjectReportChartAction
 		
 		for (Integer customerId: seriesMap.keySet())
 		{
-//			if (customerId.intValue() == 24)
-			{
-				seriesCollection.addSeries(seriesMap.get(customerId));
-			}
+			seriesCollection.addSeries(seriesMap.get(customerId));
 		}
 		
 		JFreeChart chart = ChartFactory.createTimeSeriesChart("Hours per customer", "Week", "Hours", 

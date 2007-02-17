@@ -110,4 +110,18 @@ public class ProjectDAOTest extends BaseDAOTest
 	{
 		assertEquals(2, dao.findDefaultProjects().size());
 	}
+	
+	public void testFindProjectForCustomersAll()
+	{
+		List r = dao.findProjectForCustomers(new Integer[]{3, 1}, false);
+		
+		assertEquals(3, r.size());
+	}
+
+	public void testFindProjectForCustomersOnlyActive()
+	{
+		List r = dao.findProjectForCustomers(new Integer[]{3, 1}, true);
+		
+		assertEquals(2, r.size());
+	}
 }

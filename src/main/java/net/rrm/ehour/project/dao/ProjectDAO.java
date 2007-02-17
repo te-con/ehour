@@ -14,7 +14,7 @@ import net.rrm.ehour.project.domain.Project;
 public interface ProjectDAO extends GenericDAO<Project, Integer>
 {
 	/**
-	 * Get all projects (with active flag)
+	 * Get all projects
 	 * @return
 	 */
 	public List<Project> findAll();
@@ -30,4 +30,12 @@ public interface ProjectDAO extends GenericDAO<Project, Integer>
 	 * @return
 	 */
 	public List<Project> findDefaultProjects();
+	
+	/**
+	 * Get projects for customer respecting the active flag
+	 * @param customerIds
+	 * @param active
+	 * @return
+	 */
+	public List<Project> findProjectForCustomers(Integer[] customerIds, boolean onlyActive);
 }
