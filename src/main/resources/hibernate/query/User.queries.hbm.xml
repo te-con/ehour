@@ -34,4 +34,21 @@
 	    WHERE lcase(name) like  :name AND lcase(code) LIKE :code
 	</query>	
 
+	<query name="User.findActiveByNamePatternForDepartment"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like  :pattern OR lcase(lastName) like :pattern)
+	    		AND active = true
+	    		AND user.userDepartment.departmentId IN (:departments)
+	    ORDER BY lastName, firstName	    
+	</query>
+
+	<query name="User.findNamePatternForDepartment"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like :pattern OR lcase(lastName) like :pattern)
+	    		AND user.userDepartment.departmentId IN (:departments)
+	    ORDER BY lastName, firstName	    
+	</query>
+
 </hibernate-mapping>

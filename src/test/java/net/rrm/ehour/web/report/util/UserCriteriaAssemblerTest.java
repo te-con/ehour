@@ -50,6 +50,7 @@ public class UserCriteriaAssemblerTest extends TestCase
 		rcForm.setDateEnd("1974-09-01");
 		rcForm.setProjectId(new Integer[]{1, 2, -1});
 		rcForm.setCustomerId(new Integer[]{1,2,3});
+		rcForm.setDepartmentId(new Integer[]{1,2,3, 4});
 		rcForm.setOnlyActiveCustomers(false);
 		rcForm.setOnlyActiveProjects(true);
 		
@@ -60,6 +61,7 @@ public class UserCriteriaAssemblerTest extends TestCase
 		
 		assertNull(uc.getProjectIds());
 		assertEquals(3, uc.getCustomerIds().length);
+		assertEquals(4, uc.getDepartmentIds().length);
 		assertFalse(uc.isOnlyActiveCustomers());
 		assertTrue(uc.isOnlyActiveProjects());
 	}

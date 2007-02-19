@@ -40,10 +40,12 @@ public class UserCriteria
 	private DateRange	reportRange;
 	private	boolean		onlyActiveProjects = true;
 	private	boolean		onlyActiveCustomers = true;
-	private	int			userFilter;
+	private	int			userActivityFilter;
+	private	String		userFilter;
 	private	Integer[]	userIds;
 	private	Integer[]	projectIds;
 	private	Integer[]	customerIds;
+	private	Integer[]	departmentIds;
 	private	boolean		singleUser;
 	
 	/**
@@ -79,10 +81,28 @@ public class UserCriteria
 		return projectIds == null || projectIds.length == 0;
 	}
 
-	
+	/**
+	 * No departments selected ?
+	 * @return
+	 */
+
+	public boolean isEmptyDepartments()
+	{
+		return departmentIds == null || departmentIds.length == 0;
+	}	
 	
 	/**
-	 * Get customers as string (needed for JSTL)
+	 * No users selected ?
+	 * @return
+	 */
+	
+	public boolean isEmptyUsers()
+	{
+		return userIds == null || userIds.length == 0;
+	}
+	
+	/**
+	 * Get customers as string (needed for JSTL, should not be here..)
 	 * @return
 	 */
 	public String getCustomersAsString()
@@ -97,6 +117,24 @@ public class UserCriteria
 	public String getProjectsAsString()
 	{
 		return getIntegerArrayAsString(projectIds);
+	}
+	
+	/**
+	 * Get departments as string (JSTL)
+	 * @return
+	 */
+	public String getDepartmentsAsString()
+	{
+		return getIntegerArrayAsString(departmentIds);
+	}
+
+	/**
+	 * Get users as string (JSTL)
+	 * @return
+	 */
+	public String getUsersAsString()
+	{
+		return getIntegerArrayAsString(userIds);
 	}
 	
 	/**
@@ -208,18 +246,18 @@ public class UserCriteria
 		this.singleUser = singleUser;
 	}
 	/**
-	 * @return the userFilter
+	 * @return the userActivityFilter
 	 */
-	public int getUserFilter()
+	public int getUserActivityFilter()
 	{
-		return userFilter;
+		return userActivityFilter;
 	}
 	/**
-	 * @param userFilter the userFilter to set
+	 * @param userActivityFilter the userActivityFilter to set
 	 */
-	public void setUserFilter(int userFilter)
+	public void setUserActivityFilter(int userFilter)
 	{
-		this.userFilter = userFilter;
+		this.userActivityFilter = userFilter;
 	}
 
 	/**
@@ -236,5 +274,47 @@ public class UserCriteria
 	public void setCustomerIds(Integer[] customerIds)
 	{
 		this.customerIds = customerIds;
+	}
+
+	/**
+	 * @return the departmentIds
+	 */
+	public Integer[] getDepartmentIds()
+	{
+		return departmentIds;
+	}
+
+	/**
+	 * @param departmentIds the departmentIds to set
+	 */
+	public void setDepartmentIds(Integer[] departmentIds)
+	{
+		this.departmentIds = departmentIds;
+	}
+
+	/**
+	 * @return the userFilter
+	 */
+	public String getUserFilter()
+	{
+		return userFilter;
+	}
+
+	/**
+	 * @param userFilter the userFilter to set
+	 */
+	public void setUserFilter(String userFilter)
+	{
+		this.userFilter = userFilter;
+	}
+	
+	public boolean isOnlyActiveUsers()
+	{
+		return userActivityFilter == UserCriteria.USER_ACTIVE;
+	}
+	
+	public boolean isEmptyUserFilter()
+	{
+		return userFilter == null || userFilter.trim().length() == 0;
 	}
 }

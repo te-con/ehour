@@ -77,6 +77,10 @@ public class UserCriteriaAssembler
 
 		uc.setProjectIds(getIdsFromForm(rcf.getProjectId()));
 		uc.setCustomerIds(getIdsFromForm(rcf.getCustomerId()));
+		uc.setDepartmentIds(getIdsFromForm(rcf.getDepartmentId()));
+		uc.setUserIds(getIdsFromForm(rcf.getUserIds()));
+		
+		uc.setUserFilter(rcf.getUserFilter());
 		
 		uc.setOnlyActiveCustomers(rcf.isOnlyActiveCustomers());
 		uc.setOnlyActiveProjects(rcf.isOnlyActiveProjects());

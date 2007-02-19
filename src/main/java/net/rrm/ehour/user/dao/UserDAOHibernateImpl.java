@@ -87,4 +87,38 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	{
 		return getHibernateTemplate().findByNamedQuery("User.findAllActiveUsers");
 	}
+
+	
+	/**
+	 * Find users for departments with filter pattern and active flag
+	 * @param pattern
+	 * @param departmentIds
+	 * @param onlyActive
+	 * @return
+	 */	
+	@SuppressWarnings("unchecked")
+	public List<User> findUsersForDepartments(String pattern, Integer[] departmentIds, boolean onlyActive)
+	{
+		String		hql;
+		String[]	paramKeys;
+		Object[]	paramValues;
+		
+		if (pattern != null)
+		{
+			pattern = pattern.toLowerCase();
+			pattern = "%" + pattern + "%";
+		}
+		else
+		{
+			pattern = "%";
+		}		
+		
+		hql = (onlyActive) ? "User.findActiveByNamePatternForDepartment" :
+			  				 "User.findNamePatternForDepartment";
+		
+		paramKeys = new String[]{"pattern", "departments"};
+		paramValues = new Object[]{pattern, departmentIds};
+		
+		return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, paramKeys, paramValues);
+	}
 }

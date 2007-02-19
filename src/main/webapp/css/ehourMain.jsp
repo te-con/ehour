@@ -311,7 +311,13 @@ div.ContentFrame h1
 	padding: 0;
 }
 
-
+div.BlueFrameContainer
+{
+	margin-left: 20px;
+	padding-left: 11px;
+	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+}
 
 div.BlueFrame
 {

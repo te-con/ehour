@@ -50,12 +50,14 @@
 	<query name="Project.findAllProjectsForCustomers">
 		FROM Project prj
 		WHERE prj.customer.customerId IN (:customerIds)
+		ORDER BY prj.name
 	</query>	
 
 	<query name="Project.findActiveProjectsForCustomers">
 		FROM Project prj
 		WHERE prj.customer.customerId IN (:customerIds) AND
 			  prj.active is true
+		ORDER BY prj.name			  
 	</query>	
 
 

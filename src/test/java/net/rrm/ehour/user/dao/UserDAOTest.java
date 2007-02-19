@@ -90,4 +90,11 @@ public class UserDAOTest extends BaseDAOTest
 		
 		assertNotNull(user.getUserId());
 	}
+	
+	public void testFindUsersForDepartments()
+	{
+		List results = dao.findUsersForDepartments("in", new Integer[]{1}, false);
+		
+		assertEquals(2, results.size());
+	}
 }

@@ -49,4 +49,13 @@ public interface UserDAO extends GenericDAO<User, Integer>
 	 * @return
 	 */
 	public List<User> findAllActiveUsers();
+	
+	/**
+	 * Find users for departments with filter pattern and active flag
+	 * @param pattern
+	 * @param departmentIds
+	 * @param onlyActive
+	 * @return
+	 */
+	public List<User> findUsersForDepartments(String pattern, Integer[] departmentIds, boolean onlyActive);
 }

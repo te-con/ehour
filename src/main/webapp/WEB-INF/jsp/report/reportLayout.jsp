@@ -9,6 +9,8 @@
 <script type="text/javascript">
 	dojo.require("dojo.io.*");	
 	dojo.require("dojo.event.*");		
+	
+	var defaultText = "<fmt:message key="report.criteria.filterUsersOn" />";
 </script>
 
 <script src="<c:url value="/js/navCalendarOverview.js" />" type="text/javascript"></script>

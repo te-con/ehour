@@ -83,7 +83,7 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 	{
 		ReportCriteria criteria = new ReportCriteria();
 		UserCriteria	uc = new UserCriteria();
-		uc.setUserFilter(UserCriteria.USER_SINGLE);
+		uc.setUserActivityFilter(UserCriteria.USER_SINGLE);
 		uc.setUserIds(new Integer[]{1});
 		criteria.setUserCriteria(uc);
 		

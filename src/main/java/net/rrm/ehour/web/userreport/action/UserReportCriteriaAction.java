@@ -60,7 +60,7 @@ public class UserReportCriteriaAction extends Action
 		
 		uc = UserCriteriaAssembler.getUserCriteria(rcForm);
 		uc.setUserIds(new Integer[]{userId});
-		uc.setUserFilter(UserCriteria.USER_SINGLE);
+		uc.setUserActivityFilter(UserCriteria.USER_SINGLE);
 		
 		reportCriteria.setUserCriteria(uc);
 		reportCriteria.updateAvailableCriteria();

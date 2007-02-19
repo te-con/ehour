@@ -81,6 +81,17 @@ public class ReportCriteriaAction extends Action
 		try
 		{
 			uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
+			
+			if (criteriaForm.isOnlyActiveCustomers())
+			{
+				uc.setUserActivityFilter(UserCriteria.USER_ACTIVE);
+			}
+			else
+			{
+				uc.setUserActivityFilter(UserCriteria.USER_ALL);
+			}
+			
+			
 		} catch (ParseException e)
 		{
 			logger.error("Invalid date format specified when creating report", e);

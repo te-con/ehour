@@ -110,7 +110,7 @@ public class ReportServiceImpl implements ReportService
 		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
 		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
 		
-		if (userCriteria.getUserFilter() == UserCriteria.USER_SINGLE)
+		if (userCriteria.getUserActivityFilter() == UserCriteria.USER_SINGLE)
 		{
 			syncCriteriaForUsers(reportCriteria);
 		}
@@ -140,19 +140,29 @@ public class ReportServiceImpl implements ReportService
 	
 	private List<User> getAvailableUsers(UserCriteria userCriteria)
 	{
-		List<User> users;
-		
-		switch (userCriteria.getUserFilter())
+		List<User> 	users;
+		boolean		activeUsers = userCriteria.getUserActivityFilter() == UserCriteria.USER_ACTIVE;
+
+		if (userCriteria.getDepartmentIds() == null || 
+			userCriteria.getDepartmentIds().length == 0)
 		{
-			case UserCriteria.USER_ALL:
-				users = userDAO.findAll();
-				break;
-			case UserCriteria.USER_ACTIVE:
+			if (activeUsers)
+			{
+				logger.debug("Finding all active users");
 				users = userDAO.findAllActiveUsers();
-				break;
-			default:
-				users = null;
-				break;
+			}
+			else
+			{
+				
+				logger.debug("Finding all users");
+				users = userDAO.findAll();
+			}
+		}
+		else
+		{
+			users = userDAO.findUsersForDepartments(userCriteria.getUserFilter()
+														, userCriteria.getDepartmentIds()
+														, activeUsers);
 		}
 		
 		return users;

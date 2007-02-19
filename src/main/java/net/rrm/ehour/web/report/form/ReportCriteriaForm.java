@@ -40,14 +40,14 @@ public class ReportCriteriaForm extends UserIdForm
 
 	private	Integer	projectId[];
 	private	Integer	customerId[];
+	private	Integer	departmentId[];
+	private	Integer	userIds[];
 	private	String	dateStart;
 	private	String	dateEnd;
 	private	boolean	onlyActiveCustomers;	
 	private	boolean	onlyActiveProjects;
-	
-	/**
-	 * 
-	 */
+	private	boolean	onlyActiveUsers;
+	private	String	userFilter;
 	
 	/**
 	 * 
@@ -169,5 +169,69 @@ public class ReportCriteriaForm extends UserIdForm
 	public void setOnlyActiveProjects(boolean onlyActiveProjects)
 	{
 		this.onlyActiveProjects = onlyActiveProjects;
+	}
+
+	/**
+	 * @return the departmentId
+	 */
+	public Integer[] getDepartmentId()
+	{
+		return departmentId;
+	}
+
+	/**
+	 * @param departmentId the departmentId to set
+	 */
+	public void setDepartmentId(Integer[] departmentId)
+	{
+		this.departmentId = departmentId;
+	}
+
+	/**
+	 * @return the userIds
+	 */
+	public Integer[] getUserIds()
+	{
+		return userIds;
+	}
+
+	/**
+	 * @param userIds the userIds to set
+	 */
+	public void setUserIds(Integer[] userIds)
+	{
+		this.userIds = userIds;
+	}
+
+	/**
+	 * @return the userFilter
+	 */
+	public String getUserFilter()
+	{
+		return userFilter;
+	}
+
+	/**
+	 * @param userFilter the userFilter to set
+	 */
+	public void setUserFilter(String filterUser)
+	{
+		this.userFilter = filterUser;
+	}
+
+	/**
+	 * @return the onlyActiveUsers
+	 */
+	public boolean isOnlyActiveUsers()
+	{
+		return onlyActiveUsers;
+	}
+
+	/**
+	 * @param onlyActiveUsers the onlyActiveUsers to set
+	 */
+	public void setOnlyActiveUsers(boolean onlyActiveUsers)
+	{
+		this.onlyActiveUsers = onlyActiveUsers;
 	}
 }

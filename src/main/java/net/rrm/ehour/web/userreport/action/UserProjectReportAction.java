@@ -75,7 +75,7 @@ public class UserProjectReportAction extends Action
 		userId = AuthUtil.getUserId(rcForm);
 //		uc = reportCriteria.getUserCriteria();
 		uc.setUserIds(new Integer[]{userId});
-		uc.setUserFilter(UserCriteria.USER_SINGLE);
+		uc.setUserActivityFilter(UserCriteria.USER_SINGLE);
 		reportCriteria.setUserCriteria(uc);
 		
 		report = reportService.createProjectReport(reportCriteria);

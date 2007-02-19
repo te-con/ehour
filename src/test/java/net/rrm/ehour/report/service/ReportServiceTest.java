@@ -137,7 +137,7 @@ public class ReportServiceTest extends TestCase
 		reportCriteria.setReportService(rsMock);
 		
 		userCriteria = new UserCriteria();
-		userCriteria.setUserFilter(UserCriteria.USER_SINGLE);
+		userCriteria.setUserActivityFilter(UserCriteria.USER_SINGLE);
 		userCriteria.setUserIds(new Integer[]{1});
 		reportCriteria.setUserCriteria(userCriteria);
 		
@@ -183,7 +183,7 @@ public class ReportServiceTest extends TestCase
 		reportCriteria.setReportService(rsMock);
 		
 		userCriteria = new UserCriteria();
-		userCriteria.setUserFilter(UserCriteria.USER_ALL);
+		userCriteria.setUserActivityFilter(UserCriteria.USER_ALL);
 		userCriteria.setOnlyActiveCustomers(true);
 		userCriteria.setOnlyActiveProjects(false);
 		reportCriteria.setUserCriteria(userCriteria);
