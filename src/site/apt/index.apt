@@ -1,12 +1,10 @@
-eHour summary
+eHour
 
   eHour is a webbased time registration tool for consultancy companies and other project based businesses.
   The primary objective is to keep time registration as simple as needed while still being very effective at measuring and reporting the amount of time your team spends on a project.
 
   See the {{{demo.html}online demo}} to see it in full effect.
 
-  eHour is developed following enterprise standards such as Java 1.5, Struts, Spring, Hibernate, Acegi and Maven 2.
-  
-  Automated testing is implemented using {{{clover/index.html}Junit, Easymock and DBUnit}}.
-  
-  Continous integration is taken care by {{{integration.html}Continuum}}.
+  The application is developed following enterprise standards such as Java 1.5, Struts, Spring, Hibernate, Acegi and Maven 2.  Automated testing is implemented using {{{clover/index.html}Junit, Easymock and DBUnit}}.  Continous integration is taken care of by {{{integration.html}Continuum}}.  
+
+  eHour is developed by {{{http://www.te-con.nl}Thies Edeling}}.
