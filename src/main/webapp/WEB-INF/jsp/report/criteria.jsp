@@ -30,7 +30,7 @@
 			
 				<tr>
 					<td><fmt:message key="report.criteria.reportRange" />:</td>
-					<td><div id="dateStartDiv"></div></td>
+					<td><div id="dateStartDiv" class="textInputSmall"></div></td>
 					<td><fmt:message key="report.criteria.until" /></td>
 					<td><div id="dateEndDiv"></div></td>
 				</tr>
@@ -38,43 +38,101 @@
 			
 			<br>
 			
-			<table class="ReportCriteriaTableTable" style="width: auto">
-				<tr>
-					<td><fmt:message key="report.criteria.customers" />:</td>
-					<td><select multiple="multiple" name="customerId" id="customerId" size="4" class="textInput">
-							<c:forEach items="${criteria.availableCriteria.customers}" var="customer">
-								<option value="${customer.customerId}"
-								<c:set var="cId" value="${customer.customerId}-" />
-								<c:if test="${fn:contains(criteria.userCriteria.customersAsString,  cId)}">
-										SELECTED
-								</c:if>
-								>${customer.name}
-							</c:forEach>
-						</select></td>
-
-					<td><fmt:message key="report.criteria.projects" />:</td>
-					<td><select multiple="multiple" name="projectId" id="projectId" size="4"  class="textInput">
-							<c:forEach items="${criteria.availableCriteria.projects}" var="project">
-								<option value="${project.projectId}">${project.name}
-							</c:forEach>
-						</select></td>
-				</tr>
-				
-				<tr>
-					<td colspan="2">
-						<fmt:message key="report.criteria.onlyActive" />
-							<input type="checkbox" name="onlyActiveCustomers" id="onlyActiveCustomers"
-								<c:if test="${criteria.userCriteria.onlyActiveCustomers}">checked</c:if>>
-					</td>
-				</tr>
-				
-				<tr>
-					<td colspan="4">
-						<input type="submit" id="criteriaSubmit" value=">>">
-					</td>
-				</tr>
-			</table>
+			<div style="display: block; height: 200px">
 			
+			<div class="BlueFrame" style="float: left">
+				<div class="BlueLeftTop">
+					<div class="BlueRightTop">
+						&nbsp;
+					</div>
+				</div>	
+				
+					<table class="ReportCriteriaTableTable">
+	
+					<tr>
+						<td><fmt:message key="report.criteria.customers" />:</td>
+						<td><select multiple="multiple" name="customerId" id="customerId" size="4" class="textInputSmall" style="width: 200px">
+								<option value="-1"
+									<c:if test="${criteria.userCriteria.emptyCustomers}">
+										SELECTED
+									</c:if>>{<fmt:message key="report.criteria.all" />}
+								
+								<c:forEach items="${criteria.availableCriteria.customers}" var="customer">
+									<option value="${customer.customerId}"
+									<c:set var="cId" value="${customer.customerId}-" />
+									<c:if test="${fn:contains(criteria.userCriteria.customersAsString,  cId)}">
+											SELECTED
+									</c:if>
+									>${customer.name}
+								</c:forEach>
+							</select></td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<fmt:message key="report.criteria.onlyActive" />
+								<input type="checkbox" name="onlyActiveCustomers" id="onlyActiveCustomers"
+									<c:if test="${criteria.userCriteria.onlyActiveCustomers}">checked</c:if>>
+						</td>					
+					</tr>
+					
+					</table>
+			
+				<div class="BlueLeftBottom">
+					<div class="BlueRightBottom">
+						&nbsp;
+					</div>
+				</div>			
+			</div>		
+		
+			<div class="BlueFrame" style="float: left">
+				<div class="BlueLeftTop">
+					<div class="BlueRightTop">
+						&nbsp;
+					</div>
+				</div>		
+			
+			
+				<table class="ReportCriteriaTableTable" style="width: auto">
+					<tr>
+						<td><fmt:message key="report.criteria.projects" />:</td>
+						<td><select multiple="multiple" name="projectId" id="projectId" size="4"  class="textInputSmall" style="width: 200px">
+								<option value="-1"
+									<c:if test="${criteria.userCriteria.emptyProjects}">
+										SELECTED
+									</c:if>>{<fmt:message key="report.criteria.all" />}
+								<c:forEach items="${criteria.availableCriteria.projects}" var="project">
+									<option value="${project.projectId}"
+									<c:set var="pId" value="${project.projectId}-" />
+									<c:if test="${fn:contains(criteria.userCriteria.projectsAsString,  pId)}">
+											SELECTED
+									</c:if>
+									>${project.name}
+								</c:forEach>
+							</select></td>
+					</tr>
+				
+					<tr>
+						<td colspan="2">
+							<fmt:message key="report.criteria.onlyActive" />
+								<input type="checkbox" name="onlyActiveProjects" id="onlyActiveProjects"
+									<c:if test="${criteria.userCriteria.onlyActiveProjects}">checked</c:if>>
+						</td>					
+					</tr>
+					
+				</table>
+			
+				<div class="BlueLeftBottom">
+					<div class="BlueRightBottom">
+						&nbsp;
+					</div>
+				</div>			
+			</div>				
+
+		
+			
+			<input type="submit" id="criteriaSubmit" value=">>">
+			</div>				
 			</form>
 		</div>
 		

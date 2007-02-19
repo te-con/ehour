@@ -26,6 +26,7 @@ function connectEvents()
 {
 	dojo.event.connect(dojo.byId('customerId'), "onchange", "updateCriteria");
 	dojo.event.connect(dojo.byId('onlyActiveCustomers'), "onclick", "updateCriteria");
+	dojo.event.connect(dojo.byId('onlyActiveProjects'), "onclick", "updateCriteria");
 	
 	new dojo.io.FormBind({formNode: dojo.byId('criteriaForm'),
 	  					  handler: criteriaSubmitted

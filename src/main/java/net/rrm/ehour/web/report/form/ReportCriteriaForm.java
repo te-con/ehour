@@ -43,6 +43,7 @@ public class ReportCriteriaForm extends UserIdForm
 	private	String	dateStart;
 	private	String	dateEnd;
 	private	boolean	onlyActiveCustomers;	
+	private	boolean	onlyActiveProjects;
 	
 	/**
 	 * 
@@ -55,6 +56,7 @@ public class ReportCriteriaForm extends UserIdForm
 	{
 		fromForm = false;
 		onlyActiveCustomers= false;
+		onlyActiveProjects = false;
 	}
 
 	/**
@@ -151,5 +153,21 @@ public class ReportCriteriaForm extends UserIdForm
 	public void setOnlyActiveCustomers(boolean onlyActiveCustomers)
 	{
 		this.onlyActiveCustomers = onlyActiveCustomers;
+	}
+
+	/**
+	 * @return the onlyActiveProjects
+	 */
+	public boolean isOnlyActiveProjects()
+	{
+		return onlyActiveProjects;
+	}
+
+	/**
+	 * @param onlyActiveProjects the onlyActiveProjects to set
+	 */
+	public void setOnlyActiveProjects(boolean onlyActiveProjects)
+	{
+		this.onlyActiveProjects = onlyActiveProjects;
 	}
 }

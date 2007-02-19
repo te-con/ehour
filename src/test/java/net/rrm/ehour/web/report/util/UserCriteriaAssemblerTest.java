@@ -51,6 +51,7 @@ public class UserCriteriaAssemblerTest extends TestCase
 		rcForm.setProjectId(new Integer[]{1, 2, -1});
 		rcForm.setCustomerId(new Integer[]{1,2,3});
 		rcForm.setOnlyActiveCustomers(false);
+		rcForm.setOnlyActiveProjects(true);
 		
 		UserCriteria uc = UserCriteriaAssembler.getUserCriteria(rcForm);
 		
@@ -60,6 +61,7 @@ public class UserCriteriaAssemblerTest extends TestCase
 		assertNull(uc.getProjectIds());
 		assertEquals(3, uc.getCustomerIds().length);
 		assertFalse(uc.isOnlyActiveCustomers());
+		assertTrue(uc.isOnlyActiveProjects());
 	}
 
 }

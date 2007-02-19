@@ -23,9 +23,13 @@
 
 package net.rrm.ehour.report.criteria;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.util.DateUtil;
 
@@ -42,6 +46,16 @@ public class ReportCriteria
 	private	AvailableCriteria	availableCriteria;
 	private	UserCriteria		userCriteria;
 	private	ReportService		reportService;
+	
+	/**
+	 * To avoid NPE's
+	 *
+	 */
+	public ReportCriteria()
+	{
+		userCriteria = new UserCriteria();
+		availableCriteria = new AvailableCriteria();
+	}
 	
 	/**
 	 * Initialize the available criteria so they're available
@@ -77,7 +91,6 @@ public class ReportCriteria
 			reportRange = userCriteria.getReportRange();
 		}
 		
-		
 		// if no timesheets were specified, use the current month as the range
 		if (reportRange == null || reportRange.isEmpty())
 		{
@@ -96,6 +109,33 @@ public class ReportCriteria
 	public void updateAvailableCriteria()
 	{
 		reportService.syncUserReportCriteria(this);
+		
+		checkIfUserCriteriaAreAvailable();
+	}
+	
+	/**
+	 * After the available criteria are synced, check if the user criteria are still valid
+	 *
+	 */
+	private void checkIfUserCriteriaAreAvailable()
+	{
+		List<Integer>	projectIds;
+		List<Integer>	projectIdsValid = new ArrayList<Integer>();
+		
+		if (userCriteria.getProjectIds() != null)
+		{
+			projectIds = Arrays.asList(userCriteria.getProjectIds());
+			
+			for (Integer projectId : projectIds)
+			{
+				if (availableCriteria.getProjects().contains(new Project(projectId)))
+				{
+					projectIdsValid.add(projectId);
+				}
+			}
+			
+			userCriteria.setProjectIds(projectIdsValid.toArray(new Integer[projectIdsValid.size()]));
+		}
 	}
 
 	/**

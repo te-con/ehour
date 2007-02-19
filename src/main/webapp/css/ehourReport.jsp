@@ -7,6 +7,7 @@
 	width: inherit;
 }
 
+
 .ReportCriteriaTableTable th
 {
 	padding: 5px 0 5px 0;

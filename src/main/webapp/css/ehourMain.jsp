@@ -397,6 +397,16 @@ div.BlueLeftBottom
 	border-width: 1px;
 	border-color: #cfdbe6;
 	margin: 0;
-	font: 0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	font: 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
+}
+
+input
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #cfdbe6;
+	margin: 0;
+	font: 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
 }

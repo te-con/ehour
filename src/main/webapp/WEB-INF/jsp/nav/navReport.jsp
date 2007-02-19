@@ -9,12 +9,8 @@
 
 	<div class="GreyNavBody">
 		<ul>
-			<li><a href="<c:url value="/eh/admin/user/index.do" />"><fmt:message key="admin.nav.users" /></a>
-			<li><a href="<c:url value="/eh/admin/dept/index.do" />"><fmt:message key="admin.nav.departments" />
-			<br>
-			<li><a href="<c:url value="/eh/admin/customer/index.do" />"><fmt:message key="admin.nav.customers" /></a>
-			<li><a href="<c:url value="/eh/admin/project/index.do" />"><fmt:message key="admin.nav.projects" /></a>
-			<li><a href="<c:url value="/eh/admin/assignment/index.do" />"><fmt:message key="admin.nav.assignments" /></a>
+			<li>Export to Excel
+			<li>Export to PDF
 		</ul>
 	</div>
 	<div class="GreyNavFrameFooter">

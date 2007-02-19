@@ -2,6 +2,9 @@ package net.rrm.ehour.project.domain;
 
 import java.util.Set;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.domain.DomainObject;
 
@@ -158,6 +161,10 @@ public class Project extends DomainObject implements Comparable<Project>
 		this.projectAssignments = projectAssignments;
 	}
 
+	
+	/**
+	 * Satisfy the Comparable contract
+	 */
 	public int compareTo(Project o)
 	{
 		int	customerCompare = customer.compareTo(o.getCustomer());
@@ -169,5 +176,40 @@ public class Project extends DomainObject implements Comparable<Project>
 		
 		return customerCompare;
 	}
+	
+	/**
+	 * Equals
+	 */
+	@Override
+	public boolean equals(Object other)
+	{
+		if ((this == other))
+		{
+			return true;
+		}
+		
+		if (!(other instanceof Project))
+		{
+			return false;
+		}
+		
+		Project castOther = (Project) other;
+		
+		if (castOther.getProjectId() == null && this.getProjectId() != null)
+		{
+			return false;
+		}
+		
+		return new EqualsBuilder().append(this.getProjectId(), castOther.getProjectId()).isEquals();
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(getProjectId()).toHashCode();
+	}	
 
 }

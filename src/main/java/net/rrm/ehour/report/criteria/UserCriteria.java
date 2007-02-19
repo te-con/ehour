@@ -38,7 +38,7 @@ public class UserCriteria
 	public final static int	USER_SINGLE = 3;
 	
 	private DateRange	reportRange;
-	private	boolean		onlyActiveProjects;
+	private	boolean		onlyActiveProjects = true;
 	private	boolean		onlyActiveCustomers = true;
 	private	int			userFilter;
 	private	Integer[]	userIds;
@@ -61,25 +61,65 @@ public class UserCriteria
 	}
 	
 	/**
+	 * No customers selected ?
+	 * @return
+	 */
+	public boolean isEmptyCustomers()
+	{
+		return customerIds == null || customerIds.length == 0;
+	}
+	
+	/**
+	 * No projects selected ?
+	 * @return
+	 */
+
+	public boolean isEmptyProjects()
+	{
+		return projectIds == null || projectIds.length == 0;
+	}
+
+	
+	
+	/**
 	 * Get customers as string (needed for JSTL)
 	 * @return
 	 */
 	public String getCustomersAsString()
 	{
+		return getIntegerArrayAsString(customerIds);
+	}
+	
+	/**
+	 * Get projects as string (needed for JSTL)
+	 * @return
+	 */
+	public String getProjectsAsString()
+	{
+		return getIntegerArrayAsString(projectIds);
+	}
+	
+	/**
+	 * Get Integer array as string
+	 * @param ints
+	 * @return
+	 */
+	private String getIntegerArrayAsString(Integer[] ints)
+	{
 		StringBuffer	ids = new StringBuffer();
 		int				i;
 		
-		if (customerIds != null)
+		if (ints != null)
 		{
 			for (i = 0;
-				 i < customerIds.length;
+				 i < ints.length;
 				 i++)
 			{
-				ids.append("-" + customerIds[i].toString() + "-");
+				ids.append("-" + ints[i].toString() + "-");
 			}
 		}
 		
-		return ids.toString();
+		return ids.toString();		
 	}
 	
 	/**
