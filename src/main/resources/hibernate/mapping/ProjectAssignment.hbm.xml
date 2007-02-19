@@ -10,7 +10,7 @@
 			<generator class="identity" />
        	</id>
 
-        <many-to-one name="user" class="net.rrm.ehour.user.domain.User" fetch="join">
+        <many-to-one name="user" class="net.rrm.ehour.user.domain.User" fetch="join" insert="true">
             <column name="USER_ID" not-null="true" />
         </many-to-one>
 

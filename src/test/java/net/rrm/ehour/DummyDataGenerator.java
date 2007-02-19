@@ -23,11 +23,16 @@
 
 package net.rrm.ehour;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
 
 /**
  * TODO 
@@ -67,5 +72,25 @@ public class DummyDataGenerator
 		pag.setTurnOver(baseId * 10);
 		pag.setProjectAssignment(getProjectAssignment(baseId));
 		return pag;
+	}
+	
+	public static User getUser()
+	{
+		User user = new User();
+		
+		user.setActive(true);
+		user.setEmail("thies@te-con.nl");
+		user.setUsername("testmetoo");
+		user.setFirstName("Dummy");
+		user.setLastName("TestUser");
+		user.setPassword("abc");
+		
+		user.setUserDepartment(new UserDepartment(1));
+		
+		Set<UserRole> roles = new HashSet<UserRole>();
+		roles.add(new UserRole("ROLE_ADMIN"));
+		user.setUserRoles(roles);
+		
+		return user;
 	}
 }

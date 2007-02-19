@@ -28,7 +28,7 @@
             <column name="DEPARTMENT_ID" not-null="true" />
         </many-to-one>         
 
-		<set name="projectAssignments" inverse="true" lazy="true" cascade="save-update">
+		<set name="projectAssignments" inverse="true" lazy="true" cascade="merge,persist,save-update">
 			<key column="USER_ID" not-null="true" />
 	       	<one-to-many class="net.rrm.ehour.project.domain.ProjectAssignment"/>
 	   </set>         

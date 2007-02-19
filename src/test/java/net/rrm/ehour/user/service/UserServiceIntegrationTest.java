@@ -23,8 +23,11 @@
 
 package net.rrm.ehour.user.service;
 
+import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 
 /**
  * Small unit test to test service <-> dao interaction with tx 
@@ -34,7 +37,20 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 {
 	private UserService userService;
 	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void testAddUser() throws Exception
+	{
+		User	user = DummyDataGenerator.getUser();
+		userService.persistUser(user);
+	}
 	
+	/**
+	 * 
+	 * @throws Exception
+	 */
 	public void testDeleteUserDepartment() throws Exception
 	{
 		userService.deleteUserDepartment(new Integer(2));
@@ -50,6 +66,19 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		}
 	}
 	
+	public void testPersistUser() throws Exception
+	{
+		User user = new User();
+		user.setUsername("thies");
+		user.setFirstName("Thies");
+		user.setLastName("Unit");
+		user.setEmail("dum@dum.nl");
+		user.setUserDepartment(new UserDepartment(1));
+		user.setActive(true);
+		user.setUserId(1);
+		
+		userService.persistUser(user);
+	}
 	
 	/**
 	 * 

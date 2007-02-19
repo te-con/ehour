@@ -174,12 +174,12 @@ public class ProjectServiceImpl implements ProjectService
 			assignment.setDefaultAssignment(true);
 			assignment.setProject(project);
 			assignment.setUser(user);
+			assignment.setActive(true);
 			
 			if (!isAssignmentDuplicate(assignment, user.getProjectAssignments()))
 			{
 				logger.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
 				user.addProjectAssignment(assignment);
-//				projectAssignmentDAO.persist(assignment);
 			}
 		}
 		
@@ -207,7 +207,8 @@ public class ProjectServiceImpl implements ProjectService
 		for (ProjectAssignment assignment : assignments)
 		{
 			// if this is an update and the assignment is the same, skip it
-			if (assignment.getAssignmentId().equals(projectAssignment.getAssignmentId()))
+			if (assignment.getAssignmentId() != null &&
+				assignment.getAssignmentId().equals(projectAssignment.getAssignmentId()))
 			{
 				alreadyAssigned = false;
 				continue;

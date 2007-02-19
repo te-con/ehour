@@ -277,7 +277,7 @@ public class UserServiceImpl implements UserService
 		byte[]	shaPass;
 
 		nameUser = userDAO.findByUsername(user.getUsername());
-		
+				
 		if (nameUser != null && !nameUser.getUserId().equals(user.getUserId()))
 		{
 			throw new ObjectNotUniqueException("Username already in use");

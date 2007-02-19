@@ -20,6 +20,7 @@ public class UserDepartment extends DomainObject
 	 */
 	private static final long serialVersionUID = 7802944013593352L;
 
+	
 	/**
 	 * @uml.property  name="departmentId"
 	 */
@@ -42,6 +43,15 @@ public class UserDepartment extends DomainObject
 	/** default constructor */
 	public UserDepartment()
 	{
+	}
+	
+	/**
+	 * id only constructor
+	 * @param departmentId
+	 */
+	public UserDepartment(Integer departmentId)
+	{
+		this.departmentId = departmentId;	
 	}
 
 	/** minimal constructor */

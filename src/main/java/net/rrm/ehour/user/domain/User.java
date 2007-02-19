@@ -5,6 +5,8 @@ import java.util.Set;
 
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * @author  Thies
@@ -244,5 +246,32 @@ public class User  extends DomainObject implements Comparable
 	public void setInactiveProjectAssignments(Set<ProjectAssignment> inactiveProjectAssignments)
 	{
 		this.inactiveProjectAssignments = inactiveProjectAssignments;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object)
+	{
+		if (!(object instanceof User))
+		{
+			return false;
+		}
+		User rhs = (User) object;
+		return new EqualsBuilder().appendSuper(super.equals(object))
+					.append(this.username, rhs.username)
+					.append(this.userId, rhs.userId)
+					.isEquals();
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder(-2038170721, -475387721).appendSuper(super.hashCode())
+				.append(this.username)
+				.append(this.userId)
+				.toHashCode();
 	}
 }
