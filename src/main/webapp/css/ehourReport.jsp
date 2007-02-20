@@ -3,8 +3,8 @@
 
 .ReportCriteriaTableTable 
 {
-	margin: -1em 1em 0 1em;
-	width: inherit;
+	margin: -0.5em 1em 0 0.5em;
+	width: 100%;
 }
 
 
@@ -36,4 +36,9 @@
 	border-top-color: #233e55;
 	border-top-style: solid;
 	font-weight: bold;
+}
+
+.tester
+{
+	width: 100%;
 }

@@ -38,51 +38,57 @@
 				</tr>
 			</table>
 			
-			<br>
-			<Table><tr><td>	
+			<table>
+				<tr>
+				<td>	
 			
 <!-- customers -->			
-			<div class="BlueFrameContainer"  style="float: left">
-				<fmt:message key="report.criteria.customers" />
-				
-				<div class="BlueFrame"  style="margin-left: -11px">
-					<div class="BlueLeftTop">
-						<div class="BlueRightTop">
-							&nbsp;
-						</div>
-					</div>	
+				<div class="BlueFrameContainer">
+					<fmt:message key="report.criteria.customers" />
 					
-					<table class="ReportCriteriaTableTable">
-						<tr>
-							<td colspan="2">
-								<div id="criteriaCustomerList">
-									<tiles:insert page="criteriaCustomerList.jsp" />
-								</div>							
-							</td>
-						</tr>
+					<div class="BlueFrame" style="margin-left: -11px">
+						<div class="BlueLeftTop">
+							<div class="BlueRightTop">
+								<br>
+							</div>
+						</div>	
 						
-						<tr>
-							<td>
-								<fmt:message key="report.criteria.onlyActive" />
-							</td>
+						<table class="ReportCriteriaTableTable">
+							<tr>
+								<td colspan="2">
+									<div id="criteriaCustomerList">
+										<tiles:insert page="criteriaCustomerList.jsp" />
+									</div>							
+								</td>
+								<td rowpspan="2" width="11">
+									&nbsp;
+								</td>
+							</tr>
 							
-							<td align="right">
-								<input type="checkbox" name="onlyActiveCustomers" id="onlyActiveCustomers"
-									<c:if test="${criteria.userCriteria.onlyActiveCustomers}">checked</c:if>>
-							</td>					
-						</tr>
-					</table>
+							<tr>
+								<td>
+									<fmt:message key="report.criteria.onlyActive" />
+								</td>
+								
+								<td align="right">
+									<input type="checkbox" name="onlyActiveCustomers" id="onlyActiveCustomers"
+										<c:if test="${criteria.userCriteria.onlyActiveCustomers}">checked</c:if>>
+								</td>					
+							</tr>
+						</table>
+					
+						<div class="BlueLeftBottom">
+							<div class="BlueRightBottom">
+								&nbsp;
+							</div>
+						</div>			
+					</div>		
+				</div>
+			</td>
 				
-					<div class="BlueLeftBottom">
-						<div class="BlueRightBottom">
-							&nbsp;
-						</div>
-					</div>			
-				</div>		
-			</div>
-
+			<td>
 <!-- projects -->
-			<div class="BlueFrameContainer"  style="float: left">
+			<div class="BlueFrameContainer" >
 				<fmt:message key="report.criteria.projects" />
 					
 				<div class="BlueFrame" style="margin-left: -11px">
@@ -99,6 +105,9 @@
 									<tiles:insert page="criteriaProjectList.jsp" />
 								</div>
 							</td>
+							<td rowpspan="2" width="11">
+								&nbsp;
+							</td>							
 						</tr>
 					
 						<tr>
@@ -122,10 +131,20 @@
 				</div>				
 			</div>
 
-			<br>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="2">
+				<br>
+			</td>
+		</tr>
+				
+		<tr>
+			<td valign="top">
 
 <!-- departments -->
-			<div class="BlueFrameContainer"  style="float: left;height: 200px">
+			<div class="BlueFrameContainer">
 				<fmt:message key="report.criteria.departments" />
 				
 				<div class="BlueFrame" style="margin-left: -11px">
@@ -135,25 +154,29 @@
 						</div>
 					</div>	
 					
-						<table class="ReportCriteriaTableTable">
-							<tr>
-								<td><select multiple="multiple" name="departmentId" id="departmentId" size="4" class="textInputSmall" style="width: 200px">
-										<option value="-1"
-											<c:if test="${criteria.userCriteria.emptyDepartments}">
+					<table class="ReportCriteriaTableTable">
+						<tr>
+							<td><select multiple="multiple" name="departmentId" id="departmentId" size="4" class="textInputSmall" style="width: 100%">
+									<option value="-1"
+										<c:if test="${criteria.userCriteria.emptyDepartments}">
+											SELECTED
+										</c:if>>{<fmt:message key="report.criteria.all" />}
+									
+									<c:forEach items="${criteria.availableCriteria.userDepartments}" var="dept">
+										<option value="${dept.departmentId}"
+										<c:set var="dId" value="${dept.departmentId}-" />
+										<c:if test="${fn:contains(criteria.userCriteria.departmentsAsString,  dId)}">
 												SELECTED
-											</c:if>>{<fmt:message key="report.criteria.all" />}
-										
-										<c:forEach items="${criteria.availableCriteria.userDepartments}" var="dept">
-											<option value="${dept.departmentId}"
-											<c:set var="dId" value="${dept.departmentId}-" />
-											<c:if test="${fn:contains(criteria.userCriteria.departmentsAsString,  dId)}">
-													SELECTED
-											</c:if>
-											>${dept.name}
-										</c:forEach>
-									</select></td>
-							</tr>
-						</table>
+										</c:if>
+										>${dept.name}
+									</c:forEach>
+								</select>
+							</td>
+							<td width="11">
+								&nbsp;
+							</td>								
+						</tr>
+					</table>
 				
 					<div class="BlueLeftBottom">
 						<div class="BlueRightBottom">
@@ -162,10 +185,11 @@
 					</div>			
 				</div>
 			</div>			
-			
+		</td>
+		<td>
 
 <!-- employees -->
-			<div class="BlueFrameContainer" style="float: left">
+			<div class="BlueFrameContainer">
 				<fmt:message key="report.criteria.users" />:
 				
 				<div class="BlueFrame" style="margin-left: -11px">
@@ -181,7 +205,7 @@
 									<input type="text" name="userFilter"
 											id="userFilter"
 											class="textInputSmall"
-											style="width: 200px; <c:if test="${!report.criteria.emptyUserFilter}">color: #aaaaaa</c:if>"
+											style="<c:if test="${!report.criteria.emptyUserFilter}">color: #aaaaaa</c:if>"
 											value="<fmt:message key="report.criteria.filterUsersOn" /><c:choose>
 														<c:when test="${report.criteria.emptyUserFilter}">
 															<fmt:message key="report.criteria.filterUsersOn" />
@@ -192,6 +216,9 @@
 														</c:otherwise>
 													</c:choose>">
 								</td>
+							<td width="11" rowspan="3"> 
+								&nbsp;
+							</td>									
 							</tr>
 							
 							<tr>
@@ -221,8 +248,15 @@
 					</div>			
 				</div>		
 			</div>	
-		</td></tr></Table>
-		<input style="float: bottom" type="submit" id="criteriaSubmit" value=">>">
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2" align="right">
+			<input style="float: bottom" type="submit" id="criteriaSubmit" value=">>">
+		</td>
+	</tr>
+</table>
 		</div>				
 		</form>
 		

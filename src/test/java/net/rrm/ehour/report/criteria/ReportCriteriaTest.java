@@ -52,15 +52,6 @@ public class ReportCriteriaTest extends TestCase
 		reportCriteria.setReportService(reportService);
 	}
 
-	public void testInitialize()
-	{
-		expect(reportService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL)).andReturn(reportCriteria);
-		replay(reportService);
-		
-		reportCriteria.initialize();
-		
-		verify(reportService);
-	}
 
 	
 	public void testGetReportRange()
