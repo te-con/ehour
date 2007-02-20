@@ -153,7 +153,7 @@ public class ReportServiceTest extends TestCase
 		replay(prjAssignmentDAO);
 		replay(reportDAO);
 		
-		reportService.syncUserReportCriteria(reportCriteria);
+		reportService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL);
 		
 		verify(reportDAO);
 		verify(prjAssignmentDAO);
@@ -207,7 +207,7 @@ public class ReportServiceTest extends TestCase
 		expectLastCall().andReturn(null);
 		replay(reportDAO);
 		
-		reportService.syncUserReportCriteria(reportCriteria);
+		reportService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL);
 		
 		verify(reportDAO);
 		verify(projectDAO);

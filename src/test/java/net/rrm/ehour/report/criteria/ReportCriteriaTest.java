@@ -54,7 +54,7 @@ public class ReportCriteriaTest extends TestCase
 
 	public void testInitialize()
 	{
-		expect(reportService.syncUserReportCriteria(reportCriteria)).andReturn(reportCriteria);
+		expect(reportService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL)).andReturn(reportCriteria);
 		replay(reportService);
 		
 		reportCriteria.initialize();
@@ -78,7 +78,7 @@ public class ReportCriteriaTest extends TestCase
 	
 	public void testSetUserCriteria()
 	{
-		expect(reportService.syncUserReportCriteria(reportCriteria)).andReturn(reportCriteria);
+		expect(reportService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL)).andReturn(reportCriteria);
 
 		replay(reportService);
 		
