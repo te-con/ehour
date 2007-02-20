@@ -20,5 +20,8 @@
 
 	<!-- Report criteria update -->
     <definition name=".ehour.report.criteria" path="/WEB-INF/jsp/report/criteria.jsp" />	
+
+	<!-- Report criteria users filter -->    
+    <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteriaUserList.jsp" />	    
 	
 </tiles-definitions>

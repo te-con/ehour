@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
 
 <!-- spanTarget: criteria -->
 <script src="../../js/dojo.js" type="text/javascript"></script>
@@ -212,21 +213,10 @@
 							</tr>
 							
 							<tr>
-								<td colspan="2"><select multiple="multiple" name="userId" id="userId" size="4" class="textInputSmall" style="width: 200px">
-										<option value="-1"
-											<c:if test="${criteria.userCriteria.emptyUsers}">
-												SELECTED
-											</c:if>>{<fmt:message key="report.criteria.all" />}
-										
-										<c:forEach items="${criteria.availableCriteria.users}" var="user">
-											<option value="${user.userId}"
-											<c:set var="uId" value="${user.userId}-" />
-											<c:if test="${fn:contains(criteria.userCriteria.usersAsString,  uId)}">
-													SELECTED
-											</c:if>
-											>${user.lastName}, ${user.firstName}
-										</c:forEach>
-									</select>
+								<td colspan="2">
+									<div id="userSpanTarget">	
+										<tiles:insert page="criteriaUserList.jsp" />
+									</div>
 								</td>
 							</tr>
 							

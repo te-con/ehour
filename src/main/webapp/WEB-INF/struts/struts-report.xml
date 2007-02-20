@@ -21,7 +21,12 @@
 				path="/updateCriteria">
 			<forward name="success" path=".ehour.report.criteria" />	
 		</action>
-		
+
+		<!-- Report criteria update -->
+		<action name="ReportCriteriaForm"
+				path="/filterUsers">
+			<forward name="success" path=".ehour.report.criteria.users" />	
+		</action>		
 		
 	</action-mappings>
 	

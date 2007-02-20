@@ -74,7 +74,8 @@ function criteriaSubmitted(type, xml, evt)
 	else
 	{
 		ajaxEventReceived(xml, true, {report: "reportTarget",
-									  criteria: "criteriaTarget"});
+									  criteria: "criteriaTarget",
+									  userList: "userSpanTarget"});
 	}
 }
 
@@ -92,5 +93,20 @@ function updateCriteria(evt)
 	criteriaForm.action = contextRoot + '/updateCriteria.do';
 	
 	dojo.byId('criteriaSubmit').click();
+}
 
+//
+function updateCriteriaFromFilter(evt)
+{
+	var criteriaForm = dojo.byId('criteriaForm');
+	var userFilterInput = dojo.byId('userFilter');
+	
+	if (userFilterInput.value == defaultText)
+	{
+		userFilterInput.value = "";
+	}
+	
+	criteriaForm.action = contextRoot + '/filterUsers.do';
+	
+	dojo.byId('criteriaSubmit').click();
 }

@@ -11,5 +11,9 @@
 	<bean name="/eh/report/updateCriteria" class="net.rrm.ehour.web.report.action.ReportCriteriaAction">
 		<property name="reportCriteria" ref="reportCriteria" />
 	</bean>
+
+	<bean name="/eh/report/filterUsers" class="net.rrm.ehour.web.report.action.FilterUsersAction">
+		<property name="reportCriteria" ref="reportCriteria" />
+	</bean>
 	
 </beans>
