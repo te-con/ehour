@@ -4,7 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!-- spanTarget: userList -->
-<select multiple="multiple" name="userId" id="userId" size="4" class="textInputSmall" style="width: 200px">
+
+<select multiple="multiple" name="userIds" id="userId" size="4" class="textInputSmall" style="width: 200px">
 	<option value="-1"
 		<c:if test="${criteria.userCriteria.emptyUsers}">
 			SELECTED

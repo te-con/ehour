@@ -26,6 +26,7 @@
 		
 			<form method="post" action="report.do" id="criteriaForm">
 			<input type="hidden" name="fromForm" value="yes">
+			<input type="hidden" name="updateType" value="0">			
 
 			<table class="ReportCriteriaTableTable" style="width: auto">
 			
@@ -53,21 +54,11 @@
 					
 					<table class="ReportCriteriaTableTable">
 						<tr>
-							<td colspan="2"><select multiple="multiple" name="customerId" id="customerId" size="4" class="textInputSmall" style="width: 200px">
-									<option value="-1"
-										<c:if test="${criteria.userCriteria.emptyCustomers}">
-											SELECTED
-										</c:if>>{<fmt:message key="report.criteria.all" />}
-									
-									<c:forEach items="${criteria.availableCriteria.customers}" var="customer">
-										<option value="${customer.customerId}"
-										<c:set var="cId" value="${customer.customerId}-" />
-										<c:if test="${fn:contains(criteria.userCriteria.customersAsString,  cId)}">
-												SELECTED
-										</c:if>
-										>${customer.name}
-									</c:forEach>
-								</select></td>
+							<td colspan="2">
+								<div id="criteriaCustomerList">
+									<tiles:insert page="criteriaCustomerList.jsp" />
+								</div>							
+							</td>
 						</tr>
 						
 						<tr>
@@ -103,20 +94,11 @@
 
 					<table class="ReportCriteriaTableTable">
 						<tr>
-							<td colspan="2"><select multiple="multiple" name="projectId" id="projectId" size="4"  class="textInputSmall" style="width: 200px">
-									<option value="-1"
-										<c:if test="${criteria.userCriteria.emptyProjects}">
-											SELECTED
-										</c:if>>{<fmt:message key="report.criteria.all" />}
-									<c:forEach items="${criteria.availableCriteria.projects}" var="project">
-										<option value="${project.projectId}"
-										<c:set var="pId" value="${project.projectId}-" />
-										<c:if test="${fn:contains(criteria.userCriteria.projectsAsString,  pId)}">
-												SELECTED
-										</c:if>
-										>${project.name}
-									</c:forEach>
-								</select></td>
+							<td colspan="2">
+								<div id="criteriaProjectList">
+									<tiles:insert page="criteriaProjectList.jsp" />
+								</div>
+							</td>
 						</tr>
 					
 						<tr>
@@ -214,7 +196,7 @@
 							
 							<tr>
 								<td colspan="2">
-									<div id="userSpanTarget">	
+									<div id="criteriaUserList">
 										<tiles:insert page="criteriaUserList.jsp" />
 									</div>
 								</td>
