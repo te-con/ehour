@@ -31,8 +31,10 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
 
@@ -42,6 +44,11 @@ import org.apache.log4j.Logger;
 
 public class ReportCriteria
 {
+	public static final int		UPDATE_ALL = 0;
+	public static final int		UPDATE_CUSTOMERS = 1;
+	public static final int		UPDATE_PROJECTS = 2;
+	public static final int		UPDATE_USERS = 3;
+	
 	private	Logger				logger = Logger.getLogger(this.getClass());
 	private	AvailableCriteria	availableCriteria;
 	private	UserCriteria		userCriteria;
@@ -68,8 +75,6 @@ public class ReportCriteria
 		
 		availableCriteria = new AvailableCriteria();
 		userCriteria = new UserCriteria();
-		
-		updateAvailableCriteria();
 	}
 	
 	/**
@@ -108,16 +113,61 @@ public class ReportCriteria
 	 */
 	public void updateAvailableCriteria()
 	{
-		reportService.syncUserReportCriteria(this);
-		
-		checkIfUserCriteriaAreAvailable();
+		updateAvailableCriteria(ReportCriteria.UPDATE_ALL);
 	}
 	
+	/**
+	 * 
+	 *
+	 */
+	public void updateAvailableCriteria(int updateType)
+	{
+		reportService.syncUserReportCriteria(this, updateType);
+		
+		checkIfUserCriteriaAreAvailable();
+	}	
 	/**
 	 * After the available criteria are synced, check if the user criteria are still valid
 	 *
 	 */
 	private void checkIfUserCriteriaAreAvailable()
+	{
+		checkProjects();
+		checkUsers();
+	}
+	
+	/**
+	 *  TODO use commons-collection ListUtils.retainall however commons-config depends on collections 2.1 while
+	 *  retainall is introduced in 3.2
+	 *
+	 */
+	private void checkUsers()
+	{
+		
+		List<Integer>	userIds;
+		List<Integer>	userIdsValid = new ArrayList<Integer>();
+		
+		if (userCriteria.getUserIds() != null)
+		{
+			userIds = Arrays.asList(userCriteria.getUserIds());
+			
+			for (Integer userId : userIds)
+			{
+				if (availableCriteria.getUsers().contains(new User(userId)))
+				{
+					userIdsValid.add(userId);
+				}
+			}
+			
+			userCriteria.setUserIds(userIdsValid.toArray(new Integer[userIdsValid.size()]));
+		}
+	}
+		
+	/**
+	 * 
+	 *
+	 */
+	private void checkProjects()
 	{
 		List<Integer>	projectIds;
 		List<Integer>	projectIdsValid = new ArrayList<Integer>();

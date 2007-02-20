@@ -25,9 +25,9 @@ package net.rrm.ehour.web.report.form;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionMapping;
-
 import net.rrm.ehour.web.form.UserIdForm;
+
+import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
@@ -44,10 +44,12 @@ public class ReportCriteriaForm extends UserIdForm
 	private	Integer	userIds[];
 	private	String	dateStart;
 	private	String	dateEnd;
-	private	boolean	onlyActiveCustomers;	
+	private	boolean	onlyActiveCustomers;
 	private	boolean	onlyActiveProjects;
 	private	boolean	onlyActiveUsers;
 	private	String	userFilter;
+	
+	private	int		updateType;
 	
 	/**
 	 * 
@@ -57,6 +59,8 @@ public class ReportCriteriaForm extends UserIdForm
 		fromForm = false;
 		onlyActiveCustomers= false;
 		onlyActiveProjects = false;
+		
+		//updateType = ReportCriteria.UPDATE_ALL;
 	}
 
 	/**
@@ -233,5 +237,21 @@ public class ReportCriteriaForm extends UserIdForm
 	public void setOnlyActiveUsers(boolean onlyActiveUsers)
 	{
 		this.onlyActiveUsers = onlyActiveUsers;
+	}
+
+	/**
+	 * @return the updateType
+	 */
+	public int getUpdateType()
+	{
+		return updateType;
+	}
+
+	/**
+	 * @param updateType the updateType to set
+	 */
+	public void setUpdateType(int event)
+	{
+		this.updateType = event;
 	}
 }

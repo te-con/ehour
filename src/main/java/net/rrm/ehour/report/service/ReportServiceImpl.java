@@ -105,7 +105,7 @@ public class ReportServiceImpl implements ReportService
 	 * Update available report criteria 
 	 */
 	
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria)
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, int updateType)
 	{
 		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
 		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
@@ -116,14 +116,29 @@ public class ReportServiceImpl implements ReportService
 		}
 		else
 		{
-			availCriteria.setUsers(getAvailableUsers(userCriteria));
-				
-			availCriteria.setUserDepartments(userDepartmentDAO.findAll());
+			if (updateType == ReportCriteria.UPDATE_USERS ||
+				updateType == ReportCriteria.UPDATE_ALL)
+			{
+				availCriteria.setUsers(getAvailableUsers(userCriteria));
+			}
 
-			availCriteria.setCustomers(getAvailableCustomers(userCriteria));
-			availCriteria.setProjects(getAvailableProjects(userCriteria));
+			if (updateType == ReportCriteria.UPDATE_CUSTOMERS ||
+				updateType == ReportCriteria.UPDATE_ALL)
+			{
+				availCriteria.setCustomers(getAvailableCustomers(userCriteria));
+			}
+
+			if (updateType == ReportCriteria.UPDATE_PROJECTS ||
+				updateType == ReportCriteria.UPDATE_ALL)
+			{
+				availCriteria.setProjects(getAvailableProjects(userCriteria));
+			}
 			
-			availCriteria.setReportRange(reportDAO.getMinMaxDateTimesheetEntry());
+			if (updateType == ReportCriteria.UPDATE_ALL)
+			{
+				availCriteria.setUserDepartments(userDepartmentDAO.findAll());
+				availCriteria.setReportRange(reportDAO.getMinMaxDateTimesheetEntry());
+			}
 			
 			// not entirely useful but for clarity
 			reportCriteria.setAvailableCriteria(availCriteria);
@@ -160,6 +175,7 @@ public class ReportServiceImpl implements ReportService
 		}
 		else
 		{
+			logger.debug("Finding users for departments");
 			users = userDAO.findUsersForDepartments(userCriteria.getUserFilter()
 														, userCriteria.getDepartmentIds()
 														, activeUsers);

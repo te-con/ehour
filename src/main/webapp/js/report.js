@@ -23,16 +23,17 @@ function init()
 }
 
 //  bind the form and add onchange and onclick events on dropdowns and checkboxes
+//  event types are from ReportCriteria constants
 function connectEvents()
 {
-	dojo.event.connect(dojo.byId('customerId'), "onchange", "updateCriteria");
-	dojo.event.connect(dojo.byId('departmentId'), "onchange", "updateCriteria");
-	dojo.event.connect(dojo.byId('onlyActiveCustomers'), "onclick", "updateCriteria");
-	dojo.event.connect(dojo.byId('onlyActiveProjects'), "onclick", "updateCriteria");
-	dojo.event.connect(dojo.byId('onlyActiveUsers'), "onclick", "updateCriteria");
+	dojo.event.connect(dojo.byId('customerId'), "onchange", "updateProjects");
+	dojo.event.connect(dojo.byId('departmentId'), "onchange", "updateUsers");
+	dojo.event.connect(dojo.byId('onlyActiveCustomers'), "onclick", "updateCustomers");
+	dojo.event.connect(dojo.byId('onlyActiveProjects'), "onclick", "updateProjects");
+	dojo.event.connect(dojo.byId('onlyActiveUsers'), "onclick", "updateUsers");
 	dojo.event.connect(dojo.byId('userFilter'), "onclick", "hideDefaultText");
 	dojo.event.connect(dojo.byId('userFilter'), "onblur", "showDefaultText");
-	dojo.event.connect(dojo.byId('userFilter'), "onkeyup", "updateCriteriaFromFilter");	
+	dojo.event.connect(dojo.byId('userFilter'), "onkeyup", "updateUsers");	
 	
 	new dojo.io.FormBind({formNode: dojo.byId('criteriaForm'),
 	  					  handler: criteriaSubmitted
@@ -75,16 +76,40 @@ function criteriaSubmitted(type, xml, evt)
 	{
 		ajaxEventReceived(xml, true, {report: "reportTarget",
 									  criteria: "criteriaTarget",
-									  userList: "userSpanTarget"});
+									  customerList: "criteriaCustomerList",
+									  projectList: "criteriaProjectList",
+  									  userList: "criteriaUserList"
+									  });
+									  
+		showDefaultText();
 	}
 }
 
-// update the criteria
-function updateCriteria(evt)
+// update the customers (ReportCriteria.UPDATE_CUSTOMERS)
+function updateCustomers(evt)
+{
+	updateCriteria(1);
+}
+
+// update the projects (ReportCriteria.UPDATE_PROJECTS)
+function updateProjects(evt)
+{
+	updateCriteria(2);
+}
+
+// update the users (ReportCriteria.UPDATE_USERS)
+function updateUsers(evt)
+{
+	updateCriteria(3);
+}
+
+function updateCriteria(updateType)
 {
 	var criteriaForm = dojo.byId('criteriaForm');
 	var userFilterInput = dojo.byId('userFilter');
 	
+	criteriaForm.updateType.value = updateType;
+
 	if (userFilterInput.value == defaultText)
 	{
 		userFilterInput.value = "";
@@ -93,20 +118,5 @@ function updateCriteria(evt)
 	criteriaForm.action = contextRoot + '/updateCriteria.do';
 	
 	dojo.byId('criteriaSubmit').click();
-}
 
-//
-function updateCriteriaFromFilter(evt)
-{
-	var criteriaForm = dojo.byId('criteriaForm');
-	var userFilterInput = dojo.byId('userFilter');
-	
-	if (userFilterInput.value == defaultText)
-	{
-		userFilterInput.value = "";
-	}
-	
-	criteriaForm.action = contextRoot + '/filterUsers.do';
-	
-	dojo.byId('criteriaSubmit').click();
 }

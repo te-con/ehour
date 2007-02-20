@@ -63,10 +63,11 @@ public interface ReportService
 	
 	/**
 	 * Sync the user 
-	 * @param bookedOnly to list only criteria which have entries booked 
+	 * @param bookedOnly to list only criteria which have entries booked
+	 * @param updateType see ReportCriteria.UPDATE_ constants 
 	 * @return
 	 */
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria);
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, int updateType);
 	
 	/**
 	 * Get project report

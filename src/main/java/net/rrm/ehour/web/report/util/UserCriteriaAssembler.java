@@ -49,13 +49,13 @@ public class UserCriteriaAssembler
 	 */
 	public static UserCriteria getUserCriteria(ReportCriteriaForm rcf) throws ParseException
 	{
-		UserCriteria		uc;
 		SimpleDateFormat	dateParser = new SimpleDateFormat("yyyy-MM-dd");
 		DateRange			reportRange;
 		boolean				dateSupplied = false;
-		
-		uc = new UserCriteria();
+		UserCriteria		uc;
 
+		uc = new UserCriteria();
+		
 		reportRange = new DateRange();
 		
 		if (rcf.getDateStart() != null)
@@ -74,14 +74,14 @@ public class UserCriteriaAssembler
 		{
 			uc.setReportRange(reportRange);
 		}
-
+		
 		uc.setProjectIds(getIdsFromForm(rcf.getProjectId()));
-		uc.setCustomerIds(getIdsFromForm(rcf.getCustomerId()));
 		uc.setDepartmentIds(getIdsFromForm(rcf.getDepartmentId()));
 		uc.setUserIds(getIdsFromForm(rcf.getUserIds()));
-		
+		uc.setCustomerIds(getIdsFromForm(rcf.getCustomerId()));
+		uc.setOnlyActiveCustomers(rcf.isOnlyActiveCustomers());
 		uc.setUserFilter(rcf.getUserFilter());
-		
+
 		uc.setOnlyActiveCustomers(rcf.isOnlyActiveCustomers());
 		uc.setOnlyActiveProjects(rcf.isOnlyActiveProjects());
 		

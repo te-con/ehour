@@ -19,7 +19,10 @@
     </definition>
 
 	<!-- Report criteria update -->
-    <definition name=".ehour.report.criteria" path="/WEB-INF/jsp/report/criteria.jsp" />	
+    <definition name=".ehour.report.criteria.all" path="/WEB-INF/jsp/report/criteria.jsp" />	
+    <definition name=".ehour.report.criteria.customers" path="/WEB-INF/jsp/report/criteriaCustomerList.jsp" />    
+    <definition name=".ehour.report.criteria.projects" path="/WEB-INF/jsp/report/criteriaProjectList.jsp" />
+    <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteriaUserList.jsp" />        
 
 	<!-- Report criteria users filter -->    
     <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteriaUserList.jsp" />	    

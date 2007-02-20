@@ -55,17 +55,38 @@ public class ReportCriteriaAction extends Action
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception
 	{
-		ReportCriteriaForm criteriaForm = (ReportCriteriaForm)form;
+		ReportCriteriaForm 	criteriaForm = (ReportCriteriaForm)form;
+		ActionForward		fwd;
 		
-		if (criteriaForm.isFromForm())
+		updateCriteria(criteriaForm);
+		
+		if (criteriaForm != null)
 		{
-			updateCriteria(criteriaForm);
+			switch (criteriaForm.getUpdateType())
+			{
+				case ReportCriteria.UPDATE_CUSTOMERS:
+					fwd = mapping.findForward("customers");
+					break;
+				case ReportCriteria.UPDATE_PROJECTS:
+					fwd = mapping.findForward("projects");
+					break;
+				case ReportCriteria.UPDATE_USERS:
+					fwd = mapping.findForward("users");
+					break;
+				default:
+					fwd = mapping.findForward("success");
+					break;
+			}
+		}
+		else
+		{
+			fwd = mapping.findForward("success");
 		}
 		
 		request.setAttribute("criteria", reportCriteria);
 		
 		response.setHeader("Cache-Control", "no-cache");
-		return mapping.findForward("success");
+		return fwd;
 	}
 
 	/**
@@ -75,31 +96,33 @@ public class ReportCriteriaAction extends Action
 	private void updateCriteria(ReportCriteriaForm criteriaForm)
 	{
 		UserCriteria	uc;
+		int				updateType;
 		
 		logger.debug("Updating UserCriteria");
 		
-		try
+		if (criteriaForm != null)
 		{
-			uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
-			
-			if (criteriaForm.isOnlyActiveCustomers())
+			try
 			{
-				uc.setUserActivityFilter(UserCriteria.USER_ACTIVE);
-			}
-			else
+				uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
+				uc.setUserActivityFilter(criteriaForm.isOnlyActiveCustomers() ? UserCriteria.USER_ACTIVE : UserCriteria.USER_ALL);
+				updateType = criteriaForm.getUpdateType();
+			} catch (ParseException e)
 			{
-				uc.setUserActivityFilter(UserCriteria.USER_ALL);
+				logger.error("Invalid date format specified when creating report", e);
+				uc = new UserCriteria();
+				updateType = ReportCriteria.UPDATE_ALL;
 			}
-			
-			
-		} catch (ParseException e)
-		{
-			logger.error("Invalid date format specified when creating report", e);
-			uc = new UserCriteria();
 		}
+		else
+		{
+			uc = new UserCriteria();
+			updateType = ReportCriteria.UPDATE_ALL;
+		}
+			
 
 		reportCriteria.setUserCriteria(uc);
-		reportCriteria.updateAvailableCriteria();
+ 		reportCriteria.updateAvailableCriteria(updateType);
 	}
 	
 	/**

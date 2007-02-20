@@ -47,6 +47,17 @@ public class UserCriteria
 	private	Integer[]	customerIds;
 	private	Integer[]	departmentIds;
 	private	boolean		singleUser;
+
+	/**
+	 * 
+	 *
+	 */
+	public UserCriteria()
+	{
+		onlyActiveProjects = true;
+		onlyActiveCustomers = true;
+		userActivityFilter = USER_ACTIVE;
+	}
 	
 	/**
 	 * 
