@@ -11,23 +11,18 @@
 	<!-- Action Mapping Definitions -->
 	<action-mappings>
 		<!-- Report -->
-		<action name="ReportCriteriaForm"
-				path="/index">
+		<action path="/index">
 			<forward name="success" path=".ehour.report.index" />	
 		</action>
 		
 		<!-- Report criteria update -->
 		<action name="ReportCriteriaForm"
 				path="/updateCriteria">
-			<forward name="success" path=".ehour.report.criteria" />	
+			<forward name="all" path=".ehour.report.criteria.all" />	
+			<forward name="customers" path=".ehour.report.criteria.customers" />	
+			<forward name="projects" path=".ehour.report.criteria.projects" />	
+			<forward name="users" path=".ehour.report.criteria.users" />
 		</action>
-
-		<!-- Report criteria update -->
-		<action name="ReportCriteriaForm"
-				path="/filterUsers">
-			<forward name="success" path=".ehour.report.criteria.users" />	
-		</action>		
-		
 	</action-mappings>
 	
 	<!-- spring tiles controller -->
