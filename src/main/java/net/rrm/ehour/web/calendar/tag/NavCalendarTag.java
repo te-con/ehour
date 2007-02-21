@@ -53,7 +53,7 @@ public class NavCalendarTag extends CalendarTag
 	private boolean[] 	bookedDays;
 	private	Integer		userId;
 	
-	private Logger	logger = Logger.getLogger(NavCalendarTag.class);
+	private transient Logger	logger = Logger.getLogger(NavCalendarTag.class);
 	
 	/**
 	 *

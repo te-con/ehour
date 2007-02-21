@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.report.project.ProjectReport;
+import net.rrm.ehour.report.project.AssignmentReport;
 import net.rrm.ehour.report.project.WeeklyProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
 
@@ -50,7 +50,7 @@ public class ProjectReportOverviewChartAction extends ProjectReportChartAction
 	 * @param report
 	 * @return
 	 */
-	protected JFreeChart getChart(ProjectReport report)
+	protected JFreeChart getChart(AssignmentReport report)
 	{
 		List<WeeklyProjectAssignmentAggregate>	results;
 		TimeSeries 		timeSeries;

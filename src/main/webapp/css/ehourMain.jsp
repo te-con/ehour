@@ -311,6 +311,7 @@ div.ContentFrame h1
 	padding: 0;
 }
 
+
 div.BlueFrameContainer
 {
 	margin-left: 20px;

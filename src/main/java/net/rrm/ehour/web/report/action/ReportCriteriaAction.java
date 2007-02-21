@@ -105,7 +105,6 @@ public class ReportCriteriaAction extends Action
 			try
 			{
 				uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
-				uc.setUserActivityFilter(criteriaForm.isOnlyActiveCustomers() ? UserCriteria.USER_ACTIVE : UserCriteria.USER_ALL);
 				updateType = criteriaForm.getUpdateType();
 			} catch (ParseException e)
 			{

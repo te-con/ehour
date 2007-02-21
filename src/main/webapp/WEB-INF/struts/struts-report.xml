@@ -23,6 +23,20 @@
 			<forward name="projects" path=".ehour.report.criteria.projects" />	
 			<forward name="users" path=".ehour.report.criteria.users" />
 		</action>
+
+		<!-- Report create report-->
+		<action name="ReportCriteriaForm"
+				path="/criteriaSmall">
+			<forward name="success" path=".ehour.report.criteria.small" />
+		</action>		
+
+		
+		<!-- Report create report-->
+		<action name="ReportCriteriaForm"
+				parameter="report"
+				path="/createReport">
+			<forward name="success" path=".ehour.report.showReport" />	
+		</action>		
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

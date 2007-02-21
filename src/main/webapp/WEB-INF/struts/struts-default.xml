@@ -96,24 +96,28 @@
 
 		<!-- User project report -->
 		<action name="ReportCriteriaForm"
+				parameter="consultant"
 				path="/eh/userReport/projectReport"
-				type="net.rrm.ehour.web.userreport.action.UserProjectReportAction" >
+				type="net.rrm.ehour.web.report.action.CreateProjectReportAction" >
 			<forward name="success" path=".ehour.userreport.projectReport" />
 		</action>		
 
 		<!-- User project total hours chart -->
 		<action name="ReportChartForm"
+				parameter="consultant"
 				path="/eh/userReport/projectReportTotalHoursChart"
 				type="net.rrm.ehour.web.userreport.action.ProjectReportTotalHoursChartAction" />
 
 		<!-- User project total hours per customer per week chart -->
 		<action name="ReportChartForm"
+				parameter="consultant"
 				path="/eh/userReport/projectReportPerWeekChart"
 				type="net.rrm.ehour.web.userreport.action.ProjectReportOverviewChartAction" />
 
 
 		<!-- User project total turnover chart -->
 		<action name="ReportChartForm"
+				parameter="consultant"
 				path="/eh/userReport/projectReportTotalTurnoverChart"
 				type="net.rrm.ehour.web.userreport.action.ProjectReportTotalTurnOverChartAction" />
 

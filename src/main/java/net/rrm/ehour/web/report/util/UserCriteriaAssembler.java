@@ -84,6 +84,7 @@ public class UserCriteriaAssembler
 
 		uc.setOnlyActiveCustomers(rcf.isOnlyActiveCustomers());
 		uc.setOnlyActiveProjects(rcf.isOnlyActiveProjects());
+		uc.setOnlyActiveUsers(rcf.isOnlyActiveUsers());
 		
 		return uc;
 	}

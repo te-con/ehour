@@ -1,5 +1,5 @@
 /**
- * Created on Dec 4, 2006
+ * Created on 21-feb-2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,19 +21,21 @@
  *
  */
 
-package net.rrm.ehour.domain;
+package net.rrm.ehour.report.service;
 
-import java.io.Serializable;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 
 /**
- * Domain Object
+ * 
  **/
 
-public abstract class DomainObject <PK extends Serializable> implements Serializable
+public interface ReportCriteriaService
 {
 	/**
-	 * Get primary key
+	 * Sync the criteria 
+	 * @param bookedOnly to list only criteria which have entries booked
+	 * @param updateType see ReportCriteria.UPDATE_ constants 
 	 * @return
 	 */
-	public abstract PK getPK();
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, int updateType);
 }

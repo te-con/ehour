@@ -25,15 +25,14 @@ package net.rrm.ehour.web.report.form;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.rrm.ehour.web.form.UserIdForm;
-
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
  **/
 
-public class ReportCriteriaForm extends UserIdForm
+public class ReportCriteriaForm extends ActionForm
 {
 	private static final long serialVersionUID = -208431579864236722L;
 	private	boolean	fromForm;

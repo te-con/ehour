@@ -33,7 +33,7 @@ import net.rrm.ehour.domain.DomainObject;
  * TODO 
  **/
 
-public class TimesheetComment extends DomainObject
+public class TimesheetComment extends DomainObject<TimesheetCommentId>
 {
 	/**
 	 * 
@@ -108,5 +108,11 @@ public class TimesheetComment extends DomainObject
 	public int hashCode()
 	{
 		return new HashCodeBuilder().append(getCommentId()).append(getComment()).toHashCode();
+	}
+
+	@Override
+	public TimesheetCommentId getPK()
+	{
+		return commentId;
 	}	
 }

@@ -8,7 +8,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Customer extends DomainObject implements Comparable<Customer>
+public class Customer extends DomainObject<Integer> implements Comparable<Customer>
 {
 
 	// Fields
@@ -170,6 +170,12 @@ public class Customer extends DomainObject implements Comparable<Customer>
 	public int hashCode()
 	{
 		return new HashCodeBuilder().append(getCustomerId()).toHashCode();
+	}
+
+	@Override
+	public Integer getPK()
+	{
+		return customerId;
 	}	
 
 }

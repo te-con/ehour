@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.userreport.action;
+package net.rrm.ehour.web.report.action;
 
 import java.util.Date;
 
@@ -32,11 +32,13 @@ import javax.servlet.http.HttpSession;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.project.ProjectReport;
+import net.rrm.ehour.report.project.AssignmentReport;
 import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
 import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
+import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
@@ -48,7 +50,7 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class UserProjectReportAction extends Action
+public class CreateProjectReportAction extends Action
 {
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
@@ -63,22 +65,39 @@ public class UserProjectReportAction extends Action
 			throws Exception
 	{
 		ReportCriteriaForm	rcForm = (ReportCriteriaForm)form;
-		Integer				userId;
 		UserCriteria		uc;
-		ProjectReport		report;
+		AssignmentReport		report;
 		String				sessionKey;
 		HttpSession			session = request.getSession();
+		String				param;
+		User				loggedInUser;
+		
+		param = mapping.getParameter();
 		
 		uc = UserCriteriaAssembler.getUserCriteria(rcForm);
 		
-		// sanity check to prevent abuse
-		userId = AuthUtil.getUserId(rcForm);
-//		uc = reportCriteria.getUserCriteria();
-		uc.setUserIds(new Integer[]{userId});
-		uc.setUserActivityFilter(UserCriteria.USER_SINGLE);
+		if (param.equals("report") &&
+			AuthUtil.hasRole(WebConstants.ROLE_REPORT))
+		{
+			uc.setSingleUser(false);
+		}
+		else
+		{
+			loggedInUser = AuthUtil.getLoggedInUser();
+			uc.setUserIds(new Integer[]{loggedInUser.getUserId()});	
+			uc.setSingleUser(true);
+			
+			if (!(param.equals("consultant")))
+			{
+				logger.warn(loggedInUser + " tried to access overall reporting without proper privileges !");
+			}
+			
+		}
+		
 		reportCriteria.setUserCriteria(uc);
 		
-		report = reportService.createProjectReport(reportCriteria);
+		report = reportService.createAssignmentReport(reportCriteria);
+		
 		sessionKey = generateSessionKey();
 		session.setAttribute(sessionKey, report);
 		request.setAttribute("report", report);

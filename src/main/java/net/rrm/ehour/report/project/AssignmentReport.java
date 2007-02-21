@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * TODO 
  **/
 
-public class ProjectReport
+public class AssignmentReport
 {
 	/**
 	 * 

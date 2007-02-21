@@ -6,7 +6,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class TimesheetEntry extends DomainObject implements Comparable<TimesheetEntry>
+public class TimesheetEntry extends DomainObject<TimesheetEntryId> implements Comparable<TimesheetEntry>
 {
 
 	/**
@@ -81,5 +81,11 @@ public class TimesheetEntry extends DomainObject implements Comparable<Timesheet
 	public int compareTo(TimesheetEntry o)
 	{
 		return this.getEntryId().getEntryDate().compareTo(o.getEntryId().getEntryDate());
+	}
+
+	@Override
+	public TimesheetEntryId getPK()
+	{
+		return entryId;
 	}
 }

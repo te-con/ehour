@@ -4,6 +4,7 @@ public class WebConstants
 {
 	public final static String	ROLE_CONSULTANT = "ROLE_CONSULTANT";
 	public final static String	ROLE_ADMIN = "ROLE_ADMIN";
+	public final static String	ROLE_REPORT = "ROLE_REPORT";
 	
 	public final static String	SESSION_KEY_USER = "eHourUser";
 

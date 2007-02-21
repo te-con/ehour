@@ -1,6 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/css;" %>
 
+.CriteriaLabel
+{
+	text-align: left;
+	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0 0 0 11px;
+	padding: 0;
+}
+
 .ReportCriteriaTableTable 
 {
 	margin: -0.5em 1em 0 0.5em;

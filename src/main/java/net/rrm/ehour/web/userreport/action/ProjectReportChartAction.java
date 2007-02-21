@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.rrm.ehour.report.project.ProjectReport;
+import net.rrm.ehour.report.project.AssignmentReport;
 import net.rrm.ehour.web.report.form.ReportChartForm;
 import net.rrm.ehour.web.report.util.ChartUtil;
 
@@ -55,7 +55,7 @@ public abstract class ProjectReportChartAction extends Action
 	{
 		String			sessionKey;
 		HttpSession		session;
-		ProjectReport	report;
+		AssignmentReport	report;
 		JFreeChart		chart;
 		ReportChartForm	chartForm = (ReportChartForm)form;
 		int				chartWidth;
@@ -73,7 +73,7 @@ public abstract class ProjectReportChartAction extends Action
 		// TODO find out how sessionKey can be null ?
 		if (sessionKey != null)
 		{
-			report = (ProjectReport)session.getAttribute(sessionKey);
+			report = (AssignmentReport)session.getAttribute(sessionKey);
 			
 			if (report != null)
 			{
@@ -100,6 +100,6 @@ public abstract class ProjectReportChartAction extends Action
 	 * @param report
 	 * @return
 	 */
-	protected abstract JFreeChart getChart(ProjectReport report);
+	protected abstract JFreeChart getChart(AssignmentReport report);
 
 }

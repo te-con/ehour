@@ -26,7 +26,7 @@ package net.rrm.ehour.web.userreport.action;
 import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.report.project.ProjectReport;
+import net.rrm.ehour.report.project.AssignmentReport;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -43,7 +43,7 @@ public class ProjectReportTotalHoursChartAction extends ProjectReportChartAction
 	 * @param report
 	 * @return
 	 */
-	protected JFreeChart getChart(ProjectReport report)
+	protected JFreeChart getChart(AssignmentReport report)
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		

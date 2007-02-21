@@ -24,7 +24,7 @@
     <definition name=".ehour.report.criteria.projects" path="/WEB-INF/jsp/report/criteriaProjectList.jsp" />
     <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteriaUserList.jsp" />        
 
-	<!-- Report criteria users filter -->    
-    <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteriaUserList.jsp" />	    
+	<!-- Report criteria small version-->    
+    <definition name=".ehour.report.criteria.small" path="/WEB-INF/jsp/report/criteriaSmall.jsp" />	    
 	
 </tiles-definitions>

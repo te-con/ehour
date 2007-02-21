@@ -33,19 +33,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class UserCriteria
 {
-	public final static int	USER_ACTIVE = 1;
-	public final static int	USER_ALL = 2;
-	public final static int	USER_SINGLE = 3;
-	
 	private DateRange	reportRange;
 	private	boolean		onlyActiveProjects = true;
 	private	boolean		onlyActiveCustomers = true;
+	private	boolean		onlyActiveUsers = true;
 	private	int			userActivityFilter;
 	private	String		userFilter;
 	private	Integer[]	userIds;
 	private	Integer[]	projectIds;
 	private	Integer[]	customerIds;
 	private	Integer[]	departmentIds;
+
 	private	boolean		singleUser;
 
 	/**
@@ -56,7 +54,7 @@ public class UserCriteria
 	{
 		onlyActiveProjects = true;
 		onlyActiveCustomers = true;
-		userActivityFilter = USER_ACTIVE;
+		onlyActiveUsers = true;
 	}
 	
 	/**
@@ -318,14 +316,26 @@ public class UserCriteria
 	{
 		this.userFilter = userFilter;
 	}
-	
-	public boolean isOnlyActiveUsers()
-	{
-		return userActivityFilter == UserCriteria.USER_ACTIVE;
-	}
+
 	
 	public boolean isEmptyUserFilter()
 	{
 		return userFilter == null || userFilter.trim().length() == 0;
+	}
+
+	/**
+	 * @return the onlyActiveUsers
+	 */
+	public boolean isOnlyActiveUsers()
+	{
+		return onlyActiveUsers;
+	}
+
+	/**
+	 * @param onlyActiveUsers the onlyActiveUsers to set
+	 */
+	public void setOnlyActiveUsers(boolean onlyActiveUsers)
+	{
+		this.onlyActiveUsers = onlyActiveUsers;
 	}
 }

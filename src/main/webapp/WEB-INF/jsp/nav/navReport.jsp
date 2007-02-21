@@ -11,6 +11,7 @@
 		<ul>
 			<li>Export to Excel
 			<li>Export to PDF
+			<li>Save report for future reuse
 		</ul>
 	</div>
 	<div class="GreyNavFrameFooter">

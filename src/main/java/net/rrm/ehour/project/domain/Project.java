@@ -8,7 +8,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.domain.DomainObject;
 
-public class Project extends DomainObject implements Comparable<Project>
+public class Project extends DomainObject<Integer> implements Comparable<Project>
 {
 
 	// Fields    
@@ -57,6 +57,14 @@ public class Project extends DomainObject implements Comparable<Project>
 		}
 			
 	}	
+	
+	/**
+	 * Get primary key
+	 */
+	public Integer getPK()
+	{
+		return projectId;
+	}
 	
 	// Property accessors
 	public Integer getProjectId()

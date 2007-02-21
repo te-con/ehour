@@ -1,5 +1,5 @@
 /**
- * Created on 26-jan-2007
+ * Created on 21-feb-2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,18 +21,15 @@
  *
  */
 
-package net.rrm.ehour.web.userreport.action;
+package net.rrm.ehour.web.report.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
 import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
-import net.rrm.ehour.web.util.AuthUtil;
 
-import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -41,10 +38,8 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class UserReportCriteriaAction extends Action
+public class ShowReportCriteriaAction
 {
-	private ReportCriteria reportCriteria;
-
 	/**
 	 * 
 	 */
@@ -52,30 +47,13 @@ public class UserReportCriteriaAction extends Action
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception
 	{
-		ReportCriteriaForm	rcForm = (ReportCriteriaForm)form;
-		Integer				userId;
+		ReportCriteriaForm 	criteriaForm = (ReportCriteriaForm)form;
 		UserCriteria		uc;
-
-		userId = AuthUtil.getLoggedInUser().getUserId();
 		
-		uc = UserCriteriaAssembler.getUserCriteria(rcForm);
-		uc.setUserIds(new Integer[]{userId});
-		uc.setSingleUser(true);
+		uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
 		
-		reportCriteria.setUserCriteria(uc);
-		reportCriteria.updateAvailableCriteria();
+		request.setAttribute("criteria", uc);
 		
-		request.setAttribute("criteria", reportCriteria);
-
 		return mapping.findForward("success");
-	}
-
-	/**
-	 * @param availReportCriteria
-	 *            the availReportCriteria to set
-	 */
-	public void setReportCriteria(ReportCriteria reportCriteria)
-	{
-		this.reportCriteria = reportCriteria;
 	}
 }

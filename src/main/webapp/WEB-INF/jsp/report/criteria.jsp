@@ -17,14 +17,14 @@
 	var contextRoot = "<c:url value="/eh/report" />";
 </script>
 
-<div class="ContentFrame">
-	<h1><fmt:message key="report.criteria.header" /></h1>
+<div dojoType="TitlePane" id="criteriaPane" label="<fmt:message key="report.criteria.header" />" labelNodeClass="CriteriaLabel" containerNodeClass="ContentFrame">
+
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>
 		
 		<div class="GreyFrameBody">
 		
-			<form method="post" action="report.do" id="criteriaForm">
+			<form method="post" id="criteriaForm">
 			<input type="hidden" name="fromForm" value="yes">
 			<input type="hidden" name="updateType" value="0">			
 
@@ -156,7 +156,7 @@
 					
 					<table class="ReportCriteriaTableTable">
 						<tr>
-							<td><select multiple="multiple" name="departmentId" id="departmentId" size="4" class="textInputSmall" style="width: 100%">
+							<td><select multiple="multiple" name="departmentId" id="departmentId" size="4" class="textInputSmall" sdtyle="width: 100%">
 									<option value="-1"
 										<c:if test="${criteria.userCriteria.emptyDepartments}">
 											SELECTED

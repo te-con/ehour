@@ -1,5 +1,5 @@
 /**
- * Created on Dec 4, 2006
+ * Created on 21-feb-2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,19 +21,36 @@
  *
  */
 
-package net.rrm.ehour.domain;
+package net.rrm.ehour.report.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import net.rrm.ehour.domain.DomainObject;
 
 /**
- * Domain Object
+ * TODO 
  **/
 
-public abstract class DomainObject <PK extends Serializable> implements Serializable
+public class ReportUtil
 {
 	/**
-	 * Get primary key
+	 * Convert list of projects to id
+	 * TODO: this broken
+	 * @param projects
 	 * @return
 	 */
-	public abstract PK getPK();
+	public static<PK extends Serializable, DO extends DomainObject<Serializable>> PK[] getPKsFromDomainObjects(List<DO> domainObjects)
+	{
+		List pks = new ArrayList();
+		
+		for (DO domainObject : domainObjects)
+		{
+			pks.add(domainObject.getPK());
+		}
+		
+		return (PK[])pks.toArray();
+	}
 }

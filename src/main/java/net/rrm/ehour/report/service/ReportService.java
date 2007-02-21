@@ -29,7 +29,7 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.project.ProjectReport;
+import net.rrm.ehour.report.project.AssignmentReport;
 import net.rrm.ehour.report.project.WeeklyProjectAssignmentAggregate;
 
 
@@ -60,22 +60,13 @@ public interface ReportService
 
 	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
 	
-	
 	/**
-	 * Sync the user 
-	 * @param bookedOnly to list only criteria which have entries booked
-	 * @param updateType see ReportCriteria.UPDATE_ constants 
-	 * @return
-	 */
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, int updateType);
-	
-	/**
-	 * Get project report
+	 * Get project report for reporting role
 	 * @param criteria
 	 * @return
 	 */
-	public ProjectReport createProjectReport(ReportCriteria criteria);
-	
+	public AssignmentReport createAssignmentReport(ReportCriteria criteria);
+
 	/**
 	 * Get weekly project report
 	 * @param criteria

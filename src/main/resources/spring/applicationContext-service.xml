@@ -52,6 +52,17 @@
 	<!-- Report service -->
 	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl" />
 
+	<!-- Report criteria service -->
+	<bean id="reportCriteriaService" class="net.rrm.ehour.report.service.ReportCriteriaServiceImpl">
+		<property name="userDAO" ref="userDAO" />	
+		<property name="userDepartmentDAO" ref="userDepartmentDAO" />	
+		<property name="customerDAO" ref="customerDAO" />	
+		<property name="projectDAO" ref="projectDAO" />	
+		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />			
+		<property name="reportDAO" ref="reportDAO" />	
+	</bean>
+
+
 	<!-- Timesheet service -->
 	<bean id="timesheetService" class="net.rrm.ehour.timesheet.service.TimesheetServiceImpl" />
 
@@ -61,12 +72,13 @@
 	<!-- Customer service -->
 	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl" />
 
-	<!-- Avai -->
+	<!-- Report Criteria -->
 	<bean id="reportCriteria"
 			class="net.rrm.ehour.report.criteria.ReportCriteria"
 			scope="session"
 			init-method="initialize">
-		<aop:scoped-proxy/>			
+		<aop:scoped-proxy/>
+		<property name="reportCriteriaService" ref="reportCriteriaService" />
 	</bean>
 	
 </beans>

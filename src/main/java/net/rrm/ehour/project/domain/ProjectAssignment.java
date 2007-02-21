@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class ProjectAssignment extends DomainObject
+public class ProjectAssignment extends DomainObject<Integer>
 {
 
 	// Fields    
@@ -248,5 +248,11 @@ public class ProjectAssignment extends DomainObject
 	public void setActive(boolean active)
 	{
 		this.active = active;
+	}
+
+	@Override
+	public Integer getPK()
+	{
+		return assignmentId;
 	}
 }

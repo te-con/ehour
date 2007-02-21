@@ -30,11 +30,10 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
 
@@ -52,7 +51,7 @@ public class ReportCriteria
 	private	Logger				logger = Logger.getLogger(this.getClass());
 	private	AvailableCriteria	availableCriteria;
 	private	UserCriteria		userCriteria;
-	private	ReportService		reportService;
+	private	ReportCriteriaService	reportCriteriaService;
 	
 	/**
 	 * To avoid NPE's
@@ -122,7 +121,7 @@ public class ReportCriteria
 	 */
 	public void updateAvailableCriteria(int updateType)
 	{
-		reportService.syncUserReportCriteria(this, updateType);
+		reportCriteriaService.syncUserReportCriteria(this, updateType);
 		
 		checkIfUserCriteriaAreAvailable();
 	}	
@@ -205,11 +204,11 @@ public class ReportCriteria
 	}
 
 	/**
-	 * @param reportService the reportService to set
+	 * @param reportCriteriaService the reportCriteriaService to set
 	 */
-	public void setReportService(ReportService reportService)
+	public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
 	{
-		this.reportService = reportService;
+		this.reportCriteriaService = reportCriteriaService;
 	}
 
 	/**

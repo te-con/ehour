@@ -11,7 +11,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * @author  Thies
  */
-public class User  extends DomainObject implements Comparable
+public class User  extends DomainObject<Integer> implements Comparable
 {
 
 	// Fields    
@@ -273,5 +273,11 @@ public class User  extends DomainObject implements Comparable
 				.append(this.username)
 				.append(this.userId)
 				.toHashCode();
+	}
+
+	@Override
+	public Integer getPK()
+	{
+		return userId;
 	}
 }

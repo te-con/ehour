@@ -37,7 +37,7 @@
 		<property name="reportCriteria" ref="reportCriteria" />
 	</bean>
 
-	<bean name="/eh/userReport/projectReport" class="net.rrm.ehour.web.userreport.action.UserProjectReportAction">	
+	<bean name="/eh/userReport/projectReport" class="net.rrm.ehour.web.report.action.CreateProjectReportAction">	
 		<property name="reportCriteria" ref="reportCriteria" />
 		<property name="reportService" ref="reportService" />
 		<property name="config" ref="ehourConfig" />

@@ -38,8 +38,38 @@ import org.apache.log4j.Logger;
 
 public class AuthUtil
 {
-	public static transient Logger logger = Logger.getLogger(AuthUtil.class);
+	public final static transient Logger logger = Logger.getLogger(AuthUtil.class);
 
+	/**
+	 * Check whether the logged in user has the role 
+	 * @param role
+	 * @return
+	 */
+
+	public static boolean hasRole(String role)
+	{
+		Authentication		authUser;
+		
+		authUser = SecurityContextHolder.getContext().getAuthentication();
+		
+		return hasRole(role, authUser.getAuthorities());
+	}
+
+	/**
+	 * Get the logged in user
+	 * @return
+	 */
+	public static User getLoggedInUser()
+	{
+		Authentication		authUser;
+		User				user;
+		
+		authUser = SecurityContextHolder.getContext().getAuthentication();
+		user = ((AuthUser)authUser.getPrincipal()).getUser();
+		
+		return user;
+	}
+	
 	/**
 	 * Check whether a role is in the array of roles 
 	 * @param role
@@ -74,12 +104,24 @@ public class AuthUtil
 	 */
 	public static Integer getUserId(UserIdForm form)
 	{
+		return getUserId(form, WebConstants.ROLE_ADMIN);		
+	}
+	
+	/**
+	 * Get the user Id either from the supplied form if the authenticated user is authorized to
+	 * operate on other users or return the user Id from the logged in user
+	 * @param form
+	 * @param allowedRole
+	 * @return
+	 */	
+	public static Integer getUserId(UserIdForm form, String allowedRole)
+	{
 		Integer				userId;
 		Authentication		authUser;
 		User				user;
 		
 		authUser = SecurityContextHolder.getContext().getAuthentication();
-		user = ((AuthUser)authUser.getPrincipal()).getUser();
+		user = AuthUtil.getLoggedInUser();
 		
 		if (form.getUserId() == null)
 		{
@@ -87,7 +129,7 @@ public class AuthUtil
 		}
 		else
 		{
-			if (AuthUtil.hasRole(WebConstants.ROLE_ADMIN, authUser.getAuthorities()))	
+			if (AuthUtil.hasRole(allowedRole, authUser.getAuthorities()))	
 			{
 				userId = form.getUserId();	
 			}
@@ -95,7 +137,7 @@ public class AuthUtil
 			{
 				if (!user.getUserId().equals(form.getUserId()))
 				{
-					logger.warn("User " + user.getUsername() + " tried to access someone else's data without appropiate rights");
+					logger.warn("User " + user.getUsername() + " tried to access someone else's data without " + allowedRole + " rights");
 				}
 				
 				userId = user.getUserId();
@@ -103,5 +145,5 @@ public class AuthUtil
 		}
 		
 		return userId;		
-	}
+	}	
 }

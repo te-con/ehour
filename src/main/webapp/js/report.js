@@ -1,3 +1,8 @@
+// if true then submit to report, if false update criteria 
+var clickIsSubmit = true;
+
+dojo.require("dojo.widget.TitlePane");
+
 // initialized
 function init()
 {
@@ -115,8 +120,52 @@ function updateCriteria(updateType)
 		userFilterInput.value = "";
 	}
 	
+	clickIsSubmit = false;
+	
 	criteriaForm.action = contextRoot + '/updateCriteria.do';
 	
 	dojo.byId('criteriaSubmit').click();
-
 }
+
+// change form's action according to event
+function changeFormAction()
+{
+	var criteriaForm = dojo.byId('criteriaForm');
+	
+	alert(contextRoot);
+	if (clickIsSubmit)
+	{
+		criteriaForm.action = contextRoot + '/createReport.do';
+	}
+	else
+	{
+		criteriaForm.action = contextRoot + '/updateCriteria.do';
+	}
+	
+	// reset to default value
+	clickIsSubmit = true;
+
+	return true;
+}
+
+	
+// extend FormBind onSubmit to change the form's action
+dojo.lang.extend(dojo.io.FormBind, {onSubmit: function(/*DOMNode*/form)
+									{
+										return changeFormAction();
+									}});
+									
+dojo.lang.extend(dojo.widget.TitlePane,
+						{	onLabelClick: function() {
+		// summary: callback when label is clicked
+		if (this.open) {
+			dojo.lfx.wipeOut(this.containerNode, 250).play();
+			this.open=false;
+		} else {
+			dojo.lfx.wipeIn(this.containerNode, 250).play();
+			this.open=true;
+		}
+	}});
+				
+
+									
