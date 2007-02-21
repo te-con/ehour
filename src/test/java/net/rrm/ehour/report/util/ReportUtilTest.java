@@ -1,5 +1,5 @@
 /**
- * Created on 21-feb-2007
+ * Created on Feb 21, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -23,33 +23,36 @@
 
 package net.rrm.ehour.report.util;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.domain.DomainObject;
+import junit.framework.TestCase;
+import net.rrm.ehour.project.domain.Project;
 
 /**
  * TODO 
  **/
 
-public class ReportUtil
+public class ReportUtilTest extends TestCase
 {
-	/**
-	 * Convert list of projects to id
-	 * TODO: this broken
-	 * @param projects
-	 * @return
-	 */
-	public static<PK extends Serializable> List<PK> getPKsFromDomainObjects(List<? extends DomainObject> domainObjects)
+
+	protected void setUp() throws Exception
 	{
-		List<PK> pks = new ArrayList<PK>();
-		
-		for (DomainObject<PK> domainObject : domainObjects)
-		{
-			pks.add(domainObject.getPK());
-		}
-		
-		return pks;
+		super.setUp();
 	}
+
+	public void testGetPKsFromDomainObjects()
+	{
+		List<Project>	projectIds = new ArrayList<Project>();
+		
+		projectIds.add(new Project(1));
+		projectIds.add(new Project(2));
+		projectIds.add(new Project(3));
+		projectIds.add(new Project(4));
+		
+		List<Integer> ints = ReportUtil.getPKsFromDomainObjects(projectIds);
+		
+		assertEquals(4, ints.size());
+	}
+
 }

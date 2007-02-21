@@ -1,6 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/css;" %>
-
+.dojoTabPaneWrapper {
+  padding : 10px 10px 10px 10px;
+}
 .CriteriaLabel
 {
 	text-align: left;

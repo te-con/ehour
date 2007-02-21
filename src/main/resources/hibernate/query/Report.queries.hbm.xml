@@ -12,19 +12,19 @@
         ]]></query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUserIds">
-         <![CDATA[SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
-                FROM TimesheetEntry entry
-                WHERE entry.entryId.projectAssignment.user.userId IN (:userIds)
-                GROUP BY entry.entryId.projectAssignment.assignmentId
-        ]]></query>
+        SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+        FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.user.userId IN (:userIds)
+        GROUP BY entry.entryId.projectAssignment.assignmentId
+	</query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUserIdsAndProjectIds">
-         <![CDATA[SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
-                FROM TimesheetEntry entry
-                WHERE entry.entryId.projectAssignment.user.userId IN (:userIds) AND
-                	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
-                GROUP BY entry.entryId.projectAssignment.assignmentId
-        ]]></query>
+		SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+        FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.user.userId IN (:userIds) AND
+        	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
+        GROUP BY entry.entryId.projectAssignment.assignmentId
+	</query>
 
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForUserIdsAndProjectIds">
          <![CDATA[SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
@@ -36,6 +36,26 @@
                 GROUP BY entry.entryId.projectAssignment.assignmentId
         ]]></query>
         
+    <query name="Report.getCumulatedHoursPerAssignment">
+        <![CDATA[
+        SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+        FROM TimesheetEntry entry
+        WHERE entry.entryId.entryDate >= :dateStart AND
+              entry.entryId.entryDate <= :dateEnd 
+        GROUP BY entry.entryId.projectAssignment.assignmentId
+        ]]>
+	</query>        
+        
+    <query name="Report.getCumulatedHoursPerAssignmentOnDateForProjectIds">
+         <![CDATA[SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+                FROM TimesheetEntry entry
+                WHERE entry.entryId.entryDate >= :dateStart AND
+                      entry.entryId.entryDate <= :dateEnd AND
+                	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
+                GROUP BY entry.entryId.projectAssignment.assignmentId
+        ]]></query>
+                
+        
     <query name="Report.getMinMaxTimesheetEntryDate">
         SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
 		FROM TimesheetEntry entry
@@ -45,9 +65,6 @@
         SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
 		FROM TimesheetEntry entry
         WHERE entry.entryId.projectAssignment.user.userId = :userId
-	</query> 	
-	<query name="Report.getAvailReportCriteria">
-	   	SELECT new net.rrm.ehour.user.domain.User(user.userId, user.firstName, user.lastName)
-	   	FROM User user
-	</query>
+	</query> 
+
 </hibernate-mapping>

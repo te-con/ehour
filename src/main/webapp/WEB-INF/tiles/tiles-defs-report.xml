@@ -14,17 +14,20 @@
     <!-- Report index -->
     <definition name=".ehour.report.index" extends=".ehour.report.baseLayout">
         <put name="content" value="/WEB-INF/jsp/report/reportLayout.jsp" />
-        <put name="criteriaTile" value="/WEB-INF/jsp/report/criteria.jsp" />
-        <put name="reportTile" value="/WEB-INF/jsp/report/report.jsp" />
+        <put name="criteriaTile" value="/WEB-INF/jsp/report/criteria/criteria.jsp" />
+        <put name="reportTile" value="/WEB-INF/jsp/nav/nothing.html" />
     </definition>
 
 	<!-- Report criteria update -->
-    <definition name=".ehour.report.criteria.all" path="/WEB-INF/jsp/report/criteria.jsp" />	
-    <definition name=".ehour.report.criteria.customers" path="/WEB-INF/jsp/report/criteriaCustomerList.jsp" />    
-    <definition name=".ehour.report.criteria.projects" path="/WEB-INF/jsp/report/criteriaProjectList.jsp" />
-    <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteriaUserList.jsp" />        
+    <definition name=".ehour.report.criteria.all" path="/WEB-INF/jsp/report/criteria/criteria.jsp" />	
+    <definition name=".ehour.report.criteria.customers" path="/WEB-INF/jsp/report/criteria/criteriaCustomerList.jsp" />    
+    <definition name=".ehour.report.criteria.projects" path="/WEB-INF/jsp/report/criteria/criteriaProjectList.jsp" />
+    <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteria/criteriaUserList.jsp" />        
 
-	<!-- Report criteria small version-->    
+	<!-- Report criteria small version-->
     <definition name=".ehour.report.criteria.small" path="/WEB-INF/jsp/report/criteriaSmall.jsp" />	    
+
+	<!-- Report criteria aggregate report-->    
+    <definition name=".ehour.report.showReport" path="/WEB-INF/jsp/report/aggregateReports.jsp" />	        
 	
 </tiles-definitions>

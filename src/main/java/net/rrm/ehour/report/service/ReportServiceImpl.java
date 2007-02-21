@@ -38,6 +38,8 @@ import net.rrm.ehour.report.project.AssignmentReport;
 import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.project.WeeklyProjectAssignmentAggregate;
 import net.rrm.ehour.report.util.ReportUtil;
+import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
@@ -51,11 +53,12 @@ import org.apache.log4j.Logger;
 
 public class ReportServiceImpl implements ReportService
 {
-	private	ReportDAO				reportDAO;
-	private	ReportPerMonthDAO		reportPerMonthDAO;
-	private	ProjectDAO				projectDAO;
+	private	ReportDAO			reportDAO;
+	private	ReportPerMonthDAO	reportPerMonthDAO;
+	private	ProjectDAO			projectDAO;
+	private	UserDAO				userDAO;
 
-	private	Logger					logger = Logger.getLogger(this.getClass());
+	private	Logger				logger = Logger.getLogger(this.getClass());
 	
 	/**
 	 * Get the booked hours per project assignment for a month
@@ -98,21 +101,40 @@ public class ReportServiceImpl implements ReportService
 		AssignmentReport					assignmentReport = new AssignmentReport();
 		List<ProjectAssignmentAggregate>	aggregates;
 		UserCriteria						userCriteria;
+		Integer[]							projectIds;
+		Integer[]							userIds;
+		boolean								ignoreUsers;
+		boolean								ignoreProjects;
+		DateRange							reportRange;
 		
 		userCriteria = reportCriteria.getUserCriteria();
 		
 		logger.debug("Creating assignment report for " + userCriteria);
 	
-		if (userCriteria.getProjectIds() == null)
+		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
+		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
+		reportRange = reportCriteria.getReportRange();
+		
+		if (ignoreProjects && ignoreUsers)
 		{
-			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userCriteria.getUserIds(),
-																			reportCriteria.getReportRange());
+			logger.debug("creating full report");
+			aggregates = reportDAO.getCumulatedHoursPerAssignment(reportRange);
 		}
+		else if (ignoreProjects && !ignoreUsers)
+		{
+			userIds = getUserIds(userCriteria);
+			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userIds, reportRange);
+		}
+		else if (!ignoreProjects && ignoreUsers)
+		{
+			projectIds = getProjectIds(userCriteria);
+			aggregates = reportDAO.getCumulatedHoursPerAssignmentForProjects(projectIds, reportRange);
+	}
 		else
 		{
-			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userCriteria.getUserIds(),
-					userCriteria.getProjectIds(),
-					reportCriteria.getReportRange());
+			userIds = getUserIds(userCriteria);
+			projectIds = getProjectIds(userCriteria);
+			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userIds, projectIds, reportRange);
 		}
 		
 		assignmentReport.setReportCriteria(reportCriteria);
@@ -131,14 +153,16 @@ public class ReportServiceImpl implements ReportService
 		Integer[]		projectIds;
 		List<Project>	projects;
 		
+		
 		// No projects selected by the user, use any given customer limitation 
 		if (userCriteria.isEmptyProjects())
 		{
-			if (!userCriteria.isEmptyProjects())
+			if (!userCriteria.isEmptyCustomers())
 			{
-				logger.debug("No customers or projects selected");
-				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(), userCriteria.isOnlyActiveProjects());
-				projectIds = ReportUtil.getProjectIds(projects);
+				logger.debug("Using customers to determine projects");
+				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(),
+																userCriteria.isOnlyActiveProjects());
+				projectIds = (Integer[])ReportUtil.getPKsFromDomainObjects(projects).toArray();
 			}
 			else
 			{
@@ -153,6 +177,41 @@ public class ReportServiceImpl implements ReportService
 		}
 		
 		return projectIds;
+	}
+	
+	/**
+	 * Get user id's based on selected departments
+	 * @param userCriteria
+	 * @return
+	 */
+	private Integer[] getUserIds(UserCriteria userCriteria)
+	{
+		Integer[]	userIds;
+		List<User>	users;
+		
+		if (userCriteria.isEmptyUsers())
+		{
+			if (!userCriteria.isEmptyDepartments())
+			{
+				logger.debug("Using departments to determine users");
+				users = userDAO.findUsersForDepartments(null,
+														userCriteria.getDepartmentIds(),
+														userCriteria.isOnlyActiveUsers());
+				userIds = (Integer[])ReportUtil.getPKsFromDomainObjects(users).toArray();
+			}
+			else
+			{
+				logger.debug("No departments or users selected");
+				userIds = null;
+			}
+		}
+		else
+		{
+			logger.debug("Using user provided users");
+			userIds = userCriteria.getUserIds();
+		}
+		
+		return userIds;
 	}
 	
 	/**

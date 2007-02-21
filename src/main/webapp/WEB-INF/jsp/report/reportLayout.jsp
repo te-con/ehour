@@ -9,12 +9,15 @@
 <script type="text/javascript">
 	dojo.require("dojo.io.*");	
 	dojo.require("dojo.event.*");		
+	dojo.require("dojo.widget.TabContainer");
+	dojo.require("dojo.widget.LinkPane");
+	dojo.require("dojo.widget.ContentPane");
+	dojo.require("dojo.widget.LayoutContainer");
 	
 	var defaultText = "<fmt:message key="report.criteria.filterUsersOn" />";
 </script>
 
 <script src="<c:url value="/js/navCalendarOverview.js" />" type="text/javascript"></script>
-<script src="<c:url value="/js/timesheet.js" />" type="text/javascript"></script>
 
 <div id="criteriaTarget">
 	<tiles:insert page="${criteriaTile}" />
@@ -23,4 +26,3 @@
 <div id="reportTarget">
 	<tiles:insert page="${reportTile}" />
 </div>
-

@@ -140,6 +140,25 @@ public class ReportDAOTest extends BaseDAOTest
 		assertEquals(1, results.size());
 	}
 	
+	public void testGetCumulatedHoursPerAssignment()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2006 - 1900, 10 - 1, 4));
+		
+		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignment(dateRange);
+		
+		assertEquals(3, results.size());
+	}
+	
+	public void getCumulatedHoursPerAssignmentForProjects()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2006 - 1900, 10 - 1, 4));
+		
+		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForProjects(new Integer[]{1}, dateRange);
+		
+		assertEquals(2, results.size());
+	}
 
 
 }

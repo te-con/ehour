@@ -1,7 +1,6 @@
 // if true then submit to report, if false update criteria 
 var clickIsSubmit = true;
 
-dojo.require("dojo.widget.TitlePane");
 
 // initialized
 function init()
@@ -90,19 +89,19 @@ function criteriaSubmitted(type, xml, evt)
 	}
 }
 
-// update the customers (ReportCriteria.UPDATE_CUSTOMERS)
+// update the customers (1=ReportCriteria.UPDATE_CUSTOMERS)
 function updateCustomers(evt)
 {
 	updateCriteria(1);
 }
 
-// update the projects (ReportCriteria.UPDATE_PROJECTS)
+// update the projects (2=ReportCriteria.UPDATE_PROJECTS)
 function updateProjects(evt)
 {
 	updateCriteria(2);
 }
 
-// update the users (ReportCriteria.UPDATE_USERS)
+// update the users (3=ReportCriteria.UPDATE_USERS)
 function updateUsers(evt)
 {
 	updateCriteria(3);
@@ -132,10 +131,11 @@ function changeFormAction()
 {
 	var criteriaForm = dojo.byId('criteriaForm');
 	
-	alert(contextRoot);
 	if (clickIsSubmit)
 	{
 		criteriaForm.action = contextRoot + '/createReport.do';
+		var criteriaPane = dojo.widget.getWidgetById("criteriaPane");
+		criteriaPane.onLabelClick();
 	}
 	else
 	{
@@ -154,18 +154,7 @@ dojo.lang.extend(dojo.io.FormBind, {onSubmit: function(/*DOMNode*/form)
 									{
 										return changeFormAction();
 									}});
-									
-dojo.lang.extend(dojo.widget.TitlePane,
-						{	onLabelClick: function() {
-		// summary: callback when label is clicked
-		if (this.open) {
-			dojo.lfx.wipeOut(this.containerNode, 250).play();
-			this.open=false;
-		} else {
-			dojo.lfx.wipeIn(this.containerNode, 250).play();
-			this.open=true;
-		}
-	}});
+
 				
 
 									

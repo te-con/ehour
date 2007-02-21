@@ -24,6 +24,7 @@
 package net.rrm.ehour.web.report.action;
 
 import java.util.Date;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +51,7 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class CreateProjectReportAction extends Action
+public class CreateAggregateReportAction extends Action
 {
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
@@ -98,13 +99,38 @@ public class CreateProjectReportAction extends Action
 		
 		report = reportService.createAssignmentReport(reportCriteria);
 		
+		removeOldReports(session);
+		
 		sessionKey = generateSessionKey();
 		session.setAttribute(sessionKey, report);
 		request.setAttribute("report", report);
 		request.setAttribute("reportSessionKey", sessionKey);
 		request.setAttribute("config", config);
 		
+		response.setHeader("Cache-Control", "no-cache");
 		return mapping.findForward("success");
+	}
+	
+	/**
+	 * Remove old reports from the session
+	 * @param session
+	 */
+	private void removeOldReports(HttpSession session)
+	{
+		Enumeration attribs = session.getAttributeNames();
+		String		attrib;
+		
+		while (attribs.hasMoreElements())
+		{
+			attrib = (String)attribs.nextElement();
+			
+			if (attrib.startsWith("report_"))
+			{
+				logger.debug("Removing old report from session: " + attrib);
+				session.removeAttribute(attrib);
+			}
+		}
+		
 	}
 
 	/**

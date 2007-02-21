@@ -31,6 +31,7 @@ import net.rrm.ehour.report.criteria.ReportCriteriaTest;
 import net.rrm.ehour.report.project.ProjectReportTest;
 import net.rrm.ehour.report.service.ReportCriteriaServiceTest;
 import net.rrm.ehour.report.service.ReportServiceTest;
+import net.rrm.ehour.report.util.ReportUtilTest;
 import net.rrm.ehour.timesheet.dto.BookedDayComparatorTest;
 import net.rrm.ehour.timesheet.service.TimesheetServiceTest;
 import net.rrm.ehour.user.service.UserServiceTest;
@@ -65,6 +66,8 @@ public class ServiceTests
 		suite.addTestSuite(ProjectReportTest.class);
 		suite.addTestSuite(ReportCriteriaTest.class);
 		suite.addTestSuite(UserCriteriaAssemblerTest.class);
+		
+		suite.addTestSuite(ReportUtilTest.class);
 		//$JUnit-END$
 		return suite;
 	}
