@@ -29,6 +29,7 @@ import net.rrm.ehour.customer.service.CustomerServiceTest;
 import net.rrm.ehour.project.service.ProjectServiceTest;
 import net.rrm.ehour.report.criteria.ReportCriteriaTest;
 import net.rrm.ehour.report.project.ProjectReportTest;
+import net.rrm.ehour.report.service.ReportCriteriaServiceTest;
 import net.rrm.ehour.report.service.ReportServiceTest;
 import net.rrm.ehour.timesheet.dto.BookedDayComparatorTest;
 import net.rrm.ehour.timesheet.service.TimesheetServiceTest;
@@ -50,6 +51,7 @@ public class ServiceTests
 		suite.addTestSuite(UserServiceTest.class);
 		suite.addTestSuite(TimesheetServiceTest.class);
 		suite.addTestSuite(ReportServiceTest.class);
+		suite.addTestSuite(ReportCriteriaServiceTest.class);
 		suite.addTestSuite(ProjectServiceTest.class);
 		suite.addTestSuite(CustomerServiceTest.class);
 

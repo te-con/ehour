@@ -65,7 +65,7 @@ public class ProjectReportTest extends TestCase
 		pags.add(pag1);
 		pags.add(pag2);
 		
-		ProjectReport report = new ProjectReport();
+		AssignmentReport report = new AssignmentReport();
 		report.initialize(pags);
 		
 		assertEquals(2, report.getReportValues().size());

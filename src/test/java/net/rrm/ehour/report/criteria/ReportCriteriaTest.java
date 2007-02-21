@@ -24,7 +24,6 @@
 package net.rrm.ehour.report.criteria;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
@@ -32,7 +31,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.ReportCriteriaService;
 
 /**
  * TODO 
@@ -40,7 +39,7 @@ import net.rrm.ehour.report.service.ReportService;
 
 public class ReportCriteriaTest extends TestCase
 {
-	ReportService 	reportService;
+	ReportCriteriaService 	reportCriteriaService;
 	ReportCriteria	reportCriteria;
 	
 	protected void setUp() throws Exception
@@ -48,8 +47,8 @@ public class ReportCriteriaTest extends TestCase
 		super.setUp();
 		reportCriteria = new ReportCriteria();
 		
-		reportService = createMock(ReportService.class);
-		reportCriteria.setReportService(reportService);
+		reportCriteriaService = createMock(ReportCriteriaService.class);
+		reportCriteria.setReportCriteriaService(reportCriteriaService);
 	}
 
 
@@ -69,14 +68,14 @@ public class ReportCriteriaTest extends TestCase
 	
 	public void testSetUserCriteria()
 	{
-		expect(reportService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL)).andReturn(reportCriteria);
+		expect(reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL)).andReturn(reportCriteria);
 
-		replay(reportService);
+		replay(reportCriteriaService);
 		
 		reportCriteria.setUserCriteria(new UserCriteria());
 		reportCriteria.updateAvailableCriteria();
 		
-		verify(reportService);
+		verify(reportCriteriaService);
 	}
 
 }

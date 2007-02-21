@@ -64,11 +64,6 @@ public class ReportServiceTest extends TestCase
 	private	ReportService	reportService;
 	
 	private	ReportDAO		reportDAO;
-	private	UserDAO			userDAO;
-	private	ProjectAssignmentDAO	prjAssignmentDAO;
-	private	CustomerDAO		customerDAO;
-	private	ProjectDAO		projectDAO;
-	private UserDepartmentDAO userDepartmentDAO;
 	
 	/**
 	 * 
@@ -79,21 +74,6 @@ public class ReportServiceTest extends TestCase
 
 		reportDAO = createMock(ReportDAO.class);
 		((ReportServiceImpl)reportService).setReportDAO(reportDAO);
-		
-		prjAssignmentDAO = createMock(ProjectAssignmentDAO.class);
-		((ReportServiceImpl)reportService).setProjectAssignmentDAO(prjAssignmentDAO);
-
-		userDAO = createMock(UserDAO.class);
-		((ReportServiceImpl)reportService).setUserDAO(userDAO);
-
-		customerDAO = createMock(CustomerDAO.class);
-		((ReportServiceImpl)reportService).setCustomerDAO(customerDAO);
-
-		projectDAO = createMock(ProjectDAO.class);
-		((ReportServiceImpl)reportService).setProjectDAO(projectDAO);
-
-		userDepartmentDAO = createMock(UserDepartmentDAO.class);
-		((ReportServiceImpl)reportService).setUserDepartmentDAO(userDepartmentDAO);
 	}
 	
 	/**
@@ -119,107 +99,16 @@ public class ReportServiceTest extends TestCase
 		verify();
 	}
 	
-	public void testSyncUserReportCriteriaUserSingle()
-	{
-		ReportCriteria		reportCriteria;
-		UserCriteria		userCriteria;
-		AvailableCriteria	availCriteria;
-		
-		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
-		
-		
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
-		
-		reportCriteria = new ReportCriteria();
-		// bit odd but otherwise unnecc. stuff is called
-		ReportService rsMock = createMock(ReportService.class);
-		reportCriteria.setReportService(rsMock);
-		
-		userCriteria = new UserCriteria();
-		userCriteria.setUserActivityFilter(UserCriteria.USER_SINGLE);
-		userCriteria.setUserIds(new Integer[]{1});
-		reportCriteria.setUserCriteria(userCriteria);
-		
-		availCriteria = new AvailableCriteria();
-		reportCriteria.setAvailableCriteria(availCriteria);
-		
-		prjAssignmentDAO.findProjectAssignmentsForUser(1);
-		expectLastCall().andReturn(prjAsgs);
-
-		reportDAO.getMinMaxDateTimesheetEntry(1);
-		expectLastCall().andReturn(null);
-		
-		replay(prjAssignmentDAO);
-		replay(reportDAO);
-		
-		reportService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL);
-		
-		verify(reportDAO);
-		verify(prjAssignmentDAO);
-		
-		assertEquals(2, availCriteria.getCustomers().size());
-	}
 
 
-	/**
-	 * 
-	 *
-	 */
-	public void testSyncUserReportCriteriaUserAll()
-	{
-		ReportCriteria		reportCriteria;
-		UserCriteria		userCriteria;
-		AvailableCriteria	availCriteria;
-		
-		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
-		
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
-		
-		reportCriteria = new ReportCriteria();
-		// bit odd but otherwise unnecc. stuff is called
-		ReportService rsMock = createMock(ReportService.class);
-		reportCriteria.setReportService(rsMock);
-		
-		userCriteria = new UserCriteria();
-		userCriteria.setUserActivityFilter(UserCriteria.USER_ALL);
-		userCriteria.setOnlyActiveCustomers(true);
-		userCriteria.setOnlyActiveProjects(false);
-		reportCriteria.setUserCriteria(userCriteria);
-		
-		availCriteria = new AvailableCriteria();
-		reportCriteria.setAvailableCriteria(availCriteria);
-		
-		expect(userDAO.findAll()).andReturn(new ArrayList<User>());
-		replay(userDAO);
-		
-		expect(customerDAO.findAll(true)).andReturn(new ArrayList<Customer>());
-		replay(customerDAO);
-		
-		expect(projectDAO.findAll()).andReturn(new ArrayList<Project>());
-		replay(projectDAO);
 
-		expect(userDepartmentDAO.findAll()).andReturn(new ArrayList<UserDepartment>());
-		replay(userDepartmentDAO);
 
-		reportDAO.getMinMaxDateTimesheetEntry();
-		expectLastCall().andReturn(null);
-		replay(reportDAO);
-		
-		reportService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL);
-		
-		verify(reportDAO);
-		verify(projectDAO);
-		verify(customerDAO);
-		verify(userDAO);
-	}
 	
 	public void testCreateProjectReport()
 	{
 		ReportCriteria rc = new ReportCriteria();
-		ReportService rsMock = createMock(ReportService.class);
-		rc.setReportService(rsMock);
+		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
+		rc.setReportCriteriaService(rsMock);
 		Integer[] userID = new Integer[]{1};
 
 		DateRange dr = new DateRange();
@@ -236,7 +125,7 @@ public class ReportServiceTest extends TestCase
 		expect(reportDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
 					.andReturn(pags);
 		replay(reportDAO);
-		reportService.createProjectReport(rc);
+		reportService.createAssignmentReport(rc);
 		verify(reportDAO);
 	}
 }

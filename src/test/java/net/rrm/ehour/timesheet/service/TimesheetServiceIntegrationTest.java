@@ -83,7 +83,7 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 	{
 		ReportCriteria criteria = new ReportCriteria();
 		UserCriteria	uc = new UserCriteria();
-		uc.setUserActivityFilter(UserCriteria.USER_SINGLE);
+		uc.setSingleUser(true);
 		uc.setUserIds(new Integer[]{1});
 		criteria.setUserCriteria(uc);
 		
@@ -91,7 +91,7 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 		ac.setReportRange(new DateRange(new Date(2006 - 1900, 2 - 1, 1), new Date(2008 - 1900, 1, 1)));
 		criteria.setAvailableCriteria(ac);
 		
-		reportService.createProjectReport(criteria);
+		reportService.createAssignmentReport(criteria);
 	}
 	
 	/**
