@@ -12,7 +12,7 @@
 		<property name="reportCriteria" ref="reportCriteria" />
 	</bean>
 
-	<bean name="/eh/report/createReport" class="net.rrm.ehour.web.report.action.CreateAggregateReportAction">
+	<bean name="/eh/report/createReport" class="net.rrm.ehour.web.report.action.CreateReportAction">
 		<property name="reportService" ref="reportService" />
 		<property name="reportCriteria" ref="reportCriteria" />		
 	</bean>

@@ -21,67 +21,27 @@
  *
  */
 
-package net.rrm.ehour.report.project;
+package net.rrm.ehour.web.report.reports;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-
-import org.apache.log4j.Logger;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
- * TODO 
+ * Create a customer report based on the supplied report data
+ * Structure: Customer -> Project -> Aggregate
  **/
 
-public class AssignmentReport
+public class CustomerReport extends AggregateReport<Customer, Project>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6365903846883586472L;
 	
 	private	ReportCriteria	reportCriteria;
-	private	Logger			logger = Logger.getLogger(this.getClass());
-	private	Map<Customer, List<ProjectAssignmentAggregate>>	report;
-	
-	/**
-	 * Initialize the report based on the supplied aggregates
-	 * @param aggregates
-	 */
-	public void initialize(List<ProjectAssignmentAggregate> aggregates)
-	{
-		Customer							customer;
-		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
-		
-		report = new HashMap<Customer, List<ProjectAssignmentAggregate>>();
-		
-		logger.debug("Initializing project report");
-		
-		for (ProjectAssignmentAggregate aggregate : aggregates)
-		{
-			logger.debug("Found aggregate : " + aggregate);
-			customer = aggregate.getProjectAssignment().getProject().getCustomer();
-			
-			if (report.containsKey(customer))
-			{
-				aggregatesPerCustomer = report.get(customer);
-			}
-			else
-			{
-				logger.debug("Adding customer " + customer + " to report");
-				aggregatesPerCustomer = new ArrayList<ProjectAssignmentAggregate>();
-			}
-			
-			aggregatesPerCustomer.add(aggregate);
-			
-			report.put(customer, aggregatesPerCustomer);
-		}
-	}
 
 	/**
 	 * Get total hours for a key
@@ -92,7 +52,7 @@ public class AssignmentReport
 	{
 		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
 		float								totalHours = 0f;
-		aggregatesPerCustomer = report.get(key);
+		aggregatesPerCustomer = reportMap.get(key);
 		
 		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
 		{
@@ -111,7 +71,7 @@ public class AssignmentReport
 	{
 		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
 		float								totalTurnOver = 0f;
-		aggregatesPerCustomer = report.get(key);
+		aggregatesPerCustomer = reportMap.get(key);
 		
 		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
 		{
@@ -130,7 +90,7 @@ public class AssignmentReport
 	 */
 	public Set<Customer> getCustomers()
 	{
-		return report.keySet();
+		return reportMap.keySet();
 	}
 	
 	/**
@@ -139,7 +99,7 @@ public class AssignmentReport
 	 */
 	public Map<Customer, List<ProjectAssignmentAggregate>> getReportValues()
 	{
-		return report;
+		return reportMap;
 	}
 
 	/**
@@ -151,11 +111,29 @@ public class AssignmentReport
 	}
 
 	/**
-	 * @param reportCriteria the reportCriteria to set
+	 * 
 	 */
-	public void setReportCriteria(ReportCriteria reportCriteria)
+	public String getReportName()
 	{
-		this.reportCriteria = reportCriteria;
+		return "customerReport";
+		
 	}
 
+	/**
+	 * Get the project as the child key
+	 */
+	@Override
+	protected Project getChildKey(ProjectAssignmentAggregate aggregate)
+	{
+		return aggregate.getProjectAssignment().getProject();
+	}
+
+	/**
+	 * Get the customer as the root key
+	 */
+	@Override
+	public Customer getRootKey(ProjectAssignmentAggregate aggregate)
+	{
+		return aggregate.getProjectAssignment().getProject().getCustomer();
+	}
 }

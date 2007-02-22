@@ -1,19 +1,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/css;" %>
 
-.criteriaTable
+.userCriteriaTable
 {
 	width: 100%;
 	margin: 0;
 	padding: 0;
 }
 
-.criteriaTable td
+.userCriteriaTable td
 {
 	color:	#536e87;
 }
 
-.criteriaTable input
+.userCriteriaTable input
 {
 	border-style: solid;
 	border-width: 1px;

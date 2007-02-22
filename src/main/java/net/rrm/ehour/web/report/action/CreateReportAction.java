@@ -25,6 +25,7 @@ package net.rrm.ehour.web.report.action;
 
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,10 +34,12 @@ import javax.servlet.http.HttpSession;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.project.AssignmentReport;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
+import net.rrm.ehour.web.report.reports.AggregateReport;
+import net.rrm.ehour.web.report.reports.AggregateReportFactory;
 import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
@@ -51,7 +54,7 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class CreateAggregateReportAction extends Action
+public class CreateReportAction extends Action
 {
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
@@ -67,11 +70,13 @@ public class CreateAggregateReportAction extends Action
 	{
 		ReportCriteriaForm	rcForm = (ReportCriteriaForm)form;
 		UserCriteria		uc;
-		AssignmentReport		report;
+		ReportData				reportData;
 		String				sessionKey;
 		HttpSession			session = request.getSession();
 		String				param;
 		User				loggedInUser;
+		boolean				reportRole = false;
+		
 		
 		param = mapping.getParameter();
 		
@@ -81,6 +86,7 @@ public class CreateAggregateReportAction extends Action
 			AuthUtil.hasRole(WebConstants.ROLE_REPORT))
 		{
 			uc.setSingleUser(false);
+			reportRole = true;
 		}
 		else
 		{
@@ -92,18 +98,18 @@ public class CreateAggregateReportAction extends Action
 			{
 				logger.warn(loggedInUser + " tried to access overall reporting without proper privileges !");
 			}
-			
 		}
 		
 		reportCriteria.setUserCriteria(uc);
 		
-		report = reportService.createAssignmentReport(reportCriteria);
+		reportData = reportService.createReportData(reportCriteria);
+
+		removeOldReportData(session);
 		
-		removeOldReports(session);
+		createAggregateReports(reportRole, request, reportData);
 		
 		sessionKey = generateSessionKey();
-		session.setAttribute(sessionKey, report);
-		request.setAttribute("report", report);
+		session.setAttribute(sessionKey, reportData);
 		request.setAttribute("reportSessionKey", sessionKey);
 		request.setAttribute("config", config);
 		
@@ -112,10 +118,29 @@ public class CreateAggregateReportAction extends Action
 	}
 	
 	/**
+	 * Get aggregate reports and put them on the request
+	 * @param reportRole
+	 * @param request
+	 * @param reportData
+	 */
+	private void createAggregateReports(boolean reportRole, HttpServletRequest request, ReportData reportData)
+	{
+		List<AggregateReport>	aggregateReports;
+		
+		aggregateReports = AggregateReportFactory.createReports(reportRole ? WebConstants.ROLE_REPORT : WebConstants.ROLE_CONSULTANT,
+				reportData);
+		
+		for (AggregateReport report : aggregateReports)
+		{
+			request.setAttribute(report.getReportName(), report);
+		}
+	}
+	
+	/**
 	 * Remove old reports from the session
 	 * @param session
 	 */
-	private void removeOldReports(HttpSession session)
+	private void removeOldReportData(HttpSession session)
 	{
 		Enumeration attribs = session.getAttributeNames();
 		String		attrib;
@@ -126,11 +151,10 @@ public class CreateAggregateReportAction extends Action
 			
 			if (attrib.startsWith("report_"))
 			{
-				logger.debug("Removing old report from session: " + attrib);
+				logger.debug("Removing old report data from session: " + attrib);
 				session.removeAttribute(attrib);
 			}
 		}
-		
 	}
 
 	/**

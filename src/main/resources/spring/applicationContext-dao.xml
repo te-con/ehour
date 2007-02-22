@@ -64,7 +64,7 @@
 	</bean>
 	
 	<!-- Report DAO -->
-	<bean id="reportDAO" class="net.rrm.ehour.report.dao.ReportDAOHibernateImpl">
+	<bean id="reportAggregatedDAO" class="net.rrm.ehour.report.dao.ReportAggregatedDAOHibernateImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 	<!-- User department DAO -->

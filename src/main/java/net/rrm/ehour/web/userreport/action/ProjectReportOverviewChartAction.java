@@ -27,9 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.report.project.AssignmentReport;
-import net.rrm.ehour.report.project.WeeklyProjectAssignmentAggregate;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -43,14 +42,12 @@ import org.jfree.data.time.Week;
 
 public class ProjectReportOverviewChartAction extends ProjectReportChartAction
 {
-	private	ReportService	reportService;
-	
 	/**
 	 * Create chart
-	 * @param report
+	 * @param reportData
 	 * @return
 	 */
-	protected JFreeChart getChart(AssignmentReport report)
+	protected JFreeChart getChart(ReportData reportData)
 	{
 		List<WeeklyProjectAssignmentAggregate>	results;
 		TimeSeries 		timeSeries;
@@ -61,8 +58,7 @@ public class ProjectReportOverviewChartAction extends ProjectReportChartAction
 		
 		seriesMap = new HashMap<Integer, TimeSeries>();
 		
-		
-		results = reportService.createWeeklyProjectReport(report.getReportCriteria());
+		results = reportData.getWeeklyProjectAssignmentAggregates();
 
 		for (WeeklyProjectAssignmentAggregate aggregate : results)
 		{
@@ -94,13 +90,5 @@ public class ProjectReportOverviewChartAction extends ProjectReportChartAction
 				seriesCollection, true, true, true);
 		
 		return chart;
-	}
-
-	/**
-	 * @param reportService the reportService to set
-	 */
-	public void setReportService(ReportService reportService)
-	{
-		this.reportService = reportService;
 	}
 }

@@ -3,7 +3,7 @@ package net.rrm.ehour.timesheet.dto;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
 

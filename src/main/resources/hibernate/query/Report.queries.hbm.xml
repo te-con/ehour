@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForUserIds">
-         <![CDATA[SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
@@ -12,14 +12,14 @@
         ]]></query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUserIds">
-        SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+        SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
         FROM TimesheetEntry entry
         WHERE entry.entryId.projectAssignment.user.userId IN (:userIds)
         GROUP BY entry.entryId.projectAssignment.assignmentId
 	</query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUserIdsAndProjectIds">
-		SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+		SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
         FROM TimesheetEntry entry
         WHERE entry.entryId.projectAssignment.user.userId IN (:userIds) AND
         	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
@@ -27,7 +27,7 @@
 	</query>
 
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForUserIdsAndProjectIds">
-         <![CDATA[SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
@@ -38,7 +38,7 @@
         
     <query name="Report.getCumulatedHoursPerAssignment">
         <![CDATA[
-        SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+        SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
         FROM TimesheetEntry entry
         WHERE entry.entryId.entryDate >= :dateStart AND
               entry.entryId.entryDate <= :dateEnd 
@@ -47,7 +47,7 @@
 	</query>        
         
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForProjectIds">
-         <![CDATA[SELECT new net.rrm.ehour.report.project.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours), SUM(entry.hours) * entry.entryId.projectAssignment.hourlyRate)
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND

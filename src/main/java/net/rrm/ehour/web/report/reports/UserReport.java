@@ -1,5 +1,5 @@
 /**
- * Created on Feb 4, 2007
+ * Created on 22-feb-2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,33 +21,39 @@
  *
  */
 
-package net.rrm.ehour.report.dao;
+package net.rrm.ehour.web.report.reports;
 
 import java.util.List;
+import java.util.Map;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.user.domain.User;
+
+import org.apache.log4j.Logger;
 
 /**
- * TODO 
+ * UserReport
  **/
 
-public interface ReportPerMonthDAO
+public class UserReport extends AggregateReport<User>
 {
-	
+	private	ReportCriteria	reportCriteria;
+	private	Logger			logger = Logger.getLogger(this.getClass());
+	private	Map<User, List<ProjectAssignmentAggregate>>	reportMap;
+
 	/**
-	 * TODO refactor method signatures (perMonth vs Weekly? hmm)
-	 * @param userId
-	 * @param projectId
-	 * @param dateRange
-	 * @return
+	 * Initialize user report
 	 */
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userId, List<Integer> projectId, DateRange dateRange);
-	
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userId, DateRange dateRange);
-	
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignment(DateRange dateRange);
-	
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Integer> projectId, DateRange dateRange);
-	
+	public void initialize(ReportData reportData)
+	{
+		logger.debug("Initializing user report");
+		
+	}
+
+	public String getReportName()
+	{
+		return "userReport";
+	}
 }

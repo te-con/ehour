@@ -24,14 +24,15 @@
 							<td width="5">&nbsp;</td>
 							<td>
 					<table class="reportTable" cellpadding="0" cellspacing="0">
-						<tr>
-							<th><fmt:message key="report.userReport.user" /></th>
-							<th><fmt:message key="report.userReport.customer" /></th>
-							<th><fmt:message key="report.userReport.project" /></th>
-							<th><fmt:message key="report.userReport.hours" /></th>										
-							<th><fmt:message key="report.userReport.turnOver" /></th>
+							<tr>
+							<th>Customer</th>
+							<th>Project</th>
+							<th>Hours booked</th>
+							<c:if test="${config.showTurnover}">										
+								<th>Turn over</th>
+							</c:if>
 						</tr>
-					
+						
 					<c:set var="totalHour" value="0" />
 					<c:set var="totalTurnOver" value="0" />					
 			

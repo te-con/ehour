@@ -42,7 +42,7 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
@@ -57,7 +57,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 {
 	private	ReportCriteriaService	reportCriteriaService;
 	
-	private	ReportDAO		reportDAO;
+	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	UserDAO			userDAO;
 	private	ProjectAssignmentDAO	prjAssignmentDAO;
 	private	CustomerDAO		customerDAO;
@@ -71,8 +71,8 @@ public class ReportCriteriaServiceTest  extends TestCase
 	{
 		reportCriteriaService = new ReportCriteriaServiceImpl();
 
-		reportDAO = createMock(ReportDAO.class);
-		((ReportCriteriaServiceImpl)reportCriteriaService).setReportDAO(reportDAO);
+		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
+		((ReportCriteriaServiceImpl)reportCriteriaService).setReportAggregatedDAO(reportAggregatedDAO);
 		
 		prjAssignmentDAO = createMock(ProjectAssignmentDAO.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setProjectAssignmentDAO(prjAssignmentDAO);
@@ -118,15 +118,15 @@ public class ReportCriteriaServiceTest  extends TestCase
 		prjAssignmentDAO.findProjectAssignmentsForUser(1);
 		expectLastCall().andReturn(prjAsgs);
 
-		reportDAO.getMinMaxDateTimesheetEntry(1);
+		reportAggregatedDAO.getMinMaxDateTimesheetEntry(1);
 		expectLastCall().andReturn(null);
 		
 		replay(prjAssignmentDAO);
-		replay(reportDAO);
+		replay(reportAggregatedDAO);
 		
 		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL);
 		
-		verify(reportDAO);
+		verify(reportAggregatedDAO);
 		verify(prjAssignmentDAO);
 		
 		assertEquals(2, availCriteria.getCustomers().size());
@@ -173,13 +173,13 @@ public class ReportCriteriaServiceTest  extends TestCase
 		expect(userDepartmentDAO.findAll()).andReturn(new ArrayList<UserDepartment>());
 		replay(userDepartmentDAO);
 
-		reportDAO.getMinMaxDateTimesheetEntry();
+		reportAggregatedDAO.getMinMaxDateTimesheetEntry();
 		expectLastCall().andReturn(null);
-		replay(reportDAO);
+		replay(reportAggregatedDAO);
 		
 		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL);
 		
-		verify(reportDAO);
+		verify(reportAggregatedDAO);
 		verify(projectDAO);
 		verify(customerDAO);
 		verify(userDAO);

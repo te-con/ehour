@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.report.project;
+package net.rrm.ehour.web.report.reports;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +30,15 @@ import junit.framework.TestCase;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.web.report.reports.CustomerReport;
 
 /**
  * TODO 
  **/
 
-public class ProjectReportTest extends TestCase
+public class CustomerReportTest extends TestCase
 {
 
 	protected void setUp() throws Exception
@@ -65,8 +68,10 @@ public class ProjectReportTest extends TestCase
 		pags.add(pag1);
 		pags.add(pag2);
 		
-		AssignmentReport report = new AssignmentReport();
-		report.initialize(pags);
+		ReportData reportData = new ReportData(pags, null, null);
+		
+		CustomerReport report = new CustomerReport();
+		report.initialize(reportData);
 		
 		assertEquals(2, report.getReportValues().size());
 	}

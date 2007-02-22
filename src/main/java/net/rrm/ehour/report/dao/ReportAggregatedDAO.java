@@ -26,7 +26,7 @@ package net.rrm.ehour.report.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
  * Reporting data operations 
@@ -34,7 +34,7 @@ import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
  *
  */
 
-public interface ReportDAO
+public interface ReportAggregatedDAO
 {
 	/**
 	 * Get cumulated hours per project assignment for user in a date range

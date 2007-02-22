@@ -91,7 +91,7 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 		ac.setReportRange(new DateRange(new Date(2006 - 1900, 2 - 1, 1), new Date(2008 - 1900, 1, 1)));
 		criteria.setAvailableCriteria(ac);
 		
-		reportService.createAssignmentReport(criteria);
+		reportService.createReportData(criteria);
 	}
 	
 	/**

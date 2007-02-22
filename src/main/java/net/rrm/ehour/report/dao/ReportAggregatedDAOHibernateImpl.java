@@ -26,7 +26,7 @@ package net.rrm.ehour.report.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -36,7 +36,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  *
  */
 
-public class ReportDAOHibernateImpl extends HibernateDaoSupport implements ReportDAO
+public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implements ReportAggregatedDAO
 {
 	/**
 	 * Get cumulated hours per project assignment for a user between a date range
@@ -201,7 +201,7 @@ public class ReportDAOHibernateImpl extends HibernateDaoSupport implements Repor
 		
 		keys[0] = "dateStart";
 		keys[1] = "dateEnd";		
-		keys[2] = "projectIds";
+		keys[2] = "dateEnd";
 
 		params[0] = dateRange.getDateStart();
 		params[1] = dateRange.getDateEnd();

@@ -98,7 +98,7 @@
 		<action name="ReportCriteriaForm"
 				parameter="consultant"
 				path="/eh/userReport/projectReport"
-				type="net.rrm.ehour.web.report.action.CreateAggregateReportAction" >
+				type="net.rrm.ehour.web.report.action.CreateReportAction" >
 			<forward name="success" path=".ehour.userreport.projectReport" />
 		</action>		
 

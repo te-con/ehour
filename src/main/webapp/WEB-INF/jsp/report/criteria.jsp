@@ -17,7 +17,7 @@
 	var contextRoot = "<c:url value="/eh/report" />";
 </script>
 
-<div dojoType="TitlePane" id="criteriaPane" label="<fmt:message key="report.criteria.header" />" labelNodeClass="reportCriteriaLabel" containerNodeClass="ContentFrame">
+<div dojoType="TitlePane" id="criteriaPane" label="<fmt:message key="report.criteria.header" />" labelNodeClass="CriteriaLabel" containerNodeClass="ContentFrame">
 
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>
@@ -28,7 +28,7 @@
 			<input type="hidden" name="fromForm" value="yes">
 			<input type="hidden" name="updateType" value="0">			
 
-			<table class="reportCriteriaTableTable" style="width: auto">
+			<table class="ReportCriteriaTableTable" style="width: auto">
 			
 				<tr>
 					<td><fmt:message key="report.criteria.reportRange" />:</td>
@@ -53,7 +53,7 @@
 							</div>
 						</div>	
 						
-						<table class="reportCriteriaTableTable">
+						<table class="ReportCriteriaTableTable">
 							<tr>
 								<td colspan="2">
 									<div id="criteriaCustomerList">
@@ -98,7 +98,7 @@
 						</div>
 					</div>		
 
-					<table class="reportCriteriaTableTable">
+					<table class="ReportCriteriaTableTable">
 						<tr>
 							<td colspan="2">
 								<div id="criteriaProjectList">
@@ -154,7 +154,7 @@
 						</div>
 					</div>	
 					
-					<table class="reportCriteriaTableTable">
+					<table class="ReportCriteriaTableTable">
 						<tr>
 							<td><select multiple="multiple" name="departmentId" id="departmentId" size="4" class="textInputSmall" sdtyle="width: 100%">
 									<option value="-1"
@@ -199,7 +199,7 @@
 						</div>
 					</div>	
 					
-						<table class="reportCriteriaTableTable">
+						<table class="ReportCriteriaTableTable">
 							<tr>
 								<td colspan="2">
 									<input type="text" name="userFilter"

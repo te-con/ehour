@@ -36,7 +36,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -239,7 +239,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	}
 
 	/**
-	 * Report setter (Spring)
+	 * ReportData setter (Spring)
 	 * @param dao
 	 */	
 	

@@ -50,7 +50,11 @@
 	</bean>
 
 	<!-- Report service -->
-	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl" />
+	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl">
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
+		<property name="userDAO" ref="userDAO" />	
+		<property name="projectDAO" ref="projectDAO" />	
+	</bean>
 
 	<!-- Report criteria service -->
 	<bean id="reportCriteriaService" class="net.rrm.ehour.report.service.ReportCriteriaServiceImpl">
@@ -59,7 +63,7 @@
 		<property name="customerDAO" ref="customerDAO" />	
 		<property name="projectDAO" ref="projectDAO" />	
 		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />			
-		<property name="reportDAO" ref="reportDAO" />	
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 	</bean>
 
 

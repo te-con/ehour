@@ -26,9 +26,9 @@ package net.rrm.ehour.report.service;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.easymock.EasyMock.isA;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,22 +37,12 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
-import net.rrm.ehour.customer.dao.CustomerDAO;
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
-import net.rrm.ehour.project.dao.ProjectDAO;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportDAO;
-import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
-import net.rrm.ehour.user.dao.UserDAO;
-import net.rrm.ehour.user.dao.UserDepartmentDAO;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.dao.ReportPerMonthDAO;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.util.DateUtil;
 
 /**
@@ -63,7 +53,8 @@ public class ReportServiceTest extends TestCase
 {
 	private	ReportService	reportService;
 	
-	private	ReportDAO		reportDAO;
+	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private	ReportPerMonthDAO	reportMonthDAO;
 	
 	/**
 	 * 
@@ -72,8 +63,12 @@ public class ReportServiceTest extends TestCase
 	{
 		reportService = new ReportServiceImpl();
 
-		reportDAO = createMock(ReportDAO.class);
-		((ReportServiceImpl)reportService).setReportDAO(reportDAO);
+		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
+		((ReportServiceImpl)reportService).setReportAggregatedDAO(reportAggregatedDAO);
+
+		reportMonthDAO = createMock(ReportPerMonthDAO.class);
+		((ReportServiceImpl)reportService).setReportPerMonthDAO(reportMonthDAO);
+
 	}
 	
 	/**
@@ -89,7 +84,7 @@ public class ReportServiceTest extends TestCase
 		
 		results.add(new ProjectAssignmentAggregate());
 		
-		reportDAO.getCumulatedHoursPerAssignmentForUsers(new Integer[]{userId}, DateUtil.calendarToMonthRange(cal));
+		reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(new Integer[]{userId}, DateUtil.calendarToMonthRange(cal));
 		expectLastCall().andReturn(results);
 		
 		replay();
@@ -122,10 +117,10 @@ public class ReportServiceTest extends TestCase
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3));
 		
-		expect(reportDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
 					.andReturn(pags);
-		replay(reportDAO);
-		reportService.createAssignmentReport(rc);
-		verify(reportDAO);
+		replay(reportAggregatedDAO);
+		reportService.createReportData(rc);
+		verify(reportAggregatedDAO);
 	}
 }

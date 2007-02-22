@@ -32,7 +32,7 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 
 /**
- * Report Criteria
+ * ReportData Criteria
  * Contains input as well as output
  **/
 

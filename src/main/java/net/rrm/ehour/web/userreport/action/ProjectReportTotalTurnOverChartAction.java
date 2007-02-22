@@ -26,25 +26,27 @@ package net.rrm.ehour.web.userreport.action;
 import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.report.project.AssignmentReport;
+import net.rrm.ehour.web.report.reports.CustomerReport;
 
+import org.apache.struts.action.Action;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- * TODO 
+ *
+ *  TODO FIXME
  **/
 
-public class ProjectReportTotalTurnOverChartAction extends ProjectReportChartAction
+public class ProjectReportTotalTurnOverChartAction extends Action//ProjectReportChartAction
 {
 	/**
 	 * Create chart
 	 * @param report
 	 * @return
 	 */
-	protected JFreeChart getChart(AssignmentReport report)
+	protected JFreeChart getChart(CustomerReport report)
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		

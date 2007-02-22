@@ -28,7 +28,6 @@ import junit.framework.TestSuite;
 import net.rrm.ehour.customer.service.CustomerServiceTest;
 import net.rrm.ehour.project.service.ProjectServiceTest;
 import net.rrm.ehour.report.criteria.ReportCriteriaTest;
-import net.rrm.ehour.report.project.ProjectReportTest;
 import net.rrm.ehour.report.service.ReportCriteriaServiceTest;
 import net.rrm.ehour.report.service.ReportServiceTest;
 import net.rrm.ehour.report.util.ReportUtilTest;
@@ -38,6 +37,7 @@ import net.rrm.ehour.user.service.UserServiceTest;
 import net.rrm.ehour.util.DateUtilTest;
 import net.rrm.ehour.web.calendar.CalendarUtilTest;
 import net.rrm.ehour.web.calendar.tag.NavCalendarTagTest;
+import net.rrm.ehour.web.report.reports.CustomerReportTest;
 import net.rrm.ehour.web.report.util.UserCriteriaAssemblerTest;
 import net.rrm.ehour.web.util.AuthUtilTest;
 import net.rrm.ehour.web.util.DomainAssemblerTest;
@@ -63,7 +63,7 @@ public class ServiceTests
 		suite.addTestSuite(BookedDayComparatorTest.class);
 		suite.addTestSuite(DomainAssemblerTest.class);
 		suite.addTestSuite(NavCalendarTagTest.class);
-		suite.addTestSuite(ProjectReportTest.class);
+		suite.addTestSuite(CustomerReportTest.class);
 		suite.addTestSuite(ReportCriteriaTest.class);
 		suite.addTestSuite(UserCriteriaAssemblerTest.class);
 		

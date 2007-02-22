@@ -29,7 +29,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.project.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
 
 /**
  * TODO 
