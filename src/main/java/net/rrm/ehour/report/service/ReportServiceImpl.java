@@ -32,11 +32,11 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.dao.ReportPerMonthDAO;
-import net.rrm.ehour.report.project.AssignmentReport;
-import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.project.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
 import net.rrm.ehour.report.util.ReportUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.domain.User;
@@ -53,7 +53,7 @@ import org.apache.log4j.Logger;
 
 public class ReportServiceImpl implements ReportService
 {
-	private	ReportDAO			reportDAO;
+	private	ReportAggregatedDAO	reportAggregatedDAO;
 	private	ReportPerMonthDAO	reportPerMonthDAO;
 	private	ProjectDAO			projectDAO;
 	private	UserDAO				userDAO;
@@ -86,7 +86,7 @@ public class ReportServiceImpl implements ReportService
 	{
 		List<ProjectAssignmentAggregate>	projectAssignmentAggregates;
 
-		projectAssignmentAggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(new Integer[]{userId}, dateRange);
+		projectAssignmentAggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(new Integer[]{userId}, dateRange);
 
 		return projectAssignmentAggregates;
 	}	
@@ -96,52 +96,116 @@ public class ReportServiceImpl implements ReportService
 	 * 
 	 * @return
 	 */
-	public AssignmentReport createAssignmentReport(ReportCriteria reportCriteria)
+	public ReportData createReportData(ReportCriteria reportCriteria)
 	{
-		AssignmentReport					assignmentReport = new AssignmentReport();
-		List<ProjectAssignmentAggregate>	aggregates;
-		UserCriteria						userCriteria;
-		Integer[]							projectIds;
-		Integer[]							userIds;
-		boolean								ignoreUsers;
-		boolean								ignoreProjects;
-		DateRange							reportRange;
+		ReportData		reportData = new ReportData();
+		UserCriteria	userCriteria;
+		Integer[]		projectIds = null;
+		Integer[]		userIds = null;
+		boolean			ignoreUsers;
+		boolean			ignoreProjects;
+		DateRange		reportRange;
 		
 		userCriteria = reportCriteria.getUserCriteria();
+		logger.debug("Creating report for " + userCriteria);
 		
-		logger.debug("Creating assignment report for " + userCriteria);
-	
+		reportRange = reportCriteria.getReportRange();
+		
 		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
 		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
-		reportRange = reportCriteria.getReportRange();
 		
 		if (ignoreProjects && ignoreUsers)
 		{
 			logger.debug("creating full report");
-			aggregates = reportDAO.getCumulatedHoursPerAssignment(reportRange);
 		}
 		else if (ignoreProjects && !ignoreUsers)
 		{
+			logger.debug("creating report for only selected users");
 			userIds = getUserIds(userCriteria);
-			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userIds, reportRange);
 		}
 		else if (!ignoreProjects && ignoreUsers)
 		{
+			logger.debug("creating report for only selected project");
 			projectIds = getProjectIds(userCriteria);
-			aggregates = reportDAO.getCumulatedHoursPerAssignmentForProjects(projectIds, reportRange);
-	}
+		}
 		else
 		{
+			logger.debug("creating report for selected users & projects");
 			userIds = getUserIds(userCriteria);
 			projectIds = getProjectIds(userCriteria);
-			aggregates = reportDAO.getCumulatedHoursPerAssignmentForUsers(userIds, projectIds, reportRange);
+		}		
+		
+		reportData.setProjectAssignmentAggregates(getProjectAssignmentAggregates(userIds, projectIds, reportRange));
+		reportData.setWeeklyProjectAssignmentAggregates(getWeeklyReportData(userIds, projectIds, reportRange));
+		reportData.setReportCriteria(reportCriteria);
+		
+		return reportData;
+	}
+	
+	/**
+	 * Get project assignments aggregates
+	 * @param reportCriteria
+	 * @return
+	 */
+	private List<ProjectAssignmentAggregate> getProjectAssignmentAggregates(Integer[] userIds,
+																			Integer[] projectIds,
+																			DateRange reportRange)
+	{
+		List<ProjectAssignmentAggregate>	aggregates;
+		
+		if (userIds == null && projectIds == null)
+		{
+			aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignment(reportRange);
+		}
+		else if (projectIds == null && userIds != null)
+		{
+			aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(userIds, reportRange);
+		}
+		else if (projectIds != null && userIds == null)
+		{
+			aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projectIds, reportRange);
+		}
+		else
+		{
+			aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(userIds, projectIds, reportRange);
 		}
 		
-		assignmentReport.setReportCriteria(reportCriteria);
-		assignmentReport.initialize(aggregates);
-		
-		return assignmentReport;
+		return aggregates;
 	}
+	
+	
+	/**
+	 * Get weekly project report
+	 * @param criteria
+	 * @return
+	 */
+	private List<WeeklyProjectAssignmentAggregate> getWeeklyReportData(Integer[] userIds,
+																		Integer[] projectIds,
+																		DateRange reportRange)
+	{
+		List<WeeklyProjectAssignmentAggregate> aggregates = null;
+
+		if (userIds == null && projectIds == null)
+		{
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignment(reportRange);
+		}
+		else if (projectIds == null && userIds != null)
+		{		
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(Arrays.asList(userIds), reportRange);
+		}
+		else if (projectIds != null && userIds == null)
+		{
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(Arrays.asList(projectIds), reportRange);
+		}
+		else
+		{
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(Arrays.asList(userIds),
+																					Arrays.asList(projectIds),
+																					reportRange);
+		}	
+		
+		return aggregates;
+	}	
 
 	/**
 	 * Get project id's based on selected customers
@@ -162,7 +226,7 @@ public class ReportServiceImpl implements ReportService
 				logger.debug("Using customers to determine projects");
 				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(),
 																userCriteria.isOnlyActiveProjects());
-				projectIds = ReportUtil.getPKsFromDomainObjects(projects).toArray(new Integer[]{});
+				projectIds = (Integer[])ReportUtil.getPKsFromDomainObjects(projects).toArray();
 			}
 			else
 			{
@@ -215,37 +279,12 @@ public class ReportServiceImpl implements ReportService
 	}
 	
 	/**
-	 * Get weekly project report
-	 * @param criteria
-	 * @return
-	 */
-	public List<WeeklyProjectAssignmentAggregate> createWeeklyProjectReport(ReportCriteria reportCriteria)
-	{
-		UserCriteria userCriteria = reportCriteria.getUserCriteria();
-		List<WeeklyProjectAssignmentAggregate> aggregates = null;
-		
-		if (userCriteria.getProjectIds() == null)
-		{
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(Arrays.asList(userCriteria.getUserIds()), 
-																					reportCriteria.getReportRange());
-		}
-		else
-		{
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(Arrays.asList(userCriteria.getUserIds()),
-																					Arrays.asList(userCriteria.getProjectIds()),
-																					reportCriteria.getReportRange());
-		}	
-		
-		return aggregates;
-	}
-	
-	/**
 	 *  
 	 *
 	 */
-	public void setReportDAO(ReportDAO reportDAO)
+	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
 	{
-		this.reportDAO = reportDAO;
+		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
 
 	/**
@@ -262,5 +301,13 @@ public class ReportServiceImpl implements ReportService
 	public void setProjectDAO(ProjectDAO projectDAO)
 	{
 		this.projectDAO = projectDAO;
+	}
+
+	/**
+	 * @param userDAO the userDAO to set
+	 */
+	public void setUserDAO(UserDAO userDAO)
+	{
+		this.userDAO = userDAO;
 	}
 }

@@ -38,7 +38,7 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
@@ -54,7 +54,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	private	CustomerDAO				customerDAO;
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
-	private	ReportDAO				reportDAO;
+	private	ReportAggregatedDAO				reportAggregatedDAO;
 	private	Logger					logger = Logger.getLogger(this.getClass());
 	
 	/* (non-Javadoc)
@@ -96,7 +96,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 			if (updateType == ReportCriteria.UPDATE_ALL)
 			{
 				availCriteria.setUserDepartments(userDepartmentDAO.findAll());
-				availCriteria.setReportRange(reportDAO.getMinMaxDateTimesheetEntry());
+				availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry());
 			}
 			
 			// not entirely useful but for clarity
@@ -224,7 +224,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		availCriteria.setCustomers(customers);
 		availCriteria.setProjects(projects);
 		
-		availCriteria.setReportRange(reportDAO.getMinMaxDateTimesheetEntry(userId));
+		availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry(userId));
 	}
 
 	/**
@@ -271,9 +271,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	 *  
 	 *
 	 */
-	public void setReportDAO(ReportDAO reportDAO)
+	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
 	{
-		this.reportDAO = reportDAO;
+		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
 	
 }

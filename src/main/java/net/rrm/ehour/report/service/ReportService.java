@@ -28,9 +28,8 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.project.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.project.AssignmentReport;
-import net.rrm.ehour.report.project.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 
 
 /**
@@ -65,12 +64,5 @@ public interface ReportService
 	 * @param criteria
 	 * @return
 	 */
-	public AssignmentReport createAssignmentReport(ReportCriteria criteria);
-
-	/**
-	 * Get weekly project report
-	 * @param criteria
-	 * @return
-	 */
-	public List<WeeklyProjectAssignmentAggregate> createWeeklyProjectReport(ReportCriteria criteria);
+	public ReportData createReportData(ReportCriteria criteria);
 }
