@@ -162,7 +162,7 @@ public class ReportServiceImpl implements ReportService
 				logger.debug("Using customers to determine projects");
 				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(),
 																userCriteria.isOnlyActiveProjects());
-				projectIds = (Integer[])ReportUtil.getPKsFromDomainObjects(projects).toArray();
+				projectIds = ReportUtil.getPKsFromDomainObjects(projects).toArray(new Integer[]{});
 			}
 			else
 			{

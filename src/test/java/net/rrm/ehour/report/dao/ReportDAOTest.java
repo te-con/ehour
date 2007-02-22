@@ -155,7 +155,7 @@ public class ReportDAOTest extends BaseDAOTest
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
 			    new Date(2006 - 1900, 10 - 1, 4));
 		
-		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForProjects(new Integer[]{1}, dateRange);
+		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForProjects(new Integer[]{1,2}, dateRange);
 		
 		assertEquals(2, results.size());
 	}

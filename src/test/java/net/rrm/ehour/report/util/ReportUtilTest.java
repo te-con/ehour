@@ -53,6 +53,8 @@ public class ReportUtilTest extends TestCase
 		List<Integer> ints = ReportUtil.getPKsFromDomainObjects(projectIds);
 		
 		assertEquals(4, ints.size());
+		
+		Integer[] ints2 = ints.toArray(new Integer[]{});
 	}
 
 }

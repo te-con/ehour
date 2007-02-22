@@ -201,7 +201,7 @@ public class ReportDAOHibernateImpl extends HibernateDaoSupport implements Repor
 		
 		keys[0] = "dateStart";
 		keys[1] = "dateEnd";		
-		keys[2] = "dateEnd";
+		keys[2] = "projectIds";
 
 		params[0] = dateRange.getDateStart();
 		params[1] = dateRange.getDateEnd();
