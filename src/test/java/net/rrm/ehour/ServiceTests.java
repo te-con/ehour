@@ -28,6 +28,7 @@ import junit.framework.TestSuite;
 import net.rrm.ehour.customer.service.CustomerServiceTest;
 import net.rrm.ehour.project.service.ProjectServiceTest;
 import net.rrm.ehour.report.criteria.ReportCriteriaTest;
+import net.rrm.ehour.report.reports.UserReportTest;
 import net.rrm.ehour.report.service.ReportCriteriaServiceTest;
 import net.rrm.ehour.report.service.ReportServiceTest;
 import net.rrm.ehour.report.util.ReportUtilTest;
@@ -68,6 +69,8 @@ public class ServiceTests
 		suite.addTestSuite(UserCriteriaAssemblerTest.class);
 		
 		suite.addTestSuite(ReportUtilTest.class);
+		
+		suite.addTestSuite(UserReportTest.class);
 		//$JUnit-END$
 		return suite;
 	}

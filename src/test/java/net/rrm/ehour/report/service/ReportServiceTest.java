@@ -113,9 +113,9 @@ public class ReportServiceTest extends TestCase
 		rc.setUserCriteria(uc);
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
 		
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
 					.andReturn(pags);

@@ -23,37 +23,40 @@
 
 package net.rrm.ehour.web.report.reports;
 
-import java.util.List;
-import java.util.Map;
-
-import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.user.domain.User;
-
-import org.apache.log4j.Logger;
 
 /**
  * UserReport
  **/
 
-public class UserReport extends AggregateReport<User>
+public class UserReport extends AggregateReport<User, Customer>
 {
-	private	ReportCriteria	reportCriteria;
-	private	Logger			logger = Logger.getLogger(this.getClass());
-	private	Map<User, List<ProjectAssignmentAggregate>>	reportMap;
-
 	/**
-	 * Initialize user report
+	 * 
 	 */
-	public void initialize(ReportData reportData)
-	{
-		logger.debug("Initializing user report");
-		
-	}
-
+	@Override
 	public String getReportName()
 	{
 		return "userReport";
+	}
+
+	/**
+	 * Get the customer as the child key
+	 */
+	@Override
+	protected Customer getChildKey(ProjectAssignmentAggregate aggregate)
+	{
+		return aggregate.getProjectAssignment().getProject().getCustomer();
+	}
+
+	/**
+	 * Get the user as the root key
+	 */
+	@Override
+	protected User getRootKey(ProjectAssignmentAggregate aggregate)
+	{
+		return aggregate.getProjectAssignment().getUser();
 	}
 }

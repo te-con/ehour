@@ -147,7 +147,19 @@ public class Customer extends DomainObject<Integer> implements Comparable<Custom
 
 	public int compareTo(Customer o)
 	{
-		return name.compareTo(o.getName());
+		int compare = 0;
+		
+		if (name != null && o.getName() != null)
+		{
+			compare = name.compareTo(o.getName());
+		}
+		
+		if (compare == 0)
+		{
+			compare = customerId.compareTo(customerId);
+		}
+		
+		return compare;
 	}
 	
 	@Override

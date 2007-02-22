@@ -24,16 +24,15 @@
 package net.rrm.ehour.web.report.reports;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportData;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 
 /**
@@ -103,17 +102,35 @@ public abstract class AggregateReport<RK extends Comparable, CK extends Comparab
 			reportMap.put(rootKey, childMap);
 		}		
 	}
+	
 
 	/**
-	 * Get total hours for a key
+	 * @return the reportCriteria
+	 */
+	public ReportCriteria getReportCriteria()
+	{
+		return reportCriteria;
+	}	
+	
+	/**
+	 * Get values
+	 * @return
+	 */
+	public SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>> getReportValues()
+	{
+		return reportMap;
+	}	
+	
+	/**
+	 * Get total hours for a rootKey/childKey
 	 * @param key
 	 * @return
 	 */
-	public float getHourTotal(Customer key)
+	public float getHourTotal(RK rootKey, CK childKey)
 	{
-		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
-		float								totalHours = 0f;
-		aggregatesPerCustomer = reportMap.get(key);
+		Set<ProjectAssignmentAggregate>	aggregatesPerCustomer;
+		float							totalHours = 0f;
+		aggregatesPerCustomer = reportMap.get(rootKey).get(childKey);
 		
 		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
 		{
@@ -124,11 +141,33 @@ public abstract class AggregateReport<RK extends Comparable, CK extends Comparab
 	}	
 	
 	/**
+	 * Get total turn over for rootKey/childKey
+	 * @param key
+	 * @return
+	 */
+	public float getTurnOverTotal(RK rootKey, CK childKey)
+	{
+		Set<ProjectAssignmentAggregate>	aggregatesPerCustomer;
+		float							totalTurnOver = 0f;
+		aggregatesPerCustomer = reportMap.get(rootKey).get(childKey);
+		
+		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
+		{
+			if (aggregate.getTurnOver() != null)
+			{
+				totalTurnOver += aggregate.getTurnOver().floatValue();
+			}
+		}
+		
+		return totalTurnOver;
+	}	
+	
+	/**
 	 * Get root key from aggregate
 	 * @param aggregate
 	 * @return
 	 */
-	public abstract RK getRootKey(ProjectAssignmentAggregate aggregate);
+	protected abstract RK getRootKey(ProjectAssignmentAggregate aggregate);
 	
 	/**
 	 * Get child key from aggregate
@@ -142,5 +181,14 @@ public abstract class AggregateReport<RK extends Comparable, CK extends Comparab
 	 *
 	 */
 	public abstract String getReportName();
+	
+	/**
+	 * ToString
+	 */
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this).append("reportMap", reportMap).toString();
+	}
 	
 }

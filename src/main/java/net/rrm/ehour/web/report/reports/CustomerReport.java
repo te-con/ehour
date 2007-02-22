@@ -23,13 +23,10 @@
 
 package net.rrm.ehour.web.report.reports;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
@@ -40,50 +37,7 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 public class CustomerReport extends AggregateReport<Customer, Project>
 {
 	private static final long serialVersionUID = 6365903846883586472L;
-	
-	private	ReportCriteria	reportCriteria;
 
-	/**
-	 * Get total hours for a key
-	 * @param key
-	 * @return
-	 */
-	public float getHourTotal(Customer key)
-	{
-		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
-		float								totalHours = 0f;
-		aggregatesPerCustomer = reportMap.get(key);
-		
-		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
-		{
-			totalHours += aggregate.getHours().floatValue();
-		}
-		
-		return totalHours;
-	}
-	
-	/**
-	 * Get total turn over for key
-	 * @param key
-	 * @return
-	 */
-	public float getTurnOverTotal(Customer key)
-	{
-		List<ProjectAssignmentAggregate>	aggregatesPerCustomer;
-		float								totalTurnOver = 0f;
-		aggregatesPerCustomer = reportMap.get(key);
-		
-		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
-		{
-			if (aggregate.getTurnOver() != null)
-			{
-				totalTurnOver += aggregate.getTurnOver().floatValue();
-			}
-		}
-		
-		return totalTurnOver;
-	}
-	
 	/**
 	 * Get customers in this report 
 	 * @return
@@ -92,27 +46,11 @@ public class CustomerReport extends AggregateReport<Customer, Project>
 	{
 		return reportMap.keySet();
 	}
-	
-	/**
-	 * Get values
-	 * @return
-	 */
-	public Map<Customer, List<ProjectAssignmentAggregate>> getReportValues()
-	{
-		return reportMap;
-	}
-
-	/**
-	 * @return the reportCriteria
-	 */
-	public ReportCriteria getReportCriteria()
-	{
-		return reportCriteria;
-	}
 
 	/**
 	 * 
 	 */
+	@Override
 	public String getReportName()
 	{
 		return "customerReport";
@@ -132,7 +70,7 @@ public class CustomerReport extends AggregateReport<Customer, Project>
 	 * Get the customer as the root key
 	 */
 	@Override
-	public Customer getRootKey(ProjectAssignmentAggregate aggregate)
+	protected Customer getRootKey(ProjectAssignmentAggregate aggregate)
 	{
 		return aggregate.getProjectAssignment().getProject().getCustomer();
 	}

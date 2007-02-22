@@ -5,13 +5,15 @@ import java.util.Set;
 
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * @author  Thies
  */
-public class User  extends DomainObject<Integer> implements Comparable
+public class User  extends DomainObject<Integer> implements Comparable<User>
 {
 
 	// Fields    
@@ -157,21 +159,29 @@ public class User  extends DomainObject<Integer> implements Comparable
 		this.userRoles = userRoles;
 	}
 
-	
-    public int compareTo(Object o)
+    public int compareTo(User  other)
     {
-        User other;
+        int	compare = 0;
 
-        if (o instanceof User)
+        if (lastName != null && other.getLastName() != null)
         {
-            other = (User)o;
-            // just use last name for sorting
-            return other.getLastName().compareTo(this.getLastName());
+        	compare = other.getLastName().compareTo(this.lastName);
         }
-        else
+        
+        if (compare == 0)
         {
-            return -1;
+        	if (firstName != null && other.getFirstName() != null)
+        	{
+        		compare = other.getFirstName().compareTo(this.firstName);
+        	}
+        	
+        	if (compare == 0)
+        	{
+        		compare = other.getUserId().compareTo(this.userId);
+        	}
         }
+        
+        return compare;
     }
 
 	/**
@@ -259,7 +269,6 @@ public class User  extends DomainObject<Integer> implements Comparable
 		}
 		User rhs = (User) object;
 		return new EqualsBuilder().appendSuper(super.equals(object))
-					.append(this.username, rhs.username)
 					.append(this.userId, rhs.userId)
 					.isEquals();
 	}
@@ -270,7 +279,6 @@ public class User  extends DomainObject<Integer> implements Comparable
 	public int hashCode()
 	{
 		return new HashCodeBuilder(-2038170721, -475387721).appendSuper(super.hashCode())
-				.append(this.username)
 				.append(this.userId)
 				.toHashCode();
 	}
@@ -279,5 +287,11 @@ public class User  extends DomainObject<Integer> implements Comparable
 	public Integer getPK()
 	{
 		return userId;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this).append("userId", userId).append("username", username) .toString();
 	}
 }

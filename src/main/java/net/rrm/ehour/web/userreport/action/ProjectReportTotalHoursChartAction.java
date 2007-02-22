@@ -46,22 +46,23 @@ public class ProjectReportTotalHoursChartAction extends Action//extends ProjectR
 	 */
 	protected JFreeChart getChart(CustomerReport customerReport)
 	{
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		
-		Set<Customer>						customers;
-		
-		customers = customerReport.getCustomers();
-		String s = "Hours";
-		
-		for (Customer customer : customers)
-		{
-			dataset.addValue(customerReport.getHourTotal(customer), s, customer.getName());
-		}
-		
-		JFreeChart chart = ChartFactory.createBarChart("Booked hours per customer",
-				"Customer", "Hours", dataset, PlotOrientation.HORIZONTAL,
-				false, false, false);
-		chart.removeLegend();
-		return chart;
+//		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//		
+//		Set<Customer>						customers;
+//		
+//		customers = customerReport.getCustomers();
+//		String s = "Hours";
+//		
+//		for (Customer customer : customers)
+//		{
+//			dataset.addValue(customerReport.getHourTotal(customer), s, customer.getName());
+//		}
+//		
+//		JFreeChart chart = ChartFactory.createBarChart("Booked hours per customer",
+//				"Customer", "Hours", dataset, PlotOrientation.HORIZONTAL,
+//				false, false, false);
+//		chart.removeLegend();
+//		return chart;
+		return null;
 	}
 }

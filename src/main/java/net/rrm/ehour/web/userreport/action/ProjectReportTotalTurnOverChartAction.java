@@ -48,22 +48,23 @@ public class ProjectReportTotalTurnOverChartAction extends Action//ProjectReport
 	 */
 	protected JFreeChart getChart(CustomerReport report)
 	{
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		
-		Set<Customer>						customers;
-		
-		customers = report.getCustomers();
-		String s = "Turnover";
-		
-		for (Customer customer : customers)
-		{
-			dataset.addValue(report.getTurnOverTotal(customer), s, customer.getName());
-		}
-		
-		JFreeChart chart = ChartFactory.createBarChart("Turnover per customer",
-				"Customer", "Turnover", dataset, PlotOrientation.HORIZONTAL,
-				false, false, false);
-		
-		return chart;
+//		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//		
+//		Set<Customer>						customers;
+//		
+//		customers = report.getCustomers();
+//		String s = "Turnover";
+//		
+//		for (Customer customer : customers)
+//		{
+//			dataset.addValue(report.getTurnOverTotal(customer), s, customer.getName());
+//		}
+//		
+//		JFreeChart chart = ChartFactory.createBarChart("Turnover per customer",
+//				"Customer", "Turnover", dataset, PlotOrientation.HORIZONTAL,
+//				false, false, false);
+//		
+//		return chart;
+		return null;
 	}
 }

@@ -35,20 +35,42 @@ import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 
 /**
- * TODO 
+ * DummyDataGenerator 
  **/
 
 public class DummyDataGenerator
 {
-	public static ProjectAssignment getProjectAssignment(int baseId)
+	public static ProjectAssignment getProjectAssignment(int... baseIds)
 	{
 		ProjectAssignment	prjAsg;
 		Project				prj;
 		Customer			cust;
 		User				user;
+		int					customerId, userId;
 		
-		cust = new Customer(baseId);
-		cust.setActive(true);
+		// IMHO varargs is a stupid addition to the Java language
+		// ah yes, it cleans up your API but it adds an MSN signature style and a lot of bogus code to parse that MSN style crap
+		// let alone that it's completely unknown at what the exact signature functionally means
+		// oh we explain that in javadoc? right... (<= that's a vararg! :))
+		// you know what, why don't we drop type safety at all and change every argument to Object ?
+		int baseId = baseIds[0];
+		
+		customerId = baseId;
+		userId = baseId;
+		
+		if (baseIds.length >= 2)
+		{
+			customerId = baseIds[1];
+			userId = customerId;
+		}
+
+		if (baseIds.length >= 3)
+		{
+			userId = baseIds[2];
+		}
+
+		
+		cust = getCustomer(customerId);
 		
 		prj = new Project(baseId * 10);
 		prj.setCustomer(cust);
@@ -58,19 +80,29 @@ public class DummyDataGenerator
 		prjAsg.setProject(prj);
 		prjAsg.setAssignmentId(baseId * 100);
 		
-		user = new User(baseId * 1000);
+		user = getUser();
+		user.setUserId(userId);
 		prjAsg.setUser(user);
 		prjAsg.setActive(true);
 		
 		return prjAsg;
 	}
 	
-	public static ProjectAssignmentAggregate getProjectAssignmentAggregate(int baseId)
+	public static Customer getCustomer(int customerId)
+	{
+		Customer cust = new Customer(customerId);
+		cust.setName(customerId + "");
+		cust.setActive(true);
+		
+		return cust;
+	}
+
+	public static ProjectAssignmentAggregate getProjectAssignmentAggregate(int baseId, int customerId, int userId)
 	{
 		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
 		pag.setHours(baseId);
 		pag.setTurnOver(baseId * 10);
-		pag.setProjectAssignment(getProjectAssignment(baseId));
+		pag.setProjectAssignment(getProjectAssignment(baseId, customerId, userId));
 		return pag;
 	}
 	

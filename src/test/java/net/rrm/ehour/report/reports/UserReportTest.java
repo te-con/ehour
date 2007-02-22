@@ -1,5 +1,5 @@
 /**
- * Created on Feb 1, 2007
+ * Created on Feb 22, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,48 +21,51 @@
  *
  */
 
-package net.rrm.ehour.web.report.reports;
+package net.rrm.ehour.report.reports;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.web.report.reports.CustomerReport;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.web.report.reports.UserReport;
 
 /**
  * TODO 
  **/
 
-public class CustomerReportTest extends TestCase
+public class UserReportTest extends TestCase
 {
 
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#setUp()
+	 */
 	protected void setUp() throws Exception
 	{
 		super.setUp();
 	}
 
+	/**
+	 * Test method for {@link net.rrm.ehour.web.report.reports.UserReport#initialize(net.rrm.ehour.report.reports.ReportData)}.
+	 */
 	public void testInitialize()
 	{
-		ProjectAssignmentAggregate pag1 = DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1);
-		ProjectAssignmentAggregate pag2 = DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 1);
-		
+		ReportData	reportData = new ReportData();
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		
-		pags.add(pag1);
-		pags.add(pag2);
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 2, 1));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(4, 3, 1));
 		
-		ReportData reportData = new ReportData(pags, null, null);
+		reportData.setProjectAssignmentAggregates(pags);
 		
-		CustomerReport report = new CustomerReport();
+		UserReport report = new UserReport();
 		report.initialize(reportData);
-		
-		assertEquals(2, report.getReportValues().size());
+
+		assertEquals(2, report.getReportValues().keySet().size());
+		assertEquals(3, report.getReportValues().get(new User(1)).size());
 	}
 
 }
