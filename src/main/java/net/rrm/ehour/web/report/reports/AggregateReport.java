@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.web.report.reports;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
@@ -54,6 +55,7 @@ public abstract class AggregateReport<RK extends Comparable, CK extends Comparab
 	 */
 	public void initialize(ReportData reportData)
 	{
+		Date								profileStart = new Date();
 		RK									rootKey;
 		CK									childKey;
 		SortedMap<CK, Set<ProjectAssignmentAggregate>>	childMap;
@@ -101,6 +103,8 @@ public abstract class AggregateReport<RK extends Comparable, CK extends Comparab
 			childMap.put(childKey, aggregatesPerChild);
 			reportMap.put(rootKey, childMap);
 		}		
+		
+		logger.debug(getReportName() + " took " + (new Date().getTime() - profileStart.getTime()) + "ms to create");
 	}
 	
 

@@ -28,7 +28,7 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.domain.User;
 
 /**
- * UserReport
+ * UserReport (User -> Customer -> Project details)
  **/
 
 public class UserReport extends AggregateReport<User, Customer>

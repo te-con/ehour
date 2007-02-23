@@ -36,7 +36,7 @@
 
 .reportCriteriaTableTable td
 {
-	font:  0.9em Geneva, Arial, Helvetica, sans-serif;	
+	font:  1.0em Geneva, Arial, Helvetica, sans-serif;	
 	color: #233e55;
 	vertical-align: top;
 }
@@ -79,7 +79,7 @@
 
 .reportTable tr.reportTotal td
 {
-	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  0.9m Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	padding: 0 5px 0 5px;
 }
@@ -101,6 +101,7 @@
 	border-right-color:#a1bcd7;
 	border-right-width: 1px;
 	padding: 0 5px 0 5px;
+		font:  0.9m Geneva, Arial, Helvetica, sans-serif;	
 }
 
 .reportTable tr.customerRow td.lastChild

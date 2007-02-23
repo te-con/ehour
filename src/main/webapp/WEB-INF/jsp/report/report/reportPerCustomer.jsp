@@ -25,52 +25,46 @@
 							<td>
 					<table class="reportTable" cellpadding="0" cellspacing="0">
 							<tr>
-							<th>Customer</th>
-							<th>Project</th>
-							<th>Hours booked</th>
-							<c:if test="${config.showTurnover}">										
-								<th>Turn over</th>
-							</c:if>
+							<th><fmt:message key="report.report.customer" /></th>
+							<th><fmt:message key="report.report.project" /></th>
+							<th><fmt:message key="report.report.hours" /></th>
+							<th><fmt:message key="report.report.turnOver" /></th>
 						</tr>
 						
 					<c:set var="totalHour" value="0" />
 					<c:set var="totalTurnOver" value="0" />					
 			
-					<c:forEach items="${customerReport.customers}" var="customer" varStatus="status">
+					<c:forEach items="${customerReport.reportValues}" var="customerItem" varStatus="status">
 						<tr class="customerRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
-							<td>${customer.name}</td>
-							
-						<c:forEach items="${customerReport.reportValues[customer]}" var="pag" varStatus="pagStatus">
-							<c:set var="totalHour" value="${totalHour + pag.hours}" />	
-							<c:set var="totalTurnOver" value="${totalTurnOver + pag.turnOver}" />								
-						
-							<c:if test="${pagStatus.count > 1}">
-								<tr class="customerRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>><td>&nbsp;</td>						
-							</c:if>
-
-							<td>${pag.projectAssignment.project.name}</td>
-							<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${pag.hours}" maxFractionDigits="2" /></td>
-							
-							<c:if test="${config.showTurnover}">			
-								<td class="lastChild" align="right"><fmt:formatNumber maxFractionDigits="2" value="${pag.turnOver}" type="currency" /></td>
-							</c:if>
-							</tr>
-						</c:forEach>
-					</c:forEach>
-					
-						<tr class="reportTotal">
-							<td colspan="2">
-								<fmt:message key="userReport.total" />:
-							</td>
-							
-							<td align="right">
-								<fmt:formatNumber value="${totalHour}" maxFractionDigits="2" />
-							</td>
-							
-							<td align="right">
-								<fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" />
-							</td>
+							<td>${customerItem.key.name}</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>														
+							<td>&nbsp;</td>
 						</tr>
+						
+						<c:forEach items="${customerReport.reportValues[customerItem.key]}" var="projectItem">
+							<tr class="customerRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+								<td>&nbsp;</td>
+								<td>${projectItem.key.name}</td>					
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>														
+								<td>&nbsp;</td>
+							</tr>
+							
+							<c:forEach items="${customerReport.reportValues[customerItem.key][projectItem.key]}" var="userItem">
+								<tr class="customerRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>									
+									<td>${userItem.projectAssignment.user.lastName}, ${userItem.projectAssignment.user.firstName}</td>					
+									<td><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
+									<td><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" /></td>
+								</tr>
+							</c:forEach>							
+							
+						</c:forEach>							
+					</c:forEach>
+
 					</table>
 							</td>
 							<td width="5">&nbsp;</td>
@@ -86,16 +80,19 @@
 				</div>
 			</td>
 
+<!-- 
 			<td valign="top" width="270">
 				<img style="float: right; margin-right: 5px;" src="projectReportTotalHoursChart.do?key=${reportSessionKey}&chartWidth=0&chartHeight=0&random=<%= new Date().getTime() %>"><br>
 				<img style="float: right; margin-right: 5px;" src="projectReportTotalTurnoverChart.do?key=${reportSessionKey}&chartWidth=0&chartHeight=0&random=<%= new Date().getTime() %>">
 			</td>
+ -->			
 		</tr>
 	</table>
 	<br>
 	
+<!-- 
 	<img src="projectReportPerWeekChart.do?chartWidth=700&chartHeight=200&random=<%= new Date().getTime() %>" />
-	
+ -->	
 	<div class="GreyFrameFooter">
 		<p>
 		</p>

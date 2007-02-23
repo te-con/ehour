@@ -2,4 +2,5 @@
 
 <!-- spanTarget: report -->
 
+<tiles:insert page="report/reportPerCustomer.jsp" />
 <tiles:insert page="report/reportPerUserOnProject.jsp" />

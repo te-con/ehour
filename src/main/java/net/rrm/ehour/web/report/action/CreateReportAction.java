@@ -145,6 +145,7 @@ public class CreateReportAction extends Action
 		Enumeration attribs = session.getAttributeNames();
 		String		attrib;
 		
+		logger.debug("Removing old reports from session..");
 		while (attribs.hasMoreElements())
 		{
 			attrib = (String)attribs.nextElement();
