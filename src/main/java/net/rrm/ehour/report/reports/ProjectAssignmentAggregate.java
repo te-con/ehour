@@ -98,8 +98,7 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 	 */
 	public int compareTo(ProjectAssignmentAggregate pagO)
 	{
-		// TODO
-		return 0;
+		return this.getProjectAssignment().getProject().compareTo(pagO.getProjectAssignment().getProject());
 	}
 	
 	public String toString()

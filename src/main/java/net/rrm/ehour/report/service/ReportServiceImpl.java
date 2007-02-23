@@ -226,7 +226,8 @@ public class ReportServiceImpl implements ReportService
 				logger.debug("Using customers to determine projects");
 				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(),
 																userCriteria.isOnlyActiveProjects());
-				projectIds = (Integer[])ReportUtil.getPKsFromDomainObjects(projects).toArray();
+				
+				projectIds = (Integer[])ReportUtil.getPKsFromDomainObjects(projects).toArray(new Integer[]{});
 			}
 			else
 			{
@@ -261,7 +262,7 @@ public class ReportServiceImpl implements ReportService
 				users = userDAO.findUsersForDepartments(null,
 														userCriteria.getDepartmentIds(),
 														userCriteria.isOnlyActiveUsers());
-				userIds = (Integer[])ReportUtil.getPKsFromDomainObjects(users).toArray();
+				userIds = (Integer[])ReportUtil.getPKsFromDomainObjects(users).toArray(new Integer[]{});
 			}
 			else
 			{
