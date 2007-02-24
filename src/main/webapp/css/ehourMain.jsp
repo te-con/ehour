@@ -222,6 +222,7 @@ div.GreyNavBody a:visited
 
 div.GreyNavBody a:hover
 {
+	color: #233e55;
 	text-decoration: underline;
 }
 
@@ -254,10 +255,10 @@ div.GreyFrame
 
 div.GreyFrame h3
 {
-  background: 	url(<c:url value="/img/grey/corner_right_top.gif" />) top right no-repeat;
-  line-height:	11px;
-  padding:		0;
-	  margin:		0 0 0px 11px;
+	background: 	url(<c:url value="/img/grey/corner_right_top.gif" />) top right no-repeat;
+	line-height:	11px;
+	padding:		0;
+	margin:		0 0 0px 11px;
 	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 }

@@ -17,6 +17,10 @@ eHour development roadmap
   * IE6 compatibility (please request more browsers if needed)
   * Increase code coverage
 
+* Version 0.21
+
+  * Add charts to reporting
+
 * Version 0.2 
 
   * Add reporting for administrators;

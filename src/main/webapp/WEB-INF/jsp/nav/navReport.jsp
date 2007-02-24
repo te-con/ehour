@@ -9,6 +9,7 @@
 
 	<div class="GreyNavBody">
 		<ul>
+			<li><a href="" onClick="return showCriteria()">Show criteria</a>
 			<li>Individual report
 			<li>Overall report
 			<li>Save report criteria for future reuse

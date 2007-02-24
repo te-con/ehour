@@ -149,11 +149,24 @@ function updateReport(reportName, key, forId)
 	return false;
 }
 
-//
+// Set report
 function setReportName(rn)
 {
 	var form = dojo.byId('criteriaForm');
 	form.reportName.value = rn;
+}
+
+// Show criteria
+function showCriteria()
+{
+	var criteriaPane = dojo.widget.getWidgetById("criteriaPane");
+
+	if (!criteriaPane.open)
+	{
+		criteriaPane.onLabelClick();
+	}
+	
+	return false;
 }
 
 // change form's action according to event

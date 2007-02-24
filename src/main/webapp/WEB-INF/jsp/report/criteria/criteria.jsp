@@ -262,7 +262,8 @@
 
 	<tr>
 		<td colspan="2" align="right">
-			<input style="float: bottom" type="submit" id="criteriaSubmit" value=">>">
+			<br>
+			<input style="float: bottom" type="submit" class="submitButtonBlue" id="criteriaSubmit" value="show report >>">
 		</td>
 	</tr>
 </table>
