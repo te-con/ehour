@@ -161,7 +161,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		availCriteria = new AvailableCriteria();
 		reportCriteria.setAvailableCriteria(availCriteria);
 		
-		expect(userDAO.findAll()).andReturn(new ArrayList<User>());
+		expect(userDAO.findUsersByNameMatch(null, false) ).andReturn(new ArrayList<User>());
 		replay(userDAO);
 		
 		expect(customerDAO.findAll(true)).andReturn(new ArrayList<Customer>());
