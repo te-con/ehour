@@ -3,6 +3,14 @@
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<!-- spanTarget: report -->
+
+<script>
+	// TODO fix this
+	var form = dojo.byId('criteriaForm');
+	form.reportName.value = 'userReport';
+</script>
+
 <div class="ContentFrame">
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>

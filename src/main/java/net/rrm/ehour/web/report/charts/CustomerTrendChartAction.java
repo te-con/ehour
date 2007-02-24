@@ -1,5 +1,5 @@
 /**
- * Created on Feb 5, 2007
+ * Created on Feb 23, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.userreport.action;
+package net.rrm.ehour.web.report.charts;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +29,6 @@ import java.util.Map;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
-import net.rrm.ehour.web.report.charts.AbstractChartAction;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -41,13 +40,10 @@ import org.jfree.data.time.Week;
  * TODO 
  **/
 
-public class ProjectReportOverviewChartAction extends AbstractChartAction
+public class CustomerTrendChartAction  extends AbstractChartAction
 {
-	/**
-	 * Create chart
-	 * @param reportData
-	 * @return
-	 */
+
+	@Override
 	protected JFreeChart getChart(ReportData reportData)
 	{
 		List<WeeklyProjectAssignmentAggregate>	results;
@@ -90,6 +86,6 @@ public class ProjectReportOverviewChartAction extends AbstractChartAction
 		JFreeChart chart = ChartFactory.createTimeSeriesChart("Hours per customer", "Week", "Hours", 
 				seriesCollection, true, true, true);
 		
-		return chart;
+		return chart;		
 	}
 }

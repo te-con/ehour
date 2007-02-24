@@ -1,8 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/css;" %>
-.dojoTabPaneWrapper {
-  padding : 10px 10px 10px 10px;
-}
 .reportCriteriaLabel
 {
 	text-align: left;
@@ -79,12 +76,12 @@
 
 .reportTable tr.reportTotal td
 {
-	font:  0.9m Geneva, Arial, Helvetica, sans-serif;	
+	font:  0.9em Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	padding: 0 5px 0 5px;
 }
 
-.reportTable tr.customerRow
+.reportTable tr.dataRow
 {
 	background-color: #eef6fe;
 	padding-bottom: 1px;
@@ -94,19 +91,53 @@
 }
 
 
-.reportTable tr.customerRow td
+.reportTable tr.dataRow td
 {
 	color:	#536e87;
 	border-right-style: solid;
 	border-right-color:#a1bcd7;
 	border-right-width: 1px;
 	padding: 0 5px 0 5px;
-		font:  0.9m Geneva, Arial, Helvetica, sans-serif;	
+	font:  0.9em Geneva, Arial, Helvetica, sans-serif;	
 }
 
-.reportTable tr.customerRow td.lastChild
+.reportTable tr.dataRow td.lastChild
 {
 	border: 0;
+}
+
+.reportTable tr.dataRow a:link
+{
+	color: #233e55;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+.reportTable tr.dataRow a:visited
+{
+	color: #233e55;
+	font-weight: normal;	
+	text-decoration: none;
+}
+
+.reportTable tr.dataRow a:hover
+{
+	text-decoration: underline;
+}
+
+.reportTable tr.dataRow a:active
+{
+	text-decoration: none
+}
+
+.reportTable tr.totalRow td
+{
+	color:	#536e87;
+	border-top-style: solid;
+	border-top-color:#a1bcd7;
+	border-top-width: 1px;
+	padding: 0 5px 5px 5px;
+	font: bold 0.9em Geneva, Arial, Helvetica, sans-serif;
 }
 
 .reportTable th
@@ -115,5 +146,5 @@
 	color: #536e87;
 	margin: 0;
 	padding: 0;
-	text-align: center;
+	text-align: left;
 }

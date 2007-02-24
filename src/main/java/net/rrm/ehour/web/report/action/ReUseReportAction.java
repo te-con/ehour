@@ -1,5 +1,5 @@
 /**
- * Created on 26-jan-2007
+ * Created on Feb 24, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,7 +21,9 @@
  *
  */
 
-package net.rrm.ehour.web.userreport.action;
+package net.rrm.ehour.web.report.action;
+
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,47 +31,45 @@ import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.web.report.form.ReportChartForm;
-import net.rrm.ehour.web.report.util.ChartUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
+
 /**
  * TODO 
  **/
 
-public abstract class ProjectReportChartAction extends Action
+public abstract class ReUseReportAction extends Action
 {
 	protected	Logger			logger = Logger.getLogger(this.getClass());
 	
 	/**
 	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception
 	{
+		ReportChartForm	chartForm = (ReportChartForm)form;
 		String			sessionKey;
 		HttpSession		session;
-		ReportData			reportData;
-		JFreeChart		chart;
-		ReportChartForm	chartForm = (ReportChartForm)form;
-		int				chartWidth;
-		int				chartHeight;
+		ReportData		reportData;
+		ActionForward	fwd = null;
 		
-		response.setContentType("image/png");
 		response.setHeader("Cache-Control", "no-cache");
 
 		session = request.getSession();
 		sessionKey = chartForm.getKey();
 
-		chartWidth = (chartForm.getChartWidth() == 0) ? 250 : chartForm.getChartWidth();
-		chartHeight = (chartForm.getChartHeight() == 0) ? 120 : chartForm.getChartHeight();
-		
 		// TODO find out how sessionKey can be null ?
 		if (sessionKey != null)
 		{
@@ -77,10 +77,7 @@ public abstract class ProjectReportChartAction extends Action
 			
 			if (reportData != null)
 			{
-				chart = getChart(reportData);
-				ChartUtil.changeChartStyle(chart);
-				
-				ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, chartWidth, chartHeight);
+				fwd = reUseReport(mapping, request, response, chartForm, reportData);
 			}
 			else
 			{
@@ -92,13 +89,19 @@ public abstract class ProjectReportChartAction extends Action
 			logger.error("No session key provided while creating chart?");
 		}
 		
-		return null;
+		return fwd;
 	}
-	
+
 	/**
-	 * Create chart
+	 * Do something with the report
+	 * @param response
+	 * @param chartForm
 	 * @param reportData
 	 * @return
 	 */
-	protected abstract JFreeChart getChart(ReportData reportData);
+	protected abstract ActionForward reUseReport(ActionMapping mapping,
+													HttpServletRequest request,
+													HttpServletResponse response,
+													ReportChartForm chartForm,
+													ReportData reportData)  throws IOException;
 }

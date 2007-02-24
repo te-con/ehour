@@ -1,7 +1,6 @@
 // if true then submit to report, if false update criteria 
 var clickIsSubmit = true;
 
-
 // initialized
 function init()
 {
@@ -24,6 +23,14 @@ function init()
 										 }, replacedNode);  
 
 	connectEvents();
+}
+
+// set the report to create when the criteria form is submitted
+// reportName should match AggregateReport.getReportName
+function setReportName(reportName)
+{
+	var form = dojo.byId('criteriaForm');
+	form.reportName.value = reportName;
 }
 
 //  bind the form and add onchange and onclick events on dropdowns and checkboxes
@@ -107,6 +114,7 @@ function updateUsers(evt)
 	updateCriteria(3);
 }
 
+
 function updateCriteria(updateType)
 {
 	var criteriaForm = dojo.byId('criteriaForm');
@@ -124,6 +132,19 @@ function updateCriteria(updateType)
 	criteriaForm.action = contextRoot + '/updateCriteria.do';
 	
 	dojo.byId('criteriaSubmit').click();
+}
+
+// update the report, re-using the reportdata
+function updateReport(reportName, key)
+{
+    dojo.io.bind({
+                   url: 'showReport.do',
+                   handler: criteriaSubmitted,
+                   content: {key: key,
+                   			 reportName: reportName}
+                });  		
+	
+	return false;
 }
 
 // change form's action according to event

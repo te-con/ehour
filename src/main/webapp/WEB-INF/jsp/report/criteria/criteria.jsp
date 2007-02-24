@@ -26,7 +26,8 @@
 		
 			<form method="post" id="criteriaForm">
 			<input type="hidden" name="fromForm" value="yes">
-			<input type="hidden" name="updateType" value="0">			
+			<input type="hidden" name="updateType" value="0">	
+			<input type="hidden" name="reportName" value="customerReport" />		
 
 			<table class="reportCriteriaTableTable" style="width: auto">
 			

@@ -50,6 +50,8 @@ public class ReportCriteriaForm extends ActionForm
 	
 	private	int		updateType;
 	
+	private	String	reportName;
+	
 	/**
 	 * 
 	 */
@@ -252,5 +254,21 @@ public class ReportCriteriaForm extends ActionForm
 	public void setUpdateType(int event)
 	{
 		this.updateType = event;
+	}
+
+	/**
+	 * @return the reportName
+	 */
+	public String getReportName()
+	{
+		return reportName;
+	}
+
+	/**
+	 * @param reportName the reportName to set
+	 */
+	public void setReportName(String reportType)
+	{
+		this.reportName = reportType;
 	}
 }

@@ -24,10 +24,10 @@
     <definition name=".ehour.report.criteria.projects" path="/WEB-INF/jsp/report/criteria/criteriaProjectList.jsp" />
     <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteria/criteriaUserList.jsp" />        
 
-	<!-- Report criteria small version-->
-    <definition name=".ehour.report.criteria.small" path="/WEB-INF/jsp/report/criteriaSmall.jsp" />	    
+	<!-- Report show customer report -->    
+    <definition name=".ehour.report.customerReport" path="/WEB-INF/jsp/report/report/reportPerCustomer.jsp" />	        
 
-	<!-- Report criteria aggregate report-->    
-    <definition name=".ehour.report.showReport" path="/WEB-INF/jsp/report/aggregateReports.jsp" />	        
+	<!-- Report show customer report -->    
+    <definition name=".ehour.report.userReport" path="/WEB-INF/jsp/report/report/reportPerUser.jsp" />	        
 	
 </tiles-definitions>

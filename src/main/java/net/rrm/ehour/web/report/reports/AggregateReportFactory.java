@@ -23,11 +23,7 @@
 
 package net.rrm.ehour.web.report.reports;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.web.util.WebConstants;
 
 /**
  * Factory for aggregate reports
@@ -35,64 +31,35 @@ import net.rrm.ehour.web.util.WebConstants;
 
 public class AggregateReportFactory
 {
+	public final static String	USER_REPORT ="userReport";
+	public final static String	CUSTOMER_REPORT ="customerReport";
+	
 	/**
 	 * Create reports based on user role
 	 * @param userRole
 	 * @param reportData
 	 * @return
 	 */
-	public static List<AggregateReport> createReports(String userRole, ReportData reportData)
+	public static AggregateReport createReport(String reportName, ReportData reportData)
 	{
-		List<AggregateReport>	reports = null;
+		AggregateReport	report;
 		
-		if (userRole.equals(WebConstants.ROLE_CONSULTANT))
+		// TODO make this a bit more configurable
+		if (reportName.equals(USER_REPORT))
 		{
-			reports = createConsultantRoleReports(reportData);
+			report = new UserReport();
 		}
-		else if (userRole.equals(WebConstants.ROLE_REPORT))
+		else if (reportName.equals(CUSTOMER_REPORT))
 		{
-			reports = creatReportRoleReports(reportData);
+			report = new CustomerReport();
 		}
-		return reports;
-	}
-	
-	/**
-	 * Create reports specific for consultant role
-	 * @param reportData
-	 * @return
-	 */	
-	private static List<AggregateReport> createConsultantRoleReports(ReportData reportData)
-	{
-		AggregateReport	customerReport;
-		List<AggregateReport>	reports = new ArrayList<AggregateReport>();
+		else
+		{
+			return null;
+		}
 		
-		customerReport = new CustomerReport();
-		customerReport.initialize(reportData);
-		
-		reports.add(customerReport);
-		
-		return reports;
-	}
-	
-	/**
-	 * Create reports specific for report role
-	 * @param reportData
-	 * @return
-	 */
-	private static List<AggregateReport> creatReportRoleReports(ReportData reportData)
-	{
-		AggregateReport			aggReport;
-		List<AggregateReport>	reports = new ArrayList<AggregateReport>();
-		
-		aggReport = new CustomerReport();
-		aggReport.initialize(reportData);
-		reports.add(aggReport);
+		report.initialize(reportData);
 
-		aggReport = new UserReport();
-		aggReport.initialize(reportData);
-		reports.add(aggReport);
-
-		return reports;
-		
-	}	
+		return report;
+	}
 }

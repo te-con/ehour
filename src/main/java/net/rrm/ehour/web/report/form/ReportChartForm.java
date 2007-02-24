@@ -41,6 +41,7 @@ public class ReportChartForm extends ActionForm
 	private	String	key;
 	private	int		chartWidth;
 	private	int		chartHeight;
+	private	String	reportName;
 	
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
@@ -90,5 +91,19 @@ public class ReportChartForm extends ActionForm
 	public void setKey(String sessionKey)
 	{
 		this.key = sessionKey;
+	}
+	/**
+	 * @return the reportName
+	 */
+	public String getReportName()
+	{
+		return reportName;
+	}
+	/**
+	 * @param reportName the reportName to set
+	 */
+	public void setReportName(String reportName)
+	{
+		this.reportName = reportName;
 	}
 }

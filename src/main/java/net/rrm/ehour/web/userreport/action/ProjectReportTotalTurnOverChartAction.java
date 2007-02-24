@@ -39,7 +39,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
  *  TODO FIXME
  **/
 
-public class ProjectReportTotalTurnOverChartAction extends Action//ProjectReportChartAction
+public class ProjectReportTotalTurnOverChartAction extends Action//AbstractChartAction
 {
 	/**
 	 * Create chart

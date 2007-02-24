@@ -23,9 +23,9 @@
 
 package net.rrm.ehour.web.report.action;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,14 +38,11 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
-import net.rrm.ehour.web.report.reports.AggregateReport;
-import net.rrm.ehour.web.report.reports.AggregateReportFactory;
 import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -54,7 +51,7 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class CreateReportAction extends Action
+public class CreateReportAction extends ShowExistingReportAction
 {
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
@@ -70,15 +67,42 @@ public class CreateReportAction extends Action
 	{
 		ReportCriteriaForm	rcForm = (ReportCriteriaForm)form;
 		UserCriteria		uc;
-		ReportData				reportData;
+		ReportData			reportData;
 		String				sessionKey;
 		HttpSession			session = request.getSession();
 		String				param;
-		User				loggedInUser;
-		boolean				reportRole = false;
-		
 		
 		param = mapping.getParameter();
+		
+		uc = getUserCriteria(param, rcForm);
+		reportCriteria.setUserCriteria(uc);
+		
+		reportData = reportService.createReportData(reportCriteria);
+
+		removeOldReportData(session);
+		
+		super.createAndStoreReport(request, rcForm.getReportName(), reportData);
+
+		sessionKey = generateSessionKey();
+		session.setAttribute(sessionKey, reportData);
+		request.setAttribute("reportSessionKey", sessionKey);
+		request.setAttribute("config", config);
+		
+		response.setHeader("Cache-Control", "no-cache");
+		return mapping.findForward(rcForm.getReportName());
+	}
+	
+	/**
+	 * Get the user criteria from the form and check authorization
+	 * @param param
+	 * @param rcForm
+	 * @return
+	 * @throws ParseException
+	 */
+	private UserCriteria getUserCriteria(String param, ReportCriteriaForm rcForm) throws ParseException
+	{
+		UserCriteria 	uc;
+		User			loggedInUser;
 		
 		uc = UserCriteriaAssembler.getUserCriteria(rcForm);
 		
@@ -86,7 +110,6 @@ public class CreateReportAction extends Action
 			AuthUtil.hasRole(WebConstants.ROLE_REPORT))
 		{
 			uc.setSingleUser(false);
-			reportRole = true;
 		}
 		else
 		{
@@ -98,42 +121,9 @@ public class CreateReportAction extends Action
 			{
 				logger.warn(loggedInUser + " tried to access overall reporting without proper privileges !");
 			}
-		}
+		}		
 		
-		reportCriteria.setUserCriteria(uc);
-		
-		reportData = reportService.createReportData(reportCriteria);
-
-		removeOldReportData(session);
-		
-		createAggregateReports(reportRole, request, reportData);
-		
-		sessionKey = generateSessionKey();
-		session.setAttribute(sessionKey, reportData);
-		request.setAttribute("reportSessionKey", sessionKey);
-		request.setAttribute("config", config);
-		
-		response.setHeader("Cache-Control", "no-cache");
-		return mapping.findForward("success");
-	}
-	
-	/**
-	 * Get aggregate reports and put them on the request
-	 * @param reportRole
-	 * @param request
-	 * @param reportData
-	 */
-	private void createAggregateReports(boolean reportRole, HttpServletRequest request, ReportData reportData)
-	{
-		List<AggregateReport>	aggregateReports;
-		
-		aggregateReports = AggregateReportFactory.createReports(reportRole ? WebConstants.ROLE_REPORT : WebConstants.ROLE_CONSULTANT,
-				reportData);
-		
-		for (AggregateReport report : aggregateReports)
-		{
-			request.setAttribute(report.getReportName(), report);
-		}
+		return uc;
 	}
 	
 	/**

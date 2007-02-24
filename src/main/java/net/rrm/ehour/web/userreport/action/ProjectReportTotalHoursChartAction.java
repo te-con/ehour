@@ -37,7 +37,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * TODO  fixme
  **/
 
-public class ProjectReportTotalHoursChartAction extends Action//extends ProjectReportChartAction
+public class ProjectReportTotalHoursChartAction extends Action//extends AbstractChartAction
 {
 	/**
 	 * Create chart
