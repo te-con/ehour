@@ -45,12 +45,12 @@
 						<c:set var="totalTurnOver" value="0" />					
 					
 					
-						<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+						<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 							<td>${userItem.key.lastName}, ${userItem.key.firstName}</td>
 
 						<c:forEach items="${userReport.reportValues[userItem.key]}" var="customerItem" varStatus="customerStatus">
 							<c:if test="${!customerStatus.first}">
-								<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+								<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 								<td>&nbsp;</td>
 							</c:if>					
 								<td><a href=""
@@ -59,7 +59,7 @@
 
 								<c:forEach items="${userReport.reportValues[userItem.key][customerItem.key]}" var="projectItem" varStatus="projectStatus">
 									<c:if test="${!projectStatus.first}">
-										<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+										<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 										<td>&nbsp;</td>
 										<td><a href=""
 												onClick="return updateReport('customerReport', '${reportSessionKey}', '${customerItem.key.customerId}')"

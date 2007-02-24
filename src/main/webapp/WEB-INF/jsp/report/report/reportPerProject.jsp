@@ -41,7 +41,7 @@
 
 						
 					<c:forEach items="${projectReport.reportValues}" var="projectItem" varStatus="status">
-						<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+						<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 							<td>${projectItem.key.name}</td>
 
 						<c:set var="totalHour" value="0" />
@@ -49,13 +49,13 @@
 						
 						<c:forEach items="${projectReport.reportValues[projectItem.key]}" var="customerItem" varStatus="customerStatus">
 							<c:if test="${!customerStatus.first}">
-								<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+								<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 								<td>&nbsp;</td>
 							</c:if>
 
 							<c:forEach items="${projectReport.reportValues[projectItem.key][customerItem.key]}" var="userItem" varStatus="userStatus">
 									<c:if test="${!userStatus.first}">
-										<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+										<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 										<td>&nbsp;</td>
 									</c:if>
 									<td><a href=""

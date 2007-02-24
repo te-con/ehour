@@ -27,7 +27,6 @@
 			<form method="post" id="criteriaForm">
 			<input type="hidden" name="fromForm" value="yes">
 			<input type="hidden" name="updateType" value="0">	
-			<input type="hidden" name="reportName" value="customerReport" />		
 
 			<table class="reportCriteriaTableTable" style="width: auto">
 			
@@ -36,6 +35,14 @@
 					<td><div id="dateStartDiv" class="textInputSmall"></div></td>
 					<td><fmt:message key="report.criteria.until" /></td>
 					<td><div id="dateEndDiv"></div></td>
+					<td><fmt:message key="report.criteria.report" />:</td>
+					<td><select name="reportName"  class="textInputSmall">
+							<option value="customerReport"><fmt:message key="report.report.customerReport" />
+							<option value="userReport"><fmt:message key="report.report.userReport" />
+							<option value="projectReport"><fmt:message key="report.report.projectReport" />														
+						</select>
+					</td>
+					
 				</tr>
 			</table>
 			

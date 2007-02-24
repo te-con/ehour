@@ -42,7 +42,7 @@
 					<c:set var="grandTotalTurnOver" value="0" />					
 						
 					<c:forEach items="${customerReport.reportValues}" var="customerItem" varStatus="status">
-						<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+						<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 							<td>${customerItem.key.name}</td>
 
 						<c:set var="totalHour" value="0" />
@@ -50,20 +50,20 @@
 						
 						<c:forEach items="${customerReport.reportValues[customerItem.key]}" var="projectItem" varStatus="projectStatus">
 							<c:if test="${!projectStatus.first}">
-								<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+								<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 								<td>&nbsp;</td>
 							</c:if>
 								<td><a href=""
 										onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
 										>${projectItem.key.name}</a></td>					
-							
 							<c:forEach items="${customerReport.reportValues[customerItem.key][projectItem.key]}" var="userItem" varStatus="userStatus">
+							
 									<c:if test="${!userStatus.first}">
-										<tr class="dataRow" <c:if test="${status.count % 2 == 0}">style="background-color: #fefeff"</c:if>>
+										<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 										<td>&nbsp;</td>
 										<td><a href=""
 											onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
-											>${projectItem.key.name}</a>a</td>
+											>${projectItem.key.name}</a></td>
 									</c:if>
 									<td><a href=""
 											onClick="return updateReport('userReport', '${reportSessionKey}', '${userItem.projectAssignment.user.userId}')"
