@@ -123,7 +123,10 @@ public class ReportCriteria
 	{
 		reportCriteriaService.syncUserReportCriteria(this, updateType);
 		
-		checkIfUserCriteriaAreAvailable();
+		if (!userCriteria.isSingleUser())
+		{
+			checkIfUserCriteriaAreAvailable();
+		}
 	}	
 	/**
 	 * After the available criteria are synced, check if the user criteria are still valid
@@ -136,8 +139,8 @@ public class ReportCriteria
 	}
 	
 	/**
-	 *  TODO use commons-collection ListUtils.retainall however commons-config depends on collections 2.1 while
-	 *  retainall is introduced in 3.2
+	 *  TODO use commons-collection ListUtils.retainAll however commons-config depends on collections 2.1 while
+	 *  retainAll is introduced in 3.2
 	 *
 	 */
 	private void checkUsers()

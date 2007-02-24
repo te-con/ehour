@@ -213,7 +213,7 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 	@Override
 	public String toString()
 	{
-		return new ToStringBuilder(this).append("reportMap", reportMap).toString();
+		return new ToStringBuilder(this).append("reportName", getReportName()).append("reportMap", reportMap).toString();
 	}
 
 	/**

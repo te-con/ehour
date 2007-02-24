@@ -71,6 +71,7 @@ public class CreateReportAction extends ShowExistingReportAction
 		String				sessionKey;
 		HttpSession			session = request.getSession();
 		String				param;
+		String				reportName;
 		
 		param = mapping.getParameter();
 		
@@ -81,7 +82,9 @@ public class CreateReportAction extends ShowExistingReportAction
 
 		removeOldReportData(session);
 		
-		super.createAndStoreReport(request, rcForm.getReportName(), null, reportData);
+		reportName = getReportName(rcForm, uc);
+		
+		super.createAndStoreReport(request, reportName, null, reportData);
 
 		sessionKey = generateSessionKey();
 		session.setAttribute(sessionKey, reportData);
@@ -89,7 +92,29 @@ public class CreateReportAction extends ShowExistingReportAction
 		request.setAttribute("config", config);
 		
 		response.setHeader("Cache-Control", "no-cache");
-		return mapping.findForward(rcForm.getReportName());
+		return mapping.findForward(reportName);
+	}
+	
+	/**
+	 * Get report name
+	 * @param rcForm
+	 * @param uc
+	 * @return
+	 */
+	private String getReportName(ReportCriteriaForm rcForm, UserCriteria uc)
+	{
+		String	reportName;
+		
+		if (uc.isSingleUser())
+		{
+			reportName = "customerReport";
+		}
+		else
+		{
+			reportName = rcForm.getReportName();
+		}
+		
+		return reportName;
 	}
 	
 	/**
