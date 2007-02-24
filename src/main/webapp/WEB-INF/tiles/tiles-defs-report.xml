@@ -27,7 +27,10 @@
 	<!-- Report show customer report -->    
     <definition name=".ehour.report.customerReport" path="/WEB-INF/jsp/report/report/reportPerCustomer.jsp" />	        
 
-	<!-- Report show customer report -->    
+	<!-- Report show user report -->    
     <definition name=".ehour.report.userReport" path="/WEB-INF/jsp/report/report/reportPerUser.jsp" />	        
+
+	<!-- Report show project report -->    
+    <definition name=".ehour.report.projectReport" path="/WEB-INF/jsp/report/report/reportPerProject.jsp" />	        
 	
 </tiles-definitions>

@@ -135,16 +135,24 @@ function updateCriteria(updateType)
 }
 
 // update the report, re-using the reportdata
-function updateReport(reportName, key)
+function updateReport(reportName, key, forId)
 {
     dojo.io.bind({
                    url: 'showReport.do',
                    handler: criteriaSubmitted,
                    content: {key: key,
-                   			 reportName: reportName}
+                   			 reportName: reportName,
+                   			 forId: forId}
                 });  		
 	
 	return false;
+}
+
+//
+function setReportName(rn)
+{
+	var form = dojo.byId('criteriaForm');
+	form.reportName.value = rn;
 }
 
 // change form's action according to event
@@ -168,14 +176,9 @@ function changeFormAction()
 
 	return true;
 }
-
 	
 // extend FormBind onSubmit to change the form's action
 dojo.lang.extend(dojo.io.FormBind, {onSubmit: function(/*DOMNode*/form)
 									{
 										return changeFormAction();
 									}});
-
-				
-
-									

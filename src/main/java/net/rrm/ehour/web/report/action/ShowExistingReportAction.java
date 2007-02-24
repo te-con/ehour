@@ -48,7 +48,7 @@ public class ShowExistingReportAction extends ReUseReportAction
 										ReportChartForm chartForm,
 										ReportData reportData)  throws IOException
 	{
-		createAndStoreReport(request, chartForm.getReportName(), reportData);
+		createAndStoreReport(request, chartForm.getReportName(), chartForm.getForId(), reportData);
 		return mapping.findForward(chartForm.getReportName());
 	}
 
@@ -58,11 +58,19 @@ public class ShowExistingReportAction extends ReUseReportAction
 	 * @param reportName
 	 * @param reportData
 	 */
-	protected void createAndStoreReport(HttpServletRequest request, String reportName, ReportData reportData)
+	protected void createAndStoreReport(HttpServletRequest request, String reportName, Integer forId, ReportData reportData)
 	{
 		AggregateReport	report;
 		
-		report = AggregateReportFactory.createReport(reportName, reportData);
+		if (forId == null || forId.intValue() == 0)
+		{
+			report = AggregateReportFactory.createReport(reportName, reportData);
+		}
+		else
+		{
+			report = AggregateReportFactory.createReport(reportName, reportData, forId);
+		}
+		
 		request.setAttribute(reportName, report);
 	}
 }

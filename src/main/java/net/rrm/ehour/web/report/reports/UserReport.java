@@ -31,7 +31,7 @@ import net.rrm.ehour.user.domain.User;
  * UserReport (User -> Customer -> Project details)
  **/
 
-public class UserReport extends AggregateReport<User, Customer>
+public class UserReport extends AggregateReport<User, Customer, Integer>
 {
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class UserReport extends AggregateReport<User, Customer>
 	@Override
 	public String getReportName()
 	{
-		return "userReport";
+		return AggregateReportFactory.USER_REPORT;
 	}
 
 	/**

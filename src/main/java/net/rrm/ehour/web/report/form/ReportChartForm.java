@@ -42,14 +42,15 @@ public class ReportChartForm extends ActionForm
 	private	int		chartWidth;
 	private	int		chartHeight;
 	private	String	reportName;
+	private	Integer	forId;
 	
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
 		chartWidth = 0;
 		chartHeight = 0;
-	
-	
+		forId = null;
 	}
+	
 	/**
 	 * @return the chartHeight
 	 */
@@ -105,5 +106,21 @@ public class ReportChartForm extends ActionForm
 	public void setReportName(String reportName)
 	{
 		this.reportName = reportName;
+	}
+
+	/**
+	 * @return the forId
+	 */
+	public Integer getForId()
+	{
+		return forId;
+	}
+
+	/**
+	 * @param forId the forId to set
+	 */
+	public void setForId(Integer forId)
+	{
+		this.forId = forId;
 	}
 }

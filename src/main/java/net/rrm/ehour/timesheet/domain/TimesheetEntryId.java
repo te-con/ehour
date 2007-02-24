@@ -31,8 +31,9 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
-public class TimesheetEntryId implements Serializable
+public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntryId>
 {
 
 	/**
@@ -68,13 +69,14 @@ public class TimesheetEntryId implements Serializable
 		this.entryDate = entryDate;
 	}
 
-
+	@Override
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("entryDate", getEntryDate())
 										.append("assignment", getProjectAssignment()).toString();
 	}
 
+	@Override
 	public boolean equals(Object other)
 	{
 		if ((this == other))
@@ -86,6 +88,7 @@ public class TimesheetEntryId implements Serializable
 								  .append(this.getProjectAssignment(), castOther.getProjectAssignment()).isEquals();
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return new HashCodeBuilder().append(getEntryDate())
@@ -100,6 +103,16 @@ public class TimesheetEntryId implements Serializable
 	public void setProjectAssignment(ProjectAssignment projectAssignment)
 	{
 		this.projectAssignment = projectAssignment;
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(TimesheetEntryId object)
+	{
+		return new CompareToBuilder()
+			.append(this.projectAssignment, object.projectAssignment)
+			.append(this.entryDate, object.entryDate).toComparison();
 	}
 
 }

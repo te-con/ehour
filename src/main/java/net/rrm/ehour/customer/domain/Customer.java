@@ -7,8 +7,9 @@ import net.rrm.ehour.domain.DomainObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
-public class Customer extends DomainObject<Integer> implements Comparable<Customer>
+public class Customer extends DomainObject<Integer, Customer>
 {
 
 	// Fields
@@ -145,22 +146,6 @@ public class Customer extends DomainObject<Integer> implements Comparable<Custom
 		this.active = active;
 	}
 
-	public int compareTo(Customer o)
-	{
-		int compare = 0;
-		
-		if (name != null && o.getName() != null)
-		{
-			compare = name.compareTo(o.getName());
-		}
-		
-		if (compare == 0)
-		{
-			compare = customerId.compareTo(customerId);
-		}
-		
-		return compare;
-	}
 	
 	@Override
 	public boolean equals(Object other)
@@ -188,6 +173,17 @@ public class Customer extends DomainObject<Integer> implements Comparable<Custom
 	public Integer getPK()
 	{
 		return customerId;
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Customer object)
+	{
+		return new CompareToBuilder()
+		.append(this.name, object.name)
+			.append(this.customerId, object.customerId)
+			.append(this.code, object.code).toComparison();
 	}	
 
 }

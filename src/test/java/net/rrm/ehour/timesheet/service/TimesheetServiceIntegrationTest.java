@@ -79,20 +79,20 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 	}
 
 
-	public void testReport()
-	{
-		ReportCriteria criteria = new ReportCriteria();
-		UserCriteria	uc = new UserCriteria();
-		uc.setSingleUser(true);
-		uc.setUserIds(new Integer[]{1});
-		criteria.setUserCriteria(uc);
-		
-		AvailableCriteria ac = new AvailableCriteria();
-		ac.setReportRange(new DateRange(new Date(2006 - 1900, 2 - 1, 1), new Date(2008 - 1900, 1, 1)));
-		criteria.setAvailableCriteria(ac);
-		
-		reportService.createReportData(criteria);
-	}
+//	public void testReport()
+//	{
+//		ReportCriteria criteria = new ReportCriteria();
+//		UserCriteria	uc = new UserCriteria();
+//		uc.setSingleUser(true);
+//		uc.setUserIds(new Integer[]{1});
+//		criteria.setUserCriteria(uc);
+//		
+//		AvailableCriteria ac = new AvailableCriteria();
+//		ac.setReportRange(new DateRange(new Date(2006 - 1900, 2 - 1, 1), new Date(2008 - 1900, 1, 1)));
+//		criteria.setAvailableCriteria(ac);
+//		
+//		reportService.createReportData(criteria);
+//	}
 	
 	/**
 	 * @param reportService the reportService to set

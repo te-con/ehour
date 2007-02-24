@@ -45,7 +45,7 @@ public class ReportUtil
 	{
 		List<PK> pks = new ArrayList<PK>();
 		
-		for (DomainObject<PK> domainObject : domainObjects)
+		for (DomainObject<PK,? extends DomainObject> domainObject : domainObjects)
 		{
 			pks.add(domainObject.getPK());
 		}

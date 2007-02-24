@@ -34,7 +34,7 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
  * Structure: Customer -> Project -> Aggregate
  **/
 
-public class CustomerReport extends AggregateReport<Customer, Project>
+public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 {
 	private static final long serialVersionUID = 6365903846883586472L;
 
@@ -53,7 +53,7 @@ public class CustomerReport extends AggregateReport<Customer, Project>
 	@Override
 	public String getReportName()
 	{
-		return "customerReport";
+		return AggregateReportFactory.CUSTOMER_REPORT;
 		
 	}
 

@@ -82,6 +82,7 @@ public class DummyDataGenerator
 		
 		user = getUser();
 		user.setUserId(userId);
+
 		prjAsg.setUser(user);
 		prjAsg.setActive(true);
 		

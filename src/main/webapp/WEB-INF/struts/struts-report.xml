@@ -28,8 +28,9 @@
 		<action name="ReportCriteriaForm"
 				parameter="report"
 				path="/createReport">
-			<forward name="customerReport" path=".ehour.report.customerReport" />	
-			<forward name="userReport" path=".ehour.report.userReport" />				
+			<forward name="customerReport" path=".ehour.report.customerReport" />
+			<forward name="userReport" path=".ehour.report.userReport" />
+			<forward name="projectReport" path=".ehour.report.projectReport" />
 		</action>		
 
 		<!-- Report show customer chart -->
@@ -43,6 +44,7 @@
 				path="/showReport">
 			<forward name="customerReport" path=".ehour.report.customerReport" />	
 			<forward name="userReport" path=".ehour.report.userReport" />
+			<forward name="projectReport" path=".ehour.report.projectReport" />			
 		</action>
 
 	</action-mappings>

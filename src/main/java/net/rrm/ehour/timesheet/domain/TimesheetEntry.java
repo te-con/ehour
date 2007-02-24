@@ -5,8 +5,9 @@ import net.rrm.ehour.domain.DomainObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
-public class TimesheetEntry extends DomainObject<TimesheetEntryId> implements Comparable<TimesheetEntry>
+public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntry>
 {
 
 	/**
@@ -78,14 +79,18 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId> implements Co
 		return new HashCodeBuilder().append(getEntryId()).toHashCode();
 	}
 
-	public int compareTo(TimesheetEntry o)
-	{
-		return this.getEntryId().getEntryDate().compareTo(o.getEntryId().getEntryDate());
-	}
-
 	@Override
 	public TimesheetEntryId getPK()
 	{
 		return entryId;
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(TimesheetEntry object)
+	{
+		return new CompareToBuilder()
+			.append(this.entryId, object.entryId).toComparison();
 	}
 }

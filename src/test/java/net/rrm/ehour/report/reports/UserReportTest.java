@@ -53,6 +53,8 @@ public class UserReportTest extends TestCase
 	{
 		ReportData	reportData = new ReportData();
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		User user = DummyDataGenerator.getUser();
+		user.setUserId(1);
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
@@ -65,7 +67,7 @@ public class UserReportTest extends TestCase
 		report.initialize(reportData);
 
 		assertEquals(2, report.getReportValues().keySet().size());
-		assertEquals(3, report.getReportValues().get(new User(1)).size());
+		assertEquals(3, report.getReportValues().get(user).size());
 	}
 
 }

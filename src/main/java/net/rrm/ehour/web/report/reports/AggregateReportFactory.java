@@ -33,6 +33,19 @@ public class AggregateReportFactory
 {
 	public final static String	USER_REPORT ="userReport";
 	public final static String	CUSTOMER_REPORT ="customerReport";
+	public final static String	PROJECT_REPORT ="projectReport";
+	
+	
+	/**
+	 * 
+	 * @param reportName
+	 * @param reportData
+	 * @return
+	 */
+	public static AggregateReport createReport(String reportName, ReportData reportData)
+	{
+		return createReport(reportName, reportData, null);
+	}
 	
 	/**
 	 * Create reports based on user role
@@ -40,9 +53,9 @@ public class AggregateReportFactory
 	 * @param reportData
 	 * @return
 	 */
-	public static AggregateReport createReport(String reportName, ReportData reportData)
+	public static AggregateReport createReport(String reportName, ReportData reportData, Integer forId)
 	{
-		AggregateReport	report;
+		AggregateReport<?, ?, Integer>	report;
 		
 		// TODO make this a bit more configurable
 		if (reportName.equals(USER_REPORT))
@@ -53,12 +66,16 @@ public class AggregateReportFactory
 		{
 			report = new CustomerReport();
 		}
+		else if (reportName.equals(PROJECT_REPORT))
+		{
+			report = new ProjectReport();
+		}
 		else
 		{
 			return null;
 		}
 		
-		report.initialize(reportData);
+		report.initialize(reportData, forId);
 
 		return report;
 	}

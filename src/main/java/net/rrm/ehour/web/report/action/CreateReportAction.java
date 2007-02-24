@@ -81,7 +81,7 @@ public class CreateReportAction extends ShowExistingReportAction
 
 		removeOldReportData(session);
 		
-		super.createAndStoreReport(request, rcForm.getReportName(), reportData);
+		super.createAndStoreReport(request, rcForm.getReportName(), null, reportData);
 
 		sessionKey = generateSessionKey();
 		session.setAttribute(sessionKey, reportData);

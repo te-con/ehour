@@ -29,12 +29,13 @@ import java.util.Date;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
  * TODO 
  **/
 
-public class TimesheetCommentId implements Serializable
+public class TimesheetCommentId implements Serializable, Comparable<TimesheetCommentId>
 {
 	/**
 	 * 
@@ -110,5 +111,17 @@ public class TimesheetCommentId implements Serializable
 	public int hashCode()
 	{
 		return new HashCodeBuilder().append(getUserId()).append(getCommentDate()).toHashCode();
-	}	
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(TimesheetCommentId object)
+	{
+		return new CompareToBuilder()
+			.append(this.commentDate, object.commentDate)
+			.append(this.userId, object.userId).toComparison();
+	}
+
+	
 }

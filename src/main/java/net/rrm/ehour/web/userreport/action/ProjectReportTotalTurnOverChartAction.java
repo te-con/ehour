@@ -23,16 +23,10 @@
 
 package net.rrm.ehour.web.userreport.action;
 
-import java.util.Set;
-
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.web.report.reports.CustomerReport;
 
 import org.apache.struts.action.Action;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *

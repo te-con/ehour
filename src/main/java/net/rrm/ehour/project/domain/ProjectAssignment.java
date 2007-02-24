@@ -9,8 +9,9 @@ import net.rrm.ehour.user.domain.User;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
-public class ProjectAssignment extends DomainObject<Integer>
+public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 {
 
 	// Fields    
@@ -255,4 +256,18 @@ public class ProjectAssignment extends DomainObject<Integer>
 	{
 		return assignmentId;
 	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(ProjectAssignment object)
+	{
+		return new CompareToBuilder()
+			.append(this.project, object.project)
+			.append(this.dateEnd, object.dateEnd)
+			.append(this.dateStart, object.dateStart)
+			.append(this.user, object.user)
+			.append(this.assignmentId, object.assignmentId).toComparison();
+	}
+
 }

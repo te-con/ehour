@@ -7,8 +7,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.domain.DomainObject;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
-public class Project extends DomainObject<Integer> implements Comparable<Project>
+public class Project extends DomainObject<Integer, Project>
 {
 
 	// Fields    
@@ -169,21 +170,7 @@ public class Project extends DomainObject<Integer> implements Comparable<Project
 		this.projectAssignments = projectAssignments;
 	}
 
-	
-	/**
-	 * Satisfy the Comparable contract
-	 */
-	public int compareTo(Project o)
-	{
-		int	customerCompare = customer.compareTo(o.getCustomer());
-		
-		if (customerCompare == 0)
-		{
-			return name.compareTo(o.getName());
-		}
-		
-		return customerCompare;
-	}
+
 	
 	/**
 	 * Equals
@@ -218,6 +205,18 @@ public class Project extends DomainObject<Integer> implements Comparable<Project
 	public int hashCode()
 	{
 		return new HashCodeBuilder().append(getProjectId()).toHashCode();
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Project object)
+	{
+		return new CompareToBuilder()
+			.append(this.name, object.name)
+			.append(this.projectCode, object.projectCode)
+			.append(this.projectId, object.projectId)
+			.append(this.customer, object.customer).toComparison();
 	}	
 
 }

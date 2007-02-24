@@ -28,12 +28,13 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import net.rrm.ehour.domain.DomainObject;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
  * TODO 
  **/
 
-public class TimesheetComment extends DomainObject<TimesheetCommentId>
+public class TimesheetComment extends DomainObject<TimesheetCommentId, TimesheetComment>
 {
 	/**
 	 * 
@@ -114,5 +115,16 @@ public class TimesheetComment extends DomainObject<TimesheetCommentId>
 	public TimesheetCommentId getPK()
 	{
 		return commentId;
-	}	
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(TimesheetComment object)
+	{
+		return new CompareToBuilder()
+			.append(this.comment, object.comment)
+			.append(this.commentId, object.commentId).toComparison();
+	}
+
 }

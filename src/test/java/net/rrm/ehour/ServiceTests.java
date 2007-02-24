@@ -71,6 +71,7 @@ public class ServiceTests
 		suite.addTestSuite(ReportUtilTest.class);
 		
 		suite.addTestSuite(UserReportTest.class);
+		suite.addTestSuite(CustomerReportTest.class);
 		//$JUnit-END$
 		return suite;
 	}

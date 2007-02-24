@@ -1,5 +1,5 @@
 /**
- * Created on Dec 4, 2006
+ * Created on Feb 24, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,44 +21,35 @@
  *
  */
 
-package net.rrm.ehour.domain;
+package net.rrm.ehour.web.report.reports;
 
-import java.io.Serializable;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
- * Domain Object
+ * TODO 
  **/
 
-public abstract class DomainObject <PK extends Serializable, DO extends Serializable> implements Serializable, Comparable<DO>
+public class ProjectReport extends AggregateReport<Project, Customer, Integer>
 {
-	/**
-	 * Get primary key
-	 * @return
-	 */
-	public abstract PK getPK();
 
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object)
+	@Override
+	protected Customer getChildKey(ProjectAssignmentAggregate aggregate)
 	{
-		if (!(object instanceof DomainObject))
-		{
-			return false;
-		}
-		DomainObject rhs = (DomainObject) object;
-		return new EqualsBuilder()
-					.append(getPK(), rhs.getPK()).isEquals();
+		return aggregate.getProjectAssignment().getProject().getCustomer();
 	}
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode()
+	@Override
+	public String getReportName()
 	{
-		return new HashCodeBuilder(-1766206347, 615682397)
-					.append(getPK()).toHashCode();
+		return AggregateReportFactory.PROJECT_REPORT;
 	}
+
+	@Override
+	protected Project getRootKey(ProjectAssignmentAggregate aggregate)
+	{
+		return aggregate.getProjectAssignment().getProject();
+	}
+
 }

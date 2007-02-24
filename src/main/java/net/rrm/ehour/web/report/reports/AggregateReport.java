@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportData;
@@ -38,13 +39,14 @@ import org.apache.log4j.Logger;
 
 /**
  * Generic class for the aggregate 3 level (web)reports
- * RK = root key, CK = client key 
+ * RK = root key, CK = client key, PK = primary key of the root key
  **/
 
-public abstract class AggregateReport<RK extends Comparable, CK extends Comparable>
+public abstract class AggregateReport<RK extends DomainObject, CK extends DomainObject, PK extends Comparable>
 {
 	protected ReportCriteria	reportCriteria;
 	protected Logger			logger = Logger.getLogger(this.getClass());
+	private	  PK				forId;
 
 	// nest nest nest...
 	protected SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>	reportMap;
@@ -55,15 +57,27 @@ public abstract class AggregateReport<RK extends Comparable, CK extends Comparab
 	 */
 	public void initialize(ReportData reportData)
 	{
+		initialize(reportData, null);
+	}
+	
+	/**
+	 * Initialize the webreport for a specific id 
+	 * @param reportData
+	 * @param forID the ID to generate the report for (null to ignore)
+	 */
+	public void initialize(ReportData reportData, PK forId)
+	{
 		Date								profileStart = new Date();
 		RK									rootKey;
 		CK									childKey;
 		SortedMap<CK, Set<ProjectAssignmentAggregate>>	childMap;
 		Set<ProjectAssignmentAggregate>		aggregatesPerChild;
 		
+		this.forId = forId;
+		
 		reportMap = new TreeMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>();
 
-		logger.debug("Initializing " + getReportName() + " report");
+		logger.debug("Initializing " + getReportName() + " report" + ((forId != null) ? " for id " + forId : ""));
 
 		reportCriteria = reportData.getReportCriteria();
 		
@@ -72,6 +86,13 @@ public abstract class AggregateReport<RK extends Comparable, CK extends Comparab
 			logger.debug("Found aggregate : " + aggregate);
 			
 			rootKey = getRootKey(aggregate);
+			
+			// should we ignore this entry?
+			if (forId != null && !(rootKey.getPK().equals(forId)))
+			{
+				continue;
+			}
+			
 			childKey = getChildKey(aggregate);
 			
 			// first check if the child is in the root
@@ -193,6 +214,14 @@ public abstract class AggregateReport<RK extends Comparable, CK extends Comparab
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("reportMap", reportMap).toString();
+	}
+
+	/**
+	 * @return the forId
+	 */
+	public PK getForId()
+	{
+		return forId;
 	}
 	
 }

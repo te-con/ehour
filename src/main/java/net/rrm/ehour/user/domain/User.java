@@ -9,11 +9,12 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
  * @author  Thies
  */
-public class User  extends DomainObject<Integer> implements Comparable<User>
+public class User  extends DomainObject<Integer, User>
 {
 
 	// Fields    
@@ -159,30 +160,6 @@ public class User  extends DomainObject<Integer> implements Comparable<User>
 		this.userRoles = userRoles;
 	}
 
-    public int compareTo(User  other)
-    {
-        int	compare = 0;
-
-        if (lastName != null && other.getLastName() != null)
-        {
-        	compare = other.getLastName().compareTo(this.lastName);
-        }
-        
-        if (compare == 0)
-        {
-        	if (firstName != null && other.getFirstName() != null)
-        	{
-        		compare = other.getFirstName().compareTo(this.firstName);
-        	}
-        	
-        	if (compare == 0)
-        	{
-        		compare = other.getUserId().compareTo(this.userId);
-        	}
-        }
-        
-        return compare;
-    }
 
 	/**
 	 * @return the active
@@ -293,5 +270,17 @@ public class User  extends DomainObject<Integer> implements Comparable<User>
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("userId", userId).append("username", username) .toString();
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(User object)
+	{
+		return new CompareToBuilder()
+			.append(this.lastName, object.lastName)
+			.append(this.firstName, object.firstName)
+			.append(this.userDepartment, object.userDepartment)
+			.append(this.userId, object.userId).toComparison();
 	}
 }
