@@ -5,7 +5,7 @@
 
 <!-- spanTarget: customerList -->
 
-<select multiple="multiple" name="customerId" id="customerId" size="4" class="textInputSmall">
+<select multiple="multiple" name="customerId" id="customerId" size="4" class="criteriaInput">
 	<option value="-1"
 		<c:if test="${criteria.userCriteria.emptyCustomers}">
 			SELECTED

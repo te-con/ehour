@@ -13,6 +13,9 @@
 	dojo.require("dojo.widget.LinkPane");
 	dojo.require("dojo.widget.ContentPane");
 	dojo.require("dojo.widget.LayoutContainer");
+	dojo.require("dojo.widget.TitlePane");
+	dojo.require("dojo.widget.DropdownDatePicker");
+
 	
 	var defaultText = "<fmt:message key="report.criteria.filterUsersOn" />";
 </script>

@@ -5,7 +5,7 @@
 
 <!-- spanTarget: userList -->
 
-<select multiple="multiple" name="userIds" id="userId" size="4" class="textInputSmall" stfyle="width: 100%">
+<select multiple="multiple" name="userIds" id="userId" size="4" class="criteriaInput">
 	<option value="-1"
 		<c:if test="${criteria.userCriteria.emptyUsers}">
 			SELECTED

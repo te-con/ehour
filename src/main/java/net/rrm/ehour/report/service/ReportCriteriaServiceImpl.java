@@ -123,7 +123,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		}
 		else
 		{
-			logger.debug("Finding users for departments");
+			logger.debug("Finding users for departments with filter '" + userCriteria.getUserFilter() + "'");
 			users = userDAO.findUsersForDepartments(userCriteria.getUserFilter()
 														, userCriteria.getDepartmentIds()
 														, userCriteria.isOnlyActiveUsers());

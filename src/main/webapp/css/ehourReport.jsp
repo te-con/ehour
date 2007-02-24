@@ -5,8 +5,25 @@
 	text-align: left;
 	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
-	margin: 0 0 0 11px;
+	margin: 0 5px 2px 11px;
 	padding: 0;
+	background-image: url(<c:url value="/img/fold_up.gif" />);
+	background-repeat: no-repeat;
+	background-position: bottom right;
+	max-width: 710px;
+}
+
+.reportCriteriaLabelFolded
+{
+	text-align: left;
+	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0 5px 2px 11px;
+	padding: 0;
+	background-image: url(<c:url value="/img/fold_down.gif" />);
+	background-repeat: no-repeat;
+	background-position: bottom right;
+	max-width: 710px;
 }
 
 .reportCriteriaTableTable 
@@ -147,4 +164,23 @@
 	margin: 0;
 	padding: 0;
 	text-align: left;
+}
+
+.criteriaInput
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #cfdbe6;
+	margin: 0;
+	font: 1em/ Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
+	width:	100%;
+}
+
+
+div.CriteriaBlueFrameContainer
+{
+	margin-left: 20px;
+	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
 }

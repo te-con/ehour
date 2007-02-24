@@ -9,9 +9,6 @@
 <script src="../../js/report.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-	dojo.require("dojo.widget.*");
-	dojo.require("dojo.widget.DropdownDatePicker");
-
 	var dateStart = "<fmt:formatDate value="${criteria.reportRange.dateStart}" pattern="yyyy-MM-dd" />T00:00:00-00:00";
 	var dateEnd = "<fmt:formatDate value="${criteria.reportRange.dateEnd}" pattern="yyyy-MM-dd" />T00:00:00-00:00";
 	var contextRoot = "<c:url value="/eh/report" />";
@@ -28,15 +25,16 @@
 			<input type="hidden" name="fromForm" value="yes">
 			<input type="hidden" name="updateType" value="0">	
 
-			<table class="reportCriteriaTableTable" style="width: auto">
+			<table class="reportCriteriaTableTable">
 			
 				<tr>
-					<td><fmt:message key="report.criteria.reportRange" />:</td>
-					<td><div id="dateStartDiv" class="textInputSmall"></div></td>
-					<td><fmt:message key="report.criteria.until" /></td>
-					<td><div id="dateEndDiv"></div></td>
-					<td><fmt:message key="report.criteria.report" />:</td>
-					<td><select name="reportName"  class="textInputSmall">
+					<td style="padding-left: 20px"><fmt:message key="report.criteria.reportRange" />:
+						<div id="dateStartDiv" class="textInputSmall"></div>
+					    <fmt:message key="report.criteria.until" />
+						<div id="dateEndDiv"></div>
+					</td>
+					<td align="right" style="padding-right: 20px"><fmt:message key="report.criteria.report" />:
+					<select name="reportName"  class="textInputSmall">
 							<option value="customerReport"><fmt:message key="report.report.customerReport" />
 							<option value="userReport"><fmt:message key="report.report.userReport" />
 							<option value="projectReport"><fmt:message key="report.report.projectReport" />														
@@ -46,18 +44,19 @@
 				</tr>
 			</table>
 			
-			<table>
+			<br>
+			<table cellpadding="0" cellspacing="0">
 				<tr>
-				<td>	
+				<td valign="top">
 			
 <!-- customers -->			
 				<div class="BlueFrameContainer">
 					<fmt:message key="report.criteria.customers" />
 					
-					<div class="BlueFrame" style="margin-left: -11px">
+					<div class="BlueFrame" style="margin-left: -11px;">
 						<div class="BlueLeftTop">
 							<div class="BlueRightTop">
-								<br>
+								&nbsp;
 							</div>
 						</div>	
 						
@@ -68,7 +67,7 @@
 										<tiles:insert page="criteriaCustomerList.jsp" />
 									</div>							
 								</td>
-								<td rowpspan="2" width="11">
+								<td rowpspan="2" width="8">
 									&nbsp;
 								</td>
 							</tr>
@@ -94,9 +93,9 @@
 				</div>
 			</td>
 				
-			<td>
+			<td width="50%">
 <!-- projects -->
-			<div class="BlueFrameContainer" >
+			<div class="BlueFrameContainer">
 				<fmt:message key="report.criteria.projects" />
 					
 				<div class="BlueFrame" style="margin-left: -11px">
@@ -164,23 +163,25 @@
 					
 					<table class="reportCriteriaTableTable">
 						<tr>
-							<td><select multiple="multiple" name="departmentId" id="departmentId" size="4" class="textInputSmall" sdtyle="width: 100%">
-									<option value="-1"
-										<c:if test="${criteria.userCriteria.emptyDepartments}">
-											SELECTED
-										</c:if>>{<fmt:message key="report.criteria.all" />}
-									
-									<c:forEach items="${criteria.availableCriteria.userDepartments}" var="dept">
-										<option value="${dept.departmentId}"
-										<c:set var="dId" value="${dept.departmentId}-" />
-										<c:if test="${fn:contains(criteria.userCriteria.departmentsAsString,  dId)}">
+							<td><div>
+									<select multiple="multiple" name="departmentId" id="departmentId" size="4" class="criteriaInput">
+										<option value="-1"
+											<c:if test="${criteria.userCriteria.emptyDepartments}">
 												SELECTED
-										</c:if>
-										>${dept.name}
-									</c:forEach>
-								</select>
+											</c:if>>{<fmt:message key="report.criteria.all" />}
+										
+										<c:forEach items="${criteria.availableCriteria.userDepartments}" var="dept">
+											<option value="${dept.departmentId}"
+											<c:set var="dId" value="${dept.departmentId}-" />
+											<c:if test="${fn:contains(criteria.userCriteria.departmentsAsString,  dId)}">
+													SELECTED
+											</c:if>
+											>${dept.name}
+										</c:forEach>
+									</select>
+								</div>
 							</td>
-							<td width="11">
+							<td width="8">
 								&nbsp;
 							</td>								
 						</tr>
@@ -194,7 +195,7 @@
 				</div>
 			</div>			
 		</td>
-		<td>
+		<td width="50%">
 
 <!-- employees -->
 			<div class="BlueFrameContainer">
@@ -212,8 +213,8 @@
 								<td colspan="2">
 									<input type="text" name="userFilter"
 											id="userFilter"
-											class="textInputSmall"
-											style="<c:if test="${!report.criteria.emptyUserFilter}">color: #aaaaaa</c:if>"
+											class="criteriaInput"
+											style="width: 15em;<c:if test="${!report.criteria.emptyUserFilter}">color: #aaaaaa</c:if>"
 											value="<fmt:message key="report.criteria.filterUsersOn" /><c:choose>
 														<c:when test="${report.criteria.emptyUserFilter}">
 															<fmt:message key="report.criteria.filterUsersOn" />

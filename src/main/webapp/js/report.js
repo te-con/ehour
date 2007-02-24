@@ -121,11 +121,12 @@ function updateCriteria(updateType)
 	var userFilterInput = dojo.byId('userFilter');
 	
 	criteriaForm.updateType.value = updateType;
-
-	if (userFilterInput.value == defaultText)
+	
+	if (trim(userFilterInput.value) == defaultText)
 	{
 		userFilterInput.value = "";
 	}
+	
 	
 	clickIsSubmit = false;
 	
@@ -182,3 +183,17 @@ dojo.lang.extend(dojo.io.FormBind, {onSubmit: function(/*DOMNode*/form)
 									{
 										return changeFormAction();
 									}});
+									
+dojo.lang.extend(dojo.widget.TitlePane, {onLabelClick: function()
+											{
+											if (this.open)
+											{
+												dojo.html.setClass(this.labelNode, 'reportCriteriaLabelFolded');
+												dojo.lfx.wipeOut(this.containerNode, 250).play();
+												this.open=false;
+											} else {
+												dojo.html.setClass(this.labelNode, 'reportCriteriaLabel');
+												dojo.lfx.wipeIn(this.containerNode, 250).play();
+												this.open=true;
+											}
+										}});

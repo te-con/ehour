@@ -5,7 +5,7 @@
 
 <!-- spanTarget: projectList -->
 
-<select multiple="multiple" name="projectId" id="projectId" size="4"  class="textInputSmall" sfyle="width: 100%">
+<select multiple="multiple" name="projectId" id="projectId" size="4"  class="criteriaInput">
 	<option value="-1"
 		<c:if test="${criteria.userCriteria.emptyProjects}">
 			SELECTED
