@@ -119,17 +119,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		if (userCriteria.getDepartmentIds() == null || 
 			userCriteria.getDepartmentIds().length == 0)
 		{
-			if (userCriteria.isOnlyActiveUsers())
-			{
-				logger.debug("Finding all active users");
-				users = userDAO.findAllActiveUsers();
-			}
-			else
-			{
-				
-				logger.debug("Finding all users");
-				users = userDAO.findAll();
-			}
+			users = userDAO.findUsersByNameMatch(userCriteria.getUserFilter(), userCriteria.isOnlyActiveUsers());
 		}
 		else
 		{

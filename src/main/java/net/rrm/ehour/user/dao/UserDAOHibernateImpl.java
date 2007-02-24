@@ -62,7 +62,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	{
 		String	hql;
 		
-		if (pattern != null)
+		if (pattern != null && !pattern.trim().equals(""))
 		{
 			pattern = pattern.toLowerCase();
 			pattern = "%" + pattern + "%";
