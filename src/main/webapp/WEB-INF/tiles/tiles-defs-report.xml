@@ -6,8 +6,10 @@
     <definition name=".ehour.report.baseLayout" extends=".ehour.baseLayout">
         <put name="pageTitle" value="eHour - reporting" />
         <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
-		<put name="navCalendar" value="/WEB-INF/jsp/nav/navReport.jsp" />        
-		<put name="extraCss" value="/css/ehourReport.jsp" />        		
+		<put name="navCalendar" value="/WEB-INF/jsp/nav/navReport.jsp" />
+		<put name="extraCss" value="/css/ehourReport.jsp" />
+		<put name="helpHeader" value="report.header" />
+		<put name="helpBody" value="report.body" />
     </definition>
 
 
