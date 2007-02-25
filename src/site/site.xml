@@ -41,6 +41,7 @@
 		<menu name="Install">
 			<item name="Download" href="download.html" />
 			<item name="Instructions" href="install.html" />
+			<item name="Upgrading" href="upgrading.html" />			
 		</menu>
 
 		<menu name="Usage">

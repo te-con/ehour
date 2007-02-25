@@ -1,5 +1,15 @@
 eHour Project Structure
 
+* User roles
+
+	eHour users can have 3 roles:
+
+	[[1]] <<Consultant>> When a user has the consultant role (s)he can register hours on projects
+	
+	[[2]] <<Administrator>> rights gives access to the admin section: add/remove employees, departments, customers & projects
+	
+	[[3]] The <<Report Role>> gives access to global reporting where you can get aggregate reporting on all customers and employees
+
 * Employees and Departments
 
 	To organize your employees you can organize them in departments. You can create an indefinite amount of department
@@ -15,7 +25,7 @@ eHour Project Structure
 	
 	When you assign an employee to a project you determine the start and end date and the hourly rate. The employee
 	can only book hours within the start and end date on this project. If the employee has multiple roles on this project
-	you can make multiple assignments, use the description field to differentiate the employees roles.
+	you can make multiple assignments, use the description field to differentiate between the employees roles.
 	
 * Default project assignments
 

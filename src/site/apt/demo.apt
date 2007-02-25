@@ -2,8 +2,9 @@ Online demo
 
 	You can view an online version at {{{http://www.ehour.nl/ehour-test/}http://www.ehour.nl/ehour-test/}}.
 	
-	To login use <<thies>> as the username and <<test>> as the password. The admin section is not part of the demo.	
+	To login as a consultant who has to book hours, use <<thies>> as the username and <<test>> as the password. 
+	To access the reporting section, use <<report>> as the username and password to login.
 
-	eHour is currently in beta phase. Not all functionality is ready yet nor is full compatibility with the main stream browsers.  
+	The admin section is not yet part of this demo.
 
-	Take note that it's a development server which is always out of bandwidth, delays are likely caused by this.
+	eHour is currently in beta phase. Not all functionality is ready yet nor is full compatibility with the main stream browsers.

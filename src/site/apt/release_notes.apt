@@ -1,8 +1,8 @@
-Release Notes - eHour v0.1
+Release Notes - eHour v0.2
 
-	TE-CON would like to announce the release of eHour v0.1 beta.
+	TE-CON would like to announce the release of eHour v0.2 beta.
 	
-	eHour v0.1 beta is {{{download.html}available for download}}.
+	eHour v0.2 beta is {{{download.html}available for download}}.
 	
 	eHour is a webbased time registration tool for consultancy companies and other project based businesses.
 	The primary objective is to keep time registration as simple as needed while still being very effective at measuring and reporting the amount of time your team spends on a project.
@@ -12,20 +12,20 @@ Release Notes - eHour v0.1
   
   If you run into any issues please use the {{{issue-tracking.html}bug tracker}} or post your question on the {{{https://lists.sourceforge.net/lists/listinfo/ehour-users}mailinglist}} or {{{http://sourceforge.net/forum/?group_id=167867}forum}}.
 
+* 0.2 Release Notes
+
+	Second beta released! Major change versus the 0.1 is the addition of the global reporting. It's not entirely finished
+	yet and the user interface is not exactly what I have in mind but it's functional. All charts are disabled in this release,
+	those will be (re-)added in version 0.21.
+	
+	Fixed a nasty bug in version 0.1 prevented administrators to add new users.
 	
 	
 * 0.1 Release Notes
 
 	0.1 is the first beta release. Take note that this release was tested on IE7/Firefox 2.0 running on Apache Tomcat 5.5
 	with a MySQL 5 database. Global reporting and IE6 compatibility is missing in this beta release.
-	
-	Features:
-	
-	* Create multiple projects per customer
-	
-	* Have employees book their hours on various projects
-	
-	* Employee reporting per date range, per project
+
 	
 	
 	

@@ -1,0 +1,8 @@
+Upgrading
+
+* Upgrade from v0.1 to v0.2
+
+	No database changes are needed, just replace the ehour-test.war in your tomcat deploy directory with the new one.
+	
+	To access the reporting section, create or edit a user and add the Reporting Role. To do so, go to the admin section,
+	click on employees, select your user and in the role dropdown add <<Reporting Role>>
