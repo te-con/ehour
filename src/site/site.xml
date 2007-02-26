@@ -31,22 +31,23 @@
 
 		<menu name="eHour">
 			<item name="Introduction" href="index.html" />
+			<item name="Features" href="features.html" />			
 			<item name="Screenshots" href="screenshots.html" />
 			<item name="Online demo" href="demo.html" />						
-			<item name="License" href="license.html" />
-			<item name="Release Notes" href="release_notes.html" />
 			<item name="Roadmap" href="roadmap.html" />
 		</menu>
 
 		<menu name="Install">
 			<item name="Download" href="download.html" />
+			<item name="Release Notes" href="release_notes.html" />
 			<item name="Instructions" href="install.html" />
 			<item name="Upgrading" href="upgrading.html" />			
+			<item name="License" href="license.html" />
 		</menu>
 
-		<menu name="Usage">
-			<item name="eHour structure" href="ehour_structure.html" />
+		<menu name="Documentation">
 			<item name="First time usage" href="first_time_usage.html" />			
+			<item name="eHour structure" href="ehour_structure.html" />
 		</menu>
 
 		${reports}

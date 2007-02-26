@@ -1,9 +1,27 @@
 eHour
 
-  25 feb 2007: {{{download.html}eHour v0.2}} is released! 
+  24 feb 2007: {{{download.html}eHour v0.2}} released! 
 
-  eHour is a webbased time registration tool for consultancy companies and other project based businesses.
-  The primary objective is to keep time tracking as simple as needed while still being very effective at measuring and reporting the amount of time your team spends on a project.
+  eHour is a webbased time tracking tool for consultancy companies and other project based businesses.
+  The primary objective is to keep time tracking as simple and user friendly as possible while still 
+  being very effective at measuring and reporting the amount of time your team spends on a project.
+
+  What you can do with eHour:
+  
+	  * create multiple projects per customer
+	
+	  * assign employees to projects
+	  
+	  * have different start and end dates and hourly rates per employee to project assignment 
+	  
+	  * create default projects to which all employees should be assigned (days off, sick leave, etc.) so you can keep track
+	  of those hours as well
+	  
+	  * turnover & booked hours reports on all customers, projects, employees, departments or a selection of them
+	  
+	  * configure whether you want your employees see their turnover
+	  
+	  * seperation of consultant, reporting and administration role. 
 
   See the {{{demo.html}online demo}} to see it in full effect.
 

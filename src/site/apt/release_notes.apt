@@ -14,11 +14,15 @@ Release Notes - eHour v0.2
 
 * 0.2 Release Notes
 
-	Second beta released! Major change versus the 0.1 is the addition of the global reporting. It's not entirely finished
-	yet and the user interface is not exactly what I have in mind but it's functional. All charts are disabled in this release,
-	those will be (re-)added in version 0.21.
+	Second beta released! 
 	
-	Fixed a nasty bug in version 0.1 prevented administrators to add new users.
+	<<Features>>
+
+	Added global reporting on customers, projects and users. Some reporting features still need to be added.
+	For now charts are disabled in this release but	those will be (re-)added in version 0.21.
+	
+	<<Bugs fixed>>
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1663464&group_id=167867&atid=844648}1663464}} Fixed a bug in version 0.1 prevented administrators to add new users.
 	
 	
 * 0.1 Release Notes
