@@ -23,16 +23,17 @@
 
 package net.rrm.ehour.web.util;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
+import static org.junit.Assert.*;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 /**
  * TODO 
  **/
 
-public class AuthUtilTest extends TestCase
+public class AuthUtilTest 
 {
+	@Test
 	public void testHasRole()
 	{
 		String	role = WebConstants.ROLE_CONSULTANT;

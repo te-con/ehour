@@ -79,7 +79,7 @@ public class TimesheetFormAssembler
 	 * @param dateSequence
 	 * @return
 	 */
-	protected List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<Date, TimesheetEntry>> assignmentMap, 
+	private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<Date, TimesheetEntry>> assignmentMap, 
 													List<Date> dateSequence)
 	{
 		List<TimesheetRow> 	timesheetRows = new ArrayList<TimesheetRow>();
@@ -111,7 +111,7 @@ public class TimesheetFormAssembler
 	 * @param date
 	 * @return
 	 */
-	protected TimesheetCell createTimesheetCell(ProjectAssignment assignment, TimesheetEntry entry, Date date)
+	private TimesheetCell createTimesheetCell(ProjectAssignment assignment, TimesheetEntry entry, Date date)
 	{
 		TimesheetCell	cell = new TimesheetCell();
 		
@@ -192,7 +192,7 @@ public class TimesheetFormAssembler
 	 * @param weekOverview
 	 * @return
 	 */
-	private List<Date> createDateSequence(WeekOverview weekOverview)
+	protected List<Date> createDateSequence(WeekOverview weekOverview)
 	{
 		List<Date>	dateSequence = new ArrayList<Date>();
 		DateRange	weekRange;

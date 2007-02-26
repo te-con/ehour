@@ -38,11 +38,15 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.dao.ReportPerMonthDAO;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 /**
@@ -52,10 +56,12 @@ import net.rrm.ehour.util.DateUtil;
 public class ReportServiceTest extends TestCase
 {
 	private	ReportService	reportService;
-	
+	private UserDAO			userDAO;
+	private ProjectDAO			projectDAO;
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	ReportPerMonthDAO	reportMonthDAO;
-	
+	private	ReportCriteria 	rc;
+	private ReportCriteriaService rsMock; 
 	/**
 	 * 
 	 */
@@ -66,8 +72,19 @@ public class ReportServiceTest extends TestCase
 		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
 		((ReportServiceImpl)reportService).setReportAggregatedDAO(reportAggregatedDAO);
 
+		userDAO = createMock(UserDAO.class);
+		((ReportServiceImpl)reportService).setUserDAO(userDAO);
+
 		reportMonthDAO = createMock(ReportPerMonthDAO.class);
 		((ReportServiceImpl)reportService).setReportPerMonthDAO(reportMonthDAO);
+
+		projectDAO = createMock(ProjectDAO.class);
+		((ReportServiceImpl)reportService).setProjectDAO(projectDAO);
+
+	
+		rc = new ReportCriteria();
+		rsMock = createMock(ReportCriteriaService.class);
+		rc.setReportCriteriaService(rsMock);
 
 	}
 	
@@ -94,16 +111,8 @@ public class ReportServiceTest extends TestCase
 		verify();
 	}
 	
-
-
-
-
-	
-	public void testCreateProjectReport()
+	public void testCreateProjectReportUserId()
 	{
-		ReportCriteria rc = new ReportCriteria();
-		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
-		rc.setReportCriteriaService(rsMock);
 		Integer[] userID = new Integer[]{1};
 
 		DateRange dr = new DateRange();
@@ -123,4 +132,89 @@ public class ReportServiceTest extends TestCase
 		reportService.createReportData(rc);
 		verify(reportAggregatedDAO);
 	}
+
+	public void testCreateProjectReportNoUserId()
+	{
+		Integer[] userID = new Integer[]{1};
+
+		DateRange dr = new DateRange();
+		UserCriteria uc = new UserCriteria();
+		uc.setReportRange(dr);
+		rc.setUserCriteria(uc);
+		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
+		
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignment(isA(DateRange.class))).andReturn(pags);
+		replay(reportAggregatedDAO);
+		reportService.createReportData(rc);
+		verify(reportAggregatedDAO);
+	}
+
+	public void testCreateProjectReportNoUserIdDptId()
+	{
+		Integer[] userID = new Integer[]{1};
+		Integer[]	dptId = new Integer[]{2};
+		List<User> users = new ArrayList<User>();
+		User user = new User(1);
+		users.add(user);
+
+		DateRange dr = new DateRange();
+		UserCriteria uc = new UserCriteria();
+		uc.setReportRange(dr);
+		uc.setDepartmentIds(dptId);
+		uc.setOnlyActiveUsers(true);
+		rc.setUserCriteria(uc);
+		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
+		
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
+		.andReturn(pags);
+		
+		expect(userDAO.findUsersForDepartments(null, dptId, true)).andReturn(users);
+		
+		replay(reportAggregatedDAO);
+		replay(userDAO);
+		reportService.createReportData(rc);
+		verify(reportAggregatedDAO);
+		verify(userDAO);
+	}
+	
+	public void testCreateProjectReport()
+	{
+		Integer[] customerID = new Integer[]{1};
+
+		List<Project> prjs = new ArrayList<Project>();
+		Project prj = new Project(1);
+		prjs.add(prj);		
+		
+		DateRange dr = new DateRange();
+		UserCriteria uc = new UserCriteria();
+		uc.setReportRange(dr);
+		uc.setCustomerIds(customerID);
+		rc.setUserCriteria(uc);
+		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
+		
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(isA(Integer[].class), isA(DateRange.class)))
+		.andReturn(pags);
+		expect(projectDAO.findProjectForCustomers(customerID, true)).andReturn(prjs);
+		
+		replay(reportAggregatedDAO);
+		replay(projectDAO);
+
+		reportService.createReportData(rc);
+		verify(reportAggregatedDAO);
+		verify(projectDAO);
+	}
+
 }
+

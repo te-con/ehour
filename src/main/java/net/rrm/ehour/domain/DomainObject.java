@@ -42,6 +42,7 @@ public abstract class DomainObject <PK extends Serializable, DO extends Serializ
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
+	@Override
 	public boolean equals(Object object)
 	{
 		if (!(object instanceof DomainObject))

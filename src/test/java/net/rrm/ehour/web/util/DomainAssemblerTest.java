@@ -30,6 +30,8 @@ import junit.framework.TestCase;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.timesheet.domain.TimesheetComment;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -38,6 +40,7 @@ import net.rrm.ehour.web.admin.customer.form.CustomerForm;
 import net.rrm.ehour.web.admin.dept.form.UserDepartmentForm;
 import net.rrm.ehour.web.admin.project.form.ProjectForm;
 import net.rrm.ehour.web.admin.user.form.UserForm;
+import net.rrm.ehour.web.timesheet.form.TimesheetForm;
 
 /**
  * TODO 
@@ -158,5 +161,33 @@ public class DomainAssemblerTest extends TestCase
 		assertEquals(3, pa.getDateStart().getDate());
 		assertEquals(new Integer(1), pa.getAssignmentId());
 		assertEquals("d", pa.getDescription());
+	}
+	
+	public void testGetTimesheetComment()
+	{
+		TimesheetForm	form;
+		
+		form = new TimesheetForm();
+		form.setComment("comment");
+		form.setSheetYear(2007);
+		form.setSheetDay(1);
+		form.setSheetMonth(9);
+		
+		TimesheetComment tc = DomainAssembler.getTimesheetComment(1, form);
+		
+		assertEquals("comment", tc.getComment());
+		assertEquals(new Integer(1), tc.getCommentId().getUserId());
+		assertEquals(new Date(2007 - 1900, 9 -1, 1, 0, 0, 0), tc.getCommentId().getCommentDate());
+	}
+	
+	public void testGetTimesheetEntry()
+	{
+		Date x = new Date(2007 - 1900, 9 - 1, 1, 0, 0, 0);
+		
+		TimesheetEntry entry = DomainAssembler.getTimesheetEntry(new Integer(1), x, new Float(5.0f));
+		
+		assertEquals(new Integer(1), entry.getEntryId().getProjectAssignment().getAssignmentId());
+		assertEquals(x, entry.getPK().getEntryDate());
+		assertEquals(new Float(5.0f), entry.getHours());
 	}
 }

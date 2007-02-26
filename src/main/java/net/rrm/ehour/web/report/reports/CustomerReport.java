@@ -23,8 +23,6 @@
 
 package net.rrm.ehour.web.report.reports;
 
-import java.util.Set;
-
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
@@ -38,14 +36,6 @@ public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 {
 	private static final long serialVersionUID = 6365903846883586472L;
 
-	/**
-	 * Get customers in this report 
-	 * @return
-	 */
-	public Set<Customer> getCustomers()
-	{
-		return reportMap.keySet();
-	}
 
 	/**
 	 * 

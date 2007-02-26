@@ -23,8 +23,6 @@
 
 package net.rrm.ehour;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import net.rrm.ehour.customer.dao.CustomerDAOTest;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAOTest;
 import net.rrm.ehour.project.dao.ProjectDAOTest;
@@ -39,29 +37,26 @@ import net.rrm.ehour.user.dao.UserDepartmentDAOTest;
 import net.rrm.ehour.user.dao.UserRoleDAOTest;
 import net.rrm.ehour.user.service.UserServiceIntegrationTest;
 
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+@RunWith(Suite.class)
+@SuiteClasses({TimesheetServiceIntegrationTest.class,
+				UserServiceIntegrationTest.class, 
+				ProjectServiceIntegrationTest.class, 
+				UserDAOTest.class,
+				UserDepartmentDAOTest.class,
+				TimesheetDAOTest.class,
+				ReportAggregatedDAOTest.class,
+				CustomerDAOTest.class,
+				ProjectDAOTest.class,
+				UserRoleDAOTest.class,		
+				ProjectAssignmentDAOTest.class,
+				TimesheetCommentDAOTest.class,
+				ReportPerMonthDAOTest.class})
+
 public class DAOTests
 {
-	public static Test suite()
-	{
-		TestSuite suite = new TestSuite("DAO & integration tests for net.rrm.ehour");
-		
-		
-		//$JUnit-BEGIN$
-		suite.addTestSuite(TimesheetServiceIntegrationTest.class);
-		suite.addTestSuite(UserServiceIntegrationTest.class);
-		suite.addTestSuite(ProjectServiceIntegrationTest.class);
 
-		suite.addTestSuite(UserDAOTest.class);
-		suite.addTestSuite(UserDepartmentDAOTest.class);
-		suite.addTestSuite(TimesheetDAOTest.class);
-		suite.addTestSuite(ReportAggregatedDAOTest.class);
-		suite.addTestSuite(CustomerDAOTest.class);
-		suite.addTestSuite(UserRoleDAOTest.class);
-		suite.addTestSuite(ProjectDAOTest.class);
-		suite.addTestSuite(ProjectAssignmentDAOTest.class);
-		suite.addTestSuite(TimesheetCommentDAOTest.class);
-		suite.addTestSuite(ReportPerMonthDAOTest.class);
-		//$JUnit-END$
-		return suite;
-	}
 }

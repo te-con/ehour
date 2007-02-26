@@ -23,6 +23,7 @@
 
 package net.rrm.ehour;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +31,8 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -40,6 +43,12 @@ import net.rrm.ehour.user.domain.UserRole;
 
 public class DummyDataGenerator
 {
+	/**
+	 * 
+	 * 
+	 * @param baseIds baseId[0] = baseId, baseId[1] = customerId, baseId[2] = userId
+	 * @return
+	 */
 	public static ProjectAssignment getProjectAssignment(int... baseIds)
 	{
 		ProjectAssignment	prjAsg;
@@ -75,6 +84,7 @@ public class DummyDataGenerator
 		prj = new Project(baseId * 10);
 		prj.setCustomer(cust);
 		prj.setActive(true);
+		prj.setName("tralala" + baseId);
 		
 		prjAsg = new ProjectAssignment();
 		prjAsg.setProject(prj);
@@ -125,5 +135,21 @@ public class DummyDataGenerator
 		user.setUserRoles(roles);
 		
 		return user;
+	}
+	
+	public static TimesheetEntry getTimesheetEntry(int prjId, Date date, float hours)
+	{
+		TimesheetEntry 	entry;
+		TimesheetEntryId id;
+		
+		id = new TimesheetEntryId();
+		id.setEntryDate(date);
+		id.setProjectAssignment(getProjectAssignment(prjId, prjId, 1));
+		
+		entry = new TimesheetEntry();
+		entry.setEntryId(id);
+		entry.setHours(hours);
+		
+		return entry;
 	}
 }

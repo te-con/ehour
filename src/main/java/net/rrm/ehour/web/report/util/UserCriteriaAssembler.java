@@ -36,11 +36,6 @@ import net.rrm.ehour.web.report.form.ReportCriteriaForm;
 
 public class UserCriteriaAssembler
 {
-	// do not instantiate
-	private UserCriteriaAssembler()
-	{
-	}
-	
 	/**
 	 * Assemble user criteria from a reportcriteriaform
 	 * @param rcf

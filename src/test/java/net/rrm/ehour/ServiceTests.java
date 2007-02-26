@@ -23,12 +23,11 @@
 
 package net.rrm.ehour;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+
 import net.rrm.ehour.customer.service.CustomerServiceTest;
 import net.rrm.ehour.project.service.ProjectServiceTest;
 import net.rrm.ehour.report.criteria.ReportCriteriaTest;
-import net.rrm.ehour.report.reports.CustomerReportTest;
+import net.rrm.ehour.report.reports.ProjectReportTest;
 import net.rrm.ehour.report.reports.UserReportTest;
 import net.rrm.ehour.report.service.ReportCriteriaServiceTest;
 import net.rrm.ehour.report.service.ReportServiceTest;
@@ -39,41 +38,40 @@ import net.rrm.ehour.user.service.UserServiceTest;
 import net.rrm.ehour.util.DateUtilTest;
 import net.rrm.ehour.web.calendar.CalendarUtilTest;
 import net.rrm.ehour.web.calendar.tag.NavCalendarTagTest;
+import net.rrm.ehour.web.report.reports.CustomerReportTest;
 import net.rrm.ehour.web.report.util.UserCriteriaAssemblerTest;
+import net.rrm.ehour.web.timesheet.util.TimesheetFormAssemblerTest;
+import net.rrm.ehour.web.timesheet.util.TimesheetRowComparatorTest;
 import net.rrm.ehour.web.util.AuthUtilTest;
 import net.rrm.ehour.web.util.DomainAssemblerTest;
 
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+@RunWith(Suite.class)
+@SuiteClasses({UserServiceTest.class,
+				TimesheetServiceTest.class, 
+				ReportServiceTest.class, 
+				ReportCriteriaServiceTest.class,
+				ProjectServiceTest.class,
+				CustomerServiceTest.class,
+				CalendarUtilTest.class,
+				DateUtilTest.class,
+				AuthUtilTest.class,
+				CalendarUtilTest.class,		
+				BookedDayComparatorTest.class,
+				DomainAssemblerTest.class,
+				NavCalendarTagTest.class,
+				CustomerReportTest.class,
+				ReportCriteriaTest.class,
+				UserCriteriaAssemblerTest.class,
+				ReportUtilTest.class,
+				UserReportTest.class,
+				CustomerReportTest.class,
+				TimesheetRowComparatorTest.class,
+				TimesheetFormAssemblerTest.class,
+				ProjectReportTest.class}) 
 public class ServiceTests
 {
-
-	public static Test suite()
-	{
-		TestSuite suite = new TestSuite("Service tests for net.rrm.ehour");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(UserServiceTest.class);
-		suite.addTestSuite(TimesheetServiceTest.class);
-		suite.addTestSuite(ReportServiceTest.class);
-		suite.addTestSuite(ReportCriteriaServiceTest.class);
-		suite.addTestSuite(ProjectServiceTest.class);
-		suite.addTestSuite(CustomerServiceTest.class);
-
-		suite.addTestSuite(CalendarUtilTest.class);
-		suite.addTestSuite(DateUtilTest.class);
-		suite.addTestSuite(AuthUtilTest.class);
-		suite.addTestSuite(CalendarUtilTest.class);		
-		suite.addTestSuite(BookedDayComparatorTest.class);
-		suite.addTestSuite(DomainAssemblerTest.class);
-		suite.addTestSuite(NavCalendarTagTest.class);
-		suite.addTestSuite(CustomerReportTest.class);
-		suite.addTestSuite(ReportCriteriaTest.class);
-		suite.addTestSuite(UserCriteriaAssemblerTest.class);
-		
-		suite.addTestSuite(ReportUtilTest.class);
-		
-		suite.addTestSuite(UserReportTest.class);
-		suite.addTestSuite(CustomerReportTest.class);
-		//$JUnit-END$
-		return suite;
-	}
-
 }
