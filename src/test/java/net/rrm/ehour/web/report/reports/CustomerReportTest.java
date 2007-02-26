@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.report.reports;
+package net.rrm.ehour.web.report.reports;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,5 @@
 /**
- * Created on Feb 22, 2007
+ * Created on 26-feb-2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,37 +21,36 @@
  *
  */
 
-package net.rrm.ehour.report.reports;
+package net.rrm.ehour.web.report.reports;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.web.report.reports.UserReport;
+import net.rrm.ehour.web.report.reports.AggregateReport;
+import net.rrm.ehour.web.report.reports.AggregateReportFactory;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * TODO 
  **/
 
-public class UserReportTest extends TestCase
+public class ProjectReportTest
 {
-
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception
-	{
-		super.setUp();
-	}
-
+	private ReportData	reportData;
+	
 	/**
-	 * Test method for {@link net.rrm.ehour.web.report.reports.UserReport#initialize(net.rrm.ehour.report.reports.ReportData)}.
+	 * @throws java.lang.Exception
 	 */
-	public void testInitialize()
+	@Before
+	public void setUp() throws Exception
 	{
-		ReportData	reportData = new ReportData();
+		reportData = new ReportData();
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		User user = DummyDataGenerator.getUser();
 		user.setUserId(1);
@@ -59,15 +58,20 @@ public class UserReportTest extends TestCase
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 2, 1));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(4, 3, 1));
+		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(4, 3, 1));	
 		
 		reportData.setProjectAssignmentAggregates(pags);
-		
-		UserReport report = new UserReport();
-		report.initialize(reportData);
+	}
 
-		assertEquals(2, report.getReportValues().keySet().size());
-		assertEquals(3, report.getReportValues().get(user).size());
+	/**
+	 * Test method for {@link net.rrm.ehour.web.report.reports.ProjectReport#getReportName()}.
+	 */
+	@Test
+	public void testGetReportName()
+	{
+		AggregateReport report = AggregateReportFactory.createReport(AggregateReportFactory.PROJECT_REPORT, reportData);
+		
+		assertEquals(4, report.getReportValues().keySet().size());
 	}
 
 }
