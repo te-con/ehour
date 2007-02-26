@@ -24,13 +24,15 @@
 		</license>
 	</licenses>
 
-   <mailingLists>
-     <mailingList>
-       <name>eHour user support mailing list</name>
-      <post>ehour-users@lists.sourceforge.net</post>
-      <archive>https://lists.sourceforge.net/lists/listinfo/ehour-users</archive>
-     </mailingList>
-   </mailingLists>	
+	<mailingLists>
+		<mailingList>
+			<name>eHour user support mailing list</name>
+			<post>ehour-users@lists.sourceforge.net</post>
+			<archive>
+				https://lists.sourceforge.net/lists/listinfo/ehour-users
+			</archive>
+		</mailingList>
+	</mailingLists>
 
 	<ciManagement>
 		<system>continuum</system>
@@ -91,7 +93,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
-			          <licenseLocation>etc/clover-eHour.license</licenseLocation>
+					<licenseLocation>
+						etc/clover-eHour.license
+					</licenseLocation>
 					<excludes>
 						<exclude>**/*Test</exclude>
 					</excludes>
@@ -114,10 +118,17 @@
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-				  <descriptors>
-				    <descriptor>src/assembly/assembly.xml</descriptor>
-				  </descriptors>
+					<descriptors>
+						<descriptor>
+							src/assembly/assembly.xml
+						</descriptor>
+					</descriptors>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.3-SNAPSHOT</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -174,6 +185,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.2</version>
+  			<scope>test</scope>			
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -316,11 +328,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
-				
+
 				<configuration>
-			          <licenseLocation>etc/clover-eHour.license</licenseLocation>
-					  <generateHtml>true</generateHtml>
-				</configuration>				
+					<licenseLocation>
+						etc/clover-eHour.license
+					</licenseLocation>
+					<generateHtml>true</generateHtml>
+				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>
