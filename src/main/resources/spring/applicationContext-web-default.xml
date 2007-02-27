@@ -33,6 +33,8 @@
 	
 	<bean name="/eh/timesheet/postTimesheet" class="net.rrm.ehour.web.timesheet.action.PostTimesheetFormAction" />	
 	
+	<bean name="/eh/timesheet/printTimesheet" class="net.rrm.ehour.web.timesheet.action.PrintTimesheetAction" />		
+	
 	<bean name="/eh/userReport/index" class="net.rrm.ehour.web.userreport.action.UserReportCriteriaAction">	
 		<property name="reportCriteria" ref="reportCriteria" />
 	</bean>
