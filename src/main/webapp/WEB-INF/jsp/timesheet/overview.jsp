@@ -58,9 +58,21 @@
 </div>
 <br><br>
 
-<div class="ContentFrame">	
-	<h1><fmt:message key="user.overview.monthOverview" /></h1>
-		<a href="printSheet.do?month=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="M" />&year=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="yyyy" />">print sheet</a>
+<div class="ContentFrame">
+	<div style="float: left; margin: 0 0 -5px 0; padding: 0">
+		<h1><fmt:message key="user.overview.monthOverview" /></h1>
+	</div>
+	
+	<div style="text-align: right;max-width: 719px;margin: 0 0 -5px 0; padding: 0">
+		<a href="printSheet.do?month=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="M" />&year=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="yyyy" />">
+			<img src="<c:url value="/img/print_off.gif" />"
+				onMouseover="this.src='<c:url value="/img/print_on.gif" />'"
+				onMouseout="this.src='<c:url value="/img/print_off.gif" />'"
+				alt="<fmt:message key="user.overview.print" />"
+			 border="0">
+		</a>
+	</div>
+
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>
 		

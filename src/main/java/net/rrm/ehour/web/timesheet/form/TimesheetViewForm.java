@@ -29,7 +29,7 @@ import java.util.GregorianCalendar;
 import net.rrm.ehour.web.form.UserIdForm;
 
 /**
- * TODO 
+ * TODO remove, it's the same as the NavCalendarForm
  **/
 
 public class TimesheetViewForm extends UserIdForm

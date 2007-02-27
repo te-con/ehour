@@ -125,7 +125,7 @@
 		<!-- Print month sheet -->
 		<action name="PrintSheetForm"
 				path="/eh/timesheet/printSheet"
-				type="net.rrm.ehour.web.print.action.PrintSheetAction">
+				type="net.rrm.ehour.web.print.action.PrintTimesheetAction">
 			<forward name="selectionForm" path=".ehour.timesheet.printForm" />
 		</action>>
 

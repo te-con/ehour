@@ -23,12 +23,14 @@
 
 package net.rrm.ehour.web.timesheet.form;
 
+import net.rrm.ehour.web.calendar.NavCalendarForm;
+
 
 /**
  * TODO 
  **/
 
-public class PrintTimesheetForm extends TimesheetViewForm
+public class PrintTimesheetForm extends NavCalendarForm
 {
 	
 	/**

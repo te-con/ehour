@@ -27,9 +27,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.web.util.WebConstants;
 
 /**
  *  
@@ -81,4 +85,49 @@ public class CalendarUtil
 
 		return monthOverview;
 	}
+	
+	/**
+	 * Determine if we need the month stored in the session or the one in the request
+	 * or if this is a new date
+	 * @param request HttpServletRequest
+	 * @return Calendar
+	 */
+
+	public Calendar getRequestedMonth(HttpServletRequest request, NavCalendarForm form)
+	{
+		HttpSession session;
+		int year;
+		int month;
+		Calendar nowCalendar;
+
+		session = request.getSession();
+
+		nowCalendar = new GregorianCalendar();
+
+		if (form.getYear() != null)
+		{
+			year = form.getYear().intValue();
+		}
+		else if (session.getAttribute(WebConstants.SESSION_CALENDAR_YEAR_KEY) != null)
+		{
+			year = ((Integer) session.getAttribute(WebConstants.SESSION_CALENDAR_YEAR_KEY)).intValue();
+		} else
+		{
+			year = nowCalendar.get(Calendar.YEAR);
+		}
+
+		if (form.getMonth() != null)
+		{
+			month = form.getMonth().intValue();
+		}
+		else if (session.getAttribute(WebConstants.SESSION_CALENDAR_MONTH_KEY) != null)
+		{
+			month = ((Integer) session.getAttribute(WebConstants.SESSION_CALENDAR_MONTH_KEY)).intValue();
+		} else
+		{
+			month = nowCalendar.get(Calendar.MONTH);
+		}
+
+		return new GregorianCalendar(year, month, 1);
+	}	
 }
