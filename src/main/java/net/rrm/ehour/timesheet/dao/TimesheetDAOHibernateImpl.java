@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
@@ -53,22 +54,7 @@ public class TimesheetDAOHibernateImpl
 	@SuppressWarnings("unchecked")
 	public List<TimesheetEntry> getTimesheetEntriesInRange(Integer userId, DateRange dateRange)
 	{
-		List<TimesheetEntry>		results;
-		String[]	keys = new String[3];
-		Object[]	params = new Object[3];
-		
-		keys[0] = "dateStart";
-		keys[1] = "dateEnd";
-		keys[2] = "userId";
-		
-		params[0] = dateRange.getDateStart();
-		params[1] = dateRange.getDateEnd();
-		params[2] = userId;
-		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesBetweenDateForUserId"
-																		, keys, params);
-		
-		return results;		
+		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getEntriesBetweenDateForUserId");
 	}
 
 	
@@ -81,22 +67,7 @@ public class TimesheetDAOHibernateImpl
 	@SuppressWarnings("unchecked")
 	public List<BookedDay> getBookedHoursperDayInRange(Integer userId, DateRange dateRange)
 	{
-		List<BookedDay>		results;
-		String[]	keys = new String[3];
-		Object[]	params = new Object[3];
-		
-		keys[0] = "dateStart";
-		keys[1] = "dateEnd";
-		keys[2] = "userId";
-		
-		params[0] = dateRange.getDateStart();
-		params[1] = dateRange.getDateEnd();
-		params[2] = userId;
-		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getBookedDaysInRangeForUserId"
-																		, keys, params);
-		
-		return results;			
+		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedDaysInRangeForUserId");
 	}
 
 
@@ -113,5 +84,43 @@ public class TimesheetDAOHibernateImpl
 		
 		return ((Long)results.get(0)).intValue();
 		
+	}
+
+	/**
+	 * Get list of project assignments booked on in a daterange
+	 * @param userId
+	 * @param dateRange
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignment> getBookedProjectAssignmentsInRange(Integer userId, DateRange dateRange)
+	{
+		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedProjectsInRangeForUserId	");
+	}
+	 	
+	/**
+	 * 
+	 * @param userId
+	 * @param range
+	 * @param hql
+	 * @return
+	 */
+	private List getListOnUserIdAndRange(Integer userId, DateRange dateRange, String hql)
+	{
+		List		results;
+		String[]	keys = new String[3];
+		Object[]	params = new Object[3];
+		
+		keys[0] = "dateStart";
+		keys[1] = "dateEnd";
+		keys[2] = "userId";
+		
+		params[0] = dateRange.getDateStart();
+		params[1] = dateRange.getDateEnd();
+		params[2] = userId;
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam(hql, keys, params);
+		
+		return results;			
 	}
 }

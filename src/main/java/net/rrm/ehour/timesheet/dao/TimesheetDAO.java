@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
@@ -56,4 +57,13 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	 * @return List with key values -> key = date, value = hours booked
 	 */	
 	public List<BookedDay> getBookedHoursperDayInRange(Integer userId, DateRange dateRange);
+	
+	/**
+	 * Get list of project assignments booked on in a daterange
+	 * @param userId
+	 * @param dateRange
+	 * @return
+	 */
+	public List<ProjectAssignment> getBookedProjectAssignmentsInRange(Integer userId, DateRange dateRange);
+	
 }
