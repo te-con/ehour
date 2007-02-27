@@ -60,7 +60,7 @@
 
 <div class="ContentFrame">	
 	<h1><fmt:message key="user.overview.monthOverview" /></h1>
-
+		<a href="printSheet.do?month=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="M" />&year=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="yyyy" />">print sheet</a>
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>
 		
