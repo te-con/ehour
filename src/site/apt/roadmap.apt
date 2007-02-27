@@ -4,22 +4,19 @@ eHour development roadmap
   If you have any requests, please use {{{http://sourceforge.net/tracker/?group_id=167867&atid=844651}Sourceforge's feature reequester}}.
 
 * Version 0.5
- 
-  * 
-
-* Version 0.4
 
   * Add configuration parameters whether to display turnover to employees, etc. etc.
 
-* Version 0.3
+* Version 0.4
 
   * Bugfix release
   * IE6 compatibility (please request more browsers if needed)
   * Increase code coverage
 
-* Version 0.21
+* Version 0.3
 
   * Add charts to reporting
+  * Add print functionality
 
 * Version 0.2 (released 24 feb '07) 
 
