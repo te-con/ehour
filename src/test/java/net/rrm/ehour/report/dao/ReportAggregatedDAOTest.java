@@ -150,7 +150,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		assertEquals(3, results.size());
 	}
 	
-	public void getCumulatedHoursPerAssignmentForProjects()
+	public void testGetCumulatedHoursPerAssignmentForProjects()
 	{
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
 			    new Date(2006 - 1900, 10 - 1, 4));
@@ -159,6 +159,5 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		
 		assertEquals(2, results.size());
 	}
-
 
 }

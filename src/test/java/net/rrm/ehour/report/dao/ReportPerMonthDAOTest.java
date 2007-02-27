@@ -27,10 +27,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
-
+import static org.junit.Assert.assertEquals;
 /**
  * TODO 
  **/
@@ -39,41 +41,67 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 {
 	private	ReportPerMonthDAO	dao;
 	
+	@Test
 	public void testGetHoursPerMonthPerAssignmentForUsersIntegerArrayDateRange()
 	{
-//		List userIds = new ArrayList();
-//		userIds.add(2);
-//		
-//		DateRange dateRange = new DateRange(new Date(2006 - 1900, 12 - 1, 1), // deprecated? hmm ;) 
-//			    new Date(2007 - 1900, 10, 30));
-//
-//		
-//		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, dateRange);
-//		
-//		assertEquals(1, results.size());
+		List userIds = new ArrayList();
+		userIds.add(2);
+		
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 12 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2007 - 1900, 10, 30));
+
+		
+		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, dateRange);
+		
+		assertEquals(1, results.size());
 	}
 
 	/**
 	 * 
 	 * TODO fix dbunit + jdbctemplate
 	 */
+	@Test
 	public void testGetHoursPerMonthPerAssignmentForUsersIntegerArrayIntegerArrayDateRange()
 	{
-//		List userIds = new ArrayList();
-//		userIds.add(1);
-//		
-//		List projectIds = new ArrayList();
-//		projectIds.add(2);
-//		
-//		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
-//			    new Date(2006 - 1900, 10, 3));
-//
-//		
-//		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, projectIds, dateRange);
-//		
-//		assertEquals(1, results.size());
+		List userIds = new ArrayList();
+		userIds.add(1);
+		
+		List projectIds = new ArrayList();
+		projectIds.add(2);
+		
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2006 - 1900, 10, 3));
+
+		
+		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, projectIds, dateRange);
+		
+		assertEquals(1, results.size());
 	}
 
+	public void testGetHoursPerMonthPerAssignmentForProjects()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2008 - 1900, 1, 3));
+
+		List projectIds = new ArrayList();
+		projectIds.add(1);
+		
+		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForProjects(projectIds, dateRange);
+		
+		assertEquals(5, results.size());
+
+	}
+	
+	public void testGetHoursPerMonthPerAssignment()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2008 - 1900, 1, 3));
+
+		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignment(dateRange);
+		
+		assertEquals(6, results.size());		
+	}
+	
 	/**
 	 * @param dao the dao to set
 	 */
