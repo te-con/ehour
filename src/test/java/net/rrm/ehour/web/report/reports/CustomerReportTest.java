@@ -28,7 +28,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
-import net.rrm.ehour.web.report.reports.CustomerReport;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 
 /**
  * TODO 
