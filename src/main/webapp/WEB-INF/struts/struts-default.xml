@@ -8,6 +8,7 @@
 		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.NavCalendarForm" />
 		<form-bean name="TimesheetViewForm" type="net.rrm.ehour.web.timesheet.form.TimesheetViewForm" />
 		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
+		<form-bean name="PrintTimesheetForm" type="net.rrm.ehour.web.timesheet.form.PrintTimesheetForm" />		
 		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
 		<form-bean name="ReportChartForm" type="net.rrm.ehour.web.report.form.ReportChartForm" />		
 	</form-beans>
@@ -120,6 +121,13 @@
 				parameter="consultant"
 				path="/eh/userReport/projectReportTotalTurnoverChart"
 				type="net.rrm.ehour.web.userreport.action.ProjectReportTotalTurnOverChartAction" />
+
+		<!-- Print month sheet -->
+		<action name="PrintSheetForm"
+				path="/eh/timesheet/printSheet"
+				type="net.rrm.ehour.web.print.action.PrintSheetAction">
+			<forward name="selectionForm" path=".ehour.timesheet.printForm" />
+		</action>>
 
 	</action-mappings>
 
