@@ -24,6 +24,7 @@
 package net.rrm.ehour.project.service;
 
 import java.util.List;
+import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -102,4 +103,13 @@ public interface ProjectService
 	 * @param assignmentId
 	 */
 	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException;
+	
+	/**
+	 * Get active projects in daterange and any inactive if hours were booked on 'm in this period
+	 * @param userId
+	 * @param dateRange
+	 * @return
+	 */
+	
+	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange);
 }

@@ -23,9 +23,10 @@
 
 package net.rrm.ehour.project.service;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -50,32 +51,6 @@ public class ProjectServiceImpl implements ProjectService
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO			timesheetDAO;
 	private	Logger					logger = Logger.getLogger(ProjectServiceImpl.class);
-	
-	public void setProjectAssignmentDAO(ProjectAssignmentDAO dao)
-	{
-		this.projectAssignmentDAO = dao;
-	}
-	
-	public void setProjectDAO(ProjectDAO dao)
-	{
-		this.projectDAO = dao;
-	}
-	
-	public void setTimesheetDAO(TimesheetDAO dao)
-	{
-		timesheetDAO = dao;
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getActiveProjectsForUser(java.lang.Integer, java.util.Calendar, java.util.Calendar)
-	 */
-	public List<Project> getActiveProjectsForUser(Integer userId, Calendar dateStart, Calendar dateEnd)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 	
 	/**
 	 * 
@@ -302,5 +277,36 @@ public class ProjectServiceImpl implements ProjectService
 			throw new ParentChildConstraintException("Timesheet entries booked on assignment.");
 		}
 		
+	}
+	
+	/**
+	 * Get active projects for user 
+	 */
+
+	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange)
+	{
+		List<ProjectAssignment>	activeProjectAssignments = getProjectAssignmentsForUser(userId, dateRange);
+		List<ProjectAssignment> bookedProjectAssignments = timesheetDAO.getBookedProjectAssignmentsInRange(userId, dateRange);
+		
+		Set<ProjectAssignment> mergedAssignments = new TreeSet<ProjectAssignment>(activeProjectAssignments);
+		mergedAssignments.addAll(bookedProjectAssignments);
+		
+		return mergedAssignments;
+	}
+	
+
+	public void setProjectAssignmentDAO(ProjectAssignmentDAO dao)
+	{
+		this.projectAssignmentDAO = dao;
+	}
+	
+	public void setProjectDAO(ProjectDAO dao)
+	{
+		this.projectDAO = dao;
+	}
+	
+	public void setTimesheetDAO(TimesheetDAO dao)
+	{
+		timesheetDAO = dao;
 	}
 }
