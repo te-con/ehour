@@ -24,7 +24,7 @@ my $log_dbuser = "perf";
 my $log_dbpassword = "me";
 my $log_dsn = "DBI:mysql:database=$log_db;host=$log_dbhostname;port=$log_dbport";
 
-$dbh = DBI->connect($log_dsn, $log_dbuser, $log_dbpassword, {AutoCommit => 0}) or die "Couldn't connect: " . DBI->errstr;
+$dbh = DBI->connect($log_dsn, $log_dbuser, $log_dbpassword, {AutoCommit => 11}) or die "Couldn't connect: " . DBI->errstr;
 
 # Create random user departments
 my @dept_id = insert_random_depts();
@@ -40,7 +40,7 @@ my @asg_id = create_random_assignments(\@user_id, \@prj_id);
 create_timesheet_entries(@asg_id);
 
 #$dbh->rollback;
-$dbh->commit;
+#$dbh->commit;
 $dbh->disconnect;
 
 # Create timesheet entries
@@ -191,7 +191,7 @@ sub insert_random_users()
 		$lastName = ucfirst lc $word[$wordIndex++];
 		$r = int(rand($DEPARTMENT_COUNT));
 		$deptId = $dept_ids[$r];
-		#print "creating $username ($firstName, $lastName) with dept id $deptId\r\n";
+	#	print "creating $username ($firstName, $lastName) with dept id $deptId\r\n";
 		$sth->execute($username, $firstName, $lastName, $deptId) or die DBI->errstr;
 		$user_id[$i] = $dbh->last_insert_id(undef, undef, 'USER', undef);
 
