@@ -46,8 +46,11 @@
     </definition>
 
     <!-- Timesheet print month form -->
-    <definition name=".ehour.timesheet.printForm" path="/WEB-INF/jsp/timesheet/printForm.jsp" />
-
+    <definition name=".ehour.timesheet.printForm"  extends=".ehour.baseLayout">
+        <put name="navCalendar" value="/eh/cal/navCalendar.do" />
+    	<put name="extraCss" value="/css/ehourTimesheet.jsp" />
+        <put name="content" value="/WEB-INF/jsp/timesheet/printForm.jsp" />
+    </definition>
 
     <!-- User report Overview page -->
     <definition name=".ehour.userreport.overview" extends=".ehour.baseLayout">

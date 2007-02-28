@@ -123,9 +123,9 @@
 				type="net.rrm.ehour.web.userreport.action.ProjectReportTotalTurnOverChartAction" />
 
 		<!-- Print month sheet -->
-		<action name="PrintSheetForm"
-				path="/eh/timesheet/printSheet"
-				type="net.rrm.ehour.web.print.action.PrintTimesheetAction">
+		<action name="PrintTimesheetForm"
+				path="/eh/timesheet/printTimesheet"
+				type="net.rrm.ehour.web.timesheet.action.PrintTimesheetAction">
 			<forward name="selectionForm" path=".ehour.timesheet.printForm" />
 		</action>>
 

@@ -123,7 +123,7 @@ public class AuthUtil
 		authUser = SecurityContextHolder.getContext().getAuthentication();
 		user = AuthUtil.getLoggedInUser();
 		
-		if (form.getUserId() == null)
+		if (form == null || form.getUserId() == null)
 		{
 			userId = user.getUserId();
 		}

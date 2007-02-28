@@ -95,7 +95,7 @@ public class TimesheetDAOHibernateImpl
 	@SuppressWarnings("unchecked")
 	public List<ProjectAssignment> getBookedProjectAssignmentsInRange(Integer userId, DateRange dateRange)
 	{
-		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedProjectsInRangeForUserId	");
+		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedProjectsInRangeForUserId");
 	}
 	 	
 	/**

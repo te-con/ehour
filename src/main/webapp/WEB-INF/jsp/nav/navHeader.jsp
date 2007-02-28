@@ -10,7 +10,7 @@
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			<a href="<c:url value="/eh/timesheet/viewTimesheet.do" />"><fmt:message key="nav.enterTimesheet" /></a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
-			<a href="<c:url value="/eh/timesheet/printSheet.do" />"><fmt:message key="nav.printTimesheet" /></a>
+			<a href="<c:url value="/eh/timesheet/printTimesheet.do" />"><fmt:message key="nav.printTimesheet" /></a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 </authz:authorize>			
 
