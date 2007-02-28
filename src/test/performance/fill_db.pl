@@ -57,7 +57,7 @@ sub create_timesheet_entries()
 
 	$asg_i = 0;
 
-	while ($year == 2006)
+	while ($year <= 2007)
 	{
 		for (my $i = 0; $i < $TIMESHEET_ENTRIES_PER_DAY; $i++)
 		{
@@ -70,7 +70,7 @@ sub create_timesheet_entries()
 			$sth->execute($asgId, $date, rand(24));
 			$entries++;
 
-			if ($entries % 2000 == 0)
+			if ($entries % 4000 == 0)
 			{
 				print ".";
 			}
