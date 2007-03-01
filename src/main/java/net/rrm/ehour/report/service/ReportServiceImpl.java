@@ -278,6 +278,17 @@ public class ReportServiceImpl implements ReportService
 		
 		return userIds;
 	}
+
+
+	/**
+	 * Create print report
+	 */
+	public ReportData createPrintReport(List<Integer> projectAssignmentIds, DateRange dateRange)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 	/**
 	 *  

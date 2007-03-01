@@ -65,4 +65,12 @@ public interface ReportService
 	 * @return
 	 */
 	public ReportData createReportData(ReportCriteria criteria);
+	
+	/**
+	 * Create report for printing
+	 * @param projectAssignmentIds
+	 * @param dateRange
+	 * @return
+	 */
+	public ReportData createPrintReport(List<Integer> projectAssignmentIds, DateRange dateRange);
 }

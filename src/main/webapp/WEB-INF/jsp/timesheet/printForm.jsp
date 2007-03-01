@@ -18,6 +18,10 @@
 				</div>
 			</div>	
 
+			<form method="post" action="printSheet.do">
+			
+				<input type="hidden" name="fromForm" value="Y">
+
 			<table class="TimesheetPrintFormTable">
 			
 				<tr>

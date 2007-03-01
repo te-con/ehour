@@ -55,6 +55,9 @@
     	<put name="helpBody" value="print.body" /> 
     </definition>
 
+    <!-- Timesheet print sheet -->
+    <definition name=".ehour.timesheet.printSheet" page="/WEB-INF/jsp/timesheet/printSheet.jsp" />
+
     <!-- Timesheet print month form -->
     <definition name=".ehour.timesheet.printForm"  page="/WEB-INF/jsp/timesheet/printForm.jsp" />
 
