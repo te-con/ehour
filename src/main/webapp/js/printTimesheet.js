@@ -28,3 +28,8 @@ function overviewChanged(type, xml, evt)
  		ajaxEventReceived(xml, true, {content: 'contentSpan'}); 	
 	}
 }
+
+function enterSheet(year, month, day, userId)
+{
+	// TODO disable hover at all
+}

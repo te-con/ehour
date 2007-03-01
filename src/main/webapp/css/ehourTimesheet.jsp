@@ -361,3 +361,20 @@
 	width: 500px;
 	color: #536e87;
 }
+
+.TimesheetPrintFormTable
+{
+	width: auto;
+	padding: 0;
+	margin: -10px 0 0 0;
+}
+
+.TimesheetPrintFormTable td
+{
+	color:	#536e87;
+	border-left-style: solid;
+	border-left-color:#a1bcd7;
+	border-left-width: 1px;
+	vertical-align: top;
+}
+	

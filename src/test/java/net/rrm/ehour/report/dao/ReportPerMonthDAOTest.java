@@ -27,14 +27,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
-import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 /**
- * TODO 
+ * TODO  use a diff tx manager than the hibernate one
  **/
 
 public class ReportPerMonthDAOTest extends BaseDAOTest
@@ -54,6 +53,8 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, dateRange);
 		
 		assertEquals(1, results.size());
+		
+		endTransaction();
 	}
 
 	/**

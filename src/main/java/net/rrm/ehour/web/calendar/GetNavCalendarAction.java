@@ -76,8 +76,8 @@ public class GetNavCalendarAction extends Action
 		
 		// store current date in session
 		session = request.getSession();
-		session.setAttribute(WebConstants.SESSION_CALENDAR_MONTH_KEY,  requestedMonth.get(Calendar.MONTH));
-		session.setAttribute(WebConstants.SESSION_CALENDAR_YEAR_KEY,  requestedMonth.get(Calendar.YEAR));
+		session.setAttribute(WebConstants.SESSION_CALENDAR_MONTH_KEY, requestedMonth.get(Calendar.MONTH));
+		session.setAttribute(WebConstants.SESSION_CALENDAR_YEAR_KEY, requestedMonth.get(Calendar.YEAR));
 		
 		response.setHeader("Cache-Control", "no-cache");
 		

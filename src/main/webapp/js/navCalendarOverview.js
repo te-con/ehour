@@ -1,11 +1,42 @@
 var currentCalMonth;
 var currentCalYear;
 
+// check if calendar matches timesheet
+function syncTimesheet(month, year, userId, zeroBaseDate)
+{
+	if (!zeroBaseDate)
+	{
+		month--;
+		
+		if (month < 0)
+		{
+			month = 11;
+			year--;
+		}
+	}
+	
+	if (month != currentCalMonth || year != currentCalYear)
+	{
+		fireCalendarRequest(month, year, userId);
+	}
+}
+
 // calendar month changed
 function changeCalMonth(month, year, userId)
 {
 	showLoadingData();
 	
+	fireCalendarRequest(month, year, userId);
+
+	// navCalendarUpdated should be implemented by page specific js
+	navCalendarUpdated(month, year, userId);
+		
+	return false;
+}
+
+// request new calendar
+function fireCalendarRequest(month, year, userId)
+{
 	currentCalMonth = month;
 	currentCalYear = year;
 	
@@ -15,12 +46,7 @@ function changeCalMonth(month, year, userId)
 	               content: {month: month,
 	               			 year: year,
 	               			 userId: userId}
-	            });  		
-
-	// navCalendarUpdated should be implemented by page specific js
-	navCalendarUpdated(month, year, userId);
-		
-	return false;
+	            }); 
 }
 
 // function enterSheet(year, month, day, userId) must be implemented by page specific js

@@ -51,6 +51,8 @@
     	<put name="extraCss" value="/css/ehourTimesheet.jsp" />
         <put name="content" value="/WEB-INF/jsp/timesheet/printLayout.jsp" />
         <put name="subContent" value="/WEB-INF/jsp/timesheet/printForm.jsp" />        
+    	<put name="helpHeader" value="print.header" />    	
+    	<put name="helpBody" value="print.body" /> 
     </definition>
 
     <!-- Timesheet print month form -->

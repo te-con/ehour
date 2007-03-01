@@ -115,6 +115,8 @@ function hideLoadingData()
 	//fadeTimer = setTimeout("fadeInMessage(loginAs)", 55);
 }
 
+	
+
 function ltrim(str) { 
 	for(var k = 0; k < str.length && isWhitespace(str.charAt(k)); k++);
 	return str.substring(k, str.length);

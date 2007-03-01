@@ -24,14 +24,14 @@
 package net.rrm.ehour.web.timesheet.action;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
-import net.rrm.ehour.web.timesheet.form.TimesheetViewForm;
+import net.rrm.ehour.web.calendar.CalendarUtil;
+import net.rrm.ehour.web.calendar.NavCalendarForm;
 import net.rrm.ehour.web.util.AuthUtil;
 
 import org.apache.struts.action.ActionForm;
@@ -45,27 +45,20 @@ import org.apache.struts.action.ActionMapping;
 public class TimesheetOverviewAction extends BaseTimesheetAction
 {
 	private EhourConfig	config;
+	private	CalendarUtil	calendarUtil;
 	
 	/**
 	 * 
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) 
 	{
-		TimesheetViewForm	timesheetViewForm = (TimesheetViewForm)form;
+		NavCalendarForm		calendarForm = (NavCalendarForm)form;
 		Calendar			requestedMonth;
 		Integer				userId;
 		TimesheetOverview	timesheetOverview;
 		
-		requestedMonth = timesheetViewForm.getCalendar();
-		
-		// if none supplied, use the current date
-		if (requestedMonth == null)
-		{
-			requestedMonth = new GregorianCalendar();
-			requestedMonth.set(Calendar.DAY_OF_MONTH, 1);
-		}
-		
-		userId = AuthUtil.getUserId(timesheetViewForm);
+		userId = AuthUtil.getUserId(calendarForm);
+		requestedMonth = calendarUtil.getRequestedMonth(request, calendarForm);
 		
 		timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
 
@@ -92,6 +85,14 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 	public void setConfig(EhourConfig config)
 	{
 		this.config = config;
+	}
+
+	/**
+	 * @param calendarUtil the calendarUtil to set
+	 */
+	public void setCalendarUtil(CalendarUtil calendarUtil)
+	{
+		this.calendarUtil = calendarUtil;
 	}
 	
 	

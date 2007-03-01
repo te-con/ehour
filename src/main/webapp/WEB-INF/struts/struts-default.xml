@@ -6,7 +6,6 @@
 	<!-- Action forms -->
 	<form-beans>
 		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.NavCalendarForm" />
-		<form-bean name="TimesheetViewForm" type="net.rrm.ehour.web.timesheet.form.TimesheetViewForm" />
 		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
 		<form-bean name="PrintTimesheetForm" type="net.rrm.ehour.web.timesheet.form.PrintTimesheetForm" />		
 		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
@@ -36,14 +35,14 @@
 		</action>
 		
 		<!-- Timesheet overview, login entry for consultants -->
-		<action name="TimesheetViewForm"
+		<action name="NavCalendarForm"
 				path="/eh/timesheet/overview"
 				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overviewFull" />
 		</action>
 
 		<!-- Timesheet overview -->
-		<action name="TimesheetViewForm"
+		<action name="NavCalendarForm"
 				path="/eh/timesheet/overviewSnippet"
 				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
 			<forward name="success" path=".ehour.timesheet.overview" />

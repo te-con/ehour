@@ -12,6 +12,10 @@ Release Notes - eHour v0.2
   
   If you run into any issues please use the {{{issue-tracking.html}bug tracker}} or post your question on the {{{https://lists.sourceforge.net/lists/listinfo/ehour-users}mailinglist}} or {{{http://sourceforge.net/forum/?group_id=167867}forum}}.
 
+* 0.3 Release Notes
+
+	Navigation calendar is more in sync with the selected overview or timesheet
+
 * 0.2 Release Notes
 
 	Second beta released! 

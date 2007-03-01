@@ -4,6 +4,8 @@ Change log
 
 	<<Functional>>
 
+		* Navigation calendar and the date used in timesheet overview and timesheet entry are better synced
+
 	<<Technical>>
 
 		* Increased test coverage

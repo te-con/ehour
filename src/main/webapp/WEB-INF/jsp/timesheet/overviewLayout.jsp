@@ -18,6 +18,16 @@
 
 <script src="<c:url value="/js/navCalendarOverview.js" />" type="text/javascript"></script>
 <script src="<c:url value="/js/timesheet.js" />" type="text/javascript"></script>
+	
+<c:if test="${timesheet != null}">
+<script type="text/javascript">
+	inSheetForm = true;
+	syncTimesheet(<fmt:formatDate value="${timesheet.weekStart}" pattern="M" />, <fmt:formatDate value="${timesheet.weekStart}" pattern="yyyy" />, ${timesheet.userId}, false);
+</script>
+</c:if>	
+	
+</script>
+
 
 <div id="overviewSpan">
 	<tiles:insert page="${subContent}" />
