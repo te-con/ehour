@@ -1,0 +1,12 @@
+Change log
+
+* 0.21
+
+	<<Functional>>
+
+	<<Technical>>
+
+		* Increased test coverage
+		
+		* Switched from Junit 3.8 to Junit 4.2
+	
