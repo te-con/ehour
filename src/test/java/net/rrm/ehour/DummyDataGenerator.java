@@ -47,6 +47,7 @@ public class DummyDataGenerator
 	 * 
 	 * 
 	 * @param baseIds baseId[0] = baseId, baseId[1] = customerId, baseId[2] = userId
+	 * 			baseIds[3] = projectId, baseId[4] = assignmentId
 	 * @return
 	 */
 	public static ProjectAssignment getProjectAssignment(int... baseIds)
@@ -55,7 +56,7 @@ public class DummyDataGenerator
 		Project				prj;
 		Customer			cust;
 		User				user;
-		int					customerId, userId;
+		int					customerId, userId, projectId, assignmentId;
 		
 		// IMHO varargs is a stupid addition to the Java language
 		// ah yes, it cleans up your API but it adds an MSN signature style and a lot of bogus code to parse that MSN style crap
@@ -66,6 +67,8 @@ public class DummyDataGenerator
 		
 		customerId = baseId;
 		userId = baseId;
+		projectId = baseId * 10;
+		assignmentId = baseId * 100;
 		
 		if (baseIds.length >= 2)
 		{
@@ -77,18 +80,28 @@ public class DummyDataGenerator
 		{
 			userId = baseIds[2];
 		}
+		
+		if (baseIds.length >= 4)
+		{
+			projectId = baseIds[3];
+		}		
+
+		if (baseIds.length >= 5)
+		{
+			assignmentId = baseIds[4];
+		}		
 
 		
 		cust = getCustomer(customerId);
 		
-		prj = new Project(baseId * 10);
+		prj = new Project(projectId);
 		prj.setCustomer(cust);
 		prj.setActive(true);
 		prj.setName("tralala" + baseId);
 		
 		prjAsg = new ProjectAssignment();
 		prjAsg.setProject(prj);
-		prjAsg.setAssignmentId(baseId * 100);
+		prjAsg.setAssignmentId(assignmentId);
 		
 		user = getUser();
 		user.setUserId(userId);

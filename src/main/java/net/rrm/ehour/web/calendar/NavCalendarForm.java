@@ -23,6 +23,10 @@
 
 package net.rrm.ehour.web.calendar;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts.action.ActionMapping;
+
 import net.rrm.ehour.web.form.UserIdForm;
 
 /**
@@ -38,7 +42,19 @@ public class NavCalendarForm extends UserIdForm
 	
 	private	Integer	year;
 	private	Integer	month;
+	private	boolean		zeroBased = true;
 
+	/**
+	 * 
+	 */
+	public void reset(ActionMapping mapping, HttpServletRequest request)
+	{
+		zeroBased = true;
+		year = null;
+		month = null;
+	}	
+		
+	
 	/**
 	 * @return the month
 	 */
@@ -69,6 +85,22 @@ public class NavCalendarForm extends UserIdForm
 	public void setYear(Integer year)
 	{
 		this.year = year;
+	}
+
+	/**
+	 * @return the zeroBased
+	 */
+	public boolean isZeroBased()
+	{
+		return zeroBased;
+	}
+
+	/**
+	 * @param zeroBased the zeroBased to set
+	 */
+	public void setZeroBased(boolean zeroBased)
+	{
+		this.zeroBased = zeroBased;
 	}
 	
 }

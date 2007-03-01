@@ -24,7 +24,6 @@
 package net.rrm.ehour.web.calendar;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,6 +56,7 @@ public class GetNavCalendarAction extends Action
 		Integer			userId;
 		Calendar		requestedMonth;
 		boolean[]		monthOverview;
+		HttpSession		session;
 		
 		// get the requested userId
 		userId = AuthUtil.getUserId(ncForm);
@@ -73,6 +73,11 @@ public class GetNavCalendarAction extends Action
 		
 		// set the navigation urls
 		setNavParams(request, requestedMonth, userId);
+		
+		// store current date in session
+		session = request.getSession();
+		session.setAttribute(WebConstants.SESSION_CALENDAR_MONTH_KEY,  requestedMonth.get(Calendar.MONTH));
+		session.setAttribute(WebConstants.SESSION_CALENDAR_YEAR_KEY,  requestedMonth.get(Calendar.YEAR));
 		
 		response.setHeader("Cache-Control", "no-cache");
 		

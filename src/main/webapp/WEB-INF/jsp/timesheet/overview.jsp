@@ -64,7 +64,7 @@
 	</div>
 	
 	<div style="text-align: right;max-width: 719px;margin: 0 0 -5px 0; padding: 0">
-		<a href="printTimesheet.do?month=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="M" />&year=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="yyyy" />">
+		<a href="printTimesheet.do?zeroBased=0&month=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="M" />&year=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="yyyy" />">
 			<img src="<c:url value="/img/print_off.gif" />"
 				onMouseover="this.src='<c:url value="/img/print_on.gif" />'"
 				onMouseout="this.src='<c:url value="/img/print_off.gif" />'"

@@ -23,6 +23,10 @@
 
 package net.rrm.ehour.web.timesheet.form;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts.action.ActionMapping;
+
 import net.rrm.ehour.web.calendar.NavCalendarForm;
 
 
@@ -40,8 +44,21 @@ public class PrintTimesheetForm extends NavCalendarForm
 	private static final long serialVersionUID = -358079213446195520L;
 
 	private boolean		fromForm = false;
+	private	boolean		ajaxCall = false;
 	private	Integer[]	projectIds;
 
+	
+	/**
+	 * 
+	 *
+	 */
+	public void reset(ActionMapping mapping, HttpServletRequest request)
+	{
+		fromForm = false;
+		ajaxCall = false;
+		super.reset(mapping, request);
+	}	
+	
 	/**
 	 * @return the fromForm
 	 */
@@ -72,6 +89,22 @@ public class PrintTimesheetForm extends NavCalendarForm
 	public void setProjectIds(Integer[] projectIds)
 	{
 		this.projectIds = projectIds;
+	}
+
+	/**
+	 * @return the ajaxCall
+	 */
+	public boolean isAjaxCall()
+	{
+		return ajaxCall;
+	}
+
+	/**
+	 * @param ajaxCall the ajaxCall to set
+	 */
+	public void setAjaxCall(boolean ajaxCall)
+	{
+		this.ajaxCall = ajaxCall;
 	}
 }
 

@@ -74,7 +74,7 @@ public class PrintTimesheetAction extends Action
 			projectAssignments = getProjects(userId, printDate);
 			request.setAttribute("projectAssignments", projectAssignments);
 			request.setAttribute("printDate", printDate);
-			fwd = mapping.findForward("selectionForm");
+			fwd = mapping.findForward( (psForm.isAjaxCall()) ? "printForm" : "printLayout");
 		}
 
 		return fwd;

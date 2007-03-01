@@ -99,7 +99,6 @@ public class CalendarUtil
 		int year;
 		int month;
 		Calendar nowCalendar;
-
 		session = request.getSession();
 
 		nowCalendar = new GregorianCalendar();
@@ -119,6 +118,12 @@ public class CalendarUtil
 		if (form.getMonth() != null)
 		{
 			month = form.getMonth().intValue();
+			
+			if (!form.isZeroBased())
+			{
+				month--;
+			}
+					
 		}
 		else if (session.getAttribute(WebConstants.SESSION_CALENDAR_MONTH_KEY) != null)
 		{

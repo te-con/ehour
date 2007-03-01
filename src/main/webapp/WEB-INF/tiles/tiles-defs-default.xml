@@ -45,12 +45,16 @@
 		<put name="helpBody" value="timesheet.body" />		
     </definition>
 
-    <!-- Timesheet print month form -->
-    <definition name=".ehour.timesheet.printForm"  extends=".ehour.baseLayout">
+    <!-- Timesheet print layout -->
+    <definition name=".ehour.timesheet.printLayout"  extends=".ehour.baseLayout">
         <put name="navCalendar" value="/eh/cal/navCalendar.do" />
     	<put name="extraCss" value="/css/ehourTimesheet.jsp" />
-        <put name="content" value="/WEB-INF/jsp/timesheet/printForm.jsp" />
+        <put name="content" value="/WEB-INF/jsp/timesheet/printLayout.jsp" />
+        <put name="subContent" value="/WEB-INF/jsp/timesheet/printForm.jsp" />        
     </definition>
+
+    <!-- Timesheet print month form -->
+    <definition name=".ehour.timesheet.printForm"  page="/WEB-INF/jsp/timesheet/printForm.jsp" />
 
     <!-- User report Overview page -->
     <definition name=".ehour.userreport.overview" extends=".ehour.baseLayout">

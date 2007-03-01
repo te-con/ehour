@@ -126,8 +126,9 @@
 		<action name="PrintTimesheetForm"
 				path="/eh/timesheet/printTimesheet"
 				type="net.rrm.ehour.web.timesheet.action.PrintTimesheetAction">
-			<forward name="selectionForm" path=".ehour.timesheet.printForm" />
-		</action>>
+			<forward name="printLayout" path=".ehour.timesheet.printLayout" />
+			<forward name="printForm" path=".ehour.timesheet.printForm" />
+		</action>
 
 	</action-mappings>
 
