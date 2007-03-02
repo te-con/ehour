@@ -50,4 +50,12 @@ public interface ReportPerMonthDAO
 	
 	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Integer> projectId, DateRange dateRange);
 	
+	/**
+	 * Get hours per day for assignments
+	 * @param assignmentId
+	 * @param dateRange
+	 * @return
+	 */
+	public List<WeeklyProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Integer> assignmentId, DateRange dateRange);
+	
 }

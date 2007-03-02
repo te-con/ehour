@@ -126,19 +126,43 @@ public class DateUtil
 	public static DateRange getDateRangeForWeek(Calendar calendar)
 	{
 		DateRange	weekRange = new DateRange();
-		
 		Calendar	calClone = (Calendar)calendar.clone();
 		
 		// @todo assuming the week starts on sunday. configurable?
+		
 		calClone.add(Calendar.DAY_OF_MONTH, Calendar.SUNDAY - calClone.get(Calendar.DAY_OF_WEEK));
+		nullifyTime(calClone);
 		weekRange.setDateStart(calClone.getTime());
 		
 		calClone.add(Calendar.DAY_OF_MONTH, +6);
+		maximizeTime(calClone);
 		weekRange.setDateEnd(calClone.getTime());
 		
 		return weekRange;
 	}
 	
+	/**
+	 * Get a date range covering the month the supplied calendar is in
+	 * @param calendar
+	 * @return
+	 */	
+	public static DateRange getDateRangeForMonth(Calendar calendar)
+	{
+		DateRange	monthRange = new DateRange();
+		
+		Calendar	calClone = (Calendar)calendar.clone();
+		
+		calClone.set(Calendar.DAY_OF_MONTH, 1);
+		nullifyTime(calClone);
+		monthRange.setDateStart(calClone.getTime());
+		
+		calClone.add(Calendar.MONTH, 1);
+		calClone.add(Calendar.DATE, -1);
+		maximizeTime(calClone);
+		monthRange.setDateEnd(calClone.getTime());
+		
+		return monthRange;
+	}	
 	/**
 	 * Set the time of a date to 00:00.00 (up to the ms)
 	 * @param date
@@ -149,8 +173,9 @@ public class DateUtil
 	{
 		Calendar	cal = new GregorianCalendar();
 		cal.setTime(date);
+		nullifyTime(cal);
 		
-		return nullifyTime(cal).getTime();
+		return cal.getTime();
 	}
 	
 	/**
@@ -158,13 +183,22 @@ public class DateUtil
 	 * @param cal
 	 * @return
 	 */
-	public static Calendar nullifyTime(Calendar cal)
+	public static void nullifyTime(Calendar cal)
 	{
 		cal.set(Calendar.HOUR, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		
-		return cal;
+	}
+	
+	/**
+	 * Set the time of a calendar to 23:59:59 
+	 * @param cal
+	 */
+	public static void maximizeTime(Calendar cal)
+	{
+		cal.set(Calendar.HOUR, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.MILLISECOND, 59);
 	}
 }

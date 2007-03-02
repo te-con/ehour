@@ -30,6 +30,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
 
 
 /**
@@ -72,5 +73,5 @@ public interface ReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public ReportData createPrintReport(List<Integer> projectAssignmentIds, DateRange dateRange);
+	public List<WeeklyProjectAssignmentAggregate> getPrintReportData(List<Integer> projectAssignmentIds, DateRange dateRange);
 }

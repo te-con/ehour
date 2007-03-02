@@ -283,10 +283,13 @@ public class ReportServiceImpl implements ReportService
 	/**
 	 * Create print report
 	 */
-	public ReportData createPrintReport(List<Integer> projectAssignmentIds, DateRange dateRange)
+	public List<WeeklyProjectAssignmentAggregate> getPrintReportData(List<Integer> projectAssignmentIds, DateRange dateRange)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<WeeklyProjectAssignmentAggregate>	aggregates;
+		
+		aggregates = reportPerMonthDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange);
+		
+		return aggregates;
 	}
 	
 	

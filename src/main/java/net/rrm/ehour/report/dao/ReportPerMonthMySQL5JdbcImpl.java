@@ -230,6 +230,57 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 
 		return namedParamTemp.query(sql, params, mapper);	
 	}	
+
+
+	/**
+	 * Get hours per day for assignments
+	 * @param assignmentId
+	 * @param dateRange
+	 * @return
+	 */	
+	@SuppressWarnings("unchecked")
+	public List<WeeklyProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Integer> assignmentIds, DateRange dateRange)
+	{
+		ParameterizedRowMapper<WeeklyProjectAssignmentAggregate> 	mapper;
+		NamedParameterJdbcTemplate 	namedParamTemp; 
+		Map	params;
+		
+		String	sql = "SELECT SUM(ENTRY.HOURS) AS BOOKED_HOURS, " +
+				"       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS TURNOVER, " +
+				"       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS ENTRY_DATE, " +
+				"       CUST.CUSTOMER_ID, " +
+				"       CUST.NAME AS CUSTOMER_NAME, " +
+				"       PAG.PROJECT_ID, " +
+				"       PAG.USER_ID, " +
+				"		USR.FIRST_NAME, " + 
+				"		USR.LAST_NAME, " +
+				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
+				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
+				"       PRJ.NAME AS PROJECT_NAME " +
+				"FROM TIMESHEET_ENTRY ENTRY, " +
+				"     CUSTOMER CUST, " +
+				"     PROJECT PRJ, " +
+				"     PROJECT_ASSIGNMENT PAG, " +
+				"     USER USR " +
+				"WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND " +
+				"      PAG.PROJECT_ID = PRJ.PROJECT_ID AND " +
+				"      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND " +
+				"      PAG.USER_ID = USR.USER_ID AND " +
+				"      PAG.PROJECT_ID IN (:assignmentId) AND " +				
+				"      (ENTRY.ENTRY_DATE >= :dateStart AND ENTRY.ENTRY_DATE <= :dateEnd) " + 
+				"GROUP BY PAG.ASSIGNMENT_ID, " +
+				"         DATE_FORMAT(ENTRY_DATE, '%e%m%Y') ";
+		
+		mapper = new  WeeklyProjectAssignmentAggregateRowMapper();
+		namedParamTemp = new NamedParameterJdbcTemplate(getJdbcTemplate());
+		
+		params = new HashMap();
+		params.put("dateStart", dateRange.getDateStart());
+		params.put("dateEnd", dateRange.getDateEnd());
+		params.put("assignmentId", assignmentIds);
+
+		return namedParamTemp.query(sql, params, mapper);
+	}	
 	
 	/**
 	 * Row mapper for WeeklyProjectAssignmentAggregate

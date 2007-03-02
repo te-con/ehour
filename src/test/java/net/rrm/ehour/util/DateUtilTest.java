@@ -153,6 +153,35 @@ public class DateUtilTest extends TestCase
 		assertEquals(2007 - 1900, range.getDateEnd().getYear());
 		assertEquals(1 - 1, range.getDateEnd().getMonth());
 		assertEquals(6, range.getDateEnd().getDate());
-
 	}
-}
+
+	/**
+	 * 
+	 *
+	 */
+	public void testNullifyTime()
+	{
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.MINUTE, 10);
+		DateUtil.nullifyTime(cal);
+		
+		assertEquals(0, cal.get(Calendar.MINUTE));
+	}
+	
+	/**
+	 * 
+	 *
+	 */
+	public void testGetDateRangeForMonth()
+	{
+		Calendar cal = new GregorianCalendar(2006, 12 - 1, 5);
+		DateRange range = DateUtil.getDateRangeForMonth(cal);
+		
+		assertEquals(2006 - 1900, range.getDateStart().getYear());
+		assertEquals(12 - 1, range.getDateStart().getMonth());
+		assertEquals(1, range.getDateStart().getDate());
+
+		assertEquals(2006 - 1900, range.getDateEnd().getYear());
+		assertEquals(12 - 1, range.getDateEnd().getMonth());
+		assertEquals(31, range.getDateEnd().getDate());
+	}}

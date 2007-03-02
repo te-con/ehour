@@ -18,7 +18,7 @@
 				</div>
 			</div>	
 
-			<form method="post" action="printSheet.do">
+			<form method="post" action="printTimesheet.do">
 			
 				<input type="hidden" name="fromForm" value="Y">
 
@@ -31,7 +31,11 @@
 
 					<td style="padding-left: 5px">					
 						<c:forEach items="${projectAssignments}" var="projectAssignment">
-							<input type="checkbox" name="prj_${projectAssignment.assignmentId}" <c:if test="${!projectAssignment.defaultAssignment}">checked</c:if>>
+							<input type="checkbox" 
+									name="projectId"
+									value="${projectAssignment.assignmentId}"
+									<c:if test="${!projectAssignment.defaultAssignment}">checked</c:if>
+								>
 									${projectAssignment.project.name} 
 									<c:if test="${projectAssignment.description != null && projectAssignment.description != ''}">
 										(${projectAssignment.description})

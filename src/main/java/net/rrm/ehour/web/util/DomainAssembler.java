@@ -253,7 +253,7 @@ public class DomainAssembler
 			cal = new GregorianCalendar(form.getSheetYear(),
 										form.getSheetMonth() - 1,
 										form.getSheetDay());
-			cal = DateUtil.nullifyTime(cal);
+			DateUtil.nullifyTime(cal);
 			
 			id.setCommentDate(cal.getTime());
 			

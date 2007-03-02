@@ -45,7 +45,7 @@ public class PrintTimesheetForm extends NavCalendarForm
 
 	private boolean		fromForm = false;
 	private	boolean		ajaxCall = false;
-	private	Integer[]	projectIds;
+	private	Integer[]	projectId;
 
 	
 	/**
@@ -76,19 +76,19 @@ public class PrintTimesheetForm extends NavCalendarForm
 	}
 
 	/**
-	 * @return the projectIds
+	 * @return the projectId
 	 */
-	public Integer[] getProjectIds()
+	public Integer[] getProjectId()
 	{
-		return projectIds;
+		return projectId;
 	}
 
 	/**
-	 * @param projectIds the projectIds to set
+	 * @param projectId the projectId to set
 	 */
-	public void setProjectIds(Integer[] projectIds)
+	public void setProjectId(Integer[] projectIds)
 	{
-		this.projectIds = projectIds;
+		this.projectId = projectIds;
 	}
 
 	/**

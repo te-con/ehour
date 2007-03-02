@@ -23,14 +23,21 @@
 
 package net.rrm.ehour.web.timesheet.action;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.calendar.CalendarUtil;
 import net.rrm.ehour.web.timesheet.form.PrintTimesheetForm;
@@ -49,6 +56,7 @@ public class PrintTimesheetAction extends Action
 {
 	private ProjectService	projectService;
 	private	CalendarUtil	calendarUtil;
+	private	ReportService	reportService;
 	
 	/**
 	 * 
@@ -60,14 +68,19 @@ public class PrintTimesheetAction extends Action
 		Integer					userId;
 		Calendar				printDate;
 		Set<ProjectAssignment>	projectAssignments;
+		DateRange				printRange;
+		List<WeeklyProjectAssignmentAggregate>	results;
 		
 		userId = AuthUtil.getUserId(psForm);
 		
 		printDate = calendarUtil.getRequestedMonth(request, psForm);
+		printRange = DateUtil.getDateRangeForMonth(printDate);
 		
 		if (psForm != null && psForm.isFromForm())
 		{
-			fwd = null;
+			results = reportService.getPrintReportData(Arrays.asList(psForm.getProjectId()), printRange);
+			request.setAttribute("printData", results);
+			fwd = mapping.findForward("printSheet");
 		}
 		else
 		{
@@ -79,6 +92,10 @@ public class PrintTimesheetAction extends Action
 
 		return fwd;
 	}
+	
+	 
+	
+
 
 	/**
 	 * Get projects for this user in this month
@@ -106,5 +123,13 @@ public class PrintTimesheetAction extends Action
 	public void setCalendarUtil(CalendarUtil calendarUtil)
 	{
 		this.calendarUtil = calendarUtil;
+	}
+
+	/**
+	 * @param reportService the reportService to set
+	 */
+	public void setReportService(ReportService reportService)
+	{
+		this.reportService = reportService;
 	}
 }

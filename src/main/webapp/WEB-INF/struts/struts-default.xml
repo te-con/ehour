@@ -114,7 +114,6 @@
 				path="/eh/userReport/projectReportPerWeekChart"
 				type="net.rrm.ehour.web.userreport.action.ProjectReportOverviewChartAction" />
 
-
 		<!-- User project total turnover chart -->
 		<action name="ReportChartForm"
 				parameter="consultant"
@@ -127,6 +126,7 @@
 				type="net.rrm.ehour.web.timesheet.action.PrintTimesheetAction">
 			<forward name="printLayout" path=".ehour.timesheet.printLayout" />
 			<forward name="printForm" path=".ehour.timesheet.printForm" />
+			<forward name="printSheet" path=".ehour.timesheet.printSheet" />			
 		</action>
 
 	</action-mappings>
