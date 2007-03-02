@@ -39,15 +39,16 @@
 
 		<menu name="Install">
 			<item name="Download" href="download.html" />
-			<item name="Release Notes" href="release_notes.html" />
-			<item name="Instructions" href="install.html" />
+			<item name="Install instructions" href="install.html" />
 			<item name="Upgrading" href="upgrading.html" />			
+			<item name="Release Notes" href="release_notes.html" />
 			<item name="License" href="license.html" />
 		</menu>
 
 		<menu name="Documentation">
 			<item name="First time usage" href="first_time_usage.html" />			
 			<item name="eHour structure" href="ehour_structure.html" />
+			<item name="Support forum" href="support.html" />
 		</menu>
 
 		${reports}
