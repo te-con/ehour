@@ -64,7 +64,8 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"		USR.LAST_NAME, " +
 				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
-				"       PRJ.NAME AS PROJECT_NAME " +
+				"       PRJ.NAME AS PROJECT_NAME, " +
+				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
 				"FROM TIMESHEET_ENTRY ENTRY, " +
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
@@ -114,7 +115,8 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"		USR.LAST_NAME, " +
 				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
-				"       PRJ.NAME AS PROJECT_NAME " +
+				"       PRJ.NAME AS PROJECT_NAME, " +
+				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
 				"FROM TIMESHEET_ENTRY ENTRY, " +
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
@@ -162,7 +164,8 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"		USR.LAST_NAME, " +
 				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
-				"       PRJ.NAME AS PROJECT_NAME " +
+				"       PRJ.NAME AS PROJECT_NAME, " +
+				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
 				"FROM TIMESHEET_ENTRY ENTRY, " +
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
@@ -211,7 +214,8 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"		USR.LAST_NAME, " +
 				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
-				"       PRJ.NAME AS PROJECT_NAME " +
+				"       PRJ.NAME AS PROJECT_NAME, " +
+				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
 				"FROM TIMESHEET_ENTRY ENTRY, " +
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
