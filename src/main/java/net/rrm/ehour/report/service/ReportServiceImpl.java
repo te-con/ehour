@@ -36,7 +36,7 @@ import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.dao.ReportPerMonthDAO;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 import net.rrm.ehour.report.util.ReportUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.domain.User;
@@ -136,7 +136,7 @@ public class ReportServiceImpl implements ReportService
 		}		
 		
 		reportData.setProjectAssignmentAggregates(getProjectAssignmentAggregates(userIds, projectIds, reportRange));
-		reportData.setWeeklyProjectAssignmentAggregates(getWeeklyReportData(userIds, projectIds, reportRange));
+		reportData.setFlatProjectAssignmentAggregates(getWeeklyReportData(userIds, projectIds, reportRange));
 		reportData.setReportCriteria(reportCriteria);
 		
 		return reportData;
@@ -179,11 +179,11 @@ public class ReportServiceImpl implements ReportService
 	 * @param criteria
 	 * @return
 	 */
-	private List<WeeklyProjectAssignmentAggregate> getWeeklyReportData(Integer[] userIds,
+	private List<FlatProjectAssignmentAggregate> getWeeklyReportData(Integer[] userIds,
 																		Integer[] projectIds,
 																		DateRange reportRange)
 	{
-		List<WeeklyProjectAssignmentAggregate> aggregates = null;
+		List<FlatProjectAssignmentAggregate> aggregates = null;
 
 		if (userIds == null && projectIds == null)
 		{
@@ -283,9 +283,9 @@ public class ReportServiceImpl implements ReportService
 	/**
 	 * Create print report
 	 */
-	public List<WeeklyProjectAssignmentAggregate> getPrintReportData(List<Integer> projectAssignmentIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getPrintReportData(List<Integer> projectAssignmentIds, DateRange dateRange)
 	{
-		List<WeeklyProjectAssignmentAggregate>	aggregates;
+		List<FlatProjectAssignmentAggregate>	aggregates;
 		
 		aggregates = reportPerMonthDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange);
 		

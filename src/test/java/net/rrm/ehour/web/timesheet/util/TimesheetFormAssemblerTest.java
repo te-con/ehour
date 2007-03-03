@@ -122,13 +122,5 @@ public class TimesheetFormAssemblerTest
 		Map<ProjectAssignment, Map<Date, TimesheetEntry>> resMap = ass.createAssignmentMap(weekOverview);
 		assertEquals(2, resMap.keySet().size());
 	}
-	
-	@Test
-	public void testCreateDateSequence()
-	{
-		List res = ass.createDateSequence(weekOverview);
-		
-		assertEquals(7, res.size());
-	}
 
 }

@@ -68,19 +68,19 @@
 					
 
 			</table>			
+			</form>
 			
-			<Br>
-			
-			<div class="BlueLeftBottom">
-				<div class="BlueRightBottom">
-					&nbsp;
-				</div>
-			</div>			
-		</div>
-		<br>
+				<div class="BlueLeftBottom">
+					<div class="BlueRightBottom">
+						&nbsp;
+					</div>
+				</div>			
+			</div>
+
+		<br>		
 		<div class="GreyFrameFooter">
 			<p>
 			</p>
 		</div>				
 	</div>	
-</div>					
+</div>				

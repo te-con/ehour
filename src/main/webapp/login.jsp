@@ -58,7 +58,7 @@
 	
 	<div class="BackFrameFooter">
 		<p style="padding-right: 60px;margin-top: -15px">
-			v0.2
+			v0.3
 		</p> 
 	</div>
 </div>

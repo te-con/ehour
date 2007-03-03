@@ -23,9 +23,11 @@
 
 package net.rrm.ehour.util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 
@@ -76,7 +78,6 @@ public class DateUtil
 		
         cal.set(Calendar.DATE, 1);
         dateRange.setDateStart(cal.getTime());
-
         
         cal.add(Calendar.MONTH, 1);
         cal.add(Calendar.DATE, -1);
@@ -131,11 +132,9 @@ public class DateUtil
 		// @todo assuming the week starts on sunday. configurable?
 		
 		calClone.add(Calendar.DAY_OF_MONTH, Calendar.SUNDAY - calClone.get(Calendar.DAY_OF_WEEK));
-		nullifyTime(calClone);
 		weekRange.setDateStart(calClone.getTime());
 		
 		calClone.add(Calendar.DAY_OF_MONTH, +6);
-		maximizeTime(calClone);
 		weekRange.setDateEnd(calClone.getTime());
 		
 		return weekRange;
@@ -153,12 +152,10 @@ public class DateUtil
 		Calendar	calClone = (Calendar)calendar.clone();
 		
 		calClone.set(Calendar.DAY_OF_MONTH, 1);
-		nullifyTime(calClone);
 		monthRange.setDateStart(calClone.getTime());
 		
 		calClone.add(Calendar.MONTH, 1);
 		calClone.add(Calendar.DATE, -1);
-		maximizeTime(calClone);
 		monthRange.setDateEnd(calClone.getTime());
 		
 		return monthRange;
@@ -192,13 +189,51 @@ public class DateUtil
 	}
 	
 	/**
-	 * Set the time of a calendar to 23:59:59 
+	 * Set the time of a calendar to 23:59:59.999 
 	 * @param cal
 	 */
 	public static void maximizeTime(Calendar cal)
 	{
 		cal.set(Calendar.HOUR, 23);
 		cal.set(Calendar.MINUTE, 59);
-		cal.set(Calendar.MILLISECOND, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
 	}
+
+	/**
+	 * Set the time of a date to 23:59:59.999
+	 * @param cal
+	 */
+	public static Date maximizeTime(Date date)
+	{
+		Calendar	cal = new GregorianCalendar();
+		cal.setTime(date);
+		maximizeTime(cal);
+		
+		return cal.getTime();
+	}
+
+	/**
+	 * Create a sequence of dates from the date range
+	 * TODO should be in a web package somewhere
+	 * @param weekOverview
+	 * @return
+	 */
+	public static List<Date> createDateSequence(DateRange range)
+	{
+		List<Date>	dateSequence = new ArrayList<Date>();
+		Calendar	calendar;
+		
+		calendar = new GregorianCalendar();
+		calendar.setTime(range.getDateStart());
+		
+		while (calendar.getTime().before(range.getDateEnd()))
+		{
+			nullifyTime(calendar);
+			dateSequence.add(calendar.getTime());
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		
+		return dateSequence;
+	}	
 }

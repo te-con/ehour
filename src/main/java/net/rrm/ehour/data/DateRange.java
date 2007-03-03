@@ -24,9 +24,12 @@
 package net.rrm.ehour.data;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
+import net.rrm.ehour.util.DateUtil;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Object containing a range of dates.
@@ -53,6 +56,10 @@ public class DateRange implements Serializable
 		setDateEnd(dateEnd);
 	}
 
+	/**
+	 * Get date end
+	 * @return
+	 */
 	public Date getDateEnd()
 	{
 		return dateEnd;
@@ -69,21 +76,14 @@ public class DateRange implements Serializable
 	}
 	
 	/**
-	 * Set the date end, time is set to 23:59
+	 * Set the date end, time is set to 23:59:59.999
 	 * @param dateEnd
 	 */
 	public void setDateEnd(Date dateEnd)
 	{
-		Calendar	cal;
 		if (dateEnd != null)
 		{
-			cal = new GregorianCalendar();
-			cal.setTime(dateEnd);
-			cal.set(Calendar.HOUR_OF_DAY, 23);
-			cal.set(Calendar.MINUTE, 59);
-			cal.set(Calendar.SECOND, 59);
-			
-			this.dateEnd = cal.getTime();
+			this.dateEnd = DateUtil.maximizeTime(dateEnd);
 		}
 	}
 
@@ -102,60 +102,38 @@ public class DateRange implements Serializable
 	 */
 	public void setDateStart(Date dateStart)
 	{
-		Calendar	cal;
 		if (dateStart != null)
 		{
-			cal = new GregorianCalendar();
-			cal.setTime(dateStart);
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-				
-			this.dateStart = cal.getTime();
+			this.dateStart = DateUtil.nullifyTime(dateStart);
 		}
-		
-	}
-
-	
-	
-	@Override
-	public int hashCode()
-	{
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((dateEnd == null) ? 0 : dateEnd.hashCode());
-		result = PRIME * result + ((dateStart == null) ? 0 : dateStart.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final DateRange other = (DateRange) obj;
-		if (dateEnd == null)
-		{
-			if (other.dateEnd != null)
-				return false;
-		} else if (!dateEnd.equals(other.dateEnd))
-			return false;
-		if (dateStart == null)
-		{
-			if (other.dateStart != null)
-				return false;
-		} else if (!dateStart.equals(other.dateStart))
-			return false;
-		return true;
 	}
 	
 	public String toString()
 	{
 		return "date start: " + ((dateStart != null) ? dateStart.toString() : "null") 
 				+ ", date end: " + ((dateEnd != null) ? dateEnd.toString() : "null");
+	}
+
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	@Override
+	public boolean equals(Object object)
+	{
+		if (!(object instanceof DateRange))
+		{
+			return false;
+		}
+		DateRange rhs = (DateRange) object;
+		return new EqualsBuilder().append(this.dateEnd, rhs.dateEnd).append(this.dateStart, rhs.dateStart).isEquals();
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder(213586715, -454293689).append(this.dateEnd).append(this.dateStart).toHashCode();
 	}
 }

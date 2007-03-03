@@ -1,0 +1,39 @@
+body
+{
+	background: white;
+	font: Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.Header img
+{
+	margin: 15px 0 10px 15px;
+	padding: 0;
+	vertical-align: bottom;
+}
+
+hr
+{
+	border: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 1px;
+	color: #09283d;
+	background-color: #09283d;	
+}
+
+div.Content
+{
+	text-align: center;
+}
+
+div.Content h1
+{
+	padding:	0;
+	margin: 	0;
+	font: 		bold 1.1em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	color: 		#233e55;
+}

@@ -25,6 +25,7 @@ package net.rrm.ehour.timesheet.service;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
@@ -170,7 +171,7 @@ public class TimesheetServiceTest  extends TestCase
 		Date da = new Date(2006 - 1900, 12 - 1, 31);
 		Date db = new Date(2007 - 1900, 1 - 1, 6);
 		DateRange range = new DateRange(da, db);
-		
+		System.out.println(range);
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, range))
 				.andReturn(new ArrayList<TimesheetEntry>());
 		

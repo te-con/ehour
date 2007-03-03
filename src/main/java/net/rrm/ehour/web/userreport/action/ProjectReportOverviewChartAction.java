@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 import net.rrm.ehour.web.report.charts.AbstractChartAction;
 
 import org.jfree.chart.ChartFactory;
@@ -50,7 +50,7 @@ public class ProjectReportOverviewChartAction extends AbstractChartAction
 	 */
 	protected JFreeChart getChart(ReportData reportData)
 	{
-		List<WeeklyProjectAssignmentAggregate>	results;
+		List<FlatProjectAssignmentAggregate>	results;
 		TimeSeries 		timeSeries;
 		String[]		weekYear;
 		Week			week;
@@ -59,9 +59,9 @@ public class ProjectReportOverviewChartAction extends AbstractChartAction
 		
 		seriesMap = new HashMap<Integer, TimeSeries>();
 		
-		results = reportData.getWeeklyProjectAssignmentAggregates();
+		results = reportData.getFlatProjectAssignmentAggregates();
 
-		for (WeeklyProjectAssignmentAggregate aggregate : results)
+		for (FlatProjectAssignmentAggregate aggregate : results)
 		{
 			if (seriesMap.containsKey(aggregate.getCustomerId()))
 			{
@@ -73,7 +73,7 @@ public class ProjectReportOverviewChartAction extends AbstractChartAction
 				timeSeries = new TimeSeries(aggregate.getCustomerName(), Week.class);
 			}
 			
-			weekYear = aggregate.getWeekYear().split(" ");
+			weekYear = aggregate.getEntryDate().split(" ");
 			week = new Week(Integer.parseInt(weekYear[0]), Integer.parseInt(weekYear[1]));
 			timeSeries.addOrUpdate(week, aggregate.getTotalHours());
 			

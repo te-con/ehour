@@ -36,6 +36,7 @@
 	<bean name="/eh/timesheet/printTimesheet" class="net.rrm.ehour.web.timesheet.action.PrintTimesheetAction">		
 		<property name="projectService" ref="projectService" />
 		<property name="calendarUtil" ref="calendarUtil" />
+		<property name="reportService" ref="reportService" />
 	</bean>
 	
 	<bean name="/eh/userReport/index" class="net.rrm.ehour.web.userreport.action.UserReportCriteriaAction">	

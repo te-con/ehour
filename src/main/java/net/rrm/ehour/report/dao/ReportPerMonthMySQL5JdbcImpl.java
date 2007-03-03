@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -46,9 +46,9 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForUsers(java.lang.Integer[], java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userIds, List<Integer> projectIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userIds, List<Integer> projectIds, DateRange dateRange)
 	{
-		ParameterizedRowMapper<WeeklyProjectAssignmentAggregate> 	mapper;
+		ParameterizedRowMapper<FlatProjectAssignmentAggregate> 	mapper;
 		NamedParameterJdbcTemplate 	namedParamTemp; 
 		Map	params;
 		
@@ -57,6 +57,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS ENTRY_DATE, " +
 				"       CUST.CUSTOMER_ID, " +
 				"       CUST.NAME AS CUSTOMER_NAME, " +
+				"       CUST.CODE AS CUSTOMER_CODE, " +				
 				"       PAG.PROJECT_ID, " +
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
@@ -95,9 +96,9 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForUsers(java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userIds, DateRange dateRange)
 	{
-		ParameterizedRowMapper<WeeklyProjectAssignmentAggregate> 	mapper;
+		ParameterizedRowMapper<FlatProjectAssignmentAggregate> 	mapper;
 		NamedParameterJdbcTemplate 	namedParamTemp; 
 		Map	params;
 		
@@ -106,6 +107,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS ENTRY_DATE, " +
 				"       CUST.CUSTOMER_ID, " +
 				"       CUST.NAME AS CUSTOMER_NAME, " +
+				"       CUST.CODE AS CUSTOMER_CODE, " +				
 				"       PAG.PROJECT_ID, " +
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
@@ -142,9 +144,9 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForProjects(java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Integer> projectIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Integer> projectIds, DateRange dateRange)
 	{
-		ParameterizedRowMapper<WeeklyProjectAssignmentAggregate> 	mapper;
+		ParameterizedRowMapper<FlatProjectAssignmentAggregate> 	mapper;
 		NamedParameterJdbcTemplate 	namedParamTemp; 
 		Map	params;
 		
@@ -153,6 +155,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS ENTRY_DATE, " +
 				"       CUST.CUSTOMER_ID, " +
 				"       CUST.NAME AS CUSTOMER_NAME, " +
+				"       CUST.CODE AS CUSTOMER_CODE, " +				
 				"       PAG.PROJECT_ID, " +
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
@@ -190,9 +193,9 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignment(net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignment(DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignment(DateRange dateRange)
 	{
-		ParameterizedRowMapper<WeeklyProjectAssignmentAggregate> 	mapper;
+		ParameterizedRowMapper<FlatProjectAssignmentAggregate> 	mapper;
 		NamedParameterJdbcTemplate 	namedParamTemp; 
 		Map	params;
 		
@@ -201,6 +204,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS ENTRY_DATE, " +
 				"       CUST.CUSTOMER_ID, " +
 				"       CUST.NAME AS CUSTOMER_NAME, " +
+				"       CUST.CODE AS CUSTOMER_CODE, " +				
 				"       PAG.PROJECT_ID, " +
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
@@ -239,24 +243,26 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	 * @return
 	 */	
 	@SuppressWarnings("unchecked")
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Integer> assignmentIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Integer> assignmentIds, DateRange dateRange)
 	{
-		ParameterizedRowMapper<WeeklyProjectAssignmentAggregate> 	mapper;
+		ParameterizedRowMapper<FlatProjectAssignmentAggregate> 	mapper;
 		NamedParameterJdbcTemplate 	namedParamTemp; 
 		Map	params;
 		
 		String	sql = "SELECT SUM(ENTRY.HOURS) AS BOOKED_HOURS, " +
 				"       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS TURNOVER, " +
-				"       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS ENTRY_DATE, " +
+				"       DATE_FORMAT(ENTRY_DATE, '%d%m%Y') AS ENTRY_DATE, " +
 				"       CUST.CUSTOMER_ID, " +
 				"       CUST.NAME AS CUSTOMER_NAME, " +
+				"       CUST.CODE AS CUSTOMER_CODE, " +				
 				"       PAG.PROJECT_ID, " +
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
 				"		USR.LAST_NAME, " +
 				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
-				"       PRJ.NAME AS PROJECT_NAME " +
+				"       PRJ.NAME AS PROJECT_NAME, " +
+				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
 				"FROM TIMESHEET_ENTRY ENTRY, " +
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
@@ -266,10 +272,10 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"      PAG.PROJECT_ID = PRJ.PROJECT_ID AND " +
 				"      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND " +
 				"      PAG.USER_ID = USR.USER_ID AND " +
-				"      PAG.PROJECT_ID IN (:assignmentId) AND " +				
+				"      PAG.ASSIGNMENT_ID IN (:assignmentId) AND " +				
 				"      (ENTRY.ENTRY_DATE >= :dateStart AND ENTRY.ENTRY_DATE <= :dateEnd) " + 
 				"GROUP BY PAG.ASSIGNMENT_ID, " +
-				"         DATE_FORMAT(ENTRY_DATE, '%e%m%Y') ";
+				"         DATE_FORMAT(ENTRY_DATE, '%d%m%Y') ";
 		
 		mapper = new  WeeklyProjectAssignmentAggregateRowMapper();
 		namedParamTemp = new NamedParameterJdbcTemplate(getJdbcTemplate());
@@ -283,26 +289,29 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	}	
 	
 	/**
-	 * Row mapper for WeeklyProjectAssignmentAggregate
+	 * Row mapper for FlatProjectAssignmentAggregate
 	 * @author Thies
 	 *
 	 */
-	private class WeeklyProjectAssignmentAggregateRowMapper implements ParameterizedRowMapper<WeeklyProjectAssignmentAggregate>
+	private class WeeklyProjectAssignmentAggregateRowMapper implements ParameterizedRowMapper<FlatProjectAssignmentAggregate>
 	{
-        public WeeklyProjectAssignmentAggregate mapRow(ResultSet rs, int rowNum) throws SQLException
+        public FlatProjectAssignmentAggregate mapRow(ResultSet rs, int rowNum) throws SQLException
         {
-        	WeeklyProjectAssignmentAggregate aggregate = new WeeklyProjectAssignmentAggregate();
+        	FlatProjectAssignmentAggregate aggregate = new FlatProjectAssignmentAggregate();
         	
-        	aggregate.setAssignmentDescription(rs.getString("ASSIGNMENT_DESC"));
+        	aggregate.setAssignmentDesc(rs.getString("ASSIGNMENT_DESC"));
+        	aggregate.setAssignmentId(rs.getInt("ASSIGNMENT_ID"));
         	aggregate.setCustomerId(rs.getInt("CUSTOMER_ID"));
         	aggregate.setCustomerName(rs.getString("CUSTOMER_NAME"));
+        	aggregate.setCustomerCode(rs.getString("CUSTOMER_CODE"));
+        	aggregate.setProjectName(rs.getString("PROJECT_NAME"));
         	aggregate.setProjectId(rs.getInt("PROJECT_ID"));
         	aggregate.setProjectName(rs.getString("PROJECT_NAME"));
         	aggregate.setTotalHours(rs.getFloat("BOOKED_HOURS"));
         	aggregate.setTotalTurnOver(rs.getFloat("TURNOVER"));
         	aggregate.setUserFirstName(rs.getString("FIRST_NAME"));
         	aggregate.setUserLastName(rs.getString("LAST_NAME"));
-        	aggregate.setWeekYear(rs.getString("ENTRY_DATE"));
+        	aggregate.setEntryDate(rs.getString("ENTRY_DATE"));
 
         	return aggregate;
         }		

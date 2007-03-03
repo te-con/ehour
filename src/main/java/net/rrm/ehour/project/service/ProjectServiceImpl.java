@@ -24,9 +24,9 @@
 package net.rrm.ehour.project.service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -288,7 +288,7 @@ public class ProjectServiceImpl implements ProjectService
 		List<ProjectAssignment>	activeProjectAssignments = getProjectAssignmentsForUser(userId, dateRange);
 		List<ProjectAssignment> bookedProjectAssignments = timesheetDAO.getBookedProjectAssignmentsInRange(userId, dateRange);
 		
-		Set<ProjectAssignment> mergedAssignments = new TreeSet<ProjectAssignment>(activeProjectAssignments);
+		Set<ProjectAssignment> mergedAssignments = new HashSet<ProjectAssignment>(activeProjectAssignments);
 		mergedAssignments.addAll(bookedProjectAssignments);
 		
 		return mergedAssignments;

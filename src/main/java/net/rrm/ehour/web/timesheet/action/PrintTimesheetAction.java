@@ -23,10 +23,10 @@
 
 package net.rrm.ehour.web.timesheet.action;
 
-import java.util.ArrayList;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Enumeration;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
@@ -36,10 +36,12 @@ import javax.servlet.http.HttpServletResponse;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.calendar.CalendarUtil;
+import net.rrm.ehour.web.timesheet.dto.PrintReport;
 import net.rrm.ehour.web.timesheet.form.PrintTimesheetForm;
 import net.rrm.ehour.web.util.AuthUtil;
 
@@ -59,17 +61,19 @@ public class PrintTimesheetAction extends Action
 	private	ReportService	reportService;
 	
 	/**
+	 * @throws ParseException 
 	 * 
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) 
+	public ActionForward execute(ActionMapping mapping,
+								ActionForm form,
+								HttpServletRequest request,
+								HttpServletResponse response) throws ParseException 
 	{
 		ActionForward			fwd;
 		PrintTimesheetForm		psForm = (PrintTimesheetForm)form;
 		Integer					userId;
 		Calendar				printDate;
-		Set<ProjectAssignment>	projectAssignments;
 		DateRange				printRange;
-		List<WeeklyProjectAssignmentAggregate>	results;
 		
 		userId = AuthUtil.getUserId(psForm);
 		
@@ -78,35 +82,77 @@ public class PrintTimesheetAction extends Action
 		
 		if (psForm != null && psForm.isFromForm())
 		{
-			results = reportService.getPrintReportData(Arrays.asList(psForm.getProjectId()), printRange);
-			request.setAttribute("printData", results);
-			fwd = mapping.findForward("printSheet");
+			fwd = getPrintSheetData(request, printRange, mapping, psForm);
 		}
 		else
 		{
-			projectAssignments = getProjects(userId, printDate);
-			request.setAttribute("projectAssignments", projectAssignments);
-			request.setAttribute("printDate", printDate);
-			fwd = mapping.findForward( (psForm.isAjaxCall()) ? "printForm" : "printLayout");
+			fwd = getFormData(request, mapping, userId, psForm, printRange);
 		}
+
+		request.setAttribute("printDate", printDate);
 
 		return fwd;
 	}
 	
-	 
-	
-
-
 	/**
-	 * Get projects for this user in this month
-	 * @param userId
-	 * @param printDate
+	 * Get data for printing sheet and put it on the request
+	 * @param request
+	 * @param printRange
+	 * @param mapping
+	 * @param psForm
+	 * @return
+	 * @throws ParseException 
 	 */
-	private Set<ProjectAssignment> getProjects(Integer userId, Calendar printDate)
+	private ActionForward getPrintSheetData(HttpServletRequest request,
+											DateRange printRange,
+											ActionMapping mapping,
+											PrintTimesheetForm psForm) throws ParseException
 	{
-		Set<ProjectAssignment>	assignments;
-		assignments = projectService.getProjectsForUser(userId, DateUtil.calendarToMonthRange(printDate));
-		return assignments;
+		List<FlatProjectAssignmentAggregate>	results;
+		PrintReport								printReport;
+		ActionForward							fwd;
+		User									user;
+		
+		user = AuthUtil.getLoggedInUser();
+		
+		results = reportService.getPrintReportData(Arrays.asList(psForm.getProjectId()), printRange);
+		printReport = new PrintReport();
+		printReport.initialize(results);
+		
+		request.setAttribute("printReport", printReport);
+		request.setAttribute("printUser", user);
+		request.setAttribute("dateSequence", DateUtil.createDateSequence(printRange));
+		request.setAttribute("signatureSpace", psForm.isSignatureSpace());
+		request.setAttribute("currentDate", new GregorianCalendar());
+		fwd = mapping.findForward("printSheet");
+		
+		return fwd;
+	}
+	
+	/**
+	 * Get data for form
+	 * @param request
+	 * @param mapping
+	 * @param userId
+	 * @param psForm
+	 * @param printRange
+	 * @return
+	 */
+	
+	private ActionForward getFormData(HttpServletRequest request,
+										ActionMapping mapping,
+										Integer userId,
+										PrintTimesheetForm psForm,
+										DateRange printRange)
+	{
+		Set<ProjectAssignment>	projectAssignments;
+		ActionForward			fwd;
+		
+		projectAssignments = projectService.getProjectsForUser(userId, printRange);
+		request.setAttribute("projectAssignments", projectAssignments);
+		fwd = mapping.findForward( (psForm.isAjaxCall()) ? "printForm" : "printLayout");
+
+		return fwd;
 	}
 	
 	/**

@@ -27,44 +27,32 @@ package net.rrm.ehour.report.reports;
  * TODO 
  **/
 
-public class WeeklyProjectAssignmentAggregate
+public class FlatProjectAssignmentAggregate
 {
 	private	Integer	customerId;
 	private	String	customerName;
+	private	String	customerCode;
 	private	float	totalHours;
 	private	float	totalTurnOver;
-	private	String	weekYear;
+	private	String	entryDate;
 	private	Integer	userId;
 	private	String	userLastName;
 	private	String	userFirstName;
 	private	Integer	projectId;
 	private	String	projectName;
-	private	String	assignmentDescription;
+	private	Integer	assignmentId;
+	private	String	assignmentDesc;
 	
 	/**
 	 * Minimal constructor
 	 *
 	 */
-	public WeeklyProjectAssignmentAggregate()
+	public FlatProjectAssignmentAggregate()
 	{
 		
 	}
 
 
-	/**
-	 * @return the assignmentDescription
-	 */
-	public String getAssignmentDescription()
-	{
-		return assignmentDescription;
-	}
-	/**
-	 * @param assignmentDescription the assignmentDescription to set
-	 */
-	public void setAssignmentDescription(String assignmentDescription)
-	{
-		this.assignmentDescription = assignmentDescription;
-	}
 	/**
 	 * @return the customerName
 	 */
@@ -178,18 +166,18 @@ public class WeeklyProjectAssignmentAggregate
 		this.userLastName = userLastName;
 	}
 	/**
-	 * @return the weekYear
+	 * @return the entryDate
 	 */
-	public String getWeekYear()
+	public String getEntryDate()
 	{
-		return weekYear;
+		return entryDate;
 	}
 	/**
-	 * @param weekYear the weekYear to set
+	 * @param entryDate the entryDate to set
 	 */
-	public void setWeekYear(String weekYear)
+	public void setEntryDate(String weekYear)
 	{
-		this.weekYear = weekYear;
+		this.entryDate = weekYear;
 	}
 
 
@@ -208,5 +196,59 @@ public class WeeklyProjectAssignmentAggregate
 	public void setCustomerId(Integer customerId)
 	{
 		this.customerId = customerId;
+	}
+
+
+	/**
+	 * @return the customerCode
+	 */
+	public String getCustomerCode()
+	{
+		return customerCode;
+	}
+
+
+	/**
+	 * @param customerCode the customerCode to set
+	 */
+	public void setCustomerCode(String customerCode)
+	{
+		this.customerCode = customerCode;
+	}
+
+
+	/**
+	 * @return the assignmentDesc
+	 */
+	public String getAssignmentDesc()
+	{
+		return assignmentDesc;
+	}
+
+
+	/**
+	 * @param assignmentDesc the assignmentDesc to set
+	 */
+	public void setAssignmentDesc(String assignmentDesc)
+	{
+		this.assignmentDesc = assignmentDesc;
+	}
+
+
+	/**
+	 * @return the assignmentId
+	 */
+	public Integer getAssignmentId()
+	{
+		return assignmentId;
+	}
+
+
+	/**
+	 * @param assignmentId the assignmentId to set
+	 */
+	public void setAssignmentId(Integer assignmentId)
+	{
+		this.assignmentId = assignmentId;
 	}
 }

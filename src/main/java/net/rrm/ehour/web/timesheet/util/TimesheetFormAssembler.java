@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
@@ -54,7 +53,7 @@ public class TimesheetFormAssembler
 		List<TimesheetRow>									timesheetRows = null;
 		Timesheet											timesheet;
 		
-		dateSequence = createDateSequence(weekOverview);
+		dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange());
 		
 		assignmentMap = createAssignmentMap(weekOverview);
 		mergeUnbookedAssignments(weekOverview, assignmentMap);
@@ -186,29 +185,4 @@ public class TimesheetFormAssembler
 		return assignmentMap;
 	}
 	
-
-	/**
-	 * Create a sequence of dates from the date range
-	 * @param weekOverview
-	 * @return
-	 */
-	protected List<Date> createDateSequence(WeekOverview weekOverview)
-	{
-		List<Date>	dateSequence = new ArrayList<Date>();
-		DateRange	weekRange;
-		Calendar	calendar;
-		
-		weekRange = weekOverview.getWeekRange();
-		
-		calendar = new GregorianCalendar();
-		calendar.setTime(weekRange.getDateStart());
-		
-		while (calendar.getTime().before(weekRange.getDateEnd()))
-		{
-			dateSequence.add(calendar.getTime());
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-		}
-		
-		return dateSequence;
-	}	
 }

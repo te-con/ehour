@@ -29,7 +29,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 
 import org.junit.Test;
 /**
@@ -50,7 +50,7 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 			    new Date(2007 - 1900, 10, 30));
 
 		
-		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, dateRange);
+		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, dateRange);
 		
 		assertEquals(1, results.size());
 		
@@ -74,7 +74,7 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 			    new Date(2006 - 1900, 10, 3));
 
 		
-		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, projectIds, dateRange);
+		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, projectIds, dateRange);
 		
 		assertEquals(1, results.size());
 	}
@@ -87,7 +87,7 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 		List projectIds = new ArrayList();
 		projectIds.add(1);
 		
-		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForProjects(projectIds, dateRange);
+		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForProjects(projectIds, dateRange);
 		
 		assertEquals(5, results.size());
 
@@ -98,7 +98,7 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
 			    new Date(2008 - 1900, 1, 3));
 
-		List<WeeklyProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignment(dateRange);
+		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignment(dateRange);
 		
 		assertEquals(6, results.size());		
 	}

@@ -26,7 +26,7 @@ package net.rrm.ehour.report.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.WeeklyProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 
 /**
  * TODO 
@@ -42,13 +42,13 @@ public interface ReportPerMonthDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userId, List<Integer> projectId, DateRange dateRange);
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userId, List<Integer> projectId, DateRange dateRange);
 	
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userId, DateRange dateRange);
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userId, DateRange dateRange);
 	
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignment(DateRange dateRange);
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignment(DateRange dateRange);
 	
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Integer> projectId, DateRange dateRange);
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Integer> projectId, DateRange dateRange);
 	
 	/**
 	 * Get hours per day for assignments
@@ -56,6 +56,6 @@ public interface ReportPerMonthDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List<WeeklyProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Integer> assignmentId, DateRange dateRange);
+	public List<FlatProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Integer> assignmentId, DateRange dateRange);
 	
 }

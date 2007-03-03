@@ -46,6 +46,7 @@ public class PrintTimesheetForm extends NavCalendarForm
 	private boolean		fromForm = false;
 	private	boolean		ajaxCall = false;
 	private	Integer[]	projectId;
+	private	boolean		signatureSpace = false;
 
 	
 	/**
@@ -56,6 +57,7 @@ public class PrintTimesheetForm extends NavCalendarForm
 	{
 		fromForm = false;
 		ajaxCall = false;
+		signatureSpace = false;
 		super.reset(mapping, request);
 	}	
 	
@@ -105,6 +107,22 @@ public class PrintTimesheetForm extends NavCalendarForm
 	public void setAjaxCall(boolean ajaxCall)
 	{
 		this.ajaxCall = ajaxCall;
+	}
+
+	/**
+	 * @return the signatureSpace
+	 */
+	public boolean isSignatureSpace()
+	{
+		return signatureSpace;
+	}
+
+	/**
+	 * @param signatureSpace the signatureSpace to set
+	 */
+	public void setSignatureSpace(boolean signatureSpace)
+	{
+		this.signatureSpace = signatureSpace;
 	}
 }
 

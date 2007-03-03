@@ -49,20 +49,25 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 	
 	public void testGetMinMaxDateTimesheetEntry()
 	{
+		// ms accuracy rocks..
+		Date endDate = new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59);
+		endDate = new Date(endDate.getTime() + 999);
 		DateRange	range = dao.getMinMaxDateTimesheetEntry();
 		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
-		assertEquals(new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59), range.getDateEnd());
+		assertEquals(endDate, range.getDateEnd());
 
 	}	
 	
 	public void testGetMinMaxDateTimesheetEntryForUser()
 	{
 		DateRange range = dao.getMinMaxDateTimesheetEntry(2);
+		Date endDate = new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59);
+		endDate = new Date(endDate.getTime() + 999);
 
 		Calendar cal = new GregorianCalendar(2006, 10 - 1, 31);
 
 		assertEquals(new Date(2006 - 1900, 10 - 1, 3), range.getDateStart());
-		assertEquals(new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59), range.getDateEnd());
+		assertEquals(endDate, range.getDateEnd());
 	}
 	
 	/**

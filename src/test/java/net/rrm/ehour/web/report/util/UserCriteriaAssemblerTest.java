@@ -54,10 +54,12 @@ public class UserCriteriaAssemblerTest extends TestCase
 		rcForm.setOnlyActiveCustomers(false);
 		rcForm.setOnlyActiveProjects(true);
 		
+		Date endDate = new Date(1974 - 1900, 9 - 1, 1, 23, 59, 59);
+		endDate = new Date(endDate.getTime() + 999);
 		UserCriteria uc = UserCriteriaAssembler.getUserCriteria(rcForm);
 		
 		assertEquals(new Date(2006 - 1900, 9 - 1, 5), uc.getReportRange().getDateStart());
-		assertEquals(new Date(1974 - 1900, 9 - 1, 1, 23, 59, 59), uc.getReportRange().getDateEnd());
+		assertEquals(endDate, uc.getReportRange().getDateEnd());
 		
 		assertNull(uc.getProjectIds());
 		assertEquals(3, uc.getCustomerIds().length);

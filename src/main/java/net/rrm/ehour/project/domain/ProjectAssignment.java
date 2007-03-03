@@ -269,5 +269,4 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 			.append(this.user, object.user)
 			.append(this.assignmentId, object.assignmentId).toComparison();
 	}
-
 }

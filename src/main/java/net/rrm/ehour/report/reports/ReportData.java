@@ -34,7 +34,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 public class ReportData
 {
 	private List<ProjectAssignmentAggregate>		projectAssignmentAggregates;
-	private List<WeeklyProjectAssignmentAggregate>	weeklyProjectAssignmentAggregates;
+	private List<FlatProjectAssignmentAggregate>	flatProjectAssignmentAggregates;
 	private	ReportCriteria							reportCriteria;
 	
 	/**
@@ -50,10 +50,10 @@ public class ReportData
 	 * @param wpag
 	 * @param criteria
 	 */
-	public ReportData(List<ProjectAssignmentAggregate> pag, List<WeeklyProjectAssignmentAggregate> wpag, ReportCriteria criteria)
+	public ReportData(List<ProjectAssignmentAggregate> pag, List<FlatProjectAssignmentAggregate> wpag, ReportCriteria criteria)
 	{
 		projectAssignmentAggregates = pag;
-		weeklyProjectAssignmentAggregates = wpag;
+		flatProjectAssignmentAggregates = wpag;
 		reportCriteria = criteria;
 	}
 	
@@ -87,18 +87,18 @@ public class ReportData
 		this.reportCriteria = reportCriteria;
 	}
 	/**
-	 * @return the weeklyProjectAssignmentAggregates
+	 * @return the flatProjectAssignmentAggregates
 	 */
-	public List<WeeklyProjectAssignmentAggregate> getWeeklyProjectAssignmentAggregates()
+	public List<FlatProjectAssignmentAggregate> getFlatProjectAssignmentAggregates()
 	{
-		return weeklyProjectAssignmentAggregates;
+		return flatProjectAssignmentAggregates;
 	}
 	/**
-	 * @param weeklyProjectAssignmentAggregates the weeklyProjectAssignmentAggregates to set
+	 * @param flatProjectAssignmentAggregates the flatProjectAssignmentAggregates to set
 	 */
-	public void setWeeklyProjectAssignmentAggregates(
-			List<WeeklyProjectAssignmentAggregate> weeklyProjectAssignmentAggregates)
+	public void setFlatProjectAssignmentAggregates(
+			List<FlatProjectAssignmentAggregate> flatProjectAssignmentAggregates)
 	{
-		this.weeklyProjectAssignmentAggregates = weeklyProjectAssignmentAggregates;
+		this.flatProjectAssignmentAggregates = flatProjectAssignmentAggregates;
 	}
 }
