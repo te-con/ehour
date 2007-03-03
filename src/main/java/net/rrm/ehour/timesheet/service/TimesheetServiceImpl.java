@@ -191,7 +191,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		// @todo assuming the week starts on sunday. configurable?
 		requestedWeek.setFirstDayOfWeek(Calendar.SUNDAY);
 		range = DateUtil.getDateRangeForWeek(requestedWeek);
-		System.out.println(range);
+
 		weekOverview.setWeekRange(range);
 		
 		weekOverview.setTimesheetEntries(timesheetDAO.getTimesheetEntriesInRange(userId, range));

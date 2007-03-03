@@ -1,7 +1,7 @@
 body
 {
 	background: white;
-	font: Geneva, Arial, Helvetica, sans-serif;
+	font: 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
 	margin: 0px;
 	padding: 0px;
@@ -12,6 +12,17 @@ div.Header img
 	margin: 15px 0 10px 15px;
 	padding: 0;
 	vertical-align: bottom;
+}
+
+div.Footer
+{
+	position: absolute;
+	bottom: 2em;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 }
 
 hr
@@ -37,3 +48,75 @@ div.Content h1
 	font: 		bold 1.1em/1.5 Geneva, Arial, Helvetica, sans-serif;
 	color: 		#233e55;
 }
+
+.sheetTable
+{
+	padding: 0;
+	margin: 0;
+}
+
+.sheetTable td
+{
+	margin: 0;
+	padding: 2px 3px 2px 3px;
+	border-bottom-width: 1px;
+	border-bottom-color: #233e55;
+	border-bottom-style: solid;
+	border-left-width: 1px;
+	border-left-color: #233e55;
+	border-left-style: solid;
+}
+
+.sheetTable td.firstCell
+{
+	margin: 0;
+	padding: 2px 3px 2px 3px;
+	border-bottom-width: 1px;
+	border-bottom-color: #233e55;
+	border-bottom-style: solid;
+	border-left-width: 0;
+}
+
+.sheetTable td.dateRow
+{
+	margin: 0;
+	padding: 2px 3px 2px 3px;
+	font-weight: bold;
+	border-bottom-width: 1px;
+	border-bottom-color: #233e55;
+	border-bottom-style: solid;
+	border-left-width: 1px;
+	border-left-color: #233e55;
+	border-left-style: solid;
+	
+	color: white;
+	background-color: #233e55;
+}
+
+.sheetTable td.dateRowFirstCell
+{
+	margin: 0;
+	padding: 2px 3px 2px 3px;
+	border: 0;
+		
+	background-color: white;
+}
+
+
+.sheetTable td.dateRow.weekend
+{
+	margin: 0;
+	padding: 2px 3px 2px 3px;
+	font-weight: bold;
+	border-top-width: 1px;
+	border-top-color: #233e55;
+	border-top-style: solid;
+	border-left-width: 1px;
+	border-left-color: #233e55;
+	border-left-style: solid;
+	
+	color: white;
+	background-color: #3b556d;
+}
+
+

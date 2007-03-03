@@ -18,7 +18,7 @@
 				</div>
 			</div>	
 
-			<form method="post" action="printTimesheet.do">
+			<form method="post" action="printTimesheet.do" target="_new">
 			
 				<input type="hidden" name="fromForm" value="Y">
 
