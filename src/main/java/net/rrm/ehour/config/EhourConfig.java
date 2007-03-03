@@ -33,4 +33,8 @@ public interface EhourConfig
 	public int getCompleteDayHours();
 	
 	public boolean isShowTurnover();
+	
+	public String getTimeZone();
+	
+	public String getLocale();
 }

@@ -29,7 +29,7 @@ import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.log4j.Logger;
 
 /**
- * TODO 
+ * Config from database
  **/
 
 public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfig
@@ -51,6 +51,16 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	public boolean isShowTurnover()
 	{
 		return this.getBoolean("showTurnOver");
+	}
+	
+	public String getTimeZone()
+	{
+		return this.getString("timezone");
+	}
+
+	public String getLocale()
+	{
+		return this.getString("locale");	
 	}
 
 }

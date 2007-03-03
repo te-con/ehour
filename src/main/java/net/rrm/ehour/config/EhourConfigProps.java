@@ -26,7 +26,7 @@ package net.rrm.ehour.config;
 import java.util.Properties;
 
 /**
- * TODO 
+ * Configuration based on .properties file
  **/
 
 public class EhourConfigProps implements EhourConfig
@@ -46,5 +46,15 @@ public class EhourConfigProps implements EhourConfig
 	public boolean isShowTurnover()
 	{
 		return Boolean.valueOf(props.getProperty("showTurnOver"));
+	}
+
+	public String getTimeZone()
+	{
+		return props.getProperty("timezone");
+	}
+
+	public String getLocale()
+	{
+		return props.getProperty("locale");
 	}
 }
