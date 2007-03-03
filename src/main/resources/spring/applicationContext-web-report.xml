@@ -17,7 +17,7 @@
 		<property name="reportCriteria" ref="reportCriteria" />		
 	</bean>
 	
-	<bean name="/eh/report/showCustomerChart" class="net.rrm.ehour.web.report.charts.CustomerTrendChartAction" />
+	<bean name="/eh/report/showCustomerAggregateChart" class="net.rrm.ehour.web.report.charts.CustomerAggregateChartAction" />
 
 	<bean name="/eh/report/showReport" class="net.rrm.ehour.web.report.action.ShowExistingReportAction" />
 	

@@ -116,10 +116,10 @@
 		</tr>
 	</table>
 	<br>
-	<!-- 
-	<img src="showCustomerChart.do?chartWidth=700&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+
+	<img src="showCustomerAggregateChart.do?chartWidth=700&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
 	<br><br>
-	 -->
+
 	<div class="GreyFrameFooter">
 		<p>
 		</p>

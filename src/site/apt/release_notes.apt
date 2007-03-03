@@ -14,7 +14,9 @@ Release Notes - eHour v0.2
 
 * 0.3 Release Notes
 
-	Navigation calendar is more in sync with the selected overview or timesheet
+	Navigation calendar is more in sync with the selected overview or timesheet.
+	
+	[1670791 ] Added print functionality to month sheets.
 
 * 0.2 Release Notes
 

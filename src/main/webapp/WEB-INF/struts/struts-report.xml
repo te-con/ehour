@@ -35,8 +35,7 @@
 
 		<!-- Report show customer chart -->
 		<action name="ReportChartForm"
-				path="/showCustomerChart" />
-
+				path="/showCustomerAggregateChart" />
 
 		<!-- Report show report-->
 		<action name="ReportChartForm"

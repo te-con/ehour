@@ -40,7 +40,7 @@ import org.jfree.data.time.Week;
  * TODO 
  **/
 
-public class CustomerTrendChartAction  extends AbstractChartAction
+public class CustomerTrendChartAction extends AbstractChartAction
 {
 
 	@Override
