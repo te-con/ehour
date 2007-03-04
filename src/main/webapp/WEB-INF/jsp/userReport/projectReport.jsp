@@ -106,9 +106,15 @@
 	</table>
 	<br>
 	
-	<!--  
-	<img src="projectReportPerWeekChart.do?chartWidth=700&chartHeight=200&random=<%= new Date().getTime() %>" />
-	-->
+	<img src="showCustomerHoursAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	<img src="showCustomerTurnoverAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	<br>
+	<img src="showProjectHoursAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	<img src="showProjectTurnoverAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	<br>
+	
+	<br>
+	
 	<div class="GreyFrameFooter">
 		<p>
 		</p>

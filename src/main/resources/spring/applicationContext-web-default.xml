@@ -49,11 +49,11 @@
 		<property name="config" ref="ehourConfig" />
 	</bean>
 
-	<bean name="/eh/userReport/projectChartTotalHours" class="net.rrm.ehour.web.userreport.action.ProjectReportTotalHoursChartAction" />
-	
-	<bean name="/eh/userReport/projectChartTotalTurnOver" class="net.rrm.ehour.web.userreport.action.ProjectReportTotalTurnOverChartAction" />
+	<bean name="/eh/userReport/showCustomerHoursAggregateChart" class="net.rrm.ehour.web.report.charts.CustomerHoursAggregateChartAction" />
+	<bean name="/eh/userReport/showCustomerTurnoverAggregateChart" class="net.rrm.ehour.web.report.charts.CustomerTurnoverAggregateChartAction" />
 
-	<bean name="/eh/userReport/projectReportPerWeekChart" class="net.rrm.ehour.web.userreport.action.ProjectReportOverviewChartAction" />	
+	<bean name="/eh/userReport/showProjectHoursAggregateChart" class="net.rrm.ehour.web.report.charts.ProjectHoursAggregateChartAction" />
+	<bean name="/eh/userReport/showProjectTurnoverAggregateChart" class="net.rrm.ehour.web.report.charts.ProjectTurnoverAggregateChartAction" />
 		
 	<bean name="/eh/cal/navCalendar" class="net.rrm.ehour.web.calendar.GetNavCalendarAction" />	
 	

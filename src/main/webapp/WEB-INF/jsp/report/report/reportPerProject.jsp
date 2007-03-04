@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=ASCII" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page import="java.util.Date" %>
 
 <!-- spanTarget: report -->
 
@@ -100,6 +100,11 @@
 		</tr>
 	</table>
 	<br>
+	
+	<img src="showProjectHoursAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	<img src="showProjectTurnoverAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	<br><br>
+	
 	
 	<div class="GreyFrameFooter">
 		<p>

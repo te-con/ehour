@@ -33,9 +33,15 @@
 			<forward name="projectReport" path=".ehour.report.projectReport" />
 		</action>		
 
-		<!-- Report show customer chart -->
-		<action name="ReportChartForm"
-				path="/showCustomerAggregateChart" />
+		<!-- Report aggregate charts -->
+		<action name="ReportChartForm" path="/showCustomerHoursAggregateChart" />
+		<action name="ReportChartForm" path="/showCustomerTurnoverAggregateChart" />		
+
+		<action name="ReportChartForm" path="/showUserHoursAggregateChart" />
+		<action name="ReportChartForm" path="/showUserTurnoverAggregateChart" />		
+
+		<action name="ReportChartForm" path="/showProjectHoursAggregateChart" />
+		<action name="ReportChartForm" path="/showProjectTurnoverAggregateChart" />		
 
 		<!-- Report show report-->
 		<action name="ReportChartForm"

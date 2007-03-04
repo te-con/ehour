@@ -102,23 +102,11 @@
 			<forward name="customerReport" path=".ehour.userreport.projectReport" />
 		</action>		
 
-		<!-- User project total hours chart -->
-		<action name="ReportChartForm"
-				parameter="consultant"
-				path="/eh/userReport/projectReportTotalHoursChart"
-				type="net.rrm.ehour.web.userreport.action.ProjectReportTotalHoursChartAction" />
+		<action name="ReportChartForm" path="/eh/userReport/showCustomerHoursAggregateChart" />
+		<action name="ReportChartForm" path="/eh/userReport/showCustomerTurnoverAggregateChart" />		
 
-		<!-- User project total hours per customer per week chart -->
-		<action name="ReportChartForm"
-				parameter="consultant"
-				path="/eh/userReport/projectReportPerWeekChart"
-				type="net.rrm.ehour.web.userreport.action.ProjectReportOverviewChartAction" />
-
-		<!-- User project total turnover chart -->
-		<action name="ReportChartForm"
-				parameter="consultant"
-				path="/eh/userReport/projectReportTotalTurnoverChart"
-				type="net.rrm.ehour.web.userreport.action.ProjectReportTotalTurnOverChartAction" />
+		<action name="ReportChartForm" path="/eh/userReport/showProjectHoursAggregateChart" />
+		<action name="ReportChartForm" path="/eh/userReport/showProjectTurnoverAggregateChart" />		
 
 		<!-- Print month sheet -->
 		<action name="PrintTimesheetForm"
@@ -128,7 +116,6 @@
 			<forward name="printForm" path=".ehour.timesheet.printForm" />
 			<forward name="printSheet" path=".ehour.timesheet.printSheet" />			
 		</action>
-
 	</action-mappings>
 
 

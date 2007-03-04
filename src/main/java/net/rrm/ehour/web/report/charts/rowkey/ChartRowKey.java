@@ -1,5 +1,5 @@
 /**
- * Created on Feb 4, 2007
+ * Created on Mar 4, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,44 +21,24 @@
  *
  */
 
-package net.rrm.ehour.web.userreport.action;
+package net.rrm.ehour.web.report.charts.rowkey;
 
-import net.rrm.ehour.web.report.reports.CustomerReport;
-
-import org.apache.struts.action.Action;
-import org.jfree.chart.JFreeChart;
 
 /**
- *
- *  TODO FIXME
+ * RowKey wrapper 
  **/
 
-public class ProjectReportTotalTurnOverChartAction extends Action//AbstractChartAction
+public interface ChartRowKey
 {
 	/**
-	 * Create chart
-	 * @param report
+	 * Get identifier
 	 * @return
 	 */
-	protected JFreeChart getChart(CustomerReport report)
-	{
-//		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//		
-//		Set<Customer>						customers;
-//		
-//		customers = report.getCustomers();
-//		String s = "Turnover";
-//		
-//		for (Customer customer : customers)
-//		{
-//			dataset.addValue(report.getTurnOverTotal(customer), s, customer.getName());
-//		}
-//		
-//		JFreeChart chart = ChartFactory.createBarChart("Turnover per customer",
-//				"Customer", "Turnover", dataset, PlotOrientation.HORIZONTAL,
-//				false, false, false);
-//		
-//		return chart;
-		return null;
-	}
+	public Integer getId();
+	
+	/**
+	 * Get row name
+	 * @return
+	 */
+	public String getName();
 }
