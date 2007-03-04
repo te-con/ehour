@@ -6,10 +6,15 @@ eHour development roadmap
 * Version 0.5
 
   * Add configuration parameters whether to display turnover to employees, etc. etc.
+  * Add locale switching
+  * Add timezone switching
+  * Add paging
+  * Add department report
 
 * Version 0.4
 
   * Bugfix release
+  * Fix UI inconsistencies
   * IE6 compatibility (please request more browsers if needed)
   * Increase code coverage
 

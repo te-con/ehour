@@ -1,8 +1,8 @@
-Release Notes - eHour v0.2
+Release Notes - eHour v0.3
 
-	TE-CON would like to announce the release of eHour v0.2 beta.
+	TE-CON would like to announce the release of eHour v0.3 beta.
 	
-	eHour v0.2 beta is {{{download.html}available for download}}.
+	eHour v0.3 beta is {{{download.html}available for download}}.
 	
 	eHour is a webbased time registration tool for consultancy companies and other project based businesses.
 	The primary objective is to keep time registration as simple as needed while still being very effective at measuring and reporting the amount of time your team spends on a project.
@@ -16,7 +16,9 @@ Release Notes - eHour v0.2
 
 	Navigation calendar is more in sync with the selected overview or timesheet.
 	
-	[1670791 ] Added print functionality to month sheets.
+	[{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670791&group_id=167867&atid=844651}1670791}}] Added print functionality (sign off) to month sheets.
+	
+	[{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1668140&group_id=167867&atid=844648}1668140}}] Charts added to reports
 
 * 0.2 Release Notes
 
