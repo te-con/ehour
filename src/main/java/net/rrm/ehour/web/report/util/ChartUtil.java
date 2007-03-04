@@ -45,6 +45,7 @@ public class ChartUtil
 		title = chart.getTitle();
 		title.setFont(chartTitleFont);
 		title.setPaint(new Color(0x536e87));
+		
 		chart.setTitle(title);
 	}
 }

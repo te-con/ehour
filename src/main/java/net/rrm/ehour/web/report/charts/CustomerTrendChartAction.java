@@ -44,7 +44,7 @@ public class CustomerTrendChartAction extends AbstractChartAction
 {
 
 	@Override
-	protected JFreeChart getChart(ReportData reportData)
+	protected JFreeChart getChart(ReportData reportData, Integer forId)
 	{
 		List<FlatProjectAssignmentAggregate>	results;
 		TimeSeries 		timeSeries;

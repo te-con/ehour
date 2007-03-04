@@ -71,6 +71,7 @@ public abstract class ReUseReportAction extends Action
 		sessionKey = chartForm.getKey();
 		
 		request.setAttribute("reportSessionKey", sessionKey);
+		request.setAttribute("forId", chartForm.getForId());
 
 		// TODO find out how sessionKey can be null ?
 		if (sessionKey != null)

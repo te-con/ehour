@@ -83,8 +83,6 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 		
 		for (ProjectAssignmentAggregate aggregate : reportData.getProjectAssignmentAggregates())
 		{
-			logger.debug("Found aggregate : " + aggregate);
-			
 			rootKey = getRootKey(aggregate);
 			
 			// should we ignore this entry?
@@ -102,7 +100,6 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 			}
 			else
 			{
-				logger.debug("Adding rootkey " + rootKey + " to report");
 				childMap = new TreeMap<CK, Set<ProjectAssignmentAggregate>>();
 			}
 			
@@ -113,7 +110,6 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 			}
 			else
 			{
-				logger.debug("Adding childkey " + childKey + " to rootkey " + rootKey);
 				aggregatesPerChild = new HashSet<ProjectAssignmentAggregate>();
 			}
 

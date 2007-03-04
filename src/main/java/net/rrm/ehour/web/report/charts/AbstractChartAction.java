@@ -52,21 +52,29 @@ public abstract class AbstractChartAction extends ReUseReportAction
 	 * 
 	 */
 	protected ActionForward reUseReport(ActionMapping mapping,
-										HttpServletRequest request,
-										HttpServletResponse response,								
-										ReportChartForm chartForm,
-										ReportData reportData) throws IOException
+					HttpServletRequest request,
+					HttpServletResponse response,								
+					ReportChartForm chartForm,
+					ReportData reportData) throws IOException
 	{
-		JFreeChart		chart;
-		int				chartWidth;
-		int				chartHeight;
+		JFreeChart	chart;
+		int		chartWidth;
+		int		chartHeight;
+		Integer		forId;
 		
 		response.setContentType("image/png");
 
 		chartWidth = (chartForm.getChartWidth() == 0) ? 250 : chartForm.getChartWidth();
 		chartHeight = (chartForm.getChartHeight() == 0) ? 120 : chartForm.getChartHeight();
 		
-		chart = getChart(reportData);
+		forId = chartForm.getForId();
+		
+		if (forId == 0)
+		{
+		    forId = null;
+		}
+		
+		chart = getChart(reportData, forId);
 		ChartUtil.changeChartStyle(chart);
 				
 		ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, chartWidth, chartHeight);
@@ -79,5 +87,5 @@ public abstract class AbstractChartAction extends ReUseReportAction
 	 * @param reportData
 	 * @return
 	 */
-	protected abstract JFreeChart getChart(ReportData reportData);
+	protected abstract JFreeChart getChart(ReportData reportData, Integer forId);
 }

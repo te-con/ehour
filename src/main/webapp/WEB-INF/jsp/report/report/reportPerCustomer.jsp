@@ -117,7 +117,8 @@
 	</table>
 	<br>
 
-	<img src="showCustomerAggregateChart.do?chartWidth=700&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	<img src="showCustomerAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+		<img src="showCustomerAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
 	<br><br>
 
 	<div class="GreyFrameFooter">

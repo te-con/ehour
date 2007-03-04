@@ -48,7 +48,7 @@ public class ProjectReportOverviewChartAction extends AbstractChartAction
 	 * @param reportData
 	 * @return
 	 */
-	protected JFreeChart getChart(ReportData reportData)
+	protected JFreeChart getChart(ReportData reportData, Integer forId)
 	{
 		List<FlatProjectAssignmentAggregate>	results;
 		TimeSeries 		timeSeries;
