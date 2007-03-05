@@ -1,5 +1,10 @@
 Upgrading
 
+* Upgrade from v0.1 to v0.3, v0.2 to v0.3
+
+	No database changes are needed, just replace the ehour.war in your tomcat deploy directory with the new one.
+
+
 * Upgrade from v0.1 to v0.2
 
 	No database changes are needed, just replace the ehour-test.war in your tomcat deploy directory with the new one.

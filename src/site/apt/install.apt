@@ -82,7 +82,7 @@ Installation instructions
 
 	In the install directory of Tomcat create a directory named <<deploy>>
 	
-	From the eHour distribution copy the <<ehour-0.2.war>> into this directory.
+	From the eHour distribution copy the <<ehour-0.3.war>> into this directory.
 	
 * Start it all up !
 

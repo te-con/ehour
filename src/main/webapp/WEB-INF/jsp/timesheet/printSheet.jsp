@@ -16,7 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="<c:url value="/css/ehourPrint.css" />">
 </head>
 
-<body>
+<body onLoad="window.print()">
 
 <div class="Header">
 	<img src="<c:url value="/img/print/ehour.png" />">
