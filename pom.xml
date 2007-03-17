@@ -5,7 +5,7 @@
 	<artifactId>eHour</artifactId>
 	<packaging>war</packaging>
 	<name>eHour</name>
-	<version>0.3</version>
+	<version>0.4-SNAPSHOT</version>
 	<description>
 		eHour - web-based time registration for consultancy companies
 		and other project based businesses
@@ -63,6 +63,16 @@
 		</developerConnection>
 		<url>http://svn.sourceforge.net/ehour/</url>
 	</scm>
+        <pluginRepositories>
+               <pluginRepository>
+                        <id>stat-scm-sourceforge</id>
+                        <url>http://stat-scm.sourceforge.net/maven2</url>
+                </pluginRepository>
+                <pluginRepository>
+                        <id>stat-scm-sourceforge-snapshot</id>
+                        <url>http://stat-scm.sourceforge.net/maven2-snapshots</url>
+                </pluginRepository>
+        </pluginRepositories>	
 	<build>
 		<resources>
 			<resource>
@@ -323,7 +333,7 @@
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.3</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
@@ -361,6 +371,10 @@
 					</licenseLocation>
 					<generateHtml>true</generateHtml>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>net.sf</groupId>
+				<artifactId>stat-scm</artifactId>
 			</plugin>
 		</plugins>
 	</reporting>
