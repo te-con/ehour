@@ -58,9 +58,20 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("timezone");
 	}
 
-	public String getLocale()
+
+	public String getCurrency()
 	{
-		return this.getString("locale");	
+		return this.getString("currency");
+	}
+
+	public String getLocaleCountry()
+	{
+		return this.getString("localeCountry");
+	}
+
+	public String getLocaleLanguage()
+	{
+		return this.getString("localeLanguage");
 	}
 
 }

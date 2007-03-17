@@ -5,7 +5,7 @@
 
 	<!-- Action forms -->
 	<form-beans>
-		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.NavCalendarForm" />
+		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.form.NavCalendarForm" />
 		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
 		<form-bean name="PrintTimesheetForm" type="net.rrm.ehour.web.timesheet.form.PrintTimesheetForm" />		
 		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
@@ -76,7 +76,7 @@
 		<!-- Navigation Calendar -->
 		<action name="NavCalendarForm"
 				path="/eh/cal/navCalendar"
-				type="net.rrm.ehour.web.calendar.GetNavCalendarAction" >
+				type="net.rrm.ehour.web.calendar.action.GetNavCalendarAction" >
 			<forward name="success" path=".ehour.calendar.navCalendar" />
 		</action>
 

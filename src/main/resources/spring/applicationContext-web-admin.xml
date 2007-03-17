@@ -52,4 +52,15 @@
 	<bean name="/eh/admin/assignment/editAssignment" class="net.rrm.ehour.web.admin.assignment.action.EditAssignmentAction" />
 
 	<bean name="/eh/admin/assignment/deleteAssignment" class="net.rrm.ehour.web.admin.assignment.action.DeleteAssignmentAction" />	
+	
+	<!-- Configuration -->
+	<bean id="abstractConfigAction"
+			class="net.rrm.ehour.web.admin.config.action.BaseConfigAction"
+			abstract="true">
+		<property name="config" ref="ehourConfig" />
+    </bean>	
+	
+	<bean name="/eh/admin/config/index"
+			class="net.rrm.ehour.web.admin.config.action.ConfigAction"
+			parent="abstractConfigAction" />
 </beans>

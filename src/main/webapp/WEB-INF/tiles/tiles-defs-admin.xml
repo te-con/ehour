@@ -66,7 +66,6 @@
 
 
 
-
     <!-- Admin assignment index -->
     <definition name=".ehour.admin.assignment.fullList" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/assignment/index.jsp" />
@@ -74,5 +73,13 @@
 
     <!-- Admin assignment form  -->
     <definition name=".ehour.admin.assignment.assignmentForm" path="/WEB-INF/jsp/admin/assignment/assignmentForm.jsp" />
+
+
+
+    <!-- Configuration index -->
+    <definition name=".ehour.admin.configuration.index" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/config/index.jsp" />
+    </definition>
+
     
 </tiles-definitions>

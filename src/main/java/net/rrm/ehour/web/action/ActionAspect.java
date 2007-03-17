@@ -56,11 +56,19 @@ public class ActionAspect
 //	@Before("execution(* net.rrm.ehour.web.*.action.*Action.execute(..)) and args(mapping, form, request,..)")
 	public void setLocale(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Throwable
 	{
-		logger.debug("Setting locale and content-type");
-		Config.set(request, Config.FMT_LOCALE, config.getLocale());
+		logger.debug("Setting locale to " + config.getLocaleLanguage());
+		Config.set(request, Config.FMT_LOCALE, config.getLocaleLanguage());
 		
+//		Locale.getISOCountries()
+//		Locale locale = new Locale(config.getLocale(), "NL");
+//		Currency curr = Currency.getInstance(locale);
+////		Currency curr = Currency.getInstance("EUR");
+//		
+//		System.out.println(curr.getCurrencyCode());
+//		System.out.println(curr.getDefaultFractionDigits());
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control", "no-cache");
 	}
 
 	/**

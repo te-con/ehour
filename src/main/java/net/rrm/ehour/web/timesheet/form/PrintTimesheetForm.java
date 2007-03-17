@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionMapping;
 
-import net.rrm.ehour.web.calendar.NavCalendarForm;
+import net.rrm.ehour.web.calendar.form.NavCalendarForm;
 
 
 /**

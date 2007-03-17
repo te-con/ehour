@@ -24,6 +24,7 @@
 package net.rrm.ehour.web.timesheet.action;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.web.calendar.CalendarUtil;
-import net.rrm.ehour.web.calendar.NavCalendarForm;
+import net.rrm.ehour.web.calendar.form.NavCalendarForm;
 import net.rrm.ehour.web.util.AuthUtil;
 
 import org.apache.struts.action.ActionForm;
@@ -66,11 +67,31 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		request.setAttribute("timesheetOverviewMonth", requestedMonth);
 		request.setAttribute("config", config);
 		
-		response.setHeader("Cache-Control", "no-cache");
+		setWeekdays(request);
+		
+		request.setAttribute("currencyCode", "EUR");
+		request.setAttribute("currencySymbol", "\u20AC");
+		request.setAttribute("currencySymbol", "$");
 		
 		return mapping.findForward("success");
 	}
 
+	/**
+	 * Set weekdays in request
+	 * @param request
+	 */
+	private void setWeekdays(HttpServletRequest request)
+	{
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		
+		for (int i = 0; i < 7; i++)
+		{
+			request.setAttribute("day_" + i, cal.getTime());
+			cal.add(Calendar.DAY_OF_WEEK, 1);
+		}
+	}
+	
 	/**
 	 * @return the config
 	 */

@@ -41,7 +41,9 @@
 	</c:if>			
 				<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /> </td>
 	<c:if test="${config.showTurnover}">
-				<td><fmt:formatNumber type="currency" value="${projectReport.turnOver}" currencyCode="EUR" /></td>
+				<td><fmt:formatNumber type="currency"
+										value="${projectReport.turnOver}" 
+										currencySymbol="${currencySymbol}" /></td>
 	</c:if>
 			</tr>
 			
@@ -89,13 +91,13 @@
 					<table class="MonthOverviewMonthTable" cellpadding="0" cellspacing="0">
 						<tr class="weekColumnRow">
 							<td class="weekNumber">&nbsp;</td>
-							<td><fmt:message key="user.overview.sun" /></td>
-							<td><fmt:message key="user.overview.mon" /></td>
-							<td><fmt:message key="user.overview.tue" /></td>
-							<td><fmt:message key="user.overview.wed" /></td>
-							<td><fmt:message key="user.overview.thu" /></td>
-							<td><fmt:message key="user.overview.fri" /></td>
-							<td class="lastChild"><fmt:message key="user.overview.sat" /></td>
+							<td><fmt:formatDate pattern="EEE" value="${day_0}" /></td>
+							<td><fmt:formatDate pattern="EEE" value="${day_1}" /></td>							
+							<td><fmt:formatDate pattern="EEE" value="${day_2}" /></td>
+							<td><fmt:formatDate pattern="EEE" value="${day_3}" /></td>							
+							<td><fmt:formatDate pattern="EEE" value="${day_4}" /></td>							
+							<td><fmt:formatDate pattern="EEE" value="${day_5}" /></td>							
+							<td class="lastChild"><fmt:formatDate pattern="EEE" value="${day_6}" /></td>							
 						</tr>	
 						
 					<ehour:overviewCalendar calendar="${timesheetOverviewMonth}"

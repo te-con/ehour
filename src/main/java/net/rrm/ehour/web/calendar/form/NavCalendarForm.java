@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.calendar;
+package net.rrm.ehour.web.calendar.form;
 
 import javax.servlet.http.HttpServletRequest;
 

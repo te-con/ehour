@@ -207,9 +207,15 @@
 			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
 		</action>
 
-		<!-- Report -->
+		<!-- Report TODO remove?-->
 		<action path="/report/index" 
 				type="net.rrm.ehour.web.report.action.ReportCriteriaAction">
+		</action>
+
+		<!-- Configuration index-->
+		<action path="/config/index" 
+				type="net.rrm.ehour.web.admin.config.action.ConfigAction">
+			<forward name="success" path=".ehour.admin.configuration.index" />
 		</action>
 		
 				

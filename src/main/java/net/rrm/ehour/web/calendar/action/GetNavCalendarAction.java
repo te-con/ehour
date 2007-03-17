@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.calendar;
+package net.rrm.ehour.web.calendar.action;
 
 import java.util.Calendar;
 
@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.rrm.ehour.web.calendar.CalendarUtil;
+import net.rrm.ehour.web.calendar.form.NavCalendarForm;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
 

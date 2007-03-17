@@ -36,5 +36,9 @@ public interface EhourConfig
 	
 	public String getTimeZone();
 	
-	public String getLocale();
+	public String getLocaleLanguage();
+	
+	public String getLocaleCountry();
+	
+	public String getCurrency();
 }
