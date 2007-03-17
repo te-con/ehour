@@ -17,23 +17,6 @@
 			http://sourceforge.net/tracker/?group_id=167867&amp;atid=844648/
 		</url>
 	</issueManagement>
-	<licenses>
-		<license>
-			<name>GPL</name>
-			<url>LICENSE.txt</url>
-		</license>
-	</licenses>
-
-	<mailingLists>
-		<mailingList>
-			<name>eHour user support mailing list</name>
-			<post>ehour-users@lists.sourceforge.net</post>
-			<archive>
-				https://lists.sourceforge.net/lists/listinfo/ehour-users
-			</archive>
-		</mailingList>
-	</mailingLists>
-
 	<ciManagement>
 		<system>continuum</system>
 		<url>http://www.ehour.nl/continuum/</url>
@@ -45,6 +28,15 @@
 			</notifier>
 		</notifiers>
 	</ciManagement>
+	<mailingLists>
+		<mailingList>
+			<name>eHour user support mailing list</name>
+			<post>ehour-users@lists.sourceforge.net</post>
+			<archive>
+				https://lists.sourceforge.net/lists/listinfo/ehour-users
+			</archive>
+		</mailingList>
+	</mailingLists>
 	<developers>
 		<developer>
 			<id>thiesede</id>
@@ -56,6 +48,12 @@
 			</roles>
 		</developer>
 	</developers>
+	<licenses>
+		<license>
+			<name>GPL</name>
+			<url>LICENSE.txt</url>
+		</license>
+	</licenses>
 	<scm>
 		<connection>
 			scm:svn:http://ehour.svn.sourceforge.net/svnroot/ehour/eHour
@@ -90,16 +88,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
-				<configuration>
-					<licenseLocation>
-						etc/clover-eHour.license
-					</licenseLocation>
-					<excludes>
-						<exclude>**/*Test</exclude>
-					</excludes>
-				</configuration>
 				<executions>
 					<execution>
 						<phase>pre-site</phase>
@@ -108,6 +97,14 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<licenseLocation>
+						etc/clover-eHour.license
+					</licenseLocation>
+					<excludes>
+						<exclude>**/*Test</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -126,7 +123,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
@@ -191,7 +187,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.2</version>
-  			<scope>test</scope>			
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -235,6 +231,20 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
 			<version>3.2.2.ga</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>asm-attrs</artifactId>
+					<groupId>asm</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>asm</artifactId>
+					<groupId>asm</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cglib</artifactId>
+					<groupId>cglib</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>dbunit</groupId>
@@ -244,27 +254,33 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>cglib</artifactId>
+					<groupId>cglib</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-hibernate3</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-struts</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -307,6 +323,12 @@
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.3</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.1_3</version>
+		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>
@@ -332,9 +354,7 @@
 				<artifactId>taglist-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
-
 				<configuration>
 					<licenseLocation>
 						etc/clover-eHour.license
