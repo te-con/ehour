@@ -148,7 +148,7 @@ div.NavCalFrame table tr.hoverable:hover
 div.NavCalFrame table th
 {
 	color: #536e87;
-	font: bold 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	font: bold 1em/1.5 Arial, Geneva, Helvetica, sans-serif;
 }
 
 div.NavCalFrame table td

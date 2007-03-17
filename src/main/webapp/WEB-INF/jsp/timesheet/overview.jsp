@@ -41,7 +41,7 @@
 	</c:if>			
 				<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /> </td>
 	<c:if test="${config.showTurnover}">
-				<td><fmt:formatNumber type="currency" value="${projectReport.turnOver}" /></td>
+				<td><fmt:formatNumber type="currency" value="${projectReport.turnOver}" currencyCode="EUR" /></td>
 	</c:if>
 			</tr>
 			

@@ -1,8 +1,13 @@
 eHour
 
-  4 march 2007: {{{download.html}eHour v0.3}} released! 
+  5 March 2007: {{{release_notes.html}eHour v0.3}} released! 
   
-  24 feb 2007: {{{download.html}eHour v0.2}} released! 
+   Version 0.3 adds timesheet printing, report charts and a couple of bugs fixed.
+   
+   If your browser is Firefox 2 or IE7 this release is production ready. Other browser may not work properly with this version (as in, they're not tested yet).
+
+=======================================================================
+
 
   eHour is an {{{license.html}open source}} webbased time tracking tool for consultancy companies and other project based businesses.
   The primary objective is to keep time tracking as simple and user friendly as possible while still 
@@ -27,6 +32,6 @@ eHour
 
   See the {{{demo.html}online demo}} to see it in full effect.
 
-  The application is developed following enterprise standards such as Java 1.5, Struts, Spring, Hibernate, Acegi and Maven 2.  Automated testing is implemented using {{{clover/index.html}Junit, Easymock and DBUnit}}.  Continous integration is taken care of by {{{integration.html}Continuum}}.  
+  The application is developed following enterprise standards such as Java 1.5, Struts, Spring, Hibernate, Acegi and Maven 2.  Automated testing is implemented using {{{clover/index.html}Junit, Easymock and DBUnit}}.  Continuous integration is taken care of by {{{integration.html}Continuum}}.  
 
   eHour is developed by {{{http://www.te-con.nl}Thies Edeling}}.

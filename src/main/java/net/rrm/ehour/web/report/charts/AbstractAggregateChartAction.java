@@ -92,7 +92,7 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 	private DefaultCategoryDataset createDataset(ReportData reportData, Integer forId)
 	{
 		DefaultCategoryDataset dataset;
-		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
+		Map<String, Number> valueMap = new HashMap<String, Number>();
 		ChartRowKey		rowKey;
 		Number 	value;
 		String	valueAxisLabel = getValueAxisLabel();
@@ -107,6 +107,7 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 			
 			if (forId != null && !rowKey.getId().equals(forId))
 			{
+				System.out.println("skipping");
 				continue;
 			}
 
@@ -116,19 +117,19 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 			}
 
 
-			if (valueMap.containsKey(rowKey))
+			if (valueMap.containsKey(rowKey.getName()))
 			{
-				value = value.doubleValue() + valueMap.get(rowKey).doubleValue();
-				valueMap.put(rowKey, value);
+				value = value.doubleValue() + valueMap.get(rowKey.getName()).doubleValue();
+				valueMap.put(rowKey.getName(), value);
 			} else
 			{
-				valueMap.put(rowKey, value);
+				valueMap.put(rowKey.getName(), value);
 			}
 		}
 
-		for (ChartRowKey rowKeyAgg : valueMap.keySet())
+		for (String rowKeyAgg : valueMap.keySet())
 		{
-			dataset.addValue(valueMap.get(rowKeyAgg), valueAxisLabel, rowKeyAgg.getName());
+			dataset.addValue(valueMap.get(rowKeyAgg), valueAxisLabel, rowKeyAgg);
 		}
 
 		return dataset;

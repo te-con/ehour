@@ -171,6 +171,8 @@
 <script>
 	updateTotal();
 	
+	bindTimesheetForm();
+	
 	<c:if test="${errorCommentTooLong}">
 		alert(errorCommentTooLong);
 	</c:if>	

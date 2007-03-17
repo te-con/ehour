@@ -65,7 +65,3 @@ function navCalChanged(type, xml, evt)
  		ajaxEventReceived(xml, true, {navCalendar: "NavCalTarget"});
 	}
 }
-
-
-
-

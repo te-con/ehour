@@ -12,24 +12,27 @@ Release Notes - eHour v0.3
   
   If you run into any issues please use the {{{issue-tracking.html}bug tracker}} or post your question on the {{{https://lists.sourceforge.net/lists/listinfo/ehour-users}mailinglist}} or {{{http://sourceforge.net/forum/?group_id=167867}forum}}.
 
+* 0.4 Release Notes
+
+	Added Dutch translation
+	
+	Changed page encoding to UTF-8 and therefore supporting umlauts and all that. Also forms accept UTF characters.
+	
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1674818&group_id=167867&atid=844648}1674818}} Timesheet -> store sheet gave a semi-white page. Fixed
+
 * 0.3 Release Notes
 
 	Navigation calendar is more in sync with the selected overview or timesheet.
 	
-	[{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670791&group_id=167867&atid=844651}1670791}}] Added print functionality (sign off) to month sheets.
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670791&group_id=167867&atid=844651}1670791}} Added print functionality (sign off) to month sheets.
 	
-	[{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1668140&group_id=167867&atid=844648}1668140}}] Charts added to reports
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1668140&group_id=167867&atid=844648}1668140}} Charts added to reports
 
 * 0.2 Release Notes
-
-	Second beta released! 
-	
-	<<Features>>
 
 	Added global reporting on customers, projects and users. Some reporting features still need to be added.
 	For now charts are disabled in this release but	those will be (re-)added in version 0.21.
 	
-	<<Bugs fixed>>
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1663464&group_id=167867&atid=844648}1663464}} Fixed a bug in version 0.1 prevented administrators to add new users.
 	
 	

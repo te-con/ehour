@@ -58,6 +58,14 @@ function weekChanged(type, xml, evt)
 	}
 }
 
+// bind timesheet form
+function bindTimesheetForm()
+{
+	new dojo.io.FormBind({	formNode: dojo.byId('timesheetFormId'),
+  							handler: timesheetSubmitted
+							});
+}
+
 // overview changed	
 function overviewChanged(type, xml, evt)
 {

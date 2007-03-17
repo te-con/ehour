@@ -92,7 +92,9 @@ div.BlueFrame table
 {
 	border-collapse: collapse; 
 	border-spacing: 0px;
-	margin-left: 70px;
+	margin-left: 30px;
+	width: 90%;
+	margin-right: 20px;
 }
 
 div.BlueFrame td
