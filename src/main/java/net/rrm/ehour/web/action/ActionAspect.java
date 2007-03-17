@@ -24,6 +24,7 @@
 package net.rrm.ehour.web.action;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -53,10 +54,13 @@ public class ActionAspect
 	 * @throws Throwable
 	 */
 //	@Before("execution(* net.rrm.ehour.web.*.action.*Action.execute(..)) and args(mapping, form, request,..)")
-	public void setLocale(ActionMapping mapping, ActionForm form, HttpServletRequest request) throws Throwable
+	public void setLocale(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Throwable
 	{
-		logger.debug("Setting locale");
+		logger.debug("Setting locale and content-type");
 		Config.set(request, Config.FMT_LOCALE, config.getLocale());
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 	}
 
 	/**

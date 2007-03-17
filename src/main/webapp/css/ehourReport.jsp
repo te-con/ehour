@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page contentType="text/css;" %>
+<%@ page contentType="text/css; charset=UTF-8" %>
 .reportCriteriaLabel
 {
 	text-align: left;

@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page contentType="text/css;" %>
+<%@ page contentType="text/css; charset=UTF-8" %>
 
 body
 {
@@ -306,7 +306,7 @@ div.ContentFrame
 div.ContentFrame h1
 {
 	text-align: left;
-	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+	font:  bold 1.0em Arial, Geneva, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0 0 0 11px;
 	padding: 0;

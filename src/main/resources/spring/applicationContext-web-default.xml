@@ -14,9 +14,9 @@
 	<aop:config>
 		<aop:aspect ref="actionAspect">
 			<aop:pointcut id="actionPointcut"
-				expression="execution(* net.rrm.ehour.web.*.action.*Action.execute(..)) and args(mapping, form, request,..)"
+				expression="execution(* net.rrm.ehour.web.*.action.*Action.execute(..)) and args(mapping,form,request,response,..)"
 				 />
-			<aop:after pointcut-ref="actionPointcut" method="setLocale" arg-names="mapping,form,request"/>
+			<aop:after pointcut-ref="actionPointcut" method="setLocale" arg-names="mapping,form,request,response"/>
 		</aop:aspect>
 	</aop:config>
 	
