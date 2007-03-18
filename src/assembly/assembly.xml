@@ -22,6 +22,12 @@
 		</fileSet>
 
 		<fileSet>
+			<directory>src/test/performance</directory>
+			<outputDirectory>util/performance</outputDirectory>
+			<lineEnding>dos</lineEnding>
+		</fileSet>
+
+		<fileSet>
 			<directory>sql</directory>
 			<outputDirectory>sql</outputDirectory>
 			<lineEnding>dos</lineEnding>
