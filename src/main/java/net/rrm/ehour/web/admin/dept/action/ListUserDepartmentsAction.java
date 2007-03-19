@@ -23,10 +23,14 @@
 
 package net.rrm.ehour.web.admin.dept.action;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.web.sort.UserDepartmentComparator;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -45,8 +49,8 @@ public class ListUserDepartmentsAction extends AdminUserDepartmentBaseAction
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List	userDepartments = userService.getUserDepartments();
-		
+		List<UserDepartment>	userDepartments = userService.getUserDepartments();
+		Collections.sort(userDepartments, new UserDepartmentComparator());
 		request.setAttribute("userDepartments", userDepartments);
 			
 		return mapping.findForward("success");

@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.web.admin.assignment.action;
 
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -34,6 +35,8 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
+import net.rrm.ehour.web.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.web.sort.ProjectComparator;
 import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.struts.action.ActionForm;
@@ -65,9 +68,11 @@ public class GetAssignmentAction extends AdminProjectAssignmentBaseAction
 		param = mapping.getParameter();
 		
 		allProjects = projectService.getAllProjects(true);
+		Collections.sort(allProjects, new ProjectComparator());
 		request.setAttribute("allProjects", allProjects);
 		
 		assignments = projectService.getAllProjectsForUser(paForm.getUserId());
+		Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_START));
 		request.setAttribute("assignments", assignments);
 		
 		if (!"addOnly".equals(param))

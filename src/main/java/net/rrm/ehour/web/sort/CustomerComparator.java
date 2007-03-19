@@ -1,5 +1,5 @@
 /**
- * Created on Feb 24, 2007
+ * Created on Mar 19, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,48 +21,22 @@
  *
  */
 
-package net.rrm.ehour.web.report.reports;
+package net.rrm.ehour.web.sort;
 
 import java.util.Comparator;
 
 import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.web.sort.CustomerComparator;
 
 /**
- * Project -> user report 
+ * Customer name comparator
  **/
 
-public class ProjectReport extends AggregateReport<Project, Customer, Integer>
+public class CustomerComparator implements Comparator<Customer>
 {
 
-	@Override
-	protected Customer getChildKey(ProjectAssignmentAggregate aggregate)
+	public int compare(Customer o1, Customer o2)
 	{
-		return aggregate.getProjectAssignment().getProject().getCustomer();
-	}
-
-	@Override
-	public String getReportName()
-	{
-		return AggregateReportFactory.PROJECT_REPORT;
-	}
-
-	@Override
-	protected Project getRootKey(ProjectAssignmentAggregate aggregate)
-	{
-		return aggregate.getProjectAssignment().getProject();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.reports.AggregateReport#getComparator()
-	 */
-	@Override
-	public Comparator<Customer> getComparator()
-	{
-		return new CustomerComparator();
+		return o1.getName().compareToIgnoreCase(o2.getName());
 	}
 
 }

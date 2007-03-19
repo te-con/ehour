@@ -25,6 +25,7 @@ package net.rrm.ehour.report.criteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -33,6 +34,10 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.web.sort.CustomerComparator;
+import net.rrm.ehour.web.sort.ProjectComparator;
+import net.rrm.ehour.web.sort.UserComparator;
+import net.rrm.ehour.web.sort.UserDepartmentComparator;
 
 import org.apache.log4j.Logger;
 
@@ -127,6 +132,11 @@ public class ReportCriteria
 		{
 			checkIfUserCriteriaAreAvailable();
 		}
+		
+		Collections.sort(availableCriteria.getCustomers(), new CustomerComparator());
+		Collections.sort(availableCriteria.getProjects(), new ProjectComparator());
+		Collections.sort(availableCriteria.getUserDepartments(), new UserDepartmentComparator());
+		Collections.sort(availableCriteria.getUsers(), new UserComparator(false));
 	}	
 	/**
 	 * After the available criteria are synced, check if the user criteria are still valid

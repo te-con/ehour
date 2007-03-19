@@ -24,10 +24,13 @@
 package net.rrm.ehour.web.report.reports;
 
 import java.text.ParseException;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 import net.rrm.ehour.util.DateUtil;
@@ -42,7 +45,7 @@ import org.apache.log4j.Logger;
 public abstract class TimelineReport<RK extends Comparable>
 {
 	protected Logger			logger = Logger.getLogger(this.getClass());
-	protected Map<RK, Map<Date, FlatProjectAssignmentAggregate>>	rowMap;
+	protected SortedMap<RK, Map<Date, FlatProjectAssignmentAggregate>>	rowMap;
 
 	/**
 	 * Initialize the report
@@ -55,7 +58,7 @@ public abstract class TimelineReport<RK extends Comparable>
 		Date	aggregateDate;
 		RK		rowKey;
 		
-		rowMap = new HashMap<RK, Map<Date, FlatProjectAssignmentAggregate>>();
+		rowMap = new TreeMap<RK, Map<Date, FlatProjectAssignmentAggregate>>(getRKComparator());
 
 		for (FlatProjectAssignmentAggregate aggregate : aggregateData)
 		{
@@ -83,7 +86,7 @@ public abstract class TimelineReport<RK extends Comparable>
 	 * Get the values
 	 * @return
 	 */
-	public Map<RK, Map<Date, FlatProjectAssignmentAggregate>> getValues()
+	public SortedMap<RK, Map<Date, FlatProjectAssignmentAggregate>> getValues()
 	{
 		return rowMap;
 	}
@@ -101,4 +104,10 @@ public abstract class TimelineReport<RK extends Comparable>
 	 * @return
 	 */
 	protected abstract RK getRowKey(FlatProjectAssignmentAggregate aggregate);
+	
+	/**
+	 * Get row key comparator for sorting
+	 * @return
+	 */
+	protected abstract Comparator<RK> getRKComparator();
 }

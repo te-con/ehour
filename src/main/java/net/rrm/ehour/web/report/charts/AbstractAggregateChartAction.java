@@ -26,12 +26,16 @@ package net.rrm.ehour.web.report.charts;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.web.report.charts.rowkey.ChartRowKey;
+import net.rrm.ehour.web.sort.StringComparator;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -94,8 +98,9 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 		DefaultCategoryDataset dataset;
 		Map<String, Number> valueMap = new HashMap<String, Number>();
 		ChartRowKey		rowKey;
-		Number 	value;
-		String	valueAxisLabel = getValueAxisLabel();
+		Number 			value;
+		String			valueAxisLabel = getValueAxisLabel();
+		List<String>	keys;
 
 		dataset = new DefaultCategoryDataset();
 
@@ -115,7 +120,6 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 				value = new Double(0);
 			}
 
-
 			if (valueMap.containsKey(rowKey.getName()))
 			{
 				value = value.doubleValue() + valueMap.get(rowKey.getName()).doubleValue();
@@ -126,7 +130,10 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 			}
 		}
 
-		for (String rowKeyAgg : valueMap.keySet())
+		keys = new ArrayList<String>(valueMap.keySet());
+		Collections.sort(keys, new StringComparator());
+		
+		for (String rowKeyAgg : keys)
 		{
 			dataset.addValue(valueMap.get(rowKeyAgg), valueAxisLabel, rowKeyAgg);
 		}

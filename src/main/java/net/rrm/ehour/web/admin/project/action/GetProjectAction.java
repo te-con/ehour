@@ -23,13 +23,16 @@
 
 package net.rrm.ehour.web.admin.project.action;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.web.admin.project.form.ProjectForm;
+import net.rrm.ehour.web.sort.CustomerComparator;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -50,15 +53,13 @@ public class GetProjectAction extends AdminProjectBaseAction
 		ActionForward	fwd = mapping.findForward("success");
 		ProjectForm		projectForm = (ProjectForm)form;
 		String			param;
-		List			customers;
+		List<Customer>	customers;
 		Project			project;
-		
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
 		
 		param = mapping.getParameter();
 		
 		customers = customerService.getCustomers(true);
+		Collections.sort(customers, new CustomerComparator());
 		
 		request.setAttribute("customers", customers);
 		

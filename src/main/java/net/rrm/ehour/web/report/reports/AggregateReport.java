@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.web.report.reports;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -100,7 +101,7 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 			}
 			else
 			{
-				childMap = new TreeMap<CK, Set<ProjectAssignmentAggregate>>();
+				childMap = new TreeMap<CK, Set<ProjectAssignmentAggregate>>(getComparator());
 			}
 			
 			// then check if the client is in the submap
@@ -202,6 +203,12 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 	 *
 	 */
 	public abstract String getReportName();
+
+	/**
+	 * Get comparator for the client key
+	 * @return
+	 */
+	public abstract Comparator<CK> getComparator();
 	
 	/**
 	 * ToString
@@ -211,7 +218,7 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 	{
 		return new ToStringBuilder(this).append("reportName", getReportName()).append("reportMap", reportMap).toString();
 	}
-
+	
 	/**
 	 * @return the forId
 	 */

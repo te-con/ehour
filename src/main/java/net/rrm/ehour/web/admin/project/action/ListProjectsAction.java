@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.web.admin.project.action;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.web.admin.project.form.ProjectForm;
+import net.rrm.ehour.web.sort.ProjectComparator;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -50,8 +52,6 @@ public class ListProjectsAction extends AdminProjectBaseAction
 		ActionForward	fwd;
 		ProjectForm		projectForm = (ProjectForm)form;
 		
-		response.setHeader("Cache-Control", "no-cache");
-		
 		if (projectForm.isFromForm())
 		{
 			response.setContentType("text/xml");
@@ -65,6 +65,8 @@ public class ListProjectsAction extends AdminProjectBaseAction
 			
 			fwd = mapping.findForward("fullList");
 		}
+		
+		Collections.sort(projects, new ProjectComparator());
 		
 		request.setAttribute("projects", projects);
 			

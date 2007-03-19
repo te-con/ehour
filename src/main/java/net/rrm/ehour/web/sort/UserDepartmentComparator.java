@@ -25,22 +25,18 @@ package net.rrm.ehour.web.sort;
 
 import java.util.Comparator;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.user.domain.UserDepartment;
 
 /**
- * TODO 
+ * User dept comparator ignoring case 
  **/
 
-public class ProjectAssignmentAggregateComparator implements Comparator<ProjectAssignmentAggregate>
+public class UserDepartmentComparator implements Comparator<UserDepartment>
 {
 
-	/* (non-Javadoc)
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-	 */
-	public int compare(ProjectAssignmentAggregate o1, ProjectAssignmentAggregate o2)
+	public int compare(UserDepartment o1, UserDepartment o2)
 	{
-		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
-					o2.getProjectAssignment().getProject().getName());
+		return o1.getName().compareToIgnoreCase(o2.getName());
 	}
 
 }

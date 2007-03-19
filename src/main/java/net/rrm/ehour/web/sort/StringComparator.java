@@ -25,22 +25,16 @@ package net.rrm.ehour.web.sort;
 
 import java.util.Comparator;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-
 /**
- * TODO 
+ * String comparator ignoring case 
  **/
 
-public class ProjectAssignmentAggregateComparator implements Comparator<ProjectAssignmentAggregate>
+public class StringComparator implements Comparator<String>
 {
 
-	/* (non-Javadoc)
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-	 */
-	public int compare(ProjectAssignmentAggregate o1, ProjectAssignmentAggregate o2)
+	public int compare(String o1, String o2)
 	{
-		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
-					o2.getProjectAssignment().getProject().getName());
+		return o1.compareToIgnoreCase(o2);
 	}
 
 }

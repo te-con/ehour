@@ -25,12 +25,14 @@ package net.rrm.ehour.web.timesheet.dto;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 import net.rrm.ehour.web.report.reports.TimelineReport;
+import net.rrm.ehour.web.sort.ProjectAssignmentComparator;
 
 /**
  * Print report for printing a timesheet
@@ -73,6 +75,15 @@ public class PrintReport extends TimelineReport<ProjectAssignment>
 	protected Date getAggregateDate(FlatProjectAssignmentAggregate aggregate) throws ParseException
 	{
 		return dateParser.parse(aggregate.getEntryDate());
+	}
+
+	/**
+	 * Row key comparator
+	 */
+	@Override
+	protected Comparator<ProjectAssignment> getRKComparator()
+	{
+		return new ProjectAssignmentComparator();
 	}
 
 }

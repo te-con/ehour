@@ -23,9 +23,12 @@
 
 package net.rrm.ehour.web.report.reports;
 
+import java.util.Comparator;
+
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.web.sort.CustomerComparator;
 
 /**
  * UserReport (User -> Customer -> Project details)
@@ -58,5 +61,11 @@ public class UserReport extends AggregateReport<User, Customer, Integer>
 	protected User getRootKey(ProjectAssignmentAggregate aggregate)
 	{
 		return aggregate.getProjectAssignment().getUser();
+	}
+
+	@Override
+	public Comparator<Customer> getComparator()
+	{
+		return new CustomerComparator();
 	}
 }

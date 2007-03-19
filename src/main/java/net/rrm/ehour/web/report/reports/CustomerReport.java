@@ -23,9 +23,12 @@
 
 package net.rrm.ehour.web.report.reports;
 
+import java.util.Comparator;
+
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.web.sort.ProjectComparator;
 
 /**
  * Create a customer report based on the supplied report data
@@ -35,7 +38,6 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 {
 	private static final long serialVersionUID = 6365903846883586472L;
-
 
 	/**
 	 * 
@@ -63,5 +65,15 @@ public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 	protected Customer getRootKey(ProjectAssignmentAggregate aggregate)
 	{
 		return aggregate.getProjectAssignment().getProject().getCustomer();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.web.report.reports.AggregateReport#getComparator()
+	 */
+	@Override
+	public Comparator<Project> getComparator()
+	{
+		return new ProjectComparator();
 	}
 }

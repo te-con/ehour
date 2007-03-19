@@ -23,11 +23,10 @@
 
 package net.rrm.ehour.report.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.customer.domain.Customer;
@@ -43,6 +42,8 @@ import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
 
+import org.apache.log4j.Logger;
+
 /**
  * TODO 
  **/
@@ -57,9 +58,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	private	ReportAggregatedDAO				reportAggregatedDAO;
 	private	Logger					logger = Logger.getLogger(this.getClass());
 	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.ReportCriteriaService#syncUserReportCriteria(net.rrm.ehour.report.criteria.ReportCriteria, int)
-	 */
 	/**
 	 * Update available report criteria 
 	 */
@@ -211,8 +209,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 			projects.add(assignment.getProject());
 		}
 		
-		availCriteria.setCustomers(customers);
-		availCriteria.setProjects(projects);
+		
+		availCriteria.setCustomers(new ArrayList<Customer>(customers));
+		availCriteria.setProjects(new ArrayList<Project>(projects));
 		
 		availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry(userId));
 	}

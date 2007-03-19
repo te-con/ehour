@@ -23,10 +23,14 @@
 
 package net.rrm.ehour.web.admin.customer.action;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.web.sort.CustomerComparator;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -43,11 +47,11 @@ public class ListCustomersAction extends AdminCustomerBaseAction
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List	customers = customerService.getCustomers();
+		List<Customer>	customers = customerService.getCustomers();
 		
+		Collections.sort(customers, new CustomerComparator());
+
 		request.setAttribute("customers", customers);
-		
-		response.setHeader("Cache-Control", "no-cache");
 		
 		return mapping.findForward("success");
 	}	

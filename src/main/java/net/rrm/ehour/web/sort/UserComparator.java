@@ -1,5 +1,5 @@
 /**
- * Created on 3-mar-2007
+ * Created on Mar 19, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -20,45 +20,56 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  *
  */
-package net.rrm.ehour.web.report.charts;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.web.report.charts.rowkey.ChartRowKey;
-import net.rrm.ehour.web.report.charts.rowkey.CustomerRowKey;
+package net.rrm.ehour.web.sort;
 
-public class CustomerHoursAggregateChartAction extends AbstractAggregateChartAction
+import java.util.Comparator;
+
+import net.rrm.ehour.user.domain.User;
+
+/**
+ * TODO 
+ **/
+
+public class UserComparator implements Comparator<User>
 {
-	// TODO i18n
-	@Override
-	protected String getReportName()
+	private boolean firstNameFirst;
+	
+	/**
+	 * 
+	 * @param firstNameFirst
+	 */
+	public UserComparator(boolean firstNameFirst)
 	{
-		return "Hours per customer";
+		this.firstNameFirst = firstNameFirst;
 	}
 
 	/**
-	 * Get the hours from the aggregate
+	 * 
 	 */
-	@Override
-	protected Number getColumnValue(ProjectAssignmentAggregate aggregate)
+	public int compare(User o1, User o2)
 	{
-		return aggregate.getHours();
-	}
+		int	cmp;
+		
+		if (firstNameFirst)
+		{
+			cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
 
-	/**
-	 * Get the customerrowkey decorator from the aggregate
-	 */
-	@Override
-	protected ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate)
-	{
-		return new CustomerRowKey(aggregate.getProjectAssignment().getProject().getCustomer());
-	}
-
-	/**
-	 * TODO: i18n
-	 */
-	@Override
-	protected String getValueAxisLabel()
-	{
-		return "Hours";
+			if (cmp == 0)
+			{
+				cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
+			}
+		}
+		else
+		{
+			cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
+			
+			if (cmp == 0)
+			{
+				cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
+			}
+		}
+		
+		return cmp;
 	}
 }

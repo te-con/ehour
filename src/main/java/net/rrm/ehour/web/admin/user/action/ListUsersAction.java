@@ -23,12 +23,15 @@
 
 package net.rrm.ehour.web.admin.user.action;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.admin.user.form.UserForm;
+import net.rrm.ehour.web.sort.UserComparator;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -45,11 +48,9 @@ public class ListUsersAction extends AdminUserBaseAction
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List 			users;
+		List<User>		users;
 		ActionForward	fwd;
 		UserForm		userForm = (UserForm)form;
-		
-		response.setHeader("Cache-Control", "no-cache");
 		
 		if (userForm.isFromForm())
 		{
@@ -63,6 +64,8 @@ public class ListUsersAction extends AdminUserBaseAction
 			users = userService.getUsers();
 			fwd = mapping.findForward("fullList");
 		}
+		
+		Collections.sort(users, new UserComparator(false));
 		
 		request.setAttribute("users", users);
 			

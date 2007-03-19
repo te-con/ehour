@@ -23,7 +23,7 @@
 
 package net.rrm.ehour.report.criteria;
 
-import java.util.Collection;
+import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
@@ -38,37 +38,37 @@ import net.rrm.ehour.user.domain.UserDepartment;
 
 public class AvailableCriteria
 {
-	private Collection<User>			users;
-	private Collection<UserDepartment>	userDepartments;
-	private Collection<Customer>		customers;
-	private Collection<Project>			projects;
+	private List<User>			users;
+	private List<UserDepartment>	userDepartments;
+	private List<Customer>		customers;
+	private List<Project>			projects;
 	private DateRange					reportRange;
 
 	/**
 	 * @return the customers
 	 */
-	public Collection<Customer> getCustomers()
+	public List<Customer> getCustomers()
 	{
 		return customers;
 	}
 	/**
 	 * @param customers the customers to set
 	 */
-	public void setCustomers(Collection<Customer> customers)
+	public void setCustomers(List<Customer> customers)
 	{
 		this.customers = customers;
 	}
 	/**
 	 * @return the projects
 	 */
-	public Collection<Project> getProjects()
+	public List<Project> getProjects()
 	{
 		return projects;
 	}
 	/**
 	 * @param projects the projects to set
 	 */
-	public void setProjects(Collection<Project> projects)
+	public void setProjects(List<Project> projects)
 	{
 		this.projects = projects;
 	}
@@ -89,28 +89,28 @@ public class AvailableCriteria
 	/**
 	 * @return the userDepartments
 	 */
-	public Collection<UserDepartment> getUserDepartments()
+	public List<UserDepartment> getUserDepartments()
 	{
 		return userDepartments;
 	}
 	/**
 	 * @param userDepartments the userDepartments to set
 	 */
-	public void setUserDepartments(Collection<UserDepartment> userDepartments)
+	public void setUserDepartments(List<UserDepartment> userDepartments)
 	{
 		this.userDepartments = userDepartments;
 	}
 	/**
 	 * @return the users
 	 */
-	public Collection<User> getUsers()
+	public List<User> getUsers()
 	{
 		return users;
 	}
 	/**
 	 * @param users the users to set
 	 */
-	public void setUsers(Collection<User> users)
+	public void setUsers(List<User> users)
 	{
 		this.users = users;
 	}

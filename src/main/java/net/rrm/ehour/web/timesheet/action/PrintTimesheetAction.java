@@ -29,6 +29,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +43,7 @@ import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.calendar.CalendarUtil;
+import net.rrm.ehour.web.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.web.timesheet.dto.PrintReport;
 import net.rrm.ehour.web.timesheet.form.PrintTimesheetForm;
 import net.rrm.ehour.web.util.AuthUtil;
@@ -145,11 +148,15 @@ public class PrintTimesheetAction extends Action
 										PrintTimesheetForm psForm,
 										DateRange printRange)
 	{
-		Set<ProjectAssignment>	projectAssignments;
-		ActionForward			fwd;
+		Set<ProjectAssignment>			projectAssignments;
+		SortedSet<ProjectAssignment>	sortedAssignments;
+		ActionForward					fwd;
 		
 		projectAssignments = projectService.getProjectsForUser(userId, printRange);
-		request.setAttribute("projectAssignments", projectAssignments);
+		sortedAssignments = new TreeSet<ProjectAssignment>(new ProjectAssignmentComparator());
+		sortedAssignments.addAll(projectAssignments);
+		
+		request.setAttribute("projectAssignments", sortedAssignments);
 		fwd = mapping.findForward( (psForm.isAjaxCall()) ? "printForm" : "printLayout");
 
 		return fwd;
