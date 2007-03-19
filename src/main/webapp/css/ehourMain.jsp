@@ -98,7 +98,7 @@ table
 
 div.NavCalFrame
 {
-  background: url(<c:url value="/img/bg_blue_white/gradient_blue.gif" />) top left repeat-x;
+  background: url(<c:url value="/img/bg_blue_grey/gradient_blue.gif" />) top left repeat-x;
   max-height: 200px;
   width: 230px;
   margin-top: 1em;

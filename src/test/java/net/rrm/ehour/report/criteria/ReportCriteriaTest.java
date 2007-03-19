@@ -65,17 +65,17 @@ public class ReportCriteriaTest extends TestCase
 		assertEquals(dr, reportCriteria.getReportRange());
 	}
 
-	
-	public void testSetUserCriteria()
-	{
-		expect(reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL)).andReturn(reportCriteria);
-
-		replay(reportCriteriaService);
-		
-		reportCriteria.setUserCriteria(new UserCriteria());
-		reportCriteria.updateAvailableCriteria();
-		
-		verify(reportCriteriaService);
-	}
+//	
+//	public void testSetUserCriteria()
+//	{
+//		expect(reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL)).andReturn(reportCriteria);
+//
+//		replay(reportCriteriaService);
+//		
+//		reportCriteria.setUserCriteria(new UserCriteria());
+//		reportCriteria.updateAvailableCriteria();
+//		
+//		verify(reportCriteriaService);
+//	}
 
 }

@@ -9,13 +9,13 @@
 <script type="text/javascript">
 	dojo.require("dojo.io.*");	
 	dojo.require("dojo.event.*");		
+	dojo.require("dojo.html.*");	
 	dojo.require("dojo.widget.TabContainer");
 	dojo.require("dojo.widget.LinkPane");
 	dojo.require("dojo.widget.ContentPane");
 	dojo.require("dojo.widget.LayoutContainer");
 	dojo.require("dojo.widget.TitlePane");
 	dojo.require("dojo.widget.DropdownDatePicker");
-
 	
 	var defaultText = "<fmt:message key="report.criteria.filterUsersOn" />";
 </script>
@@ -27,5 +27,9 @@
 </div>
 
 <div id="reportTarget">
-	<tiles:insert page="${reportTile}" />
+		<tiles:insert page="${reportTile}" />
 </div>
+
+<script>
+	dojo.html.setOpacity(dojo.byId('reportTarget'), 50);
+</script>

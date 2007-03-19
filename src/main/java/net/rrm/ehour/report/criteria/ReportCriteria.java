@@ -132,7 +132,7 @@ public class ReportCriteria
 		{
 			checkIfUserCriteriaAreAvailable();
 		}
-		
+
 		Collections.sort(availableCriteria.getCustomers(), new CustomerComparator());
 		Collections.sort(availableCriteria.getProjects(), new ProjectComparator());
 		Collections.sort(availableCriteria.getUserDepartments(), new UserDepartmentComparator());

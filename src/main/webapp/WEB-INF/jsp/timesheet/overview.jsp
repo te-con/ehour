@@ -67,10 +67,10 @@
 
 <div class="ContentFrame">
 	<div style="float: left; margin: 0 0 -5px 0; padding: 0">
-		<h1><fmt:message key="user.overview.monthOverview" /></h1>
+		<h1 style="float: left;margin: 0;padding: 0;"><fmt:message key="user.overview.monthOverview" /></h1>
 	</div>
-	
-	<div style="text-align: right;width: 719px;margin: 0 0 -5px 0; padding: 0;">
+
+	<div style="text-align: right;width: 719px;margin: -5px 0 -5px 0; padding: 0;">
 		<a href="printTimesheet.do?zeroBased=0&month=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="M" />&year=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="yyyy" />">
 			<img src="<c:url value="/img/print_off.gif" />"
 				onMouseover="this.src='<c:url value="/img/print_on.gif" />'"
@@ -79,6 +79,7 @@
 			 border="0">
 		</a>
 	</div>
+	
 
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>
