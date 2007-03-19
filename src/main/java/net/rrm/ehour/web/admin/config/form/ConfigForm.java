@@ -40,10 +40,16 @@ public class ConfigForm extends ActionForm
 	private static final long serialVersionUID = 5616191733233138171L;
 	private String	language;
 	private	boolean	showTranslationsOnly;
+	private	String	currency;
+	private	boolean	noForce;
+	private boolean	showTurnOver;
+	private boolean	fromForm;
 	
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
-		showTranslationsOnly = true;
+		showTranslationsOnly = false;
+		fromForm = false;
+		showTurnOver = false;
 	}
 	
 	/**
@@ -73,6 +79,70 @@ public class ConfigForm extends ActionForm
 	public void setShowTranslationsOnly(boolean showTranslationsOnly)
 	{
 		this.showTranslationsOnly = showTranslationsOnly;
+	}
+
+	/**
+	 * @return the currency
+	 */
+	public String getCurrency()
+	{
+		return currency;
+	}
+
+	/**
+	 * @param currency the currency to set
+	 */
+	public void setCurrency(String currency)
+	{
+		this.currency = currency;
+	}
+
+	/**
+	 * @return the noForce
+	 */
+	public boolean isNoForce()
+	{
+		return noForce;
+	}
+
+	/**
+	 * @param noForce the noForce to set
+	 */
+	public void setNoForce(boolean noForce)
+	{
+		this.noForce = noForce;
+	}
+
+	/**
+	 * @return the fromForm
+	 */
+	public boolean isFromForm()
+	{
+		return fromForm;
+	}
+
+	/**
+	 * @param fromForm the fromForm to set
+	 */
+	public void setFromForm(boolean fromForm)
+	{
+		this.fromForm = fromForm;
+	}
+
+	/**
+	 * @return the hideTurnOver
+	 */
+	public boolean isShowTurnOver()
+	{
+		return showTurnOver;
+	}
+
+	/**
+	 * @param hideTurnOver the hideTurnOver to set
+	 */
+	public void setShowTurnOver(boolean hideTurnOver)
+	{
+		this.showTurnOver = hideTurnOver;
 	}
 	
 }

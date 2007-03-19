@@ -77,15 +77,22 @@
 		<property name="config" ref="ehourConfig" />
 	</bean>
 
+	<!-- reUseReportAction from web-report.xml -->
 	<bean name="/eh/userReport/showCustomerHoursAggregateChart"
-		class="net.rrm.ehour.web.report.charts.CustomerHoursAggregateChartAction" />
+		class="net.rrm.ehour.web.report.charts.CustomerHoursAggregateChartAction" 
+		parent="reUseReportAction" />
+		
 	<bean name="/eh/userReport/showCustomerTurnoverAggregateChart"
-		class="net.rrm.ehour.web.report.charts.CustomerTurnoverAggregateChartAction" />
+		class="net.rrm.ehour.web.report.charts.CustomerTurnoverAggregateChartAction"
+		parent="reUseReportAction" />
 
 	<bean name="/eh/userReport/showProjectHoursAggregateChart"
-		class="net.rrm.ehour.web.report.charts.ProjectHoursAggregateChartAction" />
+		class="net.rrm.ehour.web.report.charts.ProjectHoursAggregateChartAction" 
+		parent="reUseReportAction" />
+		
 	<bean name="/eh/userReport/showProjectTurnoverAggregateChart"
-		class="net.rrm.ehour.web.report.charts.ProjectTurnoverAggregateChartAction" />
+		class="net.rrm.ehour.web.report.charts.ProjectTurnoverAggregateChartAction" 
+		parent="reUseReportAction" />
 
 	<bean name="/eh/cal/navCalendar"
 		class="net.rrm.ehour.web.calendar.action.GetNavCalendarAction" />

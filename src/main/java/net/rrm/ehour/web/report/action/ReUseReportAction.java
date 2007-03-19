@@ -29,8 +29,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.web.report.form.ReportChartForm;
+import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
@@ -44,6 +46,7 @@ import org.apache.struts.action.ActionMapping;
 
 public abstract class ReUseReportAction extends Action
 {
+	private 	EhourConfig	config;
 	protected	Logger			logger = Logger.getLogger(this.getClass());
 	
 	/**
@@ -72,7 +75,8 @@ public abstract class ReUseReportAction extends Action
 		
 		request.setAttribute("reportSessionKey", sessionKey);
 		request.setAttribute("forId", chartForm.getForId());
-
+		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
+		
 		// TODO find out how sessionKey can be null ?
 		if (sessionKey != null)
 		{
@@ -107,4 +111,12 @@ public abstract class ReUseReportAction extends Action
 													HttpServletResponse response,
 													ReportChartForm chartForm,
 													ReportData reportData)  throws IOException;
+
+	/**
+	 * @param config the config to set
+	 */
+	public void setConfig(EhourConfig config)
+	{
+		this.config = config;
+	}
 }

@@ -84,7 +84,12 @@
     </definition>
     
     <!-- Configuration locales tile -->
-	<definition name=".ehour.admin.configuration.locales" path="/WEB-INF/jsp/admin/config/localeConfiguration.jsp" />
+	<definition name=".ehour.admin.configuration.locales" path="/WEB-INF/jsp/admin/config/localeConfiguration.jsp">
+	</definition>
+
+    <!-- Configuration locales tile -->
+	<definition name=".ehour.admin.configuration.locales" path="/WEB-INF/jsp/admin/config/localeConfiguration.jsp">
+	</definition>
 
     
 </tiles-definitions>

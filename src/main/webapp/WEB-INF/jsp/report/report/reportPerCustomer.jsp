@@ -68,7 +68,7 @@
 											onClick="return updateReport('userReport', '${reportSessionKey}', '${userItem.projectAssignment.user.userId}')"
 											>${userItem.projectAssignment.user.lastName}, ${userItem.projectAssignment.user.firstName}</a></td>
 									<td align="right"><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
-									<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" /></td>
+									<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 									
 									<c:set var="totalHour" value="${totalHour + userItem.hours}" />	
 									<c:set var="totalTurnOver" value="${totalTurnOver + userItem.turnOver}" />								
@@ -85,7 +85,7 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
-							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" /></td>
+							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 						</tr>
 													
 					</c:forEach>
@@ -95,7 +95,7 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td align="right"><b><fmt:formatNumber value="${grandTotalHour}" maxFractionDigits="2" /></b></td>
-						<td align="right" class="lastChild"><b><fmt:formatNumber maxFractionDigits="2" value="${grandTotalTurnOver}" type="currency" /></b></td>
+						<td align="right" class="lastChild"><b><fmt:formatNumber maxFractionDigits="2" value="${grandTotalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></b></td>
 					</tr>
 
 					</table>

@@ -91,10 +91,16 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	public void persistConfiguration(EhourConfig config)
 	{
 		persistConfig("currency", config.getCurrency());
-		persistConfig("completeDayHours", config.getCompleteDayHours());
+		
+		// TODO change to Integer and use null
+		if (config.getCompleteDayHours() != 0)
+		{
+			persistConfig("completeDayHours", config.getCompleteDayHours());
+		}
 		persistConfig("localeCountry", config.getLocaleCountry());
 		persistConfig("localeLanguage", config.getLocaleLanguage());
-		persistConfig("timeZone", config.getTimeZone());
+//		persistConfig("timeZone", config.getTimeZone());
+		persistConfig("showTurnOver", config.isShowTurnover());
 
 	}
 	

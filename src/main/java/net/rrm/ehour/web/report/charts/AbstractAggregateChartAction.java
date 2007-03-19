@@ -107,7 +107,6 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 			
 			if (forId != null && !rowKey.getId().equals(forId))
 			{
-				System.out.println("skipping");
 				continue;
 			}
 

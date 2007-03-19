@@ -20,7 +20,7 @@
 	<table class="contentTable" cellspacing="2">
 		<tr>
 			<td valign="top">
-				<h1><fmt:message key="admin.config.locale.title" /></h1>
+				<h1><fmt:message key="admin.config.title" /></h1>
 				<div class="GreyFrame">
 					<h3>&nbsp;</h3>
 
@@ -42,8 +42,7 @@
 									&nbsp;
 								</div>
 							</div>			
-						</div>									
-
+						</div>	
 				
 					<br>
 					

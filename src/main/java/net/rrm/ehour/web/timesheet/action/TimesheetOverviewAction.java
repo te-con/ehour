@@ -34,6 +34,7 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.web.calendar.CalendarUtil;
 import net.rrm.ehour.web.calendar.form.NavCalendarForm;
 import net.rrm.ehour.web.util.AuthUtil;
+import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -69,9 +70,7 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		
 		setWeekdays(request);
 		
-		request.setAttribute("currencyCode", "EUR");
-		request.setAttribute("currencySymbol", "\u20AC");
-		request.setAttribute("currencySymbol", "$");
+		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
 		
 		return mapping.findForward("success");
 	}

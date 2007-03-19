@@ -90,6 +90,7 @@ public class CreateReportAction extends ShowExistingReportAction
 		session.setAttribute(sessionKey, reportData);
 		request.setAttribute("reportSessionKey", sessionKey);
 		request.setAttribute("config", config);
+		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
 		
 		response.setHeader("Cache-Control", "no-cache");
 		return mapping.findForward(reportName);

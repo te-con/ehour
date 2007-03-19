@@ -59,8 +59,11 @@
 										<td>&nbsp;</td>
 										<td>${projectItem.key.name}</td>
 									</c:if>
-									<td align="right"><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
-									<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" /></td>
+									<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
+									
+									<c:if test="${config.showTurnover}">																			
+										<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
+									</c:if>
 									
 									<c:set var="totalHour" value="${totalHour + userItem.hours}" />	
 									<c:set var="totalTurnOver" value="${totalTurnOver + userItem.turnOver}" />								
@@ -75,8 +78,10 @@
 						<tr class="totalRow">
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
-							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" /></td>
+							<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
+							<c:if test="${config.showTurnover}">							
+								<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
+							</c:if>
 						</tr>
 													
 					</c:forEach>
@@ -84,8 +89,10 @@
 					<tr class="totalRow">
 						<td><b><fmt:message key="report.report.total" />:</b></td>
 						<td>&nbsp;</td>
-						<td align="right"><b><fmt:formatNumber value="${grandTotalHour}" maxFractionDigits="2" /></b></td>
-						<td align="right" class="lastChild"><b><fmt:formatNumber maxFractionDigits="2" value="${grandTotalTurnOver}" type="currency" /></b></td>
+						<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><b><fmt:formatNumber value="${grandTotalHour}" maxFractionDigits="2" /></b></td>
+						<c:if test="${config.showTurnover}">							
+							<td align="right" class="lastChild"><b><fmt:formatNumber maxFractionDigits="2" value="${grandTotalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></b></td>
+						</c:if>
 					</tr>
 
 					</table>
@@ -107,10 +114,14 @@
 	<br>
 	
 	<img src="showCustomerHoursAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
-	<img src="showCustomerTurnoverAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
-	<br>
+	<c:if test="${config.showTurnover}">							
+		<img src="showCustomerTurnoverAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+		<br>
+	</c:if>
 	<img src="showProjectHoursAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
-	<img src="showProjectTurnoverAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	<c:if test="${config.showTurnover}">							
+		<img src="showProjectTurnoverAggregateChart.do?forId=${forId}&chartWidth=350&chartHeight=200&key=${reportSessionKey}&random=<%= new Date().getTime() %>" />
+	</c:if>
 	<br>
 	
 	<br>

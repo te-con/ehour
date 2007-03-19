@@ -37,7 +37,9 @@
 			<tr>
 				<td>${projectReport.projectAssignment.project.name}</td>
 	<c:if test="${config.showTurnover}">
-				<td><fmt:formatNumber type="currency" value="${projectReport.projectAssignment.hourlyRate}" /></td>
+				<td><fmt:formatNumber type="currency"
+										value="${projectReport.projectAssignment.hourlyRate}" 
+										currencySymbol="${currencySymbol}" /></td>
 	</c:if>			
 				<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /> </td>
 	<c:if test="${config.showTurnover}">

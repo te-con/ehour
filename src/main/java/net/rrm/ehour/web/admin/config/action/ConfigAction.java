@@ -23,19 +23,21 @@
 
 package net.rrm.ehour.web.admin.config.action;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.web.admin.config.form.ConfigForm;
 import net.rrm.ehour.web.admin.config.util.LocaleComparator;
+import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionForm;
@@ -56,19 +58,39 @@ public class ConfigAction extends BaseConfigAction
 	{
 		ActionForward	fwd;
 		ConfigForm		configForm = (ConfigForm)form;
+		EhourConfig		dbConfig;
 		
+		dbConfig = configService.getConfiguration();
+		request.setAttribute("config", dbConfig);
+		
+		if (!configForm.isFromForm())
+		{
+			configForm.setNoForce(dbConfig.getLocaleLanguage().equals("noForce"));
+			configForm.setCurrency(dbConfig.getCurrency());
+			configForm.setShowTurnOver(dbConfig.isShowTurnover());
+		}
+
 		request.setAttribute("form", configForm);
 		
-		request.setAttribute("config", configService.getConfiguration());
-		
-		setAvailableCountries(request);
+		setCurrencies(request);
 		setAvailableLanguages(request, configForm.isShowTranslationsOnly());
 
 		fwd = mapping.findForward("success");
 		
 		return fwd;
 	}
-	
+
+	/**
+	 * Set (sorted) currencies
+	 * @param request
+	 */
+
+	private void setCurrencies(HttpServletRequest request)
+	{
+		SortedMap<String, String>	currencies = new TreeMap<String,String>(WebConstants.getCurrencies());
+		
+		request.setAttribute("currencies", currencies);
+	}
 	
 	/**
 	 * Set available languages
@@ -106,25 +128,5 @@ public class ConfigAction extends BaseConfigAction
 		
 		request.setAttribute("languages", localeSet);
 	}
-	
-	/**
-	 * Set available countries in the request context under countries
-	 * @param request
-	 */
-	private void setAvailableCountries(HttpServletRequest request)
-	{
-		String[]		countries;
-		List<Locale>	locales = new ArrayList<Locale>();
-		Locale			localeCountry;
-		
-		countries = Locale.getISOCountries();
-		
-		for (String country: countries)
-		{
-			localeCountry = new Locale("", country);
-			locales.add(localeCountry);
-		}
-		
-		request.setAttribute("countries", locales);
-	}
+
 }

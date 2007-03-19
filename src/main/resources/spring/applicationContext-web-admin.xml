@@ -70,4 +70,9 @@
 	<bean name="/eh/admin/config/updateLocales"
 			class="net.rrm.ehour.web.admin.config.action.ConfigAction"
 			parent="abstractConfigAction" />			
+			
+	<bean name="/eh/admin/config/saveConfig"
+			class="net.rrm.ehour.web.admin.config.action.SaveConfigAction"
+			parent="abstractConfigAction" />			
+			
 </beans>

@@ -1,5 +1,8 @@
 package net.rrm.ehour.web.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class WebConstants
 {
 	public final static String	ROLE_CONSULTANT = "ROLE_CONSULTANT";
@@ -23,4 +26,20 @@ public class WebConstants
 	public final static int PERIOD_YEAR = 4;
 	public final static int PERIOD_3YEAR = 5;
 	public final static int PERIOD_5YEAR = 6;
+	
+	/**
+	 * Get currencies
+	 * @return
+	 */
+	public static Map<String, String> getCurrencies()
+	{
+		Map<String, String> currencies = new HashMap<String,String>();
+		
+		currencies.put("Dollar", "$");
+		currencies.put("Euro", "&#8364;");
+		currencies.put("Yen", "&yen;");
+		currencies.put("Pound", "&pound;");
+		
+		return currencies;
+	}
 }

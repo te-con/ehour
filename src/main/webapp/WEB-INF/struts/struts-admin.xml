@@ -226,8 +226,13 @@
 				type="net.rrm.ehour.web.admin.config.action.ConfigAction">
 			<forward name="success" path=".ehour.admin.configuration.locales" />
 		</action>
-		
-				
+
+		<!-- Configuration Save-->
+		<action name="ConfigForm"
+				path="/config/saveConfig" 
+				type="net.rrm.ehour.web.admin.config.action.SaveConfigAction">
+			<forward name="success" path=".ehour.admin.configuration.locales" />
+		</action>
 						
 	</action-mappings>
 	
