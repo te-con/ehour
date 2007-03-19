@@ -30,6 +30,8 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
 import net.rrm.ehour.config.domain.Configuration;
 
+import org.apache.log4j.Logger;
+
 /**
  * TODO 
  **/
@@ -37,6 +39,7 @@ import net.rrm.ehour.config.domain.Configuration;
 public class ConfigurationServiceImpl implements ConfigurationService
 {
 	private ConfigurationDAO	configDAO;
+	private	Logger				logger = Logger.getLogger(this.getClass());
 	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
@@ -90,6 +93,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	 */
 	public void persistConfiguration(EhourConfig config)
 	{
+		logger.debug("Persisting config");
 		persistConfig("currency", config.getCurrency());
 		
 		// TODO change to Integer and use null

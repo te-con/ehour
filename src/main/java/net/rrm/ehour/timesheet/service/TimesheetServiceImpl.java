@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
@@ -95,7 +96,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		calendarMap = entriesToCalendarMap(timesheetEntries);
 		
-		overview.setProjectHours(projectAssignmentAggregates);
+		overview.setProjectHours(new TreeSet<ProjectAssignmentAggregate>(projectAssignmentAggregates));
 		overview.setTimesheetEntries(calendarMap);
 		
 		return overview;

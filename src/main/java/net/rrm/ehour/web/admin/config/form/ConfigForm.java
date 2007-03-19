@@ -50,6 +50,7 @@ public class ConfigForm extends ActionForm
 		showTranslationsOnly = false;
 		fromForm = false;
 		showTurnOver = false;
+		noForce = false;
 	}
 	
 	/**

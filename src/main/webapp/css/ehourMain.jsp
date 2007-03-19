@@ -397,6 +397,7 @@ div.BlueLeftBottom
 	margin: 5px 0 5px 0;
 	font: 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
+	background-color: white;
 }
 
 .textInputSmall
@@ -407,6 +408,7 @@ div.BlueLeftBottom
 	margin: 0;
 	font: 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
+	background-color: white;
 }
 
 input

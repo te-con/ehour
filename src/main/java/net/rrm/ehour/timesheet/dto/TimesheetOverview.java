@@ -2,6 +2,7 @@ package net.rrm.ehour.timesheet.dto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
@@ -9,8 +10,8 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
 public class TimesheetOverview
 {
-	private	List<ProjectAssignmentAggregate>	projectHours;
-	private	Map<Integer, List<TimesheetEntry>>	timesheetEntries;
+	private	SortedSet<ProjectAssignmentAggregate>	projectHours;
+	private	Map<Integer, List<TimesheetEntry>>		timesheetEntries;
 
 
 
@@ -28,12 +29,12 @@ public class TimesheetOverview
 		this.timesheetEntries = timesheetEntries;
 	}
 
-	public List<ProjectAssignmentAggregate> getProjectHours()
+	public SortedSet<ProjectAssignmentAggregate> getProjectHours()
 	{
 		return projectHours;
 	}
 
-	public void setProjectHours(List<ProjectAssignmentAggregate> projectHours)
+	public void setProjectHours(SortedSet<ProjectAssignmentAggregate> projectHours)
 	{
 		this.projectHours = projectHours;
 	}

@@ -1,5 +1,5 @@
 /**
- * Created on Dec 11, 2006
+ * Created on Mar 19, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,43 +21,27 @@
  *
  */
 
-package net.rrm.ehour.web.admin.assignment.action;
+package net.rrm.ehour.web.sort;
 
-import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.user.service.UserService;
+import java.util.Comparator;
 
-import org.apache.struts.action.Action;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
  * TODO 
  **/
 
-public class AdminProjectAssignmentBaseAction extends Action
+public class ProjectAssignmentAggregateComparator implements Comparator<ProjectAssignmentAggregate>
 {
-	protected ProjectService	projectService;
-	protected UserService		userService;
-	protected EhourConfig		config;
-	
-	/**
-	 * 
-	 * @param projectService
+
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
-	public void setProjectService(ProjectService projectService)
+	public int compare(ProjectAssignmentAggregate o1, ProjectAssignmentAggregate o2)
 	{
-		this.projectService = projectService;
-	}
-	
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
+		// TODO Auto-generated method stub
+		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
+					o2.getProjectAssignment().getProject().getName());
 	}
 
-	/**
-	 * @param config the config to set
-	 */
-	public void setConfig(EhourConfig config)
-	{
-		this.config = config;
-	}
 }

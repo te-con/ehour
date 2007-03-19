@@ -25,10 +25,10 @@
 				</div>
 			</div>	
 
-		<table class="timesheetTableIEPaddingHack">
+		<table class="timesheetTableIEPaddingHack" cellpadding="0" cellspacing="0" style="margin-top: -15px">
 			<tr>
 				<td width="5">&nbsp;</td>
-				<td>
+				<td valign="top">
 		<table class="timesheetTable" cellpadding="0" cellspacing="0">
 
 		<tr class="weekColumnRow">
@@ -56,10 +56,10 @@
 					&nbsp;
 					<a href="" onClick="return bookToProject(${row.projectAssignment.assignmentId})"
 							   title="<fmt:message key="user.timesheet.bookWeekOnProject" />">
-						${row.projectAssignment.project.fullname}:
+						${row.projectAssignment.project.name}
 					</a>
 				</td>
-				
+
 				<c:forEach items="${row.timesheetCells}" var="cell" varStatus="status">
 		<%-- @todo sunday & saturday as marked as grey, configurable? --%>
 					<c:choose>

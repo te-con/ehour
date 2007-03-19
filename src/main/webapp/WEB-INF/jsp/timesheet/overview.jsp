@@ -16,37 +16,40 @@
 			<table class="MonthAggregateTable" cellpadding="0" cellspacing="0">
 			<tr>
 				<th class="firstCell"><fmt:message key="user.overview.project" /></th>
-	<c:if test="${config.showTurnover}">			
-				<th><fmt:message key="user.overview.rate" /></th>
-	</c:if>
+				<th><fmt:message key="user.overview.projectCode" /></th>
+				<c:if test="${config.showTurnover}">			
+					<th><fmt:message key="user.overview.rate" /></th>
+				</c:if>
 				<th><fmt:message key="user.overview.bookedHours" /></th>
-	<c:if test="${config.showTurnover}">			
-				<th><fmt:message key="user.overview.turnover" /></th>
-	</c:if>
+				<c:if test="${config.showTurnover}">			
+					<th><fmt:message key="user.overview.turnover" /></th>
+				</c:if>
 			</tr>
-			
-<!-- TODO: fix IE boxing
-			<tr>
-				<td colspan="4" height="1" style="height: 1px;padding: 0; margin: 0; background: #c1c1c1">
-
-				</td>
-			</tr>
- -->						
+					
 			<c:forEach items="${timesheetOverview.projectHours}" var="projectReport">
 			
 			<tr>
 				<td>${projectReport.projectAssignment.project.name}</td>
-	<c:if test="${config.showTurnover}">
-				<td><fmt:formatNumber type="currency"
-										value="${projectReport.projectAssignment.hourlyRate}" 
-										currencySymbol="${currencySymbol}" /></td>
-	</c:if>			
-				<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /> </td>
-	<c:if test="${config.showTurnover}">
-				<td><fmt:formatNumber type="currency"
+				<td>${projectReport.projectAssignment.project.projectCode}</td>				
+				<c:if test="${config.showTurnover}">
+					<td>
+						<c:if test="${projectReport.projectAssignment.hourlyRate == '' || projectReport.projectAssignment.hourlyRate == null}">
+							--
+						</c:if>
+					<nobr><fmt:formatNumber type="currency" 
+											value="${projectReport.projectAssignment.hourlyRate}" 
+											currencySymbol="${currencySymbol}" /></nobr></td>
+				</c:if>			
+				<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /></td>
+				<c:if test="${config.showTurnover}">
+					<td><c:if test="${projectReport.projectAssignment.hourlyRate == '' || projectReport.projectAssignment.hourlyRate == null}">
+						--
+					</c:if>
+					<nobr>
+				<fmt:formatNumber type="currency"
 										value="${projectReport.turnOver}" 
-										currencySymbol="${currencySymbol}" /></td>
-	</c:if>
+										currencySymbol="${currencySymbol}" /></nobr></td>
+				</c:if>
 			</tr>
 			
 			</c:forEach>
@@ -67,7 +70,7 @@
 		<h1><fmt:message key="user.overview.monthOverview" /></h1>
 	</div>
 	
-	<div style="text-align: right;max-width: 719px;margin: 0 0 -5px 0; padding: 0">
+	<div style="text-align: right;width: 719px;margin: 0 0 -5px 0; padding: 0;">
 		<a href="printTimesheet.do?zeroBased=0&month=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="M" />&year=<fmt:formatDate value="${timesheetOverviewMonth.time}" pattern="yyyy" />">
 			<img src="<c:url value="/img/print_off.gif" />"
 				onMouseover="this.src='<c:url value="/img/print_on.gif" />'"

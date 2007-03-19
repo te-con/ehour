@@ -25,14 +25,18 @@ package net.rrm.ehour.web.timesheet.action;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.web.calendar.CalendarUtil;
 import net.rrm.ehour.web.calendar.form.NavCalendarForm;
+import net.rrm.ehour.web.sort.ProjectAssignmentAggregateComparator;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
 
@@ -63,6 +67,8 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		requestedMonth = calendarUtil.getRequestedMonth(request, calendarForm);
 		
 		timesheetOverview = timesheetService.getTimesheetOverview(userId, requestedMonth);
+		
+		reSortTimesheetOverview(timesheetOverview);
 
 		request.setAttribute("timesheetOverview", timesheetOverview);
 		request.setAttribute("timesheetOverviewMonth", requestedMonth);
@@ -73,6 +79,20 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
 		
 		return mapping.findForward("success");
+	}
+	
+	/**
+	 * Resort timesheet overview
+	 * @param overview
+	 */
+	private void reSortTimesheetOverview(TimesheetOverview overview)
+	{
+		SortedSet<ProjectAssignmentAggregate>	sortedSet;
+		
+		sortedSet = new TreeSet<ProjectAssignmentAggregate>(new ProjectAssignmentAggregateComparator());
+		sortedSet.addAll(overview.getProjectHours());
+		
+		overview.setProjectHours(sortedSet);
 	}
 
 	/**

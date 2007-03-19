@@ -34,6 +34,7 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
+import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -59,8 +60,7 @@ public class GetAssignmentAction extends AdminProjectAssignmentBaseAction
 		User					user;
 		ProjectAssignment		assignment;
 		
-		response.setContentType("text/xml");
-		response.setHeader("Cache-Control", "no-cache");
+		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
 		
 		param = mapping.getParameter();
 		

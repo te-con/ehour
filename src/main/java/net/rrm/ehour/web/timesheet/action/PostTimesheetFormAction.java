@@ -111,7 +111,8 @@ public class PostTimesheetFormAction extends BaseTimesheetAction
 
 			request.setAttribute("errorCommentTooLong", true);
 		}
-		
+
+		// Retrieve data for next week (TODO merge it with GetTimesheetFormAction)
 		logger.debug("Next week is " + requestedWeek.getTime());
 
 		weekOverview = timesheetService.getWeekOverview(userId, requestedWeek);
@@ -120,8 +121,6 @@ public class PostTimesheetFormAction extends BaseTimesheetAction
 		timesheet.setUserId(userId);
 		
 		request.setAttribute("timesheet", timesheet);
-		
-		response.setHeader("Cache-Control", "no-cache");
 		
 		return mapping.findForward("success");
 	}

@@ -5,6 +5,7 @@
 {
 	margin: -1em 1em 0 1em;
 	width: inherit;
+	width:expression(document.body.clientWidth > 710? "710px": "auto" );
 }
 
 .MonthAggregateTable th
@@ -193,7 +194,6 @@
 
 .timesheetTable
 {
-	margin-top: -15px;
 	padding: 0;
 	width: 100%;
 }
@@ -230,13 +230,13 @@
 {
 	width: 290px;
 	border-width: 0;
+	color: #536e87;
 }
 
 .timesheetTable tr.projectRow td.project
 {
 	width: 290px;
 	text-align: left;
-	color: white;
 	border-right: 0px;
 	font:  0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 }
@@ -360,6 +360,7 @@
 	overflow-y: auto;
 	width: 500px;
 	color: #536e87;
+	background-color: white;
 }
 
 .TimesheetPrintFormTable

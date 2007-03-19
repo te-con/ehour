@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 
-function init()
+function initDojo()
 {
 	var replacedNode = document.getElementById("dateStartDiv");
 	dojo.widget.createWidget("DropdownDatePicker",
@@ -63,7 +63,7 @@ function init()
 		</td>
 
 		<td>
-			<fmt:formatNumber type="currency" value="${assignment.hourlyRate}" />
+			<fmt:formatNumber type="currency" currencySymbol="${currencySymbol}" value="${assignment.hourlyRate}" />
 		</td>
 	</tr>
 	
@@ -168,7 +168,7 @@ function init()
 	</td>
 	
 	<td>
-		<input class="textInputSmall" type="text" name="hourlyRate" value="${assignment.hourlyRate}">
+		<input class="textInputSmall" type="text" name="hourlyRate" value="${assignment.hourlyRate}"> ${currencySymbol}
 	</td>
 	
 	<td id="hourlyRateError" style="color: red"></td>
@@ -220,5 +220,5 @@ function init()
 
 
 <script type="text/javascript">
-	init();
+	initDojo();
 </script>

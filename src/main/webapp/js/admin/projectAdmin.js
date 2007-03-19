@@ -78,9 +78,6 @@ function editProject(editId)
 		responseReceived(type, xml, evt);
 	
 		dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
-		
-		// DOM changed, rebind
-		bindAdminForm();
 	}
   }
 

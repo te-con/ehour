@@ -187,7 +187,7 @@ public class OverviewCalendarTag extends CalendarTag
 	            		
 	            		if (entry.getHours().intValue() != 0)
 	            		{
-		            		sb.append(entry.getEntryId().getProjectAssignment().getProject().getName() 
+		            		sb.append(entry.getEntryId().getProjectAssignment().getProject().getProjectCode() 
 		            					+ ":");
 	
 		            		sb.append("<div class='bookedHourValue'>");

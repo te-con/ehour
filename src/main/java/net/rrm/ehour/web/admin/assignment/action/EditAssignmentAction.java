@@ -63,8 +63,6 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 		List<ProjectAssignment>	assignments;
 		ActionMessages		messages = new ActionMessages();
 
-		response.setHeader("Cache-Control", "no-cache");
-		
 		try
 		{
 			pa = DomainAssembler.getProjectAssignment(paf);

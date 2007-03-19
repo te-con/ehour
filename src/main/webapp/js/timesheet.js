@@ -41,9 +41,7 @@ function weekChanged(type, xml, evt)
 {
 	overviewChanged(type, xml, evt);
 
-	new dojo.io.FormBind({	formNode: dojo.byId('timesheetFormId'),
-  							handler: timesheetSubmitted
-							});
+//	bindTimesheetForm();
 			
 	// update contextual help?							
 	if (!inSheetForm)
@@ -255,6 +253,11 @@ function validateField(field)
 {
 	var value = field.value;
 	var inError = false;
+
+	if (value == "")
+	{
+		return;
+	}
 
 	value = value.replace(",", "\.");
 

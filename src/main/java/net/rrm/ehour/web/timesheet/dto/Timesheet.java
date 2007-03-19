@@ -26,6 +26,7 @@ package net.rrm.ehour.web.timesheet.dto;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedSet;
 
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 
@@ -38,7 +39,7 @@ public class Timesheet implements Serializable
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -547682050331580675L;
+	private static final long 	serialVersionUID = -547682050331580675L;
 	private List<TimesheetRow>	timesheetRows;
 	private	List<Date>			dateSequence;
 	private	Date				weekStart;
