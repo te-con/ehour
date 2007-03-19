@@ -76,6 +76,10 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			{
 				config.setShowTurnover(Boolean.parseBoolean(value));
 			}
+			else if (key.equalsIgnoreCase("timeZone"))
+			{
+				config.setTimeZone(value);
+			}
 		}
 		
 		return config;
@@ -86,9 +90,32 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	 */
 	public void persistConfiguration(EhourConfig config)
 	{
-		// TODO Auto-generated method stub
+		persistConfig("currency", config.getCurrency());
+		persistConfig("completeDayHours", config.getCompleteDayHours());
+		persistConfig("localeCountry", config.getLocaleCountry());
+		persistConfig("localeLanguage", config.getLocaleLanguage());
+		persistConfig("timeZone", config.getTimeZone());
 
 	}
+	
+	private void persistConfig(String key, String value)
+	{
+		Configuration config = new Configuration();
+		config.setConfigKey(key);
+		config.setConfigValue(value);
+		
+		configDAO.persist(config);
+	}
+
+	private void persistConfig(String key, boolean value)
+	{
+		persistConfig(key, Boolean.toString(value));
+	}	
+
+	private void persistConfig(String key, int value)
+	{
+		persistConfig(key, Integer.toString(value));
+	}	
 
 	/**
 	 * @param configDAO the configDAO to set

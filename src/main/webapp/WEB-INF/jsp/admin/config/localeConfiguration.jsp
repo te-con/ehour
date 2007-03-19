@@ -4,7 +4,7 @@
 
 <!-- spanTarget: locale -->
 
-<form method="post" action="UpdateConfig.do">
+<form method="post" action="updateLocales.do">
 
 <table class="contentTable">
 	<tr>
@@ -31,3 +31,7 @@
 </table>
 
 </form>
+
+<script>
+	initConfigAdmin();
+</script>

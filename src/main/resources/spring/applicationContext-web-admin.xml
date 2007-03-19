@@ -66,4 +66,8 @@
 	<bean name="/eh/admin/config/index"
 			class="net.rrm.ehour.web.admin.config.action.ConfigAction"
 			parent="abstractConfigAction" />
+			
+	<bean name="/eh/admin/config/updateLocales"
+			class="net.rrm.ehour.web.admin.config.action.ConfigAction"
+			parent="abstractConfigAction" />			
 </beans>

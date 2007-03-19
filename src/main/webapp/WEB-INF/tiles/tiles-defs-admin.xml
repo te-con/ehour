@@ -82,6 +82,9 @@
 		<put name="helpHeader" value="config.header" />		
 		<put name="helpBody" value="config.body" />		
     </definition>
+    
+    <!-- Configuration locales tile -->
+	<definition name=".ehour.admin.configuration.locales" path="/WEB-INF/jsp/admin/config/localeConfiguration.jsp" />
 
     
 </tiles-definitions>

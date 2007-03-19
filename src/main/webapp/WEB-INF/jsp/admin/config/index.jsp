@@ -14,6 +14,7 @@
 <script src="../../../js/dojo.js" type="text/javascript"></script>
 
 <script src="<c:url value="/js/base.js" />" type="text/javascript"></script>
+<script src="<c:url value="/js/admin/configurationAdmin.js" />" type="text/javascript"></script>
 
 <div class="ContentFrame" style="max-width: 1200px">
 	<table class="contentTable" cellspacing="2">
@@ -32,7 +33,7 @@
 								</div>
 							</div>											
 
-							<span id="listUsersSpan">
+							<span id="localeSpan">
 								<tiles:insert page="localeConfiguration.jsp" />
 							</span>
 							

@@ -219,6 +219,13 @@
 				type="net.rrm.ehour.web.admin.config.action.ConfigAction">
 			<forward name="success" path=".ehour.admin.configuration.index" />
 		</action>
+
+		<!-- Configuration Update locales -->
+		<action name="ConfigForm"
+				path="/config/updateLocales" 
+				type="net.rrm.ehour.web.admin.config.action.ConfigAction">
+			<forward name="success" path=".ehour.admin.configuration.locales" />
+		</action>
 		
 				
 						
