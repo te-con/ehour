@@ -214,10 +214,20 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		for (TimesheetEntry entry : timesheetEntries)
 		{
-			logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
 			
-			timesheetDAO.persist(entry);
+			if (entry.getHours() == null)
+			{
+				logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+				timesheetDAO.delete(entry);
+				
+			}
+			else
+			{
+				logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+				timesheetDAO.persist(entry);
+			}
 		}
 		
 		if (comment != null 

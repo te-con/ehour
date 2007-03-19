@@ -159,10 +159,12 @@ public class PostTimesheetFormAction extends BaseTimesheetAction
 					
 					if (paramValue == null || "".equals(paramValue))
 					{
-						continue;
+						hours = null;
 					}
-					
-					hours = new Float(paramValue);
+					else
+					{
+						hours = new Float(paramValue);
+					}
 					
 					decomposedKey = key.split("_");
 					

@@ -22,6 +22,8 @@ Release Notes - eHour v0.3
 	
 	Projectcode is used in month overview rather than project name
 	
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1683909&group_id=167867&atid=844648}1683909 }} Forms get submitted twice, fixed. Project admin and timesheet were affected.
+	
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1663548&group_id=167867&atid=844648}1663548 }} Changed page encoding to UTF-8 and therefore supporting umlauts and all that. Also forms accept UTF characters so
 	comments can have umlauts, accent egu's etc.
 

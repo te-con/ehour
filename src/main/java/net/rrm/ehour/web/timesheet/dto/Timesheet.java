@@ -26,7 +26,6 @@ package net.rrm.ehour.web.timesheet.dto;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.SortedSet;
 
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 
