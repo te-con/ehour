@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-       					   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+       					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
 	default-autowire="byName">
 
 	<bean id="actionAspect"
@@ -13,10 +13,15 @@
 
 	<aop:config>
 		<aop:aspect ref="actionAspect">
-			<aop:pointcut id="actionPointcut"
+			<aop:pointcut id="userActionPointcut"
 				expression="execution(* net.rrm.ehour.web.*.action.*Action.execute(..)) and args(mapping,form,request,response,..)"
 				 />
-			<aop:after pointcut-ref="actionPointcut" method="setLocale" arg-names="mapping,form,request,response"/>
+			<aop:pointcut id="adminActionPointcut"
+				expression="execution(* net.rrm.ehour.web.admin.*.action.*Action.execute(..)) and args(mapping,form,request,response,..)"
+				 />
+
+			<aop:after pointcut-ref="userActionPointcut" method="setLocale" arg-names="mapping,form,request,response"/>
+			<aop:after pointcut-ref="adminActionPointcut" method="setLocale" arg-names="mapping,form,request,response"/>
 		</aop:aspect>
 	</aop:config>
 	

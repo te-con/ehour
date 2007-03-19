@@ -79,6 +79,8 @@
     <!-- Configuration index -->
     <definition name=".ehour.admin.configuration.index" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/config/index.jsp" />
+		<put name="helpHeader" value="config.header" />		
+		<put name="helpBody" value="config.body" />		
     </definition>
 
     

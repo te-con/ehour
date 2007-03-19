@@ -74,4 +74,9 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("localeLanguage");
 	}
 
+	public String[] getAvailableTranslations()
+	{
+		return this.getString("availableTranslations").split(",");
+	}
+
 }

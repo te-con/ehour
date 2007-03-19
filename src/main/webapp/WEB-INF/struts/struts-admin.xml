@@ -10,6 +10,7 @@
 		<form-bean name="UserForm" type="net.rrm.ehour.web.admin.user.form.UserForm" />
 		<form-bean name="ProjectForm" type="net.rrm.ehour.web.admin.project.form.ProjectForm" />
 		<form-bean name="ProjectAssignmentForm" type="net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm" />
+		<form-bean name="ConfigForm" type="net.rrm.ehour.web.admin.config.form.ConfigForm" />
 	</form-beans>
 	
 	<!-- Global exceptions -->
@@ -213,7 +214,8 @@
 		</action>
 
 		<!-- Configuration index-->
-		<action path="/config/index" 
+		<action name="ConfigForm"
+				path="/config/index" 
 				type="net.rrm.ehour.web.admin.config.action.ConfigAction">
 			<forward name="success" path=".ehour.admin.configuration.index" />
 		</action>

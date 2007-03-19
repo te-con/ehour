@@ -1,5 +1,5 @@
 /**
- * Created on Nov 5, 2006
+ * Created on Mar 19, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,54 +21,25 @@
  *
  */
 
-package net.rrm.ehour.config;
+package net.rrm.ehour.config.service;
 
+import net.rrm.ehour.config.EhourConfig;
 
 /**
- * Available configuration parameters
+ * Service for modifying the configuration
  **/
 
-public interface EhourConfig
+public interface ConfigurationService
 {
 	/**
-	 * Get the amount of hours needed before a day is booked as complete
+	 * Get all configuration items
 	 * @return
 	 */
-	public int getCompleteDayHours();
+	public EhourConfig getConfiguration();
 	
 	/**
-	 * Show turnover to consultants
-	 * @return
+	 * Persist all configuration items
+	 * @param config
 	 */
-	public boolean isShowTurnover();
-	
-	/**
-	 * Get configured timezone
-	 * @return
-	 */
-	public String getTimeZone();
-	
-	/**
-	 * Get configured language
-	 * @return
-	 */
-	public String getLocaleLanguage();
-	
-	/**
-	 * Get configured country
-	 * @return
-	 */
-	public String getLocaleCountry();
-	
-	/**
-	 * Get configured currency
-	 * @return
-	 */
-	public String getCurrency();
-	
-	/**
-	 * Get available translations
-	 * @return
-	 */
-	public String[] getAvailableTranslations();
+	public void persistConfiguration(EhourConfig config);
 }

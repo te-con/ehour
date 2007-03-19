@@ -67,6 +67,7 @@
 	<bean id="reportAggregatedDAO" class="net.rrm.ehour.report.dao.ReportAggregatedDAOHibernateImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
+	
 	<!-- User department DAO -->
 	<bean id="userDepartmentDAO" 
 			class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl" 
@@ -102,4 +103,9 @@
 			class="net.rrm.ehour.report.dao.ReportPerMonthMySQL5JdbcImpl">
 		<property name="dataSource" ref="eHourDataSource" />
 	</bean>
+
+	<!-- Configuration DAO -->
+	<bean id="configurationDAO"
+		 	class="net.rrm.ehour.config.dao.ConfigurationDAOHibernateImpl" 
+		 	parent="abstractDAOTarget" />		 	
 </beans>

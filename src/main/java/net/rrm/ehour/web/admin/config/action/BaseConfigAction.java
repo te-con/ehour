@@ -1,5 +1,5 @@
 /**
- * Created on Nov 5, 2006
+ * Created on Mar 17, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,54 +21,44 @@
  *
  */
 
-package net.rrm.ehour.config;
+package net.rrm.ehour.web.admin.config.action;
 
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.service.ConfigurationService;
+
+import org.apache.struts.action.Action;
 
 /**
- * Available configuration parameters
+ * TODO 
  **/
 
-public interface EhourConfig
+public abstract class BaseConfigAction extends Action
 {
+	protected EhourConfig			config;
+	protected ConfigurationService	configService;
+
 	/**
-	 * Get the amount of hours needed before a day is booked as complete
-	 * @return
+	 * @return the config
 	 */
-	public int getCompleteDayHours();
+	public EhourConfig getConfig()
+	{
+		return config;
+	}
+
+	/**
+	 * @param config the config to set
+	 */
+	public void setConfig(EhourConfig config)
+	{
+		this.config = config;
+	}
+
+	/**
+	 * @param configService the configService to set
+	 */
+	public void setConfigService(ConfigurationService configService)
+	{
+		this.configService = configService;
+	}
 	
-	/**
-	 * Show turnover to consultants
-	 * @return
-	 */
-	public boolean isShowTurnover();
-	
-	/**
-	 * Get configured timezone
-	 * @return
-	 */
-	public String getTimeZone();
-	
-	/**
-	 * Get configured language
-	 * @return
-	 */
-	public String getLocaleLanguage();
-	
-	/**
-	 * Get configured country
-	 * @return
-	 */
-	public String getLocaleCountry();
-	
-	/**
-	 * Get configured currency
-	 * @return
-	 */
-	public String getCurrency();
-	
-	/**
-	 * Get available translations
-	 * @return
-	 */
-	public String[] getAvailableTranslations();
 }

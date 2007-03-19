@@ -1,5 +1,5 @@
 /**
- * Created on Nov 5, 2006
+ * Created on Mar 19, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,54 +21,24 @@
  *
  */
 
-package net.rrm.ehour.config;
+package net.rrm.ehour.web.admin.config.util;
 
+import java.util.Comparator;
+import java.util.Locale;
 
 /**
- * Available configuration parameters
+ * TODO 
  **/
 
-public interface EhourConfig
+public class LocaleComparator implements Comparator<Locale>
 {
-	/**
-	 * Get the amount of hours needed before a day is booked as complete
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
-	public int getCompleteDayHours();
-	
-	/**
-	 * Show turnover to consultants
-	 * @return
-	 */
-	public boolean isShowTurnover();
-	
-	/**
-	 * Get configured timezone
-	 * @return
-	 */
-	public String getTimeZone();
-	
-	/**
-	 * Get configured language
-	 * @return
-	 */
-	public String getLocaleLanguage();
-	
-	/**
-	 * Get configured country
-	 * @return
-	 */
-	public String getLocaleCountry();
-	
-	/**
-	 * Get configured currency
-	 * @return
-	 */
-	public String getCurrency();
-	
-	/**
-	 * Get available translations
-	 * @return
-	 */
-	public String[] getAvailableTranslations();
+	public int compare(Locale l1, Locale l2)
+	{
+		return l1.getDisplayName().compareTo(l2.getDisplayName());
+	}
+
 }

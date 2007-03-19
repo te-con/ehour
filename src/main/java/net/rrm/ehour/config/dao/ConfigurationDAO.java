@@ -1,5 +1,5 @@
 /**
- * Created on Nov 5, 2006
+ * Created on Mar 19, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,54 +21,15 @@
  *
  */
 
-package net.rrm.ehour.config;
+package net.rrm.ehour.config.dao;
 
+import net.rrm.ehour.config.domain.Configuration;
+import net.rrm.ehour.dao.GenericDAO;
 
 /**
- * Available configuration parameters
+ * CRUD on configuration 
  **/
 
-public interface EhourConfig
+public interface ConfigurationDAO extends GenericDAO<Configuration, String>
 {
-	/**
-	 * Get the amount of hours needed before a day is booked as complete
-	 * @return
-	 */
-	public int getCompleteDayHours();
-	
-	/**
-	 * Show turnover to consultants
-	 * @return
-	 */
-	public boolean isShowTurnover();
-	
-	/**
-	 * Get configured timezone
-	 * @return
-	 */
-	public String getTimeZone();
-	
-	/**
-	 * Get configured language
-	 * @return
-	 */
-	public String getLocaleLanguage();
-	
-	/**
-	 * Get configured country
-	 * @return
-	 */
-	public String getLocaleCountry();
-	
-	/**
-	 * Get configured currency
-	 * @return
-	 */
-	public String getCurrency();
-	
-	/**
-	 * Get available translations
-	 * @return
-	 */
-	public String[] getAvailableTranslations();
 }

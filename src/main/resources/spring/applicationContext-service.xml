@@ -85,4 +85,10 @@
 		<property name="reportCriteriaService" ref="reportCriteriaService" />
 	</bean>
 	
+	<!-- Configuration service -->
+	<bean id="configurationService"
+			class="net.rrm.ehour.config.service.ConfigurationServiceImpl">
+			<property name="configDAO" ref="configurationDAO" />
+	</bean>
+	
 </beans>

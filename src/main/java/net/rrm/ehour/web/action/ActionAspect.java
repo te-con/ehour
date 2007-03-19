@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.web.action;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
@@ -59,15 +61,13 @@ public class ActionAspect
 		logger.debug("Setting locale to " + config.getLocaleLanguage());
 		Config.set(request, Config.FMT_LOCALE, config.getLocaleLanguage());
 		
-//		Locale.getISOCountries()
-//		Locale locale = new Locale(config.getLocale(), "NL");
-//		Currency curr = Currency.getInstance(locale);
-////		Currency curr = Currency.getInstance("EUR");
-//		
-//		System.out.println(curr.getCurrencyCode());
-//		System.out.println(curr.getDefaultFractionDigits());
+		Locale defaultLocale = new Locale(config.getLocaleLanguage());
+		Locale.setDefault(defaultLocale);
+		
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
+		
+		// hmm, yes shouldn't be here..
 		response.setHeader("Cache-Control", "no-cache");
 	}
 

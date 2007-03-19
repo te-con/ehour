@@ -67,4 +67,9 @@ public class EhourConfigProps implements EhourConfig
 	{
 		return props.getProperty("localeLanguage");
 	}
+
+	public String[] getAvailableTranslations()
+	{
+		return props.getProperty("localeLanguage").split(",");
+	}
 }
