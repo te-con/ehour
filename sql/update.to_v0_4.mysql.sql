@@ -1,0 +1,1 @@
+INSERT INTO `CONFIGURATION` VALUES ('localeLanguage','en'),('currency','Euro'),('localeCountry',NULL),('availableTranslations','en,nl');

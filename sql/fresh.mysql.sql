@@ -45,7 +45,7 @@ CREATE TABLE `CONFIGURATION` (
 
 LOCK TABLES `CONFIGURATION` WRITE;
 /*!40000 ALTER TABLE `CONFIGURATION` DISABLE KEYS */;
-INSERT INTO `CONFIGURATION` (`config_key`, `config_value`) VALUES ('completeDayHours','8'),('showTurnOver','true');
+INSERT INTO `CONFIGURATION` VALUES ('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','Euro'),('localeCountry',NULL),('availableTranslations','en,nl');
 /*!40000 ALTER TABLE `CONFIGURATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
