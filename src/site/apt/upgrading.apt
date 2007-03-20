@@ -1,9 +1,16 @@
 Upgrading
 
+* Upgrade from v0.1 - v0.3 to v0.4
+
+	A small database update is needed which adds some configuration keys.
+	
+	In the sql directory, run the update.to_v0_4.mysql.sql script against your existing eHour database to add these keys.
+	
+	For the application, replace the ehour.war in your tomcat deploy directory with the 0.4 one.
+
 * Upgrade from v0.1 to v0.3, v0.2 to v0.3
 
 	No database changes are needed, just replace the ehour.war in your tomcat deploy directory with the new one.
-
 
 * Upgrade from v0.1 to v0.2
 

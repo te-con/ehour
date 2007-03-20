@@ -1,8 +1,8 @@
 eHour
 
-  5 March 2007: {{{release_notes.html}eHour v0.3}} released! 
+  20 March 2007: {{{release_notes.html}eHour v0.4}} released!
   
-   Version 0.3 adds timesheet printing, report charts and a couple of bugs fixed.
+   Version 0.4 fixes a couple of bugs and improves (configurable) localization. 
    
    If your browser is Firefox 2 or IE7 this release is production ready. Other browser may not work properly with this version (as in, they're not tested yet).
 

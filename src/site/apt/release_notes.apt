@@ -24,6 +24,8 @@ Release Notes - eHour v0.3
 	
 	Quite some IE7 stylesheet incompatibilies fixed
 	
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670788&group_id=167867&atid=844648}1670788 }} Background gradient sized up to accomodate long lists
+	
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1673440&group_id=167867&atid=844651}1673440 }} 	Default sorting added to all lists
 	
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1672898&group_id=167867&atid=844651}1672898 }} Local language and currency is configurable
