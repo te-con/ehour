@@ -6,7 +6,10 @@ Upgrading
 	
 	In the sql directory, run the update.to_v0_4.mysql.sql script against your existing eHour database to add these keys.
 	
-	For the application, replace the ehour.war in your tomcat deploy directory with the 0.4 one.
+	For the application, copy the ehour-0.4.war to your tomcat deploy directory. Edit <<conf/Catalina/localhost/ehour-tomcat.xml>> and
+	update the version number of the war file in docBase to 0.4.
+	
+	After you restarted Tomcat and you still see v0.3 on the logon screen, delete the ehour directory in Tomcat's <<webapps>>.
 
 * Upgrade from v0.1 to v0.3, v0.2 to v0.3
 

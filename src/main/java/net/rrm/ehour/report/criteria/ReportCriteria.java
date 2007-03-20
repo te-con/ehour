@@ -133,10 +133,25 @@ public class ReportCriteria
 			checkIfUserCriteriaAreAvailable();
 		}
 
-		Collections.sort(availableCriteria.getCustomers(), new CustomerComparator());
-		Collections.sort(availableCriteria.getProjects(), new ProjectComparator());
-		Collections.sort(availableCriteria.getUserDepartments(), new UserDepartmentComparator());
-		Collections.sort(availableCriteria.getUsers(), new UserComparator(false));
+		if (availableCriteria.getCustomers() != null)
+		{
+			Collections.sort(availableCriteria.getCustomers(), new CustomerComparator());
+		}
+		
+		if (availableCriteria.getProjects() != null)
+		{
+			Collections.sort(availableCriteria.getProjects(), new ProjectComparator());
+		}
+		
+		if (availableCriteria.getUserDepartments() != null)
+		{
+			Collections.sort(availableCriteria.getUserDepartments(), new UserDepartmentComparator());
+		}
+		
+		if (availableCriteria.getUsers() != null)
+		{
+			Collections.sort(availableCriteria.getUsers(), new UserComparator(false));
+		}
 	}	
 	/**
 	 * After the available criteria are synced, check if the user criteria are still valid

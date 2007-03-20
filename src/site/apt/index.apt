@@ -6,8 +6,9 @@ eHour
    
    If your browser is Firefox 2 or IE7 this release is production ready. Other browser may not work properly with this version (as in, they're not tested yet).
 
-=======================================================================
+   I intend to move to an OSGi architecture. If you have any experience with server-side OSGi please {{{mailto:thies@te-con.nl}contact me}}.
 
+=======================================================================
 
   eHour is an {{{license.html}open source}} webbased time tracking tool for consultancy companies and other project based businesses.
   The primary objective is to keep time tracking as simple and user friendly as possible while still 
