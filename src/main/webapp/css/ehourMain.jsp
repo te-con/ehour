@@ -9,6 +9,11 @@ body
 	margin: 0px;
 }
 
+#container
+{
+	line-height: 130%;
+	width: 100%;
+}
 div.NavHeader
 {
 	background-color: #a9c4e0;

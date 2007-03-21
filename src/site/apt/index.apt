@@ -1,8 +1,10 @@
 eHour
 
-  20 March 2007: {{{release_notes.html}eHour v0.4}} released!
+  21 March 2007: {{{release_notes.html}eHour v0.41}} released!
   
-   Version 0.4 fixes a couple of bugs and improves (configurable) localization. 
+   Version 0.41 fixes the datasource which was still in development mode. The binary release of 0.4 was compiled with the development profile...
+   
+   Version 0.40 fixes a couple of bugs and improves (configurable) localization.
    
    If your browser is Firefox 2 or IE7 this release is production ready. Other browser may not work properly with this version (as in, they're not tested yet).
 
@@ -20,7 +22,7 @@ eHour
 	
 	  * assign employees to projects
 	  
-	  * have different start and end dates and hourly rates per employee to project assignment 
+	  * have different start and end dates and hourly rates per employee for each project assignment 
 	  
 	  * create default projects to which all employees should be assigned (days off, sick leave, etc.) so you can keep track
 	  of those hours as well
@@ -29,7 +31,9 @@ eHour
 	  
 	  * configure whether you want your employees see their turnover
 	  
-	  * seperation of consultant, reporting and administration role. 
+	  * separation of consultant, reporting and administration role. 
+	  
+	  * configure localization. (currently) only English and Dutch translations available
 
   See the {{{demo.html}online demo}} to see it in full effect.
 
