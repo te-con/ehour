@@ -35,7 +35,7 @@ DROP TABLE IF EXISTS `ACTIVE_ASSIGNMENTS`;
 DROP TABLE IF EXISTS `CONFIGURATION`;
 CREATE TABLE `CONFIGURATION` (
   `config_key` varchar(255) NOT NULL,
-  `config_value` varchar(255) NOT NULL,
+  `config_value` varchar(255),
   PRIMARY KEY  (`config_key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
