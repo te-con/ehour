@@ -112,7 +112,7 @@ CREATE TABLE `PROJECT_ASSIGNMENT` (
   `HOURLY_RATE` float(9,3) default NULL,
   `DATE_START` date default NULL,
   `DATE_END` date default NULL,
-  `DESCRIPTION` varchar(255) default NULL,
+  `ROLE` varchar(255) default NULL,
   `USER_ID` int(11) NOT NULL,
   `DEFAULT_ASSIGNMENT` char(1) character set latin1 NOT NULL default 'N',
   `ACTIVE` char(1) character set latin1 NOT NULL default 'Y',
