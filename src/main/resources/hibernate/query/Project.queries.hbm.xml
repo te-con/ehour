@@ -16,9 +16,9 @@
 	
 	<query name="Project.findAllActiveDefault">
 		FROM Project project
-	    WHERE active is true AND 
+	    WHERE project.active is true AND 
 	    	  project.customer.active is true AND 
-	    	  defaultProject is true
+	    	  project.defaultProject is true
 	</query>	
 	
 	<query name="ProjectAssignment.findProjectForUser">
@@ -36,6 +36,15 @@
 		ORDER BY pa.dateStart, pa.project.name
 	</query>	
 
+	<query name="ProjectAssignment.findProjectsForUserForType">
+		FROM ProjectAssignment pa
+		WHERE pa.project.active is true AND
+			  pa.project.customer.active is true AND 
+			  pa.user.userId = :userId AND
+			  pa.assignmentType = :type
+		ORDER BY pa.dateStart, pa.project.name
+	</query>	
+
 	<query name="ProjectAssignment.findProjectsForUserInRange">
     <![CDATA[	
 		FROM ProjectAssignment pa
@@ -43,7 +52,7 @@
 			  pa.project.active is true AND
 			  pa.project.customer.active is true AND 
 			  pa.user.userId = :userId AND
-			  (pa.defaultAssignment is true OR (pa.dateStart <= :dateEnd AND pa.dateEnd >= :dateStart))
+			  (pa.assignmentType = '1' OR (pa.dateStart <= :dateEnd AND pa.dateEnd >= :dateStart))
     		 ]]>
 	</query>	
 

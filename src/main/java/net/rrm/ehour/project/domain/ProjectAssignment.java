@@ -35,7 +35,9 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 
 	private String description;
 	
-	private	boolean	defaultAssignment;
+	private	Integer	assignmentType;
+	
+	private	Float	allottedHours;
 	
 	private boolean active;
 	
@@ -134,14 +136,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	 */
 	public DateRange getDateRange()
 	{
-		if (dateStart != null && dateEnd != null)
-		{
-			return new DateRange(dateStart, dateEnd);
-		}
-		else
-		{
-			return null;
-		}
+		return new DateRange(dateStart, dateEnd);
 	}
 	
 	public void setDateRange(DateRange dateRange)
@@ -225,16 +220,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 		this.deletable = deletable;
 	}
 
-	public boolean isDefaultAssignment()
-	{
-		return defaultAssignment;
-	}
-
-	public void setDefaultAssignment(boolean defaultAssignment)
-	{
-		this.defaultAssignment = defaultAssignment;
-	}
-
 	/**
 	 * @return the active
 	 */
@@ -268,5 +253,37 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 			.append(this.dateStart, object.dateStart)
 			.append(this.user, object.user)
 			.append(this.assignmentId, object.assignmentId).toComparison();
+	}
+
+	/**
+	 * @return the allottedHours
+	 */
+	public Float getAllottedHours()
+	{
+		return allottedHours;
+	}
+
+	/**
+	 * @param allottedHours the allottedHours to set
+	 */
+	public void setAllottedHours(Float allottedHours)
+	{
+		this.allottedHours = allottedHours;
+	}
+
+	/**
+	 * @return the assignmentType
+	 */
+	public Integer getAssignmentType()
+	{
+		return assignmentType;
+	}
+
+	/**
+	 * @param assignmentType the assignmentType to set
+	 */
+	public void setAssignmentType(Integer assignmentType)
+	{
+		this.assignmentType = assignmentType;
 	}
 }

@@ -23,21 +23,17 @@
 
 package net.rrm.ehour.project.service;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 
@@ -48,9 +44,10 @@ import org.apache.log4j.Logger;
 public class ProjectServiceImpl implements ProjectService
 {
 	private	ProjectDAO				projectDAO;
-	private	ProjectAssignmentDAO	projectAssignmentDAO;
-	private	TimesheetDAO			timesheetDAO;
+	private ProjectAssignmentDAO	projectAssignmentDAO;
 	private	Logger					logger = Logger.getLogger(ProjectServiceImpl.class);
+	private ProjectAssignmentService	projectAssignmentService;
+	private TimesheetDAO			timesheetDAO;
 	
 	/**
 	 * 
@@ -61,14 +58,30 @@ public class ProjectServiceImpl implements ProjectService
 		
 		if (hideInactive)
 		{
+			logger.debug("Finding all active projects");
 			res = projectDAO.findAllActive();
 		}
 		else
 		{
+			logger.debug("Finding all projects");
 			res = projectDAO.findAll();
 		}
 
 		return res;
+	}
+
+
+	/**
+	 * Get all project assignments for user
+	 * @param userId
+	 */
+	public List<ProjectAssignment> getAllProjectsForUser(Integer userId)
+	{
+		List<ProjectAssignment>	results;
+		
+		results = projectAssignmentDAO.findProjectAssignmentsForUser(userId);
+		
+		return results;
 	}
 	
 	/**
@@ -101,183 +114,16 @@ public class ProjectServiceImpl implements ProjectService
 		if (project.getProjectAssignments() != null &&
 			project.getProjectAssignments().size() > 0)
 		{
+			logger.debug("Can't delete project, still has " + project.getProjectAssignments().size() + " assignments");
 			throw new ParentChildConstraintException("Project assignments still attached");
 		}
 		else
 		{
+			logger.debug("Deleting project " + project);
 			projectDAO.delete(project);
 		}
 	}
-	
-	/**
-	 * Assign user to project
-	 */
-	
-	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException
-	{
-		if (isAssignmentDuplicate(projectAssignment))
-		{
-			throw new ProjectAlreadyAssignedException("Project already assigned for date range");
-		}
 
-		// use merge as the session already contains an attached PA with the same id when checking for dupes
-		if (projectAssignment.getAssignmentId() != null)
-		{
-			projectAssignmentDAO.merge(projectAssignment);
-		}
-		else
-		{
-			projectAssignmentDAO.persist(projectAssignment);
-		}
-		
-		return projectAssignment;
-	}
-	
-	/**
-	 * Assign user to default projects
-	 */
-	public User assignUserToDefaultProjects(User user)
-	{
-		List<Project>		defaultProjects;
-		ProjectAssignment	assignment;
-		
-		defaultProjects = projectDAO.findDefaultProjects();
-		
-		for (Project project : defaultProjects)
-		{
-			assignment = new ProjectAssignment();
-			assignment.setDefaultAssignment(true);
-			assignment.setProject(project);
-			assignment.setUser(user);
-			assignment.setActive(true);
-			
-			if (!isAssignmentDuplicate(assignment, user.getProjectAssignments()))
-			{
-				logger.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
-				user.addProjectAssignment(assignment);
-			}
-		}
-		
-		return user;
-	}
-	
-	
-	/**
-	 * Check if the project is already assigned and the date overlaps
-	 * 
-	 * @param projectAssignment
-	 * @param user
-	 * @return
-	 */
-	private boolean isAssignmentDuplicate(ProjectAssignment projectAssignment, Collection<ProjectAssignment> assignments)
-	{
-		boolean		alreadyAssigned = false;
-		DateRange	range = projectAssignment.getDateRange();
-		
-		if (assignments == null)
-		{
-			return false;
-		}
-		
-		for (ProjectAssignment assignment : assignments)
-		{
-			// if this is an update and the assignment is the same, skip it
-			if (assignment.getAssignmentId() != null &&
-				assignment.getAssignmentId().equals(projectAssignment.getAssignmentId()))
-			{
-				alreadyAssigned = false;
-				continue;
-			}
-			
-			if (assignment.isDefaultAssignment() ||
-				DateUtil.isDateRangeOverlaps(assignment.getDateRange(), range))
-			{
-				if (logger.isDebugEnabled())
-				{
-					logger.debug("Assignment overlaps with assignmentId " + assignment.getAssignmentId());
-				}
-				
-				alreadyAssigned = true;
-				break;
-			}
-		}
-			
-		return alreadyAssigned;
-	}
-	
-	/**
-	 * Check if the project is already assigned and the date overlaps
-	 * @param projectAssignment
-	 * @return
-	 */
-	private boolean isAssignmentDuplicate(ProjectAssignment projectAssignment)
-	{
-		List<ProjectAssignment> assignments;
-		
-		assignments = projectAssignmentDAO.findProjectAssignmentForUser(projectAssignment.getProject().getProjectId(),
-															 	projectAssignment.getUser().getUserId());
-
-		return isAssignmentDuplicate(projectAssignment, assignments);
-	}
-
-	/**
-	 * 
-	 */
-	public List<ProjectAssignment> getAllProjectsForUser(Integer userId)
-	{
-		List<ProjectAssignment>	results;
-		
-		results = projectAssignmentDAO.findProjectAssignmentsForUser(userId);
-		
-		return results;
-	}
-	
-	/**
-	 * Get active projects for user in date range 
-	 * @param userId
-	 * @param dateRange
-	 * @return
-	 */	
-	
-	public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange)
-	{
-		return projectAssignmentDAO.findProjectAssignmentsForUser(userId, dateRange);
-	}
-
-	/**
-	 * Get project assignment on id
-	 * 
-	 */
-	public ProjectAssignment getProjectAssignment(Integer assignmentId)
-	{
-		ProjectAssignment 	assignment;
-		int					timesheetEntries;
-		
-		assignment = projectAssignmentDAO.findById(assignmentId);
-		timesheetEntries = timesheetDAO.getTimesheetEntryCountForAssignment(assignmentId);
-		
-		assignment.setDeletable(timesheetEntries == 0);
-		
-		return assignment;
-	}
-
-	/**
-	 * 
-	 */
-	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException
-	{
-		ProjectAssignment pa = getProjectAssignment(assignmentId);
-		
-		if (pa.isDeletable())
-		{
-			projectAssignmentDAO.delete(pa);
-		}
-		else
-		{
-			throw new ParentChildConstraintException("Timesheet entries booked on assignment.");
-		}
-		
-	}
 	
 	/**
 	 * Get active projects for user 
@@ -285,28 +131,49 @@ public class ProjectServiceImpl implements ProjectService
 
 	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange)
 	{
-		List<ProjectAssignment>	activeProjectAssignments = getProjectAssignmentsForUser(userId, dateRange);
+		List<ProjectAssignment>	activeProjectAssignments = projectAssignmentService.getProjectAssignmentsForUser(userId, dateRange);
 		List<ProjectAssignment> bookedProjectAssignments = timesheetDAO.getBookedProjectAssignmentsInRange(userId, dateRange);
 		
 		Set<ProjectAssignment> mergedAssignments = new HashSet<ProjectAssignment>(activeProjectAssignments);
 		mergedAssignments.addAll(bookedProjectAssignments);
 		
 		return mergedAssignments;
-	}
+	}	
 	
+	/**
+	 * 
+	 * @param dao
+	 */
 
-	public void setProjectAssignmentDAO(ProjectAssignmentDAO dao)
-	{
-		this.projectAssignmentDAO = dao;
-	}
-	
 	public void setProjectDAO(ProjectDAO dao)
 	{
 		this.projectDAO = dao;
 	}
-	
-	public void setTimesheetDAO(TimesheetDAO dao)
+
+
+	/**
+	 * @param projectAssignmentDAO the projectAssignmentDAO to set
+	 */
+	public void setProjectAssignmentDAO(ProjectAssignmentDAO projectAssignmentDAO)
 	{
-		timesheetDAO = dao;
+		this.projectAssignmentDAO = projectAssignmentDAO;
+	}
+
+
+	/**
+	 * @param projectAssignmentService the projectAssignmentService to set
+	 */
+	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
+	{
+		this.projectAssignmentService = projectAssignmentService;
+	}
+
+
+	/**
+	 * @param timesheetDAO the timesheetDAO to set
+	 */
+	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
+	{
+		this.timesheetDAO = timesheetDAO;
 	}
 }

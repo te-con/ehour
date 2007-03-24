@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
@@ -121,7 +122,7 @@ public class TimesheetFormAssembler
 		// the assignment/project/customer was deactivated; hence the checks here 
 		cell.setValid(assignment.isActive() && assignment.getProject().isActive() &&
 					  assignment.getProject().getCustomer().isActive() &&
-					  (assignment.isDefaultAssignment() || 
+					  (assignment.getAssignmentType().intValue() == ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT || 
 					   DateUtil.isDateWithinRange(date, assignment.getDateRange())));
 		cell.setCellDate(date);
 		

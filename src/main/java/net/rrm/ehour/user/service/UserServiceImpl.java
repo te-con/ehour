@@ -33,7 +33,8 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService
 	private	UserDepartmentDAO	userDepartmentDAO;
 	private	UserRoleDAO			userRoleDAO;
 	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
-	private	ProjectService		projectService;
+	private	ProjectAssignmentService		projectAssignmentService;
 
 	/**
 	 * Get user by userId 
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService
 		{
 			for (ProjectAssignment assignment : user.getProjectAssignments())
 			{
-				if (!assignment.isDefaultAssignment() &&
+				if (assignment.getAssignmentType().intValue() != ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT &&
 					(!DateUtil.isDateWithinRange(currentDate , assignment.getDateRange())) ||
 					 (assignment.getProject() == null || !assignment.getProject().isActive()))
 				{
@@ -314,7 +315,7 @@ public class UserServiceImpl implements UserService
 			// new users
 			if (user.getUserId() == null)
 			{
-				projectService.assignUserToDefaultProjects(user);
+				projectAssignmentService.assignUserToDefaultProjects(user);
 			}
 			
 			userDAO.merge(user);
@@ -324,10 +325,10 @@ public class UserServiceImpl implements UserService
 	}
 
 	/**
-	 * @param projectService the projectService to set
+	 * @param projectAssignmentService the projectAssignmentService to set
 	 */
-	public void setProjectService(ProjectService projectService)
+	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
 	{
-		this.projectService = projectService;
+		this.projectAssignmentService = projectAssignmentService;
 	}
 }

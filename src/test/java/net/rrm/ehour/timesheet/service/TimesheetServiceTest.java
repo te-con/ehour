@@ -25,7 +25,6 @@ package net.rrm.ehour.timesheet.service;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
@@ -39,7 +38,7 @@ import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
@@ -59,7 +58,7 @@ public class TimesheetServiceTest  extends TestCase
 	private TimesheetCommentDAO	timesheetCommentDAO;
 	private	EhourConfig			config;
 	private	ReportService		reportService;
-	private	ProjectService		projectService;
+	private	ProjectAssignmentService		projectAssignmentService;
 	
 	/**
 	 * 
@@ -72,13 +71,13 @@ public class TimesheetServiceTest  extends TestCase
 		timesheetDAO = createMock(TimesheetDAO.class);
 		reportService = createMock(ReportService.class);
 		timesheetCommentDAO = createMock(TimesheetCommentDAO.class);
-		projectService = createMock(ProjectService.class);
+		projectAssignmentService = createMock(ProjectAssignmentService.class);
 		
 		((TimesheetServiceImpl)timesheetService).setTimesheetDAO(timesheetDAO);
 		((TimesheetServiceImpl)timesheetService).setReportService(reportService);
 		((TimesheetServiceImpl)timesheetService).setEhourConfig(config);
 		((TimesheetServiceImpl)timesheetService).setTimesheetCommentDAO(timesheetCommentDAO);
-		((TimesheetServiceImpl)timesheetService).setProjectService(projectService);
+		((TimesheetServiceImpl)timesheetService).setProjectAssignmentService(projectAssignmentService);
 	}
 	
 	/**
@@ -178,17 +177,17 @@ public class TimesheetServiceTest  extends TestCase
 		expect(timesheetCommentDAO.findById(new TimesheetCommentId(1, range.getDateStart())))
 			.andReturn(new TimesheetComment());
 		
-		expect(projectService.getProjectAssignmentsForUser(1, range))
+		expect(projectAssignmentService.getProjectAssignmentsForUser(1, range))
 				.andReturn(new ArrayList<ProjectAssignment>());
 		
 		replay(timesheetDAO);
 		replay(timesheetCommentDAO);
-		replay(projectService);
+		replay(projectAssignmentService);
 		
 		timesheetService.getWeekOverview(1, new GregorianCalendar(2007, 1 - 1, 1));
 		
 		verify(timesheetDAO);
 		verify(timesheetCommentDAO);
-		verify(projectService);
+		verify(projectAssignmentService);
 	}
 }

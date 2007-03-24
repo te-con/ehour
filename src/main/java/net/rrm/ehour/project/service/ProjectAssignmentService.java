@@ -1,5 +1,5 @@
 /**
- * Created on Nov 25, 2006
+ * Created on Mar 23, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -24,58 +24,50 @@
 package net.rrm.ehour.project.service;
 
 import java.util.List;
-import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.user.domain.User;
 
-public interface ProjectService
+/**
+ * Service for handling project assignments
+ **/
+
+public interface ProjectAssignmentService
 {
 	/**
-	 * Get all projects
-	 * @param hideInactive 
-	 * @return
+	 * Assign user to project
+	 * @param projectAssignment
 	 */
-	public List<Project> getAllProjects(boolean hideInactive);
+	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException;
 	
 	/**
-	 * Get project
-	 * @param projectId
+	 * Assign user to default projects
+	 * @param user
 	 * @return
 	 */
-	public Project getProject(Integer projectId);
+	public User assignUserToDefaultProjects(User user);
 	
 	/**
-	 * Persist the project
-	 * @param project
-	 * @return
-	 */
-	public Project persistProject(Project project);
-	
-	/**
-	 * Delete the project
-	 * @param projectId
-	 * @return
-	 */
-	public void deleteProject(Integer projectId) throws ParentChildConstraintException;
-	
-	
-	/**
-	 * Get all projects for user where project itself is still active
-	 * @param userId
-	 * @return
-	 */
-	public List<ProjectAssignment> getAllProjectsForUser(Integer userId);
-
-	
-	/**
-	 * Get active projects in daterange and any inactive if hours were booked on 'm in this period
+	 * Get active projects for user in date range 
 	 * @param userId
 	 * @param dateRange
 	 * @return
 	 */
+	public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange);
+
+	/**
+	 * Get project assignment and mark it as deletable or not
+	 * @param assignmentId
+	 * @return
+	 */
+	public ProjectAssignment getProjectAssignment(Integer assignmentId);
 	
-	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange);	
+	/**
+	 * Delete project assignment
+	 * @param assignmentId
+	 */
+	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException;
 }

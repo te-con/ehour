@@ -100,4 +100,18 @@ public class ProjectAssignmentDAOHibernateImpl
 		
 		return results;
 	}
+
+	/**
+	 * Find project assignments for user for a specific type
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId, Integer assignmentType)
+	{
+		List<ProjectAssignment>		results;
+		String[]	names = new String[]{"userId", "type"};
+		Integer[]	values = new Integer[]{userId, assignmentType};
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectsForUserForType", names, values); 
+		
+		return results;
+	}
 }

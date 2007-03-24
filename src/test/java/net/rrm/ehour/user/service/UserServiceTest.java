@@ -37,6 +37,7 @@ import junit.framework.TestCase;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
@@ -133,6 +134,7 @@ public class UserServiceTest extends TestCase
 		prA.setActive(true);
 		paA = new ProjectAssignment();
 		paA.setAssignmentId(1);
+		paA.setAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE);
 		calA = new GregorianCalendar();
 		calA.add(Calendar.MONTH, -5);
 		paA.setDateStart(calA.getTime());
@@ -146,6 +148,7 @@ public class UserServiceTest extends TestCase
 
 		paB = new ProjectAssignment();
 		paB.setAssignmentId(2);
+		paB.setAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE);
 		calB = new GregorianCalendar();
 		calB.add(Calendar.MONTH, -2);
 		paB.setDateStart(calB.getTime());

@@ -54,6 +54,7 @@ public class ProjectServiceTest extends TestCase
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO 			timesheetDAO;
+	private ProjectAssignmentService	projectAssignmentService;
 	
 	/**
 	 * 
@@ -70,6 +71,10 @@ public class ProjectServiceTest extends TestCase
 		
 		timesheetDAO = createMock(TimesheetDAO.class);
 		((ProjectServiceImpl)projectService).setTimesheetDAO(timesheetDAO);
+		
+		projectAssignmentService = createMock(ProjectAssignmentService.class);
+		((ProjectServiceImpl)projectService).setProjectAssignmentService(projectAssignmentService);
+		
 	}
 
 	
@@ -162,25 +167,7 @@ public class ProjectServiceTest extends TestCase
 			// ok
 		}
 	}
-	
-	public void testGetProjectAssignment()
-	{
-		ProjectAssignment pa = new ProjectAssignment();
-		
-		expect(projectAssignmentDAO.findById(new Integer(1)))
-			.andReturn(pa);
-		
-		expect(timesheetDAO.getTimesheetEntryCountForAssignment(1))
-			.andReturn(0);
 
-		replay(projectAssignmentDAO);
-		replay(timesheetDAO);
-		
-		projectService.getProjectAssignment(1);
-		
-		verify(projectAssignmentDAO);
-		verify(timesheetDAO);		
-	}	
 	
 	public void testGetProjectsForUser()
 	{
@@ -198,8 +185,6 @@ public class ProjectServiceTest extends TestCase
 		pags1.add(pag4);
 		Integer userId = 1;
 		
-		expect(projectAssignmentDAO.findProjectAssignmentsForUser(1, dr)).andReturn(pags1);
-
 		pag1 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 1, 1);
 		pags2.add(pag1);
 		pag2 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 2, 2);
@@ -211,13 +196,17 @@ public class ProjectServiceTest extends TestCase
 		
 		expect(timesheetDAO.getBookedProjectAssignmentsInRange(userId, dr)).andReturn(pags2);
 		
+		expect(projectAssignmentService.getProjectAssignmentsForUser(userId, dr))
+					.andReturn(new ArrayList<ProjectAssignment>());
+		
 		replay(projectAssignmentDAO);
 		replay(timesheetDAO);
+		replay(projectAssignmentService);
+		
 		Set<ProjectAssignment> res = projectService.getProjectsForUser(1, dr);
 		
 		verify(timesheetDAO);
-		verify(projectAssignmentDAO);
-		
-		assertEquals(5, res.size());
+		verify(projectAssignmentService);
+		assertEquals(4, res.size());
 	}
 }

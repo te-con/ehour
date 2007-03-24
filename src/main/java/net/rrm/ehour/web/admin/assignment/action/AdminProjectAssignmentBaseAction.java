@@ -24,6 +24,7 @@
 package net.rrm.ehour.web.admin.assignment.action;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.user.service.UserService;
 
@@ -35,17 +36,18 @@ import org.apache.struts.action.Action;
 
 public class AdminProjectAssignmentBaseAction extends Action
 {
-	protected ProjectService	projectService;
-	protected UserService		userService;
-	protected EhourConfig		config;
+	protected ProjectAssignmentService	projectAssignmentService;
+	protected ProjectService			projectService;
+	protected UserService				userService;
+	protected EhourConfig				config;
 	
 	/**
 	 * 
 	 * @param projectService
 	 */
-	public void setProjectService(ProjectService projectService)
+	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
 	{
-		this.projectService = projectService;
+		this.projectAssignmentService = projectAssignmentService;
 	}
 	
 	public void setUserService(UserService userService)
@@ -59,5 +61,13 @@ public class AdminProjectAssignmentBaseAction extends Action
 	public void setConfig(EhourConfig config)
 	{
 		this.config = config;
+	}
+
+	/**
+	 * @param projectService the projectService to set
+	 */
+	public void setProjectService(ProjectService projectService)
+	{
+		this.projectService = projectService;
 	}
 }

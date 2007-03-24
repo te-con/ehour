@@ -25,6 +25,7 @@ package net.rrm.ehour;
 
 
 import net.rrm.ehour.customer.service.CustomerServiceTest;
+import net.rrm.ehour.project.service.ProjectAssignmentServiceTest;
 import net.rrm.ehour.project.service.ProjectServiceTest;
 import net.rrm.ehour.report.criteria.ReportCriteriaTest;
 import net.rrm.ehour.report.service.ReportCriteriaServiceTest;
@@ -55,6 +56,7 @@ import org.junit.runners.Suite.SuiteClasses;
 				ReportServiceTest.class, 
 				ReportCriteriaServiceTest.class,
 				ProjectServiceTest.class,
+				ProjectAssignmentServiceTest.class,
 				CustomerServiceTest.class,
 				CalendarUtilTest.class,
 				DateUtilTest.class,

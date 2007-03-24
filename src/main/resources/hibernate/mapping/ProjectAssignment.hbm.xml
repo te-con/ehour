@@ -34,8 +34,10 @@
             <column name="DESCRIPTION" />
         </property>
         
-		<property name="defaultAssignment" column="DEFAULT_ASSIGNMENT" type="yes_no"/>        
-		
 		<property name="active" column="ACTIVE" type="yes_no"/>        		
+
+		<property name="assignmentType" column="ASSIGNMENT_TYPE" type="int"/>
+
+		<property name="allottedHours" column="ALLOTTED_HOURS" type="java.lang.Float"/>
 	</class>	
 </hibernate-mapping>

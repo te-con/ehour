@@ -29,6 +29,7 @@ import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.user.domain.User;
 
 /**
@@ -37,12 +38,12 @@ import net.rrm.ehour.user.domain.User;
 
 public class ProjectServiceIntegrationTest extends BaseDAOTest
 {
-	private	ProjectService projectService;
+	private	ProjectAssignmentService projectAssignmentService;
 
 	
-	public void setProjectService(ProjectService service)
+	public void setProjectAssignmentService(ProjectAssignmentService service)
 	{
-		this.projectService=service;
+		this.projectAssignmentService=service;
 	}
 	
 	public void testAssignUserToProjectSuccess() throws ProjectAlreadyAssignedException
@@ -50,6 +51,7 @@ public class ProjectServiceIntegrationTest extends BaseDAOTest
 		ProjectAssignment pa = new ProjectAssignment();
 		
 		pa.setAssignmentId(1);
+		pa.setAssignmentType(0);
 		Project prj = new Project(1);
 		User user = new User(1);
 		
@@ -58,24 +60,25 @@ public class ProjectServiceIntegrationTest extends BaseDAOTest
 		pa.setProject(prj);
 		pa.setUser(user);
 		
-		projectService.assignUserToProject(pa);
+		projectAssignmentService.assignUserToProject(pa);
 	}
 
 	public void testAssignUserToProjectFailure()
 	{
 		ProjectAssignment pa = new ProjectAssignment();
 		
-		Project prj = new Project(1);
+		Project prj = new Project(2);
 		User user = new User(1);
 		
 		pa.setDateStart(new GregorianCalendar(2006, 1, 1).getTime());
 		pa.setDateEnd(new GregorianCalendar(2006, 11, 1).getTime());
 		pa.setProject(prj);
 		pa.setUser(user);
+		pa.setAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
 		
 		try
 		{
-			projectService.assignUserToProject(pa);
+			projectAssignmentService.assignUserToProject(pa);
 			fail("Should throw ex");
 		} catch (ProjectAlreadyAssignedException e)
 		{

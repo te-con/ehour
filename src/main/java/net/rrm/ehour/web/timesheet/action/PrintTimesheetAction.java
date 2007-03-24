@@ -59,10 +59,9 @@ import org.apache.struts.action.ActionMapping;
 
 public class PrintTimesheetAction extends Action
 {
-	private ProjectService	projectService;
-	private	CalendarUtil	calendarUtil;
-	private	ReportService	reportService;
-	
+	private	CalendarUtil		calendarUtil;
+	private	ReportService		reportService;
+	private ProjectService		projectService;
 	/**
 	 * @throws ParseException 
 	 * 
@@ -161,14 +160,6 @@ public class PrintTimesheetAction extends Action
 
 		return fwd;
 	}
-	
-	/**
-	 * @param projectService the projectService to set
-	 */
-	public void setProjectService(ProjectService projectService)
-	{
-		this.projectService = projectService;
-	}
 
 	/**
 	 * @param calendarUtil the calendarUtil to set
@@ -184,5 +175,13 @@ public class PrintTimesheetAction extends Action
 	public void setReportService(ReportService reportService)
 	{
 		this.reportService = reportService;
+	}
+
+	/**
+	 * @param projectService the projectService to set
+	 */
+	public void setProjectService(ProjectService projectService)
+	{
+		this.projectService = projectService;
 	}
 }

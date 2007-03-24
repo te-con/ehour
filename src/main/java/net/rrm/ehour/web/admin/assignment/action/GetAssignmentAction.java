@@ -77,7 +77,7 @@ public class GetAssignmentAction extends AdminProjectAssignmentBaseAction
 		
 		if (!"addOnly".equals(param))
 		{
-			assignment = projectService.getProjectAssignment(paForm.getAssignmentId());
+			assignment = projectAssignmentService.getProjectAssignment(paForm.getAssignmentId());
 			user = assignment.getUser();
 		}
 		else

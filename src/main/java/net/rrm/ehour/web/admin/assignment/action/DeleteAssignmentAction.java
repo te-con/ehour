@@ -68,7 +68,7 @@ public class DeleteAssignmentAction extends AdminProjectAssignmentBaseAction
 		
 		try
 		{
-			projectService.deleteProjectAssignment(paf.getAssignmentId());
+			projectAssignmentService.deleteProjectAssignment(paf.getAssignmentId());
 			
 			// upon success, display new assignment form
 			pa = new ProjectAssignment();
@@ -79,7 +79,7 @@ public class DeleteAssignmentAction extends AdminProjectAssignmentBaseAction
 			request.setAttribute("error", e.getMessage());
 			e.printStackTrace();
 			
-			pa = projectService.getProjectAssignment(paf.getAssignmentId());
+			pa = projectAssignmentService.getProjectAssignment(paf.getAssignmentId());
 		}
 
 		assignments = projectService.getAllProjectsForUser(paf.getUserId());

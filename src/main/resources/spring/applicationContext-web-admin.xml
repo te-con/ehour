@@ -51,7 +51,8 @@
 			class="net.rrm.ehour.web.admin.assignment.action.AdminProjectAssignmentBaseAction"
 			abstract="true">
 		<property name="config" ref="ehourConfig" />
-		<property name="projectService" ref="projectService" />
+		<property name="projectAssignmentService" ref="projectAssignmentService" />
+		<property name="projectService" ref="projectService" />		
 		<property name="userService" ref="userService" />
     </bean>		
 	

@@ -73,7 +73,7 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 			}
 			else
 			{
-				projectService.assignUserToProject(pa);
+				projectAssignmentService.assignUserToProject(pa);
 				
 				// upon success, display new assignment form
 				pa = new ProjectAssignment();

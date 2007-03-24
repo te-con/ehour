@@ -25,28 +25,27 @@
 		<aop:pointcut id="serviceOperation" expression="execution(* net.rrm.ehour.*.service.*Service.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config>
-	
-	<!-- User service -->
-	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl" />
 
-	<bean id="calendarUtil"
-		class="net.rrm.ehour.web.calendar.CalendarUtil">
-		<property name="timesheetService" ref="timesheetService" />
-	</bean>
-
-<!--
-	<util:properties id="ehourPropertiesConfig" location="classpath:/ehourConfig.properties" />
-
-
-	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigProps">
-		<property name="propertiesConfig" ref="ehourPropertiesConfig" />
-	</bean>
--->
+	<!-- Ehour Config -->
 	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigJdbc">
 		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
 		<constructor-arg value="CONFIGURATION" />
 		<constructor-arg value="config_key" />		
 		<constructor-arg value="config_value" />		
+	</bean>
+
+	<!-- User service -->
+	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl">
+		<property name="userDAO" ref="userDAO" />	
+		<property name="userDepartmentDAO" ref="userDepartmentDAO" />	
+		<property name="userRoleDAO" ref="userRoleDAO" />
+		<property name="projectAssignmentService" ref="projectAssignmentService" />		
+	</bean>
+
+	<!-- Calendar util (move to web?) -->
+	<bean id="calendarUtil"
+		class="net.rrm.ehour.web.calendar.CalendarUtil">
+		<property name="timesheetService" ref="timesheetService" />
 	</bean>
 
 	<!-- Report service -->
@@ -68,13 +67,23 @@
 
 
 	<!-- Timesheet service -->
-	<bean id="timesheetService" class="net.rrm.ehour.timesheet.service.TimesheetServiceImpl" />
+	<bean id="timesheetService" class="net.rrm.ehour.timesheet.service.TimesheetServiceImpl">
+		<property name="projectAssignmentService" ref="projectAssignmentService" />
+	</bean>
 
 	<!-- Project service -->
-	<bean id="projectService" class="net.rrm.ehour.project.service.ProjectServiceImpl" />
+	<bean id="projectService" class="net.rrm.ehour.project.service.ProjectServiceImpl">
+		<property name="projectDAO" ref="projectDAO" />	
+		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />			
+	</bean>
 	
 	<!-- Customer service -->
 	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl" />
+
+	<!-- Project assignment service -->
+	<bean id="projectAssignmentService" class="net.rrm.ehour.project.service.ProjectAssignmentServiceImpl">
+		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />				
+	</bean>
 
 	<!-- Report Criteria -->
 	<bean id="reportCriteria"

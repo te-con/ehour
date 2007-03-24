@@ -44,6 +44,15 @@ public interface ProjectAssignmentDAO  extends GenericDAO<ProjectAssignment, Int
 	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId);
 	
 	/**
+	 * Find assigned (active) projects for user with specific assignment type
+	 * @param projectId
+	 * @param userId
+	 * @param assignmentType
+	 * @return
+	 */
+	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId, Integer assignmentType);
+	
+	/**
 	 * Find (active) projects for user
 	 * @param userId
 	 * @return

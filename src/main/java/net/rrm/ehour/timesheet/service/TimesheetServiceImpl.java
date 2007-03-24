@@ -36,7 +36,7 @@ import java.util.TreeSet;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
@@ -64,7 +64,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	private	TimesheetDAO		timesheetDAO;
 	private TimesheetCommentDAO	timesheetCommentDAO;
 	private	ReportService		reportService;
-	private	ProjectService		projectService;
+	private ProjectAssignmentService	projectAssignmentService;
 	private	EhourConfig			configuration;
 	private	Logger				logger = Logger.getLogger(TimesheetServiceImpl.class);
 	
@@ -201,7 +201,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		weekOverview.setComment(timesheetCommentDAO.findById(new TimesheetCommentId(userId, range.getDateStart())));
 		logger.debug("Week overview: comments found for userId " + userId + ": " + (weekOverview.getComment() != null));
 		
-		weekOverview.setProjectAssignments(projectService.getProjectAssignmentsForUser(userId, range));
+		weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(userId, range));
 		logger.debug("Week overview: project assignments found for userId " + userId + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
 		
 		return weekOverview;
@@ -279,8 +279,8 @@ public class TimesheetServiceImpl implements TimesheetService
 	/**
 	 * @param projectService the projectService to set
 	 */
-	public void setProjectService(ProjectService projectService)
+	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
 	{
-		this.projectService = projectService;
+		this.projectAssignmentService = projectAssignmentService;
 	}
 }
