@@ -56,7 +56,7 @@ public class PrintReport extends TimelineReport<ProjectAssignment>
 		ProjectAssignment pa = new ProjectAssignment();
 		
 		pa.setAssignmentId(aggregate.getAssignmentId());
-		pa.setDescription(aggregate.getAssignmentDesc());
+		pa.setRole(aggregate.getAssignmentDesc());
 		
 		Project prj = new Project();
 		prj.setName(aggregate.getProjectName());

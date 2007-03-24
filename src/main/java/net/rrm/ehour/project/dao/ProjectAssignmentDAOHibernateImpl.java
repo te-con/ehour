@@ -59,7 +59,7 @@ public class ProjectAssignmentDAOHibernateImpl
 		String[]	keys = new String[]{"dateStart", "dateEnd", "userId"};
 		Object[]	params = new Object[]{range.getDateStart(), range.getDateEnd(), userId}; 
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectsForUserInRange"
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUserInRange"
 																		, keys, params);		
 	
 		return results;
@@ -79,7 +79,7 @@ public class ProjectAssignmentDAOHibernateImpl
 		Integer[]	values = new Integer[]{projectId, userId};
 		List<ProjectAssignment>		results;
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectForUser", 
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUserForProject", 
 															 names, values);
 		
 		return results;
@@ -95,7 +95,7 @@ public class ProjectAssignmentDAOHibernateImpl
 	{
 		List<ProjectAssignment>		results;
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectsForUser", 
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUser", 
 																		"userId", userId);
 		
 		return results;

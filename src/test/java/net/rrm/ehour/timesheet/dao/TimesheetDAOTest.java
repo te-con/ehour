@@ -54,7 +54,7 @@ public class TimesheetDAOTest extends BaseDAOTest
 		
 		results = dao.getTimesheetEntriesInRange(new Integer(1), dateRange);
 		
-		assertEquals(8, results.size());
+		assertEquals(9, results.size());
 	}
 	
 	/**

@@ -89,7 +89,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		logger.debug("Getting timesheet overview for userId " + userId + " in range " + monthRange);
 		
 		projectAssignmentAggregates = reportService.getHoursPerAssignmentInRange(userId, monthRange);
-		logger.debug("Project reports found for userId " + userId + ": " + projectAssignmentAggregates.size());
+		logger.debug("Project assignments found for userId " + userId + ": " + projectAssignmentAggregates.size());
 		
 		timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(userId, monthRange);
 		logger.debug("Timesheet entries found for userId " + userId + " in range " + monthRange + ": " + timesheetEntries.size());

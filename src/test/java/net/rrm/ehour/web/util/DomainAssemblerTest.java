@@ -160,7 +160,7 @@ public class DomainAssemblerTest extends TestCase
 		assertEquals(9, pa.getDateStart().getMonth() );
 		assertEquals(3, pa.getDateStart().getDate());
 		assertEquals(new Integer(1), pa.getAssignmentId());
-		assertEquals("d", pa.getDescription());
+		assertEquals("d", pa.getRole());
 	}
 	
 	public void testGetTimesheetComment()

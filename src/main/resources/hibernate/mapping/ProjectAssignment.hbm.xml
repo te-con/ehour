@@ -30,8 +30,8 @@
             <column name="DATE_END" length="10"/>
         </property>
 
-        <property name="description" type="string">
-            <column name="DESCRIPTION" />
+        <property name="role" type="string">
+            <column name="ROLE" />
         </property>
         
 		<property name="active" column="ACTIVE" type="yes_no"/>        		

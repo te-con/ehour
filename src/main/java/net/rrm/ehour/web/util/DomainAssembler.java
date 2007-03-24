@@ -187,7 +187,7 @@ public class DomainAssembler
 		pa.setDateStart(dateParser.parse(paf.getDateStart()));
 		pa.setDateEnd(dateParser.parse(paf.getDateEnd()));
 		pa.setHourlyRate(paf.getHourlyRate());
-		pa.setDescription(paf.getDescription());
+		pa.setRole(paf.getDescription());
 		
 		// TODO quickfix..
 		pa.setActive(true);

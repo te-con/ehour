@@ -60,13 +60,11 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 	
 	public void testGetMinMaxDateTimesheetEntryForUser()
 	{
-		DateRange range = dao.getMinMaxDateTimesheetEntry(2);
+		DateRange range = dao.getMinMaxDateTimesheetEntry(1);
 		Date endDate = new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59);
 		endDate = new Date(endDate.getTime() + 999);
 
-		Calendar cal = new GregorianCalendar(2006, 10 - 1, 31);
-
-		assertEquals(new Date(2006 - 1900, 10 - 1, 3), range.getDateStart());
+		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
 		assertEquals(endDate, range.getDateEnd());
 	}
 	
@@ -88,7 +86,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		rep = results.get(0);
 		assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
 		
-		assertEquals(2, results.size());
+		assertEquals(3, results.size());
 	}
 	
 	/**
@@ -122,7 +120,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		ProjectAssignmentAggregate rep = results.get(0);
 		assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
 		
-		assertEquals(1, results.size());
+		assertEquals(2, results.size());
 	}	
 	
 	/**
@@ -134,15 +132,15 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
 			    new Date(2006 - 1900, 10 - 1, 4));
 		
-		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(new Integer[]{2},
+		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(new Integer[]{1},
 																								new Integer[]{1},
 																								dateRange);
 
 		// test if collection is properly initialized
 		ProjectAssignmentAggregate rep = results.get(0);
-		assertEquals(9.2f, rep.getHours().floatValue(), 0.1);
+		assertEquals(14f, rep.getHours().floatValue(), 0.1);
 		
-		assertEquals(1, results.size());
+		assertEquals(2, results.size());
 	}
 	
 	public void testGetCumulatedHoursPerAssignment()

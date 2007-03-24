@@ -55,14 +55,18 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 	{
 		List<ProjectAssignment> pas = dao.findProjectAssignmentForUser(1, 1);
 		
-		assertEquals(1, pas.size());
+		assertEquals(4, pas.size());
 	}
 
+	/**
+	 * 
+	 *
+	 */
 	public void testFindProjectAssignmentsForUser()
 	{
 		List<ProjectAssignment> pas = dao.findProjectAssignmentsForUser(1);
 		
-		assertEquals(3, pas.size());
+		assertEquals(6, pas.size());
 	}
 	
 	
@@ -73,7 +77,7 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 	{
 		List<ProjectAssignment> pas = dao.findAll();
 		
-		assertEquals(5, pas.size());
+		assertEquals(9, pas.size());
 	}
 
 	/**
@@ -124,10 +128,10 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 	public void testFindProjectAssignmentsForUserInRange()
 	{
 		List<ProjectAssignment> results;
-		DateRange range = new DateRange(new Date(2006 - 1900, 10 - 1, 5), new Date(2006 - 1900, 10 - 1, 10));
+		DateRange range = new DateRange(new Date(2006 - 1900, 10 - 1, 24), new Date(2007 - 1900, 1 - 1, 10));
 		
 		results = dao.findProjectAssignmentsForUser(1, range);
 
-		assertEquals(3, results.size());
+		assertEquals(4, results.size());
 	}
 }

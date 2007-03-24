@@ -33,7 +33,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 
 	private Date dateEnd;
 
-	private String description;
+	private String role;
 	
 	private	Integer	assignmentType;
 	
@@ -86,7 +86,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 		this.hourlyRate = hourlyRate;
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
-		this.description = description;
+		this.role = description;
 	}
 
 	// Property accessors
@@ -166,14 +166,14 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 		this.dateEnd = dateEnd;
 	}
 
-	public String getDescription()
+	public String getRole()
 	{
-		return this.description;
+		return this.role;
 	}
 
-	public void setDescription(String description)
+	public void setRole(String description)
 	{
-		this.description = description;
+		this.role = description;
 	}
 
 
