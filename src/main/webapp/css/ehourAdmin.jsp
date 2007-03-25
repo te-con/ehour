@@ -48,7 +48,6 @@ a:active
 	color: #233e55;
 }
 
-
 .contentTable TD
 {
 	padding: 0px;
@@ -56,7 +55,23 @@ a:active
 	font:  1em Verdana Geneva, Arial, Helvetica, sans-serif;
 	border: 0px;
 	text-align: left;
-	color: #536e87;
+	color: #6c87a1;
+}
+
+.contentTable td.main
+{
+	color: #233e55;
+}
+
+.contentTable td.extra
+{
+	padding: 0 0 0 5px;
+	margin: 0px;
+	font:  1em Verdana Geneva, Arial, Helvetica, sans-serif;
+	border: 0px;
+	text-align: left;
+	color: #86a1bc;
+	border-bottom: 1px solid #6c87a1;
 }
 
 .errorCell

@@ -97,8 +97,13 @@ public class DateUtil
 	{
 		boolean	withinRange = false;
 		
-		withinRange =  !(dateRange.getDateStart().after(date) ||
-						 dateRange.getDateEnd().before(date));
+		if (date != null &&
+			dateRange.getDateStart() != null &&
+			dateRange.getDateEnd() != null)
+		{
+			withinRange =  !(dateRange.getDateStart().after(date) ||
+							dateRange.getDateEnd().before(date));
+		}
 		
 		return withinRange;
 	}

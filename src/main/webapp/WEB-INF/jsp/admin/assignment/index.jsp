@@ -35,12 +35,16 @@
 					<h3>&nbsp;</h3>
 
 					<div class="GreyFrameBody">
-						<form onSubmit="return false;">
 							<p>
-								<fmt:message key="admin.user.filter" />:<input style="margin-bottom: 0" class="textInput" type="text" name="filter" size="30" id="filterInput"><br>
+								<input style="margin-bottom: 0;color: #aaaaaa; margin-bottom: 3px"
+										class="textInput"
+										type="text"
+										name="filter"
+										size="30"
+										id="filterInput"
+										value="<fmt:message key="admin.user.filter" />"><br>
 								<fmt:message key="admin.user.hideInactive" />: <input style="margin-bottom: 0" type="checkbox" id="hideInactive" name="hideInactive" checked><br>
 							</p>
-						</form>
 						
 						<div class="BlueFrame" style="width: 220px; padding-top: 0; margin-top: 10px">
 							<div class="BlueLeftTop">
