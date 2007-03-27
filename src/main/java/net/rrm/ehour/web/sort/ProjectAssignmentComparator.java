@@ -31,6 +31,7 @@ public class ProjectAssignmentComparator implements Comparator<ProjectAssignment
 {
 	public final static int	ASSIGNMENT_COMPARE_NAME = 0;
 	public final static int	ASSIGNMENT_COMPARE_START = 1;
+	public final static int ASSIGNMENT_COMPARE_CUSTDATEPRJ = 2;
 	
 	private int	compareType;
 	
@@ -60,6 +61,9 @@ public class ProjectAssignmentComparator implements Comparator<ProjectAssignment
 			case ASSIGNMENT_COMPARE_START:
 				cmp = compareDateStart(o1, o2);
 				break;
+			case ASSIGNMENT_COMPARE_CUSTDATEPRJ:
+				cmp = compareCustomerStartDateProject(o1, o2);
+				break;
 			default:
 				cmp = 0;
 				break;
@@ -68,6 +72,30 @@ public class ProjectAssignmentComparator implements Comparator<ProjectAssignment
 		return cmp;
 	}
 	
+	/**
+	 * Compare first on customer name, if the same, use the project name
+	 * @param o1
+	 * @param o2
+	 * @return
+	 */
+	private int compareCustomerStartDateProject(ProjectAssignment o1, ProjectAssignment o2)
+	{
+		int	cmp;
+		
+		cmp = o1.getProject().getCustomer().getName().compareToIgnoreCase(o2.getProject().getCustomer().getName());
+		
+		if (cmp == 0)
+		{
+			cmp = compareDateStart(o1, o2);
+			
+			if (cmp == 0)
+			{
+				cmp = compareNames(o1, o2);
+			}
+		}
+		
+		return cmp;
+	}
 	/**
 	 * Compare on start date (or name if start date is the same)
 	 * @param o1

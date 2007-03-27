@@ -111,7 +111,7 @@ function initDojo()
 	</div>				
 </div>	
 
-	<div style="text-align: right; margin: 3px 11px 0 0">
+	<div style="text-align: right; margin: 3px 16px 0 0; max-width: 730px;">
 			<c:if test="${assignment.assignmentId != null}">
 				<a href="" onClick="return showAddForm()" title="Add assignment"><img src="<c:url value="/img/icons/grey_add_assignment.png" />" border="0"></a>	
 			</c:if>
@@ -143,6 +143,22 @@ function initDojo()
 		<input type="hidden" name="assignmentId"  value="${assignment.assignmentId}">
 		
 		<table CLASS="contentTable" CELLSPACING=2>
+
+		<tr>
+			<td>
+				<fmt:message key="admin.assignment.type" />:
+			</td>
+			
+			<td>
+				<select name="assignmentType" class="textInputSmall" >
+					<option value="0"><fmt:message key="admin.assignment.dateRange" />
+					<option value="1"><fmt:message key="admin.assignment.default" />
+					<option value="2"><fmt:message key="admin.assignment.allotted" />
+				</select>
+			</td>
+			
+			<td></td>
+		</tr>
 		
 		<tr>
 			<td>
@@ -211,7 +227,7 @@ function initDojo()
 		</td>
 		
 		<td>
-			<input class="textInputSmall" type="text" name="hourlyRate" value="${assignment.hourlyRate}"> ${currencySymbol}
+			<input class="textInputSmall"  size="6"  type="text" name="hourlyRate" value="${assignment.hourlyRate}"> ${currencySymbol}
 		</td>
 		
 		<td id="hourlyRateError" style="color: red"></td>

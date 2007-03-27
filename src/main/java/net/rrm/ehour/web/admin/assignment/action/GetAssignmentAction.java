@@ -72,7 +72,7 @@ public class GetAssignmentAction extends AdminProjectAssignmentBaseAction
 		request.setAttribute("allProjects", allProjects);
 		
 		assignments = projectService.getAllProjectsForUser(paForm.getUserId());
-		Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_START));
+		Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
 		request.setAttribute("assignments", assignments);
 		
 		if (!"addOnly".equals(param))

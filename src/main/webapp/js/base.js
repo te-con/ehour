@@ -17,6 +17,7 @@ function evalScript(html)
 					}
 				);	
 							
+
 	self.eval(scripts.join('\n'));
 }
 
