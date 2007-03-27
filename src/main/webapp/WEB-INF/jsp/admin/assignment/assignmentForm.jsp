@@ -57,8 +57,8 @@ function initDojo()
 	<c:forEach items="${assignments}" var="assignment">
 		<tr>
 			<td valign="top" rowspan="2">
-				<a href="" onClick="return editAssignment(${user.userId}, ${assignment.assignmentId})">
-					<img src="<c:url value="/img/icons/edit.png" />" border="0">
+				<a href="" onClick="return editAssignment(${user.userId}, ${assignment.assignmentId})" title="Edit assignment">
+					<img src="<c:url value="/img/icons/grey_edit_assignment.png" />" alt="Edit assignment" border="0">
 				</a>
 			</td>
 			
@@ -72,7 +72,7 @@ function initDojo()
 				<fmt:formatDate value="${assignment.dateStart}" pattern="dd MMMM yyyy" />
 			</td>
 	
-			<td>
+			<td class="main">
 				<fmt:formatDate value="${assignment.dateEnd}" pattern="dd MMMM yyyy" />
 			</td>
 		</tr>
@@ -99,15 +99,6 @@ function initDojo()
 		</tr>
 		
 	</c:forEach>
-	
-	<tr>
-		<td colspan="4" align="right">
-			<c:if test="${assignment.assignmentId != null}">
-				<a href="" onClick="return showAddForm()"><fmt:message key="admin.assignment.newAssignmentLink" /></a>	
-			</c:if>
-			<br>
-		</td>
-	</tr>
 </table>
 
 <br><br>
@@ -119,6 +110,12 @@ function initDojo()
 		</p>
 	</div>				
 </div>	
+
+	<div style="text-align: right; margin: 3px 11px 0 0">
+			<c:if test="${assignment.assignmentId != null}">
+				<a href="" onClick="return showAddForm()" title="Add assignment"><img src="<c:url value="/img/icons/grey_add_assignment.png" />" border="0"></a>	
+			</c:if>
+	</div>
 
 <br>
 

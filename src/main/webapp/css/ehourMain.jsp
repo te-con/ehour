@@ -16,7 +16,7 @@ body
 }
 div.NavHeader
 {
-	background-color: #a9c4e0;
+	background: url(<c:url value="/img/header_bg.gif" />) top left repeat-x;
 	margin:	0;
 	padding: 0;
 	height: 	60px;
