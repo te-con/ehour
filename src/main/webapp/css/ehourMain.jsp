@@ -16,10 +16,10 @@ body
 }
 div.NavHeader
 {
-	background: url(<c:url value="/img/header_bg.gif" />) top left repeat-x;
+	background-color: #a9c4e0;
 	margin:	0;
 	padding: 0;
-	height: 	60px;
+	height: 60px;
 }
 
 div.NavHeader table
@@ -93,6 +93,7 @@ div.LoggedInAs
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 	width: 100%;
 	text-align: right;
+	margin-right: 11px;
 }
 
 table

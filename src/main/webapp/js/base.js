@@ -94,7 +94,8 @@ function showLoadingData()
 //	}
 	
 //	fadeTimer = setTimeout("fadeInMessage(loadingMsg)", 55);
-	document.getElementById('LoggedInAs').innerHTML = loadingMsg + '&nbsp;';
+//	document.getElementById('LoggedInAs').innerHTML = loadingMsg + '&nbsp;';
+	document.getElementById('NavLoading').style.visibility = 'visible';
 }
 
 function fadeInMessage(msg)
@@ -105,7 +106,8 @@ function fadeInMessage(msg)
 
 function hideLoadingData()
 {
-	document.getElementById('LoggedInAs').innerHTML = loginAs + '&nbsp;';
+//	document.getElementById('LoggedInAs').innerHTML = loginAs + '&nbsp;';
+	document.getElementById('NavLoading').style.visibility = 'hidden';
 //	dojo.lfx.html.fadeOut('LoggedInAs', 50).play();
 
 	//if (fadeTimer != null)
