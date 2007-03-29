@@ -185,7 +185,7 @@ function initDojo()
 			</td>
 			
 			<td>
-				<select name="assignmentTypeId" class="textInputSmall" >
+				<select id="assignmentTypeId" name="assignmentTypeId" class="textInputSmall" >
 					<option value="0" <c:if test="${assignment.assignmentType.assignmentTypeId == 0}">SELECTED</c:if>><fmt:message key="admin.assignment.dateRange" />
 					<option value="1" <c:if test="${assignment.assignmentType.assignmentTypeId == 1}">SELECTED</c:if>><fmt:message key="admin.assignment.default" />
 					<option value="2" <c:if test="${assignment.assignmentType.assignmentTypeId == 2}">SELECTED</c:if>><fmt:message key="admin.assignment.allotted" />
@@ -195,6 +195,20 @@ function initDojo()
 			<td></td>
 		</tr>		
 	
+		
+		<tr id="allottedTr">
+			<td>
+				<fmt:message key="admin.assignment.allotted" />:
+			</td>
+			
+			<td>
+				<input class="textInputSmall"  size="6"  type="text" name="hourlyRate" value="${assignment.hourlyRate}"> hours
+			</td>
+			
+			<td style="color: red">
+			</td>
+		</tr>	
+
 		<tr>
 			<td>
 				<fmt:message key="admin.assignment.dateStart" />:

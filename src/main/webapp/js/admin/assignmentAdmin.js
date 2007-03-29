@@ -107,9 +107,24 @@ function editAssignment(editId, assignmentId)
 		evalScript(xml);
 
 		// DOM changed, rebind
-		bindAssignmentForm();
+		initForm();
 	}
-  }
+}
+
+function initForm()
+{
+	bindAssignmentForm();
+
+	dojo.event.connect(dojo.byId('assignmentTypeId'), "onchange", "hideAllotted");
+	
+	hideAllotted('');
+}
+
+function hideAllotted(evt)
+{
+	var asgTypeId = dojo.byId('assignmentTypeId').value;
+	dojo.byId('allottedTr').style.display = (asgTypeId == 2) ? "" : "none";
+}	
 
 
 function init()

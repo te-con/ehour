@@ -34,6 +34,7 @@ import java.util.Set;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
@@ -188,6 +189,7 @@ public class DomainAssembler
 		pa.setDateEnd(dateParser.parse(paf.getDateEnd()));
 		pa.setHourlyRate(paf.getHourlyRate());
 		pa.setRole(paf.getDescription());
+		pa.setAssignmentType(new ProjectAssignmentType(paf.getAssignmentTypeId()));
 		
 		// TODO quickfix..
 		pa.setActive(true);
