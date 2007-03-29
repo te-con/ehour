@@ -33,6 +33,7 @@ import java.util.Map;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
@@ -81,13 +82,13 @@ public class TimesheetFormAssemblerTest
 		ProjectAssignment pa1 = DummyDataGenerator.getProjectAssignment(2);
 		pa1.setDateStart(new Date(2007 - 1900, 1 -1 , 7));
 		pa1.setDateEnd(new Date(2008 - 1900, 1 -1 , 7));
-		pa1.setAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE);
+		pa1.setAssignmentType(new ProjectAssignmentType(0));
 		pas.add(pa1);
 
 		ProjectAssignment pa2 = DummyDataGenerator.getProjectAssignment(3);
 		pa2.setDateStart(new Date(2007 - 1900, 1 -1 , 7));
 		pa2.setDateEnd(new Date(2008 - 1900, 1 -1 , 7));
-		pa2.setAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE);
+		pa2.setAssignmentType(new ProjectAssignmentType(0));
 		pas.add(pa2);
 		weekOverview.setProjectAssignments(pas);
 		

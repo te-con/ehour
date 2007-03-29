@@ -35,6 +35,7 @@ function responseReceived(type, xml, evt)
 		} else if (spanTarget == 'form')
 		{
 			changeForm(xml);
+			evalScript(xml);
 		}
 		else
 		{

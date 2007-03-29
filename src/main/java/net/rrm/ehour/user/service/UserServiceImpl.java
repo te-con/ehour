@@ -34,7 +34,6 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
@@ -78,7 +77,7 @@ public class UserServiceImpl implements UserService
 		{
 			for (ProjectAssignment assignment : user.getProjectAssignments())
 			{
-				if (assignment.getAssignmentType().intValue() != ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT &&
+				if (assignment.getAssignmentType().isDefaultAssignmentType() &&
 					(!DateUtil.isDateWithinRange(currentDate , assignment.getDateRange())) ||
 					 (assignment.getProject() == null || !assignment.getProject().isActive()))
 				{

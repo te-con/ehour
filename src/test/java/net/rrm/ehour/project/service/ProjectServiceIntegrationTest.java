@@ -29,6 +29,7 @@ import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.user.domain.User;
 
@@ -51,7 +52,7 @@ public class ProjectServiceIntegrationTest extends BaseDAOTest
 		ProjectAssignment pa = new ProjectAssignment();
 		
 		pa.setAssignmentId(1);
-		pa.setAssignmentType(0);
+		pa.setAssignmentType(new ProjectAssignmentType(0));
 		Project prj = new Project(1);
 		User user = new User(1);
 		
@@ -74,7 +75,7 @@ public class ProjectServiceIntegrationTest extends BaseDAOTest
 		pa.setDateEnd(new GregorianCalendar(2006, 11, 1).getTime());
 		pa.setProject(prj);
 		pa.setUser(user);
-		pa.setAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
+		pa.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT));
 		
 		try
 		{

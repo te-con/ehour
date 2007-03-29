@@ -21,8 +21,6 @@ function validateForm(formId)
 		showLoadingData();
 	}
 
-	document.getElementById('statusMessage').innerHTML = sendingData;
-
 	return isValid;
 }
 

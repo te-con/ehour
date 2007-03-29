@@ -33,6 +33,7 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.user.domain.User;
@@ -57,7 +58,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	
 	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException
 	{
-		if (projectAssignment.getAssignmentType().intValue() == ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT &&
+		if (projectAssignment.getAssignmentType().isDefaultAssignmentType() &&
 			isAlreadyAssignedAsDefault(projectAssignment))
 		{
 			throw new ProjectAlreadyAssignedException("Already default assignment made for this project");
@@ -89,7 +90,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		for (Project project : defaultProjects)
 		{
 			assignment = new ProjectAssignment();
-			assignment.setAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
+			assignment.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT));
 			assignment.setProject(project);
 			assignment.setUser(user);
 			assignment.setActive(true);
@@ -135,7 +136,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		// if the assignment ain't default, ignore it
 		if (assignments == null ||
-				projectAssignment.getAssignmentType().intValue() != ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT)
+				projectAssignment.getAssignmentType().isDefaultAssignmentType())
 		{
 			return false;
 		}
@@ -144,7 +145,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		for (ProjectAssignment assignment : assignments)
 		{
-			if (assignment.getAssignmentType().intValue() == ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT &&
+			if (assignment.getAssignmentType().isDefaultAssignmentType() &&
 				assignment.getProject().getProjectId().intValue() == projectId)
 			{
 				if (logger.isDebugEnabled())

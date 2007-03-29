@@ -1,6 +1,3 @@
-dojo.require("dojo.event.*");
-dojo.require("dojo.lfx.*");
-
 var fadeTimer = null;
 
 // evaluate any script in the loaded html snippet
@@ -84,38 +81,17 @@ function helpChanged(type, xml, evt)
 // had a nice fade but pages load too fast so it's annoying... :D
 function showLoadingData()
 {
-	// set it to full
-//	dojo.html.setOpacity(dojo.byId('LoggedInAs'), 0);
-	//dojo.lfx.html.fadeOut('LoggedInAs', 50).play();
-	
-//	if (fadeTimer != null)
-//	{
-//		fadeTimer = null;
-//	}
-	
-//	fadeTimer = setTimeout("fadeInMessage(loadingMsg)", 55);
-//	document.getElementById('LoggedInAs').innerHTML = loadingMsg + '&nbsp;';
 	document.getElementById('NavLoading').style.visibility = 'visible';
 }
 
 function fadeInMessage(msg)
 {
 	document.getElementById('LoggedInAs').innerHTML = msg + '&nbsp;';
-//	dojo.lfx.html.fadeIn('LoggedInAs', 50).play();
 }
 
 function hideLoadingData()
 {
-//	document.getElementById('LoggedInAs').innerHTML = loginAs + '&nbsp;';
 	document.getElementById('NavLoading').style.visibility = 'hidden';
-//	dojo.lfx.html.fadeOut('LoggedInAs', 50).play();
-
-	//if (fadeTimer != null)
-//	{
-	//	fadeTimer = null;
-//	}
-	
-	//fadeTimer = setTimeout("fadeInMessage(loginAs)", 55);
 }
 
 	

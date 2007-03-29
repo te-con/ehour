@@ -35,7 +35,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 
 	private String role;
 	
-	private	Integer	assignmentType;
+	private	ProjectAssignmentType assignmentType;
 	
 	private	Float	allottedHours;
 	
@@ -274,7 +274,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	/**
 	 * @return the assignmentType
 	 */
-	public Integer getAssignmentType()
+	public ProjectAssignmentType getAssignmentType()
 	{
 		return assignmentType;
 	}
@@ -282,8 +282,9 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	/**
 	 * @param assignmentType the assignmentType to set
 	 */
-	public void setAssignmentType(Integer assignmentType)
+	public void setAssignmentType(ProjectAssignmentType assignmentType)
 	{
 		this.assignmentType = assignmentType;
 	}
+
 }

@@ -27,6 +27,7 @@ import java.util.Comparator;
 
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.web.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.web.timesheet.util.TimesheetRowComparator;
@@ -67,8 +68,8 @@ public class TimesheetRowComparatorTest
 	@Test
 	public void testCompareDefaultFirst()
 	{
-		pag1.setAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
-		pag2.setAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE);
+		pag1.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT));
+		pag2.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE));
 		
 		assertEquals(-1, comp.compare(row1, row2));
 	}
@@ -79,8 +80,8 @@ public class TimesheetRowComparatorTest
 	@Test
 	public void testCompareDefaultBothNaming()
 	{
-		pag1.setAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
-		pag2.setAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
+		pag1.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT));
+		pag2.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT));
 		
 		pag1.getProject().setName("bb");
 		pag2.getProject().setName("aa");
@@ -94,8 +95,8 @@ public class TimesheetRowComparatorTest
 	@Test
 	public void testCompareDefaultNoneNaming()
 	{
-		pag1.setAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE);
-		pag2.setAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE);
+		pag1.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE));
+		pag2.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE));
 		
 		pag1.getProject().setName("BABAB");
 		pag2.getProject().setName("BABAA");

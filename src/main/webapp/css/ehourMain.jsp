@@ -426,3 +426,8 @@ input
 	font: 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
 }
+
+.submitNoBorder
+{
+	border: 0;
+}

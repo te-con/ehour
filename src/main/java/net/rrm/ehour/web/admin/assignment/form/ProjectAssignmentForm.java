@@ -38,6 +38,7 @@ public class ProjectAssignmentForm extends ActionForm
 	
 	private	Integer	userId;
 	private	Integer	assignmentId;
+	private	Integer	assignmentTypeId;
 	private	String	dateStart;
 	private	String	dateEnd;
 	private	Integer	projectId;
@@ -133,6 +134,22 @@ public class ProjectAssignmentForm extends ActionForm
 		{
 			this.description = description;
 		}
+	}
+
+	/**
+	 * @return the assignmentTypeId
+	 */
+	public Integer getAssignmentTypeId()
+	{
+		return assignmentTypeId;
+	}
+
+	/**
+	 * @param assignmentTypeId the assignmentTypeId to set
+	 */
+	public void setAssignmentTypeId(Integer assignmentTypeId)
+	{
+		this.assignmentTypeId = assignmentTypeId;
 	}
 	
 }

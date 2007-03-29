@@ -36,7 +36,8 @@
         
 		<property name="active" column="ACTIVE" type="yes_no"/>        		
 
-		<property name="assignmentType" column="ASSIGNMENT_TYPE" type="int"/>
+        <many-to-one name="assignmentType" outer-join="auto" fetch="join"
+                class="net.rrm.ehour.project.domain.ProjectAssignmentType" column="ASSIGNMENT_TYPE_ID"/>
 
 		<property name="allottedHours" column="ALLOTTED_HOURS" type="java.lang.Float"/>
 	</class>	

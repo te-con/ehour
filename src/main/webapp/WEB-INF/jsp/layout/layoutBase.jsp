@@ -26,7 +26,6 @@
 	var loadingMsg = "<fmt:message key="general.loading" />";
 	var contextRoot = "<c:url value="/" />";
 	var loginAs = "<fmt:message key="nav.loggedInAs"><fmt:param><authz:authentication operation="username"/></fmt:param></fmt:message>";
-	var loadingImg = "<c:url value="/img/loading.gif" />";
 </script>
 
 </head>

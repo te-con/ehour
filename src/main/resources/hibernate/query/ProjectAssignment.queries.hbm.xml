@@ -22,7 +22,7 @@
 		WHERE pa.project.active is true AND
 			  pa.project.customer.active is true AND 
 			  pa.user.userId = :userId AND
-			  pa.assignmentType = :type
+			  pa.assignmentType.assignmentTypeId = :type
 		ORDER BY pa.dateStart, pa.project.name
 	</query>	
 
@@ -33,9 +33,9 @@
 			  pa.project.active is true AND
 			  pa.project.customer.active is true AND 
 			  pa.user.userId = :userId AND
-			  ((pa.assignmentType = '0' AND pa.dateStart <= :dateEnd AND pa.dateEnd >= :dateStart) OR
-			   pa.assignmentType = '1' OR
-			   (pa.assignmentType = '2' AND (pa.dateStart IS NULL OR pa.dateStart <= :dateEnd) AND 
+			  ((pa.assignmentType.assignmentTypeId = '0' AND pa.dateStart <= :dateEnd AND pa.dateEnd >= :dateStart) OR
+			   pa.assignmentType.assignmentTypeId = '1' OR
+			   (pa.assignmentType.assignmentTypeId = '2' AND (pa.dateStart IS NULL OR pa.dateStart <= :dateEnd) AND 
 			   								 (pa.dateEnd IS NULL or pa.dateEnd >= :dateEnd))
 			   )
     		 ]]>
