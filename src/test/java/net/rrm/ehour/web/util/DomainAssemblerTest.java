@@ -148,7 +148,7 @@ public class DomainAssemblerTest extends TestCase
 		paf.setHourlyRate(90f);
 		paf.setProjectId(2);
 		paf.setUserId(3);
-		paf.setDescription("d");
+		paf.setRole("d");
 		
 		ProjectAssignment pa = DomainAssembler.getProjectAssignment(paf);
 		

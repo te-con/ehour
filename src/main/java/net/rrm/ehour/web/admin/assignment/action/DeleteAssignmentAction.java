@@ -58,7 +58,6 @@ public class DeleteAssignmentAction extends AdminProjectAssignmentBaseAction
 		User				user;
 		List<Project>		allProjects;
 		ProjectAssignment	pa;
-		List<ProjectAssignment>	assignments;
 		
 		response.setContentType("text/xml");
 		response.setHeader("Cache-Control", "no-cache");
@@ -82,8 +81,8 @@ public class DeleteAssignmentAction extends AdminProjectAssignmentBaseAction
 			pa = projectAssignmentService.getProjectAssignment(paf.getAssignmentId());
 		}
 
-		assignments = projectService.getAllProjectsForUser(paf.getUserId());
-		request.setAttribute("assignments", assignments);		
+		
+		super.setAssignmentsOnContext(request, paf);
 		
 		request.setAttribute("assignment", pa);
 		

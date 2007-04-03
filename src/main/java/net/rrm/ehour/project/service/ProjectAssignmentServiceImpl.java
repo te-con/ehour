@@ -136,7 +136,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		// if the assignment ain't default, ignore it
 		if (assignments == null ||
-				projectAssignment.getAssignmentType().isDefaultAssignmentType())
+				!projectAssignment.getAssignmentType().isDefaultAssignmentType())
 		{
 			return false;
 		}

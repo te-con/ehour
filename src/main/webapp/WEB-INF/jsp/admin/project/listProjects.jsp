@@ -7,7 +7,7 @@
 <c:forEach items="${projects}" var="project">
 	<a href="" onClick="return editProject(${project.projectId})">
 				${project.name}
-	</a>
+	</a> [${project.customer.name}]
 		<c:if test="${!project.active}">*</c:if>
 	<br>
 </c:forEach>

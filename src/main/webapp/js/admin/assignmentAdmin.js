@@ -10,12 +10,20 @@ var adminListReceivedSpan = 'listUsersSpan';
 function validateForm(formId)
 {
 	formId = 'AssignmentForm';
+
+	var isValid = true;
 	
-	var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", rateNotValid)
-											);
+	var asgTypeId = dojo.byId('assignmentTypeId').value;
 	
-	isValid = validateFloat(formId, validationRules);
-	
+	if (asgTypeId != 1)
+	{
+		var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat),
+										new Array("allottedHours", "allottedHoursError", notAFloat)
+												);
+		
+		isValid = validateFloat(formId, validationRules);
+	}
+		
 	if (isValid)
 	{
 		showLoadingData();
@@ -27,7 +35,7 @@ function validateForm(formId)
 // delete event, ask for confirm and whistle off
 function deleteAssignment(assignmentId)
 {
-	if (confirm(noDeleteMessage))
+	if (confirm(deleteConfirm))
 	{
 		showLoadingData();	
 	    dojo.io.bind({
@@ -115,22 +123,53 @@ function initForm()
 {
 	bindAssignmentForm();
 
-	dojo.event.connect(dojo.byId('assignmentTypeId'), "onchange", "hideAllotted");
+	dojo.event.connect(dojo.byId('assignmentTypeId'), "onchange", "hideRows");
 	
-	hideAllotted('');
+	hideRows('');
 }
 
-function hideAllotted(evt)
+function hideRows(evt)
 {
 	var asgTypeId = dojo.byId('assignmentTypeId').value;
+	
 	dojo.byId('allottedTr').style.display = (asgTypeId == 2) ? "" : "none";
+	
+	dojo.byId('dateStartTr').style.display = (asgTypeId == 1) ? "none" : "";
+	dojo.byId('dateEndTr').style.display = (asgTypeId == 1) ? "none" : "";	
 }	
-
 
 function init()
 {
 	dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");
+	dojo.event.connect(dojo.byId('filterInput'), "onclick", "hideDefaultText");
+	dojo.event.connect(dojo.byId('filterInput'), "onblur", "showDefaultText");
 }
+
+// hide default text from user filter
+function hideDefaultText(evt)
+{
+	var userFilterInput = dojo.byId('filterInput');
+	
+	if (userFilterInput.value == defaultText)
+	{
+		userFilterInput.value = '';
+		userFilterInput.style.color = '#233e55';
+		userFilterInput.focus();
+	}
+}
+
+// show default text in user filter if value is empty
+function showDefaultText(evt)
+{
+	var userFilterInput = dojo.byId('filterInput');
+	
+	if (userFilterInput.value == "" && userFilterInput.value != defaultText)
+	{
+		userFilterInput.value = defaultText;
+		userFilterInput.style.color = '#aaaaaa';
+	}
+}
+
 
 function filterKeyUp(evt)
 {

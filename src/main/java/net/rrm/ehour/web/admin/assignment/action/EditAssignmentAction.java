@@ -23,18 +23,16 @@
 
 package net.rrm.ehour.web.admin.assignment.action;
 
-import java.text.ParseException;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
 import net.rrm.ehour.web.util.DomainAssembler;
 
@@ -59,35 +57,22 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 		ProjectAssignmentForm paf = (ProjectAssignmentForm)form;
 		ProjectAssignment	pa = null;
 		User				user;
-		List<Project>		allProjects;
-		List<ProjectAssignment>	assignments;
 		ActionMessages		messages = new ActionMessages();
 
 		try
 		{
 			pa = DomainAssembler.getProjectAssignment(paf);
 			
-			if (pa.getDateStart().after(pa.getDateEnd()))
-			{
-				messages.add("dateStart", new ActionMessage("admin.assignment.errorStartAfterEnd"));
-			}
-			else
+			messages = validateProjectAssignment(pa);
+
+			if (messages.size() == 0)
 			{
 				projectAssignmentService.assignUserToProject(pa);
-				
+			
 				// upon success, display new assignment form
 				pa = new ProjectAssignment();
 				pa.setDateRange(DateUtil.calendarToMonthRange(new GregorianCalendar()));
 			}
-
-		} catch (ParseException e1)
-		{
-			// @todo - could be dateEnd as well. quite unlikely this will happen though
-			messages.add("dateStart", new ActionMessage("errors.invalidDate"));
-			
-			// we couldn't parse it so init
-			pa = new ProjectAssignment();
-			pa.setDateRange(DateUtil.calendarToMonthRange(new GregorianCalendar()));
 		}
 		catch (ProjectAlreadyAssignedException e)
 		{
@@ -95,12 +80,8 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 		}
 
 		// retrieve info
-		allProjects = projectService.getAllProjects(true);
-		request.setAttribute("allProjects", allProjects);
-		
-		assignments = projectService.getAllProjectsForUser(paf.getUserId());
-		request.setAttribute("assignments", assignments);		
-		
+		super.setAssignmentsOnContext(request, paf);
+
 		request.setAttribute("assignment", pa);
 		
 		user = userService.getUser(paf.getUserId());
@@ -110,5 +91,45 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 		saveErrors(request, messages);
 		
 		return fwd;
+	}
+	
+	/**
+	 * Validate
+	 * @param pa
+	 * @return
+	 */
+	private ActionMessages validateProjectAssignment(ProjectAssignment pa)
+	{
+		ActionMessages messages = new ActionMessages();
+		
+		if (!pa.getAssignmentType().isDefaultAssignmentType())
+		{
+			if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_DATE)
+			{
+				if (pa.getDateStart() == null)
+				{
+					messages.add("dateStart", new ActionMessage("errors.invalidDate"));
+				}
+				else if (pa.getDateEnd() == null)
+				{
+					messages.add("dateEnd", new ActionMessage("errors.invalidDate"));
+				}
+				else if (pa.getDateStart().after(pa.getDateEnd()))
+				{
+					messages.add("dateStart", new ActionMessage("admin.assignment.errorStartAfterEnd"));
+				}
+
+			} 
+			else if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED)
+			{
+				if (pa.getAllottedHours() == null)
+				{
+					messages.add("dateEnd", new ActionMessage("admin.assignment.errorNoAllottedHours"));
+				}
+			}
+				
+		}
+		
+		return messages;
 	}
 }

@@ -175,7 +175,7 @@ public class DomainAssembler
 	 * @throws ParseException 
 	 */
 	
-	public static ProjectAssignment getProjectAssignment(ProjectAssignmentForm paf) throws ParseException
+	public static ProjectAssignment getProjectAssignment(ProjectAssignmentForm paf)
 	{
 		ProjectAssignment 	pa = new ProjectAssignment();
 		SimpleDateFormat	dateParser = new SimpleDateFormat("yyyy-MM-dd");
@@ -184,12 +184,20 @@ public class DomainAssembler
 		{
 			pa.setAssignmentId(paf.getAssignmentId());
 		}		
+
+		try
+		{
+			pa.setDateStart(dateParser.parse(paf.getDateStart()));
+			pa.setDateEnd(dateParser.parse(paf.getDateEnd()));
+		}
+		catch (ParseException pe)
+		{
+		}
 		
-		pa.setDateStart(dateParser.parse(paf.getDateStart()));
-		pa.setDateEnd(dateParser.parse(paf.getDateEnd()));
 		pa.setHourlyRate(paf.getHourlyRate());
-		pa.setRole(paf.getDescription());
+		pa.setRole(paf.getRole());
 		pa.setAssignmentType(new ProjectAssignmentType(paf.getAssignmentTypeId()));
+		pa.setAllottedHours(paf.getAllottedHours());
 		
 		// TODO quickfix..
 		pa.setActive(true);

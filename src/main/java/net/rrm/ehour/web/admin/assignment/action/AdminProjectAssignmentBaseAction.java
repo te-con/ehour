@@ -23,10 +23,21 @@
 
 package net.rrm.ehour.web.admin.assignment.action;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
+import net.rrm.ehour.web.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.web.sort.ProjectComparator;
+import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.struts.action.Action;
 
@@ -40,6 +51,26 @@ public class AdminProjectAssignmentBaseAction extends Action
 	protected ProjectService			projectService;
 	protected UserService				userService;
 	protected EhourConfig				config;
+	
+	/**
+	 * Set assignments and currency on context
+	 * @param request
+	 */
+	protected void setAssignmentsOnContext(HttpServletRequest request, ProjectAssignmentForm paForm)
+	{
+		List<Project>			allProjects;
+		List<ProjectAssignment>	assignments;
+		
+		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
+		
+		allProjects = projectService.getAllProjects(true);
+		Collections.sort(allProjects, new ProjectComparator());
+		request.setAttribute("allProjects", allProjects);
+		
+		assignments = projectService.getAllProjectsForUser(paForm.getUserId());
+		Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
+		request.setAttribute("assignments", assignments);
+	}
 	
 	/**
 	 * 

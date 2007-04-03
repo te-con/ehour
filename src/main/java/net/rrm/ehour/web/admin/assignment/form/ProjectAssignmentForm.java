@@ -43,7 +43,8 @@ public class ProjectAssignmentForm extends ActionForm
 	private	String	dateEnd;
 	private	Integer	projectId;
 	private	Float	hourlyRate;
-	private	String	description;
+	private	String	role;
+	private Float	allottedHours;
 
 	/**
 	 * @return the userId
@@ -119,20 +120,20 @@ public class ProjectAssignmentForm extends ActionForm
 		this.dateStart = dateStart;
 	}
 
-	public String getDescription()
+	public String getRole()
 	{
-		return description;
+		return role;
 	}
 
-	public void setDescription(String description)
+	public void setRole(String description)
 	{
 		if (description.equals(""))
 		{
-			this.description = null;
+			this.role = null;
 		}
 		else
 		{
-			this.description = description;
+			this.role = description;
 		}
 	}
 
@@ -150,6 +151,22 @@ public class ProjectAssignmentForm extends ActionForm
 	public void setAssignmentTypeId(Integer assignmentTypeId)
 	{
 		this.assignmentTypeId = assignmentTypeId;
+	}
+
+	/**
+	 * @return the allotted
+	 */
+	public Float getAllottedHours()
+	{
+		return allottedHours;
+	}
+
+	/**
+	 * @param allotted the allotted to set
+	 */
+	public void setAllottedHours(Float allotted)
+	{
+		this.allottedHours = allotted;
 	}
 	
 }

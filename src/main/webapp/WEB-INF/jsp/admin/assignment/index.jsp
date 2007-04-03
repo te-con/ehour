@@ -9,9 +9,10 @@
 	var formSuccess = "<fmt:message key="admin.general.formSuccess" />";
 	var sendingData = "<fmt:message key="general.submitting" />";
 	var loadingMsg = "<fmt:message key="general.loading" />";	
-	var rateNotValid = "<fmt:message key="admin.assignment.errorRateNotValid" />";	
+	var notAFloat = "<fmt:message key="admin.assignment.errorNotAFloat" />";	
 	var noDeleteMessage = "<fmt:message key="admin.assignment.noDelete" />";		
-
+	var deleteConfirm = "<fmt:message key="admin.assignment.deleteConfirm" />";
+	var defaultText= "<fmt:message key="admin.user.filter" />...";
 </script>
 
 <script src="../../../js/dojo.js" type="text/javascript"></script>
@@ -42,7 +43,7 @@
 										name="filter"
 										size="30"
 										id="filterInput"
-										value="<fmt:message key="admin.user.filter" />"><br>
+										value="<fmt:message key="admin.user.filter" />..."><br>
 								<fmt:message key="admin.user.hideInactive" />: <input style="margin-bottom: 0" type="checkbox" id="hideInactive" name="hideInactive" checked><br>
 							</p>
 						

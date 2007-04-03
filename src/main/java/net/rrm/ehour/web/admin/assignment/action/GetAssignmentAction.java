@@ -23,20 +23,15 @@
 
 package net.rrm.ehour.web.admin.assignment.action;
 
-import java.util.Collections;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm;
-import net.rrm.ehour.web.sort.ProjectAssignmentComparator;
-import net.rrm.ehour.web.sort.ProjectComparator;
 import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.struts.action.ActionForm;
@@ -58,22 +53,14 @@ public class GetAssignmentAction extends AdminProjectAssignmentBaseAction
 		ActionForward			fwd = mapping.findForward("success");
 		ProjectAssignmentForm	paForm = (ProjectAssignmentForm)form;
 		String					param;
-		List<Project>			allProjects;
-		List<ProjectAssignment>	assignments;
 		User					user;
 		ProjectAssignment		assignment;
 		
 		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
 		
 		param = mapping.getParameter();
-		
-		allProjects = projectService.getAllProjects(true);
-		Collections.sort(allProjects, new ProjectComparator());
-		request.setAttribute("allProjects", allProjects);
-		
-		assignments = projectService.getAllProjectsForUser(paForm.getUserId());
-		Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
-		request.setAttribute("assignments", assignments);
+
+		super.setAssignmentsOnContext(request, paForm);
 		
 		if (!"addOnly".equals(param))
 		{

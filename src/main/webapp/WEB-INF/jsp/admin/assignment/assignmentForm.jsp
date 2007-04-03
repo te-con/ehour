@@ -8,7 +8,9 @@ function initDojo()
 {
 	var replacedNode = document.getElementById("dateStartDiv");
 	dojo.widget.createWidget("DropdownDatePicker",
-											{value:"<fmt:formatDate value="${assignment.dateStart}" pattern="yyyy-MM-dd" />T00:00:00-00:00",
+											{<c:if test="${assignment.dateStart != null}">
+												value:"<fmt:formatDate value="${assignment.dateStart}" pattern="yyyy-MM-dd" />T00:00:00-00:00",
+											</c:if>
 											 disabled: false,
 											 name: "dateStart",
 											 containerToggle: "fade"
@@ -18,7 +20,9 @@ function initDojo()
 
 	replacedNode = document.getElementById("dateEndDiv");
 	dojo.widget.createWidget("DropdownDatePicker",
-											{value:"<fmt:formatDate value="${assignment.dateEnd}" pattern="yyyy-MM-dd" />T00:00:00-00:00",
+											{<c:if test="${assignment.dateEnd != null}">
+												value:"<fmt:formatDate value="${assignment.dateEnd}" pattern="yyyy-MM-dd" />T00:00:00-00:00",
+											 </c:if>
 											 disabled: false,
 											 name: "dateEnd",
 											 containerToggle: "fade"
@@ -43,14 +47,10 @@ function initDojo()
 <table class="contentTable" cellspacing="2">
 	<tr>
 		<th></th>
-		<th><fmt:message key="admin.assignment.customerHeader" /></th>
-
-		<th><fmt:message key="admin.assignment.projectCodeHeader" /></th>
-
 		<th><fmt:message key="admin.assignment.projectHeader" /></th>
-
+		<th><fmt:message key="admin.assignment.projectCodeHeader" /></th>
+		<th><fmt:message key="admin.assignment.customerHeader" /></th>
 		<th><fmt:message key="admin.assignment.startHeader" /></th>
-		
 		<th><fmt:message key="admin.assignment.endHeader" /></th>		
 	</tr>
 	
@@ -62,11 +62,10 @@ function initDojo()
 				</a>
 			</td>
 			
-			<td class="main">${assignment.project.customer.name}</td>
-
-			<td class="main">${assignment.project.projectCode}</td>			
-		
 			<td class="main">${assignment.project.name}</td>
+			<td class="main">${assignment.project.projectCode}</td>			
+			<td class="main">${assignment.project.customer.name}</td>
+		
 			
 			<td class="main">
 				<fmt:formatDate value="${assignment.dateStart}" pattern="dd MMMM yyyy" />
@@ -155,7 +154,7 @@ function initDojo()
 							<c:if test="${project.projectId== assignment.project.projectId}">
 							SELECTED
 						</c:if>
-					> ${project.projectCode} - ${project.name}
+					> ${project.name} - ${project.projectCode} - ${project.customer.name}
 					</c:forEach>
 				</select>
 			</td>
@@ -202,14 +201,15 @@ function initDojo()
 			</td>
 			
 			<td>
-				<input class="textInputSmall"  size="6"  type="text" name="hourlyRate" value="${assignment.hourlyRate}"> hours
+				<input class="textInputSmall"  size="6"  type="text" id="allottedHours" name="allottedHours" value="${assignment.allottedHours}"> hours
 			</td>
 			
-			<td style="color: red">
+			<td style="color: red" id="allottedHoursError">
+				<html:errors property="allottedHours" />
 			</td>
 		</tr>	
 
-		<tr>
+		<tr id="dateStartTr">
 			<td>
 				<fmt:message key="admin.assignment.dateStart" />:
 			</td>
@@ -223,7 +223,7 @@ function initDojo()
 			</td>
 		</tr>
 	
-		<tr>
+		<tr id="dateEndTr">
 			<td>
 				<fmt:message key="admin.assignment.dateEnd" />:
 			</td>
@@ -232,7 +232,9 @@ function initDojo()
 				<div id="dateEndDiv" />
 			</td>
 			
-			<td></td>
+			<td style="color: red">
+				<html:errors property="dateEnd" />
+			</td>
 		</tr>
 	
 		<tr>
@@ -266,7 +268,7 @@ function initDojo()
 		</c:when>
 
 		<c:when test="${assignment.assignmentId != null && !assignment.deletable}">
-			<a href="" javascript:alert('<fmt:message key="admin.assignment.noDelete" />');return false">
+			<a href="" onClick="alert('<fmt:message key="admin.assignment.noDelete" />');return false">
 				<img src="<c:url value="/img/icons/white_delete_disabled.png" />" border="0">
 			</a>
 		</c:when>
