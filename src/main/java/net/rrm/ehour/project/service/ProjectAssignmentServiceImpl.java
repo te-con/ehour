@@ -34,9 +34,9 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 
@@ -58,21 +58,21 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	
 	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException
 	{
-		if (projectAssignment.getAssignmentType().isDefaultAssignmentType() &&
-			isAlreadyAssignedAsDefault(projectAssignment))
-		{
-			throw new ProjectAlreadyAssignedException("Already default assignment made for this project");
-		}
-
-		// use merge as the session already contains an attached PA with the same id when checking for dupes
-		if (projectAssignment.getAssignmentId() != null)
-		{
-			projectAssignmentDAO.merge(projectAssignment);
-		}
-		else
-		{
+//		if (projectAssignment.getAssignmentType().isDefaultAssignmentType() &&
+//			isAlreadyAssignedAsDefault(projectAssignment))
+//		{
+//			throw new ProjectAlreadyAssignedException("Already default assignment made for this project");
+//		}
+//
+//		// use merge as the session already contains an attached PA with the same id when checking for dupes
+//		if (projectAssignment.getAssignmentId() != null)
+//		{
+//			projectAssignmentDAO.merge(projectAssignment);
+//		}
+//		else
+//		{
 			projectAssignmentDAO.persist(projectAssignment);
-		}
+//		}
 		
 		return projectAssignment;
 	}
@@ -90,12 +90,12 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		for (Project project : defaultProjects)
 		{
 			assignment = new ProjectAssignment();
-			assignment.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT));
+			assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
 			assignment.setProject(project);
 			assignment.setUser(user);
 			assignment.setActive(true);
 			
-			if (!isAlreadyAssignedAsDefault(assignment, user.getProjectAssignments()))
+			if (!isAlreadyAssigned(assignment, user.getProjectAssignments()))
 			{
 				logger.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
 				user.addProjectAssignment(assignment);
@@ -106,21 +106,21 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	}
 	
 	
-	/**
-	 * Check if the project is already assigned and the date overlaps
-	 * @param projectAssignment
-	 * @return
-	 */
-	private boolean isAlreadyAssignedAsDefault(ProjectAssignment projectAssignment)
-	{
-		List<ProjectAssignment> assignments;
-		
-		assignments = projectAssignmentDAO.findProjectAssignmentForUser(projectAssignment.getProject().getProjectId(),
-															 	projectAssignment.getUser().getUserId(),
-															 	ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
-
-		return isAlreadyAssignedAsDefault(projectAssignment, assignments);
-	}	
+//	/**
+//	 * Check if the project is already assigned and the date overlaps
+//	 * @param projectAssignment
+//	 * @return
+//	 */
+//	private boolean isAlreadyAssignedAsDefault(ProjectAssignment projectAssignment)
+//	{
+//		List<ProjectAssignment> assignments;
+//		
+//		assignments = projectAssignmentDAO.findProjectAssignmentForUser(projectAssignment.getProject().getProjectId(),
+//															 	projectAssignment.getUser().getUserId(),
+//															 	ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
+//
+//		return isAlreadyAssignedAsDefault(projectAssignment, assignments);
+//	}	
 	
 	/**
 	 * Check if this default assignment is already assigned as default
@@ -129,14 +129,12 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * @param user
 	 * @return
 	 */
-	private boolean isAlreadyAssignedAsDefault(ProjectAssignment projectAssignment, Collection<ProjectAssignment> assignments)
+	private boolean isAlreadyAssigned(ProjectAssignment projectAssignment, Collection<ProjectAssignment> assignments)
 	{
 		boolean		alreadyAssigned = false;
 		int			projectId;
 		
-		// if the assignment ain't default, ignore it
-		if (assignments == null ||
-				!projectAssignment.getAssignmentType().isDefaultAssignmentType())
+		if (assignments == null)
 		{
 			return false;
 		}
@@ -145,12 +143,11 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		for (ProjectAssignment assignment : assignments)
 		{
-			if (assignment.getAssignmentType().isDefaultAssignmentType() &&
-				assignment.getProject().getProjectId().intValue() == projectId)
+			if (assignment.getProject().getProjectId().intValue() == projectId)
 			{
 				if (logger.isDebugEnabled())
 				{
-					logger.debug("Default assignment is already default assigned as assignmentId " + assignment.getAssignmentId());
+					logger.debug("Default assignment is already assigned as assignmentId " + assignment.getAssignmentId());
 				}
 				
 				alreadyAssigned = true;

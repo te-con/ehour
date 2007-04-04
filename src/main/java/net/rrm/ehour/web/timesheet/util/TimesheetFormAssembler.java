@@ -121,8 +121,7 @@ public class TimesheetFormAssembler
 		// the assignment/project/customer was deactivated; hence the checks here 
 		cell.setValid(assignment.isActive() && assignment.getProject().isActive() &&
 					  assignment.getProject().getCustomer().isActive() &&
-					  (assignment.getAssignmentType().isDefaultAssignmentType() || 
-					   DateUtil.isDateWithinRange(date, assignment.getDateRange())));
+					  DateUtil.isDateWithinRange(date, assignment.getDateRange()));
 		cell.setCellDate(date);
 		
 		return cell;

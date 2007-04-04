@@ -123,6 +123,7 @@ public class DomainAssemblerTest extends TestCase
 		pf.setName("name");
 		pf.setProjectCode("projectcode");
 		pf.setProjectId(2);
+		pf.setProjectManagerId(-1);
 		
 		Project prj = DomainAssembler.getProject(pf);
 		

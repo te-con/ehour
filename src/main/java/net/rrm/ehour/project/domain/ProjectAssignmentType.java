@@ -24,7 +24,6 @@
 package net.rrm.ehour.project.domain;
 
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 
@@ -93,10 +92,5 @@ public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignme
 		return new CompareToBuilder()
 				.append(this.assignmentType, type.assignmentType)
 				.append(this.assignmentTypeId, type.assignmentTypeId).toComparison();
-	}
-	
-	public boolean isDefaultAssignmentType()
-	{
-		return this.assignmentTypeId.equals(ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
 	}
 }

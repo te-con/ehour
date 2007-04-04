@@ -34,7 +34,6 @@ import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.web.timesheet.dto.Timesheet;

@@ -84,9 +84,6 @@ function initDojo()
 						<c:when test="${assignment.assignmentType.assignmentTypeId == 0}">
 							<fmt:message key="admin.assignment.dateRange" />
 						</c:when>
-						<c:when test="${assignment.assignmentType.assignmentTypeId == 1}">
-							<fmt:message key="admin.assignment.default" />
-						</c:when>
 						<c:when test="${assignment.assignmentType.assignmentTypeId == 2}">
 							<fmt:message key="admin.assignment.allottedFixed" />
 						</c:when>

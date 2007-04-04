@@ -77,8 +77,7 @@ public class UserServiceImpl implements UserService
 		{
 			for (ProjectAssignment assignment : user.getProjectAssignments())
 			{
-				if (assignment.getAssignmentType().isDefaultAssignmentType() &&
-					(!DateUtil.isDateWithinRange(currentDate , assignment.getDateRange())) ||
+				if ((!DateUtil.isDateWithinRange(currentDate , assignment.getDateRange())) ||
 					 (assignment.getProject() == null || !assignment.getProject().isActive()))
 				{
 					inactiveAssignments.add(assignment);
@@ -261,7 +260,7 @@ public class UserServiceImpl implements UserService
 	/**
 	 * 
 	 */
-	public List getUserRoles()
+	public List<UserRole> getUserRoles()
 	{
 		return userRoleDAO.findAll();
 	}

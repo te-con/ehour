@@ -22,9 +22,10 @@
  */
 package net.rrm.ehour.user.service;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;

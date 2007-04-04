@@ -33,8 +33,8 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.util.EhourConstants;
 
 /**
  * TODO 
@@ -112,7 +112,7 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 		pa.setUser(user);
 		pa.setDateStart(new Date());
 		pa.setDateEnd(cal.getTime());
-		pa.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE));
+		pa.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
 		dao.persist(pa);
 	}
 

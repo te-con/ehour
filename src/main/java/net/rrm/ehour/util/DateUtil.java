@@ -95,14 +95,21 @@ public class DateUtil
 	
 	public static boolean isDateWithinRange(Date date, DateRange dateRange)
 	{
-		boolean	withinRange = false;
-		
-		if (date != null &&
-			dateRange.getDateStart() != null &&
-			dateRange.getDateEnd() != null)
+		boolean	withinRange = true;
+	
+		if (date == null)
 		{
-			withinRange =  !(dateRange.getDateStart().after(date) ||
-							dateRange.getDateEnd().before(date));
+			return false;
+		}
+		
+		if (dateRange.getDateStart() != null)
+		{
+			withinRange = !dateRange.getDateStart().after(date);
+		}
+		
+		if (dateRange.getDateEnd() != null)
+		{
+			withinRange = withinRange && !dateRange.getDateEnd().before(date);
 		}
 		
 		return withinRange;

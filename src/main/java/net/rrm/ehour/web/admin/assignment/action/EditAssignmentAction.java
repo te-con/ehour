@@ -102,45 +102,43 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 	{
 		ActionMessages messages = new ActionMessages();
 		
-		if (!pa.getAssignmentType().isDefaultAssignmentType())
+		if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_DATE)
 		{
-			if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_DATE)
+			if (pa.getDateStart() == null)
 			{
-				if (pa.getDateStart() == null)
-				{
-					messages.add("dateStart", new ActionMessage("errors.invalidDate"));
-				}
-				else if (pa.getDateEnd() == null)
-				{
-					messages.add("dateEnd", new ActionMessage("errors.invalidDate"));
-				}
-				else if (pa.getDateStart().after(pa.getDateEnd()))
-				{
-					messages.add("dateStart", new ActionMessage("admin.assignment.errorStartAfterEnd"));
-				}
-
-			} 
-			else if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
-			{
-				if (pa.getAllottedHours() == null)
-				{
-					messages.add("allottedHours", new ActionMessage("admin.assignment.required"));
-				}
+				messages.add("dateStart", new ActionMessage("errors.invalidDate"));
 			}
-			else if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+			else if (pa.getDateEnd() == null)
 			{
-				if (pa.getAllottedHours() == null)
-				{
-					messages.add("allottedHours", new ActionMessage("admin.assignment.required"));
-				}
+				messages.add("dateEnd", new ActionMessage("errors.invalidDate"));
+			}
+			else if (pa.getDateStart().after(pa.getDateEnd()))
+			{
+				messages.add("dateStart", new ActionMessage("admin.assignment.errorStartAfterEnd"));
+			}
 
-				if (pa.getAllowedOverrun() == null)
-				{
-					messages.add("allowedOverrun", new ActionMessage("admin.assignment.required"));
-				}
-			
+		} 
+		else if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
+		{
+			if (pa.getAllottedHours() == null)
+			{
+				messages.add("allottedHours", new ActionMessage("admin.assignment.required"));
 			}
 		}
+		else if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+		{
+			if (pa.getAllottedHours() == null)
+			{
+				messages.add("allottedHours", new ActionMessage("admin.assignment.required"));
+			}
+
+			if (pa.getAllowedOverrun() == null)
+			{
+				messages.add("allowedOverrun", new ActionMessage("admin.assignment.required"));
+			}
+		
+		}
+		
 		
 		return messages;
 	}

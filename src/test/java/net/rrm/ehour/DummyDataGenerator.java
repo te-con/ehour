@@ -31,13 +31,13 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.util.EhourConstants;
 
 /**
  * DummyDataGenerator 
@@ -108,7 +108,7 @@ public class DummyDataGenerator
 		user = getUser();
 		user.setUserId(userId);
 		
-		prjAsg.setAssignmentType(new ProjectAssignmentType(ProjectAssignmentUtil.TYPE_START_END_DATE));
+		prjAsg.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
 
 		prjAsg.setUser(user);
 		prjAsg.setActive(true);

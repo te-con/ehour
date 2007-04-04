@@ -33,7 +33,6 @@ public class EhourConstants
 	public final static int	USERTYPE_ADMIN = 2;
 	
 	public final static int ASSIGNMENT_DATE = 0;
-	public final static int ASSIGNMENT_DEFAULT = 1;
 	public final static int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
 	public final static int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
 	

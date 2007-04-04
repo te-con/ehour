@@ -15,41 +15,37 @@ function validateForm(formId)
 	
 	var asgTypeId = dojo.byId('assignmentTypeId').value;
 	
-	// default
-	if (asgTypeId != 1)
+	// date range
+	if (asgTypeId == 0)
 	{
-		// date range
-		if (asgTypeId == 0)
-		{
-			var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat));
-			isValid = validateFloat(formId, validationRules);
-		}
-		// time alloted fixed
-		else if (asgTypeId == 2)
-		{
-			var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat),
-											new Array("allottedHours", "allottedHoursError", notAFloat));
-											
-			isValid = validateFloat(formId, validationRules);											
-			
-			validationRules = new Array(new Array("allottedHours", "allottedHoursError", required));
-			isValid = isValid && validateRequired(formId, validationRules);
-		}
-		// time alloted flex
-		else if (asgTypeId == 3)
-		{
-			var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat),
-											new Array("allottedHours", "allottedHoursError", notAFloat),
-											new Array("allowedOverrun", "allowedOverrunError", notAFloat)											
-													);
-
-			isValid = validateFloat(formId, validationRules);											
-			
-			validationRules = new Array(new Array("allottedHours", "allottedHoursError", required),
-										new Array("allowedOverrun", "allowedOverrunError", required));
-			isValid = isValid && validateRequired(formId, validationRules);
-		}		
+		var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat));
+		isValid = validateFloat(formId, validationRules);
 	}
+	// time alloted fixed
+	else if (asgTypeId == 2)
+	{
+		var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat),
+										new Array("allottedHours", "allottedHoursError", notAFloat));
+										
+		isValid = validateFloat(formId, validationRules);											
+		
+		validationRules = new Array(new Array("allottedHours", "allottedHoursError", required));
+		isValid = isValid && validateRequired(formId, validationRules);
+	}
+	// time alloted flex
+	else if (asgTypeId == 3)
+	{
+		var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat),
+										new Array("allottedHours", "allottedHoursError", notAFloat),
+										new Array("allowedOverrun", "allowedOverrunError", notAFloat)											
+												);
+
+		isValid = validateFloat(formId, validationRules);											
+		
+		validationRules = new Array(new Array("allottedHours", "allottedHoursError", required),
+									new Array("allowedOverrun", "allowedOverrunError", required));
+		isValid = isValid && validateRequired(formId, validationRules);
+	}		
 		
 	if (isValid)
 	{
