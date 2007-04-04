@@ -15,13 +15,40 @@ function validateForm(formId)
 	
 	var asgTypeId = dojo.byId('assignmentTypeId').value;
 	
+	// default
 	if (asgTypeId != 1)
 	{
-		var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat),
-										new Array("allottedHours", "allottedHoursError", notAFloat)
-												);
-		
-		isValid = validateFloat(formId, validationRules);
+		// date range
+		if (asgTypeId == 0)
+		{
+			var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat));
+			isValid = validateFloat(formId, validationRules);
+		}
+		// time alloted fixed
+		else if (asgTypeId == 2)
+		{
+			var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat),
+											new Array("allottedHours", "allottedHoursError", notAFloat));
+											
+			isValid = validateFloat(formId, validationRules);											
+			
+			validationRules = new Array(new Array("allottedHours", "allottedHoursError", required));
+			isValid = isValid && validateRequired(formId, validationRules);
+		}
+		// time alloted flex
+		else if (asgTypeId == 3)
+		{
+			var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat),
+											new Array("allottedHours", "allottedHoursError", notAFloat),
+											new Array("allowedOverrun", "allowedOverrunError", notAFloat)											
+													);
+
+			isValid = validateFloat(formId, validationRules);											
+			
+			validationRules = new Array(new Array("allottedHours", "allottedHoursError", required),
+										new Array("allowedOverrun", "allowedOverrunError", required));
+			isValid = isValid && validateRequired(formId, validationRules);
+		}		
 	}
 		
 	if (isValid)
@@ -119,25 +146,76 @@ function editAssignment(editId, assignmentId)
 	}
 }
 
+// initialize form after new load
 function initForm()
 {
 	bindAssignmentForm();
 
 	dojo.event.connect(dojo.byId('assignmentTypeId'), "onchange", "hideRows");
+	dojo.event.connect(dojo.byId('projectSelector'), "onchange", "fetchProject");
 	
 	hideRows('');
+	
+	fetchProject('');
 }
 
+// hide rows based on assignment type
 function hideRows(evt)
 {
 	var asgTypeId = dojo.byId('assignmentTypeId').value;
 	
-	dojo.byId('allottedTr').style.display = (asgTypeId == 2) ? "" : "none";
+	dojo.byId('allottedTr').style.display = (asgTypeId == 2 || asgTypeId == 3) ? "" : "none";
+	dojo.byId('notifyPmTr').style.display = (asgTypeId == 2 || asgTypeId == 3) ? "" : "none";	
+	dojo.byId('allowedOverrunTr').style.display = (asgTypeId == 3) ? "" : "none";	
 	
 	dojo.byId('dateStartTr').style.display = (asgTypeId == 1) ? "none" : "";
 	dojo.byId('dateEndTr').style.display = (asgTypeId == 1) ? "none" : "";	
 }	
 
+// fetch project
+function fetchProject(evt)
+{
+	showLoadingData();	
+	
+	var projectId = dojo.byId('projectSelector').value;
+	
+    dojo.io.bind({
+                   url: 'getProject.do',
+                   handler: projectFetched,
+                   content: {projectId: projectId}
+                });  		
+}
+
+// project fetched from server
+function projectFetched(type, xml, evt)
+{
+  	hideLoadingData();
+  	
+	if (type == 'error')
+	{	
+   		alert(ajaxError);
+	}
+	else
+	{
+		// JSON response
+		var project = eval('(' + xml + ')');	
+		
+		if (project.pm == '')
+		{
+			dojo.byId('notifyPm').disabled = true;
+			dojo.byId('notifyPm').checked = false;
+			dojo.byId('notifyPmMsg').innerHTML = cantNotify;
+		}
+		else
+		{
+			dojo.byId('notifyPm').disabled = false;
+			dojo.byId('notifyPmMsg').innerHTML = '&nbsp;';
+		}
+
+	}
+}
+
+// connect all events
 function init()
 {
 	dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");

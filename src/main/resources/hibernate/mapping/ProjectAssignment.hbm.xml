@@ -39,6 +39,8 @@
         <many-to-one name="assignmentType" outer-join="auto" fetch="join"
                 class="net.rrm.ehour.project.domain.ProjectAssignmentType" column="ASSIGNMENT_TYPE_ID"/>
 
-		<property name="allottedHours" column="ALLOTTED_HOURS" type="java.lang.Float"/>
+		<property name="allottedHours" column="ALLOTTED_HOURS" type="float"/>
+		<property name="allowedOverrun" column="ALLOTTED_HOURS_OVERRUN" type="float"/>
+		<property name="notifyPm" column="NOTIFY_PM_ON_OVERRUN" type="yes_no"/>
 	</class>	
 </hibernate-mapping>

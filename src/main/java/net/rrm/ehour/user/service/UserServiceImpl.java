@@ -330,4 +330,13 @@ public class UserServiceImpl implements UserService
 	{
 		this.projectAssignmentService = projectAssignmentService;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#getUsersWithEmailSet()
+	 */
+	public List<User> getUsersWithEmailSet()
+	{
+		return userDAO.findAllActiveUsersWithEmailSet();
+	}
 }

@@ -97,4 +97,11 @@ public class UserDAOTest extends BaseDAOTest
 		
 		assertEquals(2, results.size());
 	}
+	
+	public void testFindAllActiveUsersWithEmailSet()
+	{
+		List results = dao.findAllActiveUsersWithEmailSet();
+		
+		assertEquals(2, results.size());
+	}
 }

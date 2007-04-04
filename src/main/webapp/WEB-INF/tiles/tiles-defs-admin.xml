@@ -74,6 +74,7 @@
     <!-- Admin assignment form  -->
     <definition name=".ehour.admin.assignment.assignmentForm" path="/WEB-INF/jsp/admin/assignment/assignmentForm.jsp" />
 
+	<definition name=".ehour.admin.assignment.projectPmCheck" path="/WEB-INF/jsp/admin/assignment/projectPmCheck.jsp" />
 
 
     <!-- Configuration index -->

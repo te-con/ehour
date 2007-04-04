@@ -88,7 +88,10 @@ function initDojo()
 							<fmt:message key="admin.assignment.default" />
 						</c:when>
 						<c:when test="${assignment.assignmentType.assignmentTypeId == 2}">
-							<fmt:message key="admin.assignment.allotted" />
+							<fmt:message key="admin.assignment.allottedFixed" />
+						</c:when>
+						<c:when test="${assignment.assignmentType.assignmentTypeId == 3}">
+							<fmt:message key="admin.assignment.allottedFlex" />
 						</c:when>
 					</c:choose>;&nbsp;&nbsp;
 					
@@ -148,7 +151,7 @@ function initDojo()
 			</td>
 		
 			<td>
-				<select class="textInputSmall" name="projectId">
+				<select class="textInputSmall" name="projectId" id="projectSelector">
 					<c:forEach items="${allProjects}" var="project">
 						<option value="${project.projectId}" 
 							<c:if test="${project.projectId== assignment.project.projectId}">
@@ -187,7 +190,8 @@ function initDojo()
 				<select id="assignmentTypeId" name="assignmentTypeId" class="textInputSmall" >
 					<option value="0" <c:if test="${assignment.assignmentType.assignmentTypeId == 0}">SELECTED</c:if>><fmt:message key="admin.assignment.dateRange" />
 					<option value="1" <c:if test="${assignment.assignmentType.assignmentTypeId == 1}">SELECTED</c:if>><fmt:message key="admin.assignment.default" />
-					<option value="2" <c:if test="${assignment.assignmentType.assignmentTypeId == 2}">SELECTED</c:if>><fmt:message key="admin.assignment.allotted" />
+					<option value="2" <c:if test="${assignment.assignmentType.assignmentTypeId == 2}">SELECTED</c:if>><fmt:message key="admin.assignment.allottedFixed" />
+					<option value="3" <c:if test="${assignment.assignmentType.assignmentTypeId == 3}">SELECTED</c:if>><fmt:message key="admin.assignment.allottedFlex" />
 				</select>
 			</td>
 			
@@ -208,6 +212,35 @@ function initDojo()
 				<html:errors property="allottedHours" />
 			</td>
 		</tr>	
+
+
+		<tr id="allowedOverrunTr">
+			<td>
+				<fmt:message key="admin.assignment.allowedOverrun" />:
+			</td>
+			
+			<td>
+				<input class="textInputSmall" 
+						size="6"
+						type="text" id="allowedOverrun" name="allowedOverrun" value="${assignment.allowedOverrun}"> hours
+			</td>
+			
+			<td style="color: red" id="allowedOverrunError">
+				<html:errors property="allowedOverrun" />
+			</td>
+		</tr>	
+
+		<tr id="notifyPmTr">
+			<td>
+				<fmt:message key="admin.assignment.notifyPm" />:
+			</td>
+		
+			<td colspan="2" style="color: #aaaaa;">
+				<input class="textInputSmall" type="checkbox" id="notifyPm" name="notifyPm" <c:if test="${assignment.notifyPm}">checked</c:if>>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="notifyPmMsg">&nbsp;</span>
+			</td>
+		</tr>
+		
 
 		<tr id="dateStartTr">
 			<td>
@@ -275,7 +308,7 @@ function initDojo()
 	</c:choose>
 </div>
 
-<div style="float: right; text-align: right; margin: 3px 16px 0 0; max-width: 730px;border: 0">					
+<div class="SubmitButtonPos">
 	<input type="image" src="<c:url value="/img/icons/white_submit.png" />" border="0" class="submitNoBorder" alt="<c:choose>
 					<c:when test="${assignment.assignmentId == null}">
 						<fmt:message key="general.add" />

@@ -17,6 +17,7 @@
 			<tr>
 				<th class="firstCell"><fmt:message key="user.overview.project" /></th>
 				<th><fmt:message key="user.overview.projectCode" /></th>
+				<th><fmt:message key="user.overview.customer" /></th>
 				<c:if test="${config.showTurnover}">			
 					<th><fmt:message key="user.overview.rate" /></th>
 				</c:if>
@@ -31,6 +32,7 @@
 			<tr>
 				<td>${projectReport.projectAssignment.project.name}</td>
 				<td>${projectReport.projectAssignment.project.projectCode}</td>				
+				<td>${projectReport.projectAssignment.project.customer.name}</td>
 				<c:if test="${config.showTurnover}">
 					<td>
 						<c:if test="${projectReport.projectAssignment.hourlyRate == '' || projectReport.projectAssignment.hourlyRate == null}">

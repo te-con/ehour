@@ -189,7 +189,6 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		weekOverview = new WeekOverview();
 		
-		// @todo assuming the week starts on sunday. configurable?
 		requestedWeek.setFirstDayOfWeek(Calendar.SUNDAY);
 		range = DateUtil.getDateRangeForWeek(requestedWeek);
 

@@ -29,6 +29,14 @@
 	    ORDER BY lastName, firstName	    
 	</query>	
 
+	<query name="User.findAllActiveUsersWithEmailSet">
+	<![CDATA[
+		SELECT user
+		FROM User as user
+		WHERE active = true AND email IS NOT NULL AND email <> ''
+	    ORDER BY lastName, firstName	]]>    
+	</query>	
+
 	<query name="UserDepartment.findByNameAndCode"> 
 		FROM UserDepartment as userDepartment
 	    WHERE lcase(name) like  :name AND lcase(code) LIKE :code

@@ -164,6 +164,7 @@ public class DomainAssembler
 		prj.setDescription(pf.getDescription());
 		prj.setName(pf.getName());
 		prj.setProjectCode(pf.getProjectCode());
+		prj.setProjectManager( (pf.getProjectManagerId() != -1) ? new User(pf.getProjectManagerId()) : null);
 
 		return prj;
 	}
@@ -198,7 +199,8 @@ public class DomainAssembler
 		pa.setRole(paf.getRole());
 		pa.setAssignmentType(new ProjectAssignmentType(paf.getAssignmentTypeId()));
 		pa.setAllottedHours(paf.getAllottedHours());
-		
+		pa.setAllowedOverrun(paf.getAllowedOverrun());
+		pa.setNotifyPm(paf.isNotifyPm());
 		// TODO quickfix..
 		pa.setActive(true);
 		

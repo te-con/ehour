@@ -120,14 +120,26 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 				}
 
 			} 
-			else if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED)
+			else if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
 			{
 				if (pa.getAllottedHours() == null)
 				{
-					messages.add("dateEnd", new ActionMessage("admin.assignment.errorNoAllottedHours"));
+					messages.add("allottedHours", new ActionMessage("admin.assignment.required"));
 				}
 			}
-				
+			else if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+			{
+				if (pa.getAllottedHours() == null)
+				{
+					messages.add("allottedHours", new ActionMessage("admin.assignment.required"));
+				}
+
+				if (pa.getAllowedOverrun() == null)
+				{
+					messages.add("allowedOverrun", new ActionMessage("admin.assignment.required"));
+				}
+			
+			}
 		}
 		
 		return messages;

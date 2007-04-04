@@ -31,8 +31,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.admin.project.form.ProjectForm;
 import net.rrm.ehour.web.sort.CustomerComparator;
+import net.rrm.ehour.web.sort.UserComparator;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -54,14 +56,21 @@ public class GetProjectAction extends AdminProjectBaseAction
 		ProjectForm		projectForm = (ProjectForm)form;
 		String			param;
 		List<Customer>	customers;
+		List<User>		users;
 		Project			project;
 		
 		param = mapping.getParameter();
 		
-		customers = customerService.getCustomers(true);
-		Collections.sort(customers, new CustomerComparator());
-		
-		request.setAttribute("customers", customers);
+		if (!"projectOnly".equals(param))
+		{
+			customers = customerService.getCustomers(true);
+			Collections.sort(customers, new CustomerComparator());
+			request.setAttribute("customers", customers);
+	
+			users = userService.getUsersWithEmailSet();
+			Collections.sort(users, new UserComparator(false));
+			request.setAttribute("users", users);
+		}
 		
 		if (!"addOnly".equals(param))
 		{
@@ -70,6 +79,5 @@ public class GetProjectAction extends AdminProjectBaseAction
 		}
 			
 		return fwd;		
-		
 	}
 }

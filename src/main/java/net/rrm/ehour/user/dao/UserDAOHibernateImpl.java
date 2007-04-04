@@ -121,4 +121,14 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 		
 		return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, paramKeys, paramValues);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.dao.UserDAO#findAllActiveUsersWithEmailSet()
+	 */
+	@SuppressWarnings("unchecked")
+	public List<User> findAllActiveUsersWithEmailSet()
+	{
+		return getHibernateTemplate().findByNamedQuery("User.findAllActiveUsersWithEmailSet");
+	}
 }

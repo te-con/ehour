@@ -2,12 +2,13 @@ package net.rrm.ehour.project.domain;
 
 import java.util.Set;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.user.domain.User;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class Project extends DomainObject<Integer, Project>
 {
@@ -33,6 +34,8 @@ public class Project extends DomainObject<Integer, Project>
 	private	boolean	active;
 	private Customer customer;
 	private	Set		projectAssignments;
+	private User	projectManager;
+	
 	// Constructors
 
 	/** default constructor */
@@ -217,6 +220,22 @@ public class Project extends DomainObject<Integer, Project>
 			.append(this.projectCode, object.projectCode)
 			.append(this.projectId, object.projectId)
 			.append(this.customer, object.customer).toComparison();
+	}
+
+	/**
+	 * @return the projectManager
+	 */
+	public User getProjectManager()
+	{
+		return projectManager;
+	}
+
+	/**
+	 * @param projectManager the projectManager to set
+	 */
+	public void setProjectManager(User projectManager)
+	{
+		this.projectManager = projectManager;
 	}	
 
 }

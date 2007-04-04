@@ -39,6 +39,10 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	
 	private	Float	allottedHours;
 	
+	private Float 	allowedOverrun;
+	
+	private boolean	notifyPm;
+	
 	private boolean active;
 	
 	// @todo move to a VO - someday..
@@ -285,6 +289,38 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	public void setAssignmentType(ProjectAssignmentType assignmentType)
 	{
 		this.assignmentType = assignmentType;
+	}
+
+	/**
+	 * @return the allowedOverrun
+	 */
+	public Float getAllowedOverrun()
+	{
+		return allowedOverrun;
+	}
+
+	/**
+	 * @param allowedOverrun the allowedOverrun to set
+	 */
+	public void setAllowedOverrun(Float allowedOverrun)
+	{
+		this.allowedOverrun = allowedOverrun;
+	}
+
+	/**
+	 * @return the notifyPm
+	 */
+	public boolean isNotifyPm()
+	{
+		return notifyPm;
+	}
+
+	/**
+	 * @param notifyPm the notifyPm to set
+	 */
+	public void setNotifyPm(boolean notifyPm)
+	{
+		this.notifyPm = notifyPm;
 	}
 
 }

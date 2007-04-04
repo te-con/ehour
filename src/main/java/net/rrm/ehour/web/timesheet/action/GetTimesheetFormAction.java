@@ -87,7 +87,6 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 		{
 			request.setAttribute("config", config);
 		}
-		
 
 		fwd = mapping.findForward("success");
 		

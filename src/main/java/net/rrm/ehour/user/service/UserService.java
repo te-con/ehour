@@ -74,10 +74,16 @@ public interface UserService extends UserDetailsService
     public List<User> getUsersByNameMatch(String match, boolean inclInactive);
     
     /**
-     * Get all users
+     * Get all active users
      * @return
      */
     public List<User> getUsers();
+    
+    /**
+     * Get all active users with email set
+     * @return
+     */
+    public List<User> getUsersWithEmailSet();
     
     /**
      * Get list of all user departments
@@ -117,5 +123,7 @@ public interface UserService extends UserDetailsService
      * Get all user roles
      * @return
      */
-    public List getUserRoles();
+    public List<UserRole> getUserRoles();
+    
+    
 }

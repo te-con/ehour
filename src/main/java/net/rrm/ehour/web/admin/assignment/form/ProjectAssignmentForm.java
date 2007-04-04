@@ -23,7 +23,10 @@
 
 package net.rrm.ehour.web.admin.assignment.form;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
@@ -45,7 +48,18 @@ public class ProjectAssignmentForm extends ActionForm
 	private	Float	hourlyRate;
 	private	String	role;
 	private Float	allottedHours;
+	private Float	allowedOverrun;
+	private boolean	notifyPm;
 
+	/**
+	 * 
+	 *
+	 */
+	public void reset(ActionMapping mapping, HttpServletRequest request)
+	{
+		notifyPm = false;
+	}	
+	
 	/**
 	 * @return the userId
 	 */
@@ -167,6 +181,38 @@ public class ProjectAssignmentForm extends ActionForm
 	public void setAllottedHours(Float allotted)
 	{
 		this.allottedHours = allotted;
+	}
+
+	/**
+	 * @return the notifyPm
+	 */
+	public boolean isNotifyPm()
+	{
+		return notifyPm;
+	}
+
+	/**
+	 * @param notifyPm the notifyPm to set
+	 */
+	public void setNotifyPm(boolean notifyPm)
+	{
+		this.notifyPm = notifyPm;
+	}
+
+	/**
+	 * @return the allowedOverrun
+	 */
+	public Float getAllowedOverrun()
+	{
+		return allowedOverrun;
+	}
+
+	/**
+	 * @param allowedOverrun the allowedOverrun to set
+	 */
+	public void setAllowedOverrun(Float allowedOverrun)
+	{
+		this.allowedOverrun = allowedOverrun;
 	}
 	
 }

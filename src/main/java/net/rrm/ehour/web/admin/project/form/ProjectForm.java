@@ -48,6 +48,8 @@ public class ProjectForm extends ActionForm
 	private	boolean	active;
 	private	boolean	fromForm;
 	private	boolean	hideInactive;
+	private Integer	projectManagerId;
+	
 	
 	/**
 	 * 
@@ -219,5 +221,21 @@ public class ProjectForm extends ActionForm
 	public void setHideInactive(boolean hideInactive)
 	{
 		this.hideInactive = hideInactive;
+	}
+
+	/**
+	 * @return the projectManagerId
+	 */
+	public Integer getProjectManagerId()
+	{
+		return projectManagerId;
+	}
+
+	/**
+	 * @param projectManagerId the projectManagerId to set
+	 */
+	public void setProjectManagerId(Integer projectManagerId)
+	{
+		this.projectManagerId = projectManagerId;
 	}	
 }

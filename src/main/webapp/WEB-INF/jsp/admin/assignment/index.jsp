@@ -13,6 +13,8 @@
 	var noDeleteMessage = "<fmt:message key="admin.assignment.noDelete" />";		
 	var deleteConfirm = "<fmt:message key="admin.assignment.deleteConfirm" />";
 	var defaultText= "<fmt:message key="admin.user.filter" />...";
+	var required = "<fmt:message key="admin.assignment.required" />";
+	var cantNotify = "<fmt:message key="admin.assignment.cantNotify" />";
 </script>
 
 <script src="../../../js/dojo.js" type="text/javascript"></script>

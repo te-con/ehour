@@ -37,13 +37,30 @@
 	
 	<bean name="/eh/admin/user/deleteUser" class="net.rrm.ehour.web.admin.user.action.DeleteUserAction" />			
 
-	<bean name="/eh/admin/project/index" class="net.rrm.ehour.web.admin.project.action.ListProjectsAction" />
+	<!-- Projects -->
+	<bean id="abstractProjectAction"
+			class="net.rrm.ehour.web.admin.project.action.AdminProjectBaseAction"
+			abstract="true">
+		<property name="projectService" ref="projectService" />		
+		<property name="customerService" ref="customerService" />
+		<property name="userService" ref="userService" />
+    </bean>		
 
-	<bean name="/eh/admin/project/addProjectForm" class="net.rrm.ehour.web.admin.project.action.GetProjectAction" />	
+	<bean name="/eh/admin/project/index"
+			class="net.rrm.ehour.web.admin.project.action.ListProjectsAction" 
+			parent="abstractProjectAction" />
 
-	<bean name="/eh/admin/project/getProject" class="net.rrm.ehour.web.admin.project.action.GetProjectAction" />		
+	<bean name="/eh/admin/project/addProjectForm"
+			class="net.rrm.ehour.web.admin.project.action.GetProjectAction"
+			parent="abstractProjectAction" />	
+
+	<bean name="/eh/admin/project/getProject"
+			class="net.rrm.ehour.web.admin.project.action.GetProjectAction"
+			parent="abstractProjectAction" />
 	
-	<bean name="/eh/admin/project/editProject" class="net.rrm.ehour.web.admin.project.action.EditProjectAction" />
+	<bean name="/eh/admin/project/editProject"
+			class="net.rrm.ehour.web.admin.project.action.EditProjectAction"
+			parent="abstractProjectAction" />
 	
 	
 	<!-- Assignments -->
@@ -74,6 +91,10 @@
 	<bean name="/eh/admin/assignment/deleteAssignment"
 			class="net.rrm.ehour.web.admin.assignment.action.DeleteAssignmentAction"
 			parent="abstractAssignmentAction"/>
+	
+	<bean name="/eh/admin/assignment/getProject"
+			class="net.rrm.ehour.web.admin.project.action.GetProjectAction"
+			parent="abstractProjectAction" />	
 	
 	
 	<!-- Configuration -->

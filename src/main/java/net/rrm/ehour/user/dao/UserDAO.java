@@ -51,6 +51,12 @@ public interface UserDAO extends GenericDAO<User, Integer>
 	public List<User> findAllActiveUsers();
 	
 	/**
+	 * Find all active users with email address set
+	 * @return
+	 */
+	public List<User> findAllActiveUsersWithEmailSet();
+	
+	/**
 	 * Find users for departments with filter pattern and active flag
 	 * @param pattern
 	 * @param departmentIds

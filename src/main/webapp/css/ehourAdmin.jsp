@@ -117,3 +117,12 @@ div.GreyNavBody li a:active
 	text-decoration: underline;
 	font: 1em Verdana, Geneva, Arial, Helvetica;
 }
+
+div.SubmitButtonPos
+{
+	float: right;
+	text-align: right;
+	margin: 3px 16px 0 0;
+	max-width: 730px;
+	border: 0
+}
