@@ -161,8 +161,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			
 		return alreadyAssigned;
 	}
-
-
 	
 	/**
 	 * Get active projects for user in date range 
@@ -201,7 +199,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			}
 		}
 		
-		return assignments;
+		return validAssignments;
 	}
 	
 	/**
@@ -215,7 +213,10 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		
-		overrun = (aggregate.getHours().floatValue() >= assignment.getAllottedHours().floatValue());
+		if (aggregate != null)
+		{
+			overrun = (aggregate.getHours().floatValue() >= assignment.getAllottedHours().floatValue());
+		}
 		
 		return overrun;
 	}
@@ -230,9 +231,12 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		boolean	overrun = false;
 		
 		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
-		
-		overrun = (aggregate.getHours().floatValue() >= 
-						(assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()));
+
+		if (aggregate != null)
+		{
+			overrun = (aggregate.getHours().floatValue() >= 
+							(assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()));
+		}
 		
 		return overrun;
 	}	
