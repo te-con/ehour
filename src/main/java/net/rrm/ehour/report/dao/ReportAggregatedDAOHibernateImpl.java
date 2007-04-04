@@ -26,6 +26,7 @@ package net.rrm.ehour.report.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -38,11 +39,9 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implements ReportAggregatedDAO
 {
-	/**
-	 * Get cumulated hours per project assignment for a user between a date range
-	 * @param userId
-	 * @param dateRange
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer userIds[], DateRange dateRange)
@@ -64,14 +63,11 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		
 		return results;		
 	}
-	
 
-	/**
-	 * Get cumulated hours per project assignment for users
-	 * @param userId
-	 * @param dateRange
-	 * @return
-	 */	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.lang.Integer[])
+	 */
 	@SuppressWarnings("unchecked")
 	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer userIds[])
 	{
@@ -83,8 +79,9 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		return results;		
 	}	
 
-	/**
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getMinMaxDateTimesheetEntry()
 	 */
 	@SuppressWarnings("unchecked")
 	public DateRange getMinMaxDateTimesheetEntry()
@@ -94,12 +91,9 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		return results.get(0);
 	}
 
-
-	/**
-	 * Get cumulated hours per project assignment for users, projects
-	 * @param userId
-	 * @param projectId
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.lang.Integer[], java.lang.Integer[])
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer[] userIds, Integer[] projectIds)
@@ -119,13 +113,9 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		return results;
 	}
 
-	/**
-	 * Get cumulated hours per project assignment for users, projects in a date range
-	 * @param userId
-	 * @param projectId
-	 * @param dateRange
-	 * @return
-	 *
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.lang.Integer[], java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer[] userIds,
@@ -151,8 +141,9 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		return results;
 	}
 
-	/**
-	 * Get the min/max timesheet date for a user
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getMinMaxDateTimesheetEntry(java.lang.Integer)
 	 */
 	@SuppressWarnings("unchecked")
 	public DateRange getMinMaxDateTimesheetEntry(Integer userId)
@@ -165,10 +156,9 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	}
 
 
-	/**
-	 * Get cumulated hours
-	 * @param dateRange
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignment(net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignment(DateRange dateRange)
@@ -189,8 +179,9 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	}
 
 
-	/**
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForProjects(java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForProjects(Integer[] projectIds, DateRange dateRange)
@@ -210,5 +201,21 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForProjectIds"
 																			, keys, params);
 		return results;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursForAssignmentForUser(java.lang.Integer)
+	 */
+	@SuppressWarnings("unchecked")
+	public ProjectAssignmentAggregate getCumulatedHoursForAssignment(ProjectAssignment projectAssignment)
+	{
+		List<ProjectAssignmentAggregate>	results;
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursForAssignment",
+																		"assignment",
+																		projectAssignment);
+
+		return (results != null && results.size() > 0) ? results.get(0) : null;
 	}
 }

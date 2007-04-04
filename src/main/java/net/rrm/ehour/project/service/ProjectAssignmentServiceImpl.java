@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.project.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,6 +35,8 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.EhourConstants;
@@ -49,6 +52,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO			timesheetDAO;
 	private	ProjectDAO				projectDAO;
+	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 	
 	/**
@@ -169,8 +173,70 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	
 	public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange)
 	{
-		return projectAssignmentDAO.findProjectAssignmentsForUser(userId, dateRange);
+		List<ProjectAssignment>	assignments;
+		List<ProjectAssignment>	validAssignments = new ArrayList<ProjectAssignment>();
+		
+		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(userId, dateRange);
+		
+		for (ProjectAssignment assignment : assignments)
+		{
+			if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_DATE)
+			{
+				validAssignments.add(assignment);
+				continue;
+			}
+			
+			if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED &&
+				!isFixedAllottedAssignmentOverrun(assignment))
+			{
+				validAssignments.add(assignment);
+				continue;
+			}
+
+			if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX &&
+				!isFlexAllottedAssignmentOverrun(assignment))
+			{
+				validAssignments.add(assignment);
+				continue;
+			}
+		}
+		
+		return assignments;
 	}
+	
+	/**
+	 * Check if a fixed allotted assignment is overrun (as in, no more hours left)
+	 * @param assignment
+	 * @return
+	 */
+	private boolean isFixedAllottedAssignmentOverrun(ProjectAssignment assignment)
+	{
+		boolean	overrun = false;
+		
+		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
+		
+		overrun = (aggregate.getHours().floatValue() >= assignment.getAllottedHours().floatValue());
+		
+		return overrun;
+	}
+	
+	/**
+	 * Check if a flex allotted assignment is overrun (as in, no more hours left)
+	 * @param assignment
+	 * @return
+	 */
+	private boolean isFlexAllottedAssignmentOverrun(ProjectAssignment assignment)
+	{
+		boolean	overrun = false;
+		
+		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
+		
+		overrun = (aggregate.getHours().floatValue() >= 
+						(assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()));
+		
+		return overrun;
+	}	
+	
 
 	/**
 	 * Get project assignment on id
@@ -224,5 +290,13 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	public void setProjectDAO(ProjectDAO dao)
 	{
 		this.projectDAO = dao;
-	}	
+	}
+
+	/**
+	 * @param reportAggregatedDAO the reportAggregatedDAO to set
+	 */
+	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
+	{
+		this.reportAggregatedDAO = reportAggregatedDAO;
+	}
 }

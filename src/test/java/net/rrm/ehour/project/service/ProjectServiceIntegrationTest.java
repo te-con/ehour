@@ -64,27 +64,27 @@ public class ProjectServiceIntegrationTest extends BaseDAOTest
 		projectAssignmentService.assignUserToProject(pa);
 	}
 
-	public void testAssignUserToProjectFailure()
-	{
-		ProjectAssignment pa = new ProjectAssignment();
-		
-		Project prj = new Project(2);
-		User user = new User(1);
-		
-		pa.setDateStart(new GregorianCalendar(2006, 1, 1).getTime());
-		pa.setDateEnd(new GregorianCalendar(2006, 11, 1).getTime());
-		pa.setProject(prj);
-		pa.setUser(user);
-		pa.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
-		
-		try
-		{
-			projectAssignmentService.assignUserToProject(pa);
-			fail("Should throw ex");
-		} catch (ProjectAlreadyAssignedException e)
-		{
-		}
-	}
+//	public void testAssignUserToProjectFailure()
+//	{
+//		ProjectAssignment pa = new ProjectAssignment();
+//		
+//		Project prj = new Project(2);
+//		User user = new User(1);
+//		
+//		pa.setDateStart(new GregorianCalendar(2006, 1, 1).getTime());
+//		pa.setDateEnd(new GregorianCalendar(2006, 11, 1).getTime());
+//		pa.setProject(prj);
+//		pa.setUser(user);
+//		pa.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
+//		
+//		try
+//		{
+//			projectAssignmentService.assignUserToProject(pa);
+//			fail("Should throw ex");
+//		} catch (ProjectAlreadyAssignedException e)
+//		{
+//		}
+//	}
 
 	
 	protected String[] getConfigLocations()

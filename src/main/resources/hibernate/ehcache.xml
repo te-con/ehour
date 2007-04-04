@@ -12,13 +12,21 @@
         diskExpiryThreadIntervalSeconds="120"
         />
 
-<cache
-    name="net.rrm.user.domain.UserRole"
-    maxElementsInMemory="10000"
-    eternal="false"
-    timeToIdleSeconds="300"
-    timeToLiveSeconds="600"
-    overflowToDisk="false"
-/>
-        
+	<cache
+	    name="net.rrm.user.domain.UserRole"
+	    maxElementsInMemory="10000"
+	    eternal="false"
+	    timeToIdleSeconds="300"
+	    timeToLiveSeconds="600"
+	    overflowToDisk="false"
+	/>
+
+	<cache
+	    name="net.rrm.ehour.project.domain.ProjectAssignmentType"
+	    maxElementsInMemory="10000"
+	    eternal="false"
+	    timeToIdleSeconds="300"
+	    timeToLiveSeconds="600"
+	    overflowToDisk="false"
+	/>
 </ehcache>

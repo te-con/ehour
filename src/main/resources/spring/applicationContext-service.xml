@@ -83,6 +83,9 @@
 	<!-- Project assignment service -->
 	<bean id="projectAssignmentService" class="net.rrm.ehour.project.service.ProjectAssignmentServiceImpl">
 		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />				
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
+		<property name="timesheetDAO" ref="timesheetDAO" />
+		<property name="projectDAO" ref="projectDAO" />		
 	</bean>
 
 	<!-- Report Criteria -->

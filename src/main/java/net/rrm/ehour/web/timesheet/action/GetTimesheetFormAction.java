@@ -90,8 +90,6 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 
 		fwd = mapping.findForward("success");
 		
-		response.setHeader("Cache-Control", "no-cache");
-		
 		return fwd;
 	}
 

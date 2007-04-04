@@ -33,11 +33,8 @@
 			  pa.project.active is true AND
 			  pa.project.customer.active is true AND 
 			  pa.user.userId = :userId AND
-			  ((pa.assignmentType.assignmentTypeId = '0' AND pa.dateStart <= :dateEnd AND pa.dateEnd >= :dateStart) OR
-			   pa.assignmentType.assignmentTypeId = '1' OR
-			   (pa.assignmentType.assignmentTypeId = '2' AND (pa.dateStart IS NULL OR pa.dateStart <= :dateEnd) AND 
-			   								 (pa.dateEnd IS NULL or pa.dateEnd >= :dateEnd))
-			   )
+			  (pa.dateStart IS NULL OR pa.dateStart <= :dateStart) AND
+			  (pa.dateEnd IS NULL or pa.dateEnd >= :dateEnd)
     		 ]]>
 	</query>	
 </hibernate-mapping>
