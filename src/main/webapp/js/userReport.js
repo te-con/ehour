@@ -1,7 +1,6 @@
 // dojo stuff
 dojo.require("dojo.io.*");
 dojo.require("dojo.event.*");
-dojo.require("dojo.lfx.*");
 
 // bindCriteriaForm
 function bindCriteriaForm()
