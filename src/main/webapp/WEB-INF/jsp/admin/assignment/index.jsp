@@ -20,7 +20,6 @@
 <script src="../../../js/dojo.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-	dojo.require("dojo.widget.*");
 	dojo.require("dojo.widget.DropdownDatePicker");
 </script>
 

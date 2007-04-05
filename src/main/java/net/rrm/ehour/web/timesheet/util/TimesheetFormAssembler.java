@@ -46,6 +46,11 @@ import net.rrm.ehour.web.timesheet.dto.TimesheetRow;
 
 public class TimesheetFormAssembler
 {
+	/**
+	 * Create timesheet form
+	 * @param weekOverview
+	 * @return
+	 */
 	public Timesheet createTimesheetForm(WeekOverview weekOverview)
 	{
 		Map<ProjectAssignment, Map<Date, TimesheetEntry>>	assignmentMap;
@@ -58,7 +63,7 @@ public class TimesheetFormAssembler
 		assignmentMap = createAssignmentMap(weekOverview);
 		mergeUnbookedAssignments(weekOverview, assignmentMap);
 		
-		timesheetRows = createTimesheetRows(assignmentMap, dateSequence);
+		timesheetRows = createTimesheetRows(assignmentMap, dateSequence, weekOverview.getProjectAssignments());
 		
 		Collections.sort(timesheetRows, new TimesheetRowComparator());
 		
@@ -79,7 +84,8 @@ public class TimesheetFormAssembler
 	 * @return
 	 */
 	private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<Date, TimesheetEntry>> assignmentMap, 
-													List<Date> dateSequence)
+													List<Date> dateSequence,
+													List<ProjectAssignment> validProjectAssignments)
 	{
 		List<TimesheetRow> 	timesheetRows = new ArrayList<TimesheetRow>();
 		TimesheetRow		timesheetRow;
@@ -94,7 +100,7 @@ public class TimesheetFormAssembler
 			for (Date date : dateSequence)
 			{
 				entry = assignmentMap.get(assignment).get(date);
-				timesheetRow.addTimesheetCell(createTimesheetCell(assignment, entry, date));
+				timesheetRow.addTimesheetCell(createTimesheetCell(assignment, entry, date, validProjectAssignments));
 			}
 			
 			timesheetRows.add(timesheetRow);
@@ -110,7 +116,9 @@ public class TimesheetFormAssembler
 	 * @param date
 	 * @return
 	 */
-	private TimesheetCell createTimesheetCell(ProjectAssignment assignment, TimesheetEntry entry, Date date)
+	private TimesheetCell createTimesheetCell(ProjectAssignment assignment,
+												TimesheetEntry entry, Date date,
+												List<ProjectAssignment> validProjectAssignments)
 	{
 		TimesheetCell	cell = new TimesheetCell();
 		
@@ -119,9 +127,11 @@ public class TimesheetFormAssembler
 		// although the active filters are done on db level there's still
 		// the possibility that hours were booked on a project and afterwards
 		// the assignment/project/customer was deactivated; hence the checks here 
-		cell.setValid(assignment.isActive() && assignment.getProject().isActive() &&
-					  assignment.getProject().getCustomer().isActive() &&
-					  DateUtil.isDateWithinRange(date, assignment.getDateRange()));
+		cell.setValid(validProjectAssignments.contains(assignment));
+//				
+//				assignment.isActive() && assignment.getProject().isActive() &&
+//					  assignment.getProject().getCustomer().isActive() &&
+//					  DateUtil.isDateWithinRange(date, assignment.getDateRange()));
 		cell.setCellDate(date);
 		
 		return cell;

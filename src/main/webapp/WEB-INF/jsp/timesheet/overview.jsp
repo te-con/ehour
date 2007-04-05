@@ -16,12 +16,12 @@
 			<table class="MonthAggregateTable" cellpadding="0" cellspacing="0">
 			<tr>
 				<th class="firstCell"><fmt:message key="user.overview.project" /></th>
-				<th><fmt:message key="user.overview.projectCode" /></th>
+				<th><nobr><fmt:message key="user.overview.projectCode" /></nobr></th>
 				<th><fmt:message key="user.overview.customer" /></th>
 				<c:if test="${config.showTurnover}">			
 					<th><fmt:message key="user.overview.rate" /></th>
 				</c:if>
-				<th><fmt:message key="user.overview.bookedHours" /></th>
+				<th><nobr><fmt:message key="user.overview.bookedHours" /></nobr></th>
 				<c:if test="${config.showTurnover}">			
 					<th><fmt:message key="user.overview.turnover" /></th>
 				</c:if>

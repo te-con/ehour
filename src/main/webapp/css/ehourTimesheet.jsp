@@ -14,13 +14,13 @@
 	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;	
 	color: #233e55;
 	border: 0;
-	width: 20%;
+	width: 15%;
 	text-align: left;
 }
 
 .MonthAggregateTable th.firstCell
 {
-	width: 40%;
+	width: 25%;
 }
 
 .MonthAggregateTable td

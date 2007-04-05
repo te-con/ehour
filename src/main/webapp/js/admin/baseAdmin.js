@@ -1,7 +1,6 @@
 // dojo stuff
 dojo.require("dojo.io.*");
 dojo.require("dojo.event.*");
-dojo.require("dojo.lfx.*");
 
 // bindAdminForm
 function bindAdminForm()
@@ -75,14 +74,6 @@ function showAddForm()
 }
 
 
-// display and trigger fade in status message
-function setStatusMessage(statusMsg)
-{
-	document.getElementById('statusMessage').innerHTML = statusMsg;
-	dojo.html.setOpacity(dojo.byId('statusMessage'), 1);
-	
-	setTimeout("dojo.lfx.html.fadeOut('statusMessage', 800).play()", 1000);
-}
 
 // extend FormBind to add the validation call
 dojo.lang.extend(dojo.io.FormBind, {onSubmit: function(/*DOMNode*/form)

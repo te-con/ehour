@@ -62,7 +62,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
 				"		USR.LAST_NAME, " +
-				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
+				"       PAG.ROLE AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
 				"       PRJ.NAME AS PROJECT_NAME, " +
 				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
@@ -113,7 +113,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
 				"		USR.LAST_NAME, " +
-				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
+				"       PAG.ROLE AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
 				"       PRJ.NAME AS PROJECT_NAME, " +
 				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
@@ -162,7 +162,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
 				"		USR.LAST_NAME, " +
-				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
+				"       PAG.ROLE AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
 				"       PRJ.NAME AS PROJECT_NAME, " +
 				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
@@ -212,7 +212,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
 				"		USR.LAST_NAME, " +
-				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
+				"       PAG.ROLE AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
 				"       PRJ.NAME AS PROJECT_NAME, " +
 				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +
@@ -263,7 +263,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"       PAG.USER_ID, " +
 				"		USR.FIRST_NAME, " + 
 				"		USR.LAST_NAME, " +
-				"       PAG.DESCRIPTION AS ASSIGNMENT_DESC, " +
+				"       PAG.ROLE AS ASSIGNMENT_DESC, " +
 				"       PRJ.PROJECT_ID AS PROJECT_ID, " +
 				"       PRJ.NAME AS PROJECT_NAME, " +
 				"       PAG.ASSIGNMENT_ID AS ASSIGNMENT_ID " +

@@ -93,7 +93,6 @@ div.LoggedInAs
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 	width: 100%;
 	text-align: right;
-	margin-right: 11px;
 }
 
 table
