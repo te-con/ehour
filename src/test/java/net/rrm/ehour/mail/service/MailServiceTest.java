@@ -23,17 +23,52 @@
 
 package net.rrm.ehour.mail.service;
 
+import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.user.domain.User;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.junit.Test;
+
 /**
- * Mail service
+ * TODO 
  **/
 
-public interface MailService
+public class MailServiceTest extends BaseDAOTest
 {
-	/**
-	 * Send project assignmen overrun e-mail
-	 * @param user
+	private MailService	mailService;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.springframework.test.AbstractSingleSpringContextTests#getConfigLocations()
 	 */
-	public void mailProjectAssignmentOverrun(User user);
+	protected String[] getConfigLocations()
+	{
+		String[] configs = super.getConfigLocations();
+		
+		configs = (String[])ArrayUtils.add(configs, "classpath:applicationContext-service.xml");
+
+		return configs;
+	}
+	
+	/**
+	 * 
+	 * @param mailService
+	 */
+	public void setMailService(MailService mailService)
+	{
+		this.mailService = mailService;
+	}
+	
+	/*
+	 * 
+	 */
+	@Test
+	public void testMailProjectAssignmentOverrun()
+	{
+		User	user = new User();
+		user.setEmail("thies@rrm.net");
+		
+		mailService.mailProjectAssignmentOverrun(user);
+	}
+
 }

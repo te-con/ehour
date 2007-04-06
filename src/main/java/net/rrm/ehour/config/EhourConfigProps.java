@@ -72,4 +72,14 @@ public class EhourConfigProps implements EhourConfig
 	{
 		return props.getProperty("localeLanguage").split(",");
 	}
+
+	public String getMailFrom()
+	{
+		return props.getProperty("mailFrom");
+	}
+
+	public String getMailSmtp()
+	{
+		return props.getProperty("mailSmtp");
+	}
 }

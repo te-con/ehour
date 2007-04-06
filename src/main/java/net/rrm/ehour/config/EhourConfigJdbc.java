@@ -79,4 +79,14 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("availableTranslations").split(",");
 	}
 
+	public String getMailFrom()
+	{
+		return this.getString("mailFrom");
+	}
+
+	public String getMailSmtp()
+	{
+		return this.getString("mailSmtp");
+	}
+
 }

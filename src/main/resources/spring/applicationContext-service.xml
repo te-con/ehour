@@ -26,14 +26,6 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config>
 
-	<!-- Ehour Config -->
-	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigJdbc">
-		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
-		<constructor-arg value="CONFIGURATION" />
-		<constructor-arg value="config_key" />		
-		<constructor-arg value="config_value" />		
-	</bean>
-
 	<!-- User service -->
 	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl">
 		<property name="userDAO" ref="userDAO" />	
@@ -103,10 +95,24 @@
 			<property name="configDAO" ref="configurationDAO" />
 	</bean>
 	
-	<!-- Mail service -->
-	<bean id="mailService"
-			class="net.rrm.ehour.mail.service.MailServiceImpl">
-			
+	<!-- Ehour Config -->
+	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigJdbc">
+		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
+		<constructor-arg value="CONFIGURATION" />
+		<constructor-arg value="config_key" />		
+		<constructor-arg value="config_value" />		
 	</bean>
-	
+
+	<!-- Task executor for async mail sending -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	  <property name="corePoolSize" value="5" />
+	  <property name="maxPoolSize" value="10" />
+	  <property name="queueCapacity" value="25" />
+	</bean>
+
+	<!-- Mail service -->
+	<bean id="mailService" class="net.rrm.ehour.mail.service.MailServiceImpl">
+		<constructor-arg ref="ehourConfig" />
+		<constructor-arg ref="taskExecutor" />		
+	</bean>	
 </beans>

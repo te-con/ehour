@@ -71,4 +71,17 @@ public interface EhourConfig
 	 * @return
 	 */
 	public String[] getAvailableTranslations();
+	
+	/**
+	 * Get from address for e-mail sending
+	 * @return
+	 */
+	public String getMailFrom();
+	
+	/**
+	 * Get SMTP server for e-mail sending
+	 * @return
+	 */
+	public String getMailSmtp();
+	
 }

@@ -36,6 +36,9 @@ public class EhourConfigStub implements EhourConfig
 	private String 		localeLanguage;
 	private	String		timeZone;
 	private	boolean		showTurnover;
+	private	String		mailFrom;
+	private	String		mailSmtp;
+	
 	/**
 	 * @return the availableTranslations
 	 */
@@ -133,5 +136,27 @@ public class EhourConfigStub implements EhourConfig
 	public void setTimeZone(String timeZone)
 	{
 		this.timeZone = timeZone;
+	}
+	public String getMailFrom()
+	{
+		return mailFrom;
+	}
+	public String getMailSmtp()
+	{
+		return mailSmtp;
+	}
+	/**
+	 * @param mailFrom the mailFrom to set
+	 */
+	public void setMailFrom(String mailFrom)
+	{
+		this.mailFrom = mailFrom;
+	}
+	/**
+	 * @param mailSmtp the mailSmtp to set
+	 */
+	public void setMailSmtp(String mailSmtp)
+	{
+		this.mailSmtp = mailSmtp;
 	}
 }
