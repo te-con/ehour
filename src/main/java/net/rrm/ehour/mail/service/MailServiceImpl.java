@@ -24,6 +24,8 @@
 package net.rrm.ehour.mail.service;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.mail.dto.FixedAssignmentOverrunMessage;
+import net.rrm.ehour.mail.dto.MailTaskMessage;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.log4j.Logger;
@@ -64,13 +66,15 @@ public class MailServiceImpl implements MailService
 	public void mailProjectAssignmentOverrun(User user)
 	{
 		SimpleMailMessage	msg = new SimpleMailMessage();
+		FixedAssignmentOverrunMessage	faoMsg = new FixedAssignmentOverrunMessage();
 		MailTask			mailTask;
 		
 		msg.setTo(user.getEmail());
 		msg.setFrom(config.getMailFrom());
 		msg.setText("ohoh");
+		faoMsg.setMailMessage(msg);
 		
-		mailTask = new MailTask(msg);
+		mailTask = new MailTask(faoMsg);
 		taskExecutor.execute(mailTask);
 	}
 	
@@ -81,15 +85,15 @@ public class MailServiceImpl implements MailService
 	 */
 	private class MailTask implements Runnable
 	{
-		private	SimpleMailMessage msg;
+		private	MailTaskMessage mailTaskMessage;
 		
 		/**
 		 * 
 		 * @param msg
 		 */
-		public MailTask(SimpleMailMessage msg)
+		public MailTask(MailTaskMessage mailTaskMessage)
 		{
-			this.msg = msg;
+			this.mailTaskMessage = mailTaskMessage;
 		}
 
 		/**
@@ -97,16 +101,20 @@ public class MailServiceImpl implements MailService
 		 */
 		public void run()
 		{
+			SimpleMailMessage msg = mailTaskMessage.getMailMessage();
+			
 			try
 			{
-				logger.debug("Sending overrun email to " + msg.getTo());	
+				logger.debug("Sending email to " + msg.getTo());	
 				mailSender.send(msg);
+				
+				mailTaskMessage.getCallback().mailTaskSuccess();
 			}
 			catch (MailException me)
 			{
 				logger.info("Failed to e-mail to " + msg.getTo() + ": " + me.getMessage());
+				mailTaskMessage.getCallback().mailTaskFailure(me);
 			}			
 		}
-		
 	}
 }
