@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +37,7 @@ import java.util.TreeSet;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
@@ -207,7 +209,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	}	
 
 	/**
-	 * Persist timesheet & comment
+	 * Persist timesheets & comment
 	 */
 	public void persistTimesheet(Set<TimesheetEntry> timesheetEntries, TimesheetComment comment)
 	{
@@ -236,8 +238,27 @@ public class TimesheetServiceImpl implements TimesheetService
 			logger.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
 			timesheetCommentDAO.persist(comment);
 		}
-				
+		
+		checkTimeAllottedOverruns(timesheetEntries);
 	}
+	
+	/**
+	 * Check for time allotted overruns
+	 * @param timesheetEntries
+	 */
+	private void checkTimeAllottedOverruns(Set<TimesheetEntry> timesheetEntries)
+	{
+		Set<ProjectAssignment>	projectAssignments = new HashSet<ProjectAssignment>();
+		
+		for (TimesheetEntry entry : timesheetEntries)
+		{
+			projectAssignments.add(entry.getEntryId().getProjectAssignment());
+		}
+		
+		projectAssignmentService.checkForOverruns(projectAssignments);
+	}
+	
+		
 	
 	/**
 	 * DAO setter (Spring)

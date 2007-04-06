@@ -1,8 +1,23 @@
 <Context path="/ehour" reloadable="false" cookies="true" docBase="${catalina.home}/deploy/ehour-0.4.war">
-  <Resource name="jdbc/eHourDS" auth="Container" type="javax.sql.DataSource"
-               maxActive="100" maxIdle="30" maxWait="10000"
-               username="@ehour.db.username"
-	       password="@ehour.db.password"
-	       driverClassName="com.mysql.jdbc.Driver"
-               url="jdbc:mysql://@ehour.db.hostname:3306/@ehour.db.name?autoReconnect=true"/>
+  <Resource name="jdbc/eHourDS"
+  			auth="Container"
+  			type="javax.sql.DataSource"
+            maxActive="100"
+            maxIdle="30"
+            maxWait="10000"
+            username="@ehour.db.username"
+	       	password="@ehour.db.password"
+	       	driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://@ehour.db.hostname:3306/@ehour.db.name?autoReconnect=true"/>
+
+  <Resource name="mail/eHourSession"
+			auth="Container"
+            type="javax.mail.Session"/>
+	  <ResourceParams name="mail/eHourSession">
+	    <parameter>
+	      <name>mail.smtp.host</name>
+	      <value>@smtp.server</value>
+	    </parameter>
+	  </ResourceParams>
+  </Resource>
 </Context>

@@ -103,4 +103,10 @@
 			<property name="configDAO" ref="configurationDAO" />
 	</bean>
 	
+	<!-- Mail service -->
+	<bean id="mailService"
+			class="net.rrm.ehour.mail.service.MailServiceImpl">
+			
+	</bean>
+	
 </beans>

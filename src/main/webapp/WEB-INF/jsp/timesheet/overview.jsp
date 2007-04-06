@@ -69,7 +69,7 @@
 
 <div class="ContentFrame">
 	<div style="float: left; margin: 0 0 -5px 0; padding: 0">
-		<h1 style="float: left;margin: 0;padding: 0;"><fmt:message key="user.overview.monthOverview" /></h1>
+		<h1><fmt:message key="user.overview.monthOverview" /></h1>
 	</div>
 
 	<div style="text-align: right;width: 719px;margin: -5px 0 -5px 0; padding: 0;">

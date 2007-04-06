@@ -24,6 +24,7 @@
 package net.rrm.ehour.project.service;
 
 import java.util.List;
+import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -70,4 +71,10 @@ public interface ProjectAssignmentService
 	 * @param assignmentId
 	 */
 	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException;
+	
+	/**
+	 * Check for time allotted overruns and mail the PM when required
+	 * @param assignments
+	 */
+	public void checkForOverruns(Set<ProjectAssignment> assignments);
 }

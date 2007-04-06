@@ -26,6 +26,7 @@ package net.rrm.ehour.project.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -62,21 +63,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	
 	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException
 	{
-//		if (projectAssignment.getAssignmentType().isDefaultAssignmentType() &&
-//			isAlreadyAssignedAsDefault(projectAssignment))
-//		{
-//			throw new ProjectAlreadyAssignedException("Already default assignment made for this project");
-//		}
-//
-//		// use merge as the session already contains an attached PA with the same id when checking for dupes
-//		if (projectAssignment.getAssignmentId() != null)
-//		{
-//			projectAssignmentDAO.merge(projectAssignment);
-//		}
-//		else
-//		{
-			projectAssignmentDAO.persist(projectAssignment);
-//		}
+		projectAssignmentDAO.persist(projectAssignment);
 		
 		return projectAssignment;
 	}
@@ -108,23 +95,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		return user;
 	}
-	
-	
-//	/**
-//	 * Check if the project is already assigned and the date overlaps
-//	 * @param projectAssignment
-//	 * @return
-//	 */
-//	private boolean isAlreadyAssignedAsDefault(ProjectAssignment projectAssignment)
-//	{
-//		List<ProjectAssignment> assignments;
-//		
-//		assignments = projectAssignmentDAO.findProjectAssignmentForUser(projectAssignment.getProject().getProjectId(),
-//															 	projectAssignment.getUser().getUserId(),
-//															 	ProjectAssignmentUtil.TYPE_DEFAULT_ASSIGNMENT);
-//
-//		return isAlreadyAssignedAsDefault(projectAssignment, assignments);
-//	}	
 	
 	/**
 	 * Check if this default assignment is already assigned as default
@@ -277,8 +247,24 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#checkForOverruns(java.util.Set)
+	 */
+	public void checkForOverruns(Set<ProjectAssignment> assignments)
+	{
+		for (ProjectAssignment assignment : assignments)
+		{
+			
+		}
+		
+	}
 	
-	
+
+	/**
+	 * 
+	 * @param dao
+	 */
 	public void setTimesheetDAO(TimesheetDAO dao)
 	{
 		timesheetDAO = dao;
