@@ -24,7 +24,7 @@
 package net.rrm.ehour.mail.callbacks;
 
 import net.rrm.ehour.mail.domain.MailLogAssignment;
-import net.rrm.ehour.mail.dto.FixedAssignmentOverrunMessage;
+import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 
 import org.springframework.mail.MailException;
@@ -33,7 +33,7 @@ import org.springframework.mail.MailException;
  * Callback 
  **/
 
-public class AssignmentOverrunCallback extends MailTaskCallback
+public class AssignmentMsgCallback extends MailTaskCallback
 {
 
 	/* (non-Javadoc)
@@ -41,9 +41,7 @@ public class AssignmentOverrunCallback extends MailTaskCallback
 	 */
 	public void mailTaskFailure(MailTaskMessage mailTaskMessage, MailException me)
 	{
-		System.out.println();
-		// TODO Auto-generated method stub
-
+		persistMailLogAssignmentMessage(mailTaskMessage, false, me.getMessage());
 	}
 
 	/* (non-Javadoc)
@@ -51,15 +49,25 @@ public class AssignmentOverrunCallback extends MailTaskCallback
 	 */
 	public void mailTaskSuccess(MailTaskMessage mailTaskMessage)
 	{
-		MailLogAssignment mailLog;
-		FixedAssignmentOverrunMessage faoMessage = (FixedAssignmentOverrunMessage)mailTaskMessage;
-		
-		mailLog = new MailLogAssignment();
-		mailLog.setProjectAssignment(faoMessage.getAssignment());
-		mailLog.setSuccess(true);
-		
-		persistMailMessage(faoMessage, mailLog);
-		
+		persistMailLogAssignmentMessage(mailTaskMessage, true, null);
 	}
 
+	/**
+	 * Persist mail log assignment message
+	 * @param mailTaskMessage
+	 * @param success
+	 * @param resultMsg
+	 */
+	private void persistMailLogAssignmentMessage(MailTaskMessage mailTaskMessage, boolean success, String resultMsg)
+	{
+		MailLogAssignment 	mailLog;
+		AssignmentPMMessage asgMessage = (AssignmentPMMessage)mailTaskMessage;
+		
+		mailLog = new MailLogAssignment();
+		mailLog.setProjectAssignment(asgMessage.getAggregate().getProjectAssignment());
+		mailLog.setBookDate(asgMessage.getBookDate());
+		mailLog.setBookedHours(new Float(asgMessage.getAggregate().getHours().floatValue()));
+		
+		persistMailMessage(asgMessage, success, resultMsg, mailLog);
+	}
 }

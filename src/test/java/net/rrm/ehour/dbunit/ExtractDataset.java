@@ -28,12 +28,16 @@ public class ExtractDataset
         partialDataSet.addTable("user_to_userrole");
         partialDataSet.addTable("customer");
         partialDataSet.addTable("project");
+        partialDataSet.addTable("project_assignment_type");
         partialDataSet.addTable("project_assignment");
         partialDataSet.addTable("timesheet_entry");
         partialDataSet.addTable("timesheet_comment");
+        partialDataSet.addTable("mail_type");
+        partialDataSet.addTable("mail_log");
+        partialDataSet.addTable("mail_log_assignment");
 
         FlatXmlDataSet.write(partialDataSet,
-                new FileOutputStream("src/test/resources/test-dataset.xml"));		
+                new FileOutputStream("src/test/resources/t2est-dataset.xml"));		
 		System.out.println("Dataset written");
 	}
 

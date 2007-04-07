@@ -3,10 +3,12 @@ package net.rrm.ehour.mail.domain;
 // Generated Apr 7, 2007 1:08:18 AM by Hibernate Tools 3.2.0.beta8
 
 import java.util.Date;
+
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
-import org.apache.commons.lang.builder.EqualsBuilder;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
@@ -22,6 +24,8 @@ public class MailLogAssignment extends MailLog
 	 */
 	private static final long serialVersionUID = -6902873370377635410L;
 	private ProjectAssignment projectAssignment;
+	private Float bookedHours;
+	private Date	bookDate;
 
 	// Constructors
 
@@ -75,6 +79,38 @@ public class MailLogAssignment extends MailLog
 	public int hashCode()
 	{
 		return new HashCodeBuilder(-1194418173, 1339254353).appendSuper(super.hashCode()).append(this.projectAssignment).toHashCode();
+	}
+
+	/**
+	 * @return the bookDate
+	 */
+	public Date getBookDate()
+	{
+		return bookDate;
+	}
+
+	/**
+	 * @param bookDate the bookDate to set
+	 */
+	public void setBookDate(Date bookDate)
+	{
+		this.bookDate = bookDate;
+	}
+
+	/**
+	 * @return the bookedHours
+	 */
+	public Float getBookedHours()
+	{
+		return bookedHours;
+	}
+
+	/**
+	 * @param bookedHours the bookedHours to set
+	 */
+	public void setBookedHours(Float bookedHours)
+	{
+		this.bookedHours = bookedHours;
 	}
 
 }

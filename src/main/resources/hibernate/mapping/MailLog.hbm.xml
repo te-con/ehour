@@ -26,6 +26,10 @@
 			<key column="MAIL_LOG_ID" />
 	        <many-to-one name="projectAssignment" outer-join="auto" fetch="join"
     	            class="net.rrm.ehour.project.domain.ProjectAssignment" column="PROJECT_ASSIGNMENT_ID"/>
+    	            
+			<property name="bookedHours" column="BOOKED_HOURS" type="float"/>
+			
+			<property name="bookDate" column="BOOK_DATE" type="timestamp"/>			
 		</joined-subclass>
 	</class>
 </hibernate-mapping>

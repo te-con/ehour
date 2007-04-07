@@ -25,18 +25,20 @@ package net.rrm.ehour.project.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
+import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.project.util.TimeAllottedUtil;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.user.domain.User;
@@ -53,7 +55,8 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO			timesheetDAO;
 	private	ProjectDAO				projectDAO;
-	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private	TimeAllottedUtil		timeAllottedUtil;
+	private	MailService				mailService;
 	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 	
 	/**
@@ -148,21 +151,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		for (ProjectAssignment assignment : assignments)
 		{
-			if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_DATE)
-			{
-				validAssignments.add(assignment);
-				continue;
-			}
-			
-			if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED &&
-				!isFixedAllottedAssignmentOverrun(assignment))
-			{
-				validAssignments.add(assignment);
-				continue;
-			}
-
-			if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX &&
-				!isFlexAllottedAssignmentOverrun(assignment))
+			if (timeAllottedUtil.isTimeAllottedAssignmentOverrun(assignment) == null)
 			{
 				validAssignments.add(assignment);
 				continue;
@@ -171,45 +160,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		return validAssignments;
 	}
-	
-	/**
-	 * Check if a fixed allotted assignment is overrun (as in, no more hours left)
-	 * @param assignment
-	 * @return
-	 */
-	private boolean isFixedAllottedAssignmentOverrun(ProjectAssignment assignment)
-	{
-		boolean	overrun = false;
-		
-		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
-		
-		if (aggregate != null)
-		{
-			overrun = (aggregate.getHours().floatValue() >= assignment.getAllottedHours().floatValue());
-		}
-		
-		return overrun;
-	}
-	
-	/**
-	 * Check if a flex allotted assignment is overrun (as in, no more hours left)
-	 * @param assignment
-	 * @return
-	 */
-	private boolean isFlexAllottedAssignmentOverrun(ProjectAssignment assignment)
-	{
-		boolean	overrun = false;
-		
-		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
-
-		if (aggregate != null)
-		{
-			overrun = (aggregate.getHours().floatValue() >= 
-							(assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()));
-		}
-		
-		return overrun;
-	}	
 	
 
 	/**
@@ -253,11 +203,37 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 */
 	public void checkForOverruns(Set<ProjectAssignment> assignments)
 	{
+		ProjectAssignment			dbAssignment;
+		ProjectAssignmentAggregate	aggregate;
+		
 		for (ProjectAssignment assignment : assignments)
 		{
+			// assignment in set might not be fetched from db but created with only the id
+			dbAssignment = projectAssignmentDAO.findById(assignment.getAssignmentId());
+			
+			// don't bother to check for notifications if we won't/can't send email anyway
+			if (!dbAssignment.isNotifyPm()
+				|| dbAssignment.getProject().getProjectManager() == null
+				|| dbAssignment.getProject().getProjectManager().getEmail() == null)
+			{
+				continue;
+			}
+		
+			aggregate = timeAllottedUtil.isTimeAllottedAssignmentOverrun(dbAssignment);
+			
+			
+			if (aggregate != null 
+				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
+			{
+				mailService.mailPMAllottedHoursReached(aggregate, new Date(), dbAssignment.getProject().getProjectManager());
+			}
+			else if (aggregate != null 
+					&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+			{
+				mailService.mailPMAllottedOverrunReached(aggregate, new Date(), dbAssignment.getProject().getProjectManager());
+			}
 			
 		}
-		
 	}
 	
 
@@ -275,7 +251,11 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	{
 		this.projectAssignmentDAO = dao;
 	}
-	
+
+	/**
+	 * 
+	 * @param dao
+	 */
 
 	public void setProjectDAO(ProjectDAO dao)
 	{
@@ -283,10 +263,18 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	}
 
 	/**
-	 * @param reportAggregatedDAO the reportAggregatedDAO to set
+	 * @param timeAllottedUtil the timeAllottedUtil to set
 	 */
-	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
+	public void setTimeAllottedUtil(TimeAllottedUtil timeAllottedUtil)
 	{
-		this.reportAggregatedDAO = reportAggregatedDAO;
+		this.timeAllottedUtil = timeAllottedUtil;
+	}
+
+	/**
+	 * @param mailService the mailService to set
+	 */
+	public void setMailService(MailService mailService)
+	{
+		this.mailService = mailService;
 	}
 }

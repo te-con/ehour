@@ -23,7 +23,9 @@
 
 package net.rrm.ehour.mail.service;
 
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import java.util.Date;
+
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.domain.User;
 
 /**
@@ -33,8 +35,15 @@ import net.rrm.ehour.user.domain.User;
 public interface MailService
 {
 	/**
-	 * Send project assignmen overrun e-mail
+	 * Send project assignment overrun e-mail
 	 * @param user
 	 */
-	public void mailProjectAssignmentOverrun(ProjectAssignment assignment, User user);
+	public void mailPMAllottedOverrunReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
+	
+	/**
+	 * Send project assignment time allotted hours reached
+	 * @param assignment
+	 * @param mailToUser
+	 */
+	public void mailPMAllottedHoursReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
 }

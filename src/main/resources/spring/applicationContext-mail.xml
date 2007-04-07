@@ -15,7 +15,7 @@
 	<bean id="mailService" class="net.rrm.ehour.mail.service.MailServiceImpl">
 		<constructor-arg ref="ehourConfig" />
 		<constructor-arg ref="taskExecutor" />	
-		<property name="assignmentOverrunCallback" ref="assignmentOverrunCallback" />
+		<property name="assignmentMsgCallback" ref="assignmentMsgCallback" />
 	</bean>	
 	
 	<!-- Mail task call back -->
@@ -26,7 +26,7 @@
 	</bean>
 
 	<!-- Assignment overrun callback -->	
-	<bean id="assignmentOverrunCallback"
-			class="net.rrm.ehour.mail.callbacks.AssignmentOverrunCallback"
+	<bean id="assignmentMsgCallback"
+			class="net.rrm.ehour.mail.callbacks.AssignmentMsgCallback"
 			parent="mailTaskCallBack" />
 </beans>

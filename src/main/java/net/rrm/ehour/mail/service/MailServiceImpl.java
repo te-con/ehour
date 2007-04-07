@@ -23,12 +23,16 @@
 
 package net.rrm.ehour.mail.service;
 
+import java.util.Date;
+
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.mail.callbacks.AssignmentOverrunCallback;
-import net.rrm.ehour.mail.dto.FixedAssignmentOverrunMessage;
+import net.rrm.ehour.mail.callbacks.AssignmentMsgCallback;
+import net.rrm.ehour.mail.domain.MailType;
+import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.springframework.core.task.TaskExecutor;
@@ -47,7 +51,7 @@ public class MailServiceImpl implements MailService
 	private	Logger			logger = Logger.getLogger(this.getClass());
 	private	MailSender		mailSender;
 	private	TaskExecutor	taskExecutor;
-	private AssignmentOverrunCallback	assignmentOverrunCallback;
+	private AssignmentMsgCallback	assignmentMsgCallback;
 	
 	/**
 	 * 
@@ -66,26 +70,57 @@ public class MailServiceImpl implements MailService
 	 * Mail project assignment overrun
 	 * @param user
 	 */
-	public void mailProjectAssignmentOverrun(ProjectAssignment assignment, User user)
+	public void mailPMAllottedOverrunReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	{
+		mailPMAggregateMessage(assignmentAggregate,
+								"allotted hours reached", 
+								EhourConstants.MAILTYPE_ALLOTTED_OVERRUN_REACHED,
+								bookDate,
+								user);
+	}
+
+	/**
+	 * Mail project assignment overrun
+	 * @param user
+	 */
+	public void mailPMAllottedHoursReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	{
+		mailPMAggregateMessage(assignmentAggregate, 
+								"allotted hours reached", 
+								EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED,
+								bookDate,
+								user);
+	}	
+
+	/**
+	 * Mail project assignment msg
+	 * @param assignmentAggregate
+	 * @param mailBody
+	 * @param mailTypeId
+	 * @param user
+	 */
+	private void mailPMAggregateMessage(ProjectAssignmentAggregate assignmentAggregate,
+										String mailBody, int mailTypeId, Date bookDate, User user)
 	{
 		SimpleMailMessage	msg = new SimpleMailMessage();
-		FixedAssignmentOverrunMessage	faoMsg = new FixedAssignmentOverrunMessage();
+		AssignmentPMMessage	asgMsg = new AssignmentPMMessage();
 		MailTask			mailTask;
 		
-		msg.setText("ohoh");
+		msg.setText(mailBody);
 		
-		faoMsg.setMailMessage(msg);
-		faoMsg.setToUser(user);
-		faoMsg.setAssignment(assignment);
+		asgMsg.setMailMessage(msg);
+		asgMsg.setToUser(user);
+		asgMsg.setBookDate(bookDate);
+		asgMsg.setAggregate(assignmentAggregate);
+		asgMsg.setMailType(new MailType(mailTypeId));
+		asgMsg.setCallBack(assignmentMsgCallback);
 		
-		faoMsg.setCallBack(assignmentOverrunCallback);
-		
-		mailTask = new MailTask(faoMsg);
+		mailTask = new MailTask(asgMsg);
 		taskExecutor.execute(mailTask);
 	}
 	
 	/**
-	 * 
+	 * Actual send off mail and invoke callback afterwards
 	 * @author Thies
 	 *
 	 */
@@ -128,10 +163,10 @@ public class MailServiceImpl implements MailService
 	}
 
 	/**
-	 * @param assignmentOverrunCallback the assignmentOverrunCallback to set
+	 * @param assignmentMsgCallback the assignmentMsgCallback to set
 	 */
-	public void setAssignmentOverrunCallback(AssignmentOverrunCallback assignmentOverrunCallback)
+	public void setAssignmentMsgCallback(AssignmentMsgCallback assignmentMsgCallback)
 	{
-		this.assignmentOverrunCallback = assignmentOverrunCallback;
+		this.assignmentMsgCallback = assignmentMsgCallback;
 	}
 }

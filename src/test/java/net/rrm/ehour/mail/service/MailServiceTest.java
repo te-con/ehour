@@ -23,8 +23,11 @@
 
 package net.rrm.ehour.mail.service;
 
+import java.util.Date;
+
+import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -65,17 +68,20 @@ public class MailServiceTest extends BaseDAOTest
 	 * 
 	 */
 	@Test
-	public void testMailProjectAssignmentOverrun()
+	public void testMailPMAllottedHoursReached()
 	{
 		User	user = new User(1);
-		user.setEmail("thies@rrm.net");
+		user.setEmail("spam@rrm.net");
 		
-		mailService.mailProjectAssignmentOverrun(new ProjectAssignment(1), user);
+		ProjectAssignmentAggregate asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
+		asg.getProjectAssignment().setAssignmentId(1);
+		asg.setHours(new Float(121.1f));
 		
+		mailService.mailPMAllottedHoursReached(asg, new Date(), user);
 		try
 		{
 			// mailService is async
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
@@ -83,4 +89,29 @@ public class MailServiceTest extends BaseDAOTest
 		}
 	}
 
+	/*
+	 * 
+	 */
+	@Test
+	public void testMailPMAllottedHoursReachedFailure()
+	{
+		User	user = new User(1);
+		user.setEmail("unknownemailaddress@rrm.net");
+		
+		ProjectAssignmentAggregate asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
+		asg.getProjectAssignment().setAssignmentId(1);
+		asg.setHours(new Float(121.1f));
+		
+		mailService.mailPMAllottedHoursReached(asg, new Date(), user);
+		try
+		{
+			// mailService is async
+			Thread.sleep(2000);
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
+	
 }

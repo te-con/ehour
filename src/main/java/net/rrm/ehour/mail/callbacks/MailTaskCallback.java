@@ -64,11 +64,14 @@ public abstract class MailTaskCallback
 	 * @param msg
 	 * @param mailLog
 	 */
-	protected void persistMailMessage(MailTaskMessage msg, MailLog mailLog)
+	protected void persistMailMessage(MailTaskMessage msg, boolean success, String resultMsg, MailLog mailLog)
 	{
 		mailLog.setMailType(msg.getMailType());
 		mailLog.setTimestamp(new Date());
 		mailLog.setToUser(msg.getToUser());
+		mailLog.setSuccess(success);
+		mailLog.setResultMsg(resultMsg);
+		
 		mailLogDAO.persist(mailLog);
 	}
 }

@@ -23,42 +23,50 @@
 
 package net.rrm.ehour.mail.dto;
 
-import net.rrm.ehour.mail.domain.MailType;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.util.EhourConstants;
+import java.util.Date;
+
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 
 /**
  * Mail message for fixed assignment overrun 
  **/
 
-public class FixedAssignmentOverrunMessage extends MailTaskMessage
+public class AssignmentPMMessage extends MailTaskMessage
 {
-	private ProjectAssignment	assignment;
-
-	/**
-	 * 
-	 *
-	 */
-	public FixedAssignmentOverrunMessage()
-	{
-		super.setMailType(new MailType(EhourConstants.MAILTYPE_ALLOTTED_FIXED_REACHED));
-	}
+	private ProjectAssignmentAggregate	aggregate;
+	private	Date						bookDate;
 	
 	/**
-	 * @return the assignment
+	 * @return the aggregate
 	 */
-	public ProjectAssignment getAssignment()
+	public ProjectAssignmentAggregate getAggregate()
 	{
-		return assignment;
+		return aggregate;
 	}
 
 	/**
-	 * @param assignment the assignment to set
+	 * @param aggregate the aggregate to set
 	 */
-	public void setAssignment(ProjectAssignment assignment)
+	public void setAggregate(ProjectAssignmentAggregate aggregate)
 	{
-		this.assignment = assignment;
+		this.aggregate = aggregate;
+	}
+
+	/**
+	 * @return the bookDate
+	 */
+	public Date getBookDate()
+	{
+		return bookDate;
+	}
+
+	/**
+	 * @param bookDate the bookDate to set
+	 */
+	public void setBookDate(Date bookDate)
+	{
+		this.bookDate = bookDate;
 	}
 
 }

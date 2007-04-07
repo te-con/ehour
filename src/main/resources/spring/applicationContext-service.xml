@@ -74,9 +74,10 @@
 	<!-- Project assignment service -->
 	<bean id="projectAssignmentService" class="net.rrm.ehour.project.service.ProjectAssignmentServiceImpl">
 		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />				
-		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 		<property name="timesheetDAO" ref="timesheetDAO" />
 		<property name="projectDAO" ref="projectDAO" />		
+		<property name="timeAllottedUtil" ref="timeAllottedUtil" />
+		<property name="mailService" ref="mailService" />
 	</bean>
 
 	<!-- Report Criteria -->
@@ -100,5 +101,11 @@
 		<constructor-arg value="CONFIGURATION" />
 		<constructor-arg value="config_key" />		
 		<constructor-arg value="config_value" />		
+	</bean>
+	
+	<!-- Time allotted util class -->
+	<bean id="timeAllottedUtil"
+			class="net.rrm.ehour.project.util.TimeAllottedUtil">
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 	</bean>
 </beans>
