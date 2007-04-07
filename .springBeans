@@ -6,9 +6,11 @@
 	<configs>
 		<config>src/main/resources/spring/applicationContext-service.xml</config>
 		<config>src/main/resources/spring/applicationContext-acegi-security.xml</config>
+		<config>src/main/resources/spring/applicationContext-mail.xml</config>
 		<config>src/main/resources/spring/applicationContext-web-default.xml</config>
 		<config>src/main/resources/spring/applicationContext-dao.xml</config>
 		<config>src/main/resources/spring/applicationContext-web-admin.xml</config>
+		<config>src/main/resources/spring/applicationContext-web-report.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
