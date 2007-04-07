@@ -15,6 +15,8 @@
 	</head>
 <body>
 
+<!-- spanTarget: loginForm -->
+
 <br><br>
 
 <div class="BackFrame">

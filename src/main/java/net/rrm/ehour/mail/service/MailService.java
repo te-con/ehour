@@ -35,15 +35,27 @@ import net.rrm.ehour.user.domain.User;
 public interface MailService
 {
 	/**
-	 * Send project assignment overrun e-mail
-	 * @param user
-	 */
-	public void mailPMAllottedOverrunReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
-	
-	/**
-	 * Send project assignment time allotted hours reached
+	 * Send project assignment overrun e-mail for fixed assignments, allotted reached
 	 * @param assignment
+	 * @param bookDate
 	 * @param mailToUser
 	 */
-	public void mailPMAllottedHoursReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
+	public void mailPMFixedAllottedReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
+	
+	/**
+	 * Send project assignment overrun e-mail for flex assignments, overrun reached
+	 * @param assignment
+	 * @param bookDate
+	 * @param mailToUser
+	 */
+	public void mailPMFlexOverrunReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
+
+
+	/**
+	 * Send project assignment overrun e-mail for flex assignments, allotted reached
+	 * @param assignment
+	 * @param bookDate
+	 * @param mailToUser
+	 */
+	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
 }

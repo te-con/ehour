@@ -66,32 +66,45 @@ public class MailServiceImpl implements MailService
 		((JavaMailSenderImpl)mailSender).setHost(config.getMailSmtp());
 	}
 	
-	/**
-	 * Mail project assignment overrun
-	 * @param user
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#mailPMFixedAllottedReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
 	 */
-	public void mailPMAllottedOverrunReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	public void mailPMFixedAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
 		mailPMAggregateMessage(assignmentAggregate,
 								"allotted hours reached", 
-								EhourConstants.MAILTYPE_ALLOTTED_OVERRUN_REACHED,
+								EhourConstants.MAILTYPE_FIXED_ALLOTTED_REACHED,
 								bookDate,
 								user);
 	}
 
-	/**
-	 * Mail project assignment overrun
-	 * @param user
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
 	 */
-	public void mailPMAllottedHoursReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	public void mailPMFlexOverrunReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
 		mailPMAggregateMessage(assignmentAggregate, 
 								"allotted hours reached", 
-								EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED,
+								EhourConstants.MAILTYPE_FLEX_OVERRUN_REACHED,
 								bookDate,
 								user);
 	}	
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
+	 */
+	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	{
+		mailPMAggregateMessage(assignmentAggregate, 
+								"allotted hours reached", 
+								EhourConstants.MAILTYPE_FLEX_ALLOTTED_REACHED,
+								bookDate,
+								user);
+	}	
+	
 	/**
 	 * Mail project assignment msg
 	 * @param assignmentAggregate

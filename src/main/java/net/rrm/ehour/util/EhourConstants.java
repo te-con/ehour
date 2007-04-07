@@ -36,6 +36,7 @@ public class EhourConstants
 	public final static int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
 	public final static int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
 	
-	public final static int MAILTYPE_ALLOTTED_FIXED_REACHED = 1;
-	public final static int MAILTYPE_ALLOTTED_OVERRUN_REACHED = 2;
+	public final static int MAILTYPE_FIXED_ALLOTTED_REACHED = 1;
+	public final static int MAILTYPE_FLEX_ALLOTTED_REACHED = 2;
+	public final static int MAILTYPE_FLEX_OVERRUN_REACHED = 3;	
 }

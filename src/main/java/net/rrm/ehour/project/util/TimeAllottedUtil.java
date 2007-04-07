@@ -24,12 +24,13 @@
 package net.rrm.ehour.project.util;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
- * Time allotted util class
+ * Time allotted util class (TODO rename to AssignmentUtil)
  **/
 
 public class TimeAllottedUtil
@@ -41,61 +42,87 @@ public class TimeAllottedUtil
 	 * @param assignment
 	 * @return
 	 */
-	public ProjectAssignmentAggregate isTimeAllottedAssignmentOverrun(ProjectAssignment assignment)
+	public AssignmentStatus getAssignmentStatus(ProjectAssignment assignment)
 	{
 		int assignmentTypeId = assignment.getAssignmentType().getAssignmentTypeId().intValue();
-		ProjectAssignmentAggregate aggregate = null;
+		AssignmentStatus	status = null;			
 		
 		if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
 		{
-			aggregate = isFixedAllottedAssignmentOverrun(assignment);
+			status = getFixedAssignmentStatus(assignment);
 		}
 		else if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
 		{
-			aggregate = isFlexAllottedAssignmentOverrun(assignment);
-		}		
-		
-		return aggregate;
-	}
-	
-
-	/**
-	 * Check if a fixed allotted assignment is overrun (as in, no more hours left)
-	 * @param assignment
-	 * @return
-	 */
-	private ProjectAssignmentAggregate isFixedAllottedAssignmentOverrun(ProjectAssignment assignment)
-	{
-		boolean	overrun = false;
-		
-		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
-		
-		if (aggregate != null)
+			status = getFlexAssignmentStatus(assignment);
+		}
+		else if (assignmentTypeId == EhourConstants.ASSIGNMENT_DATE)
 		{
-			overrun = (aggregate.getHours().floatValue() >= assignment.getAllottedHours().floatValue());
+			// TODO check boundaries
+			status = new AssignmentStatus();
+			status.setAssignmentPhase(AssignmentStatus.IN_DATERANGE_PHASE);
 		}
 		
-		return overrun ? aggregate : null;
+		return status;
 	}
 	
 	/**
-	 * Check if a flex allotted assignment is overrun (as in, no more hours left)
+	 * Get the status for a fixed assignment
 	 * @param assignment
 	 * @return
 	 */
-	private ProjectAssignmentAggregate isFlexAllottedAssignmentOverrun(ProjectAssignment assignment)
+	private AssignmentStatus getFixedAssignmentStatus(ProjectAssignment assignment)
 	{
-		boolean	overrun = false;
-		
+		AssignmentStatus	status = new AssignmentStatus();
 		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
-
+		status.setAggregate(aggregate);
+		
 		if (aggregate != null)
 		{
-			overrun = (aggregate.getHours().floatValue() >= 
-							(assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()));
+			if (aggregate.getHours().floatValue() >= assignment.getAllottedHours().floatValue());
+			{
+				status.setAssignmentPhase(AssignmentStatus.OVER_ALLOTTED_PHASE);
+			}
+		}
+		else
+		{
+			status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
 		}
 		
-		return overrun ? aggregate : null;
+		return status;
+	}
+	
+	/**
+	 * Get the status for a flex assignment
+	 * @param assignment
+	 * @return
+	 */
+	private AssignmentStatus getFlexAssignmentStatus(ProjectAssignment assignment)
+	{
+		AssignmentStatus	status = new AssignmentStatus();
+		float				hours;
+		
+		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
+		status.setAggregate(aggregate);
+		
+		if (aggregate != null)
+		{
+			hours = aggregate.getHours().floatValue();
+			
+			if (hours < assignment.getAllottedHours().floatValue())
+			{
+				status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
+			}
+			else if (hours >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
+			{
+				status.setAssignmentPhase(AssignmentStatus.OVER_OVERRUN_PHASE);
+			}
+			else
+			{
+				status.setAssignmentPhase(AssignmentStatus.IN_OVERRUN_PHASE);
+			}
+		}
+		
+		return status;
 	}
 	
 	/**
