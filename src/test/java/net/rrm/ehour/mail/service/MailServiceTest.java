@@ -68,7 +68,7 @@ public class MailServiceTest extends BaseDAOTest
 	 * 
 	 */
 	@Test
-	public void testMailPMAllottedHoursReached()
+	public void testMailPMFixedAllottedReached()
 	{
 		User	user = new User(1);
 		user.setEmail("spam@rrm.net");
@@ -77,7 +77,7 @@ public class MailServiceTest extends BaseDAOTest
 		asg.getProjectAssignment().setAssignmentId(1);
 		asg.setHours(new Float(121.1f));
 		
-		mailService.mailPMAllottedHoursReached(asg, new Date(), user);
+		mailService.mailPMFixedAllottedReached(asg, new Date(), user);
 		try
 		{
 			// mailService is async
@@ -93,7 +93,7 @@ public class MailServiceTest extends BaseDAOTest
 	 * 
 	 */
 	@Test
-	public void testMailPMAllottedHoursReachedFailure()
+	public void testMailPMFixedAllottedReachedFailure()
 	{
 		User	user = new User(1);
 		user.setEmail("unknownemailaddress@rrm.net");
@@ -102,7 +102,7 @@ public class MailServiceTest extends BaseDAOTest
 		asg.getProjectAssignment().setAssignmentId(1);
 		asg.setHours(new Float(121.1f));
 		
-		mailService.mailPMAllottedHoursReached(asg, new Date(), user);
+		mailService.mailPMFixedAllottedReached(asg, new Date(), user);
 		try
 		{
 			// mailService is async
