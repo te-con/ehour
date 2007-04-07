@@ -306,15 +306,7 @@ function initDojo()
 </div>
 
 <div class="SubmitButtonPos">
-	<input type="image" src="<c:url value="/img/icons/white_submit.png" />" border="0" class="submitNoBorder" alt="<c:choose>
-					<c:when test="${assignment.assignmentId == null}">
-						<fmt:message key="general.add" />
-					</c:when>
-					
-					<c:otherwise>
-						<fmt:message key="general.edit" />
-					</c:otherwise>
-				</c:choose>">
+	<input type="image" src="<c:url value="/img/icons/white_submit.png" />" border="0" class="submitNoBorder" alt="<c:choose><c:when test="${assignment.assignmentId == null}"><fmt:message key="general.add" /></c:when><c:otherwise><fmt:message key="general.edit" /></c:otherwise></c:choose>">
 </div>
 	
 </form>
