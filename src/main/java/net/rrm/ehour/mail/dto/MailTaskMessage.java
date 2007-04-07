@@ -24,6 +24,8 @@
 package net.rrm.ehour.mail.dto;
 
 import net.rrm.ehour.mail.callbacks.MailTaskCallback;
+import net.rrm.ehour.mail.domain.MailType;
+import net.rrm.ehour.user.domain.User;
 
 import org.springframework.mail.SimpleMailMessage;
 
@@ -35,7 +37,9 @@ public abstract class MailTaskMessage
 {
 	private SimpleMailMessage	mailMessage;
 	private MailTaskCallback	callback; 
-
+	private	MailType			mailType;
+	private	User				toUser;
+	
 	/**
 	 * @return the mailMessage
 	 */
@@ -66,5 +70,37 @@ public abstract class MailTaskMessage
 	public void setCallBack(MailTaskCallback callback)
 	{
 		this.callback = callback;
+	}
+
+	/**
+	 * @return the mailType
+	 */
+	public MailType getMailType()
+	{
+		return mailType;
+	}
+
+	/**
+	 * @param mailType the mailType to set
+	 */
+	public void setMailType(MailType mailType)
+	{
+		this.mailType = mailType;
+	}
+
+	/**
+	 * @return the toUser
+	 */
+	public User getToUser()
+	{
+		return toUser;
+	}
+
+	/**
+	 * @param toUser the toUser to set
+	 */
+	public void setToUser(User toUser)
+	{
+		this.toUser = toUser;
 	}
 }

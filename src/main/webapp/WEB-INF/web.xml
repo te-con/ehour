@@ -13,6 +13,7 @@
 			classpath:/applicationContext-datasource.xml,
 			classpath:/applicationContext-dao.xml,
 			classpath:/applicationContext-service.xml,
+			classpath:/applicationContext-mail.xml,			
 			classpath:/applicationContext-acegi-security.xml,
 			classpath:/applicationContext-web-admin.xml,
 			classpath:/applicationContext-web-report.xml,

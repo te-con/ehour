@@ -23,20 +23,25 @@
 
 package net.rrm.ehour.mail.callbacks;
 
+import net.rrm.ehour.mail.domain.MailLogAssignment;
+import net.rrm.ehour.mail.dto.FixedAssignmentOverrunMessage;
+import net.rrm.ehour.mail.dto.MailTaskMessage;
+
 import org.springframework.mail.MailException;
 
 /**
  * Callback 
  **/
 
-public class AssignmentOverrunCallback implements MailTaskCallback
+public class AssignmentOverrunCallback extends MailTaskCallback
 {
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.mail.callbacks.MailTaskCallback#failure(org.springframework.mail.MailException)
 	 */
-	public void mailTaskFailure(MailException me)
+	public void mailTaskFailure(MailTaskMessage mailTaskMessage, MailException me)
 	{
+		System.out.println();
 		// TODO Auto-generated method stub
 
 	}
@@ -44,10 +49,17 @@ public class AssignmentOverrunCallback implements MailTaskCallback
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.mail.callbacks.MailTaskCallback#success()
 	 */
-	public void mailTaskSuccess()
+	public void mailTaskSuccess(MailTaskMessage mailTaskMessage)
 	{
-		// TODO Auto-generated method stub
-
+		MailLogAssignment mailLog;
+		FixedAssignmentOverrunMessage faoMessage = (FixedAssignmentOverrunMessage)mailTaskMessage;
+		
+		mailLog = new MailLogAssignment();
+		mailLog.setProjectAssignment(faoMessage.getAssignment());
+		mailLog.setSuccess(true);
+		
+		persistMailMessage(faoMessage, mailLog);
+		
 	}
 
 }

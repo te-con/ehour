@@ -1,5 +1,5 @@
 /**
- * Created on Nov 10, 2006
+ * Created on Apr 7, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,21 +21,16 @@
  *
  */
 
-package net.rrm.ehour.util;
+package net.rrm.ehour.mail.dao;
+
+import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.mail.domain.MailLog;
 
 /**
- * TODO 
+ * DAO for MailLog db operations 
  **/
 
-public class EhourConstants
+public interface MailLogDAO  extends GenericDAO<MailLog, Integer>
 {
-	public final static int	USERTYPE_CONSULTANT = 1;
-	public final static int	USERTYPE_ADMIN = 2;
-	
-	public final static int ASSIGNMENT_DATE = 0;
-	public final static int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
-	public final static int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
-	
-	public final static int MAILTYPE_ALLOTTED_FIXED_REACHED = 1;
-	public final static int MAILTYPE_ALLOTTED_OVERRUN_REACHED = 2;
+
 }

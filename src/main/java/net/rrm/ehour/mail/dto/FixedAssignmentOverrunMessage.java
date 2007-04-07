@@ -23,7 +23,9 @@
 
 package net.rrm.ehour.mail.dto;
 
+import net.rrm.ehour.mail.domain.MailType;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.util.EhourConstants;
 
 
 /**
@@ -34,6 +36,15 @@ public class FixedAssignmentOverrunMessage extends MailTaskMessage
 {
 	private ProjectAssignment	assignment;
 
+	/**
+	 * 
+	 *
+	 */
+	public FixedAssignmentOverrunMessage()
+	{
+		super.setMailType(new MailType(EhourConstants.MAILTYPE_ALLOTTED_FIXED_REACHED));
+	}
+	
 	/**
 	 * @return the assignment
 	 */

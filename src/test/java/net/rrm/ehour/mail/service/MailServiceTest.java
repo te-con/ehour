@@ -24,6 +24,7 @@
 package net.rrm.ehour.mail.service;
 
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -46,7 +47,8 @@ public class MailServiceTest extends BaseDAOTest
 		String[] configs = super.getConfigLocations();
 		
 		configs = (String[])ArrayUtils.add(configs, "classpath:applicationContext-service.xml");
-
+		configs = (String[])ArrayUtils.add(configs, "classpath:applicationContext-mail.xml");
+		
 		return configs;
 	}
 	
@@ -65,10 +67,20 @@ public class MailServiceTest extends BaseDAOTest
 	@Test
 	public void testMailProjectAssignmentOverrun()
 	{
-		User	user = new User();
+		User	user = new User(1);
 		user.setEmail("thies@rrm.net");
 		
-		mailService.mailProjectAssignmentOverrun(user);
+		mailService.mailProjectAssignmentOverrun(new ProjectAssignment(1), user);
+		
+		try
+		{
+			// mailService is async
+			Thread.sleep(5000);
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

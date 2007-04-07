@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.mail.service;
 
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 
 /**
@@ -35,5 +36,5 @@ public interface MailService
 	 * Send project assignmen overrun e-mail
 	 * @param user
 	 */
-	public void mailProjectAssignmentOverrun(User user);
+	public void mailProjectAssignmentOverrun(ProjectAssignment assignment, User user);
 }

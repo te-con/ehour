@@ -55,6 +55,11 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	{
 	}
 
+	public ProjectAssignment(Integer assignmentId)
+	{
+		this.assignmentId = assignmentId;
+	}
+	
 	/** minimal constructor */
 	public ProjectAssignment(User user, Project project)
 	{

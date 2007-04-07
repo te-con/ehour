@@ -108,4 +108,9 @@
 	<bean id="configurationDAO"
 		 	class="net.rrm.ehour.config.dao.ConfigurationDAOHibernateImpl" 
 		 	parent="abstractDAOTarget" />		 	
+
+	<!-- MailLog DAO -->
+	<bean id="mailLogDAO"
+		 	class="net.rrm.ehour.mail.dao.MailLogDAOHibernateImpl"
+		 	parent="abstractDAOTarget" />	
 </beans>

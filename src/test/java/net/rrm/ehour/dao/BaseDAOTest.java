@@ -60,7 +60,7 @@ public abstract class BaseDAOTest extends AbstractTransactionalDataSourceSpringC
 		
 		try
 		{
-			DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+			DatabaseOperation.REFRESH.execute(connection, dataSet);
 		} finally
 		{
 			connection.close();

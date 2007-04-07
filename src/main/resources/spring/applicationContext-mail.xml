@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+	>
+
+	<!-- Task executor for async mail sending -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	  <property name="corePoolSize" value="5" />
+	  <property name="maxPoolSize" value="10" />
+	  <property name="queueCapacity" value="25" />
+	</bean>
+
+	<!-- Mail service -->
+	<bean id="mailService" class="net.rrm.ehour.mail.service.MailServiceImpl">
+		<constructor-arg ref="ehourConfig" />
+		<constructor-arg ref="taskExecutor" />	
+		<property name="assignmentOverrunCallback" ref="assignmentOverrunCallback" />
+	</bean>	
+	
+	<!-- Mail task call back -->
+	<bean id="mailTaskCallBack"
+			class="net.rrm.ehour.mail.callbacks.MailTaskCallback"
+			abstract="true">
+		<property name="mailLogDAO" ref="mailLogDAO" />
+	</bean>
+
+	<!-- Assignment overrun callback -->	
+	<bean id="assignmentOverrunCallback"
+			class="net.rrm.ehour.mail.callbacks.AssignmentOverrunCallback"
+			parent="mailTaskCallBack" />
+</beans>

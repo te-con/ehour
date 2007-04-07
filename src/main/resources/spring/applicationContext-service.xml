@@ -12,7 +12,6 @@
 
 	<!-- the transactional advice  -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<!-- the transactional semantics... -->
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
 			<tx:method name="persist*" propagation="REQUIRED" rollback-for="net.rrm.ehour.exception.ObjectNotUniqueException,net.rrm.ehour.exception.ParentChildConstraintException" />
@@ -102,17 +101,4 @@
 		<constructor-arg value="config_key" />		
 		<constructor-arg value="config_value" />		
 	</bean>
-
-	<!-- Task executor for async mail sending -->
-	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-	  <property name="corePoolSize" value="5" />
-	  <property name="maxPoolSize" value="10" />
-	  <property name="queueCapacity" value="25" />
-	</bean>
-
-	<!-- Mail service -->
-	<bean id="mailService" class="net.rrm.ehour.mail.service.MailServiceImpl">
-		<constructor-arg ref="ehourConfig" />
-		<constructor-arg ref="taskExecutor" />		
-	</bean>	
 </beans>

@@ -24,8 +24,10 @@
 package net.rrm.ehour.mail.service;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.mail.callbacks.AssignmentOverrunCallback;
 import net.rrm.ehour.mail.dto.FixedAssignmentOverrunMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
+import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.log4j.Logger;
@@ -45,6 +47,7 @@ public class MailServiceImpl implements MailService
 	private	Logger			logger = Logger.getLogger(this.getClass());
 	private	MailSender		mailSender;
 	private	TaskExecutor	taskExecutor;
+	private AssignmentOverrunCallback	assignmentOverrunCallback;
 	
 	/**
 	 * 
@@ -63,16 +66,19 @@ public class MailServiceImpl implements MailService
 	 * Mail project assignment overrun
 	 * @param user
 	 */
-	public void mailProjectAssignmentOverrun(User user)
+	public void mailProjectAssignmentOverrun(ProjectAssignment assignment, User user)
 	{
 		SimpleMailMessage	msg = new SimpleMailMessage();
 		FixedAssignmentOverrunMessage	faoMsg = new FixedAssignmentOverrunMessage();
 		MailTask			mailTask;
 		
-		msg.setTo(user.getEmail());
-		msg.setFrom(config.getMailFrom());
 		msg.setText("ohoh");
+		
 		faoMsg.setMailMessage(msg);
+		faoMsg.setToUser(user);
+		faoMsg.setAssignment(assignment);
+		
+		faoMsg.setCallBack(assignmentOverrunCallback);
 		
 		mailTask = new MailTask(faoMsg);
 		taskExecutor.execute(mailTask);
@@ -103,18 +109,29 @@ public class MailServiceImpl implements MailService
 		{
 			SimpleMailMessage msg = mailTaskMessage.getMailMessage();
 			
+			msg.setFrom(config.getMailFrom());
+			msg.setTo(mailTaskMessage.getToUser().getEmail());
+			
 			try
 			{
-				logger.debug("Sending email to " + msg.getTo());	
+				logger.debug("Sending email to " + msg.getTo()[0]);	
 				mailSender.send(msg);
 				
-				mailTaskMessage.getCallback().mailTaskSuccess();
+				mailTaskMessage.getCallback().mailTaskSuccess(mailTaskMessage);
 			}
 			catch (MailException me)
 			{
-				logger.info("Failed to e-mail to " + msg.getTo() + ": " + me.getMessage());
-				mailTaskMessage.getCallback().mailTaskFailure(me);
+				logger.info("Failed to e-mail to " + msg.getTo()[0] + ": " + me.getMessage());
+				mailTaskMessage.getCallback().mailTaskFailure(mailTaskMessage, me);
 			}			
 		}
+	}
+
+	/**
+	 * @param assignmentOverrunCallback the assignmentOverrunCallback to set
+	 */
+	public void setAssignmentOverrunCallback(AssignmentOverrunCallback assignmentOverrunCallback)
+	{
+		this.assignmentOverrunCallback = assignmentOverrunCallback;
 	}
 }

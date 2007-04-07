@@ -41,6 +41,16 @@ public class MailType extends DomainObject<Integer, MailType>
 	private	Integer	mailTypeId;
 	private	String	mailType;
 	
+	public MailType()
+	{
+		
+	}
+	
+	public MailType(Integer mailTypeId)
+	{
+		this.mailTypeId = mailTypeId;
+	}
+	
 	/**
 	 * @return the mailType
 	 */
