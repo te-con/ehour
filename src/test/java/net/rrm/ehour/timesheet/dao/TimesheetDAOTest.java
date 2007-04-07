@@ -29,6 +29,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
 public class TimesheetDAOTest extends BaseDAOTest 
@@ -85,5 +86,12 @@ public class TimesheetDAOTest extends BaseDAOTest
 		int count = dao.getTimesheetEntryCountForAssignment(1);
 		
 		assertEquals(6, count);
+	}
+	
+	public void testGetLatestTimesheetEntryForAssignment()
+	{
+		TimesheetEntry entry = dao.getLatestTimesheetEntryForAssignment(1);
+		assertEquals(9.2f, entry.getHours(), 0.01f);
+		
 	}
 }

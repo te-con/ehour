@@ -25,7 +25,6 @@ package net.rrm.ehour.project.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +40,7 @@ import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.project.util.TimeAllottedUtil;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -205,6 +205,8 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	{
 		ProjectAssignment	dbAssignment;
 		AssignmentStatus	status;
+		TimesheetEntry		entry;
+		
 		
 		for (ProjectAssignment assignment : assignments)
 		{
@@ -220,21 +222,31 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			}
 		
 			status = timeAllottedUtil.getAssignmentStatus(dbAssignment);
+
 			
 			if (status.getAssignmentPhase() == AssignmentStatus.OVER_ALLOTTED_PHASE 
 				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
 			{
-				mailService.mailPMFixedAllottedReached(status.getAggregate(), new Date(), dbAssignment.getProject().getProjectManager());
+				entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+				mailService.mailPMFixedAllottedReached(status.getAggregate(),
+														entry.getEntryId().getEntryDate(),
+														dbAssignment.getProject().getProjectManager());
 			}
 			else if (status.getAssignmentPhase() == AssignmentStatus.OVER_OVERRUN_PHASE 
 					&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
 			{
-				mailService.mailPMFlexOverrunReached(status.getAggregate(), new Date(), dbAssignment.getProject().getProjectManager());
+				entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+				mailService.mailPMFlexOverrunReached(status.getAggregate(), 
+														entry.getEntryId().getEntryDate(),
+														dbAssignment.getProject().getProjectManager());
 			}
 			else if (status.getAssignmentPhase() == AssignmentStatus.IN_OVERRUN_PHASE 
 					&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
 			{
-				mailService.mailPMFlexAllottedReached(status.getAggregate(), new Date(), dbAssignment.getProject().getProjectManager());
+				entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+				mailService.mailPMFlexAllottedReached(status.getAggregate(), 
+														entry.getEntryId().getEntryDate(),
+														dbAssignment.getProject().getProjectManager());
 			}
 		}
 	}

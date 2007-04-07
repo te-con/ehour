@@ -41,4 +41,10 @@
     		  comment.commentId.userId = :userId
     		 ]]>
 	</query>   
+
+    <query name="Timesheet.getLatestEntryForAssignmentId">
+    	FROM TimesheetEntry entry
+    	WHERE entry.entryId.projectAssignment.assignmentId = :assignmentId
+    	ORDER BY entry.entryId.entryDate DESC
+	</query>   
 </hibernate-mapping>

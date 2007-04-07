@@ -66,4 +66,11 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	 */
 	public List<ProjectAssignment> getBookedProjectAssignmentsInRange(Integer userId, DateRange dateRange);
 	
+	/**
+	 * Get latest timesheet entry for assignment
+	 * @param assignmentId
+	 * @return
+	 */
+	public TimesheetEntry getLatestTimesheetEntryForAssignment(Integer assignmentId);
+	
 }

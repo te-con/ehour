@@ -77,7 +77,7 @@ public class MailServiceImpl implements MailService
 	public void mailPMFixedAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
 		mailPMAggregateMessage(assignmentAggregate,
-								"allotted hours reached", 
+								"allotted hours reached: " + bookDate.toString() + ", hours: " + assignmentAggregate.getHours(),
 								EhourConstants.MAILTYPE_FIXED_ALLOTTED_REACHED,
 								bookDate,
 								user);
@@ -90,7 +90,7 @@ public class MailServiceImpl implements MailService
 	public void mailPMFlexOverrunReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
 		mailPMAggregateMessage(assignmentAggregate, 
-								"overrun hours reached", 
+								"overrun hours reached: " + bookDate.toString() + ", hours: " + assignmentAggregate.getHours(),
 								EhourConstants.MAILTYPE_FLEX_OVERRUN_REACHED,
 								bookDate,
 								user);
@@ -103,7 +103,7 @@ public class MailServiceImpl implements MailService
 	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
 		mailPMAggregateMessage(assignmentAggregate, 
-								"flex - alloted hours reached, in overrun", 
+								"flex - alloted hours reached, in overrun. bookdate: " + bookDate.toString() + ", hours: " + assignmentAggregate.getHours(), 
 								EhourConstants.MAILTYPE_FLEX_ALLOTTED_REACHED,
 								bookDate,
 								user);

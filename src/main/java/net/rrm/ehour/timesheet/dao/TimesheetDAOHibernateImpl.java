@@ -32,6 +32,11 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
+
 public class TimesheetDAOHibernateImpl 
 		extends GenericDAOHibernateImpl<TimesheetEntry, TimesheetEntryId>
 		implements TimesheetDAO
@@ -122,5 +127,28 @@ public class TimesheetDAOHibernateImpl
 		results = getHibernateTemplate().findByNamedQueryAndNamedParam(hql, keys, params);
 		
 		return results;			
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#getLatestTimesheetEntryForAssignment(java.lang.Integer)
+	 */
+	@SuppressWarnings("unchecked")
+	public TimesheetEntry getLatestTimesheetEntryForAssignment(final Integer assignmentId)
+	{
+		return (TimesheetEntry) getHibernateTemplate().execute(
+				new HibernateCallback()
+				{
+					public Object doInHibernate(Session session) throws HibernateException
+					{
+						List<TimesheetEntry> results;
+						
+						Query queryObject = session.getNamedQuery("Timesheet.getLatestEntryForAssignmentId");
+						queryObject.setInteger("assignmentId", assignmentId);
+						queryObject.setMaxResults(1);
+						results = (List<TimesheetEntry>)queryObject.list();
+						return ((results != null && results.size() > 0) ? results.get(0) : null);
+					}
+			}, true);		
 	}
 }
