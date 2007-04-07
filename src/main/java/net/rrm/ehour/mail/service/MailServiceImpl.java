@@ -24,9 +24,12 @@
 package net.rrm.ehour.mail.service;
 
 import java.util.Date;
+import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.mail.callbacks.AssignmentMsgCallback;
+import net.rrm.ehour.mail.dao.MailLogDAO;
+import net.rrm.ehour.mail.domain.MailLogAssignment;
 import net.rrm.ehour.mail.domain.MailType;
 import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
@@ -50,6 +53,7 @@ public class MailServiceImpl implements MailService
 	private	EhourConfig		config;
 	private	Logger			logger = Logger.getLogger(this.getClass());
 	private	MailSender		mailSender;
+	private MailLogDAO		mailLogDAO;
 	private	TaskExecutor	taskExecutor;
 	private AssignmentMsgCallback	assignmentMsgCallback;
 	
@@ -86,7 +90,7 @@ public class MailServiceImpl implements MailService
 	public void mailPMFlexOverrunReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
 		mailPMAggregateMessage(assignmentAggregate, 
-								"allotted hours reached", 
+								"overrun hours reached", 
 								EhourConstants.MAILTYPE_FLEX_OVERRUN_REACHED,
 								bookDate,
 								user);
@@ -99,7 +103,7 @@ public class MailServiceImpl implements MailService
 	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
 		mailPMAggregateMessage(assignmentAggregate, 
-								"allotted hours reached", 
+								"flex - alloted hours reached, in overrun", 
 								EhourConstants.MAILTYPE_FLEX_ALLOTTED_REACHED,
 								bookDate,
 								user);
@@ -115,21 +119,49 @@ public class MailServiceImpl implements MailService
 	private void mailPMAggregateMessage(ProjectAssignmentAggregate assignmentAggregate,
 										String mailBody, int mailTypeId, Date bookDate, User user)
 	{
-		SimpleMailMessage	msg = new SimpleMailMessage();
-		AssignmentPMMessage	asgMsg = new AssignmentPMMessage();
+		SimpleMailMessage	msg; 
+		AssignmentPMMessage	asgMsg;
 		MailTask			mailTask;
 		
-		msg.setText(mailBody);
+		if (!isAssignmentMailAlreadySent(assignmentAggregate, mailTypeId))
+		{
+			asgMsg = new AssignmentPMMessage();
+			msg = new SimpleMailMessage();
+			msg.setText(mailBody);
+			
+			asgMsg.setMailMessage(msg);
+			asgMsg.setToUser(user);
+			asgMsg.setBookDate(bookDate);
+			asgMsg.setAggregate(assignmentAggregate);
+			asgMsg.setMailType(new MailType(mailTypeId));
+			asgMsg.setCallBack(assignmentMsgCallback);
+			
+			mailTask = new MailTask(asgMsg);
+			taskExecutor.execute(mailTask);
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private boolean isAssignmentMailAlreadySent(ProjectAssignmentAggregate aggregate, int mailTypeId)
+	{
+		List<MailLogAssignment> mlaList = mailLogDAO.findMailLogOnAssignmentId(aggregate.getProjectAssignment().getAssignmentId());
+		boolean	alreadySent = false;
 		
-		asgMsg.setMailMessage(msg);
-		asgMsg.setToUser(user);
-		asgMsg.setBookDate(bookDate);
-		asgMsg.setAggregate(assignmentAggregate);
-		asgMsg.setMailType(new MailType(mailTypeId));
-		asgMsg.setCallBack(assignmentMsgCallback);
+		for (MailLogAssignment mailLog : mlaList)
+		{
+			if ((mailLog.getMailType().getMailTypeId().intValue() == mailTypeId)
+				&& mailLog.getSuccess().booleanValue())
+			{
+				alreadySent = true;
+				logger.info("Mail was already sent for assignment " + aggregate.getProjectAssignment().getAssignmentId() + ", not sending again");
+				break;
+			}
+		}
 		
-		mailTask = new MailTask(asgMsg);
-		taskExecutor.execute(mailTask);
+		return alreadySent;
 	}
 	
 	/**
@@ -181,5 +213,13 @@ public class MailServiceImpl implements MailService
 	public void setAssignmentMsgCallback(AssignmentMsgCallback assignmentMsgCallback)
 	{
 		this.assignmentMsgCallback = assignmentMsgCallback;
+	}
+
+	/**
+	 * @param mailLogDAO the mailLogDAO to set
+	 */
+	public void setMailLogDAO(MailLogDAO mailLogDAO)
+	{
+		this.mailLogDAO = mailLogDAO;
 	}
 }

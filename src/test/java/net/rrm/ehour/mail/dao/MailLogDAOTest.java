@@ -25,33 +25,34 @@ package net.rrm.ehour.mail.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
-import net.rrm.ehour.mail.domain.MailLog;
+import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.mail.domain.MailLogAssignment;
 
+import org.junit.Test;
+
 /**
- * DAO for MailLog db operations 
+ * TODO 
  **/
 
-public class MailLogDAOHibernateImpl extends GenericDAOHibernateImpl<MailLog, Integer>  implements MailLogDAO
+public class MailLogDAOTest extends BaseDAOTest
 {
-	/**
-	 * @todo fix this a bit better
-	 */
-	public MailLogDAOHibernateImpl()
+	private MailLogDAO	mailLogDAO;
+	
+	@Test
+	public final void testGetMailLogAssignment()
 	{
-		super(MailLog.class);
+		List<MailLogAssignment> mla = mailLogDAO.findMailLogOnAssignmentId(2);
+		
+		assertEquals(1, mla.size());
+		assertEquals(9, mla.get(0).getMailLogId().intValue());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.mail.dao.MailLogDAO#getMailLogAssignment(java.lang.Integer)
+	/**
+	 * @param mailLogDAO the mailLogDAO to set
 	 */
-	@SuppressWarnings("unchecked")
-	public List<MailLogAssignment> findMailLogOnAssignmentId(Integer projectAssignmentId)
+	public void setMailLogDAO(MailLogDAO mailLogDAO)
 	{
-		return getHibernateTemplate().findByNamedQueryAndNamedParam("MailLogAssignment.findOnAssignmentId",
-																		"assignmentId", projectAssignmentId);
+		this.mailLogDAO = mailLogDAO;
 	}
 
 }

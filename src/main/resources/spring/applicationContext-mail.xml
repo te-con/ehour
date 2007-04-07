@@ -12,10 +12,12 @@
 	</bean>
 
 	<!-- Mail service -->
-	<bean id="mailService" class="net.rrm.ehour.mail.service.MailServiceImpl">
+	<bean id="mailService"
+			class="net.rrm.ehour.mail.service.MailServiceImpl">
 		<constructor-arg ref="ehourConfig" />
 		<constructor-arg ref="taskExecutor" />	
 		<property name="assignmentMsgCallback" ref="assignmentMsgCallback" />
+		<property name="mailLogDAO" ref="mailLogDAO" />
 	</bean>	
 	
 	<!-- Mail task call back -->
