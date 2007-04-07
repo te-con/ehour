@@ -49,8 +49,8 @@ public class MailServiceTest extends BaseDAOTest
 	{
 		String[] configs = super.getConfigLocations();
 		
-		configs = (String[])ArrayUtils.add(configs, "classpath:applicationContext-service.xml");
 		configs = (String[])ArrayUtils.add(configs, "classpath:applicationContext-mail.xml");
+		configs = (String[])ArrayUtils.add(configs, "classpath:applicationContext-service.xml");
 		
 		return configs;
 	}

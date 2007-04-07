@@ -74,7 +74,8 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 	protected String[] getConfigLocations()
 	{
 		return new String[] { "classpath:/applicationContext-datasource.xml",
-							  "classpath:/applicationContext-dao.xml", 
+							  "classpath:/applicationContext-dao.xml",
+							  "classpath:/applicationContext-mail.xml", 
 							  "classpath:/applicationContext-service.xml"};	
 	}
 
