@@ -189,12 +189,20 @@ public class DomainAssembler
 		try
 		{
 			pa.setDateStart(dateParser.parse(paf.getDateStart()));
+		}
+		catch (ParseException pe)
+		{
+		}
+
+		try
+		{
 			pa.setDateEnd(dateParser.parse(paf.getDateEnd()));
 		}
 		catch (ParseException pe)
 		{
 		}
 		
+
 		pa.setHourlyRate(paf.getHourlyRate());
 		pa.setRole(paf.getRole());
 		pa.setAssignmentType(new ProjectAssignmentType(paf.getAssignmentTypeId()));
