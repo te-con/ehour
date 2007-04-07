@@ -18,9 +18,14 @@
 	text-align: left;
 }
 
-.MonthAggregateTable th.firstCell
+.MonthAggregateTable td.foldCell
 {
-	width: 25%;
+	width: 25px;
+}
+
+.MonthAggregateTable th.projectCell
+{
+	width: 23%;
 }
 
 .MonthAggregateTable td

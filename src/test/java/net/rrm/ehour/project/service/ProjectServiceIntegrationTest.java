@@ -31,7 +31,6 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.util.EhourConstants;
 
 /**
  * TODO 

@@ -9,6 +9,7 @@ import net.rrm.ehour.user.domain.User;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Project extends DomainObject<Integer, Project>
 {
@@ -236,6 +237,16 @@ public class Project extends DomainObject<Integer, Project>
 	public void setProjectManager(User projectManager)
 	{
 		this.projectManager = projectManager;
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString()
+	{
+		return new ToStringBuilder(this).append("description", this.description).append("contact", this.contact).append("projectManager", this.projectManager).append("projectAssignments", this.projectAssignments).append("active", this.active)
+				.append("PK", this.getPK()).append("defaultProject", this.defaultProject).append("fullname", this.getFullname()).append("projectCode", this.projectCode).append("name", this.name).append("customer", this.customer).append("projectId",
+						this.projectId).toString();
 	}	
 
 }

@@ -76,16 +76,14 @@ public class TimeAllottedUtil
 		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		status.setAggregate(aggregate);
 		
+		status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
+		
 		if (aggregate != null)
 		{
-			if (aggregate.getHours().floatValue() >= assignment.getAllottedHours().floatValue());
+			if (assignment.getAllottedHours().compareTo(aggregate.getHours().floatValue()) <= 0)
 			{
 				status.setAssignmentPhase(AssignmentStatus.OVER_ALLOTTED_PHASE);
 			}
-		}
-		else
-		{
-			status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
 		}
 		
 		return status;
@@ -99,20 +97,17 @@ public class TimeAllottedUtil
 	private AssignmentStatus getFlexAssignmentStatus(ProjectAssignment assignment)
 	{
 		AssignmentStatus	status = new AssignmentStatus();
-		float				hours;
 		
 		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		status.setAggregate(aggregate);
 		
 		if (aggregate != null)
 		{
-			hours = aggregate.getHours().floatValue();
-			
-			if (hours < assignment.getAllottedHours().floatValue())
+			if (assignment.getAllottedHours().compareTo(aggregate.getHours().floatValue()) > 0)
 			{
 				status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
 			}
-			else if (hours >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
+			else if (aggregate.getHours().floatValue()  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
 			{
 				status.setAssignmentPhase(AssignmentStatus.OVER_OVERRUN_PHASE);
 			}
@@ -120,6 +115,10 @@ public class TimeAllottedUtil
 			{
 				status.setAssignmentPhase(AssignmentStatus.IN_OVERRUN_PHASE);
 			}
+		}
+		else
+		{
+			status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
 		}
 		
 		return status;

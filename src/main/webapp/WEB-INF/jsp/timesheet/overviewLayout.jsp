@@ -14,6 +14,8 @@
 	var errorNotValidNumber = '<fmt:message key="user.timesheet.errorNotValidNumber" />';
 	var error24HoursMax = '<fmt:message key="user.timesheet.error24HoursMax" />';
 	var errorCommentTooLong= '<fmt:message key="user.timesheet.errorCommentTooLong" />';
+	var foldUpImg = '<c:url value="/img/fold_up.gif" />';
+	var foldDownImg = '<c:url value="/img/fold_down.gif" />';	
 </script>
 
 <script src="<c:url value="/js/navCalendarOverview.js" />" type="text/javascript"></script>

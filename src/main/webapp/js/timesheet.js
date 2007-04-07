@@ -36,6 +36,27 @@ function enterSheet(year, month, day, userId)
 	showLoadingData();
 }
 
+// toggle project info
+function toggleProjectInfo(assignmentId)
+{	
+	infoRow = dojo.byId('project' + assignmentId);
+	foldImg = dojo.byId('foldImg' + assignmentId);
+	
+	
+	if (infoRow.style.display == 'none')
+	{
+		infoRow.style.display = '';
+		foldImg.src = foldUpImg;
+	}
+	else
+	{
+		infoRow.style.display = 'none';
+		foldImg.src = foldDownImg;
+	}
+	
+	return false;
+}
+
 // week changed	
 function weekChanged(type, xml, evt)
 {

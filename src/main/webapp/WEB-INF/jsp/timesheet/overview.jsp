@@ -15,7 +15,8 @@
 		<div class="GreyFrameBody">
 			<table class="MonthAggregateTable" cellpadding="0" cellspacing="0">
 			<tr>
-				<th class="firstCell"><fmt:message key="user.overview.project" /></th>
+				<td class="foldCell">&nbsp;</td>
+				<th class="projectCell"><fmt:message key="user.overview.project" /></th>
 				<th><nobr><fmt:message key="user.overview.projectCode" /></nobr></th>
 				<th><fmt:message key="user.overview.customer" /></th>
 				<c:if test="${config.showTurnover}">			
@@ -30,7 +31,8 @@
 			<c:forEach items="${timesheetOverview.projectHours}" var="projectReport">
 			
 			<tr>
-				<td>${projectReport.projectAssignment.project.name}</td>
+				<td><a href="" onClick="return toggleProjectInfo(${projectReport.projectAssignment.assignmentId})"><img id="foldImg${projectReport.projectAssignment.assignmentId}" src="<c:url value="/img/fold_down.gif" />" border="0"></a></td>
+				<td><a href="" onClick="return toggleProjectInfo(${projectReport.projectAssignment.assignmentId})">${projectReport.projectAssignment.project.name}</a></td>
 				<td>${projectReport.projectAssignment.project.projectCode}</td>				
 				<td>${projectReport.projectAssignment.project.customer.name}</td>
 				<c:if test="${config.showTurnover}">
@@ -54,6 +56,12 @@
 				</c:if>
 			</tr>
 			
+			<tr id="project${projectReport.projectAssignment.assignmentId}" style="display: none">
+				<td>&nbsp;</td>
+				<td style="background-color: red" colspan="<c:if test="${config.showTurnover}">6</c:if><c:if test="${!config.showTurnover}">4</c:if>">
+					<fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateStart}" /> - <fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateEnd}" />
+				</td>
+			</tr>					
 			</c:forEach>
 		</table>
 		
