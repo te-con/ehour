@@ -38,6 +38,7 @@ import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
@@ -148,7 +149,12 @@ public class TimesheetServiceTest  extends TestCase
 		entryB.setHours(new Float(3));
 		daoResults.add(entryB);
 		
-		reportResults.add(new ProjectAssignmentAggregate());
+		ProjectAssignmentAggregate agg = new ProjectAssignmentAggregate();
+		ProjectAssignmentType type = new ProjectAssignmentType(0);
+		ProjectAssignment pa = new ProjectAssignment();
+		pa.setAssignmentType(type);
+		agg.setProjectAssignment(pa);
+		reportResults.add(agg);
 		
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal)))
 				.andReturn(daoResults);
