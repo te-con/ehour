@@ -68,7 +68,7 @@
 								<fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateStart}" />
 							</c:otherwise>
 						</c:choose>
-						&nbsp;<fmt:message key="user.overview.to" />:&nbsp;
+						&nbsp;<fmt:message key="user.overview.to" />&nbsp;
 						<c:choose>
 							<c:when test="${projectReport.projectAssignment.dateEnd == null}">
 								<span title="<fmt:message key="user.overview.infinite" />">&infin;</span>
