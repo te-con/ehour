@@ -24,6 +24,7 @@
 package net.rrm.ehour.project.domain;
 
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 
@@ -50,6 +51,27 @@ public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignme
 	{
 		this.assignmentTypeId = assignmentTypeId;
 	}
+	
+	public boolean isDateType()
+	{
+		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_DATE;
+	}
+
+	public boolean isFixedAllottedType()
+	{
+		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED;
+	}
+
+	public boolean isFlexAllottedType()
+	{
+		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX;
+	}
+	
+	public boolean isAllottedType()
+	{
+		return isFixedAllottedType() || isFlexAllottedType();
+	}
+
 	/**
 	 * @return the assignmentType
 	 */

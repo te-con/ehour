@@ -28,7 +28,7 @@
 				</c:if>
 			</tr>
 					
-			<c:forEach items="${timesheetOverview.projectHours}" var="projectReport">
+			<c:forEach items="${timesheetOverview.projectStatus}" var="projectReport">
 			
 			<tr>
 				<td><a href="" onClick="return toggleProjectInfo(${projectReport.projectAssignment.assignmentId})"><img id="foldImg${projectReport.projectAssignment.assignmentId}" src="<c:url value="/img/fold_down.gif" />" border="0"></a></td>
@@ -58,8 +58,30 @@
 			
 			<tr id="project${projectReport.projectAssignment.assignmentId}" style="display: none">
 				<td>&nbsp;</td>
-				<td style="background-color: red" colspan="<c:if test="${config.showTurnover}">6</c:if><c:if test="${!config.showTurnover}">4</c:if>">
-					<fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateStart}" /> - <fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateEnd}" />
+				<td style="color: #999999;font-size: 0.8em;padding-top: 2px" colspan="<c:if test="${config.showTurnover}">6</c:if><c:if test="${!config.showTurnover}">4</c:if>">
+					<fmt:message key="user.overview.validFrom" />:
+						<c:choose>
+							<c:when test="${projectReport.projectAssignment.dateStart == null}">
+								<span title="<fmt:message key="user.overview.infinite" />">&infin;</span>
+							</c:when>
+							<c:otherwise>
+								<fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateStart}" />
+							</c:otherwise>
+						</c:choose>
+						&nbsp;<fmt:message key="user.overview.to" />:&nbsp;
+						<c:choose>
+							<c:when test="${projectReport.projectAssignment.dateEnd == null}">
+								<span title="<fmt:message key="user.overview.infinite" />">&infin;</span>
+							</c:when>
+							<c:otherwise>
+								<fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateEnd}" />
+							</c:otherwise>
+						</c:choose>.
+						
+						<c:if test="${projectReport.projectAssignment.assignmentType.allottedType}">
+							<fmt:message key="user.overview.totalBookedHours" />: <fmt:formatNumber value="${projectReport.totalBookedHours}" maxFractionDigits="2" /><fmt:message key="user.overview.hourShort" />.&nbsp;
+							<fmt:message key="user.overview.remainingHours" />: <fmt:formatNumber value="${projectReport.hoursRemaining}" maxFractionDigits="2" /><fmt:message key="user.overview.hourShort" />.
+						</c:if>
 				</td>
 			</tr>					
 			</c:forEach>

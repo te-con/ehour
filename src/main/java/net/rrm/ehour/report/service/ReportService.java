@@ -61,6 +61,13 @@ public interface ReportService
 	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
 	
 	/**
+	 * Get all booked hours for assignments
+	 * @param projectAssignmentIds
+	 * @return
+	 */
+	public List<ProjectAssignmentAggregate> getHoursPerAssignment(Integer[] projectAssignmentIds);
+	
+	/**
 	 * Get project report for reporting role
 	 * @param criteria
 	 * @return

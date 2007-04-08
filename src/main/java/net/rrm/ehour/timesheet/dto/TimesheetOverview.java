@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
 
 public class TimesheetOverview
 {
-	private	SortedSet<ProjectAssignmentAggregate>	projectHours;
+	private	SortedSet<UserProjectStatus>	projectStatus;
 	private	Map<Integer, List<TimesheetEntry>>		timesheetEntries;
 
 
@@ -29,13 +28,19 @@ public class TimesheetOverview
 		this.timesheetEntries = timesheetEntries;
 	}
 
-	public SortedSet<ProjectAssignmentAggregate> getProjectHours()
+	/**
+	 * @return the projectStatus
+	 */
+	public SortedSet<UserProjectStatus> getProjectStatus()
 	{
-		return projectHours;
+		return projectStatus;
 	}
 
-	public void setProjectHours(SortedSet<ProjectAssignmentAggregate> projectHours)
+	/**
+	 * @param projectStatus the projectStatus to set
+	 */
+	public void setProjectStatus(SortedSet<UserProjectStatus> projectStatus)
 	{
-		this.projectHours = projectHours;
+		this.projectStatus = projectStatus;
 	}
 }

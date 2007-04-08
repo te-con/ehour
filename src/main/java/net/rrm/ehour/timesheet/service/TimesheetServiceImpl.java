@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -48,6 +49,7 @@ import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
+import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
 
@@ -83,25 +85,73 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		TimesheetOverview	overview = new TimesheetOverview();
 		DateRange			monthRange;
-		List<ProjectAssignmentAggregate>	projectAssignmentAggregates = null;
 		List<TimesheetEntry> timesheetEntries = null;
 		Map<Integer, List<TimesheetEntry>>	calendarMap = null;
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
 		logger.debug("Getting timesheet overview for userId " + userId + " in range " + monthRange);
 		
-		projectAssignmentAggregates = reportService.getHoursPerAssignmentInRange(userId, monthRange);
-		logger.debug("Project assignments found for userId " + userId + ": " + projectAssignmentAggregates.size());
+		overview.setProjectStatus(getProjectStatus(userId, monthRange));
 		
 		timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(userId, monthRange);
 		logger.debug("Timesheet entries found for userId " + userId + " in range " + monthRange + ": " + timesheetEntries.size());
-		
+
 		calendarMap = entriesToCalendarMap(timesheetEntries);
-		
-		overview.setProjectHours(new TreeSet<ProjectAssignmentAggregate>(projectAssignmentAggregates));
 		overview.setTimesheetEntries(calendarMap);
 		
 		return overview;
+	}
+	
+	/**
+	 * Get project status for user
+	 * @param userId
+	 * @param monthRange
+	 * @return
+	 */
+	private SortedSet<UserProjectStatus> getProjectStatus(Integer userId, DateRange monthRange)
+	{
+		List<ProjectAssignmentAggregate>	aggregates;
+		List<Integer>						assignmentIds = new ArrayList<Integer>();
+		SortedSet<UserProjectStatus>		userProjectStatus = new TreeSet<UserProjectStatus>();
+		List<ProjectAssignmentAggregate> 	timeAllottedAggregates;
+		Map<Integer, ProjectAssignmentAggregate>	originalAggregates = new HashMap<Integer, ProjectAssignmentAggregate>();
+		Integer 							assignmentId;
+		
+		aggregates = reportService.getHoursPerAssignmentInRange(userId, monthRange);
+		
+		logger.debug("Getting project status for " + aggregates.size() + " assignments");
+		
+		// only flex & fixed needed, others can already be added to the returned list
+		for (ProjectAssignmentAggregate aggregate : aggregates)
+		{
+			if (aggregate.getProjectAssignment().getAssignmentType().isFixedAllottedType() ||
+				aggregate.getProjectAssignment().getAssignmentType().isFlexAllottedType())
+			{
+				assignmentId = aggregate.getProjectAssignment().getAssignmentId();
+				assignmentIds.add(assignmentId);
+				originalAggregates.put(assignmentId, aggregate);
+
+				logger.debug("Fetching total hours for assignment Id: " + assignmentId);
+			}
+			else
+			{
+				userProjectStatus.add(new UserProjectStatus(aggregate));
+			}
+		}
+		
+		// fetch total hours for flex/fixed assignments
+		if (assignmentIds.size() > 0)
+		{
+			timeAllottedAggregates = reportService.getHoursPerAssignment((Integer[])assignmentIds.toArray(new Integer[assignmentIds.size()]));
+			
+			for (ProjectAssignmentAggregate aggregate : timeAllottedAggregates)
+			{
+				userProjectStatus.add(new UserProjectStatus(originalAggregates.get(aggregate.getProjectAssignment().getAssignmentId()),
+																					aggregate.getHours()));
+			}
+		}
+		
+		return userProjectStatus;
 	}
 	
 	/**

@@ -76,6 +76,15 @@ public class ReportServiceImpl implements ReportService
 		return getHoursPerAssignmentInRange(userId, monthRange);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
+	 */
+	public List<ProjectAssignmentAggregate> getHoursPerAssignment(Integer[] projectAssignmentIds)
+	{
+		return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
+	}
+	
 	/**
 	 * Get the booked hours per project assignment for a date range
 	 * @param userId

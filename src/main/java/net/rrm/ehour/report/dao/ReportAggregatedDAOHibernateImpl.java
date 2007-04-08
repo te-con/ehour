@@ -218,4 +218,18 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 
 		return (results != null && results.size() > 0) ? results.get(0) : null;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForAssignments(java.lang.Integer[])
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForAssignments(Integer[] projectAssignmentIds)
+	{
+		List		results;
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForAssignmentIds"
+																		, "assignmentIds", projectAssignmentIds);
+		return results;		
+	}
 }

@@ -1,6 +1,32 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/css; charset=UTF-8" %>
 
+
+a:link
+{
+	color: #536e87;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+a:visited
+{
+	color: #536e87;
+	font-weight: normal;	
+	text-decoration: none;
+}
+
+a:hover
+{
+	color: #233e55;
+	text-decoration: underline;
+}
+
+a:active
+{
+	text-decoration: none
+}
+
 .MonthAggregateTable 
 {
 	margin: -1em 1em 0 1em;

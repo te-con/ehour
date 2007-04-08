@@ -32,8 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
+import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.web.calendar.CalendarUtil;
 import net.rrm.ehour.web.calendar.form.NavCalendarForm;
 import net.rrm.ehour.web.sort.ProjectAssignmentAggregateComparator;
@@ -87,12 +87,12 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 	 */
 	private void reSortTimesheetOverview(TimesheetOverview overview)
 	{
-		SortedSet<ProjectAssignmentAggregate>	sortedSet;
+		SortedSet<UserProjectStatus>	sortedSet;
 		
-		sortedSet = new TreeSet<ProjectAssignmentAggregate>(new ProjectAssignmentAggregateComparator());
-		sortedSet.addAll(overview.getProjectHours());
+		sortedSet = new TreeSet<UserProjectStatus>(new ProjectAssignmentAggregateComparator());
+		sortedSet.addAll(overview.getProjectStatus());
 		
-		overview.setProjectHours(sortedSet);
+		overview.setProjectStatus(sortedSet);
 	}
 
 	/**

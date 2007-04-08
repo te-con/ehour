@@ -52,6 +52,13 @@ public interface ReportAggregatedDAO
 	 * @return
 	 */
 	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(Integer userId[]);
+	
+	/**
+	 * Get cumulated hours per project assignment for assignments
+	 * @param projectAssignmentIds
+	 * @return
+	 */
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForAssignments(Integer projectAssignmentIds[]);
 
 	/**
 	 * Get cumulated hours per project assignment for users, projects
