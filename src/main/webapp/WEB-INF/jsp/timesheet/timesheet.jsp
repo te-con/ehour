@@ -32,7 +32,11 @@
 		<table class="timesheetTable" cellpadding="0" cellspacing="0">
 
 		<tr class="weekColumnRow">
-			<td class="project">&nbsp;</td>
+			<td class="project" style="left">&nbsp;&nbsp;<fmt:message key="user.timesheet.project" /></td>
+			<td class="projectCode"><fmt:message key="user.timesheet.projectCode" /></td>
+			<td class="customer" valign="bottom"><fmt:message key="user.timesheet.customer" /></td>
+			<td class="spacer">&nbsp;</td>
+			
 			<c:forEach items="${timesheet.dateSequence}" var="date" varStatus="status">
 				<c:choose>
 					<c:when test="${status.count == 7}">
@@ -59,6 +63,10 @@
 						${row.projectAssignment.project.name}
 					</a>
 				</td>
+				
+				<td class="projectCode">${row.projectAssignment.project.projectCode}</td>
+				<td class="customer">${row.projectAssignment.project.customer.name}</td>
+				<td class="spacer">&nbsp;</td>
 
 				<c:forEach items="${row.timesheetCells}" var="cell" varStatus="status">
 					<c:choose>
@@ -77,7 +85,7 @@
 		
 					<c:choose>
 						<c:when test="${cell.valid}">
-							<input type="text" size="2" class="textInput"
+							<input type="text"
 								   name="ehts_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />_${status.count}"
 								   <c:if test="${cell.timesheetEntry.hours != null && cell.timesheetEntry.hours  > 0}">
 									   value="<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>"

@@ -56,7 +56,7 @@ a:active
 
 .MonthAggregateTable td
 {
-	font:  0.9em Geneva, Arial, Helvetica, sans-serif;	
+	font:  1em Geneva, Arial, Helvetica, sans-serif;	
 	color: #233e55;
 }
 
@@ -259,17 +259,63 @@ a:active
 
 .timesheetTable tr.weekColumnRow td.project
 {
-	width: 290px;
+	width: 250px;
 	border-width: 0;
 	color: #536e87;
+	text-align: left;
+	vertical-align: bottom;
+	padding-bottom: 1px;
 }
 
 .timesheetTable tr.projectRow td.project
 {
-	width: 290px;
+	width: 250px;
 	text-align: left;
 	border-right: 0px;
-	font:  0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  1em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+}
+
+.timesheetTable tr.projectRow td.projectCode
+{
+	text-align: left;
+	font-weight: normal;
+}
+
+
+.timesheetTable tr.projectRow td.customer
+{
+	font-weight: normal;
+	weight: 10em;
+	text-align: left;
+	padding-left: 3px;
+	border-right: 0;
+}
+
+.timesheetTable tr.weekColumnRow td.spacer
+{
+	border-right: 0;
+}
+
+.timesheetTable tr.weekColumnRow td.customer
+{
+	border-right: 0;
+	text-align: left;
+	padding-left: 3px;
+	padding-bottom: 1px;
+}
+
+.timesheetTable tr.weekColumnRow td.projectCode
+{
+	border: 0;
+	padding-bottom: 1px;
+	text-align: left;
+	vertical-align: bottom;
+}
+
+.timesheetTable tr.projectRow td.spacer
+{
+	border-right: 0;
+	weight: 10em;
 }
 
 .timesheetTable tr.projectRow td.project a:link
@@ -358,6 +404,18 @@ a:active
 	text-align: center;
 }
 
+.timesheetTable input
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #cfdbe6;
+	margin: 5px 0 5px 0;
+	font: 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
+	background-color: white;
+	width: 3em;
+	size: 3;
+}
 .timesheetTable tr.totalRow td
 {
 	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
@@ -409,4 +467,6 @@ a:active
 	border-left-width: 1px;
 	vertical-align: top;
 }
+
+
 	

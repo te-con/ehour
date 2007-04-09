@@ -42,7 +42,7 @@
 						</c:if>
 					<nobr><fmt:formatNumber type="currency" 
 											value="${projectReport.projectAssignment.hourlyRate}" 
-											currencySymbol="${currencySymbol}" /></nobr></td>
+											currencySymbol="${currencySymbol} " /></nobr></td>
 				</c:if>			
 				<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /></td>
 				<c:if test="${config.showTurnover}">
@@ -52,7 +52,7 @@
 					<nobr>
 				<fmt:formatNumber type="currency"
 										value="${projectReport.turnOver}" 
-										currencySymbol="${currencySymbol}" /></nobr></td>
+										currencySymbol="${currencySymbol} " /></nobr></td>
 				</c:if>
 			</tr>
 			

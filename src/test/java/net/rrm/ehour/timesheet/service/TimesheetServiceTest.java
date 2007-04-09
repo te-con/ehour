@@ -176,6 +176,9 @@ public class TimesheetServiceTest  extends TestCase
 		Date da = new Date(2006 - 1900, 12 - 1, 31);
 		Date db = new Date(2007 - 1900, 1 - 1, 6);
 		DateRange range = new DateRange(da, db);
+		
+		DateRange rangeB = new DateRange(new Date(2007 - 1900, 1 - 1, 5), new Date(2007 - 1900, 1 - 1, 1));
+		
 
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, range))
 				.andReturn(new ArrayList<TimesheetEntry>());
@@ -183,7 +186,7 @@ public class TimesheetServiceTest  extends TestCase
 		expect(timesheetCommentDAO.findById(new TimesheetCommentId(1, range.getDateStart())))
 			.andReturn(new TimesheetComment());
 		
-		expect(projectAssignmentService.getProjectAssignmentsForUser(1, range))
+		expect(projectAssignmentService.getProjectAssignmentsForUser(1, rangeB))
 				.andReturn(new ArrayList<ProjectAssignment>());
 		
 		replay(timesheetDAO);
