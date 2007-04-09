@@ -14,7 +14,13 @@ Release Notes - eHour v0.5
 
 * 0.5 Release Notes
 
-	{{http://sourceforge.net/tracker/index.php?func=detail&aid=1688586&group_id=167867&atid=844651}1688586 }} Customer and project code added to timesheet
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1668137&group_id=167867&atid=844648}1668137 }} userlist is refreshed in admin after editting a user
+	
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670789&group_id=167867&atid=844648}1670789 }} Reporting logs cut down to normal proportions
+
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670792&group_id=167867&atid=844648}1670792 }} When creating a new report a loading message is displayed
+	
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1688586&group_id=167867&atid=844651}1688586 }} Customer and project code added to timesheet
 
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1668139&group_id=167867&atid=844648}1668139 }} Dojo upgraded to 0.4.2 and did a serious cut in the src dir.
 

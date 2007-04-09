@@ -57,7 +57,7 @@
 							</c:url>">${pa.project.name}</a>
 					
 					<c:if test="${!pa.project.defaultProject}">
-						&nbsp;[${pa.description}]
+						&nbsp;[${pa.role}]
 					</c:if>
 					<br>
 				</c:forEach>
