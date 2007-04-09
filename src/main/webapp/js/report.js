@@ -79,6 +79,7 @@ function showDefaultText(evt)
 // criteria submitted
 function criteriaSubmitted(type, xml, evt)
 {
+	hideLoadingData();
 	if (type == 'error')
 	{
 		alert(ajaxError);
@@ -179,6 +180,7 @@ function changeFormAction()
 		criteriaForm.action = contextRoot + '/createReport.do';
 		var criteriaPane = dojo.widget.getWidgetById("criteriaPane");
 		criteriaPane.onLabelClick();
+		showLoadingData();
 	}
 	else
 	{
