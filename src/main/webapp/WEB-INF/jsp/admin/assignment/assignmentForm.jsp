@@ -186,7 +186,6 @@ function initDojo()
 			<td>
 				<select id="assignmentTypeId" name="assignmentTypeId" class="textInputSmall" >
 					<option value="0" <c:if test="${assignment.assignmentType.assignmentTypeId == 0}">SELECTED</c:if>><fmt:message key="admin.assignment.dateRange" />
-					<option value="1" <c:if test="${assignment.assignmentType.assignmentTypeId == 1}">SELECTED</c:if>><fmt:message key="admin.assignment.default" />
 					<option value="2" <c:if test="${assignment.assignmentType.assignmentTypeId == 2}">SELECTED</c:if>><fmt:message key="admin.assignment.allottedFixed" />
 					<option value="3" <c:if test="${assignment.assignmentType.assignmentTypeId == 3}">SELECTED</c:if>><fmt:message key="admin.assignment.allottedFlex" />
 				</select>

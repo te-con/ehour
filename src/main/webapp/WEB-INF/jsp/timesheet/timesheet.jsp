@@ -61,7 +61,6 @@
 				</td>
 
 				<c:forEach items="${row.timesheetCells}" var="cell" varStatus="status">
-		<%-- @todo sunday & saturday as marked as grey, configurable? --%>
 					<c:choose>
 						<c:when test="${status.count == 1}">
 							<td class="sunday">

@@ -123,18 +123,33 @@ public class TimesheetFormAssembler
 		TimesheetCell	cell = new TimesheetCell();
 		
 		cell.setTimesheetEntry(entry);
-		
-		// although the active filters are done on db level there's still
-		// the possibility that hours were booked on a project and afterwards
-		// the assignment/project/customer was deactivated; hence the checks here 
-		cell.setValid(validProjectAssignments.contains(assignment));
-//				
-//				assignment.isActive() && assignment.getProject().isActive() &&
-//					  assignment.getProject().getCustomer().isActive() &&
-//					  DateUtil.isDateWithinRange(date, assignment.getDateRange()));
+		cell.setValid(isCellValid(assignment, validProjectAssignments, date));
 		cell.setCellDate(date);
 		
 		return cell;
+	}
+
+	/**
+	 * Check if the cell is still valid. Even if they're in the timesheet entries it can be that time allotted
+	 * assignments are over their budget or default assignments are de-activated
+	 * @param assignment
+	 * @param validProjectAssignments
+	 * @param date
+	 * @return
+	 */
+	private boolean isCellValid(ProjectAssignment assignment, 
+								List<ProjectAssignment> validProjectAssignments,
+								Date date)
+	{
+		boolean isValid = false;
+		
+		// first check if it's in valid project assignments (time allotted can have values
+		// but not be valid anymore)
+		isValid = validProjectAssignments.contains(assignment);
+		
+		isValid = isValid && DateUtil.isDateWithinRange(date, assignment.getDateRange());
+		
+		return isValid;
 	}
 	
 	/**

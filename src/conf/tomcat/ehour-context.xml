@@ -9,15 +9,4 @@
 	       	password="@ehour.db.password"
 	       	driverClassName="com.mysql.jdbc.Driver"
             url="jdbc:mysql://@ehour.db.hostname:3306/@ehour.db.name?autoReconnect=true"/>
-
-  <Resource name="mail/eHourSession"
-			auth="Container"
-            type="javax.mail.Session"/>
-	  <ResourceParams name="mail/eHourSession">
-	    <parameter>
-	      <name>mail.smtp.host</name>
-	      <value>@smtp.server</value>
-	    </parameter>
-	  </ResourceParams>
-  </Resource>
 </Context>
