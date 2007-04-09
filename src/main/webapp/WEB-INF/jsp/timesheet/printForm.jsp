@@ -34,11 +34,10 @@
 							<input type="checkbox" 
 									name="projectId"
 									value="${projectAssignment.assignmentId}"
-									<c:if test="${!projectAssignment.defaultAssignment}">checked</c:if>
 								>
 									${projectAssignment.project.name} 
-									<c:if test="${projectAssignment.description != null && projectAssignment.description != ''}">
-										(${projectAssignment.description})
+									<c:if test="${projectAssignment.role != null && projectAssignment.role != ''}">
+										(${projectAssignment.role})
 									</c:if>
 										<br>
 						</c:forEach>

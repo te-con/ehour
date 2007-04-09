@@ -49,7 +49,7 @@
 		<c:forEach items="${printReport.values}" var="row" varStatus="rowStatus">
 			<c:set var="totalHour" value="0" />		
 		<tr>
-			<td class="firstCell">${row.key.project.name} <c:if test='${row.key.description != null && row.key.description != ""}'> - ${row.key.description}</c:if></td>
+			<td class="firstCell">${row.key.project.name} <c:if test='${row.key.role != null && row.key.role != ""}'> - ${row.key.role}</c:if></td>
 
 			<c:forEach items="${dateSequence}" var="date" varStatus="dateStatus">			
 				<c:set var="totalHour" value="${totalHour + printReport.values[row.key][date].totalHours}" />	
