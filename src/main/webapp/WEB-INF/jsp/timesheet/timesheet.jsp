@@ -109,7 +109,7 @@
 		</c:forEach>
 
 		<tr class="totalRow">
-			<td colspan="7">&nbsp;<fmt:message key="user.timesheet.total" />:</th>
+			<td colspan="9">&nbsp;<fmt:message key="user.timesheet.total" />:</th>
 			<td colspan="3" id="totalHours" style="text-align: right;padding-right: 7px">0</th>
 		</tr>
 		
