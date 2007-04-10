@@ -44,6 +44,8 @@ public class ConfigForm extends ActionForm
 	private	boolean	noForce;
 	private boolean	showTurnOver;
 	private boolean	fromForm;
+	private String	mailSmtp;
+	private String 	mailFrom;
 	
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
@@ -144,6 +146,38 @@ public class ConfigForm extends ActionForm
 	public void setShowTurnOver(boolean hideTurnOver)
 	{
 		this.showTurnOver = hideTurnOver;
+	}
+
+	/**
+	 * @return the mailFrom
+	 */
+	public String getMailFrom()
+	{
+		return mailFrom;
+	}
+
+	/**
+	 * @param mailFrom the mailFrom to set
+	 */
+	public void setMailFrom(String mailFrom)
+	{
+		this.mailFrom = mailFrom;
+	}
+
+	/**
+	 * @return the mailSmtp
+	 */
+	public String getMailSmtp()
+	{
+		return mailSmtp;
+	}
+
+	/**
+	 * @param mailSmtp the mailSmtp to set
+	 */
+	public void setMailSmtp(String mailSmtp)
+	{
+		this.mailSmtp = mailSmtp;
 	}
 	
 }

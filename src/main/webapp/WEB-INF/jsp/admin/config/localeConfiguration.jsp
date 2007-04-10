@@ -79,16 +79,44 @@
 	</tr>
 	
 	<tr>
+		<td><fmt:message key="admin.config.mailFrom" />:</td>
+		<td><input type="text"
+					id="mailFrom"
+					name="mailFrom"
+					size="30"
+					value="${form.mailFrom}">
+		</td>
+	</tr>	
+
+	<tr>
+		<td><fmt:message key="admin.config.mailSmtp" />:</td>
+		<td><input type="text"
+					id="mailSmtp"
+					name="mailSmtp"
+					size="30"
+					value="${form.mailSmtp}">
+		</td>
+	</tr>	
+
+
+	<tr>
+		<td colspan="2"><br><br></td>
+	</tr>	
+	
+	<tr>
 		<td>
 			<c:if test="${updateMsg != null}">
 				<fmt:message key="${updateMsg}" />
 			</c:if>
 		</td><td>
-				<input type="submit" class="submitButtonBlue" value="<fmt:message key="admin.config.save" />">		
+		
+						<div class="SubmitButtonPos" style="padding-right: 11px">
+							<input type="image" alt="<fmt:message key="admin.config.save" />" src="<c:url value="/img/icons/blue_submit.png" />" border="0" class="submitNoBorder" alt="<c:choose><c:when test="${assignment.assignmentId == null}"><fmt:message key="general.add" /></c:when><c:otherwise><fmt:message key="general.edit" /></c:otherwise></c:choose>">
+						</div>
+				
 		</td>
 	</tr>
 </table>
-
 </form>
 
 <script>

@@ -50,6 +50,8 @@ public class SaveConfigAction extends ConfigAction
 		
 		config.setCurrency(configForm.getCurrency());
 		config.setShowTurnover(configForm.isShowTurnOver());
+		config.setMailFrom(configForm.getMailFrom());
+		config.setMailSmtp(configForm.getMailSmtp());
 		
 		if (configForm.isNoForce())
 		{

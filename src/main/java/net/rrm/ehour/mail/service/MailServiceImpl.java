@@ -194,7 +194,7 @@ public class MailServiceImpl implements MailService
 			
 			try
 			{
-				logger.debug("Sending email to " + msg.getTo()[0]);	
+				logger.debug("Sending email to " + msg.getTo()[0] + " using " + config.getMailSmtp());	
 				mailSender.send(msg);
 				
 				mailTaskMessage.getCallback().mailTaskSuccess(mailTaskMessage);

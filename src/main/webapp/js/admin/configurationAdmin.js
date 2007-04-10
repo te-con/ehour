@@ -20,6 +20,7 @@ dojo.lang.extend(dojo.io.FormBind, {onSubmit: function(/*DOMNode*/form)
 										}
 	
 										inSubmit = true;
+										showLoadingData();
 										return true;
 									}});
 
@@ -52,6 +53,9 @@ function updateLocales(evt)
 function localesReceived(type, xml, evt)
 {
 	ajaxEventReceived(xml, true, {locale: "localeSpan"});
+	initConfigAdmin();
+	inSubmit = false;
+	hideLoadingData();
 }
 
 dojo.addOnLoad(initConfigAdmin);

@@ -43,7 +43,7 @@
 								</div>
 							</div>			
 						</div>	
-				
+
 					<br>
 					
 					<div class="GreyFrameFooter">
@@ -60,11 +60,6 @@
 			</td>
 		</tr>
 		
-		<tr>
-			<td colspan="2" align="right" style="text-align: right; margin-right: 20px; color: #233e55" id="statusMessage">
-				&nbsp;
-			</td>
-		</tr>
 	</table>
 </div>
 

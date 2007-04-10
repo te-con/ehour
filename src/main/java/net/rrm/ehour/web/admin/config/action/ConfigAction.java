@@ -68,6 +68,8 @@ public class ConfigAction extends BaseConfigAction
 			configForm.setNoForce(dbConfig.getLocaleLanguage().equals("noForce"));
 			configForm.setCurrency(dbConfig.getCurrency());
 			configForm.setShowTurnOver(dbConfig.isShowTurnover());
+			configForm.setMailFrom(dbConfig.getMailFrom());
+			configForm.setMailSmtp(dbConfig.getMailSmtp());
 		}
 
 		request.setAttribute("form", configForm);

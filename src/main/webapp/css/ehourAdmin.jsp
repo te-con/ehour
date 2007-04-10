@@ -55,7 +55,7 @@ a:active
 	font:  1em Verdana Geneva, Arial, Helvetica, sans-serif;
 	border: 0px;
 	text-align: left;
-	color: #6c87a1;
+	color: #3b556d;
 }
 
 .contentTable td.main

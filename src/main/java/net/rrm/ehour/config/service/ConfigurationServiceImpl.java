@@ -83,6 +83,14 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			{
 				config.setTimeZone(value);
 			}
+			else if (key.equalsIgnoreCase("mailFrom"))
+			{
+				config.setMailFrom(value);
+			}
+			else if (key.equalsIgnoreCase("mailSmtp"))
+			{
+				config.setMailSmtp(value);
+			}
 		}
 		
 		return config;
@@ -105,6 +113,8 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig("localeLanguage", config.getLocaleLanguage());
 //		persistConfig("timeZone", config.getTimeZone());
 		persistConfig("showTurnOver", config.isShowTurnover());
+		persistConfig("mailFrom", config.getMailFrom());
+		persistConfig("mailSmtp", config.getMailSmtp());
 
 	}
 	

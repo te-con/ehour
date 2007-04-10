@@ -420,7 +420,7 @@ input
 {
 	border-style: solid;
 	border-width: 1px;
-	border-color: #cfdbe6;
+	border-color: #b3c0cb;
 	margin: 0;
 	font: 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
