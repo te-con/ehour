@@ -176,6 +176,33 @@ function initUserAdmin()
 {
 	dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");
 	dojo.event.connect(dojo.byId('hideInactive'), "onclick", "filterKeyUp");
+	dojo.event.connect(dojo.byId('filterInput'), "onclick", "hideDefaultText");
+	dojo.event.connect(dojo.byId('filterInput'), "onblur", "showDefaultText");
+}
+
+// hide default text from user filter
+function hideDefaultText(evt)
+{
+	var userFilterInput = dojo.byId('filterInput');
+	
+	if (userFilterInput.value == defaultText)
+	{
+		userFilterInput.value = '';
+		userFilterInput.style.color = '#233e55';
+		userFilterInput.focus();
+	}
+}
+
+// show default text in user filter if value is empty
+function showDefaultText(evt)
+{
+	var userFilterInput = dojo.byId('filterInput');
+	
+	if (userFilterInput.value == "" && userFilterInput.value != defaultText)
+	{
+		userFilterInput.value = defaultText;
+		userFilterInput.style.color = '#aaaaaa';
+	}
 }
 
 function filterKeyUp(evt)

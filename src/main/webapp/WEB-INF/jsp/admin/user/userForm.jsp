@@ -51,14 +51,12 @@
 		<c:if test="${user != null}">
 			<td rowspan="10" valign="top">
 				<c:forEach items="${user.projectAssignments}" var="pa">
-					<a href="<c:url value="../assignment/index.do">
+					<a <c:if test="${!pa.project.defaultProject}">
+						title="${pa.role}"
+					</c:if> href="<c:url value="../assignment/index.do">
 								<c:param name="assignmentId" value="${pa.assignmentId}" />
 								<c:param name="userId" value="${user.userId}" />
 							</c:url>">${pa.project.name}</a>
-					
-					<c:if test="${!pa.project.defaultProject}">
-						&nbsp;[${pa.role}]
-					</c:if>
 					<br>
 				</c:forEach>
 				<br>
@@ -158,27 +156,17 @@
 		<td valign="top"><fmt:message key="general.active" />:</td>
 		<td><input type="checkbox" name="active" <c:if test="${user == null || user.active}">checked</c:if>></td>
 	</tr>	
-	
-	<tr>
-		<td colspan="2" style="text-align: right">
-			<c:choose>
-				<c:when test="${user == null || user == ''}">
-					<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.add" /> >>">
-				</c:when>
-				
-				<c:otherwise>
-					<input type="submit" class="submitButtonBlue" value="<fmt:message key="general.edit" /> >>">
-				</c:otherwise>
-			</c:choose>		
-		</td>
-		
-		<td>&nbsp;</td>
-	</tr>
+
 </table>
 
-</form>
 
 	</div>
+		
+<div class="SubmitButtonPos">
+	<input type="image" src="<c:url value="/img/icons/white_submit.png" />" border="0" class="submitNoBorder" alt="<c:choose><c:when test="${assignment.assignmentId == null}"><fmt:message key="general.add" /></c:when><c:otherwise><fmt:message key="general.edit" /></c:otherwise></c:choose>">
+</div>
+<br>
+</form>		
 						
 	<div class="GreyFrameFooter">
 		<p>

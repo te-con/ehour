@@ -16,6 +16,7 @@
 	var formSuccess = "<fmt:message key="admin.general.formSuccess" />";
 	var sendingData = "<fmt:message key="general.submitting" />";
 	var loadingMsg = "<fmt:message key="general.loading" />";	
+	var defaultText= "<fmt:message key="admin.user.filter" />...";
 </script>
 
 <script src="../../../js/dojo.js" type="text/javascript"></script>
@@ -37,7 +38,13 @@
 						
 						<form onSubmit="return false;">
 							<p>
-								<fmt:message key="admin.user.filter" />:<input style="margin-bottom: 0" class="textInput" type="text" name="filter" size="30" id="filterInput"><br>
+								<input class="textInput" 
+										type="text" 
+										name="filter" 
+										value="<fmt:message key="admin.user.filter" />..."
+										style="margin-bottom: 0;color: #aaaaaa; margin-bottom: 3px"
+										size="30" 
+										id="filterInput"><br>
 								<fmt:message key="admin.user.hideInactive" />: <input style="margin-bottom: 0" type="checkbox" id="hideInactive" name="hideInactive" checked><br>
 							</p>
 						</form>
