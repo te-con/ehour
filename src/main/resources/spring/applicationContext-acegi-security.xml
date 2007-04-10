@@ -84,6 +84,7 @@
 				PATTERN_TYPE_APACHE_ANT
 				/eh/admin/**=ROLE_ADMIN
 				/eh/report/**=ROLE_REPORT
+				/eh/pmreport/**=ROLE_PROJECTMANAGER
 				/eh/**=ROLE_REPORT,ROLE_ADMIN,ROLE_CONSULTANT
 			</value>
 		</property>

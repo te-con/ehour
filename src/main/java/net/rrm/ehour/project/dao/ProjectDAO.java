@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * CRUD on project domain object
@@ -38,4 +39,11 @@ public interface ProjectDAO extends GenericDAO<Project, Integer>
 	 * @return
 	 */
 	public List<Project> findProjectForCustomers(Integer[] customerIds, boolean onlyActive);
+	
+	/**
+	 * Find projects where user is projectmanager
+	 * @param user
+	 * @return
+	 */
+	public List<Project> findActiveProjectsWhereUserIsPM(User user);
 }

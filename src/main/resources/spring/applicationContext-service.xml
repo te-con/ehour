@@ -65,7 +65,8 @@
 	<!-- Project service -->
 	<bean id="projectService" class="net.rrm.ehour.project.service.ProjectServiceImpl">
 		<property name="projectDAO" ref="projectDAO" />	
-		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />			
+		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />		
+		<property name="userService" ref="userService" />
 	</bean>
 	
 	<!-- Customer service -->

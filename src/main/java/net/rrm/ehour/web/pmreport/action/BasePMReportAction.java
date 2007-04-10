@@ -1,5 +1,5 @@
 /**
- * Created on Dec 4, 2006
+ * Created on Apr 10, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,55 +21,15 @@
  *
  */
 
-package net.rrm.ehour.dao;
+package net.rrm.ehour.web.pmreport.action;
 
-import java.io.Serializable;
-import java.util.List;
-
-import net.rrm.ehour.domain.DomainObject;
+import org.apache.struts.action.Action;
 
 /**
- * GenericDAO interface for CRUD on domain objects
- * 
+ * TODO 
  **/
 
-public interface GenericDAO <T extends DomainObject, PK extends Serializable>
+public abstract class BasePMReportAction extends Action
 {
-	/**
-	 * Find all domain objects
-	 * @return
-	 */
-	public List<T> findAll();
-		
-	
-	/**
-	 * Delete domain object
-	 * @param domObj
-	 */
-	public void delete(T domObj);
-	
-	/**
-	 * Delete on primary key
-	 * @param pk
-	 */
-	public void delete(PK pk);
-	
-	/**
-	 * Persist domain object
-	 * @param domObj
-	 * @return
-	 */
-	public T persist(T domObj);
-	
-	/**
-	 * Find by primary key
-	 * @param id
-	 * @return
-	 */
-	public T findById(PK id);
-	
-	/**
-	 * Merge the domain object
-	 */
-	public T merge(T domoj);
+
 }

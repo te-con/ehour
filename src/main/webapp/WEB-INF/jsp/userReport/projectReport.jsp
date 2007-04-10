@@ -28,11 +28,11 @@
 							<td>
 					<table class="reportTable" cellpadding="0" cellspacing="0">
 						<tr>
-							<th><fmt:message key="userReport.report.customer" /></th>
-							<th><fmt:message key="userReport.report.project" /></th>
-							<th><fmt:message key="userReport.report.hours" /></th>
+							<th>&nbsp;<fmt:message key="userReport.report.customer" /></th>
+							<th>&nbsp;<fmt:message key="userReport.report.project" /></th>
+							<th style="Text-align: right"><fmt:message key="userReport.report.hours" />&nbsp;</th>
 							<c:if test="${config.showTurnover}">										
-								<th><fmt:message key="userReport.report.turnover" /></th>
+								<th style="Text-align: right"><fmt:message key="userReport.report.turnover" />&nbsp;</th>
 							</c:if>
 						</tr>
 						
@@ -59,7 +59,7 @@
 										<td>&nbsp;</td>
 										<td>${projectItem.key.name}</td>
 									</c:if>
-									<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
+									<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
 									
 									<c:if test="${config.showTurnover}">																			
 										<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>

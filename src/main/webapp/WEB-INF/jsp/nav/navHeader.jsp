@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
-<TABLE CELLSPACING=0>
+<TABLE CELLSPACING="0">
 	<TR>
 		<th valign="bottom">
 <authz:authorize ifAllGranted="ROLE_CONSULTANT">
@@ -27,6 +27,14 @@
 				&nbsp;&nbsp;|&nbsp;&nbsp;
 			</c:if>
 </authz:authorize>				
+
+<authz:authorize ifAllGranted="ROLE_PROJECTMANAGER">
+			<c:if test="${reportSet == null}">
+				<a HREF="<c:url value="/eh/pmReport/index.do" />"><fmt:message key="nav.pmReporting" /></a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+			</c:if>
+</authz:authorize>				
+			
 
 			
 <authz:authorize ifAllGranted="ROLE_ADMIN">

@@ -116,12 +116,19 @@
 			<forward name="printForm" path=".ehour.timesheet.printForm" />
 			<forward name="printSheet" path=".ehour.timesheet.printSheet" />			
 		</action>
+
+		<!-- Project manager report-->
+		<action path="/eh/pmReport/index"
+				type="net.rrm.ehour.web.pmreport.action.OverviewAction">
+			<forward name="success" path=".ehour.pmreport.layout" />			
+		</action>
+
+
 	</action-mappings>
 
 
 	<!-- spring tiles controller -->
 	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
-
 
 	<!-- i18n message resources (only used for html:error) -->
 	<message-resources parameter="MessageResources" />

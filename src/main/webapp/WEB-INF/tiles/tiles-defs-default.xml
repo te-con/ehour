@@ -73,5 +73,12 @@
     
     <!-- NavCalendar -->
     <definition name=".ehour.calendar.navCalendar" path="/WEB-INF/jsp/nav/navCalendar.jsp" />
+    
+    <!-- Project manager report layout -->
+    <definition name=".ehour.pmreport.layout" extends=".ehour.baseLayout">
+        <put name="navCalendar" value="/WEB-INF/jsp/userReport/criteria.jsp" />
+        <put name="content" value="/WEB-INF/jsp/userReport/reportLayout.jsp" />
+    	<put name="extraCss" value="/css/ehourReport.jsp" />        
+    </definition>
 
 </tiles-definitions>

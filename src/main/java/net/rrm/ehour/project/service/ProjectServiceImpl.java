@@ -34,6 +34,8 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 
@@ -48,6 +50,7 @@ public class ProjectServiceImpl implements ProjectService
 	private	Logger					logger = Logger.getLogger(ProjectServiceImpl.class);
 	private ProjectAssignmentService	projectAssignmentService;
 	private TimesheetDAO			timesheetDAO;
+	private	UserService				userService;
 	
 	/**
 	 * 
@@ -92,14 +95,49 @@ public class ProjectServiceImpl implements ProjectService
 		return projectDAO.findById(projectId);
 	}
 	
-	/**
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#persistProject(net.rrm.ehour.project.domain.Project)
 	 */
-	
 	public Project persistProject(Project project)
 	{
-		projectDAO.persist(project);
+		Project	dbProject = getProject(project.getProjectId());
+		
+		if (dbProject == null)
+		{
+			projectDAO.persist(project);
+		}
+		else 
+		{
+			if (!(dbProject.getProjectManager() == null && project.getProjectManager() == null) || 
+				!dbProject.getProjectManager().equals(project.getProjectManager()))
+			{
+				if (dbProject.getProjectManager() != null)
+				{
+					removePMRoleFromUser(dbProject.getProjectManager(), dbProject);
+				}
+			}
+
+			project = projectDAO.merge(project);
+		}
+		
 		return project;
+	}
+	
+	/**
+	 * Remove PM role from user when he's no longer PM on any project
+	 * @param user
+	 */
+	private void removePMRoleFromUser(User user, Project dbProject)
+	{
+		List<Project> projects = projectDAO.findActiveProjectsWhereUserIsPM(user);
+		
+		if (projects == null || projects.size() == 0 || (projects.size() == 1 && projects.get(0).equals(dbProject))) 
+		{
+			// TODO use constant
+			logger.info("Removing project manager's role from user " + user.getPK());
+			userService.removeRoleFromUser(user,"ROLE_PROJECTMANAGER");
+		}
 	}
 
 	/**
@@ -175,5 +213,14 @@ public class ProjectServiceImpl implements ProjectService
 	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
 	{
 		this.timesheetDAO = timesheetDAO;
+	}
+
+
+	/**
+	 * @param userService the userService to set
+	 */
+	public void setUserService(UserService userService)
+	{
+		this.userService = userService;
 	}
 }

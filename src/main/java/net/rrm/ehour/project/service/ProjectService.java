@@ -48,7 +48,7 @@ public interface ProjectService
 	public Project getProject(Integer projectId);
 	
 	/**
-	 * Persist the project
+	 * Persist the project and if a PM is assigned, give him a ROLE_PROJECTMANAGER role
 	 * @param project
 	 * @return
 	 */

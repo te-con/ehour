@@ -34,5 +34,12 @@
 		ORDER BY prj.name			  
 	</query>	
 
+	<query name="Project.findActiveProjectsWhereUserIsPM">
+		FROM Project prj
+		WHERE prj.projectManager = :user AND
+			  prj.active is true AND
+			  prj.customer.active is true
+	</query>	
+
 
 </hibernate-mapping>

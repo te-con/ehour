@@ -17,6 +17,7 @@
 			classpath:/applicationContext-acegi-security.xml,
 			classpath:/applicationContext-web-admin.xml,
 			classpath:/applicationContext-web-report.xml,
+			classpath:/applicationContext-web-pmReport.xml,			
 			classpath:/applicationContext-web-default.xml
 		</param-value>
 	</context-param>

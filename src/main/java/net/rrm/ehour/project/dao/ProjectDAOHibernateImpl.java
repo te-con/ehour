@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.user.domain.User;
 
 /**
  *  
@@ -84,5 +85,16 @@ public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, In
 		results = getHibernateTemplate().findByNamedQueryAndNamedParam(hqlName , "customerIds", customerIds);
 		
 		return results;			
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.dao.ProjectDAO#findProjectWhereUserIsPM(net.rrm.ehour.user.domain.User)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Project> findActiveProjectsWhereUserIsPM(User user)
+	{
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM",
+																	"user", user);
 	}
 }

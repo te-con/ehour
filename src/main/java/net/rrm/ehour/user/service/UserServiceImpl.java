@@ -258,11 +258,15 @@ public class UserServiceImpl implements UserService
 
 
 	/**
-	 * 
+	 * Get the assignable user roles
 	 */
 	public List<UserRole> getUserRoles()
 	{
-		return userRoleDAO.findAll();
+		List<UserRole> userRoles = userRoleDAO.findAll();
+		
+		userRoles.remove(new UserRole("ROLE_PROJECTMANAGER"));
+		
+		return userRoles;
 	}
 
 	/**
@@ -337,5 +341,27 @@ public class UserServiceImpl implements UserService
 	public List<User> getUsersWithEmailSet()
 	{
 		return userDAO.findAllActiveUsersWithEmailSet();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#removeRoleFromUser(net.rrm.ehour.user.domain.User, net.rrm.ehour.user.domain.UserRole)
+	 */
+	public void removeRoleFromUser(User user, String userRoleId)
+	{
+		User			dbUser = userDAO.findById(user.getUserId());
+		Set<UserRole>	newRoles = new HashSet<UserRole>();
+		
+		for (UserRole userRole: dbUser.getUserRoles())
+		{
+			if (!userRole.getRole().equals(userRoleId))
+			{
+				newRoles.add(userRole);
+			}
+		}
+		
+		dbUser.setUserRoles(newRoles);
+		
+		userDAO.persist(dbUser);
 	}
 }

@@ -125,5 +125,12 @@ public interface UserService extends UserDetailsService
      */
     public List<UserRole> getUserRoles();
     
+    /**
+     * Remove role from user
+     * @param user
+     * @param userRoleId
+     */
+    public void removeRoleFromUser(User user, String userRoleId);
+    
     
 }

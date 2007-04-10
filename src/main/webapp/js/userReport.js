@@ -14,6 +14,8 @@ function bindCriteriaForm()
 // handler for bindCriteriaForm
 function reportReceived(type, xml, evt)
 {
+	hideLoadingData();
+	
 	if (type == 'error')
 	{	
    		alert(ajaxError);
@@ -23,3 +25,10 @@ function reportReceived(type, xml, evt)
 		ajaxEventReceived(xml, true, {reportContent: "reportContent"});
 	}
 }
+
+// extend FormBind to add the validation call
+dojo.lang.extend(dojo.io.FormBind, {onSubmit: function(/*DOMNode*/form)
+									{
+										showLoadingData();
+										return true;
+									}})

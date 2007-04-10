@@ -1,5 +1,5 @@
 /**
- * Created on Dec 4, 2006
+ * Created on Apr 10, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,55 +21,29 @@
  *
  */
 
-package net.rrm.ehour.dao;
+package net.rrm.ehour.web.pmreport.action;
 
-import java.io.Serializable;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.domain.DomainObject;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 
 /**
- * GenericDAO interface for CRUD on domain objects
- * 
+ * TODO 
  **/
 
-public interface GenericDAO <T extends DomainObject, PK extends Serializable>
+public class PMReportCriteriaAction extends BasePMReportAction
 {
 	/**
-	 * Find all domain objects
-	 * @return
+	 * 
 	 */
-	public List<T> findAll();
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception
+	{
+		return mapping.findForward("success");
 		
-	
-	/**
-	 * Delete domain object
-	 * @param domObj
-	 */
-	public void delete(T domObj);
-	
-	/**
-	 * Delete on primary key
-	 * @param pk
-	 */
-	public void delete(PK pk);
-	
-	/**
-	 * Persist domain object
-	 * @param domObj
-	 * @return
-	 */
-	public T persist(T domObj);
-	
-	/**
-	 * Find by primary key
-	 * @param id
-	 * @return
-	 */
-	public T findById(PK id);
-	
-	/**
-	 * Merge the domain object
-	 */
-	public T merge(T domoj);
+	}
 }

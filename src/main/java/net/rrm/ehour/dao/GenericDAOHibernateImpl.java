@@ -105,8 +105,9 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	 * Merge
 	 * @param domobj
 	 */
-	public void merge(T domobj)
+	@SuppressWarnings("unchecked")
+	public T merge(T domobj)
 	{
-		getHibernateTemplate().merge(domobj);
+		return (T)getHibernateTemplate().merge(domobj);
 	}
 }

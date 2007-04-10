@@ -102,6 +102,10 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
         {
             isEqual = obj.equals(this.role);
         }
+        else if (obj instanceof UserRole)
+        {
+        	isEqual = ((UserRole)obj).getRole().equals(this.role);
+        }
         else if (obj instanceof GrantedAuthority)
         {
             GrantedAuthority attr = (GrantedAuthority) obj;
