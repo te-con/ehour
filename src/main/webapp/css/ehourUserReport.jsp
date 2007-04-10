@@ -68,3 +68,8 @@
 	padding: 0;
 	text-align: center;
 }
+
+div.reportCriteria
+{
+	margin: 0 10px 0 10px;
+}

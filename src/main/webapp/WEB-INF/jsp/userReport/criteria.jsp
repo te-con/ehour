@@ -36,6 +36,8 @@ function init()
 }
 </script>
 
+<form method="post" action="projectReport.do" id="criteriaForm">
+
 <div id="NavCalTarget">
 <div class="NavCalFrame">
 	<div class="NavCalFrameLeftTop">
@@ -44,43 +46,48 @@ function init()
 		</div>
 	</div>
 
-	<form method="post" action="projectReport.do" id="criteriaForm">
 	
-	<table class="criteriaTable" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>
-				<fmt:message key="admin.assignment.dateStart" />:
-				<div id="dateStartDiv"></div>
-			</td>
-		</tr>	
+	<div class="UserReportCriteria">
 	
-		<tr>
-			<td>
-				<fmt:message key="admin.assignment.dateEnd" />:
-				<div id="dateEndDiv"></div>
-			</td>
-		</tr>	
-	
-	
-		<tr>	
-			<td valign="top">
-				Project:
-				<select size="2" name="projectId" multiple="multiple" class="textInput">
-					<option value="-1">(All)
-					<c:forEach items="${criteria.availableCriteria.projects}" var="project">
-						<option value="${project.projectId}">${project.name}
-					</c:forEach>
-				</select>
-			</td>
-		</tr>
+		<div style="float: left;vertical-align: bottom;height: 1.5em">
+			<fmt:message key="admin.assignment.dateStart" />:
+		</div>
 		
-		<tr>
-			<td colspan="2" align="right">
-				<input type="submit" value="submit" id="submitButton">
-			</td>
-		</tr>
-	</table>
-	</form>
+		<div style="float: right">
+			<span id="dateStartDiv"></span>
+		</div>
+	
+		<br><br>
+		
+		<div style="float: left;vertical-align: bottom;height: 1.5em">
+			<nobr><fmt:message key="admin.assignment.dateEnd" />:</nobr>
+		</div>
+		
+		<div style="float: right">
+			<div id="dateEndDiv"></div>
+		</div>
+		
+		<br>
+		<br>
+		<div style="float: left;vertical-align: bottom;margin-top: 5px">
+			Project:
+		</div>
+		
+		<div style="float: right;vertical-align: bottom">
+			<select size="2" name="projectId" multiple="multiple" class="textInputSmall" >
+				<option value="-1">(All)
+				<c:forEach items="${criteria.availableCriteria.projects}" var="project">
+					<option value="${project.projectId}">${project.name}
+				</c:forEach>
+			</select>
+		</div>
+		<br><br><br>
+		
+		<div style="float: right;vertical-align: bottom;height: 1.5em">
+			<input type="submit" value="submit" id="submitButton">
+		</div>
+		<Br>
+	</div>
 
 	<div class="NavCalFrameLeftBottom">
 		<div class="NavCalFrameRightBottom">
@@ -89,6 +96,7 @@ function init()
 	</div>		
 </div>
 </div>
+	</form>
 
 <script type="text/javascript">
 	init();

@@ -184,3 +184,10 @@ div.CriteriaBlueFrameContainer
 	font:  bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 }
+
+div.UserReportCriteria
+{
+	margin: 0 10px 0 10px;
+	color: #536e87;
+	font: 1em Arial, Geneva, Helvetica, sans-serif;	
+}
