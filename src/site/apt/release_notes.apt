@@ -14,6 +14,29 @@ Release Notes - eHour v0.5
 
 * 0.5 Release Notes
 
+	Fixed the layout of the report criteria for users.
+
+	Configurable SMTP server address and default mail from: added to eHour config
+
+	A project can now have a project manager. PM's get warning messages with fixed/flex time allotted assignments.
+	New authorization role (ROLE_PROJECTMANAGER) added. Users are automatically given (or revoked) a PM role, this role is not selectable when modifying or editing users.
+
+	User filters in the admin section don't have a label anymore but the text is in the input box itself (a la google toolbar).
+
+	To save horizontal space, in the user admin section the project role is not displayed behind the project anymore but shown as a tooltip
+
+	Renamed project description to project role.
+
+	Flex time alloted and Fixed time alloted assignment types added.
+
+	Using a standard 'loading' animation rather than a loading message which is in a different location on every page
+
+	Project duration and total booked and remaining hours shown on user's month overview
+
+	On most pages used icons rather than plain submit buttons (admin section)
+
+	Customer and projectcode shown on user's month overview
+
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1668137&group_id=167867&atid=844648}1668137 }} userlist is refreshed in admin after editting a user
 	
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670789&group_id=167867&atid=844648}1670789 }} Reporting logs cut down to normal proportions
