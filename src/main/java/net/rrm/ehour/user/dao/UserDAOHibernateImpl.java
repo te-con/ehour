@@ -131,4 +131,25 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	{
 		return getHibernateTemplate().findByNamedQuery("User.findAllActiveUsersWithEmailSet");
 	}
+
+	/*
+	 * 
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.dao.UserDAO#findUsersWithPMRoleButNoProject(net.rrm.ehour.user.domain.User)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<User> findUsersWithPMRoleButNoProject()
+	{
+		return getHibernateTemplate().findByNamedQuery("User.findUsersWhoHavePMRoleButNoProject");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.dao.UserDAO#findUsersWhoDontHavePMRoleButArePM()
+	 */
+	@SuppressWarnings("unchecked")
+	public List<User> findUsersWhoDontHavePMRoleButArePM()
+	{
+		return getHibernateTemplate().findByNamedQuery("User.findUsersWhoDontHavePMRoleButProject");
+	}
 }

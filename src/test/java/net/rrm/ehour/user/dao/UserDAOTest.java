@@ -39,7 +39,7 @@ public class UserDAOTest extends BaseDAOTest
 		assertEquals(2, results.size());
 
 		results = dao.findUsersByNameMatch(null, true);
-		assertEquals(3, results.size());
+		assertEquals(4, results.size());
 
 	}
 	
@@ -48,7 +48,7 @@ public class UserDAOTest extends BaseDAOTest
 		List<User>	results;
 		
 		results = dao.findAllActiveUsers();
-		assertEquals(3, results.size());
+		assertEquals(4, results.size());
 	}
 	
 	/**
@@ -104,4 +104,21 @@ public class UserDAOTest extends BaseDAOTest
 		
 		assertEquals(2, results.size());
 	}
+	
+	public void testFindUsersWithPMRoleButNoProject()
+	{
+		List<User> results = dao.findUsersWithPMRoleButNoProject();
+
+		assertEquals(2, results.size());
+	}
+	
+	public void testFindUsersWhoDontHavePMRoleButArePM()
+	{
+		List<User> results = dao.findUsersWhoDontHavePMRoleButArePM();
+		
+		assertEquals(1, results.size());
+		assertEquals(3, results.get(0).getUserId().intValue());
+	}
+	
+	
 }

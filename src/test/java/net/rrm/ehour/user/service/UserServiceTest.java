@@ -222,47 +222,47 @@ public class UserServiceTest extends TestCase
 		verify(userRoleDAO);
 	}
 	
-	public void testPersistUserDepartment() throws ObjectNotUniqueException
-	{
-		UserDepartment ud = new UserDepartment();
-		ud.setDepartmentId(1);
-		ud.setName("t1");
-		ud.setCode("t2");
-		
-		UserDepartment ud2 = new UserDepartment();
-		ud2.setDepartmentId(1);
-		ud2.setName("t3");
-		ud2.setCode("t4");
-		
-		expect(userDepartmentDAO.findOnNameAndCode("t3", "t4"))
-			.andReturn(ud);
-		
-		userDepartmentDAO.merge(ud2);
-		
-		replay(userDepartmentDAO);
-		
-		userService.persistUserDepartment(ud2);
-		
-		verify(userDepartmentDAO);
-		
-		reset(userDepartmentDAO);
-		
-		ud2.setDepartmentId(2);
-		
-
-		expect(userDepartmentDAO.findOnNameAndCode("t3", "t4"))
-			.andReturn(ud);
-		
-		replay(userDepartmentDAO);
-		
-		try
-		{
-			userService.persistUserDepartment(ud2);
-			fail();
-		}
-		catch (ObjectNotUniqueException onue)
-		{
-			verify(userDepartmentDAO);
-		}
-	}
+//	public void testPersistUserDepartment() throws ObjectNotUniqueException
+//	{
+//		UserDepartment ud = new UserDepartment();
+//		ud.setDepartmentId(1);
+//		ud.setName("t1");
+//		ud.setCode("t2");
+//		
+//		UserDepartment ud2 = new UserDepartment();
+//		ud2.setDepartmentId(1);
+//		ud2.setName("t3");
+//		ud2.setCode("t4");
+//		
+//		expect(userDepartmentDAO.findOnNameAndCode("t3", "t4"))
+//			.andReturn(ud);
+//		
+//		userDepartmentDAO.merge(ud2);
+//		
+//		replay(userDepartmentDAO);
+//		
+//		userService.persistUserDepartment(ud2);
+//		
+//		verify(userDepartmentDAO);
+//		
+//		reset(userDepartmentDAO);
+//		
+//		ud2.setDepartmentId(2);
+//		
+//
+//		expect(userDepartmentDAO.findOnNameAndCode("t3", "t4"))
+//			.andReturn(ud);
+//		
+//		replay(userDepartmentDAO);
+//		
+//		try
+//		{
+//			userService.persistUserDepartment(ud2);
+//			fail();
+//		}
+//		catch (ObjectNotUniqueException onue)
+//		{
+//			verify(userDepartmentDAO);
+//		}
+//	}
 }

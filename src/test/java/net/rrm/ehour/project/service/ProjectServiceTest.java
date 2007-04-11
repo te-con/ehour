@@ -43,6 +43,7 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.user.service.UserService;
 
 /**
  *  
@@ -55,6 +56,7 @@ public class ProjectServiceTest extends TestCase
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO 			timesheetDAO;
 	private ProjectAssignmentService	projectAssignmentService;
+	private UserService			userService;
 	
 	/**
 	 * 
@@ -74,7 +76,10 @@ public class ProjectServiceTest extends TestCase
 		
 		projectAssignmentService = createMock(ProjectAssignmentService.class);
 		((ProjectServiceImpl)projectService).setProjectAssignmentService(projectAssignmentService);
-		
+
+		userService = createMock(UserService.class);
+		((ProjectServiceImpl)projectService).setUserService(userService);
+
 	}
 
 	
@@ -128,15 +133,19 @@ public class ProjectServiceTest extends TestCase
 	 */
 	public void testPersistProject()
 	{
-		Project prj = new Project();
-		
+		Project prj = new Project(1);
+
 		expect(projectDAO.persist(prj))
 			.andReturn(prj);
+		
+		userService.checkProjectManagementRolesValid();
 	
+		replay(userService);
 		replay(projectDAO);
 	
 		projectService.persistProject(prj);
 	
+		verify(userService);
 		verify(projectDAO);
 	}
 	

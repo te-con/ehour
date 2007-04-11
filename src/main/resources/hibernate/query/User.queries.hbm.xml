@@ -59,4 +59,22 @@
 	    ORDER BY lastName, firstName	    
 	</query>
 
+	<query name="User.findUsersWhoHavePMRoleButNoProject"> 
+		SELECT user
+		FROM User as user
+	    WHERE 'ROLE_PROJECTMANAGER' in elements (user.userRoles) AND
+	    		user.active IS TRUE AND
+	    	  user NOT IN (SELECT prj.projectManager
+	    	  				FROM Project as prj)
+	</query>
+
+	<query name="User.findUsersWhoDontHavePMRoleButProject"> 
+		SELECT user
+		FROM User as user,
+			 Project project
+	    WHERE 'ROLE_PROJECTMANAGER' not in elements (user.userRoles) AND
+				project.projectManager = user AND
+				user.active IS TRUE
+	    GROUP BY user
+	</query>
 </hibernate-mapping>

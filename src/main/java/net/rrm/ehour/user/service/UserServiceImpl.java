@@ -345,23 +345,45 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#removeRoleFromUser(net.rrm.ehour.user.domain.User, net.rrm.ehour.user.domain.UserRole)
+	 * @see net.rrm.ehour.user.service.UserService#checkProjectManagementRolesValid()
 	 */
-	public void removeRoleFromUser(User user, String userRoleId)
+	public void checkProjectManagementRolesValid()
 	{
-		User			dbUser = userDAO.findById(user.getUserId());
-		Set<UserRole>	newRoles = new HashSet<UserRole>();
+		List<User>	invalidUsers;
+		List<User>	validUsers;
 		
-		for (UserRole userRole: dbUser.getUserRoles())
+		Set<UserRole>	userRoles;
+		
+		// invalids
+		invalidUsers = userDAO.findUsersWithPMRoleButNoProject();
+		
+		for (User user : invalidUsers)
 		{
-			if (!userRole.getRole().equals(userRoleId))
+			logger.info("Removing projectmgmt role from " + user.getLastName());
+			
+			userRoles = new HashSet<UserRole>();
+			
+			// no clue why set.remove won't work nor do I care
+			for (UserRole role : user.getUserRoles())
 			{
-				newRoles.add(userRole);
+				if (!role.getRole().equals("ROLE_PROJECTMANAGER"))
+				{
+					userRoles.add(role);
+				}
 			}
+			
+			user.setUserRoles(userRoles);
+			userDAO.merge(user);
 		}
+
+		// valids
+		validUsers = userDAO.findUsersWhoDontHavePMRoleButArePM();
 		
-		dbUser.setUserRoles(newRoles);
-		
-		userDAO.persist(dbUser);
+		for (User user : validUsers)
+		{
+			logger.info("Adding projectmgmt role to " + user.getLastName());
+			user.getUserRoles().add(new UserRole("ROLE_PROJECTMANAGER"));
+			userDAO.merge(user);
+		}
 	}
 }

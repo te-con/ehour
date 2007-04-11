@@ -126,11 +126,10 @@ public interface UserService extends UserDetailsService
     public List<UserRole> getUserRoles();
     
     /**
-     * Remove role from user
-     * @param user
-     * @param userRoleId
+     * Check if PM roles are still valid and remove 'm if necc.
+     *
      */
-    public void removeRoleFromUser(User user, String userRoleId);
+    public void checkProjectManagementRolesValid();
     
     
 }
