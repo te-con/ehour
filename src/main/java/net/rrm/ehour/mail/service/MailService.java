@@ -24,7 +24,9 @@
 package net.rrm.ehour.mail.service;
 
 import java.util.Date;
+import java.util.List;
 
+import net.rrm.ehour.mail.domain.MailLogAssignment;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.domain.User;
 
@@ -58,4 +60,11 @@ public interface MailService
 	 * @param mailToUser
 	 */
 	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
+	
+	/**
+	 * Get sent mail for assignments
+	 * @param assignmentId
+	 * @return
+	 */
+	public List<MailLogAssignment> getSentMailForAssignment(Integer[] assignmentId);
 }

@@ -34,6 +34,7 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -144,6 +145,16 @@ public class ProjectServiceImpl implements ProjectService
 		
 		return mergedAssignments;
 	}	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#getProjectManagerProjects(net.rrm.ehour.user.domain.User)
+	 */
+	public List<Project> getProjectManagerProjects(User user)
+	{
+		return projectDAO.findActiveProjectsWhereUserIsPM(user);
+	}
+
 	
 	/**
 	 * 
@@ -190,4 +201,6 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		this.userService = userService;
 	}
+
+
 }

@@ -30,6 +30,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.user.domain.User;
 
 public interface ProjectService
 {
@@ -77,5 +78,12 @@ public interface ProjectService
 	 * @return
 	 */
 	
-	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange);	
+	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange);
+	
+	/**
+	 * Get project's where user is project manager
+	 * @param user
+	 * @return
+	 */
+	public List<Project> getProjectManagerProjects(User user);
 }

@@ -1,5 +1,5 @@
 /**
- * Created on Apr 10, 2007
+ * Created on Apr 11, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -23,42 +23,39 @@
 
 package net.rrm.ehour.web.pmreport.action;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.web.util.AuthUtil;
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.web.pmreport.form.PMReportForm;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- *  
+ * 
  **/
 
-public class PMReportCriteriaAction extends BasePMReportAction
+public class PMReportAction extends BasePMReportAction
 {
-	/**
-	 * 
-	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception
 	{
-		List<Project>	projects;
-		User			user;
+		PMReportForm			pmReportForm = (PMReportForm)form;
+		ProjectManagerReport	pmReport;
+		DateRange				reportRange;
 		
-		user = AuthUtil.getLoggedInUser();
+		reportRange = new DateRange(pmReportForm.getDateStartAsDate(),
+									pmReportForm.getDateEndAsDate());
 		
-		projects = projectService.getProjectManagerProjects(user);
+		pmReport = reportService.getProjectManagerReport(reportRange, pmReportForm.getProjectId());
 		
-		request.setAttribute("projects", projects);
+		request.setAttribute("pmReport", pmReport);
 		
 		return mapping.findForward("success");
-		
 	}
+
 }

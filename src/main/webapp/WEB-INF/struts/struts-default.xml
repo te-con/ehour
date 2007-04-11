@@ -9,7 +9,8 @@
 		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
 		<form-bean name="PrintTimesheetForm" type="net.rrm.ehour.web.timesheet.form.PrintTimesheetForm" />		
 		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
-		<form-bean name="ReportChartForm" type="net.rrm.ehour.web.report.form.ReportChartForm" />		
+		<form-bean name="ReportChartForm" type="net.rrm.ehour.web.report.form.ReportChartForm" />
+		<form-bean name="PMReportForm" type="net.rrm.ehour.web.pmreport.form.PMReportForm" />
 	</form-beans>
 
 	<!-- Global exceptions -->
@@ -118,7 +119,8 @@
 		</action>
 
 		<!-- Project manager report-->
-		<action path="/eh/pmReport/index"
+		<action name="PMReportForm"
+				path="/eh/pmReport/index"
 				type="net.rrm.ehour.web.pmreport.action.OverviewAction">
 			<forward name="success" path=".ehour.pmreport.layout" />			
 		</action>

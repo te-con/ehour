@@ -147,7 +147,7 @@ public class MailServiceImpl implements MailService
 	 */
 	private boolean isAssignmentMailAlreadySent(ProjectAssignmentAggregate aggregate, int mailTypeId)
 	{
-		List<MailLogAssignment> mlaList = mailLogDAO.findMailLogOnAssignmentId(aggregate.getProjectAssignment().getAssignmentId());
+		List<MailLogAssignment> mlaList = mailLogDAO.findMailLogOnAssignmentIds(new Integer[]{aggregate.getProjectAssignment().getAssignmentId()});
 		boolean	alreadySent = false;
 		
 		for (MailLogAssignment mailLog : mlaList)
@@ -207,6 +207,16 @@ public class MailServiceImpl implements MailService
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#getSentMailForAssignment(java.lang.Integer[])
+	 */
+	public List<MailLogAssignment> getSentMailForAssignment(Integer[] assignmentIds)
+	{
+		return mailLogDAO.findMailLogOnAssignmentIds(assignmentIds);
+	}
+	
+	
 	/**
 	 * @param assignmentMsgCallback the assignmentMsgCallback to set
 	 */
@@ -222,4 +232,5 @@ public class MailServiceImpl implements MailService
 	{
 		this.mailLogDAO = mailLogDAO;
 	}
+
 }

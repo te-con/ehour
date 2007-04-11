@@ -99,6 +99,7 @@ public interface ReportAggregatedDAO
 	 * @return
 	 */
 	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignment(DateRange dateRange);
+	
 	/**
 	 * Get the min/max timesheet date
 	 * @return

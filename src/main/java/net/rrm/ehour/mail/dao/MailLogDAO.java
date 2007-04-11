@@ -36,9 +36,9 @@ import net.rrm.ehour.mail.domain.MailLogAssignment;
 public interface MailLogDAO  extends GenericDAO<MailLog, Integer>
 {
 	/**
-	 * Get mail log on project assignment id
+	 * Get mail log on project assignment id's
 	 * @param projectAssignmentId
 	 * @return
 	 */
-	public List<MailLogAssignment> findMailLogOnAssignmentId(Integer projectAssignmentId);
+	public List<MailLogAssignment> findMailLogOnAssignmentIds(Integer[] projectAssignmentId);	
 }

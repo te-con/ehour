@@ -1,6 +1,6 @@
 Release Notes - eHour v0.5
 
-	TE-CON would like to announce the release of eHour v0.41.
+	TE-CON would like to announce the release of eHour v0.5.
 	
 	eHour v0.5 is {{{download.html}available for download}}.
 	
@@ -19,6 +19,7 @@ Release Notes - eHour v0.5
 	Configurable SMTP server address and default mail from: added to eHour config
 
 	A project can now have a project manager. PM's get warning messages with fixed/flex time allotted assignments.
+
 	New authorization role (ROLE_PROJECTMANAGER) added. Users are automatically given (or revoked) a PM role, this role is not selectable when modifying or editing users.
 
 	User filters in the admin section don't have a label anymore but the text is in the input box itself (a la google toolbar).
@@ -33,7 +34,7 @@ Release Notes - eHour v0.5
 
 	Project duration and total booked and remaining hours shown on user's month overview
 
-	On most pages used icons rather than plain submit buttons (admin section)
+	On most pages icons are used rather than plain submit buttons (admin section)
 
 	Customer and projectcode shown on user's month overview
 

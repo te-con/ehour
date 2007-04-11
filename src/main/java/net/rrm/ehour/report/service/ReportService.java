@@ -28,9 +28,10 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.report.reports.ReportData;
 
 
 /**
@@ -81,4 +82,11 @@ public interface ReportService
 	 * @return
 	 */
 	public List<FlatProjectAssignmentAggregate> getPrintReportData(List<Integer> projectAssignmentIds, DateRange dateRange);
+	
+	/**
+	 * Get project manager report
+	 * @param reportCriteria
+	 * @return
+	 */
+	public ProjectManagerReport getProjectManagerReport(DateRange reportRange, Integer projectId);
 }

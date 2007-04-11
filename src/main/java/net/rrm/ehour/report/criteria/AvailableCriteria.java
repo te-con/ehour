@@ -38,11 +38,11 @@ import net.rrm.ehour.user.domain.UserDepartment;
 
 public class AvailableCriteria
 {
-	private List<User>			users;
+	private List<User>				users;
 	private List<UserDepartment>	userDepartments;
-	private List<Customer>		customers;
+	private List<Customer>			customers;
 	private List<Project>			projects;
-	private DateRange					reportRange;
+	private DateRange				reportRange;
 
 	/**
 	 * @return the customers

@@ -41,7 +41,7 @@ public class MailLogDAOTest extends BaseDAOTest
 	@Test
 	public final void testGetMailLogAssignment()
 	{
-		List<MailLogAssignment> mla = mailLogDAO.findMailLogOnAssignmentId(2);
+		List<MailLogAssignment> mla = mailLogDAO.findMailLogOnAssignmentIds(new Integer[]{2});
 		
 		assertEquals(1, mla.size());
 		assertEquals(9, mla.get(0).getMailLogId().intValue());

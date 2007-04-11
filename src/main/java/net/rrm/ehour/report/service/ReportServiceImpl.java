@@ -23,20 +23,25 @@
 
 package net.rrm.ehour.report.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TreeSet;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.mail.domain.MailLogAssignment;
+import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.dao.ReportPerMonthDAO;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.util.ReportUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.domain.User;
@@ -57,7 +62,8 @@ public class ReportServiceImpl implements ReportService
 	private	ReportPerMonthDAO	reportPerMonthDAO;
 	private	ProjectDAO			projectDAO;
 	private	UserDAO				userDAO;
-
+	private	MailService			mailService;
+	
 	private	Logger				logger = Logger.getLogger(this.getClass());
 	
 	/**
@@ -299,6 +305,37 @@ public class ReportServiceImpl implements ReportService
 		aggregates = reportPerMonthDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange);
 		
 		return aggregates;
+	}
+	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.service.ReportService#getProjectManagerReport(net.rrm.ehour.data.DateRange, java.lang.Integer)
+	 */
+	public ProjectManagerReport getProjectManagerReport(DateRange reportRange, Integer projectId)
+	{
+		ProjectManagerReport	report = new ProjectManagerReport();
+		List<ProjectAssignmentAggregate>	aggregates;
+		List<MailLogAssignment>	sentMail;
+		Project					project;
+		List<Integer>			assignmentIds = new ArrayList<Integer>();
+		
+		project = projectDAO.findById(projectId);
+		report.setProject(project);
+		logger.debug("PM report for project " + project.getName());
+		
+		aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(new Integer[]{projectId}, reportRange);
+		report.setAggregates(new TreeSet<ProjectAssignmentAggregate>(aggregates));
+		
+		for (ProjectAssignmentAggregate aggregate : aggregates)
+		{
+			assignmentIds.add(aggregate.getProjectAssignment().getAssignmentId());
+		}
+		
+		sentMail = mailService.getSentMailForAssignment((Integer[])assignmentIds.toArray());
+		report.setSentMail(new TreeSet<MailLogAssignment>(sentMail));
+		
+		return report;
 	}
 	
 	

@@ -48,10 +48,10 @@ public class MailLogDAOHibernateImpl extends GenericDAOHibernateImpl<MailLog, In
 	 * @see net.rrm.ehour.mail.dao.MailLogDAO#getMailLogAssignment(java.lang.Integer)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<MailLogAssignment> findMailLogOnAssignmentId(Integer projectAssignmentId)
+	public List<MailLogAssignment> findMailLogOnAssignmentIds(Integer[] projectAssignmentIds)
 	{
-		return getHibernateTemplate().findByNamedQueryAndNamedParam("MailLogAssignment.findOnAssignmentId",
-																		"assignmentId", projectAssignmentId);
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("MailLogAssignment.findOnAssignmentIds",
+																		"assignmentIds", projectAssignmentIds);
 	}
 
 }

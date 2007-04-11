@@ -23,13 +23,33 @@
 
 package net.rrm.ehour.web.pmreport.action;
 
+import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.report.service.ReportService;
+
 import org.apache.struts.action.Action;
 
 /**
- * TODO 
+ * Base class for project management report actions 
  **/
 
 public abstract class BasePMReportAction extends Action
 {
+	protected ReportService		reportService;
+	protected ProjectService	projectService;
 
+	/**
+	 * @param reportService the reportService to set
+	 */
+	public void setReportService(ReportService reportService)
+	{
+		this.reportService = reportService;
+	}
+
+	/**
+	 * @param projectService the projectService to set
+	 */
+	public void setProjectService(ProjectService projectService)
+	{
+		this.projectService = projectService;
+	}
 }
