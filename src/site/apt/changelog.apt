@@ -1,5 +1,7 @@
 * 0.5 Release Notes
 
+	When assigning projects to users, customer and project code are displayed in the project dropdown (admin)
+	
 	Fixed the layout of the report criteria for users.
 
 	Configurable SMTP server address and default mail from: added to eHour config

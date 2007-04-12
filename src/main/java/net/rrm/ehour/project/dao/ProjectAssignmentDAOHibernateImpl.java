@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 
 /**
@@ -114,4 +115,20 @@ public class ProjectAssignmentDAOHibernateImpl
 		
 		return results;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.dao.ProjectAssignmentDAO#findProjectAssignmentsForProject(net.rrm.ehour.project.domain.Project, net.rrm.ehour.data.DateRange)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignment> findProjectAssignmentsForProject(Project project, DateRange range)
+	{
+		List<ProjectAssignment>		results;
+		String[]	keys = new String[]{"dateStart", "dateEnd", "project"};
+		Object[]	params = new Object[]{range.getDateStart(), range.getDateEnd(), project}; 
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForProjectInRange"
+																		, keys, params);		
+		
+		return results;	}
 }

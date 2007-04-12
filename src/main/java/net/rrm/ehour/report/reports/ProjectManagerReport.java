@@ -55,6 +55,11 @@ public class ProjectManagerReport
 		{
 			for (ProjectAssignmentAggregate aggregate : aggregates)
 			{
+				if (aggregate.getHours() == null)
+				{
+					continue;
+				}
+				
 				hours += aggregate.getHours().floatValue();
 				
 				if (aggregate.getProjectAssignment().getAssignmentType().isAllottedType())

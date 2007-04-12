@@ -45,6 +45,7 @@
 		<property name="userDAO" ref="userDAO" />	
 		<property name="projectDAO" ref="projectDAO" />	
 		<property name="mailService" ref="mailService" />
+		<property name="projectAssignmentService" ref="projectAssignmentService" />
 	</bean>
 
 	<!-- Report criteria service -->

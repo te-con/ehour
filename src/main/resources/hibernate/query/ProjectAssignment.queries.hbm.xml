@@ -36,5 +36,20 @@
 			  (pa.dateStart IS NULL OR pa.dateStart <= :dateStart) AND
 			  (pa.dateEnd IS NULL or pa.dateEnd >= :dateEnd)
     		 ]]>
-	</query>	
+	</query>
+
+	<query name="ProjectAssignment.findProjectAssignmentsForProjectInRange">
+    <![CDATA[	
+		FROM ProjectAssignment pa
+		WHERE pa.active is true AND 
+			  pa.project.active is true AND
+			  pa.project.customer.active is true AND 
+			  pa.project = :project AND
+			  (pa.dateStart IS NULL OR pa.dateStart < :dateEnd) AND
+			  (pa.dateEnd IS NULL or pa.dateEnd > :dateStart)
+    		 ]]>
+	</query>
+
+	
+
 </hibernate-mapping>

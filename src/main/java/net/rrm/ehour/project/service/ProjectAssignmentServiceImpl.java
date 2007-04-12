@@ -250,6 +250,16 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			}
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#getProjectAssignments(net.rrm.ehour.project.domain.Project, net.rrm.ehour.data.DateRange)
+	 */
+	public List<ProjectAssignment> getProjectAssignments(Project project, DateRange range)
+	{
+		return projectAssignmentDAO.findProjectAssignmentsForProject(project, range);
+		
+	}
 	
 
 	/**
@@ -292,4 +302,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	{
 		this.mailService = mailService;
 	}
+
+	
 }

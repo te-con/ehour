@@ -43,13 +43,12 @@
 
 								<c:forEach items="${pmReport.aggregates}" var="aggregate" varStatus="status">
 								<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
-										
 									<td>${aggregate.projectAssignment.user.lastName}</td>
 									<td><c:out value="${aggregate.projectAssignment.role}" default="--"/></td>
 									<td style="text-align: right"><fmt:formatNumber value="${aggregate.hours}" maxFractionDigits="2" />&nbsp;</td>
-									<td></td>
-									<td></td>
-									<td></td>
+									<td style="text-align: right"><fmt:formatNumber value="${aggregate.projectAssignment.allottedHours}" maxFractionDigits="2" /></td>
+									<td style="text-align: right"><fmt:formatNumber value="${aggregate.projectAssignment.allowedOverrun}" maxFractionDigits="2" /></td>
+									<td style="text-align: right"><fmt:formatNumber value="${aggregate.progressPercentage}" minFractionDigits="2" maxFractionDigits="2" />%</td>
 								</tr>
 								</c:forEach>
 		

@@ -23,9 +23,13 @@
 
 package net.rrm.ehour.report.reports;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import java.util.Date;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * TODO 
@@ -57,6 +61,48 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 		this.turnOver = turnOver;
 	}
 
+	/**
+	 * Get the progress (booked hours) in percentage of the allotted hours, leaving out the overrun
+	 * or for date ranges use the current date vs start & end date (if they're both null)
+	 * @return
+	 */
+	public float getProgressPercentage()
+	{
+		float	percentage = 0;
+		float	currentTime;
+		float	dateRangeLength;
+		
+		if (projectAssignment.getAssignmentType().isAllottedType())
+		{
+			if (hours != null && 
+				projectAssignment.getAllottedHours() != null &&
+				hours.floatValue() > 0 &&
+				projectAssignment.getAllottedHours().floatValue() > 0)
+			{
+				percentage = (hours.floatValue() / projectAssignment.getAllottedHours().floatValue()) * 100; 
+			}
+		}
+		else if (projectAssignment.getAssignmentType().isDateType())
+		{
+			if (projectAssignment.getDateStart() != null &&
+				projectAssignment.getDateEnd() != null)
+			{
+				currentTime = new Date().getTime() - projectAssignment.getDateStart().getTime();
+				
+				dateRangeLength = projectAssignment.getDateEnd().getTime() - 
+									projectAssignment.getDateStart().getTime();
+			
+				percentage = (currentTime / dateRangeLength) * 100;
+			}
+		}
+		
+		return percentage;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public Number getHours()
 	{
 		return hours;
@@ -98,7 +144,7 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 	 */
 	public int compareTo(ProjectAssignmentAggregate pagO)
 	{
-		return this.getProjectAssignment().getProject().compareTo(pagO.getProjectAssignment().getProject());
+		return this.getProjectAssignment().compareTo(pagO.getProjectAssignment());
 	}
 	
 	public String toString()
@@ -108,6 +154,27 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 			.append("hours", hours)
 			.append("turnOver", turnOver)
 			.toString();		
+	}
+
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object)
+	{
+		if (!(object instanceof ProjectAssignmentAggregate))
+		{
+			return false;
+		}
+		ProjectAssignmentAggregate rhs = (ProjectAssignmentAggregate) object;
+		return new EqualsBuilder().appendSuper(super.equals(object)).append(this.projectAssignment, rhs.projectAssignment).isEquals();
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder(259442803, 2067843191).appendSuper(super.hashCode()).append(this.projectAssignment).toHashCode();
 	}
 
 }

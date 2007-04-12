@@ -29,6 +29,7 @@ import java.util.Set;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 
@@ -77,4 +78,10 @@ public interface ProjectAssignmentService
 	 * @param assignments
 	 */
 	public void checkForOverruns(Set<ProjectAssignment> assignments);
+	
+	/**
+	 * Get project assignments for project
+	 * @param project
+	 */
+	public List<ProjectAssignment>  getProjectAssignments(Project project, DateRange dateRange);
 }

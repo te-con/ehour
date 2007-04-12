@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.rrm.ehour.data.DateRange;
@@ -34,6 +35,8 @@ import net.rrm.ehour.mail.domain.MailLogAssignment;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
@@ -63,6 +66,7 @@ public class ReportServiceImpl implements ReportService
 	private	ProjectDAO			projectDAO;
 	private	UserDAO				userDAO;
 	private	MailService			mailService;
+	private	ProjectAssignmentService	projectAssignmentService;
 	
 	private	Logger				logger = Logger.getLogger(this.getClass());
 	
@@ -315,26 +319,49 @@ public class ReportServiceImpl implements ReportService
 	public ProjectManagerReport getProjectManagerReport(DateRange reportRange, Integer projectId)
 	{
 		ProjectManagerReport	report = new ProjectManagerReport();
-		List<ProjectAssignmentAggregate>	aggregates;
+		SortedSet<ProjectAssignmentAggregate>	aggregates;
 		List<MailLogAssignment>	sentMail;
 		Project					project;
 		List<Integer>			assignmentIds = new ArrayList<Integer>();
+		List<ProjectAssignment>	allAssignments;
+		ProjectAssignmentAggregate	emptyAggregate;
 		
+		// get the project
 		project = projectDAO.findById(projectId);
 		report.setProject(project);
 		logger.debug("PM report for project " + project.getName());
 		
+		// get a proper report range
 		reportRange = getReportRangeForProject(reportRange, project);
 		report.setReportRange(reportRange);
 		
-		aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(new Integer[]{projectId}, reportRange);
-		report.setAggregates(new TreeSet<ProjectAssignmentAggregate>(aggregates));
-		
+		// get all aggregates
+		aggregates = new TreeSet<ProjectAssignmentAggregate>(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(new Integer[]{projectId}, reportRange));
+
+		// filter out just the id's
 		for (ProjectAssignmentAggregate aggregate : aggregates)
 		{
 			assignmentIds.add(aggregate.getProjectAssignment().getAssignmentId());
+		}		
+		
+		// get all assignments for this period regardless whether they booked hours on it
+		allAssignments = projectAssignmentService.getProjectAssignments(project, reportRange);
+		
+		for (ProjectAssignment assignment : allAssignments)
+		{
+			if (!assignmentIds.contains(assignment.getAssignmentId()))
+			{
+				emptyAggregate = new ProjectAssignmentAggregate();
+				emptyAggregate.setProjectAssignment(assignment);
+			
+				aggregates.add(emptyAggregate);	
+			}
 		}
 		
+		report.setAggregates(aggregates);
+		
+
+		// get mail sent for this project
 		if (assignmentIds.size() > 0)
 		{
 			sentMail = mailService.getSentMailForAssignment((Integer[])assignmentIds.toArray(new Integer[assignmentIds.size()]));
@@ -416,5 +443,13 @@ public class ReportServiceImpl implements ReportService
 	public void setMailService(MailService mailService)
 	{
 		this.mailService = mailService;
+	}
+
+	/**
+	 * @param projectAssignmentService the projectAssignmentService to set
+	 */
+	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
+	{
+		this.projectAssignmentService = projectAssignmentService;
 	}
 }
