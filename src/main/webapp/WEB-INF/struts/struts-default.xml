@@ -118,14 +118,20 @@
 			<forward name="printSheet" path=".ehour.timesheet.printSheet" />			
 		</action>
 
-		<!-- Project manager report-->
+		<!-- Project manager report overview -->
 		<action name="PMReportForm"
 				path="/eh/pmReport/index"
-				type="net.rrm.ehour.web.pmreport.action.OverviewAction">
+				type="net.rrm.ehour.web.pmreport.action.PMReportCriteriaAction">
 			<forward name="success" path=".ehour.pmreport.layout" />			
 		</action>
-
-
+		
+		<!-- Project manager report -->
+		<action name="PMReportForm"
+				path="/eh/pmReport/projectReport"
+				type="net.rrm.ehour.web.pmreport.action.PMCreateReportAction" >
+			<forward name="success" path=".ehour.pmReport.projectReport" />
+			<forward name="noReport" path=".ehour.pmReport.noProjectSelected" />			
+		</action>			
 	</action-mappings>
 
 

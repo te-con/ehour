@@ -83,4 +83,10 @@
         WHERE entry.entryId.projectAssignment.user.userId = :userId
 	</query> 
 
+    <query name="Report.getMinMaxTimesheetEntryDateForProject">
+        SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
+		FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.project = :project
+	</query> 
+
 </hibernate-mapping>

@@ -76,9 +76,13 @@
     
     <!-- Project manager report layout -->
     <definition name=".ehour.pmreport.layout" extends=".ehour.baseLayout">
-        <put name="navCalendar" value="/WEB-INF/jsp/userReport/criteria.jsp" />
-        <put name="content" value="/WEB-INF/jsp/userReport/reportLayout.jsp" />
+        <put name="navCalendar" value="/WEB-INF/jsp/pmReport/reportCriteria.jsp" />
+        <put name="content" value="/WEB-INF/jsp/pmReport/reportLayout.jsp" />
     	<put name="extraCss" value="/css/ehourReport.jsp" />        
     </definition>
+
+    <!-- Project manager report -->    
+    <definition name=".ehour.pmReport.projectReport" path="/WEB-INF/jsp/pmReport/projectReport.jsp" />
+    <definition name=".ehour.pmReport.noProjectSelected" path="/WEB-INF/jsp/pmReport/noReport.jsp" />
 
 </tiles-definitions>

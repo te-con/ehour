@@ -39,6 +39,34 @@ public class ProjectManagerReport
 	private	SortedSet<ProjectAssignmentAggregate>	aggregates;
 	private	DateRange								reportRange;
 	private	SortedSet<MailLogAssignment>			sentMail;
+	private	Float									totalHoursBooked;
+	private	Float									totalHoursAvailable;
+
+	/**
+	 * Derive the totals
+	 *
+	 */
+	public void deriveTotals()
+	{
+		float 	hours = 0;
+		float	avail = 0;
+		
+		if (aggregates != null)
+		{
+			for (ProjectAssignmentAggregate aggregate : aggregates)
+			{
+				hours += aggregate.getHours().floatValue();
+				
+				if (aggregate.getProjectAssignment().getAssignmentType().isAllottedType())
+				{
+					avail += aggregate.getProjectAssignment().getAllottedHours().floatValue();	
+				}
+			}
+		}
+		
+		totalHoursBooked = new Float(hours);
+		totalHoursAvailable = new Float(avail);
+	}
 	
 	/**
 	 * @return the aggregates
@@ -95,5 +123,33 @@ public class ProjectManagerReport
 	public void setReportRange(DateRange reportRange)
 	{
 		this.reportRange = reportRange;
+	}
+	/**
+	 * @return the totalHoursAvailable
+	 */
+	public Float getTotalHoursAvailable()
+	{
+		return totalHoursAvailable;
+	}
+	/**
+	 * @param totalHoursAvailable the totalHoursAvailable to set
+	 */
+	public void setTotalHoursAvailable(Float totalHoursAvailable)
+	{
+		this.totalHoursAvailable = totalHoursAvailable;
+	}
+	/**
+	 * @return the totalHoursBooked
+	 */
+	public Float getTotalHoursBooked()
+	{
+		return totalHoursBooked;
+	}
+	/**
+	 * @param totalHoursBooked the totalHoursBooked to set
+	 */
+	public void setTotalHoursBooked(Float totalHoursBooked)
+	{
+		this.totalHoursBooked = totalHoursBooked;
 	}
 }

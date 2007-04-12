@@ -26,6 +26,7 @@ package net.rrm.ehour.report.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
@@ -111,4 +112,11 @@ public interface ReportAggregatedDAO
 	 * @return
 	 */
 	public DateRange getMinMaxDateTimesheetEntry(Integer userId);
+	
+	/**
+	 * Get the min/max timesheet date for a project
+	 * @param project
+	 * @return
+	 */
+	public DateRange getMinMaxDateTimesheetEntry(Project project);
 }

@@ -26,6 +26,7 @@ package net.rrm.ehour.report.dao;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
@@ -232,4 +233,17 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 																		, "assignmentIds", projectAssignmentIds);
 		return results;		
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getMixMaxDateTimesheetEntry(net.rrm.ehour.project.domain.Project)
+	 */
+	@SuppressWarnings("unchecked")
+	public DateRange getMinMaxDateTimesheetEntry(Project project)
+	{
+		List<DateRange>	results;
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getMinMaxTimesheetEntryDateForProject"
+																		, "project",
+																		project);
+		return results.get(0);	}
 }

@@ -44,6 +44,7 @@
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 		<property name="userDAO" ref="userDAO" />	
 		<property name="projectDAO" ref="projectDAO" />	
+		<property name="mailService" ref="mailService" />
 	</bean>
 
 	<!-- Report criteria service -->

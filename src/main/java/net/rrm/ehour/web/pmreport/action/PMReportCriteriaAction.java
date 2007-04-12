@@ -42,9 +42,6 @@ import org.apache.struts.action.ActionMapping;
 
 public class PMReportCriteriaAction extends BasePMReportAction
 {
-	/**
-	 * 
-	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception
@@ -58,7 +55,6 @@ public class PMReportCriteriaAction extends BasePMReportAction
 		
 		request.setAttribute("projects", projects);
 		
-		return mapping.findForward("success");
-		
+		return mapping.findForward("success");		
 	}
 }

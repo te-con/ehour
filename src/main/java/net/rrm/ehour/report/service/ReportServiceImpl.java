@@ -324,6 +324,9 @@ public class ReportServiceImpl implements ReportService
 		report.setProject(project);
 		logger.debug("PM report for project " + project.getName());
 		
+		reportRange = getReportRangeForProject(reportRange, project);
+		report.setReportRange(reportRange);
+		
 		aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(new Integer[]{projectId}, reportRange);
 		report.setAggregates(new TreeSet<ProjectAssignmentAggregate>(aggregates));
 		
@@ -332,10 +335,45 @@ public class ReportServiceImpl implements ReportService
 			assignmentIds.add(aggregate.getProjectAssignment().getAssignmentId());
 		}
 		
-		sentMail = mailService.getSentMailForAssignment((Integer[])assignmentIds.toArray());
-		report.setSentMail(new TreeSet<MailLogAssignment>(sentMail));
+		if (assignmentIds.size() > 0)
+		{
+			sentMail = mailService.getSentMailForAssignment((Integer[])assignmentIds.toArray(new Integer[assignmentIds.size()]));
+			report.setSentMail(new TreeSet<MailLogAssignment>(sentMail));
+		}
+		
+		report.deriveTotals();
 		
 		return report;
+	}
+	
+	/**
+	 * Get report range for project
+	 * @param reportRange
+	 * @param project
+	 * @return
+	 */
+	private DateRange getReportRangeForProject(DateRange reportRange, Project project)
+	{
+		DateRange	minMaxRange;
+		
+		if (reportRange.getDateStart() == null || reportRange.getDateEnd() == null)
+		{
+			minMaxRange = reportAggregatedDAO.getMinMaxDateTimesheetEntry(project);
+			
+			if (reportRange.getDateStart() == null)
+			{
+				reportRange.setDateStart(minMaxRange.getDateStart());
+			}
+
+			if (reportRange.getDateEnd() == null)
+			{
+				reportRange.setDateEnd(minMaxRange.getDateEnd());
+			}
+		}
+		
+		logger.debug("Used date range for pm report: " + reportRange + " on report " + project);
+		
+		return reportRange;
 	}
 	
 	
@@ -370,5 +408,13 @@ public class ReportServiceImpl implements ReportService
 	public void setUserDAO(UserDAO userDAO)
 	{
 		this.userDAO = userDAO;
+	}
+
+	/**
+	 * @param mailService the mailService to set
+	 */
+	public void setMailService(MailService mailService)
+	{
+		this.mailService = mailService;
 	}
 }
