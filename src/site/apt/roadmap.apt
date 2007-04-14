@@ -3,10 +3,6 @@ eHour development roadmap
   See below for the planning of eHour development. The aim is to have a new version out every two weeks while in beta phase.
   If you have any requests, please use {{{http://sourceforge.net/tracker/?group_id=167867&atid=844651}Sourceforge's feature reequester}}.
 
-* Version 0.6
-
-  Move to an OSGi architecture ! Big thing, if you have any experience with server-side OSGi please contact me.
-
 * Version 0.5 (released 16 april '07)
 
   * Add paging
