@@ -14,42 +14,13 @@ Release Notes - eHour v0.5
 
 * 0.5 Release Notes
 
-	Two new assignment types have been added, 
-	Fixed the layout of the report criteria for users.
-
-	Configurable SMTP server address and default mail from: added to eHour config
-
-	A project can now have a project manager. PM's get warning messages with fixed/flex time allotted assignments.
-
-	New authorization role (ROLE_PROJECTMANAGER) added. Users are automatically given (or revoked) a PM role, this role is not selectable when modifying or editing users.
-
-	User filters in the admin section don't have a label anymore but the text is in the input box itself (a la google toolbar).
-
-	To save horizontal space, in the user admin section the project role is not displayed behind the project anymore but shown as a tooltip
-
-	Renamed project description to project role.
-
-	Flex time alloted and Fixed time alloted assignment types added.
-
-	Using a standard 'loading' animation rather than a loading message which is in a different location on every page
-
-	Project duration and total booked and remaining hours shown on user's month overview
-
-	On most pages icons are used rather than plain submit buttons (admin section)
-
-	Customer and projectcode shown on user's month overview
-
-	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1668137&group_id=167867&atid=844648}1668137 }} userlist is refreshed in admin after editting a user
+	Two new assignment types have been added, flex and fixed assignment types. With the new assignment types
+	you can define a maximum number of hours an employee can book on a project.
 	
-	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670789&group_id=167867&atid=844648}1670789 }} Reporting logs cut down to normal proportions
+	Also a project manager can be assigned to a project. The project manager receives e-mail warnings
+	when an employee books all the allotted hours and (s)he can view project specific reports.
 
-	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1670792&group_id=167867&atid=844648}1670792 }} When creating a new report a loading message is displayed
-	
-	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1688586&group_id=167867&atid=844651}1688586 }} Customer and project code added to timesheet
-
-	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1668139&group_id=167867&atid=844648}1668139 }} Dojo upgraded to 0.4.2 and did a serious cut in the src dir.
-
-	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1688339&group_id=167867&atid=844648}1688339 }} Fixed the bogus message when deleting an assignment. Actually the wrong text was used, it should have been a confirm msg.
+	Quite some smaller bugs and user interface inconsistencies were fixed, see the {{{changelog.html} change log}} for the full list.
 
 * 0.41 Release Notes
 

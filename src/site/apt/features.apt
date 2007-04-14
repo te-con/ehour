@@ -8,6 +8,14 @@ Features
   
   * have different start and end dates and hourly rates per employee to project assignment 
   
+  * assign employees based on start and end date, time allotted or a combination of those
+
+  * warning e-mail sent to project manager when an employee used all the the time allotted
+  
+  * reporting on projects managed by project manager  
+  
+  * global reporting for administrators
+  
   * print monthly timesheets for easy signing off
   
   * create default projects to which all employees should be assigned (days off, sick leave, etc.) so you can keep track
@@ -17,7 +25,7 @@ Features
   
   * separation of consultant, reporting and administration role
   
-  * configure whether you want your employees see their turnover
+  * configure whether you want your employees to see their turnover and hourly rate
   
   * configure localization (currently) only English and Dutch translations available
   

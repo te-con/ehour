@@ -2,6 +2,12 @@ Change Log
 
 * 0.5 Release Notes
 
+	Added project manager reports for projects that (s)he manages
+
+	Added more contextual help in the admin sections with links to the main documentation
+
+	Update documentation on website (www.ehour.nl/documentation.html)
+
 	Removed the hide inactive users checkbox from the assignment form, it didn't make sense. Why
 	would you assign a project to an inactive user anyway ? (admin)
 
@@ -29,7 +35,8 @@ Change Log
 
 	Renamed project description to project role.
 
-	Flex time alloted and Fixed time alloted assignment types added.
+	Flex time alloted and Fixed time alloted assignment types added. See the documentation on www.ehour.nl as this
+	was quite a change.
 
 	Using a standard 'loading' animation rather than a loading message which is in a different location on every page
 

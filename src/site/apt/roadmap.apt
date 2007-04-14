@@ -7,7 +7,7 @@ eHour development roadmap
 
   Move to an OSGi architecture ! Big thing, if you have any experience with server-side OSGi please contact me.
 
-* Version 0.5
+* Version 0.5 (released 16 april '07)
 
   * Add paging
   

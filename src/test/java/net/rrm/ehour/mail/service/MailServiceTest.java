@@ -76,6 +76,8 @@ public class MailServiceTest extends BaseDAOTest
 		ProjectAssignmentAggregate asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
 		asg.getProjectAssignment().setAssignmentId(1);
 		asg.setHours(new Float(121.1f));
+		asg.getProjectAssignment().setAllottedHours(100f);
+		asg.getProjectAssignment().setAllowedOverrun(100f);
 		
 		mailService.mailPMFixedAllottedReached(asg, new Date(), user);
 		try
@@ -101,6 +103,8 @@ public class MailServiceTest extends BaseDAOTest
 		ProjectAssignmentAggregate asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
 		asg.getProjectAssignment().setAssignmentId(1);
 		asg.setHours(new Float(121.1f));
+		asg.getProjectAssignment().setAllottedHours(100f);
+		asg.getProjectAssignment().setAllowedOverrun(100f);
 		
 		mailService.mailPMFixedAllottedReached(asg, new Date(), user);
 		try

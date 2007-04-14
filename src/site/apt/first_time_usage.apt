@@ -11,6 +11,11 @@ eHour first usage
 	
 	A default admin account was created when you installed the database scripts.
 	Login with username <<admin>> and password <<admin>>.
+	
+	First change the global configuration to match your needs. After logging in click on <<configuration>>. 
+	Change the From address and SMTP server so that mail can be sent. 
+	
+	After updating the configuration it's time to create some employees and projects.
 
 	Employees are organized into <<departments>> so you need to create a department first.
 	In the administration section, create a department by clicking on Departments and fill out the form
@@ -40,5 +45,7 @@ eHour first usage
 	him/her to a project by filling in the description (Developer/project manager/etc), hourly rate and start and end date.
 	When you've added the project assignment you'll see it appear in the list above the form.
 	
-	Congratulations, the first employee can now track time for this project!	
+	Congratulations, the first employee can now track time for this project!
+	
+	For full documentation on the features, check out the {{{http://www.ehour.nl/documentation.html} documentation on the eHour site}}.	
 
