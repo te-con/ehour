@@ -23,6 +23,9 @@
 
 package net.rrm.ehour.mail.service;
 
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -76,8 +79,49 @@ public class MailServiceImpl implements MailService
 	 */
 	public void mailPMFixedAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
+		String	subject;
+		StringBuffer	body = new StringBuffer();
+		NumberFormat	numberFormat = NumberFormat.getNumberInstance();
+		SimpleDateFormat	dateFormat = new SimpleDateFormat("dd MMM yyyy");
+		
+		// TODO use templates
+		
+		// and no, stringbuffers aren't faster anymore..
+		subject = "eHour: All allotted hours used for project " 
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ " by "
+					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+					+ " "
+					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
+		
+		body.append("Project warning for project " 
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ " ("
+						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
+						+ ")"
+						+ "\r\n\r\n");
+		body.append(numberFormat.format(assignmentAggregate.getProjectAssignment().getAllottedHours().floatValue()) 
+						+ " hours were allotted for this project to " 
+						+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+						+ " "
+						+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+						+ "."
+						+ "\r\n");
+		body.append("On " 
+						+ dateFormat.format(bookDate)
+						+ ", a total of "
+						+ numberFormat.format(assignmentAggregate.getHours()) 
+						+ " hours were booked reaching the allotted hours mark."
+						+ "\r\n\r\n");
+		body.append("Take note, "
+						+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+						+ " "
+						+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+						+ " can't book anymore hours on the project. Add more hours in the project assignment if needed.");
+		
 		mailPMAggregateMessage(assignmentAggregate,
-								"allotted hours reached: " + bookDate.toString() + ", hours: " + assignmentAggregate.getHours(),
+								subject,
+								body.toString(),
 								EhourConstants.MAILTYPE_FIXED_ALLOTTED_REACHED,
 								bookDate,
 								user);
@@ -89,8 +133,53 @@ public class MailServiceImpl implements MailService
 	 */
 	public void mailPMFlexOverrunReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
-		mailPMAggregateMessage(assignmentAggregate, 
-								"overrun hours reached: " + bookDate.toString() + ", hours: " + assignmentAggregate.getHours(),
+		String	subject;
+		StringBuffer	body = new StringBuffer();
+		NumberFormat	numberFormat = NumberFormat.getNumberInstance();
+		SimpleDateFormat	dateFormat = new SimpleDateFormat("dd MMM yyyy");
+		
+		// TODO use templates
+		
+		// and no, stringbuffers aren't faster anymore..
+		subject = "eHour: All allotted and overrun hours used for project " 
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ " by "
+					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+					+ " "
+					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
+		
+		body.append("Project warning for project " 
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ " ("
+						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
+						+ ")"
+						+ "\r\n\r\n");
+		body.append(numberFormat.format(assignmentAggregate.getProjectAssignment().getAllottedHours().floatValue()) 
+						+ " hours were allotted for this project to " 
+						+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+						+ " "
+						+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+						+ "."
+						+ "\r\n");
+		body.append("Additionally an extra overrun of "
+				+ numberFormat.format(assignmentAggregate.getProjectAssignment().getAllowedOverrun())
+				+ " hours was created for this employee.\r\n\r\n");		
+		body.append("On " 
+						+ dateFormat.format(bookDate)
+						+ ", a total of "
+						+ numberFormat.format(assignmentAggregate.getHours()) 
+						+ " hours were booked consuming as well the allotted hours as the extra overrun."
+						+ "\r\n\r\n");
+		body.append("Take note, "
+				+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+				+ " "
+				+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+				+ " can't book anymore hours on the project. Add more hours in the project assignment if needed.");
+		
+		
+		mailPMAggregateMessage(assignmentAggregate,
+								subject,
+								body.toString(),
 								EhourConstants.MAILTYPE_FLEX_OVERRUN_REACHED,
 								bookDate,
 								user);
@@ -102,8 +191,47 @@ public class MailServiceImpl implements MailService
 	 */
 	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
 	{
-		mailPMAggregateMessage(assignmentAggregate, 
-								"flex - alloted hours reached, in overrun. bookdate: " + bookDate.toString() + ", hours: " + assignmentAggregate.getHours(), 
+		String	subject;
+		StringBuffer	body = new StringBuffer();
+		NumberFormat	numberFormat = NumberFormat.getNumberInstance();
+		SimpleDateFormat	dateFormat = new SimpleDateFormat("dd MMM yyyy");
+		
+		// TODO use templates
+		
+		// and no, stringbuffers aren't faster anymore..
+		subject = "eHour: All allotted hours used for project " 
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ " by "
+					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+					+ " "
+					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
+		
+		body.append("Project warning for project " 
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ " ("
+						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
+						+ ")"
+						+ "\r\n\r\n");
+		body.append(numberFormat.format(assignmentAggregate.getProjectAssignment().getAllottedHours().floatValue()) 
+						+ " hours were allotted for this project to " 
+						+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+						+ " "
+						+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+						+ "."
+						+ "\r\n");
+		body.append("On " 
+						+ dateFormat.format(bookDate)
+						+ ", a total of "
+						+ numberFormat.format(assignmentAggregate.getHours()) 
+						+ " hours were booked reaching the allotted hours mark."
+						+ "\r\n\r\n");
+		body.append("An extra overrun of "
+						+ numberFormat.format(assignmentAggregate.getProjectAssignment().getAllowedOverrun())
+						+ " hours was granted when the employee was assigned on this project. Hours can still be booked on this project.");
+		
+		mailPMAggregateMessage(assignmentAggregate,
+								subject,
+								body.toString(), 
 								EhourConstants.MAILTYPE_FLEX_ALLOTTED_REACHED,
 								bookDate,
 								user);
@@ -117,6 +245,7 @@ public class MailServiceImpl implements MailService
 	 * @param user
 	 */
 	private void mailPMAggregateMessage(ProjectAssignmentAggregate assignmentAggregate,
+										String subject,
 										String mailBody, int mailTypeId, Date bookDate, User user)
 	{
 		SimpleMailMessage	msg; 
@@ -128,6 +257,7 @@ public class MailServiceImpl implements MailService
 			asgMsg = new AssignmentPMMessage();
 			msg = new SimpleMailMessage();
 			msg.setText(mailBody);
+			msg.setSubject(subject);
 			
 			asgMsg.setMailMessage(msg);
 			asgMsg.setToUser(user);
@@ -191,7 +321,6 @@ public class MailServiceImpl implements MailService
 			
 			msg.setFrom(config.getMailFrom());
 			msg.setTo(mailTaskMessage.getToUser().getEmail());
-			
 			try
 			{
 				logger.debug("Sending email to " + msg.getTo()[0] + " using " + config.getMailSmtp());	
