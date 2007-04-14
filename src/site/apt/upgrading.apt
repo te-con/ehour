@@ -1,5 +1,10 @@
 Upgrading
 
+* Upgrade from v0.41 to v0.5
+	
+	If you get the error "Unknown column 'projectass0_.ROLE' in 'field list'" after logging in, run
+	the fix_role.sql
+
 * Upgrade from v0.1 - v0.3 to v0.41
 
 	A small database update is needed which adds some configuration keys.

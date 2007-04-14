@@ -44,6 +44,7 @@
     <definition name=".ehour.timesheet.help" path="/WEB-INF/jsp/help/help.jsp">
 		<put name="helpHeader" value="timesheet.header" />		
 		<put name="helpBody" value="timesheet.body" />		
+		<put name="helpDocLink" value="" />		
     </definition>
 
     <!-- Timesheet print layout -->
@@ -54,6 +55,7 @@
         <put name="subContent" value="/WEB-INF/jsp/timesheet/printForm.jsp" />        
     	<put name="helpHeader" value="print.header" />    	
     	<put name="helpBody" value="print.body" /> 
+		<put name="helpDocLink" value="" />	    	
     </definition>
 
     <!-- Timesheet print sheet -->
