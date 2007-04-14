@@ -10,6 +10,7 @@
 		<put name="contextHelp" value="/WEB-INF/jsp/help/help.jsp" />
 		<put name="helpHeader" value="" />		
 		<put name="helpBody" value="" />		
+		<put name="helpDocLink" value="" />		
 		<put name="extraCss" value="" />
     </definition>
 

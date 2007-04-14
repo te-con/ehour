@@ -430,3 +430,28 @@ input
 {
 	border: 0;
 }
+
+div.Help a:link
+{
+	font-weight: normal;
+	text-decoration: underline;
+}
+
+div.Help a:visited
+{
+	font-weight: normal;	
+	text-decoration: underline;
+}
+
+div.Help a:hover
+{
+	color: red;
+	text-decoration: underline;
+}
+
+div.Help a:active
+{
+	color: red;
+	text-decoration: underline;
+}
+

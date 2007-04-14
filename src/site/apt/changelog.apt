@@ -2,6 +2,9 @@ Change Log
 
 * 0.5 Release Notes
 
+	Removed the hide inactive users checkbox from the assignment form, it didn't make sense. Why
+	would you assign a project to an inactive user anyway ? (admin)
+
 	When assigning projects to users, customer and project code are displayed in the project dropdown (admin)
 	
 	Fixed the layout of the report criteria for users.

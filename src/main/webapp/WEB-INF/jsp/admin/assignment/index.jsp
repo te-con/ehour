@@ -45,7 +45,6 @@
 										size="30"
 										id="filterInput"
 										value="<fmt:message key="admin.user.filter" />..."><br>
-								<fmt:message key="admin.user.hideInactive" />: <input style="margin-bottom: 0" type="checkbox" id="hideInactive" name="hideInactive" checked><br>
 							</p>
 						
 						<div class="BlueFrame" style="width: 220px; padding-top: 0; margin-top: 10px">

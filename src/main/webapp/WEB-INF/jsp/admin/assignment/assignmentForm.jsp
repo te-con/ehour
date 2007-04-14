@@ -68,11 +68,11 @@ function initDojo()
 		
 			
 			<td class="main">
-				<fmt:formatDate value="${assignment.dateStart}" pattern="dd MMMM yyyy" />
+				<fmt:formatDate value="${assignment.dateStart}" pattern="dd MMM yyyy" />
 			</td>
 	
 			<td class="main">
-				<fmt:formatDate value="${assignment.dateEnd}" pattern="dd MMMM yyyy" />
+				<fmt:formatDate value="${assignment.dateEnd}" pattern="dd MMM yyyy" />
 			</td>
 		</tr>
 		
@@ -228,7 +228,7 @@ function initDojo()
 
 		<tr id="notifyPmTr">
 			<td>
-				<fmt:message key="admin.assignment.notifyPm" />:
+				<nobr><fmt:message key="admin.assignment.notifyPm" /></nobr>
 			</td>
 		
 			<td colspan="2" style="color: #aaaaa;">

@@ -208,8 +208,13 @@ function showDefaultText(evt)
 function filterKeyUp(evt)
 {
 	var filterInput = dojo.byId('filterInput').value;
+
+	if (filterInput == defaultText)
+	{
+		filterInput = "";
+	}
 	
-	dojo.byId("filterForm").value = dojo.byId('filterInput').value;
+	dojo.byId("filterForm").value = filterInput;
 	dojo.byId("inActiveForm").value = dojo.byId('hideInactive').checked;
 	
 	dojo.io.bind({url: 'index.do',

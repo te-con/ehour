@@ -249,6 +249,11 @@ function filterKeyUp(evt)
 {
 	var filterInput = dojo.byId('filterInput').value;
 	
+	if (filterInput == defaultText)
+	{
+		filterInput = "";
+	}
+	
 	dojo.io.bind({url: 'index.do',
 				  handler: userListReceivedFromFilter,
                   content: {filterPattern: filterInput,

@@ -18,6 +18,9 @@
     <!-- Admin department index -->
     <definition name=".ehour.admin.dept.index" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/dept/index.jsp" />
+		<put name="helpHeader" value="admin.dept.header" />
+		<put name="helpBody" value="admin.dept.body" />
+		<put name="helpDocLink" value="documentation.html#departments" />
     </definition>
 
     <!-- Admin department list (because the spring DelegatingTilesRequestProcessor is used this is here -->
@@ -30,6 +33,9 @@
     <!-- Admin customer index -->
     <definition name=".ehour.admin.customer.index" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/customer/index.jsp" />
+		<put name="helpHeader" value="admin.customer.header" />
+		<put name="helpBody" value="admin.customer.body" />
+		<put name="helpDocLink" value="documentation.html#customers" />
     </definition>
 
     <!-- Admin customer list (because the spring DelegatingTilesRequestProcessor is used this is here -->
@@ -43,6 +49,9 @@
     <!-- Admin user index -->
     <definition name=".ehour.admin.user.fullList" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/user/index.jsp" />
+		<put name="helpHeader" value="admin.employee.header" />
+		<put name="helpBody" value="admin.employee.body" />
+		<put name="helpDocLink" value="documentation.html#departments" />
     </definition>
 
     <!-- Admin user filtered list -->
@@ -56,6 +65,9 @@
     <!-- Admin project index -->
     <definition name=".ehour.admin.project.fullList" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/project/index.jsp" />
+		<put name="helpHeader" value="admin.project.header" />
+		<put name="helpBody" value="admin.project.body" />
+		<put name="helpDocLink" value="documentation.html#customers" />
     </definition>    
 
     <!-- Admin project filtered list -->
@@ -69,6 +81,10 @@
     <!-- Admin assignment index -->
     <definition name=".ehour.admin.assignment.fullList" extends=".ehour.admin.baseLayout">
         <put name="content" value="/WEB-INF/jsp/admin/assignment/index.jsp" />
+		<put name="helpHeader" value="admin.assignment.header" />
+		<put name="helpBody" value="admin.assignment.body" />
+		<put name="helpDocLink" value="documentation.html#assignments" />
+        
     </definition>
 
     <!-- Admin assignment form  -->

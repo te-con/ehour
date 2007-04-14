@@ -38,7 +38,7 @@
 	</tr>
 
 	<tr>
-		<td><fmt:message key="admin.project.projectManager" />:</td>
+		<td><nobr><fmt:message key="admin.project.projectManager" />:</nobr></td>
 		<td><select class="textInputSmall" name="projectManagerId">
 				<option value="-1">--</option>
 			<c:forEach items="${users}" var="user">
@@ -51,7 +51,7 @@
 
 	<tr>
 		<td valign="top"><fmt:message key="admin.project.description" />:</td>
-		<td><textarea name="description" class="textInputSmall" wrap="virtual" cols="40" rows="2">${project.description}</textarea>
+		<td><textarea name="description" class="textInputSmall" wrap="virtual" cols="30" rows="2">${project.description}</textarea>
 		</td>
 		<td></td>
 	</tr>		

@@ -128,7 +128,6 @@ function updateCriteria(updateType)
 		userFilterInput.value = "";
 	}
 	
-	
 	clickIsSubmit = false;
 	
 	criteriaForm.action = contextRoot + '/updateCriteria.do';

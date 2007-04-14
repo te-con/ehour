@@ -83,5 +83,4 @@ public interface EhourConfig
 	 * @return
 	 */
 	public String getMailSmtp();
-	
 }
