@@ -2,6 +2,13 @@ Installation instructions
 
 	eHour requires a Java JDK, the Apache Tomcat servlet container and a MySQL database to be installed.
 	
+	If you're upgrading an existing installation of eHour, please see the {{{upgrading.html} upgrading instructions;
+	do not follow these steps again.
+	
+* Download eHour
+
+	Download a {{{download.html} binary distribution of eHour}} and unpack the downloaded archive in a temp dir.
+	
 * Java 1.5+
 
 	eHour is built in Java so you'll need a Java JDK, 1.5 or newer, before anything can happen.
@@ -13,23 +20,28 @@ Installation instructions
 	For now only MySQL is supported as the back-end database.
 	If you don't have MySQL, version 5 or better, installed download it from  {{{http://dev.mysql.com/downloads/mysql/5.0.html#downloads}http://dev.mysql.com/downloads/mysql/5.0.html#downloads}}
 	and follow the installation instructions.
+	
 	Windows users, the Essentials package is sufficient if you're not afraid of the DOS command prompt.
 	
 ** Create database
 
-	First create a MySQL database named <<eHour>>:
+	First create a MySQL database named <<eHour>>. 
+	
+	When you're running Windows open a DOS box (start -> run -> cmd) and change directory to the bin dir
+	of your MySQL install. Possibly this is C:\Program Files\MySQL\MySQL Server 5.0\bin
+
+	Execute the following command:
 
 +--	
 	mysqladmin create ehour -u user -p
 +--
 	Replace <<user>> with a database user that has enough priviliges to create a new database.
 	
-	Windows users, change the current directory to the MySQL install directory first as mysqladmin isn't in your path.
-	
 ** Install eHour database
 
-	With the ehour database created it's time to fill it. See the <<sql>> directory for a script containing the
-	table definition and initial data for MySQL
+	With the ehour database created it's time to create the database tables and fill 'm with some static data.
+	In the temp dir where you unpacked the binary distribution you'll find an <<sql>> directory. In this
+	directory is a <<fresh.mysql.sql>> script, execute it by running the following command in a DOS box or shell:
 	
 +--
 	mysql ehour -u user -p < fresh.mysql.sql
@@ -42,11 +54,12 @@ Installation instructions
 
 ** Install Tomcat
 
-	Apache Tomcat acts as the container server which runs all things. As of now eHour was only tested with Tomcat 5.5
+	Apache Tomcat acts as the container server which runs the application. As of now eHour was only tested with Tomcat 5.5
 	
 	If you don't have Tomcat installed yet, download it at {{{http://tomcat.apache.org/download-55.cgi#5.5.20}http://tomcat.apache.org/download-55.cgi#5.5.20}}.
-	
 	Windows users can download the Windows Service Installer.
+
+	Install instructions for Tomcat can be found {{{http://tomcat.apache.org/tomcat-5.5-doc/setup.html} on their site}}.
 	
 ** Install the MySQL JDBC connector
 
@@ -62,7 +75,7 @@ Installation instructions
 	First make sure that Tomcat isn't running. When you're running Windows, navigate to the bin directory
 	in your Tomcat and install and run <<tomcat5w.exe>> to check the status.
 
-	In the <<conf/tomcat>> directory of the eHour distribution you can find the file <<ehour-tomcat.xml>>.
+	In the <<conf/tomcat>> directory of the eHour distribution you can find the file <<ehour.xml>>.
 	
 	Edit this file in your favourite text-editor and replace the following:
 	
@@ -76,7 +89,7 @@ Installation instructions
  @ehour.db.name | the eHour MySQL database
 *-----*------*
 
-	After editing copy this file to the <<conf/Catalina/localhost>> directory in your Tomcat install directory
+	After editing, copy this file to the <<conf/Catalina/localhost>> directory in your Tomcat install directory
 	
 ** Install eHour in Tomcat
 
@@ -90,7 +103,14 @@ Installation instructions
 	
 	Start Tomcat by running <<tomcat5.exe>> or <<startup.sh>> in the bin directory of the Tomcat installation directory.
 	
-	Now proceed with the {{{first_time_usage.html}usage instructions}}.
+	Congratulations! You just installed eHour, now proceed with the {{{first_time_usage.html}usage instructions}}!
+	
+* Troubleshooting
+
+	After starting Tomcat, in the logs directory of Tomcat a logfile called <<ehour.log>> should appear. If it's not there make sure
+	you followed the step 'Hookup eHour to Tomcat'
+	
+	
 		
 	
 	

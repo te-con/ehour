@@ -5,7 +5,7 @@ Upgrading
 	A database update is needed which adds new tables and modifies the PROJECT and PROJECT_ASSIGNMENT table.
 	
 	Before performing the update it's wise to backup your database first. After the backup run the update.v_04x_to_v0_5.mysql.sql script
-	which can be found in the sql directory. To do so:
+	which can be found in the sql directory. To do so execute the following command:
 	
 +--
 	mysql ehour -u user -p < update.v_04x_to_v0_5.mysql.sql
@@ -14,7 +14,7 @@ Upgrading
 	For the application, copy the ehour-0.5.war to your tomcat deploy directory. Edit <<conf/Catalina/localhost/ehour-tomcat.xml>> and
 	update the version number of the war file in docBase to 0.5.
 	
-	After you restarted Tomcat and you still see v0.4 on the logon screen, delete the ehour directory in Tomcat's <<webapps>>.
+	After you restarted Tomcat and you still see v0.4 on the logon screen, delete the ehour directory in Tomcat's <<webapps>> dir.
 
 	Two new configuration parameters are introduced in this version, <<Mail from>> and <<SMTP server>>. Login as
 	an admin and go to the configurations page to change the values.

@@ -19,6 +19,8 @@ Release Notes - eHour v0.5
 	
 	Also a project manager can be assigned to a project. The project manager receives e-mail warnings
 	when an employee books all the allotted hours and (s)he can view project specific reports.
+	
+	Added full documentation on the site and contextual help added to the admin pages.
 
 	Quite some smaller bugs and user interface inconsistencies were fixed, see the {{{changelog.html} change log}} for the full list.
 
