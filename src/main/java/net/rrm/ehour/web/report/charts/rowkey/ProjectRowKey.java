@@ -47,7 +47,7 @@ public class ProjectRowKey implements ChartRowKey
 	 */
 	public String getName()
 	{
-		return project.getName();
+		return project.getProjectCode();
 	}
 
 	public Integer getId()
