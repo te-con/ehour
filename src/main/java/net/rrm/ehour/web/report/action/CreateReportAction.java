@@ -88,15 +88,16 @@ public class CreateReportAction extends Action
 		removeOldReportData(session);
 		
 		reportName = getReportName(rcForm, uc);
-		
 		aggregateReport = createReport(reportName, null, reportData);
 
 		// store the report data and the generated report on the session
 		sessionKey = generateSessionKey();
 		session.setAttribute(ReportSessionKey.REPORT_DATA + "_" + sessionKey, reportData);
 		session.setAttribute(ReportSessionKey.REPORT_AGGREGATE + "_" + sessionKey, aggregateReport);
-		
+
+		// put it on the request
 		request.setAttribute("reportSessionKey", sessionKey);
+		request.setAttribute(reportName, aggregateReport);
 		
 		request.setAttribute("config", config);
 		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));

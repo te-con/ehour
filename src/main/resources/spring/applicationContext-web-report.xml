@@ -20,7 +20,7 @@
 
 	<!-- Reuse report action -->
 	<bean id="reUseReportAction"
-			class="net.rrm.ehour.web.report.action.ReUseReportAction"
+			class="net.rrm.ehour.web.report.action.reuse.ReUseReportAction"
 			abstract="true">
 		<property name="config" ref="ehourConfig" />
     </bean>	
@@ -52,5 +52,8 @@
 	<bean name="/eh/report/showReport" 
 			class="net.rrm.ehour.web.report.action.ShowExistingReportAction" 
 			parent="reUseReportAction"/>
-	
+
+	<bean name="/eh/report/customerExcelReport" 
+			class="net.rrm.ehour.web.report.excel.CustomerExcelReport"
+			parent="reUseReportAction"/>
 </beans>

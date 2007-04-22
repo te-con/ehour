@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.web.report.action.ReUseReportAction;
+import net.rrm.ehour.web.report.action.reuse.ReUseReportDataAction;
 import net.rrm.ehour.web.report.form.ReportChartForm;
 import net.rrm.ehour.web.report.util.ChartUtil;
 
@@ -42,7 +42,7 @@ import org.jfree.chart.JFreeChart;
  * TODO 
  **/
 
-public abstract class AbstractChartAction extends ReUseReportAction
+public abstract class AbstractChartAction extends ReUseReportDataAction
 {
 	protected	Logger			logger = Logger.getLogger(this.getClass());
 	

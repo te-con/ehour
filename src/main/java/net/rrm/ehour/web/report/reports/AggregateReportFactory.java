@@ -35,7 +35,6 @@ public class AggregateReportFactory
 	public final static String	CUSTOMER_REPORT ="customerReport";
 	public final static String	PROJECT_REPORT ="projectReport";
 	
-	
 	/**
 	 * 
 	 * @param reportName

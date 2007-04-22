@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.web.report.form.ReportChartForm;
+import net.rrm.ehour.web.report.reports.AggregateReport;
 import net.rrm.ehour.web.report.util.ReportSessionKey;
 import net.rrm.ehour.web.util.WebConstants;
 
@@ -38,11 +38,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * TODO probably rename the class as it's not exclusively used for charts
+ * Base class for aggregate excel reports 
  **/
 
-public abstract class ReUseForChartAction extends ReUseReportAction
+public abstract class ReUseAggregateReportAction extends ReUseReportAction
 {
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.action.reuse.ReUseReportAction#reUseReport(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, net.rrm.ehour.web.report.form.ReportChartForm, java.lang.String)
@@ -54,7 +55,7 @@ public abstract class ReUseForChartAction extends ReUseReportAction
 										ReportChartForm chartForm,
 										String sessionKey) throws IOException
 	{
-		ReportData		reportData;
+		AggregateReport	aggregateReport;
 		HttpSession		session;
 		ActionForward	fwd = null;
 		
@@ -65,11 +66,11 @@ public abstract class ReUseForChartAction extends ReUseReportAction
 		// TODO find out how sessionKey can be null ?
 		if (sessionKey != null)
 		{
-			reportData = (ReportData)session.getAttribute(ReportSessionKey.REPORT_DATA + "_" +  sessionKey);
+			aggregateReport = (AggregateReport)session.getAttribute(ReportSessionKey.REPORT_AGGREGATE + "_" +  sessionKey);
 			
-			if (reportData != null)
+			if (aggregateReport != null)
 			{
-				fwd = reUseReport(mapping, request, response, chartForm, reportData);
+				fwd = reUseReport(mapping, request, response, chartForm, aggregateReport);
 			}
 			else
 			{
@@ -82,7 +83,8 @@ public abstract class ReUseForChartAction extends ReUseReportAction
 		}
 		
 		return fwd;
-	}	
+	}
+
 	
 	/**
 	 * Do something with the report
@@ -95,6 +97,6 @@ public abstract class ReUseForChartAction extends ReUseReportAction
 													HttpServletRequest request,
 													HttpServletResponse response,
 													ReportChartForm chartForm,
-													ReportData reportData)  throws IOException;	
+													AggregateReport reportData)  throws IOException;	
 
 }

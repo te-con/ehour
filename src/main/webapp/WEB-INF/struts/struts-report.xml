@@ -52,6 +52,9 @@
 			<forward name="projectReport" path=".ehour.report.projectReport" />			
 		</action>
 
+		<!-- Customer excel report -->
+		<action name="ReportChartForm" path="/customerExcelReport" />		
+
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

@@ -28,10 +28,9 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.web.report.action.reuse.ReUseAggregateReportAction;
 import net.rrm.ehour.web.report.form.ReportChartForm;
 import net.rrm.ehour.web.report.reports.AggregateReport;
-import net.rrm.ehour.web.report.reports.AggregateReportFactory;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -40,37 +39,17 @@ import org.apache.struts.action.ActionMapping;
  * Show report by re-using reportData in the session
  **/
 
-public class ShowExistingReportAction extends ReUseReportAction
+public class ShowExistingReportAction extends ReUseAggregateReportAction
 {
 	protected ActionForward reUseReport(ActionMapping mapping,
 										HttpServletRequest request,
 										HttpServletResponse response,
 										ReportChartForm chartForm,
-										ReportData reportData)  throws IOException
+										AggregateReport aggregateReport)  throws IOException
 	{
-		createAndStoreReport(request, chartForm.getReportName(), chartForm.getForId(), reportData);
-		return mapping.findForward(chartForm.getReportName());
-	}
-
-	/**
-	 * Create and store report
-	 * @param request
-	 * @param reportName
-	 * @param reportData
-	 */
-	protected void createAndStoreReport(HttpServletRequest request, String reportName, Integer forId, ReportData reportData)
-	{
-		AggregateReport	report;
+		String	reportName = chartForm.getReportName();
 		
-		if (forId == null || forId.intValue() == 0)
-		{
-			report = AggregateReportFactory.createReport(reportName, reportData);
-		}
-		else
-		{
-			report = AggregateReportFactory.createReport(reportName, reportData, forId);
-		}
-		
-		request.setAttribute(reportName, report);
+		request.setAttribute(reportName, aggregateReport);
+		return mapping.findForward(reportName);
 	}
 }

@@ -27,10 +27,8 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.web.report.form.ReportChartForm;
 
 import org.apache.log4j.Logger;
@@ -63,13 +61,10 @@ public abstract class ReUseReportAction extends Action
 	{
 		ReportChartForm	chartForm = (ReportChartForm)form;
 		String			sessionKey;
-		HttpSession		session;
-		ReportData		reportData;
 		ActionForward	fwd = null;
 		
 		response.setHeader("Cache-Control", "no-cache");
 
-		session = request.getSession();
 		sessionKey = chartForm.getKey();
 		
 		request.setAttribute("reportSessionKey", sessionKey);

@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.web.report.form.ReportChartForm;
-import net.rrm.ehour.web.report.reports.AggregateReport;
 import net.rrm.ehour.web.report.util.ReportSessionKey;
 import net.rrm.ehour.web.util.WebConstants;
 
@@ -38,12 +38,11 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * Base class for aggregate excel reports 
+ * Reuse the report data stored in the session
  **/
 
-public abstract class ReUseForAggregateExcelAction extends ReUseReportAction
+public abstract class ReUseReportDataAction extends ReUseReportAction
 {
-
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.action.reuse.ReUseReportAction#reUseReport(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, net.rrm.ehour.web.report.form.ReportChartForm, java.lang.String)
@@ -55,7 +54,7 @@ public abstract class ReUseForAggregateExcelAction extends ReUseReportAction
 										ReportChartForm chartForm,
 										String sessionKey) throws IOException
 	{
-		AggregateReport	aggregateReport;
+		ReportData		reportData;
 		HttpSession		session;
 		ActionForward	fwd = null;
 		
@@ -66,11 +65,11 @@ public abstract class ReUseForAggregateExcelAction extends ReUseReportAction
 		// TODO find out how sessionKey can be null ?
 		if (sessionKey != null)
 		{
-			aggregateReport = (AggregateReport)session.getAttribute(ReportSessionKey.REPORT_AGGREGATE + "_" +  sessionKey);
+			reportData = (ReportData)session.getAttribute(ReportSessionKey.REPORT_DATA + "_" +  sessionKey);
 			
-			if (aggregateReport != null)
+			if (reportData != null)
 			{
-				fwd = reUseReport(mapping, request, response, chartForm, aggregateReport);
+				fwd = reUseReport(mapping, request, response, chartForm, reportData);
 			}
 			else
 			{
@@ -83,8 +82,7 @@ public abstract class ReUseForAggregateExcelAction extends ReUseReportAction
 		}
 		
 		return fwd;
-	}
-
+	}	
 	
 	/**
 	 * Do something with the report
@@ -97,6 +95,6 @@ public abstract class ReUseForAggregateExcelAction extends ReUseReportAction
 													HttpServletRequest request,
 													HttpServletResponse response,
 													ReportChartForm chartForm,
-													AggregateReport reportData)  throws IOException;	
+													ReportData reportData)  throws IOException;	
 
 }
