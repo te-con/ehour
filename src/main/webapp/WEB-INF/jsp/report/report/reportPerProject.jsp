@@ -53,11 +53,13 @@
 							<c:if test="${!customerStatus.first}">
 								<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 								<td>&nbsp;</td>
+								<td>&nbsp;</td>								
 							</c:if>
 
 							<c:forEach items="${projectReport.reportValues[projectItem.key][customerItem.key]}" var="userItem" varStatus="userStatus">
 									<c:if test="${!userStatus.first}">
 										<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
+										<td>&nbsp;</td>								
 										<td>&nbsp;</td>
 									</c:if>
 									<td><a href=""
@@ -79,6 +81,7 @@
 
 						<tr class="totalRow">
 							<td>&nbsp;</td>
+							<td>&nbsp;</td>							
 							<td>&nbsp;</td>
 							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
 							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>

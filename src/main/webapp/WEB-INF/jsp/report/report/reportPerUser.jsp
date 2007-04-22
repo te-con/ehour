@@ -33,6 +33,7 @@
 							<th><fmt:message key="report.report.user" /></th>
 							<th><fmt:message key="report.report.customer" /></th>
 							<th><fmt:message key="report.report.project" /></th>
+							<th><fmt:message key="report.report.projectCode" /></th>							
 							<th><fmt:message key="report.report.hours" /></th>										
 							<th><fmt:message key="report.report.turnOver" /></th>
 						</tr>
@@ -68,6 +69,7 @@
 										<td><a href=""
 											onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.projectAssignment.project.projectId}')"
 											>${projectItem.projectAssignment.project.name}</a></td>
+										<td>${projectItem.projectAssignment.project.projectCode}</td>
 										<td align="right"><fmt:formatNumber value="${projectItem.hours}" maxFractionDigits="2" /></td>
 										<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${projectItem.turnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 									</tr>
@@ -83,6 +85,7 @@
 						<tr class="totalRow">
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
+							<td>&nbsp;</td>							
 							<td>&nbsp;</td>
 							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
 							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>

@@ -87,6 +87,7 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
+							<td>&nbsp;</td>							
 							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
 							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 						</tr>
@@ -97,6 +98,7 @@
 						<td><b><fmt:message key="report.report.total" />:</b></td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
+						<td>&nbsp;</td>						
 						<td align="right"><b><fmt:formatNumber value="${grandTotalHour}" maxFractionDigits="2" /></b></td>
 						<td align="right" class="lastChild"><b><fmt:formatNumber maxFractionDigits="2" value="${grandTotalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></b></td>
 					</tr>
