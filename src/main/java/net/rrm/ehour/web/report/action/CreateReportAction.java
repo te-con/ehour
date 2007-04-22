@@ -38,11 +38,15 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
+import net.rrm.ehour.web.report.reports.AggregateReport;
+import net.rrm.ehour.web.report.reports.AggregateReportFactory;
+import net.rrm.ehour.web.report.util.ReportSessionKey;
 import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -51,7 +55,7 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class CreateReportAction extends ShowExistingReportAction
+public class CreateReportAction extends Action
 {
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
@@ -72,6 +76,7 @@ public class CreateReportAction extends ShowExistingReportAction
 		HttpSession			session = request.getSession();
 		String				param;
 		String				reportName;
+		AggregateReport		aggregateReport;
 		
 		param = mapping.getParameter();
 		
@@ -84,11 +89,15 @@ public class CreateReportAction extends ShowExistingReportAction
 		
 		reportName = getReportName(rcForm, uc);
 		
-		super.createAndStoreReport(request, reportName, null, reportData);
+		aggregateReport = createReport(reportName, null, reportData);
 
+		// store the report data and the generated report on the session
 		sessionKey = generateSessionKey();
-		session.setAttribute(sessionKey, reportData);
+		session.setAttribute(ReportSessionKey.REPORT_DATA + "_" + sessionKey, reportData);
+		session.setAttribute(ReportSessionKey.REPORT_AGGREGATE + "_" + sessionKey, aggregateReport);
+		
 		request.setAttribute("reportSessionKey", sessionKey);
+		
 		request.setAttribute("config", config);
 		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
 		
@@ -166,13 +175,41 @@ public class CreateReportAction extends ShowExistingReportAction
 		{
 			attrib = (String)attribs.nextElement();
 			
-			if (attrib.startsWith("report_"))
+			if (attrib.startsWith(ReportSessionKey.REPORT_DATA + "_"))
 			{
 				logger.debug("Removing old report data from session: " + attrib);
 				session.removeAttribute(attrib);
 			}
+			else if (attrib.startsWith(ReportSessionKey.REPORT_AGGREGATE + "_"))
+			{
+				logger.debug("Removing old generated report from session: " + attrib);
+				session.removeAttribute(attrib);
+			}
 		}
 	}
+	
+	/**
+	 * Create and store report
+	 * @param request
+	 * @param reportName
+	 * @param reportData
+	 */
+	private AggregateReport createReport(String reportName, Integer forId, ReportData reportData)
+	{
+		AggregateReport	report;
+		
+		if (forId == null || forId.intValue() == 0)
+		{
+			report = AggregateReportFactory.createReport(reportName, reportData);
+		}
+		else
+		{
+			report = AggregateReportFactory.createReport(reportName, reportData, forId);
+		}
+		
+		return report;
+	}	
+	
 
 	/**
 	 * Generate session key for this report 
@@ -181,11 +218,9 @@ public class CreateReportAction extends ShowExistingReportAction
 	 */
 	private String generateSessionKey()
 	{
-		StringBuffer 	sessionKey = new StringBuffer("report_");
+		String	sessionKey = Long.toHexString(new Date().getTime());
 		
-		sessionKey.append(new Date().getTime());
-		
-		logger.debug("generated session key for report: " + sessionKey);
+		logger.debug("generated session key for reports: " + sessionKey);
 		
 		return sessionKey.toString();
 	}
