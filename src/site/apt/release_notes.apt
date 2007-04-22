@@ -14,15 +14,15 @@ Release Notes - eHour v0.5
 
 * 0.5 Release Notes
 
-	Two new assignment types have been added, flex and fixed assignment types. With the new assignment types
-	you can define a maximum number of hours an employee can book on a project.
-	
-	Also a project manager can be assigned to a project. The project manager receives e-mail warnings
-	when an employee books all the allotted hours and (s)he can view project specific reports.
-	
-	Added full documentation on the site and contextual help added to the admin pages.
+	Major release with two new assignment types, project manager reports and a couple of UI enhancements and fixed.
 
-	Quite some smaller bugs and user interface inconsistencies were fixed, see the {{{changelog.html} change log}} for the full list.
+	With the two new assignment types  flex and fixed time allotted, an admin can define a maximum number of hours for an employee to book on a project.
+	
+	Also a project manager can be assigned to a project. The project manager receives e-mail warnings when an employee books all the allotted hours and (s)he can view project specific reports.
+	
+	Full documentation is now available on the website and contextual help is added to the admin pages.
+
+	Furthermore quite some smaller bugs were fixed and user interface enhancements added, see the {{{changelog.html} change log}} for the full list.
 
 * 0.41 Release Notes
 

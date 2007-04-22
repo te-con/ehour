@@ -2,7 +2,7 @@ eHour
 
   15 April 2007: {{{release_notes.html}eHour v0.5}} released!
 
-   Version 0.5 adds new assignment types, project manager role and project manager reports and a lot more
+   {{{release_notes.html}Version 0.5}} adds new assignment types, project manager role and project manager reports and a lot more.
 
    Version 0.41 fixes the datasource which was still in development mode. The binary release of 0.4 was compiled with the development profile...
    

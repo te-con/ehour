@@ -31,6 +31,7 @@
 					<table class="reportTable" cellpadding="0" cellspacing="0">
 						<tr>
 							<th><fmt:message key="report.report.project" /></th>
+							<th><fmt:message key="report.report.projectCode" /></th>							
 							<th><fmt:message key="report.report.user" /></th>
 							<th><fmt:message key="report.report.hours" /></th>										
 							<th><fmt:message key="report.report.turnOver" /></th>
@@ -43,6 +44,7 @@
 					<c:forEach items="${projectReport.reportValues}" var="projectItem" varStatus="status">
 						<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 							<td>${projectItem.key.name}</td>
+							<td>${projectItem.key.projectCode}</td>
 
 						<c:set var="totalHour" value="0" />
 						<c:set var="totalTurnOver" value="0" />					

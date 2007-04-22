@@ -32,6 +32,7 @@
 							<tr>
 								<th><fmt:message key="report.report.customer" /></th>
 								<th><fmt:message key="report.report.project" /></th>
+								<th><fmt:message key="report.report.projectCode" /></th>
 								<th><fmt:message key="report.report.user" /></th>
 								<th><fmt:message key="report.report.hours" /></th>
 								<th><fmt:message key="report.report.turnOver" /></th>
@@ -55,6 +56,7 @@
 								<td><a href=""
 										onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
 										>${projectItem.key.name}</a></td>					
+								<td>${projectItem.key.projectCode}</td>
 							<c:forEach items="${customerReport.reportValues[customerItem.key][projectItem.key]}" var="userItem" varStatus="userStatus">
 							
 									<c:if test="${!userStatus.first}">
@@ -63,6 +65,7 @@
 										<td><a href=""
 											onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
 											>${projectItem.key.name}</a></td>
+										<td>${projectItem.key.projectCode}</td>											
 									</c:if>
 									<td><a href=""
 											onClick="return updateReport('userReport', '${reportSessionKey}', '${userItem.projectAssignment.user.userId}')"
