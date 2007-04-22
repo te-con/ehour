@@ -23,10 +23,13 @@
 
 package net.rrm.ehour.web.report.excel;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.web.report.reports.AggregateReport;
+import net.rrm.ehour.web.report.reports.CustomerReport;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -51,10 +54,11 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet 	sheet = wb.createSheet(getReportName());
 		int			rowNumber = 0;
+		CustomerReport	customerReport = (CustomerReport)report;
 		
 		createHeaders(sheet);
 		rowNumber = createColumnNames(rowNumber, wb, sheet);
-		createValues(rowNumber, wb, sheet, report);
+		createValues(rowNumber, wb, sheet, customerReport);
 		
 		return wb;
 	}
@@ -72,13 +76,23 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @param reportData
 	 * @return
 	 */
-	private int createValues(int rowNumber, HSSFWorkbook wb, HSSFSheet sheet, AggregateReport report)
+	private int createValues(int rowNumber, HSSFWorkbook wb, HSSFSheet sheet, CustomerReport report)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
 		short		cellNumber = 0;
 
-//		reportData.
+		Set<Customer>	customers = report.getReportValues().keySet();
+		
+		for (Customer customer : customers)
+		{
+			row = sheet.createRow(rowNumber++);
+			cell = row.createCell(cellNumber++);
+			cell.setCellValue(customer.getName());
+			
+			cellNumber = 0;
+		}
+		
 		
 		return rowNumber;
 	}
