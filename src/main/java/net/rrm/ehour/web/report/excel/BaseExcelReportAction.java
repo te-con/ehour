@@ -48,7 +48,7 @@ public abstract class BaseExcelReportAction extends ReUseAggregateReportAction
 {
 	private final String	FONT_TYPE = "Arial";
 	private HSSFFont		boldFont;
-	
+	protected HSSFCellStyle	boldStyle;
 	/**
 	 * 
 	 */
@@ -81,20 +81,15 @@ public abstract class BaseExcelReportAction extends ReUseAggregateReportAction
 	 * @param workbook
 	 * @return
 	 */
-	protected HSSFCellStyle getBoldCellStyle(HSSFWorkbook workbook)
+	protected void initCellStyles(HSSFWorkbook workbook)
 	{
-		HSSFCellStyle 	style = workbook.createCellStyle();
+		boldStyle = workbook.createCellStyle();
 		
-		if (boldFont == null)
-		{
-			boldFont = workbook.createFont();
-			boldFont.setFontName(FONT_TYPE);
-			boldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-		}		
+		boldFont = workbook.createFont();
+		boldFont.setFontName(FONT_TYPE);
+		boldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		
-		style.setFont(boldFont);
-		
-		return style;
+		boldStyle.setFont(boldFont);
 	}
 	
 	/**

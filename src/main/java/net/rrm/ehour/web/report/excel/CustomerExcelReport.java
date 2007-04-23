@@ -24,15 +24,17 @@
 package net.rrm.ehour.web.report.excel;
 
 import java.util.Set;
+import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.web.report.reports.AggregateReport;
 import net.rrm.ehour.web.report.reports.CustomerReport;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -55,6 +57,8 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		HSSFSheet 	sheet = wb.createSheet(getReportName());
 		int			rowNumber = 0;
 		CustomerReport	customerReport = (CustomerReport)report;
+		
+		initCellStyles(wb);
 		
 		createHeaders(sheet);
 		rowNumber = createColumnNames(rowNumber, wb, sheet);
@@ -83,14 +87,56 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		short		cellNumber = 0;
 
 		Set<Customer>	customers = report.getReportValues().keySet();
+		SortedMap<Project, Set<ProjectAssignmentAggregate>>	projectsPerCustomer;
+		Set<ProjectAssignmentAggregate>	aggregates;
 		
 		for (Customer customer : customers)
 		{
-			row = sheet.createRow(rowNumber++);
-			cell = row.createCell(cellNumber++);
-			cell.setCellValue(customer.getName());
+			projectsPerCustomer = report.getReportValues().get(customer);
 			
-			cellNumber = 0;
+			for (Project prj : projectsPerCustomer.keySet())
+			{
+				aggregates = projectsPerCustomer.get(prj);
+				
+				for (ProjectAssignmentAggregate aggregate : aggregates)
+				{
+					row = sheet.createRow(rowNumber++);
+					cell = row.createCell(cellNumber++);
+					cell.setCellValue(customer.getName());
+
+					cell = row.createCell(cellNumber++);
+					cell.setCellValue(prj.getName());
+
+					cell = row.createCell(cellNumber++);
+					cell.setCellValue(prj.getProjectCode());
+					
+					cell = row.createCell(cellNumber++);
+					cell.setCellValue(aggregate.getProjectAssignment().getUser().getLastName() + ", " +
+							aggregate.getProjectAssignment().getUser().getFirstName());
+					
+					cell = row.createCell(cellNumber++);
+					
+					if (aggregate.getHours() != null)
+					{
+						cell.setCellValue(aggregate.getHours().floatValue());
+					}
+
+					cell = row.createCell(cellNumber++);
+					
+					if (aggregate.getProjectAssignment().getHourlyRate() != null)
+					{
+						cell.setCellValue(aggregate.getProjectAssignment().getHourlyRate().floatValue());
+					}
+					
+					if (aggregate.getTurnOver() != null)
+					{
+						cell = row.createCell(cellNumber++);
+						cell.setCellValue(aggregate.getTurnOver().floatValue());
+					}
+					
+					cellNumber = 0;
+				}
+			}
 		}
 		
 		
@@ -107,27 +153,34 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		HSSFRow		row;
 		HSSFCell	cell;
 		short		cellNumber = 0;
-		HSSFCellStyle	headerStyle = this.getBoldCellStyle(wb);
 		
 		row = sheet.createRow(rowNumber++);
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(headerStyle);
+		cell.setCellStyle(boldStyle);
 		cell.setCellValue("Customer");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(headerStyle);
+		cell.setCellStyle(boldStyle);
 		cell.setCellValue("Project");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(headerStyle);
+		cell.setCellStyle(boldStyle);
 		cell.setCellValue("Project code");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(headerStyle);
+		cell.setCellStyle(boldStyle);
 		cell.setCellValue("Employee");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(headerStyle);
+		cell.setCellStyle(boldStyle);
+		cell.setCellValue("Hours");
+
+		cell = row.createCell(cellNumber++);
+		cell.setCellStyle(boldStyle);
+		cell.setCellValue("Rate");
+
+		cell = row.createCell(cellNumber++);
+		cell.setCellStyle(boldStyle);
 		cell.setCellValue("Turnover");
 		
 		return rowNumber;
