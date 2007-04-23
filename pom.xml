@@ -353,6 +353,17 @@
 	<reporting>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
 			</plugin>
@@ -376,7 +387,7 @@
 			<plugin>
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
-					<jdk>1.5</jdk>				
+					<jdk>1.5</jdk>
 					<licenseLocation>
 						etc/clover-eHour.license
 					</licenseLocation>
