@@ -66,7 +66,7 @@ public class TimesheetCommentId implements Serializable, Comparable<TimesheetCom
 	/**
 	 * @param commentDate the commentDate to set
 	 */
-	public void setCommentDate(Date commentDate)
+	public final void setCommentDate(Date commentDate)
 	{
 		this.commentDate = commentDate;
 	}
@@ -80,7 +80,7 @@ public class TimesheetCommentId implements Serializable, Comparable<TimesheetCom
 	/**
 	 * @param userId the userId to set
 	 */
-	public void setUserId(Integer userId)
+	public final void setUserId(Integer userId)
 	{
 		this.userId = userId;
 	}

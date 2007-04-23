@@ -79,7 +79,7 @@ public class DateRange implements Serializable
 	 * Set the date end, time is set to 23:59:59.999
 	 * @param dateEnd
 	 */
-	public void setDateEnd(Date dateEnd)
+	public final void setDateEnd(Date dateEnd)
 	{
 		if (dateEnd != null)
 		{
@@ -100,7 +100,7 @@ public class DateRange implements Serializable
 	 * Set the date start, time is set to 00:00
 	 * @param dateStart
 	 */
-	public void setDateStart(Date dateStart)
+	public final void setDateStart(Date dateStart)
 	{
 		if (dateStart != null)
 		{

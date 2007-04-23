@@ -63,7 +63,7 @@ public class TimesheetComment extends DomainObject<TimesheetCommentId, Timesheet
 	/**
 	 * @param comment the comment to set
 	 */
-	public void setComment(String comment)
+	public final void setComment(String comment)
 	{
 		this.comment = comment;
 	}
@@ -77,7 +77,7 @@ public class TimesheetComment extends DomainObject<TimesheetCommentId, Timesheet
 	/**
 	 * @param commentId the commentId to set
 	 */
-	public void setCommentId(TimesheetCommentId commentId)
+	public final void setCommentId(TimesheetCommentId commentId)
 	{
 		this.commentId = commentId;
 	}

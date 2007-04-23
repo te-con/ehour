@@ -28,19 +28,67 @@ import java.util.Comparator;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
- * TODO 
+ * Project Assignment aggregate comparator 
  **/
 
 public class ProjectAssignmentAggregateComparator implements Comparator<ProjectAssignmentAggregate>
 {
-
-	/* (non-Javadoc)
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	public final static int SORT_ON_CUSTOMER = 1;
+	public final static int SORT_ON_PROJECT = 2;
+	
+	private int	sortType;
+	
+	public ProjectAssignmentAggregateComparator()
+	{
+		sortType = SORT_ON_CUSTOMER;
+	}
+	
+	/**
+	 * 
+	 * @param sortType
+	 */
+	public ProjectAssignmentAggregateComparator(int sortType)
+	{
+		this.sortType = sortType;
+	}
+	
+	/**
+	 * Compare on project name or customer name
 	 */
 	public int compare(ProjectAssignmentAggregate o1, ProjectAssignmentAggregate o2)
 	{
+		int	compare = 0;
+		
+		switch (sortType)
+		{
+			case SORT_ON_PROJECT:
+				compare = compareOnProject(o1, o2);
+				break;
+			case SORT_ON_CUSTOMER:
+				compare = o1.getProjectAssignment().getProject().getCustomer().getName()
+						.compareToIgnoreCase(o2.getProjectAssignment().getProject().getCustomer().getName());
+				
+				if (compare == 0)
+				{
+					compare = compareOnProject(o1, o2);
+				}
+				break;
+		}
+		
+		return compare;
+	}
+	
+	/**
+	 * Compare on prj
+	 * @param o1
+	 * @param o2
+	 * @return
+	 */
+	private int compareOnProject(ProjectAssignmentAggregate o1, ProjectAssignmentAggregate o2)
+	{
 		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
-					o2.getProjectAssignment().getProject().getName());
+				o2.getProjectAssignment().getProject().getName());
+
 	}
 
 }

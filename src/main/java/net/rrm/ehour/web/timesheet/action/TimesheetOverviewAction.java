@@ -89,7 +89,7 @@ public class TimesheetOverviewAction extends BaseTimesheetAction
 	{
 		SortedSet<UserProjectStatus>	sortedSet;
 		
-		sortedSet = new TreeSet<UserProjectStatus>(new ProjectAssignmentAggregateComparator());
+		sortedSet = new TreeSet<UserProjectStatus>(new ProjectAssignmentAggregateComparator(ProjectAssignmentAggregateComparator.SORT_ON_CUSTOMER));
 		sortedSet.addAll(overview.getProjectStatus());
 		
 		overview.setProjectStatus(sortedSet);
