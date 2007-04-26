@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+
+    <!-- Admin base layout -->
+    <definition name=".ehour.admin.baseLayout" extends=".ehour.baseLayout">
+        <put name="pageTitle" value="eHour - admin" />
+        <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
+        <put name="navCalendar" value="/WEB-INF/jsp/nav/navAdmin.jsp" />
+		<put name="extraCss" value="/css/ehourAdmin.jsp" />        
+    </definition>
+
+    <!-- Admin index -->
+    <definition name=".ehour.admin.index" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/index.jsp" />
+    </definition>
+
+    <!-- Admin department index -->
+    <definition name=".ehour.admin.dept.index" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/dept/index.jsp" />
+		<put name="helpHeader" value="admin.dept.header" />
+		<put name="helpBody" value="admin.dept.body" />
+		<put name="helpDocLink" value="documentation.html#departments" />
+    </definition>
+
+    <!-- Admin department list (because the spring DelegatingTilesRequestProcessor is used this is here -->
+    <definition name=".ehour.admin.dept.list" path="/WEB-INF/jsp/admin/dept/listUserDepartments.jsp" />
+
+    <!-- Admin department edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
+    <definition name=".ehour.admin.dept.userDepartmentForm" path="/WEB-INF/jsp/admin/dept/userDepartmentForm.jsp" />
+
+
+    <!-- Admin customer index -->
+    <definition name=".ehour.admin.customer.index" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/customer/index.jsp" />
+		<put name="helpHeader" value="admin.customer.header" />
+		<put name="helpBody" value="admin.customer.body" />
+		<put name="helpDocLink" value="documentation.html#customers" />
+    </definition>
+
+    <!-- Admin customer list (because the spring DelegatingTilesRequestProcessor is used this is here -->
+    <definition name=".ehour.admin.customer.list" path="/WEB-INF/jsp/admin/customer/listCustomers.jsp" />
+
+    <!-- Admin customer edit form (because the spring DelegatingTilesRequestProcessor is used this is here -->
+    <definition name=".ehour.admin.customer.customerForm" path="/WEB-INF/jsp/admin/customer/customerForm.jsp" />
+
+
+
+    <!-- Admin user index -->
+    <definition name=".ehour.admin.user.fullList" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/user/index.jsp" />
+		<put name="helpHeader" value="admin.employee.header" />
+		<put name="helpBody" value="admin.employee.body" />
+		<put name="helpDocLink" value="documentation.html#departments" />
+    </definition>
+
+    <!-- Admin user filtered list -->
+    <definition name=".ehour.admin.user.filteredList" path="/WEB-INF/jsp/admin/user/listUsers.jsp" />
+
+    <!-- Admin user form  -->
+    <definition name=".ehour.admin.user.userForm" path="/WEB-INF/jsp/admin/user/userForm.jsp" />
+    
+
+    
+    <!-- Admin project index -->
+    <definition name=".ehour.admin.project.fullList" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/project/index.jsp" />
+		<put name="helpHeader" value="admin.project.header" />
+		<put name="helpBody" value="admin.project.body" />
+		<put name="helpDocLink" value="documentation.html#customers" />
+    </definition>    
+
+    <!-- Admin project filtered list -->
+    <definition name=".ehour.admin.project.filteredList" path="/WEB-INF/jsp/admin/project/listProjects.jsp" />
+
+    <!-- Admin project form  -->
+    <definition name=".ehour.admin.project.projectForm" path="/WEB-INF/jsp/admin/project/projectForm.jsp" />
+
+
+
+    <!-- Admin assignment index -->
+    <definition name=".ehour.admin.assignment.fullList" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/assignment/index.jsp" />
+		<put name="helpHeader" value="admin.assignment.header" />
+		<put name="helpBody" value="admin.assignment.body" />
+		<put name="helpDocLink" value="documentation.html#assignments" />
+        
+    </definition>
+
+    <!-- Admin assignment form  -->
+    <definition name=".ehour.admin.assignment.assignmentForm" path="/WEB-INF/jsp/admin/assignment/assignmentForm.jsp" />
+
+	<definition name=".ehour.admin.assignment.projectPmCheck" path="/WEB-INF/jsp/admin/assignment/projectPmCheck.jsp" />
+
+
+    <!-- Configuration index -->
+    <definition name=".ehour.admin.configuration.index" extends=".ehour.admin.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/admin/config/index.jsp" />
+		<put name="helpHeader" value="config.header" />		
+		<put name="helpBody" value="config.body" />		
+    </definition>
+    
+    <!-- Configuration locales tile -->
+	<definition name=".ehour.admin.configuration.locales" path="/WEB-INF/jsp/admin/config/localeConfiguration.jsp">
+	</definition>
+
+    <!-- Configuration locales tile -->
+	<definition name=".ehour.admin.configuration.locales" path="/WEB-INF/jsp/admin/config/localeConfiguration.jsp">
+	</definition>
+
+    
+</tiles-definitions>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<!-- Action forms -->
+	<form-beans>
+		<form-bean name="UserDepartmentForm" type="net.rrm.ehour.web.admin.dept.form.UserDepartmentForm" />
+		<form-bean name="CustomerForm" type="net.rrm.ehour.web.admin.customer.form.CustomerForm" />
+		<form-bean name="UserForm" type="net.rrm.ehour.web.admin.user.form.UserForm" />
+		<form-bean name="ProjectForm" type="net.rrm.ehour.web.admin.project.form.ProjectForm" />
+		<form-bean name="ProjectAssignmentForm" type="net.rrm.ehour.web.admin.assignment.form.ProjectAssignmentForm" />
+		<form-bean name="ConfigForm" type="net.rrm.ehour.web.admin.config.form.ConfigForm" />
+	</form-beans>
+	
+	<!-- Global exceptions -->
+	<global-exceptions>
+		<exception	handler="net.rrm.ehour.web.exception.GlobalExceptionHandler"
+					type="java.lang.Exception"
+					key="generic"
+					path="/exceptions.jsp"/>
+	</global-exceptions>	
+	
+
+	<!-- Action Mapping Definitions -->
+	<action-mappings>
+
+		<!--  Actions -->
+
+		<!-- Entry page for all administrators -->
+		<action path="/index" type="net.rrm.ehour.web.admin.action.AdminEntryAction" input="">
+			<forward name="success" path=".ehour.admin.index" />
+		</action>
+
+		<!-- List all user departments -->
+		<action path="/dept/index" type="net.rrm.ehour.web.admin.dept.action.ListUserDepartmentsAction" >
+			<forward name="success" path=".ehour.admin.dept.index" />
+		</action>
+
+		<!-- Get user department for editing -->
+		<action name="UserDepartmentForm" 
+				path="/dept/getUserDepartment" 
+				type="net.rrm.ehour.web.admin.dept.action.GetUserDepartmentAction">
+			<forward name="success" path=".ehour.admin.dept.userDepartmentForm" />
+		</action>
+
+		<!-- Edit user department -->
+		<action name="UserDepartmentForm" 
+				path="/dept/editUserDepartment" 
+				type="net.rrm.ehour.web.admin.dept.action.EditUserDepartmentAction">
+			<forward  name="success" path=".ehour.admin.dept.list" />				
+			<forward name="failure" path=".ehour.admin.dept.userDepartmentForm" />			
+		</action>
+
+		<!-- Delete user department -->
+		<action name="UserDepartmentForm" 
+				path="/dept/deleteUserDepartment" 
+				type="net.rrm.ehour.web.admin.dept.action.DeleteUserDepartmentAction">
+			<forward name="success" path=".ehour.admin.dept.list" />	
+			<forward name="failure" path=".ehour.admin.dept.userDepartmentForm" />									
+		</action>
+
+		<!-- Show add user department form -->
+		<action path="/dept/addUserDepartmentForm" forward=".ehour.admin.dept.userDepartmentForm" />
+
+
+
+		<!-- List all customers -->
+		<action path="/customer/index" type="net.rrm.ehour.web.admin.customer.action.ListCustomersAction" >
+			<forward name="success" path=".ehour.admin.customer.index" />
+		</action>
+
+		<!-- Get customer for editing-->
+		<action name="CustomerForm"
+				path="/customer/getCustomer" 
+				type="net.rrm.ehour.web.admin.customer.action.GetCustomerAction" >
+			<forward name="success" path=".ehour.admin.customer.customerForm" />
+		</action>
+
+		<!-- Show add customer form -->
+		<action path="/customer/addCustomerForm" forward=".ehour.admin.customer.customerForm" />
+
+		<!-- Edit customer-->
+		<action name="CustomerForm" 
+				path="/customer/editCustomer" 
+				type="net.rrm.ehour.web.admin.customer.action.EditCustomerAction">
+			<forward  name="success" path=".ehour.admin.customer.list" />
+			<forward  name="failure" path=".ehour.admin.customer.customerForm" />			
+		</action>
+
+		<!-- Delete customer -->
+		<action name="CustomerForm" 
+				path="/customer/deleteCustomer" 
+				type="net.rrm.ehour.web.admin.customer.action.DeleteCustomerAction">
+			<forward  name="success" path=".ehour.admin.customer.list" />	
+			<forward  name="failure" path=".ehour.admin.customer.customerForm" />						
+		</action>
+
+
+
+		<!-- List all users -->
+		<action name="UserForm"
+				path="/user/index" 
+				type="net.rrm.ehour.web.admin.user.action.ListUsersAction" 
+				>
+			<forward name="fullList" path=".ehour.admin.user.fullList" />
+			<forward name="filteredList" path=".ehour.admin.user.filteredList" />			
+		</action>
+
+		<!-- Show add user form -->
+		<action path="/user/addUserForm" 
+				type="net.rrm.ehour.web.admin.user.action.GetUserAction"
+				parameter="addOnly">
+			<forward name="success" path=".ehour.admin.user.userForm" />
+		</action>
+
+		<!-- Show edit user form -->
+		<action name="UserForm"
+				path="/user/getUser" 
+				type="net.rrm.ehour.web.admin.user.action.GetUserAction">
+			<forward name="success" path=".ehour.admin.user.userForm" />
+		</action>
+
+		<!-- Edit User -->
+		<action name="UserForm"
+				path="/user/editUser" 
+				type="net.rrm.ehour.web.admin.user.action.EditUserAction">
+			<forward name="success" path=".ehour.admin.user.filteredList" />
+			<forward name="failure" path=".ehour.admin.user.userForm" />			
+		</action>
+
+		<!-- Check if user exists -->
+		<action name="UserForm"
+				path="/user/userExistsCheck" 
+				type="net.rrm.ehour.web.admin.user.action.UserExistsAction" />
+				
+				
+				
+		<!-- List all projects -->
+		<action name="ProjectForm"
+				path="/project/index" 
+				type="net.rrm.ehour.web.admin.project.action.ListProjectsAction" 
+				>
+			<forward name="fullList" path=".ehour.admin.project.fullList" />
+			<forward name="filteredList" path=".ehour.admin.project.filteredList" />			
+		</action>				
+				
+		<!-- Show add project form -->
+		<action path="/project/addProjectForm" 
+				type="net.rrm.ehour.web.admin.project.action.GetProjectAction"
+				parameter="addOnly">
+			<forward name="success" path=".ehour.admin.project.projectForm" />
+		</action>	
+		
+		<!-- Show get project form -->
+		<action name="ProjectForm"
+				path="/project/getProject" 
+				type="net.rrm.ehour.web.admin.project.action.GetProjectAction">
+			<forward name="success" path=".ehour.admin.project.projectForm" />
+		</action>						
+
+		<!-- Edit project form -->
+		<action name="ProjectForm"
+				path="/project/editProject" 
+				type="net.rrm.ehour.web.admin.project.action.EditAction">
+			<forward name="success" path=".ehour.admin.project.filteredList" />
+		</action>				
+				
+				
+				
+
+
+		<!-- List all users for project assignments -->
+		<action name="UserForm"
+				path="/assignment/index" 
+				type="net.rrm.ehour.web.admin.user.action.ListUsersAction" 
+				>
+			<forward name="fullList" path=".ehour.admin.assignment.fullList" />
+			<forward name="filteredList" path=".ehour.admin.user.filteredList" />			
+		</action>
+				
+		<!-- Show add project assignment form -->
+		<action name="ProjectAssignmentForm"
+				path="/assignment/getAssignmentsForUser" 
+				type="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction"
+				parameter="addOnly">
+			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
+		</action>
+				
+		<!-- Show edit project assignment form -->
+		<action name="ProjectAssignmentForm"
+				path="/assignment/getAssignment" 
+				type="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction">
+			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
+		</action>
+
+		<!-- Edit project assignment -->
+		<action name="ProjectAssignmentForm"
+				path="/assignment/editAssignment" 
+				type="net.rrm.ehour.web.admin.assignment.action.GetAssignmentAction">
+			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
+		</action>
+
+		<!-- Delete project assignment -->
+		<action name="ProjectAssignmentForm"
+				path="/assignment/deleteAssignment" 
+				type="net.rrm.ehour.web.admin.assignment.action.DeleteAction">
+			<forward name="success" path=".ehour.admin.assignment.assignmentForm" />
+		</action>
+
+		<!-- Get project -->
+		<action name="ProjectForm"
+				path="/assignment/getProject"
+				parameter="projectOnly"
+				type="net.rrm.ehour.web.admin.project.action.GetProjectAction">
+			<forward name="success" path=".ehour.admin.assignment.projectPmCheck" />
+		</action>						
+
+
+		<!-- Report TODO remove?-->
+		<action path="/report/index" 
+				type="net.rrm.ehour.web.report.action.ReportCriteriaAction">
+		</action>
+
+		<!-- Configuration index-->
+		<action name="ConfigForm"
+				path="/config/index" 
+				type="net.rrm.ehour.web.admin.config.action.ConfigAction">
+			<forward name="success" path=".ehour.admin.configuration.index" />
+		</action>
+
+		<!-- Configuration Update locales -->
+		<action name="ConfigForm"
+				path="/config/updateLocales" 
+				type="net.rrm.ehour.web.admin.config.action.ConfigAction">
+			<forward name="success" path=".ehour.admin.configuration.locales" />
+		</action>
+
+		<!-- Configuration Save-->
+		<action name="ConfigForm"
+				path="/config/saveConfig" 
+				type="net.rrm.ehour.web.admin.config.action.SaveConfigAction">
+			<forward name="success" path=".ehour.admin.configuration.locales" />
+		</action>
+						
+	</action-mappings>
+	
+	<!-- spring tiles controller -->
+	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
+	
+	<!-- i18n message resources (only used for html:error) -->
+	<message-resources parameter="MessageResources" />
+
+	
+</struts-config>
+

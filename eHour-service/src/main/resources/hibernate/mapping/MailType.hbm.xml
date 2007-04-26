@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.mail.domain.MailType" table="MAIL_TYPE">
+	    <cache usage="read-only" />
+		
+		<id name="mailTypeId" column="MAIL_TYPE_ID" type="integer">
+			<generator class="assigned" />
+       	</id>
+
+		<property name="mailType" column="MAIL_TYPE" type="string"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<configExtensions>
+		<configExtension>xml</configExtension>
+	</configExtensions>
+	<configs>
+		<config>src/main/resources/spring/applicationContext-service.xml</config>
+		<config>src/main/resources/spring/applicationContext-mail.xml</config>
+		<config>src/main/resources/spring/applicationContext-dao.xml</config>
+		<config>src/main/profiles/dev/resources/spring/applicationContext-datasource.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

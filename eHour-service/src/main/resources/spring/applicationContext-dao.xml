@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Session factory definition -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="eHourDataSource" />
+		</property>
+
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:mapping/*.hbm.xml</value>
+				<value>classpath:query/*.hbm.xml</value>				
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQL5Dialect
+				</prop>
+				<prop key="show_sql">false</prop>
+				<prop key="use_outer_join">true</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+		        <prop key="net.sf.ehcache.configurationResourceName">ehcache-2.xml</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- transaction manager -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+
+
+	<!-- Template class  -->
+	<bean id="hibernateTemplate"
+		class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<!-- Generic DAO -->
+    <bean id="abstractDAOTarget" class="net.rrm.ehour.dao.GenericDAOHibernateImpl" abstract="true">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+    </bean>	
+	
+	<!--  UserDAO -->
+	<bean id="userDAO" 
+			class="net.rrm.ehour.user.dao.UserDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
+
+	<!-- Timesheet DAO -->
+	<bean id="timesheetDAO" class="net.rrm.ehour.timesheet.dao.TimesheetDAOHibernateImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+	
+	<!-- Report DAO -->
+	<bean id="reportAggregatedDAO" class="net.rrm.ehour.report.dao.ReportAggregatedDAOHibernateImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+	
+	<!-- User department DAO -->
+	<bean id="userDepartmentDAO" 
+			class="net.rrm.ehour.user.dao.UserDepartmentDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
+
+	<!-- Customer DAO -->
+	<bean id="customerDAO" 
+			class="net.rrm.ehour.customer.dao.CustomerDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
+	
+	<!-- UserRole DAO -->
+	<bean id="userRoleDAO" 
+			class="net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
+
+	<!-- Project DAO -->
+	<bean id="projectDAO" 
+			class="net.rrm.ehour.project.dao.ProjectDAOHibernateImpl" 
+			parent="abstractDAOTarget" />
+
+	<!-- ProjectAssignment DAO -->
+	<bean id="projectAssignmentDAO"
+		 	class="net.rrm.ehour.project.dao.ProjectAssignmentDAOHibernateImpl" 
+		 	parent="abstractDAOTarget" />
+		 	
+	<!-- TimesheetComment DAO -->
+	<bean id="timesheetCommentDAO"
+		 	class="net.rrm.ehour.timesheet.dao.TimesheetCommentDAOHibernateImpl" 
+		 	parent="abstractDAOTarget" />		 	
+
+	<!-- ReportPerMonth DAO -->
+	<bean id="reportPerMonthDAO"
+			class="net.rrm.ehour.report.dao.ReportPerMonthMySQL5JdbcImpl">
+		<property name="dataSource" ref="eHourDataSource" />
+	</bean>
+
+	<!-- Configuration DAO -->
+	<bean id="configurationDAO"
+		 	class="net.rrm.ehour.config.dao.ConfigurationDAOHibernateImpl" 
+		 	parent="abstractDAOTarget" />		 	
+
+	<!-- MailLog DAO -->
+	<bean id="mailLogDAO"
+		 	class="net.rrm.ehour.mail.dao.MailLogDAOHibernateImpl"
+		 	parent="abstractDAOTarget" />	
+</beans>

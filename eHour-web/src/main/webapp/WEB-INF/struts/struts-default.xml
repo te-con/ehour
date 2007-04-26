@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<!-- Action forms -->
+	<form-beans>
+		<form-bean name="NavCalendarForm" type="net.rrm.ehour.web.calendar.form.NavCalendarForm" />
+		<form-bean name="TimesheetForm" type="net.rrm.ehour.web.timesheet.form.TimesheetForm" />
+		<form-bean name="PrintTimesheetForm" type="net.rrm.ehour.web.timesheet.form.PrintTimesheetForm" />		
+		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
+		<form-bean name="ReportChartForm" type="net.rrm.ehour.web.report.form.ReportChartForm" />
+		<form-bean name="PMReportForm" type="net.rrm.ehour.web.pmreport.form.PMReportForm" />
+	</form-beans>
+
+	<!-- Global exceptions -->
+	<global-exceptions>
+		<exception	handler="net.rrm.ehour.web.exception.GlobalExceptionHandler"
+					type="java.lang.Exception"
+					key="generic"
+					path="/exceptions.jsp"/>
+	</global-exceptions>	
+	
+
+	<!-- Action Mapping Definitions -->
+	<action-mappings>
+
+		<!--  Actions -->
+
+		<!-- entry point for all -->
+		<action path="/eh/index"
+				type="net.rrm.ehour.web.action.EntranceAction" >
+			<forward name="adminOnly" path="/eh/admin/index.do" redirect="true" />
+			<forward name="report" path="/eh/report/index.do" redirect="true" />			
+			<forward name="billable" path="/eh/timesheet/overview.do" redirect="true" />
+		</action>
+		
+		<!-- Timesheet overview, login entry for consultants -->
+		<action name="NavCalendarForm"
+				path="/eh/timesheet/overview"
+				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
+			<forward name="success" path=".ehour.timesheet.overviewFull" />
+		</action>
+
+		<!-- Timesheet overview -->
+		<action name="NavCalendarForm"
+				path="/eh/timesheet/overviewSnippet"
+				type="net.rrm.ehour.web.timesheet.action.TimesheetOverviewAction" >
+			<forward name="success" path=".ehour.timesheet.overview" />
+		</action>
+
+		<!-- Timesheet enter week form -->
+		<action name="TimesheetForm"
+				path="/eh/timesheet/getTimesheetForm"
+				type="net.rrm.ehour.web.timesheet.action.GetTimesheetFormAction" >
+			<forward name="success" path=".ehour.timesheet.timesheet" />
+		</action>
+
+		<!-- Timesheet submit week form -->
+		<action name="TimesheetForm"
+				path="/eh/timesheet/postTimesheet"
+				type="net.rrm.ehour.web.timesheet.action.PostTimesheetFormAction" >
+			<forward name="success" path=".ehour.timesheet.timesheet" />
+		</action>
+		
+		<!-- Timesheet view sheet standalone -->
+		<action name="TimesheetForm"
+				path="/eh/timesheet/viewTimesheet"
+				type="net.rrm.ehour.web.timesheet.action.GetTimesheetFormAction" >
+			<forward name="success" path=".ehour.timesheet.timesheet.standalone" />
+		</action>		
+
+		<!-- Timesheet help -->
+		<action path="/eh/timesheet/timesheetHelp"
+				forward=".ehour.timesheet.help" />
+
+		<!-- Navigation Calendar -->
+		<action name="NavCalendarForm"
+				path="/eh/cal/navCalendar"
+				type="net.rrm.ehour.web.calendar.action.GetNavCalendarAction" >
+			<forward name="success" path=".ehour.calendar.navCalendar" />
+		</action>
+
+		<!-- Logoff action -->
+		<action path="/eh/logOff"
+			type="net.rrm.ehour.web.action.LogOffAction" >
+			<forward name="success" path="/" />
+		</action>
+		
+
+		<!-- User report criteria -->
+		<action name="ReportCriteriaForm"
+				path="/eh/userReport/index"
+				type="net.rrm.ehour.web.userreport.action.UserReportCriteriaAction" >
+			<forward name="success" path=".ehour.userreport.overview" />
+		</action>		
+
+		<!-- User project report -->
+		<action name="ReportCriteriaForm"
+				parameter="consultant"
+				path="/eh/userReport/projectReport"
+				type="net.rrm.ehour.web.report.action.CreateReportAction" >
+			<forward name="customerReport" path=".ehour.userreport.projectReport" />
+		</action>		
+
+		<action name="ReportChartForm" path="/eh/userReport/showCustomerHoursAggregateChart" />
+		<action name="ReportChartForm" path="/eh/userReport/showCustomerTurnoverAggregateChart" />		
+
+		<action name="ReportChartForm" path="/eh/userReport/showProjectHoursAggregateChart" />
+		<action name="ReportChartForm" path="/eh/userReport/showProjectTurnoverAggregateChart" />		
+
+		<!-- Print month sheet -->
+		<action name="PrintTimesheetForm"
+				path="/eh/timesheet/printTimesheet"
+				type="net.rrm.ehour.web.timesheet.action.PrintTimesheetAction">
+			<forward name="printLayout" path=".ehour.timesheet.printLayout" />
+			<forward name="printForm" path=".ehour.timesheet.printForm" />
+			<forward name="printSheet" path=".ehour.timesheet.printSheet" />			
+		</action>
+
+		<!-- Project manager report overview -->
+		<action name="PMReportForm"
+				path="/eh/pmReport/index"
+				type="net.rrm.ehour.web.pmreport.action.PMReportCriteriaAction">
+			<forward name="success" path=".ehour.pmreport.layout" />			
+		</action>
+		
+		<!-- Project manager report -->
+		<action name="PMReportForm"
+				path="/eh/pmReport/projectReport"
+				type="net.rrm.ehour.web.pmreport.action.PMCreateReportAction" >
+			<forward name="success" path=".ehour.pmReport.projectReport" />
+			<forward name="noReport" path=".ehour.pmReport.noProjectSelected" />			
+		</action>			
+	</action-mappings>
+
+
+	<!-- spring tiles controller -->
+	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
+
+	<!-- i18n message resources (only used for html:error) -->
+	<message-resources parameter="MessageResources" />
+
+	<!-- tiles plugin. apparently tiles defs for other modules need to be loaded here as well,
+		 adding them to the other config files won't work.. -->
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"	value="/WEB-INF/tiles/tiles-defs-default.xml,
+															/WEB-INF/tiles/tiles-defs-admin.xml,
+															/WEB-INF/tiles/tiles-defs-report.xml" />
+		<set-property property="definitions-parser-validate" value="true" />
+	</plug-in>
+
+</struts-config>

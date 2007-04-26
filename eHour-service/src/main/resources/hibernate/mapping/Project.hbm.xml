@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.project.domain.Project" table="PROJECT">
+		<!-- <cache usage="read-write" />-->
+		
+		<id name="projectId" column="PROJECT_ID" type="integer">
+			<generator class="identity" />
+       	</id>
+
+		<property name="projectCode" column="PROJECT_CODE" type="string"/>
+		<property name="contact" column="CONTACT" type="string"/>
+		<property name="description" column="DESCRIPTION" type="string"/>
+		<property name="name" column="NAME" type="string"/>
+		<property name="defaultProject" column="DEFAULT_PROJECT" type="yes_no"/>
+		<property name="active" column="ACTIVE" type="yes_no"/>
+		
+        <many-to-one name="customer" outer-join="auto" fetch="join"
+                class="net.rrm.ehour.customer.domain.Customer" column="CUSTOMER_ID"/>
+
+        <many-to-one name="projectManager" outer-join="auto" fetch="join"
+                class="net.rrm.ehour.user.domain.User" column="PROJECT_MANAGER"/>
+                
+		<set name="projectAssignments" inverse="true" lazy="true">
+			<key column="PROJECT_ID" />
+	       	<one-to-many class="net.rrm.ehour.project.domain.ProjectAssignment"/>
+	   </set>                
+	</class>	
+</hibernate-mapping>

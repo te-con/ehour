@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+	<!-- Action forms -->
+	<form-beans>
+		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
+		<form-bean name="ReportChartForm" type="net.rrm.ehour.web.report.form.ReportChartForm" />		
+	</form-beans>
+
+	<!-- Action Mapping Definitions -->
+	<action-mappings>
+		<!-- Report -->
+		<action path="/index">
+			<forward name="success" path=".ehour.report.index" />	
+		</action>
+		
+		<!-- Report criteria update -->
+		<action name="ReportCriteriaForm"
+				path="/updateCriteria">
+			<forward name="all" path=".ehour.report.criteria.all" />	
+			<forward name="customers" path=".ehour.report.criteria.customers" />	
+			<forward name="projects" path=".ehour.report.criteria.projects" />	
+			<forward name="users" path=".ehour.report.criteria.users" />
+		</action>
+		
+		<!-- Report create report-->
+		<action name="ReportCriteriaForm"
+				parameter="report"
+				path="/createReport">
+			<forward name="customerReport" path=".ehour.report.customerReport" />
+			<forward name="userReport" path=".ehour.report.userReport" />
+			<forward name="projectReport" path=".ehour.report.projectReport" />
+		</action>		
+
+		<!-- Report aggregate charts -->
+		<action name="ReportChartForm" path="/showCustomerHoursAggregateChart" />
+		<action name="ReportChartForm" path="/showCustomerTurnoverAggregateChart" />		
+
+		<action name="ReportChartForm" path="/showUserHoursAggregateChart" />
+		<action name="ReportChartForm" path="/showUserTurnoverAggregateChart" />		
+
+		<action name="ReportChartForm" path="/showProjectHoursAggregateChart" />
+		<action name="ReportChartForm" path="/showProjectTurnoverAggregateChart" />		
+
+		<!-- Report show report-->
+		<action name="ReportChartForm"
+				parameter="report"
+				path="/showReport">
+			<forward name="customerReport" path=".ehour.report.customerReport" />	
+			<forward name="userReport" path=".ehour.report.userReport" />
+			<forward name="projectReport" path=".ehour.report.projectReport" />			
+		</action>
+
+		<!-- Customer excel report -->
+		<action name="ReportChartForm" path="/customerExcelReport" />		
+
+	</action-mappings>
+	
+	<!-- spring tiles controller -->
+	<controller processorClass="org.springframework.web.struts.DelegatingTilesRequestProcessor" />
+	
+	<!-- i18n message resources (only used for html:error) -->
+	<message-resources parameter="MessageResources" />
+
+	
+</struts-config>
+

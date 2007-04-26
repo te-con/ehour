@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!--  struts actions -->
+	<bean name="/eh/report/index" class="net.rrm.ehour.web.report.action.ReportCriteriaAction">
+		<property name="reportCriteria" ref="reportCriteria" />
+	</bean>
+
+	<bean name="/eh/report/updateCriteria" class="net.rrm.ehour.web.report.action.ReportCriteriaAction">
+		<property name="reportCriteria" ref="reportCriteria" />
+	</bean>
+
+	<bean name="/eh/report/createReport" class="net.rrm.ehour.web.report.action.CreateReportAction">
+		<property name="reportService" ref="reportService" />
+		<property name="reportCriteria" ref="reportCriteria" />		
+		<property name="config" ref="ehourConfig" />		
+	</bean>
+
+	<!-- Reuse report action -->
+	<bean id="reUseReportAction"
+			class="net.rrm.ehour.web.report.action.reuse.ReUseReportAction"
+			abstract="true">
+		<property name="config" ref="ehourConfig" />
+    </bean>	
+	
+	<bean name="/eh/report/showCustomerHoursAggregateChart" 
+			class="net.rrm.ehour.web.report.charts.CustomerHoursAggregateChartAction"
+			parent="reUseReportAction"/>
+
+	<bean name="/eh/report/showCustomerTurnoverAggregateChart" 
+			class="net.rrm.ehour.web.report.charts.CustomerTurnoverAggregateChartAction" 
+			parent="reUseReportAction"/>
+
+	<bean name="/eh/report/showUserHoursAggregateChart" 
+			class="net.rrm.ehour.web.report.charts.UserHoursAggregateChartAction" 
+			parent="reUseReportAction"/>
+	
+	<bean name="/eh/report/showUserTurnoverAggregateChart" 
+			class="net.rrm.ehour.web.report.charts.UserTurnoverAggregateChartAction" 
+			parent="reUseReportAction"/>
+
+	<bean name="/eh/report/showProjectHoursAggregateChart" 
+			class="net.rrm.ehour.web.report.charts.ProjectHoursAggregateChartAction" 
+			parent="reUseReportAction"/>
+
+	<bean name="/eh/report/showProjectTurnoverAggregateChart" 
+			class="net.rrm.ehour.web.report.charts.ProjectTurnoverAggregateChartAction" 
+			parent="reUseReportAction"/>
+
+	<bean name="/eh/report/showReport" 
+			class="net.rrm.ehour.web.report.action.ShowExistingReportAction" 
+			parent="reUseReportAction"/>
+
+	<bean name="/eh/report/customerExcelReport" 
+			class="net.rrm.ehour.web.report.excel.CustomerExcelReport"
+			parent="reUseReportAction"/>
+</beans>

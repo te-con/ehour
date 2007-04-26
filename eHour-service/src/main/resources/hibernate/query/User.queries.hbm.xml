@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<query name="User.findByUsername"> 
+		FROM User as user
+		LEFT JOIN FETCH user.userRoles
+	    WHERE username = :username
+	</query>
+
+	<query name="User.findByUsernamePattern"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE lcase(firstName) like  :pattern OR lcase(lastName) like :pattern
+	    ORDER BY lastName, firstName
+	</query>
+	
+	<query name="User.findActiveByUsernamePattern"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like  :pattern OR lcase(lastName) like :pattern) AND active = true
+	    ORDER BY lastName, firstName	    
+	</query>	
+
+	<query name="User.findAllActiveUsers"> 
+		SELECT user
+		FROM User as user
+		WHERE active = true
+	    ORDER BY lastName, firstName	    
+	</query>	
+
+	<query name="User.findAllActiveUsersWithEmailSet">
+	<![CDATA[
+		SELECT user
+		FROM User as user
+		WHERE active = true AND email IS NOT NULL AND email <> ''
+	    ORDER BY lastName, firstName	]]>    
+	</query>	
+
+	<query name="UserDepartment.findByNameAndCode"> 
+		FROM UserDepartment as userDepartment
+	    WHERE lcase(name) like  :name AND lcase(code) LIKE :code
+	</query>	
+
+	<query name="User.findActiveByNamePatternForDepartment"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like  :pattern OR lcase(lastName) like :pattern)
+	    		AND active = true
+	    		AND user.userDepartment.departmentId IN (:departments)
+	    ORDER BY lastName, firstName	    
+	</query>
+
+	<query name="User.findNamePatternForDepartment"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like :pattern OR lcase(lastName) like :pattern)
+	    		AND user.userDepartment.departmentId IN (:departments)
+	    ORDER BY lastName, firstName	    
+	</query>
+
+	<query name="User.findUsersWhoHavePMRoleButNoProject"> 
+		SELECT user
+		FROM User as user
+	    WHERE 'ROLE_PROJECTMANAGER' in elements (user.userRoles) AND
+	    		user.active IS TRUE AND
+	    	  user NOT IN (SELECT prj.projectManager
+	    	  				FROM Project as prj)
+	</query>
+
+	<query name="User.findUsersWhoDontHavePMRoleButProject"> 
+		SELECT user
+		FROM User as user,
+			 Project project
+	    WHERE 'ROLE_PROJECTMANAGER' not in elements (user.userRoles) AND
+				project.projectManager = user AND
+				user.active IS TRUE
+	    GROUP BY user
+	</query>
+</hibernate-mapping>

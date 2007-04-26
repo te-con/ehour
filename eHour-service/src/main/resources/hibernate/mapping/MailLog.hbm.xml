@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.mail.domain.MailLog" table="MAIL_LOG">
+		<cache usage="read-write" />
+		
+		<id name="mailLogId" column="MAIL_LOG_ID" type="integer">
+			<generator class="identity" />
+       	</id>
+       	
+        <many-to-one name="mailType" outer-join="auto" fetch="join"
+                class="net.rrm.ehour.mail.domain.MailType" column="MAIL_TYPE_ID"/>
+
+        <many-to-one name="toUser" outer-join="auto" fetch="join"
+                class="net.rrm.ehour.user.domain.User" column="TO_USER_ID"/>
+
+		<property name="timestamp" column="TIMESTAMP" type="timestamp"/>
+		
+		<property name="success" column="SUCCESS" type="yes_no"/>
+		
+		<property name="resultMsg" column="RESULT_MSG" type="string"/>		
+		
+		<joined-subclass name="net.rrm.ehour.mail.domain.MailLogAssignment" table="MAIL_LOG_ASSIGNMENT">
+			<key column="MAIL_LOG_ID" />
+	        <many-to-one name="projectAssignment" outer-join="auto" fetch="join"
+    	            class="net.rrm.ehour.project.domain.ProjectAssignment" column="PROJECT_ASSIGNMENT_ID"/>
+    	            
+			<property name="bookedHours" column="BOOKED_HOURS" type="float"/>
+			
+			<property name="bookDate" column="BOOK_DATE" type="timestamp"/>			
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

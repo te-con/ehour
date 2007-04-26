@@ -1,0 +1,365 @@
+/**
+ * Created on Apr 6, 2007
+ * Created by Thies Edeling
+ * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * 
+ * thies@te-con.nl
+ * TE-CON
+ * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ *
+ */
+
+package net.rrm.ehour.mail.service;
+
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.mail.callbacks.AssignmentMsgCallback;
+import net.rrm.ehour.mail.dao.MailLogDAO;
+import net.rrm.ehour.mail.domain.MailLogAssignment;
+import net.rrm.ehour.mail.domain.MailType;
+import net.rrm.ehour.mail.dto.AssignmentPMMessage;
+import net.rrm.ehour.mail.dto.MailTaskMessage;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.util.EhourConstants;
+
+import org.apache.log4j.Logger;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+/**
+ * Mail servce which takes of sending mail async
+ **/
+
+public class MailServiceImpl implements MailService
+{
+	private	EhourConfig		config;
+	private	Logger			logger = Logger.getLogger(this.getClass());
+	private	MailSender		mailSender;
+	private MailLogDAO		mailLogDAO;
+	private	TaskExecutor	taskExecutor;
+	private AssignmentMsgCallback	assignmentMsgCallback;
+	
+	/**
+	 * 
+	 * @param config
+	 */
+	public MailServiceImpl(EhourConfig config, TaskExecutor taskExecutor)
+	{
+		this.config = config;
+		this.taskExecutor = taskExecutor;
+		
+		mailSender = new JavaMailSenderImpl();
+		((JavaMailSenderImpl)mailSender).setHost(config.getMailSmtp());
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#mailPMFixedAllottedReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
+	 */
+	public void mailPMFixedAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	{
+		String	subject;
+		StringBuffer	body = new StringBuffer();
+		NumberFormat	numberFormat = NumberFormat.getNumberInstance();
+		SimpleDateFormat	dateFormat = new SimpleDateFormat("dd MMM yyyy");
+		
+		// TODO use templates
+		
+		// and no, stringbuffers aren't faster anymore..
+		subject = "eHour: All allotted hours used for project " 
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ " by "
+					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+					+ " "
+					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
+		
+		body.append("Project warning for project " 
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ " ("
+						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
+						+ ")"
+						+ "\r\n\r\n");
+		body.append(numberFormat.format(assignmentAggregate.getProjectAssignment().getAllottedHours().floatValue()) 
+						+ " hours were allotted for this project to " 
+						+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+						+ " "
+						+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+						+ "."
+						+ "\r\n");
+		body.append("On " 
+						+ dateFormat.format(bookDate)
+						+ ", a total of "
+						+ numberFormat.format(assignmentAggregate.getHours()) 
+						+ " hours were booked reaching the allotted hours mark."
+						+ "\r\n\r\n");
+		body.append("Take note, "
+						+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+						+ " "
+						+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+						+ " can't book anymore hours on the project. Add more hours in the project assignment if needed.");
+		
+		mailPMAggregateMessage(assignmentAggregate,
+								subject,
+								body.toString(),
+								EhourConstants.MAILTYPE_FIXED_ALLOTTED_REACHED,
+								bookDate,
+								user);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
+	 */
+	public void mailPMFlexOverrunReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	{
+		String	subject;
+		StringBuffer	body = new StringBuffer();
+		NumberFormat	numberFormat = NumberFormat.getNumberInstance();
+		SimpleDateFormat	dateFormat = new SimpleDateFormat("dd MMM yyyy");
+		
+		// TODO use templates
+		
+		// and no, stringbuffers aren't faster anymore..
+		subject = "eHour: All allotted and overrun hours used for project " 
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ " by "
+					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+					+ " "
+					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
+		
+		body.append("Project warning for project " 
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ " ("
+						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
+						+ ")"
+						+ "\r\n\r\n");
+		body.append(numberFormat.format(assignmentAggregate.getProjectAssignment().getAllottedHours().floatValue()) 
+						+ " hours were allotted for this project to " 
+						+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+						+ " "
+						+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+						+ "."
+						+ "\r\n");
+		body.append("Additionally an extra overrun of "
+				+ numberFormat.format(assignmentAggregate.getProjectAssignment().getAllowedOverrun())
+				+ " hours was created for this employee.\r\n\r\n");		
+		body.append("On " 
+						+ dateFormat.format(bookDate)
+						+ ", a total of "
+						+ numberFormat.format(assignmentAggregate.getHours()) 
+						+ " hours were booked consuming as well the allotted hours as the extra overrun."
+						+ "\r\n\r\n");
+		body.append("Take note, "
+				+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+				+ " "
+				+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+				+ " can't book anymore hours on the project. Add more hours in the project assignment if needed.");
+		
+		
+		mailPMAggregateMessage(assignmentAggregate,
+								subject,
+								body.toString(),
+								EhourConstants.MAILTYPE_FLEX_OVERRUN_REACHED,
+								bookDate,
+								user);
+	}	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
+	 */
+	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	{
+		String	subject;
+		StringBuffer	body = new StringBuffer();
+		NumberFormat	numberFormat = NumberFormat.getNumberInstance();
+		SimpleDateFormat	dateFormat = new SimpleDateFormat("dd MMM yyyy");
+		
+		// TODO use templates
+		
+		// and no, stringbuffers aren't faster anymore..
+		subject = "eHour: All allotted hours used for project " 
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ " by "
+					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+					+ " "
+					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
+		
+		body.append("Project warning for project " 
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ " ("
+						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
+						+ ")"
+						+ "\r\n\r\n");
+		body.append(numberFormat.format(assignmentAggregate.getProjectAssignment().getAllottedHours().floatValue()) 
+						+ " hours were allotted for this project to " 
+						+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
+						+ " "
+						+ assignmentAggregate.getProjectAssignment().getUser().getLastName() 
+						+ "."
+						+ "\r\n");
+		body.append("On " 
+						+ dateFormat.format(bookDate)
+						+ ", a total of "
+						+ numberFormat.format(assignmentAggregate.getHours()) 
+						+ " hours were booked reaching the allotted hours mark."
+						+ "\r\n\r\n");
+		body.append("An extra overrun of "
+						+ numberFormat.format(assignmentAggregate.getProjectAssignment().getAllowedOverrun())
+						+ " hours was granted when the employee was assigned on this project. Hours can still be booked on this project.");
+		
+		mailPMAggregateMessage(assignmentAggregate,
+								subject,
+								body.toString(), 
+								EhourConstants.MAILTYPE_FLEX_ALLOTTED_REACHED,
+								bookDate,
+								user);
+	}	
+	
+	/**
+	 * Mail project assignment msg
+	 * @param assignmentAggregate
+	 * @param mailBody
+	 * @param mailTypeId
+	 * @param user
+	 */
+	private void mailPMAggregateMessage(ProjectAssignmentAggregate assignmentAggregate,
+										String subject,
+										String mailBody, int mailTypeId, Date bookDate, User user)
+	{
+		SimpleMailMessage	msg; 
+		AssignmentPMMessage	asgMsg;
+		MailTask			mailTask;
+		
+		if (!isAssignmentMailAlreadySent(assignmentAggregate, mailTypeId))
+		{
+			asgMsg = new AssignmentPMMessage();
+			msg = new SimpleMailMessage();
+			msg.setText(mailBody);
+			msg.setSubject(subject);
+			
+			asgMsg.setMailMessage(msg);
+			asgMsg.setToUser(user);
+			asgMsg.setBookDate(bookDate);
+			asgMsg.setAggregate(assignmentAggregate);
+			asgMsg.setMailType(new MailType(mailTypeId));
+			asgMsg.setCallBack(assignmentMsgCallback);
+			
+			mailTask = new MailTask(asgMsg);
+			taskExecutor.execute(mailTask);
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private boolean isAssignmentMailAlreadySent(ProjectAssignmentAggregate aggregate, int mailTypeId)
+	{
+		List<MailLogAssignment> mlaList = mailLogDAO.findMailLogOnAssignmentIds(new Integer[]{aggregate.getProjectAssignment().getAssignmentId()});
+		boolean	alreadySent = false;
+		
+		for (MailLogAssignment mailLog : mlaList)
+		{
+			if ((mailLog.getMailType().getMailTypeId().intValue() == mailTypeId)
+				&& mailLog.getSuccess().booleanValue())
+			{
+				alreadySent = true;
+				logger.info("Mail was already sent for assignment " + aggregate.getProjectAssignment().getAssignmentId() + ", not sending again");
+				break;
+			}
+		}
+		
+		return alreadySent;
+	}
+	
+	/**
+	 * Actual send off mail and invoke callback afterwards
+	 * @author Thies
+	 *
+	 */
+	private class MailTask implements Runnable
+	{
+		private	MailTaskMessage mailTaskMessage;
+		
+		/**
+		 * 
+		 * @param msg
+		 */
+		public MailTask(MailTaskMessage mailTaskMessage)
+		{
+			this.mailTaskMessage = mailTaskMessage;
+		}
+
+		/**
+		 * 
+		 */
+		public void run()
+		{
+			SimpleMailMessage msg = mailTaskMessage.getMailMessage();
+			
+			msg.setFrom(config.getMailFrom());
+			msg.setTo(mailTaskMessage.getToUser().getEmail());
+			try
+			{
+				logger.debug("Sending email to " + msg.getTo()[0] + " using " + config.getMailSmtp());	
+				mailSender.send(msg);
+				
+				mailTaskMessage.getCallback().mailTaskSuccess(mailTaskMessage);
+			}
+			catch (MailException me)
+			{
+				logger.info("Failed to e-mail to " + msg.getTo()[0] + ": " + me.getMessage());
+				mailTaskMessage.getCallback().mailTaskFailure(mailTaskMessage, me);
+			}			
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#getSentMailForAssignment(java.lang.Integer[])
+	 */
+	public List<MailLogAssignment> getSentMailForAssignment(Integer[] assignmentIds)
+	{
+		return mailLogDAO.findMailLogOnAssignmentIds(assignmentIds);
+	}
+	
+	
+	/**
+	 * @param assignmentMsgCallback the assignmentMsgCallback to set
+	 */
+	public void setAssignmentMsgCallback(AssignmentMsgCallback assignmentMsgCallback)
+	{
+		this.assignmentMsgCallback = assignmentMsgCallback;
+	}
+
+	/**
+	 * @param mailLogDAO the mailLogDAO to set
+	 */
+	public void setMailLogDAO(MailLogDAO mailLogDAO)
+	{
+		this.mailLogDAO = mailLogDAO;
+	}
+
+}

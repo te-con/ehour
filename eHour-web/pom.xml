@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>net.rrm.ehour</groupId>
+    <artifactId>eHour</artifactId>
+    <version>0.61-SNAPSHOT</version>
+  </parent>  
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.rrm.ehour</groupId>
+  <artifactId>eHour-web</artifactId>
+  <packaging>war</packaging>
+  <name>eHour-web web layer</name>
+  <url>http://maven.apache.org</url>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources/spring</directory>
+			</resource>
+		</resources>
+		<finalName>ehour</finalName>
+
+  <plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warName>ehour-${version}</warName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>
+							src/assembly/assembly.xml
+						</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>  
+  </plugins>		
+		
+	</build>
+	
+  <dependencies>
+   <dependency>
+      <groupId>net.rrm.ehour</groupId>
+      <artifactId>eHour-service</artifactId>
+      <version>${pom.version}</version>
+    </dependency>	
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>struts</groupId>
+			<artifactId>struts</artifactId>
+			<version>1.2.9</version>
+		</dependency>
+				<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-struts</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+				<dependency>
+			<groupId>aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+				<dependency>
+			<groupId>poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>2.5-final-20040302</version>
+		</dependency>
+  </dependencies>
+  
+
+</project>

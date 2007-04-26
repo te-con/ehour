@@ -1,0 +1,51 @@
+eHour first usage
+
+* eHour structure
+
+	Although eHour's project structure is simple, read about {{{ehour_structure.html}the details here}}.
+
+* First time login
+
+	After installing eHour, fire up your browser and go to {{{http://localhost:8080/ehour/}http://localhost:8080/ehour/}}
+	replacing <<localhost>> with the name of the server where you installed Tomcat.
+	
+	A default admin account was created when you installed the database scripts.
+	Login with username <<admin>> and password <<admin>>.
+	
+	First change the global configuration to match your needs. After logging in click on <<configuration>>. 
+	Change the From address and SMTP server so that mail can be sent. 
+	
+	After updating the configuration it's time to create some employees and projects.
+
+	Employees are organized into <<departments>> so you need to create a department first.
+	In the administration section, create a department by clicking on Departments and fill out the form
+	on the right. Choose a descriptive name and a short code, for example IT or HR.
+	
+	Now that you've created a department you can add employees to it. Click on <<Employees>> and fill out the required fields.
+	Each employee can have one (or more) of the following roles:
+	
+		[[1]] <<Consultant>>'s can track hours
+		
+		[[2]] <<Administrator>> rights gives access to the admin section: add/remove employees, departments, customers & projects
+		
+		[[3]] The <<Report Role>> gives access to global reporting where you can get aggregate reporting on all customers and employees
+
+	Don't forget to change the default password for the admin account. To do so, locate the Admin user in the list of 
+	employees and click on it to edit. Fill out a new password in the form.
+	
+	Now that you've created the employees it's time to define the customers. Click on <<Customers>> to add some customers.
+
+	You cannot assign an employee directly to a customer, you have to create a project first. When adding a project you see your
+	previously created customer appear in the dropdown. A project can only have on customer (one customer however can of course
+	have multiple projects).
+	
+	With the customers, projects and employees in place you can now assign employees to a project. Click on assignments.
+	
+	First you need to select the employee you want to assign a project to. After you've selected the employee you can assign
+	him/her to a project by filling in the description (Developer/project manager/etc), hourly rate and start and end date.
+	When you've added the project assignment you'll see it appear in the list above the form.
+	
+	Congratulations, the first employee can now track time for this project!
+	
+	For full documentation on the features, check out the {{{http://www.ehour.nl/documentation.html} documentation on the eHour site}}.	
+

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+<!-- User -->
+	<class name="net.rrm.ehour.user.domain.User" table="USER">
+	    <!-- <cache usage="read-write" /> -->
+		<id name="userId" column="USER_ID" type="java.lang.Integer">
+			<generator class="identity" />
+       	</id>
+
+		<property name="username" type="string"/>
+		<property name="password" type="string"/>
+		<property name="firstName" column="first_name" type="string"/>
+		<property name="lastName" column="last_name" type="string"/>
+		<property name="email" column="EMAIL" type="string"/>
+		
+		<property name="active" column="ACTIVE" type="yes_no"/>
+		
+        <set name="userRoles" table="USER_TO_USERROLE" lazy="true">
+           <key column="USER_ID" />
+           <many-to-many column="ROLE" class="net.rrm.ehour.user.domain.UserRole"/>
+        </set>		
+
+        <many-to-one name="userDepartment" class="net.rrm.ehour.user.domain.UserDepartment" lazy="proxy">
+            <column name="DEPARTMENT_ID" not-null="true" />
+        </many-to-one>         
+
+		<set name="projectAssignments" inverse="true" lazy="true" cascade="merge,persist,save-update">
+			<key column="USER_ID" not-null="true" />
+	       	<one-to-many class="net.rrm.ehour.project.domain.ProjectAssignment"/>
+	   </set>         
+	</class>
+</hibernate-mapping>

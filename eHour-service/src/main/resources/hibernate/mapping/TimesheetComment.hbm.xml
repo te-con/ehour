@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.timesheet.domain.TimesheetComment" table="TIMESHEET_COMMENT">
+		<cache usage="read-write" />
+		
+        <composite-id name="commentId" class="net.rrm.ehour.timesheet.domain.TimesheetCommentId">
+		    <key-property name="userId" column="USER_ID" type="integer"/>
+		    <key-property name="commentDate" column="COMMENT_DATE" type="date"/>		    
+        </composite-id>
+
+		<property name="comment" column="COMMENT" type="string"/>
+	</class>	
+</hibernate-mapping>

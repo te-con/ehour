@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+"http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>1.2</jspversion>
+	<shortname>eHour commons</shortname>
+	<uri>http://ehour.rrm.net/ehour-commons</uri>
+
+	<tag>
+		<name>navCalendar</name>
+		<tagclass>net.rrm.ehour.web.calendar.tag.NavCalendarTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>calendar</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>bookedDays</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>userId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>overviewCalendar</name>
+		<tagclass>net.rrm.ehour.web.calendar.tag.OverviewCalendarTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>calendar</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>timesheetEntries</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

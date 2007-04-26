@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+
+    <!-- Report base layout -->
+    <definition name=".ehour.report.baseLayout" extends=".ehour.baseLayout">
+        <put name="pageTitle" value="eHour - reporting" />
+        <put name="header" value="/WEB-INF/jsp/nav/navHeader.jsp" />
+		<put name="navCalendar" value="/WEB-INF/jsp/nav/navReport.jsp" />
+		<put name="extraCss" value="/css/ehourReport.jsp" />
+		<put name="helpHeader" value="report.header" />
+		<put name="helpBody" value="report.body" />
+    </definition>
+
+
+    <!-- Report index -->
+    <definition name=".ehour.report.index" extends=".ehour.report.baseLayout">
+        <put name="content" value="/WEB-INF/jsp/report/reportLayout.jsp" />
+        <put name="criteriaTile" value="/WEB-INF/jsp/report/criteria/criteria.jsp" />
+        <put name="reportTile" value="/WEB-INF/jsp/nav/nothing.html" />
+    </definition>
+
+	<!-- Report criteria update -->
+    <definition name=".ehour.report.criteria.all" path="/WEB-INF/jsp/report/criteria/criteria.jsp" />	
+    <definition name=".ehour.report.criteria.customers" path="/WEB-INF/jsp/report/criteria/criteriaCustomerList.jsp" />    
+    <definition name=".ehour.report.criteria.projects" path="/WEB-INF/jsp/report/criteria/criteriaProjectList.jsp" />
+    <definition name=".ehour.report.criteria.users" path="/WEB-INF/jsp/report/criteria/criteriaUserList.jsp" />        
+
+	<!-- Report show customer report -->    
+    <definition name=".ehour.report.customerReport" path="/WEB-INF/jsp/report/report/reportPerCustomer.jsp" />	        
+
+	<!-- Report show user report -->    
+    <definition name=".ehour.report.userReport" path="/WEB-INF/jsp/report/report/reportPerUser.jsp" />	        
+
+	<!-- Report show project report -->    
+    <definition name=".ehour.report.projectReport" path="/WEB-INF/jsp/report/report/reportPerProject.jsp" />	        
+	
+</tiles-definitions>
