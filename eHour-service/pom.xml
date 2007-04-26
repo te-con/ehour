@@ -14,16 +14,6 @@
 	<name>eHour-service service layer</name>
 	<version>0.61-SNAPSHOT</version>
 
-	<scm>
-		<connection>
-			scm:svn:http://ehour.svn.sourceforge.net/svnroot/ehour/eHour
-		</connection>
-		<developerConnection>
-			scm:svn:https://ehour.svn.sourceforge.net/svnroot/ehour/eHour
-		</developerConnection>
-		<url>http://svn.sourceforge.net/ehour/</url>
-	</scm>
-
 	<build>
 		<resources>
 			<resource>
