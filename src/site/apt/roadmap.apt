@@ -1,0 +1,45 @@
+eHour development roadmap
+ 
+  See below for the planning of eHour development. The aim is to have a new version out every two weeks while in beta phase.
+  If you have any requests, please use {{{http://sourceforge.net/tracker/?group_id=167867&atid=844651}Sourceforge's feature reequester}}.
+
+* Version 0.5 (released 16 april '07)
+
+  * Add paging
+  
+  * Add department report
+
+  * IE6 compatibility (please request more browsers if needed)
+  
+  * Increase code coverage
+
+  * Bugfix release
+  
+
+* Version 0.4 (releaed 19 march '07)
+
+  * Fix UI inconsistencies
+  
+  * Add configuration parameters whether to display turnover to employees, etc. etc.
+  
+  * Add locale switching
+  
+  * Add timezone switching
+  
+
+* Version 0.3 (releaed 5 march '07)
+
+  * Add charts to reporting
+
+  * Add print functionality
+
+* Version 0.2 (released 24 feb '07) 
+
+  * Add reporting for administrators;
+
+  * Improve reporting for users
+
+* Version 0.1 (released 16 feb '07) 
+ 
+  * Initial release
+

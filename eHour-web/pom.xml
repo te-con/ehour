@@ -1,18 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>net.rrm.ehour</groupId>
-    <artifactId>eHour</artifactId>
-    <version>0.61-SNAPSHOT</version>
-  </parent>  
-  
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>net.rrm.ehour</groupId>
-  <artifactId>eHour-web</artifactId>
-  <packaging>war</packaging>
-  <name>eHour-web web layer</name>
-  <url>http://maven.apache.org</url>
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>net.rrm.ehour</groupId>
+		<artifactId>eHour</artifactId>
+		<version>0.6-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.rrm.ehour</groupId>
+	<artifactId>eHour-web</artifactId>
+	<packaging>war</packaging>
+	<name>eHour web layer</name>
 	<build>
 		<resources>
 			<resource>
@@ -20,8 +16,7 @@
 			</resource>
 		</resources>
 		<finalName>ehour</finalName>
-
-  <plugins>
+		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
@@ -37,17 +32,15 @@
 						</descriptor>
 					</descriptors>
 				</configuration>
-			</plugin>  
-  </plugins>		
-		
+			</plugin>
+		</plugins>
 	</build>
-	
-  <dependencies>
-   <dependency>
-      <groupId>net.rrm.ehour</groupId>
-      <artifactId>eHour-service</artifactId>
-      <version>${pom.version}</version>
-    </dependency>	
+	<dependencies>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-service</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -70,7 +63,7 @@
 			<artifactId>struts</artifactId>
 			<version>1.2.9</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-struts</artifactId>
 			<version>2.0.3</version>
@@ -80,8 +73,7 @@
 			<artifactId>jstl</artifactId>
 			<version>1.1.2</version>
 		</dependency>
-
-				<dependency>
+		<dependency>
 			<groupId>aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.5.0</version>
@@ -91,12 +83,10 @@
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.3</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>2.5-final-20040302</version>
 		</dependency>
-  </dependencies>
-  
-
+	</dependencies>
 </project>

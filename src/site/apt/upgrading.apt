@@ -1,0 +1,50 @@
+Upgrading
+
+* Upgrade from v0.41 to v0.5
+	
+	A database update is needed which adds new tables and modifies the PROJECT and PROJECT_ASSIGNMENT table.
+	
+	Before performing the update it's wise to backup your database first. After the backup run the update.v_04x_to_v0_5.mysql.sql script
+	which can be found in the sql directory. To do so execute the following command:
+	
++--
+	mysql ehour -u user -p < update.v_04x_to_v0_5.mysql.sql
++--	
+	
+	For the application, copy the ehour-0.5.war to your tomcat deploy directory. Edit <<conf/Catalina/localhost/ehour-tomcat.xml>> and
+	update the version number of the war file in docBase to 0.5.
+	
+	After you restarted Tomcat and you still see v0.4 on the logon screen, delete the ehour directory in Tomcat's <<webapps>> dir.
+
+	Two new configuration parameters are introduced in this version, <<Mail from>> and <<SMTP server>>. Login as
+	an admin and go to the configurations page to change the values.
+
+	If you get the error "Unknown column 'projectass0_.ROLE' in 'field list'" in your logfile after logging in, run
+	the fix_v0.4_role.sql on your database:
+	
++--
+	mysql ehour -u user -p < fix_v0.4_role.sql
++--	
+	
+
+* Upgrade from v0.1 - v0.3 to v0.41
+
+	A small database update is needed which adds some configuration keys.
+	
+	In the sql directory, run the update.to_v0_4.mysql.sql script against your existing eHour database to add these keys.
+	
+	For the application, copy the ehour-0.4.war to your tomcat deploy directory. Edit <<conf/Catalina/localhost/ehour-tomcat.xml>> and
+	update the version number of the war file in docBase to 0.4.
+	
+	After you restarted Tomcat and you still see v0.3 on the logon screen, delete the ehour directory in Tomcat's <<webapps>>.
+
+* Upgrade from v0.1 to v0.3, v0.2 to v0.3
+
+	No database changes are needed, just replace the ehour.war in your tomcat deploy directory with the new one.
+
+* Upgrade from v0.1 to v0.2
+
+	No database changes are needed, just replace the ehour-test.war in your tomcat deploy directory with the new one.
+	
+	To access the reporting section, create or edit a user and add the Reporting Role. To do so, go to the admin section,
+	click on employees, select your user and in the role dropdown add <<Reporting Role>>
