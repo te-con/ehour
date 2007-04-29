@@ -23,8 +23,6 @@
 
 package net.rrm.ehour.web.report.action;
 
-import java.text.ParseException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -102,16 +100,8 @@ public class ReportCriteriaAction extends Action
 		
 		if (criteriaForm != null)
 		{
-			try
-			{
-				uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
-				updateType = criteriaForm.getUpdateType();
-			} catch (ParseException e)
-			{
-				logger.error("Invalid date format specified when creating report", e);
-				uc = new UserCriteria();
-				updateType = ReportCriteria.UPDATE_ALL;
-			}
+			uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
+			updateType = criteriaForm.getUpdateType();
 		}
 		else
 		{

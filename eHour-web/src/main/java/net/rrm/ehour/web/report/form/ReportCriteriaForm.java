@@ -25,14 +25,13 @@ package net.rrm.ehour.web.report.form;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
  **/
 
-public class ReportCriteriaForm extends ActionForm
+public class ReportCriteriaForm extends ReportForm
 {
 	private static final long serialVersionUID = -208431579864236722L;
 	private	boolean	fromForm;
@@ -49,8 +48,6 @@ public class ReportCriteriaForm extends ActionForm
 	private	String	userFilter;
 	
 	private	int		updateType;
-	
-	private	String	reportName;
 	
 	/**
 	 * 
@@ -256,19 +253,4 @@ public class ReportCriteriaForm extends ActionForm
 		this.updateType = event;
 	}
 
-	/**
-	 * @return the reportName
-	 */
-	public String getReportName()
-	{
-		return reportName;
-	}
-
-	/**
-	 * @param reportName the reportName to set
-	 */
-	public void setReportName(String reportType)
-	{
-		this.reportName = reportType;
-	}
 }

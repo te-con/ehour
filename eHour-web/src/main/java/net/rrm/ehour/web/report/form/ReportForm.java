@@ -1,5 +1,5 @@
 /**
- * Created on Apr 22, 2007
+ * Created on Apr 29, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,15 +21,62 @@
  *
  */
 
-package net.rrm.ehour.web.report.util;
+package net.rrm.ehour.web.report.form;
+
+import org.apache.struts.action.ActionForm;
 
 /**
- * TODO 
+ * Base form for all reports
  **/
 
-public enum ReportSessionKey
+public class ReportForm extends ActionForm
 {
-	REPORT_DATA,
-	REPORT_AGGREGATE,
-	REPORT_CRITERIA;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private	String	reportName;
+	private	Integer	forId;
+	private	String	key;
+
+	
+	public String getReportName()
+	{
+		return reportName;
+	}
+
+	public void setReportName(String reportName)
+	{
+		this.reportName = reportName;
+	}
+	
+
+
+	/**
+	 * @return the forId
+	 */
+	public Integer getForId()
+	{
+		return forId;
+	}
+
+	/**
+	 * @param forId the forId to set
+	 */
+	public void setForId(Integer forId)
+	{
+		this.forId = forId;
+	}
+
+	public String getKey()
+	{
+		return key;
+	}
+
+	public void setKey(String key)
+	{
+		this.key = key;
+	}	
+
+	
 }

@@ -12,13 +12,13 @@
 		<param-value>
 			classpath:applicationContext-dao.xml
 			classpath:applicationContext-datasource.xml
-			classpath:applicationContext-service.xml,
-			classpath:applicationContext-mail.xml,			
-			classpath:applicationContext-acegi-security.xml,
-			classpath:applicationContext-web-admin.xml,
-			classpath:applicationContext-web-report.xml,
-			classpath:applicationContext-web-pmReport.xml,			
-			classpath:applicationContext-web-default.xml,
+			classpath:applicationContext-service.xml
+			classpath:applicationContext-mail.xml		
+			classpath:applicationContext-acegi-security.xml
+			classpath:applicationContext-web-admin.xml
+			classpath:applicationContext-web-report.xml
+			classpath:applicationContext-web-pmReport.xml			
+			classpath:applicationContext-web-default.xml
 			classpath:applicationContext-web-util.xml			
 		</param-value>
 	</context-param>

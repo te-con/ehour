@@ -42,7 +42,7 @@ public class UserCriteriaAssembler
 	 * @return
 	 * @throws ParseException 
 	 */
-	public static UserCriteria getUserCriteria(ReportCriteriaForm rcf) throws ParseException
+	public static UserCriteria getUserCriteria(ReportCriteriaForm rcf) 
 	{
 		SimpleDateFormat	dateParser = new SimpleDateFormat("yyyy-MM-dd");
 		DateRange			reportRange;
@@ -55,14 +55,24 @@ public class UserCriteriaAssembler
 		
 		if (rcf.getDateStart() != null)
 		{
-			reportRange.setDateStart(dateParser.parse(rcf.getDateStart()));
-			dateSupplied = true;
+			try
+			{
+				reportRange.setDateStart(dateParser.parse(rcf.getDateStart()));
+				dateSupplied = true;
+			} catch (ParseException e)
+			{
+			}
 		}
 		
 		if (rcf.getDateEnd() != null)
 		{
-			reportRange.setDateEnd(dateParser.parse(rcf.getDateEnd()));
-			dateSupplied = true;
+			try
+			{
+				reportRange.setDateEnd(dateParser.parse(rcf.getDateEnd()));
+				dateSupplied = true;
+			} catch (ParseException e)
+			{
+			}
 		}
 
 		if (dateSupplied)

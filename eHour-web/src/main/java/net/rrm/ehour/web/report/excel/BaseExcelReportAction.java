@@ -27,11 +27,12 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import net.rrm.ehour.web.report.action.reuse.ReUseAggregateReportAction;
-import net.rrm.ehour.web.report.form.ReportChartForm;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.web.report.action.ReUseReportAction;
+import net.rrm.ehour.web.report.form.ReportForm;
 import net.rrm.ehour.web.report.reports.AggregateReport;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -44,34 +45,53 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public abstract class BaseExcelReportAction extends ReUseAggregateReportAction
+public abstract class BaseExcelReportAction extends ReUseReportAction
 {
 	private final String	FONT_TYPE = "Arial";
 	private HSSFFont		boldFont;
 	protected HSSFCellStyle	boldStyle;
+
+	protected AggregateReport getAggregateReport(HttpSession session,
+			 String reportName,
+			 ReportForm reportForm,
+			 ReportData reportData)
+	{
+		return null;
+	}
+	
 	/**
 	 * 
 	 */
 	@Override
-	protected ActionForward reUseReport(ActionMapping mapping, HttpServletRequest request,
-										HttpServletResponse response, ReportChartForm chartForm, 
-										AggregateReport report) throws IOException
+	protected ActionForward processReport(ActionMapping mapping,
+											HttpServletResponse response,
+											ReportForm reportForm,
+											String reportName,
+											ReportData reportData,
+											AggregateReport report)
 	{
-		String			filename = getReportName();
+		String			filename = getExcelReportName();
 		HSSFWorkbook	workbook;
 		OutputStream	outputStream;
 		BufferedOutputStream bos;
 
-		outputStream = response.getOutputStream();
-		bos = new BufferedOutputStream(outputStream);			
-		
-		response.setContentType("application/x-ms-excel");
-		response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xls");
-		
-		workbook = createWorkbook(request, report);
-		workbook.write(bos);
-		bos.close();
-		outputStream.close();
+		try
+		{
+			outputStream = response.getOutputStream();
+			bos = new BufferedOutputStream(outputStream);			
+			
+			response.setContentType("application/x-ms-excel");
+			response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xls");
+			
+			workbook = createWorkbook(report);
+			workbook.write(bos);
+			bos.close();
+			outputStream.close();
+		}
+		catch (IOException e)
+		{
+			logger.error("Can't write excel report to outputstream: " + e.getMessage());
+		}
 		
 		return null;
 	}
@@ -98,12 +118,22 @@ public abstract class BaseExcelReportAction extends ReUseAggregateReportAction
 	 * @param reportData
 	 * @return
 	 */
-	public abstract HSSFWorkbook createWorkbook(HttpServletRequest request, AggregateReport report);
+	public abstract HSSFWorkbook createWorkbook(AggregateReport report);
 	
 	/**
 	 * Get report name
 	 * @return
 	 */
-	protected abstract String getReportName();
+	protected abstract String getExcelReportName();
+	
+	
+	/**
+	 * Session data shouldn't be replaced as other charts on the same page
+	 * could be created with the same session key
+	 */
+	protected boolean isReplaceSessionData()
+	{
+		return false;
+	}	
 	
 }

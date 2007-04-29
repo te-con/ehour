@@ -25,43 +25,52 @@ package net.rrm.ehour.web.report.charts;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.web.report.action.reuse.ReUseReportDataAction;
+import net.rrm.ehour.web.report.action.ReUseReportAction;
 import net.rrm.ehour.web.report.form.ReportChartForm;
+import net.rrm.ehour.web.report.form.ReportForm;
+import net.rrm.ehour.web.report.reports.AggregateReport;
 import net.rrm.ehour.web.report.util.ChartUtil;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 /**
- * TODO 
+ * Base class for charts, fetches report data and chart sizes and 
+ * leaves chart generation to impl 
  **/
 
-public abstract class AbstractChartAction extends ReUseReportDataAction
+public abstract class AbstractChartAction extends ReUseReportAction
 {
-	protected	Logger			logger = Logger.getLogger(this.getClass());
+	protected AggregateReport getAggregateReport(HttpSession session,
+			 String reportName,
+			 ReportForm reportForm,
+			 ReportData reportData)
+	{
+		return null;
+	}
 	
-
 	/**
-	 * @throws IOException 
 	 * 
 	 */
-	protected ActionForward reUseReport(ActionMapping mapping,
-					HttpServletRequest request,
-					HttpServletResponse response,								
-					ReportChartForm chartForm,
-					ReportData reportData) throws IOException
+	protected ActionForward processReport(ActionMapping mapping,
+											HttpServletResponse response,
+											ReportForm reportForm,
+											String reportName,
+											ReportData reportData,
+											AggregateReport report)
 	{
-		JFreeChart	chart;
-		int		chartWidth;
-		int		chartHeight;
-		Integer		forId;
-		
+		ReportChartForm chartForm = (ReportChartForm)reportForm;
+		JFreeChart		chart;
+		int				chartWidth;
+		int				chartHeight;
+		Integer			forId;
+
+		logger.debug("Creating chart for report " + reportName);
 		response.setContentType("image/png");
 
 		chartWidth = (chartForm.getChartWidth() == 0) ? 250 : chartForm.getChartWidth();
@@ -77,9 +86,24 @@ public abstract class AbstractChartAction extends ReUseReportDataAction
 		chart = getChart(reportData, forId);
 		ChartUtil.changeChartStyle(chart);
 				
-		ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, chartWidth, chartHeight);
+		try
+		{
+			ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart, chartWidth, chartHeight);
+		} catch (IOException e)
+		{
+			logger.error("Can't write chart to outputstream: " + e.getMessage());
+		}
 		
 		return null;
+	}
+	
+	/**
+	 * Session data shouldn't be replaced as other charts on the same page
+	 * could be created with the same session key
+	 */
+	protected boolean isReplaceSessionData()
+	{
+		return false;
 	}
 	
 	/**

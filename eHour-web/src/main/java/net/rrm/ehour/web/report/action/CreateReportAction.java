@@ -24,110 +24,88 @@
 package net.rrm.ehour.web.report.action;
 
 import java.text.ParseException;
-import java.util.Date;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
+import net.rrm.ehour.web.report.form.ReportForm;
 import net.rrm.ehour.web.report.reports.AggregateReport;
 import net.rrm.ehour.web.report.reports.AggregateReportFactory;
-import net.rrm.ehour.web.report.util.ReportSessionKey;
 import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
 
-import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * TODO 
+ * Creates new report data and new aggregated report
  **/
 
-public class CreateReportAction extends Action
+public class CreateReportAction extends AbstractCreateAggregateReportAction
 {
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
-	private	Logger			logger = Logger.getLogger(this.getClass());
-	private EhourConfig		config;
-	
-	/**
-	 * 
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.web.report.action.AbstractCreateAggregateReportAction#getAggregateReport(java.lang.String, java.lang.Integer, net.rrm.ehour.report.reports.ReportData)
 	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception
+	@Override
+	protected AggregateReport getAggregateReport(HttpSession session,
+												String reportName,
+												ReportForm reportForm,
+												ReportData reportData)
 	{
+		AggregateReport	report;
+		Integer			forId;
+		
+		forId = reportForm.getForId();
+		
+		logger.debug("Creating new " + reportName + " aggregate report");
+		
+		if (forId == null || forId.intValue() == 0)
+		{
+			report = AggregateReportFactory.createReport(reportName, reportData);
+		}
+		else
+		{
+			report = AggregateReportFactory.createReport(reportName, reportData, forId);
+		}
+		
+		return report;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.web.report.action.AbstractCreateAggregateReportAction#getReportData(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionMapping, net.rrm.ehour.web.report.form.ReportForm)
+	 */
+	@Override
+	protected ReportData getReportData(HttpServletRequest request, ActionMapping mapping, ReportForm form)
+	{
+		String				param;
 		ReportCriteriaForm	rcForm = (ReportCriteriaForm)form;
 		UserCriteria		uc;
 		ReportData			reportData;
-		String				sessionKey;
-		HttpSession			session = request.getSession();
-		String				param;
-		String				reportName;
-		AggregateReport		aggregateReport;
 		
 		param = mapping.getParameter();
 		
 		uc = getUserCriteria(param, rcForm);
+		
 		reportCriteria.setUserCriteria(uc);
 		
+		logger.debug("Getting new report data for criteria " + uc);
+		
 		reportData = reportService.createReportData(reportCriteria);
+		
+		return reportData;
+	}	
 
-		removeOldReportData(session);
-		
-		reportName = getReportName(rcForm, uc);
-		aggregateReport = createReport(reportName, null, reportData);
-
-		// store the report data and the generated report on the session
-		sessionKey = generateSessionKey();
-		session.setAttribute(ReportSessionKey.REPORT_DATA + "_" + sessionKey, reportData);
-		session.setAttribute(ReportSessionKey.REPORT_AGGREGATE + "_" + sessionKey, aggregateReport);
-
-		// put it on the request
-		request.setAttribute("reportSessionKey", sessionKey);
-		request.setAttribute(reportName, aggregateReport);
-		
-		request.setAttribute("config", config);
-		request.setAttribute("currencySymbol", WebConstants.getCurrencies().get(config.getCurrency()));
-		
-		response.setHeader("Cache-Control", "no-cache");
-		return mapping.findForward(reportName);
-	}
-	
-	/**
-	 * Get report name
-	 * @param rcForm
-	 * @param uc
-	 * @return
-	 */
-	private String getReportName(ReportCriteriaForm rcForm, UserCriteria uc)
-	{
-		String	reportName;
-		
-		if (uc.isSingleUser())
-		{
-			reportName = "customerReport";
-		}
-		else
-		{
-			reportName = rcForm.getReportName();
-		}
-		
-		return reportName;
-	}
-	
 	/**
 	 * Get the user criteria from the form and check authorization
 	 * @param param
@@ -135,7 +113,7 @@ public class CreateReportAction extends Action
 	 * @return
 	 * @throws ParseException
 	 */
-	private UserCriteria getUserCriteria(String param, ReportCriteriaForm rcForm) throws ParseException
+	private UserCriteria getUserCriteria(String param, ReportCriteriaForm rcForm)
 	{
 		UserCriteria 	uc;
 		User			loggedInUser;
@@ -163,69 +141,13 @@ public class CreateReportAction extends Action
 	}
 	
 	/**
-	 * Remove old reports from the session
-	 * @param session
+	 * Session data should be replaced
 	 */
-	private void removeOldReportData(HttpSession session)
+	@Override
+	protected boolean isReplaceSessionData()
 	{
-		Enumeration attribs = session.getAttributeNames();
-		String		attrib;
-		
-		logger.debug("Removing old reports from session..");
-		while (attribs.hasMoreElements())
-		{
-			attrib = (String)attribs.nextElement();
-			
-			if (attrib.startsWith(ReportSessionKey.REPORT_DATA + "_"))
-			{
-				logger.debug("Removing old report data from session: " + attrib);
-				session.removeAttribute(attrib);
-			}
-			else if (attrib.startsWith(ReportSessionKey.REPORT_AGGREGATE + "_"))
-			{
-				logger.debug("Removing old generated report from session: " + attrib);
-				session.removeAttribute(attrib);
-			}
-		}
+		return true;
 	}
-	
-	/**
-	 * Create and store report
-	 * @param request
-	 * @param reportName
-	 * @param reportData
-	 */
-	private AggregateReport createReport(String reportName, Integer forId, ReportData reportData)
-	{
-		AggregateReport	report;
-		
-		if (forId == null || forId.intValue() == 0)
-		{
-			report = AggregateReportFactory.createReport(reportName, reportData);
-		}
-		else
-		{
-			report = AggregateReportFactory.createReport(reportName, reportData, forId);
-		}
-		
-		return report;
-	}	
-	
-
-	/**
-	 * Generate session key for this report 
-	 * @param userId
-	 * @return
-	 */
-	private String generateSessionKey()
-	{
-		String	sessionKey = Long.toHexString(new Date().getTime());
-		
-		logger.debug("generated session key for reports: " + sessionKey);
-		
-		return sessionKey.toString();
-	}
-	
 	
 	/**
 	 * @param reportCriteria the reportCriteria to set
@@ -243,11 +165,4 @@ public class CreateReportAction extends Action
 		this.reportService = reportService;
 	}
 
-	/**
-	 * @param config the config to set
-	 */
-	public void setConfig(EhourConfig config)
-	{
-		this.config = config;
-	}
 }

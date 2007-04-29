@@ -26,8 +26,6 @@ package net.rrm.ehour.web.report.excel;
 import java.util.Set;
 import java.util.SortedMap;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
@@ -51,10 +49,10 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#createWorkbook(javax.servlet.http.HttpServletRequest, net.rrm.ehour.report.reports.ReportData)
 	 */
 	@Override
-	public HSSFWorkbook createWorkbook(HttpServletRequest request, AggregateReport report)
+	public HSSFWorkbook createWorkbook(AggregateReport report)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFSheet 	sheet = wb.createSheet(getReportName());
+		HSSFSheet 	sheet = wb.createSheet(getExcelReportName());
 		int			rowNumber = 0;
 		CustomerReport	customerReport = (CustomerReport)report;
 		
@@ -191,7 +189,7 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#getFilename()
 	 */
 	@Override
-	protected String getReportName()
+	protected String getExcelReportName()
 	{
 		return "CustomerReport";
 	}

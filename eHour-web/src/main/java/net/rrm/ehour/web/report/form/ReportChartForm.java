@@ -25,30 +25,26 @@ package net.rrm.ehour.web.report.form;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
  **/
 
-public class ReportChartForm extends ActionForm
+public class ReportChartForm extends ReportForm
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4650287107802113182L;
-	private	String	key;
 	private	int		chartWidth;
 	private	int		chartHeight;
-	private	String	reportName;
-	private	Integer	forId;
 	
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
+		super.reset(mapping, request);
 		chartWidth = 0;
 		chartHeight = 0;
-		forId = null;
 	}
 	
 	/**
@@ -78,49 +74,5 @@ public class ReportChartForm extends ActionForm
 	public void setChartWidth(int chartWidth)
 	{
 		this.chartWidth = chartWidth;
-	}
-	/**
-	 * @return the key
-	 */
-	public String getKey()
-	{
-		return key;
-	}
-	/**
-	 * @param key the key to set
-	 */
-	public void setKey(String sessionKey)
-	{
-		this.key = sessionKey;
-	}
-	/**
-	 * @return the reportName
-	 */
-	public String getReportName()
-	{
-		return reportName;
-	}
-	/**
-	 * @param reportName the reportName to set
-	 */
-	public void setReportName(String reportName)
-	{
-		this.reportName = reportName;
-	}
-
-	/**
-	 * @return the forId
-	 */
-	public Integer getForId()
-	{
-		return forId;
-	}
-
-	/**
-	 * @param forId the forId to set
-	 */
-	public void setForId(Integer forId)
-	{
-		this.forId = forId;
 	}
 }
