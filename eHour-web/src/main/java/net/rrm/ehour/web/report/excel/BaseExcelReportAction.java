@@ -50,14 +50,6 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 	private final String	FONT_TYPE = "Arial";
 	private HSSFFont		boldFont;
 	protected HSSFCellStyle	boldStyle;
-
-	protected AggregateReport getAggregateReport(HttpSession session,
-			 String reportName,
-			 ReportForm reportForm,
-			 ReportData reportData)
-	{
-		return null;
-	}
 	
 	/**
 	 * 

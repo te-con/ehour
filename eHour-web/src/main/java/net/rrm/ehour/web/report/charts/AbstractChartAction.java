@@ -46,6 +46,9 @@ import org.jfree.chart.JFreeChart;
 
 public abstract class AbstractChartAction extends ReUseReportAction
 {
+	/**
+	 * Not too clean..
+	 */
 	protected AggregateReport getAggregateReport(HttpSession session,
 			 String reportName,
 			 ReportForm reportForm,

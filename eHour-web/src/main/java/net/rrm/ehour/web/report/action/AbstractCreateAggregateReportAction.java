@@ -76,7 +76,7 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 		reportForm = (ReportForm)form;
 		
 		reportData = getReportData(request, mapping, reportForm);
-		reportName = getReportName(reportForm);
+		reportName = getReportName(session, reportForm);
 
 		aggregateReport = getAggregateReport(session, reportName, reportForm, reportData);
 
@@ -91,6 +91,7 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 			sessionKey = generateSessionKey();
 			session.setAttribute(ReportSessionKey.REPORT_DATA + "_" + sessionKey, reportData);
 			session.setAttribute(ReportSessionKey.REPORT_AGGREGATE + "_" + reportName + "_" + sessionKey, aggregateReport);
+			session.setAttribute(ReportSessionKey.REPORT_NAME + "_" + sessionKey, aggregateReport.getReportName());
 
 			request.setAttribute("reportSessionKey", sessionKey);
 		}
@@ -154,15 +155,30 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 
 	
 	/**
-	 * Get the reportname
+	 * Get the reportname either from the form or the session if it's not found there
 	 * @param reportForm
 	 * @return
 	 */
-	private String getReportName(ReportForm reportForm)
+	private String getReportName(HttpSession session, ReportForm reportForm)
 	{
 		String	reportName;
+		String	sessionKey;
 		
 		reportName = (!AuthUtil.hasRole(WebConstants.ROLE_REPORT)) ? "customerReport" : reportForm.getReportName();
+		
+		if (reportName == null)
+		{
+			sessionKey = reportForm.getKey();
+			
+			if (sessionKey == null)
+			{
+				logger.error("No reportName provided in request or session");
+			}
+			else
+			{
+				reportName = (String)session.getAttribute(ReportSessionKey.REPORT_NAME + "_" + sessionKey);
+			}
+		}
 		
 		logger.debug(reportName + " requested");
 		

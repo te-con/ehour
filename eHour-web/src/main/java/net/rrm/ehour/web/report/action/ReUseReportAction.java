@@ -93,7 +93,7 @@ public abstract class ReUseReportAction extends AbstractCreateAggregateReportAct
 			
 			if (reportData != null)
 			{
-				logger.info("report data found on session for key " + sessionKey);
+				logger.info("Report data found on session for key " + sessionKey);
 			}
 			else
 			{
