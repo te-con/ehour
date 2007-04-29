@@ -209,6 +209,11 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 				logger.debug("Removing previous aggregate report from session: " + attrib);
 				session.removeAttribute(attrib);
 			}
+			else if (attrib.startsWith(ReportSessionKey.REPORT_NAME + "_"))
+			{
+				logger.debug("Removing previous report name from session: " + attrib);
+				session.removeAttribute(attrib);
+			}
 		}
 	}
 

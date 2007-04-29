@@ -30,6 +30,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
 import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
+import net.rrm.ehour.web.report.util.WebReportUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
@@ -112,6 +113,7 @@ public class ReportCriteriaAction extends Action
 
 		reportCriteria.setUserCriteria(uc);
  		reportCriteria.updateAvailableCriteria(updateType);
+ 		WebReportUtil.sortAvailableCriteria(reportCriteria.getAvailableCriteria());
 	}
 	
 	/**
