@@ -5,6 +5,7 @@ import java.util.Date;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -168,6 +169,11 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	public Date getDateEnd()
 	{
 		return this.dateEnd;
+	}
+	
+	public Date getDateEndForDispaly()
+	{
+		return DateUtil.getDateEndForDisplay(getDateEnd());
 	}
 
 	public void setDateEnd(Date dateEnd)

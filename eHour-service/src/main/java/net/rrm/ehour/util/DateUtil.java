@@ -266,4 +266,19 @@ public class DateUtil
 		
 		return dateSequence;
 	}	
+	
+	/**
+	 * Get date end for display (as in, time is set to 12:00pm)
+	 * TODO pretty bad hack as this is a timezone issue
+	 * @return
+	 */
+	public static Date getDateEndForDisplay(Date date)
+	{
+		Calendar cal = new GregorianCalendar();
+		
+		cal.setTime(date);
+		cal.add(Calendar.HOUR, -12);
+		
+		return cal.getTime();		
+	}
 }
