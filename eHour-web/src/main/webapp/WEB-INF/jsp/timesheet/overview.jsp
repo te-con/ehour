@@ -74,7 +74,7 @@
 								<span title="<fmt:message key="user.overview.infinite" />">&infin;</span>
 							</c:when>
 							<c:otherwise>
-								<fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateEnd}" />
+								<fmt:formatDate pattern="dd-MMM-yyyy" value="${projectReport.projectAssignment.dateEndForDisplay}" />
 							</c:otherwise>
 						</c:choose>.
 						

@@ -11,7 +11,7 @@
 
 <div class="ContentFrame">
 	<div class="GreyFrame">
-		<h3><fmt:message key="report.report.userReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${userReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${userReport.reportCriteria.reportRange.dateEnd}" /></h3>
+		<h3><fmt:message key="report.report.userReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${userReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${userReport.reportCriteria.reportRange.dateEndForDisplay}" /></h3>
 				
 		<table width="100%" cellpadding="0" cellspacing="0">
 			<tr>

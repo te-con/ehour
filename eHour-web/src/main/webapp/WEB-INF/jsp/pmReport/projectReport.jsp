@@ -9,7 +9,7 @@
 	<h1><fmt:message key="pmReport.title">
 			<fmt:param>${pmReport.project.fullname}</fmt:param>
 			<fmt:param><fmt:formatDate pattern="dd MMM yyyy" value="${pmReport.reportRange.dateStart}" /></fmt:param>
-			<fmt:param><fmt:formatDate pattern="dd MMM yyyy" value="${pmReport.reportRange.dateEnd}" /></fmt:param>			
+			<fmt:param><fmt:formatDate pattern="dd MMM yyyy" value="${pmReport.reportRange.dateEndForDisplay}" /></fmt:param>			
 		</fmt:message></h1>
 
 	<div class="GreyFrame">

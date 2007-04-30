@@ -11,7 +11,7 @@
 
 <div class="ContentFrame">
 	<div class="GreyFrame">
-		<h3><fmt:message key="report.report.customerReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateEnd}" />
+		<h3><fmt:message key="report.report.customerReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateEndForDisplay}" />
 			&nbsp;&nbsp;<a href="customerExcelReport.do">excel</a>
 		</h3>
 				

@@ -21,7 +21,7 @@ function initDojo()
 	replacedNode = document.getElementById("dateEndDiv");
 	dojo.widget.createWidget("DropdownDatePicker",
 											{<c:if test="${assignment.dateEnd != null}">
-												value:"<fmt:formatDate value="${assignment.dateEnd}" pattern="yyyy-MM-dd" />T00:00:00-00:00",
+												value:"<fmt:formatDate value="${assignment.dateEndForDisplay}" pattern="yyyy-MM-dd" />T00:00:00-00:00",
 											 </c:if>
 											 disabled: false,
 											 name: "dateEnd",
@@ -72,7 +72,7 @@ function initDojo()
 			</td>
 	
 			<td class="main">
-				<fmt:formatDate value="${assignment.dateEnd}" pattern="dd MMM yyyy" />
+				<fmt:formatDate value="${assignment.dateEndForDisplay}" pattern="dd MMM yyyy" />
 			</td>
 		</tr>
 		

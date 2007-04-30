@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
 	var dateStart = "<fmt:formatDate value="${criteria.reportRange.dateStart}" pattern="yyyy-MM-dd" />T00:00:00-00:00";
-	var dateEnd = "<fmt:formatDate value="${criteria.reportRange.dateEnd}" pattern="yyyy-MM-dd" />T00:00:00-00:00";
+	var dateEnd = "<fmt:formatDate value="${criteria.reportRange.dateEndForDisplay}" pattern="yyyy-MM-dd" />T00:00:00-00:00";
 	var contextRoot = "<c:url value="/eh/report" />";
 </script>
 

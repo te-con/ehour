@@ -26,7 +26,7 @@ function init()
 
 	replacedNode = document.getElementById("dateEndDiv");
 	dojo.widget.createWidget("DropdownDatePicker",
-											{value:"<fmt:formatDate value="${criteria.reportRange.dateEnd}" pattern="yyyy-MM-dd" />T00:00:00-00:00",
+											{value:"<fmt:formatDate value="${criteria.reportRange.dateEndForDisplay}" pattern="yyyy-MM-dd" />T00:00:00-00:00",
 											 disabled: false,
 											 name: "dateEnd",
 											 containerToggle: "fade"

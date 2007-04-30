@@ -58,7 +58,7 @@ function init()
 		<br><br>
 		
 		<div style="float: left;vertical-align: bottom;height: 1.5em">
-			<nobr><fmt:message key="admin.assignment.dateEnd" />:</nobr>
+			<nobr><fmt:message key="admin.assignment.dateEndForDisplay" />:</nobr>
 		</div>
 		
 		<div style="float: right">
