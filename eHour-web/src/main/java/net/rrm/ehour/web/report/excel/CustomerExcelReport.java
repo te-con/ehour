@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.web.report.excel;
 
+import java.text.DecimalFormat;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -35,7 +36,6 @@ import net.rrm.ehour.web.report.reports.CustomerReport;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Customer excel report 
@@ -49,25 +49,14 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#createWorkbook(javax.servlet.http.HttpServletRequest, net.rrm.ehour.report.reports.ReportData)
 	 */
 	@Override
-	public HSSFWorkbook createWorkbook(AggregateReport report)
+	protected int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber)
 	{
-		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFSheet 	sheet = wb.createSheet(getExcelReportName());
-		int			rowNumber = 0;
 		CustomerReport	customerReport = (CustomerReport)report;
 		
-		initCellStyles(wb);
+		rowNumber = createColumnNames(rowNumber, sheet);
+		rowNumber = createValues(rowNumber, sheet, customerReport);
 		
-		createHeaders(sheet);
-		rowNumber = createColumnNames(rowNumber, wb, sheet);
-		createValues(rowNumber, wb, sheet, customerReport);
-		
-		return wb;
-	}
-
-	private void createHeaders(HSSFSheet sheet)
-	{
-		
+		return rowNumber;
 	}
 	
 	/**
@@ -78,7 +67,7 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @param reportData
 	 * @return
 	 */
-	private int createValues(int rowNumber, HSSFWorkbook wb, HSSFSheet sheet, CustomerReport report)
+	private int createValues(int rowNumber, HSSFSheet sheet, CustomerReport report)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
@@ -99,38 +88,54 @@ public class CustomerExcelReport extends BaseExcelReportAction
 				for (ProjectAssignmentAggregate aggregate : aggregates)
 				{
 					row = sheet.createRow(rowNumber++);
+
+					// customer name
 					cell = row.createCell(cellNumber++);
+					cell.setCellStyle(defaultCellStyle);
 					cell.setCellValue(customer.getName());
 
+					// project name
 					cell = row.createCell(cellNumber++);
+					cell.setCellStyle(defaultCellStyle);
 					cell.setCellValue(prj.getName());
 
+					// project code
 					cell = row.createCell(cellNumber++);
+					cell.setCellStyle(defaultCellStyle);
 					cell.setCellValue(prj.getProjectCode());
 					
+					// employee name
 					cell = row.createCell(cellNumber++);
+					cell.setCellStyle(defaultCellStyle);
 					cell.setCellValue(aggregate.getProjectAssignment().getUser().getLastName() + ", " +
 							aggregate.getProjectAssignment().getUser().getFirstName());
 					
+					// aggregated hours
 					cell = row.createCell(cellNumber++);
-					
+					cell.setCellStyle(valueDigitCellStyle);
 					if (aggregate.getHours() != null)
 					{
+						// TODO round it to 2 digits
 						cell.setCellValue(aggregate.getHours().floatValue());
 					}
-
+					
+					// hourly rate
 					cell = row.createCell(cellNumber++);
+					cell.setCellStyle(currencyCellStyle);
 					
 					if (aggregate.getProjectAssignment().getHourlyRate() != null)
 					{
 						cell.setCellValue(aggregate.getProjectAssignment().getHourlyRate().floatValue());
 					}
-					
-					if (aggregate.getTurnOver() != null)
-					{
-						cell = row.createCell(cellNumber++);
-						cell.setCellValue(aggregate.getTurnOver().floatValue());
-					}
+
+					// turnover
+					cell = row.createCell(cellNumber++);
+					cell.setCellStyle(currencyCellStyle);
+					cell.setCellFormula("E" + rowNumber + "*F" + rowNumber);
+//					if (aggregate.getTurnOver() != null)
+//					{
+//						cell.setCellValue(aggregate.getTurnOver().floatValue());
+//					}
 					
 					cellNumber = 0;
 				}
@@ -146,7 +151,7 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @param wb
 	 * @param sheet
 	 */
-	private int createColumnNames(int rowNumber, HSSFWorkbook wb, HSSFSheet sheet)
+	private int createColumnNames(int rowNumber, HSSFSheet sheet)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
@@ -154,31 +159,31 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		
 		row = sheet.createRow(rowNumber++);
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(boldStyle);
+		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Customer");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(boldStyle);
+		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Project");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(boldStyle);
+		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Project code");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(boldStyle);
+		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Employee");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(boldStyle);
+		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Hours");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(boldStyle);
+		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Rate");
 
 		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(boldStyle);
+		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Turnover");
 		
 		return rowNumber;
@@ -192,6 +197,13 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	protected String getExcelReportName()
 	{
 		return "CustomerReport";
+	}
+
+	@Override
+	protected String getHeaderReportName()
+	{
+		// TODO i18n
+		return "Customer report";
 	}
 
 

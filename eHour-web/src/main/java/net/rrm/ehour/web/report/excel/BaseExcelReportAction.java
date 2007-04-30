@@ -28,28 +28,39 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.web.report.action.ReUseReportAction;
 import net.rrm.ehour.web.report.form.ReportForm;
 import net.rrm.ehour.web.report.reports.AggregateReport;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.Region;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * TODO 
+ * Base class for excel reporting which contains default cell styles and etc. and sets up the default header 
  **/
 
 public abstract class BaseExcelReportAction extends ReUseReportAction
 {
 	private final String	FONT_TYPE = "Arial";
 	private HSSFFont		boldFont;
-	protected HSSFCellStyle	boldStyle;
+	private HSSFFont		normalFont;
+	protected HSSFCellStyle	boldCellStyle;
+	protected HSSFCellStyle	headerCellStyle;
+	protected HSSFCellStyle	valueDigitCellStyle;
+	protected HSSFCellStyle	defaultCellStyle;
+	protected HSSFCellStyle	currencyCellStyle;
+	protected HSSFCellStyle	dateBoldCellStyle;
+	
 	
 	/**
 	 * 
@@ -75,7 +86,7 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 			response.setContentType("application/x-ms-excel");
 			response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xls");
 			
-			workbook = createWorkbook(report);
+			workbook = createExcelReport(report);
 			workbook.write(bos);
 			bos.close();
 			outputStream.close();
@@ -89,35 +100,126 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 	}
 	
 	/**
-	 * Get cellstyle with bold font
+	 * Create excel report
+	 * @param report
+	 * @return
+	 */
+
+	private HSSFWorkbook createExcelReport(AggregateReport report)
+	{
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet 	sheet = wb.createSheet(getExcelReportName());
+		int			rowNumber = 0;
+
+		initCellStyles(wb);
+		
+		rowNumber = createHeaders(rowNumber, sheet, report);
+		
+		fillReportSheet(report, sheet, rowNumber);
+		
+		return wb;
+	}
+	
+	/**
+	 * Create header containing report date
+	 * @param sheet
+	 */
+
+	private int createHeaders(int rowNumber, HSSFSheet sheet, AggregateReport report)
+	{
+		HSSFRow		row;
+		HSSFCell	cell;
+
+		row = sheet.createRow(rowNumber++);
+		cell = row.createCell((short)0);
+		cell.setCellStyle(boldCellStyle);
+		// TODO i18n
+		cell.setCellValue(getHeaderReportName());
+		sheet.addMergedRegion(new Region(0, (short)0, 0, (short)1));
+
+		row = sheet.createRow(rowNumber++);
+		cell = row.createCell((short)0);
+		cell.setCellStyle(boldCellStyle);
+		cell.setCellValue("Start date:");
+
+		cell = row.createCell((short)1);
+		cell.setCellStyle(dateBoldCellStyle);
+		cell.setCellValue(report.getReportCriteria().getReportRange().getDateStart());
+
+		row = sheet.createRow(rowNumber++);
+		cell = row.createCell((short)0);
+		cell.setCellStyle(boldCellStyle);
+		cell.setCellValue("End date:");
+
+		cell = row.createCell((short)1);
+		cell.setCellStyle(dateBoldCellStyle);
+		cell.setCellValue(report.getReportCriteria().getReportRange().getDateEndForDisplay());
+		
+		rowNumber++;
+		
+		return rowNumber;
+	}	
+	
+	/**
+	 * Initialize cellstyles
 	 * @param workbook
 	 * @return
 	 */
 	protected void initCellStyles(HSSFWorkbook workbook)
 	{
-		boldStyle = workbook.createCellStyle();
+		headerCellStyle = workbook.createCellStyle();
 		
 		boldFont = workbook.createFont();
 		boldFont.setFontName(FONT_TYPE);
 		boldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		headerCellStyle.setFont(boldFont);
+		headerCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+		headerCellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+
+		boldCellStyle = workbook.createCellStyle();
+		boldCellStyle.setFont(boldFont);
+
+		dateBoldCellStyle = workbook.createCellStyle();
+		dateBoldCellStyle.setFont(boldFont);
+		dateBoldCellStyle.setDataFormat((short)0xf);
 		
-		boldStyle.setFont(boldFont);
+		defaultCellStyle = workbook.createCellStyle();
+		normalFont = workbook.createFont();
+		normalFont.setFontName(FONT_TYPE);
+		defaultCellStyle.setFont(normalFont);
+		
+		valueDigitCellStyle = workbook.createCellStyle();
+		valueDigitCellStyle.setFont(normalFont);
+		// 0.00 digit style
+		valueDigitCellStyle.setDataFormat((short)2);
+
+		currencyCellStyle= workbook.createCellStyle();
+		currencyCellStyle.setFont(normalFont);
+		currencyCellStyle.setDataFormat((short)0x7);
+	
 	}
 	
+	
+	
 	/**
-	 * Create POI excel workbook
+	 * Fill report sheet
 	 * @param request
 	 * @param reportData
 	 * @return
 	 */
-	public abstract HSSFWorkbook createWorkbook(AggregateReport report);
+	protected abstract int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber);
 	
 	/**
-	 * Get report name
+	 * Get report name for the filename
 	 * @return
 	 */
 	protected abstract String getExcelReportName();
 	
+	/**
+	 * Get report name for the header
+	 * @return
+	 */
+	protected abstract String getHeaderReportName();
 	
 	/**
 	 * Session data shouldn't be replaced as other charts on the same page
@@ -126,6 +228,7 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 	protected boolean isReplaceSessionData()
 	{
 		return false;
-	}	
+	}
+	
 	
 }
