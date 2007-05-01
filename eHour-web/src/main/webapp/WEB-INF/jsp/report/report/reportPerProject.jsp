@@ -10,10 +10,21 @@
 </script>
 
 <div class="ContentFrame">
+	<div style="float: left; padding: 0">
+		<h1><fmt:message key="report.report.projectReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${projectReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${projectReport.reportCriteria.reportRange.dateEndForDisplay}" /></h1>
+	</div>
+	
+	<div style="text-align: right;width: 719px;margin: -5px 0 -5px 0; padding: 0;">
+		<a href="projectExcelReport.do">
+			<img src="<c:url value="/img/excel_off.gif" />"
+				onMouseover="this.src='<c:url value="/img/excel_on.gif" />'"
+				onMouseout="this.src='<c:url value="/img/excel_off.gif" />'"
+			 border="0">
+		</a>
+	</div>	
+
 	<div class="GreyFrame">
-		<h3><fmt:message key="report.report.projectReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${projectReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${projectReport.reportCriteria.reportRange.dateEnd}" />
-			&nbsp;&nbsp;<a href="projectExcelReport.do">excel</a>
-		</h3>
+		<h3>&nbsp;</h3>
 				
 		<table width="100%" cellpadding="0" cellspacing="0">
 			<tr>
