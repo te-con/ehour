@@ -35,6 +35,7 @@
 							<th><fmt:message key="report.report.project" /></th>
 							<th><fmt:message key="report.report.projectCode" /></th>							
 							<th><fmt:message key="report.report.hours" /></th>										
+							<th><fmt:message key="report.report.rate" /></th>
 							<th><fmt:message key="report.report.turnOver" /></th>
 						</tr>
 					
@@ -69,8 +70,13 @@
 										<td><a href=""
 											onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.projectAssignment.project.projectId}')"
 											>${projectItem.projectAssignment.project.name}</a></td>
-										<td>${projectItem.projectAssignment.project.projectCode}</td>
+										<td><a href=""
+												onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.projectAssignment.project.projectId}')"
+												>${projectItem.projectAssignment.project.projectCode}</a></td>
 										<td align="right"><fmt:formatNumber value="${projectItem.hours}" maxFractionDigits="2" /></td>
+										<td align="right"><nobr><fmt:formatNumber type="currency"
+																	value="${projectItem.projectAssignment.hourlyRate}" 
+																	currencySymbol="${currencySymbol} " /></nobr></td>
 										<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${projectItem.turnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 									</tr>
 
@@ -88,6 +94,7 @@
 							<td>&nbsp;</td>							
 							<td>&nbsp;</td>
 							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
+							<td>&nbsp;</td>
 							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 						</tr>						
 						

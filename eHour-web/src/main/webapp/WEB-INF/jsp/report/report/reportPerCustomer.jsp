@@ -37,6 +37,7 @@
 								<th><fmt:message key="report.report.projectCode" /></th>
 								<th><fmt:message key="report.report.user" /></th>
 								<th><fmt:message key="report.report.hours" /></th>
+								<th><fmt:message key="report.report.rate" /></th>								
 								<th><fmt:message key="report.report.turnOver" /></th>
 							</tr>
 
@@ -58,7 +59,9 @@
 								<td><a href=""
 										onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
 										>${projectItem.key.name}</a></td>					
-								<td>${projectItem.key.projectCode}</td>
+								<td><a href=""
+										onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
+										>${projectItem.key.projectCode}</a></td>
 							<c:forEach items="${customerReport.reportValues[customerItem.key][projectItem.key]}" var="userItem" varStatus="userStatus">
 							
 									<c:if test="${!userStatus.first}">
@@ -67,12 +70,18 @@
 										<td><a href=""
 											onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
 											>${projectItem.key.name}</a></td>
-										<td>${projectItem.key.projectCode}</td>											
+										<td><a href=""
+											onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
+											>${projectItem.key.projectCode}</a></td>											
 									</c:if>
 									<td><a href=""
 											onClick="return updateReport('userReport', '${reportSessionKey}', '${userItem.projectAssignment.user.userId}')"
 											>${userItem.projectAssignment.user.lastName}, ${userItem.projectAssignment.user.firstName}</a></td>
 									<td align="right"><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
+									<td align="right"><nobr><fmt:formatNumber type="currency"
+																value="${userItem.projectAssignment.hourlyRate}" 
+																currencySymbol="${currencySymbol} " /></nobr></td>
+									
 									<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 									
 									<c:set var="totalHour" value="${totalHour + userItem.hours}" />	
@@ -91,6 +100,7 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>							
 							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
+							<td>&nbsp;</td>							
 							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 						</tr>
 													
@@ -102,6 +112,7 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>						
 						<td align="right"><b><fmt:formatNumber value="${grandTotalHour}" maxFractionDigits="2" /></b></td>
+						<td>&nbsp;</td>							
 						<td align="right" class="lastChild"><b><fmt:formatNumber maxFractionDigits="2" value="${grandTotalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></b></td>
 					</tr>
 

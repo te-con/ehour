@@ -31,9 +31,11 @@
 					<table class="reportTable" cellpadding="0" cellspacing="0">
 						<tr>
 							<th><fmt:message key="report.report.project" /></th>
-							<th><fmt:message key="report.report.projectCode" /></th>							
+							<th><fmt:message key="report.report.projectCode" /></th>
+							<th><fmt:message key="report.report.customer" /></th>							
 							<th><fmt:message key="report.report.user" /></th>
-							<th><fmt:message key="report.report.hours" /></th>										
+							<th><fmt:message key="report.report.hours" /></th>
+							<th><fmt:message key="report.report.rate" /></th>
 							<th><fmt:message key="report.report.turnOver" /></th>
 						</tr>
 					
@@ -45,6 +47,9 @@
 						<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 							<td>${projectItem.key.name}</td>
 							<td>${projectItem.key.projectCode}</td>
+							<td><a href=""
+									onClick="return updateReport('customerReport', '${reportSessionKey}', '${projectItem.key.customer.customerId}')"
+											>${projectItem.key.customer.name}</a></td>
 
 						<c:set var="totalHour" value="0" />
 						<c:set var="totalTurnOver" value="0" />					
@@ -53,20 +58,25 @@
 							<c:if test="${!customerStatus.first}">
 								<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 								<td>&nbsp;</td>
-								<td>&nbsp;</td>								
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>			
 							</c:if>
 
 							<c:forEach items="${projectReport.reportValues[projectItem.key][customerItem.key]}" var="userItem" varStatus="userStatus">
 									<c:if test="${!userStatus.first}">
 										<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
-										<td>&nbsp;</td>								
-										<td>&nbsp;</td>
-									</c:if>
+											<td>&nbsp;</td>
+											<td>&nbsp;</td>								
+											<td>&nbsp;</td>
+										</c:if>
 									<td><a href=""
 											onClick="return updateReport('userReport',
 																			 '${reportSessionKey}', '${userItem.projectAssignment.user.userId}')"
 											>${userItem.projectAssignment.user.lastName}, ${userItem.projectAssignment.user.firstName}</a></td>
 									<td align="right"><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
+									<td align="right"><nobr><fmt:formatNumber type="currency"
+																value="${userItem.projectAssignment.hourlyRate}" 
+																currencySymbol="${currencySymbol} " /></nobr></td>
 									<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 									
 									<c:set var="totalHour" value="${totalHour + userItem.hours}" />	
@@ -83,7 +93,9 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>							
 							<td>&nbsp;</td>
+							<td>&nbsp;</td>
 							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
+							<td>&nbsp;</td>
 							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 						</tr>
 													
