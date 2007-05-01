@@ -30,7 +30,6 @@ a:active
 .MonthAggregateTable 
 {
 	margin: -1em 1em 0 1em;
-	width: inherit;
 	width:expression(document.body.clientWidth > 710? "710px": "auto" );
 }
 
@@ -40,18 +39,30 @@ a:active
 	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;	
 	color: #233e55;
 	border: 0;
-	width: 15%;
 	text-align: left;
 }
 
+.MonthAggregateTable th.foldCell
+{
+	width: 15px;
+}
+
+
 .MonthAggregateTable td.foldCell
 {
-	width: 25px;
+	width: 15px;
 }
 
 .MonthAggregateTable th.projectCell
 {
 	width: 23%;
+}
+
+.MonthAggregateTable th.total
+{
+	border-style: solid;
+	border-top-width: 1px;
+	border-color: #ededed
 }
 
 .MonthAggregateTable td

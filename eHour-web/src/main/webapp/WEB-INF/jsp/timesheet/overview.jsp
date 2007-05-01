@@ -15,7 +15,7 @@
 		<div class="GreyFrameBody">
 			<table class="MonthAggregateTable" cellpadding="0" cellspacing="0">
 			<tr>
-				<td class="foldCell">&nbsp;</td>
+				<th width="25" class="foldCell">&nbsp;</th>
 				<th class="projectCell"><fmt:message key="user.overview.project" /></th>
 				<th><nobr><fmt:message key="user.overview.projectCode" /></nobr></th>
 				<th><fmt:message key="user.overview.customer" /></th>
@@ -27,11 +27,13 @@
 					<th><fmt:message key="user.overview.turnover" /></th>
 				</c:if>
 			</tr>
+			<c:set var="totalHour" value="0" />
+			<c:set var="totalTurnOver" value="0" />					
 					
 			<c:forEach items="${timesheetOverview.projectStatus}" var="projectReport">
 			
 			<tr>
-				<td><a href="" onClick="return toggleProjectInfo(${projectReport.projectAssignment.assignmentId})"><img id="foldImg${projectReport.projectAssignment.assignmentId}" src="<c:url value="/img/fold_down.gif" />" border="0"></a></td>
+				<td class="foldCell"><a href="" onClick="return toggleProjectInfo(${projectReport.projectAssignment.assignmentId})"><img id="foldImg${projectReport.projectAssignment.assignmentId}" src="<c:url value="/img/fold_down.gif" />" border="0" width="7" height="7"></a></td>
 				<td><a href="" onClick="return toggleProjectInfo(${projectReport.projectAssignment.assignmentId})">${projectReport.projectAssignment.project.name}</a></td>
 				<td>${projectReport.projectAssignment.project.projectCode}</td>				
 				<td>${projectReport.projectAssignment.project.customer.name}</td>
@@ -49,10 +51,9 @@
 					<td><c:if test="${projectReport.projectAssignment.hourlyRate == '' || projectReport.projectAssignment.hourlyRate == null}">
 						--
 					</c:if>
-					<nobr>
-				<fmt:formatNumber type="currency"
-										value="${projectReport.turnOver}" 
-										currencySymbol="${currencySymbol} " /></nobr></td>
+					<nobr><fmt:formatNumber type="currency"
+									value="${projectReport.turnOver}" 
+									currencySymbol="${currencySymbol} " /></nobr></td>
 				</c:if>
 			</tr>
 			
@@ -83,8 +84,29 @@
 							<fmt:message key="user.overview.remainingHours" />: <fmt:formatNumber value="${projectReport.hoursRemaining}" maxFractionDigits="2" /><fmt:message key="user.overview.hourShort" />.
 						</c:if>
 				</td>
-			</tr>					
+			</tr>
+			
+			<c:set var="totalHour" value="${totalHour + projectReport.hours}" />	
+			<c:set var="totalTurnOver" value="${totalTurnOver + projectReport.turnOver}" />								
+								
 			</c:forEach>
+			
+			<tr>
+				<c:choose>
+					<c:when test="${config.showTurnover}">
+						<th class="total" colspan="5">
+					</c:when>
+					<c:otherwise><th class="total" colspan="4"></c:otherwise>
+				</c:choose>
+				&nbsp;</th>
+				<th class="total"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></th>
+				
+				<c:if test="${config.showTurnover}">			
+					<th class="total"><nobr><fmt:formatNumber type="currency"
+								value="${totalTurnOver}" 
+								currencySymbol="${currencySymbol} " /></nobr></th>
+				</c:if>
+			</tr>
 		</table>
 		
 		<br>
