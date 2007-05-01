@@ -1,5 +1,5 @@
 /**
- * Created on Apr 22, 2007
+ * Created on May 1, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -27,37 +27,37 @@ import java.util.Set;
 import java.util.SortedMap;
 
 import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.report.reports.AggregateReport;
-import net.rrm.ehour.web.report.reports.CustomerReport;
+import net.rrm.ehour.web.report.reports.UserReport;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 
 /**
- * Customer excel report 
+ * Employee excel report
  **/
 
-public class CustomerExcelReport extends BaseExcelReportAction
+public class UserExcelReport extends BaseExcelReportAction
 {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#createWorkbook(javax.servlet.http.HttpServletRequest, net.rrm.ehour.report.reports.ReportData)
+	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#fillReportSheet(net.rrm.ehour.web.report.reports.AggregateReport, org.apache.poi.hssf.usermodel.HSSFSheet, int)
 	 */
 	@Override
 	protected int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber)
 	{
-		CustomerReport	customerReport = (CustomerReport)report;
+		UserReport userReport = (UserReport)report;
 		
 		rowNumber = createColumnNames(rowNumber, sheet);
-		rowNumber = createValues(rowNumber, sheet, customerReport);
+		rowNumber = createValues(rowNumber, sheet, userReport);
 		
 		return rowNumber;
 	}
-	
+
 	/**
 	 * Create values
 	 * @param rowNumber
@@ -66,49 +66,50 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @param reportData
 	 * @return
 	 */
-	private int createValues(int rowNumber, HSSFSheet sheet, CustomerReport report)
+	private int createValues(int rowNumber, HSSFSheet sheet, UserReport report)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
 		short		cellNumber = 0;
 
-		Set<Customer>	customers = report.getReportValues().keySet();
-		SortedMap<Project, Set<ProjectAssignmentAggregate>>	projectsPerCustomer;
+		Set<User>	users = report.getReportValues().keySet();
+		SortedMap<Customer, Set<ProjectAssignmentAggregate>>	customerPerUsers;
 		Set<ProjectAssignmentAggregate>	aggregates;
 		
-		for (Customer customer : customers)
+		for (User user : users)
 		{
-			projectsPerCustomer = report.getReportValues().get(customer);
+			customerPerUsers = report.getReportValues().get(user);
 			
-			for (Project prj : projectsPerCustomer.keySet())
+			for (Customer cust : customerPerUsers.keySet())
 			{
-				aggregates = projectsPerCustomer.get(prj);
+				aggregates = customerPerUsers.get(cust);
 				
 				for (ProjectAssignmentAggregate aggregate : aggregates)
 				{
 					row = sheet.createRow(rowNumber++);
 
+					// employee name
+					cell = row.createCell(cellNumber++);
+					cell.setCellStyle(defaultCellStyle);
+					cell.setCellValue(user.getLastName() + ", " +
+										user.getFirstName());
+
 					// customer name
 					cell = row.createCell(cellNumber++);
 					cell.setCellStyle(defaultCellStyle);
-					cell.setCellValue(customer.getName());
-
+					cell.setCellValue(cust.getName());
+					
 					// project name
 					cell = row.createCell(cellNumber++);
 					cell.setCellStyle(defaultCellStyle);
-					cell.setCellValue(prj.getName());
+					cell.setCellValue(aggregate.getProjectAssignment().getProject().getName());
 
 					// project code
 					cell = row.createCell(cellNumber++);
 					cell.setCellStyle(defaultCellStyle);
-					cell.setCellValue(prj.getProjectCode());
-					
-					// employee name
-					cell = row.createCell(cellNumber++);
-					cell.setCellStyle(defaultCellStyle);
-					cell.setCellValue(aggregate.getProjectAssignment().getUser().getLastName() + ", " +
-							aggregate.getProjectAssignment().getUser().getFirstName());
-					
+					cell.setCellValue(aggregate.getProjectAssignment().getProject().getProjectCode());
+
+
 					// aggregated hours
 					cell = row.createCell(cellNumber++);
 					cell.setCellStyle(valueDigitCellStyle);
@@ -141,9 +142,8 @@ public class CustomerExcelReport extends BaseExcelReportAction
 			}
 		}
 		
-		
 		return rowNumber;
-	}
+	}		
 	
 	/**
 	 * Create column names
@@ -160,8 +160,12 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		row = sheet.createRow(rowNumber++);
 		cell = row.createCell(cellNumber++);
 		cell.setCellStyle(headerCellStyle);
-		cell.setCellValue("Customer");
+		cell.setCellValue("Employee");
 
+		cell = row.createCell(cellNumber++);
+		cell.setCellStyle(headerCellStyle);
+		cell.setCellValue("Customer");
+		
 		cell = row.createCell(cellNumber++);
 		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Project");
@@ -169,10 +173,6 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		cell = row.createCell(cellNumber++);
 		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Project code");
-
-		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(headerCellStyle);
-		cell.setCellValue("Employee");
 
 		cell = row.createCell(cellNumber++);
 		cell.setCellStyle(headerCellStyle);
@@ -187,16 +187,16 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		cell.setCellValue("Turnover");
 		
 		return rowNumber;
-	}
+	}	
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#getFilename()
+	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#getExcelReportName()
 	 */
 	@Override
 	protected String getExcelReportName()
 	{
-		return "CustomerReport";
+		return "EmployeeReport";
 	}
 
 	/*
@@ -206,9 +206,7 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	@Override
 	protected String getHeaderReportName()
 	{
-		// TODO i18n
-		return "Customer report";
+		return "Employee Report";
 	}
-
 
 }

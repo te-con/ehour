@@ -53,7 +53,13 @@
 		</action>
 
 		<!-- Customer excel report -->
-		<action name="ReportChartForm" path="/customerExcelReport" />		
+		<action name="ReportChartForm" path="/customerExcelReport" />
+
+		<!-- Project excel report -->
+		<action name="ReportChartForm" path="/projectExcelReport" />
+
+		<!-- User excel report -->
+		<action name="ReportChartForm" path="/userExcelReport" />
 
 	</action-mappings>
 	

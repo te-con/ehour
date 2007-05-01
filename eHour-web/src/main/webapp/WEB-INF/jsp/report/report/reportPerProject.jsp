@@ -11,7 +11,9 @@
 
 <div class="ContentFrame">
 	<div class="GreyFrame">
-		<h3><fmt:message key="report.report.projectReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${projectReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${projectReport.reportCriteria.reportRange.dateEnd}" /></h3>
+		<h3><fmt:message key="report.report.projectReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${projectReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${projectReport.reportCriteria.reportRange.dateEnd}" />
+			&nbsp;&nbsp;<a href="projectExcelReport.do">excel</a>
+		</h3>
 				
 		<table width="100%" cellpadding="0" cellspacing="0">
 			<tr>

@@ -26,6 +26,7 @@ package net.rrm.ehour.web.report.excel;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -73,18 +74,20 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 											ReportData reportData,
 											AggregateReport report)
 	{
-		String			filename = getExcelReportName();
+		String			filename;
 		HSSFWorkbook	workbook;
 		OutputStream	outputStream;
 		BufferedOutputStream bos;
-
+		
 		try
 		{
 			outputStream = response.getOutputStream();
 			bos = new BufferedOutputStream(outputStream);			
+		
+			filename = getFilename(report);
 			
 			response.setContentType("application/x-ms-excel");
-			response.setHeader("Content-disposition", "attachment; filename=" + filename + ".xls");
+			response.setHeader("Content-disposition", "attachment; filename=" + filename);
 			
 			workbook = createExcelReport(report);
 			workbook.write(bos);
@@ -97,6 +100,26 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Get excel filename as <reportName>_ddMMyyyy-ddMMyyyy.xls
+	 * @param report
+	 * @return
+	 */
+	private String getFilename(AggregateReport report)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		
+		StringBuffer filename = new StringBuffer(getExcelReportName());
+		filename.append("_");
+		filename.append(sdf.format(report.getReportCriteria().getReportRange().getDateStart()));
+		filename.append("-");
+		filename.append(sdf.format(report.getReportCriteria().getReportRange().getDateEndForDisplay()));
+		
+		filename.append(".xls");
+		
+		return filename.toString();
 	}
 	
 	/**
