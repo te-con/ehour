@@ -274,11 +274,20 @@ public class DateUtil
 	 */
 	public static Date getDateEndForDisplay(Date date)
 	{
-		Calendar cal = new GregorianCalendar();
+		Calendar cal;
 		
-		cal.setTime(date);
-		cal.add(Calendar.HOUR, -12);
+		if (date != null)
+		{
+			cal = new GregorianCalendar();
+			
+			cal.setTime(date);
+			cal.add(Calendar.HOUR, -12);
 		
-		return cal.getTime();		
+			return cal.getTime();
+		}
+		else
+		{
+			return null;
+		}
 	}
 }
