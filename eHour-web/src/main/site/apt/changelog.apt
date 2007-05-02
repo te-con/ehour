@@ -2,6 +2,8 @@ Change Log
 
 * 0.6 Release Notes
 
+	Added available hours and assignment type to PM report. Also date range assignments are limited to 100% progress.
+
 	Added excel export to project, customer and employee reports.
 
 	Added total hours & turnover to timesheet overview for employees.
