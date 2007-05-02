@@ -93,10 +93,53 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 									projectAssignment.getDateStart().getTime();
 			
 				percentage = (currentTime / dateRangeLength) * 100;
+				
+				// if percentage is above 100 for daterange the user can't book anymore hours
+				// so don't display more than 100%
+				if (percentage > 100)
+				{
+					percentage = 100;
+				}
 			}
 		}
 		
 		return percentage;
+	}
+	
+	/**
+	 * For flex/fixed allotted, give the available hours
+	 * @return
+	 */
+	public float getAvailableHours()
+	{
+		float	available = 0;
+		
+		if (projectAssignment.getAssignmentType().isFixedAllottedType())
+		{
+			if (hours != null && 
+				projectAssignment.getAllottedHours() != null &&
+				hours.floatValue() > 0 &&
+				projectAssignment.getAllottedHours().floatValue() > 0)
+			{
+				available = projectAssignment.getAllottedHours().floatValue() - hours.floatValue();
+			}
+		}
+		else if (projectAssignment.getAssignmentType().isFlexAllottedType())
+		{
+			if (hours != null && 
+					projectAssignment.getAllottedHours() != null &&
+					hours.floatValue() > 0 &&
+					projectAssignment.getAllottedHours().floatValue() > 0)
+				{
+					
+					available = (projectAssignment.getAllottedHours().floatValue() +
+								 ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun().floatValue() : 0))
+								 - hours.floatValue();
+				}
+			
+		}
+		
+		return available;
 	}
 	
 	/**
