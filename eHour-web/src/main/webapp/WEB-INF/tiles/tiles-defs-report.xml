@@ -12,6 +12,11 @@
 		<put name="helpBody" value="report.body" />
     </definition>
 
+	<!-- Print base layout -->
+    <definition name=".ehour.report.print.baseLayout" path="/WEB-INF/jsp/report/printLayout.jsp">
+        <put name="pageTitle" value="eHour - reporting" />
+    </definition>
+	
 
     <!-- Report index -->
     <definition name=".ehour.report.index" extends=".ehour.report.baseLayout">
@@ -28,11 +33,23 @@
 
 	<!-- Report show customer report -->    
     <definition name=".ehour.report.customerReport" path="/WEB-INF/jsp/report/report/reportPerCustomer.jsp" />	        
+    <definition name=".ehour.report.customerPrintReport" extends=".ehour.report.print.baseLayout">
+        <put name="reportTile" value="/WEB-INF/jsp/report/report/reportPerCustomer.jsp" />
+        <put name="pageTitle" value="Customer report" />        
+    </definition>
 
 	<!-- Report show user report -->    
     <definition name=".ehour.report.userReport" path="/WEB-INF/jsp/report/report/reportPerUser.jsp" />	        
+    <definition name=".ehour.report.userPrintReport" extends=".ehour.report.print.baseLayout">
+        <put name="reportTile" value="/WEB-INF/jsp/report/report/reportPerUser.jsp" />
+        <put name="pageTitle" value="Employee report" />        
+    </definition>
 
 	<!-- Report show project report -->    
     <definition name=".ehour.report.projectReport" path="/WEB-INF/jsp/report/report/reportPerProject.jsp" />	        
+    <definition name=".ehour.report.projectPrintReport" extends=".ehour.report.print.baseLayout">
+        <put name="reportTile" value="/WEB-INF/jsp/report/report/reportPerProject.jsp" />
+        <put name="pageTitle" value="Project report" />        
+    </definition>
 	
 </tiles-definitions>

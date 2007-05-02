@@ -75,5 +75,9 @@
 	<bean name="/eh/report/userExcelReport"
 			class="net.rrm.ehour.web.report.excel.UserExcelReport"
 			parent="reUseReportAction"/>
-
+			
+	<!-- Print report -->
+	<bean name="/eh/report/printReport"
+			class="net.rrm.ehour.web.report.action.PrintReportAction"
+			parent="reUseReportAction"/>
 </beans>

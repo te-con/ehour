@@ -191,3 +191,9 @@ div.UserReportCriteria
 	color: #536e87;
 	font: 1em Arial, Geneva, Helvetica, sans-serif;	
 }
+
+div.ReportPrintFooter
+{
+	color: #536e87;
+	font: 1em Arial, Geneva, Helvetica, sans-serif;	
+}

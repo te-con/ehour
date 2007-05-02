@@ -10,13 +10,13 @@
 <head>
 	<title><tiles:getAsString name="pageTitle" /></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<link rel="stylesheet" type="text/css" href="<c:url value="/css/ehourMain.jsp" />" media="screen">
+	<link rel="stylesheet" type="text/css" href="<c:url value="/css/ehourMain.jsp" />" />
 
 <tiles:importAttribute name="extraCss" scope="page" />
 <tiles:importAttribute scope="request" /> 
 
 <c:if test='${extraCss != ""}'>
-	<link rel="stylesheet" type="text/css" href="<c:url value="${extraCss}" />" media="screen">
+	<link rel="stylesheet" type="text/css" href="<c:url value="${extraCss}" />"  />
 </c:if>
 
 <script>

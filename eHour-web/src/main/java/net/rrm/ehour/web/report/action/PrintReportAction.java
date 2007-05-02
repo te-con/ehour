@@ -1,5 +1,5 @@
 /**
- * Created on 21-feb-2007
+ * Created on May 2, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -26,10 +26,6 @@ package net.rrm.ehour.web.report.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.web.report.form.ReportCriteriaForm;
-import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -38,22 +34,24 @@ import org.apache.struts.action.ActionMapping;
  * TODO 
  **/
 
-public class ShowReportCriteriaAction
+public class PrintReportAction extends ReUseReportAction
 {
 	/**
 	 * 
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception
+									HttpServletRequest request, HttpServletResponse response)
 	{
-		ReportCriteriaForm 	criteriaForm = (ReportCriteriaForm)form;
-		UserCriteria		uc;
+		request.setAttribute("print", new Boolean(true));
 		
-		uc = UserCriteriaAssembler.getUserCriteria(criteriaForm);
-		
-		request.setAttribute("criteria", uc);
-		
-		return mapping.findForward("success");
+		return super.execute(mapping, form, request, response);
 	}
+	
+	
+	@Override
+	protected boolean isReplaceSessionData()
+	{
+		return false;
+	}
+
 }

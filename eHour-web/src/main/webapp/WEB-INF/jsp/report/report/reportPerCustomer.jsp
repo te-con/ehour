@@ -13,7 +13,7 @@
 	<div style="float: left; padding: 0">
 		<h1><fmt:message key="report.report.customerReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateEndForDisplay}" /></h1>
 	</div>
-	
+<c:if test="${!print}">
 	<div style="text-align: right;width: 719px;margin: -5px 0 -5px 0; padding: 0;">
 		<a href="customerExcelReport.do">
 			<img src="<c:url value="/img/excel_off.gif" />"
@@ -21,8 +21,18 @@
 				onMouseout="this.src='<c:url value="/img/excel_off.gif" />'"
 			 border="0">
 		</a>
+		<a href="printReport.do" target="_print">
+			<img src="<c:url value="/img/print_off.gif" />"
+				onMouseover="this.src='<c:url value="/img/print_on.gif" />'"
+				onMouseout="this.src='<c:url value="/img/print_off.gif" />'"
+				alt="<fmt:message key="user.overview.print" />"
+			 border="0">
+		</a>
 	</div>	
-
+</c:if>
+<c:if test="${print}">
+	<br>
+</c:if>
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>
 				
@@ -67,27 +77,27 @@
 								<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 								<td>&nbsp;</td>
 							</c:if>
-								<td><a href=""
+								<td><c:if test="${!print}"><a href=""
 										onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
-										>${projectItem.key.name}</a></td>					
-								<td><a href=""
+										></c:if>${projectItem.key.name}</a></td>					
+								<td><c:if test="${!print}"><a href=""
 										onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
-										>${projectItem.key.projectCode}</a></td>
+										></c:if>${projectItem.key.projectCode}</a></td>
 							<c:forEach items="${customerReport.reportValues[customerItem.key][projectItem.key]}" var="userItem" varStatus="userStatus">
 							
 									<c:if test="${!userStatus.first}">
 										<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 										<td>&nbsp;</td>
-										<td><a href=""
+										<td><c:if test="${!print}"><a href=""
 											onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
-											>${projectItem.key.name}</a></td>
-										<td><a href=""
+											></c:if>${projectItem.key.name}</a></td>
+										<td><c:if test="${!print}"><a href=""
 											onClick="return updateReport('projectReport', '${reportSessionKey}', '${projectItem.key.projectId}')"
-											>${projectItem.key.projectCode}</a></td>											
+											></c:if>${projectItem.key.projectCode}</a></td>											
 									</c:if>
-									<td><a href=""
+									<td><c:if test="${!print}"><a href=""
 											onClick="return updateReport('userReport', '${reportSessionKey}', '${userItem.projectAssignment.user.userId}')"
-											>${userItem.projectAssignment.user.lastName}, ${userItem.projectAssignment.user.firstName}</a></td>
+											></c:if>${userItem.projectAssignment.user.lastName}, ${userItem.projectAssignment.user.firstName}</a></td>
 									<td align="right"><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
 									<td align="right"><nobr><fmt:formatNumber type="currency"
 																value="${userItem.projectAssignment.hourlyRate}" 

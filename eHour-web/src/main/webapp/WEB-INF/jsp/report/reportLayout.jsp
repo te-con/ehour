@@ -29,7 +29,3 @@
 <div id="reportTarget">
 		<tiles:insert page="${reportTile}" />
 </div>
-
-<script>
-	dojo.html.setOpacity(dojo.byId('reportTarget'), 50);
-</script>

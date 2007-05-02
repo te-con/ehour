@@ -35,6 +35,7 @@
 					</td>
 					<td align="right" style="padding-right: 20px"><fmt:message key="report.criteria.report" />:
 					<select name="reportName"  class="textInputSmall">
+							<option value="customerReport"><fmt:message key="report.report.overallReport" />
 							<option value="customerReport"><fmt:message key="report.report.customerReport" />
 							<option value="userReport"><fmt:message key="report.report.userReport" />
 							<option value="projectReport"><fmt:message key="report.report.projectReport" />														

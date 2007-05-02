@@ -92,9 +92,13 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 			session.setAttribute(ReportSessionKey.REPORT_DATA + "_" + sessionKey, reportData);
 			session.setAttribute(ReportSessionKey.REPORT_AGGREGATE + "_" + reportName + "_" + sessionKey, aggregateReport);
 			session.setAttribute(ReportSessionKey.REPORT_NAME + "_" + sessionKey, aggregateReport.getReportName());
-
-			request.setAttribute("reportSessionKey", sessionKey);
 		}
+		else
+		{
+			sessionKey = reportForm.getKey();
+		}
+		
+		request.setAttribute("reportSessionKey", sessionKey);
 		
 		// store the report on the request as well
 		request.setAttribute(reportName, aggregateReport);

@@ -61,6 +61,13 @@
 		<!-- User excel report -->
 		<action name="ReportChartForm" path="/userExcelReport" />
 
+		<!-- Print report -->
+		<action name="ReportChartForm" path="/printReport">
+			<forward name="customerReport" path=".ehour.report.customerPrintReport" />	
+			<forward name="userReport" path=".ehour.report.userPrintReport" />	
+			<forward name="projectReport" path=".ehour.report.projectPrintReport" />	
+		</action>
+
 	</action-mappings>
 	
 	<!-- spring tiles controller -->
