@@ -38,6 +38,7 @@ import net.rrm.ehour.web.report.reports.AggregateReport;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -133,6 +134,17 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet 	sheet = wb.createSheet(getExcelReportName());
 		int			rowNumber = 0;
+		short		column;
+		
+		for (column = 0; column < 4; column++)
+		{
+			sheet.setColumnWidth(column, (short)5000);
+		}
+
+		for (; column < 7; column++)
+		{
+			sheet.setColumnWidth(column, (short)3000);
+		}
 
 		initCellStyles(wb);
 		
@@ -169,12 +181,11 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 		cell.setCellStyle(dateBoldCellStyle);
 		cell.setCellValue(report.getReportCriteria().getReportRange().getDateStart());
 
-		row = sheet.createRow(rowNumber++);
-		cell = row.createCell((short)0);
+		cell = row.createCell((short)3);
 		cell.setCellStyle(boldCellStyle);
 		cell.setCellValue("End date:");
 
-		cell = row.createCell((short)1);
+		cell = row.createCell((short)4);
 		cell.setCellStyle(dateBoldCellStyle);
 		cell.setCellValue(report.getReportCriteria().getReportRange().getDateEndForDisplay());
 		
@@ -190,6 +201,9 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 	 */
 	protected void initCellStyles(HSSFWorkbook workbook)
 	{
+		HSSFPalette palette = workbook.getCustomPalette();
+		palette.setColorAtIndex(HSSFColor.BLUE.index, (byte) 231, (byte) 243, (byte) 255);
+		
 		headerCellStyle = workbook.createCellStyle();
 		
 		boldFont = workbook.createFont();
@@ -198,6 +212,8 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 		headerCellStyle.setFont(boldFont);
 		headerCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
 		headerCellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+		headerCellStyle.setFillForegroundColor(HSSFColor.BLUE.index);
+		headerCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
 		boldCellStyle = workbook.createCellStyle();
 		boldCellStyle.setFont(boldFont);
