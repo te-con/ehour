@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="net.rrm.ehour.project.domain.ProjectAssignmentType" table="PROJECT_ASSIGNMENT_TYPE">
+	<class name="net.rrm.ehour.project.domain.ProjectAssignmentType" table="PROJECT_ASSIGNMENT_TYPE"  mutable="false">
 	    <cache usage="read-only" />
 		
 		<id name="assignmentTypeId" column="ASSIGNMENT_TYPE_ID" type="integer">

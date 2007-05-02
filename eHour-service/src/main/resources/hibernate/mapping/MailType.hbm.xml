@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="net.rrm.ehour.mail.domain.MailType" table="MAIL_TYPE">
+	<class name="net.rrm.ehour.mail.domain.MailType" table="MAIL_TYPE"  mutable="false">
 	    <cache usage="read-only" />
 		
 		<id name="mailTypeId" column="MAIL_TYPE_ID" type="integer">
