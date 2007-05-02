@@ -41,7 +41,6 @@
 							<option value="projectReport"><fmt:message key="report.report.projectReport" />														
 						</select>
 					</td>
-					
 				</tr>
 			</table>
 			
