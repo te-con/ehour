@@ -154,7 +154,8 @@ function initForm()
 	dojo.event.connect(dojo.byId('infiniteEndDateId'), "onclick", "toggleEndDate");	
 	
 	hideRows('');
-	
+	toggleStartDate('');
+	toggleEndDate('');
 	fetchProject('');
 }
 

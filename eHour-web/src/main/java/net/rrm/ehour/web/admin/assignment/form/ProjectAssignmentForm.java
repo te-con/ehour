@@ -43,7 +43,9 @@ public class ProjectAssignmentForm extends ActionForm
 	private	Integer	assignmentId;
 	private	Integer	assignmentTypeId;
 	private	String	dateStart;
+	private boolean infiniteStartDate;
 	private	String	dateEnd;
+	private boolean	infiniteEndDate;
 	private	Integer	projectId;
 	private	Float	hourlyRate;
 	private	String	role;
@@ -58,6 +60,8 @@ public class ProjectAssignmentForm extends ActionForm
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
 		notifyPm = false;
+		infiniteStartDate = false;
+		infiniteEndDate = false;
 	}	
 	
 	/**
@@ -213,6 +217,38 @@ public class ProjectAssignmentForm extends ActionForm
 	public void setAllowedOverrun(Float allowedOverrun)
 	{
 		this.allowedOverrun = allowedOverrun;
+	}
+
+	/**
+	 * @return the infiniteEndDate
+	 */
+	public boolean isInfiniteEndDate()
+	{
+		return infiniteEndDate;
+	}
+
+	/**
+	 * @param infiniteEndDate the infiniteEndDate to set
+	 */
+	public void setInfiniteEndDate(boolean infiniteEndDate)
+	{
+		this.infiniteEndDate = infiniteEndDate;
+	}
+
+	/**
+	 * @return the infiniteStartDate
+	 */
+	public boolean isInfiniteStartDate()
+	{
+		return infiniteStartDate;
+	}
+
+	/**
+	 * @param infiniteStartDate the infiniteStartDate to set
+	 */
+	public void setInfiniteStartDate(boolean infiniteStartDate)
+	{
+		this.infiniteStartDate = infiniteStartDate;
 	}
 	
 }

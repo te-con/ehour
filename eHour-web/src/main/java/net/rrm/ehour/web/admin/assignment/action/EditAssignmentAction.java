@@ -104,15 +104,18 @@ public class EditAssignmentAction extends AdminProjectAssignmentBaseAction
 		
 		if (pa.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_DATE)
 		{
-			if (pa.getDateStart() == null)
-			{
-				messages.add("dateStart", new ActionMessage("errors.invalidDate"));
-			}
-			else if (pa.getDateEnd() == null)
-			{
-				messages.add("dateEnd", new ActionMessage("errors.invalidDate"));
-			}
-			else if (pa.getDateStart().after(pa.getDateEnd()))
+//			if (pa.getDateStart() == null)
+//			{
+//				messages.add("dateStart", new ActionMessage("errors.invalidDate"));
+//			}
+//			else if (pa.getDateEnd() == null)
+//			{
+//				messages.add("dateEnd", new ActionMessage("errors.invalidDate"));
+//			}
+//			else 
+			if (pa.getDateStart() != null
+					&& pa.getDateEnd() != null
+					&& pa.getDateStart().after(pa.getDateEnd()))
 			{
 				messages.add("dateStart", new ActionMessage("admin.assignment.errorStartAfterEnd"));
 			}

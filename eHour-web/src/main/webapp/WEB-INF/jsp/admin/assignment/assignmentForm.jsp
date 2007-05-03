@@ -249,7 +249,13 @@ function initDojo()
 					<br>
 				</div>
 				
-				<input type="checkbox" name="infiniteStartDate" class="textInputSmall" id="infiniteStartDateId">
+				<input type="checkbox" name="infiniteStartDate"
+						class="textInputSmall"
+						id="infiniteStartDateId"
+						<c:if test="${assignment.dateStart == null}">
+							CHECKED
+						</c:if>
+						>
 				<fmt:message key="admin.assignment.infiniteStart" />
 				<br><br>
 			</td>
@@ -270,7 +276,14 @@ function initDojo()
 					<br>
 				</div>
 
-				<input type="checkbox" name="infiniteEndDate" class="textInputSmall" id="infiniteEndDateId">
+				<input type="checkbox"
+						name="infiniteEndDate"
+						class="textInputSmall"
+						id="infiniteEndDateId"
+						<c:if test="${assignment.dateEnd == null}">
+							CHECKED
+						</c:if>
+						>
 				<fmt:message key="admin.assignment.infiniteEnd" />
 				<br><br>
 			</td>

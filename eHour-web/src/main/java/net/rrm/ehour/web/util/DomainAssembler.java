@@ -186,22 +186,27 @@ public class DomainAssembler
 			pa.setAssignmentId(paf.getAssignmentId());
 		}		
 
-		try
+		if (!paf.isInfiniteStartDate())
 		{
-			pa.setDateStart(dateParser.parse(paf.getDateStart()));
-		}
-		catch (ParseException pe)
-		{
+			try
+			{
+				pa.setDateStart(dateParser.parse(paf.getDateStart()));
+			}
+			catch (ParseException pe)
+			{
+			}
 		}
 
-		try
+		if (!paf.isInfiniteEndDate())
 		{
-			pa.setDateEnd(dateParser.parse(paf.getDateEnd()));
-		}
-		catch (ParseException pe)
-		{
-		}
-		
+			try
+			{
+				pa.setDateEnd(dateParser.parse(paf.getDateEnd()));
+			}
+			catch (ParseException pe)
+			{
+			}
+		}		
 
 		pa.setHourlyRate(paf.getHourlyRate());
 		pa.setRole(paf.getRole());
