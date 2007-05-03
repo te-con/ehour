@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.report.charts;
+package net.rrm.ehour.web.report.charts.aggregate;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.web.report.charts.rowkey.ChartRowKey;
 import net.rrm.ehour.web.sort.StringComparator;
 
@@ -54,11 +54,11 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 	 * @see net.rrm.ehour.web.report.charts.AbstractChartAction#getChart(net.rrm.ehour.report.reports.ReportData, java.lang.Integer)
 	 */
 	@Override
-	protected JFreeChart getChart(ReportData reportData, Integer forId)
+	protected JFreeChart getChart(ReportDataAggregate reportDataAggregate, Integer forId)
 	{
 		logger.debug("Creating " + getReportName() + " aggregate chart");
 		
-		DefaultCategoryDataset dataset = createDataset(reportData, forId);
+		DefaultCategoryDataset dataset = createDataset(reportDataAggregate, forId);
 
 		JFreeChart chart = ChartFactory.createBarChart(getReportName(), // chart title
 				null, // domain axis label
@@ -90,10 +90,10 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 	
 	/**
 	 * Create dataset for this aggregate chart
-	 * @param reportData
+	 * @param reportDataAggregate
 	 * @return
 	 */
-	private DefaultCategoryDataset createDataset(ReportData reportData, Integer forId)
+	private DefaultCategoryDataset createDataset(ReportDataAggregate reportDataAggregate, Integer forId)
 	{
 		DefaultCategoryDataset dataset;
 		Map<String, Number> valueMap = new HashMap<String, Number>();
@@ -104,7 +104,7 @@ public abstract class AbstractAggregateChartAction extends AbstractChartAction
 
 		dataset = new DefaultCategoryDataset();
 
-		for (ProjectAssignmentAggregate aggregate : reportData.getProjectAssignmentAggregates())
+		for (ProjectAssignmentAggregate aggregate : reportDataAggregate.getProjectAssignmentAggregates())
 		{
 			rowKey = getRowKey(aggregate);
 			

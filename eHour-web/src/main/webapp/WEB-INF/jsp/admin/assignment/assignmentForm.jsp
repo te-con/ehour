@@ -239,12 +239,19 @@ function initDojo()
 		
 
 		<tr id="dateStartTr">
-			<td>
+			<td valign="top">
 				<fmt:message key="admin.assignment.dateStart" />:
 			</td>
 			
 			<td>
-				<div id="dateStartDiv"></div>
+				<div id="dateStartSelect">
+					<div id="dateStartDiv"></div>
+					<br>
+				</div>
+				
+				<input type="checkbox" name="infiniteStartDate" class="textInputSmall" id="infiniteStartDateId">
+				<fmt:message key="admin.assignment.infiniteStart" />
+				<br><br>
 			</td>
 			
 			<td style="color: red">
@@ -253,12 +260,19 @@ function initDojo()
 		</tr>
 	
 		<tr id="dateEndTr">
-			<td>
+			<td valign="top">
 				<fmt:message key="admin.assignment.dateEnd" />:
 			</td>
 			
 			<td>
-				<div id="dateEndDiv" />
+				<div id="dateEndSelect">
+					<div id="dateEndDiv"></div>
+					<br>
+				</div>
+
+				<input type="checkbox" name="infiniteEndDate" class="textInputSmall" id="infiniteEndDateId">
+				<fmt:message key="admin.assignment.infiniteEnd" />
+				<br><br>
 			</td>
 			
 			<td style="color: red">

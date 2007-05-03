@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.report.reports;
+package net.rrm.ehour.web.report.reports.trend;
 
 import java.text.ParseException;
 import java.util.Comparator;

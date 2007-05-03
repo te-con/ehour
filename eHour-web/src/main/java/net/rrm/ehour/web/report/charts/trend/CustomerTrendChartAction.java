@@ -21,14 +21,15 @@
  *
  */
 
-package net.rrm.ehour.web.report.charts;
+package net.rrm.ehour.web.report.charts.trend;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.web.report.charts.aggregate.AbstractChartAction;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -44,7 +45,7 @@ public class CustomerTrendChartAction extends AbstractChartAction
 {
 
 	@Override
-	protected JFreeChart getChart(ReportData reportData, Integer forId)
+	protected JFreeChart getChart(ReportDataAggregate reportDataAggregate, Integer forId)
 	{
 		List<FlatProjectAssignmentAggregate>	results;
 		TimeSeries 		timeSeries;
@@ -55,7 +56,7 @@ public class CustomerTrendChartAction extends AbstractChartAction
 		
 		seriesMap = new HashMap<Integer, TimeSeries>();
 		
-		results = reportData.getFlatProjectAssignmentAggregates();
+		results = reportDataAggregate.getFlatProjectAssignmentAggregates();
 
 		for (FlatProjectAssignmentAggregate aggregate : results)
 		{

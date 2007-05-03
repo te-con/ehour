@@ -58,7 +58,8 @@ public class ActionAspect
 //	@Before("execution(* net.rrm.ehour.web.*.action.*Action.execute(..)) and args(mapping, form, request,..)")
 	public void setLocale(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Throwable
 	{
-		if (!config.getLocaleLanguage().equals("noForce"))
+		if (config.getLocaleLanguage() == null 
+			|| !config.getLocaleLanguage().equals("noForce"))
 		{
 			logger.debug("Setting locale to " + config.getLocaleLanguage());
 			Config.set(request, Config.FMT_LOCALE, config.getLocaleLanguage());

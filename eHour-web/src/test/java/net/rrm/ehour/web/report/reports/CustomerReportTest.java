@@ -29,7 +29,8 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.web.report.reports.aggregate.CustomerReport;
 
 /**
  * TODO 
@@ -53,10 +54,10 @@ public class CustomerReportTest extends TestCase
 		pags.add(pag1);
 		pags.add(pag2);
 		
-		ReportData reportData = new ReportData(pags, null, null);
+		ReportDataAggregate reportDataAggregate = new ReportDataAggregate(pags, null, null);
 		
 		CustomerReport report = new CustomerReport();
-		report.initialize(reportData);
+		report.initialize(reportDataAggregate);
 		
 		assertEquals(2, report.getReportValues().size());
 	}

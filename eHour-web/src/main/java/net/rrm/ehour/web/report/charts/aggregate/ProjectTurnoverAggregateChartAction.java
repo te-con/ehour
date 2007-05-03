@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.report.charts;
+package net.rrm.ehour.web.report.charts.aggregate;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.web.report.charts.rowkey.ChartRowKey;

@@ -25,10 +25,10 @@ package net.rrm.ehour.web.report.action;
 
 import javax.servlet.http.HttpSession;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.web.report.form.ReportForm;
-import net.rrm.ehour.web.report.reports.AggregateReport;
-import net.rrm.ehour.web.report.reports.AggregateReportFactory;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReport;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReportFactory;
 
 /**
  * Show report by re-using reportData in the session and creating a new aggregate one
@@ -43,7 +43,7 @@ public class ShowNewReportForSameDataAction extends ReUseReportAction
 	protected AggregateReport getAggregateReport(HttpSession session,
 												 String reportName,
 												 ReportForm reportForm,
-												 ReportData reportData)
+												 ReportDataAggregate reportDataAggregate)
 	{
 		AggregateReport	report;
 		Integer			forId;
@@ -54,11 +54,11 @@ public class ShowNewReportForSameDataAction extends ReUseReportAction
 		
 		if (forId == null || forId.intValue() == 0)
 		{
-			report = AggregateReportFactory.createReport(reportName, reportData);
+			report = AggregateReportFactory.createReport(reportName, reportDataAggregate);
 		}
 		else
 		{
-			report = AggregateReportFactory.createReport(reportName, reportData, forId);
+			report = AggregateReportFactory.createReport(reportName, reportDataAggregate, forId);
 		}
 		
 		return report;

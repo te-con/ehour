@@ -29,8 +29,8 @@ import java.util.SortedMap;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.web.report.reports.AggregateReport;
-import net.rrm.ehour.web.report.reports.UserReport;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReport;
+import net.rrm.ehour.web.report.reports.aggregate.UserReport;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;

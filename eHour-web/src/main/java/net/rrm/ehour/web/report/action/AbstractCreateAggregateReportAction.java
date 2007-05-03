@@ -31,9 +31,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.web.report.form.ReportForm;
-import net.rrm.ehour.web.report.reports.AggregateReport;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReport;
 import net.rrm.ehour.web.report.util.ReportSessionKey;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
@@ -65,7 +65,7 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 									HttpServletRequest request, HttpServletResponse response)
 	{
-		ReportData			reportData;
+		ReportDataAggregate			reportDataAggregate;
 		String				sessionKey;
 		HttpSession			session = request.getSession();
 		String				reportName;
@@ -75,13 +75,13 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 		
 		reportForm = (ReportForm)form;
 		
-		reportData = getReportData(request, mapping, reportForm);
+		reportDataAggregate = getReportData(request, mapping, reportForm);
 		reportName = getReportName(session, reportForm);
 
-		aggregateReport = getAggregateReport(session, reportName, reportForm, reportData);
+		aggregateReport = getAggregateReport(session, reportName, reportForm, reportDataAggregate);
 
 		// with the data retrieved, provide a hook for any excel/chart reporting
-		fwd = processReport(mapping, response, reportForm, reportName, reportData, aggregateReport);
+		fwd = processReport(mapping, response, reportForm, reportName, reportDataAggregate, aggregateReport);
 		
 		// store the report data and the generated report on the session
 		if (isReplaceSessionData())
@@ -89,7 +89,7 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 			removeOldReportData(session);
 	
 			sessionKey = generateSessionKey();
-			session.setAttribute(ReportSessionKey.REPORT_DATA + "_" + sessionKey, reportData);
+			session.setAttribute(ReportSessionKey.REPORT_DATA + "_" + sessionKey, reportDataAggregate);
 			session.setAttribute(ReportSessionKey.REPORT_AGGREGATE + "_" + reportName + "_" + sessionKey, aggregateReport);
 			session.setAttribute(ReportSessionKey.REPORT_NAME + "_" + sessionKey, aggregateReport.getReportName());
 		}
@@ -118,7 +118,7 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 	 * @param fwd
 	 * @return
 	 */
-	protected abstract ReportData getReportData(HttpServletRequest request,
+	protected abstract ReportDataAggregate getReportData(HttpServletRequest request,
 												ActionMapping mapping,
 												ReportForm form);
 	
@@ -126,25 +126,25 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 	 * Get aggregate report based on report data
 	 * @param request
 	 * @param reportName
-	 * @param reportData
+	 * @param reportDataAggregate
 	 */
 	protected abstract AggregateReport getAggregateReport(HttpSession session,
 															String reportName,
 															ReportForm reportForm,
-															ReportData reportData);
+															ReportDataAggregate reportDataAggregate);
 	
 	/**
 	 * Process report. Normally this defaults to just fetching the fwd
 	 * @param request
 	 * @param reportForm
-	 * @param reportData
+	 * @param reportDataAggregate
 	 * @param report
 	 */
 	protected ActionForward processReport(ActionMapping mapping,
 											HttpServletResponse response,
 											ReportForm reportForm,
 											String reportName,
-											ReportData reportData,
+											ReportDataAggregate reportDataAggregate,
 											AggregateReport report)
 	{
 		return mapping.findForward(reportName);

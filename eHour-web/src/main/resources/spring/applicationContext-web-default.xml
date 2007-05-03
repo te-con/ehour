@@ -71,7 +71,7 @@
 	</bean>
 
 	<bean name="/eh/userReport/projectReport"
-		class="net.rrm.ehour.web.report.action.CreateReportAction">
+		class="net.rrm.ehour.web.report.action.CreateAggregateReportAction">
 		<property name="reportCriteria" ref="reportCriteria" />
 		<property name="reportService" ref="reportService" />
 		<property name="config" ref="ehourConfig" />
@@ -79,19 +79,19 @@
 
 	<!-- reUseReportAction from web-report.xml -->
 	<bean name="/eh/userReport/showCustomerHoursAggregateChart"
-		class="net.rrm.ehour.web.report.charts.CustomerHoursAggregateChartAction" 
+		class="net.rrm.ehour.web.report.charts.aggregate.CustomerHoursAggregateChartAction" 
 		parent="reUseReportAction" />
 		
 	<bean name="/eh/userReport/showCustomerTurnoverAggregateChart"
-		class="net.rrm.ehour.web.report.charts.CustomerTurnoverAggregateChartAction"
+		class="net.rrm.ehour.web.report.charts.aggregate.CustomerTurnoverAggregateChartAction"
 		parent="reUseReportAction" />
 
 	<bean name="/eh/userReport/showProjectHoursAggregateChart"
-		class="net.rrm.ehour.web.report.charts.ProjectHoursAggregateChartAction" 
+		class="net.rrm.ehour.web.report.charts.aggregate.ProjectHoursAggregateChartAction" 
 		parent="reUseReportAction" />
 		
 	<bean name="/eh/userReport/showProjectTurnoverAggregateChart"
-		class="net.rrm.ehour.web.report.charts.ProjectTurnoverAggregateChartAction" 
+		class="net.rrm.ehour.web.report.charts.aggregate.ProjectTurnoverAggregateChartAction" 
 		parent="reUseReportAction" />
 
 	<bean name="/eh/cal/navCalendar"

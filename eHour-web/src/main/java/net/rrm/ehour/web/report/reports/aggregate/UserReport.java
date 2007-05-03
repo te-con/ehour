@@ -1,5 +1,5 @@
 /**
- * Created on Jan 31, 2007
+ * Created on 22-feb-2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,59 +21,51 @@
  *
  */
 
-package net.rrm.ehour.web.report.reports;
+package net.rrm.ehour.web.report.reports.aggregate;
 
 import java.util.Comparator;
 
 import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.web.sort.ProjectComparator;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.web.sort.CustomerComparator;
 
 /**
- * Create a customer report based on the supplied report data
- * Structure: Customer -> Project -> Aggregate
+ * UserReport (User -> Customer -> Project details)
  **/
 
-public class CustomerReport extends AggregateReport<Customer, Project, Integer>
+public class UserReport extends AggregateReport<User, Customer, Integer>
 {
-	private static final long serialVersionUID = 6365903846883586472L;
-
 	/**
 	 * 
 	 */
 	@Override
 	public String getReportName()
 	{
-		return AggregateReportFactory.CUSTOMER_REPORT;
-		
+		return AggregateReportFactory.USER_REPORT;
 	}
 
 	/**
-	 * Get the project as the child key
+	 * Get the customer as the child key
 	 */
 	@Override
-	protected Project getChildKey(ProjectAssignmentAggregate aggregate)
-	{
-		return aggregate.getProjectAssignment().getProject();
-	}
-
-	/**
-	 * Get the customer as the root key
-	 */
-	@Override
-	protected Customer getRootKey(ProjectAssignmentAggregate aggregate)
+	protected Customer getChildKey(ProjectAssignmentAggregate aggregate)
 	{
 		return aggregate.getProjectAssignment().getProject().getCustomer();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.reports.AggregateReport#getComparator()
+	/**
+	 * Get the user as the root key
 	 */
 	@Override
-	public Comparator<Project> getComparator()
+	protected User getRootKey(ProjectAssignmentAggregate aggregate)
 	{
-		return new ProjectComparator();
+		return aggregate.getProjectAssignment().getUser();
+	}
+
+	@Override
+	public Comparator<Customer> getComparator()
+	{
+		return new CustomerComparator();
 	}
 }

@@ -26,7 +26,6 @@ package net.rrm.ehour.web.report.util;
 import java.util.Collections;
 
 import net.rrm.ehour.report.criteria.AvailableCriteria;
-import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.web.sort.CustomerComparator;
 import net.rrm.ehour.web.sort.ProjectComparator;
 import net.rrm.ehour.web.sort.UserComparator;

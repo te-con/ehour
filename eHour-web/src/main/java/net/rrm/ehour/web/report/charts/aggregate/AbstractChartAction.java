@@ -21,18 +21,18 @@
  *
  */
 
-package net.rrm.ehour.web.report.charts;
+package net.rrm.ehour.web.report.charts.aggregate;
 
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.web.report.action.ReUseReportAction;
 import net.rrm.ehour.web.report.form.ReportChartForm;
 import net.rrm.ehour.web.report.form.ReportForm;
-import net.rrm.ehour.web.report.reports.AggregateReport;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReport;
 import net.rrm.ehour.web.report.util.ChartUtil;
 
 import org.apache.struts.action.ActionForward;
@@ -52,7 +52,7 @@ public abstract class AbstractChartAction extends ReUseReportAction
 	protected AggregateReport getAggregateReport(HttpSession session,
 			 String reportName,
 			 ReportForm reportForm,
-			 ReportData reportData)
+			 ReportDataAggregate reportDataAggregate)
 	{
 		return null;
 	}
@@ -64,7 +64,7 @@ public abstract class AbstractChartAction extends ReUseReportAction
 											HttpServletResponse response,
 											ReportForm reportForm,
 											String reportName,
-											ReportData reportData,
+											ReportDataAggregate reportDataAggregate,
 											AggregateReport report)
 	{
 		ReportChartForm chartForm = (ReportChartForm)reportForm;
@@ -86,7 +86,7 @@ public abstract class AbstractChartAction extends ReUseReportAction
 		    forId = null;
 		}
 		
-		chart = getChart(reportData, forId);
+		chart = getChart(reportDataAggregate, forId);
 		ChartUtil.changeChartStyle(chart);
 				
 		try
@@ -111,8 +111,8 @@ public abstract class AbstractChartAction extends ReUseReportAction
 	
 	/**
 	 * Create chart
-	 * @param reportData
+	 * @param reportDataAggregate
 	 * @return
 	 */
-	protected abstract JFreeChart getChart(ReportData reportData, Integer forId);
+	protected abstract JFreeChart getChart(ReportDataAggregate reportDataAggregate, Integer forId);
 }

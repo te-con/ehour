@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.report.charts;
+package net.rrm.ehour.web.report.charts.aggregate;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.web.report.charts.rowkey.ChartRowKey;
@@ -31,32 +31,29 @@ import net.rrm.ehour.web.report.charts.rowkey.UserRowKey;
  * TODO 
  **/
 
-public class UserTurnoverAggregateChartAction extends AbstractAggregateChartAction
+public class UserHoursAggregateChartAction extends AbstractAggregateChartAction
 {
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getColumnValue(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
 	protected Number getColumnValue(ProjectAssignmentAggregate aggregate)
 	{
-		return aggregate.getTurnOver();
+		return aggregate.getHours();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getReportName()
 	 */
 	@Override
 	protected String getReportName()
 	{
 		// TODO i18n
-		return "Turnover per employee";
+		return "Hours per employee";
 	}
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getRowKey(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
@@ -65,15 +62,14 @@ public class UserTurnoverAggregateChartAction extends AbstractAggregateChartActi
 		return new UserRowKey(aggregate.getProjectAssignment().getUser());
 	}
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getValueAxisLabel()
 	 */
 	@Override
 	protected String getValueAxisLabel()
 	{
-		// TODO: i18n
-		return "Turnover";
+		// TODO i18n
+		return "Hours";
 	}
 
 }

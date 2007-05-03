@@ -30,8 +30,10 @@ import java.util.List;
 
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReport;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReportFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +44,7 @@ import org.junit.Test;
 
 public class ProjectReportTest
 {
-	private ReportData	reportData;
+	private ReportDataAggregate	reportDataAggregate;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -50,7 +52,7 @@ public class ProjectReportTest
 	@Before
 	public void setUp() throws Exception
 	{
-		reportData = new ReportData();
+		reportDataAggregate = new ReportDataAggregate();
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		User user = DummyDataGenerator.getUser();
 		user.setUserId(1);
@@ -60,16 +62,16 @@ public class ProjectReportTest
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 2, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(4, 3, 1));	
 		
-		reportData.setProjectAssignmentAggregates(pags);
+		reportDataAggregate.setProjectAssignmentAggregates(pags);
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.web.report.reports.ProjectReport#getReportName()}.
+	 * Test method for {@link net.rrm.ehour.web.report.reports.aggregate.ProjectReport#getReportName()}.
 	 */
 	@Test
 	public void testGetReportName()
 	{
-		AggregateReport report = AggregateReportFactory.createReport(AggregateReportFactory.PROJECT_REPORT, reportData);
+		AggregateReport report = AggregateReportFactory.createReport(AggregateReportFactory.PROJECT_REPORT, reportDataAggregate);
 		
 		assertEquals(4, report.getReportValues().keySet().size());
 	}

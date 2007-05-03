@@ -1,5 +1,5 @@
 /**
- * Created on 3-mar-2007
+ * Created on Feb 24, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -20,45 +20,49 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  *
  */
-package net.rrm.ehour.web.report.charts;
 
+package net.rrm.ehour.web.report.reports.aggregate;
+
+import java.util.Comparator;
+
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.web.report.charts.rowkey.ChartRowKey;
-import net.rrm.ehour.web.report.charts.rowkey.CustomerRowKey;
+import net.rrm.ehour.web.sort.CustomerComparator;
 
-public class CustomerHoursAggregateChartAction extends AbstractAggregateChartAction
+/**
+ * Project -> user report 
+ **/
+
+public class ProjectReport extends AggregateReport<Project, Customer, Integer>
 {
-	// TODO i18n
+
 	@Override
-	protected String getReportName()
+	protected Customer getChildKey(ProjectAssignmentAggregate aggregate)
 	{
-		return "Hours per customer";
+		return aggregate.getProjectAssignment().getProject().getCustomer();
 	}
 
-	/**
-	 * Get the hours from the aggregate
-	 */
 	@Override
-	protected Number getColumnValue(ProjectAssignmentAggregate aggregate)
+	public String getReportName()
 	{
-		return aggregate.getHours();
+		return AggregateReportFactory.PROJECT_REPORT;
 	}
 
-	/**
-	 * Get the customerrowkey decorator from the aggregate
-	 */
 	@Override
-	protected ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate)
+	protected Project getRootKey(ProjectAssignmentAggregate aggregate)
 	{
-		return new CustomerRowKey(aggregate.getProjectAssignment().getProject().getCustomer());
+		return aggregate.getProjectAssignment().getProject();
 	}
 
-	/**
-	 * TODO: i18n
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.web.report.reports.AggregateReport#getComparator()
 	 */
 	@Override
-	protected String getValueAxisLabel()
+	public Comparator<Customer> getComparator()
 	{
-		return "Hours";
+		return new CustomerComparator();
 	}
+
 }

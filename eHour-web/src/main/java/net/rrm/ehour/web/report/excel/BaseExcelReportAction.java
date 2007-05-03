@@ -30,10 +30,10 @@ import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.web.report.action.ReUseReportAction;
 import net.rrm.ehour.web.report.form.ReportForm;
-import net.rrm.ehour.web.report.reports.AggregateReport;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReport;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -72,7 +72,7 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 											HttpServletResponse response,
 											ReportForm reportForm,
 											String reportName,
-											ReportData reportData,
+											ReportDataAggregate reportDataAggregate,
 											AggregateReport report)
 	{
 		String			filename;

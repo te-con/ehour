@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.web.report.reports;
+package net.rrm.ehour.web.report.reports.aggregate;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -33,7 +33,8 @@ import java.util.TreeMap;
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.web.report.reports.Report;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
@@ -44,6 +45,7 @@ import org.apache.log4j.Logger;
  **/
 
 public abstract class AggregateReport<RK extends DomainObject, CK extends DomainObject, PK extends Comparable>
+					implements Report
 {
 	protected ReportCriteria	reportCriteria;
 	protected Logger			logger = Logger.getLogger(this.getClass());
@@ -54,19 +56,19 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 	
 	/**
 	 * Initialize the webreport
-	 * @param reportData
+	 * @param reportDataAggregate
 	 */
-	public void initialize(ReportData reportData)
+	public void initialize(ReportDataAggregate reportDataAggregate)
 	{
-		initialize(reportData, null);
+		initialize(reportDataAggregate, null);
 	}
 	
 	/**
 	 * Initialize the webreport for a specific id 
-	 * @param reportData
+	 * @param reportDataAggregate
 	 * @param forID the ID to generate the report for (null to ignore)
 	 */
-	public void initialize(ReportData reportData, PK forId)
+	public void initialize(ReportDataAggregate reportDataAggregate, PK forId)
 	{
 		Date								profileStart = new Date();
 		RK									rootKey;
@@ -78,11 +80,11 @@ public abstract class AggregateReport<RK extends DomainObject, CK extends Domain
 		
 		reportMap = new TreeMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>();
 
-		logger.debug("Initializing " + getReportName() + " report" + ((forId != null) ? " for id " + forId : ""));
+		logger.debug("Initializing aggregate " + getReportName() + " report" + ((forId != null) ? " for id " + forId : ""));
 
-		reportCriteria = reportData.getReportCriteria();
+		reportCriteria = reportDataAggregate.getReportCriteria();
 		
-		for (ProjectAssignmentAggregate aggregate : reportData.getProjectAssignmentAggregates())
+		for (ProjectAssignmentAggregate aggregate : reportDataAggregate.getProjectAssignmentAggregates())
 		{
 			rootKey = getRootKey(aggregate);
 			

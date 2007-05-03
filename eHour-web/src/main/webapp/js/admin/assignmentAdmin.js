@@ -21,6 +21,7 @@ function validateForm(formId)
 		var validationRules = new Array(new Array("hourlyRate", "hourlyRateError", notAFloat));
 		isValid = validateFloat(formId, validationRules);
 	}
+	
 	// time alloted fixed
 	else if (asgTypeId == 2)
 	{
@@ -149,6 +150,8 @@ function initForm()
 
 	dojo.event.connect(dojo.byId('assignmentTypeId'), "onchange", "hideRows");
 	dojo.event.connect(dojo.byId('projectSelector'), "onchange", "fetchProject");
+	dojo.event.connect(dojo.byId('infiniteStartDateId'), "onclick", "toggleStartDate");
+	dojo.event.connect(dojo.byId('infiniteEndDateId'), "onclick", "toggleEndDate");	
 	
 	hideRows('');
 	
@@ -165,6 +168,7 @@ function hideRows(evt)
 	dojo.byId('allowedOverrunTr').style.display = (asgTypeId == 3) ? "" : "none";	
 	
 	dojo.byId('dateStartTr').style.display = (asgTypeId == 1) ? "none" : "";
+	dojo.byId('dateStartTr').style.display = (asgTypeId == 1) ? "none" : "";	
 	dojo.byId('dateEndTr').style.display = (asgTypeId == 1) ? "none" : "";	
 }	
 
@@ -217,6 +221,36 @@ function init()
 	dojo.event.connect(dojo.byId('filterInput'), "onkeyup", "filterKeyUp");
 	dojo.event.connect(dojo.byId('filterInput'), "onclick", "hideDefaultText");
 	dojo.event.connect(dojo.byId('filterInput'), "onblur", "showDefaultText");
+}
+
+// toggle start date
+function toggleStartDate(evt)
+{
+	var infiniteStartDate = dojo.byId('infiniteStartDateId');
+	
+	if (infiniteStartDate.checked)
+	{
+		dojo.byId('dateStartSelect').style.display='none';
+	}
+	else
+	{
+		dojo.byId('dateStartSelect').style.display='';
+	}
+}
+
+// toggle end date
+function toggleEndDate(evt)
+{
+	var infiniteEndDate = dojo.byId('infiniteEndDateId');
+	
+	if (infiniteEndDate.checked)
+	{
+		dojo.byId('dateEndSelect').style.display='none';
+	}
+	else
+	{
+		dojo.byId('dateEndSelect').style.display='';
+	}
 }
 
 // hide default text from user filter

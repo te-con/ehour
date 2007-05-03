@@ -21,9 +21,9 @@
  *
  */
 
-package net.rrm.ehour.web.report.reports;
+package net.rrm.ehour.web.report.reports.aggregate;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 
 /**
  * Factory for aggregate reports
@@ -38,25 +38,24 @@ public class AggregateReportFactory
 	/**
 	 * 
 	 * @param reportName
-	 * @param reportData
+	 * @param reportDataAggregate
 	 * @return
 	 */
-	public static AggregateReport createReport(String reportName, ReportData reportData)
+	public static AggregateReport createReport(String reportName, ReportDataAggregate reportDataAggregate)
 	{
-		return createReport(reportName, reportData, null);
+		return createReport(reportName, reportDataAggregate, null);
 	}
 	
 	/**
 	 * Create reports based on user role
 	 * @param userRole
-	 * @param reportData
+	 * @param reportDataAggregate
 	 * @return
 	 */
-	public static AggregateReport createReport(String reportName, ReportData reportData, Integer forId)
+	public static AggregateReport createReport(String reportName, ReportDataAggregate reportDataAggregate, Integer forId)
 	{
 		AggregateReport<?, ?, Integer>	report;
-		
-		// TODO make this a bit more configurable
+
 		if (reportName.equals(USER_REPORT))
 		{
 			report = new UserReport();
@@ -74,7 +73,7 @@ public class AggregateReportFactory
 			return null;
 		}
 		
-		report.initialize(reportData, forId);
+		report.initialize(reportDataAggregate, forId);
 
 		return report;
 	}

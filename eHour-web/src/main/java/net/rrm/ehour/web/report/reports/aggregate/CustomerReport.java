@@ -1,5 +1,5 @@
 /**
- * Created on Feb 24, 2007
+ * Created on Jan 31, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,38 +21,50 @@
  *
  */
 
-package net.rrm.ehour.web.report.reports;
+package net.rrm.ehour.web.report.reports.aggregate;
 
 import java.util.Comparator;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.web.sort.CustomerComparator;
+import net.rrm.ehour.web.sort.ProjectComparator;
 
 /**
- * Project -> user report 
+ * Create a customer report based on the supplied report data
+ * Structure: Customer -> Project -> Aggregate
  **/
 
-public class ProjectReport extends AggregateReport<Project, Customer, Integer>
+public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 {
+	private static final long serialVersionUID = 6365903846883586472L;
 
-	@Override
-	protected Customer getChildKey(ProjectAssignmentAggregate aggregate)
-	{
-		return aggregate.getProjectAssignment().getProject().getCustomer();
-	}
-
+	/**
+	 * 
+	 */
 	@Override
 	public String getReportName()
 	{
-		return AggregateReportFactory.PROJECT_REPORT;
+		return AggregateReportFactory.CUSTOMER_REPORT;
+		
 	}
 
+	/**
+	 * Get the project as the child key
+	 */
 	@Override
-	protected Project getRootKey(ProjectAssignmentAggregate aggregate)
+	protected Project getChildKey(ProjectAssignmentAggregate aggregate)
 	{
 		return aggregate.getProjectAssignment().getProject();
+	}
+
+	/**
+	 * Get the customer as the root key
+	 */
+	@Override
+	protected Customer getRootKey(ProjectAssignmentAggregate aggregate)
+	{
+		return aggregate.getProjectAssignment().getProject().getCustomer();
 	}
 
 	/*
@@ -60,9 +72,8 @@ public class ProjectReport extends AggregateReport<Project, Customer, Integer>
 	 * @see net.rrm.ehour.web.report.reports.AggregateReport#getComparator()
 	 */
 	@Override
-	public Comparator<Customer> getComparator()
+	public Comparator<Project> getComparator()
 	{
-		return new CustomerComparator();
+		return new ProjectComparator();
 	}
-
 }

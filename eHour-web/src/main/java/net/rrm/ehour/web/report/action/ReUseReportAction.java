@@ -26,9 +26,9 @@ package net.rrm.ehour.web.report.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.web.report.form.ReportForm;
-import net.rrm.ehour.web.report.reports.AggregateReport;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReport;
 import net.rrm.ehour.web.report.util.ReportSessionKey;
 
 import org.apache.struts.action.ActionMapping;
@@ -47,7 +47,7 @@ public abstract class ReUseReportAction extends AbstractCreateAggregateReportAct
 	protected AggregateReport getAggregateReport(HttpSession session,
 												 String reportName,
 												 ReportForm reportForm,
-												 ReportData reportData)
+												 ReportDataAggregate reportDataAggregate)
 	{
 		String			sessionKey = reportForm.getKey();
 		AggregateReport	aggregateReport = null;
@@ -78,9 +78,9 @@ public abstract class ReUseReportAction extends AbstractCreateAggregateReportAct
 	 * Get cached report data from session (mainly for charts and new types of report on the same data)
 	 */
 	@Override
-	protected ReportData getReportData(HttpServletRequest request, ActionMapping mapping, ReportForm form)
+	protected ReportDataAggregate getReportData(HttpServletRequest request, ActionMapping mapping, ReportForm form)
 	{
-		ReportData		reportData = null;
+		ReportDataAggregate		reportDataAggregate = null;
 		HttpSession		session;
 		String			sessionKey;
 		
@@ -89,9 +89,9 @@ public abstract class ReUseReportAction extends AbstractCreateAggregateReportAct
 		
 		if (sessionKey != null)
 		{
-			reportData = (ReportData)session.getAttribute(ReportSessionKey.REPORT_DATA + "_" +  sessionKey);
+			reportDataAggregate = (ReportDataAggregate)session.getAttribute(ReportSessionKey.REPORT_DATA + "_" +  sessionKey);
 			
-			if (reportData != null)
+			if (reportDataAggregate != null)
 			{
 				logger.info("Report data found on session for key " + sessionKey);
 			}
@@ -105,6 +105,6 @@ public abstract class ReUseReportAction extends AbstractCreateAggregateReportAct
 			logger.error("No session key provided!");
 		}	
 		
-		return reportData;
+		return reportDataAggregate;
 	}
 }

@@ -29,8 +29,9 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.web.report.reports.aggregate.UserReport;
 
 /**
  * TODO 
@@ -48,11 +49,11 @@ public class UserReportTest extends TestCase
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.web.report.reports.UserReport#initialize(net.rrm.ehour.report.reports.ReportData)}.
+	 * Test method for {@link net.rrm.ehour.web.report.reports.aggregate.UserReport#initialize(net.rrm.ehour.report.reports.ReportDataAggregate)}.
 	 */
 	public void testInitialize()
 	{
-		ReportData	reportData = new ReportData();
+		ReportDataAggregate	reportDataAggregate = new ReportDataAggregate();
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		User user = DummyDataGenerator.getUser();
 		user.setUserId(1);
@@ -62,10 +63,10 @@ public class UserReportTest extends TestCase
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 2, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(4, 3, 1));
 		
-		reportData.setProjectAssignmentAggregates(pags);
+		reportDataAggregate.setProjectAssignmentAggregates(pags);
 		
 		UserReport report = new UserReport();
-		report.initialize(reportData);
+		report.initialize(reportDataAggregate);
 
 		assertEquals(2, report.getReportValues().keySet().size());
 		assertEquals(3, report.getReportValues().get(user).size());

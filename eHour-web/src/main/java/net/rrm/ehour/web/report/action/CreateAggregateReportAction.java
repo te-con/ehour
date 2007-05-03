@@ -30,13 +30,13 @@ import javax.servlet.http.HttpSession;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.web.report.form.ReportCriteriaForm;
 import net.rrm.ehour.web.report.form.ReportForm;
-import net.rrm.ehour.web.report.reports.AggregateReport;
-import net.rrm.ehour.web.report.reports.AggregateReportFactory;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReport;
+import net.rrm.ehour.web.report.reports.aggregate.AggregateReportFactory;
 import net.rrm.ehour.web.report.util.UserCriteriaAssembler;
 import net.rrm.ehour.web.util.AuthUtil;
 import net.rrm.ehour.web.util.WebConstants;
@@ -47,7 +47,7 @@ import org.apache.struts.action.ActionMapping;
  * Creates new report data and new aggregated report
  **/
 
-public class CreateReportAction extends AbstractCreateAggregateReportAction
+public class CreateAggregateReportAction extends AbstractCreateAggregateReportAction
 {
 	private ReportCriteria 	reportCriteria;
 	private	ReportService	reportService;
@@ -60,7 +60,7 @@ public class CreateReportAction extends AbstractCreateAggregateReportAction
 	protected AggregateReport getAggregateReport(HttpSession session,
 												String reportName,
 												ReportForm reportForm,
-												ReportData reportData)
+												ReportDataAggregate reportDataAggregate)
 	{
 		AggregateReport	report;
 		Integer			forId;
@@ -71,11 +71,11 @@ public class CreateReportAction extends AbstractCreateAggregateReportAction
 		
 		if (forId == null || forId.intValue() == 0)
 		{
-			report = AggregateReportFactory.createReport(reportName, reportData);
+			report = AggregateReportFactory.createReport(reportName, reportDataAggregate);
 		}
 		else
 		{
-			report = AggregateReportFactory.createReport(reportName, reportData, forId);
+			report = AggregateReportFactory.createReport(reportName, reportDataAggregate, forId);
 		}
 		
 		return report;
@@ -86,12 +86,12 @@ public class CreateReportAction extends AbstractCreateAggregateReportAction
 	 * @see net.rrm.ehour.web.report.action.AbstractCreateAggregateReportAction#getReportData(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionMapping, net.rrm.ehour.web.report.form.ReportForm)
 	 */
 	@Override
-	protected ReportData getReportData(HttpServletRequest request, ActionMapping mapping, ReportForm form)
+	protected ReportDataAggregate getReportData(HttpServletRequest request, ActionMapping mapping, ReportForm form)
 	{
 		String				param;
 		ReportCriteriaForm	rcForm = (ReportCriteriaForm)form;
 		UserCriteria		uc;
-		ReportData			reportData;
+		ReportDataAggregate			reportDataAggregate;
 		
 		param = mapping.getParameter();
 		
@@ -101,9 +101,9 @@ public class CreateReportAction extends AbstractCreateAggregateReportAction
 		
 		logger.debug("Getting new report data for criteria " + uc);
 		
-		reportData = reportService.createReportData(reportCriteria);
+		reportDataAggregate = reportService.createAggregateReportData(reportCriteria);
 		
-		return reportData;
+		return reportDataAggregate;
 	}	
 
 	/**

@@ -31,7 +31,7 @@ import java.util.Date;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
-import net.rrm.ehour.web.report.reports.TimelineReport;
+import net.rrm.ehour.web.report.reports.trend.TimelineReport;
 import net.rrm.ehour.web.sort.ProjectAssignmentComparator;
 
 /**
