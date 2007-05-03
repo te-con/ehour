@@ -31,7 +31,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 
 
 /**
@@ -73,7 +73,8 @@ public interface ReportService
 	 * @param criteria
 	 * @return
 	 */
-	public ReportData createReportData(ReportCriteria criteria);
+	public ReportDataAggregate createAggregateReportData(ReportCriteria criteria);
+	
 	
 	/**
 	 * Create report for printing

@@ -129,7 +129,7 @@ public class ReportServiceTest extends TestCase
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
 					.andReturn(pags);
 		replay(reportAggregatedDAO);
-		reportService.createReportData(rc);
+		reportService.createAggregateReportData(rc);
 		verify(reportAggregatedDAO);
 	}
 
@@ -149,7 +149,7 @@ public class ReportServiceTest extends TestCase
 		
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignment(isA(DateRange.class))).andReturn(pags);
 		replay(reportAggregatedDAO);
-		reportService.createReportData(rc);
+		reportService.createAggregateReportData(rc);
 		verify(reportAggregatedDAO);
 	}
 
@@ -180,7 +180,7 @@ public class ReportServiceTest extends TestCase
 		
 		replay(reportAggregatedDAO);
 		replay(userDAO);
-		reportService.createReportData(rc);
+		reportService.createAggregateReportData(rc);
 		verify(reportAggregatedDAO);
 		verify(userDAO);
 	}
@@ -211,7 +211,7 @@ public class ReportServiceTest extends TestCase
 		replay(reportAggregatedDAO);
 		replay(projectDAO);
 
-		reportService.createReportData(rc);
+		reportService.createAggregateReportData(rc);
 		verify(reportAggregatedDAO);
 		verify(projectDAO);
 	}

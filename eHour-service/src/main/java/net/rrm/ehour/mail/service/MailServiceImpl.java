@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.mail.service;
 
-import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -28,19 +28,19 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 
 /**
- * TODO 
+ * Data holder for aggregate reports
  **/
 
-public class ReportData
+public class ReportDataAggregate
 {
 	private List<ProjectAssignmentAggregate>		projectAssignmentAggregates;
 	private List<FlatProjectAssignmentAggregate>	flatProjectAssignmentAggregates;
 	private	ReportCriteria							reportCriteria;
 	
 	/**
-	 * Empty constructor
+	 * Default constructor
 	 */
-	public ReportData()
+	public ReportDataAggregate()
 	{
 	}
 	
@@ -50,7 +50,7 @@ public class ReportData
 	 * @param wpag
 	 * @param criteria
 	 */
-	public ReportData(List<ProjectAssignmentAggregate> pag, List<FlatProjectAssignmentAggregate> wpag, ReportCriteria criteria)
+	public ReportDataAggregate(List<ProjectAssignmentAggregate> pag, List<FlatProjectAssignmentAggregate> wpag, ReportCriteria criteria)
 	{
 		projectAssignmentAggregates = pag;
 		flatProjectAssignmentAggregates = wpag;
