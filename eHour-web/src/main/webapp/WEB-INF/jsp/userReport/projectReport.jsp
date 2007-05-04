@@ -30,6 +30,7 @@
 						<tr>
 							<th>&nbsp;<fmt:message key="userReport.report.customer" /></th>
 							<th>&nbsp;<fmt:message key="userReport.report.project" /></th>
+							<th>&nbsp;<fmt:message key="userReport.report.projectCode" /></th>
 							<th style="Text-align: right"><fmt:message key="userReport.report.hours" />&nbsp;</th>
 							<c:if test="${config.showTurnover}">										
 								<th style="Text-align: right"><fmt:message key="userReport.report.turnover" />&nbsp;</th>
@@ -52,12 +53,14 @@
 								<td>&nbsp;</td>
 							</c:if>
 								<td>${projectItem.key.name}</td>					
+										<td>${projectItem.key.projectCode}</td>
 							<c:forEach items="${customerReport.reportValues[customerItem.key][projectItem.key]}" var="userItem" varStatus="userStatus">
 							
 									<c:if test="${!userStatus.first}">
 										<tr class="dataRow" <c:if test="${status.count % 2 == 1}">style="background-color: #fefeff"</c:if>>
 										<td>&nbsp;</td>
 										<td>${projectItem.key.name}</td>
+										<td>${projectItem.key.projectCode}</td>
 									</c:if>
 									<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
 									
@@ -78,6 +81,7 @@
 						<tr class="totalRow">
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
+							<td>&nbsp;</td>
 							<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
 							<c:if test="${config.showTurnover}">							
 								<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
@@ -88,6 +92,7 @@
 
 					<tr class="totalRow">
 						<td><b><fmt:message key="report.report.total" />:</b></td>
+						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><b><fmt:formatNumber value="${grandTotalHour}" maxFractionDigits="2" /></b></td>
 						<c:if test="${config.showTurnover}">							
