@@ -69,6 +69,8 @@
         <put name="navCalendar" value="/WEB-INF/jsp/userReport/criteria.jsp" />
         <put name="content" value="/WEB-INF/jsp/userReport/reportLayout.jsp" />
     	<put name="extraCss" value="/css/ehourReport.jsp" />        
+		<put name="helpHeader" value="userreport.header" />		
+		<put name="helpBody" value="userreport.body" />
     </definition>
 
     <!-- User report projectReport -->    
@@ -84,7 +86,6 @@
     	<put name="extraCss" value="/css/ehourReport.jsp" />        
 		<put name="helpHeader" value="pmreport.header" />		
 		<put name="helpBody" value="pmreport.body" />
-    	
     </definition>
 
     <!-- Project manager report -->    

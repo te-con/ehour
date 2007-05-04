@@ -44,8 +44,8 @@ public class PMReportForm extends ActionForm
 	private static final long serialVersionUID = -6217637101679695022L;
 	private	Integer	projectId;
 	private	String	dateStart;
-	private boolean infiniteStartDate;
 	private	String	dateEnd;
+	private boolean infiniteStartDate;
 	private boolean	infiniteEndDate;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

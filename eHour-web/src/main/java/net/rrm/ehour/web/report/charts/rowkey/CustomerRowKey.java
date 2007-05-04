@@ -48,7 +48,7 @@ public class CustomerRowKey implements ChartRowKey
 	 */
 	public String getName()
 	{
-		return customer.getName();
+		return customer.getCode();
 	}
 
 
