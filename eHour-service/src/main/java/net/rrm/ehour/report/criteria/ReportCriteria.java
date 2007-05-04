@@ -88,13 +88,24 @@ public class ReportCriteria
 		if (userCriteria.getReportRange() == null)
 		{
 			reportRange = availableCriteria.getReportRange();
-			userCriteria.setReportRange(reportRange);
 		}
 		else
 		{
 			reportRange = userCriteria.getReportRange();
+			
+			if (reportRange.getDateStart() == null)
+			{
+				reportRange.setDateStart(availableCriteria.getReportRange().getDateStart());
+			}
+			
+			if (reportRange.getDateEnd() == null)
+			{
+				reportRange.setDateEnd(availableCriteria.getReportRange().getDateEnd());
+			}
 		}
-		
+
+		userCriteria.setReportRange(reportRange);
+
 		// if no timesheets were specified, use the current month as the range
 		if (reportRange == null || reportRange.isEmpty())
 		{
