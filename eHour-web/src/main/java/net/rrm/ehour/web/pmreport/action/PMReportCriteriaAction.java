@@ -23,13 +23,16 @@
 
 package net.rrm.ehour.web.pmreport.action;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.web.util.AuthUtil;
 
 import org.apache.struts.action.ActionForm;
@@ -48,12 +51,16 @@ public class PMReportCriteriaAction extends BasePMReportAction
 	{
 		List<Project>	projects;
 		User			user;
+		DateRange		initRange;
 		
 		user = AuthUtil.getLoggedInUser();
 		
 		projects = projectService.getProjectManagerProjects(user);
 		
 		request.setAttribute("projects", projects);
+		
+		initRange = DateUtil.calendarToMonthRange(new GregorianCalendar());
+		request.setAttribute("initRange", initRange);
 		
 		return mapping.findForward("success");		
 	}

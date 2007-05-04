@@ -53,22 +53,37 @@ function init()
 			<fmt:message key="admin.assignment.dateStart" />:
 		</div>
 		
-		<div style="float: right">
-			<span id="dateStartDiv"></span>
-		</div>
-	
-		<br><br>
-		
+		<div style="float: right;width :9em">
+			<div id="dateStartId"><span id="dateStartDiv"></span><br></div>
+				<input type="checkbox"
+						name="infiniteStartDate"
+						class="textInputSmall"
+						id="infiniteStartDateId"
+						CHECKED
+						>
+				<nobr><fmt:message key="general.useEarliestAvailDate" /></nobr>
+			</div>	
+
+		<br clear="all">
+		<br>
+				
 		<div style="float: left;vertical-align: bottom;height: 1.5em">
 			<nobr><fmt:message key="admin.assignment.dateEnd" />:</nobr>
 		</div>
 		
-		<div style="float: right">
-			<div id="dateEndDiv"></div>
+		<div style="float: right;width: 9em">
+			<div id="dateEndId"><span id="dateEndDiv"></span><br></div>
+				<input type="checkbox"
+						name="infiniteEndDate"
+						class="textInputSmall"
+						id="infiniteEndDateId"
+						CHECKED
+						>
+				<nobr><fmt:message key="general.useLastAvailDate" /></nobr>
 		</div>
 		
-		<br>
-		<br>
+		<br clear="all">
+		
 		<div style="float: left;vertical-align: bottom;margin-top: 5px">
 			Project:
 		</div>
@@ -81,7 +96,9 @@ function init()
 				</c:forEach>
 			</select>
 		</div>
-		<br><br><br>
+		
+		<br clear="all">
+		<br>
 		
 		<div style="float: right;vertical-align: bottom;height: 1.5em">
 			<input type="submit" value="submit" id="submitButton">

@@ -12,11 +12,17 @@
 	dojo.require("dojo.widget.*");
 	dojo.require("dojo.widget.DropdownDatePicker");
 
+
 function init()
 {
 	var replacedNode = document.getElementById("dateStartDiv");
+
+	var dateStart = "<fmt:formatDate value="${initRange.dateStart}" pattern="yyyy-MM-dd" />T00:00:00-00:00";
+	var dateEnd = "<fmt:formatDate value="${initRange.dateEndForDisplay}" pattern="yyyy-MM-dd" />T00:00:00-00:00";
+
 	dojo.widget.createWidget("DropdownDatePicker",
 											{disabled: false,
+		  									value:dateStart,
 											 name: "dateStart",
 											 containerToggle: "fade"
 										 }, replacedNode);  
@@ -26,12 +32,16 @@ function init()
 	replacedNode = document.getElementById("dateEndDiv");
 	dojo.widget.createWidget("DropdownDatePicker",
 											{disabled: false,
+		  									value:dateEnd,
 											 name: "dateEnd",
 											 containerToggle: "fade"
 										 }, replacedNode);  
 		
-	bindCriteriaForm();										 
+	bindCriteriaForm();
 }
+	
+
+
 </script>
 
 <form method="post" action="projectReport.do" id="criteriaForm">
@@ -43,31 +53,47 @@ function init()
 			&nbsp;
 		</div>
 	</div>
-
 	
 	<div class="UserReportCriteria">
 	
-		<div style="float: left;vertical-align: bottom;height: 1.5em">
-			<fmt:message key="admin.assignment.dateStart" />:
+		<div style="float: left;vertical-align: bottom;">
+			<nobr><fmt:message key="admin.assignment.dateStart" />:</nobr>
 		</div>
 		
-		<div style="float: right">
-			<span id="dateStartDiv"></span>
+		<div style="float: right;width: 9em">
+			<div id="dateStartId"><span id="dateStartDiv"></span><br></div>
+				<input type="checkbox"
+						name="infiniteStartDate"
+						class="textInputSmall"
+						id="infiniteStartDateId"
+						CHECKED
+						>
+				<nobr><fmt:message key="general.useEarliestAvailDate" /></nobr>
 		</div>
 	
-		<br><br>
+		<br clear="all">
+		<br>
 		
-		<div style="float: left;vertical-align: bottom;height: 1.5em">
+		<div style="float: left;vertical-align: bottom;">
 			<nobr><fmt:message key="admin.assignment.dateEnd" />:</nobr>
 		</div>
 		
-		<div style="float: right">
-			<div id="dateEndDiv"></div>
+		<div style="float: right;width: 9em">
+			<div id="dateEndId"><span id="dateEndDiv"></span><br></div>
+			
+				<input type="checkbox"
+						name="infiniteEndDate"
+						class="textInputSmall"
+						id="infiniteEndDateId"
+						CHECKED
+						>
+				<nobr><fmt:message key="general.useLastAvailDate" /></nobr>
 		</div>
 		
+		<br clear="all">
 		<br>
-		<br>
-		<div style="float: left;vertical-align: bottom;margin-top: 5px">
+		
+		<div style="float: left;vertical-align: bottom">
 			Project:
 		</div>
 		
@@ -78,12 +104,13 @@ function init()
 				</c:forEach>
 			</select>
 		</div>
-		<br><br><br>
+
+		<br clear="all">
+		<br>
 		
 		<div style="float: right;vertical-align: bottom;height: 1.5em">
 			<input type="submit" value="submit" id="submitButton">
 		</div>
-		<Br>
 	</div>
 
 	<div class="NavCalFrameLeftBottom">
@@ -94,8 +121,7 @@ function init()
 </div>
 </div>
 	</form>
-
-<script type="text/javascript">
+	
+<script>
 	init();
 </script>
-	

@@ -2,6 +2,10 @@ Change Log
 
 * 0.6 Release Notes
 
+	Added infinite checkbox to all (reporting) date dropdowns
+
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1712322&group_id=167867&atid=844648}1712322 }} Start/end date can now be empty in assignments
+
 	Reports can now be printed
 
 	Added available hours and assignment type to PM report. Also date range assignments are limited to 100% progress.

@@ -68,11 +68,26 @@ function initDojo()
 		
 			
 			<td class="main">
-				<fmt:formatDate value="${assignment.dateStart}" pattern="dd MMM yyyy" />
+				<c:choose>
+					<c:when test="${assignment.dateStart == null}">
+						<span title="<fmt:message key="user.overview.infinite" />">&infin;</span>
+					</c:when>
+					<c:otherwise>
+						<fmt:formatDate value="${assignment.dateStart}" pattern="dd MMM yyyy" />
+					</c:otherwise>
+				</c:choose>
 			</td>
 	
 			<td class="main">
-				<fmt:formatDate value="${assignment.dateEndForDisplay}" pattern="dd MMM yyyy" />
+				<c:choose>
+					<c:when test="${assignment.dateEnd == null}">
+						<span title="<fmt:message key="user.overview.infinite" />">&infin;</span>
+					</c:when>
+					<c:otherwise>
+						<fmt:formatDate value="${assignment.dateEndForDisplay}" pattern="dd MMM yyyy" />
+					</c:otherwise>
+				</c:choose>
+
 			</td>
 		</tr>
 		
@@ -237,6 +252,12 @@ function initDojo()
 			</td>
 		</tr>
 		
+		<tr>
+			<td colspan="3">
+				<br>
+			</td>
+		</tr>
+		
 
 		<tr id="dateStartTr">
 			<td valign="top">
@@ -257,10 +278,9 @@ function initDojo()
 						</c:if>
 						>
 				<fmt:message key="admin.assignment.infiniteStart" />
-				<br><br>
 			</td>
 			
-			<td style="color: red">
+			<td style="color: red" valign="top">
 				<html:errors property="dateStart" />
 			</td>
 		</tr>
@@ -288,7 +308,7 @@ function initDojo()
 				<br><br>
 			</td>
 			
-			<td style="color: red">
+			<td style="color: red" valign="top">
 				<html:errors property="dateEnd" />
 			</td>
 		</tr>

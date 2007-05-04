@@ -27,7 +27,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
 
 /**
  *  
@@ -41,10 +44,21 @@ public class PMReportForm extends ActionForm
 	private static final long serialVersionUID = -6217637101679695022L;
 	private	Integer	projectId;
 	private	String	dateStart;
+	private boolean infiniteStartDate;
 	private	String	dateEnd;
+	private boolean	infiniteEndDate;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
+	/**
+	 * 
+	 *
+	 */
+	public void reset(ActionMapping mapping, HttpServletRequest request)
+	{
+		infiniteStartDate = false;
+		infiniteEndDate = false;
+	}	
 	
 	/**
 	 * @return the projectId
@@ -74,7 +88,7 @@ public class PMReportForm extends ActionForm
 	{
 		Date date = null;
 		
-		if (dateEnd != null)
+		if (!infiniteEndDate && dateEnd != null)
 		{
 			try
 			{
@@ -110,7 +124,7 @@ public class PMReportForm extends ActionForm
 	{
 		Date date = null;
 		
-		if (dateStart != null)
+		if (!infiniteStartDate && dateStart != null)
 		{
 			try
 			{
@@ -131,5 +145,37 @@ public class PMReportForm extends ActionForm
 	public void setDateStart(String dateStart)
 	{
 		this.dateStart = dateStart;
+	}
+
+	/**
+	 * @return the infiniteEndDate
+	 */
+	public boolean isInfiniteEndDate()
+	{
+		return infiniteEndDate;
+	}
+
+	/**
+	 * @param infiniteEndDate the infiniteEndDate to set
+	 */
+	public void setInfiniteEndDate(boolean infiniteEndDate)
+	{
+		this.infiniteEndDate = infiniteEndDate;
+	}
+
+	/**
+	 * @return the infiniteStartDate
+	 */
+	public boolean isInfiniteStartDate()
+	{
+		return infiniteStartDate;
+	}
+
+	/**
+	 * @param infiniteStartDate the infiniteStartDate to set
+	 */
+	public void setInfiniteStartDate(boolean infiniteStartDate)
+	{
+		this.infiniteStartDate = infiniteStartDate;
 	}
 }

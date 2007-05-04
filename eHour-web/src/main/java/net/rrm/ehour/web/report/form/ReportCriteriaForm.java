@@ -42,6 +42,8 @@ public class ReportCriteriaForm extends ReportForm
 	private	Integer	userIds[];
 	private	String	dateStart;
 	private	String	dateEnd;
+	private boolean infiniteStartDate;
+	private boolean	infiniteEndDate;
 	private	boolean	onlyActiveCustomers;
 	private	boolean	onlyActiveProjects;
 	private	boolean	onlyActiveUsers;
@@ -57,8 +59,9 @@ public class ReportCriteriaForm extends ReportForm
 		fromForm = false;
 		onlyActiveCustomers= false;
 		onlyActiveProjects = false;
-		
-		//updateType = ReportCriteria.UPDATE_ALL;
+
+		infiniteStartDate = false;
+		infiniteEndDate = false;
 	}
 
 	/**
@@ -251,6 +254,38 @@ public class ReportCriteriaForm extends ReportForm
 	public void setUpdateType(int event)
 	{
 		this.updateType = event;
+	}
+
+	/**
+	 * @return the infiniteEndDate
+	 */
+	public boolean isInfiniteEndDate()
+	{
+		return infiniteEndDate;
+	}
+
+	/**
+	 * @param infiniteEndDate the infiniteEndDate to set
+	 */
+	public void setInfiniteEndDate(boolean infiniteEndDate)
+	{
+		this.infiniteEndDate = infiniteEndDate;
+	}
+
+	/**
+	 * @return the infiniteStartDate
+	 */
+	public boolean isInfiniteStartDate()
+	{
+		return infiniteStartDate;
+	}
+
+	/**
+	 * @param infiniteStartDate the infiniteStartDate to set
+	 */
+	public void setInfiniteStartDate(boolean infiniteStartDate)
+	{
+		this.infiniteStartDate = infiniteStartDate;
 	}
 
 }

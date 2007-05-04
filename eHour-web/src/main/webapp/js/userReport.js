@@ -9,6 +9,42 @@ function bindCriteriaForm()
    						formNode: dojo.byId("criteriaForm"),
    						handler: reportReceived
 						});
+						
+	dojo.event.connect(dojo.byId('infiniteStartDateId'), "onclick", "toggleStartDate");
+	dojo.event.connect(dojo.byId('infiniteEndDateId'), "onclick", "toggleEndDate");	
+	
+	toggleStartDate(null);
+	toggleEndDate(null);
+}
+
+// toggle start date
+function toggleStartDate(evt)
+{
+	var infiniteStartDate = dojo.byId('infiniteStartDateId');
+	
+	if (infiniteStartDate.checked)
+	{
+		dojo.byId('dateStartId').style.display='none';
+	}
+	else
+	{
+		dojo.byId('dateStartId').style.display='';
+	}
+}
+
+// toggle end date
+function toggleEndDate(evt)
+{
+	var infiniteEndDate = dojo.byId('infiniteEndDateId');
+	
+	if (infiniteEndDate.checked)
+	{
+		dojo.byId('dateEndId').style.display='none';
+	}
+	else
+	{
+		dojo.byId('dateEndId').style.display='';
+	}
 }
 
 // handler for bindCriteriaForm

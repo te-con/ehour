@@ -53,7 +53,7 @@ public class UserCriteriaAssembler
 		
 		reportRange = new DateRange();
 		
-		if (rcf.getDateStart() != null)
+		if (!rcf.isInfiniteStartDate() && rcf.getDateStart() != null)
 		{
 			try
 			{
@@ -64,7 +64,7 @@ public class UserCriteriaAssembler
 			}
 		}
 		
-		if (rcf.getDateEnd() != null)
+		if (!rcf.isInfiniteEndDate() && rcf.getDateEnd() != null)
 		{
 			try
 			{
