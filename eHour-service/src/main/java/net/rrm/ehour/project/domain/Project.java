@@ -86,7 +86,7 @@ public class Project extends DomainObject<Integer, Project>
 	{
 		return this.projectCode;
 	}
-
+	
 	public void setProjectCode(String projectCode)
 	{
 		this.projectCode = projectCode;
