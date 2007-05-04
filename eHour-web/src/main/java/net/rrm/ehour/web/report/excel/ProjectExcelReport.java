@@ -47,7 +47,7 @@ public class ProjectExcelReport extends BaseExcelReportAction
 	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#fillReportSheet(net.rrm.ehour.web.report.reports.AggregateReport, org.apache.poi.hssf.usermodel.HSSFSheet, int)
 	 */
 	@Override
-	protected int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber)
+	protected int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber, boolean showTurnOver)
 	{
 		ProjectReport projectReport = (ProjectReport)report;
 		

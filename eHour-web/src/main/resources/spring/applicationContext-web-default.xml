@@ -25,14 +25,6 @@
 		</aop:aspect>
 	</aop:config>
 	
-<!-- session scope beans 
-		<bean id="configWrapper" 
-		class="net.rrm.ehour.config.EhourConfigWrapper"
-		scope="session">
-		<constructor-arg><ref bean="ehourConfig" /></constructor-arg>
-		</bean>
-	-->
-
 	<!-- struts actions -->
 	<bean name="/eh/index"
 		class="net.rrm.ehour.web.action.EntranceAction" />
@@ -70,12 +62,22 @@
 		<property name="reportCriteria" ref="reportCriteria" />
 	</bean>
 
+	<!-- Reports -->
 	<bean name="/eh/userReport/projectReport"
-		class="net.rrm.ehour.web.report.action.CreateAggregateReportAction">
-		<property name="reportCriteria" ref="reportCriteria" />
-		<property name="reportService" ref="reportService" />
+		class="net.rrm.ehour.web.report.action.CreateAggregateReportAction"
+		parent="abstractCreateAggregateReport">
 		<property name="config" ref="ehourConfig" />
 	</bean>
+
+	<!-- Excel reporting -->
+	<bean name="/eh/userReport/excelReport" 
+			class="net.rrm.ehour.web.report.excel.CustomerExcelReport"
+			parent="reUseReportAction"/>
+
+	<!-- Print report -->
+	<bean name="/eh/userReport/printReport"
+			class="net.rrm.ehour.web.report.action.PrintReportAction"
+			parent="reUseReportAction"/>
 
 	<!-- reUseReportAction from web-report.xml -->
 	<bean name="/eh/userReport/showCustomerHoursAggregateChart"

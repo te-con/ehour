@@ -2,6 +2,8 @@ Change Log
 
 * 0.6 Release Notes
 
+	Charts use project and customer code rather than the fullname
+
 	Added infinite checkbox to all (reporting) date dropdowns
 
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1712322&group_id=167867&atid=844648}1712322 }} Start/end date can now be empty in assignments

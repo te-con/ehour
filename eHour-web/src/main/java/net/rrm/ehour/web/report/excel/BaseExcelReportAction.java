@@ -63,7 +63,6 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 	protected HSSFCellStyle	currencyCellStyle;
 	protected HSSFCellStyle	dateBoldCellStyle;
 	
-	
 	/**
 	 * 
 	 */
@@ -79,7 +78,14 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 		HSSFWorkbook	workbook;
 		OutputStream	outputStream;
 		BufferedOutputStream bos;
+		String			parameter;
+		boolean			showTurnOver;
 		
+		// parameter is used whether this report was created for a consultant. in that case
+		// the config needs to be checked for turnover availability
+		parameter = mapping.getParameter();
+		showTurnOver = !(parameter.equalsIgnoreCase("consultant") && !config.isShowTurnover());
+			
 		try
 		{
 			outputStream = response.getOutputStream();
@@ -90,7 +96,7 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 			response.setContentType("application/x-ms-excel");
 			response.setHeader("Content-disposition", "attachment; filename=" + filename);
 			
-			workbook = createExcelReport(report);
+			workbook = createExcelReport(report, showTurnOver);
 			workbook.write(bos);
 			bos.close();
 			outputStream.close();
@@ -129,7 +135,7 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 	 * @return
 	 */
 
-	private HSSFWorkbook createExcelReport(AggregateReport report)
+	private HSSFWorkbook createExcelReport(AggregateReport report, boolean showTurnOver)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet 	sheet = wb.createSheet(getExcelReportName());
@@ -150,7 +156,7 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 		
 		rowNumber = createHeaders(rowNumber, sheet, report);
 		
-		fillReportSheet(report, sheet, rowNumber);
+		fillReportSheet(report, sheet, rowNumber, showTurnOver);
 		
 		return wb;
 	}
@@ -238,15 +244,13 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 	
 	}
 	
-	
-	
 	/**
 	 * Fill report sheet
 	 * @param request
 	 * @param reportData
 	 * @return
 	 */
-	protected abstract int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber);
+	protected abstract int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber, boolean showTurnOver);
 	
 	/**
 	 * Get report name for the filename

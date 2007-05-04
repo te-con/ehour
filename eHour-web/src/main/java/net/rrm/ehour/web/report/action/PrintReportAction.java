@@ -26,12 +26,14 @@ package net.rrm.ehour.web.report.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rrm.ehour.web.util.AuthUtil;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * TODO 
+ * print report
  **/
 
 public class PrintReportAction extends ReUseReportAction
@@ -43,6 +45,9 @@ public class PrintReportAction extends ReUseReportAction
 									HttpServletRequest request, HttpServletResponse response)
 	{
 		request.setAttribute("print", new Boolean(true));
+		
+		// only used for consultant reporting
+		request.setAttribute("loggedInUser", AuthUtil.getLoggedInUser());
 		
 		return super.execute(mapping, form, request, response);
 	}

@@ -20,7 +20,6 @@
 					key="generic"
 					path="/exceptions.jsp"/>
 	</global-exceptions>	
-	
 
 	<!-- Action Mapping Definitions -->
 	<action-mappings>
@@ -103,6 +102,18 @@
 			<forward name="customerReport" path=".ehour.userreport.projectReport" />
 		</action>		
 
+		<!-- User project excel report -->
+		<action name="ReportChartForm" 
+				parameter="consultant"
+				path="/eh/userReport/excelReport" />
+
+		<!-- Print report -->
+		<action name="ReportChartForm" path="/eh/userReport/printReport">
+			<forward name="customerReport" path=".ehour.userreport.printReport" />	
+		</action>
+
+
+		<!-- User project report bar charts -->
 		<action name="ReportChartForm" path="/eh/userReport/showCustomerHoursAggregateChart" />
 		<action name="ReportChartForm" path="/eh/userReport/showCustomerTurnoverAggregateChart" />		
 

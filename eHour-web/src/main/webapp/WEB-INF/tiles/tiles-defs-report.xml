@@ -16,7 +16,6 @@
     <definition name=".ehour.report.print.baseLayout" path="/WEB-INF/jsp/report/printLayout.jsp">
         <put name="pageTitle" value="eHour - reporting" />
     </definition>
-	
 
     <!-- Report index -->
     <definition name=".ehour.report.index" extends=".ehour.report.baseLayout">

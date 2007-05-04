@@ -6,7 +6,26 @@
 
 <!-- spanTarget: reportContent -->
 <div class="ContentFrame">
-	<h1><fmt:message key="userReport.criteria.projectReport" />: <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateEnd}" /></h1>
+	<h1><fmt:message key="userReport.criteria.projectReport" />
+		<c:if test="${print}">
+			<fmt:message key="userReport.for" /> ${loggedInUser.firstName} ${loggedInUser.lastName}</c:if>: <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateStart}" /> - <fmt:formatDate pattern="dd MMM yyyy" value="${customerReport.reportCriteria.reportRange.dateEnd}" /></h1>
+	<c:if test="${!print}">
+		<div style="text-align: right;width: 719px;margin: -5px 0 -5px 0; padding: 0;">
+			<a href="excelReport.do">
+				<img src="<c:url value="/img/excel_off.gif" />"
+					onMouseover="this.src='<c:url value="/img/excel_on.gif" />'"
+					onMouseout="this.src='<c:url value="/img/excel_off.gif" />'"
+				 border="0">
+			</a>
+			<a href="printReport.do" target="_print">
+				<img src="<c:url value="/img/print_off.gif" />"
+					onMouseover="this.src='<c:url value="/img/print_on.gif" />'"
+					onMouseout="this.src='<c:url value="/img/print_off.gif" />'"
+					alt="<fmt:message key="user.overview.print" />"
+				 border="0">
+			</a>
+		</div>	
+	</c:if>
 
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>
@@ -136,3 +155,5 @@
 		</p>
 	</div>				
 </div>
+
+<br><Br>

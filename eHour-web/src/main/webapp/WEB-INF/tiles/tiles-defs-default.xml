@@ -14,6 +14,11 @@
 		<put name="extraCss" value="" />
     </definition>
 
+	<!-- Print base layout -->
+    <definition name=".ehour.userreport.print.baseLayout" path="/WEB-INF/jsp/report/printLayout.jsp">
+        <put name="pageTitle" value="eHour - reporting" />
+    </definition>
+
     <!-- Timesheet Overview layout page -->
     <definition name=".ehour.timesheet.overviewFull" extends=".ehour.baseLayout">
         <put name="navCalendar" value="/eh/cal/navCalendar.do" />
@@ -75,6 +80,12 @@
 
     <!-- User report projectReport -->    
     <definition name=".ehour.userreport.projectReport" path="/WEB-INF/jsp/userReport/projectReport.jsp" />
+    
+    <definition name=".ehour.userreport.printReport" extends=".ehour.userreport.print.baseLayout">
+        <put name="reportTile" value="/WEB-INF/jsp/userReport/projectReport.jsp" />
+        <put name="pageTitle" value="Project report" />        
+    </definition>
+    
     
     <!-- NavCalendar -->
     <definition name=".ehour.calendar.navCalendar" path="/WEB-INF/jsp/nav/navCalendar.jsp" />

@@ -48,12 +48,12 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @see net.rrm.ehour.web.report.excel.BaseExcelReportAction#createWorkbook(javax.servlet.http.HttpServletRequest, net.rrm.ehour.report.reports.ReportData)
 	 */
 	@Override
-	protected int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber)
+	protected int fillReportSheet(AggregateReport report, HSSFSheet sheet, int rowNumber, boolean showTurnOver)
 	{
 		CustomerReport	customerReport = (CustomerReport)report;
 		
-		rowNumber = createColumnNames(rowNumber, sheet);
-		rowNumber = createValues(rowNumber, sheet, customerReport);
+		rowNumber = createColumnNames(rowNumber, sheet, showTurnOver);
+		rowNumber = createValues(rowNumber, sheet, customerReport, showTurnOver);
 		
 		return rowNumber;
 	}
@@ -66,7 +66,7 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @param reportData
 	 * @return
 	 */
-	private int createValues(int rowNumber, HSSFSheet sheet, CustomerReport report)
+	private int createValues(int rowNumber, HSSFSheet sheet, CustomerReport report, boolean showTurnOver)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
@@ -118,24 +118,22 @@ public class CustomerExcelReport extends BaseExcelReportAction
 						cell.setCellValue(aggregate.getHours().floatValue());
 					}
 					
-					// hourly rate
-					cell = row.createCell(cellNumber++);
-					cell.setCellStyle(currencyCellStyle);
-					
-					if (aggregate.getProjectAssignment().getHourlyRate() != null)
+					if (showTurnOver)
 					{
-						cell.setCellValue(aggregate.getProjectAssignment().getHourlyRate().floatValue());
-					}
-
-					// turnover
-					cell = row.createCell(cellNumber++);
-					cell.setCellStyle(currencyCellStyle);
-					cell.setCellFormula("E" + rowNumber + "*F" + rowNumber);
-//					if (aggregate.getTurnOver() != null)
-//					{
-//						cell.setCellValue(aggregate.getTurnOver().floatValue());
-//					}
-					
+						// hourly rate
+						cell = row.createCell(cellNumber++);
+						cell.setCellStyle(currencyCellStyle);
+						
+						if (aggregate.getProjectAssignment().getHourlyRate() != null)
+						{
+							cell.setCellValue(aggregate.getProjectAssignment().getHourlyRate().floatValue());
+						}
+	
+						// turnover
+						cell = row.createCell(cellNumber++);
+						cell.setCellStyle(currencyCellStyle);
+						cell.setCellFormula("E" + rowNumber + "*F" + rowNumber);
+					}					
 					cellNumber = 0;
 				}
 			}
@@ -151,7 +149,7 @@ public class CustomerExcelReport extends BaseExcelReportAction
 	 * @param wb
 	 * @param sheet
 	 */
-	private int createColumnNames(int rowNumber, HSSFSheet sheet)
+	private int createColumnNames(int rowNumber, HSSFSheet sheet, boolean showTurnOver)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
@@ -178,13 +176,16 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		cell.setCellStyle(headerCellStyle);
 		cell.setCellValue("Hours");
 
-		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(headerCellStyle);
-		cell.setCellValue("Rate");
-
-		cell = row.createCell(cellNumber++);
-		cell.setCellStyle(headerCellStyle);
-		cell.setCellValue("Turnover");
+		if (showTurnOver)
+		{
+			cell = row.createCell(cellNumber++);
+			cell.setCellStyle(headerCellStyle);
+			cell.setCellValue("Rate");
+	
+			cell = row.createCell(cellNumber++);
+			cell.setCellStyle(headerCellStyle);
+			cell.setCellValue("Turnover");
+		}
 		
 		return rowNumber;
 	}
@@ -209,6 +210,4 @@ public class CustomerExcelReport extends BaseExcelReportAction
 		// TODO i18n
 		return "Customer report";
 	}
-
-
 }

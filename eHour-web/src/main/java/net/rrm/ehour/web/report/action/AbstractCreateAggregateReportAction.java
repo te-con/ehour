@@ -65,7 +65,7 @@ public abstract class AbstractCreateAggregateReportAction extends Action
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 									HttpServletRequest request, HttpServletResponse response)
 	{
-		ReportDataAggregate			reportDataAggregate;
+		ReportDataAggregate	reportDataAggregate;
 		String				sessionKey;
 		HttpSession			session = request.getSession();
 		String				reportName;
