@@ -9,7 +9,8 @@ function init()
 											{value:dateStart,
 											 disabled: false,
 											 name: "dateStart",
-											 containerToggle: "fade"
+											 containerToggle: "fade",
+											 widgetId: "dateStartId"
 										 }, replacedNode);  
 
 
@@ -19,7 +20,8 @@ function init()
 											{value:dateEnd,
 											 disabled: false,
 											 name: "dateEnd",
-											 containerToggle: "fade"
+											 containerToggle: "fade",
+											 widgetId: "dateEndId"
 										 }, replacedNode);  
 
 	connectEvents();
@@ -44,12 +46,73 @@ function connectEvents()
 	dojo.event.connect(dojo.byId('onlyActiveUsers'), "onclick", "updateUsers");
 	dojo.event.connect(dojo.byId('userFilter'), "onclick", "hideDefaultText");
 	dojo.event.connect(dojo.byId('userFilter'), "onblur", "showDefaultText");
-	dojo.event.connect(dojo.byId('userFilter'), "onkeyup", "updateUsers");	
-	
+	dojo.event.connect(dojo.byId('userFilter'), "onkeyup", "updateUsers");
+	dojo.event.connect(dojo.byId('quickDateWeekId'), "onchange", "updateDateWeek");
+	dojo.event.connect(dojo.byId('quickDateMonthId'), "onchange", "updateDateMonth");
+	dojo.event.connect(dojo.byId('quickDateQuarterId'), "onchange", "updateDateQuarter");	
+
 	new dojo.io.FormBind({formNode: dojo.byId('criteriaForm'),
 	  					  handler: criteriaSubmitted
 						});
 }
+
+// update quick quarter
+function updateDateQuarter(evt)
+{
+	var relativity = dojo.byId('quickDateQuarterId').value;
+	
+    dojo.io.bind({
+                   url: 'quickDate.do',
+                   handler: quickDateReceived,
+                   content: {quickDateType: 'quarter',
+                   			 relativity: relativity}
+                }); 
+}
+
+// update quick month
+function updateDateMonth(evt)
+{
+	var relativity = dojo.byId('quickDateMonthId').value;
+	
+    dojo.io.bind({
+                   url: 'quickDate.do',
+                   handler: quickDateReceived,
+                   content: {quickDateType: 'month',
+                   			 relativity: relativity}
+                }); 
+}
+
+// update quick week
+function updateDateWeek(evt)
+{
+	var relativity = dojo.byId('quickDateWeekId').value;
+	
+    dojo.io.bind({
+                   url: 'quickDate.do',
+                   handler: quickDateReceived,
+                   content: {quickDateType: 'week',
+                   			 relativity: relativity}
+                }); 
+}
+
+// quick date json response received
+function quickDateReceived(type, xml, evt)
+{
+  	hideLoadingData();
+  	
+	if (type == 'error')
+	{	
+   		alert(ajaxError);
+	}
+	else
+	{
+		var range = eval('(' + xml + ')');	
+		
+		dojo.widget.byId('dateStartId').setDate(range.start);
+		dojo.widget.byId('dateEndId').setDate(range.end);
+	}
+}
+
 
 // hide default text from user filter
 function hideDefaultText(evt)

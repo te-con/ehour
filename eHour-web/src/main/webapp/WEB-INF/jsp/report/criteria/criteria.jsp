@@ -14,6 +14,11 @@
 	var contextRoot = "<c:url value="/eh/report" />";
 </script>
 
+<form method="post" id="criteriaForm">
+<input type="hidden" name="fromForm" value="yes">
+<input type="hidden" name="updateType" value="0">	
+
+
 <div dojoType="TitlePane" id="criteriaPane" label="<fmt:message key="report.criteria.header" />" labelNodeClass="reportCriteriaLabel" containerNodeClass="ContentFrame">
 
 	<div class="GreyFrame">
@@ -21,30 +26,64 @@
 		
 		<div class="GreyFrameBody">
 		
-			<form method="post" id="criteriaForm">
-			<input type="hidden" name="fromForm" value="yes">
-			<input type="hidden" name="updateType" value="0">	
 
-			<table class="reportCriteriaTableTable">
+			<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
+				<fmt:message key="report.criteria.reportRange" />:
+				<div id="dateStartDiv" class="textInputSmall"></div>
+			    <fmt:message key="report.criteria.until" />
+				<div id="dateEndDiv"></div>
+			</div>
 			
-				<tr>
-					<td style="padding-left: 20px"><fmt:message key="report.criteria.reportRange" />:
-						<div id="dateStartDiv" class="textInputSmall"></div>
-					    <fmt:message key="report.criteria.until" />
-						<div id="dateEndDiv"></div>
-					</td>
-					<td align="right" style="padding-right: 20px"><fmt:message key="report.criteria.report" />:
-					<select name="reportName"  class="textInputSmall">
-							<option value="customerReport"><fmt:message key="report.report.overallReport" />
-							<option value="customerReport"><fmt:message key="report.report.customerReport" />
-							<option value="userReport"><fmt:message key="report.report.userReport" />
-							<option value="projectReport"><fmt:message key="report.report.projectReport" />														
-						</select>
-					</td>
-				</tr>
-			</table>
+			<div style="float: right;padding-right: 20px;margin: 0;">
+				<fmt:message key="report.criteria.report" />:
+				<select name="reportName"  class="textInputSmall">
+<!-- 							<option value="customerReport"><fmt:message key="report.report.overallReport" /> -->
+						<option value="customerReport"><fmt:message key="report.report.customerReport" /></option>
+						<option value="userReport"><fmt:message key="report.report.userReport" /></option>
+						<option value="projectReport"><fmt:message key="report.report.projectReport" /></option>
+				</select>
+			</div>
 			
+			<br clear="all">
+
+			<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;padding-top: 5px">
+				Quick date:
+				<select class="textInputSmall" id="quickDateWeekId">
+					<option value="-1">Previous week</option>
+					<option value="0">Current week</option>
+					<option value="1">Next week</option>
+					<option style="color: #999999" SELECTED>Week</option>
+				</select>
+				&nbsp;&nbsp;
+				<select class="textInputSmall" id="quickDateMonthId">
+					<option value="-1">Previous month</option>
+					<option value="0">Current month</option>
+					<option value="1">Next month</option>
+					<option style="color: #999999" SELECTED>Month</option>
+				</select>
+				&nbsp;&nbsp;
+				<select class="textInputSmall" id="quickDateQuarterId">
+					<option value="-1">Previous quarter</option>
+					<option value="0">Current quarter</option>
+					<option value="1">Next quarter</option>
+					<option style="color: #999999" SELECTED>Quarter</option>
+				</select>
+			</div>
+
 			<br>
+		</div>
+		
+		<div class="GreyFrameFooter">
+			<p />
+		</div>	
+	</div>
+			<br>
+			
+	<div class="GreyFrame">
+		<h3>&nbsp;</h3>
+		
+		<div class="GreyFrameBody">
+			
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 				<td valign="top">
@@ -268,13 +307,14 @@
 	</tr>
 </table>
 		</div>				
-		</form>
 		
 		<div class="GreyFrameFooter">
 			<p />
 		</div>	
 	</div>
 </div>
+		</form>
+
 <br><br>		
 
 <script>

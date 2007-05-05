@@ -6,6 +6,7 @@
 	<form-beans>
 		<form-bean name="ReportCriteriaForm" type="net.rrm.ehour.web.report.form.ReportCriteriaForm" />
 		<form-bean name="ReportChartForm" type="net.rrm.ehour.web.report.form.ReportChartForm" />		
+		<form-bean name="QuickDateForm" type="net.rrm.ehour.web.report.form.QuickDateForm" />		
 	</form-beans>
 
 	<!-- Action Mapping Definitions -->
@@ -68,6 +69,10 @@
 			<forward name="projectReport" path=".ehour.report.projectPrintReport" />	
 		</action>
 
+		<!-- Quick date -->
+		<action name="QuickDateForm" path="/quickDate">
+			<forward name="success" path=".ehour.report.quickDate" />	
+		</action>
 	</action-mappings>
 	
 	<!-- spring tiles controller -->

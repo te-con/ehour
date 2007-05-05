@@ -2,6 +2,8 @@ Change Log
 
 * 0.6 Release Notes
 
+	Quick date selection (previous/current/next week, month, quarter) added to reports
+
 	Charts use project and customer code rather than the fullname
 
 	Added infinite checkbox to all (reporting) date dropdowns

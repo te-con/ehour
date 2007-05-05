@@ -50,5 +50,8 @@
         <put name="reportTile" value="/WEB-INF/jsp/report/report/reportPerProject.jsp" />
         <put name="pageTitle" value="Project report" />        
     </definition>
+    
+    <!-- Quick date JSON response -->
+    <definition name=".ehour.report.quickDate" path="/WEB-INF/jsp/report/criteria/quickDate.jsp" />
 	
 </tiles-definitions>

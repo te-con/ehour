@@ -84,7 +84,7 @@ public abstract class BaseExcelReportAction extends ReUseReportAction
 		// parameter is used whether this report was created for a consultant. in that case
 		// the config needs to be checked for turnover availability
 		parameter = mapping.getParameter();
-		showTurnOver = !(parameter.equalsIgnoreCase("consultant") && !config.isShowTurnover());
+		showTurnOver = !(parameter != null && parameter.equalsIgnoreCase("consultant") && !config.isShowTurnover());
 			
 		try
 		{

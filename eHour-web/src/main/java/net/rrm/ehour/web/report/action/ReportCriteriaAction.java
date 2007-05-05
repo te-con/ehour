@@ -84,10 +84,18 @@ public class ReportCriteriaAction extends Action
 		
 		request.setAttribute("criteria", reportCriteria);
 		
-		response.setHeader("Cache-Control", "no-cache");
 		return fwd;
 	}
 
+	/**
+	 * Set quick dates on request
+	 * @param request
+	 */
+	private void setQuickDates(HttpServletRequest request)
+	{
+		
+	}
+	
 	/**
 	 * Update criteria
 	 * @param criteriaForm
