@@ -190,6 +190,49 @@ public class DateUtil
 		
 		return monthRange;
 	}	
+	
+	/**
+	 * Get date range for quarter
+	 * @param calendar
+	 * @return
+	 */
+	public static DateRange getDateRangeForQuarter(Calendar calendar)
+	{
+		DateRange	quarterRange = new DateRange();
+		Calendar	startMonth, endMonth;
+		
+		int month = calendar.get(Calendar.MONTH);
+		int quarter = month / 3;
+		
+		startMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
+		endMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter  * 3, 1);
+		endMonth.add(Calendar.MONTH, 3);
+		endMonth.add(Calendar.DATE, -1);
+		
+		quarterRange = new DateRange(startMonth.getTime(), endMonth.getTime());
+		
+		return quarterRange;
+	}	
+
+	/**
+	 * Add quarter to current
+	 * @param calendar
+	 * @param quarterDelta
+	 * @return
+	 */
+	public static Calendar addQuarter(Calendar calendar, int quarterDelta)
+	{
+		int month = calendar.get(Calendar.MONTH);
+		int quarter = month / 3;
+
+		Calendar startMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
+		startMonth.add(Calendar.MONTH, quarterDelta * 3);
+		
+		return startMonth;
+	}
+
+	
+	
 	/**
 	 * Set the time of a date to 00:00.00 (up to the ms)
 	 * @param date

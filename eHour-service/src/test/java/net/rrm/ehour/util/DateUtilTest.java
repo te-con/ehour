@@ -199,4 +199,50 @@ public class DateUtilTest extends TestCase
 		
 		assertEquals(7, res.size());
 	}	
+	
+	@Test
+	public void testGetDateRangeForQuarter()
+	{
+		Calendar cal = new GregorianCalendar(2007, 12 - 1, 5);
+		DateRange range = DateUtil.getDateRangeForQuarter(cal);
+		
+		assertEquals(2007 - 1900, range.getDateStart().getYear());
+		assertEquals(10 - 1, range.getDateStart().getMonth());
+		assertEquals(1, range.getDateStart().getDate());
+
+		assertEquals(2007 - 1900, range.getDateEnd().getYear());
+		assertEquals(12 - 1, range.getDateEnd().getMonth());
+		assertEquals(31, range.getDateEnd().getDate());
+
+		cal = new GregorianCalendar(2007, 5 - 1, 5);
+		range = DateUtil.getDateRangeForQuarter(cal);
+		
+		assertEquals(2007 - 1900, range.getDateStart().getYear());
+		assertEquals(4 - 1, range.getDateStart().getMonth());
+		assertEquals(1, range.getDateStart().getDate());
+
+		assertEquals(2007 - 1900, range.getDateEnd().getYear());
+		assertEquals(6 - 1, range.getDateEnd().getMonth());
+		assertEquals(30, range.getDateEnd().getDate());
+	}
+	
+	@Test
+	public void testAddQuarter()
+	{
+		Calendar cal = new GregorianCalendar(2007, 12 - 1, 5);
+
+		Calendar q = DateUtil.addQuarter(cal, 1);
+		
+		assertEquals(2008, q.get(Calendar.YEAR));
+		assertEquals(0, q.get(Calendar.MONTH));
+		assertEquals(1, q.get(Calendar.DATE));
+
+		cal = new GregorianCalendar(2007, 12 - 1, 5);
+		q = DateUtil.addQuarter(cal, -2);
+
+		assertEquals(2007, q.get(Calendar.YEAR));
+		assertEquals(4 - 1, q.get(Calendar.MONTH));
+		assertEquals(1, q.get(Calendar.DATE));
+
+	}
 }
