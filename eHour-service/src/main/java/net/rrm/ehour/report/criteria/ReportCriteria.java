@@ -25,6 +25,7 @@ package net.rrm.ehour.report.criteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -95,12 +96,27 @@ public class ReportCriteria
 			
 			if (reportRange.getDateStart() == null)
 			{
-				reportRange.setDateStart(availableCriteria.getReportRange().getDateStart());
+				if (availableCriteria == null || availableCriteria.getReportRange() == null)
+				{
+					reportRange.setDateStart(new Date());
+				}
+				else
+				{
+					reportRange.setDateStart(availableCriteria.getReportRange().getDateStart());
+				}
 			}
 			
 			if (reportRange.getDateEnd() == null)
 			{
-				reportRange.setDateEnd(availableCriteria.getReportRange().getDateEnd());
+				if (availableCriteria == null || availableCriteria.getReportRange() == null)
+				{
+					reportRange.setDateEnd(new Date());
+				}
+				else
+				{
+					reportRange.setDateEnd(availableCriteria.getReportRange().getDateEnd());
+				}
+				
 			}
 		}
 
