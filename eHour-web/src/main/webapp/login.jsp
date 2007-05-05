@@ -47,6 +47,13 @@
 				<td><input type="submit" value="<fmt:message key="login.login.submit" /> >>" id="submitButton" onFocus="blur()">
 				</td>
 			</tr>
+			
+			<tr>
+				<td><fmt:message key="login.login.rememberMe" /></td>
+            	<td><input type="checkbox" name="j_acegi_security_remember_me" /></td>
+				<td>&nbsp;</td>
+			</tr>
+			
 		</table>
 		</form>
 		

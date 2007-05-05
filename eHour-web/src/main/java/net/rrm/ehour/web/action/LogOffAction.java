@@ -23,10 +23,15 @@
 
 package net.rrm.ehour.web.action;
 
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -38,13 +43,23 @@ import org.apache.struts.action.ActionMapping;
 
 public class LogOffAction extends Action
 {
+	private Logger	logger = Logger.getLogger(this.getClass());
+	
 	public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest servletRequest, HttpServletResponse servletResponse)
 	{
 		HttpSession session;
 
+		logger.debug("Invalidating session");
 		session = servletRequest.getSession();
 		session.invalidate();
+		
+		logger.debug("Removing rememberMe cookie");
+		TokenBasedRememberMeServices rememberMe = new TokenBasedRememberMeServices();
+		rememberMe.logout(servletRequest, servletResponse, SecurityContextHolder.getContext().getAuthentication());
 
+		logger.debug("Clearing securityContext");
+		SecurityContextHolder.clearContext();
+		
 		return actionMapping.findForward("success");
 	}
 }

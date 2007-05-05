@@ -44,13 +44,6 @@
 		<property name="rememberMeServices" ref="rememberMeServices"/> 
 	</bean>
 
-<!-- 
-	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
-		<property name="key" value="changeThis"/>
-		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
-	</bean>
- -->
-
 	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
 		<property name="authenticationEntryPoint">
 			<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
@@ -92,7 +85,8 @@
 
 	<bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
 		<property name="userDetailsService" ref="userService"/>
-		<property name="key" value="changeThis"/>
+		<property name="key" value="eHour"/>
+		<property name="parameter"><value>j_acegi_security_remember_me</value></property>
 	</bean>
 
  
@@ -100,13 +94,9 @@
 		<property name="providers">
 			<list>
 				<ref local="daoAuthenticationProvider"/>
-<!-- 
-				<bean class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
-					<property name="key" value="changeThis"/>
-				</bean>
- -->				
+
 				<bean class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
-					<property name="key" value="changeThis"/>
+					<property name="key" value="eHour"/>
 				</bean>
 
 			</list>

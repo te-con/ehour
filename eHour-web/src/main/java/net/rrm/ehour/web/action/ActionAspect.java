@@ -55,7 +55,7 @@ public class ActionAspect
 	 * @param request
 	 * @throws Throwable
 	 */
-//	@Before("execution(* net.rrm.ehour.web.*.action.*Action.execute(..)) and args(mapping, form, request,..)")
+//	@After("execution(* net.rrm.ehour.web.*.action.*Action.execute(..)) and args(mapping, form, request,..)")
 	public void setLocale(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Throwable
 	{
 		if (config.getLocaleLanguage() == null 

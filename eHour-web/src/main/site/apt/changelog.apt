@@ -2,6 +2,8 @@ Change Log
 
 * 0.6 Release Notes
 
+	Added "remember me" to login
+
 	Quick date selection (previous/current/next week, month, quarter) added to reports
 
 	Charts use project and customer code rather than the full name
