@@ -25,7 +25,6 @@
 		<h3>&nbsp;</h3>
 		
 		<div class="GreyFrameBody">
-		
 
 			<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
 				<fmt:message key="report.criteria.reportRange" />:
@@ -47,26 +46,39 @@
 			<br clear="all">
 
 			<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;padding-top: 5px">
-				Quick date:
+				<fmt:message key="report.quickDate" />
 				<select class="textInputSmall" id="quickDateWeekId">
-					<option value="-1">Previous week</option>
-					<option value="0">Current week</option>
-					<option value="1">Next week</option>
-					<option style="color: #999999" SELECTED>Week</option>
+					<c:forEach items="${prevWeeks}" var="week" varStatus="weekStatus">
+						<option value="${(18 - weekStatus.count) * -1}"><fmt:message key="report.week" /> ${week}</option>
+					</c:forEach>
+					<option value="-1"><fmt:message key="report.prevWeek" /></option>
+					<option value="0"><fmt:message key="report.currWeek" /></option>
+					<option style="color: #999999" SELECTED><fmt:message key="report.week" /></option>
+					<option value="1"><fmt:message key="report.nextWeek" /></option>
+					<c:forEach items="${nextWeeks}" var="week" varStatus="weekStatus">
+						<option value="${1 + weekStatus.count}"><fmt:message key="report.week" /> ${week}</option>
+					</c:forEach>
 				</select>
 				&nbsp;&nbsp;
 				<select class="textInputSmall" id="quickDateMonthId">
-					<option value="-1">Previous month</option>
-					<option value="0">Current month</option>
-					<option value="1">Next month</option>
-					<option style="color: #999999" SELECTED>Month</option>
+					<c:forEach items="${prevMonths}" var="month" varStatus="monthStatus">
+						<option value="${(8 - monthStatus.count) * -1}"><fmt:formatDate pattern="MMMM yyyy" value="${month}" /></option>
+					</c:forEach>
+
+					<option value="-1"><fmt:message key="report.prevMonth" /></option>
+					<option value="0"><fmt:message key="report.currMonth" /></option>
+					<option style="color: #999999" SELECTED><fmt:message key="report.month" /></option>
+					<option value="1"><fmt:message key="report.nextMonth" /></option>
+					<c:forEach items="${nextMonths}" var="month" varStatus="monthStatus">
+						<option value="${(1 + monthStatus.count)}"><fmt:formatDate pattern="MMMM yyyy" value="${month}" /></option>
+					</c:forEach>
 				</select>
 				&nbsp;&nbsp;
 				<select class="textInputSmall" id="quickDateQuarterId">
-					<option value="-1">Previous quarter</option>
-					<option value="0">Current quarter</option>
-					<option value="1">Next quarter</option>
-					<option style="color: #999999" SELECTED>Quarter</option>
+					<option value="-1"><fmt:message key="report.prevQuarter" /></option>
+					<option value="0"><fmt:message key="report.currQuarter" /></option>
+					<option style="color: #999999" SELECTED><fmt:message key="report.quarter" /></option>
+					<option value="1"><fmt:message key="report.nextQuarter" /></option>
 				</select>
 			</div>
 

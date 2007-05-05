@@ -4,7 +4,7 @@ Change Log
 
 	Quick date selection (previous/current/next week, month, quarter) added to reports
 
-	Charts use project and customer code rather than the fullname
+	Charts use project and customer code rather than the full name
 
 	Added infinite checkbox to all (reporting) date dropdowns
 

@@ -23,6 +23,12 @@
 
 package net.rrm.ehour.web.report.action;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -73,12 +79,14 @@ public class ReportCriteriaAction extends Action
 					fwd = mapping.findForward("users");
 					break;
 				default:
+					setQuickDates(request);
 					fwd = mapping.findForward("success");
 					break;
 			}
 		}
 		else
 		{
+			setQuickDates(request);
 			fwd = mapping.findForward("success");
 		}
 		
@@ -93,7 +101,79 @@ public class ReportCriteriaAction extends Action
 	 */
 	private void setQuickDates(HttpServletRequest request)
 	{
+		setQuickDatesWeeks(request);
+		setQuickDatesMonths(request);
+	}
+	
+	/**
+	 * Set months
+	 * @param request
+	 */
+	private void setQuickDatesMonths(HttpServletRequest request)
+	{
+		Calendar		cal;
+		SortedSet<Date>	months = new TreeSet<Date>();
+		int				i;
 		
+		cal = new GregorianCalendar();
+		cal.add(Calendar.MONTH, -2);
+
+		for (i = 0; i < 6; i++)
+		{
+			months.add(cal.getTime());
+			cal.add(Calendar.MONTH, -1);
+		}
+		
+		request.setAttribute("prevMonths", months);
+		
+		SortedSet<Date> monthsNext = new TreeSet<Date>();
+		cal = new GregorianCalendar();
+		cal.add(Calendar.MONTH, 2);
+
+		for (i = 0; i < 6; i++)
+		{
+			monthsNext.add(cal.getTime());
+			cal.add(Calendar.MONTH, 1);
+		}
+		
+		request.setAttribute("nextMonths", monthsNext);		
+	}
+	
+	/**
+	 * Set weeks
+	 * @param request
+	 */
+	private void setQuickDatesWeeks(HttpServletRequest request)
+	{
+		Calendar			cal;
+		SortedSet<Integer>	weeks = new TreeSet<Integer>();
+		int					i;
+		
+		// week
+		cal = new GregorianCalendar();
+		cal.add(Calendar.WEEK_OF_YEAR, -2);
+		
+		for (i = 0; i < 16; i++)
+		{
+			weeks.add(cal.get(Calendar.WEEK_OF_YEAR));
+			cal.add(Calendar.WEEK_OF_YEAR, -1);
+		}
+		
+		request.setAttribute("prevWeeks", weeks);
+
+		weeks = new TreeSet<Integer>();
+		
+		cal = new GregorianCalendar();
+		cal.add(Calendar.WEEK_OF_YEAR, 2);
+
+		for (i = 0; i < 16; i++)
+		{
+			weeks.add(cal.get(Calendar.WEEK_OF_YEAR));
+			cal.add(Calendar.WEEK_OF_YEAR, 1);
+		}
+		
+		request.setAttribute("nextWeeks", weeks);
+
 	}
 	
 	/**
