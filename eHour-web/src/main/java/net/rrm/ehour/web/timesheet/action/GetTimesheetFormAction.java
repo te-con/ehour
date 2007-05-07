@@ -67,6 +67,12 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 
 		requestedWeek = timesheetForm.getCalendar();
 		
+		// relative week movement
+		if (timesheetForm.isMoveRelative())
+		{
+			requestedWeek.add(Calendar.DATE, timesheetForm.getRelativeWeek().intValue() * 7);
+		}
+		
 		// if accessed directly, display the current week as it's not provided
 		if (requestedWeek == null)
 		{
@@ -82,7 +88,6 @@ public class GetTimesheetFormAction extends BaseTimesheetAction
 		request.setAttribute("timesheet", timesheet);
 		
 		// needed when ran standalone
-		// TODO move wrapped config to session
 		if (config != null)
 		{
 			request.setAttribute("config", config);

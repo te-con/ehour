@@ -26,9 +26,12 @@ package net.rrm.ehour.web.timesheet.form;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.rrm.ehour.web.form.UserIdForm;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionMapping;
 
 /**
  * TODO 
@@ -47,7 +50,19 @@ public class TimesheetForm extends UserIdForm
 	private	Integer	sheetMonth;
 	private	Integer	sheetYear;
 	private	String	comment;
+	private	Integer	relativeWeek;
+	private	boolean	moveRelative;
 	private	transient Logger	logger = Logger.getLogger(TimesheetForm.class);
+	
+	/**
+	 * 
+	 *
+	 */
+	public void reset(ActionMapping mapping, HttpServletRequest request)
+	{
+		moveRelative = false;
+		super.reset(mapping, request);
+	}	
 	
 	/**
 	 * Get supplied date as calendar or current date if none given
@@ -180,6 +195,38 @@ public class TimesheetForm extends UserIdForm
 	public void setComment(String comment)
 	{
 		this.comment = comment;
+	}
+
+	/**
+	 * @return the relativeWeek
+	 */
+	public Integer getRelativeWeek()
+	{
+		return relativeWeek;
+	}
+
+	/**
+	 * @param relativeWeek the relativeWeek to set
+	 */
+	public void setRelativeWeek(Integer relativeWeek)
+	{
+		this.relativeWeek = relativeWeek;
+	}
+
+	/**
+	 * @return the moveRelative
+	 */
+	public boolean isMoveRelative()
+	{
+		return moveRelative;
+	}
+
+	/**
+	 * @param moveRelative the moveRelative to set
+	 */
+	public void setMoveRelative(boolean moveRelative)
+	{
+		this.moveRelative = moveRelative;
 	}
 
 }

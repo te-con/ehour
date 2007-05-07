@@ -27,6 +27,50 @@ a:active
 	text-decoration: none
 }
 
+.TimesheetHeaderDiv
+{
+	margin-left: 11px;
+}
+
+.TimesheetHeaderDiv a:link
+{
+	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+.TimesheetHeaderDiv a:visited
+{
+	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	font-weight: normal;	
+	text-decoration: none;
+}
+
+.TimesheetHeaderDiv a:hover
+{
+	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;	
+	color: #233e55;
+	text-decoration: none;
+}
+
+.TimesheetHeaderDiv a:active
+{
+	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;	
+	text-decoration: none
+}
+
+.timesheetHeader
+{
+	font-family: Arial,Geneva,Helvetica,sans-serif;
+	font-weight: bold;
+	font-size: 1em;
+	color: #536e87;
+	margin: 0;
+	padding: 0;
+}
+
 .MonthAggregateTable 
 {
 	margin: -1em 1em 0 1em;

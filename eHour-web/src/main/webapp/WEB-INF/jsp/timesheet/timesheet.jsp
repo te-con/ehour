@@ -13,7 +13,12 @@
 
 
 <div class="ContentFrame">
-	<h1><fmt:message key="user.overview.week" /> <fmt:formatDate value="${timesheet.weekStart}" pattern="w, MMMMM yyyy" /></h1>
+
+	<div class="TimesheetHeaderDiv">
+		<a href="" onclick="return moveRelativeWeek(-1)" title="<fmt:message key="user.timesheet.previousWeek" />">&lt;&lt;</a>
+		<span class="timesheetHeader"><fmt:message key="user.overview.week" /> <fmt:formatDate value="${timesheet.weekStart}" pattern="w, MMMMM yyyy" /></span>
+		<a href="" onclick="return moveRelativeWeek(1)" title="<fmt:message key="user.timesheet.nextWeek" />">&gt;&gt;</a>
+	</div>
 	
 	<div class="GreyFrame">
 		<h3>&nbsp;</h3>

@@ -1,5 +1,7 @@
 var doNotSubmitTimesheet = true;
 var inSheetForm = false;
+var sheetChanged = false;
+
 
 // 'abstract' methods from navCalendarOverview.js
 function navCalendarUpdated(month, year, userId)
@@ -36,6 +38,35 @@ function enterSheet(year, month, day, userId)
 	showLoadingData();
 }
 
+// navigate to next week
+function moveRelativeWeek(relativeWeek)
+{
+	doNotSubmitTimesheet = true;
+	
+	if (sheetChanged && !confirm(noSaveWarn))
+	{
+		return false;
+	}
+	
+	day = dojo.byId('sheetDay').value;
+	month = dojo.byId('sheetMonth').value - 1;
+	year = dojo.byId('sheetYear').value;		
+	
+	dojo.io.bind({
+	               url: 'getTimesheetForm.do',
+	               handler: weekChanged,
+	               content: {moveRelative: 'true',
+	               			 month: month,
+	               			 year: year,
+	               			 relativeWeek: relativeWeek,
+	               			 day: day}
+	            });  		
+
+	showLoadingData();
+	
+	return false;
+}
+
 // toggle project info
 function toggleProjectInfo(assignmentId)
 {	
@@ -62,9 +93,7 @@ function weekChanged(type, xml, evt)
 {
 	overviewChanged(type, xml, evt);
 
-//	bindTimesheetForm();
-			
-	// update contextual help?							
+	// do we need to the update contextual help?							
 	if (!inSheetForm)
 	{
 		inSheetForm = true;
@@ -75,6 +104,8 @@ function weekChanged(type, xml, evt)
 		               handler: helpChanged
 		            });
 	}
+	
+	sheetChanged = false;
 }
 
 // bind timesheet form
@@ -272,6 +303,8 @@ function timesheetSubmitted(type, xml, evt)
 // validate field
 function validateField(field)
 {
+	sheetChanged = true;
+
 	var value = field.value;
 	var inError = false;
 

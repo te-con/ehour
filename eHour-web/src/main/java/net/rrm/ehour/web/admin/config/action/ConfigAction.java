@@ -70,6 +70,7 @@ public class ConfigAction extends BaseConfigAction
 			configForm.setShowTurnOver(dbConfig.isShowTurnover());
 			configForm.setMailFrom(dbConfig.getMailFrom());
 			configForm.setMailSmtp(dbConfig.getMailSmtp());
+			
 			configForm.setRememberMeAvailable(dbConfig.isRememberMeAvailable());
 		}
 
