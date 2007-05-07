@@ -52,7 +52,7 @@
 		<table>
 			<tr>
 				<td colspan="3">
-					<form name="loginForm" method="post" action="<c:url value="/security_check.jsp"/>">
+					<form name="loginForm" method="post" action="<c:url value="/security_check"/>">
 				
 				    <c:if test="${not empty param.login_error}">
 						<fmt:message key="login.login.failed" > 
