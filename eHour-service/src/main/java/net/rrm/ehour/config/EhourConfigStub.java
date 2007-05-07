@@ -38,7 +38,7 @@ public class EhourConfigStub implements EhourConfig
 	private	boolean		showTurnover;
 	private	String		mailFrom;
 	private	String		mailSmtp;
-	private	boolean		rememberMeAvailable;
+	private	boolean		rememberMeAvailable = true;
 	
 	/**
 	 * @return the availableTranslations
