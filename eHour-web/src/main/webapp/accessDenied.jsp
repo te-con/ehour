@@ -8,14 +8,14 @@
 	<head>
 		<title>eHour - <fmt:message key="login.accessDenied.header" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehourLogin.jsp" />">
+		<link rel="stylesheet" type="text/css" href="<c:url  value="/css/ehourLogin.jsp" />" />
 	</head>
 <body>
 
-<br><br>
+<br /><br />
 
 <div class="BackFrame">
-	<h3><img src="<c:url value="/img/bg_grey/ehour.gif" />" style="padding-top: 5px"></h3>
+	<h3><img src="<c:url value="/img/bg_grey/ehour.gif" />" style="padding-top: 5px" /></h3>
 	<div class="BlueFrame">
 		<h3><fmt:message key="login.accessDenied.header" /></h3>
 
@@ -23,7 +23,7 @@
 			<fmt:message key="login.accessDenied.body" />
 		</p>
 		
-		<br><br>
+		<br /><br />
 		<div class="BlueFrameFooter">
 			<p>
 			</p>
