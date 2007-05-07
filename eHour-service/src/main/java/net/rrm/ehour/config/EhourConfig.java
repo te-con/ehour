@@ -83,4 +83,10 @@ public interface EhourConfig
 	 * @return
 	 */
 	public String getMailSmtp();
+	
+	/**
+	 * Is remember me on login functionality available ?
+	 * @return
+	 */
+	public boolean isRememberMeAvailable();
 }

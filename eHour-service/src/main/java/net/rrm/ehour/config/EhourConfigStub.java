@@ -38,6 +38,7 @@ public class EhourConfigStub implements EhourConfig
 	private	boolean		showTurnover;
 	private	String		mailFrom;
 	private	String		mailSmtp;
+	private	boolean		rememberMeAvailable;
 	
 	/**
 	 * @return the availableTranslations
@@ -159,4 +160,14 @@ public class EhourConfigStub implements EhourConfig
 	{
 		this.mailSmtp = mailSmtp;
 	}
+	public boolean isRememberMeAvailable()
+	{
+		return this.rememberMeAvailable;
+	}
+
+	public void setRememberMeAvailable(boolean rma)
+	{
+		this.rememberMeAvailable = rma;
+	}
+
 }

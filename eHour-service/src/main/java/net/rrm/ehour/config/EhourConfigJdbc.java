@@ -45,12 +45,12 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	
 	public int getCompleteDayHours()
 	{
-		return this.getInt("completeDayHours");
+		return this.getInt("completeDayHours", 8);
 	}
 
 	public boolean isShowTurnover()
 	{
-		return this.getBoolean("showTurnOver");
+		return this.getBoolean("showTurnOver", true);
 	}
 	
 	public String getTimeZone()
@@ -58,10 +58,9 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("timezone");
 	}
 
-
 	public String getCurrency()
 	{
-		return this.getString("currency");
+		return this.getString("currency", "Euro");
 	}
 
 	public String getLocaleCountry()
@@ -71,22 +70,27 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	public String getLocaleLanguage()
 	{
-		return this.getString("localeLanguage");
+		return this.getString("localeLanguage", "en");
 	}
 
 	public String[] getAvailableTranslations()
 	{
-		return this.getString("availableTranslations").split(",");
+		return this.getString("availableTranslations", "en,nl").split(",");
 	}
 
 	public String getMailFrom()
 	{
-		return this.getString("mailFrom");
+		return this.getString("mailFrom", "devnull@devnull.com");
 	}
 
 	public String getMailSmtp()
 	{
-		return this.getString("mailSmtp");
+		return this.getString("mailSmtp", "127.0.0.1");
+	}
+
+	public boolean isRememberMeAvailable()
+	{
+		return this.getBoolean("rememberMeAvailable", true);
 	}
 
 }

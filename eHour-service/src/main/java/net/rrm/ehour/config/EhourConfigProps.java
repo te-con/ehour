@@ -82,4 +82,9 @@ public class EhourConfigProps implements EhourConfig
 	{
 		return props.getProperty("mailSmtp");
 	}
+
+	public boolean isRememberMeAvailable()
+	{
+		return Boolean.valueOf(props.getProperty("rememberMeAvailable"));
+	}
 }
