@@ -2,8 +2,8 @@ Installation instructions
 
 	eHour requires a Java JDK, the Apache Tomcat servlet container and a MySQL database to be installed.
 	
-	If you're upgrading an existing installation of eHour, please see the {{{upgrading.html} upgrading instructions}};
-	do not follow these steps again.
+	If you're upgrading an existing installation of eHour, please see the {{{upgrading.html} upgrade instructions}};
+	do not execute these steps more than once.
 	
 * Download eHour
 

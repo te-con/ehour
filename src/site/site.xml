@@ -49,8 +49,8 @@
 			<item name="eHour structure" href="http://www.ehour.nl/documentation.html" />
 			<item name="Support forum" href="support.html" />
 		</menu>
-
-		${reports}
+		
+		<menu ref="modules" />
 
 	</body>
 </project>

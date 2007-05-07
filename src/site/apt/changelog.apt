@@ -2,9 +2,37 @@ Change Log
 
 * 0.6 Release Notes
 
-	Timesheet overview for employees is now sorted on customer / project
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1713149&group_id=167867&atid=844651}1713149 }} Consistent number of decimal places, all numbers now got 2 fraction digits.
 
-	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1702393&group_id=167867&atid=844651}1702393  }} project code added to reports
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1705209&group_id=167867&atid=844648}1705209 }} Not selecting a project to print gives a warning to the user rather than an error
+
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1707334&group_id=167867&atid=844651}1707334 }} Week navigation added to timesheet
+
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1713207&group_id=167867&atid=844651}1713207 }} Added "remember me" to login. Configurable from admin section whether it should be enabled for users or not.
+
+	Quick date selection (previous/current/next week, month, quarter) added to reports
+
+	Charts use project and customer code rather than the full name
+
+	Added infinite checkbox to all (reporting) date dropdowns
+
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1712322&group_id=167867&atid=844648}1712322 }} Start/end date can now be empty in assignments
+
+	Reports can now be printed
+
+	Added available hours and assignment type to PM report. Also date range assignments are limited to 100% progress.
+
+	Added excel export to all reports
+
+	Added total hours & turnover to timesheet overview for employees.
+
+	Added rate and customer to all reports.
+
+	Timesheet overview for employees is now sorted on customer / project.
+
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1688620&group_id=167867&atid=844648}1688620 }} Project assignment date mismatch fixed.
+
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1702393&group_id=167867&atid=844651}1702393 }} Project code added to reports.
 
 * 0.5 Release Notes
 
