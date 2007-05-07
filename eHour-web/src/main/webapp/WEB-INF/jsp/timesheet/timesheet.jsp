@@ -90,10 +90,10 @@
 		
 					<c:choose>
 						<c:when test="${cell.valid}">
-							<input type="text"
+							<input style="text-align: right" type="text"
 								   name="ehts_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />_${status.count}"
 								   <c:if test="${cell.timesheetEntry.hours != null && cell.timesheetEntry.hours  > 0}">
-									   value="<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>"
+									   value="<fmt:formatNumber value="${cell.timesheetEntry.hours}" minFractionDigits="2" maxFractionDigits="2"/>"
 									</c:if>							  
 								   onChange="validateField(this)"
 									>
@@ -101,7 +101,9 @@
 						
 						<c:otherwise>
 								&nbsp;
-								<fmt:formatNumber value="${cell.timesheetEntry.hours}" maxFractionDigits="2"/>
+								<c:if test="${cell.timesheetEntry.hours > 0}">
+									<fmt:formatNumber value="${cell.timesheetEntry.hours}" minFractionDigits="2" maxFractionDigits="2"/>
+								</c:if>
 								<input type="hidden"
 									   name="inactive_${row.projectAssignment.assignmentId}_<fmt:formatDate value="${cell.cellDate}" pattern="yyyyMMdd" />" 
 									   value="${cell.timesheetEntry.hours}">

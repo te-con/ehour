@@ -314,7 +314,7 @@
 	<tr>
 		<td colspan="2" align="right">
 			<br>
-			<input style="float: bottom" type="submit" class="submitButtonBlue" id="criteriaSubmit" value="show report >>">
+			<input style="float: bottom" type="submit" class="submitButtonBlue" id="criteriaSubmit" value="<fmt:message key="userReport.criteria.showReport" /> >>">
 		</td>
 	</tr>
 </table>

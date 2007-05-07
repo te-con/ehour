@@ -13,18 +13,18 @@
 			</fmt:message>
 	</title>
 	
-	<link rel="stylesheet" type="text/css" href="<c:url value="/css/ehourPrint.css" />">
+	<link rel="stylesheet" type="text/css" href="<c:url value="/css/ehourPrint.css" />" />
 </head>
 
-<body onLoad="window.print()">
+<body onload="window.print()">
 
 <div class="Header">
-	<img src="<c:url value="/img/print/ehour.png" />">
+	<img src="<c:url value="/img/print/ehour.png" />" />
 </div>
 
-<hr>
+<hr />
 
-<br>
+<br />
 
 <div class="Content">
 
@@ -32,7 +32,7 @@
 					<fmt:param>${printUser.firstName}  ${printUser.lastName}</fmt:param>
 					<fmt:param><fmt:formatDate pattern="MMMMM yyyy" value="${printDate.time}" /></fmt:param>				
 				</fmt:message></h1>
-	<br>
+	<br />
 	<center>
 	<table class="sheetTable" cellpadding="0" cellspacing="0">
 	
@@ -55,12 +55,12 @@
 				<c:set var="totalHour" value="${totalHour + printReport.values[row.key][date].totalHours}" />	
 				<c:set var="grandTotalHour" value="${grandTotalHour + printReport.values[row.key][date].totalHours}" />					
 				<td>
-					<fmt:formatNumber value="${printReport.values[row.key][date].totalHours}" maxFractionDigits="2"/>&nbsp;
+					<fmt:formatNumber value="${printReport.values[row.key][date].totalHours}" minFractionDigits="2" maxFractionDigits="2"/>&nbsp;
 				</td>
 			</c:forEach>
 			
 			<td class="dateRow" style="text-align:right">
-				<fmt:formatNumber value="${totalHour}" maxFractionDigits="2"/>
+				<fmt:formatNumber value="${totalHour}" minFractionDigits="2" maxFractionDigits="2"/>
 			</td>
 		</tr>
 		</c:forEach>
@@ -82,9 +82,9 @@
 			</td>
 			
 			<td colspan="15" style="border: 0;text-align: left">
-				<Br><Br><br>
+				<br /><br /><br />
 				<fmt:message key="user.timesheet.print.managerSignature" />
-				<br><br><br><br>
+				<br /><br /><br /><br />
 				Date:
 			</td>
 			
@@ -93,9 +93,9 @@
 			</td>
 			
 			<td colspan="16" style="border: 0;text-align: left">
-				<Br><Br><br>		
+				<br /><br /><br />
 				${printUser.firstName}  ${printUser.lastName} <fmt:message key="user.timesheet.print.userSignature" />
-				<br><br><br><br>
+				<br /><br /><br /><br />
 				Date:
 			</td>		
 		</tr>
@@ -105,9 +105,9 @@
 		
 	</table>
 	</center>
-		<Br>
+		<br />
 		
-		<br><br>
+		<br /><br />
 		
 
 
@@ -115,7 +115,7 @@
 </div>
 
 <div class="Footer">
-	<hr>
+	<hr />
 	<div style="float: left; padding-left: 15px;">
 		<fmt:message key="user.timesheet.print.printedOn">
 			<fmt:param><fmt:formatDate value="${currentDate.time}" pattern="dd MMMMM yyyy" /></fmt:param>

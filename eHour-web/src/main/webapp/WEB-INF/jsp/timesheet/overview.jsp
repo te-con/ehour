@@ -20,11 +20,11 @@
 				<th><nobr><fmt:message key="user.overview.projectCode" /></nobr></th>
 				<th><fmt:message key="user.overview.customer" /></th>
 				<c:if test="${config.showTurnover}">			
-					<th><fmt:message key="user.overview.rate" /></th>
+					<th  style="text-align: right"><fmt:message key="user.overview.rate" /></th>
 				</c:if>
-				<th><nobr><fmt:message key="user.overview.bookedHours" /></nobr></th>
+				<th style="text-align: right"><nobr><fmt:message key="user.overview.bookedHours" /></nobr></th>
 				<c:if test="${config.showTurnover}">			
-					<th><fmt:message key="user.overview.turnover" /></th>
+					<th style="text-align: right"><fmt:message key="user.overview.turnover" /></th>
 				</c:if>
 			</tr>
 			<c:set var="totalHour" value="0" />
@@ -38,7 +38,7 @@
 				<td>${projectReport.projectAssignment.project.projectCode}</td>				
 				<td>${projectReport.projectAssignment.project.customer.name}</td>
 				<c:if test="${config.showTurnover}">
-					<td>
+					<td align="right">
 						<c:if test="${projectReport.projectAssignment.hourlyRate == '' || projectReport.projectAssignment.hourlyRate == null}">
 							--
 						</c:if>
@@ -46,20 +46,20 @@
 											value="${projectReport.projectAssignment.hourlyRate}" 
 											currencySymbol="${currencySymbol} " /></nobr></td>
 				</c:if>			
-				<td><fmt:formatNumber value="${projectReport.hours}" maxFractionDigits="2" /></td>
+				<td align="right"><fmt:formatNumber value="${projectReport.hours}" minFractionDigits="2" maxFractionDigits="2" /></td>
 				<c:if test="${config.showTurnover}">
-					<td><c:if test="${projectReport.projectAssignment.hourlyRate == '' || projectReport.projectAssignment.hourlyRate == null}">
+					<td align="right"><c:if test="${projectReport.projectAssignment.hourlyRate == '' || projectReport.projectAssignment.hourlyRate == null}">
 						--
 					</c:if>
 					<nobr><fmt:formatNumber type="currency"
 									value="${projectReport.turnOver}" 
-									currencySymbol="${currencySymbol} " /></nobr></td>
+									currencySymbol="${currencySymbol} " /></nobr>&nbsp;</td>
 				</c:if>
 			</tr>
 			
 			<tr id="project${projectReport.projectAssignment.assignmentId}" style="display: none">
 				<td>&nbsp;</td>
-				<td style="color: #999999;font-size: 0.8em;padding-top: 2px" colspan="<c:if test="${config.showTurnover}">6</c:if><c:if test="${!config.showTurnover}">4</c:if>">
+				<td  style="color: #999999;font-size: 0.8em;padding-top: 2px" colspan="<c:if test="${config.showTurnover}">6</c:if><c:if test="${!config.showTurnover}">4</c:if>">
 					<fmt:message key="user.overview.validFrom" />:
 						<c:choose>
 							<c:when test="${projectReport.projectAssignment.dateStart == null}">
@@ -99,10 +99,10 @@
 					<c:otherwise><th class="total" colspan="4"></c:otherwise>
 				</c:choose>
 				&nbsp;</th>
-				<th class="total"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></th>
+				<th style="text-align: right" class="total"><fmt:formatNumber value="${totalHour}" minFractionDigits="2" maxFractionDigits="2" /></th>
 				
 				<c:if test="${config.showTurnover}">			
-					<th class="total"><nobr><fmt:formatNumber type="currency"
+					<th style="text-align: right" class="total"><nobr><fmt:formatNumber type="currency"
 								value="${totalTurnOver}" 
 								currencySymbol="${currencySymbol} " /></nobr></th>
 				</c:if>

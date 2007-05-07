@@ -81,7 +81,7 @@
 										<td>${projectItem.key.name}</td>
 										<td>${projectItem.key.projectCode}</td>
 									</c:if>
-									<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
+									<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${userItem.hours}" minFractionDigits="2" maxFractionDigits="2" /></td>
 									
 									<c:if test="${config.showTurnover}">																			
 										<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${userItem.turnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
@@ -101,7 +101,7 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
+							<td align="right" <c:if test="${!config.showTurnover}">class="lastChild"</c:if>><fmt:formatNumber value="${totalHour}" minFractionDigits="2" maxFractionDigits="2" /></td>
 							<c:if test="${config.showTurnover}">							
 								<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 							</c:if>

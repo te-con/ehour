@@ -57,9 +57,9 @@
 								<th><fmt:message key="report.report.project" /></th>
 								<th><fmt:message key="report.report.projectCode" /></th>
 								<th><fmt:message key="report.report.user" /></th>
-								<th><fmt:message key="report.report.hours" /></th>
-								<th><fmt:message key="report.report.rate" /></th>								
-								<th><fmt:message key="report.report.turnOver" /></th>
+								<th style="text-align: right"><fmt:message key="report.report.hours" /></th>
+								<th style="text-align: right"><fmt:message key="report.report.rate" /></th>								
+								<th style="text-align: right"><fmt:message key="report.report.turnOver" /></th>
 							</tr>
 
 					<c:set var="grandTotalHour" value="0" />
@@ -98,7 +98,7 @@
 									<td><c:if test="${!print}"><a href=""
 											onClick="return updateReport('userReport', '${reportSessionKey}', '${userItem.projectAssignment.user.userId}')"
 											></c:if>${userItem.projectAssignment.user.lastName}, ${userItem.projectAssignment.user.firstName}</a></td>
-									<td align="right"><fmt:formatNumber value="${userItem.hours}" maxFractionDigits="2" /></td>
+									<td align="right"><fmt:formatNumber value="${userItem.hours}" minFractionDigits="2" maxFractionDigits="2" /></td>
 									<td align="right"><nobr><fmt:formatNumber type="currency"
 																value="${userItem.projectAssignment.hourlyRate}" 
 																currencySymbol="${currencySymbol} " /></nobr></td>
@@ -120,7 +120,7 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>							
-							<td align="right"><fmt:formatNumber value="${totalHour}" maxFractionDigits="2" /></td>
+							<td align="right"><fmt:formatNumber value="${totalHour}" minFractionDigits="2" maxFractionDigits="2" /></td>
 							<td>&nbsp;</td>							
 							<td align="right" class="lastChild"><fmt:formatNumber maxFractionDigits="2" value="${totalTurnOver}" type="currency" currencySymbol="${currencySymbol}" /></td>
 						</tr>

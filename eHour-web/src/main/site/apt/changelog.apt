@@ -2,6 +2,10 @@ Change Log
 
 * 0.6 Release Notes
 
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1713149&group_id=167867&atid=844651}1713149 }} Consistent number of decimal places, all numbers now got 2 fraction digits.
+
+	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1705209&group_id=167867&atid=844648}1705209 }} Not selecting a project to print gives a warning to the user rather than an error
+
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1707334&group_id=167867&atid=844651}1707334 }} Week navigation added to timesheet
 
 	{{{http://sourceforge.net/tracker/index.php?func=detail&aid=1713207&group_id=167867&atid=844651}1713207 }} Added "remember me" to login. Configurable from admin section whether it should be enabled for users or not.

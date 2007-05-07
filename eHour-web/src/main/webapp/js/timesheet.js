@@ -336,14 +336,7 @@ function validateField(field)
 
     if (!inError)
     {
-		if (Math.round(floatValue) != floatValue)
-       	{
-       		value = floatValue.toFixed(2);
-       	}
-       	else
-       	{
-       		value = floatValue.toFixed(0);
-       	}
+       	value = floatValue.toFixed(2);
 
 		field.value = value;
 		

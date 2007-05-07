@@ -101,7 +101,7 @@ function init()
 		<br>
 		
 		<div style="float: right;vertical-align: bottom;height: 1.5em">
-			<input type="submit" value="submit" id="submitButton">
+			<input type="submit" value="<fmt:message key="userReport.criteria.showReport" />" id="submitButton">
 		</div>
 		<Br>
 	</div>

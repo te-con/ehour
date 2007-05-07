@@ -5,6 +5,32 @@
 
 <!-- spanTarget: content -->
 
+<script>
+	function checkForm()
+	{
+		var form = document.getElementById('printForm');
+
+		var selected = false;
+		
+		for (i = 0; i < form.projectId.length; i++)
+		{
+			if (form.projectId[i].checked)
+			{
+				selected = true;
+				break;
+			}
+		}
+
+		if (!selected)
+		{
+			alert("<fmt:message key="user.timesheet.print.noProjectSelected" />.");
+			return false;
+		}		
+
+		return true;		
+	}
+</script>
+
 <div class="ContentFrame">
 	<h1><fmt:message key="user.timesheet.print.header" /> <fmt:formatDate value="${printDate.time}" pattern="MMMMM yyyy" /></h1>
 	
@@ -18,7 +44,7 @@
 				</div>
 			</div>	
 
-			<form method="post" action="printTimesheet.do" target="_new">
+			<form method="post" action="printTimesheet.do" target="_new" onsubmit="return checkForm()" id="printForm">
 			
 				<input type="hidden" name="fromForm" value="Y">
 

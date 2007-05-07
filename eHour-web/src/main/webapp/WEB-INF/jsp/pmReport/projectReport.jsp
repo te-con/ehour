@@ -58,7 +58,7 @@
 											</c:when>
 										</c:choose>
 									</td>									
-									<td style="text-align: right"><fmt:formatNumber value="${aggregate.hours}" maxFractionDigits="2" />&nbsp;</td>
+									<td style="text-align: right"><fmt:formatNumber value="${aggregate.hours}" minFractionDigits="2" maxFractionDigits="2" />&nbsp;</td>
 									<c:choose>
 										<c:when test="${aggregate.projectAssignment.assignmentType.assignmentTypeId == 0}">
 										<td style="text-align: right">
@@ -73,13 +73,13 @@
 										</c:when>
 										<c:otherwise>
 											<td style="text-align: right">
-												<fmt:formatNumber value="${aggregate.projectAssignment.allottedHours}" maxFractionDigits="2" />
+												<fmt:formatNumber value="${aggregate.projectAssignment.allottedHours}" minFractionDigits="2" maxFractionDigits="2" />
 											</td>
 											<td style="text-align: right">
-												<fmt:formatNumber value="${aggregate.projectAssignment.allowedOverrun}" maxFractionDigits="2" />
+												<fmt:formatNumber value="${aggregate.projectAssignment.allowedOverrun}" minFractionDigits="2" maxFractionDigits="2" />
 											</td>
 											<td style="text-align: right">
-												<fmt:formatNumber value="${aggregate.availableHours}" maxFractionDigits="2" />
+												<fmt:formatNumber value="${aggregate.availableHours}" minFractionDigits="2" maxFractionDigits="2" />
 											</td>
 										</c:otherwise>
 									</c:choose>									
