@@ -2,7 +2,7 @@ Change Log
 
 * 0.6 Release Notes
 
-	Added "remember me" to login
+	Added "remember me" to login. Configurable from admin section whether it should be enabled for users or not.
 
 	Quick date selection (previous/current/next week, month, quarter) added to reports
 
