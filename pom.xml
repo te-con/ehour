@@ -1,10 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
-	<version>0.6-SNAPSHOT</version>
+	<version>0.6</version>
 	<artifactId>eHour</artifactId>
 	<packaging>pom</packaging>
 	<name>eHour</name>
@@ -13,7 +11,7 @@
 	<modules>
 		<module>eHour-service</module>
 		<module>eHour-web</module>
-	</modules>
+  </modules>
 
 	<description>eHour - web-based time registration for consultancy companies and other project based businesses</description>
 
@@ -133,8 +131,63 @@
 					<disableXmlReport>true</disableXmlReport>
 				</configuration>
 			</plugin>
+	      <plugin>
+	        <artifactId>maven-assembly-plugin</artifactId>
+	        <configuration>
+	          <descriptors>
+	            <descriptor>src/assembly/assembly.xml</descriptor>
+	          </descriptors>
+	        </configuration>
+	      </plugin>			
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jxr-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<printSummary>false</printSummary>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clover-plugin</artifactId>
+				<configuration>
+					<jdk>1.5</jdk>
+					<licenseLocation>
+						etc/clover-eHour.license
+					</licenseLocation>
+					<generateHtml>true</generateHtml>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</reporting>
 
 	<pluginRepositories>
 		<pluginRepository>
@@ -143,7 +196,7 @@
 		</pluginRepository>
 		<pluginRepository>
 			<id>stat-scm-sourceforge-snapshot</id>
-			<url>http://stat-scm.sourceforge.net/maven2-snapshots</url>
+			<url>http://stat-scm.sourceforge.net/maven2</url>
 		</pluginRepository>
 	</pluginRepositories>
 </project>
