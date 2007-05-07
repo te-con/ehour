@@ -1,5 +1,5 @@
 /**
- * Created on Mar 19, 2007
+ * Created on May 7, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,52 +21,40 @@
  *
  */
 
-package net.rrm.ehour.web.admin.config.action;
+package net.rrm.ehour.web.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.web.admin.config.form.ConfigForm;
+import net.rrm.ehour.config.EhourConfig;
 
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * Persist config in db 
+ * TODO 
  **/
 
-public class SaveConfigAction extends ConfigAction
+public class PreLoginAction extends Action
 {
-	/**
-	 * 
-	 */
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-								HttpServletRequest request, HttpServletResponse response) 
+	private	EhourConfig	config;
+	
+	
+	public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest servletRequest, HttpServletResponse servletResponse)
 	{
-		ConfigForm		configForm = (ConfigForm)form;
-		EhourConfigStub	config = new EhourConfigStub();
-		
-		config.setCurrency(configForm.getCurrency());
-		config.setShowTurnover(configForm.isShowTurnOver());
-		config.setMailFrom(configForm.getMailFrom());
-		config.setMailSmtp(configForm.getMailSmtp());
-		config.setRememberMeAvailable(configForm.isRememberMeAvailable());
-		
-		if (configForm.isNoForce())
-		{
-			config.setLocaleLanguage("noForce");
-		}
-		else
-		{
-			config.setLocaleLanguage(configForm.getLanguage());	
-		}
-		
-		configService.persistConfiguration(config);
-		
-		request.setAttribute("updateMsg", "admin.config.saved");
+		servletRequest.setAttribute("config", config);
 
-		return super.execute(mapping, form, request, response);
+		return actionMapping.findForward("success");
+	}
+
+
+	/**
+	 * @param config the config to set
+	 */
+	public void setConfig(EhourConfig config)
+	{
+		this.config = config;
 	}
 }

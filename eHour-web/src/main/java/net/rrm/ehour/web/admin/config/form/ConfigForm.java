@@ -46,6 +46,7 @@ public class ConfigForm extends ActionForm
 	private boolean	fromForm;
 	private String	mailSmtp;
 	private String 	mailFrom;
+	private	boolean	rememberMeAvailable;
 	
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
@@ -53,6 +54,7 @@ public class ConfigForm extends ActionForm
 		fromForm = false;
 		showTurnOver = false;
 		noForce = false;
+		rememberMeAvailable = false;
 	}
 	
 	/**
@@ -178,6 +180,22 @@ public class ConfigForm extends ActionForm
 	public void setMailSmtp(String mailSmtp)
 	{
 		this.mailSmtp = mailSmtp;
+	}
+
+	/**
+	 * @return the rememberMeAvailable
+	 */
+	public boolean isRememberMeAvailable()
+	{
+		return rememberMeAvailable;
+	}
+
+	/**
+	 * @param rememberMeAvailable the rememberMeAvailable to set
+	 */
+	public void setRememberMeAvailable(boolean rememberMeAvailable)
+	{
+		this.rememberMeAvailable = rememberMeAvailable;
 	}
 	
 }

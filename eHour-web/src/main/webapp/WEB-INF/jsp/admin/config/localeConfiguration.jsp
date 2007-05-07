@@ -79,6 +79,19 @@
 	</tr>
 	
 	<tr>
+		<td><fmt:message key="admin.config.rememberMe" />:</td>
+		<td><input type="checkbox"
+					id="rememberMeAvailable"
+					name="rememberMeAvailable"
+					<c:if test="${form.rememberMeAvailable}">CHECKED</c:if>>
+		</td>
+	</tr>	
+
+	<tr>
+		<td colspan="2"><br><br></td>
+	</tr>	
+	
+	<tr>
 		<td><fmt:message key="admin.config.mailFrom" />:</td>
 		<td><input type="text"
 					id="mailFrom"

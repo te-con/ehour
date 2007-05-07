@@ -114,6 +114,7 @@ div.BlueFrame input
 	color: #233e55;
 }
 
+
 #submitButton
 {
 	background-color: #a3bed9;
@@ -122,16 +123,4 @@ div.BlueFrame input
 	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
 	color: white;
 	border: 0;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #cde4fd;
-}
-
-#submitButton:hover
-{
-	background-color: #a3bed9;
-	margin: 0;
-	padding: 0;
-	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
-	color: #576d83;
 }

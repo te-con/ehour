@@ -31,7 +31,7 @@
 
 	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
-		<property name="authenticationFailureUrl" value="/login.jsp?login_error=1"/>
+		<property name="authenticationFailureUrl" value="/login.do?login_error=1"/>
 		<property name="defaultTargetUrl" value="/"/>
 		<property name="filterProcessesUrl" value="/security_check.jsp"/>
 		<property name="rememberMeServices" ref="rememberMeServices"/> 
@@ -47,7 +47,7 @@
 	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
 		<property name="authenticationEntryPoint">
 			<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-				<property name="loginFormUrl" value="/login.jsp"/>
+				<property name="loginFormUrl" value="/login.do"/>
 				<property name="forceHttps" value="false"/>
 			</bean>
 		</property>

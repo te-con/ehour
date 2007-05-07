@@ -26,6 +26,12 @@
 
 		<!--  Actions -->
 
+		<!-- login -->
+		<action path="/login"
+				type="net.rrm.ehour.web.action.PreLoginAction" >
+			<forward name="success" path="/logon.jsp" />
+		</action>
+
 		<!-- entry point for all -->
 		<action path="/eh/index"
 				type="net.rrm.ehour.web.action.EntranceAction" >
