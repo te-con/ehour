@@ -44,7 +44,7 @@ public class PrintReportAction extends ReUseReportAction
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 									HttpServletRequest request, HttpServletResponse response)
 	{
-		request.setAttribute("print", new Boolean(true));
+		request.setAttribute("print", Boolean.TRUE);
 		
 		// only used for consultant reporting
 		request.setAttribute("loggedInUser", AuthUtil.getLoggedInUser());
