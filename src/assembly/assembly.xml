@@ -5,6 +5,7 @@
 		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
+	<!--
   <moduleSets>
     <moduleSet>
       <includes>
@@ -15,6 +16,7 @@
         <unpack>false</unpack>
       </binaries>
     </moduleSet>
+  -->
   </moduleSets>	
 	<fileSets>
 		<fileSet>
@@ -27,6 +29,11 @@
 			</includes>
 		</fileSet>
 
+		<fileSet>
+			<directory>eHour-web/target/*.war</directory>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>		
+		
 		<fileSet>
 			<directory>src/assembly/conf</directory>
 			<outputDirectory>/conf</outputDirectory>
