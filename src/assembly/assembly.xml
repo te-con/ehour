@@ -16,9 +16,9 @@
         <unpack>false</unpack>
       </binaries>
     </moduleSet>
-  -->
-  </moduleSets>	
-	<fileSets>
+   </moduleSets>	
+-->
+ 	<fileSets>
 		<fileSet>
 			<directory>src/assembly/txt</directory>
 			<outputDirectory>/</outputDirectory>
