@@ -214,12 +214,6 @@
 					<generateHtml>true</generateHtml>
 				</configuration>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>net.sf</groupId>
-				<artifactId>stat-scm</artifactId>
-			</plugin>
--->
 		</plugins>
 	</reporting>
 </project>
