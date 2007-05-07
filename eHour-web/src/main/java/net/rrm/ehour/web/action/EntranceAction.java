@@ -43,8 +43,8 @@ import org.apache.struts.action.ActionMapping;
 
 public class EntranceAction extends Action
 {
-	private	Logger			logger = Logger.getLogger(TimesheetOverviewAction.class);	
-
+	private	Logger		logger = Logger.getLogger(TimesheetOverviewAction.class);	
+	
 	/**
 	 * 
 	 */
