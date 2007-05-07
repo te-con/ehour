@@ -1,5 +1,12 @@
 Upgrading
 
+* Upgrade from v0.5 to v0.6
+
+	No database changes are needed. Copy the ehour-0.6.war to your tomcat deploy directory and edit <<conf/Catalina/localhost/ehour-tomcat.xml>>
+	to reflect the increased version number in the docBase.
+
+	After you restarted Tomcat and you still see v0.5 on the logon screen, delete the ehour directory in Tomcat's <<webapps>> dir.
+
 * Upgrade from v0.41 to v0.5
 	
 	A database update is needed which adds new tables and modifies the PROJECT and PROJECT_ASSIGNMENT table.

@@ -1,6 +1,7 @@
-Installation instructions Linux
+Installation instructions Windows
 
 	eHour requires a Java JDK, the Apache Tomcat servlet container and a MySQL database to be installed.
+	Although this may seem as a lot, installation is easy.
 	
 	If you're upgrading an existing installation of eHour, please see the {{{upgrading.html} upgrade instructions}};
 	do not execute these steps more than once.
@@ -18,32 +19,55 @@ Installation instructions Linux
 * MySQL 5+ installation and configuration	
 
 	For now only MySQL is supported as the back-end database.
-	If you don't have MySQL, version 5 or better, installed download it from  {{{http://dev.mysql.com/downloads/mysql/5.0.html#downloads}http://dev.mysql.com/downloads/mysql/5.0.html#downloads}}
-	and follow the installation instructions.
+	If you don't have MySQL (version 5+) installed, download it from  {{{http://dev.mysql.com/downloads/mysql/5.0.html#win32}http://dev.mysql.com/downloads/mysql/5.0.html#win32}}}.
+	The Essentials package is sufficient if you're not afraid of the DOS command prompt but the plain setup is the easiest
+	to deal with (2nd link in the list)
+
+		* In the setup choose a typical or complete installation and click next to copy the files.
+		
+		* After copying you have the option to register at mysql.com; do so if you please or skip registration.
+		
+		* When MySQL is installed you can choose to configure the server instance. Choose a standard configuration (or
+		click detailed if you want to go into the details, not covered here).
+		
+		* Keep Install as Windows Service enabled. This makes sure that MySQL is started in the background when the
+		computer boots up
+		
+		* Change the password of the root user. Do remember which password you used as it's needed later on
+		
+		* Click next and execute!. 
+	
+	MySQL is installed
 	
 ** Create database
 
-	First create a MySQL database named <<eHour>>. 
-	
-	Execute the following command:
+	For database management you have two options, either you use the DOS prompt utility or you can use a GUI tool
+	that allows you to click through everything. The DOS prompt utility is supplied by the server install. If you
+	want to use the GUI tool you can download it from {{{http://dev.mysql.com/downloads/gui-tools/5.0.html}the MySQL site}}.
 
-+--	
-	mysqladmin create ehour -u user -p
-+--
-	Replace <<user>> with a database user that has enough priviliges to create a new database.
+	Installation instructions are provided for the GUI tool only.
+	
+[images/windows_mysql_connect.png] MySQL connect
+	
+	After installing the GUI tools fire up the MySQL query browser. As logon parameters use the server host (if installed locally
+	it's 127.0.0.1), username root and the password you used in the previous step. After clicking OK the Query browser will
+	complain about not having specified a default schema. Click ignore.
+	
+[images/windows_mysql_db.png] MySQL db created
+	
+	In the Query Browser you have 3 panels, click on the panel called "Schemata" and select "create new schema". As schema
+	name choose "ehour" and click ok.
 	
 ** Install eHour database
 
 	With the ehour database created it's time to create the database tables and fill 'm with some static data.
 	In the temp dir where you unpacked the binary distribution you'll find an <<sql>> directory. In this
-	directory is a <<fresh.mysql.sql>> script, execute it by running the following command in a DOS box or shell:
+	directory is a <<fresh.mysql.sql>> script. To load this into your fresh ehour database select file -> open script
+	and browse to the fresh.mysql.sql script.
 	
-+--
-	mysql ehour -u user -p < fresh.mysql.sql
-+--
-	Again replace <<user>> with the appropiate MySQL user.
+[images/windows_mysql_script.png] eHour db script
 	
-	Now that the database is set up it's time to set up the final part, Apache Tomcat
+	Click execute et voila, the MySQL setup is done. Now on to the final part, Apache Tomcat
 	
 * Apache Tomcat 5.5 installation and configuration
 
@@ -51,8 +75,8 @@ Installation instructions Linux
 
 	Apache Tomcat acts as the container server which runs the application. As of now eHour was only tested with Tomcat 5.5
 	
-	If you don't have Tomcat installed yet, download it at {{{http://tomcat.apache.org/download-55.cgi#5.5.20}http://tomcat.apache.org/download-55.cgi#5.5.20}}.
-
+	If you don't have Tomcat installed yet, download the Windows Service installer from {{{http://tomcat.apache.org/download-55.cgi#5.5.20}http://tomcat.apache.org/download-55.cgi#5.5.20}}.
+	
 	Install instructions for Tomcat can be found {{{http://tomcat.apache.org/tomcat-5.5-doc/setup.html} on their site}}.
 	
 ** Install the MySQL JDBC connector
@@ -66,7 +90,8 @@ Installation instructions Linux
 	
 ** Hook up eHour to Tomcat
 
-	First make sure that Tomcat isn't running. 
+	First make sure that Tomcat isn't running. Navigate to the bin directory
+	in your Tomcat and install and run <<tomcat5w.exe>> to check the status.
 
 	In the <<conf/tomcat>> directory of the eHour distribution you can find the file <<ehour.xml>>.
 	
@@ -94,7 +119,7 @@ Installation instructions Linux
 
 	MySQL is probably already running, otherwise you wouldn't be able to install the database in a previous step.
 	
-	Start Tomcat by running <<startup.sh>> in the bin directory of the Tomcat installation directory.
+	Start Tomcat by running <<tomcat5.exe>> in the bin directory of the Tomcat installation directory.
 	
 	Congratulations! You just installed eHour, now proceed with the {{{first_time_usage.html}usage instructions}}!
 	

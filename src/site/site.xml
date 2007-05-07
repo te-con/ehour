@@ -39,7 +39,8 @@
 			<item name="Download" href="download.html" />
 			<item name="Change log" href="changelog.html" />
 			<item name="Release Notes" href="release_notes.html" />
-			<item name="Install instructions" href="install.html" />
+			<item name="Install on Linux" href="install.html" />
+			<item name="Install on Windows" href="install_windows.html" />
 			<item name="Upgrading" href="upgrading.html" />			
 			<item name="License" href="license.html" />
 		</menu>

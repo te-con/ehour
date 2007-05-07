@@ -1,6 +1,10 @@
 eHour
 
-  15 April 2007: {{{release_notes.html}eHour v0.5}} released!
+  7 May 2007: {{{release_notes.html}eHour v0.6}} released!
+
+   With {{{release_notes.html}eHour v0.6}} you can export all reports to excel or print them. Also quick date selection
+   for reports, remember me functionality, easier timesheet navigation, better handling of infinite start/end date assignments, etc. etc. were
+   added/fixed. See the {{{changelog.html}change log}} for a complete list of changes.
 
    {{{release_notes.html}Version 0.5}} adds new assignment types, project manager role and project manager reports and a lot more.
 
@@ -40,6 +44,8 @@ eHour
 	  * separation of consultant, reporting and administration role. 
 	  
 	  * configure localization. (currently) only English and Dutch translations available
+	  
+	  * export your reports to excel
 
   See the {{{demo.html}online demo}} to see it in full effect. For screenshots see {{{http://www.ehour.nl/} http://www.ehour.nl/}}.
 

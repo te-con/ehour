@@ -1,8 +1,8 @@
-Release Notes - eHour v0.5
+Release Notes - eHour v0.6
 
-	TE-CON would like to announce the release of eHour v0.5.
+	TE-CON would like to announce the release of eHour v0.6.
 	
-	eHour v0.5 is {{{download.html}available for download}}.
+	eHour v0.6 is {{{download.html}available for download}}.
 	
 	eHour is a webbased time registration tool for consultancy companies and other project based businesses.
 	The primary objective is to keep time registration as simple as needed while still being very effective at measuring and reporting the amount of time your team spends on a project.
@@ -11,6 +11,13 @@ Release Notes - eHour v0.5
   browsers.
   
   If you run into any issues please use the {{{issue-tracking.html}bug tracker}} or post your question on the {{{https://lists.sourceforge.net/lists/listinfo/ehour-users}mailinglist}} or {{{http://sourceforge.net/forum/?group_id=167867}forum}}.
+
+* 0.6 Release Notes
+
+	Version 0.6 is primarly focused on improved reporting. Excel export and easy printing were added to the reports.
+	
+	Also UI enhancements such as quick week navigation, quick date selection, configurable remember me on login, consistent
+	use of project code etc. were handled.
 
 * 0.5 Release Notes
 
