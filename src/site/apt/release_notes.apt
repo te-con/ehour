@@ -14,7 +14,7 @@ Release Notes - eHour v0.6
 
 * 0.6 Release Notes
 
-	Version 0.6 is primarly focused on improved reporting. Excel export and easy printing were added to the reports.
+	Version 0.6 enhances the reporting. Excel export and easy printing were added to the reports.
 	
 	Also UI enhancements such as quick week navigation, quick date selection, configurable remember me on login, consistent
 	use of project code etc. were handled.

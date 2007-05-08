@@ -1,16 +1,10 @@
 eHour
 
-  7 May 2007: {{{release_notes.html}eHour v0.6}} released!
+  8 May 2007: {{{release_notes.html}eHour v0.6}} released!
 
    With {{{release_notes.html}eHour v0.6}} you can export all reports to excel or print them. Also quick date selection
    for reports, remember me functionality, easier timesheet navigation, better handling of infinite start/end date assignments, etc. etc. were
    added/fixed. See the {{{changelog.html}change log}} for a complete list of changes.
-
-   {{{release_notes.html}Version 0.5}} adds new assignment types, project manager role and project manager reports and a lot more.
-
-   Version 0.41 fixes the datasource which was still in development mode. The binary release of 0.4 was compiled with the development profile...
-   
-   Version 0.40 fixes a couple of bugs and improves (configurable) localization.
    
 =======================================================================
 

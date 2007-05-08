@@ -5,6 +5,8 @@ Installation instructions Linux
 	If you're upgrading an existing installation of eHour, please see the {{{upgrading.html} upgrade instructions}};
 	do not execute these steps more than once.
 	
+	For Windows install instructions, {{{install_windows.html} see here}}.
+	
 * Download eHour
 
 	Download a {{{download.html} binary distribution of eHour}} and unpack the downloaded archive in a temp dir.

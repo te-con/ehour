@@ -1,11 +1,10 @@
 <assembly>
-	<id>${version}-bin</id>
+	<id>${parent.version}-bin</id>
 	<formats>
 		<format>tar.gz</format>
 		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
-	<!--
   <moduleSets>
     <moduleSet>
       <includes>
@@ -14,10 +13,11 @@
       <binaries>
         <outputDirectory>/</outputDirectory>
         <unpack>false</unpack>
+		<outputFileNameMapping>ehour-${version}.war</outputFileNameMapping>
       </binaries>
+	  
     </moduleSet>
    </moduleSets>	
--->
  	<fileSets>
 		<fileSet>
 			<directory>src/assembly/txt</directory>
@@ -28,11 +28,6 @@
 				<include>INSTALL*</include>
 			</includes>
 		</fileSet>
-
-		<fileSet>
-			<directory>eHour-web/target/*.war</directory>
-			<outputDirectory>/</outputDirectory>
-		</fileSet>		
 		
 		<fileSet>
 			<directory>src/assembly/conf</directory>
