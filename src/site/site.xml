@@ -3,7 +3,7 @@
 	<bannerLeft>
 		<name>eHour</name>
 		<src>http://www.ehour.nl/ehour.gif</src>
-		<href>http://www.ehour.nl/</href>
+		<href>/</href>
 	</bannerLeft>
 	
 	<skin>
@@ -25,7 +25,7 @@
 
 	<body>
 		<links>
-			<item name="eHour" href="http://www.ehour.nl/" />
+			<item name="eHour" href="/m2/" />
 			<item name="Demo" href="demo.html" />
 		</links>
 
@@ -47,7 +47,7 @@
 
 		<menu name="Documentation">
 			<item name="First time usage" href="first_time_usage.html" />			
-			<item name="eHour structure" href="http://www.ehour.nl/documentation.html" />
+			<item name="Documentation" href="/documentation.html" />
 			<item name="Support forum" href="support.html" />
 		</menu>
 		
