@@ -10,8 +10,8 @@
 
 	<modules>
 		<module>eHour-service</module>
-		<module>eHour-web</module>
-  </modules>
+		<module>eHour-wicketweb</module>
+	</modules>
 
 	<description>eHour - web-based time registration for consultancy companies and other project based businesses</description>
 
