@@ -5,37 +5,29 @@
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 	
 <wicket:head>
-	<link rel="stylesheet" type="text/css" href="css/ehourMain.css" />
+	<link wicket:id="headerStyle" rel="stylesheet" type="text/css" href="style/header.css"/>
 </wicket:head>
-
+	
 <body>
 
 <wicket:panel>
 
-	<table>
-		<tr>
-			<td width="260" align="bottom"><img src="img/ehour.gif"
-				alt="eHour v0.5" /></td>
+<div class="NavHeader">
+	<div class="Logo">
+		<img src="img/ehour.gif" width="80" height="28" />
+	</div>
+	
+	<div class="LoadingSpinner">
+		<img src="img/loading.gif" />
+	</div>
+	
+	<div class="Navigation">
+		<a wicket:id="overviewLink">overview</a> |
+		<a wicket:id="page2Link">page</a> |
+		<a wicket:id="assignmentLink">assignmnent</a>
+	</div>
+</div>
 
-			<td align="bottom" style="padding-left: 11px">
-			<div class="MainNav">
-			<table cellspacing="0">
-				<tr>
-					<th valign="bottom"><a wicket:id="overviewLink">Overview</a> <a
-						wicket:id="page2Link">Page #2</a> <a wicket:id="assignmentLink">Assignmnent</a>
-					&nbsp;&nbsp;|&nbsp;&nbsp; Timesheet &nbsp;&nbsp;|&nbsp;&nbsp; Print
-					&nbsp;&nbsp;|&nbsp;&nbsp;</th>
-				</tr>
-			</table>
-			</div>
-			</td>
-
-			<td align="right" style="padding-right: 11px">
-			<div id="NavLoading" style="visibility: hidden"><img
-				src="img/loading.gif" id="loadingImg" /></div>
-			</td>
-		</tr>
-	</table>
 </wicket:panel>
 </body>
 </html>

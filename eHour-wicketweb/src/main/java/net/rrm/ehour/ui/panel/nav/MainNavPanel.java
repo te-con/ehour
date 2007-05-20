@@ -23,11 +23,15 @@
 
 package net.rrm.ehour.ui.panel.nav;
 
+import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
+import wicket.ResourceReference;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.panel.Panel;
+import wicket.markup.html.resources.CompressedResourceReference;
+import wicket.markup.html.resources.StyleSheetReference;
 
 /**
  * Main navigation panel 
@@ -47,5 +51,17 @@ public class MainNavPanel extends Panel
 		add(new BookmarkablePageLink("overviewLink", OverviewPage.class));
 		add(new BookmarkablePageLink("page2Link", Page2.class));
 		add(new BookmarkablePageLink("assignmentLink", AssignmentPage.class));
+		
+		add(new StyleSheetReference("headerStyle", headerStyle()));
 	}
+	
+	/**
+	 * Create a style
+	 * 
+	 * @return a style
+	 */
+	public final ResourceReference headerStyle()
+	{
+		return new CompressedResourceReference(MainNavPanel.class, "style/header.css");
+	}	
 }
