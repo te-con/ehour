@@ -12,10 +12,10 @@
 			<value>jdbc:mysql://192.168.1.10/ehour</value>
 		</property>
 		<property name="username">
-			<value>root</value>
+			<value>ehour_dev</value>
 		</property>
 		<property name="password">
-			<value>root</value>
+			<value>ehour_dev</value>
 		</property>
 		<property name="validationQuery">
 			<value>SELECT now()</value>
