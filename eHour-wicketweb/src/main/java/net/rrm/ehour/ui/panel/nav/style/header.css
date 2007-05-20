@@ -67,4 +67,11 @@ div.NavHeader div.LoadingSpinner
 	right: 5px;
 	bottom: 5px;
 }
-	
+
+div.LoggedInAs
+{
+	text-align: right;
+	padding-right: 7px;
+	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+	color: #536e87;
+}	

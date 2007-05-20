@@ -24,11 +24,8 @@
 package net.rrm.ehour.ui.page;
 
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
-import wicket.ResourceReference;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.resources.CompressedResourceReference;
-import wicket.markup.html.resources.StyleSheetReference;
 import wicket.model.IModel;
 
 /**
