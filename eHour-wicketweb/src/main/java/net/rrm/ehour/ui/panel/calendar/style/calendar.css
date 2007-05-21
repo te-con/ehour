@@ -1,0 +1,78 @@
+div.Calendar
+{
+	width:		216px;
+	padding:	0 7px 0 7px;
+	margin:		0;
+}
+
+div.Calendar div.CalendarHeader
+{
+	width:			100%;
+	height:			1.1em;
+	padding-bottom:	4px;
+	background-color: #d1e5f9;
+
+}
+
+div.Calendar div.CalendarHeader div.PreviousMonth
+{
+	width:	30px;
+	float:	left;
+	height:	1.1em;
+}
+
+div.Calendar div.CalendarHeader div.CurrentMonth
+{
+	text-align: center;
+	color: #536e87;
+	width: 156px;
+	line-height:			1.1em;
+	font: bold 1em Arial, Geneva, Helvetica, sans-serif;	
+	float: left;
+}
+
+div.Calendar div.CalendarHeader div.NextMonth
+{
+	width:	30px;
+	float:	left;
+	height: 1.1em;
+	text-align: right;
+}
+
+div.Calendar div.CalendarBody div.CalendarWeek
+{
+	width: 100%;
+	color: #536e87;
+	font: 1em/1.5 Arial, Helvetica, sans-serif;
+	margin-bottom: 1px;
+}
+
+
+div.Calendar div.CalendarBody div.SundayDay
+{
+	float:	left;
+	width: 30px;
+	background-color: #edf5fe;
+	text-align: center;
+	height: 1.6em;
+}
+
+div.Calendar div.CalendarBody div.SaturdayDay
+{
+	float:	left;
+	width: 30px;
+	background-color: #edf5fe;
+	text-align: center;
+	margin-left: 1px;
+	height: 1.6em;
+}
+
+div.Calendar div.CalendarBody div.WeekDay
+{
+	width:	30px;
+	float: left;
+	text-align: center;
+	margin-left: 1px;
+	height: 1.6em;
+	background-color: #fefeff;
+}

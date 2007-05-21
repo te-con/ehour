@@ -23,11 +23,43 @@
 
 package net.rrm.ehour.ui.panel.calendar;
 
+import net.rrm.ehour.ui.panel.nav.MainNavPanel;
+import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
+import wicket.ResourceReference;
+import wicket.markup.html.resources.CompressedResourceReference;
+import wicket.markup.html.resources.StyleSheetReference;
+
 /**
- * TODO 
+ * Navigation Calendar 
  **/
 
-public class CalendarPanel
+public class CalendarPanel extends SidePanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7777893083323915299L;
 
+
+	/**
+	 * 
+	 * @param id
+	 */
+	public CalendarPanel(String id)
+	{
+		super(id);
+		
+		add(new StyleSheetReference("calendarStyle", calendarStyle()));
+	}
+	
+	
+	/**
+	 * Create a style
+	 * 
+	 * @return a style
+	 */
+	public final ResourceReference calendarStyle()
+	{
+		return new CompressedResourceReference(MainNavPanel.class, "style/calendar.css");
+	}	
 }

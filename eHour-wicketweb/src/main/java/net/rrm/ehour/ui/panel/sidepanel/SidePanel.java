@@ -1,5 +1,5 @@
 /**
- * Created on May 8, 2007
+ * Created on May 21, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,28 +21,44 @@
  *
  */
 
-package net.rrm.ehour.ui.page.user;
+package net.rrm.ehour.ui.panel.sidepanel;
 
-import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
+import wicket.ResourceReference;
+import wicket.markup.html.panel.Panel;
+import wicket.markup.html.resources.CompressedResourceReference;
+import wicket.markup.html.resources.StyleSheetReference;
 
 /**
- * Overview page 
+ * Blue navigation side panel
  **/
 
-public class OverviewPage extends BasePage
+public class SidePanel extends Panel
 {
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6873845464139697303L;
+	private static final long serialVersionUID = 4573739445050690761L;
 
-	public OverviewPage()
+
+	/**
+	 * 
+	 * @param id
+	 */
+	public SidePanel(String id)
 	{
-		super("overview", null);
+		super(id);
 		
-		add(new CalendarPanel("sidePanel"));
+		add(new StyleSheetReference("navSidePanelStyle", navSidePanelStyle()));
 	}
-
+	
+	
+	/**
+	 * Create a style
+	 * 
+	 * @return a style
+	 */
+	public final ResourceReference navSidePanelStyle()
+	{
+		return new CompressedResourceReference(SidePanel.class, "style/sidePanel.css");
+	}		
 }
