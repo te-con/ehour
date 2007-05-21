@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.ui.panel.nav;
 
-import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
