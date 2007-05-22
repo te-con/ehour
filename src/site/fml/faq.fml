@@ -1,0 +1,58 @@
+ <?xml version="1.0"?> 
+<faqs title="eHour FAQ">
+   <part id="installation"> 
+   		<title>Installation</title>
+   		
+	    <faq> 
+	      <question>'Cannot create JDBC driver of class '' for connect URL 'null'' exception after logging in</question> 
+	      <answer> 
+	        <p>
+	        	This exception pops up in the ehour.log when the JNDI datasource wasn't found by eHour.<br /><br />
+	        	Most likely cause is that the ehour.war was copied to the webapp dir and not into the deploy dir.
+	        	Check that the deploy dir was created in the root of the install dir of Tomcat and it contains
+	        	the war file. Check the <a href="install.html">install instructions</a> for the exact instructions
+	        	on where to create the deploy dir.
+	        </p> 
+	      </answer> 
+	    </faq>
+
+	    <faq> 
+	      <question>'java.sql.SQLException: Unknown initial character set index '48' received from server' exception after logging in</question> 
+	      <answer>
+	      <![CDATA[
+	        <p>
+	        	eHour uses UTF-8 character encoding for its data. If your MySQL's instance is running
+	        	a different default character set you have to set UTF-8 specifically for eHour.<br />
+	        	To do so:
+	        	<ul>
+	        		<li>Create the eHour database with <pre>create database ehour character set utf8;</pre></li>
+	        		<li>In conf/Catalina/localhost/ehour.xml replace the URL with:
+	        			<pre>url="jdbc:mysql://localhost:3306/ehour?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"</pre>,
+	        			replacing localhost with the IP address of the server you're running on</li>
+	        		<li>Make sure you use at least MySQL connector version 5.06</li>
+	        	</ul>
+	        	
+	        	Thanks to <a href="http://sourceforge.net/forum/forum.php?thread_id=1738869&forum_id=572632" target="_blank">Anders</a> for 
+	        	resolving this.
+	        </p> 
+	         ]]>
+	        </answer> 
+	    </faq>
+	    
+	    <faq> 
+	      <question>'java.lang.ExceptionInInitializerError at org.aspectj.weaver.World' exception when starting Tomcat</question> 
+	      <answer>
+	        <p>
+	        	Some Linux distributions provide Apache Tomcat out of the box via their package system. However
+	        	these out-of-the-box packages got a more strict security policy than a default Tomcat install.
+	        	<br /><br />
+	        	Try using a freshly downloaded Apache Tomcat from the Apache site with default settings or
+	        	modify the catalina.policy and grant eHour the needed permissions (a fresh install is preferred).
+	        	
+	        	
+	        </p> 
+	        </answer> 
+	    </faq>	    
+
+  </part> 
+</faqs> 
