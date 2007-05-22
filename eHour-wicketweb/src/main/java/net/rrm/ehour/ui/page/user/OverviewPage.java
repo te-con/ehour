@@ -25,6 +25,9 @@ package net.rrm.ehour.ui.page.user;
 
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.service.UserService;
+import wicket.spring.injection.annot.SpringBean;
 
 /**
  * Overview page 
@@ -32,7 +35,9 @@ import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 
 public class OverviewPage extends BasePage
 {
-
+	@SpringBean
+	private	UserService	userService;
+	
 	/**
 	 * 
 	 */
@@ -43,6 +48,10 @@ public class OverviewPage extends BasePage
 		super("overview", null);
 		
 		add(new CalendarPanel("sidePanel"));
+		
+		User user = userService.getUser(1);
+		System.out.println(user.getLastName());
+//		add(new ProjectOverviewPanel("projectOverviewPanel"));
 	}
 
 }

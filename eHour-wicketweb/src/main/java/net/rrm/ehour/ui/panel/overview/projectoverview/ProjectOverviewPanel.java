@@ -1,5 +1,5 @@
-/**
- * Created on May 8, 2007
+ /**
+ * Created on May 22, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,36 +21,42 @@
  *
  */
 
-package net.rrm.ehour.ui;
+package net.rrm.ehour.ui.panel.overview.projectoverview;
 
-import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
-import net.rrm.ehour.ui.page.user.OverviewPage;
-import net.rrm.ehour.ui.page.user.timesheet.Page2;
-import wicket.protocol.http.WebApplication;
-import wicket.spring.injection.annot.SpringComponentInjector;
-import wicket.util.lang.PackageName;
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
+import wicket.markup.html.panel.Panel;
+import wicket.model.IModel;
 
 /**
- * Base config for wicket eHour webapp
+ * Panel showing overview 
  **/
 
-public class EhourWebApplication extends WebApplication
+public class ProjectOverviewPanel extends Panel
 {
-	public void init()
-	{
-		mount("/admin",  PackageName.forClass(AssignmentPage.class));	
-		mount("/consultant",  PackageName.forPackage(OverviewPage.class.getPackage()));
-		mount("/consultant/timesheet",  PackageName.forPackage(Page2.class.getPackage()));
-		
-		addComponentInstantiationListener(new SpringComponentInjector(this));
-	}
-
 	/**
-	 * Set the homepage
+	 * 
 	 */
-	@Override
-	public Class getHomePage()
+	private static final long serialVersionUID = -5935376941518756941L;
+
+	public ProjectOverviewPanel(String id, IModel model)
 	{
-		return OverviewPage.class;
+		super(id, model);
 	}
+	
+	private ProjectAssignment getAssignment()
+	{
+		ProjectAssignment assignment;
+		
+		assignment = new ProjectAssignment();
+		
+		Project prj = new Project();
+		prj.setName("test");
+		
+		assignment.setProject(prj);
+		
+		return assignment;
+		
+	}
+	
 }

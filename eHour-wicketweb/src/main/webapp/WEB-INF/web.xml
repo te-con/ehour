@@ -10,6 +10,21 @@
 	  <param-value>development</param-value>
 	</context-param>
 	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:applicationContext-dao.xml
+			classpath:applicationContext-datasource.xml
+			classpath:applicationContext-service.xml
+			classpath:applicationContext-mail.xml	
+			classpath:applicationContext-wicket.xml
+		</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>	
+	
 	<servlet>
 		<servlet-name>EhourWebApplication</servlet-name>
 		<servlet-class>
