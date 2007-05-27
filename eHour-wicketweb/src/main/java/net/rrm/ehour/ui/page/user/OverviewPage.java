@@ -23,35 +23,58 @@
 
 package net.rrm.ehour.ui.page.user;
 
+import java.util.GregorianCalendar;
+
+import net.rrm.ehour.timesheet.dto.TimesheetOverview;
+import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
+import wicket.PageParameters;
 import wicket.spring.injection.annot.SpringBean;
+import wicket.util.string.StringValueConversionException;
 
 /**
- * Overview page 
- **/
+ * Overview page
+ */
 
 public class OverviewPage extends BasePage
 {
 	@SpringBean
-	private	UserService	userService;
-	
+	private TimesheetService	timesheetService;
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6873845464139697303L;
 
-	public OverviewPage()
+	/**
+	 * Setup the page
+	 *
+	 */
+	public OverviewPage(PageParameters params)
 	{
 		super("overview", null);
-		
+
+		int userId;
+
+		// add calendar panel
 		add(new CalendarPanel("sidePanel"));
 		
-		User user = userService.getUser(1);
-		System.out.println(user.getLastName());
-//		add(new ProjectOverviewPanel("projectOverviewPanel"));
+		// get the data
+		try
+		{
+			userId = params.getInt("userID");
+		} catch (StringValueConversionException e)
+		{
+			e.printStackTrace();
+			userId = 1;
+		}
+		
+		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, new GregorianCalendar());
+		
+		// project overview panel
+		add(new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus()));
+	
 	}
-
 }

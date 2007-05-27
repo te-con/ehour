@@ -1,4 +1,4 @@
- /**
+/**
  * Created on May 22, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
@@ -23,40 +23,68 @@
 
 package net.rrm.ehour.ui.panel.overview.projectoverview;
 
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import net.rrm.ehour.timesheet.dto.UserProjectStatus;
+import wicket.Component;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.list.ListItem;
+import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
+import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
 
 /**
- * Panel showing overview 
- **/
+ * Panel showing overview
+ */
 
 public class ProjectOverviewPanel extends Panel
 {
-	/**
-	 * 
-	 */
+	private final Collection<UserProjectStatus> projectStatus;
+
 	private static final long serialVersionUID = -5935376941518756941L;
 
-	public ProjectOverviewPanel(String id, IModel model)
+	/**
+	 * 
+	 * @param id
+	 * @param projectStatus
+	 */
+	public ProjectOverviewPanel(String id, Collection<UserProjectStatus> projectStatusSet)
 	{
-		super(id, model);
+		super(id, null);
+
+		this.projectStatus = new ArrayList<UserProjectStatus>(projectStatusSet);
+		
+		IModel messagesModel = new AbstractReadOnlyModel()
+		{
+			// Wicket calls this method to get the actual "model object"
+			// at runtime
+			public Object getObject(Component component)
+			{
+				return projectStatus;
+			}
+		};
+
+		ListView view = new ListView("projectStatus", messagesModel)
+		{
+			public void populateItem(ListItem item)
+			{
+				UserProjectStatus projectStatus = (UserProjectStatus) item.getModelObject();
+				item.add(new Label("projectName", projectStatus.getProjectAssignment().getProject().getName()));
+				item.add(new Label("projectCode", projectStatus.getProjectAssignment().getProject().getProjectCode()));
+				item.add(new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()));
+			}
+		};
+
+		add(view);
 	}
-	
-	private ProjectAssignment getAssignment()
+
+	/**
+	 * @return the projectStatus
+	 */
+	public Collection<UserProjectStatus> getProjectStatus()
 	{
-		ProjectAssignment assignment;
-		
-		assignment = new ProjectAssignment();
-		
-		Project prj = new Project();
-		prj.setName("test");
-		
-		assignment.setProject(prj);
-		
-		return assignment;
-		
+		return projectStatus;
 	}
-	
 }
