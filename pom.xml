@@ -188,15 +188,4 @@
 
 		</plugins>
 	</reporting>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>stat-scm-sourceforge</id>
-			<url>http://stat-scm.sourceforge.net/maven2</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>stat-scm-sourceforge-snapshot</id>
-			<url>http://stat-scm.sourceforge.net/maven2</url>
-		</pluginRepository>
-	</pluginRepositories>
 </project>
