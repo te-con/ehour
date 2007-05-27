@@ -41,8 +41,6 @@ import wicket.model.IModel;
 
 public class ProjectOverviewPanel extends Panel
 {
-	private final Collection<UserProjectStatus> projectStatus;
-
 	private static final long serialVersionUID = -5935376941518756941L;
 
 	/**
@@ -54,19 +52,7 @@ public class ProjectOverviewPanel extends Panel
 	{
 		super(id, null);
 
-		this.projectStatus = new ArrayList<UserProjectStatus>(projectStatusSet);
-		
-		IModel messagesModel = new AbstractReadOnlyModel()
-		{
-			// Wicket calls this method to get the actual "model object"
-			// at runtime
-			public Object getObject(Component component)
-			{
-				return projectStatus;
-			}
-		};
-
-		ListView view = new ListView("projectStatus", messagesModel)
+		ListView view = new ListView("projectStatus", new ArrayList<UserProjectStatus>(projectStatusSet))
 		{
 			public void populateItem(ListItem item)
 			{
@@ -78,13 +64,5 @@ public class ProjectOverviewPanel extends Panel
 		};
 
 		add(view);
-	}
-
-	/**
-	 * @return the projectStatus
-	 */
-	public Collection<UserProjectStatus> getProjectStatus()
-	{
-		return projectStatus;
 	}
 }
