@@ -27,13 +27,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
-import wicket.Component;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
-import wicket.model.AbstractReadOnlyModel;
-import wicket.model.IModel;
+import wicket.markup.html.resources.CompressedResourceReference;
+import wicket.markup.html.resources.StyleSheetReference;
 
 /**
  * Panel showing overview
@@ -50,8 +51,11 @@ public class ProjectOverviewPanel extends Panel
 	 */
 	public ProjectOverviewPanel(String id, Collection<UserProjectStatus> projectStatusSet)
 	{
-		super(id, null);
+		super(id);
 
+		// TODO i18n
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyBorder", "Aggregated per month");
+		
 		ListView view = new ListView("projectStatus", new ArrayList<UserProjectStatus>(projectStatusSet))
 		{
 			public void populateItem(ListItem item)
@@ -62,7 +66,10 @@ public class ProjectOverviewPanel extends Panel
 				item.add(new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()));
 			}
 		};
-
-		add(view);
+		
+		greyBorder.add(view);
+		add(greyBorder);
+		
+		add(new StyleSheetReference("aggregateStyle", new CompressedResourceReference(ProjectOverviewPanel.class, "style/aggregate.css")));
 	}
 }

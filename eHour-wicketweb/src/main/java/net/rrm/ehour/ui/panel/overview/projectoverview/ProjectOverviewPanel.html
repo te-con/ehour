@@ -4,29 +4,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 
+<wicket:head>
+	<link wicket:id="aggregateStyle" rel="stylesheet" type="text/css" href="style/aggregateStyle.css" />
+</wicket:head>
+
 <body>
 
 <wicket:panel>
-<table cellpadding="0" cellspacing="0">
-	<tr>
-		<th width="25" class="foldCell">&nbsp;</th>
-		<th class="projectCell">Project</th>
-		<th><nobr>Code</nobr></th>
-		<th>Customer</th>
-		<th style="text-align: right">Rate</th>
-		<th style="text-align: right"><nobr>Booked hours</nobr></th>
-		<th style="text-align: right">Turnover </th>
-	</tr>
+	<span wicket:id="greyBorder">
+		<div class="MonthAggregateTable">
+		
+			<div class="AggregateHeader">
+				<div id="foldCell">&nbsp;</div>
+				<div id="textCell" style="width: 19%">Project</div>
+				<div id="textCell">Project code</div>
+				<div id="textCell" style="width: 17%">Customer</div>
+				<div id="numbCell">Rate</div>
+				<div id="numbCell" style="width: 17%">Booked hours</div>
+				<div id="numbCell">Turnover</div>
+			</div>
+
+			<span wicket:id="projectStatus">
+				<div class="AggregateRow">
+					<div id="foldCell"><img src="img/icon_down_off.gif" onmouseover="this.src='img/icon_down_on.gif'" onmouseout="this.src='img/icon_down_off.gif'" /></div>
+					<div id="textCell" style="width: 19%"><span wicket:id="projectName">projectName</span></div>
+					<div id="textCell"><span wicket:id="projectCode">projectCode</span></div>
+					<div id="textCell" style="width: 17%"><span wicket:id="customerName">customerName</span></div>
+					<div id="numbCell">&euro; 75.00</div>
+					<div id="numbCell" style="width: 17%">24.50</div>
+					<div id="numbCell">&euro; 16.000</div>
+				</div>
 	
-	<span wicket:id="projectStatus">
-		<tr>
-			<td><span wicket:id="projectName">projectName</span></td>
-			<td><span wicket:id="projectCode">projectCode</span></td>
-			<td><span wicket:id="customerName">customerName</span></td>
-		</tr>
+				<div class="SummaryRow">
+					<div id="foldCell">&nbsp;</div>
+					Valid from:	01-Feb-2007 &nbsp;to&nbsp; 22-Jul-2007. Total booked: 236.7hr.&nbsp;Remaining hours: 763.3hr.
+				</div>
+			</span>
+		</div>
 	</span>
-	
-</table>
 </wicket:panel>
 
 </body>

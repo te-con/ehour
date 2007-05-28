@@ -1,5 +1,5 @@
 /**
- * Created on May 21, 2007
+ * Created on May 28, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,44 +21,27 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.sidepanel;
+package net.rrm.ehour.ui.border;
 
-import wicket.ResourceReference;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.CompressedResourceReference;
-import wicket.markup.html.resources.StyleSheetReference;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.border.Border;
+import wicket.model.PropertyModel;
 
 /**
- * Blue navigation side panel
+ * CSS in ehour.css as it's very common
  **/
 
-public abstract class SidePanel extends Panel
+public class GreyRoundedBorder extends Border
 {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4573739445050690761L;
+	private static final long serialVersionUID = 7184643596615028876L;
 
-
-	/**
-	 * 
-	 * @param id
-	 */
-	public SidePanel(String id)
+	public GreyRoundedBorder(String id, String title)
 	{
 		super(id);
 		
-		add(new StyleSheetReference("navSidePanelStyle", navSidePanelStyle()));
+		add(new Label("greyTabTitle", title));
 	}
-	
-	
-	/**
-	 * Create a style
-	 * 
-	 * @return a style
-	 */
-	public final ResourceReference navSidePanelStyle()
-	{
-		return new CompressedResourceReference(SidePanel.class, "style/sidePanel.css");
-	}		
 }

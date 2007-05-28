@@ -1,0 +1,96 @@
+body
+{
+	background: white;
+	font: 0.8em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	color: black;
+	margin: 0px;
+}
+
+div.SidePanelLoc
+{
+	width: 250px;
+	margin:	0 0 0 5px;
+	padding: 0;
+	float:	left;
+}
+
+div.ContentPanelLoc
+{
+	margin:	0;
+	padding: 0;
+	float:	left;
+}
+
+
+div.GreyFrame
+{
+		text-align: left;
+		min-width: 500px;
+		max-width: 780px;
+		width:expression(document.body.clientWidth > 1000? "780px": "auto" );
+		margin: 0;
+		padding: 0;
+		background-color: white;
+}
+
+div.GreyFrame h1
+{
+		text-align: left;
+		font:  bold 1.0em Arial, Geneva, Helvetica, sans-serif;	
+		color: #536e87;
+		margin: 0 0 3px 16px;
+		padding: 0;
+}
+
+div.GreyFrame div.ExportIcons
+{
+		float: right;
+		padding-right: 16px;
+}
+
+div.GreyFrame div.GreyFrameContainer
+{
+		background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
+		min-width: 500px;
+		max-width: 780px;
+		width:expression(document.body.clientWidth > 1000? "780px": "auto" );
+} 
+
+div.GreyFrame div.GreyFrameContainer h3
+{
+		background: 	url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
+		line-height:	16px;
+		padding:		0;
+		margin:			0 0 0px 16px;
+		font:  			bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+		color: 			#536e87;
+}
+
+div.GreyFrame div.GreyFrameContainer div.GreyFrameBody
+{
+		background: url(../img/grey_frame/pixel_grey.gif);
+		margin:0px;
+		padding:0;
+		width: 100%;
+}
+
+div.GreyFrame div.GreyFrameContainer  div.GreyFrameBody p
+{
+		margin: 0 0 0 16px;
+		padding: 0;
+		font:  1.0em/0.9 Geneva, Arial, Helvetica, sans-serif;	
+		color: #536e87;
+}
+
+div.GreyFrame div.GreyFrameContainer div.GreyFrameFooter
+{
+		background: url(../img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
+}
+
+div.GreyFrame div.GreyFrameContainer div.GreyFrameFooter p
+{
+		background: url(../img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
+		padding:	16px;
+		display:block;
+		margin: 	0;
+}

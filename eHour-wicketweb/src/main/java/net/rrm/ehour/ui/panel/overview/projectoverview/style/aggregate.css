@@ -1,0 +1,60 @@
+div.MonthAggregateTable
+{
+	padding: 0 1em 0 8px;
+	margin: 0;
+	
+}
+
+div.MonthAggregateTable div.AggregateHeader
+{
+	font:  bold 1em/1em Geneva, Arial, Helvetica, sans-serif;		
+	color: #3b556d;
+	clear: both;
+	border-bottom-width: 1px;
+	border-bottom-color:  #e8e8e8;
+	border-bottom-style: solid;
+	height: 1em;
+	padding-bottom: 1px;
+	margin-bottom: 3px;
+}
+
+div.MonthAggregateTable div.AggregateRow
+{
+	font:  1em/1em Geneva, Arial, Helvetica, sans-serif;		
+	color: #3b556d;
+	clear: both;
+}
+
+div.MonthAggregateTable div.SummaryRow
+{
+	font:  0.8em/1.2em Geneva, Arial, Helvetica, sans-serif;		
+	color: #999999;
+	clear: both;
+}
+
+
+#foldCell
+{
+	width: 16px;
+	height: 1em;
+	float: 	left;
+}
+
+#textCell
+{
+	height: 1em;
+	width: 15%;
+	float: left;
+	padding-right: 5px;
+}
+
+#numbCell
+{
+	height: 1em;
+	width: 10%;
+	text-align: right;
+	float: left;
+	padding-right: 5px;
+}
+
+
