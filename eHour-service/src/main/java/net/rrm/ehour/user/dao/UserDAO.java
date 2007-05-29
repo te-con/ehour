@@ -30,10 +30,18 @@ import net.rrm.ehour.user.domain.User;
 public interface UserDAO extends GenericDAO<User, Integer>
 {
 	/**
-	 * Find a user by username
+	 * Find a user by username and password
 	 * @param username
 	 * @return
 	 */
+	public User findByUsernameAndPassword(String username, String password);
+	
+	/**
+	 * Find user by username
+	 * @param username
+	 * @return
+	 */
+	
 	public User findByUsername(String username);
 	
 	/**

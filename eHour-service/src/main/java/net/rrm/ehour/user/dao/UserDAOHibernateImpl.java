@@ -36,8 +36,9 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 		super(User.class);
 	}	
 	
-	/**
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.dao.UserDAO#findByUsername(java.lang.String)
 	 */
 	public User findByUsername(String username)
 	{
@@ -52,10 +53,36 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 		}
 		
 		return user;	
+	}	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.dao.UserDAO#findByUsernameAndPassword(java.lang.String, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public User findByUsernameAndPassword(String username, String password)
+	{
+		String[]	paramKeys;
+		Object[]	paramValues;
+		User		user = null;
+		List		l;
+		
+		paramKeys = new String[]{"username", "password"};
+		paramValues = new String[]{username, password};
+		
+		l = getHibernateTemplate().findByNamedQueryAndNamedParam("User.findByUsernameAndPassword", paramKeys, paramValues);
+		
+		if (l.size() > 0)
+		{
+			user = (User)l.get(0);
+		}
+		
+		return user;	
 	}
 
-	/**
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.dao.UserDAO#findUsersByNameMatch(java.lang.String, boolean)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<User> findUsersByNameMatch(String pattern, boolean onlyActive)

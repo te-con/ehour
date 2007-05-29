@@ -25,7 +25,6 @@ package net.rrm.ehour.user.service;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
@@ -45,8 +43,6 @@ import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
-
-import org.acegisecurity.userdetails.UsernameNotFoundException;
 
 
 /**
@@ -80,27 +76,27 @@ public class UserServiceTest extends TestCase
 	 * 
 	 *
 	 */
-	public void testLoadUserByUsername()
-	{
-		User	user;
-		user = new User();
-		user.setActive(false);
-		
-		expect(userDAO.findByUsername("test"))
-			.andReturn(user);
-		
-		replay(userDAO);
-		
-		try
-		{
-			userService.loadUserByUsername("test");
-			fail("No exception thrown");
-		}
-		catch (UsernameNotFoundException unne)
-		{
-			verify(userDAO);	
-		}
-	}
+//	public void testLoadUserByUsername()
+//	{
+//		User	user;
+//		user = new User();
+//		user.setActive(false);
+//		
+//		expect(userDAO.findByUsername("test"))
+//			.andReturn(user);
+//		
+//		replay(userDAO);
+//		
+//		try
+//		{
+//			userService.loadUserByUsername("test");
+//			fail("No exception thrown");
+//		}
+//		catch (UsernameNotFoundException unne)
+//		{
+//			verify(userDAO);	
+//		}
+//	}
 	
 	/**
 	 * 

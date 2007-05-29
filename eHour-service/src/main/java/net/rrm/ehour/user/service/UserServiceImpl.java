@@ -40,15 +40,11 @@ import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
-import net.rrm.ehour.user.dto.AuthUser;
 import net.rrm.ehour.util.DateUtil;
 
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataAccessException;
 
 /**
  * @author   Thies
@@ -90,37 +86,6 @@ public class UserServiceImpl implements UserService
 		user.setInactiveProjectAssignments(inactiveAssignments);
 		
 		return user;
-	}
-
-
-	/**
-	 * 
-	 */
-	
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
-	{
-		User		user = null;
-		AuthUser	authUser;
-		
-		logger.debug("Finding user " + username);
-		
-		user = userDAO.findByUsername(username);
-		
-		if (user == null || !user.isActive())
-		{
-			if (logger.isDebugEnabled())
-			{
-				logger.debug("Load user by username for " + username + " but user unknown or inactive");
-			}
-			
-			throw new UsernameNotFoundException("User unknown");
-		}
-		else
-		{
-			authUser = new AuthUser(user);
-		}
-		
-		return authUser;
 	}
 
 	/**
@@ -218,7 +183,6 @@ public class UserServiceImpl implements UserService
 		return userDepartmentDAO.findById(departmentId);
 	}
 
-
 	/**
 	 * 
 	 */
@@ -277,7 +241,6 @@ public class UserServiceImpl implements UserService
 	{
 		User	dbUser;
 		User	nameUser;
-		byte[]	shaPass;
 
 		nameUser = userDAO.findByUsername(user.getUsername());
 				
@@ -311,8 +274,7 @@ public class UserServiceImpl implements UserService
 		}
 		else
 		{
-			shaPass = DigestUtils.sha(user.getPassword());
-			user.setPassword(new String(Hex.encodeHex(shaPass)));
+			user.setPassword(encryptPassword(user.getPassword()));
 			
 			// new users
 			if (user.getUserId() == null)
@@ -385,5 +347,35 @@ public class UserServiceImpl implements UserService
 			user.getUserRoles().add(new UserRole("ROLE_PROJECTMANAGER"));
 			userDAO.merge(user);
 		}
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#getUser(java.lang.String)
+	 */
+	public User getUser(String username, String plainPassword)
+	{
+		User		user = null;
+		
+		logger.debug("Finding user " + username + " on user & password");
+		
+		user = userDAO.findByUsernameAndPassword(username, encryptPassword(plainPassword));
+		
+		return user;
+	}
+
+	/**
+	 * Encrypt password (sha1)
+	 * @param plainPassword
+	 * @return
+	 */
+	private String encryptPassword(String plainPassword)
+	{
+		byte[]	shaPass;
+		
+		shaPass = DigestUtils.sha(plainPassword);
+		
+		return new String(Hex.encodeHex(shaPass));
 	}
 }

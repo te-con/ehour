@@ -67,6 +67,14 @@ public class UserDAOTest extends BaseDAOTest
 		
 		assertEquals("thies", user.getUsername());
 	}
+	
+	// pwd needs encryption
+//	public void testFindByUsernameAndPassword()
+//	{
+//		User user = dao.findByUsernameAndPassword("thies", "test");
+//		
+//		assertEquals("thies", user.getUsername());
+//	}	
 
 
 	public void testPersist()

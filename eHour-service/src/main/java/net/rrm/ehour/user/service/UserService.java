@@ -33,21 +33,9 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UserDetailsService;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
-import org.springframework.dao.DataAccessException;
 
-
-public interface UserService extends UserDetailsService
+public interface UserService
 {
-
-	/**
-	 * Get user by username (acegi)
-	 * @param username
-	 */
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException;
-	
 	/**
 	 * Get user by userId
 	 * User.inactiveProjectAssignments is populated with project 
@@ -57,6 +45,13 @@ public interface UserService extends UserDetailsService
 	 * @throws NoResultsException
 	 */
     public User getUser(Integer userID);
+    
+    /**
+     * Get user on username and plain password
+     * @param username
+     * @return
+     */
+    public User getUser(String username, String plainPassword);
     
     /**
      * Persist a user
