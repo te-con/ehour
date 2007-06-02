@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.config;
 
+import java.util.Locale;
+
 
 /**
  * Available configuration parameters
@@ -59,6 +61,12 @@ public interface EhourConfig
 	 * @return
 	 */
 	public String getLocaleCountry();
+
+	/**
+	 * Get locale based on langauge
+	 * @return
+	 */
+	public Locale getLocale();
 	
 	/**
 	 * Get configured currency

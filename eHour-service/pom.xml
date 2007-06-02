@@ -121,6 +121,14 @@
 			<version>2.0.5</version>
 			<exclusions>
 				<exclusion>
+					<artifactId>org.springframework</artifactId>
+					<groupId>spring-web</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework</artifactId>
+					<groupId>spring-webmvc</groupId>
+				</exclusion>
+				<exclusion>
 					<artifactId>cglib</artifactId>
 					<groupId>cglib</groupId>
 				</exclusion>
@@ -170,6 +178,16 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-hibernate</artifactId>
+			<version>0.8</version>
 		</dependency>
 	</dependencies>
 	<reporting>

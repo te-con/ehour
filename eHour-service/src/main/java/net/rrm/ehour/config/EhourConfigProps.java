@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.config;
 
+import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -87,4 +88,10 @@ public class EhourConfigProps implements EhourConfig
 	{
 		return Boolean.valueOf(props.getProperty("rememberMeAvailable"));
 	}
+	
+	public Locale getLocale()
+	{
+		return getLocaleLanguage() != null ? new Locale(getLocaleLanguage()) : Locale.getDefault();
+	}
+	
 }

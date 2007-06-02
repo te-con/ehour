@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.config;
 
+import java.util.Locale;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.configuration.DatabaseConfiguration;
@@ -91,6 +93,11 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	public boolean isRememberMeAvailable()
 	{
 		return this.getBoolean("rememberMeAvailable", true);
+	}
+
+	public Locale getLocale()
+	{
+		return getLocaleLanguage() != null ? new Locale(getLocaleLanguage()) : Locale.getDefault();
 	}
 
 }

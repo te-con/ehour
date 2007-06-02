@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.config;
 
+import java.util.Locale;
+
 /**
  * Stub for config 
  **/
@@ -170,4 +172,9 @@ public class EhourConfigStub implements EhourConfig
 		this.rememberMeAvailable = rma;
 	}
 
+	public Locale getLocale()
+	{
+		return getLocaleLanguage() != null ? new Locale(getLocaleLanguage()) : Locale.getDefault();
+	}
+	
 }
