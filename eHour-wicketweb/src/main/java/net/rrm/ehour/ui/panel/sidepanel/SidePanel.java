@@ -23,10 +23,10 @@
 
 package net.rrm.ehour.ui.panel.sidepanel;
 
-import wicket.ResourceReference;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.CompressedResourceReference;
-import wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 
 /**
  * Blue navigation side panel

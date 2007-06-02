@@ -25,9 +25,10 @@ package net.rrm.ehour.ui.panel.calendar;
 
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
-import wicket.ResourceReference;
-import wicket.markup.html.resources.CompressedResourceReference;
-import wicket.markup.html.resources.StyleSheetReference;
+
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 
 /**
  * Navigation Calendar 

@@ -23,10 +23,13 @@
 
 package net.rrm.ehour.ui.page;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.model.IModel;
+import net.rrm.ehour.ui.session.EhourWebSession;
+
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
 
 /**
  * Base layout of all pages, adds header panel
@@ -50,5 +53,15 @@ public abstract class BasePage extends WebPage
 
 		add(new MainNavPanel("mainNav"));
 		add(new Label("pageTitle", pageTitle));
+	}
+	
+	/**
+	 * Get config
+	 * @return
+	 */
+	protected EhourConfig getEhourConfig()
+	{
+		EhourWebSession session = (EhourWebSession)getSession();
+		return session.getEhourConfig();
 	}
 }

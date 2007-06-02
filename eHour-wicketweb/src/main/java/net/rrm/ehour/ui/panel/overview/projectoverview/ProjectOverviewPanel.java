@@ -28,13 +28,16 @@ import java.util.Collection;
 
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.list.ListItem;
-import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.CompressedResourceReference;
-import wicket.markup.html.resources.StyleSheetReference;
+import net.rrm.ehour.ui.model.CurrencyModel;
+import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.session.EhourWebSession;
+
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 
 /**
  * Panel showing overview
@@ -56,14 +59,29 @@ public class ProjectOverviewPanel extends Panel
 		// TODO i18n
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyBorder", "Aggregated per month");
 		
+		
+		
 		ListView view = new ListView("projectStatus", new ArrayList<UserProjectStatus>(projectStatusSet))
 		{
 			public void populateItem(ListItem item)
 			{
+				EhourWebSession session = (EhourWebSession)getSession();
+				
 				UserProjectStatus projectStatus = (UserProjectStatus) item.getModelObject();
 				item.add(new Label("projectName", projectStatus.getProjectAssignment().getProject().getName()));
 				item.add(new Label("projectCode", projectStatus.getProjectAssignment().getProject().getProjectCode()));
-				item.add(new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()));
+				
+				Label label = new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName());
+				item.add(label);
+				
+				label = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), session.getEhourConfig()));
+				item.add(label);
+
+				label = new Label("totalHours", new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig()));
+				item.add(label);
+
+				label = new Label("turnover", new FloatModel(projectStatus.getTurnOver(), session.getEhourConfig()));
+				item.add(label);
 			}
 		};
 		

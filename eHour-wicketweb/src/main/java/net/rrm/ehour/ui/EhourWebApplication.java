@@ -26,9 +26,15 @@ package net.rrm.ehour.ui;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
-import wicket.protocol.http.WebApplication;
-import wicket.spring.injection.annot.SpringComponentInjector;
-import wicket.util.lang.PackageName;
+import net.rrm.ehour.ui.session.EhourWebSession;
+
+import org.apache.wicket.ISessionFactory;
+import org.apache.wicket.Request;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.lang.PackageName;
 
 /**
  * Base config for wicket eHour webapp
@@ -38,12 +44,34 @@ public class EhourWebApplication extends WebApplication
 {
 	public void init()
 	{
+		super.init();
+		
 		mount("/admin",  PackageName.forClass(AssignmentPage.class));	
 		mount("/consultant",  PackageName.forPackage(OverviewPage.class.getPackage()));
 		mount("/consultant/timesheet",  PackageName.forPackage(Page2.class.getPackage()));
 		
 		addComponentInstantiationListener(new SpringComponentInjector(this));
 	}
+	
+	/**
+	 * Return our own session
+	 */
+	public ISessionFactory getSessionFactory()
+	{
+		return new ISessionFactory()
+		{
+			public Session newSession(Request req, Response res)
+			{
+				return new EhourWebSession(EhourWebApplication.this, req);
+			}
+		};
+	}
+	
+//	@Override
+//	protected Class< ? extends WebPage> getSignInPageClass()
+//	{
+//		return LoginPage.class;
+//	}	
 
 	/**
 	 * Set the homepage

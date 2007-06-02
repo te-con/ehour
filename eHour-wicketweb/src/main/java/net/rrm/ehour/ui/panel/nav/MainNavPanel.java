@@ -26,11 +26,12 @@ package net.rrm.ehour.ui.panel.nav;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
-import wicket.ResourceReference;
-import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.CompressedResourceReference;
-import wicket.markup.html.resources.StyleSheetReference;
+
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 
 /**
  * Main navigation panel 

@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.page.user;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
@@ -30,28 +31,30 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
-import wicket.PageParameters;
-import wicket.spring.injection.annot.SpringBean;
-import wicket.util.string.StringValueConversionException;
+
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValueConversionException;
 
 /**
  * Overview page
  */
 
+@AuthorizeInstantiation("ADMIN")
 public class OverviewPage extends BasePage
 {
 	@SpringBean
 	private TimesheetService	timesheetService;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6873845464139697303L;
 
+	
 	/**
 	 * Setup the page
 	 *
 	 */
+	
 	public OverviewPage(PageParameters params)
 	{
 		super("overview", null);
@@ -67,11 +70,13 @@ public class OverviewPage extends BasePage
 			userId = params.getInt("userID");
 		} catch (StringValueConversionException e)
 		{
-			e.printStackTrace();
+//			e.printStackTrace();
 			userId = 1;
 		}
 		
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, new GregorianCalendar());
+		Calendar cal = new GregorianCalendar();
+		cal.add(Calendar.DATE, -7);
+		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId,cal);
 		
 		// project overview panel
 		add(new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus()));

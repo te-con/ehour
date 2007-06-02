@@ -23,9 +23,8 @@
 
 package net.rrm.ehour.ui.border;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.border.Border;
-import wicket.model.PropertyModel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.border.Border;
 
 /**
  * CSS in ehour.css as it's very common

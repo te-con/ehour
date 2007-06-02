@@ -25,10 +25,13 @@ package net.rrm.ehour.ui.page.user.timesheet;
 
 import net.rrm.ehour.ui.page.BasePage;
 
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+
 /**
  * TODO 
  **/
 
+@AuthorizeInstantiation("ADMIN")
 public class Page2 extends BasePage
 {
 
