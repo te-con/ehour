@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
 	<version>0.7-SNAPSHOT</version>
@@ -13,7 +15,10 @@
 		<module>eHour-wicketweb</module>
 	</modules>
 
-	<description>eHour - web-based time registration for consultancy companies and other project based businesses</description>
+	<description>
+		eHour - web-based time registration for consultancy companies
+		and other project based businesses
+	</description>
 
 	<scm>
 		<connection>
@@ -82,11 +87,6 @@
 			<version>1.2.13</version>
 		</dependency>
 		<dependency>
-			<groupId>org.acegisecurity</groupId>
-			<artifactId>acegi-security</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 			<version>2.2</version>
@@ -131,14 +131,16 @@
 					<disableXmlReport>true</disableXmlReport>
 				</configuration>
 			</plugin>
-	      <plugin>
-	        <artifactId>maven-assembly-plugin</artifactId>
-	        <configuration>
-	          <descriptors>
-	            <descriptor>src/assembly/assembly.xml</descriptor>
-	          </descriptors>
-	        </configuration>
-	      </plugin>			
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>
+							src/assembly/assembly.xml
+						</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -185,7 +187,15 @@
 					<generateHtml>true</generateHtml>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</reporting>
+
+	<repositories>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Wicket dev repository</name>
+			<url>http://wicketstuff.org/maven/repository/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 </project>
