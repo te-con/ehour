@@ -55,6 +55,6 @@ public abstract class AbstractNumberModel extends Model
 	public void setObject(Object value)
 	{
 		// TODO parse it properly
-		value = (Float)value;
+		this.value = (Float)value;
 	}
 }
