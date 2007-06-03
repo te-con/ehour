@@ -45,5 +45,6 @@ public class FloatModel extends AbstractNumberModel
 		this.value = value;
 		formatter = NumberFormat.getNumberInstance(config.getLocale());
 		formatter.setMaximumFractionDigits(2);
+		formatter.setMinimumFractionDigits(2);
 	}
 }

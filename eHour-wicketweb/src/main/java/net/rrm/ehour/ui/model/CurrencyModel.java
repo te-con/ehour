@@ -62,6 +62,8 @@ public class CurrencyModel extends AbstractNumberModel
 		}
 		
 		formatter = NumberFormat.getCurrencyInstance(config.getLocale());
+		formatter.setMaximumFractionDigits(2);
+		formatter.setMinimumFractionDigits(2);
 		formatter.setCurrency(currency);
 	}
 }

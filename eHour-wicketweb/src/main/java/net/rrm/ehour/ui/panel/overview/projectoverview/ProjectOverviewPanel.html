@@ -16,12 +16,12 @@
 		
 			<div class="AggregateHeader">
 				<div id="foldCell">&nbsp;</div>
-				<div id="textCell" style="width: 19%">Project</div>
-				<div id="textCell">Project code</div>
-				<div id="textCell" style="width: 17%">Customer</div>
-				<div id="numbCell">Rate</div>
-				<div id="numbCell" style="width: 17%">Booked hours</div>
-				<div id="numbCell">Turnover</div>
+				<div id="textCell" style="width: 19%" wicket:id="projectLabel">Project</div>
+				<div id="textCell" wicket:id="projectCodeLabel">Project code</div>
+				<div id="textCell" style="width: 17%" wicket:id="customerLabel">Customer</div>
+				<div id="numbCell" wicket:id="rateLabel">Rate</div>
+				<div id="numbCell" style="width: 17%" wicket:id="bookedHoursLabel">Booked hours</div>
+				<div id="numbCell" wicket:id="turnoverLabel">Turnover</div>
 			</div>
 
 			<span wicket:id="projectStatus">
@@ -37,7 +37,7 @@
 	
 				<div class="SummaryRow">
 					<div id="foldCell">&nbsp;</div>
-					Valid from:	01-Feb-2007 &nbsp;to&nbsp; 22-Jul-2007. Total booked: 236.7hr.&nbsp;Remaining hours: 763.3hr.
+					Valid from:	<span wicket:id="validStart"></span> &nbsp;to&nbsp; <span wicket:id="validEnd"></span>. Total booked: 236.7hr.&nbsp;Remaining hours: 763.3hr.
 				</div>
 			</span>
 		</div>

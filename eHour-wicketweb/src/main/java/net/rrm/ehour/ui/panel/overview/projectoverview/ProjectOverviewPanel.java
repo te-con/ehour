@@ -29,6 +29,7 @@ import java.util.Collection;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.CurrencyModel;
+import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -55,11 +56,26 @@ public class ProjectOverviewPanel extends Panel
 	public ProjectOverviewPanel(String id, Collection<UserProjectStatus> projectStatusSet)
 	{
 		super(id);
+		
+		Label	label;
+		EhourWebSession session = (EhourWebSession)getSession();
 
 		// TODO i18n
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyBorder", "Aggregated per month");
 		
+		greyBorder.add(new Label("projectLabel", "Project"));
+		greyBorder.add(new Label("projectCodeLabel", "Project code"));
+		greyBorder.add(new Label("customerLabel", "Customer"));
 		
+		label = new Label("rateLabel", "Rate");
+		label.setVisible(session.getEhourConfig().isShowTurnover());
+		greyBorder.add(label);
+		
+		greyBorder.add(new Label("bookedHoursLabel", "Booked hours"));
+
+		label = new Label("turnoverLabel", "Turnover");
+		label.setVisible(session.getEhourConfig().isShowTurnover());
+		greyBorder.add(label);
 		
 		ListView view = new ListView("projectStatus", new ArrayList<UserProjectStatus>(projectStatusSet))
 		{
@@ -75,12 +91,32 @@ public class ProjectOverviewPanel extends Panel
 				item.add(label);
 				
 				label = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), session.getEhourConfig()));
+				label.setVisible(session.getEhourConfig().isShowTurnover());
 				item.add(label);
 
-				label = new Label("totalHours", new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig()));
+				label = new Label("totalHours", new FloatModel(projectStatus.getHours(), session.getEhourConfig()));
 				item.add(label);
 
 				label = new Label("turnover", new FloatModel(projectStatus.getTurnOver(), session.getEhourConfig()));
+				label.setVisible(session.getEhourConfig().isShowTurnover());
+				item.add(label);
+				
+				label = new Label("validStart", new DateModel(projectStatus.getProjectAssignment().getDateStart(),
+						session.getEhourConfig()));
+				label.setEscapeModelStrings(false);
+				item.add(label);
+
+				label = new Label("validEnd", new DateModel(projectStatus.getProjectAssignment().getDateEnd(),
+						session.getEhourConfig()));
+				label.setEscapeModelStrings(false);
+				item.add(label);
+
+				label = new Label("totalHours", new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig()));
+				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
+				item.add(label);
+				
+				label = new Label("remainingHours", new FloatModel(projectStatus.getHoursRemaining(), session.getEhourConfig()));
+				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 				item.add(label);
 			}
 		};
