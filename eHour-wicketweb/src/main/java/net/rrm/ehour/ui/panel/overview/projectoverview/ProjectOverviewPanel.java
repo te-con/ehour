@@ -26,6 +26,7 @@ package net.rrm.ehour.ui.panel.overview.projectoverview;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.CurrencyModel;
@@ -33,6 +34,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -57,28 +59,81 @@ public class ProjectOverviewPanel extends Panel
 	{
 		super(id);
 		
-		Label	label;
 		EhourWebSession session = (EhourWebSession)getSession();
-
+		
 		// TODO i18n
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyBorder", "Aggregated per month");
+
+		addTotals(greyBorder, projectStatusSet, session.getEhourConfig());
+		addColumnLabels(greyBorder, session.getEhourConfig());
+		addTableData(greyBorder, projectStatusSet, session.getEhourConfig());
 		
-		greyBorder.add(new Label("projectLabel", "Project"));
-		greyBorder.add(new Label("projectCodeLabel", "Project code"));
-		greyBorder.add(new Label("customerLabel", "Customer"));
+		add(greyBorder);
+		
+		add(new StyleSheetReference("aggregateStyle", new CompressedResourceReference(ProjectOverviewPanel.class, "style/aggregate.css")));
+	}
+	
+	/**
+	 * Add grant totals to the mix
+	 * @param container
+	 * @param projectStatusSet
+	 * @param config
+	 */
+	private void addTotals(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
+	{
+		float	totalHours = 0;
+		float	totalTurnover = 0;
+		Label	label;
+
+		for (UserProjectStatus status : projectStatusSet)
+		{
+			totalHours += status.getHours().floatValue();
+			totalTurnover += status.getTurnOver().floatValue();
+		}
+		
+		container.add(new Label("grandTotalHours", new FloatModel(totalHours, config)));
+		
+		label = new Label("grandTotalTurnover", new FloatModel(totalHours, config));
+		label.setVisible(config.isShowTurnover());
+		container.add(label);
+	}
+	
+	/**
+	 * Add column labels
+	 * @param container
+	 * @param config
+	 */
+	private void addColumnLabels(WebMarkupContainer container, EhourConfig config)
+	{
+		Label	label;
+		
+		container.add(new Label("projectLabel", "Project"));
+		container.add(new Label("projectCodeLabel", "Project code"));
+		container.add(new Label("customerLabel", "Customer"));
 		
 		label = new Label("rateLabel", "Rate");
-		label.setVisible(session.getEhourConfig().isShowTurnover());
-		greyBorder.add(label);
+		label.setVisible(config.isShowTurnover());
+		container.add(label);
 		
-		greyBorder.add(new Label("bookedHoursLabel", "Booked hours"));
+		container.add(new Label("bookedHoursLabel", "Booked hours"));
 
 		label = new Label("turnoverLabel", "Turnover");
-		label.setVisible(session.getEhourConfig().isShowTurnover());
-		greyBorder.add(label);
-		
+		label.setVisible(config.isShowTurnover());
+		container.add(label);
+	}
+	
+	/**
+	 * Add table data
+	 * @param container
+	 * @param projectStatusSet
+	 * @param config
+	 */
+	private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
+	{
 		ListView view = new ListView("projectStatus", new ArrayList<UserProjectStatus>(projectStatusSet))
 		{
+			private static final long serialVersionUID = -2544424604230082804L;
+
 			public void populateItem(ListItem item)
 			{
 				EhourWebSession session = (EhourWebSession)getSession();
@@ -94,7 +149,7 @@ public class ProjectOverviewPanel extends Panel
 				label.setVisible(session.getEhourConfig().isShowTurnover());
 				item.add(label);
 
-				label = new Label("totalHours", new FloatModel(projectStatus.getHours(), session.getEhourConfig()));
+				label = new Label("monthHours", new FloatModel(projectStatus.getHours(), session.getEhourConfig()));
 				item.add(label);
 
 				label = new Label("turnover", new FloatModel(projectStatus.getTurnOver(), session.getEhourConfig()));
@@ -110,20 +165,21 @@ public class ProjectOverviewPanel extends Panel
 						session.getEhourConfig()));
 				label.setEscapeModelStrings(false);
 				item.add(label);
+				
+
+				WebMarkupContainer cont = new WebMarkupContainer("remainingHoursLabel");
+				cont.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 
 				label = new Label("totalHours", new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig()));
-				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
-				item.add(label);
-				
+				cont.add(label);
+
 				label = new Label("remainingHours", new FloatModel(projectStatus.getHoursRemaining(), session.getEhourConfig()));
 				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
-				item.add(label);
+				cont.add(label);
+				item.add(cont);
 			}
 		};
 		
-		greyBorder.add(view);
-		add(greyBorder);
-		
-		add(new StyleSheetReference("aggregateStyle", new CompressedResourceReference(ProjectOverviewPanel.class, "style/aggregate.css")));
+		container.add(view);
 	}
 }

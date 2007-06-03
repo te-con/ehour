@@ -31,13 +31,18 @@
 					<div id="textCell" wicket:id="projectCode">[projectCode]</div>
 					<div id="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
 					<div id="numbCell" wicket:id="rate"></div>
-					<div id="numbCell" style="width: 17%" wicket:id="totalHours">24.50</div>
+					<div id="numbCell" style="width: 17%" wicket:id="monthHours">24.50</div>
 					<div id="numbCell" wicket:id="turnover">&euro; 16.000</div>
 				</div>
 	
 				<div class="SummaryRow">
 					<div id="foldCell">&nbsp;</div>
-					Valid from:	<span wicket:id="validStart"></span> &nbsp;to&nbsp; <span wicket:id="validEnd"></span>. Total booked: 236.7hr.&nbsp;Remaining hours: 763.3hr.
+					Valid from:	<span wicket:id="validStart"></span> &nbsp;to&nbsp; 
+					<span wicket:id="validEnd"></span>. 
+					<span wicket:id="remainingHoursLabel">
+						Total booked overall: <span wicket:id="totalHours"></span>hr.
+						Remaining hours: <span wicket:id="remainingHours"></span>hr.
+					</span>
 				</div>
 			</span>
 		</div>
