@@ -24,7 +24,8 @@ function onMouseOver(elm)
 
 function onMouseOut(elm)
 {
-	var id = elm.parentNode.parentNode.parentNode.id;
+	var id = elm.id;
+	id = id.substring(id.lastIndexOf("_") + 1);
 	var summaryRow = getSummaryRow(id);
 	var value = summaryRow.style.display;
 	

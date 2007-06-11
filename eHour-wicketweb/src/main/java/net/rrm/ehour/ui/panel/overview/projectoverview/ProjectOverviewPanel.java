@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -35,14 +34,10 @@ import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.CurrencyModel;
 import net.rrm.ehour.ui.model.DateModel;
-import net.rrm.ehour.ui.model.DetachableUserProjectStatus;
 import net.rrm.ehour.ui.model.FloatModel;
-import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -54,9 +49,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
@@ -99,11 +92,11 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	 */
 	private void addJavascript(WebMarkupContainer container)
 	{
-		CharSequence iconUpOn = RequestCycle.get().urlFor(new ResourceReference(BasePage.class, "img/icon_up_on.gif")).toString();
-		CharSequence iconUpOff = RequestCycle.get().urlFor(new ResourceReference(BasePage.class, "img/icon_up_off.gif")).toString();
-		CharSequence iconDownOn = RequestCycle.get().urlFor(new ResourceReference(BasePage.class, "img/icon_down_on.gif")).toString();
-		CharSequence iconDownOff = RequestCycle.get().urlFor(new ResourceReference(BasePage.class, "img/icon_down_off.gif")).toString();
-
+		CharSequence iconUpOn = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_up_on.gif";
+		CharSequence iconUpOff = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_up_off.gif";
+		CharSequence iconDownOn = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_down_on.gif";
+		CharSequence iconDownOff = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_down_off.gif";
+		
 		PackagedTextTemplate js = new PackagedTextTemplate(ProjectOverviewPanel.class, "js/aggregate.js");
 
 		Map<String, CharSequence> map = new HashMap<String, CharSequence>();
@@ -116,7 +109,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	}
 	
 	/**
-	 * Add grant totals to the mix
+	 * Add grand totals to the mix
 	 * @param container
 	 * @param projectStatusSet
 	 * @param config
@@ -181,6 +174,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				EhourWebSession session = (EhourWebSession)getSession();
 				
 				UserProjectStatus projectStatus = (UserProjectStatus) item.getModelObject();
+				// add id to AggreagteRow
 				item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
 				{
 					public Object getObject()
@@ -189,6 +183,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 					}
 				}));				
 				
+				// set relative URL to image and set id
 				ContextImage img = new ContextImage("foldImg", new Model("img/icon_down_off.gif"));
 				img.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
 				{
@@ -197,7 +192,6 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 						return "foldImg_" + item.getIndex();
 					}
 				}));				
-
 				
 				item.add(img);
 				
@@ -218,7 +212,15 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				label.setVisible(session.getEhourConfig().isShowTurnover());
 				item.add(label);
 				
+				// SummaryRow placeholder
 				WebMarkupContainer summaryRow = new WebMarkupContainer("summaryRow");
+				summaryRow.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
+				{
+					public Object getObject()
+					{
+						return "summaryRow_" + item.getIndex();
+					}
+				}));
 				summaryRow.add(new SimpleAttributeModifier("style", "display: none")); 
 
 				label = new Label("validStart", new DateModel(projectStatus.getProjectAssignment().getDateStart(),
@@ -232,6 +234,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				summaryRow.add(label);
 				
 				WebMarkupContainer cont = new WebMarkupContainer("remainingHoursLabel");
+				// only shown for allotted types
 				cont.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 
 				label = new Label("totalHours", new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig()));
@@ -242,13 +245,6 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				cont.add(label);
 				summaryRow.add(cont);
 
-				summaryRow.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-				{
-					public Object getObject()
-					{
-						return "summaryRow_" + item.getIndex();
-					}
-				}));
 				item.add(summaryRow);
 			}
 		};
