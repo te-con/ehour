@@ -60,7 +60,9 @@ public class OverviewPage extends BasePage
 		super("overview", null);
 
 		int userId;
-
+		
+		System.out.println(this.getPath());
+		
 		// add calendar panel
 		add(new CalendarPanel("sidePanel"));
 		
@@ -75,8 +77,8 @@ public class OverviewPage extends BasePage
 		}
 		
 		Calendar cal = new GregorianCalendar();
-		cal.add(Calendar.DATE, -7);
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId,cal);
+		cal.add(Calendar.DATE, -14);
+		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, cal);
 		
 		// project overview panel
 		add(new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus()));

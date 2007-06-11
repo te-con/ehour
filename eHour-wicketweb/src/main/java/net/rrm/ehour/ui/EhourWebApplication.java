@@ -32,6 +32,8 @@ import org.apache.wicket.ISessionFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
+import org.apache.wicket.SharedResources;
+import org.apache.wicket.markup.html.resources.PackagedResourceReference;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.PackageName;

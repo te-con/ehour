@@ -5,13 +5,13 @@
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 
 <wicket:head>
-	<link wicket:id="aggregateStyle" rel="stylesheet" type="text/css" href="style/aggregateStyle.css" />
+	<link wicket:id="aggregateStyle" rel="stylesheet" type="text/css" href="style/aggregate.css" />
 </wicket:head>
 
-<body>
+<body onLoad="init()">
 
 <wicket:panel>
-	<span wicket:id="greyBorder">
+	<span wicket:id="greyBorder" >
 		<div class="MonthAggregateTable">
 		
 			<div class="AggregateHeader">
@@ -24,9 +24,11 @@
 				<div id="numbCell" wicket:id="turnoverLabel">Turnover</div>
 			</div>
 
-			<span wicket:id="projectStatus">
-				<div class="AggregateRow">
-					<div id="foldCell"><img src="img/icon_down_off.gif" onmouseover="this.src='img/icon_down_on.gif'" onmouseout="this.src='img/icon_down_off.gif'" /></div>
+			<span  wicket:id="projectStatus">
+				<div class="AggregateRow" onclick="foldSummary(this)">
+					<div id="foldCell">
+							<img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" />
+					</div>
 					<div id="textCell" style="width: 19%" wicket:id="projectName">[projectName]</div>
 					<div id="textCell" wicket:id="projectCode">[projectCode]</div>
 					<div id="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
@@ -35,7 +37,7 @@
 					<div id="numbCell" wicket:id="turnover">&euro; 16.000</div>
 				</div>
 	
-				<div class="SummaryRow">
+				<div class="SummaryRow" wicket:id="summaryRow">
 					<div id="foldCell">&nbsp;</div>
 					Valid from:	<span wicket:id="validStart"></span> &nbsp;to&nbsp; 
 					<span wicket:id="validEnd"></span>. 
