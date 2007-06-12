@@ -13,9 +13,11 @@ div.MonthAggregateTable div.AggregateHeader
 	border-bottom-width: 1px;
 	border-bottom-color:  #e8e8e8;
 	border-bottom-style: solid;
-	height: 1em;
 	padding-bottom: 1px;
 	margin-bottom: 3px;
+	height: 1em !important;
+	min-height: 1em;
+	width: auto;
 }
 
 div.MonthAggregateTable div.AggregateRow
