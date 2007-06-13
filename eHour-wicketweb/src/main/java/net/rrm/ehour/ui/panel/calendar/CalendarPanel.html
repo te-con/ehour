@@ -5,10 +5,10 @@
 	xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
-	
 <wicket:head>
 	<link wicket:id="calendarStyle" rel="stylesheet" type="text/css" href="style/calendar.css" />
 </wicket:head>
+
 <body>
 <wicket:extend>
 	<div class="Calendar">
@@ -17,12 +17,9 @@
 			<div class="PreviousMonth">
 				<div style="position: relative;	top: 7px; left: 5px;"><a href="" onclick="return changeCalMonth(3, 2007, 2)"><img src="img/left.gif" border="0"></a></div>
 			</div>
-
 				
-			<div class="CurrentMonth">
-				May 2007
+			<div class="CurrentMonth" wicket:id="currentMonth">
 			</div>
-			
 			
 			<div class="NextMonth">
 				<div style="position: relative;	top: 7px;right: 5px;"><a href="" onclick="return changeCalMonth(3, 2007, 2)"><img src="img/right.gif" border="0"></a></div>
@@ -31,65 +28,33 @@
 		</div>
 		
 		<div class="CalendarBody">
-			<div class="CalendarWeek">
+			<div class="CalendarWeek" wicket:id="weeks">
 				<div class="SundayDay">
-					1
+					<span wicket:id="sunday"></span>
 				</div>
 				
 				<div class="WeekDay">
-					2
+					<span wicket:id="monday"></span>
 				</div>
 				
 				<div class="WeekDay">
-					3
+					<span wicket:id="tuesday"></span>
 				</div>
 
 				<div class="WeekDay">
-					4
+					<span wicket:id="wednesday"></span>
 				</div>
 
 				<div class="WeekDay">
-					5
+					<span wicket:id="thursday"></span>
 				</div>
 
 				<div class="WeekDay">
-					6
+					<span wicket:id="friday"></span>
 				</div>				
 				
 				<div class="SaturdayDay">
-					7
-				</div>
-				
-				<br clear="all" />
-			</div>
-			
-			<div class="CalendarWeek">
-				<div class="SundayDay">
-					8
-				</div>
-				
-				<div class="WeekDay">
-					9
-				</div>
-				
-				<div class="WeekDay">
-					10
-				</div>
-
-				<div class="WeekDay">
-					11
-				</div>
-
-				<div class="WeekDay">
-					12
-				</div>
-
-				<div class="WeekDay">
-					13
-				</div>				
-				
-				<div class="SaturdayDay">
-					14
+					<span wicket:id="saturday"></span>
 				</div>
 				
 				<br clear="all" />

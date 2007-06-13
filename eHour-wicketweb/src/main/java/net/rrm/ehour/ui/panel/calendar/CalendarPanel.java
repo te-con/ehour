@@ -23,12 +23,29 @@
 
 package net.rrm.ehour.ui.panel.calendar;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import net.rrm.ehour.timesheet.dto.BookedDay;
+import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
+import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.util.DateUtil;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Navigation Calendar 
@@ -36,21 +53,120 @@ import org.apache.wicket.markup.html.resources.StyleSheetReference;
 
 public class CalendarPanel extends SidePanel
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7777893083323915299L;
+	private transient Logger	logger = Logger.getLogger(CalendarPanel.class);
 
+	@SpringBean
+	private TimesheetService	timesheetService;
 
 	/**
 	 * 
 	 * @param id
 	 */
-	public CalendarPanel(String id)
+	public CalendarPanel(String id, Integer userId, Calendar month)
 	{
 		super(id);
 		
+		EhourWebSession 	session = (EhourWebSession)getSession();
+		List<CalendarWeek>	weeks;
+		
+		logger.debug("Constructing navCalendar for userId: " + userId + " and month " + month.getTime().toString());
+		
+		// set month label
+		add(new Label("currentMonth", new DateModel(month, session.getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
+		
 		add(new StyleSheetReference("calendarStyle", calendarStyle()));
+		
+		weeks = createWeeks(userId, month);
+		logger.debug("Weeks filled: " + weeks.size());
+		addCalendarWeeks(this, weeks);
+	}
+	
+	private void addCalendarWeeks(WebMarkupContainer container, List<CalendarWeek> weeks)
+	{
+		ListView view = new ListView("weeks", weeks)
+		{
+			public void populateItem(final ListItem item)
+			{
+				CalendarWeek	week = (CalendarWeek)item.getModelObject();
+			
+				item.add(getLabel("sunday", week, 0)); 
+				item.add(getLabel("monday", week, 1));
+				item.add(getLabel("tuesday", week, 2));
+				item.add(getLabel("wednesday", week, 3));
+				item.add(getLabel("thursday", week, 4));
+				item.add(getLabel("friday", week, 5));
+				item.add(getLabel("saturday", week, 6));
+			}
+			
+			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
+			{
+				Label	label = new Label(id, new PropertyModel(week, "days[" + dayInWeek + "]"));
+				
+				if (week.getDays()[dayInWeek] == 0)
+				{
+					label.setVisible(false);
+				}
+				
+				return label;
+			}
+		};
+		
+		container.add(view);
+	}
+	
+	
+	
+	/**
+	 * Create CalendarWeek objects
+	 * @param userId
+	 * @param month
+	 */
+	private List<CalendarWeek> createWeeks(Integer userId, Calendar month)
+	{
+		List<CalendarWeek>	calendarWeeks = new ArrayList<CalendarWeek>();
+		boolean[]		bookedDays;
+		CalendarWeek	week = new CalendarWeek();
+		int				currentMonth;
+		int				dayInMonth;
+		int				dayInWeek;
+		
+		// grab date
+		bookedDays = getMonthNavCalendar(userId, month);
+
+		week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
+		week.setYear(month.get(Calendar.YEAR));
+		
+		currentMonth = month.get(Calendar.MONTH);
+		
+		month.set(Calendar.DAY_OF_MONTH, 1);
+		
+		do
+		{
+			dayInMonth = month.get(Calendar.DAY_OF_MONTH);
+			dayInWeek = month.get(Calendar.DAY_OF_WEEK);
+			
+			week.setDayInWeek(dayInWeek - 1, dayInMonth, bookedDays[dayInMonth - 1]);
+			
+			month.add(Calendar.DAY_OF_MONTH, 1);
+			
+			// next week? restart a
+			if (month.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+			{
+				calendarWeeks.add(week);
+				
+				week = new CalendarWeek();
+			}
+			
+		} while (month.get(Calendar.MONTH) == currentMonth);
+		
+		// sundays are already stored
+		if (month.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+		{
+			calendarWeeks.add(week);
+		}
+		
+		return calendarWeeks;
 	}
 	
 	
@@ -59,8 +175,42 @@ public class CalendarPanel extends SidePanel
 	 * 
 	 * @return a style
 	 */
-	public final ResourceReference calendarStyle()
+	private ResourceReference calendarStyle()
 	{
 		return new CompressedResourceReference(MainNavPanel.class, "style/calendar.css");
+	}
+	
+	/**
+	 * Get the month overview for the nav calendar
+	 * @param userId
+	 * @param requestedMonth
+	 * @return array of booleans each representing a day in the month. 
+	 * true = booked, false = not everything booked
+	 */
+
+	private boolean[] getMonthNavCalendar(Integer userId, Calendar requestedMonth)
+	{
+		List<BookedDay> bookedDays;
+		boolean[] 		monthOverview;
+		Calendar 		cal;
+
+		bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
+
+		monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
+
+		for (BookedDay day : bookedDays)
+		{
+			cal = new GregorianCalendar();
+			cal.setTime(day.getDate());
+
+			// just in case.. it shouldn't happen that the returned month
+			// is longer than the reserved space for this month
+			if (cal.get(Calendar.DAY_OF_MONTH) <= monthOverview.length)
+			{
+				monthOverview[cal.get(Calendar.DAY_OF_MONTH) - 1] = true;
+			}
+		}
+
+		return monthOverview;
 	}	
 }

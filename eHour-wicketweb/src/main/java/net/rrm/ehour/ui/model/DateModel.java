@@ -37,21 +37,65 @@ import org.apache.wicket.model.Model;
 
 public class DateModel extends Model
 {
+	public final static int	DATESTYLE_LONG = 1;
+	public final static int	DATESTYLE_MONTHONLY = 2;
 	
 	private static final long serialVersionUID = 431440606497572025L;
 	private Date				value;
 	private	final SimpleDateFormat	dateFormatter;
 	
+	/**
+	 * 
+	 * @param calendar
+	 * @param config
+	 */
 	public DateModel(Calendar calendar, EhourConfig config)
 	{
-		this(calendar.getTime(), config);
-		
+		this(calendar.getTime(), config, DATESTYLE_LONG);
 	}
-	
+
+	/**
+	 * 
+	 * @param date
+	 * @param config
+	 * @param dateStyle
+	 */
 	public DateModel(Date date, EhourConfig config)
 	{
+		this(date, config, DATESTYLE_LONG);
+	}
+	
+	
+	/**
+	 * 
+	 * @param date
+	 * @param config
+	 * @param dateStyle
+	 */
+	public DateModel(Date date, EhourConfig config, int dateStyle)
+	{
 		this.value = date;
-		dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
+		
+		switch (dateStyle)
+		{
+			case DATESTYLE_MONTHONLY:
+				dateFormatter = new SimpleDateFormat("MMMM yyyy", config.getLocale());
+				break;
+			default:
+				dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
+				break;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param calendar
+	 * @param config
+	 * @param dateStyle
+	 */
+	public DateModel(Calendar calendar, EhourConfig config, int dateStyle)
+	{
+		this(calendar.getTime(), config, dateStyle);
 	}
 	
 	/*

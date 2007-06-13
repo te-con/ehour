@@ -31,6 +31,7 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
+import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -58,13 +59,9 @@ public class OverviewPage extends BasePage
 	public OverviewPage(PageParameters params)
 	{
 		super("overview", null);
-
-		int userId;
 		
-		System.out.println(this.getPath());
-		
-		// add calendar panel
-		add(new CalendarPanel("sidePanel"));
+		Calendar	currentMonth;
+		Integer		userId;
 		
 		// get the data
 		try
@@ -75,13 +72,16 @@ public class OverviewPage extends BasePage
 //			e.printStackTrace();
 			userId = 1;
 		}
+
+
+		currentMonth = ((EhourWebSession)this.getSession()).getNavCalendar();
 		
-		Calendar cal = new GregorianCalendar();
-		cal.add(Calendar.DATE, -14);
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, cal);
+		// add calendar panel
+		add(new CalendarPanel("sidePanel", userId, currentMonth));
+
 		
+		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, currentMonth); 
 		// project overview panel
 		add(new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus()));
-	
 	}
 }

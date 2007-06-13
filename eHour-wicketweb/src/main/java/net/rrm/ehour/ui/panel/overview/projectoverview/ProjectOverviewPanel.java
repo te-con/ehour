@@ -61,7 +61,7 @@ import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 {
 	private static final long serialVersionUID = -5935376941518756941L;
-
+	
 	/**
 	 * 
 	 * @param id
@@ -168,11 +168,10 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		ListView view = new ListView("projectStatus", new ArrayList<UserProjectStatus>(projectStatusSet))
 		{
 			private static final long serialVersionUID = -2544424604230082804L;
+			EhourWebSession session = (EhourWebSession)getSession();
 			
 			public void populateItem(final ListItem item)
 			{
-				EhourWebSession session = (EhourWebSession)getSession();
-				
 				UserProjectStatus projectStatus = (UserProjectStatus) item.getModelObject();
 				// add id to AggreagteRow
 				item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()

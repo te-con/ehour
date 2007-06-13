@@ -23,7 +23,10 @@
 
 package net.rrm.ehour.ui.session;
 
+import java.util.Calendar;
+
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.Request;
 import org.apache.wicket.injection.web.InjectorHolder;
@@ -40,6 +43,7 @@ public class EhourWebSession extends WebSession
 	@SpringBean
 	private EhourConfig	ehourConfig;
 	
+	private	Calendar	navCalendar;
 	private static final long serialVersionUID = 93189812483240412L;
 
 	/**
@@ -61,6 +65,27 @@ public class EhourWebSession extends WebSession
 	public EhourConfig getEhourConfig()
 	{
 		return ehourConfig;
+	}
+
+	/**
+	 * @return the navCalendar
+	 */
+	public Calendar getNavCalendar()
+	{
+		if (navCalendar == null)
+		{
+			navCalendar = DateUtil.getCalendar(ehourConfig);
+		}
+		
+		return navCalendar;
+	}
+
+	/**
+	 * @param navCalendar the navCalendar to set
+	 */
+	public void setNavCalendar(Calendar navCalendar)
+	{
+		this.navCalendar = navCalendar;
 	}
 }
 
