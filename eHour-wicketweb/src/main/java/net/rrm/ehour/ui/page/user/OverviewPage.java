@@ -67,6 +67,7 @@ public class OverviewPage extends BasePage
 		try
 		{
 			userId = params.getInt("userID");
+			System.out.println(userId);
 		} catch (StringValueConversionException e)
 		{
 //			e.printStackTrace();

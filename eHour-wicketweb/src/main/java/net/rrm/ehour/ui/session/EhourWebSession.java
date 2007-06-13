@@ -80,7 +80,7 @@ public class EhourWebSession extends WebSession
 			navCalendar.add(Calendar.MONTH, -2);
 		}
 		
-		return navCalendar;
+		return (Calendar)navCalendar.clone();
 	}
 
 	/**

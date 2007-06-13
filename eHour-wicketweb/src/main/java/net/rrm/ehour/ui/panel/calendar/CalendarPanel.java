@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.panel.calendar;
 
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -31,15 +32,22 @@ import java.util.List;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.model.DateModel;
+import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.Page;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.IPageLink;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.PageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
@@ -74,6 +82,23 @@ public class CalendarPanel extends SidePanel
 		
 		// set month label
 		add(new Label("currentMonth", new DateModel(month, session.getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
+		
+		final PageParameters params = new PageParameters();
+		params.add("userId", "2");
+		
+		Link link = new Link("previousMonthLink")
+	       {
+	           public void onClick()
+	           {
+	        	   setResponsePage(new OverviewPage(params));
+	           }
+	           public boolean linksTo(Page page)
+	           {
+	        	   return true;
+	           }	       };
+//		PageLink link = new PageLink("previousMonthLink", new OverviewPage(params));
+		link.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
+		add(link);
 		
 		add(new StyleSheetReference("calendarStyle", calendarStyle()));
 		
