@@ -76,7 +76,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		// TODO i18n
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyBorder", "Aggregated per month");
 
-//		addTotals(greyBorder, projectStatusSet, session.getEhourConfig());
+		addTotals(greyBorder, projectStatusSet, session.getEhourConfig());
 		addColumnLabels(greyBorder, session.getEhourConfig());
 		addTableData(greyBorder, projectStatusSet, session.getEhourConfig());
 
@@ -128,7 +128,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		
 		container.add(new Label("grandTotalHours", new FloatModel(totalHours, config)));
 		
-		label = new Label("grandTotalTurnover", new FloatModel(totalHours, config));
+		label = new Label("grandTotalTurnover", new CurrencyModel(totalTurnover, config));
 		label.setVisible(config.isShowTurnover());
 		container.add(label);
 	}

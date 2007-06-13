@@ -13,7 +13,7 @@
 <wicket:panel>
 	<span wicket:id="greyBorder" >
 		<div class="MonthAggregateTable">
-		
+
 			<div class="AggregateHeader">
 				<div id="foldCell">&nbsp;</div>
 				<div id="textCell" style="width: 19%" wicket:id="projectLabel">Project</div>
@@ -26,9 +26,7 @@
 
 			<span  wicket:id="projectStatus">
 				<div class="AggregateRow" onclick="foldSummary(this)">
-					<div id="foldCell">
-							<img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" />
-					</div>
+					<div id="foldCell"><img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" /></div>
 					<div id="textCell" style="width: 19%" wicket:id="projectName">[projectName]</div>
 					<div id="textCell" wicket:id="projectCode">[projectCode]</div>
 					<div id="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
@@ -47,6 +45,12 @@
 					</span>
 				</div>
 			</span>
+			
+			<br clear="all" />
+			
+			<div wicket:id="grandTotalHours"></div>
+			<div wicket:id="grandTotalTurnover"></div>			
+			
 		</div>
 	</span>
 </wicket:panel>
