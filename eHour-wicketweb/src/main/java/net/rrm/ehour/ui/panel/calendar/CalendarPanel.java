@@ -97,8 +97,8 @@ public class CalendarPanel extends SidePanel
 	        	   return true;
 	           }	       };
 //		PageLink link = new PageLink("previousMonthLink", new OverviewPage(params));
-		link.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
-		add(link);
+		add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
+//		add(link);
 		
 		add(new StyleSheetReference("calendarStyle", calendarStyle()));
 		

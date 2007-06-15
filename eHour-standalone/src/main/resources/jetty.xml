@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<Configure class="org.mortbay.jetty.Server">
+
+	<Call class="org.mortbay.log.Log" name="debug">
+		<Arg>executing jetty-web.xml</Arg>
+	</Call>
+
+	<Call name="addConnector">
+		<Arg>
+			<New class="org.mortbay.jetty.nio.SelectChannelConnector">
+				<Set name="port">
+					<SystemProperty name="jetty.port" default="8000" />
+				</Set>
+			</New>
+		</Arg>
+	</Call>
+
+    <Set name="handler">
+      <New id="Handlers" class="org.mortbay.jetty.handler.HandlerCollection">
+        <Set name="handlers">
+         <Array type="org.mortbay.jetty.Handler">
+           <Item>
+             <New id="Contexts" class="org.mortbay.jetty.handler.ContextHandlerCollection">
+	             <New class="org.mortbay.jetty.webapp.WebAppContext">
+	               <Set name="contextPath">/test</Set>
+	             </New>
+             </New>
+           </Item>
+           <Item>
+             <New id="DefaultHandler" class="org.mortbay.jetty.handler.DefaultHandler"/>
+           </Item>
+           <Item>
+             <New id="RequestLog" class="org.mortbay.jetty.handler.RequestLogHandler"/>
+           </Item>
+         </Array>
+        </Set>
+      </New>
+    </Set>
+
+
+	<Call name="addLifeCycle">
+		<Arg>
+			<New class="org.mortbay.jetty.deployer.WebAppDeployer">
+				<Set name="contexts"><Ref id="Contexts"></Ref>
+				</Set>
+				<Set name="webAppDir">
+					../eHour-wicketweb/target
+				</Set>
+				<Set name="parentLoaderPriority">false</Set>
+				<Set name="extract">true</Set>
+				<Set name="allowDuplicates">false</Set>
+			</New>
+		</Arg>
+	</Call>
+
+	<Set name="ThreadPool">
+		<New class="org.mortbay.thread.BoundedThreadPool">
+			<Set name="minThreads">10</Set>
+			<Set name="maxThreads">100</Set>
+		</New>
+	</Set>
+
+	<Set name="ThreadPool">
+		<New class="org.mortbay.thread.BoundedThreadPool">
+			<Set name="minThreads">10</Set>
+			<Set name="maxThreads">100</Set>
+		</New>
+	</Set>
+
+	<New id="Datasource" class="org.mortbay.jetty.plus.naming.Resource">
+		<Arg>env/jdbc/eHourDS</Arg>
+		<Arg>
+			<New class="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource">
+				<Set name="Url">
+					jdbc:mysql://localhost:3306/databasename
+				</Set>
+				<Set name="User">user</Set>
+				<Set name="Password">pass</Set>
+			</New>
+		</Arg>
+	</New>
+
+
+</Configure>

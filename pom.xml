@@ -13,6 +13,7 @@
 	<modules>
 		<module>eHour-service</module>
 		<module>eHour-wicketweb</module>
+		<module>eHour-standalone</module>		
 	</modules>
 
 	<description>
@@ -135,8 +136,13 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<descriptors>
+					<!-- 
 						<descriptor>
 							src/assembly/assembly.xml
+						</descriptor>
+						 -->
+						<descriptor>
+							src/assembly/assembly_standalone.xml
 						</descriptor>
 					</descriptors>
 				</configuration>
