@@ -174,7 +174,14 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 	 */
 	public Number getTurnOver()
 	{
-		return new Float(hours.floatValue() * projectAssignment.getHourlyRate().floatValue());
+		if (projectAssignment != null && hours != null)
+		{
+			return new Float(hours.floatValue() * projectAssignment.getHourlyRate().floatValue());
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	/**
