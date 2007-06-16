@@ -1,5 +1,5 @@
 /**
- * Created on Jun 15, 2007
+ * Created on Jun 16, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,47 +21,13 @@
  *
  */
 
-package net.rrm.ehour;
-
-import java.io.FileInputStream;
-
-import org.mortbay.jetty.Server;
-import org.mortbay.xml.XmlConfiguration;
+package net.rrm.ehour.db;
 
 /**
  * TODO 
  **/
 
-public class KickStarter
+public class DbAccessorDerby implements DbAccessor
 {
-	public void start() throws Exception
-	{
-//		initDerby();
-		startJetty();
-	}
-	
-	/**
-	 * Start Jetty
-	 * @throws Exception
-	 */
-	
-	private void startJetty() throws Exception
-	{
-		Server server = new Server() ;
-		XmlConfiguration xmlConfig = new XmlConfiguration(new FileInputStream("src/main/resources/jetty.xml"));
-		xmlConfig.configure(server);
-		
-		server.start();
-	}
-	
-	/**
-	 * @param args
-	 * @throws Exception 
-	 */
-	public static void main(String[] args) throws Exception
-	{
-		new KickStarter().start();
-
-	}
 
 }
