@@ -7,15 +7,15 @@
 		<!-- <cache usage="read-write" />-->
 		
 		<id name="projectId" column="PROJECT_ID" type="integer">
-			<generator class="identity" />
+			<generator class="native" />
        	</id>
 
-		<property name="projectCode" column="PROJECT_CODE" type="string"/>
-		<property name="contact" column="CONTACT" type="string"/>
-		<property name="description" column="DESCRIPTION" type="string"/>
-		<property name="name" column="NAME" type="string"/>
+		<property name="projectCode" column="PROJECT_CODE" type="string" length="64" />
+		<property name="contact" column="CONTACT" type="string" length="256" />
+		<property name="description" column="DESCRIPTION" type="string" length="1024" />
+		<property name="name" column="NAME" type="string" length="256" />
 		<property name="defaultProject" column="DEFAULT_PROJECT" type="yes_no"/>
-		<property name="active" column="ACTIVE" type="yes_no"/>
+		<property name="active" column="ACTIVE" type="yes_no" index="IDX_PROJECT_ACTIVE" />
 		
         <many-to-one name="customer" outer-join="auto" fetch="join"
                 class="net.rrm.ehour.customer.domain.Customer" column="CUSTOMER_ID"/>

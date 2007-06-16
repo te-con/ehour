@@ -7,7 +7,7 @@
 		<!--  <cache usage="read-write" /> -->
 		
 		<id name="assignmentId" column="ASSIGNMENT_ID" type="integer">
-			<generator class="identity" />
+			<generator class="native" />
        	</id>
 
         <many-to-one name="user" class="net.rrm.ehour.user.domain.User" fetch="join" insert="true">
@@ -23,18 +23,16 @@
         </property>
 
         <property name="dateStart" type="date">
-            <column name="DATE_START" length="10" />
+            <column name="DATE_START" length="10" index="IDX_PA_DATESTART" />
         </property>
 
         <property name="dateEnd" type="date">
-            <column name="DATE_END" length="10"/>
+            <column name="DATE_END" length="10" index="IDX_PA_DATEEND" />
         </property>
 
-        <property name="role" type="string">
-            <column name="ROLE" />
-        </property>
+        <property name="role" type="string" column="ROLE" length="64" />
         
-		<property name="active" column="ACTIVE" type="yes_no"/>        		
+		<property name="active" column="ACTIVE" type="yes_no" index="IDX_PA_ACTIVE" />
 
         <many-to-one name="assignmentType" outer-join="auto" fetch="join"
                 class="net.rrm.ehour.project.domain.ProjectAssignmentType" column="ASSIGNMENT_TYPE_ID"/>

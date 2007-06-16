@@ -23,23 +23,27 @@
 
 package net.rrm.ehour.report.reports;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * TODO 
  **/
 
-public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentAggregate>
+public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentAggregate>, Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7175763322632066925L;
 	private ProjectAssignment 	projectAssignment;
 	private Number 				hours;
-	private Number 				turnOver;
 
 	/**
 	 * empty constructor
@@ -54,11 +58,10 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 	 * @param projectAssignment
 	 * @param hours
 	 */
-	public ProjectAssignmentAggregate(ProjectAssignment projectAssignment, Number hours, Number turnOver)
+	public ProjectAssignmentAggregate(ProjectAssignment projectAssignment, Number hours)
 	{
 		this.hours = hours;
 		this.projectAssignment = projectAssignment;
-		this.turnOver = turnOver;
 	}
 
 	/**
@@ -171,15 +174,7 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 	 */
 	public Number getTurnOver()
 	{
-		return turnOver;
-	}
-
-	/**
-	 * @param turnOver the turnOver to set
-	 */
-	public void setTurnOver(Number turnOver)
-	{
-		this.turnOver = turnOver;
+		return new Float(hours.floatValue() * projectAssignment.getHourlyRate().floatValue());
 	}
 
 	/**
@@ -195,7 +190,6 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 		return new ToStringBuilder(this)
 			.append("ProjectAssignment", projectAssignment)
 			.append("hours", hours)
-			.append("turnOver", turnOver)
 			.toString();		
 	}
 

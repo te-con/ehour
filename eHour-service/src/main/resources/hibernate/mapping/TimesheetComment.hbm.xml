@@ -11,6 +11,6 @@
 		    <key-property name="commentDate" column="COMMENT_DATE" type="date"/>		    
         </composite-id>
 
-		<property name="comment" column="COMMENT" type="string"/>
+		<property name="comment" column="COMMENT" type="string" length="1024" />
 	</class>	
 </hibernate-mapping>

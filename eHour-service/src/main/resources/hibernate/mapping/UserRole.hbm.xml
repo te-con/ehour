@@ -7,13 +7,10 @@
 	    <cache usage="read-only" />
         <id name="role" type="string">
             <column name="ROLE" />
-            <generator class="assigned" />
         </id>
         
         <property name="roleName" type="string">
-            <column name="NAME" length="128">
-                <comment></comment>
-            </column>
+            <column name="NAME" length="128" />
         </property>
     </class>
 </hibernate-mapping>

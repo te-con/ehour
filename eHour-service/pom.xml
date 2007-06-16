@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
@@ -28,55 +30,124 @@
 				<directory>src/main/resources/log4j</directory>
 			</resource>
 		</resources>
-		<finalName>ehour-service</finalName>
 	</build>
 	<profiles>
 		<profile>
-			<id>env-test</id>
+			<id>env-prod-derby</id>
 			<activation>
 				<property>
 					<name>env</name>
-					<value>test</value>
+					<value>prod-derby</value>
 				</property>
 			</activation>
 			<build>
+				<finalName>ehour-service_prod-derby-${version}</finalName>
 				<resources>
 					<resource>
 						<directory>
-							src/main/profiles/test/resources/spring
+							src/main/profiles/prod/datasource
 						</directory>
 					</resource>
 					<resource>
 						<directory>
-							src/main/profiles/test/resources/log4j
+							src/main/profiles/prod/log4j
+						</directory>
+					</resource>
+					<resource>
+						<directory>
+							src/main/profiles/hibernate/derby
 						</directory>
 					</resource>
 				</resources>
 			</build>
 		</profile>
 		<profile>
-			<id>env-dev</id>
+			<id>env-prod-mysql</id>
 			<activation>
 				<property>
 					<name>env</name>
-					<value>dev</value>
+					<value>prod-mysql</value>
 				</property>
 			</activation>
 			<build>
+				<finalName>ehour-service_prod-mysql-${version}</finalName>
 				<resources>
 					<resource>
 						<directory>
-							src/main/profiles/dev/resources/spring
+							src/main/profiles/prod/datasource
 						</directory>
 					</resource>
 					<resource>
 						<directory>
-							src/main/profiles/dev/resources/log4j
+							src/main/profiles/prod/log4j
+						</directory>
+					</resource>
+					<resource>
+						<directory>
+							src/main/profiles/hibernate/mysql
 						</directory>
 					</resource>
 				</resources>
 			</build>
 		</profile>
+		<profile>
+			<id>env-dev-derby</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev-derby</value>
+				</property>
+			</activation>
+			<build>
+				<finalName>ehour-service_dev-derby-${version}</finalName>
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/dev/datasource_derby
+						</directory>
+					</resource>
+					<resource>
+						<directory>
+							src/main/profiles/dev/log4j
+						</directory>
+					</resource>
+					<resource>
+						<directory>
+							src/main/profiles/hibernate/derby
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>env-dev-mysql</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev-mysql</value>
+				</property>
+			</activation>
+			<build>
+				<finalName>ehour-service_dev-mysql-${version}</finalName>
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/dev/datasource_mysql
+						</directory>
+					</resource>
+					<resource>
+						<directory>
+							src/main/profiles/dev/log4j
+						</directory>
+					</resource>
+					<resource>
+						<directory>
+							src/main/profiles/hibernate/mysql
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>		
 	</profiles>
 	<dependencies>
 		<dependency>
@@ -180,14 +251,9 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time-hibernate</artifactId>
-			<version>0.8</version>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.2.2.0</version>
 		</dependency>
 	</dependencies>
 	<reporting>

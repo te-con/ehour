@@ -6,10 +6,8 @@
 	<class name="net.rrm.ehour.config.domain.Configuration" table="CONFIGURATION">
 		<!-- <cache usage="read-write" /> -->
 		
-		<id name="configKey" column="CONFIG_KEY" type="string">
-			<generator class="assigned" />
-       	</id>
+		<id name="configKey" column="CONFIG_KEY" type="string" length="64" />
 
-		<property name="configValue" column="CONFIG_VALUE" type="string"/>
+		<property name="configValue" column="CONFIG_VALUE" type="string" length="256" />
 	</class>
 </hibernate-mapping>

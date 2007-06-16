@@ -5,20 +5,20 @@
 <hibernate-mapping>
 	<class name="net.rrm.ehour.customer.domain.Customer" table="CUSTOMER">
 		<!-- <cache usage="read-write" /> -->
-		
-		<id name="customerId" column="CUSTOMER_ID" type="integer">
-			<generator class="identity" />
-       	</id>
 
-		<property name="code" column="CODE" type="string"/>
-		<property name="name" column="NAME" type="string"/>
-		<property name="description" column="DESCRIPTION" type="string"/>
-		
-		<property name="active" column="ACTIVE" type="yes_no"/>
-		
-	   <set name="projects" inverse="true" lazy="true">
+		<id name="customerId" column="CUSTOMER_ID" type="integer">
+			<generator class="native" />
+		</id>
+
+		<property name="code" column="CODE" type="string" length="16" />
+		<property name="name" column="NAME" type="string" length="256" />
+		<property name="description" column="DESCRIPTION" type="string" length="1024" />
+
+		<property name="active" column="ACTIVE" type="yes_no" index="IDX_CUSTOMER_ACTIVE" />
+
+		<set name="projects" inverse="true" lazy="true">
 			<key column="CUSTOMER_ID" />
-	       	<one-to-many class="net.rrm.ehour.project.domain.Project"/>
-	   </set>		
+			<one-to-many class="net.rrm.ehour.project.domain.Project" />
+		</set>
 	</class>
 </hibernate-mapping>

@@ -49,7 +49,7 @@ public class UserDepartmentDAOHibernateImpl
 		List<UserDepartment>		results;
 
 		String[]	keys = new String[]{"name", "code"};
-		Object[]	params = new Object[]{name, code}; 
+		Object[]	params = new Object[]{name.toLowerCase(), code.toLowerCase()}; 
 		
 		results = getHibernateTemplate().findByNamedQueryAndNamedParam("UserDepartment.findByNameAndCode"
 																		, keys, params);		

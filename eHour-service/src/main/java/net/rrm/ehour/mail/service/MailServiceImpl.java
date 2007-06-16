@@ -84,8 +84,6 @@ public class MailServiceImpl implements MailService
 		SimpleDateFormat	dateFormat = new SimpleDateFormat("dd MMM yyyy");
 		
 		// TODO use templates
-		
-		// and no, stringbuffers aren't faster anymore..
 		subject = "eHour: All allotted hours used for project " 
 					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
 					+ " by "

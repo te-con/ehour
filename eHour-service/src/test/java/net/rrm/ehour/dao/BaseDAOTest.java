@@ -50,6 +50,7 @@ public abstract class BaseDAOTest extends AbstractTransactionalDataSourceSpringC
 	{
 		setUpDatabase();
 	}
+	
 
 	private void setUpDatabase() throws Exception
 	{

@@ -42,7 +42,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	
 	private Float 	allowedOverrun;
 	
-	private boolean	notifyPm;
+	private boolean	notifyPm = false;
 	
 	private boolean active;
 	

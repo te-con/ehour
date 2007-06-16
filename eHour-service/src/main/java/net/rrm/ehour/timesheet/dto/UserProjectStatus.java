@@ -32,6 +32,10 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 public class UserProjectStatus extends ProjectAssignmentAggregate
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2321889010790629630L;
 	private Number	totalBookedHours;
 
 	public UserProjectStatus()
@@ -46,7 +50,7 @@ public class UserProjectStatus extends ProjectAssignmentAggregate
 	
 	public UserProjectStatus(ProjectAssignmentAggregate aggregate, Number totalBookedHours)
 	{
-		super(aggregate.getProjectAssignment(), aggregate.getHours(), aggregate.getTurnOver());
+		super(aggregate.getProjectAssignment(), aggregate.getHours());
 		this.totalBookedHours = totalBookedHours;
 	}
 	

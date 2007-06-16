@@ -6,10 +6,8 @@
 	<class name="net.rrm.ehour.project.domain.ProjectAssignmentType" table="PROJECT_ASSIGNMENT_TYPE"  mutable="false">
 	    <cache usage="read-only" />
 		
-		<id name="assignmentTypeId" column="ASSIGNMENT_TYPE_ID" type="integer">
-			<generator class="assigned" />
-       	</id>
+		<id name="assignmentTypeId" column="ASSIGNMENT_TYPE_ID" type="integer" />
 
-        <property name="assignmentType" column="ASSIGNMENT_TYPE" type="string" />
+        <property name="assignmentType" column="ASSIGNMENT_TYPE" type="string" length="64" index="IDX_ASG_TYPE" />
 	</class>	
 </hibernate-mapping>

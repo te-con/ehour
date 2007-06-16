@@ -5,19 +5,19 @@
 <hibernate-mapping>
 
 <!-- User -->
-	<class name="net.rrm.ehour.user.domain.User" table="USER">
+	<class name="net.rrm.ehour.user.domain.User" table="USERS">
 	    <!-- <cache usage="read-write" /> -->
 		<id name="userId" column="USER_ID" type="java.lang.Integer">
-			<generator class="identity" />
+			<generator class="native" />
        	</id>
 
-		<property name="username" type="string"/>
-		<property name="password" type="string"/>
-		<property name="firstName" column="first_name" type="string"/>
-		<property name="lastName" column="last_name" type="string"/>
-		<property name="email" column="EMAIL" type="string"/>
+		<property name="username" type="string" length="64" index="IDX_USER_NAME" />
+		<property name="password" type="string" length="64" index="IDX_USER_PASS" />
+		<property name="firstName" column="first_name" type="string" length="64" />
+		<property name="lastName" column="last_name" type="string" length="128" />
+		<property name="email" column="EMAIL" type="string" length="128" />
 		
-		<property name="active" column="ACTIVE" type="yes_no"/>
+		<property name="active" column="ACTIVE" type="yes_no" index="IDX_USER_ACTIVE" />
 		
         <set name="userRoles" table="USER_TO_USERROLE" lazy="true">
            <key column="USER_ID" />

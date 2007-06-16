@@ -129,7 +129,6 @@ public class DummyDataGenerator
 	{
 		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
 		pag.setHours(baseId);
-		pag.setTurnOver(baseId * 10);
 		pag.setProjectAssignment(getProjectAssignment(baseId, customerId, userId));
 		return pag;
 	}

@@ -23,21 +23,6 @@
 
 package net.rrm.ehour;
 
-import net.rrm.ehour.customer.dao.CustomerDAOTest;
-import net.rrm.ehour.mail.dao.MailLogDAOTest;
-import net.rrm.ehour.mail.service.MailServiceTest;
-import net.rrm.ehour.project.dao.ProjectAssignmentDAOTest;
-import net.rrm.ehour.project.dao.ProjectDAOTest;
-import net.rrm.ehour.project.service.ProjectServiceIntegrationTest;
-import net.rrm.ehour.report.dao.ReportAggregatedDAOTest;
-import net.rrm.ehour.timesheet.dao.TimesheetCommentDAOTest;
-import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
-import net.rrm.ehour.timesheet.service.TimesheetServiceIntegrationTest;
-import net.rrm.ehour.user.dao.UserDAOTest;
-import net.rrm.ehour.user.dao.UserDepartmentDAOTest;
-import net.rrm.ehour.user.dao.UserRoleDAOTest;
-import net.rrm.ehour.user.service.UserServiceIntegrationTest;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
