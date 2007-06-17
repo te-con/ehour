@@ -27,6 +27,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -63,5 +64,14 @@ public abstract class BasePage extends WebPage
 	{
 		EhourWebSession session = (EhourWebSession)getSession();
 		return session.getEhourConfig();
+	}
+	
+	/**
+	 * Handle Ajax request
+	 * @param target
+	 */
+	public void ajaxRequestReceived(AjaxRequestTarget target)
+	{
+		
 	}
 }

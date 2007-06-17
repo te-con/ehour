@@ -16,7 +16,7 @@
 		<div class="CalendarHeader">
 			<div class="PreviousMonth">
 				<div style="position: relative;	top: 7px; left: 5px;">
-					<img wicket:id="previousMonthImg" src="img/left.gif" />
+					<a href="#" wicket:id="previousMonthLink"><img wicket:id="previousMonthImg" src="img/left.gif" border="0" /></a>
 				</div>
 			</div>
 				
@@ -24,7 +24,9 @@
 			</div>
 			
 			<div class="NextMonth">
-				<div style="position: relative;	top: 7px;right: 5px;"><a href="" onclick="return changeCalMonth(3, 2007, 2)"><img src="img/right.gif" border="0"></a></div>
+				<div style="position: relative;	top: 7px;right: 5px;">
+					<a href="#" wicket:id="nextMonthLink"><img wicket:id="nextMonthImg" src="img/left.gif" border="0" /></a>
+				</div>
 			</div>
 			
 		</div>

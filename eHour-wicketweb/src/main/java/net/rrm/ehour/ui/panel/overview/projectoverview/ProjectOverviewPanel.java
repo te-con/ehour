@@ -71,6 +71,8 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	{
 		super(id);
 		
+		this.setOutputMarkupId(true);
+		
 		EhourWebSession session = (EhourWebSession)getSession();
 		
 		// TODO i18n
