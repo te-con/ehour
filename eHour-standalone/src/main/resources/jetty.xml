@@ -72,12 +72,8 @@
 	<New id="Datasource" class="org.mortbay.jetty.plus.naming.Resource">
 		<Arg>env/jdbc/eHourDS</Arg>
 		<Arg>
-			<New class="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource">
-				<Set name="Url">
-					jdbc:mysql://localhost:3306/databasename
-				</Set>
-				<Set name="User">user</Set>
-				<Set name="Password">pass</Set>
+			<New class="org.apache.derby.jdbc.EmbeddedDriver">
+				<Set name="Url">jdbc:derby:ehour;create=true</Set>
 			</New>
 		</Arg>
 	</New>

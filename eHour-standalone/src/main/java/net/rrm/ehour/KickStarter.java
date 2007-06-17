@@ -23,8 +23,6 @@
 
 package net.rrm.ehour;
 
-import java.io.FileInputStream;
-
 import org.mortbay.jetty.Server;
 import org.mortbay.xml.XmlConfiguration;
 
@@ -48,7 +46,7 @@ public class KickStarter
 	private void startJetty() throws Exception
 	{
 		Server server = new Server() ;
-		XmlConfiguration xmlConfig = new XmlConfiguration(new FileInputStream("src/main/resources/jetty.xml"));
+		XmlConfiguration xmlConfig = new XmlConfiguration(ClassLoader.getSystemResource("jetty.xml"));
 		xmlConfig.configure(server);
 		
 		server.start();
