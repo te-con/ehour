@@ -1,5 +1,6 @@
 package net.rrm.ehour.timesheet.dto;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -7,7 +8,7 @@ import java.util.SortedSet;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
 
-public class TimesheetOverview
+public class TimesheetOverview implements Serializable
 {
 	private	SortedSet<UserProjectStatus>	projectStatus;
 	private	Map<Integer, List<TimesheetEntry>>		timesheetEntries;
