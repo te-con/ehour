@@ -152,7 +152,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		label.setVisible(config.isShowTurnover());
 		container.add(label);
 		
-		container.add(new Label("bookedHoursLabel", "Booked hours"));
+		container.add(new Label("bookedHoursLabel", "Hours"));
 
 		label = new Label("turnoverLabel", "Turnover");
 		label.setVisible(config.isShowTurnover());
@@ -209,7 +209,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				label = new Label("monthHours", new FloatModel(projectStatus.getHours(), session.getEhourConfig()));
 				item.add(label);
 
-				label = new Label("turnover", new FloatModel(projectStatus.getTurnOver(), session.getEhourConfig()));
+				label = new Label("turnover", new CurrencyModel(projectStatus.getTurnOver(), session.getEhourConfig()));
 				label.setVisible(session.getEhourConfig().isShowTurnover());
 				item.add(label);
 				

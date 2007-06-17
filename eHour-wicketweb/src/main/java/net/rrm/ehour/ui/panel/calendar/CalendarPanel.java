@@ -42,6 +42,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -134,6 +135,10 @@ public class CalendarPanel extends SidePanel
 				if (week.getDays()[dayInWeek] == 0)
 				{
 					label.setVisible(false);
+				}
+				else if (week.getDaysBooked()[dayInWeek])
+				{
+					label.add(new SimpleAttributeModifier("style", "font-weight: bold"));
 				}
 
 				return label;

@@ -33,6 +33,18 @@ div.MonthAggregateTable div.SummaryRow
 	clear: both;
 }
 
+div.MonthAggregateTable div.TotalRow
+{
+	
+	border-top-width: 1px;
+	border-top-color:  #e8e8e8;
+	border-top-style: solid;
+	clear:both;
+	font:  bold 1em/1em Geneva, Arial, Helvetica, sans-serif;		
+	color: #3b556d;
+	padding-top: 2x;
+	
+}
 
 #foldCell
 {
