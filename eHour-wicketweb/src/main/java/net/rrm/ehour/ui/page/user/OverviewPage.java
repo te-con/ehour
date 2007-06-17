@@ -78,8 +78,9 @@ public class OverviewPage extends BasePage
 		calendarPanel = new CalendarPanel("sidePanel", userId);
 		add(calendarPanel);
 		// project overview panel
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, currentMonth);
+		final TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, currentMonth);
 		projectOverviewPanel = new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus());
+		
 		add(projectOverviewPanel);
 	}
 	
@@ -99,11 +100,10 @@ public class OverviewPage extends BasePage
 		Calendar currentMonth = ((EhourWebSession)this.getSession()).getNavCalendar();
 		
 		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(1, currentMonth);
-		ProjectOverviewPanel newProjectOverviewPanel = new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus());
+		final ProjectOverviewPanel newProjectOverviewPanel = new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus());
 		projectOverviewPanel.replaceWith(newProjectOverviewPanel);
 		projectOverviewPanel = newProjectOverviewPanel;
-		
-		target.addComponent(newProjectOverviewPanel);
+		target.addComponent(projectOverviewPanel);
 		
 	}	
 	

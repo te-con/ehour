@@ -66,6 +66,7 @@ div.NavHeader div.LoadingSpinner
 	position: absolute;
 	right: 5px;
 	bottom: 5px;
+	visibility: hidden;
 }
 
 div.LoggedInAs

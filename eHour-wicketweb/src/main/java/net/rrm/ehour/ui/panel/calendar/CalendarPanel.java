@@ -41,6 +41,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -260,6 +261,7 @@ public class CalendarPanel extends SidePanel
 			this.monthChange = monthChange;
 		}
 		
+		@Override
 		public void onClick(AjaxRequestTarget target)
         {
 			EhourWebSession session = (EhourWebSession)this.getSession(); 
@@ -270,6 +272,28 @@ public class CalendarPanel extends SidePanel
 			((BasePage)getPage()).ajaxRequestReceived(target);
         }
 		
+		@Override
+		protected IAjaxCallDecorator getAjaxCallDecorator()
+		{
+			return new IAjaxCallDecorator()
+			{
+
+				public CharSequence decorateOnFailureScript(CharSequence script)
+				{
+					return "document.getElementById('LoadingSpinner').style.visibility = 'hidden';" + script;
+				}
+
+				public CharSequence decorateOnSuccessScript(CharSequence script)
+				{
+					return "document.getElementById('LoadingSpinner').style.visibility = 'hidden';" + script;
+				}
+
+				public CharSequence decorateScript(CharSequence script)
+				{
+					return "document.getElementById('LoadingSpinner').style.visibility = 'visible';" + script;
+				}
+			};
+		}		
 	}
 	
 }
