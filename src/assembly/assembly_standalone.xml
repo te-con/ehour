@@ -1,5 +1,5 @@
 <assembly>
-	<id>${pom.version}-standalone</id>
+	<id>${parent.version}-standalone</id>
 	<formats>
 		<format>tar.gz</format>
 		<format>zip</format>
@@ -13,43 +13,55 @@
 			<binaries>
 				<outputDirectory>/ehour</outputDirectory>
 				<unpack>false</unpack>
+				<includeDependencies>false</includeDependencies>
 			</binaries>
 		</moduleSet>
+		<moduleSet>
+			<includes>
+				<include>net.rrm.ehour:eHour-wicketweb</include>
+			</includes>
+			<binaries>
+				<outputDirectory>/lib</outputDirectory>
+				<unpack>false</unpack>
+				<includeDependencies>true</includeDependencies>
+				<excludes>
+					<exclude>org.springframework:spring-webmvc</exclude>
+					<exclude>org.springframework:spring-mock</exclude>
+					<exclude>org.springframework:spring-remoting</exclude>
+					<!-- why this is still dragged in.. -->
+					<exclude>javax.servlet:servlet-api</exclude>
+					<exclude>javax.servlet:jstl</exclude>
+					<exclude>junit:junit</exclude>
+				</excludes>	
+			</binaries>
+		</moduleSet>
+                <moduleSet>
+                        <includes>
+                                <include>net.rrm.ehour:eHour-standalone</include>
+                        </includes>
+                        <binaries>
+                                <outputDirectory>/lib</outputDirectory>
+                                <unpack>false</unpack>
+				<excludes>
+					<exclude>tomcat:jasper-compiler</exclude>
+					<exclude>javax.servlet:servlet-api</exclude>
+					<exclude>javax.servlet:jsp-api</exclude>
+				</excludes>
+                        </binaries>
+                </moduleSet>
 	</moduleSets>
 	<fileSets>
+		<fileSet>
+			<directory>eHour-standalone/src/assembly/</directory>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
 		<fileSet>
 			<directory>src/assembly/txt</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>README*</include>
 				<include>LICENSE*</include>
-				<include>INSTALL*</include>
 			</includes>
-		</fileSet>
-
-		<fileSet>
-			<directory>src/assembly/conf</directory>
-			<outputDirectory>/conf</outputDirectory>
-			<lineEnding>dos</lineEnding>
-		</fileSet>
-
-		<fileSet>
-			<directory>eHour-service/src/test/performance</directory>
-			<outputDirectory>util/performance</outputDirectory>
-			<lineEnding>dos</lineEnding>
-		</fileSet>
-
-		<fileSet>
-			<directory>src/main/assembly/sql/sql</directory>
-			<outputDirectory>sql</outputDirectory>
-			<lineEnding>dos</lineEnding>
 		</fileSet>
 	</fileSets>
-	<dependencySets>
-		<dependencySet>
-			<includes>
-				<include>*:war</include>
-			</includes>
-		</dependencySet>
-	</dependencySets>
 </assembly>
