@@ -46,7 +46,7 @@
 				<Set name="contexts"><Ref id="Contexts"></Ref>
 				</Set>
 				<Set name="webAppDir">
-					../eHour-wicketweb/target
+					../../ehour
 				</Set>
 				<Set name="parentLoaderPriority">false</Set>
 				<Set name="extract">true</Set>
@@ -72,8 +72,9 @@
 	<New id="Datasource" class="org.mortbay.jetty.plus.naming.Resource">
 		<Arg>env/jdbc/eHourDS</Arg>
 		<Arg>
-			<New class="org.apache.derby.jdbc.EmbeddedDriver">
-				<Set name="Url">jdbc:derby:ehour;create=true</Set>
+			<New class="org.apache.derby.jdbc.EmbeddedDataSource">
+				<Set name="DatabaseName">ehourDb</Set>
+				<Set name="createDatabase">create</Set>
 			</New>
 		</Arg>
 	</New>

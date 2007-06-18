@@ -34,6 +34,12 @@
 	</build>
 
 	<dependencies>
+                <dependency>
+                        <groupId>org.apache.derby</groupId>
+                        <artifactId>derby</artifactId>
+                        <version>10.2.2.0</version>
+                </dependency>
+
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
@@ -72,6 +78,11 @@
 			<artifactId>jasper-compiler-jdt</artifactId>
 			<version>5.5.9</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>tanukisoft</groupId>
+		    <artifactId>wrapper</artifactId>
+		    <version>3.2.0</version>
 		</dependency>
 	</dependencies>
 </project>
