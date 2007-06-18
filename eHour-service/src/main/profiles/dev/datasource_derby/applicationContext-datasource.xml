@@ -9,7 +9,7 @@
 			<value>org.apache.derby.jdbc.EmbeddedDriver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:derby:ehour;create=true</value>
+			<value>jdbc:derby:ehourDb;create=true</value>
 		</property>
 	</bean>
 
