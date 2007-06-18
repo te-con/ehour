@@ -52,16 +52,17 @@
 	</moduleSets>
 	<fileSets>
 		<fileSet>
-			<directory>eHour-standalone/src/assembly/</directory>
-			<outputDirectory>/</outputDirectory>
+			<directory>eHour-standalone/src/assembly/bin</directory>
+			<outputDirectory>/bin</outputDirectory>
+			<fileMode>750</fileMode>
 		</fileSet>
 		<fileSet>
-			<directory>src/assembly/txt</directory>
-			<outputDirectory>/</outputDirectory>
-			<includes>
-				<include>README*</include>
-				<include>LICENSE*</include>
-			</includes>
+			<directory>eHour-standalone/src/assembly/lib</directory>
+			<outputDirectory>/lib</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>eHour-standalone/src/assembly/conf</directory>
+			<outputDirectory>/conf</outputDirectory>
 		</fileSet>
 	</fileSets>
 </assembly>
