@@ -132,24 +132,105 @@
 					<disableXmlReport>true</disableXmlReport>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptors>
-					<!-- 
-						<descriptor>
-							src/assembly/assembly.xml
-						</descriptor>
-						 -->
-						<descriptor>
-							src/assembly/assembly_standalone.xml
-						</descriptor>
-					</descriptors>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>env-prod-derby</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>prod-derby</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>
+									src/assembly/assembly_standalone.xml
+								</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+			</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>env-dev-derby</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev-derby</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>
+									src/assembly/assembly_standalone.xml
+								</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>env-dev-mysql</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev-mysql</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>
+									src/assembly/assembly.xml
+								</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>env-prod-mysql</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>prod-mysql</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>
+									src/assembly/assembly.xml
+								</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>		
+	
 	<reporting>
 		<plugins>
 			<plugin>
