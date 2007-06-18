@@ -11,8 +11,8 @@ div.Calendar div.CalendarHeader
 	height:			1.1em;
 	padding-bottom:	4px;
 	background-color: #d1e5f9;
-
 }
+
 
 div.Calendar div.CalendarHeader div.PreviousMonth
 {
@@ -46,7 +46,6 @@ div.Calendar div.CalendarBody div.CalendarWeek
 	font: 1em/1.5 Arial, Helvetica, sans-serif;
 	margin-bottom: 1px;
 }
-
 
 div.Calendar div.CalendarBody div.SundayDay
 {

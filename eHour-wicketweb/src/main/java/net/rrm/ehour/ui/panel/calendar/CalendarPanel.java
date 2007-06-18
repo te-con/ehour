@@ -208,7 +208,7 @@ public class CalendarPanel extends SidePanel
 	 */
 	private ResourceReference calendarStyle()
 	{
-		return new CompressedResourceReference(MainNavPanel.class, "style/calendar.css");
+		return new CompressedResourceReference(CalendarPanel.class, "style/calendar.css");
 	}
 
 	/**

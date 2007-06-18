@@ -15,7 +15,7 @@
 	
 		<div class="CalendarHeader">
 			<div class="PreviousMonth">
-				<div style="position: relative;	top: 7px; left: 5px;">
+				<div style="position: relative; left: 5px;">
 					<a href="#" wicket:id="previousMonthLink"><img wicket:id="previousMonthImg" src="img/left.gif" border="0" /></a>
 				</div>
 			</div>
@@ -24,15 +24,17 @@
 			</div>
 			
 			<div class="NextMonth">
-				<div style="position: relative;	top: 7px;right: 5px;">
+				<div style="position: relative;	right: 5px;">
 					<a href="#" wicket:id="nextMonthLink"><img wicket:id="nextMonthImg" src="img/left.gif" border="0" /></a>
 				</div>
 			</div>
-			
 		</div>
 		
 		<div class="CalendarBody">
-			<div class="CalendarWeek" wicket:id="weeks">
+			<div class="CalendarWeek" wicket:id="weeks" 
+					onmouseover="backgroundOn(this)"
+					onmouseout="backgroundOff(this)"
+					>
 				<div class="SundayDay">
 					<span wicket:id="sunday"></span>
 				</div>
@@ -60,11 +62,49 @@
 				<div class="SaturdayDay">
 					<span wicket:id="saturday"></span>
 				</div>
-				
 				<br clear="all" />
 			</div>
 		</div>
 	</div>
+	
+<script>
+// when IE6 doesn't understand hovers properly..
+function backgroundOn(elm)
+{
+	for (i = 0; i < elm.childNodes.length; i++)
+	{	
+		if (elm.childNodes[i].nodeName == 'DIV')
+		{
+			elm.childNodes[i].style.backgroundColor = '#f5b82c';
+		}
+	}
+	
+	elm.style.backgroundColor = '#f5b82c';
+}
+
+function backgroundOff(elm)
+{
+	for (i = 0; i < elm.childNodes.length; i++)
+	{	
+		if (elm.childNodes[i].nodeName == 'DIV')
+		{
+			if (elm.childNodes[i].className == 'SundayDay' ||
+				elm.childNodes[i].className == 'SaturdayDay')
+			{
+				elm.childNodes[i].style.backgroundColor = '#edf5fe';
+			}
+			else
+			{
+				elm.childNodes[i].style.backgroundColor = '#fefeff';
+			}
+		}
+	}
+	
+	elm.style.backgroundColor = '';
+}
+
+</script>
+	
 </wicket:extend>
 </body>
 </html>
