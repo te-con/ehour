@@ -39,7 +39,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * TODO 
  **/
 
-public class EhourWebSession extends WebSession
+public class EhourWebSession extends /*Wasp*/WebSession
 {
 	@SpringBean
 	private EhourConfig	ehourConfig;
@@ -52,7 +52,7 @@ public class EhourWebSession extends WebSession
 	 * @param app
 	 * @param req
 	 */
-	public EhourWebSession(WebApplication app, Request req)
+	public EhourWebSession(/*Wasp*/WebApplication app, Request req)
 	{
 		super(app, req);
 		

@@ -1,0 +1,17 @@
+grant principal net.rrm.ehour.ui.authorization.PrincipalImpl "consultant"
+{
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.user.OverviewPage", "inherit, render";
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.user.OverviewPage", "enable";
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.user.timesheet.Page2", "inherit, render";
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.user.timesheet.Page2", "enable";
+};
+
+grant principal net.rrm.ehour.ui.authorization.PrincipalImpl "admin"
+{
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.admin.assignment.AssignmentPage", "inherit, render";
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.admin.assignment.AssignmentPage", "enable";
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.user.OverviewPage", "inherit, render";
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.user.OverviewPage", "enable";
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.user.timesheet.Page2", "inherit, render";
+	permission ${ComponentPermission} "net.rrm.ehour.ui.page.user.timesheet.Page2", "enable";
+}

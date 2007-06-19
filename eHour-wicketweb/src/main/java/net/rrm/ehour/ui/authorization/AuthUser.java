@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.ui.auth;
+package net.rrm.ehour.ui.authorization;
 
 import net.rrm.ehour.user.domain.User;
 

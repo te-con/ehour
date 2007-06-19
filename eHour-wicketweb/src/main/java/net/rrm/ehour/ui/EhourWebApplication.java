@@ -23,7 +23,10 @@
 
 package net.rrm.ehour.ui;
 
+import java.net.MalformedURLException;
+
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
+import net.rrm.ehour.ui.page.login.LoginPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -32,7 +35,10 @@ import org.apache.wicket.ISessionFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.security.hive.HiveMind;
+import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.PackageName;
 
@@ -40,19 +46,20 @@ import org.apache.wicket.util.lang.PackageName;
  * Base config for wicket eHour webapp
  **/
 
-public class EhourWebApplication extends WebApplication
+public class EhourWebApplication extends /*Swarm*/WebApplication
 {
 	public void init()
 	{
 		super.init();
-		
-		mount("/admin",  PackageName.forClass(AssignmentPage.class));	
-		mount("/consultant",  PackageName.forPackage(OverviewPage.class.getPackage()));
-		mount("/consultant/timesheet",  PackageName.forPackage(Page2.class.getPackage()));
+
+		mount("/admin", PackageName.forClass(AssignmentPage.class));
+		mount("/consultant", PackageName.forPackage(OverviewPage.class.getPackage()));
+		mount("/consultant/timesheet", PackageName.forPackage(Page2.class.getPackage()));
+		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
 		
 		addComponentInstantiationListener(new SpringComponentInjector(this));
 	}
-	
+
 	/**
 	 * Return our own session
 	 */
@@ -66,12 +73,6 @@ public class EhourWebApplication extends WebApplication
 			}
 		};
 	}
-	
-//	@Override
-//	protected Class< ? extends WebPage> getSignInPageClass()
-//	{
-//		return LoginPage.class;
-//	}	
 
 	/**
 	 * Set the homepage
@@ -80,5 +81,31 @@ public class EhourWebApplication extends WebApplication
 	public Class getHomePage()
 	{
 		return OverviewPage.class;
+	}
+
+//	@Override
+//	protected Object getHiveKey()
+//	{
+//		return "ehour";
+//	}
+//
+//	@Override
+//	protected void setUpHive()
+//	{
+//		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
+//		try
+//		{
+//			factory.addPolicyFile(getServletContext().getResource("/WEB-INF/ehour.hive"));
+//		} catch (MalformedURLException e)
+//		{
+//			throw new WicketRuntimeException(e);
+//		}
+//
+//		HiveMind.registerHive(getHiveKey(), factory);
+//	}
+
+	public Class getLoginPage()
+	{
+		return LoginPage.class;
 	}
 }
