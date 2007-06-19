@@ -40,6 +40,13 @@
 					<value>prod-derby</value>
 				</property>
 			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.2.2.0</version>
+				</dependency>
+			</dependencies>
 			<build>
 				<finalName>ehour-service_prod-derby-${version}</finalName>
 				<resources>
@@ -69,6 +76,14 @@
 					<value>prod-mysql</value>
 				</property>
 			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>5.0.4</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
 			<build>
 				<finalName>ehour-service_prod-mysql-${version}</finalName>
 				<resources>
@@ -98,6 +113,13 @@
 					<value>dev-derby</value>
 				</property>
 			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.2.2.0</version>
+				</dependency>
+			</dependencies>
 			<build>
 				<finalName>ehour-service_dev-derby-${version}</finalName>
 				<resources>
@@ -127,6 +149,14 @@
 					<value>dev-mysql</value>
 				</property>
 			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>5.0.4</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
 			<build>
 				<finalName>ehour-service_dev-mysql-${version}</finalName>
 				<resources>
@@ -154,12 +184,6 @@
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 			<version>1.2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.0.4</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -249,11 +273,6 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>10.2.2.0</version>
 		</dependency>
 	</dependencies>
 	<reporting>
