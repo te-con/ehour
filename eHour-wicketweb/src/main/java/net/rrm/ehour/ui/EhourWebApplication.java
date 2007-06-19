@@ -23,8 +23,6 @@
 
 package net.rrm.ehour.ui;
 
-import java.net.MalformedURLException;
-
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
 import net.rrm.ehour.ui.page.login.LoginPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
@@ -35,10 +33,7 @@ import org.apache.wicket.ISessionFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.security.hive.HiveMind;
-import org.apache.wicket.security.hive.config.PolicyFileHiveFactory;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.PackageName;
 
