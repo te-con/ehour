@@ -27,6 +27,7 @@ div.Calendar div.CalendarHeader div.CurrentMonth
 	color: #536e87;
 	width: 156px;
 	line-height:			1.1em;
+	height: 1.1em;
 	font: bold 1em Arial, Geneva, Helvetica, sans-serif;	
 	float: left;
 }

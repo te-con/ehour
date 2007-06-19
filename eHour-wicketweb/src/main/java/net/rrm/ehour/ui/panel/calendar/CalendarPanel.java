@@ -30,16 +30,17 @@ import java.util.List;
 
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -127,6 +128,9 @@ public class CalendarPanel extends SidePanel
 				item.add(getLabel("thursday", week, 4));
 				item.add(getLabel("friday", week, 5));
 				item.add(getLabel("saturday", week, 6));
+				
+		        item.setOutputMarkupId(true);
+				item.add(new AjaxWeekBehaviour("onclick", week.getWeek(), week.getYear()));
 			}
 
 			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
@@ -146,11 +150,13 @@ public class CalendarPanel extends SidePanel
 			}
 		};
 
+	
 		container.add(view);
 	}
 
 	/**
 	 * Create CalendarWeek objects
+	 * 
 	 * @param userId
 	 * @param month
 	 */
@@ -188,6 +194,8 @@ public class CalendarPanel extends SidePanel
 				calendarWeeks.add(week);
 
 				week = new CalendarWeek();
+				week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
+				week.setYear(month.get(Calendar.YEAR));
 			}
 
 		} while (month.get(Calendar.MONTH) == currentMonth);
@@ -269,31 +277,35 @@ public class CalendarPanel extends SidePanel
 			month.add(Calendar.MONTH, monthChange);
 			session.setNavCalendar(month);
 
-			((BasePage)getPage()).ajaxRequestReceived(target);
+			((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
         }
 		
 		@Override
 		protected IAjaxCallDecorator getAjaxCallDecorator()
 		{
-			return new IAjaxCallDecorator()
-			{
-
-				public CharSequence decorateOnFailureScript(CharSequence script)
-				{
-					return "document.getElementById('LoadingSpinner').style.visibility = 'hidden';" + script;
-				}
-
-				public CharSequence decorateOnSuccessScript(CharSequence script)
-				{
-					return "document.getElementById('LoadingSpinner').style.visibility = 'hidden';" + script;
-				}
-
-				public CharSequence decorateScript(CharSequence script)
-				{
-					return "document.getElementById('LoadingSpinner').style.visibility = 'visible';" + script;
-				}
-			};
+			return new LoadingSpinnerDecorator();
 		}		
 	}
-	
+
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class AjaxWeekBehaviour extends AjaxEventBehavior
+	{
+		private int week, year;
+		
+		public AjaxWeekBehaviour(String id, int week, int year)
+		{
+			super(id);
+			this.week = week;
+			this.year = year;
+		}
+		
+		protected void onEvent(AjaxRequestTarget target)
+		{
+			System.out.println("ajax here on " + week + ", year " + year);
+		}
+	}				
 }

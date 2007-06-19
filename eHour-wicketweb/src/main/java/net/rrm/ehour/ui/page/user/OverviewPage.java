@@ -89,7 +89,7 @@ public class OverviewPage extends BasePage
 	 * @param target
 	 */
 	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target)
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
 	{
 		CalendarPanel panel = new CalendarPanel("sidePanel", 1);
 		calendarPanel.replaceWith(panel);
