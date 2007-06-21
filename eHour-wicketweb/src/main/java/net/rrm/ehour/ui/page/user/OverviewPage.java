@@ -30,10 +30,13 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
+import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.CommonStaticData;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.StringValueConversionException;
 
@@ -48,12 +51,14 @@ public class OverviewPage extends BasePage
 	@SpringBean
 	private TimesheetService		timesheetService;
 	private CalendarPanel			calendarPanel;
-	private	ProjectOverviewPanel	projectOverviewPanel;
+	private	WebMarkupContainer		projectOverviewPanel;
+	private	WebMarkupContainer		contentContainer; // yeah yeah, bad name
+	private TimesheetPanel			timesheetPanel;
+	
 	/**
 	 * Setup the page
 	 *
 	 */
-	
 	public OverviewPage(PageParameters params)
 	{
 		super("overview", null);
@@ -77,11 +82,16 @@ public class OverviewPage extends BasePage
 		// add calendar panel
 		calendarPanel = new CalendarPanel("sidePanel", userId);
 		add(calendarPanel);
+		
+		contentContainer = new WebMarkupContainer("contentContainer");
+		
 		// project overview panel
-		final TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, currentMonth);
+		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, currentMonth);
 		projectOverviewPanel = new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus());
 		
-		add(projectOverviewPanel);
+		contentContainer.add(projectOverviewPanel);
+//		contentContainer.add(new TimesheetPanel("projectOverviewPanel"));
+		add(contentContainer);
 	}
 	
 	/**
@@ -89,7 +99,40 @@ public class OverviewPage extends BasePage
 	 * @param target
 	 */
 	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	{
+		switch (type)
+		{
+			case CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE:
+				calendarChanged(target);
+				break;
+			case CommonStaticData.AJAX_CALENDARPANEL_WEEK_CLICK:
+				calendarWeekClicked(target, params);
+				break;
+		}
+	}
+	
+	/**
+	 * Calendar week clicked
+	 * @param target
+	 */
+	private void calendarWeekClicked(AjaxRequestTarget target, Object params)
+	{
+		Calendar	cal = (Calendar)params;
+
+		TimesheetPanel	panel = new TimesheetPanel("projectOverviewPanel");
+		projectOverviewPanel.replaceWith(panel);
+		
+		projectOverviewPanel = panel;
+		
+		target.addComponent(panel);
+	}
+	
+	/**
+	 * Calendar changed, update panels
+	 * @param target
+	 */
+	private void calendarChanged(AjaxRequestTarget target)
 	{
 		CalendarPanel panel = new CalendarPanel("sidePanel", 1);
 		calendarPanel.replaceWith(panel);
@@ -104,7 +147,5 @@ public class OverviewPage extends BasePage
 		projectOverviewPanel.replaceWith(newProjectOverviewPanel);
 		projectOverviewPanel = newProjectOverviewPanel;
 		target.addComponent(projectOverviewPanel);
-		
-	}	
-	
+	}
 }

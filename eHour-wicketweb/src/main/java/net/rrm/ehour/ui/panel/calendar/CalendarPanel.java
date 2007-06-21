@@ -104,7 +104,6 @@ public class CalendarPanel extends SidePanel
 		addCalendarWeeks(this, weeks);
 		
 		logger.debug("Weeks filled: " + weeks.size());
-
 	}
 	
 
@@ -277,7 +276,7 @@ public class CalendarPanel extends SidePanel
 			month.add(Calendar.MONTH, monthChange);
 			session.setNavCalendar(month);
 
-			((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
+			((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE, null);
         }
 		
 		@Override
@@ -303,9 +302,26 @@ public class CalendarPanel extends SidePanel
 			this.year = year;
 		}
 		
+		@Override
 		protected void onEvent(AjaxRequestTarget target)
 		{
-			System.out.println("ajax here on " + week + ", year " + year);
+			EhourWebSession 	session = (EhourWebSession)getSession();
+			Calendar cal = DateUtil.getCalendar(session.getEhourConfig());
+			
+			cal.set(Calendar.YEAR, year);
+			cal.set(Calendar.WEEK_OF_YEAR, week);
+			
+			((BasePage)getPage()).ajaxRequestReceived(target,
+														CommonStaticData.AJAX_CALENDARPANEL_WEEK_CLICK,
+														cal
+			);
+			
 		}
+		
+		@Override
+		protected IAjaxCallDecorator getAjaxCallDecorator()
+		{
+			return new LoadingSpinnerDecorator();
+		}		
 	}				
 }

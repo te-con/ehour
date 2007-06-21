@@ -71,7 +71,7 @@ public abstract class BasePage extends WebPage
 	 * @param target
 	 * @param type of ajax req
 	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
 		
 	}
