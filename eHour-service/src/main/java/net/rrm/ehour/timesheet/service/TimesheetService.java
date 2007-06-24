@@ -24,8 +24,8 @@
 package net.rrm.ehour.timesheet.service;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
@@ -75,5 +75,5 @@ public interface TimesheetService
 	 * @param timesheetEntries
 	 * @param timesheetComment
 	 */
-	public void persistTimesheet(Set<TimesheetEntry> timesheetEntries, TimesheetComment timesheetComment);
+	public void persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment timesheetComment);
 }

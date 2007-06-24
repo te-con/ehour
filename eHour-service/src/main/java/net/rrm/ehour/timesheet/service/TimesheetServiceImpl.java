@@ -25,6 +25,7 @@ package net.rrm.ehour.timesheet.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -261,12 +262,12 @@ public class TimesheetServiceImpl implements TimesheetService
 	/**
 	 * Persist timesheets & comment
 	 */
-	public void persistTimesheet(Set<TimesheetEntry> timesheetEntries, TimesheetComment comment)
+	public void persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment)
 	{
 		for (TimesheetEntry entry : timesheetEntries)
 		{
 			
-			if (entry.getHours() == null)
+			if (entry.getHours() == null || entry.getHours().intValue() == 0)
 			{
 				logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
 						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
@@ -296,7 +297,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * Check for time allotted overruns
 	 * @param timesheetEntries
 	 */
-	private void checkTimeAllottedOverruns(Set<TimesheetEntry> timesheetEntries)
+	private void checkTimeAllottedOverruns(Collection<TimesheetEntry> timesheetEntries)
 	{
 		Set<ProjectAssignment>	projectAssignments = new HashSet<ProjectAssignment>();
 		
