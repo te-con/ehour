@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.Request;
@@ -44,6 +45,7 @@ public class EhourWebSession extends /*Wasp*/WebSession
 	@SpringBean
 	private EhourConfig	ehourConfig;
 	
+	private	User		user;
 	private	Calendar	navCalendar;
 	private static final long serialVersionUID = 93189812483240412L;
 
@@ -89,6 +91,24 @@ public class EhourWebSession extends /*Wasp*/WebSession
 	public void setNavCalendar(Calendar navCalendar)
 	{
 		this.navCalendar = navCalendar;
+	}
+	
+	/**
+	 * Get logged in user id
+	 * TODO auth
+	 * @return
+	 */
+	public User getUser()
+	{
+		if (user == null)
+		{
+			user = new User();
+			user.setUserId(1);
+			user.setFirstName("Thies");
+			user.setLastName("Edeling");
+		}
+		
+		return user;
 	}
 }
 

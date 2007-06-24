@@ -129,7 +129,7 @@ public class CalendarPanel extends SidePanel
 				item.add(getLabel("saturday", week, 6));
 				
 		        item.setOutputMarkupId(true);
-				item.add(new AjaxWeekBehaviour("onclick", week.getWeek(), week.getYear()));
+				item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
 			}
 
 			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
@@ -291,11 +291,11 @@ public class CalendarPanel extends SidePanel
 	 * @author Thies
 	 *
 	 */
-	private class AjaxWeekBehaviour extends AjaxEventBehavior
+	private class WeekClick extends AjaxEventBehavior
 	{
 		private int week, year;
 		
-		public AjaxWeekBehaviour(String id, int week, int year)
+		public WeekClick(String id, int week, int year)
 		{
 			super(id);
 			this.week = week;

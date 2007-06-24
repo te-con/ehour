@@ -7,7 +7,32 @@
 
 <body>
 <wicket:panel>
-	<span wicket:id="hoi"></span>
+	<span wicket:id="timesheetFrame">
+		<span wicket:id="blueFrame">
+			<form wicket:id="timesheetForm">
+				<span wicket:id="customers">
+					Customer:	<span wicket:id="customer"></span>
+					<br />
+					
+					<span wicket:id="rows">
+						Project: <span wicket:id="project"></span><br />
+						Code: <span wicket:id="projectCode"></span><br />
+						<input wicket:id="sunday" size="2" />
+						<input wicket:id="monday" size="2" />
+						<input wicket:id="tuesday" size="2" />
+						<input wicket:id="wednesday" size="2" />
+						<input wicket:id="thursday" size="2" />
+						<input wicket:id="friday" size="2" />
+						<input wicket:id="saturday" size="2" />
+						<br>
+						
+					</span>
+				</span>
+				
+				<input type="submit" value="Store" />
+			</form>
+		</span>
+	</span>
 </wicket:panel>
 
 </body>

@@ -72,6 +72,7 @@ div.GreyFrame div.GreyFrameContainer div.GreyFrameBody
 		margin:0px;
 		padding:0;
 		width: 100%;
+		clear: both;
 }
 
 div.GreyFrame div.GreyFrameContainer  div.GreyFrameBody p
@@ -91,6 +92,36 @@ div.GreyFrame div.GreyFrameContainer div.GreyFrameFooter p
 {
 		background: url(../img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
 		padding:	16px;
-		display:block;
+		display:	block;
 		margin: 	0;
+}
+
+
+div.GreyBlueFrame
+{
+	background: url(../img/bg_blue_grey/gradient_blue.gif) top left repeat-x;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+div.GreyBlueFrame div.GreyBlueLeftTop
+{
+	background: url(../img/bg_blue_grey/left_top.gif) top left no-repeat;
+}
+
+div.GreyBlueFrame div.GreyBlueRightTop
+{
+  	background: url(../img/bg_blue_grey/right_top.gif) top right no-repeat;
+	font:  bold 1.0em/1.5em Geneva, Arial, Helvetica, sans-serif;	
+ 	color: #536e87;
+}
+
+div.GreyBlueFrame div.GreyBlueRightBottom
+{
+	background: url(../img/bg_blue_grey/right_bottom.gif) bottom right no-repeat;
+}
+
+div.GreyBlueFrame div.GreyBlueLeftBottom
+{
+	background: url(../img/bg_blue_grey/left_bottom.gif) bottom left no-repeat;
 }

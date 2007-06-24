@@ -120,7 +120,9 @@ public class OverviewPage extends BasePage
 	{
 		Calendar	cal = (Calendar)params;
 
-		TimesheetPanel	panel = new TimesheetPanel("projectOverviewPanel");
+		TimesheetPanel	panel = new TimesheetPanel("projectOverviewPanel", ((EhourWebSession)this.getSession()).getUser(), cal);
+		
+		// TODO use addOrReplace
 		projectOverviewPanel.replaceWith(panel);
 		
 		projectOverviewPanel = panel;
@@ -143,6 +145,7 @@ public class OverviewPage extends BasePage
 		Calendar currentMonth = ((EhourWebSession)this.getSession()).getNavCalendar();
 		
 		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(1, currentMonth);
+		
 		final ProjectOverviewPanel newProjectOverviewPanel = new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus());
 		projectOverviewPanel.replaceWith(newProjectOverviewPanel);
 		projectOverviewPanel = newProjectOverviewPanel;
