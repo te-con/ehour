@@ -23,17 +23,17 @@
 
 package net.rrm.ehour.util;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import org.junit.Test;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
+import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
+
+import org.junit.Test;
 
 /**
  * TODO 
@@ -193,9 +193,9 @@ public class DateUtilTest extends TestCase
 
 	
 	@Test
-	public void testCreateDateSequence()
+	public void testCreateCalendarSequence()
 	{
-		List res = DateUtil.createDateSequence(new DateRange(new Date(2007 - 1900, 5 - 1, 2),new Date(2007 - 1900, 5 - 1, 8)));
+		List res = DateUtil.createDateSequence(new DateRange(new Date(2007 - 1900, 5 - 1, 2),new Date(2007 - 1900, 5 - 1, 8)), new EhourConfigStub());
 		
 		assertEquals(7, res.size());
 	}	
@@ -243,6 +243,5 @@ public class DateUtilTest extends TestCase
 		assertEquals(2007, q.get(Calendar.YEAR));
 		assertEquals(4 - 1, q.get(Calendar.MONTH));
 		assertEquals(1, q.get(Calendar.DATE));
-
 	}
 }

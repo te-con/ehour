@@ -59,10 +59,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 		this.hours = hours;
 	}
 
-	public String toString()
-	{
-		return new ToStringBuilder(this).append("entryID", getEntryId()).toString();
-	}
+
 
 	public boolean equals(Object other)
 	{
@@ -92,5 +89,13 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	{
 		return new CompareToBuilder()
 			.append(this.entryId, object.entryId).toComparison();
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString()
+	{
+		return new ToStringBuilder(this).append("hours", this.hours).append("entryId", this.entryId).toString();
 	}
 }

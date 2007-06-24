@@ -3,11 +3,12 @@ package net.rrm.ehour.customer.domain;
 import java.util.Set;
 
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.project.domain.Project;
 
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.CompareToBuilder;
 
 public class Customer extends DomainObject<Integer, Customer>
 {
@@ -29,7 +30,7 @@ public class Customer extends DomainObject<Integer, Customer>
 	
 	private	boolean	active;
 
-	private	Set		projects;
+	private	Set<Project>		projects;
 	
 	// Constructors
 

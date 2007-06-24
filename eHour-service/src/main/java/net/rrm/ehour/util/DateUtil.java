@@ -294,12 +294,12 @@ public class DateUtil
 	 * @param weekOverview
 	 * @return
 	 */
-	public static List<Date> createDateSequence(DateRange range)
+	public static List<Date> createDateSequence(DateRange range, EhourConfig config)
 	{
 		List<Date>	dateSequence = new ArrayList<Date>();
-		Calendar	calendar;
+		Calendar		calendar;
 		
-		calendar = new GregorianCalendar();
+		calendar = getCalendar(config);
 		calendar.setTime(range.getDateStart());
 		
 		while (calendar.getTime().before(range.getDateEnd()))
