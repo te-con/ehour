@@ -155,17 +155,19 @@ public class TimesheetAssembler
 		TimesheetRow		timesheetRow;
 		TimesheetEntry		entry;
 		Calendar			calendar;
+		Calendar			sundayDate = DateUtil.getCalendar(config);
+		sundayDate.setTime(dateSequence.get(0));
 		
 		for (ProjectAssignment assignment : assignmentMap.keySet())
 		{
 			timesheetRow = new TimesheetRow();
 			timesheetRow.setProjectAssignment(assignment);
+			timesheetRow.setSundayDate(sundayDate);
 			
 			// create a cell for every requested date
 			for (Date date : dateSequence)
 			{
 				entry = assignmentMap.get(assignment).get(keyDateFormatter.format(date));
-				System.out.println(entry);
 				calendar = DateUtil.getCalendar(config);
 				calendar.setTime(date);
 				
@@ -194,7 +196,6 @@ public class TimesheetAssembler
 		
 		cell.setTimesheetEntry(entry);
 		cell.setValid(isCellValid(assignment, validProjectAssignments, date));
-		cell.setCellDate(date);
 		
 		return cell;
 	}

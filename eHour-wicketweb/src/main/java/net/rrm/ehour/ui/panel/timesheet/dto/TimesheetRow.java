@@ -24,8 +24,13 @@
 package net.rrm.ehour.ui.panel.timesheet.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 
 /**
  * Representation of a row in the timesheet form
@@ -39,6 +44,7 @@ public class TimesheetRow implements Serializable
 	private static final long serialVersionUID = -5800367771424869244L;
 	private ProjectAssignment	projectAssignment;
 	private	TimesheetCell[]		timesheetCells;
+	private	Calendar			sundayDate;
 
 	/**
 	 * @return the projectAssignment
@@ -87,6 +93,61 @@ public class TimesheetRow implements Serializable
 		}
 		
 		timesheetCells[dayInWeek] = cell;
+	}
+	
+	
+	/**
+	 * Get all timesheet entries contained in this row
+	 * @return
+	 */
+	public List<TimesheetEntry> getTimesheetEntries()
+	{
+		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();;
+		
+		if (timesheetCells != null)
+		{
+			for (int i =0; i < timesheetCells.length; i++)
+			{
+				// as timesheet entry is lazy fetched in a subsequent request assignment is not set
+				if (timesheetCells[i] != null
+						&& timesheetCells[i].getTimesheetEntry() != null) 
+				{
+					// new entries got empty entry id
+					if (timesheetCells[i].getTimesheetEntry().getEntryId() == null)
+					{
+						TimesheetEntryId id = new TimesheetEntryId();
+						Calendar		thisDate = (Calendar)sundayDate.clone();
+						thisDate.add(Calendar.DATE, i);
+						
+						id.setProjectAssignment(getProjectAssignment());
+						id.setEntryDate(thisDate.getTime());
+						
+						timesheetCells[i].getTimesheetEntry().setEntryId(id);
+					}
+					else
+					{
+						timesheetCells[i].getTimesheetEntry().getEntryId().setProjectAssignment(getProjectAssignment());
+					}
+					entries.add(timesheetCells[i].getTimesheetEntry());
+				}
+			}
+		}
+		
+		return entries;
+	}
+	/**
+	 * @return the sundayDate
+	 */
+	public Calendar getSundayDate()
+	{
+		return sundayDate;
+	}
+	/**
+	 * @param sundayDate the sundayDate to set
+	 */
+	public void setSundayDate(Calendar sundayDate)
+	{
+		this.sundayDate = sundayDate;
 	}
 
 

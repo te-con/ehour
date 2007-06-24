@@ -25,10 +25,12 @@ package net.rrm.ehour.ui.panel.timesheet;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
@@ -85,26 +87,33 @@ public class TimesheetPanel extends Panel
 			@Override
 			public void onSubmit()
 			{
-				for (Customer customer : timesheet.getCustomers().keySet())
-				{
-					List<TimesheetRow> rows = timesheet.getCustomers().get(customer);
-					
-					System.out.println(customer.getName());
-					
-					for (TimesheetRow timesheetRow : rows)
-					{
-						for (int i = 0; i < 7; i++)
-						{
-							System.out.println(timesheetRow.getTimesheetCells()[i].getTimesheetEntry().getHours());
-						}
-						
-					}
-				}
+				persistTimesheetEntries(timesheet);
 			}
 		};	
 		
 		buildForm(timesheetForm, timesheet);
 		blueBorder.add(timesheetForm);
+	}
+
+	/**
+	 * Persist timesheet entries
+	 * @param timesheet
+	 */
+	private void persistTimesheetEntries(Timesheet timesheet)
+	{
+		List<TimesheetEntry>	timesheetEntries = new ArrayList<TimesheetEntry>();
+		
+		Collection<List<TimesheetRow>> rows = timesheet.getCustomers().values();
+		
+		for (List<TimesheetRow> list : rows)
+		{
+			for (TimesheetRow timesheetRow : list)
+			{
+				timesheetEntries.addAll(timesheetRow.getTimesheetEntries());
+			}
+		}
+		
+		timesheetService.persistTimesheet(timesheetEntries, null);
 	}
 	
 	/**
