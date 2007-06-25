@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.panel.timesheet;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -70,7 +71,7 @@ public class TimesheetPanel extends Panel
 	private TimesheetService	timesheetService;
 
 	/**
-	 * 
+	 * Construct timesheetPanel for entering hours
 	 * @param id
 	 * @param user
 	 * @param forWeek
@@ -78,17 +79,22 @@ public class TimesheetPanel extends Panel
 	public TimesheetPanel(String id, User user, Calendar forWeek)
 	{
 		super(id);
+		EhourWebSession 	session = (EhourWebSession)getSession();
+		SimpleDateFormat	dateFormatter;
+		
+		dateFormatter = new SimpleDateFormat("w, MMMM yyyy");
+
+		// dom id's
 		this.setOutputMarkupId(true);
 		
-		EhourWebSession session = (EhourWebSession)getSession();
-		
-		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("timesheetFrame", "Week");
+		// grey & blue frame border
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("timesheetFrame", "Week " + dateFormatter.format(forWeek.getTime()));
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 
 		add(greyBorder);
 		greyBorder.add(blueBorder);
-		
+
+		// the timesheet we're working on
 		final Timesheet timesheet = getTimesheet(user,  forWeek, session.getEhourConfig());
 		
 		// add form
@@ -116,6 +122,7 @@ public class TimesheetPanel extends Panel
 //            }
         });		
 		
+		// add form labels
 		buildForm(timesheetForm, timesheet);
 		blueBorder.add(timesheetForm);
 	}
@@ -128,16 +135,13 @@ public class TimesheetPanel extends Panel
 	{
 		EhourWebSession session = (EhourWebSession)getSession();
 		Calendar	cal = DateUtil.getCalendar(session.getEhourConfig());
-		int			currentMonth;
 		int			event;
 
 		cal.setTime(onScreenDate);
-
-		currentMonth = cal.get(Calendar.MONTH);
 		cal.add(Calendar.WEEK_OF_YEAR, 1);
-		
-		event = (currentMonth == cal.get(Calendar.MONTH)) ? CommonStaticData.AJAX_CALENDARPANEL_WEEK_CHANGE : CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE;
-		
+
+		// should update calendar as well
+		event = CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE;
 		session.setNavCalendar(cal);
 		
 		((BasePage)getPage()).ajaxRequestReceived(target, event);

@@ -99,9 +99,6 @@ public class OverviewPage extends BasePage
 			case CommonStaticData.AJAX_CALENDARPANEL_WEEK_CLICK:
 				calendarWeekClicked(target);
 				break;
-			case CommonStaticData.AJAX_CALENDARPANEL_WEEK_CHANGE:
-				calendarWeekClicked(target);
-				break;
 		}
 	}
 	
