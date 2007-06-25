@@ -222,6 +222,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 						return "summaryRow_" + item.getIndex();
 					}
 				}));
+				
 				summaryRow.add(new SimpleAttributeModifier("style", "display: none")); 
 
 				label = new Label("validStart", new DateModel(projectStatus.getProjectAssignment().getDateStart(),

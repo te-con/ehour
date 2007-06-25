@@ -31,4 +31,5 @@ public class CommonStaticData
 {
 	public final static int	AJAX_CALENDARPANEL_MONTH_CHANGE = 1;
 	public final static int	AJAX_CALENDARPANEL_WEEK_CLICK = 2;
+	public final static int	AJAX_CALENDARPANEL_WEEK_CHANGE = 3;
 }

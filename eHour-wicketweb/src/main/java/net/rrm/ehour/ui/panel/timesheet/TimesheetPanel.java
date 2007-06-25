@@ -26,6 +26,7 @@ package net.rrm.ehour.ui.panel.timesheet;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -33,14 +34,21 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -59,7 +67,7 @@ public class TimesheetPanel extends Panel
 	private static final long serialVersionUID = 7704288648724599187L;
 
 	@SpringBean
-	private TimesheetService		timesheetService;
+	private TimesheetService	timesheetService;
 
 	/**
 	 * 
@@ -74,6 +82,7 @@ public class TimesheetPanel extends Panel
 		
 		EhourWebSession session = (EhourWebSession)getSession();
 		
+		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("timesheetFrame", "Week");
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 
@@ -82,19 +91,58 @@ public class TimesheetPanel extends Panel
 		
 		final Timesheet timesheet = getTimesheet(user,  forWeek, session.getEhourConfig());
 		
-		Form timesheetForm = new Form("timesheetForm")
+		// add form
+		Form timesheetForm = new Form("timesheetForm");
+		timesheetForm.setOutputMarkupId(true);
+		
+		// submit is by ajax
+		timesheetForm.add(new AjaxSubmitButton("submitButton", timesheetForm)
 		{
 			@Override
-			public void onSubmit()
+            protected void onSubmit(AjaxRequestTarget target, Form form) {
+                persistTimesheetEntries(timesheet);
+                moveToNextWeek(timesheet.getWeekStart(), target);
+            }
+
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
-				persistTimesheetEntries(timesheet);
-			}
-		};	
+				return new LoadingSpinnerDecorator();
+			}			
+//			@Override
+//            protected void onError(AjaxRequestTarget target, Form form) {
+//                // repaint the feedback panel so errors are shown
+//                target.addComponent(feedback);
+//            }
+        });		
 		
 		buildForm(timesheetForm, timesheet);
 		blueBorder.add(timesheetForm);
 	}
 
+	/**
+	 * Move to next week after succesfull form submit
+	 * @param target
+	 */
+	private void moveToNextWeek(Date onScreenDate, AjaxRequestTarget target)
+	{
+		EhourWebSession session = (EhourWebSession)getSession();
+		Calendar	cal = DateUtil.getCalendar(session.getEhourConfig());
+		int			currentMonth;
+		int			event;
+
+		cal.setTime(onScreenDate);
+
+		currentMonth = cal.get(Calendar.MONTH);
+		cal.add(Calendar.WEEK_OF_YEAR, 1);
+		
+		event = (currentMonth == cal.get(Calendar.MONTH)) ? CommonStaticData.AJAX_CALENDARPANEL_WEEK_CHANGE : CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE;
+		
+		session.setNavCalendar(cal);
+		
+		((BasePage)getPage()).ajaxRequestReceived(target, event);
+	}
+	
 	/**
 	 * Persist timesheet entries
 	 * @param timesheet
@@ -156,7 +204,7 @@ public class TimesheetPanel extends Panel
 		WeekOverview	weekOverview;
 		Timesheet		timesheet;
 		
-		weekOverview = timesheetService.getWeekOverview(user.getUserId(), forWeek);
+		weekOverview = timesheetService.getWeekOverview(user, forWeek);
 		
 		TimesheetAssembler assembler = new TimesheetAssembler(config);
 		timesheet = assembler.createTimesheetForm(weekOverview);
@@ -182,10 +230,6 @@ public class TimesheetPanel extends Panel
 		{
 			TimesheetRow	row = (TimesheetRow)item.getModelObject();
 			
-			if (row.getTimesheetCells()[5] != null && row.getTimesheetCells()[5].getTimesheetEntry()!= null)
-			{
-				System.out.println(row.getTimesheetCells()[5].getTimesheetEntry().getHours());
-			}
 			item.add(new Label("project", row.getProjectAssignment().getProject().getName()));
 			item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 //			item.add(new Label("projectDesc", row.getProjectAssignment().getProject().getDescription()));

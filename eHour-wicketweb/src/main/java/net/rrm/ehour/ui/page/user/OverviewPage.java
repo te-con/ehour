@@ -33,12 +33,12 @@ import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.string.StringValueConversionException;
 
 /**
  * Overview page
@@ -49,11 +49,11 @@ public class OverviewPage extends BasePage
 	private static final long serialVersionUID = -6873845464139697303L;
 
 	@SpringBean
-	private TimesheetService		timesheetService;
-	private CalendarPanel			calendarPanel;
-	private	WebMarkupContainer		projectOverviewPanel;
-	private	WebMarkupContainer		contentContainer; // yeah yeah, bad name
-	private TimesheetPanel			timesheetPanel;
+	private TimesheetService	timesheetService;
+	private CalendarPanel		calendarPanel;
+	private	WebMarkupContainer	contentContainer; // yeah yeah, bad name
+	private	User				user;
+	private EhourWebSession		session;
 	
 	/**
 	 * Setup the page
@@ -63,34 +63,24 @@ public class OverviewPage extends BasePage
 	{
 		super("overview", null);
 		
-		Calendar	currentMonth;
-		Integer		userId;
+		Calendar		currentMonth;
+		session = ((EhourWebSession)this.getSession());
 		
-		// get the data
-		try
-		{
-			userId = params.getInt("userID");
-			System.out.println(userId);
-		} catch (StringValueConversionException e)
-		{
-//			e.printStackTrace();
-			userId = 1;
-		}
+		// TODO
+		user = new User(1);
+		session.setUser(user);
 
-		currentMonth = ((EhourWebSession)this.getSession()).getNavCalendar();
+		currentMonth = session.getNavCalendar();
 		
 		// add calendar panel
-		calendarPanel = new CalendarPanel("sidePanel", userId);
+		calendarPanel = new CalendarPanel("sidePanel", user);
 		add(calendarPanel);
 		
 		contentContainer = new WebMarkupContainer("contentContainer");
 		
 		// project overview panel
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userId, currentMonth);
-		projectOverviewPanel = new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus());
+		contentContainer = getProjectOverviewPanel();
 		
-		contentContainer.add(projectOverviewPanel);
-//		contentContainer.add(new TimesheetPanel("projectOverviewPanel"));
 		add(contentContainer);
 	}
 	
@@ -107,7 +97,10 @@ public class OverviewPage extends BasePage
 				calendarChanged(target);
 				break;
 			case CommonStaticData.AJAX_CALENDARPANEL_WEEK_CLICK:
-				calendarWeekClicked(target, params);
+				calendarWeekClicked(target);
+				break;
+			case CommonStaticData.AJAX_CALENDARPANEL_WEEK_CHANGE:
+				calendarWeekClicked(target);
 				break;
 		}
 	}
@@ -116,16 +109,12 @@ public class OverviewPage extends BasePage
 	 * Calendar week clicked
 	 * @param target
 	 */
-	private void calendarWeekClicked(AjaxRequestTarget target, Object params)
+	private void calendarWeekClicked(AjaxRequestTarget target)
 	{
-		Calendar	cal = (Calendar)params;
-
-		TimesheetPanel	panel = new TimesheetPanel("projectOverviewPanel", ((EhourWebSession)this.getSession()).getUser(), cal);
+		TimesheetPanel	panel = getTimesheetPanel();
 		
-		// TODO use addOrReplace
-		projectOverviewPanel.replaceWith(panel);
-		
-		projectOverviewPanel = panel;
+		contentContainer.replaceWith(panel);
+		contentContainer = panel;
 		
 		target.addComponent(panel);
 	}
@@ -136,19 +125,45 @@ public class OverviewPage extends BasePage
 	 */
 	private void calendarChanged(AjaxRequestTarget target)
 	{
-		CalendarPanel panel = new CalendarPanel("sidePanel", 1);
+		CalendarPanel panel = new CalendarPanel("sidePanel", user);
 		calendarPanel.replaceWith(panel);
 		calendarPanel = panel;
 		
 		target.addComponent(panel);
+
+		WebMarkupContainer	replacementPanel;
 		
-		Calendar currentMonth = ((EhourWebSession)this.getSession()).getNavCalendar();
+		if (this.get("contentContainer") instanceof TimesheetPanel)
+		{
+			replacementPanel = getTimesheetPanel();
+		}
+		else
+		{
+			replacementPanel = getProjectOverviewPanel();
+		}
 		
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(1, currentMonth);
+		contentContainer.replaceWith(replacementPanel);
+		contentContainer = replacementPanel;
+		target.addComponent(replacementPanel);
+	}
+
+	/**
+	 * Get timesheet panel for current user & current month
+	 * @return
+	 */
+	private TimesheetPanel getTimesheetPanel()
+	{
+		return new TimesheetPanel("contentContainer", user, session.getNavCalendar());
+	}
+	
+	/**
+	 * Get project overview panel for current user for current month
+	 * @return
+	 */
+	private ProjectOverviewPanel getProjectOverviewPanel()
+	{
+		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, session.getNavCalendar());
 		
-		final ProjectOverviewPanel newProjectOverviewPanel = new ProjectOverviewPanel("projectOverviewPanel", timesheetOverview.getProjectStatus());
-		projectOverviewPanel.replaceWith(newProjectOverviewPanel);
-		projectOverviewPanel = newProjectOverviewPanel;
-		target.addComponent(projectOverviewPanel);
+		return new ProjectOverviewPanel("contentContainer", timesheetOverview.getProjectStatus());
 	}
 }

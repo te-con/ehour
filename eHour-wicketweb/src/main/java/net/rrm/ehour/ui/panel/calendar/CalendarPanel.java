@@ -36,6 +36,7 @@ import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
@@ -72,7 +73,7 @@ public class CalendarPanel extends SidePanel
 	 * 
 	 * @param id
 	 */
-	public CalendarPanel(String id, Integer userId)
+	public CalendarPanel(String id, User user)
 	{
 		super(id);
 		
@@ -82,7 +83,7 @@ public class CalendarPanel extends SidePanel
 		EhourWebSession 	session = (EhourWebSession)getSession();
 		List<CalendarWeek>	weeks;
 		
-		logger.debug("Constructing navCalendar for userId: " + userId + " and month " + month.getTime().toString());
+		logger.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
 		
 		// set month label
 		add(new Label("currentMonth", new DateModel(month, session.getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
@@ -100,7 +101,7 @@ public class CalendarPanel extends SidePanel
 		add(new StyleSheetReference("calendarStyle", calendarStyle()));
 		
 		// content
-		weeks = createWeeks(userId, month);
+		weeks = createWeeks(user.getUserId(), month);
 		addCalendarWeeks(this, weeks);
 		
 		logger.debug("Weeks filled: " + weeks.size());
@@ -274,9 +275,10 @@ public class CalendarPanel extends SidePanel
 			EhourWebSession session = (EhourWebSession)this.getSession(); 
 			Calendar month = session.getNavCalendar();
 			month.add(Calendar.MONTH, monthChange);
+			month.set(Calendar.DAY_OF_MONTH, 1);
 			session.setNavCalendar(month);
 
-			((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE, null);
+			((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
         }
 		
 		@Override
@@ -310,6 +312,8 @@ public class CalendarPanel extends SidePanel
 			
 			cal.set(Calendar.YEAR, year);
 			cal.set(Calendar.WEEK_OF_YEAR, week);
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+			session.setNavCalendar(cal);
 			
 			((BasePage)getPage()).ajaxRequestReceived(target,
 														CommonStaticData.AJAX_CALENDARPANEL_WEEK_CLICK,
