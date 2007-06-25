@@ -42,25 +42,11 @@ public class Timesheet implements Serializable
 	 */
 	private static final long 	serialVersionUID = -547682050331580675L;
 	private SortedMap<Customer, List<TimesheetRow>>	customers;
-	private	List<Date>			dateSequence;
+	private	Date[]				dateSequence;
 	private	Date				weekStart;
 	private	Integer				userId;
 	private	TimesheetComment	comment;
 	
-	/**
-	 * @return the dateSequence
-	 */
-	public List<Date> getDateSequence()
-	{
-		return dateSequence;
-	}
-	/**
-	 * @param dateSequence the dateSequence to set
-	 */
-	public void setDateSequence(List<Date> dateSequence)
-	{
-		this.dateSequence = dateSequence;
-	}
 
 	/**
 	 * @return the userId
@@ -117,6 +103,20 @@ public class Timesheet implements Serializable
 	public void setCustomers(SortedMap<Customer, List<TimesheetRow>> customers)
 	{
 		this.customers = customers;
+	}
+	/**
+	 * @return the dateSequence
+	 */
+	public Date[] getDateSequence()
+	{
+		return dateSequence;
+	}
+	/**
+	 * @param dateSequence the dateSequence to set
+	 */
+	public void setDateSequence(Date[] dateSequence)
+	{
+		this.dateSequence = dateSequence;
 	}
 
 }

@@ -38,6 +38,7 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
@@ -50,6 +51,7 @@ import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -69,7 +71,8 @@ public class TimesheetPanel extends Panel
 
 	@SpringBean
 	private TimesheetService	timesheetService;
-
+	private	EhourConfig			config;
+	
 	/**
 	 * Construct timesheetPanel for entering hours
 	 * @param id
@@ -82,7 +85,9 @@ public class TimesheetPanel extends Panel
 		EhourWebSession 	session = (EhourWebSession)getSession();
 		SimpleDateFormat	dateFormatter;
 		
-		dateFormatter = new SimpleDateFormat("w, MMMM yyyy");
+		config = session.getEhourConfig();
+		
+		dateFormatter = new SimpleDateFormat("w, MMMM yyyy", config.getLocale());
 
 		// dom id's
 		this.setOutputMarkupId(true);
@@ -95,7 +100,7 @@ public class TimesheetPanel extends Panel
 		greyBorder.add(blueBorder);
 
 		// the timesheet we're working on
-		final Timesheet timesheet = getTimesheet(user,  forWeek, session.getEhourConfig());
+		final Timesheet timesheet = getTimesheet(user,  forWeek);
 		
 		// add form
 		Form timesheetForm = new Form("timesheetForm");
@@ -120,13 +125,36 @@ public class TimesheetPanel extends Panel
 //                // repaint the feedback panel so errors are shown
 //                target.addComponent(feedback);
 //            }
-        });		
+        });	
 		
 		// add form labels
 		buildForm(timesheetForm, timesheet);
 		blueBorder.add(timesheetForm);
+		
+		// add label dates
+		addDateLabels(blueBorder, timesheet);
+		
 	}
 
+//	private void addWeekNavigations(Component parent)
+//	{
+//	}
+	
+	/**
+	 * 
+	 */
+	private void addDateLabels(WebMarkupContainer parent, Timesheet timesheet)
+	{
+		parent.add(new Label("sundayLabel", new DateModel(timesheet.getDateSequence()[0], config, DateModel.DATESTYLE_DAYLONG )));
+		parent.add(new Label("mondayLabel", new DateModel(timesheet.getDateSequence()[1], config, DateModel.DATESTYLE_DAYLONG )));
+		parent.add(new Label("tuesdayLabel", new DateModel(timesheet.getDateSequence()[2], config, DateModel.DATESTYLE_DAYLONG )));
+		parent.add(new Label("wednesdayLabel", new DateModel(timesheet.getDateSequence()[3], config, DateModel.DATESTYLE_DAYLONG )));
+		parent.add(new Label("thursdayLabel", new DateModel(timesheet.getDateSequence()[4], config, DateModel.DATESTYLE_DAYLONG )));
+		parent.add(new Label("fridayLabel", new DateModel(timesheet.getDateSequence()[5], config, DateModel.DATESTYLE_DAYLONG )));
+		parent.add(new Label("saturdayLabel", new DateModel(timesheet.getDateSequence()[6], config, DateModel.DATESTYLE_DAYLONG )));
+		
+	}
+	
 	/**
 	 * Move to next week after succesfull form submit
 	 * @param target
@@ -134,7 +162,7 @@ public class TimesheetPanel extends Panel
 	private void moveToNextWeek(Date onScreenDate, AjaxRequestTarget target)
 	{
 		EhourWebSession session = (EhourWebSession)getSession();
-		Calendar	cal = DateUtil.getCalendar(session.getEhourConfig());
+		Calendar	cal = DateUtil.getCalendar(config);
 		int			event;
 
 		cal.setTime(onScreenDate);
@@ -203,7 +231,7 @@ public class TimesheetPanel extends Panel
 	 * @param forWeek
 	 */
 	
-	private Timesheet getTimesheet(User user, Calendar forWeek, EhourConfig config)
+	private Timesheet getTimesheet(User user, Calendar forWeek)
 	{
 		WeekOverview	weekOverview;
 		Timesheet		timesheet;
