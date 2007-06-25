@@ -34,7 +34,7 @@ public class Project extends DomainObject<Integer, Project>
 	private boolean defaultProject;
 	private	boolean	active;
 	private Customer customer;
-	private	Set		projectAssignments;
+	private	Set<ProjectAssignment>		projectAssignments;
 	private User	projectManager;
 	
 	// Constructors
@@ -161,7 +161,7 @@ public class Project extends DomainObject<Integer, Project>
 	/**
 	 * @return the projectAssignments
 	 */
-	public Set getProjectAssignments()
+	public Set<ProjectAssignment> getProjectAssignments()
 	{
 		return projectAssignments;
 	}
@@ -169,7 +169,7 @@ public class Project extends DomainObject<Integer, Project>
 	/**
 	 * @param projectAssignments the projectAssignments to set
 	 */
-	public void setProjectAssignments(Set projectAssignments)
+	public void setProjectAssignments(Set<ProjectAssignment> projectAssignments)
 	{
 		this.projectAssignments = projectAssignments;
 	}

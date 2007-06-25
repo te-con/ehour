@@ -33,6 +33,7 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * Provides services for displaying and manipulating timesheets.
@@ -50,7 +51,7 @@ public interface TimesheetService
 	 * @param requestedMonth only the month and year of the calendar is used
 	 * @return TimesheetOverviewAction
 	 */
-	public TimesheetOverview getTimesheetOverview(Integer userId, Calendar requestedMonth);
+	public TimesheetOverview getTimesheetOverview(User user, Calendar requestedMonth);
 	
 	/**
 	 * Get a list with all day numbers in this month that has complete booked days (config defines the completion
@@ -68,7 +69,7 @@ public interface TimesheetService
 	 * @param requestedWeek
 	 * @return
 	 */
-	public WeekOverview getWeekOverview(Integer userId, Calendar requestedWeek);
+	public WeekOverview getWeekOverview(User userId, Calendar requestedWeek);
 	
 	/**
 	 * Persist timesheet entries and comment

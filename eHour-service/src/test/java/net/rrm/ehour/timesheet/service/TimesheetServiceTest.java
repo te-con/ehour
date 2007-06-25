@@ -50,6 +50,7 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
+import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 public class TimesheetServiceTest  extends TestCase
@@ -165,7 +166,7 @@ public class TimesheetServiceTest  extends TestCase
 		replay(timesheetDAO);
 		replay(reportService);
 		
-		retObj = timesheetService.getTimesheetOverview(1, cal);
+		retObj = timesheetService.getTimesheetOverview(new User(1), cal);
 		
 		verify(timesheetDAO);
 		verify(reportService);
@@ -193,7 +194,7 @@ public class TimesheetServiceTest  extends TestCase
 		replay(timesheetCommentDAO);
 		replay(projectAssignmentService);
 		
-		timesheetService.getWeekOverview(1, new GregorianCalendar(2007, 1 - 1, 1));
+		timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, 1 - 1, 1));
 		
 		verify(timesheetDAO);
 		verify(timesheetCommentDAO);

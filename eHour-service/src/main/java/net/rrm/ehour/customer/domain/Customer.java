@@ -74,6 +74,7 @@ public class Customer extends DomainObject<Integer, Customer>
 		this.active = customer.isActive();
 	}	
 
+	
 	// Property accessors
 	public Integer getCustomerId()
 	{
@@ -118,7 +119,7 @@ public class Customer extends DomainObject<Integer, Customer>
 	/**
 	 * @return the projects
 	 */
-	public Set getProjects()
+	public Set<Project> getProjects()
 	{
 		return projects;
 	}
@@ -126,7 +127,7 @@ public class Customer extends DomainObject<Integer, Customer>
 	/**
 	 * @param projects the projects to set
 	 */
-	public void setProjects(Set projects)
+	public void setProjects(Set<Project> projects)
 	{
 		this.projects = projects;
 	}
