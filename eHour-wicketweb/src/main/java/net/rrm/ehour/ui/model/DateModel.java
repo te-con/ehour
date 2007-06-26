@@ -39,7 +39,7 @@ public class DateModel extends Model
 {
 	public final static int	DATESTYLE_LONG = 1;
 	public final static int	DATESTYLE_MONTHONLY = 2;
-	public final static int DATESTYLE_DAYLONG = 3;
+	public final static int DATESTYLE_TIMESHEET_DAYLONG = 3;
 	
 	private static final long serialVersionUID = 431440606497572025L;
 	private Date				value;
@@ -82,7 +82,7 @@ public class DateModel extends Model
 			case DATESTYLE_MONTHONLY:
 				dateFormatter = new SimpleDateFormat("MMMM yyyy", config.getLocale());
 				break;
-			case DATESTYLE_DAYLONG:
+			case DATESTYLE_TIMESHEET_DAYLONG:
 				dateFormatter = new SimpleDateFormat("EEE d", config.getLocale());
 				break;
 			default:

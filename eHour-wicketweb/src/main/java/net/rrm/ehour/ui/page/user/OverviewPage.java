@@ -63,15 +63,12 @@ public class OverviewPage extends BasePage
 	{
 		super("overview", null);
 		
-		Calendar		currentMonth;
 		session = ((EhourWebSession)this.getSession());
 		
 		// TODO
 		user = new User(1);
 		session.setUser(user);
 
-		currentMonth = session.getNavCalendar();
-		
 		// add calendar panel
 		calendarPanel = new CalendarPanel("sidePanel", user);
 		add(calendarPanel);

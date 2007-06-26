@@ -49,6 +49,7 @@ import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
@@ -132,10 +133,11 @@ public class TimesheetPanel extends Panel
 		
 		// add form labels
 		buildForm(timesheetForm, timesheet);
-		blueBorder.add(timesheetForm);
-		
+
 		// add label dates
-		addDateLabels(blueBorder, timesheet);
+		addDateLabels(timesheetForm, timesheet);
+		
+		blueBorder.add(timesheetForm);
 		
 		// add CSS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
@@ -150,13 +152,13 @@ public class TimesheetPanel extends Panel
 	 */
 	private void addDateLabels(WebMarkupContainer parent, Timesheet timesheet)
 	{
-		parent.add(new Label("sundayLabel", new DateModel(timesheet.getDateSequence()[0], config, DateModel.DATESTYLE_DAYLONG )));
-		parent.add(new Label("mondayLabel", new DateModel(timesheet.getDateSequence()[1], config, DateModel.DATESTYLE_DAYLONG )));
-		parent.add(new Label("tuesdayLabel", new DateModel(timesheet.getDateSequence()[2], config, DateModel.DATESTYLE_DAYLONG )));
-		parent.add(new Label("wednesdayLabel", new DateModel(timesheet.getDateSequence()[3], config, DateModel.DATESTYLE_DAYLONG )));
-		parent.add(new Label("thursdayLabel", new DateModel(timesheet.getDateSequence()[4], config, DateModel.DATESTYLE_DAYLONG )));
-		parent.add(new Label("fridayLabel", new DateModel(timesheet.getDateSequence()[5], config, DateModel.DATESTYLE_DAYLONG )));
-		parent.add(new Label("saturdayLabel", new DateModel(timesheet.getDateSequence()[6], config, DateModel.DATESTYLE_DAYLONG )));
+		parent.add(new Label("sundayLabel", new DateModel(timesheet.getDateSequence()[0], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG)));
+		parent.add(new Label("mondayLabel", new DateModel(timesheet.getDateSequence()[1], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
+		parent.add(new Label("tuesdayLabel", new DateModel(timesheet.getDateSequence()[2], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
+		parent.add(new Label("wednesdayLabel", new DateModel(timesheet.getDateSequence()[3], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
+		parent.add(new Label("thursdayLabel", new DateModel(timesheet.getDateSequence()[4], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
+		parent.add(new Label("fridayLabel", new DateModel(timesheet.getDateSequence()[5], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
+		parent.add(new Label("saturdayLabel", new DateModel(timesheet.getDateSequence()[6], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
 		
 	}
 	
@@ -211,7 +213,6 @@ public class TimesheetPanel extends Panel
 		ListView customers = new ListView("customers", new ArrayList<Customer>(timesheet.getCustomers().keySet()))
 		{
 			{
-				// TODO
 				setReuseItems(true);
 			}
 			
@@ -220,7 +221,7 @@ public class TimesheetPanel extends Panel
 			{
 				Customer	customer = (Customer)item.getModelObject();
 				
-				item.add(new Label("customer", customer.getName()));
+				item.add(getCustomerLabel(customer));
 //				item.add(new Label("customerDesc", customer.getDescription()));
 				
 				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer)));
@@ -230,6 +231,52 @@ public class TimesheetPanel extends Panel
 		form.add(customers);
 	}
 
+	/**
+	 * Get customer label
+	 * @param customer
+	 * @return
+	 */
+	private Label getCustomerLabel(Customer customer)
+	{
+		Label	label;
+		
+		label = new Label("customer", customer.getName());
+		
+		label.add(new CustomerClick("onclick", customer));
+		
+		return label;
+	}
+	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class CustomerClick extends AjaxEventBehavior
+	{
+		private Customer customer;
+		
+		public CustomerClick(String id, Customer customer)
+		{
+			super(id);
+			this.customer = customer;
+		}
+		
+		@Override
+		protected void onEvent(AjaxRequestTarget target)
+		{
+			System.out.println(customer);
+		}
+		
+		@Override
+		protected IAjaxCallDecorator getAjaxCallDecorator()
+		{
+			return new LoadingSpinnerDecorator(){
+			
+			};
+		}		
+	}	
+	
 	/**
 	 * Get timesheet for week
 	 * @param user
@@ -256,6 +303,8 @@ public class TimesheetPanel extends Panel
 	 */
 	private class TimesheetRowList extends ListView
 	{
+		private static final long serialVersionUID = -6905022018110510887L;
+
 		TimesheetRowList(String id, final List model)
 		{
 			super(id, model);
@@ -267,17 +316,21 @@ public class TimesheetPanel extends Panel
 		{
 			TimesheetRow	row = (TimesheetRow)item.getModelObject();
 			
-			item.add(new Label("project", row.getProjectAssignment().getProject().getName()));
-			item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
+			WebMarkupContainer	projectRow = new WebMarkupContainer("projectRow");
+			
+			projectRow.add(new Label("project", row.getProjectAssignment().getProject().getName()));
+			projectRow.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 //			item.add(new Label("projectDesc", row.getProjectAssignment().getProject().getDescription()));
 			
-			item.add(new TextField("sunday", new PropertyModel(row, "timesheetCells[0].timesheetEntry.hours")));
-			item.add(new TextField("monday", new PropertyModel(row, "timesheetCells[1].timesheetEntry.hours")));
-			item.add(new TextField("tuesday", new PropertyModel(row, "timesheetCells[2].timesheetEntry.hours")));
-			item.add(new TextField("wednesday", new PropertyModel(row, "timesheetCells[3].timesheetEntry.hours")));
-			item.add(new TextField("thursday", new PropertyModel(row, "timesheetCells[4].timesheetEntry.hours")));
-			item.add(new TextField("friday", new PropertyModel(row, "timesheetCells[5].timesheetEntry.hours")));
-			item.add(new TextField("saturday", new PropertyModel(row, "timesheetCells[6].timesheetEntry.hours")));
+			projectRow.add(new TextField("sunday", new PropertyModel(row, "timesheetCells[0].timesheetEntry.hours")));
+			projectRow.add(new TextField("monday", new PropertyModel(row, "timesheetCells[1].timesheetEntry.hours")));
+			projectRow.add(new TextField("tuesday", new PropertyModel(row, "timesheetCells[2].timesheetEntry.hours")));
+			projectRow.add(new TextField("wednesday", new PropertyModel(row, "timesheetCells[3].timesheetEntry.hours")));
+			projectRow.add(new TextField("thursday", new PropertyModel(row, "timesheetCells[4].timesheetEntry.hours")));
+			projectRow.add(new TextField("friday", new PropertyModel(row, "timesheetCells[5].timesheetEntry.hours")));
+			projectRow.add(new TextField("saturday", new PropertyModel(row, "timesheetCells[6].timesheetEntry.hours")));
+			
+			item.add(projectRow);
 		}
 	}
 }

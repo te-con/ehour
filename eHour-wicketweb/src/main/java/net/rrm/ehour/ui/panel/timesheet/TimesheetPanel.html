@@ -15,37 +15,59 @@
 	<span wicket:id="timesheetFrame">
 		<span wicket:id="blueFrame">
 			<div class="timesheet">
-				<div class="TimesheetLabelRow">
-					<span wicket:id="sundayLabel" class="dayLabel"></span>
-					<span wicket:id="mondayLabel" class="dayLabel"></span>
-					<span wicket:id="tuesdayLabel" class="dayLabel"></span>
-					<span wicket:id="wednesdayLabel" class="dayLabel"></span>
-					<span wicket:id="thursdayLabel" class="dayLabel"></span>
-					<span wicket:id="fridayLabel" class="dayLabel"></span>
-					<span wicket:id="saturdayLabel" class="dayLabel"></span>
-				</div>
-								
-				<form wicket:id="timesheetForm" style="clear: both">
-					<span wicket:id="customers">
-						Customer:	<span wicket:id="customer"></span>
-						<br />
+				<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
+				<table class="timesheetTable" cellpadding="0" cellspacing="0">
+					<tr class="weekColumnRow">
+						<td class="project" style="left">&nbsp;&nbsp;Project</td>
+						<td class="projectCode">Code</td>
+						<td class="customer" valign="bottom">Customer</td>
+						<td class="spacer">&nbsp;</td>
 						
+						<td wicket:id="sundayLabel">Sunday</td>
+						<td wicket:id="mondayLabel">Sunday</td>
+						<td wicket:id="tuesdayLabel">Sunday</td>
+						<td wicket:id="wednesdayLabel">Sunday</td>
+						<td wicket:id="thursdayLabel">Sunday</td>
+						<td wicket:id="fridayLabel">Sunday</td>
+						<td class="lastChild" wicket:id="saturdayLabel">Sunday</td>
+					</tr>
+					
+					<span wicket:id="customers">
+						<tr>	
+							<td wicket:id="customer">customer</td>
+						</tr>
+
 						<span wicket:id="rows">
-							Project: <span wicket:id="project"></span><br />
-							Code: <span wicket:id="projectCode"></span><br />
-							<input wicket:id="sunday" size="2" />
-							<input wicket:id="monday" size="2" />
-							<input wicket:id="tuesday" size="2" />
-							<input wicket:id="wednesday" size="2" />
-							<input wicket:id="thursday" size="2" />
-							<input wicket:id="friday" size="2" />
-							<input wicket:id="saturday" size="2" />
-							<br>
+							<tr class="projectRow" wicket:id="projectRow">
+								<td class="project" wicket:id="project">
+									&nbsp;
+								</td>
+		
+								<td class="projectCode" wicket:id="projectCode">projectCode</td>
+								<td class="customer" >customer</td>
+								<td class="spacer">&nbsp;</td>
+								
+								<td class="sunday"><input wicket:id="sunday" size="2" /></td>
+								<td class="weekday"><input wicket:id="monday" size="2" /></td>
+								<td class="weekday"><input wicket:id="tuesday" size="2" /></td>
+								<td class="weekday"><input wicket:id="wednesday" size="2" /></td>
+								<td class="weekday"><input wicket:id="thursday" size="2" /></td>
+								<td class="weekday"><input wicket:id="friday" size="2" /></td>
+								<td class="saturday"><input wicket:id="saturday" size="2" /></td>
+							</tr>
 						</span>
 					</span>
 					
-					<input wicket:id="submitButton" type="submit" value="Store" />
+					<tr>
+						<td>
+							<input wicket:id="submitButton" type="submit" value="Store" />
+						</td>
+					</tr>
+							
+				</table>
+
 				</form>
+				
 			</div>
 		</span>
 	</span>
