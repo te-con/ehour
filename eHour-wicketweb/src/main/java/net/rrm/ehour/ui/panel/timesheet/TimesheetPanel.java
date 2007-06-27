@@ -40,7 +40,6 @@ import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
@@ -49,6 +48,7 @@ import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -62,6 +62,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -314,7 +315,7 @@ public class TimesheetPanel extends Panel
 		@Override
 		protected void populateItem(ListItem item)
 		{
-			TimesheetRow	row = (TimesheetRow)item.getModelObject();
+			final TimesheetRow	row = (TimesheetRow)item.getModelObject();
 			
 			WebMarkupContainer	projectRow = new WebMarkupContainer("projectRow");
 			
@@ -331,6 +332,15 @@ public class TimesheetPanel extends Panel
 			projectRow.add(new TextField("saturday", new PropertyModel(row, "timesheetCells[6].timesheetEntry.hours")));
 			
 			item.add(projectRow);
+			
+			// add id to AggreagteRow
+			item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
+			{
+				public Object getObject()
+				{
+					return "pw" + row.getProjectAssignment().getProject().getCustomer().getCustomerId().toString();
+				}
+			}));			
 		}
 	}
 }
