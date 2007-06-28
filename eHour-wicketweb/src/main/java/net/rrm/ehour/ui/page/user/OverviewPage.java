@@ -23,8 +23,6 @@
 
 package net.rrm.ehour.ui.page.user;
 
-import java.util.Calendar;
-
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.page.BasePage;

@@ -36,6 +36,7 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
@@ -52,7 +53,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -61,6 +62,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
@@ -112,7 +114,7 @@ public class TimesheetPanel extends Panel
 		timesheetForm.setOutputMarkupId(true);
 		
 		// submit is by ajax
-		timesheetForm.add(new AjaxSubmitButton("submitButton", timesheetForm)
+		timesheetForm.add(new AjaxButton("submitButton", timesheetForm)
 		{
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form) {
@@ -140,8 +142,9 @@ public class TimesheetPanel extends Panel
 		
 		blueBorder.add(timesheetForm);
 		
-		// add CSS
+		// add CSS & JS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
+		add(new JavaScriptReference("timesheetJS", new CompressedResourceReference(TimesheetPanel.class, "js/timesheet.js")));
 	}
 
 //	private void addWeekNavigations(Component parent)
@@ -220,11 +223,11 @@ public class TimesheetPanel extends Panel
 			@Override
 			protected void populateItem(ListItem item)
 			{
-				Customer	customer = (Customer)item.getModelObject();
+				final Customer	customer = (Customer)item.getModelObject();
 				
 				item.add(getCustomerLabel(customer));
 //				item.add(new Label("customerDesc", customer.getDescription()));
-				
+
 				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer)));
 			}
 		};
@@ -237,46 +240,32 @@ public class TimesheetPanel extends Panel
 	 * @param customer
 	 * @return
 	 */
-	private Label getCustomerLabel(Customer customer)
+	private Label getCustomerLabel(final Customer customer)
 	{
 		Label	label;
 		
 		label = new Label("customer", customer.getName());
 		
-		label.add(new CustomerClick("onclick", customer));
+//		label.add();
+		label.add(new AjaxEventBehavior("onclick")
+		{
+			@Override
+			protected void onEvent(AjaxRequestTarget target)
+			{
+				System.out.println("click");
+				
+			}
+
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator()
+			{
+//				return new LoadingSpinnerDecorator();
+				return new OnClickDecorator("toggleProjectRow", customer.getCustomerId().toString());
+			}					
+		});		
 		
 		return label;
 	}
-	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class CustomerClick extends AjaxEventBehavior
-	{
-		private Customer customer;
-		
-		public CustomerClick(String id, Customer customer)
-		{
-			super(id);
-			this.customer = customer;
-		}
-		
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			System.out.println(customer);
-		}
-		
-		@Override
-		protected IAjaxCallDecorator getAjaxCallDecorator()
-		{
-			return new LoadingSpinnerDecorator(){
-			
-			};
-		}		
-	}	
 	
 	/**
 	 * Get timesheet for week
@@ -305,11 +294,13 @@ public class TimesheetPanel extends Panel
 	private class TimesheetRowList extends ListView
 	{
 		private static final long serialVersionUID = -6905022018110510887L;
-
+		private	int counter;
+		
 		TimesheetRowList(String id, final List model)
 		{
 			super(id, model);
 			setReuseItems(true);
+			counter = 1;
 		}
 		
 		@Override
@@ -318,6 +309,16 @@ public class TimesheetPanel extends Panel
 			final TimesheetRow	row = (TimesheetRow)item.getModelObject();
 			
 			WebMarkupContainer	projectRow = new WebMarkupContainer("projectRow");
+
+			// add id to projectRow
+			projectRow.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
+			{
+				public Object getObject()
+				{
+					return "pw" + row.getProjectAssignment().getProject().getCustomer().getCustomerId().toString() + counter++;
+				}
+			}));
+			
 			
 			projectRow.add(new Label("project", row.getProjectAssignment().getProject().getName()));
 			projectRow.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
@@ -333,14 +334,8 @@ public class TimesheetPanel extends Panel
 			
 			item.add(projectRow);
 			
-			// add id to AggreagteRow
-			item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-			{
-				public Object getObject()
-				{
-					return "pw" + row.getProjectAssignment().getProject().getCustomer().getCustomerId().toString();
-				}
-			}));			
+			
 		}
 	}
+	
 }

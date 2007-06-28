@@ -31,7 +31,6 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 
 /**
