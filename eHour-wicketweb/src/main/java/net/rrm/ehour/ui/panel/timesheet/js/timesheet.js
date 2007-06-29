@@ -4,24 +4,14 @@ function toggleProjectRow(customerId)
 	
 	var ok = true;
 	
-	while (ok)
-	{
-		row = document.getElementById("pw" + customerId + "" + i++);
-		alert(row.style.display);
-		if (row != null)
-		{
+	var row = document.getElementById("pw561");
+	
 			if (row.style.display == 'none')
 			{
-				row.style.display = '';
+				row.style.display = 'table-row';
 			}
 			else
 			{
 				row.style.display = 'none';
 			}
-		}
-		else
-		{
-			ok = false;
-		}
-	}
 }

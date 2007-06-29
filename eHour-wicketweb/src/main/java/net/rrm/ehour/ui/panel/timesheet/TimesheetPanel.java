@@ -307,11 +307,9 @@ public class TimesheetPanel extends Panel
 		protected void populateItem(ListItem item)
 		{
 			final TimesheetRow	row = (TimesheetRow)item.getModelObject();
-			
-			WebMarkupContainer	projectRow = new WebMarkupContainer("projectRow");
 
-			// add id to projectRow
-			projectRow.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
+			// add id to row
+			item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
 			{
 				public Object getObject()
 				{
@@ -320,21 +318,17 @@ public class TimesheetPanel extends Panel
 			}));
 			
 			
-			projectRow.add(new Label("project", row.getProjectAssignment().getProject().getName()));
-			projectRow.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
+			item.add(new Label("project", row.getProjectAssignment().getProject().getName()));
+			item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 //			item.add(new Label("projectDesc", row.getProjectAssignment().getProject().getDescription()));
 			
-			projectRow.add(new TextField("sunday", new PropertyModel(row, "timesheetCells[0].timesheetEntry.hours")));
-			projectRow.add(new TextField("monday", new PropertyModel(row, "timesheetCells[1].timesheetEntry.hours")));
-			projectRow.add(new TextField("tuesday", new PropertyModel(row, "timesheetCells[2].timesheetEntry.hours")));
-			projectRow.add(new TextField("wednesday", new PropertyModel(row, "timesheetCells[3].timesheetEntry.hours")));
-			projectRow.add(new TextField("thursday", new PropertyModel(row, "timesheetCells[4].timesheetEntry.hours")));
-			projectRow.add(new TextField("friday", new PropertyModel(row, "timesheetCells[5].timesheetEntry.hours")));
-			projectRow.add(new TextField("saturday", new PropertyModel(row, "timesheetCells[6].timesheetEntry.hours")));
-			
-			item.add(projectRow);
-			
-			
+			item.add(new TextField("sunday", new PropertyModel(row, "timesheetCells[0].timesheetEntry.hours")));
+			item.add(new TextField("monday", new PropertyModel(row, "timesheetCells[1].timesheetEntry.hours")));
+			item.add(new TextField("tuesday", new PropertyModel(row, "timesheetCells[2].timesheetEntry.hours")));
+			item.add(new TextField("wednesday", new PropertyModel(row, "timesheetCells[3].timesheetEntry.hours")));
+			item.add(new TextField("thursday", new PropertyModel(row, "timesheetCells[4].timesheetEntry.hours")));
+			item.add(new TextField("friday", new PropertyModel(row, "timesheetCells[5].timesheetEntry.hours")));
+			item.add(new TextField("saturday", new PropertyModel(row, "timesheetCells[6].timesheetEntry.hours")));
 		}
 	}
 	
