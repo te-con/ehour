@@ -7,8 +7,8 @@
 		<!--  <cache usage="read-write" /> -->
 		
         <composite-id name="entryId" class="net.rrm.ehour.timesheet.domain.TimesheetEntryId">
-		    <key-property name="entryDate" column="ENTRY_DATE" type="date"/>
-		    <key-many-to-one name="projectAssignment" class="net.rrm.ehour.project.domain.ProjectAssignment" column="ASSIGNMENT_ID" />
+		    <key-property name="entryDate" column="ENTRY_DATE" type="date" />
+		    <key-many-to-one name="projectAssignment" class="net.rrm.ehour.project.domain.ProjectAssignment" column="ASSIGNMENT_ID" lazy="false" />
         </composite-id>
 
 		<property name="hours" column="HOURS" type="float"/>

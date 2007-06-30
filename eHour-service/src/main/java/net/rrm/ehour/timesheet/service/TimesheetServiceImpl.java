@@ -54,6 +54,7 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
+import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
@@ -260,7 +261,16 @@ public class TimesheetServiceImpl implements TimesheetService
 		weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), DateUtil.getInversedDateRangeForWeek(requestedWeek)));
 		logger.debug("Week overview: project assignments found for userId " + user.getUserId() + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
 		
-		weekOverview.setFoldPreferences(new CustomerFoldPreferenceList(customerFoldPreferenceDAO.getPreferenceForUser(user, weekOverview.getCustomers())));
+		List<CustomerFoldPreference> prefs = customerFoldPreferenceDAO.getPreferenceForUser(user, weekOverview.getCustomers());
+		
+		if (prefs != null)
+		{
+			weekOverview.setFoldPreferences(new CustomerFoldPreferenceList(prefs));
+		}
+		else
+		{
+			weekOverview.setFoldPreferences(new CustomerFoldPreferenceList());
+		}
 		logger.debug("Week overview: customer fold preferences found for userId " + user.getUserId() + ": " + weekOverview.getFoldPreferences().size());
 		
 		weekOverview.setUser(user);
