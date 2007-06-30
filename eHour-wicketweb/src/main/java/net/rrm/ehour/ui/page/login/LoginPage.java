@@ -23,13 +23,21 @@
 
 package net.rrm.ehour.ui.page.login;
 
-import net.rrm.ehour.ui.authentication.EhourLoginContext;
+import java.io.Serializable;
 
+import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.user.domain.User;
+
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.Session;
+import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.security.WaspSession;
-import org.apache.wicket.security.hive.authentication.LoginContext;
-import org.apache.wicket.security.strategies.LoginException;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Login page 
@@ -37,60 +45,119 @@ import org.apache.wicket.security.strategies.LoginException;
 
 public class LoginPage extends WebPage
 {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Constructor.
-	 */
 	public LoginPage()
 	{
-		// stateless so the login page will not throw a timeout exception
-		// note that is only a hint we need to have stateless components on the
-		// page for this to work, like a statelessform
-		setStatelessHint(true);
-		add(new FeedbackPanel("feedback")
-		{
-			private static final long serialVersionUID = 1L;
-
-			/**
-			 * @see org.apache.wicket.Component#isVisible()
-			 */
-			public boolean isVisible()
-			{
-				return anyMessage();
-			}
-		});
-		String panelId = "signInPanel";
-		newUserPasswordSignInPanel(panelId);
+		this(null);
 	}
 
 	/**
-	 * Creeert een sign in panel voor instellingen die hun authenticatie enkel
-	 * baseren op username/wachtwoord.
-	 * 
-	 * @param panelId
-	 * @param info
+	 * Creates a new sign-in page with the given parameters (ignored).
+	 * @param parameters page parameters (ignored)
 	 */
-	protected void newUserPasswordSignInPanel(String panelId)
+	public LoginPage(final PageParameters parameters)
 	{
-		add(new UsernamePasswordSignInPanel(panelId)
-		{
-			/** Voor serializatie. */
-			private static final long serialVersionUID = 1L;
+		add(new SignInForm("loginform", new SimpleUser()));
 
-			public boolean signIn(String username, String password)
+		EhourWebSession YourAppSession = EhourWebSession.getYourAppSession();
+		if (YourAppSession.isSignedIn())
+		{
+			error(getLocalizer().getString("login.errors.alreadysignedin", LoginPage.this));
+		}
+	}
+
+	/**
+	 * The class <code>SignInForm</code> is a subclass of the Wicket
+	 * {@link Form} class that attempts to authenticate the login request using
+	 * Wicket auth (which again delegates to Acegi Security).
+	 */
+	public final class SignInForm extends Form
+	{
+		public SignInForm(String id, SimpleUser model)
+		{
+			super(id, new CompoundPropertyModel(model));
+			add(new FeedbackPanel("feedback"));
+			add(new TextField("username").setRequired(true));
+			add(new PasswordTextField("password").setResetPassword(true));
+		}
+
+		/**
+		 * Called upon form submit. Attempts to authenticate the user.
+		 */
+		protected void onSubmit()
+		{
+			if (EhourWebSession.getYourAppSession().isSignedIn())
 			{
-				EhourLoginContext ctx=new EhourLoginContext(username, password);
-				try
+				// Already logged in, ignore the submit.
+				error(getLocalizer().getString("login.errors.alreadysignedin", LoginPage.this));
+
+			} else
+			{
+				SimpleUser user = ((SimpleUser) getModel().getObject());
+				String username = user.getUsername();
+				String password = user.getPassword();
+
+				// Attempt to authenticate.
+				EhourWebSession session = (EhourWebSession) Session.get();
+				if (session.signIn(username, password))
 				{
-					((WaspSession)getSession()).login(ctx);
-				}
-				catch (LoginException e)
+
+					Roles roles = session.getRoles();
+					if (!continueToOriginalDestination())
+					{
+						// Continue to the application home page.
+						setResponsePage(getApplication().getHomePage());
+
+						// TODO
+							System.out.println("User '" + username + "' directed to application" + " homepage (" + getApplication().getHomePage().getName() + ").");
+
+					} else
+					{
+							System.out.println("User '" + username + "' continues to original destination.");
+					}
+
+				} else
 				{
-					return false;
+					System.out.println("Could not authenticate user '" + username + "'. Transferring back to sign-in page.");
+					error(getLocalizer().getString("login.errors.invalidCredentials", LoginPage.this));
 				}
-				return true;
 			}
-		});
+
+			// ALWAYS do a redirect, no matter where we are going to. The point is that the
+			// submitting page should be gone from the browsers history.
+			setRedirect(true);
+		}
+	}
+
+	/**
+	 * Simple bean that represents the properties for a login attempt (username
+	 * and clear text password).
+	 */
+	public static class SimpleUser implements Serializable
+	{
+		private static final long serialVersionUID = -5617176504597041829L;
+
+		private String username;
+
+		private String password;
+
+		public String getUsername()
+		{
+			return username;
+		}
+
+		public void setUsername(String username)
+		{
+			this.username = username;
+		}
+
+		public String getPassword()
+		{
+			return password;
+		}
+
+		public void setPassword(String password)
+		{
+			this.password = password;
+		}
 	}
 }

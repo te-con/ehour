@@ -29,11 +29,10 @@ import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.ISessionFactory;
-import org.apache.wicket.Request;
-import org.apache.wicket.Response;
-import org.apache.wicket.Session;
-import org.apache.wicket.protocol.http.WebApplication;
+import org.acegisecurity.AuthenticationManager;
+import org.apache.wicket.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.authentication.AuthenticatedWebSession;
+import org.apache.wicket.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.PackageName;
 
@@ -41,8 +40,10 @@ import org.apache.wicket.util.lang.PackageName;
  * Base config for wicket eHour webapp
  **/
 
-public class EhourWebApplication extends /*Swarm*/WebApplication
+public class EhourWebApplication extends AuthenticatedWebApplication 
 {
+	private AuthenticationManager authenticationManager;
+	
 	public void init()
 	{
 		super.init();
@@ -53,20 +54,9 @@ public class EhourWebApplication extends /*Swarm*/WebApplication
 		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
 		
 		addComponentInstantiationListener(new SpringComponentInjector(this));
-	}
-
-	/**
-	 * Return our own session
-	 */
-	public ISessionFactory getSessionFactory()
-	{
-		return new ISessionFactory()
-		{
-			public Session newSession(Request req, Response res)
-			{
-				return new EhourWebSession(EhourWebApplication.this, req);
-			}
-		};
+		
+		getSecuritySettings().setAuthorizationStrategy(new MetaDataRoleAuthorizationStrategy(this));
+		
 	}
 
 	/**
@@ -77,30 +67,25 @@ public class EhourWebApplication extends /*Swarm*/WebApplication
 	{
 		return OverviewPage.class;
 	}
+    protected Class getSignInPageClass() {
+        return LoginPage.class;
+    }
 
-//	@Override
-//	protected Object getHiveKey()
-//	{
-//		return "ehour";
-//	}
-//
-//	@Override
-//	protected void setUpHive()
-//	{
-//		PolicyFileHiveFactory factory = new PolicyFileHiveFactory();
-//		try
-//		{
-//			factory.addPolicyFile(getServletContext().getResource("/WEB-INF/ehour.hive"));
-//		} catch (MalformedURLException e)
-//		{
-//			throw new WicketRuntimeException(e);
-//		}
-//
-//		HiveMind.registerHive(getHiveKey(), factory);
-//	}
+    /*
+     * 
+     */
+    public AuthenticationManager getAuthenticationManager()
+    {
+        return authenticationManager;
+    }
 
-	public Class getLoginPage()
+    /*
+     * (non-Javadoc)
+     * @see org.apache.wicket.authentication.AuthenticatedWebApplication#getWebSessionClass()
+     */
+	@Override
+	protected Class<? extends AuthenticatedWebSession> getWebSessionClass()
 	{
-		return LoginPage.class;
+		return EhourWebSession.class;
 	}
 }

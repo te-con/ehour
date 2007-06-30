@@ -27,20 +27,30 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
+import org.acegisecurity.Authentication;
+import org.acegisecurity.AuthenticationException;
+import org.acegisecurity.AuthenticationManager;
+import org.acegisecurity.BadCredentialsException;
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.wicket.Request;
+import org.apache.wicket.Session;
+import org.apache.wicket.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.authentication.AuthenticatedWebSession;
+import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * TODO 
  **/
 
-public class EhourWebSession extends /*Wasp*/WebSession
+public class EhourWebSession extends AuthenticatedWebSession 
 {
 	@SpringBean
 	private EhourConfig	ehourConfig;
@@ -54,9 +64,9 @@ public class EhourWebSession extends /*Wasp*/WebSession
 	 * @param app
 	 * @param req
 	 */
-	public EhourWebSession(/*Wasp*/WebApplication app, Request req)
+	public EhourWebSession(final AuthenticatedWebApplication application, Request req)
 	{
-		super(app, req);
+		super(application, req);
 		
 		InjectorHolder.getInjector().inject(this);
 	}
@@ -100,23 +110,109 @@ public class EhourWebSession extends /*Wasp*/WebSession
 	 */
 	public User getUser()
 	{
-		if (user == null)
-		{
-			user = new User();
-			user.setUserId(1);
-			user.setFirstName("Thies");
-			user.setLastName("Edeling");
-		}
+		User user = null;
 		
+		if (isSignedIn())
+		{
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			user = (User) authentication.getPrincipal();
+		}
 		return user;
 	}
 
 	/**
-	 * @param user the user to set
+	 * @param user
+	 *            the user to set
 	 */
 	public void setUser(User user)
 	{
 		this.user = user;
 	}
+
+	@Override
+	public boolean authenticate(String username, String password)
+	{
+        String u = username == null ? "" : username;
+        String p = password == null ? "" : password;
+
+        // Create an Acegi authentication request.
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
+
+        // Attempt authentication.
+        try {
+            AuthenticationManager authenticationManager = ((EhourWebApplication) getApplication()).getAuthenticationManager();
+            Authentication authResult = authenticationManager.authenticate(authRequest);
+            setAuthentication(authResult);
+
+            // TODO
+            System.out.println("Login by user '" + username + "'.");
+            return true;
+
+        } catch (BadCredentialsException e) {
+        	System.out.println("Failed login by user '" + username + "'.");
+            setAuthentication(null);
+            return false;
+
+        } catch (AuthenticationException e) {
+        	e.printStackTrace();
+        	System.out.println("Could not authenticate a user");
+            setAuthentication(null);
+            throw e;
+
+        } catch (RuntimeException e) {
+        	e.printStackTrace();
+        	System.out.println("Unexpected exception while authenticating a user");
+            setAuthentication(null);
+            throw e;
+        }	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.authentication.AuthenticatedWebSession#getRoles()
+	 */
+	@Override
+    public Roles getRoles()
+	{
+		if (isSignedIn())
+		{
+			Roles roles = new Roles();
+			// Retrieve the granted authorities from the current authentication. These correspond one on
+			// one with user roles.
+			GrantedAuthority[] authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+			for (int i = 0; i < authorities.length; i++)
+			{
+				GrantedAuthority authority = authorities[i];
+				roles.add(authority.getAuthority());
+			}
+			return roles;
+		}
+		return null;
+	}
+	
+    public void signout() {
+        User user = getUser();
+        if (user != null) {
+        	// TODO logg
+            System.out.println("Logout by user '" + user.getUsername() + "'.");
+        }
+        setAuthentication(null);
+        invalidate();
+    }	
+    
+    /**
+     * Sets the acegi authentication.
+     * @param authentication the authentication or null to clear 
+     */
+    private void setAuthentication(Authentication authentication) {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+    
+    /**
+	 * @return the current YourApp session
+	 */
+	public static EhourWebSession getYourAppSession()
+	{
+		return (EhourWebSession) Session.get();
+	}    
 }
 

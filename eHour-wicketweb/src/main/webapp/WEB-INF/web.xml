@@ -11,6 +11,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
+			classpath:applicationContext-acegi-security.xml
 			classpath:applicationContext-dao.xml
 			classpath:applicationContext-datasource.xml
 			classpath:applicationContext-service.xml
@@ -32,6 +33,20 @@
 		<filter-name>hibernateFilter</filter-name>
 		<url-pattern>/eh/*</url-pattern>
 	</filter-mapping>
+
+    <filter>
+        <filter-name>Acegi HTTP Request Security Filter</filter-name>
+        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <init-param>
+            <param-name>targetClass</param-name>
+            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Acegi HTTP Request Security Filter</filter-name>
+        <url-pattern>/eh/*</url-pattern>
+    </filter-mapping>
 
 	<filter>
 		<filter-name>EhourWebApplication</filter-name>

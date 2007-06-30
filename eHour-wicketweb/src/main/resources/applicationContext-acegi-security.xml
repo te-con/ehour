@@ -12,15 +12,48 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/**=httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,rememberMeProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter
 			</value>
 		</property>
 	</bean>
 
-	<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
+  <bean id="httpSessionContextIntegrationFilter"
+    class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+    <property name="forceEagerSessionCreation" value="true"/>
+  </bean>
+  
+   <bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+      <property name="cache">
+         <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+            <property name="cacheManager" ref="cacheManager"/>
+            <property name="cacheName" value="ehour.USER_CACHE"/>
+         </bean>
+      </property>
+   </bean>
+   
+	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="authenticationProvider"/>
 
+				<bean class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
+					<property name="key" value="eHour"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="authenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="userService"/>
+		<property name="passwordEncoder"><ref local="passwordEncoder"/></property>
+	</bean>
+
+	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder"/>
+	
+   
+<!-- 
 	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
-		<constructor-arg value="/index.jsp"/> <!-- URL redirected to after logout -->
+		<constructor-arg value="/index.jsp"/>
 		<constructor-arg>
 			<list>
 				<ref bean="rememberMeServices"/>	
@@ -28,6 +61,7 @@
 			</list>
 		</constructor-arg>
 	</bean>
+
 
 	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
@@ -90,28 +124,10 @@
 	</bean>
 
  
-	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
-		<property name="providers">
-			<list>
-				<ref local="authenticationProvider"/>
-
-				<bean class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
-					<property name="key" value="eHour"/>
-				</bean>
-
-			</list>
-		</property>
-		
-	</bean>
 	
-	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder"/>
-
-	<bean id="authenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
-		<property name="userDetailsService" ref="userService"/>
-		<property name="passwordEncoder"><ref local="passwordEncoder"/></property>
-	</bean>
+-->
 
 	<!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
 	<bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>
-
+ 
 </beans>
