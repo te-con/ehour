@@ -244,6 +244,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		WeekOverview	weekOverview;
 		DateRange		range;
+		List<CustomerFoldPreference> prefs = null;
 		
 		weekOverview = new WeekOverview();
 		
@@ -261,8 +262,13 @@ public class TimesheetServiceImpl implements TimesheetService
 		weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), DateUtil.getInversedDateRangeForWeek(requestedWeek)));
 		logger.debug("Week overview: project assignments found for userId " + user.getUserId() + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
 		
-		List<CustomerFoldPreference> prefs = customerFoldPreferenceDAO.getPreferenceForUser(user, weekOverview.getCustomers());
+		weekOverview.initCustomers();
 		
+		if (weekOverview.getCustomers() != null && weekOverview.getCustomers().size() > 0)
+		{
+			prefs = customerFoldPreferenceDAO.getPreferenceForUser(user, weekOverview.getCustomers());
+		}
+			
 		if (prefs != null)
 		{
 			weekOverview.setFoldPreferences(new CustomerFoldPreferenceList(prefs));
@@ -271,6 +277,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		{
 			weekOverview.setFoldPreferences(new CustomerFoldPreferenceList());
 		}
+		
 		logger.debug("Week overview: customer fold preferences found for userId " + user.getUserId() + ": " + weekOverview.getFoldPreferences().size());
 		
 		weekOverview.setUser(user);

@@ -51,14 +51,14 @@ public class WeekOverview implements Serializable
 	private	DateRange				weekRange;
 	private	CustomerFoldPreferenceList foldPreferences;
 	private	User					user;
+	private	Set<Customer>			customers;
 
 	/**
-	 * Get customser
-	 * @return
+	 * 
 	 */
-	public Set<Customer> getCustomers()
+	public void initCustomers()
 	{
-		Set<Customer>	customers = new HashSet<Customer>();
+		customers = new HashSet<Customer>();
 		
 		for (ProjectAssignment assignment : projectAssignments)
 		{
@@ -69,7 +69,15 @@ public class WeekOverview implements Serializable
 		{
 			customers.add(entry.getEntryId().getProjectAssignment().getProject().getCustomer());
 		}
-
+	}
+	
+	
+	/**
+	 * Get customser
+	 * @return
+	 */
+	public Set<Customer> getCustomers()
+	{
 		return customers;
 	}
 	
