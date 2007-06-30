@@ -7,8 +7,8 @@
 		<cache usage="read-write" />
 
         <composite-id name="foldPreferenceId" class="net.rrm.ehour.user.domain.CustomerFoldPreferenceId" >
-	        <key-many-to-one name="user" class="net.rrm.ehour.user.domain.User" column="USER_ID" />
-		    <key-many-to-one name="customer" class="net.rrm.ehour.customer.domain.Customer" column="CUSTOMER_ID" />
+	        <key-many-to-one name="user" class="net.rrm.ehour.user.domain.User" column="USER_ID" lazy="false" />
+		    <key-many-to-one name="customer" class="net.rrm.ehour.customer.domain.Customer" column="CUSTOMER_ID" lazy="false" />
         </composite-id>
 
 		<property name="folded" column="FOLDED" type="yes_no"  />
