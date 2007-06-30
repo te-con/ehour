@@ -30,6 +30,8 @@ import java.util.SortedMap;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
+import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * Representation of a timesheet
@@ -44,24 +46,11 @@ public class Timesheet implements Serializable
 	private SortedMap<Customer, List<TimesheetRow>>	customers;
 	private	Date[]				dateSequence;
 	private	Date				weekStart;
-	private	Integer				userId;
+	private	User				user;
 	private	TimesheetComment	comment;
-	
+	private	CustomerFoldPreferenceList foldPreferences;	
 
-	/**
-	 * @return the userId
-	 */
-	public Integer getUserId()
-	{
-		return userId;
-	}
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(Integer userId)
-	{
-		this.userId = userId;
-	}
+
 	/**
 	 * @return the weekStart
 	 */
@@ -117,6 +106,34 @@ public class Timesheet implements Serializable
 	public void setDateSequence(Date[] dateSequence)
 	{
 		this.dateSequence = dateSequence;
+	}
+	/**
+	 * @return the foldPreferences
+	 */
+	public CustomerFoldPreferenceList getFoldPreferences()
+	{
+		return foldPreferences;
+	}
+	/**
+	 * @param foldPreferences the foldPreferences to set
+	 */
+	public void setFoldPreferences(CustomerFoldPreferenceList foldPreferences)
+	{
+		this.foldPreferences = foldPreferences;
+	}
+	/**
+	 * @return the user
+	 */
+	public User getUser()
+	{
+		return user;
+	}
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user)
+	{
+		this.user = user;
 	}
 
 }

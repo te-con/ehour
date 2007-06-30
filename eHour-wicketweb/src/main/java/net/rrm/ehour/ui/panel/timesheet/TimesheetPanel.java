@@ -40,13 +40,16 @@ import net.rrm.ehour.ui.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
+import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.AttributeModifier;
@@ -78,6 +81,9 @@ public class TimesheetPanel extends Panel
 
 	@SpringBean
 	private TimesheetService	timesheetService;
+	@SpringBean
+	private UserService			userService;
+	
 	private	EhourConfig			config;
 	
 	/**
@@ -152,18 +158,39 @@ public class TimesheetPanel extends Panel
 //	}
 	
 	/**
-	 * 
+	 * Add date labels (sun/mon etc)
 	 */
 	private void addDateLabels(WebMarkupContainer parent, Timesheet timesheet)
 	{
-		parent.add(new Label("sundayLabel", new DateModel(timesheet.getDateSequence()[0], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG)));
-		parent.add(new Label("mondayLabel", new DateModel(timesheet.getDateSequence()[1], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
-		parent.add(new Label("tuesdayLabel", new DateModel(timesheet.getDateSequence()[2], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
-		parent.add(new Label("wednesdayLabel", new DateModel(timesheet.getDateSequence()[3], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
-		parent.add(new Label("thursdayLabel", new DateModel(timesheet.getDateSequence()[4], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
-		parent.add(new Label("fridayLabel", new DateModel(timesheet.getDateSequence()[5], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
-		parent.add(new Label("saturdayLabel", new DateModel(timesheet.getDateSequence()[6], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG )));
+		Label	label;
 		
+		label = new Label("sundayLabel", new DateModel(timesheet.getDateSequence()[0], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+		label.setEscapeModelStrings(false);
+		parent.add(label);
+
+		label = new Label("mondayLabel", new DateModel(timesheet.getDateSequence()[1], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+		label.setEscapeModelStrings(false);
+		parent.add(label);
+
+		label = new Label("tuesdayLabel", new DateModel(timesheet.getDateSequence()[2], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+		label.setEscapeModelStrings(false);
+		parent.add(label);
+
+		label = new Label("wednesdayLabel", new DateModel(timesheet.getDateSequence()[3], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+		label.setEscapeModelStrings(false);
+		parent.add(label);
+
+		label = new Label("thursdayLabel", new DateModel(timesheet.getDateSequence()[4], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+		label.setEscapeModelStrings(false);
+		parent.add(label);
+		
+		label = new Label("fridayLabel", new DateModel(timesheet.getDateSequence()[5], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+		label.setEscapeModelStrings(false);
+		parent.add(label);
+
+		label = new Label("saturdayLabel", new DateModel(timesheet.getDateSequence()[6], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+		label.setEscapeModelStrings(false);
+		parent.add(label);
 	}
 	
 	/**
@@ -216,6 +243,7 @@ public class TimesheetPanel extends Panel
 	{
 		ListView customers = new ListView("customers", new ArrayList<Customer>(timesheet.getCustomers().keySet()))
 		{
+			private int index = 0;
 			{
 				setReuseItems(true);
 			}
@@ -224,11 +252,32 @@ public class TimesheetPanel extends Panel
 			protected void populateItem(ListItem item)
 			{
 				final Customer	customer = (Customer)item.getModelObject();
+
+				// check for any preference
+				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
 				
-				item.add(getCustomerLabel(customer));
+				if (foldPreference == null)
+				{
+					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
+				}
+				
+				
+				item.add(getCustomerLabel(customer, foldPreference));
 //				item.add(new Label("customerDesc", customer.getDescription()));
 
-				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer)));
+				// TODO fix
+				final String color = (index % 2 == 1) ? "background-color: #eef6fe" : "background-color: #eef6fe";
+
+				boolean hidden = (foldPreference != null && foldPreference.isFolded());
+				
+				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), color, hidden));
+	            item.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
+	            {
+	                public Object getObject()
+	                {
+	                    return color;
+	                }
+	            }));				
 			}
 		};
 		
@@ -240,20 +289,20 @@ public class TimesheetPanel extends Panel
 	 * @param customer
 	 * @return
 	 */
-	private Label getCustomerLabel(final Customer customer)
+	private Label getCustomerLabel(final Customer customer, final CustomerFoldPreference foldPreference)
 	{
 		Label	label;
 		
 		label = new Label("customer", customer.getName());
-		
-//		label.add();
+
 		label.add(new AjaxEventBehavior("onclick")
 		{
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				System.out.println("click");
+				foldPreference.toggleFolded();
 				
+				userService.persistCustomerFoldPreference(foldPreference);
 			}
 
 			@Override
@@ -295,18 +344,23 @@ public class TimesheetPanel extends Panel
 	{
 		private static final long serialVersionUID = -6905022018110510887L;
 		private	int counter;
+		private final String color;
+		private final boolean hidden;
 		
-		TimesheetRowList(String id, final List model)
+		TimesheetRowList(String id, final List<TimesheetRow> model, String color, boolean hidden)
 		{
 			super(id, model);
 			setReuseItems(true);
 			counter = 1;
+			this.color = color;
+			this.hidden = hidden;
 		}
 		
 		@Override
 		protected void populateItem(ListItem item)
 		{
 			final TimesheetRow	row = (TimesheetRow)item.getModelObject();
+			float totalHours = 0;
 
 			// add id to row
 			item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
@@ -316,7 +370,6 @@ public class TimesheetPanel extends Panel
 					return "pw" + row.getProjectAssignment().getProject().getCustomer().getCustomerId().toString() + counter++;
 				}
 			}));
-			
 			
 			item.add(new Label("project", row.getProjectAssignment().getProject().getName()));
 			item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
@@ -329,6 +382,30 @@ public class TimesheetPanel extends Panel
 			item.add(new TextField("thursday", new PropertyModel(row, "timesheetCells[4].timesheetEntry.hours")));
 			item.add(new TextField("friday", new PropertyModel(row, "timesheetCells[5].timesheetEntry.hours")));
 			item.add(new TextField("saturday", new PropertyModel(row, "timesheetCells[6].timesheetEntry.hours")));
+			
+			// calc total
+			for (int i = 0; i < 6; i++)
+			{
+				if (row.getTimesheetCells()[i] != null 
+						&& row.getTimesheetCells()[i].getTimesheetEntry() != null
+						&& row.getTimesheetCells()[i].getTimesheetEntry().getHours() != null)
+				{
+					totalHours += row.getTimesheetCells()[i].getTimesheetEntry().getHours().floatValue();
+				}
+			}
+			
+			item.add(new Label("total", new FloatModel(totalHours, config)));
+
+			if (hidden)
+			{
+	            item.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
+	            {
+	                public Object getObject()
+	                {
+	                    return "display: none";
+	                }
+	            }));
+			}
 		}
 	}
 	

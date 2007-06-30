@@ -95,6 +95,9 @@ public class TimesheetAssembler
 		timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());		
 	
 		timesheet.setComment(weekOverview.getComment());
+		timesheet.setUser(weekOverview.getUser());
+		timesheet.setFoldPreferences(weekOverview.getFoldPreferences());
+		
 		return timesheet;
 	}
 	

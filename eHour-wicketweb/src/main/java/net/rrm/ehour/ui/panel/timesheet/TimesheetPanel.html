@@ -19,9 +19,8 @@
 				<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
 				<table class="timesheetTable" cellpadding="0" cellspacing="0">
 					<tr class="weekColumnRow">
-						<td class="project" style="left">&nbsp;&nbsp;Project</td>
-						<td class="projectCode">Code</td>
-						<td class="customer" valign="bottom">Customer</td>
+						<td class="project" style="left">&nbsp;</td>
+						<td class="projectCode">&nbsp;</td>
 						<td class="spacer">&nbsp;</td>
 						
 						<td wicket:id="sundayLabel">Sunday</td>
@@ -30,12 +29,20 @@
 						<td wicket:id="wednesdayLabel">Wednesday</td>
 						<td wicket:id="thursdayLabel">Thursay</td>
 						<td wicket:id="fridayLabel">Friday</td>
-						<td class="lastChild" wicket:id="saturdayLabel">Saturday</td>
+						<td class="borderLess" wicket:id="saturdayLabel">Saturday</td>
+						<td class="borderLess" >&nbsp;</td>
 					</tr>
 					
 					<span wicket:id="customers">
-						<tr>	
-							<td colspan="11" wicket:id="customer">customer</td>
+						<tr class="projectRow">	
+							<td class="customerCell" colspan="4" wicket:id="customer">customer</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="saturday">&nbsp;</td>
+							<td class="saturday">&nbsp;</td>
 						</tr>
 
 						
@@ -45,7 +52,6 @@
 							</td>
 	
 							<td class="projectCode" wicket:id="projectCode">projectCode</td>
-							<td class="customer" >customer</td>
 							<td class="spacer">&nbsp;</td>
 							
 							<td class="sunday"><input wicket:id="sunday" size="2" /></td>
@@ -55,6 +61,7 @@
 							<td class="weekday"><input wicket:id="thursday" size="2" /></td>
 							<td class="weekday"><input wicket:id="friday" size="2" /></td>
 							<td class="saturday"><input wicket:id="saturday" size="2" /></td>
+							<td class="saturday" id="total" wicket:id="total"></td>
 						</tr>
 					</span>
 					

@@ -23,9 +23,11 @@
 
 package net.rrm.ehour.ui.model;
 
+import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
 
@@ -83,7 +85,7 @@ public class DateModel extends Model
 				dateFormatter = new SimpleDateFormat("MMMM yyyy", config.getLocale());
 				break;
 			case DATESTYLE_TIMESHEET_DAYLONG:
-				dateFormatter = new SimpleDateFormat("EEE d", config.getLocale());
+				dateFormatter = new TimesheetLongFormatter("EEE d", config.getLocale());
 				break;
 			default:
 				dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
@@ -121,5 +123,28 @@ public class DateModel extends Model
 	{
 		// TODO parse it properly
 		this.value = (Date)value;
+	}
+	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class TimesheetLongFormatter extends SimpleDateFormat
+	{
+		public TimesheetLongFormatter(String format, Locale locale)
+		{
+			super(format, locale);
+		}
+		
+		@Override
+	    public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition)
+		{
+			StringBuffer sb = super.format(date, toAppendTo, fieldPosition);
+			
+			String formatted = sb.toString();
+			
+			return new StringBuffer(formatted.replace(" ", "<br />"));
+		}
 	}
 }

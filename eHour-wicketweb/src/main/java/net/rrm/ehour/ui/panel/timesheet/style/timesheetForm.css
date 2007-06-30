@@ -25,14 +25,14 @@ div.timesheet
 
 .timesheetTable tr.weekColumnRow td
 {
-	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  bold 16px/16px Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
 	padding: 0;
 	text-align: center;
 }
 
-.timesheetTable tr.weekColumnRow td.lastChild
+.timesheetTable tr.weekColumnRow td.borderLess
 {
 	border: 0;
 }
@@ -173,6 +173,15 @@ div.timesheet
 	padding: 0;
 	border-right: 0px;
 	text-align: center;
+}
+
+.timesheetTable tr.projectRow td.customerCell
+{
+	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	padding: 0;
+	text-align: left;
 }
 
 .timesheetTable tr.projectRow td.weekday
