@@ -38,7 +38,7 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 	 */
 	private String code;
 	
-	private Set		users;
+	private Set<User>		users;
 
 	// Constructors
 
@@ -65,7 +65,7 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 	}
 
 	/** full constructor */
-	public UserDepartment(Integer departmentId, String name, String code, Set users)
+	public UserDepartment(Integer departmentId, String name, String code, Set<User> users)
 	{
 		this.departmentId = departmentId;
 		this.name = name;
@@ -128,12 +128,12 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 		this.code = code;
 	}
 
-	public Set getUsers()
+	public Set<User> getUsers()
 	{
 		return users;
 	}
 
-	public void setUsers(Set users)
+	public void setUsers(Set<User> users)
 	{
 		this.users = users;
 	}

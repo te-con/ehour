@@ -4,7 +4,7 @@
 
 <hibernate-mapping>
 	<class name="net.rrm.ehour.config.domain.Configuration" table="CONFIGURATION">
-		<!-- <cache usage="read-write" /> -->
+		<cache usage="read-write" />
 		
 		<id name="configKey" column="CONFIG_KEY" type="string" length="64" />
 

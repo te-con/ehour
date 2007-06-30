@@ -120,4 +120,8 @@
 	<bean id="mailLogDAO"
 		class="net.rrm.ehour.mail.dao.MailLogDAOHibernateImpl"
 		parent="abstractDAOTarget" />
-</beans>
+
+	<!-- CustomerFoldPreference DAO -->
+	<bean id="customerFoldPreferenceDAO"
+		class="net.rrm.ehour.user.dao.CustomerFoldPreferenceDAOHibernateImpl"
+		parent="abstractDAOTarget" /></beans>

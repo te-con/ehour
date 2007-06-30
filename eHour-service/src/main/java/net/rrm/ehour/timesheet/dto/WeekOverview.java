@@ -24,12 +24,16 @@
 package net.rrm.ehour.timesheet.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * Value object for timesheet entries of a week and corresponding comments
@@ -45,8 +49,31 @@ public class WeekOverview implements Serializable
 	private TimesheetComment		comment;
 	private	List<ProjectAssignment>	projectAssignments;
 	private	DateRange				weekRange;
+	private	CustomerFoldPreferenceList foldPreferences;
+	private	User					user;
+
+	/**
+	 * Get customser
+	 * @return
+	 */
+	public Set<Customer> getCustomers()
+	{
+		Set<Customer>	customers = new HashSet<Customer>();
+		
+		for (ProjectAssignment assignment : projectAssignments)
+		{
+			customers.add(assignment.getProject().getCustomer());
+		}
+
+		for (TimesheetEntry entry : timesheetEntries)
+		{
+			customers.add(entry.getEntryId().getProjectAssignment().getProject().getCustomer());
+		}
+
+		return customers;
+	}
 	
-/**
+	/**
 	 * @return the timesheetEntries
 	 */
 	public List<TimesheetEntry> getTimesheetEntries()
@@ -101,5 +128,35 @@ public class WeekOverview implements Serializable
 	public void setComment(TimesheetComment comment)
 	{
 		this.comment = comment;
+	}
+	/**
+	 * @return the foldPreferences
+	 */
+	public CustomerFoldPreferenceList getFoldPreferences()
+	{
+		return foldPreferences;
+	}
+	/**
+	 * @param foldPreferences the foldPreferences to set
+	 */
+	public void setFoldPreferences(CustomerFoldPreferenceList foldPreferences)
+	{
+		this.foldPreferences = foldPreferences;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public User getUser()
+	{
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user)
+	{
+		this.user = user;
 	}
 }

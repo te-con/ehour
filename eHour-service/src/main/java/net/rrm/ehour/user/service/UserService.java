@@ -29,6 +29,7 @@ import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -126,5 +127,9 @@ public interface UserService
      */
     public void checkProjectManagementRolesValid();
     
-    
+    /**
+     * Customer fold preference
+     * @param customerFoldPreference
+     */
+    public void persistCustomerFoldPreference(CustomerFoldPreference customerFoldPreference);
 }

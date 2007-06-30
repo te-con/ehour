@@ -33,6 +33,7 @@ import net.rrm.ehour.report.dao.ReportAggregatedDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
 import net.rrm.ehour.timesheet.service.TimesheetServiceIntegrationTest;
+import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAOImplTest;
 import net.rrm.ehour.user.dao.UserDAOTest;
 import net.rrm.ehour.user.dao.UserDepartmentDAOTest;
 import net.rrm.ehour.user.dao.UserRoleDAOTest;
@@ -56,7 +57,9 @@ import org.junit.runners.Suite.SuiteClasses;
 				ProjectAssignmentDAOTest.class,
 				TimesheetCommentDAOTest.class,
 				MailServiceTest.class,
-				MailLogDAOTest.class})
+				MailLogDAOTest.class,
+				CustomerFoldPreferenceDAOImplTest.class
+				})
 //				ReportPerMonthDAOTest.class}) TODO fix the hibernate tx manager usage here (leave it out)
 
 public class DAOTests

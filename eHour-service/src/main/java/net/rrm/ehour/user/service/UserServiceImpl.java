@@ -34,9 +34,11 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
+import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -51,6 +53,7 @@ import org.apache.log4j.Logger;
  */
 public class UserServiceImpl implements UserService
 {
+	private CustomerFoldPreferenceDAO	customerFoldPreferenceDAO;
 	private	UserDAO				userDAO;
 	private	UserDepartmentDAO	userDepartmentDAO;
 	private	UserRoleDAO			userRoleDAO;
@@ -377,5 +380,22 @@ public class UserServiceImpl implements UserService
 		shaPass = DigestUtils.sha(plainPassword);
 		
 		return new String(Hex.encodeHex(shaPass));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#persistCustomerFoldPreference(net.rrm.ehour.user.domain.CustomerFoldPreference)
+	 */
+	public void persistCustomerFoldPreference(CustomerFoldPreference customerFoldPreference)
+	{
+		customerFoldPreferenceDAO.persist(customerFoldPreference);
+	}
+
+	/**
+	 * @param customerFoldPreferenceDAO the customerFoldPreferenceDAO to set
+	 */
+	public void setCustomerFoldPreferenceDAO(CustomerFoldPreferenceDAO customerFoldPreferenceDAO)
+	{
+		this.customerFoldPreferenceDAO = customerFoldPreferenceDAO;
 	}
 }

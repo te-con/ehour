@@ -40,10 +40,11 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.user.dao.UserDAO#findByUsername(java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	public User findByUsername(String username)
 	{
-		User	user = null;
-		List	l;
+		User		user = null;
+		List<User>	l;
 		
 		l = getHibernateTemplate().findByNamedQueryAndNamedParam("User.findByUsername", "username", username);
 		

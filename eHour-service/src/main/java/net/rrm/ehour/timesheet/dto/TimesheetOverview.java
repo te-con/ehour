@@ -10,6 +10,11 @@ import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
 public class TimesheetOverview implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 294150320597773932L;
+	
 	private	SortedSet<UserProjectStatus>	projectStatus;
 	private	Map<Integer, List<TimesheetEntry>>		timesheetEntries;
 

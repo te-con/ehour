@@ -49,9 +49,11 @@ import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
+import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
+import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
@@ -67,6 +69,7 @@ import org.apache.log4j.Logger;
 
 public class TimesheetServiceImpl implements TimesheetService
 {
+	private CustomerFoldPreferenceDAO	customerFoldPreferenceDAO;
 	private	TimesheetDAO		timesheetDAO;
 	private TimesheetCommentDAO	timesheetCommentDAO;
 	private	ReportService		reportService;
@@ -257,8 +260,15 @@ public class TimesheetServiceImpl implements TimesheetService
 		weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), DateUtil.getInversedDateRangeForWeek(requestedWeek)));
 		logger.debug("Week overview: project assignments found for userId " + user.getUserId() + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
 		
+		weekOverview.setFoldPreferences(new CustomerFoldPreferenceList(customerFoldPreferenceDAO.getPreferenceForUser(user, weekOverview.getCustomers())));
+		logger.debug("Week overview: customer fold preferences found for userId " + user.getUserId() + ": " + weekOverview.getFoldPreferences().size());
+		
+		weekOverview.setUser(user);
+		
 		return weekOverview;
-	}	
+	}
+	
+	
 
 	/**
 	 * Persist timesheets & comment
@@ -354,5 +364,13 @@ public class TimesheetServiceImpl implements TimesheetService
 	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
 	{
 		this.projectAssignmentService = projectAssignmentService;
+	}
+
+	/**
+	 * @param customerFoldPreferenceDAO the customerFoldPreferenceDAO to set
+	 */
+	public void setCustomerFoldPreferenceDAO(CustomerFoldPreferenceDAO customerFoldPreferenceDAO)
+	{
+		this.customerFoldPreferenceDAO = customerFoldPreferenceDAO;
 	}
 }

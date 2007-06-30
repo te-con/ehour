@@ -84,4 +84,11 @@
 				user.active IS TRUE
 	    GROUP BY user
 	</query>
+	
+	<query name="CustomerFoldPreference.findForUserAndCustomers"> 
+		SELECT pref
+		FROM CustomerFoldPreference pref
+	    WHERE pref.foldPreferenceId.user = :user 
+	    		AND pref.foldPreferenceId.customer IN (:customers)
+	</query>	
 </hibernate-mapping>

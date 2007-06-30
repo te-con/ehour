@@ -14,7 +14,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 /**
  * @author  Thies
  */
-public class User  extends DomainObject<Integer, User>
+public class User extends DomainObject<Integer, User>
 {
 
 	// Fields    
@@ -245,7 +245,7 @@ public class User  extends DomainObject<Integer, User>
 			return false;
 		}
 		User rhs = (User) object;
-		return new EqualsBuilder().appendSuper(super.equals(object))
+		return new EqualsBuilder()
 					.append(this.userId, rhs.userId)
 					.isEquals();
 	}
@@ -255,7 +255,7 @@ public class User  extends DomainObject<Integer, User>
 	 */
 	public int hashCode()
 	{
-		return new HashCodeBuilder(-2038170721, -475387721).appendSuper(super.hashCode())
+		return new HashCodeBuilder(-2038170721, -475387721)
 				.append(this.userId)
 				.toHashCode();
 	}
