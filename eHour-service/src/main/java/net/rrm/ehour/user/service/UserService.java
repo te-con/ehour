@@ -35,7 +35,7 @@ import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 
 
-public interface UserService
+public interface UserService 
 {
 	/**
 	 * Get user by userId
@@ -46,6 +46,14 @@ public interface UserService
 	 * @throws NoResultsException
 	 */
     public User getUser(Integer userID);
+    
+	/**
+	 * Get user by username
+	 * @param userID
+	 * @return
+	 * @throws NoResultsException
+	 */
+    public User getUser(String username);    
     
     /**
      * Get user on username and plain password

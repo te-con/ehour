@@ -28,11 +28,13 @@ import net.rrm.ehour.ui.page.login.LoginPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.acegisecurity.AuthenticationManager;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.PackageName;
 
@@ -40,23 +42,27 @@ import org.apache.wicket.util.lang.PackageName;
  * Base config for wicket eHour webapp
  **/
 
-public class EhourWebApplication extends AuthenticatedWebApplication 
+public class EhourWebApplication extends AuthenticatedWebApplication
 {
 	private AuthenticationManager authenticationManager;
-	
+
 	public void init()
 	{
 		super.init();
+		
+		System.out.println("atuh: " + authenticationManager);
 
 		mount("/admin", PackageName.forClass(AssignmentPage.class));
 		mount("/consultant", PackageName.forPackage(OverviewPage.class.getPackage()));
 		mount("/consultant/timesheet", PackageName.forPackage(Page2.class.getPackage()));
 		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-		
+
 		addComponentInstantiationListener(new SpringComponentInjector(this));
-		
+
 		getSecuritySettings().setAuthorizationStrategy(new MetaDataRoleAuthorizationStrategy(this));
-		
+
+        MetaDataRoleAuthorizationStrategy.authorize(OverviewPage.class, EhourConstants.ROLE_CONSULTANT);
+        MetaDataRoleAuthorizationStrategy.authorize(AssignmentPage.class, EhourConstants.ROLE_ADMIN);		
 	}
 
 	/**
@@ -67,25 +73,35 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		return OverviewPage.class;
 	}
-    protected Class getSignInPageClass() {
-        return LoginPage.class;
-    }
 
-    /*
-     * 
-     */
-    public AuthenticationManager getAuthenticationManager()
-    {
-        return authenticationManager;
-    }
+	protected Class getSignInPageClass()
+	{
+		return LoginPage.class;
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see org.apache.wicket.authentication.AuthenticatedWebApplication#getWebSessionClass()
-     */
+	/*
+	 * 
+	 */
+	public AuthenticationManager getAuthenticationManager()
+	{
+		return authenticationManager;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.authentication.AuthenticatedWebApplication#getWebSessionClass()
+	 */
 	@Override
 	protected Class<? extends AuthenticatedWebSession> getWebSessionClass()
 	{
 		return EhourWebSession.class;
+	}
+
+	/**
+	 * @param authenticationManager the authenticationManager to set
+	 */
+	public void setAuthenticationManager(AuthenticationManager authenticationManager)
+	{
+		this.authenticationManager = authenticationManager;
 	}
 }

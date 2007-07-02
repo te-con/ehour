@@ -61,7 +61,7 @@ public class LoginPage extends WebPage
 		EhourWebSession YourAppSession = EhourWebSession.getYourAppSession();
 		if (YourAppSession.isSignedIn())
 		{
-			error(getLocalizer().getString("login.errors.alreadysignedin", LoginPage.this));
+			error("already logged in");
 		}
 	}
 
@@ -88,7 +88,7 @@ public class LoginPage extends WebPage
 			if (EhourWebSession.getYourAppSession().isSignedIn())
 			{
 				// Already logged in, ignore the submit.
-				error(getLocalizer().getString("login.errors.alreadysignedin", LoginPage.this));
+				error("already logged in");
 
 			} else
 			{
@@ -118,7 +118,7 @@ public class LoginPage extends WebPage
 				} else
 				{
 					System.out.println("Could not authenticate user '" + username + "'. Transferring back to sign-in page.");
-					error(getLocalizer().getString("login.errors.invalidCredentials", LoginPage.this));
+					error("invalid user/pass");
 				}
 			}
 

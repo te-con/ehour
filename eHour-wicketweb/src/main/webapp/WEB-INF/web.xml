@@ -55,6 +55,10 @@
 			<param-name>applicationClassName</param-name>
 			<param-value>net.rrm.ehour.ui.EhourWebApplication</param-value>
 		</init-param>
+    <init-param>
+        <param-name>applicationFactoryClassName</param-name>
+        <param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
+    </init-param>		
 	</filter>
 
 	<filter-mapping>

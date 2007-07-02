@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.ui.border;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 
 /**

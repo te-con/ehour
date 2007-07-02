@@ -90,6 +90,17 @@ public class UserServiceImpl implements UserService
 		
 		return user;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#getUser(java.lang.String)
+	 */
+	public User getUser(String username) 
+	{
+		User user = userDAO.findByUsername(username);
+		
+		return user;
+	}	
 
 	/**
 	 * 
