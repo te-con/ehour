@@ -24,6 +24,7 @@
 package net.rrm.ehour.ui.util;
 
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -35,6 +36,16 @@ import org.apache.wicket.markup.html.WebPage;
 
 public class AuthUtil
 {
+	/**
+	 * Get logged in user
+	 * @return
+	 */
+	public static User getUser()
+	{
+		EhourWebSession session = EhourWebSession.getSession();
+		
+		return (session.getUser() != null) ? session.getUser().getUser() : null;
+	}
 	
 	/**
 	 * Check if the logged in user has the specified role

@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.util.AuthUtil;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
@@ -56,6 +57,9 @@ public class MainNavPanel extends Panel
 		addLink(this, "page2Link", Page2.class);
 		addLink(this, "assignmentLink", AssignmentPage.class);
 		addLink(this, "logoffLink", LoginPage.class);
+		
+		// TODO possible NPE
+		add(new Label("loggedInUser", AuthUtil.getUser().getFullName()));
 		
 		add(new StyleSheetReference("headerStyle", headerStyle()));
 	}
