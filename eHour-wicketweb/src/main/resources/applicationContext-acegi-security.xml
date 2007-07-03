@@ -8,7 +8,7 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/**=httpSessionContextIntegrationFilter
+				/**=httpSessionContextIntegrationFilter,rememberMeProcessingFilter
 			</value>
 		</property>
 	</bean>
@@ -53,7 +53,17 @@
 
 	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder"/>
 	
-   
+	<bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="rememberMeServices" ref="rememberMeServices"/> 
+	</bean>
+	
+	<bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
+		<property name="userDetailsService" ref="authService"/>
+		<property name="key" value="eHour"/>
+		<property name="parameter"><value>j_acegi_security_remember_me</value></property>
+	</bean>	
+	   
 <!-- 
 	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
 		<constructor-arg value="/index.jsp"/>
@@ -76,10 +86,7 @@
    
 	<bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
 
-	<bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
-		<property name="authenticationManager" ref="authenticationManager"/>
-		<property name="rememberMeServices" ref="rememberMeServices"/> 
-	</bean>
+
 
 	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
 		<property name="authenticationEntryPoint">
@@ -120,11 +127,7 @@
 		</property>
 	</bean>
 
-	<bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
-		<property name="userDetailsService" ref="userService"/>
-		<property name="key" value="eHour"/>
-		<property name="parameter"><value>j_acegi_security_remember_me</value></property>
-	</bean>
+
 
  
 	

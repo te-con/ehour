@@ -57,8 +57,6 @@ public class MainNavPanel extends Panel
 		addLink(this, "page2Link", Page2.class);
 		addLink(this, "assignmentLink", AssignmentPage.class);
 		addLink(this, "logoffLink", LoginPage.class);
-		
-		// TODO possible NPE
 		add(new Label("loggedInUser", AuthUtil.getUser().getFullName()));
 		
 		add(new StyleSheetReference("headerStyle", headerStyle()));
