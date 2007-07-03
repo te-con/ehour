@@ -89,6 +89,15 @@ public class User extends DomainObject<Integer, User>
 		this.userDepartment = userDepartment;
 	}
 
+	/**
+	 * Get fullname
+	 * @return
+	 */
+	public String getFullName()
+	{
+		return ((firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "")).trim();
+	}
+	
 	// Property accessors
 	public Integer getUserId()
 	{
