@@ -47,7 +47,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 public class LoginPage extends WebPage
 {
 	private static final long serialVersionUID = -134022212692477120L;
-	private	Logger		logger = Logger.getLogger(LoginPage.class);
+	private	static Logger logger = Logger.getLogger(LoginPage.class);
 
 	/**
 	 * 

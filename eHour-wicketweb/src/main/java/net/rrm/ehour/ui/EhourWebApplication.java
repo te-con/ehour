@@ -63,7 +63,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		addComponentInstantiationListener(new SpringComponentInjector(this));
 
 		setupSecurity();
-
 	}
 	
 	/**

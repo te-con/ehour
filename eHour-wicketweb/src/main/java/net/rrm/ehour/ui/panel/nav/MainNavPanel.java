@@ -27,8 +27,11 @@ import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
 import net.rrm.ehour.ui.page.login.LoginPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
+import net.rrm.ehour.ui.util.AuthUtil;
 
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
@@ -49,12 +52,28 @@ public class MainNavPanel extends Panel
 	{
 		super(id);
 		
-		add(new BookmarkablePageLink("overviewLink", OverviewPage.class));
-		add(new BookmarkablePageLink("page2Link", Page2.class));
-		add(new BookmarkablePageLink("assignmentLink", AssignmentPage.class));
-		add(new BookmarkablePageLink("logoffLink", LoginPage.class));
+		addLink(this, "overviewLink", OverviewPage.class);
+		addLink(this, "page2Link", Page2.class);
+		addLink(this, "assignmentLink", AssignmentPage.class);
+		addLink(this, "logoffLink", LoginPage.class);
 		
 		add(new StyleSheetReference("headerStyle", headerStyle()));
+	}
+
+	/**
+	 * Add link to hierarchy, visibility off if user is not authorized to view the page
+	 * @param parent
+	 * @param id
+	 * @param linkPage
+	 */
+	private void addLink(WebMarkupContainer parent, String id, Class<? extends WebPage> linkPage)
+	{
+		BookmarkablePageLink	link;
+		
+		link = new BookmarkablePageLink(id, linkPage);
+		link.setVisible(AuthUtil.userAuthorizedForPage(linkPage));
+	
+		parent.add(link);
 	}
 	
 	/**
