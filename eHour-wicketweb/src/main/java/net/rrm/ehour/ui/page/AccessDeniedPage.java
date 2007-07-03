@@ -1,5 +1,5 @@
 /**
- * Created on Jun 19, 2007
+ * Created on Jul 2, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,20 +21,15 @@
  *
  */
 
-package net.rrm.ehour.ui.util;
+package net.rrm.ehour.ui.page;
+
+import org.apache.wicket.markup.html.WebPage;
 
 /**
- * Commons 
+ * Access denied page
  **/
 
-public class CommonStaticData
+public class AccessDeniedPage extends WebPage
 {
-	public final static int	AJAX_CALENDARPANEL_MONTH_CHANGE = 1;
-	public final static int	AJAX_CALENDARPANEL_WEEK_CLICK = 2;
-	
-	public final static String ROLE_CONSULTANT = "ROLE_CONSULTANT";
-	public final static String ROLE_ADMIN = "ROLE_ADMIN";
-	public final static String ROLE_REPORT = "ROLE_REPORT";
-	public final static String ROLE_PM = "ROLE_PROJECTMANAGER";
-	
+
 }

@@ -33,8 +33,8 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -42,6 +42,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Overview page
  */
 
+@AuthorizeInstantiation("ROLE_CONSULTANT")
 public class OverviewPage extends BasePage
 {
 	private static final long serialVersionUID = -6873845464139697303L;
@@ -57,15 +58,14 @@ public class OverviewPage extends BasePage
 	 * Setup the page
 	 *
 	 */
-	public OverviewPage(PageParameters params)
+	public OverviewPage()
 	{
 		super("overview", null);
 		
 		session = ((EhourWebSession)this.getSession());
 		
 		// TODO
-		user = new User(1);
-		session.setUser(user);
+		user = session.getUser().getUser();
 
 		// add calendar panel
 		calendarPanel = new CalendarPanel("sidePanel", user);

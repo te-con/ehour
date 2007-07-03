@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.util;
 
-import net.rrm.ehour.user.domain.UserRole;
 
 /**
  * TODO change to enum 
@@ -38,10 +37,5 @@ public class EhourConstants
 	public final static int MAILTYPE_FIXED_ALLOTTED_REACHED = 1;
 	public final static int MAILTYPE_FLEX_ALLOTTED_REACHED = 2;
 	public final static int MAILTYPE_FLEX_OVERRUN_REACHED = 3;
-	
-	public final static String ROLE_CONSULTANT = "ROLE_CONSULTANT";
-	public final static String ROLE_ADMIN = "ROLE_ADMIN";
-	public final static String ROLE_REPORT = "ROLE_REPORT";
-	public final static String ROLE_PM = "ROLE_PROJECTMANAGER";
 }
 

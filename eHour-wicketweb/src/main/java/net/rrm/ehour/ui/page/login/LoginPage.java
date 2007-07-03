@@ -25,9 +25,11 @@ package net.rrm.ehour.ui.page.login;
 
 import java.io.Serializable;
 
+import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.ui.util.CommonStaticData;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.Roles;
@@ -37,7 +39,6 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 
 /**
  * Login page 
@@ -45,23 +46,40 @@ import org.apache.wicket.model.IModel;
 
 public class LoginPage extends WebPage
 {
+	private static final long serialVersionUID = -134022212692477120L;
+	private	Logger		logger = Logger.getLogger(LoginPage.class);
+
+	/**
+	 * 
+	 */
 	public LoginPage()
 	{
 		this(null);
 	}
 
 	/**
-	 * Creates a new sign-in page with the given parameters (ignored).
+	 * Check if the session exists, kill the session and redirect to the homepage.
+	 * This will trigger the authentication but at least the redirect is properly setup
 	 * @param parameters page parameters (ignored)
 	 */
 	public LoginPage(final PageParameters parameters)
 	{
-		add(new SignInForm("loginform", new SimpleUser()));
-
-		EhourWebSession YourAppSession = EhourWebSession.getYourAppSession();
-		if (YourAppSession.isSignedIn())
+		EhourWebSession session = EhourWebSession.getSession();
+		
+		if (session.isSignedIn())
 		{
-			error("already logged in");
+			if (logger.isInfoEnabled())
+			{
+				logger.info("User already signed in, logging out");
+			}
+			
+			session.signOut();
+			setResponsePage(getApplication().getHomePage());
+		}
+		else
+		{
+			add(new SignInForm("loginform", new SimpleUser()));
+
 		}
 	}
 
@@ -72,6 +90,13 @@ public class LoginPage extends WebPage
 	 */
 	public final class SignInForm extends Form
 	{
+		private static final long serialVersionUID = -4355842488508724254L;
+
+		/**
+		 * 
+		 * @param id
+		 * @param model
+		 */
 		public SignInForm(String id, SimpleUser model)
 		{
 			super(id, new CompoundPropertyModel(model));
@@ -85,9 +110,9 @@ public class LoginPage extends WebPage
 		 */
 		protected void onSubmit()
 		{
-			if (EhourWebSession.getYourAppSession().isSignedIn())
+			if (EhourWebSession.getSession().isSignedIn())
 			{
-				// Already logged in, ignore the submit.
+				// now this really shouldn't happen as the session is killed in the constructor
 				error("already logged in");
 
 			} else
@@ -98,33 +123,51 @@ public class LoginPage extends WebPage
 
 				// Attempt to authenticate.
 				EhourWebSession session = (EhourWebSession) Session.get();
+				
+				// When authenticated decide the redirect
 				if (session.signIn(username, password))
 				{
-
-					Roles roles = session.getRoles();
-					if (!continueToOriginalDestination())
+					Class<? extends WebPage> homepage = getHomepageForRole(session.getRoles());
+					
+					if (logger.isDebugEnabled())
 					{
-						// Continue to the application home page.
-						setResponsePage(getApplication().getHomePage());
-
-						// TODO
-							System.out.println("User '" + username + "' directed to application" + " homepage (" + getApplication().getHomePage().getName() + ").");
-
-					} else
-					{
-							System.out.println("User '" + username + "' continues to original destination.");
+						logger.debug("User '" + username + "' redirected to " + homepage.getName());
 					}
-
-				} else
-				{
-					System.out.println("Could not authenticate user '" + username + "'. Transferring back to sign-in page.");
-					error("invalid user/pass");
+					
+					setResponsePage(homepage);
 				}
 			}
 
 			// ALWAYS do a redirect, no matter where we are going to. The point is that the
 			// submitting page should be gone from the browsers history.
 			setRedirect(true);
+		}
+		
+		/**
+		 * TODO externalize?
+		 * @param roles
+		 * @return
+		 */
+		@SuppressWarnings("unchecked")
+		private Class<? extends WebPage> getHomepageForRole(Roles roles)
+		{
+			Class<? extends WebPage>	homepage;
+			
+			if (roles.contains(CommonStaticData.ROLE_ADMIN))
+			{
+				homepage = AssignmentPage.class;
+			}
+			else if (roles.contains(CommonStaticData.ROLE_REPORT))
+			{
+				// TODO replace with report
+				homepage = AssignmentPage.class;
+			}
+			else
+			{
+				homepage = getApplication().getHomePage();
+			}
+		
+			return homepage;
 		}
 	}
 
@@ -137,7 +180,6 @@ public class LoginPage extends WebPage
 		private static final long serialVersionUID = -5617176504597041829L;
 
 		private String username;
-
 		private String password;
 
 		public String getUsername()

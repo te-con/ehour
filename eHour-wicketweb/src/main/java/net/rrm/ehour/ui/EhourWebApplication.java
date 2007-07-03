@@ -28,13 +28,17 @@ import net.rrm.ehour.ui.page.login.LoginPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.acegisecurity.AuthenticationManager;
+import org.apache.wicket.Component;
+import org.apache.wicket.Page;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
-import org.apache.wicket.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy;
-import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
+import org.apache.wicket.authorization.UnauthorizedInstantiationException;
+import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.PackageName;
 
@@ -50,8 +54,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		super.init();
 		
-		System.out.println("atuh: " + authenticationManager);
-
+		mount("/login", PackageName.forClass(LoginPage.class));
 		mount("/admin", PackageName.forClass(AssignmentPage.class));
 		mount("/consultant", PackageName.forPackage(OverviewPage.class.getPackage()));
 		mount("/consultant/timesheet", PackageName.forPackage(Page2.class.getPackage()));
@@ -59,22 +62,49 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
 		addComponentInstantiationListener(new SpringComponentInjector(this));
 
-		getSecuritySettings().setAuthorizationStrategy(new MetaDataRoleAuthorizationStrategy(this));
+		setupSecurity();
 
-        MetaDataRoleAuthorizationStrategy.authorize(OverviewPage.class, EhourConstants.ROLE_CONSULTANT);
-        MetaDataRoleAuthorizationStrategy.authorize(AssignmentPage.class, EhourConstants.ROLE_ADMIN);		
+	}
+	
+	/**
+	 * 
+	 */
+	private void setupSecurity()
+	{
+		// TODO use a msg on the login page indicating the session was expired 
+		getApplicationSettings().setPageExpiredErrorPage(LoginPage.class);
+
+		getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
+
+		getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
+        {
+            public void onUnauthorizedInstantiation(final Component component)
+            {
+                if (component instanceof Page)
+                {
+                    throw new RestartResponseAtInterceptPageException(LoginPage.class);
+                }
+                else
+                {
+                    throw new UnauthorizedInstantiationException(component.getClass());
+                }
+            }
+        });		
 	}
 
 	/**
 	 * Set the homepage
 	 */
 	@Override
-	public Class getHomePage()
+	public Class<? extends WebPage> getHomePage()
 	{
 		return OverviewPage.class;
 	}
 
-	protected Class getSignInPageClass()
+	/**
+	 * The login page for unauthenticated clients
+	 */
+	protected Class<? extends WebPage> getSignInPageClass()
 	{
 		return LoginPage.class;
 	}

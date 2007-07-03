@@ -28,6 +28,7 @@ import java.util.GregorianCalendar;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.EhourWebApplication;
+import net.rrm.ehour.ui.authorization.AuthUser;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
@@ -50,13 +51,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * TODO 
  **/
 
-public class EhourWebSession extends AuthenticatedWebSession 
+public class EhourWebSession extends AuthenticatedWebSession
 {
 	@SpringBean
-	private EhourConfig	ehourConfig;
-	
-	private	User		user;
-	private	Calendar	navCalendar;
+	private EhourConfig ehourConfig;
+
+	private Calendar navCalendar;
+
 	private static final long serialVersionUID = 93189812483240412L;
 
 	/**
@@ -67,10 +68,10 @@ public class EhourWebSession extends AuthenticatedWebSession
 	public EhourWebSession(final AuthenticatedWebApplication application, Request req)
 	{
 		super(application, req);
-		
+
 		InjectorHolder.getInjector().inject(this);
 	}
-	
+
 	/**
 	 * Get ehour config
 	 * @return
@@ -91,8 +92,8 @@ public class EhourWebSession extends AuthenticatedWebSession
 			navCalendar = new GregorianCalendar();
 			navCalendar.add(Calendar.MONTH, -2);
 		}
-		
-		return (Calendar)navCalendar.clone();
+
+		return (Calendar) navCalendar.clone();
 	}
 
 	/**
@@ -102,76 +103,72 @@ public class EhourWebSession extends AuthenticatedWebSession
 	{
 		this.navCalendar = navCalendar;
 	}
-	
+
 	/**
 	 * Get logged in user id
 	 * TODO auth
 	 * @return
 	 */
-	public User getUser()
+	public AuthUser getUser()
 	{
-		User user = null;
-		
+		AuthUser	user = null;
+
 		if (isSignedIn())
 		{
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			user = (User) authentication.getPrincipal();
+			user = (AuthUser) authentication.getPrincipal();
 		}
 		return user;
-	}
-
-	/**
-	 * @param user
-	 *            the user to set
-	 */
-	public void setUser(User user)
-	{
-		this.user = user;
 	}
 
 	@Override
 	public boolean authenticate(String username, String password)
 	{
-        String u = username == null ? "" : username;
-        String p = password == null ? "" : password;
+		String u = username == null ? "" : username;
+		String p = password == null ? "" : password;
 
-        // Create an Acegi authentication request.
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
+		// Create an Acegi authentication request.
+		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
 
-        // Attempt authentication.
-        try {
-            AuthenticationManager authenticationManager = ((EhourWebApplication) getApplication()).getAuthenticationManager();
-            Authentication authResult = authenticationManager.authenticate(authRequest);
-            setAuthentication(authResult);
+		// Attempt authentication.
+		try
+		{
+			AuthenticationManager authenticationManager = ((EhourWebApplication) getApplication()).getAuthenticationManager();
+			Authentication authResult = authenticationManager.authenticate(authRequest);
+			setAuthentication(authResult);
 
-            // TODO
-            System.out.println("Login by user '" + username + "'.");
-            return true;
+			// TODO
+			System.out.println("Login by user '" + username + "'.");
+			return true;
 
-        } catch (BadCredentialsException e) {
-        	System.out.println("Failed login by user '" + username + "'.");
-            setAuthentication(null);
-            return false;
+		} catch (BadCredentialsException e)
+		{
+			System.out.println("Failed login by user '" + username + "'.");
+			setAuthentication(null);
+			return false;
 
-        } catch (AuthenticationException e) {
-        	e.printStackTrace();
-        	System.out.println("Could not authenticate a user");
-            setAuthentication(null);
-            throw e;
+		} catch (AuthenticationException e)
+		{
+			e.printStackTrace();
+			System.out.println("Could not authenticate a user");
+			setAuthentication(null);
+			throw e;
 
-        } catch (RuntimeException e) {
-        	e.printStackTrace();
-        	System.out.println("Unexpected exception while authenticating a user");
-            setAuthentication(null);
-            throw e;
-        }	}
+		} catch (RuntimeException e)
+		{
+			e.printStackTrace();
+			System.out.println("Unexpected exception while authenticating a user");
+			setAuthentication(null);
+			throw e;
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.authentication.AuthenticatedWebSession#getRoles()
 	 */
 	@Override
-    public Roles getRoles()
+	public Roles getRoles()
 	{
 		if (isSignedIn())
 		{
@@ -188,31 +185,35 @@ public class EhourWebSession extends AuthenticatedWebSession
 		}
 		return null;
 	}
-	
-    public void signout() {
-        User user = getUser();
-        if (user != null) {
-        	// TODO logg
-            System.out.println("Logout by user '" + user.getUsername() + "'.");
-        }
-        setAuthentication(null);
-        invalidate();
-    }	
-    
-    /**
-     * Sets the acegi authentication.
-     * @param authentication the authentication or null to clear 
-     */
-    private void setAuthentication(Authentication authentication) {
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-    
-    /**
+
+	public void signOut()
+	{
+		AuthUser user = getUser();
+
+		if (user != null)
+		{
+			// TODO logg
+			System.out.println("Logout by user '" + user.getUsername() + "'.");
+		}
+		setAuthentication(null);
+		invalidate();
+		super.signOut();
+	}
+
+	/**
+	 * Sets the acegi authentication.
+	 * @param authentication the authentication or null to clear 
+	 */
+	private void setAuthentication(Authentication authentication)
+	{
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+	}
+
+	/**
 	 * @return the current YourApp session
 	 */
-	public static EhourWebSession getYourAppSession()
+	public static EhourWebSession getSession()
 	{
 		return (EhourWebSession) Session.get();
-	}    
+	}
 }
-

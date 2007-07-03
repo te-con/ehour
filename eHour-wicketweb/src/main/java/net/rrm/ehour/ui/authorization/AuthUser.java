@@ -97,25 +97,21 @@ public class AuthUser extends org.acegisecurity.userdetails.User
 		this.user = user;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public User getUser()
 	{
 		return user;
 	}
 
+	/**
+	 * 
+	 * @param user
+	 */
 	public void setUser(User user)
 	{
 		this.user = user;
 	}
-
-	// authentication taglib..
-	public String getFirstName()
-	{
-		return user.getFirstName();
-	}
-
-	public String getLastName()
-	{
-		return user.getLastName();
-	}
-
 }

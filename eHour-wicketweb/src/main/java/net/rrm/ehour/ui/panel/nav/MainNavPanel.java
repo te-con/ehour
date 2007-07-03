@@ -24,6 +24,7 @@
 package net.rrm.ehour.ui.panel.nav;
 
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
+import net.rrm.ehour.ui.page.login.LoginPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
 
@@ -51,6 +52,7 @@ public class MainNavPanel extends Panel
 		add(new BookmarkablePageLink("overviewLink", OverviewPage.class));
 		add(new BookmarkablePageLink("page2Link", Page2.class));
 		add(new BookmarkablePageLink("assignmentLink", AssignmentPage.class));
+		add(new BookmarkablePageLink("logoffLink", LoginPage.class));
 		
 		add(new StyleSheetReference("headerStyle", headerStyle()));
 	}

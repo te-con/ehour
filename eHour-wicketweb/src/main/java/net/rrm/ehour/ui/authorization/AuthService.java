@@ -25,7 +25,6 @@ package net.rrm.ehour.ui.authorization;
 
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.user.service.UserServiceImpl;
 
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
@@ -34,13 +33,13 @@ import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 
 /**
- * TODO 
+ * Provides userDetails 
  **/
 
 public class AuthService implements UserDetailsService
 {
 	private	UserService	userService;
-	private	Logger		logger = Logger.getLogger(UserServiceImpl.class);	
+	private	Logger		logger = Logger.getLogger(AuthService.class);	
 
 	/**
 	 * Get user by username (acegi)

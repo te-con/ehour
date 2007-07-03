@@ -25,10 +25,13 @@ package net.rrm.ehour.ui.page.admin.assignment;
 
 import net.rrm.ehour.ui.page.BasePage;
 
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+
 /**
  * TODO 
  **/
 
+@AuthorizeInstantiation("ROLE_ADMIN")
 public class AssignmentPage extends BasePage
 {
 	public AssignmentPage()
