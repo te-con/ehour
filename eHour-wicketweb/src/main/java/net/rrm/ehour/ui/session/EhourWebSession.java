@@ -29,7 +29,6 @@ import java.util.GregorianCalendar;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.authorization.AuthUser;
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 import org.acegisecurity.Authentication;
@@ -39,6 +38,7 @@ import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.apache.log4j.Logger;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
@@ -55,9 +55,9 @@ public class EhourWebSession extends AuthenticatedWebSession
 {
 	@SpringBean
 	private EhourConfig ehourConfig;
-
 	private Calendar navCalendar;
-
+	private	static Logger logger = Logger.getLogger(EhourWebSession.class);
+	
 	private static final long serialVersionUID = 93189812483240412L;
 
 	/**
@@ -106,7 +106,6 @@ public class EhourWebSession extends AuthenticatedWebSession
 
 	/**
 	 * Get logged in user id
-	 * TODO auth
 	 * @return
 	 */
 	public AuthUser getUser()
@@ -121,6 +120,9 @@ public class EhourWebSession extends AuthenticatedWebSession
 		return user;
 	}
 
+	/**
+	 * Authenticate based on username/pass
+	 */
 	@Override
 	public boolean authenticate(String username, String password)
 	{
@@ -138,26 +140,24 @@ public class EhourWebSession extends AuthenticatedWebSession
 			setAuthentication(authResult);
 
 			// TODO
-			System.out.println("Login by user '" + username + "'.");
+			logger.info("Login by user '" + username + "'.");
 			return true;
 
 		} catch (BadCredentialsException e)
 		{
-			System.out.println("Failed login by user '" + username + "'.");
+			logger.info("Failed login by user '" + username + "'.");
 			setAuthentication(null);
 			return false;
 
 		} catch (AuthenticationException e)
 		{
-			e.printStackTrace();
-			System.out.println("Could not authenticate a user");
+			logger.info("Could not authenticate a user", e);
 			setAuthentication(null);
 			throw e;
 
 		} catch (RuntimeException e)
 		{
-			e.printStackTrace();
-			System.out.println("Unexpected exception while authenticating a user");
+			logger.info("Unexpected exception while authenticating a user", e);
 			setAuthentication(null);
 			throw e;
 		}
@@ -176,6 +176,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 			// Retrieve the granted authorities from the current authentication. These correspond one on
 			// one with user roles.
 			GrantedAuthority[] authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+			
 			for (int i = 0; i < authorities.length; i++)
 			{
 				GrantedAuthority authority = authorities[i];
@@ -186,14 +187,16 @@ public class EhourWebSession extends AuthenticatedWebSession
 		return null;
 	}
 
+	/**
+	 * Invalidate authenticated user
+	 */
 	public void signOut()
 	{
 		AuthUser user = getUser();
 
 		if (user != null)
 		{
-			// TODO logg
-			System.out.println("Logout by user '" + user.getUsername() + "'.");
+			logger.info("Logout by user '" + user.getUsername() + "'.");
 		}
 		setAuthentication(null);
 		invalidate();
@@ -210,7 +213,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 	}
 
 	/**
-	 * @return the current YourApp session
+	 * @return the current session
 	 */
 	public static EhourWebSession getSession()
 	{

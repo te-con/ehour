@@ -39,7 +39,7 @@ import org.springframework.dao.DataAccessException;
 public class AuthService implements UserDetailsService
 {
 	private	UserService	userService;
-	private	Logger		logger = Logger.getLogger(AuthService.class);	
+	private	static Logger logger = Logger.getLogger(AuthService.class);	
 
 	/**
 	 * Get user by username (acegi)
