@@ -37,10 +37,23 @@ public class GreyRoundedBorder extends Border
 	 */
 	private static final long serialVersionUID = 7184643596615028876L;
 
+	public GreyRoundedBorder(String id)
+	{
+		this(id, null);
+	}	
+
+	/**
+	 * 
+	 * @param id
+	 * @param title
+	 */
 	public GreyRoundedBorder(String id, String title)
 	{
 		super(id);
 		
-		add(new Label("greyTabTitle", title));
+		Label	label = new Label("greyTabTitle", (title == null) ? "" : title);
+		
+		label.setVisible(title != null);
+		add(label);
 	}
 }

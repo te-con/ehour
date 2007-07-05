@@ -25,7 +25,10 @@ package net.rrm.ehour.ui.page.login;
 
 import java.io.Serializable;
 
+import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
+import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
 
@@ -34,10 +37,13 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 /**
@@ -78,9 +84,17 @@ public class LoginPage extends WebPage
 		}
 		else
 		{
-			add(new SignInForm("loginform", new SimpleUser()));
-
+			setupForm();
 		}
+	}
+	
+	private void setupForm()
+	{
+		//add(new StyleSheetReference("loginStyle", new CompressedResourceReference(LoginPage.class, "style/ehourLogin.css")));
+
+		add(new Label("pageTitle", "eHour - login"));
+		add(new SignInForm("loginform", new SimpleUser()));
+
 	}
 
 	/**

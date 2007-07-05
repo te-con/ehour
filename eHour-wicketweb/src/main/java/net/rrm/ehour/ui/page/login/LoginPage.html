@@ -1,12 +1,81 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="us_EN" lang="us_EN">
-<body>
-    <form wicket:id="loginform">
-         <div wicket:id="feedback"></div>
-         <div>Username <input wicket:id="username" type="text"/></div>
-         <div>Password <input wicket:id="password" type="password"/></div>
-         <div><input type="submit" value="Signin"/></div>
-    </form>
-</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<wicket:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title wicket:id="pageTitle">eHour</title>
+	<link rel="stylesheet" type="text/css" href="css/ehour.css" />
+	<link rel="stylesheet" type="text/css" href="css/ehourLogin.css" />
+</wicket:head>
+
+	<body>
+		<br /><br />
+<form wicket:id="loginform">	
+		<div class="GreyFrameContainer" style="width: 600px;margin-left: auto;margin-right: auto">
+			<h3>&nbsp;</h3>
+			
+			<div class="GreyFrameBody" style="padding: 10px 40px 10px 40px">
+				<div class="GreyBlueFrameHorizontal">
+					<div class="GreyBlueLeftTop">
+						<div class="GreyBlueRightTop">
+							&nbsp;
+						</div>
+					</div>
+					
+					<div style="padding: 0px 0 0 15px;float: left;text-align: right;font:  0.8em Geneva, Arial, Helvetica, sans-serif;">
+						<img src="img/ehour_grey.gif" /><br />
+						v0.7
+					</div>
+
+					<div style="float: left;padding: 7px 23px 0 9px">
+						<img src="img/grey_frame/pixel_grey.gif" height="80" width="1" />
+					</div>
+					
+					
+					
+					<div style="padding-top: 17px;">
+						<table cellspacing="0" cellpadding="0">
+						
+							<tr>
+								<td colspan="3">
+									<div wicket:id="feedback"></div>
+									&nbsp;
+								</td>
+							</tr>
+			
+							<tr>
+								<td>Username :</td>
+				            	<td><input wicket:id="username" type="text"/></td>
+								<td>&nbsp;</td>
+							</tr>
+			
+							<tr>
+								<td>Password :</td>
+					            <td><input wicket:id="password" type="password"/></td>
+								<td><input type="submit" value="Signin >>" id="submitButton" onfocus="blur()" /></td>
+							</tr>
+						</table>
+					</div>
+					
+					
+					<br />
+					
+					
+					<div class="GreyBlueLeftBottom">
+						<div class="GreyBlueRightBottom">
+							&nbsp;
+						</div>
+					</div>	
+				</div>
+			</div>
+			
+			<div class="GreyFrameFooter">
+				<p />
+			</div>
+		</div>
+		</form>
+	</body>
 </html>
+
+    

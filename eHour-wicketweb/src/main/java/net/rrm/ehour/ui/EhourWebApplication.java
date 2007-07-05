@@ -25,6 +25,7 @@ package net.rrm.ehour.ui;
 
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
 import net.rrm.ehour.ui.page.login.LoginPage;
+import net.rrm.ehour.ui.page.login.SessionExpiredPage;
 import net.rrm.ehour.ui.page.user.OverviewPage;
 import net.rrm.ehour.ui.page.user.timesheet.Page2;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -71,7 +72,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	private void setupSecurity()
 	{
 		// TODO use a msg on the login page indicating the session was expired 
-		getApplicationSettings().setPageExpiredErrorPage(LoginPage.class);
+		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 
 		getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
 
