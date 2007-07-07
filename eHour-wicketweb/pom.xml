@@ -50,7 +50,7 @@
 			</resource>
 		</resources>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>env-prod-derby</id>
@@ -66,7 +66,9 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
-							<warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
+							<warSourceExcludes>
+								WEB-INF/lib/*.jar
+							</warSourceExcludes>
 							<archive>
 								<manifest>
 									<addClasspath>true</addClasspath>
@@ -91,7 +93,9 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
-							<warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
+							<warSourceExcludes>
+								WEB-INF/lib/*.jar
+							</warSourceExcludes>
 							<archive>
 								<manifest>
 									<addClasspath>true</addClasspath>
@@ -102,8 +106,8 @@
 				</plugins>
 			</build>
 		</profile>
-	</profiles>	
-	
+	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
@@ -129,16 +133,21 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-auth-roles</artifactId>
 			<version>1.3.0-beta2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-dojo</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
 		</dependency>		
 		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-api</artifactId>
-		    <version>1.4.0</version>
-		</dependency>		
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-simple</artifactId>
-    <version>1.4.0</version>
-</dependency>		
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 	</dependencies>
 </project>
