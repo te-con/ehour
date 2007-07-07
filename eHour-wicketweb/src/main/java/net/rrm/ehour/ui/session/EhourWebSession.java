@@ -129,6 +129,8 @@ public class EhourWebSession extends AuthenticatedWebSession
 		String u = username == null ? "" : username;
 		String p = password == null ? "" : password;
 
+		
+		
 		// Create an Acegi authentication request.
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
 
@@ -139,7 +141,6 @@ public class EhourWebSession extends AuthenticatedWebSession
 			Authentication authResult = authenticationManager.authenticate(authRequest);
 			setAuthentication(authResult);
 
-			// TODO
 			logger.info("Login by user '" + username + "'.");
 			return true;
 

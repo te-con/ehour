@@ -32,7 +32,7 @@ public class SessionExpiredPage extends LoginPage
 	public SessionExpiredPage()
 	{
 		super(null);
-		
-		System.out.println("exp");
+
+		super.error("you have been automaticcaly logged out ");
 	}
 }

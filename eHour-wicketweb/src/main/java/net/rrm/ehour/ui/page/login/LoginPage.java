@@ -114,7 +114,11 @@ public class LoginPage extends WebPage
 		public SignInForm(String id, SimpleUser model)
 		{
 			super(id, new CompoundPropertyModel(model));
-			add(new FeedbackPanel("feedback"));
+
+			FeedbackPanel	feedback = new LoginFeedbackPanel("feedback");
+			feedback.setMaxMessages(1);
+			
+			add(feedback);
 			add(new TextField("username").setRequired(true));
 			add(new PasswordTextField("password").setResetPassword(true));
 		}
@@ -150,6 +154,10 @@ public class LoginPage extends WebPage
 					
 					setResponsePage(homepage);
 				}
+				else
+				{
+					error("invalid username or password");
+				}
 			}
 
 			// ALWAYS do a redirect, no matter where we are going to. The point is that the
@@ -183,6 +191,17 @@ public class LoginPage extends WebPage
 		
 			return homepage;
 		}
+	}
+	
+	public final class LoginFeedbackPanel extends FeedbackPanel
+	{
+		/**
+		 * @see org.apache.wicket.Component#Component(String)
+		 */
+		public LoginFeedbackPanel(final String id)
+		{
+			super(id);
+		}		
 	}
 
 	/**

@@ -21,6 +21,7 @@ div.timesheet
 
 .timesheetTable tr.weekColumnRow
 {
+	
 }
 
 .timesheetTable tr.weekColumnRow td
@@ -32,7 +33,7 @@ div.timesheet
 	text-align: center;
 }
 
-.timesheetTable tr.weekColumnRow td.borderLess
+.timesheetTable tr.weekColumnRow td.borderless
 {
 	border: 0;
 }
@@ -45,6 +46,27 @@ div.timesheet
 	text-align: left;
 	vertical-align: bottom;
 	padding-bottom: 1px;
+}
+
+.timesheetTable tr.weekColumnRow td.projectCode
+{
+	border: 0;
+	padding-bottom: 1px;
+	text-align: left;
+	vertical-align: bottom;
+}
+
+
+.timesheetTable tr.weekColumnRow td.spacer
+{
+	border-right: 0;
+	weight: 10em;
+}
+
+
+.timesheetTable tr.weekColumnRow td.spacer
+{
+	border-right: 0;
 }
 
 .timesheetTable tr.projectRow td.project
@@ -71,26 +93,6 @@ div.timesheet
 	border-right: 0;
 }
 
-.timesheetTable tr.weekColumnRow td.spacer
-{
-	border-right: 0;
-}
-
-.timesheetTable tr.weekColumnRow td.customer
-{
-	border-right: 0;
-	text-align: left;
-	padding-left: 3px;
-	padding-bottom: 1px;
-}
-
-.timesheetTable tr.weekColumnRow td.projectCode
-{
-	border: 0;
-	padding-bottom: 1px;
-	text-align: left;
-	vertical-align: bottom;
-}
 
 .timesheetTable tr.projectRow td.spacer
 {
@@ -137,7 +139,6 @@ div.timesheet
 
 .timesheetTable tr.projectRow
 {
-	background-color: #eef6fe;
 	padding-bottom: 1px;
 }
 
@@ -155,6 +156,10 @@ div.timesheet
 	text-decoration: underline;
 }
 
+.timesheetTable tr.projectRow td
+{
+	background-color: #eef6fe;
+}
 
 .timesheetTable tr.projectRow td.sunday
 {
@@ -163,6 +168,7 @@ div.timesheet
 	margin: 0;
 	padding: 0;
 	text-align: center;
+	background-color: #eef6fe;
 }
 
 .timesheetTable tr.projectRow td.saturday
@@ -175,13 +181,36 @@ div.timesheet
 	text-align: center;
 }
 
-.timesheetTable tr.projectRow td.customerCell
+.timesheetTable tr.customerRow td
+{
+	margin-top: 10px;
+	border-bottom-style:  solid;
+	border-bottom-color: #b9d3ef;
+	border-bottom-width: 1px;	
+	
+}
+
+.timesheetTable tr.customerRow td.weekday
+{
+	margin-top: 10px;
+	background-color: #fefeff;
+}
+.timesheetTable tr.customerRow td.saturday
+{
+	margin-top: 10px;
+	background-color: #fefeff;
+	border-right-width: 0;
+}
+
+.timesheetTable tr.customerRow td.customerCell
 {
 	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
+	background-color: #fefeff;
 	margin: 0;
 	padding: 0;
 	text-align: left;
+	
 }
 
 .timesheetTable tr.projectRow td.weekday

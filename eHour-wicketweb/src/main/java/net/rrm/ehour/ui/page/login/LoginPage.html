@@ -25,7 +25,7 @@
 					
 					<div style="padding: 0px 0 0 15px;float: left;text-align: right;font:  0.8em Geneva, Arial, Helvetica, sans-serif;">
 						<img src="img/ehour_grey.gif" /><br />
-						v0.7
+						v 0.7
 					</div>
 
 					<div style="float: left;padding: 7px 23px 0 9px">
@@ -34,16 +34,8 @@
 					
 					
 					
-					<div style="padding-top: 17px;">
+					<div style="margin: 0; padding: 47px 0 0 0">
 						<table cellspacing="0" cellpadding="0">
-						
-							<tr>
-								<td colspan="3">
-									<div wicket:id="feedback"></div>
-									&nbsp;
-								</td>
-							</tr>
-			
 							<tr>
 								<td>Username :</td>
 				            	<td><input wicket:id="username" type="text"/></td>
@@ -53,9 +45,10 @@
 							<tr>
 								<td>Password :</td>
 					            <td><input wicket:id="password" type="password"/></td>
-								<td><input type="submit" value="Signin >>" id="submitButton" onfocus="blur()" /></td>
+								<td><input type="submit" value="Sign in >>" id="submitButton" onfocus="blur()" /></td>
 							</tr>
 						</table>
+						<div wicket:id="feedback" style="float:left;color: red;font-size: 0.8em"></div>
 					</div>
 					
 					
