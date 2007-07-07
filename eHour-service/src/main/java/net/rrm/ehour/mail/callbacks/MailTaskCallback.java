@@ -71,7 +71,6 @@ public abstract class MailTaskCallback
 		mailLog.setToUser(msg.getToUser());
 		mailLog.setSuccess(success);
 		mailLog.setResultMsg(resultMsg);
-		System.out.println("xx: " + msg.getToUser());
 		
 		mailLogDAO.persist(mailLog);
 	}

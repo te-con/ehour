@@ -97,6 +97,25 @@
 			<groupId>org.acegisecurity</groupId>
 			<artifactId>acegi-security</artifactId>
 			<version>1.0.4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>org.springframework</artifactId>
+					<groupId>spring-web</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework</artifactId>
+					<groupId>spring-jdbc</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework</artifactId>
+					<groupId>spring-remoting</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>org.springframework</artifactId>
+					<groupId>spring-support</groupId>
+				</exclusion>
+				
+			</exclusions>			
 		</dependency>		
 	</dependencies>
 	<build>

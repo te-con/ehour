@@ -58,10 +58,7 @@ public class CustomerFoldPreferenceDAOHibernateImpl
 		
 		paramKeys = new String[]{"user", "customers"};
 		paramValues = new Object[]{user, customers};
-		
-		System.out.println("XX: " + this.getSession().isConnected());
-		System.out.println("HC: " + this.getSession().hashCode());
-		
+
 		l = getHibernateTemplate().findByNamedQueryAndNamedParam("CustomerFoldPreference.findForUserAndCustomers", paramKeys, paramValues);
 		
 		return l;
