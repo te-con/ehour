@@ -204,7 +204,6 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				info("test");
                 persistTimesheetEntries(timesheet);
                 moveToNextWeek(timesheet.getWeekStart(), target);
             }

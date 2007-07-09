@@ -81,9 +81,7 @@ public abstract class AbstractNumberModel extends Model
 	@Override
 	public void setObject(Object value)
 	{
-		// TODO parse it properly
-//		this.value = ;
-		super.setObject((Float)value);
+		nestedModel.setObject(getDefaultValue() != null && value.equals(getDefaultValue()) ? null : value);
 	}
 	
 	protected String getDefaultValue()
