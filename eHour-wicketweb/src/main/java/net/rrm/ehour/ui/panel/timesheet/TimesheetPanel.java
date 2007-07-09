@@ -214,6 +214,7 @@ public class TimesheetPanel extends Panel implements Serializable
 				return new LoadingSpinnerDecorator();
 			}			
 			
+			@Override
 			protected void onError(final AjaxRequestTarget target, Form form)
 			{
                 form.visitFormComponents(new FormHighlighter(target));

@@ -45,15 +45,15 @@ import org.apache.wicket.model.CompoundPropertyModel;
  * Login page 
  **/
 
-public class LoginPage extends WebPage
+public class Login extends WebPage
 {
 	private static final long serialVersionUID = -134022212692477120L;
-	private	static Logger logger = Logger.getLogger(LoginPage.class);
+	private	static Logger logger = Logger.getLogger(Login.class);
 
 	/**
 	 * 
 	 */
-	public LoginPage()
+	public Login()
 	{
 		this(null);
 	}
@@ -63,7 +63,7 @@ public class LoginPage extends WebPage
 	 * This will trigger the authentication but at least the redirect is properly setup
 	 * @param parameters page parameters (ignored)
 	 */
-	public LoginPage(final PageParameters parameters)
+	public Login(final PageParameters parameters)
 	{
 		EhourWebSession session = EhourWebSession.getSession();
 		

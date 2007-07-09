@@ -24,9 +24,9 @@
 package net.rrm.ehour.ui.panel.nav;
 
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
-import net.rrm.ehour.ui.page.login.LoginPage;
-import net.rrm.ehour.ui.page.user.OverviewPage;
-import net.rrm.ehour.ui.page.user.timesheet.Page2;
+import net.rrm.ehour.ui.page.login.Login;
+import net.rrm.ehour.ui.page.user.Overview;
+import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.util.AuthUtil;
 
 import org.apache.wicket.ResourceReference;
@@ -53,10 +53,10 @@ public class MainNavPanel extends Panel
 	{
 		super(id);
 		
-		addLink(this, "overviewLink", OverviewPage.class);
-		addLink(this, "page2Link", Page2.class);
+		addLink(this, "overviewLink", Overview.class);
+		addLink(this, "userReportLink", UserReport.class);
 		addLink(this, "assignmentLink", AssignmentPage.class);
-		addLink(this, "logoffLink", LoginPage.class);
+		addLink(this, "logoffLink", Login.class);
 		add(new Label("loggedInUser", AuthUtil.getUser().getFullName()));
 		
 		add(new StyleSheetReference("headerStyle", headerStyle()));

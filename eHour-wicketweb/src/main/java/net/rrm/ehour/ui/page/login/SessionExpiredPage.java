@@ -27,7 +27,7 @@ package net.rrm.ehour.ui.page.login;
  * TODO 
  **/
 
-public class SessionExpiredPage extends LoginPage
+public class SessionExpiredPage extends Login
 {
 	public SessionExpiredPage()
 	{

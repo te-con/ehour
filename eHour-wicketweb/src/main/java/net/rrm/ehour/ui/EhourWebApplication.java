@@ -24,10 +24,10 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
-import net.rrm.ehour.ui.page.login.LoginPage;
+import net.rrm.ehour.ui.page.login.Login;
 import net.rrm.ehour.ui.page.login.SessionExpiredPage;
-import net.rrm.ehour.ui.page.user.OverviewPage;
-import net.rrm.ehour.ui.page.user.timesheet.Page2;
+import net.rrm.ehour.ui.page.user.Overview;
+import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.acegisecurity.AuthenticationManager;
@@ -55,10 +55,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		super.init();
 		
-		mount("/login", PackageName.forClass(LoginPage.class));
+		mount("/login", PackageName.forClass(Login.class));
 		mount("/admin", PackageName.forClass(AssignmentPage.class));
-		mount("/consultant", PackageName.forPackage(OverviewPage.class.getPackage()));
-		mount("/consultant/timesheet", PackageName.forPackage(Page2.class.getPackage()));
+		mount("/consultant", PackageName.forPackage(Overview.class.getPackage()));
+		mount("/consultant/report", PackageName.forPackage(UserReport.class.getPackage()));
 		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
 
 		addComponentInstantiationListener(new SpringComponentInjector(this));
@@ -71,7 +71,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	 */
 	private void setupSecurity()
 	{
-		// TODO use a msg on the login page indicating the session was expired 
 		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 
 		getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
@@ -82,7 +81,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
             {
                 if (component instanceof Page)
                 {
-                    throw new RestartResponseAtInterceptPageException(LoginPage.class);
+                    throw new RestartResponseAtInterceptPageException(Login.class);
                 }
                 else
                 {
@@ -98,7 +97,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	@Override
 	public Class<? extends WebPage> getHomePage()
 	{
-		return OverviewPage.class;
+		return Overview.class;
 	}
 
 	/**
@@ -106,7 +105,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	 */
 	protected Class<? extends WebPage> getSignInPageClass()
 	{
-		return LoginPage.class;
+		return Login.class;
 	}
 
 	/*

@@ -1,5 +1,5 @@
 /**
- * Created on May 12, 2007
+ * Created on Jul 9, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,26 +21,31 @@
  *
  */
 
-package net.rrm.ehour.ui.page.user.timesheet;
+package net.rrm.ehour.ui.page.user.report;
 
+import java.util.Date;
+
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.panel.daterange.DateRangePanel;
+
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 
 /**
  * TODO 
  **/
 
-public class Page2 extends BasePage
+@AuthorizeInstantiation("ROLE_CONSULTANT")
+public class UserReport extends BasePage
 {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6873845464139697303L;
-
-	public Page2()
+	private static final long serialVersionUID = -8867366237264687482L;
+	
+	public UserReport()
 	{
-		super("page2", null);
+		super("reporting", null);
 		
+		DateRange range = new DateRange(new Date(), new Date());
+		
+		add(new DateRangePanel("sidePanel", range));
 	}
-
 }

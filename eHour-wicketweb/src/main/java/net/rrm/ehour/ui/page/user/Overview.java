@@ -43,7 +43,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class OverviewPage extends BasePage
+public class Overview extends BasePage
 {
 	private static final long serialVersionUID = -6873845464139697303L;
 
@@ -58,7 +58,7 @@ public class OverviewPage extends BasePage
 	 * Setup the page
 	 *
 	 */
-	public OverviewPage()
+	public Overview()
 	{
 		super("overview", null);
 		

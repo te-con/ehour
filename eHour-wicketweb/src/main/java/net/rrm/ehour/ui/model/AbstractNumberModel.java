@@ -84,6 +84,10 @@ public abstract class AbstractNumberModel extends Model
 		nestedModel.setObject(getDefaultValue() != null && value.equals(getDefaultValue()) ? null : value);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	protected String getDefaultValue()
 	{
 		return "--";
