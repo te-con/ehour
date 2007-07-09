@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
+import org.apache.commons.beanutils.converters.FloatConverter;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
@@ -39,6 +40,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.convert.IConverter;
 
 /**
  * TODO 
@@ -134,7 +136,10 @@ public class TimesheetRowList extends ListView
 	{
 		TextField	dayInput;
 		
-		dayInput = new TextField(id, new FloatModel(new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours"), config, null));
+		dayInput = new TextField(id, new FloatModel(
+										new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours"), config, null),
+										Float.class
+									);
 		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
 		dayInput.setOutputMarkupId(true);
 		
@@ -144,8 +149,6 @@ public class TimesheetRowList extends ListView
 		{
 			grandTotals.addValue(index, row.getTimesheetCells()[index].getTimesheetEntry().getHours().floatValue());
 		}
-		
-		System.out.println(grandTotals.hashCode());
 		
 		return dayInput;
 	}

@@ -15,11 +15,10 @@
 <wicket:panel>
 
 	<span wicket:id="timesheetFrame">
+		<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
+		
 		<span wicket:id="blueFrame">
 			<div class="timesheet">
-				<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
-						
-				
 				<table class="timesheetTable" cellpadding="0" cellspacing="0">
 					<tr class="weekColumnRow">
 						<td class="borderless" style="width: 16px">&nbsp;</td>
@@ -49,7 +48,6 @@
 							<td class="saturday">&nbsp;</td>
 							<td class="saturday">&nbsp;</td>
 						</tr>
-
 						
 						<tr class="projectRow" wicket:id="rows">
 							<td class="fold">&nbsp;</td>
@@ -64,7 +62,7 @@
 							<td class="weekday"><input wicket:id="thursday" size="2" /></td>
 							<td class="weekday"><input wicket:id="friday" size="2" /></td>
 							<td class="saturday"><input wicket:id="saturday" size="2" /></td>
-							<td class="saturday" id="total" style="text-align: right;padding-right: 10px" wicket:id="total"></td>
+							<td class="total" id="total" style="text-align: right;padding-right: 10px" wicket:id="total"></td>
 						</tr>
 					</span>
 					
@@ -82,12 +80,38 @@
 					</tr>
 					
 				</table>
-
-				<input wicket:id="submitButton" type="submit" value="Store" />
-				</form>
 				
 			</div>
 		</span>
+
+		<br />
+
+		<div wicket:id="commentsFrame">
+			<table class="timesheetCommentsTable" cellpadding="0" cellspacing="0">
+
+			<tr>
+				<td style="width: 12px" rowspan="2">&nbsp;</td>
+
+				<td valign="top">
+					Comments:
+				</td>
+				
+				<td align="right">
+					<textarea name="comment" wicket:id="commentsArea"
+								rows="3" cols="40"
+								wrap="virtual"></textarea>
+				</td>
+
+				<td style="width: 12px" rowspan="2">&nbsp;</td>
+			</tr>
+
+			</table>
+			
+		</div>
+
+				<input wicket:id="submitButton" type="submit" value="Store" />
+				</form>
+
 	</span>
 </wicket:panel>
 

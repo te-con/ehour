@@ -188,6 +188,16 @@ div.timesheet
 	text-align: center;
 }
 
+.timesheetTable tr.projectRow td.total
+{
+	font:  0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	padding: 0;
+	border-right: 0px;
+	text-align: center;
+}
+
 .timesheetTable tr.customerRow td
 {
 	margin-top: 10px;
@@ -242,12 +252,42 @@ div.timesheet
 	text-align: right;
 }
 
+.timesheetTable tr.totalRow
+{
+	background-color: #fefeff;
+}
+
 .timesheetTable tr.totalRow td
 {
-	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  bold 0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 5px 0 0 0;
 	padding: 0 13px 0 0;
 	text-align: right;
 }
 
+
+.timesheetCommentsTable
+{
+	padding: 0;
+	width: 100%;
+}
+
+.timesheetCommentsTable td
+{
+	color:	#536e87;
+	border:	0;
+}
+
+.timesheetCommentsTable textarea
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #b3c0cb;
+	margin: 0 0 5px 0;	
+	font: 0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	overflow-y: auto;
+	width: 500px;
+	color: #536e87;
+	background-color: white;
+}

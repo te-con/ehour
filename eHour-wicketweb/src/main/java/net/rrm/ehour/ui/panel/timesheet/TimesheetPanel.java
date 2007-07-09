@@ -33,6 +33,8 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.timesheet.domain.TimesheetComment;
+import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
@@ -40,6 +42,7 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.page.BasePage;
@@ -65,6 +68,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IFormVisitorParticipant;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -114,32 +118,32 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		// grey & blue frame border
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("timesheetFrame", "Week " + dateFormatter.format(forWeek.getTime()));
-		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
-
 		add(greyBorder);
-		greyBorder.add(blueBorder);
 
 		// the timesheet we're working on
 		final Timesheet timesheet = getTimesheet(user,  forWeek);
-		
+
 		// add form
 		Form timesheetForm = new Form("timesheetForm");
 		timesheetForm.setOutputMarkupId(true);
+		greyBorder.add(timesheetForm);
 		
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
+		timesheetForm.add(blueBorder);
+
 		// setup form
-		grandTotals = buildForm(timesheetForm, timesheet);
+		grandTotals = buildForm(blueBorder, timesheet);
 		
 		// add last row with grand totals
-		addGrandTotals(timesheetForm, grandTotals);
+		addGrandTotals(blueBorder, grandTotals);
 
 		// attach onsubmit ajax events
 		setSubmitActions(timesheetForm, timesheet);
 		
 		// add label dates
-		addDateLabels(timesheetForm, timesheet);
+		addDateLabels(blueBorder, timesheet);
 
-		// add form to page 
-		blueBorder.add(timesheetForm);
+		createCommentsInput(timesheetForm, timesheet);
 		
 		// TODO replace with dojo widget
 //		add(new FeedbackPanel("feedback"));
@@ -150,21 +154,41 @@ public class TimesheetPanel extends Panel implements Serializable
 	}
 
 	/**
+	 * Create comments input
+	 * @param parent
+	 * @param timesheet
+	 */
+	private void createCommentsInput(WebMarkupContainer parent, Timesheet timesheet)
+	{
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("commentsFrame");
+		
+		if (timesheet.getComment() == null)
+		{
+			timesheet.setComment(new TimesheetComment());
+		}
+		
+		TextArea	textArea = new KeepAliveTextArea("commentsArea", new PropertyModel(timesheet, "comment.comment"));
+		
+		blueBorder.add(textArea);
+		parent.add(blueBorder);
+	}
+	
+	/**
 	 * Add grand totals to form
-	 * @param timesheetForm
+	 * @param parent
 	 * @param grandTotals
 	 */
-	private void addGrandTotals(Form timesheetForm, GrandTotal grandTotals)
+	private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals)
 	{
-		timesheetForm.add(new Label("sundayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[0]"), config)));
-		timesheetForm.add(new Label("mondayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[1]"), config)));
-		timesheetForm.add(new Label("tuesdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[2]"), config)));
-		timesheetForm.add(new Label("wednesdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[3]"), config)));
-		timesheetForm.add(new Label("thursdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[4]"), config)));
-		timesheetForm.add(new Label("fridayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[5]"), config)));
-		timesheetForm.add(new Label("saturdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[6]"), config)));
+		parent.add(new Label("sundayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[0]"), config)));
+		parent.add(new Label("mondayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[1]"), config)));
+		parent.add(new Label("tuesdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[2]"), config)));
+		parent.add(new Label("wednesdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[3]"), config)));
+		parent.add(new Label("thursdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[4]"), config)));
+		parent.add(new Label("fridayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[5]"), config)));
+		parent.add(new Label("saturdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[6]"), config)));
 		
-		timesheetForm.add(new Label("grandTotal", new FloatModel(new PropertyModel(grandTotals, "grandTotal"), config)));
+		parent.add(new Label("grandTotal", new FloatModel(new PropertyModel(grandTotals, "grandTotal"), config)));
 	}
 	
 	/**
@@ -193,7 +217,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			
 			protected void onError(final AjaxRequestTarget target, Form form)
 			{
-                form.visitFormComponents(new FormValidator(target));
+                form.visitFormComponents(new FormHighlighter(target));
             }
         });			
 
@@ -205,10 +229,10 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @author Thies
 	 *
 	 */
-	private class FormValidator implements FormComponent.IVisitor, Serializable 
+	private class FormHighlighter implements FormComponent.IVisitor, Serializable 
     {
 		private transient AjaxRequestTarget	target;
-		public FormValidator(AjaxRequestTarget target)
+		public FormHighlighter(AjaxRequestTarget target)
 		{
 			this.target = target;
 		}
@@ -227,11 +251,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	            }));                        	
 
                 target.addComponent(formComponent);
-
             }
             
             return formComponent;
-            
         }
     }
 	
@@ -309,7 +331,17 @@ public class TimesheetPanel extends Panel implements Serializable
 			}
 		}
 		
-		timesheetService.persistTimesheet(timesheetEntries, null);
+		// check comment id
+		if (timesheet.getComment().getCommentId() == null)
+		{
+			TimesheetCommentId id = new TimesheetCommentId();
+			id.setUserId(timesheet.getUser().getUserId());
+			id.setCommentDate(timesheet.getWeekStart());
+			
+			timesheet.getComment().setCommentId(id);
+		}
+		
+		timesheetService.persistTimesheet(timesheetEntries, timesheet.getComment());
 	}
 	
 	/**
@@ -317,7 +349,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param parent
 	 * @param timesheet
 	 */
-	private GrandTotal buildForm(Form form, final Timesheet timesheet)
+	private GrandTotal buildForm(WebMarkupContainer parent, final Timesheet timesheet)
 	{
 		final GrandTotal	grandTotals = new GrandTotal();
 		
@@ -349,7 +381,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			}
 		};
 		
-		form.add(customers);
+		parent.add(customers);
 		
 		return grandTotals;
 	}
