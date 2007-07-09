@@ -134,11 +134,18 @@
 			<artifactId>wicket-auth-roles</artifactId>
 			<version>1.3.0-beta2</version>
 		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>test</groupId>
+			<artifactId>test</artifactId>
+			<version>0.1</version>
+		</dependency>
+		 -->
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>wicketstuff-dojo</artifactId>
 			<version>1.3.0-SNAPSHOT</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>

@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.panel.timesheet;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +43,7 @@ import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
@@ -56,11 +58,13 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.IFormVisitorParticipant;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -70,12 +74,14 @@ import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * The main panel - timesheet form
+ * TODO split up
  **/
 
-public class TimesheetPanel extends Panel
+public class TimesheetPanel extends Panel implements Serializable
 {
 	private static final long serialVersionUID = 7704288648724599187L;
 
@@ -85,7 +91,7 @@ public class TimesheetPanel extends Panel
 	private UserService			userService;
 	
 	private	EhourConfig			config;
-	
+
 	/**
 	 * Construct timesheetPanel for entering hours
 	 * @param id
@@ -95,11 +101,12 @@ public class TimesheetPanel extends Panel
 	public TimesheetPanel(String id, User user, Calendar forWeek)
 	{
 		super(id);
+		
 		EhourWebSession 	session = (EhourWebSession)getSession();
 		SimpleDateFormat	dateFormatter;
+		GrandTotal			grandTotals = new GrandTotal();
 		
 		config = session.getEhourConfig();
-		
 		dateFormatter = new SimpleDateFormat("w, MMMM yyyy", config.getLocale());
 
 		// dom id's
@@ -119,11 +126,66 @@ public class TimesheetPanel extends Panel
 		Form timesheetForm = new Form("timesheetForm");
 		timesheetForm.setOutputMarkupId(true);
 		
+		// setup form
+		grandTotals = buildForm(timesheetForm, timesheet);
+		
+		// add last row with grand totals
+		addGrandTotals(timesheetForm, grandTotals);
+
+		// attach onsubmit ajax events
+		setSubmitActions(timesheetForm, timesheet);
+		
+		// add label dates
+		addDateLabels(timesheetForm, timesheet);
+
+		// add form to page 
+		blueBorder.add(timesheetForm);
+		
+		// TODO replace with dojo widget
+//		add(new FeedbackPanel("feedback"));
+		
+		// add CSS & JS
+		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
+		add(new JavaScriptReference("timesheetJS", new CompressedResourceReference(TimesheetPanel.class, "js/timesheet.js")));
+	}
+
+	/**
+	 * Add grand totals to form
+	 * @param timesheetForm
+	 * @param grandTotals
+	 */
+	private void addGrandTotals(Form timesheetForm, GrandTotal grandTotals)
+	{
+		int i = 0;
+		float grandTotal = 0;
+		
+		timesheetForm.add(new Label("sundayTotal", new PropertyModel(grandTotals, "getValues[0]")));
+		timesheetForm.add(new Label("mondayTotal", new PropertyModel(grandTotals, "getValues[1]")));
+		timesheetForm.add(new Label("tuesdayTotal", new PropertyModel(grandTotals, "getValues[2]")));
+		timesheetForm.add(new Label("wednesdayTotal", new PropertyModel(grandTotals, "getValues[3]")));
+		timesheetForm.add(new Label("thursdayTotal", new PropertyModel(grandTotals, "getValues[4]")));
+		timesheetForm.add(new Label("fridayTotal", new PropertyModel(grandTotals, "getValues[5]")));
+		timesheetForm.add(new Label("saturdayTotal", new PropertyModel(grandTotals, "getValues[6]")));
+		
+		timesheetForm.add(new Label("grandTotal", new PropertyModel(grandTotals, "grandTotal")));
+	}
+	
+
+	
+	/**
+	 * Set submit actions for form
+	 * @param form
+	 * @param timesheet
+	 */
+	private void setSubmitActions(Form form, final Timesheet timesheet)
+	{
 		// submit is by ajax
-		timesheetForm.add(new AjaxButton("submitButton", timesheetForm)
+		form.add(new AjaxButton("submitButton", form)
 		{
 			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form form) {
+            protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				info("test");
                 persistTimesheetEntries(timesheet);
                 moveToNextWeek(timesheet.getWeekStart(), target);
             }
@@ -133,29 +195,50 @@ public class TimesheetPanel extends Panel
 			{
 				return new LoadingSpinnerDecorator();
 			}			
-//			@Override
-//            protected void onError(AjaxRequestTarget target, Form form) {
-//                // repaint the feedback panel so errors are shown
-//                target.addComponent(feedback);
-//            }
-        });	
-		
-		// add form labels
-		buildForm(timesheetForm, timesheet);
+			
+			protected void onError(final AjaxRequestTarget target, Form form)
+			{
+                form.visitFormComponents(new FormValidator(target));
+            }
+        });			
 
-		// add label dates
-		addDateLabels(timesheetForm, timesheet);
-		
-		blueBorder.add(timesheetForm);
-		
-		// add CSS & JS
-		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
-		add(new JavaScriptReference("timesheetJS", new CompressedResourceReference(TimesheetPanel.class, "js/timesheet.js")));
+		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange",  Duration.seconds(3));
 	}
+	
+	/**
+	 * Form validation
+	 * @author Thies
+	 *
+	 */
+	private class FormValidator implements FormComponent.IVisitor, Serializable 
+    {
+		private transient AjaxRequestTarget	target;
+		public FormValidator(AjaxRequestTarget target)
+		{
+			this.target = target;
+		}
+        public Object formComponent(IFormVisitorParticipant visitor)
+        {
+        	FormComponent formComponent = (FormComponent)visitor;
+            
+            if (!formComponent.isValid())
+            {
+            	formComponent.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
+	            {
+	                public Object getObject()
+	                {
+	                    return "color: #ff0000";
+	                }
+	            }));                        	
 
-//	private void addWeekNavigations(Component parent)
-//	{
-//	}
+                target.addComponent(formComponent);
+
+            }
+            
+            return formComponent;
+            
+        }
+    }
 	
 	/**
 	 * Add date labels (sun/mon etc)
@@ -180,9 +263,9 @@ public class TimesheetPanel extends Panel
 		label.setEscapeModelStrings(false);
 		parent.add(label);
 
-		label = new Label("thursdayLabel", new DateModel(timesheet.getDateSequence()[4], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-		label.setEscapeModelStrings(false);
-		parent.add(label);
+		Label labelA = new Label("thursdayLabel", new DateModel(timesheet.getDateSequence()[4], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+		labelA.setEscapeModelStrings(false);
+		parent.add(labelA);
 		
 		label = new Label("fridayLabel", new DateModel(timesheet.getDateSequence()[5], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
 		label.setEscapeModelStrings(false);
@@ -239,11 +322,12 @@ public class TimesheetPanel extends Panel
 	 * @param parent
 	 * @param timesheet
 	 */
-	private void buildForm(Form form, final Timesheet timesheet)
+	private GrandTotal buildForm(Form form, final Timesheet timesheet)
 	{
+		final GrandTotal	grandTotals = new GrandTotal();
+		
 		ListView customers = new ListView("customers", new ArrayList<Customer>(timesheet.getCustomers().keySet()))
 		{
-			private int index = 0;
 			{
 				setReuseItems(true);
 			}
@@ -261,27 +345,18 @@ public class TimesheetPanel extends Panel
 					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
 				}
 				
-				
 				item.add(getCustomerLabel(customer, foldPreference));
 //				item.add(new Label("customerDesc", customer.getDescription()));
 
-				// TODO fix
-				final String color = (index % 2 == 1) ? "background-color: #eef6fe" : "background-color: #eef6fe";
-
 				boolean hidden = (foldPreference != null && foldPreference.isFolded());
 				
-				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), color, hidden));
-	            item.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
-	            {
-	                public Object getObject()
-	                {
-	                    return color;
-	                }
-	            }));				
+				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals));
 			}
 		};
 		
 		form.add(customers);
+		
+		return grandTotals;
 	}
 
 	/**
@@ -308,7 +383,6 @@ public class TimesheetPanel extends Panel
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
-//				return new LoadingSpinnerDecorator();
 				return new OnClickDecorator("toggleProjectRow", customer.getCustomerId().toString());
 			}					
 		});		
@@ -334,79 +408,4 @@ public class TimesheetPanel extends Panel
 		
 		return timesheet;
 	}	
-	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class TimesheetRowList extends ListView
-	{
-		private static final long serialVersionUID = -6905022018110510887L;
-		private	int counter;
-		private final String color;
-		private final boolean hidden;
-		
-		TimesheetRowList(String id, final List<TimesheetRow> model, String color, boolean hidden)
-		{
-			super(id, model);
-			setReuseItems(true);
-			counter = 1;
-			this.color = color;
-			this.hidden = hidden;
-		}
-		
-		@Override
-		protected void populateItem(ListItem item)
-		{
-			final TimesheetRow	row = (TimesheetRow)item.getModelObject();
-			float totalHours = 0;
-
-			// add id to row
-			item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-			{
-				public Object getObject()
-				{
-					return "pw" + row.getProjectAssignment().getProject().getCustomer().getCustomerId().toString() + counter++;
-				}
-			}));
-			
-			item.add(new Label("project", row.getProjectAssignment().getProject().getName()));
-			item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
-//			item.add(new Label("projectDesc", row.getProjectAssignment().getProject().getDescription()));
-			
-			item.add(new TextField("sunday", new PropertyModel(row, "timesheetCells[0].timesheetEntry.hours")));
-			item.add(new TextField("monday", new PropertyModel(row, "timesheetCells[1].timesheetEntry.hours")));
-			item.add(new TextField("tuesday", new PropertyModel(row, "timesheetCells[2].timesheetEntry.hours")));
-			item.add(new TextField("wednesday", new PropertyModel(row, "timesheetCells[3].timesheetEntry.hours")));
-			item.add(new TextField("thursday", new PropertyModel(row, "timesheetCells[4].timesheetEntry.hours")));
-			item.add(new TextField("friday", new PropertyModel(row, "timesheetCells[5].timesheetEntry.hours")));
-			item.add(new TextField("saturday", new PropertyModel(row, "timesheetCells[6].timesheetEntry.hours")));
-			
-			// calc total
-			for (int i = 0; i < 6; i++)
-			{
-				if (row.getTimesheetCells()[i] != null 
-						&& row.getTimesheetCells()[i].getTimesheetEntry() != null
-						&& row.getTimesheetCells()[i].getTimesheetEntry().getHours() != null)
-				{
-					totalHours += row.getTimesheetCells()[i].getTimesheetEntry().getHours().floatValue();
-				}
-			}
-			
-			item.add(new Label("total", new FloatModel(totalHours, config)));
-
-			if (hidden)
-			{
-	            item.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
-	            {
-	                public Object getObject()
-	                {
-	                    return "display: none";
-	                }
-	            }));
-			}
-		}
-	}
-	
 }

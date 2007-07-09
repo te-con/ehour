@@ -25,10 +25,7 @@ package net.rrm.ehour.ui.page.login;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
-import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
 
@@ -42,8 +39,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 /**

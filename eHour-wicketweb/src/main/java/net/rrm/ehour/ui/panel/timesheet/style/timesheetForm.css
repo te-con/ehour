@@ -69,6 +69,12 @@ div.timesheet
 	border-right: 0;
 }
 
+.timesheetTable tr.projectRow td.fold
+{
+	border-right: 0px;
+	width: 16px;
+}
+
 .timesheetTable tr.projectRow td.project
 {
 	width: 250px;
@@ -81,6 +87,7 @@ div.timesheet
 {
 	text-align: left;
 	font-weight: normal;
+	border-right: 0px;
 }
 
 
@@ -187,7 +194,6 @@ div.timesheet
 	border-bottom-style:  solid;
 	border-bottom-color: #b9d3ef;
 	border-bottom-width: 1px;	
-	
 }
 
 .timesheetTable tr.customerRow td.weekday
@@ -229,16 +235,19 @@ div.timesheet
 	border-color: #cfdbe6;
 	margin: 5px 0 5px 0;
 	font: 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
-	color: #233e55;
+	color: #536e87;
 	background-color: white;
 	width: 3em;
 	size: 3;
+	text-align: right;
 }
+
 .timesheetTable tr.totalRow td
 {
-	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
-	margin: 0;
-	padding: 0;
-	border: 0;
+	margin: 5px 0 0 0;
+	padding: 0 13px 0 0;
+	text-align: right;
 }
+
