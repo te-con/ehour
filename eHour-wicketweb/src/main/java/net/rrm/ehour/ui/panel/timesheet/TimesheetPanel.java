@@ -156,21 +156,16 @@ public class TimesheetPanel extends Panel implements Serializable
 	 */
 	private void addGrandTotals(Form timesheetForm, GrandTotal grandTotals)
 	{
-		int i = 0;
-		float grandTotal = 0;
+		timesheetForm.add(new Label("sundayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[0]"), config)));
+		timesheetForm.add(new Label("mondayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[1]"), config)));
+		timesheetForm.add(new Label("tuesdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[2]"), config)));
+		timesheetForm.add(new Label("wednesdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[3]"), config)));
+		timesheetForm.add(new Label("thursdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[4]"), config)));
+		timesheetForm.add(new Label("fridayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[5]"), config)));
+		timesheetForm.add(new Label("saturdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[6]"), config)));
 		
-		timesheetForm.add(new Label("sundayTotal", new PropertyModel(grandTotals, "getValues[0]")));
-		timesheetForm.add(new Label("mondayTotal", new PropertyModel(grandTotals, "getValues[1]")));
-		timesheetForm.add(new Label("tuesdayTotal", new PropertyModel(grandTotals, "getValues[2]")));
-		timesheetForm.add(new Label("wednesdayTotal", new PropertyModel(grandTotals, "getValues[3]")));
-		timesheetForm.add(new Label("thursdayTotal", new PropertyModel(grandTotals, "getValues[4]")));
-		timesheetForm.add(new Label("fridayTotal", new PropertyModel(grandTotals, "getValues[5]")));
-		timesheetForm.add(new Label("saturdayTotal", new PropertyModel(grandTotals, "getValues[6]")));
-		
-		timesheetForm.add(new Label("grandTotal", new PropertyModel(grandTotals, "grandTotal")));
+		timesheetForm.add(new Label("grandTotal", new FloatModel(new PropertyModel(grandTotals, "grandTotal"), config)));
 	}
-	
-
 	
 	/**
 	 * Set submit actions for form

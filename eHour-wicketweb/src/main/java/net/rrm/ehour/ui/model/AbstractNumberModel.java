@@ -25,6 +25,7 @@ package net.rrm.ehour.ui.model;
 
 import java.text.NumberFormat;
 
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
@@ -34,9 +35,24 @@ import org.apache.wicket.model.Model;
 public abstract class AbstractNumberModel extends Model
 {
 	private static final long serialVersionUID = -3297133594178935106L;
-	protected Number			value;
+	private Number		value;
+	private	IModel		nestedModel;
 	protected NumberFormat	formatter;
-
+	
+	/**
+	 * Static
+	 */
+	public AbstractNumberModel(Number value)
+	{
+		this.value = value;
+	}
+	
+	public AbstractNumberModel(IModel model)
+	{
+		nestedModel = model;
+		
+		this.value = null;
+	}	
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.model.Model#getObject()
@@ -44,7 +60,18 @@ public abstract class AbstractNumberModel extends Model
 	@Override
 	public Object getObject()
 	{
-		return (value == null) ? "--" : formatter.format(value); 
+		Number fmt;
+
+		if (value == null && nestedModel != null)
+		{
+			fmt = (Number)nestedModel.getObject();  
+		}
+		else
+		{
+			fmt = value;
+		}
+			
+		return (fmt == null) ? getDefaultValue() : formatter.format(fmt); 
 	}
 
 	/*
@@ -55,6 +82,13 @@ public abstract class AbstractNumberModel extends Model
 	public void setObject(Object value)
 	{
 		// TODO parse it properly
-		this.value = (Float)value;
+//		this.value = ;
+		super.setObject((Float)value);
 	}
+	
+	protected String getDefaultValue()
+	{
+		return "--";
+	}
+	
 }

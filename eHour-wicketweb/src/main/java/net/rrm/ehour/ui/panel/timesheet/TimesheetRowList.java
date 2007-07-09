@@ -134,7 +134,7 @@ public class TimesheetRowList extends ListView
 	{
 		TextField	dayInput;
 		
-		dayInput = new TextField(id, new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours"));
+		dayInput = new TextField(id, new FloatModel(new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours"), config, null));
 		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
 		dayInput.setOutputMarkupId(true);
 		

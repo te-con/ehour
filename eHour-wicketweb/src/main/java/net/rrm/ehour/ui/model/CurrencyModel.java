@@ -46,9 +46,10 @@ public class CurrencyModel extends AbstractNumberModel
 	 */
 	public CurrencyModel(Number value, EhourConfig config)
 	{
-		Currency	currency;
+		super(value);
 		
-		this.value = value;
+		Currency	currency;
+
 		
 		// TODO get it display the &euro; sign instead of EUR
 		try
