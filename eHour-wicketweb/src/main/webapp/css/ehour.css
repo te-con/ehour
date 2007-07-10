@@ -9,7 +9,7 @@ body
 div.SidePanelLoc
 {
 	width: 250px;
-	margin:	0 0 0 5px;
+	margin:	19px 0 0 5px;
 	padding: 0;
 	float:	left;
 }
@@ -53,7 +53,7 @@ div.GreyFrameContainer
 {
 		background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
 		max-width: 750px;
-		//width:expression(document.body.clientWidth > 1000? "750px": "auto" );
+		width:expression(document.body.clientWidth > 1000? "750px": "auto" );
 } 
 
 div.GreyFrameContainer h3
@@ -131,4 +131,23 @@ div.GreyBlueRightBottom
 div.GreyBlueLeftBottom
 {
 	background: url(../img/bg_blue_grey/left_bottom.gif) bottom left no-repeat;
+}
+
+.submitButton
+{
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: white;
+	border: 0;
+}
+
+.submitButton:hover
+{
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #576d83;
 }

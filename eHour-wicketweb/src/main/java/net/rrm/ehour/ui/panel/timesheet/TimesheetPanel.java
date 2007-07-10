@@ -57,6 +57,8 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -133,15 +135,16 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		// add last row with grand totals
 		addGrandTotals(blueBorder, grandTotals);
-
-		// attach onsubmit ajax events
-		setSubmitActions(timesheetForm, timesheet);
 		
 		// add label dates
 		addDateLabels(blueBorder, timesheet);
 
-		createCommentsInput(timesheetForm, timesheet);
-		
+		// add comments section
+		MarkupContainer commentsFrame = createCommentsInput(timesheetForm, timesheet);
+
+		// attach onsubmit ajax events
+		setSubmitActions(timesheetForm, commentsFrame, timesheet);
+
 		// TODO replace with dojo widget
 		FeedbackPanel feedback = new FeedbackPanel("feedback");
 		feedback.setOutputMarkupId(true);
@@ -157,7 +160,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param parent
 	 * @param timesheet
 	 */
-	private void createCommentsInput(WebMarkupContainer parent, Timesheet timesheet)
+	private MarkupContainer createCommentsInput(WebMarkupContainer parent, Timesheet timesheet)
 	{
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("commentsFrame");
 		
@@ -170,6 +173,8 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		blueBorder.add(textArea);
 		parent.add(blueBorder);
+		
+		return blueBorder;
 	}
 	
 	/**
@@ -198,10 +203,10 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param form
 	 * @param timesheet
 	 */
-	private void setSubmitActions(Form form, final Timesheet timesheet)
+	private void setSubmitActions(Form form, MarkupContainer parent, final Timesheet timesheet)
 	{
 		// submit is by ajax
-		form.add(new AjaxButton("submitButton", form)
+		parent.add(new AjaxButton("submitButton", form)
 		{
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
@@ -222,8 +227,6 @@ public class TimesheetPanel extends Panel implements Serializable
                 form.visitFormComponents(new FormHighlighter(target));
             }
         });			
-		
-//		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange",  Duration.seconds(3));
 	}
 	
 	/**
