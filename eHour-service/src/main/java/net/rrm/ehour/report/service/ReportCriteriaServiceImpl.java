@@ -36,6 +36,7 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.user.dao.UserDAO;
@@ -45,7 +46,7 @@ import net.rrm.ehour.user.domain.User;
 import org.apache.log4j.Logger;
 
 /**
- * TODO 
+ * Report Criteria services
  **/
 
 public class ReportCriteriaServiceImpl implements ReportCriteriaService
@@ -55,14 +56,34 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	private	CustomerDAO				customerDAO;
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
-	private	ReportAggregatedDAO				reportAggregatedDAO;
+	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	Logger					logger = Logger.getLogger(this.getClass());
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.service.ReportCriteriaService#getReportCriteria(net.rrm.ehour.report.criteria.UserCriteria)
+	 */
+	public ReportCriteria getReportCriteria(UserCriteria userCriteria)
+	{
+		ReportCriteria criteria = new ReportCriteria();
+		criteria.setUserCriteria(userCriteria);
+		return syncUserReportCriteria(criteria);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.service.ReportCriteriaService#syncUserReportCriteria(net.rrm.ehour.report.criteria.ReportCriteria)
+	 */
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria)
+	{
+		return syncUserReportCriteria(reportCriteria, null);
+	}
 	
 	/**
 	 * Update available report criteria 
 	 */
 	
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, int updateType)
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdate updateType)
 	{
 		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
 		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
@@ -73,25 +94,25 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		}
 		else
 		{
-			if (updateType == ReportCriteria.UPDATE_USERS ||
-				updateType == ReportCriteria.UPDATE_ALL)
+			if (updateType == ReportCriteriaUpdate.UPDATE_USERS ||
+				updateType == ReportCriteriaUpdate.UPDATE_ALL)
 			{
 				availCriteria.setUsers(getAvailableUsers(userCriteria));
 			}
 
-			if (updateType == ReportCriteria.UPDATE_CUSTOMERS ||
-				updateType == ReportCriteria.UPDATE_ALL)
+			if (updateType == ReportCriteriaUpdate.UPDATE_CUSTOMERS ||
+				updateType == ReportCriteriaUpdate.UPDATE_ALL)
 			{
 				availCriteria.setCustomers(getAvailableCustomers(userCriteria));
 			}
 
-			if (updateType == ReportCriteria.UPDATE_PROJECTS ||
-				updateType == ReportCriteria.UPDATE_ALL)
+			if (updateType == ReportCriteriaUpdate.UPDATE_PROJECTS ||
+				updateType == ReportCriteriaUpdate.UPDATE_ALL)
 			{
 				availCriteria.setProjects(getAvailableProjects(userCriteria));
 			}
 			
-			if (updateType == ReportCriteria.UPDATE_ALL)
+			if (updateType == ReportCriteriaUpdate.UPDATE_ALL)
 			{
 				availCriteria.setUserDepartments(userDepartmentDAO.findAll());
 				availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry());
@@ -109,13 +130,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	 * @param userCriteria
 	 * @return
 	 */
-	
 	private List<User> getAvailableUsers(UserCriteria userCriteria)
 	{
 		List<User> 	users;
 
-		if (userCriteria.getDepartmentIds() == null || 
-			userCriteria.getDepartmentIds().length == 0)
+		if (userCriteria.isEmptyDepartments()) 
 		{
 			users = userDAO.findUsersByNameMatch(userCriteria.getUserFilter(), userCriteria.isOnlyActiveUsers());
 		}
@@ -160,8 +179,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	{
 		List<Project>	projects;
 		
-		if (userCriteria.getCustomerIds() == null || 
-			userCriteria.getCustomerIds().length == 0)
+		if (userCriteria.isEmptyCustomers()) 
 		{
 			if (userCriteria.isOnlyActiveProjects())
 			{
@@ -180,7 +198,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		{
 			logger.debug("Fetching projects for selected customers");
 			
-			projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(), userCriteria.isOnlyActiveProjects());
+			projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(), 
+															userCriteria.isOnlyActiveProjects());
 		}
 		
 		return projects;
@@ -199,7 +218,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
 		Integer					userId;
 		
-		userId = reportCriteria.getUserCriteria().getUserIds()[0];
+		userId = reportCriteria.getUserCriteria().getUserIds().get(0);
 		
 		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(userId);
 		
@@ -208,7 +227,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 			customers.add(assignment.getProject().getCustomer());
 			projects.add(assignment.getProject());
 		}
-		
 		
 		availCriteria.setCustomers(new ArrayList<Customer>(customers));
 		availCriteria.setProjects(new ArrayList<Project>(projects));
@@ -264,5 +282,4 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
-	
 }

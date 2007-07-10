@@ -22,11 +22,6 @@
  */
 
 package net.rrm.ehour.report.criteria;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -46,9 +41,6 @@ public class ReportCriteriaTest extends TestCase
 	{
 		super.setUp();
 		reportCriteria = new ReportCriteria();
-		
-		reportCriteriaService = createMock(ReportCriteriaService.class);
-		reportCriteria.setReportCriteriaService(reportCriteriaService);
 	}
 
 

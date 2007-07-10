@@ -66,7 +66,7 @@ public interface ReportService
 	 * @param projectAssignmentIds
 	 * @return
 	 */
-	public List<ProjectAssignmentAggregate> getHoursPerAssignment(Integer[] projectAssignmentIds);
+	public List<ProjectAssignmentAggregate> getHoursPerAssignment(List<Integer> projectAssignmentIds);
 	
 	/**
 	 * Get project report for reporting role

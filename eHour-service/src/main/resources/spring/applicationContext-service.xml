@@ -80,7 +80,7 @@
 		<property name="mailService" ref="mailService" />
 	</bean>
 
-	<!-- Report Criteria -->
+	<!-- Report Criteria 
 	<bean id="reportCriteria"
 			class="net.rrm.ehour.report.criteria.ReportCriteria"
 			scope="session"
@@ -88,6 +88,7 @@
 		<aop:scoped-proxy/>
 		<property name="reportCriteriaService" ref="reportCriteriaService" />
 	</bean>
+	-->
 	
 	<!-- Configuration service -->
 	<bean id="configurationService"

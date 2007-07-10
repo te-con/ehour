@@ -24,7 +24,6 @@
 package net.rrm.ehour.report.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.SortedSet;
@@ -90,7 +89,7 @@ public class ReportServiceImpl implements ReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
 	 */
-	public List<ProjectAssignmentAggregate> getHoursPerAssignment(Integer[] projectAssignmentIds)
+	public List<ProjectAssignmentAggregate> getHoursPerAssignment(List<Integer> projectAssignmentIds)
 	{
 		return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
 	}
@@ -105,7 +104,9 @@ public class ReportServiceImpl implements ReportService
 	{
 		List<ProjectAssignmentAggregate>	projectAssignmentAggregates;
 
-		projectAssignmentAggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(new Integer[]{userId}, dateRange);
+		List<Integer>	userIds = new ArrayList<Integer>();
+		userIds.add(userId);
+		projectAssignmentAggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(userIds, dateRange);
 
 		return projectAssignmentAggregates;
 	}	
@@ -119,8 +120,8 @@ public class ReportServiceImpl implements ReportService
 	{
 		ReportDataAggregate		reportDataAggregate = new ReportDataAggregate();
 		UserCriteria	userCriteria;
-		Integer[]		projectIds = null;
-		Integer[]		userIds = null;
+		List<Integer>	projectIds = null;
+		List<Integer>	userIds = null;
 		boolean			ignoreUsers;
 		boolean			ignoreProjects;
 		DateRange		reportRange;
@@ -166,8 +167,8 @@ public class ReportServiceImpl implements ReportService
 	 * @param reportCriteria
 	 * @return
 	 */
-	private List<ProjectAssignmentAggregate> getProjectAssignmentAggregates(Integer[] userIds,
-																			Integer[] projectIds,
+	private List<ProjectAssignmentAggregate> getProjectAssignmentAggregates(List<Integer> userIds,
+																			List<Integer >projectIds,
 																			DateRange reportRange)
 	{
 		List<ProjectAssignmentAggregate>	aggregates;
@@ -198,8 +199,8 @@ public class ReportServiceImpl implements ReportService
 	 * @param criteria
 	 * @return
 	 */
-	private List<FlatProjectAssignmentAggregate> getWeeklyReportData(Integer[] userIds,
-																		Integer[] projectIds,
+	private List<FlatProjectAssignmentAggregate> getWeeklyReportData(List<Integer> userIds,
+																	 List<Integer> projectIds,
 																		DateRange reportRange)
 	{
 		List<FlatProjectAssignmentAggregate> aggregates = null;
@@ -210,17 +211,15 @@ public class ReportServiceImpl implements ReportService
 		}
 		else if (projectIds == null && userIds != null)
 		{		
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(Arrays.asList(userIds), reportRange);
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(userIds, reportRange);
 		}
 		else if (projectIds != null && userIds == null)
 		{
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(Arrays.asList(projectIds), reportRange);
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(projectIds, reportRange);
 		}
 		else
 		{
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(Arrays.asList(userIds),
-																					Arrays.asList(projectIds),
-																					reportRange);
+			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(userIds, projectIds, reportRange);
 		}	
 		
 		return aggregates;
@@ -231,9 +230,9 @@ public class ReportServiceImpl implements ReportService
 	 * @param userCriteria
 	 * @return
 	 */
-	private Integer[] getProjectIds(UserCriteria userCriteria)
+	private List<Integer> getProjectIds(UserCriteria userCriteria)
 	{
-		Integer[]		projectIds;
+		List<Integer>	projectIds;
 		List<Project>	projects;
 		
 		
@@ -246,7 +245,7 @@ public class ReportServiceImpl implements ReportService
 				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(),
 																userCriteria.isOnlyActiveProjects());
 				
-				projectIds = (Integer[])ReportUtil.getPKsFromDomainObjects(projects).toArray(new Integer[]{});
+				projectIds = ReportUtil.getPKsFromDomainObjects(projects);
 			}
 			else
 			{
@@ -268,10 +267,10 @@ public class ReportServiceImpl implements ReportService
 	 * @param userCriteria
 	 * @return
 	 */
-	private Integer[] getUserIds(UserCriteria userCriteria)
+	private List<Integer> getUserIds(UserCriteria userCriteria)
 	{
-		Integer[]	userIds;
-		List<User>	users;
+		List<Integer>	userIds;
+		List<User>		users;
 		
 		if (userCriteria.isEmptyUsers())
 		{
@@ -281,7 +280,7 @@ public class ReportServiceImpl implements ReportService
 				users = userDAO.findUsersForDepartments(null,
 														userCriteria.getDepartmentIds(),
 														userCriteria.isOnlyActiveUsers());
-				userIds = (Integer[])ReportUtil.getPKsFromDomainObjects(users).toArray(new Integer[]{});
+				userIds = ReportUtil.getPKsFromDomainObjects(users);
 			}
 			else
 			{
@@ -336,7 +335,9 @@ public class ReportServiceImpl implements ReportService
 		report.setReportRange(reportRange);
 		
 		// get all aggregates
-		aggregates = new TreeSet<ProjectAssignmentAggregate>(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(new Integer[]{projectId}, reportRange));
+		List<Integer>	projectIds = new ArrayList<Integer>();
+		projectIds.add(projectId);
+		aggregates = new TreeSet<ProjectAssignmentAggregate>(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projectIds, reportRange));
 
 		// filter out just the id's
 		for (ProjectAssignmentAggregate aggregate : aggregates)

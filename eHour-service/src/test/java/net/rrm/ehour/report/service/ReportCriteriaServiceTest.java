@@ -32,6 +32,7 @@ import static org.easymock.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.customer.domain.Customer;
@@ -41,13 +42,13 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
-import junit.framework.TestCase;
 
 /**
  * TODO 
@@ -104,12 +105,14 @@ public class ReportCriteriaServiceTest  extends TestCase
 		
 		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called
-		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
-		reportCriteria.setReportCriteriaService(rsMock);
+//		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
+//		reportCriteria.setReportCriteriaService(rsMock);
 		
 		userCriteria = new UserCriteria();
 		userCriteria.setSingleUser(true);
-		userCriteria.setUserIds(new Integer[]{1});
+		List ids = new ArrayList();
+		ids.add(1);
+		userCriteria.setUserIds(ids);
 		reportCriteria.setUserCriteria(userCriteria);
 		
 		availCriteria = new AvailableCriteria();
@@ -124,7 +127,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		replay(prjAssignmentDAO);
 		replay(reportAggregatedDAO);
 		
-		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL);
+		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdate.UPDATE_ALL);
 		
 		verify(reportAggregatedDAO);
 		verify(prjAssignmentDAO);
@@ -149,8 +152,8 @@ public class ReportCriteriaServiceTest  extends TestCase
 		
 		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called
-		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
-		reportCriteria.setReportCriteriaService(rsMock);
+//		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
+//		reportCriteria.setReportCriteriaService(rsMock);
 		
 		userCriteria = new UserCriteria();
 		userCriteria.setOnlyActiveUsers(false);
@@ -177,7 +180,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		expectLastCall().andReturn(null);
 		replay(reportAggregatedDAO);
 		
-		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL);
+		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdate.UPDATE_ALL);
 		
 		verify(reportAggregatedDAO);
 		verify(projectDAO);

@@ -38,7 +38,7 @@ public interface ProjectDAO extends GenericDAO<Project, Integer>
 	 * @param active
 	 * @return
 	 */
-	public List<Project> findProjectForCustomers(Integer[] customerIds, boolean onlyActive);
+	public List<Project> findProjectForCustomers(List<Integer> customerIds, boolean onlyActive);
 	
 	/**
 	 * Find projects where user is projectmanager

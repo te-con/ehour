@@ -1,5 +1,5 @@
 /**
- * Created on Nov 10, 2006
+ * Created on Jul 10, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,25 +21,16 @@
  *
  */
 
-package net.rrm.ehour.util;
-
+package net.rrm.ehour.report.criteria;
 
 /**
- * TODO change to enum 
+ * ReportCriteria update types 
  **/
 
-public class EhourConstants
+public enum ReportCriteriaUpdate
 {
-	public final static int ASSIGNMENT_DATE = 0;
-	public final static int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
-	public final static int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
-	
-	public final static int MAILTYPE_FIXED_ALLOTTED_REACHED = 1;
-	public final static int MAILTYPE_FLEX_ALLOTTED_REACHED = 2;
-	public final static int MAILTYPE_FLEX_OVERRUN_REACHED = 3;
-	
-	public final static String	ROLE_CONSULTANT = "ROLE_CONSULTANT";
-	public final static String	ROLE_REPORT = "ROLE_REPORT";
-	
+	UPDATE_ALL,
+	UPDATE_USERS,
+	UPDATE_CUSTOMERS,
+	UPDATE_PROJECTS
 }
-

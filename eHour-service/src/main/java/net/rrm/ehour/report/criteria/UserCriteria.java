@@ -23,26 +23,37 @@
 
 package net.rrm.ehour.report.criteria;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * TODO 
+ * User selected criteria 
  **/
 
-public class UserCriteria
+public class UserCriteria implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 375613059093184619L;
 	private DateRange	reportRange;
 	private	boolean		onlyActiveProjects = true;
 	private	boolean		onlyActiveCustomers = true;
 	private	boolean		onlyActiveUsers = true;
 	private	int			userActivityFilter;
 	private	String		userFilter;
-	private	Integer[]	userIds;
-	private	Integer[]	projectIds;
-	private	Integer[]	customerIds;
-	private	Integer[]	departmentIds;
+	private	List<Integer>		userIds;
+	private	List<Integer>		projectIds;
+	private	List<Integer>		customerIds;
+	private	List<Integer>		departmentIds;
 
 	private	boolean		singleUser;
 
@@ -55,6 +66,36 @@ public class UserCriteria
 		onlyActiveProjects = true;
 		onlyActiveCustomers = true;
 		onlyActiveUsers = true;
+		
+		reportRange = new DateRange(new Date(), new Date());
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 */
+	public void setUser(User user)
+	{
+		if (userIds == null)
+		{
+			userIds = new ArrayList<Integer>();
+		}
+		
+		userIds.add(user.getUserId());
+	}
+	
+	/**
+	 * Adds project to the list
+	 * @param project
+	 */
+	public void setProject(Project project)
+	{
+		if (projectIds == null)
+		{
+			projectIds = new ArrayList<Integer>();
+		}
+		
+		projectIds.add(project.getProjectId());
 	}
 	
 	/**
@@ -77,7 +118,7 @@ public class UserCriteria
 	 */
 	public boolean isEmptyCustomers()
 	{
-		return customerIds == null || customerIds.length == 0;
+		return customerIds == null || customerIds.size() == 0;
 	}
 	
 	/**
@@ -87,7 +128,7 @@ public class UserCriteria
 
 	public boolean isEmptyProjects()
 	{
-		return projectIds == null || projectIds.length == 0;
+		return projectIds == null || projectIds.size() == 0;
 	}
 
 	/**
@@ -97,7 +138,7 @@ public class UserCriteria
 
 	public boolean isEmptyDepartments()
 	{
-		return departmentIds == null || departmentIds.length == 0;
+		return departmentIds == null || departmentIds.size() == 0;
 	}	
 	
 	/**
@@ -107,66 +148,7 @@ public class UserCriteria
 	
 	public boolean isEmptyUsers()
 	{
-		return userIds == null || userIds.length == 0;
-	}
-	
-	/**
-	 * Get customers as string (needed for JSTL, should not be here..)
-	 * @return
-	 */
-	public String getCustomersAsString()
-	{
-		return getIntegerArrayAsString(customerIds);
-	}
-	
-	/**
-	 * Get projects as string (needed for JSTL)
-	 * @return
-	 */
-	public String getProjectsAsString()
-	{
-		return getIntegerArrayAsString(projectIds);
-	}
-	
-	/**
-	 * Get departments as string (JSTL)
-	 * @return
-	 */
-	public String getDepartmentsAsString()
-	{
-		return getIntegerArrayAsString(departmentIds);
-	}
-
-	/**
-	 * Get users as string (JSTL)
-	 * @return
-	 */
-	public String getUsersAsString()
-	{
-		return getIntegerArrayAsString(userIds);
-	}
-	
-	/**
-	 * Get Integer array as string
-	 * @param ints
-	 * @return
-	 */
-	private String getIntegerArrayAsString(Integer[] ints)
-	{
-		StringBuffer	ids = new StringBuffer();
-		int				i;
-		
-		if (ints != null)
-		{
-			for (i = 0;
-				 i < ints.length;
-				 i++)
-			{
-				ids.append("-" + ints[i].toString() + "-");
-			}
-		}
-		
-		return ids.toString();		
+		return userIds == null || userIds.size() == 0;
 	}
 	
 	/**
@@ -212,34 +194,7 @@ public class UserCriteria
 	{
 		this.reportRange = reportRange;
 	}
-	/**
-	 * @return the projectIds
-	 */
-	public Integer[] getProjectIds()
-	{
-		return projectIds;
-	}
-	/**
-	 * @param projectIds the projectIds to set
-	 */
-	public void setProjectIds(Integer[] projectIds)
-	{
-		this.projectIds = projectIds;
-	}
-	/**
-	 * @return the userIds
-	 */
-	public Integer[] getUserIds()
-	{
-		return userIds;
-	}
-	/**
-	 * @param userIds the userIds to set
-	 */
-	public void setUserIds(Integer[] userIds)
-	{
-		this.userIds = userIds;
-	}
+
 	/**
 	 * @return the singleUser
 	 */
@@ -269,37 +224,6 @@ public class UserCriteria
 		this.userActivityFilter = userFilter;
 	}
 
-	/**
-	 * @return the customerIds
-	 */
-	public Integer[] getCustomerIds()
-	{
-		return customerIds;
-	}
-
-	/**
-	 * @param customerIds the customerIds to set
-	 */
-	public void setCustomerIds(Integer[] customerIds)
-	{
-		this.customerIds = customerIds;
-	}
-
-	/**
-	 * @return the departmentIds
-	 */
-	public Integer[] getDepartmentIds()
-	{
-		return departmentIds;
-	}
-
-	/**
-	 * @param departmentIds the departmentIds to set
-	 */
-	public void setDepartmentIds(Integer[] departmentIds)
-	{
-		this.departmentIds = departmentIds;
-	}
 
 	/**
 	 * @return the userFilter
@@ -337,5 +261,69 @@ public class UserCriteria
 	public void setOnlyActiveUsers(boolean onlyActiveUsers)
 	{
 		this.onlyActiveUsers = onlyActiveUsers;
+	}
+
+	/**
+	 * @return the userIds
+	 */
+	public List<Integer> getUserIds()
+	{
+		return userIds;
+	}
+
+	/**
+	 * @param userIds the userIds to set
+	 */
+	public void setUserIds(List<Integer> userIds)
+	{
+		this.userIds = userIds;
+	}
+
+	/**
+	 * @return the projectIds
+	 */
+	public List<Integer> getProjectIds()
+	{
+		return projectIds;
+	}
+
+	/**
+	 * @param projectIds the projectIds to set
+	 */
+	public void setProjectIds(List<Integer> projectIds)
+	{
+		this.projectIds = projectIds;
+	}
+
+	/**
+	 * @return the customerIds
+	 */
+	public List<Integer> getCustomerIds()
+	{
+		return customerIds;
+	}
+
+	/**
+	 * @param customerIds the customerIds to set
+	 */
+	public void setCustomerIds(List<Integer> customerIds)
+	{
+		this.customerIds = customerIds;
+	}
+
+	/**
+	 * @return the departmentIds
+	 */
+	public List<Integer> getDepartmentIds()
+	{
+		return departmentIds;
+	}
+
+	/**
+	 * @param departmentIds the departmentIds to set
+	 */
+	public void setDepartmentIds(List<Integer> departmentIds)
+	{
+		this.departmentIds = departmentIds;
 	}
 }

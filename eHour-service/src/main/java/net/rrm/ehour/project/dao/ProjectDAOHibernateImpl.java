@@ -68,7 +68,7 @@ public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, In
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Project> findProjectForCustomers(Integer[] customerIds, boolean onlyActive)
+	public List<Project> findProjectForCustomers(List<Integer> customerIds, boolean onlyActive)
 	{
 		List	results;
 		String	hqlName;
@@ -82,7 +82,9 @@ public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, In
 			hqlName = "Project.findActiveProjectsForCustomers";
 		}
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam(hqlName , "customerIds", customerIds);
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam(hqlName,
+																		"customerIds", 
+																		customerIds.toArray());
 		
 		return results;			
 	}

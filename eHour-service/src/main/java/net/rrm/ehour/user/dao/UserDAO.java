@@ -71,7 +71,7 @@ public interface UserDAO extends GenericDAO<User, Integer>
 	 * @param onlyActive
 	 * @return
 	 */
-	public List<User> findUsersForDepartments(String pattern, Integer[] departmentIds, boolean onlyActive);
+	public List<User> findUsersForDepartments(String pattern, List<Integer> departmentIds, boolean onlyActive);
 	
 	/**
 	 * Find users with a PM role but no project

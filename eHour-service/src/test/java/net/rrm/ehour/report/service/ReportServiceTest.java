@@ -84,8 +84,7 @@ public class ReportServiceTest extends TestCase
 	
 		rc = new ReportCriteria();
 		rsMock = createMock(ReportCriteriaService.class);
-		rc.setReportCriteriaService(rsMock);
-
+//		rc.setReportCriteriaService(rsMock);
 	}
 	
 	/**
@@ -96,29 +95,26 @@ public class ReportServiceTest extends TestCase
 	public void testGetHoursPerAssignmentOnMonth()
 	{
 		List<ProjectAssignmentAggregate>	results = new ArrayList<ProjectAssignmentAggregate>();
-		Integer		userId = 1;
 		Calendar	cal = new GregorianCalendar();
 		
 		results.add(new ProjectAssignmentAggregate());
 		
-		reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(new Integer[]{userId}, DateUtil.calendarToMonthRange(cal));
+		reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(getAsList(1), DateUtil.calendarToMonthRange(cal));
 		expectLastCall().andReturn(results);
 		
 		replay();
 		
-		reportService.getHoursPerAssignmentInMonth(userId, cal);
+		reportService.getHoursPerAssignmentInMonth(1, cal);
 		
 		verify();
 	}
 	
 	public void testCreateProjectReportUserId()
 	{
-		Integer[] userID = new Integer[]{1};
-
 		DateRange dr = new DateRange();
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);
-		uc.setUserIds(userID);
+		uc.setUserIds(getAsList(1));
 		rc.setUserCriteria(uc);
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		
@@ -126,7 +122,7 @@ public class ReportServiceTest extends TestCase
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
 		
-		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
 					.andReturn(pags);
 		replay(reportAggregatedDAO);
 		reportService.createAggregateReportData(rc);
@@ -155,8 +151,6 @@ public class ReportServiceTest extends TestCase
 
 	public void testCreateProjectReportNoUserIdDptId()
 	{
-		Integer[] userID = new Integer[]{1};
-		Integer[]	dptId = new Integer[]{2};
 		List<User> users = new ArrayList<User>();
 		User user = new User(1);
 		users.add(user);
@@ -164,7 +158,7 @@ public class ReportServiceTest extends TestCase
 		DateRange dr = new DateRange();
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);
-		uc.setDepartmentIds(dptId);
+		uc.setDepartmentIds(getAsList(2));
 		uc.setOnlyActiveUsers(true);
 		rc.setUserCriteria(uc);
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
@@ -173,10 +167,10 @@ public class ReportServiceTest extends TestCase
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
 		
-		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(Integer[].class), isA(DateRange.class)))
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
 		.andReturn(pags);
 		
-		expect(userDAO.findUsersForDepartments(null, dptId, true)).andReturn(users);
+		expect(userDAO.findUsersForDepartments(null, getAsList(2), true)).andReturn(users);
 		
 		replay(reportAggregatedDAO);
 		replay(userDAO);
@@ -187,7 +181,7 @@ public class ReportServiceTest extends TestCase
 	
 	public void testCreateProjectReport()
 	{
-		Integer[] customerID = new Integer[]{1};
+		List<Integer> customerID = getAsList(1);
 
 		List<Project> prjs = new ArrayList<Project>();
 		Project prj = new Project(1);
@@ -204,7 +198,7 @@ public class ReportServiceTest extends TestCase
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
 		
-		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(isA(Integer[].class), isA(DateRange.class)))
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(isA(List.class), isA(DateRange.class)))
 		.andReturn(pags);
 		expect(projectDAO.findProjectForCustomers(customerID, true)).andReturn(prjs);
 		
@@ -216,5 +210,14 @@ public class ReportServiceTest extends TestCase
 		verify(projectDAO);
 	}
 
+	private List<Integer> getAsList(Integer id)
+	{
+		List ids = new ArrayList();
+		ids.add(id);
+		
+		return ids;
+		
+	}
+	
 }
 

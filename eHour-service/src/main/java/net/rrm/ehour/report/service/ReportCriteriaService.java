@@ -24,6 +24,8 @@
 package net.rrm.ehour.report.service;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
+import net.rrm.ehour.report.criteria.UserCriteria;
 
 /**
  * 
@@ -32,10 +34,24 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 public interface ReportCriteriaService
 {
 	/**
-	 * Sync the criteria 
-	 * @param bookedOnly to list only criteria which have entries booked
-	 * @param updateType see ReportCriteria.UPDATE_ constants 
+	 * 
+	 * @param reportCriteria
 	 * @return
 	 */
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, int updateType);
+	public ReportCriteria getReportCriteria(UserCriteria reportCriteria);
+	
+	/**
+	 * 
+	 * @param reportCriteria
+	 * @return
+	 */
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria);
+	
+	/**
+	 * Sync the criteria 
+	 * @param bookedOnly to list only criteria which have entries booked
+	 * @param updateType  
+	 * @return
+	 */
+	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdate updateType);
 }

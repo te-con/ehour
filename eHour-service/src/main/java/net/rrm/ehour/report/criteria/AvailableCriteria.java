@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.report.criteria;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
@@ -36,8 +37,10 @@ import net.rrm.ehour.user.domain.UserDepartment;
  * Contains input as well as output
  **/
 
-public class AvailableCriteria
+public class AvailableCriteria implements Serializable
 {
+	private static final long serialVersionUID = -6687214845760958691L;
+	
 	private List<User>				users;
 	private List<UserDepartment>	userDepartments;
 	private List<Customer>			customers;

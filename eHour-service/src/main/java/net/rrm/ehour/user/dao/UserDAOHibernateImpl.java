@@ -125,7 +125,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	 * @return
 	 */	
 	@SuppressWarnings("unchecked")
-	public List<User> findUsersForDepartments(String pattern, Integer[] departmentIds, boolean onlyActive)
+	public List<User> findUsersForDepartments(String pattern, List<Integer> departmentIds, boolean onlyActive)
 	{
 		String		hql;
 		String[]	paramKeys;
@@ -145,7 +145,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 			  				 "User.findNamePatternForDepartment";
 		
 		paramKeys = new String[]{"pattern", "departments"};
-		paramValues = new Object[]{pattern, departmentIds};
+		paramValues = new Object[]{pattern, (Integer[])departmentIds.toArray(new Integer[]{departmentIds.size()})};
 		
 		return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, paramKeys, paramValues);
 	}

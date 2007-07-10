@@ -1,5 +1,6 @@
 package net.rrm.ehour.user.dao;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -101,7 +102,10 @@ public class UserDAOTest extends BaseDAOTest
 	
 	public void testFindUsersForDepartments()
 	{
-		List results = dao.findUsersForDepartments("in", new Integer[]{1}, false);
+		List ids = new ArrayList();
+		ids.add(1);
+		
+		List results = dao.findUsersForDepartments("in", ids, false);
 		
 		assertEquals(2, results.size());
 	}

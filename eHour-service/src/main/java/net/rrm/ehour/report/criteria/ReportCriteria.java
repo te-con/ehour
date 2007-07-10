@@ -23,58 +23,38 @@
 
 package net.rrm.ehour.report.criteria;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 
-
 /**
- * TODO 
+ * Container for the report criteria, available and user selected 
  **/
 
-public class ReportCriteria
+public class ReportCriteria implements Serializable
 {
-	public static final int		UPDATE_ALL = 0;
-	public static final int		UPDATE_CUSTOMERS = 1;
-	public static final int		UPDATE_PROJECTS = 2;
-	public static final int		UPDATE_USERS = 3;
-	
-	private	Logger				logger = Logger.getLogger(this.getClass());
+	private static final long serialVersionUID = 7406265452950554098L;
+	private	transient Logger	logger = Logger.getLogger(this.getClass());
 	private	AvailableCriteria	availableCriteria;
 	private	UserCriteria		userCriteria;
-	private	ReportCriteriaService	reportCriteriaService;
 	
 	/**
-	 * To avoid NPE's
+	 * Default constructor
 	 *
 	 */
 	public ReportCriteria()
 	{
 		userCriteria = new UserCriteria();
 		availableCriteria = new AvailableCriteria();
-	}
-	
-	/**
-	 * Initialize the available criteria so they're available
-	 * right after object construction
-	 *
-	 */
-	public void initialize()
-	{
-		logger.debug("Initializing report criteria");
-		
-		availableCriteria = new AvailableCriteria();
-		userCriteria = new UserCriteria();
 	}
 	
 	/**
@@ -137,45 +117,14 @@ public class ReportCriteria
 	 * 
 	 *
 	 */
-	public void updateAvailableCriteria()
+	public void validate(int updateType)
 	{
-		updateAvailableCriteria(ReportCriteria.UPDATE_ALL);
-	}
-	
-	/**
-	 * 
-	 *
-	 */
-	public void updateAvailableCriteria(int updateType)
-	{
-		reportCriteriaService.syncUserReportCriteria(this, updateType);
-		
 		if (!userCriteria.isSingleUser())
 		{
 			checkIfUserCriteriaAreAvailable();
 		}
-
-			// TODO move to web project
-//		if (availableCriteria.getCustomers() != null)
-//		{
-//			Collections.sort(availableCriteria.getCustomers(), new CustomerComparator());
-//		}
-//		
-//		if (availableCriteria.getProjects() != null)
-//		{
-//			Collections.sort(availableCriteria.getProjects(), new ProjectComparator());
-//		}
-//		
-//		if (availableCriteria.getUserDepartments() != null)
-//		{
-//			Collections.sort(availableCriteria.getUserDepartments(), new UserDepartmentComparator());
-//		}
-//		
-//		if (availableCriteria.getUsers() != null)
-//		{
-//			Collections.sort(availableCriteria.getUsers(), new UserComparator(false));
-//		}
 	}	
+
 	/**
 	 * After the available criteria are synced, check if the user criteria are still valid
 	 *
@@ -193,15 +142,11 @@ public class ReportCriteria
 	 */
 	private void checkUsers()
 	{
-		
-		List<Integer>	userIds;
 		List<Integer>	userIdsValid = new ArrayList<Integer>();
 		
 		if (userCriteria.getUserIds() != null)
 		{
-			userIds = Arrays.asList(userCriteria.getUserIds());
-			
-			for (Integer userId : userIds)
+			for (Integer userId : userCriteria.getUserIds())
 			{
 				if (availableCriteria.getUsers().contains(new User(userId)))
 				{
@@ -209,7 +154,7 @@ public class ReportCriteria
 				}
 			}
 			
-			userCriteria.setUserIds(userIdsValid.toArray(new Integer[userIdsValid.size()]));
+			userCriteria.setUserIds(userIdsValid);
 		}
 	}
 		
@@ -219,14 +164,11 @@ public class ReportCriteria
 	 */
 	private void checkProjects()
 	{
-		List<Integer>	projectIds;
 		List<Integer>	projectIdsValid = new ArrayList<Integer>();
 		
 		if (userCriteria.getProjectIds() != null)
 		{
-			projectIds = Arrays.asList(userCriteria.getProjectIds());
-			
-			for (Integer projectId : projectIds)
+			for (Integer projectId : userCriteria.getProjectIds())
 			{
 				if (availableCriteria.getProjects().contains(new Project(projectId)))
 				{
@@ -234,7 +176,7 @@ public class ReportCriteria
 				}
 			}
 			
-			userCriteria.setProjectIds(projectIdsValid.toArray(new Integer[projectIdsValid.size()]));
+			userCriteria.setProjectIds(projectIdsValid);
 		}
 	}
 
@@ -252,14 +194,6 @@ public class ReportCriteria
 	public void setUserCriteria(UserCriteria userCriteria)
 	{
 		this.userCriteria = userCriteria;
-	}
-
-	/**
-	 * @param reportCriteriaService the reportCriteriaService to set
-	 */
-	public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
-	{
-		this.reportCriteriaService = reportCriteriaService;
 	}
 
 	/**

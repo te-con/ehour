@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.project.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
@@ -113,14 +114,20 @@ public class ProjectDAOTest extends BaseDAOTest
 	
 	public void testFindProjectForCustomersAll()
 	{
-		List r = dao.findProjectForCustomers(new Integer[]{3, 1}, false);
+		List	ids = new ArrayList();
+		ids.add(3);
+		ids.add(1);
+		List r = dao.findProjectForCustomers(ids, false);
 		
 		assertEquals(3, r.size());
 	}
 
 	public void testFindProjectForCustomersOnlyActive()
 	{
-		List r = dao.findProjectForCustomers(new Integer[]{3, 1}, true);
+		List	ids = new ArrayList();
+		ids.add(3);
+		ids.add(1);
+		List r = dao.findProjectForCustomers(ids, true);
 		
 		assertEquals(2, r.size());
 	}
