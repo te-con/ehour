@@ -64,7 +64,6 @@ public class Overview extends BasePage
 		
 		session = ((EhourWebSession)this.getSession());
 		
-		// TODO
 		user = session.getUser().getUser();
 
 		// add calendar panel

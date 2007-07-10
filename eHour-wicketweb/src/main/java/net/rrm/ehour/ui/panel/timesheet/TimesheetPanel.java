@@ -205,7 +205,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 */
 	private void setSubmitActions(Form form, MarkupContainer parent, final Timesheet timesheet)
 	{
-		// submit is by ajax
+		// default submit
 		parent.add(new AjaxButton("submitButton", form)
 		{
 			@Override
@@ -226,7 +226,21 @@ public class TimesheetPanel extends Panel implements Serializable
 			{
                 form.visitFormComponents(new FormHighlighter(target));
             }
-        });			
+        });
+		
+		// reset, should fetch the original contents
+		AjaxButton resetButton = new AjaxButton("resetButton", form)
+		{
+			@Override
+            protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				// basically fake a week click
+				((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_CALENDARPANEL_WEEK_CLICK);
+            }			
+		};
+
+		resetButton.setDefaultFormProcessing(false);
+		parent.add(resetButton);
 	}
 	
 	/**
