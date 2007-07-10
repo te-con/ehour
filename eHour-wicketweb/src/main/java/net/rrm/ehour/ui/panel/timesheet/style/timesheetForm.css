@@ -77,7 +77,7 @@ div.timesheet
 
 .timesheetTable tr.projectRow td.project
 {
-	width: 250px;
+	width: 220px;
 	text-align: left;
 	border-right: 0px;
 	font:  1em/1.1 Geneva, Arial, Helvetica, sans-serif;	

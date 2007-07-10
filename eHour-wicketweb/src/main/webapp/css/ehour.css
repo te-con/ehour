@@ -52,8 +52,8 @@ div.GreyFrame div.ExportIcons
 div.GreyFrameContainer
 {
 		background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
-		max-width: 780px;
-		//width:expression(document.body.clientWidth > 1000? "780px": "auto" );
+		max-width: 750px;
+		//width:expression(document.body.clientWidth > 1000? "750px": "auto" );
 } 
 
 div.GreyFrameContainer h3
@@ -100,8 +100,8 @@ div.GreyFrameContainer div.GreyFrameFooter p
 div.GreyBlueFrame
 {
 	background: url(../img/bg_blue_grey/gradient_blue.gif) top left repeat-x;
-	margin-left: 20px;
-	margin-right: 20px;
+	margin-left: 15px;
+	margin-right: 15px;
 }
 
 div.GreyBlueFrameHorizontal
