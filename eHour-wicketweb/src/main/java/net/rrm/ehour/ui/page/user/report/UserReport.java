@@ -23,14 +23,12 @@
 
 package net.rrm.ehour.ui.page.user.report;
 
-import java.util.Date;
-
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
+import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -59,6 +57,9 @@ public class UserReport extends BasePage
 		
 		ReportCriteria reportCriteria = getReportCriteria();
 		setModel(new CompoundPropertyModel(reportCriteria));
+		
+		// contextual help
+		add(new ContextualHelpPanel("contextHelp"));
 		
 		add(new UserReportCriteriaPanel("sidePanel", reportCriteria));
 	}

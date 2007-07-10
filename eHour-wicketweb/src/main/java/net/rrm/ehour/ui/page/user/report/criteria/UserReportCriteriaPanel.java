@@ -30,6 +30,7 @@ import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
@@ -54,9 +55,9 @@ public class UserReportCriteriaPanel extends SidePanel
 
 		Form form = new Form("criteriaForm");
 		
-		DropDownChoice projectDropDown;
-		projectDropDown = new DropDownChoice("project", 
-											new PropertyModel(reportCriteria, "userCriteria"), 
+		ListMultipleChoice projectDropDown;
+		projectDropDown = new ListMultipleChoice("project", 
+											new PropertyModel(reportCriteria, "userCriteria.projects"), 
 											reportCriteria.getAvailableCriteria().getProjects(),
 											new ProjectChoiceRender());
 		form.add(projectDropDown);
@@ -69,7 +70,7 @@ public class UserReportCriteriaPanel extends SidePanel
 	}
 
 	/**
-	 * Add date pickters
+	 * Add date pickers
 	 * @param parent
 	 * @param reportCriteria
 	 */

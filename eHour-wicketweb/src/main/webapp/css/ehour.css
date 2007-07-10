@@ -251,3 +251,14 @@ div.Help a:active
 	color: red;
 	text-decoration: underline;
 }
+
+.textInputSmall
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #cfdbe6;
+	margin: 0;
+	font: 0.9em Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
+	background-color: white;
+}
