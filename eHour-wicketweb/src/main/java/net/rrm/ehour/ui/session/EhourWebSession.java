@@ -25,6 +25,7 @@ package net.rrm.ehour.ui.session;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.EhourWebApplication;
@@ -68,12 +69,24 @@ public class EhourWebSession extends AuthenticatedWebSession
 	public EhourWebSession(final AuthenticatedWebApplication application, Request req)
 	{
 		super(application, req);
-
+		
 		InjectorHolder.getInjector().inject(this);
+		
+		if (ehourConfig.getLocaleLanguage() == null || !ehourConfig.getLocaleLanguage().equals("noForce"))
+		{
+			logger.debug("Setting locale to " + ehourConfig.getLocaleLanguage());
+
+			Locale.setDefault(ehourConfig.getLocale());
+			setLocale(ehourConfig.getLocale());
+		} else
+		{
+			logger.debug("Not forcing locale, using browser's locale");
+		}
 	}
 
 	/**
 	 * Get ehour config
+	 * 
 	 * @return
 	 */
 	public EhourConfig getEhourConfig()

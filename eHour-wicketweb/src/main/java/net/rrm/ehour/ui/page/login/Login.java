@@ -35,11 +35,13 @@ import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Login page 
@@ -87,7 +89,7 @@ public class Login extends WebPage
 	{
 		//add(new StyleSheetReference("loginStyle", new CompressedResourceReference(LoginPage.class, "style/ehourLogin.css")));
 
-		add(new Label("pageTitle", "eHour - login"));
+		add(new Label("pageTitle", new ResourceModel("login.login.header")));
 		add(new SignInForm("loginform", new SimpleUser()));
 
 	}
@@ -116,6 +118,7 @@ public class Login extends WebPage
 			add(feedback);
 			add(new TextField("username").setRequired(true));
 			add(new PasswordTextField("password").setResetPassword(true));
+			add(new Button("signin", new ResourceModel("login.login.submit")));
 		}
 
 		/**
@@ -151,7 +154,7 @@ public class Login extends WebPage
 				}
 				else
 				{
-					error("invalid username or password");
+					error(new ResourceModel("login.login.failed"));
 				}
 			}
 

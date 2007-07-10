@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.ui.page.login;
 
+import org.apache.wicket.model.ResourceModel;
+
 /**
  * TODO 
  **/
@@ -33,6 +35,6 @@ public class SessionExpiredPage extends Login
 	{
 		super(null);
 
-		super.error("you have been automaticcaly logged out ");
+		super.error(new ResourceModel("you have been automaticcaly logged out "));
 	}
 }

@@ -37,15 +37,15 @@
 					<div style="margin: 0; padding: 47px 0 0 0">
 						<table cellspacing="0" cellpadding="0">
 							<tr>
-								<td>Username :</td>
+								<td style="padding-right:5px"><wicket:message  key="login.login.username" /> :</td>
 				            	<td><input wicket:id="username" type="text"/></td>
 								<td>&nbsp;</td>
 							</tr>
 			
 							<tr>
-								<td>Password :</td>
+								<td style="padding-right:5px"><wicket:message key="login.login.password" />:</td>
 					            <td><input wicket:id="password" type="password"/></td>
-								<td><input type="submit" value="Sign in >>" id="submitButton" onfocus="blur()" /></td>
+								<td><input type="submit" wicket:id="signin" id="submitButton" onfocus="blur()" /></td>
 							</tr>
 						</table>
 						<div wicket:id="feedback" style="float:left;color: red;font-size: 0.8em"></div>
