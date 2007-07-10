@@ -27,6 +27,7 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
+import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -71,6 +72,10 @@ public class Overview extends BasePage
 		calendarPanel = new CalendarPanel("sidePanel", user);
 		add(calendarPanel);
 		
+		// contextual help
+		add(new ContextualHelpPanel("contextHelp"));
+		
+		// content
 		contentContainer = new WebMarkupContainer("contentContainer");
 		
 		// project overview panel

@@ -133,6 +133,76 @@ div.GreyBlueLeftBottom
 	background: url(../img/bg_blue_grey/left_bottom.gif) bottom left no-repeat;
 }
 
+div.GreyNavFrame
+{
+	background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
+	max-height: 500px;
+  	width:		230px;
+} 
+
+div.GreyNavFrame h3
+{
+  background: 	url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
+  line-height:	11px;
+  padding:		0;
+  margin: 0;
+  font: 		bold 1.1em/1.5 Geneva, Arial, Helvetica, sans-serif;
+  color: #536e87;
+  text-align: center;  
+}
+
+div.GreyNavBody
+{
+	background: url(../img/grey_frame/pixel_grey.gif);
+  	margin-top: 0em;
+  	padding:0;
+	max-height: 300px;
+	overflow: auto;
+	margin-left: 5px;
+	margin-right: 5px;
+	color: #536e87;
+	font: 0.75em/1.5 Geneva, Arial, Helvetica, sans-serif;
+}
+
+div.GreyNavBody a:link
+{
+	color: #536e87;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+div.GreyNavBody a:visited
+{
+	color: #536e87;
+	font-weight: normal;	
+	text-decoration: none;
+}
+
+div.GreyNavBody a:hover
+{
+	color: #233e55;
+	text-decoration: underline;
+}
+
+div.GreyNavBody a:active
+{
+	text-decoration: none
+}
+
+
+div.GreyNavFrameFooter
+{
+  background: url(../img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
+}
+
+div.GreyNavFrameFooter p
+{
+  background: url(../img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
+  padding:20px;
+  display:block;
+  margin:-2em 0 0 0;
+}
+
 .submitButton
 {
 	background-color: transparent;
@@ -150,4 +220,34 @@ div.GreyBlueLeftBottom
 	padding: 0;
 	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #576d83;
+}
+
+div.Help
+{
+	padding: 20px 5px 0 5px;
+	margin: 0;	
+}
+
+div.Help a:link
+{
+	font-weight: normal;
+	text-decoration: underline;
+}
+
+div.Help a:visited
+{
+	font-weight: normal;	
+	text-decoration: underline;
+}
+
+div.Help a:hover
+{
+	color: red;
+	text-decoration: underline;
+}
+
+div.Help a:active
+{
+	color: red;
+	text-decoration: underline;
 }
