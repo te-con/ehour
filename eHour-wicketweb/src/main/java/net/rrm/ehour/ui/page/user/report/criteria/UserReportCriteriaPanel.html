@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<wicket:head>
+
+</wicket:head>
+
+<body>
+
+<wicket:extend>
+	<form wicket:id="criteriaForm">
+		<div class="UserReportCriteria">
+			<div style="float: left;vertical-align: bottom;height: 1.5em">
+				<wicket:message key="criteria.dateStart" />:
+			</div>
+			
+			<div style="float: right;width :9em">
+				<input wicket:id="dateStart" type="text"></input>		
+			</div>	
+	
+			<br clear="all" />
+	
+	
+			<div style="float: left;vertical-align: bottom;height: 1.5em">
+				<wicket:message key="criteria.dateEnd" />:
+			</div>
+	
+			<div style="float: right;width :9em">
+				<input wicket:id="dateEnd" type="text"></input>		
+			</div>	
+	
+			
+			<br clear="all" />
+			
+			<div style="float: left;vertical-align: bottom;margin-top: 5px">
+				<wicket:message key="criteria.project" />:
+			</div>
+			
+			<div style="float: right;vertical-align: bottom">
+				<select size="2" multiple="multiple" class="textInputSmall" wicket:id="project">
+					<option value="-1">(All)</option>
+				</select>
+			</div>
+			
+			<br clear="all" />
+			<br />
+			
+			<div style="float: right;vertical-align: bottom;height: 1.5em">
+				<input type="submit" class="submitButton" />
+			</div>
+			<br />
+		</div>
+	</form>
+	<div wicket:id="feedback">errors</div>
+</wicket:extend>
+
+</body>
+
+</html>

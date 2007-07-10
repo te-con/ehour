@@ -26,13 +26,19 @@ package net.rrm.ehour.ui.page.user.report;
 import java.util.Date;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.panel.daterange.DateRangePanel;
+import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
+import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * TODO 
+ * Reporting for user
  **/
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
@@ -40,12 +46,45 @@ public class UserReport extends BasePage
 {
 	private static final long serialVersionUID = -8867366237264687482L;
 	
+	@SpringBean
+	private ReportCriteriaService	reportCriteriaService;
+	private	UserCriteria			userCriteria;
+	
+	/**
+	 * 
+	 */
 	public UserReport()
 	{
 		super("reporting", null);
 		
-		DateRange range = new DateRange(new Date(), new Date());
+		ReportCriteria reportCriteria = getReportCriteria();
+		setModel(new CompoundPropertyModel(reportCriteria));
 		
-		add(new DateRangePanel("sidePanel", range));
+		add(new UserReportCriteriaPanel("sidePanel", reportCriteria));
+	}
+	
+	/**
+	 * Get report criteria
+	 * @return
+	 */
+	private ReportCriteria getReportCriteria()
+	{
+		userCriteria = EhourWebSession.getSession().getUserCriteria();
+		
+		if (userCriteria == null)
+		{
+			initUserCritieria();
+		}
+		
+		userCriteria.setSingleUser(true);
+		
+		return reportCriteriaService.getReportCriteria(userCriteria);
+	}
+	
+	private void initUserCritieria()
+	{
+		userCriteria = new UserCriteria();
+		userCriteria.setSingleUser(true);
+		userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
 	}
 }

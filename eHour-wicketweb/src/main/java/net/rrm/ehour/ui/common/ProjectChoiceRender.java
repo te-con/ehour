@@ -1,5 +1,5 @@
 /**
- * Created on Jul 4, 2007
+ * Created on Jul 10, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,19 +21,37 @@
  *
  */
 
-package net.rrm.ehour.ui.page.login;
+package net.rrm.ehour.ui.common;
 
+import net.rrm.ehour.project.domain.Project;
+
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 /**
- * TODO 
+ * Various choice renders
  **/
 
-public class SessionExpiredPage extends Login
+public class ProjectChoiceRender implements IChoiceRenderer
 {
-	public SessionExpiredPage()
-	{
-		super(null);
+	private static final long serialVersionUID = 9021045667533511410L;
 
-		super.error(getLocalizer().getString("login.sessionexpired", this));
+	public Object getDisplayValue(Object object)
+	{
+		if  (object instanceof Project)
+		{
+			return ((Project) object).getFullname();
+		}
+
+		return object.toString();
+	}
+
+	public String getIdValue(Object object, int index)
+	{
+		if  (object instanceof Project)
+		{
+			return ((Project) object).getProjectId().toString();
+		}
+
+		return Integer.toString(index);
 	}
 }

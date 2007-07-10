@@ -28,6 +28,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.authorization.AuthUser;
 import net.rrm.ehour.util.DateUtil;
@@ -49,14 +50,16 @@ import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * TODO 
+ * Ehour Web session
  **/
 
 public class EhourWebSession extends AuthenticatedWebSession
 {
 	@SpringBean
-	private EhourConfig ehourConfig;
-	private Calendar navCalendar;
+	private EhourConfig 	ehourConfig;
+	private Calendar 		navCalendar;
+	private	UserCriteria	userCriteria;
+	
 	private	static Logger logger = Logger.getLogger(EhourWebSession.class);
 	
 	private static final long serialVersionUID = 93189812483240412L;
@@ -232,5 +235,21 @@ public class EhourWebSession extends AuthenticatedWebSession
 	public static EhourWebSession getSession()
 	{
 		return (EhourWebSession) Session.get();
+	}
+
+	/**
+	 * @return the userCriteria
+	 */
+	public UserCriteria getUserCriteria()
+	{
+		return userCriteria;
+	}
+
+	/**
+	 * @param userCriteria the userCriteria to set
+	 */
+	public void setUserCriteria(UserCriteria userCriteria)
+	{
+		this.userCriteria = userCriteria;
 	}
 }

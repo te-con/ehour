@@ -27,9 +27,11 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.model.IModel;
 
 /**
  * Blue navigation side panel
+ * TODO convert to border
  **/
 
 public abstract class SidePanel extends Panel
@@ -46,11 +48,15 @@ public abstract class SidePanel extends Panel
 	 */
 	public SidePanel(String id)
 	{
-		super(id);
-		
+		this(id, null);
+	}
+
+	public SidePanel(String id, IModel model)
+	{
+		super(id, model);
 		add(new StyleSheetReference("navSidePanelStyle", navSidePanelStyle()));
 	}
-	
+
 	
 	/**
 	 * Create a style
