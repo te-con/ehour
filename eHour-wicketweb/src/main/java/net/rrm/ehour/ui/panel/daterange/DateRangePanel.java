@@ -23,11 +23,13 @@
 
 package net.rrm.ehour.ui.panel.daterange;
 
+import java.util.Date;
+
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
@@ -36,28 +38,34 @@ import org.wicketstuff.dojo.toggle.DojoFadeToggle;
  * Date range selection
  **/
 
-public class DateRangePanel extends Panel
+public class DateRangePanel extends SidePanel
 {
 	private static final long serialVersionUID = -6129389795390181179L;
 
+	private DateRange	dateRangeLimits;
+	private	DateRange	selectedDateRange;
 	/**
 	 * 
 	 * @param id
 	 * @param model
 	 */
-	public DateRangePanel(String id, DateRange dateRange)
+	public DateRangePanel(String id, DateRange dateRangeLimits)
 	{
 		super(id);
 		
-		Form form = new Form("dateform", new CompoundPropertyModel(dateRange));
+		this.dateRangeLimits = dateRangeLimits;
 		
-		DojoDatePicker date2P = new DojoDatePicker("dateStart", "dd/MM/yyyy");
-		date2P.setToggle(new DojoFadeToggle(200));
-		form.add(date2P);
+		selectedDateRange = new DateRange(new Date(), new Date());
 		
-		DojoDatePicker date3P = new DojoDatePicker("dateEnd", "dd/MM/yyyy");
-		date3P.setToggle(new DojoFadeToggle(600));
-		form.add(date3P);
+		Form form = new Form("dateform", new CompoundPropertyModel(selectedDateRange));
+		
+		DojoDatePicker dateStart = new DojoDatePicker("dateStart", "dd/MM/yyyy");
+		dateStart.setToggle(new DojoFadeToggle(200));
+		form.add(dateStart);
+		
+		DojoDatePicker dateEnd = new DojoDatePicker("dateEnd", "dd/MM/yyyy");
+		dateEnd.setToggle(new DojoFadeToggle(600));
+		form.add(dateEnd);
 		
 		this.add(new FeedbackPanel("feedback"));
 

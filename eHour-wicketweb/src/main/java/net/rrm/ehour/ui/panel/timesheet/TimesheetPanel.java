@@ -61,7 +61,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -71,6 +70,7 @@ import org.apache.wicket.markup.html.form.IFormVisitorParticipant;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
@@ -78,7 +78,6 @@ import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.time.Duration;
 
 /**
  * The main panel - timesheet form
@@ -132,7 +131,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		timesheetForm.add(blueBorder);
 
 		// setup form
-		grandTotals = buildForm(blueBorder, timesheet);
+		grandTotals = buildForm(timesheetForm, blueBorder, timesheet);
 		
 		// add last row with grand totals
 		addGrandTotals(blueBorder, grandTotals);
@@ -146,7 +145,9 @@ public class TimesheetPanel extends Panel implements Serializable
 		createCommentsInput(timesheetForm, timesheet);
 		
 		// TODO replace with dojo widget
-//		add(new FeedbackPanel("feedback"));
+		FeedbackPanel feedback = new FeedbackPanel("feedback");
+		feedback.setOutputMarkupId(true);
+		add(feedback);
 		
 		// add CSS & JS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
@@ -220,42 +221,9 @@ public class TimesheetPanel extends Panel implements Serializable
                 form.visitFormComponents(new FormHighlighter(target));
             }
         });			
-
-		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange",  Duration.seconds(3));
+		
+//		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange",  Duration.seconds(3));
 	}
-	
-	/**
-	 * Form validation
-	 * @author Thies
-	 *
-	 */
-	private class FormHighlighter implements FormComponent.IVisitor, Serializable 
-    {
-		private transient AjaxRequestTarget	target;
-		public FormHighlighter(AjaxRequestTarget target)
-		{
-			this.target = target;
-		}
-        public Object formComponent(IFormVisitorParticipant visitor)
-        {
-        	FormComponent formComponent = (FormComponent)visitor;
-            
-            if (!formComponent.isValid())
-            {
-            	formComponent.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
-	            {
-	                public Object getObject()
-	                {
-	                    return "color: #ff0000";
-	                }
-	            }));                        	
-
-                target.addComponent(formComponent);
-            }
-            
-            return formComponent;
-        }
-    }
 	
 	/**
 	 * Add date labels (sun/mon etc)
@@ -349,7 +317,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param parent
 	 * @param timesheet
 	 */
-	private GrandTotal buildForm(WebMarkupContainer parent, final Timesheet timesheet)
+	private GrandTotal buildForm(final Form form, WebMarkupContainer parent, final Timesheet timesheet)
 	{
 		final GrandTotal	grandTotals = new GrandTotal();
 		
@@ -377,7 +345,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
 				boolean hidden = (foldPreference != null && foldPreference.isFolded());
 				
-				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals));
+				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
 			}
 		};
 		

@@ -4,9 +4,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 
+<wicket:head>
+
+</wicket:head>
+
 <body>
 
-<wicket:panel>
+<wicket:extend>
 	<form wicket:id="dateform">
 			<input wicket:id="dateStart" type="text"></input>
 			<input wicket:id="dateEnd" type="text"></input>
@@ -14,7 +18,7 @@
 		<input value="Submit" name="Submit" type="submit" />
 	</form>
 	<div wicket:id="feedback">errors</div>
-</wicket:panel>
+</wicket:extend>
 
 </body>
 
