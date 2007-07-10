@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.authorization.AuthService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.report.user.UserReportTabularPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
@@ -73,6 +74,7 @@ public class UserReport extends BasePage
 		
 		// 
 		ReportDataAggregate reportData = getReportData(reportCriteria);
+		add(new UserReportTabularPanel("reportTable", reportData));
 		
 	}
 	
