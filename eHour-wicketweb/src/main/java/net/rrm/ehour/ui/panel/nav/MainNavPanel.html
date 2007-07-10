@@ -22,15 +22,15 @@
 	</div>
 	
 	<div class="Navigation">
-		<a wicket:id="overviewLink">overview</a> |
-		<a wicket:id="userReportLink">reporting</a> |
-		<a wicket:id="assignmentLink">assignmnent</a> |
-		<a wicket:id="logoffLink">log off</a>
+		<a wicket:id="overviewLink"><wicket:message key="nav.overview" /></a> |
+		<a wicket:id="userReportLink"><wicket:message key="nav.reporting" /></a> |
+		<a wicket:id="assignmentLink"><wicket:message key="nav.admin" /></a> |
+		<a wicket:id="logoffLink"><wicket:message key="nav.logoff" /></a>
 	</div>
 </div>
 
-<div class="LoggedInAs">
-	Logged in as <span wicket:id="loggedInUser">[Thies]</span>
+<div class="LoggedInAs" wicket:id="loggedInUser">
+	Thies Edeling
 </div>
 
 </wicket:panel>

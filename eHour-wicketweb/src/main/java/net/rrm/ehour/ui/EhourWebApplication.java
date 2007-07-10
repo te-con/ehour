@@ -55,6 +55,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		super.init();
 		
+		getMarkupSettings().setStripWicketTags(true);
+		
 		mount("/login", PackageName.forClass(Login.class));
 		mount("/admin", PackageName.forClass(AssignmentPage.class));
 		mount("/consultant", PackageName.forPackage(Overview.class.getPackage()));
