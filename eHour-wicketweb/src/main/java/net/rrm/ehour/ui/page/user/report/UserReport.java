@@ -25,12 +25,16 @@ package net.rrm.ehour.ui.page.user.report;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.ui.authorization.AuthService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -46,7 +50,10 @@ public class UserReport extends BasePage
 	
 	@SpringBean
 	private ReportCriteriaService	reportCriteriaService;
+	@SpringBean
+	private ReportService			reportService;
 	private	UserCriteria			userCriteria;
+	private transient Logger		logger = Logger.getLogger(UserReport.class);
 	
 	/**
 	 * 
@@ -60,9 +67,28 @@ public class UserReport extends BasePage
 		
 		// contextual help
 		add(new ContextualHelpPanel("contextHelp"));
-		
+
+		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", reportCriteria));
+		
+		// 
+		ReportDataAggregate reportData = getReportData(reportCriteria);
+		
 	}
+	
+	/**
+	 * Get report data
+	 * @param reportCriteria
+	 * @return
+	 */
+	private ReportDataAggregate getReportData(ReportCriteria reportCriteria)
+	{
+		logger.debug("Getting report data");
+		ReportDataAggregate data = reportService.createAggregateReportData(reportCriteria);
+		
+		return data;
+	}
+	
 	
 	/**
 	 * Get report criteria
@@ -82,6 +108,9 @@ public class UserReport extends BasePage
 		return reportCriteriaService.getReportCriteria(userCriteria);
 	}
 	
+	/**
+	 * Initialize user criteria 
+	 */
 	private void initUserCritieria()
 	{
 		userCriteria = new UserCriteria();

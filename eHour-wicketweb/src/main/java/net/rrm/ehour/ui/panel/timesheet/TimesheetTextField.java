@@ -32,6 +32,10 @@ import org.apache.wicket.model.IModel;
 
 public class TimesheetTextField extends TextField
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7033801704569935582L;
 	private	boolean	wasInvalid;
 	private Object	previousValue;
 	
