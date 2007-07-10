@@ -57,7 +57,6 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -65,8 +64,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.IFormVisitorParticipant;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -75,7 +72,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -94,7 +90,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	private UserService			userService;
 	
 	private	EhourConfig			config;
-
+	public static String[]		dayTotalIds = new String[]{"sundayTotal", "mondayTotal", "tuesdayTotal", 
+													"wednesdayTotal", "thursdayTotal", "fridayTotal", "saturdayTotal"};
+	
 	/**
 	 * Construct timesheetPanel for entering hours
 	 * @param id
@@ -181,13 +179,11 @@ public class TimesheetPanel extends Panel implements Serializable
 	 */
 	private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals)
 	{
-		String[]	ids = new String[]{"sundayTotal", "mondayTotal", "tuesdayTotal", 
-										"wednesdayTotal", "thursdayTotal", "fridayTotal", "saturdayTotal"};
 		Label		total;
 		
-		for (int i = 0; i < ids.length; i++)
+		for (int i = 0; i < dayTotalIds.length; i++)
 		{
-			total = new Label(ids[i], new FloatModel(new PropertyModel(grandTotals, "getValues[" + i + "]"), config));
+			total = new Label(dayTotalIds[i], new FloatModel(new PropertyModel(grandTotals, "getValues[" + i + "]"), config));
 			total.setOutputMarkupId(true);
 			parent.add(total);
 		}

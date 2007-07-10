@@ -24,37 +24,95 @@
 package net.rrm.ehour.ui.panel.timesheet.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.model.PropertyModel;
 
 /**
- * 
+ * GrandTotal of all days
  * @author Thies
  *
  */
 public class GrandTotal implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8908496992290848165L;
-	private float[]	grandTotals = new float[7];
+	private Map<Integer, List<PropertyModel>>	weekMatrix;
 	
-	public void addValue(int index, float value)
+	/**
+	 * Default constructor initializing the weekmatrix
+	 */
+	public GrandTotal()
 	{
-		grandTotals[index] += value;
+		weekMatrix = new HashMap<Integer, List<PropertyModel>>();
+	}
+
+	/**
+	 * Add model for specific week 
+	 * @param index
+	 * @param model
+	 */
+	public void addValue(int index, PropertyModel model)
+	{
+		List<PropertyModel>	dayModels;
+		
+		if (weekMatrix.containsKey(index))
+		{
+			dayModels = weekMatrix.get(index);
+		}
+		else
+		{
+			dayModels = new ArrayList<PropertyModel>();
+		}
+		
+		dayModels.add(model);
+		
+		weekMatrix.put(index, dayModels);
 	}
 	
+	/**
+	 * Get all the values for a single week
+	 * @return
+	 */
 	public float[] getValues()
 	{
-		return grandTotals;
+		float[]				dayValues = new float[7];
+		List<PropertyModel>	dayModels;
+		Object				modelValue;
+		
+		for (Integer dayInWeek : weekMatrix.keySet())
+		{
+			dayModels = weekMatrix.get(dayInWeek);
+			
+			for (PropertyModel propertyModel : dayModels)
+			{
+				modelValue = propertyModel.getObject();
+				
+				if (modelValue != null)
+				{
+					dayValues[dayInWeek.intValue()] += ((Number)modelValue).floatValue();
+				}
+				
+			}
+		}
+		
+		return dayValues;
 	}
 	
+	/**
+	 * Get grand total, combination of all
+	 * @return
+	 */
 	public float getGrandTotal()
 	{
-		float val = 0;
+		float[]	values = getValues();
+		float	val = 0;
 		
-		for (int i = 0; i < grandTotals.length; i++)
+		for (int i = 0; i < values.length; i++)
 		{
-			val += grandTotals[i];
+			val += values[i];
 		}
 		
 		return val;

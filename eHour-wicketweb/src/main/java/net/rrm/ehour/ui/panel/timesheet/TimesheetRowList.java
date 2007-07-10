@@ -129,17 +129,22 @@ public class TimesheetRowList extends ListView
 	 * @param index
 	 * @return
 	 */
-	private TextField createValidatedTextField(String id, TimesheetRow row, int index)
+	private TextField createValidatedTextField(String id, TimesheetRow row, final int index)
 	{
 		final TimesheetTextField	dayInput;
+		PropertyModel				cellModel;
 		
-		dayInput = new TimesheetTextField(id, new FloatModel(
-										new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours"), config, null),
-										Float.class
-									);
+		cellModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours");
+		
+		// make sure it's added to the grandtotal
+		grandTotals.addValue(index, cellModel);
+		
+		// list it on the page
+		dayInput = new TimesheetTextField(id, new FloatModel(cellModel, config, null), Float.class);
 		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
 		dayInput.setOutputMarkupId(true);
 		
+		// make sure values are checked
 		AjaxFormValidatingBehavior behavior = new AjaxFormValidatingBehavior(form, "onchange")
 		{
 			@Override
@@ -148,8 +153,14 @@ public class TimesheetRowList extends ListView
 				// update the project total
 				target.addComponent(dayInput.getParent().get("total"));
 				
+				// update the grand total & day total
 				// TODO bit brittle
-				System.out.println(((MarkupContainer)dayInput.findParent(Form.class).get("blueFrame")).get("grandTotal"));
+				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
+												.get("blueFrame"))
+												.get("grandTotal"));
+				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
+												.get("blueFrame"))
+												.get(TimesheetPanel.dayTotalIds[index]));
 				
 				form.visitFormComponents(new FormHighlighter(target));
 			}		
@@ -162,15 +173,7 @@ public class TimesheetRowList extends ListView
 		};
 		
 		dayInput.add(behavior);
-		
-		// TODO make dynamic model
-		if (row.getTimesheetCells()[index] != null 
-				&& row.getTimesheetCells()[index].getTimesheetEntry() != null 
-				&& row.getTimesheetCells()[index].getTimesheetEntry().getHours() != null)
-		{
-			grandTotals.addValue(index, row.getTimesheetCells()[index].getTimesheetEntry().getHours().floatValue());
-		}
-		
+
 		return dayInput;
 	}
 }
