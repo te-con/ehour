@@ -154,7 +154,7 @@ public class Login extends WebPage
 				}
 				else
 				{
-					error(new ResourceModel("login.login.failed"));
+					error(getLocalizer().getString("login.login.failed", this));
 				}
 			}
 

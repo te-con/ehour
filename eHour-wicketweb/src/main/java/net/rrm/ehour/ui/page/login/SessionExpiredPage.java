@@ -35,6 +35,6 @@ public class SessionExpiredPage extends Login
 	{
 		super(null);
 
-		super.error(new ResourceModel("you have been automaticcaly logged out "));
+		super.error(getLocalizer().getString("login.sessionexpired", this));
 	}
 }
