@@ -70,7 +70,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
 				"     PROJECT_ASSIGNMENT PAG, " +
-				"     USER USR " +
+				"     USERS USR " +
 				"WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND " +
 				"      PAG.PROJECT_ID = PRJ.PROJECT_ID AND " +
 				"      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND " +
@@ -121,7 +121,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
 				"     PROJECT_ASSIGNMENT PAG, " +
-				"     USER USR " +
+				"     USERS USR " +
 				"WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND " +
 				"      PAG.PROJECT_ID = PRJ.PROJECT_ID AND " +
 				"      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND " +
@@ -170,7 +170,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
 				"     PROJECT_ASSIGNMENT PAG, " +
-				"     USER USR " +
+				"     USERS USR " +
 				"WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND " +
 				"      PAG.PROJECT_ID = PRJ.PROJECT_ID AND " +
 				"      PAG.PROJECT_ID IN (:projectIdList) AND " +
@@ -220,7 +220,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
 				"     PROJECT_ASSIGNMENT PAG, " +
-				"     USER USR " +
+				"     USERS USR " +
 				"WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND " +
 				"      PAG.PROJECT_ID = PRJ.PROJECT_ID AND " +
 				"      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND " +
@@ -271,7 +271,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 				"     CUSTOMER CUST, " +
 				"     PROJECT PRJ, " +
 				"     PROJECT_ASSIGNMENT PAG, " +
-				"     USER USR " +
+				"     USERS USR " +
 				"WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND " +
 				"      PAG.PROJECT_ID = PRJ.PROJECT_ID AND " +
 				"      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND " +

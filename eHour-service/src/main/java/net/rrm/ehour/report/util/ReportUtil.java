@@ -30,14 +30,14 @@ import java.util.List;
 import net.rrm.ehour.domain.DomainObject;
 
 /**
- * TODO 
+ * Report util 
  **/
 
 public class ReportUtil
 {
 	/**
 	 * Convert list of projects to id
-	 * TODO: this broken
+	 * TODO: this broken (oh?)
 	 * @param projects
 	 * @return
 	 */
@@ -52,4 +52,5 @@ public class ReportUtil
 		
 		return pks;
 	}
+
 }
