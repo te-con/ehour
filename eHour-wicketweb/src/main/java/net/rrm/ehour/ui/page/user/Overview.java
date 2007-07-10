@@ -36,6 +36,7 @@ import net.rrm.ehour.user.domain.User;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -60,7 +61,7 @@ public class Overview extends BasePage
 	 */
 	public Overview()
 	{
-		super("overview", null);
+		super(new ResourceModel("overview.title"), null);
 		
 		session = ((EhourWebSession)this.getSession());
 		
