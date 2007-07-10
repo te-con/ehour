@@ -181,15 +181,20 @@ public class TimesheetPanel extends Panel implements Serializable
 	 */
 	private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals)
 	{
-		parent.add(new Label("sundayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[0]"), config)));
-		parent.add(new Label("mondayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[1]"), config)));
-		parent.add(new Label("tuesdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[2]"), config)));
-		parent.add(new Label("wednesdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[3]"), config)));
-		parent.add(new Label("thursdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[4]"), config)));
-		parent.add(new Label("fridayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[5]"), config)));
-		parent.add(new Label("saturdayTotal", new FloatModel(new PropertyModel(grandTotals, "getValues[6]"), config)));
+		String[]	ids = new String[]{"sundayTotal", "mondayTotal", "tuesdayTotal", 
+										"wednesdayTotal", "thursdayTotal", "fridayTotal", "saturdayTotal"};
+		Label		total;
 		
-		parent.add(new Label("grandTotal", new FloatModel(new PropertyModel(grandTotals, "grandTotal"), config)));
+		for (int i = 0; i < ids.length; i++)
+		{
+			total = new Label(ids[i], new FloatModel(new PropertyModel(grandTotals, "getValues[" + i + "]"), config));
+			total.setOutputMarkupId(true);
+			parent.add(total);
+		}
+
+		total = new Label("grandTotal", new FloatModel(new PropertyModel(grandTotals, "grandTotal"), config));
+		total.setOutputMarkupId(true);
+		parent.add(total);
 	}
 	
 	/**

@@ -28,11 +28,13 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
+import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
@@ -44,7 +46,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
 
 /**
- * TODO 
+ * Representation of a timesheet row
  **/
 
 public class TimesheetRowList extends ListView
@@ -83,7 +85,6 @@ public class TimesheetRowList extends ListView
 	protected void populateItem(ListItem item)
 	{
 		final TimesheetRow row = (TimesheetRow) item.getModelObject();
-		float totalHours = 0;
 
 		// add id to row
 		item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
@@ -105,16 +106,9 @@ public class TimesheetRowList extends ListView
 		item.add(createValidatedTextField("friday", row, 5));
 		item.add(createValidatedTextField("saturday", row, 6));
 
-		// calc week total
-		for (int i = 0; i < 6; i++)
-		{
-			if (row.getTimesheetCells()[i] != null && row.getTimesheetCells()[i].getTimesheetEntry() != null && row.getTimesheetCells()[i].getTimesheetEntry().getHours() != null)
-			{
-				totalHours += row.getTimesheetCells()[i].getTimesheetEntry().getHours().floatValue();
-			}
-		}
-
-		item.add(new Label("total", new FloatModel(totalHours, config)));
+		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
+		totalHours.setOutputMarkupId(true);
+		item.add(totalHours);
 
 		if (hidden)
 		{
@@ -137,7 +131,7 @@ public class TimesheetRowList extends ListView
 	 */
 	private TextField createValidatedTextField(String id, TimesheetRow row, int index)
 	{
-		TimesheetTextField	dayInput;
+		final TimesheetTextField	dayInput;
 		
 		dayInput = new TimesheetTextField(id, new FloatModel(
 										new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours"), config, null),
@@ -151,6 +145,12 @@ public class TimesheetRowList extends ListView
 			@Override
 			protected void onSubmit(AjaxRequestTarget target)
 			{
+				// update the project total
+				target.addComponent(dayInput.getParent().get("total"));
+				
+				// TODO bit brittle
+				System.out.println(((MarkupContainer)dayInput.findParent(Form.class).get("blueFrame")).get("grandTotal"));
+				
 				form.visitFormComponents(new FormHighlighter(target));
 			}		
 			
@@ -160,8 +160,10 @@ public class TimesheetRowList extends ListView
 				form.visitFormComponents(new FormHighlighter(target));
 			}			
 		};
+		
 		dayInput.add(behavior);
 		
+		// TODO make dynamic model
 		if (row.getTimesheetCells()[index] != null 
 				&& row.getTimesheetCells()[index].getTimesheetEntry() != null 
 				&& row.getTimesheetCells()[index].getTimesheetEntry().getHours() != null)

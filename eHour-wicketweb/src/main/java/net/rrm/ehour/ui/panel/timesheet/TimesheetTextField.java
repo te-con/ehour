@@ -33,14 +33,34 @@ import org.apache.wicket.model.IModel;
 public class TimesheetTextField extends TextField
 {
 	private	boolean	wasInvalid;
+	private Object	previousValue;
 	
 	public TimesheetTextField(final String id, IModel model, Class type)
 	{
 		super(id, model, type);
 		
 		wasInvalid = false;
+		
+		if (model != null && model.getObject() != null)
+		{
+			previousValue = model.getObject();
+		}
 	}
 
+	public boolean isChanged()
+	{
+		if (this.getModel() != null && this.getModel().getObject() != null)
+		{
+			if (previousValue == null || !previousValue.equals(getModel().getObject()))
+			{
+				previousValue = getModel().getObject();
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * @return the wasInvalid
 	 */
@@ -55,7 +75,10 @@ public class TimesheetTextField extends TextField
 	public void setWasInvalid(boolean wasInvalid)
 	{
 		this.wasInvalid = wasInvalid;
+		
+		if (!wasInvalid)
+		{
+			previousValue = null;
+		}
 	}
-	
-	
 }

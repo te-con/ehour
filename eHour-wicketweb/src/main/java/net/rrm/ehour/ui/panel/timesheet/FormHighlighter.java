@@ -63,12 +63,16 @@ public class FormHighlighter implements FormComponent.IVisitor, Serializable
             target.addComponent(formComponent);
         } 
         // reset color if it was invalid
-        else if (formComponent instanceof TimesheetTextField 
-        			&& ((TimesheetTextField)formComponent).isWasInvalid())
+        else if (formComponent instanceof TimesheetTextField)
         {
-        	formComponent.add(getColorModifier("#536e87;"));
-        	((TimesheetTextField)formComponent).setWasInvalid(false);
-        	target.addComponent(formComponent);
+        	TimesheetTextField ttField = (TimesheetTextField)formComponent;
+        	
+        	if (ttField.isWasInvalid() || ttField.isChanged())
+        	{
+	        	formComponent.add(getColorModifier("#536e87;"));
+	        	((TimesheetTextField)formComponent).setWasInvalid(false);
+	        	target.addComponent(formComponent);
+        	}
         }
         
         return formComponent;
