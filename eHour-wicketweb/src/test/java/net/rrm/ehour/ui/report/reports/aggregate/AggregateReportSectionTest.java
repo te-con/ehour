@@ -35,6 +35,9 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode.SectionChild;
+import net.rrm.ehour.ui.report.value.CustomerValueWrapper;
+import net.rrm.ehour.ui.report.value.CustomerValueWrapperFactory;
+import net.rrm.ehour.ui.report.value.ProjectValueWrapperFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -107,16 +110,16 @@ public class AggregateReportSectionTest
 	{
 		AggregateReportNode<Customer, Project> section;
 		
-		section = new AggregateReportNode<Customer, Project>(custA, content);
+		section = new AggregateReportNode<Customer, Project>(custA, content, new CustomerValueWrapperFactory(), new ProjectValueWrapperFactory());
 		
-		assertEquals(custA, section.getNode());
+		assertEquals("CA", section.getNode().getName());
 		assertEquals(3, section.getChildNodes().size());
 		
 		List<AggregateReportNode<?, ?>.SectionChild> children = section.getChildNodes();
 		
 		for (SectionChild sectionChild : children)
 		{
-			if (sectionChild.getNode().equals(prjA))
+			if (sectionChild.getNode().getName().equals("PA"))
 			{
 				assertEquals(3, sectionChild.getAggregates().size());
 				
@@ -133,12 +136,12 @@ public class AggregateReportSectionTest
 				
 			}
 
-			if (sectionChild.getNode().equals(prjB))
+			if (sectionChild.getNode().getName().equals("PB"))
 			{
 				assertEquals(1, sectionChild.getAggregates().size());
 			}
 
-			if (sectionChild.getNode().equals(prjC))
+			if (sectionChild.getNode().getName().equals("PC"))
 			{
 				assertEquals(1, sectionChild.getAggregates().size());
 			}

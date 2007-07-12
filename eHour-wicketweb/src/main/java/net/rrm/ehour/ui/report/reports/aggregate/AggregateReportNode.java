@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.SortedMap;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.ui.report.value.ReportValueWrapper;
+import net.rrm.ehour.ui.report.value.ReportValueWrapperFactory;
 
 /**
  * Representation of a node in the report
@@ -39,7 +41,7 @@ public class AggregateReportNode<RN extends Serializable,
 									CN extends Serializable> implements Serializable
 {
 	private static final long serialVersionUID = 6751211217287222516L;
-	private RN						node;
+	private ReportValueWrapper	node;
 	private List<SectionChild>	childNodes;
 	
 	/**
@@ -47,15 +49,17 @@ public class AggregateReportNode<RN extends Serializable,
 	 * @param rootNode
 	 * @param childMap
 	 */
-	public AggregateReportNode(RN rootNode, SortedMap<CN, Set<ProjectAssignmentAggregate>> childMap)
+	public AggregateReportNode(RN rootNode, SortedMap<CN, Set<ProjectAssignmentAggregate>> childMap,
+								ReportValueWrapperFactory rootWrapperFactory, 
+								ReportValueWrapperFactory childWrapperFactory)
 	{
-		this.node = rootNode;
+		this.node = rootWrapperFactory.createReportValueWrapper(rootNode);
 
 		childNodes = new ArrayList<SectionChild>();
 		
 		for (CN childNode : childMap.keySet())
 		{
-			childNodes.add(new SectionChild(childNode, childMap.get(childNode)));
+			childNodes.add(new SectionChild(childNode, childWrapperFactory, childMap.get(childNode)));
 		}
 	}
 	
@@ -68,11 +72,11 @@ public class AggregateReportNode<RN extends Serializable,
 	public class SectionChild
 	{
 		private Set<ProjectAssignmentAggregate>	aggregates;
-		private CN		node;
+		private ReportValueWrapper	node;
 		
-		public SectionChild(CN node, Set<ProjectAssignmentAggregate> aggregates)
+		public SectionChild(CN node, ReportValueWrapperFactory wrapperFactory, Set<ProjectAssignmentAggregate> aggregates)
 		{
-			this.node = node;
+			this.node = wrapperFactory.createReportValueWrapper(node);
 			this.aggregates = aggregates;
 		}
 		
@@ -81,7 +85,7 @@ public class AggregateReportNode<RN extends Serializable,
 			return aggregates;
 		}
 		
-		public CN getNode()
+		public ReportValueWrapper getNode()
 		{
 			return node;
 		}
@@ -90,7 +94,7 @@ public class AggregateReportNode<RN extends Serializable,
 	/**
 	 * @return the node
 	 */
-	public RN getNode()
+	public ReportValueWrapper getNode()
 	{
 		return node;
 	}

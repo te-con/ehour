@@ -56,6 +56,7 @@ public class UserReportTabularPanel extends Panel
 		CustomerReport	customerReport = new CustomerReport();
 		customerReport.initialize(reportData);
 
+//		add()
 		ListView report = new ListView("report", new PropertyModel(customerReport, "topNodes"))
 		{
 			@Override

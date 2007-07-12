@@ -37,6 +37,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.report.reports.Report;
+import net.rrm.ehour.ui.report.value.ReportValueWrapperFactory;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
@@ -91,7 +92,10 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 		
 		for (RK reportKey : reportMap.keySet())
 		{
-			node = new AggregateReportNode<RK, CK>(reportKey, reportMap.get(reportKey));
+			node = new AggregateReportNode<RK, CK>(reportKey, 
+													reportMap.get(reportKey), 
+													getRootValueWrapperFactory(),
+													getChildValueWrapperFactory());
 			reportNodes.add(node);
 		}
 	}
@@ -248,6 +252,18 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 	 */
 	public abstract Comparator<CK> getComparator();
 	
+	/**
+	 * Get value wrapper for root
+	 * @return
+	 */
+	public abstract ReportValueWrapperFactory getRootValueWrapperFactory();
+
+	/**
+	 * Get value wrapper for child
+	 * @return
+	 */
+	public abstract ReportValueWrapperFactory getChildValueWrapperFactory();
+
 	/**
 	 * ToString
 	 */

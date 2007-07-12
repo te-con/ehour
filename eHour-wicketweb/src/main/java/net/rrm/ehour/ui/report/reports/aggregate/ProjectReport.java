@@ -28,6 +28,9 @@ import java.util.Comparator;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.ui.report.value.CustomerValueWrapperFactory;
+import net.rrm.ehour.ui.report.value.ProjectValueWrapperFactory;
+import net.rrm.ehour.ui.report.value.ReportValueWrapperFactory;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 
 /**
@@ -64,6 +67,18 @@ public class ProjectReport extends AggregateReport<Project, Customer, Integer>
 	public Comparator<Customer> getComparator()
 	{
 		return new CustomerComparator();
+	}
+
+	@Override
+	public ReportValueWrapperFactory getChildValueWrapperFactory()
+	{
+		return new CustomerValueWrapperFactory();
+	}
+
+	@Override
+	public ReportValueWrapperFactory getRootValueWrapperFactory()
+	{
+		return new ProjectValueWrapperFactory();
 	}
 
 }
