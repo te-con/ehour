@@ -23,17 +23,18 @@
 
 package net.rrm.ehour.ui.page.user.report;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
-import net.rrm.ehour.ui.authorization.AuthService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.user.UserReportTabularPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -118,5 +119,7 @@ public class UserReport extends BasePage
 		userCriteria = new UserCriteria();
 		userCriteria.setSingleUser(true);
 		userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
+		
+		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
 	}
 }

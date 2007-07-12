@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.sort;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
@@ -31,7 +32,7 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
  * Project Assignment aggregate comparator 
  **/
 
-public class ProjectAssignmentAggregateComparator implements Comparator<ProjectAssignmentAggregate>
+public class ProjectAssignmentAggregateComparator implements Comparator<ProjectAssignmentAggregate>, Serializable
 {
 	public final static int SORT_ON_CUSTOMER = 1;
 	public final static int SORT_ON_PROJECT = 2;

@@ -1,5 +1,5 @@
 /**
- * Created on 22-feb-2007
+ * Created on Jul 13, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -23,54 +23,46 @@
 
 package net.rrm.ehour.ui.report.reports.aggregate;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.rrm.ehour.DummyDataGenerator;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /**
- * Factory for aggregate reports
+ * TODO 
  **/
 
-public class AggregateReportFactory
+public class CustomerReportTest
 {
-	/**
-	 * 
-	 * @param reportName
-	 * @param reportDataAggregate
-	 * @return
-	 */
-	public static AggregateReport<?, ?, Integer> createReport(ReportType reportType, ReportDataAggregate reportDataAggregate)
+
+	@Before
+	public void setUp() throws Exception
 	{
-		return createReport(reportType, reportDataAggregate, null);
 	}
-	
-	/**
-	 * Create reports based on user role
-	 * @param userRole
-	 * @param reportDataAggregate
-	 * @return
-	 */
-	public static AggregateReport<?, ?, Integer> createReport(ReportType reportType, ReportDataAggregate reportDataAggregate, Integer forId)
+
+	@Test
+	public void testInitializeReportDataAggregate()
 	{
-		AggregateReport<?, ?, Integer>	report;
-
-		if (reportType == ReportType.USER_REPORT)
-		{
-			report = new UserReport();
-		}
-		else if (reportType == ReportType.CUSTOMER_REPORT)
-		{
-			report = new CustomerReport();
-		}
-		else if (reportType == ReportType.PROJECT_REPORT)
-		{
-			report = new ProjectReport();
-		}
-		else
-		{
-			return null;
-		}
+		ProjectAssignmentAggregate pag1 = DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1);
+		ProjectAssignmentAggregate pag2 = DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 1);
 		
-		report.initialize(reportDataAggregate, forId);
-
-		return report;
+		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		
+		pags.add(pag1);
+		pags.add(pag2);
+		
+		ReportDataAggregate reportDataAggregate = new ReportDataAggregate(pags, null, null);
+		
+		CustomerReport report = new CustomerReport();
+		report.initialize(reportDataAggregate);
+		
+		assertEquals(2, report.getReportNodes().size());	
 	}
 }

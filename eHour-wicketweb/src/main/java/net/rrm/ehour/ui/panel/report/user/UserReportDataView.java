@@ -1,5 +1,5 @@
 /**
- * Created on Mar 19, 2007
+ * Created on Jul 12, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,24 +21,42 @@
  *
  */
 
-package net.rrm.ehour.ui.sort;
+package net.rrm.ehour.ui.panel.report.user;
 
-import java.io.Serializable;
-import java.util.Comparator;
+import net.rrm.ehour.domain.DomainObject;
 
-import net.rrm.ehour.project.domain.Project;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 
 /**
- * Comparator on project's name 
+ * TODO 
  **/
 
-public class ProjectComparator implements Comparator<Project>, Serializable
+public class UserReportDataView<RK extends DomainObject<?, ?>> extends DataView
 {
-	private static final long serialVersionUID = -2100973629921877419L;
 
-	public int compare(Project o1, Project o2)
+	/**
+	 * 
+	 * @param id
+	 * @param dataProvider
+	 */
+	public UserReportDataView(String id, IDataProvider dataProvider)
 	{
-		return o1.getName().compareToIgnoreCase(o2.getName());
+		super(id, dataProvider);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.repeater.RefreshingView#populateItem(org.apache.wicket.markup.repeater.Item)
+	 */
+	@Override
+	protected void populateItem(Item item)
+	{
+		RK topNode = (RK)item.getModelObject();
+		
+//		dataProvider.
+		
 	}
 
 }

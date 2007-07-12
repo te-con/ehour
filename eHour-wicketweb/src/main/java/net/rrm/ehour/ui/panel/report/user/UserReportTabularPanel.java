@@ -23,8 +23,6 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
-import java.util.ArrayList;
-
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.report.reports.aggregate.CustomerReport;
 
@@ -32,6 +30,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * Report table
@@ -57,7 +56,7 @@ public class UserReportTabularPanel extends Panel
 		CustomerReport	customerReport = new CustomerReport();
 		customerReport.initialize(reportData);
 
-		ListView report = new ListView("report", new ArrayList(customerReport.getReportValues().keySet()))
+		ListView report = new ListView("report", new PropertyModel(customerReport, "topNodes"))
 		{
 			@Override
 			protected void populateItem(ListItem item)

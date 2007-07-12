@@ -24,7 +24,6 @@
 package net.rrm.ehour.ui.session;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -105,8 +104,6 @@ public class EhourWebSession extends AuthenticatedWebSession
 		if (navCalendar == null)
 		{
 			navCalendar = DateUtil.getCalendar(ehourConfig);
-			navCalendar = new GregorianCalendar();
-			navCalendar.add(Calendar.MONTH, -2);
 		}
 
 		return (Calendar) navCalendar.clone();

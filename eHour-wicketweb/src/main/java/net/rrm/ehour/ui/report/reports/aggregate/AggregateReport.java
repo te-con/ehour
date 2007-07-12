@@ -23,9 +23,11 @@
 
 package net.rrm.ehour.ui.report.reports.aggregate;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -44,16 +46,14 @@ import org.apache.log4j.Logger;
  * RK = root key, CK = client key, PK = primary key of the root key
  **/
 
-public abstract class AggregateReport<RK extends DomainObject<? ,?>,
-									 CK extends DomainObject<?, ?>, PK extends Comparable<PK>>
-					implements Report
+public abstract class AggregateReport<RK extends DomainObject<?, ?>,
+									 CK extends DomainObject<?, ?>,
+									 PK extends Comparable<PK>> implements Report
 {
 	protected ReportCriteria	reportCriteria;
 	protected transient Logger	logger = Logger.getLogger(this.getClass());
 	private	  PK				forId;
-
-	// nest nest nest...
-	protected SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>	reportMap;
+	private	  List<AggregateReportNode<RK, CK>>	reportNodes;
 	
 	/**
 	 * Initialize the webreport
@@ -71,7 +71,42 @@ public abstract class AggregateReport<RK extends DomainObject<? ,?>,
 	 */
 	public void initialize(ReportDataAggregate reportDataAggregate, PK forId)
 	{
+		SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>	reportMap;
 		Date								profileStart = new Date();
+
+		reportMap = generateReportMap(reportDataAggregate, forId);
+		createReportNodes(reportMap);
+		logger.debug(getReportName() + " took " + (new Date().getTime() - profileStart.getTime()) + "ms to create");
+	}
+	
+	/**
+	 * 
+	 * @param reportMap
+	 */
+	private void createReportNodes(SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>> reportMap)
+	{
+		reportNodes = new ArrayList<AggregateReportNode<RK, CK>>();
+		
+		AggregateReportNode<RK, CK>	node;
+		
+		for (RK reportKey : reportMap.keySet())
+		{
+			node = new AggregateReportNode<RK, CK>(reportKey, reportMap.get(reportKey));
+			reportNodes.add(node);
+		}
+	}
+
+	
+	/**
+	 * Generate report map
+	 * @param reportDataAggregate
+	 * @param forId
+	 * @return
+	 */
+	private SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>> generateReportMap(ReportDataAggregate reportDataAggregate, PK forId)
+	{
+		SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>	reportMap;
+		
 		RK									rootKey;
 		CK									childKey;
 		SortedMap<CK, Set<ProjectAssignmentAggregate>>	childMap;
@@ -123,12 +158,11 @@ public abstract class AggregateReport<RK extends DomainObject<? ,?>,
 			// fold it back in
 			childMap.put(childKey, aggregatesPerChild);
 			reportMap.put(rootKey, childMap);
-		}		
+		}
 		
-		logger.debug(getReportName() + " took " + (new Date().getTime() - profileStart.getTime()) + "ms to create");
+		return reportMap;
 	}
 	
-
 	/**
 	 * @return the reportCriteria
 	 */
@@ -138,54 +172,55 @@ public abstract class AggregateReport<RK extends DomainObject<? ,?>,
 	}	
 	
 	/**
-	 * Get values
+	 * Get report nodes (the actual content)
 	 * @return
 	 */
-	public SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>> getReportValues()
+	public List<AggregateReportNode<RK, CK>> getReportNodes()
 	{
-		return reportMap;
-	}	
+		return reportNodes;
+	}
 	
-	/**
-	 * Get total hours for a rootKey/childKey
-	 * @param key
-	 * @return
-	 */
-	public float getHourTotal(RK rootKey, CK childKey)
-	{
-		Set<ProjectAssignmentAggregate>	aggregatesPerCustomer;
-		float							totalHours = 0f;
-		aggregatesPerCustomer = reportMap.get(rootKey).get(childKey);
-		
-		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
-		{
-			totalHours += aggregate.getHours().floatValue();
-		}
-		
-		return totalHours;
-	}	
 	
-	/**
-	 * Get total turn over for rootKey/childKey
-	 * @param key
-	 * @return
-	 */
-	public float getTurnOverTotal(RK rootKey, CK childKey)
-	{
-		Set<ProjectAssignmentAggregate>	aggregatesPerCustomer;
-		float							totalTurnOver = 0f;
-		aggregatesPerCustomer = reportMap.get(rootKey).get(childKey);
-		
-		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
-		{
-			if (aggregate.getTurnOver() != null)
-			{
-				totalTurnOver += aggregate.getTurnOver().floatValue();
-			}
-		}
-		
-		return totalTurnOver;
-	}	
+//	/**
+//	 * Get total hours for a rootKey/childKey
+//	 * @param key
+//	 * @return
+//	 */
+//	public float getHourTotal(RK rootKey, CK childKey)
+//	{
+//		Set<ProjectAssignmentAggregate>	aggregatesPerCustomer;
+//		float							totalHours = 0f;
+//		aggregatesPerCustomer = reportMap.get(rootKey).get(childKey);
+//		
+//		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
+//		{
+//			totalHours += aggregate.getHours().floatValue();
+//		}
+//		
+//		return totalHours;
+//	}	
+//	
+//	/**
+//	 * Get total turn over for rootKey/childKey
+//	 * @param key
+//	 * @return
+//	 */
+//	public float getTurnOverTotal(RK rootKey, CK childKey)
+//	{
+//		Set<ProjectAssignmentAggregate>	aggregatesPerCustomer;
+//		float							totalTurnOver = 0f;
+//		aggregatesPerCustomer = reportMap.get(rootKey).get(childKey);
+//		
+//		for (ProjectAssignmentAggregate aggregate : aggregatesPerCustomer)
+//		{
+//			if (aggregate.getTurnOver() != null)
+//			{
+//				totalTurnOver += aggregate.getTurnOver().floatValue();
+//			}
+//		}
+//		
+//		return totalTurnOver;
+//	}	
 	
 	/**
 	 * Get root key from aggregate
@@ -219,7 +254,9 @@ public abstract class AggregateReport<RK extends DomainObject<? ,?>,
 	@Override
 	public String toString()
 	{
-		return new ToStringBuilder(this).append("reportName", getReportName()).append("reportMap", reportMap).toString();
+		return new ToStringBuilder(this).append("reportName", getReportName())
+										.append("reportNodes", reportNodes)
+										.toString();
 	}
 	
 	/**
