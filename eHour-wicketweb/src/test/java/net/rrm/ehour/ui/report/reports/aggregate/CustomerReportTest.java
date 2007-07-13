@@ -28,9 +28,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.ui.DummyDataGenerator;
 
 import org.junit.Before;
 import org.junit.Test;
