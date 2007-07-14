@@ -23,11 +23,18 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.report.reports.ReportDataProvider;
 import net.rrm.ehour.ui.report.reports.aggregate.CustomerReport;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 
 /**
  * Report table
@@ -53,7 +60,13 @@ public class UserReportTabularPanel extends Panel
 		CustomerReport	customerReport = new CustomerReport();
 		customerReport.initialize(reportData);
 		
-		add(new UserReportDataView("report", new ReportDataProvider(customerReport)));
+		List<IColumn>	columns = new ArrayList<IColumn>();
+		columns.add(new PropertyColumn(new Model("node"), "node.name"));
+//		columns.add(new PropertyColumn(new Model("node"), "node."));		
+		
+		add(new DefaultDataTable("report", (IColumn[])columns.toArray(new IColumn[0]), new ReportDataProvider(customerReport), 8));
+		
+//		add(new UserReportDataView("report", new ReportDataProvider(customerReport)));
 //		ListView report = new ListView("report", new PropertyModel(customerReport, "topNodes"))
 //		{
 //			@Override

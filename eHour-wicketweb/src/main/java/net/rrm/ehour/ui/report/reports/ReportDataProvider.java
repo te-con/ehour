@@ -28,7 +28,7 @@ import java.util.Iterator;
 
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReport;
 
-import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -36,7 +36,7 @@ import org.apache.wicket.model.Model;
  * Report data provider
  **/
 
-public class ReportDataProvider implements IDataProvider
+public class ReportDataProvider extends SortableDataProvider
 {
 	private static final long serialVersionUID = -1898730172009882583L;
 
