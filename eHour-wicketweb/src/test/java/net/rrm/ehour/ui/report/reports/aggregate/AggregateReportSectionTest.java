@@ -27,15 +27,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode.SectionChild;
-import net.rrm.ehour.ui.report.value.CustomerValueWrapper;
 import net.rrm.ehour.ui.report.value.CustomerValueWrapperFactory;
 import net.rrm.ehour.ui.report.value.ProjectValueWrapperFactory;
 
@@ -51,7 +50,7 @@ public class AggregateReportSectionTest
 	private	Customer	custA;
 	private	Project		prjA, prjB, prjC;
 	private	ProjectAssignmentAggregate	pagA, pagB, pagC, pagD, pagE;
-	private SortedMap<Project, Set<ProjectAssignmentAggregate>>	content;
+	private Map<Project, Set<ProjectAssignmentAggregate>>	content;
 	
 	@Before
 	public void setUp()
