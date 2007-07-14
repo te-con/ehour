@@ -34,7 +34,9 @@ public class CustomerValueWrapperFactory implements ReportValueWrapperFactory
 
 	public ReportValueWrapper createReportValueWrapper(Object obj)
 	{
-		return new CustomerValueWrapper((Customer)obj);
+		Customer	customer = (Customer)obj;
+		
+		return new ReportValueWrapper(customer.getCustomerId(), customer.getName());
 	}
 
 }

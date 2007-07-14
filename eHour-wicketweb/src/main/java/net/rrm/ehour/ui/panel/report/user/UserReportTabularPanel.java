@@ -24,6 +24,7 @@
 package net.rrm.ehour.ui.panel.report.user;
 
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.ui.report.reports.ReportDataProvider;
 import net.rrm.ehour.ui.report.reports.aggregate.CustomerReport;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -55,34 +56,36 @@ public class UserReportTabularPanel extends Panel
 		
 		CustomerReport	customerReport = new CustomerReport();
 		customerReport.initialize(reportData);
-
-//		add()
-		ListView report = new ListView("report", new PropertyModel(customerReport, "topNodes"))
-		{
-			@Override
-			protected void populateItem(ListItem item)
-			{
-				System.out.println(item.getModelObject());
-				item.add(new Label("test", item.getModelObject().toString()));
-//				final Customer	customer = (Customer)item.getModelObject();
-//
-//				// check for any preference
-//				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
-//				
-//				if (foldPreference == null)
-//				{
-//					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
-//				}
-//				
-//				item.add(getCustomerLabel(customer, foldPreference));
-////				item.add(new Label("customerDesc", customer.getDescription()));
-//
-//				boolean hidden = (foldPreference != null && foldPreference.isFolded());
-//				
-//				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
-			}			
-		};
 		
-		add(report);
+		
+		
+		add(new UserReportDataView("report", new ReportDataProvider(customerReport)));
+//		ListView report = new ListView("report", new PropertyModel(customerReport, "topNodes"))
+//		{
+//			@Override
+//			protected void populateItem(ListItem item)
+//			{
+//				System.out.println(item.getModelObject());
+//				item.add(new Label("test", item.getModelObject().toString()));
+////				final Customer	customer = (Customer)item.getModelObject();
+////
+////				// check for any preference
+////				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
+////				
+////				if (foldPreference == null)
+////				{
+////					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
+////				}
+////				
+////				item.add(getCustomerLabel(customer, foldPreference));
+//////				item.add(new Label("customerDesc", customer.getDescription()));
+////
+////				boolean hidden = (foldPreference != null && foldPreference.isFolded());
+////				
+////				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
+//			}			
+//		};
+		
+//		add(report);
 	}
 }

@@ -30,17 +30,46 @@ import java.io.Serializable;
  * Report value 
  **/
 
-public interface ReportValueWrapper extends Serializable
+public class ReportValueWrapper implements Comparable<ReportValueWrapper>, Serializable
 {
+	private static final long serialVersionUID = 6316356835650959522L;
+	protected	Integer	id;
+	protected	String	name;
+	
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 */
+	public ReportValueWrapper(Integer id, String name)
+	{
+		this.id = id;
+		this.name = name;
+	}
+	
 	/**
 	 * Get identifier
 	 * @return
 	 */
-	public Integer getId();
+	public Integer getId()
+	{
+		return id;
+	}
 	
 	/**
 	 * Get row name
 	 * @return
 	 */
-	public String getName();
+	public String getName()
+	{
+		return name;
+	}
+
+	/**
+	 * 
+	 */
+	public int compareTo(ReportValueWrapper o)
+	{
+		return getName().compareToIgnoreCase(o.getName());
+	}	
 }

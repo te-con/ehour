@@ -75,11 +75,11 @@ public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.reports.AggregateReport#getComparator()
 	 */
-	@Override
-	public Comparator<Project> getComparator()
-	{
-		return new ProjectComparator();
-	}
+//	@Override
+//	public Comparator<Project> getComparator()
+//	{
+//		return new ProjectComparator();
+//	}
 
 	@Override
 	public ReportValueWrapperFactory getChildValueWrapperFactory()
@@ -91,5 +91,11 @@ public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 	public ReportValueWrapperFactory getRootValueWrapperFactory()
 	{
 		return new CustomerValueWrapperFactory();
+	}
+
+	@Override
+	public Comparator<Project> getComparator()
+	{
+		return new ProjectComparator();
 	}
 }

@@ -26,9 +26,10 @@ package net.rrm.ehour.ui.report.reports.aggregate;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 
+import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.ui.report.value.ReportValueWrapper;
 import net.rrm.ehour.ui.report.value.ReportValueWrapperFactory;
@@ -37,8 +38,8 @@ import net.rrm.ehour.ui.report.value.ReportValueWrapperFactory;
  * Representation of a node in the report
  **/
 
-public class AggregateReportNode<RN extends Serializable,
-									CN extends Serializable> implements Serializable
+public class AggregateReportNode<RN extends DomainObject<? extends Serializable, ? extends Serializable>,
+									CN extends DomainObject<? extends Serializable, ? extends Serializable>> implements Serializable
 {
 	private static final long serialVersionUID = 6751211217287222516L;
 	private ReportValueWrapper	node;
@@ -49,7 +50,7 @@ public class AggregateReportNode<RN extends Serializable,
 	 * @param rootNode
 	 * @param childMap
 	 */
-	public AggregateReportNode(RN rootNode, SortedMap<CN, Set<ProjectAssignmentAggregate>> childMap,
+	public AggregateReportNode(RN rootNode, Map<CN, Set<ProjectAssignmentAggregate>> childMap,
 								ReportValueWrapperFactory rootWrapperFactory, 
 								ReportValueWrapperFactory childWrapperFactory)
 	{

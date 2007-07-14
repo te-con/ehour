@@ -23,14 +23,15 @@
 
 package net.rrm.ehour.ui.report.reports.aggregate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -47,14 +48,15 @@ import org.apache.log4j.Logger;
  * RK = root key, CK = client key, PK = primary key of the root key
  **/
 
-public abstract class AggregateReport<RK extends DomainObject<?, ?>,
-									 CK extends DomainObject<?, ?>,
-									 PK extends Comparable<PK>> implements Report
+public abstract class AggregateReport<PK extends DomainObject<? extends Serializable, ? extends Serializable>,
+										CK extends DomainObject<? extends Serializable, ? extends Serializable>,
+										IDK 
+											> implements Report
 {
 	protected ReportCriteria	reportCriteria;
 	protected transient Logger	logger = Logger.getLogger(this.getClass());
-	private	  PK				forId;
-	private	  List<AggregateReportNode<RK, CK>>	reportNodes;
+	private	  Comparable<IDK>	forId;
+	private	  List<AggregateReportNode<PK, CK>>	reportNodes;
 	
 	/**
 	 * Initialize the webreport
@@ -70,9 +72,9 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 	 * @param reportDataAggregate
 	 * @param forID the ID to generate the report for (null to ignore)
 	 */
-	public void initialize(ReportDataAggregate reportDataAggregate, PK forId)
+	public void initialize(ReportDataAggregate reportDataAggregate, Comparable<IDK> forId)
 	{
-		SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>	reportMap;
+		Map<PK, Map<CK,Set<ProjectAssignmentAggregate>>>	reportMap;
 		Date								profileStart = new Date();
 
 		reportMap = generateReportMap(reportDataAggregate, forId);
@@ -84,15 +86,15 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 	 * 
 	 * @param reportMap
 	 */
-	private void createReportNodes(SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>> reportMap)
+	private void createReportNodes(Map<PK, Map<CK, Set<ProjectAssignmentAggregate>>> reportMap)
 	{
-		reportNodes = new ArrayList<AggregateReportNode<RK, CK>>();
+		reportNodes = new ArrayList<AggregateReportNode<PK, CK>>();
 		
-		AggregateReportNode<RK, CK>	node;
+		AggregateReportNode<PK, CK>	node;
 		
-		for (RK reportKey : reportMap.keySet())
+		for (PK reportKey : reportMap.keySet())
 		{
-			node = new AggregateReportNode<RK, CK>(reportKey, 
+			node = new AggregateReportNode<PK, CK>(reportKey, 
 													reportMap.get(reportKey), 
 													getRootValueWrapperFactory(),
 													getChildValueWrapperFactory());
@@ -107,18 +109,18 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 	 * @param forId
 	 * @return
 	 */
-	private SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>> generateReportMap(ReportDataAggregate reportDataAggregate, PK forId)
+	private Map<PK, 
+				Map<CK, Set<ProjectAssignmentAggregate>>> 
+					generateReportMap(ReportDataAggregate reportDataAggregate, Comparable<IDK> forId) 
 	{
-		SortedMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>	reportMap;
+		Map<PK, Map<CK, Set<ProjectAssignmentAggregate>>>	reportMap;
 		
-		RK									rootKey;
-		CK									childKey;
-		SortedMap<CK, Set<ProjectAssignmentAggregate>>	childMap;
+		PK rootKey;
+		CK childKey;
+		Map<CK, Set<ProjectAssignmentAggregate>>	childMap;
 		Set<ProjectAssignmentAggregate>		aggregatesPerChild;
 		
-		this.forId = forId;
-		
-		reportMap = new TreeMap<RK, SortedMap<CK, Set<ProjectAssignmentAggregate>>>();
+		reportMap = new HashMap<PK, Map<CK, Set<ProjectAssignmentAggregate>>>();
 
 		logger.debug("Initializing aggregate " + getReportName() + " report" + ((forId != null) ? " for id " + forId : ""));
 
@@ -143,7 +145,7 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 			}
 			else
 			{
-				childMap = new TreeMap<CK, Set<ProjectAssignmentAggregate>>(getComparator());
+				childMap = new HashMap<CK, Set<ProjectAssignmentAggregate>>();
 			}
 			
 			// then check if the client is in the submap
@@ -179,7 +181,7 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 	 * Get report nodes (the actual content)
 	 * @return
 	 */
-	public List<AggregateReportNode<RK, CK>> getReportNodes()
+	public List<AggregateReportNode<PK, CK>> getReportNodes()
 	{
 		return reportNodes;
 	}
@@ -231,7 +233,7 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract RK getRootKey(ProjectAssignmentAggregate aggregate);
+	protected abstract PK getRootKey(ProjectAssignmentAggregate aggregate);
 	
 	/**
 	 * Get child key from aggregate
@@ -250,7 +252,7 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 	 * Get comparator for the client key
 	 * @return
 	 */
-	public abstract Comparator<CK> getComparator();
+	public abstract Comparator<? extends DomainObject<? extends Serializable, ? extends Serializable>> getComparator();
 	
 	/**
 	 * Get value wrapper for root
@@ -278,7 +280,7 @@ public abstract class AggregateReport<RK extends DomainObject<?, ?>,
 	/**
 	 * @return the forId
 	 */
-	public PK getForId()
+	public Comparable<IDK> getForId()
 	{
 		return forId;
 	}

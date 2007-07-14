@@ -23,10 +23,7 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode;
-import net.rrm.ehour.ui.report.value.ReportValueWrapper;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
@@ -37,7 +34,7 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
  * TODO 
  **/
 
-public class UserReportDataView<RK extends ReportValueWrapper, CK extends Serializable> extends DataView
+public class UserReportDataView extends DataView
 {
 	private static final long serialVersionUID = 6846908976240456056L;
 
@@ -58,7 +55,7 @@ public class UserReportDataView<RK extends ReportValueWrapper, CK extends Serial
 	@Override
 	protected void populateItem(Item item)
 	{
-		AggregateReportNode<RK, CK> node = (AggregateReportNode<RK, CK>)item.getModelObject();
+		AggregateReportNode<?, ?> node = (AggregateReportNode<?, ?>)item.getModelObject();
 		
 		item.add(new Label("customer", node.getNode().getName()));
 		

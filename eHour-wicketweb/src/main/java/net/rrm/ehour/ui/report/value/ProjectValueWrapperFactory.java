@@ -34,7 +34,9 @@ public class ProjectValueWrapperFactory implements ReportValueWrapperFactory
 
 	public ReportValueWrapper createReportValueWrapper(Object obj)
 	{
-		return new ProjectValueWrapper((Project)obj);
+		Project	prj = (Project)obj;
+		
+		return new ReportValueWrapper(prj.getProjectId(), prj.getName());
 	}
 
 }

@@ -34,7 +34,9 @@ public class UserValueWrapperFactory implements ReportValueWrapperFactory
 
 	public ReportValueWrapper createReportValueWrapper(Object obj)
 	{
-		return new UserValueWrapper((User)obj);
+		User	usr = (User)obj;
+		
+		return new ReportValueWrapper(usr.getUserId(), usr.getLastName());
 	}
 
 }
