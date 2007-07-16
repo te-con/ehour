@@ -23,18 +23,20 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.ui.report.reports.ReportDataProvider;
+import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode;
 import net.rrm.ehour.ui.report.reports.aggregate.CustomerReport;
+import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode.SectionChild;
+import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * Report table
@@ -44,7 +46,8 @@ public class UserReportTabularPanel extends Panel
 {
 	private static final long serialVersionUID = -2740688272163704885L;
 
-	private	ReportDataAggregate	reportData;
+//	private	ReportDataAggregate	reportData;
+	private final EhourConfig	config;
 	
 	/**
 	 * 
@@ -55,44 +58,78 @@ public class UserReportTabularPanel extends Panel
 	{
 		super(id);
 		
-		this.reportData = reportData;
+		config = EhourWebSession.getSession().getEhourConfig();
+		
+//		this.reportData = reportData;
 		
 		CustomerReport	customerReport = new CustomerReport();
 		customerReport.initialize(reportData);
 		
-		List<IColumn>	columns = new ArrayList<IColumn>();
-		columns.add(new PropertyColumn(new Model("node"), "node.name"));
-//		columns.add(new PropertyColumn(new Model("node"), "node."));		
-		
-		add(new DefaultDataTable("report", (IColumn[])columns.toArray(new IColumn[0]), new ReportDataProvider(customerReport), 8));
-		
-//		add(new UserReportDataView("report", new ReportDataProvider(customerReport)));
-//		ListView report = new ListView("report", new PropertyModel(customerReport, "topNodes"))
-//		{
-//			@Override
-//			protected void populateItem(ListItem item)
-//			{
-//				System.out.println(item.getModelObject());
+		ListView report = new ListView("report", new PropertyModel(customerReport, "reportNodes"))
+		{
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				createCustomerNode(item, (AggregateReportNode<?, ?>)item.getModelObject());
+				
 //				item.add(new Label("test", item.getModelObject().toString()));
-////				final Customer	customer = (Customer)item.getModelObject();
-////
-////				// check for any preference
-////				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
-////				
-////				if (foldPreference == null)
-////				{
-////					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
-////				}
-////				
-////				item.add(getCustomerLabel(customer, foldPreference));
+//				final Customer	customer = (Customer)item.getModelObject();
+//
+//				// check for any preference
+//				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
+//				
+//				if (foldPreference == null)
+//				{
+//					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
+//				}
+//				
+//				item.add(getCustomerLabel(customer, foldPreference));
 //////				item.add(new Label("customerDesc", customer.getDescription()));
-////
-////				boolean hidden = (foldPreference != null && foldPreference.isFolded());
-////				
-////				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
-//			}			
-//		};
+//
+//				boolean hidden = (foldPreference != null && foldPreference.isFolded());
+//				
+//				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
+			}			
+		};
 		
-//		add(report);
+		add(report);
+	}
+	
+	private void createCustomerNode(WebMarkupContainer parent, AggregateReportNode<?, ?> node)
+	{
+//		ListView customer = new ListView("customerSection", node.getChildNodes())
+//		{
+//			
+//		}
+		
+		parent.add(new CustomerBlock("customerList", node));
+		
+//		parent.add(new Label("customerTotal", "veel geld"));
+	}
+	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class CustomerBlock extends ListView
+	{
+		private final AggregateReportNode<?, ?>	node;
+		
+		public CustomerBlock(String id, AggregateReportNode<?, ?> node)
+		{
+			super(id, node.getChildNodes());
+			this.node = node;
+		}
+
+		@Override
+		protected void populateItem(ListItem item)
+		{
+			SectionChild	child = (SectionChild)item.getModelObject();
+			
+			item.add(new Label("customer", node.getRootValue().getName()));
+			item.add(new Label("project", child.getChildValue().getName()));
+			item.add(new Label("hours", new FloatModel(child.getHours(), config)));
+		}
 	}
 }

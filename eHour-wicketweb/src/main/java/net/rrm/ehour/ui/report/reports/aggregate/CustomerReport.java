@@ -82,19 +82,19 @@ public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 //	}
 
 	@Override
-	public ReportValueWrapperFactory getChildValueWrapperFactory()
+	protected ReportValueWrapperFactory getChildValueWrapperFactory()
 	{
 		return new ProjectValueWrapperFactory();
 	}
 
 	@Override
-	public ReportValueWrapperFactory getRootValueWrapperFactory()
+	protected ReportValueWrapperFactory getRootValueWrapperFactory()
 	{
 		return new CustomerValueWrapperFactory();
 	}
 
 	@Override
-	public Comparator<Project> getComparator()
+	protected Comparator<Project> getComparator()
 	{
 		return new ProjectComparator();
 	}

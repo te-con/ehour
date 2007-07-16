@@ -36,13 +36,14 @@ import net.rrm.ehour.ui.report.value.ReportValueWrapperFactory;
 
 /**
  * Representation of a node in the report
+ * TODO remove generics?
  **/
 
 public class AggregateReportNode<RN extends DomainObject<? extends Serializable, ? extends Serializable>,
 									CN extends DomainObject<? extends Serializable, ? extends Serializable>> implements Serializable
 {
 	private static final long serialVersionUID = 6751211217287222516L;
-	private ReportValueWrapper	node;
+	private ReportValueWrapper	rootValue;
 	private List<SectionChild>	childNodes;
 	
 	/**
@@ -54,7 +55,7 @@ public class AggregateReportNode<RN extends DomainObject<? extends Serializable,
 								ReportValueWrapperFactory rootWrapperFactory, 
 								ReportValueWrapperFactory childWrapperFactory)
 	{
-		this.node = rootWrapperFactory.createReportValueWrapper(rootNode);
+		this.rootValue = rootWrapperFactory.createReportValueWrapper(rootNode);
 
 		childNodes = new ArrayList<SectionChild>();
 		
@@ -70,34 +71,55 @@ public class AggregateReportNode<RN extends DomainObject<? extends Serializable,
 	 *
 	 * @param <CNN>
 	 */
-	public class SectionChild
+	public class SectionChild implements Serializable
 	{
-		private Set<ProjectAssignmentAggregate>	aggregates;
-		private ReportValueWrapper	node;
+		private static final long serialVersionUID = 8652911992468812544L;
+		private ReportValueWrapper	childValue;
+		private	float				hours;
+		private	float				turnOver;
+		
 		
 		public SectionChild(CN node, ReportValueWrapperFactory wrapperFactory, Set<ProjectAssignmentAggregate> aggregates)
 		{
-			this.node = wrapperFactory.createReportValueWrapper(node);
-			this.aggregates = aggregates;
+			childValue = wrapperFactory.createReportValueWrapper(node);
+			
+			for (ProjectAssignmentAggregate projectAssignmentAggregate : aggregates)
+			{
+				if (projectAssignmentAggregate.getHours() != null)
+				{
+					hours += projectAssignmentAggregate.getHours().floatValue();
+				}
+				
+				if (projectAssignmentAggregate.getTurnOver() != null)
+				{
+					turnOver += projectAssignmentAggregate.getTurnOver().floatValue();
+					
+				}
+			}
 		}
 		
-		public  Set<ProjectAssignmentAggregate> getAggregates()
+		public float getHours()
 		{
-			return aggregates;
+			return hours;
 		}
 		
-		public ReportValueWrapper getNode()
+		public float getTurnOver()
 		{
-			return node;
+			return turnOver;
+		}
+		
+		public ReportValueWrapper getChildValue()
+		{
+			return childValue;
 		}
 	}
 
 	/**
 	 * @return the node
 	 */
-	public ReportValueWrapper getNode()
+	public ReportValueWrapper getRootValue()
 	{
-		return node;
+		return rootValue;
 	}
 
 	/**

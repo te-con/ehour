@@ -252,19 +252,19 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	 * Get comparator for the client key
 	 * @return
 	 */
-	public abstract Comparator<? extends DomainObject<? extends Serializable, ? extends Serializable>> getComparator();
+	protected abstract Comparator<? extends DomainObject<? extends Serializable, ? extends Serializable>> getComparator();
 	
 	/**
 	 * Get value wrapper for root
 	 * @return
 	 */
-	public abstract ReportValueWrapperFactory getRootValueWrapperFactory();
+	protected abstract ReportValueWrapperFactory getRootValueWrapperFactory();
 
 	/**
 	 * Get value wrapper for child
 	 * @return
 	 */
-	public abstract ReportValueWrapperFactory getChildValueWrapperFactory();
+	protected abstract ReportValueWrapperFactory getChildValueWrapperFactory();
 
 	/**
 	 * ToString
@@ -280,7 +280,7 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	/**
 	 * @return the forId
 	 */
-	public Comparable<IDK> getForId()
+	protected Comparable<IDK> getForId()
 	{
 		return forId;
 	}

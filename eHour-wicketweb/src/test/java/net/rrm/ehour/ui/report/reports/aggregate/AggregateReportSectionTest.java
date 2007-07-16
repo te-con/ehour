@@ -111,38 +111,27 @@ public class AggregateReportSectionTest
 		
 		section = new AggregateReportNode<Customer, Project>(custA, content, new CustomerValueWrapperFactory(), new ProjectValueWrapperFactory());
 		
-		assertEquals("CA", section.getNode().getName());
+		assertEquals("CA", section.getRootValue().getName());
 		assertEquals(3, section.getChildNodes().size());
 		
 		List<AggregateReportNode<?, ?>.SectionChild> children = section.getChildNodes();
 		
 		for (SectionChild sectionChild : children)
 		{
-			if (sectionChild.getNode().getName().equals("PA"))
+			if (sectionChild.getChildValue().getName().equals("PA"))
 			{
-				assertEquals(3, sectionChild.getAggregates().size());
-				
-				Set<ProjectAssignmentAggregate> aggs = sectionChild.getAggregates();
-				
-				float hours = 0;
-				
-				for (ProjectAssignmentAggregate projectAssignmentAggregate : aggs)
-				{
-					hours += projectAssignmentAggregate.getHours().floatValue();
-				}
-				
-				assertEquals(6, hours, 0);
+				assertEquals(6, sectionChild.getHours());
 				
 			}
 
-			if (sectionChild.getNode().getName().equals("PB"))
+			if (sectionChild.getChildValue().getName().equals("PB"))
 			{
-				assertEquals(1, sectionChild.getAggregates().size());
+				assertEquals(4, sectionChild.getHours(), 0);
 			}
 
-			if (sectionChild.getNode().getName().equals("PC"))
+			if (sectionChild.getChildValue().getName().equals("PC"))
 			{
-				assertEquals(1, sectionChild.getAggregates().size());
+				assertEquals(5, sectionChild.getHours(), 0);
 			}
 
 			
