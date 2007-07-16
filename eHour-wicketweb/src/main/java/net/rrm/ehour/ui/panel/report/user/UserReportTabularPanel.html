@@ -5,23 +5,26 @@
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 
 <wicket:head>
-
+	<link wicket:id="reportStyle" rel="stylesheet" type="text/css" href="style/reportStyle.css" />
 </wicket:head>
 
 <body>
 
 <wicket:panel>
-	<table wicket:id="report">
-	
-			<span wicket:id="customerList">
-				<tr>
-					<td wicket:id="customer">customer</td>
-					<td wicket:id="project">customer</td>
-					<td wicket:id="hours">customer</td>
-				</tr>
-			</span>
 
-	</table>
+	<div wicket:id="reportFrame">
+		<div wicket:id="blueFrame">
+			<table wicket:id="report" class="reportTable">
+				<span wicket:id="customerList">
+					<tr class="dataRow">
+						<td wicket:id="customer">customer</td>
+						<td wicket:id="project">customer</td>
+						<td wicket:id="hours">customer</td>
+					</tr>
+				</span>
+			</table>
+		</div>
+	</div>
 </wicket:panel>
 
 </body>

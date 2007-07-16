@@ -25,17 +25,21 @@ package net.rrm.ehour.ui.panel.report.user;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode;
 import net.rrm.ehour.ui.report.reports.aggregate.CustomerReport;
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode.SectionChild;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -70,43 +74,21 @@ public class UserReportTabularPanel extends Panel
 			@Override
 			protected void populateItem(ListItem item)
 			{
-				createCustomerNode(item, (AggregateReportNode<?, ?>)item.getModelObject());
-				
-//				item.add(new Label("test", item.getModelObject().toString()));
-//				final Customer	customer = (Customer)item.getModelObject();
-//
-//				// check for any preference
-//				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
-//				
-//				if (foldPreference == null)
-//				{
-//					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
-//				}
-//				
-//				item.add(getCustomerLabel(customer, foldPreference));
-//////				item.add(new Label("customerDesc", customer.getDescription()));
-//
-//				boolean hidden = (foldPreference != null && foldPreference.isFolded());
-//				
-//				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
+				item.add(new CustomerBlock("customerList", (AggregateReportNode<?, ?>)item.getModelObject()));
 			}			
 		};
+
+		// TODO set title
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", "Report");
+		add(greyBorder);
 		
-		add(report);
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
+		greyBorder.add(blueBorder);
+		blueBorder.add(report);
+		
+		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(UserReportTabularPanel.class, "style/reportStyle.css")));		
 	}
-	
-	private void createCustomerNode(WebMarkupContainer parent, AggregateReportNode<?, ?> node)
-	{
-//		ListView customer = new ListView("customerSection", node.getChildNodes())
-//		{
-//			
-//		}
-		
-		parent.add(new CustomerBlock("customerList", node));
-		
-//		parent.add(new Label("customerTotal", "veel geld"));
-	}
-	
+
 	/**
 	 * 
 	 * @author Thies
@@ -114,6 +96,7 @@ public class UserReportTabularPanel extends Panel
 	 */
 	private class CustomerBlock extends ListView
 	{
+		private static final long serialVersionUID = -1589085260912518831L;
 		private final AggregateReportNode<?, ?>	node;
 		
 		public CustomerBlock(String id, AggregateReportNode<?, ?> node)

@@ -57,7 +57,6 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
