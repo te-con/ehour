@@ -1,3 +1,15 @@
+a:link 
+{
+	color: #233e55;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
 body
 {
 	background: white;
@@ -261,4 +273,29 @@ div.Help a:active
 	font: 0.9em Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
 	background-color: white;
+}
+
+li a:link
+{
+	text-decoration: none;
+	font: 0.9em/1em Verdana, Geneva, Arial, Helvetica;
+}
+
+li a:visited
+{
+	text-decoration: none;
+	font: 0.9em/1em Verdana, Geneva, Arial, Helvetica;
+}
+
+li a:hover
+{
+	text-decoration: underline;
+	font: 0.9em/1em Verdana, Geneva, Arial, Helvetica;
+	color: #233e55;
+}
+
+li a:active
+{
+	text-decoration: underline;
+	font: 1em Verdana, Geneva, Arial, Helvetica;
 }

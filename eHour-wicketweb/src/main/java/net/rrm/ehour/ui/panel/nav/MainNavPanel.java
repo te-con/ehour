@@ -23,7 +23,7 @@
 
 package net.rrm.ehour.ui.panel.nav;
 
-import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
+import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.page.login.Login;
 import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.report.UserReport;
@@ -57,7 +57,7 @@ public class MainNavPanel extends Panel
 		
 		addLink(this, "overviewLink", Overview.class);
 		addLink(this, "userReportLink", UserReport.class);
-		addLink(this, "assignmentLink", AssignmentPage.class);
+		addLink(this, "adminLink", MainConfig.class);
 		addLink(this, "logoffLink", Login.class);
 		
 		Localizer localizer = getLocalizer();
