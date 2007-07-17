@@ -6,18 +6,20 @@
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
 <body>
-<wicket:extend>		
-	<ul>
-		<li><a href="#"><wicket:message key="admin.nav.users" /></a></li>
-		<li><a href="#"><wicket:message  key="admin.nav.departments" /></a></li>
-		<br /><br />
-		<li><a href="#"><wicket:message key="admin.nav.customers" /></a></li>
-		<li><a href="#"><wicket:message key="admin.nav.projects" /></a></li>
-		<li><a href="#"><wicket:message key="admin.nav.assignments" /></a></li>
-		<br /><br />
-		<li><a href="#"><wicket:message key="admin.nav.config" /></a></li>
-	</ul>
-</wicket:extend>
+<wicket:panel>
+	<div wicket:id="navBorder">
+		<ul>
+			<li><a href="#"><wicket:message key="admin.nav.config" /></a></li>
+			<br />
+			<li><a href="#"><wicket:message key="admin.nav.users" /></a></li>
+			<li><a href="#"><wicket:message  key="admin.nav.departments" /></a></li>
+			<br />
+			<li><a href="#"><wicket:message key="admin.nav.customers" /></a></li>
+			<li><a href="#"><wicket:message key="admin.nav.projects" /></a></li>
+			<li><a href="#"><wicket:message key="admin.nav.assignments" /></a></li>
+		</ul>
+	</div>
+</wicket:panel>
 
 </body>
 

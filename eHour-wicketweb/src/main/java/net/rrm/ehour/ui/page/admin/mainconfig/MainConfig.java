@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.ui.page.admin.mainconfig;
 
+import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.nav.admin.AdminNavPanel;
 
@@ -45,6 +47,19 @@ public class MainConfig extends BasePage
 	{
 		super(new ResourceModel("admin.config.title"), null);
 		add(new AdminNavPanel("adminNav"));
+		
+		setUpPage();
+	}
+	
+	/**
+	 * Setup page
+	 */
+	private void setUpPage()
+	{
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("configFrame", new ResourceModel("admin.config.title"));
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
+		greyBorder.add(blueBorder);
+		add(greyBorder);
 	}
 
 }

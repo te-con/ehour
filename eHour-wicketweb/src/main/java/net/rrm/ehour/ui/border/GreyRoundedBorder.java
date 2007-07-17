@@ -25,6 +25,8 @@ package net.rrm.ehour.ui.border;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * CSS in ehour.css as it's very common
@@ -39,7 +41,11 @@ public class GreyRoundedBorder extends Border
 
 	public GreyRoundedBorder(String id)
 	{
-		this(id, null);
+		super(id);
+		
+		Label	label = new Label("greyTabTitle", new Model());
+		label.setVisible(false);
+		add(label);
 	}	
 
 	/**
@@ -49,11 +55,14 @@ public class GreyRoundedBorder extends Border
 	 */
 	public GreyRoundedBorder(String id, String title)
 	{
+		this(id, new Model(title));
+	}
+	
+	public GreyRoundedBorder(String id, IModel title)
+	{
 		super(id);
 		
-		Label	label = new Label("greyTabTitle", (title == null) ? "" : title);
-		
-		label.setVisible(title != null);
+		Label	label = new Label("greyTabTitle", title);
 		add(label);
 	}
 }

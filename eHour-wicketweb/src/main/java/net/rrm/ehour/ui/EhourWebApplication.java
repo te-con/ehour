@@ -76,7 +76,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	/**
 	 * 
 	 */
-	private void setupSecurity()
+	protected void setupSecurity()
 	{
 		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 

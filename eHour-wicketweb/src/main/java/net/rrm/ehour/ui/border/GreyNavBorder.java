@@ -21,28 +21,28 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.nav.admin;
+package net.rrm.ehour.ui.border;
 
-import net.rrm.ehour.ui.border.GreyNavBorder;
-
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.model.IModel;
 
 /**
- * TODO 
+ * Grey nav border
  **/
 
-public class AdminNavPanel extends Panel
+public class GreyNavBorder extends Border
 {
-	private static final long serialVersionUID = -7877416542663086633L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9055202623773090602L;
 
-	public AdminNavPanel(String id)
+	public GreyNavBorder(String id, IModel title)
 	{
 		super(id);
-
-		GreyNavBorder greyNavBorder = new GreyNavBorder("navBorder", new ResourceModel("admin.nav.userAdmin"));
-
-		add(greyNavBorder);
+		
+		add(new Label("title", title));
+		
 	}
-
 }
