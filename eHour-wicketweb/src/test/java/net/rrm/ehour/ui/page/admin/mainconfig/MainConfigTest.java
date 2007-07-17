@@ -1,5 +1,5 @@
 /**
- * Created on Jul 9, 2007
+ * Created on Jul 17, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,28 +21,20 @@
  *
  */
 
-package net.rrm.ehour.ui.common;
+package net.rrm.ehour.ui.page.admin.mainconfig;
 
-import net.rrm.ehour.ui.session.EhourWebSession;
-
-import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.protocol.http.WebSession;
-import org.apache.wicket.util.tester.WicketTester;
+import net.rrm.ehour.ui.common.BaseUITest;
 
 /**
  * TODO 
  **/
 
-public class EhourWicketTester extends WicketTester
+public class MainConfigTest extends BaseUITest
 {
-	public EhourWicketTester(WebApplication webapp)
+	public void testMainConfigRender()
 	{
-		super(webapp, null);
-	}
-	
-	@Override
-	public WebSession getWicketSession()
-	{
-		return new EhourWebSession(null, new MockRequest());
+		tester.startPage(MainConfig.class);
+		tester.assertRenderedPage(MainConfig.class);
+		tester.assertNoErrorMessage();
 	}
 }

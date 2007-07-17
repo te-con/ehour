@@ -24,7 +24,11 @@
 package net.rrm.ehour.ui.common;
 
 import net.rrm.ehour.ui.EhourWebApplication;
+import net.rrm.ehour.ui.page.login.SessionExpiredPage;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
+import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
 import org.apache.wicket.injection.ConfigurableInjector;
 import org.apache.wicket.injection.IFieldValueFactory;
 import org.apache.wicket.injection.web.InjectorHolder;
@@ -49,8 +53,27 @@ public class TestEhourWebApplication extends EhourWebApplication
 		this.context = context;
 	}
 
+
 	/**
-	 * OVerride to provide our mock injector
+	 * When not authorized, just let it pass
+	 */
+	@Override
+	protected void setupSecurity()
+	{
+		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
+
+		getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
+
+		getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
+        {
+            public void onUnauthorizedInstantiation(final Component component)
+            {
+            }
+        });		
+	}
+
+	/**
+	 * Override to provide our mock injector
 	 */
 	@Override
 	protected void springInjection()
@@ -83,8 +106,5 @@ public class TestEhourWebApplication extends EhourWebApplication
 		{
 			return context;
 		}
-
 	}	
-	 
-
 }
