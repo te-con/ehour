@@ -114,7 +114,7 @@ public class AggregateReportSectionTest
 		assertEquals("CA", section.getRootValue().getName());
 		assertEquals(3, section.getChildNodes().size());
 		
-		List<AggregateReportNode<?, ?>.SectionChild> children = section.getChildNodes();
+		List<AggregateReportNode<Customer, Project>.SectionChild> children = section.getChildNodes();
 		
 		for (SectionChild sectionChild : children)
 		{
