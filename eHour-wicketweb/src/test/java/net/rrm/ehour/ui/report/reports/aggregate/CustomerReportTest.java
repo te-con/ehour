@@ -30,7 +30,7 @@ import java.util.List;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.ui.DummyDataGenerator;
+import net.rrm.ehour.ui.common.DummyDataGenerator;
 
 import org.junit.Before;
 import org.junit.Test;

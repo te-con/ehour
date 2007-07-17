@@ -68,7 +68,7 @@ public class Login extends WebPage
 	 */
 	public Login(final PageParameters parameters)
 	{
-		EhourWebSession session = EhourWebSession.getSession();
+		EhourWebSession session = (EhourWebSession)getSession();
 		
 		if (session.isSignedIn())
 		{

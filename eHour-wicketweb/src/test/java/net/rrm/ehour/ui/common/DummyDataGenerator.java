@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.ui;
+package net.rrm.ehour.ui.common;
 
 import java.util.Date;
 import java.util.HashSet;

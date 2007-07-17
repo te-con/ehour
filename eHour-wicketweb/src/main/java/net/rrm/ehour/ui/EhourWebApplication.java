@@ -62,10 +62,15 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount("/consultant", PackageName.forPackage(Overview.class.getPackage()));
 		mount("/consultant/report", PackageName.forPackage(UserReport.class.getPackage()));
 		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-
-		addComponentInstantiationListener(new SpringComponentInjector(this));
+		
+		springInjection();
 
 		setupSecurity();
+	}
+	
+	protected void springInjection()
+	{
+		addComponentInstantiationListener(new SpringComponentInjector(this));
 	}
 	
 	/**

@@ -35,6 +35,7 @@ import net.rrm.ehour.util.DateUtil;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.AuthenticationManager;
+import org.acegisecurity.AuthenticationServiceException;
 import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -151,6 +152,12 @@ public class EhourWebSession extends AuthenticatedWebSession
 		try
 		{
 			AuthenticationManager authenticationManager = ((EhourWebApplication) getApplication()).getAuthenticationManager();
+			
+			if (authenticationManager == null)
+			{
+				throw new AuthenticationServiceException("no authentication manager defined");
+			}
+			
 			Authentication authResult = authenticationManager.authenticate(authRequest);
 			setAuthentication(authResult);
 
