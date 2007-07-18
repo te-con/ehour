@@ -23,18 +23,15 @@
 
 package net.rrm.ehour.ui.common;
 
+import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.page.login.SessionExpiredPage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
-import org.apache.wicket.injection.ConfigurableInjector;
-import org.apache.wicket.injection.IFieldValueFactory;
-import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.spring.ISpringContextLocator;
-import org.apache.wicket.spring.injection.annot.AnnotProxyFieldValueFactory;
-import org.springframework.context.ApplicationContext;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 
 /**
  * TODO 
@@ -42,16 +39,7 @@ import org.springframework.context.ApplicationContext;
 
 public class TestEhourWebApplication extends EhourWebApplication
 {
-	private ApplicationContext 	context;
-
-	/**
-	 * Get the initialized spring context
-	 * @param context
-	 */
-	public void setSpringContext(ApplicationContext context)
-	{
-		this.context = context;
-	}
+	private AnnotApplicationContextMock	mockContext;
 
 
 	/**
@@ -78,33 +66,14 @@ public class TestEhourWebApplication extends EhourWebApplication
 	@Override
 	protected void springInjection()
 	{
-		 InjectorHolder.setInjector(new MockSpringInjector());
+		mockContext = new AnnotApplicationContextMock();
+		mockContext.putBean("EhourConfig", new EhourConfigStub());		
+		
+		addComponentInstantiationListener(new SpringComponentInjector(this, mockContext));
 	}
 
-	/**
-	 * Mock spring injector (which isn't a mock at all..)
-	 * @author Thies
-	 *
-	 */
-	private class MockSpringInjector extends ConfigurableInjector
-	 {
-		@Override
-		protected IFieldValueFactory getFieldValueFactory()
-		{
-			return new AnnotProxyFieldValueFactory(new ContextLocator());
-		}
-	 }
-	
-	/**
-	 * Reuses the provided context
-	 * @author Thies
-	 *
-	 */
-	private class ContextLocator implements ISpringContextLocator
+	public AnnotApplicationContextMock getMockContext()
 	{
-		public ApplicationContext getSpringContext()
-		{
-			return context;
-		}
-	}	
+		return mockContext;
+	}
 }

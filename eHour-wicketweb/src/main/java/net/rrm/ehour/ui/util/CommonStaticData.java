@@ -23,6 +23,10 @@
 
 package net.rrm.ehour.ui.util;
 
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 /**
  * Commons 
  **/
@@ -36,5 +40,21 @@ public class CommonStaticData
 	public final static String ROLE_ADMIN = "ROLE_ADMIN";
 	public final static String ROLE_REPORT = "ROLE_REPORT";
 	public final static String ROLE_PM = "ROLE_PROJECTMANAGER";
+	
+	/**
+	 * Get currencies
+	 * @return
+	 */
+	public static Map<String, String> getCurrencies()
+	{
+		SortedMap<String, String> currencies = new TreeMap<String,String>();
+		
+		currencies.put("Dollar", "$");
+		currencies.put("Euro", "&#8364;");
+		currencies.put("Yen", "&yen;");
+		currencies.put("Pound", "&pound;");
+		
+		return currencies;
+	}	
 	
 }

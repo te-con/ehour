@@ -1,5 +1,5 @@
 /**
- * Created on Jul 17, 2007
+ * Created on Mar 19, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,35 +21,24 @@
  *
  */
 
-package net.rrm.ehour.ui.common;
+package net.rrm.ehour.ui.sort;
 
-import junit.framework.TestCase;
-import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.EhourConfigStub;
-
-import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
-import org.apache.wicket.util.tester.WicketTester;
+import java.util.Comparator;
+import java.util.Locale;
 
 /**
  * TODO 
  **/
 
-public class BaseUITest extends TestCase 
+public class LocaleComparator implements Comparator<Locale>
 {
-	protected WicketTester	tester;
-	protected AnnotApplicationContextMock	mockContext;
-	protected EhourConfig	config;
-	
-	protected void setUp() throws Exception
-	{
-		TestEhourWebApplication webapp =  new TestEhourWebApplication();
-	
-		config = new EhourConfigStub();
-		
-		mockContext = new AnnotApplicationContextMock();
-		mockContext.putBean("EhourConfig", config);
 
-		tester = new EhourWicketTester(webapp);
-		mockContext = ((TestEhourWebApplication)tester.getApplication()).getMockContext();
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	public int compare(Locale l1, Locale l2)
+	{
+		return l1.getDisplayName().compareTo(l2.getDisplayName());
 	}
+
 }

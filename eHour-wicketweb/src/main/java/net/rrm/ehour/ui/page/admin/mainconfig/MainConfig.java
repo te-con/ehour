@@ -23,13 +23,42 @@
 
 package net.rrm.ehour.ui.page.admin.mainconfig;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.panel.nav.admin.AdminNavPanel;
+import net.rrm.ehour.ui.panel.timesheet.FormHighlighter;
+import net.rrm.ehour.ui.sort.LocaleComparator;
+import net.rrm.ehour.ui.util.CommonStaticData;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Main config page
@@ -40,26 +69,225 @@ public class MainConfig extends BasePage
 {
 	private static final long serialVersionUID = 8613594529875207988L;
 
+	@SpringBean
+	private ConfigurationService	configService;
+
+	private	final MainConfigBackingBean	configBackingBean = new MainConfigBackingBean();
+	
 	/**
 	 * 
 	 */
 	public MainConfig()
 	{
 		super(new ResourceModel("admin.config.title"), null);
+		
+		EhourConfig	dbConfig;
+		
 		add(new AdminNavPanel("adminNav"));
 		
-		setUpPage();
+		dbConfig = getDbConfig();
+		updateBackingBean(dbConfig, false);
+		
+		setUpPage(dbConfig);
+	}
+	
+	/**
+	 * 
+	 * @param config
+	 */
+	private void updateBackingBean(EhourConfig config, boolean translationsOnly)
+	{
+		configBackingBean.setDontForceLocale(config.getLocaleLanguage() == null || config.getLocaleLanguage().equals("noForce"));
+		configBackingBean.setTranslationsOnly(translationsOnly);
+		configBackingBean.setAvailableLanguages(getAvailableLanguages(config));
 	}
 	
 	/**
 	 * Setup page
 	 */
-	private void setUpPage()
+	private void setUpPage(EhourConfig dbConfig)
 	{
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("configFrame", new ResourceModel("admin.config.title"));
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		greyBorder.add(blueBorder);
 		add(greyBorder);
+
+		createForm(blueBorder, dbConfig);
 	}
 
+	/**
+	 * Create form
+	 * 
+	 * @param parent
+	 */
+	private void createForm(WebMarkupContainer parent, final EhourConfig dbConfig)
+	{
+		Form configForm = new Form("configForm", new CompoundPropertyModel(dbConfig));
+
+		addLocaleSelections(configForm, dbConfig);
+		
+		// currency dropdown
+		configForm.add(new DropDownChoice("currency",
+											new ArrayList<String>(CommonStaticData.getCurrencies().keySet())));
+		
+		// show turnover checkbox
+		configForm.add(new CheckBox("showTurnover"));
+		
+		// reply sender
+		configForm.add(new RequiredTextField("mailFrom"));
+		configForm.add(new RequiredTextField("mailSmtp"));
+		
+		setSubmitButton(configForm, dbConfig);
+		
+		parent.add(configForm);
+	}
+	
+	/**
+	 * Set ajax submit button
+	 * @param form
+	 * @param dbConfig
+	 */
+	private void setSubmitButton(Form form, final EhourConfig dbConfig)
+	{
+		form.add(new AjaxButton("submitButton", form)
+		{
+			@Override
+            protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				configService.persistConfiguration(dbConfig);
+            }
+
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator()
+			{
+				return new LoadingSpinnerDecorator();
+			}			
+			
+			@Override
+			protected void onError(final AjaxRequestTarget target, Form form)
+			{
+                form.visitFormComponents(new FormHighlighter(target));
+            }
+        });		
+	}
+	
+	/**
+	 * Add locale selections
+	 * @param configForm
+	 * @param dbConfig
+	 */
+	
+	private void addLocaleSelections(Form configForm, final EhourConfig dbConfig)
+	{
+		final DropDownChoice	localeDropDownChoice;
+		final AjaxCheckBox		onlyTranslationsBox;
+		
+		configForm.setOutputMarkupId(true);
+		
+		localeDropDownChoice = new DropDownChoice("localeSelection",
+													new PropertyModel(dbConfig, "locale"),
+													new PropertyModel(configBackingBean, "availableLanguages"),
+													new LocaleChoiceRenderer()); 
+		localeDropDownChoice.setEnabled(!configBackingBean.isDontForceLocale());
+		localeDropDownChoice.setOutputMarkupId(true);
+		configForm.add(localeDropDownChoice);
+		
+        setOutputMarkupId(true);
+
+		// only translations
+		onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel(configBackingBean, "translationsOnly"))
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				configBackingBean.setAvailableLanguages(getAvailableLanguages(dbConfig));
+				target.addComponent(localeDropDownChoice);
+			}
+		};
+		onlyTranslationsBox.setOutputMarkupId(true);
+		onlyTranslationsBox.setEnabled(!configBackingBean.isDontForceLocale());
+		configForm.add(onlyTranslationsBox);
+		
+		// don't force locale checkbox
+		configForm.add(new AjaxCheckBox("dontForceLocale", new PropertyModel(configBackingBean, "dontForceLocale"))
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				localeDropDownChoice.setEnabled(!configBackingBean.isDontForceLocale());
+				target.addComponent(localeDropDownChoice);
+				
+				onlyTranslationsBox.setEnabled(!configBackingBean.isDontForceLocale());
+				target.addComponent(onlyTranslationsBox);
+			}
+		});				
+	}
+    
+    /**
+     * Choice for a locale.
+     */
+    private final class LocaleChoiceRenderer extends ChoiceRenderer
+    {
+        /**
+         * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(Object)
+         */
+        public Object getDisplayValue(Object object)
+        {
+            Locale locale = (Locale)object;
+            String display = locale.getDisplayName(getLocale());
+            return display;
+        }
+    }    
+	
+	/**
+	 * Get available languages
+	 * @param config
+	 * @param onlyAvailable
+	 * @return
+	 */
+	private List<Locale> getAvailableLanguages(EhourConfig config)
+	{
+		Locale[]			locales = Locale.getAvailableLocales();
+		Map<String, Locale>	localeMap = new HashMap<String, Locale>();
+		
+		// remove all variants
+		for (Locale locale : locales)
+		{
+			if (configBackingBean.isTranslationsOnly()
+					&& !ArrayUtils.contains(config.getAvailableTranslations(), locale.getLanguage()))
+			{
+				continue;
+			}
+			
+			if (localeMap.containsKey(locale.getLanguage()))
+			{
+				if (locale.getDisplayName().indexOf('(') != -1)
+				{
+					continue;
+				}
+			}
+
+			localeMap.put(locale.getLanguage(), locale);
+		}
+		
+		
+		SortedSet<Locale>	localeSet = new TreeSet<Locale>(new LocaleComparator());
+		
+		for (Locale locale : localeMap.values())
+		{
+			localeSet.add(locale);
+		}
+		
+		
+		return new ArrayList<Locale>(localeSet);
+	}	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private EhourConfig getDbConfig()
+	{
+		return configService.getConfiguration();
+	}
 }

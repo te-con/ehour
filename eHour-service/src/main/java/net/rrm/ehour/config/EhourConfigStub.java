@@ -23,14 +23,19 @@
 
 package net.rrm.ehour.config;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
  * Stub for config 
  **/
 
-public class EhourConfigStub implements EhourConfig
+public class EhourConfigStub implements EhourConfig, Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3017492603595731493L;
 	private	String[] 	availableTranslations;
 	private	int			completeDayHours;
 	private	String		currency;

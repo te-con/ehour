@@ -17,7 +17,68 @@
 
     		<div class="ContentPanelLoc" wicket:id="configFrame">
     			<div wicket:id="blueBorder">
-    			
+
+					<form wicket:id="configForm">
+					<table class="contentTable">
+
+						<tr>
+							<td><wicket:message key="admin.config.locale.language.onlyTranslations" />:</td>
+							<td><input wicket:id="onlyTranslations" type="checkbox" /></td>
+						</tr>
+					
+						<tr>
+							<td><wicket:message key="admin.config.locale.language" />:</td>
+							<td><select class="textInputSmall"  wicket:id="localeSelection"></select></td>
+						</tr>
+
+						<tr>
+							<td><wicket:message key="admin.config.locale.language.noForce" />:</td>
+							<td><input wicket:id="dontForceLocale" type="checkbox" /></td>
+						</tr>
+
+						<tr>
+							<td colspan="2"><br /></td>
+						</tr>
+	
+						<tr>
+							<td><wicket:message key="admin.config.locale.currency" />:</td>
+							<td><select class="textInputSmall" wicket:id="currency"></select></td>
+						</tr>
+						
+						<tr>
+							<td colspan="2"><br /></td>
+						</tr>
+						
+						<tr>
+							<td><wicket:message key="admin.config.showTurnover" />:</td>
+							<td><input type="checkbox" wicket:id="showTurnover" /></td>
+						</tr>						
+
+						<tr>
+							<td colspan="2"><br /></td>
+						</tr>
+
+						<tr>
+							<td><wicket:message key="admin.config.mailFrom" />:</td>
+							<td><input type="text" size="30" wicket:id="mailFrom" /></td>
+						</tr>						
+		
+						<tr>
+							<td><wicket:message key="admin.config.mailSmtp" />:</td>
+							<td><input type="text" size="30" wicket:id="mailSmtp" /></td>
+						</tr>
+
+						<tr>
+							<td colspan="2">
+								<br />
+								<input type="submit" value="submit" wicket:id="submitButton" />
+							</td>
+						</tr>
+												
+					</table>
+					
+					
+					</form>
     			</div>
 	    	</div>
 

@@ -23,6 +23,12 @@
 
 package net.rrm.ehour.ui.page.admin.mainconfig;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.common.BaseUITest;
 
 /**
@@ -33,8 +39,18 @@ public class MainConfigTest extends BaseUITest
 {
 	public void testMainConfigRender()
 	{
+		ConfigurationService configService = createMock(ConfigurationService.class);
+		mockContext.putBean("configService", configService);
+		
+		expect(configService.getConfiguration())
+				.andReturn(new EhourConfigStub());
+
+		replay(configService);
+		
 		tester.startPage(MainConfig.class);
 		tester.assertRenderedPage(MainConfig.class);
 		tester.assertNoErrorMessage();
+		
+		verify(configService);
 	}
 }
