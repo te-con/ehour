@@ -32,6 +32,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
@@ -100,6 +101,7 @@ public class MainConfig extends BasePage
 		configBackingBean.setDontForceLocale(config.getLocaleLanguage() == null || config.getLocaleLanguage().equals("noForce"));
 		configBackingBean.setTranslationsOnly(translationsOnly);
 		configBackingBean.setAvailableLanguages(getAvailableLanguages(config));
+		configBackingBean.setLocale(config.getLocaleLanguage());
 	}
 	
 	/**
@@ -154,6 +156,7 @@ public class MainConfig extends BasePage
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
+				((EhourConfigStub)dbConfig).setLocaleLanguage(configBackingBean.isDontForceLocale() ? "noForce" : configBackingBean.getLocale().getLanguage());
 				configService.persistConfiguration(dbConfig);
             }
 
@@ -185,7 +188,7 @@ public class MainConfig extends BasePage
 		configForm.setOutputMarkupId(true);
 		
 		localeDropDownChoice = new DropDownChoice("localeSelection",
-													new PropertyModel(dbConfig, "locale"),
+													new PropertyModel(configBackingBean, "locale"),
 													new PropertyModel(configBackingBean, "availableLanguages"),
 													new LocaleChoiceRenderer()); 
 		localeDropDownChoice.setEnabled(!configBackingBean.isDontForceLocale());

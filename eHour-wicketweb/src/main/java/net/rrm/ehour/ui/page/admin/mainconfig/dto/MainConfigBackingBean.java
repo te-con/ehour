@@ -40,6 +40,7 @@ public class MainConfigBackingBean implements Serializable
 	private	boolean			translationsOnly;
 	private	List<Locale>	availableLanguages;
 	private	boolean			dontForceLocale;
+	private	String			locale;
 	
 	public boolean isTranslationsOnly()
 	{
@@ -64,5 +65,13 @@ public class MainConfigBackingBean implements Serializable
 	public void setDontForceLocale(boolean dontForceLocale)
 	{
 		this.dontForceLocale = dontForceLocale;
+	}
+	public Locale getLocale()
+	{
+		return new Locale(locale);
+	}
+	public void setLocale(String locale)
+	{
+		this.locale = locale;
 	}
 }
