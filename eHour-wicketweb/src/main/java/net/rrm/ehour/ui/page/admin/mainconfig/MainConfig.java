@@ -234,6 +234,7 @@ public class MainConfig extends BasePage
         /**
          * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(Object)
          */
+    	@Override
         public Object getDisplayValue(Object object)
         {
             Locale locale = (Locale)object;

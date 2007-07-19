@@ -68,10 +68,15 @@ public class MainConfigBackingBean implements Serializable
 	}
 	public Locale getLocale()
 	{
-		return new Locale(locale);
+		return locale != null ? new Locale(locale) : Locale.getDefault();
 	}
 	public void setLocale(String locale)
 	{
 		this.locale = locale;
 	}
+	public void setLocale(Locale locale)
+	{
+		this.locale = locale.getLanguage();
+	}	
+	
 }
