@@ -57,7 +57,7 @@ public class MainConfigTest extends BaseUITest
 		tester.assertNoErrorMessage();
 		
 		verify(configService);
-//	}
+	}
 //	
 //	/**
 //	 * 
