@@ -39,6 +39,7 @@ import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
+import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.nav.admin.AdminNavPanel;
 import net.rrm.ehour.ui.panel.timesheet.FormHighlighter;
 import net.rrm.ehour.ui.sort.LocaleComparator;
@@ -90,6 +91,10 @@ public class MainConfig extends BasePage
 		updateBackingBean(dbConfig, false);
 		
 		setUpPage(dbConfig);
+		
+		// contextual help
+		add(new ContextualHelpPanel("contextHelp"));
+		
 	}
 	
 	/**

@@ -1,5 +1,5 @@
 /**
- * Created on Jul 17, 2007
+ * Created on Jul 20, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,34 +21,27 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.nav.admin;
+package net.rrm.ehour.ui.panel.entryselector;
 
-import net.rrm.ehour.ui.border.GreyNavBorder;
-import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.page.admin.user.UserAdmin;
-
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.IModel;
 
 /**
- * TODO 
+ * Selector with autocompletion filter 
  **/
 
-public class AdminNavPanel extends Panel
+public class EntrySelectorPanel extends Panel
 {
-	private static final long serialVersionUID = -7877416542663086633L;
 
-	public AdminNavPanel(String id)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7928428437664050056L;
+
+	public EntrySelectorPanel(String id, IModel model)
 	{
-		super(id);
-
-		GreyNavBorder greyNavBorder = new GreyNavBorder("navBorder", new ResourceModel("admin.nav.userAdmin"));
-
-		add(greyNavBorder);
-		
-		greyNavBorder.add(new BookmarkablePageLink("mainConfig", MainConfig.class));
-		greyNavBorder.add(new BookmarkablePageLink("userAdmin", UserAdmin.class));
+		super(id, model);
+		// TODO Auto-generated constructor stub
 	}
 
 }
