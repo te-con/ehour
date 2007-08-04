@@ -171,7 +171,18 @@ public class DateUtilTest extends TestCase
 		DateUtil.nullifyTime(cal);
 		
 		assertEquals(0, cal.get(Calendar.MINUTE));
+		assertEquals(0, cal.get(Calendar.HOUR_OF_DAY));
 	}
+	
+	public void testMaximizeTime()
+	{
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.MINUTE, 10);
+		DateUtil.maximizeTime(cal);
+		
+		assertEquals(59, cal.get(Calendar.MINUTE));
+		assertEquals(23, cal.get(Calendar.HOUR_OF_DAY));
+	}	
 	
 	/**
 	 * 
