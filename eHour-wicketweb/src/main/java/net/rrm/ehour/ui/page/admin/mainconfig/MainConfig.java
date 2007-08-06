@@ -37,10 +37,8 @@ import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
-import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.nav.admin.AdminNavPanel;
 import net.rrm.ehour.ui.panel.timesheet.FormHighlighter;
 import net.rrm.ehour.ui.sort.LocaleComparator;
 import net.rrm.ehour.ui.util.CommonStaticData;
@@ -50,7 +48,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -65,9 +62,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * Main config page
  **/
-
-@AuthorizeInstantiation("ROLE_ADMIN")
-public class MainConfig extends BasePage
+public class MainConfig extends BaseAdminPage
 {
 	private static final long serialVersionUID = 8613594529875207988L;
 
@@ -85,16 +80,10 @@ public class MainConfig extends BasePage
 		
 		EhourConfig	dbConfig;
 		
-		add(new AdminNavPanel("adminNav"));
-		
 		dbConfig = getDbConfig();
 		updateBackingBean(dbConfig, false);
 		
 		setUpPage(dbConfig);
-		
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
-		
 	}
 	
 	/**

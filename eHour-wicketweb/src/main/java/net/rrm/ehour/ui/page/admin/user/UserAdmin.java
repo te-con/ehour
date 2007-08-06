@@ -23,22 +23,77 @@
 
 package net.rrm.ehour.ui.page.admin.user;
 
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
+import java.util.List;
 
-import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.page.admin.BaseAdminPage;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.service.UserService;
+
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * TODO 
+ * Employee management page 
  **/
 
-public class UserAdmin extends BasePage
+public class UserAdmin extends BaseAdminPage
 {
 
-	public UserAdmin(ResourceModel pageTitle, IModel model)
-	{
-		super(pageTitle, model);
-		// TODO Auto-generated constructor stub
-	}
+	@SpringBean
+	private	UserService	userService;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1883278850247747252L;
 
+	public UserAdmin()
+	{
+		super(new ResourceModel("admin.user.title"), null);
+		
+		List<User>	users;
+		ListView	userListView;
+		users = getUsers(null, false);
+		userListView = getUserListView(users);
+		
+		add(new EntrySelectorPanel("userSelector",
+									new ResourceModel("admin.user.title"),
+									getLocalizer().getString("admin.user.filter", this),
+									null, userListView));
+	}
+	
+	private ListView getUserListView(List<User> users)
+	{
+		return new ListView("itemList", users)
+		{
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				final User	user = (User)item.getModelObject();
+				
+				item.add(new Label("item", user.getLastName()));
+			}
+		};
+	}
+	
+	
+	private List<User> getUsers(String filter, boolean hideInactive)
+	{
+		List<User>	users;
+		
+		if (filter == null)
+		{
+			users = userService.getUsers();
+		}
+		else
+		{
+			users = userService.getUsersByNameMatch(filter, hideInactive);
+		}
+		
+		return users;
+	}
 }

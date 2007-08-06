@@ -23,8 +23,17 @@
 
 package net.rrm.ehour.ui.panel.entryselector;
 
+import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
+
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Selector with autocompletion filter 
@@ -32,16 +41,69 @@ import org.apache.wicket.model.IModel;
 
 public class EntrySelectorPanel extends Panel
 {
-
+	private	String	filterInput;
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7928428437664050056L;
 
-	public EntrySelectorPanel(String id, IModel model)
+	public EntrySelectorPanel(String id, ResourceModel title, String defaultFilterInputText,
+							IModel model, ListView itemList)
 	{
 		super(id, model);
-		// TODO Auto-generated constructor stub
+		
+		this.filterInput = defaultFilterInputText;
+		
+		setUpPanel(title, itemList);
+	}
+	
+
+	/**
+	 * Setup page
+	 */
+	private void setUpPanel(ResourceModel title, ListView itemList)
+	{
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title);
+		
+		setUpFilterForm(greyBorder);
+		
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
+		greyBorder.add(blueBorder);
+		add(greyBorder);
+		
+		blueBorder.add(itemList);
+	}
+	
+	/**
+	 * 
+	 * @param parent
+	 */
+	private void setUpFilterForm(WebMarkupContainer parent)
+	{
+		Form	filterForm = new Form("filterForm", new CompoundPropertyModel(this));
+		parent.add(filterForm);
+		
+		TextField	filterInput = new TextField("filterInput");
+		filterForm.add(filterInput);
 	}
 
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getFilterInput()
+	{
+		return filterInput;
+	}
+
+	/**
+	 * 
+	 * @param filterInput
+	 */
+	public void setFilterInput(String filterInput)
+	{
+		this.filterInput = filterInput;
+	}
 }

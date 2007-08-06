@@ -46,8 +46,23 @@ public class GreyRoundedBorder extends Border
 		Label	label = new Label("greyTabTitle", new Model());
 		label.setVisible(false);
 		add(label);
-	}	
-
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param forceWidth
+	 * @param forceHeight
+	 */
+	public GreyRoundedBorder(String id, Integer forceWidth, Integer forceHeight)
+	{
+		super(id);
+		
+		Label	label = new Label("greyTabTitle", new Model());
+		label.setVisible(false);
+		add(label);
+	}		
+	
 	/**
 	 * 
 	 * @param id

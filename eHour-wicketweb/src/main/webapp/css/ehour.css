@@ -299,3 +299,72 @@ li a:active
 	text-decoration: underline;
 	font: 1em Verdana, Geneva, Arial, Helvetica;
 }
+
+div.listScroll
+{
+	height:	200px;
+	margin: 0 5px 0 5px;
+	overflow: auto;
+	padding: 0px;
+	width: 210px;
+	font:  1em Geneva, Arial, Helvetica, sans-serif;
+}
+
+.contentTable
+{
+	padding: 0px;
+	margin: 0 0 0 10px;
+	spacing: 0px;
+}
+
+.contentTable TR
+{
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.contentTable TH
+{
+	padding: 0px;
+	margin: 0px;
+	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;
+	text-align: left;
+	color: #233e55;
+}
+
+.contentTable TD
+{
+	padding: 0px;
+	margin: 0px;
+	font:  1em Verdana Geneva, Arial, Helvetica, sans-serif;
+	border: 0px;
+	text-align: left;
+	color: #3b556d;
+}
+
+.contentTable td.main
+{
+	color: #233e55;
+}
+
+.contentTable td.extra
+{
+	padding: 0 0 0 5px;
+	margin: 0px;
+	font:  1em Verdana Geneva, Arial, Helvetica, sans-serif;
+	border: 0px;
+	text-align: left;
+	color: #86a1bc;
+	border-bottom: 1px solid #6c87a1;
+}
+
+input
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #b3c0cb;
+	margin: 0;
+	font: 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #233e55;
+}
