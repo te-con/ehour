@@ -35,6 +35,7 @@ public class CommonStaticData
 {
 	public final static int	AJAX_CALENDARPANEL_MONTH_CHANGE = 1;
 	public final static int	AJAX_CALENDARPANEL_WEEK_CLICK = 2;
+	public final static int	AJAX_ENTRYSELECTOR_FILTER_CHANGE = 3;
 	
 	public final static String ROLE_CONSULTANT = "ROLE_CONSULTANT";
 	public final static String ROLE_ADMIN = "ROLE_ADMIN";

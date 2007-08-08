@@ -27,9 +27,12 @@ import java.util.List;
 
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
+import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -45,6 +48,8 @@ public class UserAdmin extends BaseAdminPage
 
 	@SpringBean
 	private	UserService	userService;
+	private	ListView	userListView;
+	private	transient Logger	logger = Logger.getLogger(UserAdmin.class);
 	
 	/**
 	 * 
@@ -56,16 +61,44 @@ public class UserAdmin extends BaseAdminPage
 		super(new ResourceModel("admin.user.title"), null);
 		
 		List<User>	users;
-		ListView	userListView;
+		
 		users = getUsers(null, false);
 		userListView = getUserListView(users);
+		userListView.setOutputMarkupId(true);
 		
 		add(new EntrySelectorPanel("userSelector",
-									new ResourceModel("admin.user.title"),
-									getLocalizer().getString("admin.user.filter", this),
-									null, userListView));
+				new ResourceModel("admin.user.title"),
+				getLocalizer().getString("admin.user.filter", this),
+				null, userListView));
 	}
 	
+	/**
+	 * Handle Ajax request
+	 * @param target
+	 * @param type of ajax req
+	 */
+	@Override
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	{
+		if (type == CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE)
+		{
+			String filter = (String)param;
+
+			if (logger.isDebugEnabled())
+			{
+				logger.debug("Filtering on " + filter);
+			}
+			
+			List<User> users = getUsers(filter, true);
+			userListView.setList(users);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param users
+	 * @return
+	 */
 	private ListView getUserListView(List<User> users)
 	{
 		return new ListView("itemList", users)
@@ -75,12 +108,17 @@ public class UserAdmin extends BaseAdminPage
 			{
 				final User	user = (User)item.getModelObject();
 				
-				item.add(new Label("item", user.getLastName()));
+				item.add(new Label("item", user.getLastName() + ", " + user.getFirstName()));
 			}
 		};
 	}
 	
-	
+	/**
+	 * 
+	 * @param filter
+	 * @param hideInactive
+	 * @return
+	 */
 	private List<User> getUsers(String filter, boolean hideInactive)
 	{
 		List<User>	users;

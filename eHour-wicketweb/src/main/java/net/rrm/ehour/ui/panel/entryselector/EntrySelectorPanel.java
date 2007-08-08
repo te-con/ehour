@@ -25,14 +25,18 @@ package net.rrm.ehour.ui.panel.entryselector;
 
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.util.CommonStaticData;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -42,7 +46,7 @@ import org.apache.wicket.model.ResourceModel;
 public class EntrySelectorPanel extends Panel
 {
 	private	String	filterInput;
-	
+
 	/**
 	 * 
 	 */
@@ -65,10 +69,10 @@ public class EntrySelectorPanel extends Panel
 	private void setUpPanel(ResourceModel title, ListView itemList)
 	{
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title);
-		
-		setUpFilterForm(greyBorder);
-		
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
+		blueBorder.setOutputMarkupId(true);
+		setUpFilterForm(greyBorder, blueBorder);
+		
 		greyBorder.add(blueBorder);
 		add(greyBorder);
 		
@@ -79,13 +83,26 @@ public class EntrySelectorPanel extends Panel
 	 * 
 	 * @param parent
 	 */
-	private void setUpFilterForm(WebMarkupContainer parent)
+	private void setUpFilterForm(WebMarkupContainer parent, final GreyBlueRoundedBorder border)
 	{
-		Form	filterForm = new Form("filterForm", new CompoundPropertyModel(this));
+		Form	filterForm = new Form("filterForm");
 		parent.add(filterForm);
 		
-		TextField	filterInput = new TextField("filterInput");
-		filterForm.add(filterInput);
+		final TextField	filterInputField = new TextField("filterInput", new Model(""));
+
+		OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior()
+        {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target)
+            {
+				((BasePage)getPage()).ajaxRequestReceived(target,
+						CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filterInputField.getModelObjectAsString());
+            	target.addComponent(border);
+
+            }
+        };
+        filterInputField.add(onChangeAjaxBehavior);
+		filterForm.add(filterInputField);
 	}
 
 
