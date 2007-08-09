@@ -37,7 +37,7 @@ div.ContentPanelLoc
 div.GreyFrame
 {
 		text-align: left;
-		min-width: 500px;
+		//min-width: 500px;
 		max-width: 780px;
 		width:expression(document.body.clientWidth > 1000? "780px": "auto" );
 		margin: 0;

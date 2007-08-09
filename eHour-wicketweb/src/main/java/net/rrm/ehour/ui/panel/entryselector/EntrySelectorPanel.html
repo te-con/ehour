@@ -7,20 +7,23 @@
 <body>
 
 <wicket:panel>
-	<div class="ContentPanelLoc" wicket:id="entrySelectorFrame">
+	<div class="ContentPanelLoc" wicket:id="entrySelectorFrame" style="width: 260px">
 	
 		<form onsubmit="return false;" wicket:id="filterForm">
 			<p>
 				<input class="textInput" 
 						type="text" 
 						wicket:id="filterInput"
-						style="margin-bottom: 0;color: #aaaaaa; margin-bottom: 3px"
-						size="30" 
+						style="width: 220px; margin-bottom: 0;color: #aaaaaa; margin-bottom: 3px"
+						size="25" 
 						/>
+				<br />
+				
+				<span wicket:id="filterToggleText"></span><input wicket:id="filterToggle" type="checkbox" />
 			</p>
 		</form>	
 	
-		<div wicket:id="blueBorder">
+		<div wicket:id="blueBorder" style="width: 250px; padding-top: 0; margin-top: 10px">
 			<div class="listScroll">
 				<span wicket:id="itemList">
 					<span wicket:id="item"></span><br />

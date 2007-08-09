@@ -26,6 +26,7 @@ package net.rrm.ehour.ui.page.admin.user;
 import java.util.List;
 
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
@@ -68,8 +69,9 @@ public class UserAdmin extends BaseAdminPage
 		
 		add(new EntrySelectorPanel("userSelector",
 				new ResourceModel("admin.user.title"),
-				getLocalizer().getString("admin.user.filter", this),
-				null, userListView));
+				userListView,
+				getLocalizer().getString("admin.user.filter", this) + "...",
+				getLocalizer().getString("admin.user.hideInactive", this)));
 	}
 	
 	/**
@@ -82,14 +84,14 @@ public class UserAdmin extends BaseAdminPage
 	{
 		if (type == CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE)
 		{
-			String filter = (String)param;
+			EntrySelectorFilter filter = (EntrySelectorFilter)param;
 
 			if (logger.isDebugEnabled())
 			{
-				logger.debug("Filtering on " + filter);
+				logger.debug("Filtering on " + filter.getCleanFilterInput() + ", hide active: " + filter.isActivateToggle());
 			}
 			
-			List<User> users = getUsers(filter, true);
+			List<User> users = getUsers(filter.getCleanFilterInput(), filter.isActivateToggle());
 			userListView.setList(users);
 		}
 	}
@@ -108,7 +110,8 @@ public class UserAdmin extends BaseAdminPage
 			{
 				final User	user = (User)item.getModelObject();
 				
-				item.add(new Label("item", user.getLastName() + ", " + user.getFirstName()));
+				item.add(new Label("item", 
+						user.getLastName() + ", " + user.getFirstName() + (user.isActive() ? "" : "*")));
 			}
 		};
 	}

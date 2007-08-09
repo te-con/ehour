@@ -31,14 +31,15 @@ import net.rrm.ehour.ui.util.CommonStaticData;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
 
@@ -48,23 +49,64 @@ import org.apache.wicket.util.time.Duration;
 
 public class EntrySelectorPanel extends Panel
 {
-	private	String	filterInput;
-
-	/**
-	 * 
-	 */
+	private	String	defaultFilterText = "";
+	private	String	checkBoxPrefixText = "";
+	private	boolean	includeFilter;
+	private	boolean	includeCheckboxToggle;
+	
 	private static final long serialVersionUID = -7928428437664050056L;
 
-	public EntrySelectorPanel(String id, ResourceModel title, String defaultFilterInputText,
-							IModel model, ListView itemList)
+	/**
+	 * EntrySelectorPanel without filter or checkbox toggle
+	 * @param id
+	 * @param title
+	 * @param defaultFilterInputText
+	 * @param itemList
+	 */
+	public EntrySelectorPanel(String id, ResourceModel title, ListView itemList)
 	{
-		super(id, model);
-		
-		this.filterInput = defaultFilterInputText;
-		
-		setUpPanel(title, itemList);
+		this(id, title, itemList, null);
 	}
-	
+
+	/**
+	 * EntrySelectorPanel with filter but without checkbox toggle
+	 * @param id
+	 * @param title
+	 * @param itemList
+	 * @param defaultFilterText
+	 */
+	public EntrySelectorPanel(String id, ResourceModel title, ListView itemList, String defaultFilterText)
+	{
+		this(id, title, itemList, defaultFilterText, null);
+	}
+
+	/**
+	 * Fully featured EntrySelectorPanel
+	 * @param id
+	 * @param title
+	 * @param itemList
+	 * @param defaultFilterText
+	 * @param checkboxPrefix
+	 */
+	public EntrySelectorPanel(String id, ResourceModel title, ListView itemList, String defaultFilterText, String checkboxPrefix)
+	{
+		super(id);
+
+		if (defaultFilterText != null)
+		{
+			this.defaultFilterText = defaultFilterText;
+			includeFilter = true;
+		}
+		
+		if (checkBoxPrefixText != null)
+		{
+			this.checkBoxPrefixText = checkboxPrefix;
+			includeCheckboxToggle = true;
+		}
+
+		setUpPanel(title, itemList);
+	}	
+
 
 	/**
 	 * Setup page
@@ -83,57 +125,62 @@ public class EntrySelectorPanel extends Panel
 	}
 	
 	/**
-	 * 
+	 * Setup the filter form
 	 * @param parent
 	 */
 	private void setUpFilterForm(WebMarkupContainer parent, final GreyBlueRoundedBorder border)
 	{
+		final EntrySelectorFilter filter = new EntrySelectorFilter(defaultFilterText);
+		
 		Form	filterForm = new Form("filterForm");
 		parent.add(filterForm);
 		
-		final TextField	filterInputField = new TextField("filterInput", new Model("Filter..."));
-		
-		filterInputField.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel()
-        {
-            public Object getObject()
-            {
-                return "this.style.color='#233e55';if (this.value == 'Filter...') { this.value='';}";
-            }
-        })); 
-		
-		OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior()
-        {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target)
-            {
-				((BasePage)getPage()).ajaxRequestReceived(target,
-						CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filterInputField.getModelObjectAsString());
+		final TextField		filterInputField = new TextField("filterInput", new PropertyModel(filter, "filterInput"));
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel(filter, "activateToggle"))
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
             	target.addComponent(border);
-            }
-        };
-        
-        onChangeAjaxBehavior.setThrottleDelay(Duration.ONE_SECOND);
-        
-        filterInputField.add(onChangeAjaxBehavior);
+			}
+		};
+		filterForm.add(deactivateBox);
+		deactivateBox.setVisible(includeCheckboxToggle);
+		
+		Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
+		filterForm.add(filterToggleText);
+		filterForm.setVisible(includeCheckboxToggle);
+
+		// if filter included, attach onchange ajax behaviour otherwise hide it
+		if (includeFilter)
+		{
+			filterInputField.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel()
+	        {
+	            public Object getObject()
+	            {
+	                return "this.style.color='#233e55';if (this.value == '" + defaultFilterText + "') { this.value='';}";
+	            }
+	        }));
+			
+			OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior()
+	        {
+	            @Override
+	            protected void onUpdate(AjaxRequestTarget target)
+	            {
+					((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
+	            	target.addComponent(border);
+	            }
+	        };
+	        
+	        onChangeAjaxBehavior.setThrottleDelay(Duration.milliseconds(500));
+	        
+	        filterInputField.add(onChangeAjaxBehavior);
+		}
+		else
+		{
+			filterInputField.setVisible(false);
+		}
 		filterForm.add(filterInputField);
-	}
-
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getFilterInput()
-	{
-		return filterInput;
-	}
-
-	/**
-	 * 
-	 * @param filterInput
-	 */
-	public void setFilterInput(String filterInput)
-	{
-		this.filterInput = filterInput;
 	}
 }
