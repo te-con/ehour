@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.util.CommonStaticData;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -35,9 +36,11 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * Selector with autocompletion filter 
@@ -88,8 +91,16 @@ public class EntrySelectorPanel extends Panel
 		Form	filterForm = new Form("filterForm");
 		parent.add(filterForm);
 		
-		final TextField	filterInputField = new TextField("filterInput", new Model(""));
-
+		final TextField	filterInputField = new TextField("filterInput", new Model("Filter..."));
+		
+		filterInputField.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel()
+        {
+            public Object getObject()
+            {
+                return "this.style.color='#233e55';if (this.value == 'Filter...') { this.value='';}";
+            }
+        })); 
+		
 		OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior()
         {
             @Override
@@ -98,9 +109,11 @@ public class EntrySelectorPanel extends Panel
 				((BasePage)getPage()).ajaxRequestReceived(target,
 						CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filterInputField.getModelObjectAsString());
             	target.addComponent(border);
-
             }
         };
+        
+        onChangeAjaxBehavior.setThrottleDelay(Duration.ONE_SECOND);
+        
         filterInputField.add(onChangeAjaxBehavior);
 		filterForm.add(filterInputField);
 	}
