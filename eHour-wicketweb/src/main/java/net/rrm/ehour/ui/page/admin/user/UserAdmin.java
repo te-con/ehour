@@ -23,20 +23,25 @@
 
 package net.rrm.ehour.ui.page.admin.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.panel.user.form.UserFormPanel;
 import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -50,7 +55,11 @@ public class UserAdmin extends BaseAdminPage
 	@SpringBean
 	private	UserService	userService;
 	private	ListView	userListView;
-	private	transient Logger	logger = Logger.getLogger(UserAdmin.class);
+	private	transient 	Logger	logger = Logger.getLogger(UserAdmin.class);
+	private	UserFormPanel	formPanelAdd;
+	private	UserFormPanel	formPanelEdit;
+	private	AbstractTab	addUserTab;
+	private	AbstractTab	editUserTab;
 	
 	/**
 	 * 
@@ -72,6 +81,44 @@ public class UserAdmin extends BaseAdminPage
 				userListView,
 				getLocalizer().getString("admin.user.filter", this) + "...",
 				getLocalizer().getString("admin.user.hideInactive", this)));
+		
+		setUpTabs();
+	}
+	
+	/**
+	 * Setup tabs
+	 */
+	private void setUpTabs()
+	{
+		List<AbstractTab>	tabs = new ArrayList<AbstractTab>();
+		
+		addUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new UserFormPanel(panelId, null);
+			}
+			
+		};
+		tabs.add(addUserTab);
+
+		editUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new UserFormPanel(panelId, null);
+			}
+			
+		};
+		tabs.add(editUserTab);
+		
+		add(new AjaxTabbedPanel("tabs", tabs)
+		{
+			
+		});
+
 	}
 	
 	/**

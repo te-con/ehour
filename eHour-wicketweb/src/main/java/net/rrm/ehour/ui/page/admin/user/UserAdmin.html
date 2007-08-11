@@ -6,13 +6,19 @@
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
    	<head>
-        <title></title>
-        <link rel='stylesheet' type='text/css' href='style.css'/>
+	<wicket:head>
+		<link rel="stylesheet" type="text/css" href="css/ehourTabs.css" />
+	</wicket:head>    
     </head>
     <body>
     
+    
     	<wicket:extend>
-    		<span wicket:id="userSelector"></span>
+	    		<div wicket:id="userSelector"></div>
+
+				<div style="float:left">
+    				<div  wicket:id="tabs" class="tabpanel" style="padding-left: 10px"></div>
+    			</div>
     	</wicket:extend>
     </body>
 </html>
