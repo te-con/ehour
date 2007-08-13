@@ -44,6 +44,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -58,11 +60,11 @@ public class UserAdmin extends BaseAdminPage
 	private	UserService	userService;
 	private	ListView	userListView;
 	private	transient 	Logger	logger = Logger.getLogger(UserAdmin.class);
-	private	UserFormPanel	formPanelAdd;
-	private	UserFormPanel	formPanelEdit;
 	private	AbstractTab		addUserTab;
 	private	AbstractTab		editUserTab;
 	private	AjaxTabbedPanel	tabbedPanel;
+	private	User		addUser;
+	private	User		editUser;
 	
 	/**
 	 * 
@@ -75,13 +77,15 @@ public class UserAdmin extends BaseAdminPage
 		
 		List<User>	users;
 		
+		addUser = new User();
+		editUser = new User();
+		
 		users = getUsers(null, false);
-		userListView = getUserListView(users);
-		userListView.setOutputMarkupId(true);
+		Fragment userListHolder = getUserListHolder(users);
 		
 		add(new EntrySelectorPanel("userSelector",
 				new ResourceModel("admin.user.title"),
-				userListView,
+				userListHolder,
 				getLocalizer().getString("admin.user.filter", this) + "...",
 				getLocalizer().getString("admin.user.hideInactive", this)));
 		
@@ -100,26 +104,77 @@ public class UserAdmin extends BaseAdminPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new UserFormPanel(panelId, null);
+				return new UserFormPanel(panelId, new CompoundPropertyModel(addUser));
 			}
 			
 		};
 		tabs.add(addUserTab);
 
-		editUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
+		editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
 		{
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new UserFormPanel(panelId, null);
+				return new UserFormPanel(panelId, new CompoundPropertyModel(editUser));
 			}
-			
 		};
+		
 		tabs.add(editUserTab);
 		
 		tabbedPanel = new AjaxTabbedPanel("tabs", tabs);
 		add(tabbedPanel);
 	}
+
+	
+	/**
+	 * Get a the userListHolder fragment containing the listView
+	 * @param users
+	 * @return
+	 */
+	private Fragment getUserListHolder(List<User> users)
+	{
+		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", UserAdmin.this);
+		
+		userListView = new ListView("itemList", users)
+		{
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				final User		user = (User)item.getModelObject();
+				final Integer	userId = user.getUserId();
+				
+				AjaxLink	link = new AjaxLink("itemLink")
+				{
+					@Override
+					public void onClick(AjaxRequestTarget target)
+					{
+						editUser = userService.getUser(userId);
+//						editUserTab.
+						switchTab(target, 1, userId);
+					}
+				};
+				
+				item.add(link);
+				link.add(new Label("linkLabel", user.getLastName() + ", " + user.getFirstName() + (user.isActive() ? "" : "*")));				
+			}
+		};
+		
+		fragment.add(userListView);
+		
+		return fragment;
+	}
+	
+	/**
+	 * Switch tab
+	 * @param tab
+	 * @param userId
+	 */
+	private void switchTab(AjaxRequestTarget target, int tab, Integer userId)
+	{
+		tabbedPanel.setSelectedTab(tab);
+		target.addComponent(tabbedPanel);
+	}
+	
 	
 	/**
 	 * Handle Ajax request
@@ -141,29 +196,10 @@ public class UserAdmin extends BaseAdminPage
 			List<User> users = getUsers(filter.getCleanFilterInput(), filter.isActivateToggle());
 			userListView.setList(users);
 		}
-	}
+	}	
 	
 	/**
-	 * 
-	 * @param users
-	 * @return
-	 */
-	private ListView getUserListView(List<User> users)
-	{
-		return new ListView("itemList", users)
-		{
-			@Override
-			protected void populateItem(ListItem item)
-			{
-				final User	user = (User)item.getModelObject();
-				
-				item.add(new UserLinkFragment("item" + item.getIndex(), "item", this, user));
-			}
-		};
-	}
-	
-	/**
-	 * 
+	 * Get the users from the backend
 	 * @param filter
 	 * @param hideInactive
 	 * @return

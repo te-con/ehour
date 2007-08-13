@@ -25,8 +25,11 @@ package net.rrm.ehour.ui.panel.user.form;
 
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.CompoundPropertyModel;
 
 /**
  * User Panel 
@@ -35,12 +38,16 @@ import org.apache.wicket.model.Model;
 public class UserFormPanel extends Panel
 {
 
-	public UserFormPanel(String id, Model userModel)
+	public UserFormPanel(String id, CompoundPropertyModel userModel)
 	{
 		super(id, userModel);
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
 		add(greyBorder);
+		
+		Form form = new Form("userForm");
+		form.add(new RequiredTextField("username"));
+		greyBorder.add(form);
 	}
 
 }

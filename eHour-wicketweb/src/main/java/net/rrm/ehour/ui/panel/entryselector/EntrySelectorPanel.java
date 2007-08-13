@@ -37,6 +37,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
@@ -63,9 +64,9 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterInputText
 	 * @param itemList
 	 */
-	public EntrySelectorPanel(String id, ResourceModel title, ListView itemList)
+	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder)
 	{
-		this(id, title, itemList, null);
+		this(id, title, itemListHolder, null);
 	}
 
 	/**
@@ -75,9 +76,9 @@ public class EntrySelectorPanel extends Panel
 	 * @param itemList
 	 * @param defaultFilterText
 	 */
-	public EntrySelectorPanel(String id, ResourceModel title, ListView itemList, String defaultFilterText)
+	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder, String defaultFilterText)
 	{
-		this(id, title, itemList, defaultFilterText, null);
+		this(id, title, itemListHolder, defaultFilterText, null);
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterText
 	 * @param checkboxPrefix
 	 */
-	public EntrySelectorPanel(String id, ResourceModel title, ListView itemList, String defaultFilterText, String checkboxPrefix)
+	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder, String defaultFilterText, String checkboxPrefix)
 	{
 		super(id);
 
@@ -104,14 +105,14 @@ public class EntrySelectorPanel extends Panel
 			includeCheckboxToggle = true;
 		}
 
-		setUpPanel(title, itemList);
+		setUpPanel(title, itemListHolder);
 	}	
 
 
 	/**
 	 * Setup page
 	 */
-	private void setUpPanel(ResourceModel title, ListView itemList)
+	private void setUpPanel(ResourceModel title, Fragment itemListHolder)
 	{
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title);
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
@@ -121,7 +122,7 @@ public class EntrySelectorPanel extends Panel
 		greyBorder.add(blueBorder);
 		add(greyBorder);
 		
-		blueBorder.add(itemList);
+		blueBorder.add(itemListHolder);
 	}
 	
 	/**

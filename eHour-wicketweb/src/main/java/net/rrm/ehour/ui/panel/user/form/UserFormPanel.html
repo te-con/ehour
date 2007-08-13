@@ -8,8 +8,15 @@
 <body>
 <wicket:panel>
 		<div wicket:id="border" style="clear: all">
+			<form wicket:id="userForm">
+				<table class="contentTable">
+					<tr>
+						<td><wicket:message key="admin.user.username" />:</td>
+						<td><input class="textInputSmall" wicket:id="username" /></td>
+					</tr>
+				</table>
+			</form>		
 		</div>
-		
 </wicket:panel>
 
 </body>
