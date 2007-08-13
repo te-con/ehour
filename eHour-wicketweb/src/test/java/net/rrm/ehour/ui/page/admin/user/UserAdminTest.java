@@ -1,5 +1,5 @@
 /**
- * Created on Jul 17, 2007
+ * Created on Aug 13, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,52 +21,53 @@
  *
  */
 
-package net.rrm.ehour.ui.page.admin.mainconfig;
+package net.rrm.ehour.ui.page.admin.user;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.service.ConfigurationService;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.service.UserService;
+
 
 /**
  * TODO 
  **/
 
-public class MainConfigTest extends BaseUITest
+public class UserAdminTest  extends BaseUITest
 {
 	/**
 	 * Test render
 	 */
 	public void testMainConfigRender()
 	{
-		ConfigurationService configService = createMock(ConfigurationService.class);
-		mockContext.putBean("configService", configService);
+		UserService userService = createMock(UserService.class);
+		mockContext.putBean("userService", userService);
 		
-		expect(configService.getConfiguration())
-				.andReturn(new EhourConfigStub());
+		List<User>	users = new ArrayList<User>();
+		User user = new User();
+		user.setFirstName("thies");
+		user.setUserId(1);
+		user.setLastName("Edeling");
+		users.add(user);
+		
+		
+		expect(userService.getUsers())
+			.andReturn(users);
 
-		replay(configService);
+		replay(userService);
 		
-		tester.startPage(MainConfig.class);
-		tester.assertRenderedPage(MainConfig.class);
+		tester.startPage(UserAdmin.class);
+		tester.assertRenderedPage(UserAdmin.class);
 		tester.assertNoErrorMessage();
 		
-		verify(configService);
+		verify(userService);
 	}
-//	
-//	/**
-//	 * 
-//	 */
-////	public void testSubmitOKNoLocale()
-////	{
-//		FormTester	form = tester.newFormTester("configForm");
-//	
-//		form.setValue("dontForceLocale", "true");
-//		
-//		tester.executeAjaxEvent("configForm.submitButton", "onclick");
-//	}
-	
 }
