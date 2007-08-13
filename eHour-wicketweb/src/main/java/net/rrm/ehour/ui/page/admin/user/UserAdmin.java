@@ -36,11 +36,13 @@ import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -58,8 +60,9 @@ public class UserAdmin extends BaseAdminPage
 	private	transient 	Logger	logger = Logger.getLogger(UserAdmin.class);
 	private	UserFormPanel	formPanelAdd;
 	private	UserFormPanel	formPanelEdit;
-	private	AbstractTab	addUserTab;
-	private	AbstractTab	editUserTab;
+	private	AbstractTab		addUserTab;
+	private	AbstractTab		editUserTab;
+	private	AjaxTabbedPanel	tabbedPanel;
 	
 	/**
 	 * 
@@ -114,11 +117,8 @@ public class UserAdmin extends BaseAdminPage
 		};
 		tabs.add(editUserTab);
 		
-		add(new AjaxTabbedPanel("tabs", tabs)
-		{
-			
-		});
-
+		tabbedPanel = new AjaxTabbedPanel("tabs", tabs);
+		add(tabbedPanel);
 	}
 	
 	/**
@@ -157,8 +157,7 @@ public class UserAdmin extends BaseAdminPage
 			{
 				final User	user = (User)item.getModelObject();
 				
-				item.add(new Label("item", 
-						user.getLastName() + ", " + user.getFirstName() + (user.isActive() ? "" : "*")));
+				item.add(new UserLinkFragment("item" + item.getIndex(), "item", this, user));
 			}
 		};
 	}
