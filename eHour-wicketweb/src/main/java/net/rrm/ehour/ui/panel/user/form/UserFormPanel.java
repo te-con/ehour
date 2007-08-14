@@ -26,7 +26,7 @@ package net.rrm.ehour.ui.panel.user.form;
 import java.util.List;
 
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig.LocaleChoiceRenderer;
+//import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig.LocaleChoiceRenderer;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 
