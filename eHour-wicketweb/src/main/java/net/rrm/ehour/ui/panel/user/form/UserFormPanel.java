@@ -23,14 +23,21 @@
 
 package net.rrm.ehour.ui.panel.user.form;
 
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import java.util.List;
 
-import org.apache.wicket.markup.html.basic.Label;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig.LocaleChoiceRenderer;
+import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
+
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * User Panel 
@@ -38,8 +45,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 
 public class UserFormPanel extends Panel
 {
+	private static final long serialVersionUID = -7427807216389657732L;
 
-	public UserFormPanel(String id, CompoundPropertyModel userModel)
+	public UserFormPanel(String id, CompoundPropertyModel userModel, List<UserRole> roles, List<UserDepartment> departments)
 	{
 		super(id, userModel);
 		
@@ -52,6 +60,15 @@ public class UserFormPanel extends Panel
 
 		form.add(new RequiredTextField("firstName"));
 		form.add(new RequiredTextField("lastName"));
+		form.add(new TextField("email"));
+
+//		DropDownChoice userRole = new DropDownChoice("localeSelection",
+//				new PropertyModel(configBackingBean, "locale"),
+//				new PropertyModel(configBackingBean, "availableLanguages"),
+//				new LocaleChoiceRenderer()); 
+//
+//		form.add(userRole);
+		
 		greyBorder.add(form);
 	}
 

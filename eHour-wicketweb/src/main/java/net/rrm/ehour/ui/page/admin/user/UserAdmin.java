@@ -32,6 +32,8 @@ import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.panel.user.form.UserFormPanel;
 import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -45,7 +47,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -98,13 +99,18 @@ public class UserAdmin extends BaseAdminPage
 	private void setUpTabs()
 	{
 		List<AbstractTab>	tabs = new ArrayList<AbstractTab>();
+		final List<UserRole>		roles = userService.getUserRoles();
+		final List<UserDepartment>	departments = userService.getUserDepartments();
 		
 		addUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
 		{
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new UserFormPanel(panelId, new CompoundPropertyModel(addUser));
+				return new UserFormPanel(panelId,
+										new CompoundPropertyModel(addUser),
+										roles,
+										departments);
 			}
 			
 		};
@@ -115,7 +121,10 @@ public class UserAdmin extends BaseAdminPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new UserFormPanel(panelId, new CompoundPropertyModel(editUser));
+				return new UserFormPanel(panelId,
+											new CompoundPropertyModel(editUser),
+											roles,
+											departments);
 			}
 		};
 		
