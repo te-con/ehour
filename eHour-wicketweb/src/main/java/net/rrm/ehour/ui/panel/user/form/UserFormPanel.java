@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.border.GreyRoundedBorder;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -47,6 +48,10 @@ public class UserFormPanel extends Panel
 		
 		Form form = new Form("userForm");
 		form.add(new RequiredTextField("username"));
+		form.add(new PasswordTextField("password"));
+
+		form.add(new RequiredTextField("firstName"));
+		form.add(new RequiredTextField("lastName"));
 		greyBorder.add(form);
 	}
 
