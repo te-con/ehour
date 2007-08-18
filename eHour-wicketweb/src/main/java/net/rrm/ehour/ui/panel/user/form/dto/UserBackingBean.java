@@ -23,7 +23,11 @@
 
 package net.rrm.ehour.ui.panel.user.form.dto;
 
+import java.util.ArrayList;
+
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.util.EhourConstants;
 
 /**
  * Backing bean for users
@@ -36,6 +40,7 @@ public class UserBackingBean extends User
 	private	String	confirmPassword;
 	private	String	originalUsername;
 	private	String	originalPassword;
+	private	boolean	isPm;
 	
 	
 	public UserBackingBean(User user)
@@ -46,6 +51,9 @@ public class UserBackingBean extends User
 		{
 			this.originalUsername = user.getUsername();
 			this.originalPassword = user.getPassword();
+			
+			// barfff
+			isPm = new ArrayList<UserRole>(user.getUserRoles()).contains(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		}
 	}
 
@@ -87,5 +95,10 @@ public class UserBackingBean extends User
 	public void setOriginalPassword(String originalPassword)
 	{
 		this.originalPassword = originalPassword;
+	}
+
+	public boolean isPm()
+	{
+		return isPm;
 	}
 }

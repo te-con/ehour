@@ -37,6 +37,7 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -50,6 +51,7 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IWrapModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -69,8 +71,10 @@ public class UserAdmin extends BaseAdminPage
 	private	UserBackingBean	addUser;
 	private	UserBackingBean	editUser;
 	private EntrySelectorFilter	currentFilter;
-	private List<UserRole>	roles ;
+	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;
+	private Model			addMessage;
+	private	Model			editMessage;
 	
 	/**
 	 * 
@@ -107,34 +111,13 @@ public class UserAdmin extends BaseAdminPage
 	 */
 	private void setUpTabs()
 	{
-		List<AbstractTab>	tabs = new ArrayList<AbstractTab>();
-		
-		AbstractTab addUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new UserFormPanel(panelId,
-										new CompoundPropertyModel(addUser),
-										roles,
-										departments);
-			}
-			
-		};
-		tabs.add(addUserTab);
-
-		AbstractTab editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new NoUserSelected(panelId);
-			}
-		};
-		
-		tabs.add(editUserTab);
+		List<AbstractTab>	tabs = new ArrayList<AbstractTab>(2);
 		
 		tabbedPanel = new AjaxTabbedPanel("tabs", tabs);
+
+		addAddTab();
+		addNoUserTab();
+		
 		add(tabbedPanel);
 	}
 
@@ -185,21 +168,7 @@ public class UserAdmin extends BaseAdminPage
 	{
 		if (tabIndex == 1)
 		{
-			tabbedPanel.getTabs().remove(1);;
-			
-			AbstractTab editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
-			{
-				@Override
-				public Panel getPanel(String panelId)
-				{
-					return new UserFormPanel(panelId,
-							new CompoundPropertyModel(editUser),
-							roles,
-							departments);
-				}
-			};
-	
-			tabbedPanel.getTabs().add(editUserTab);
+			addEditTab();
 		}
 		
 		tabbedPanel.setSelectedTab(tabIndex);
@@ -229,6 +198,7 @@ public class UserAdmin extends BaseAdminPage
 				UserBackingBean	backingBean = (UserBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 				persistUser(backingBean);
 				
+				// update user list
 				List<User> users = getUsers();
 				userListView.setList(users);
 				
@@ -238,11 +208,99 @@ public class UserAdmin extends BaseAdminPage
 				{
 					addUser = new UserBackingBean(new User());
 					addUser.getUser().setActive(true);
-					switchTab(target, 0);
+					updateTabsAfterSave(0);
+					target.addComponent(tabbedPanel);
 				}				
 				break;
 			}
 		}
+	}
+	
+	private void updateTabsAfterSave(int updatedTab)
+	{
+		if (updatedTab == 0)
+		{
+			addMessage = new Model("Data saved");
+			addAddTab();
+		}
+	}
+	
+	/**
+	 * Add add tab at position 0
+	 */
+	private void addAddTab()
+	{
+		removeTab(0);
+		
+		AbstractTab addUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new UserFormPanel(panelId,
+						new CompoundPropertyModel(addUser),
+						roles,
+						departments,
+						addMessage);
+			}
+		};
+
+		tabbedPanel.getTabs().add(0, addUserTab);		
+	}	
+	
+	/**
+	 * Add edit tab at position 1
+	 */
+	private void addEditTab()
+	{
+		removeTab(1);
+		
+		AbstractTab editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new UserFormPanel(panelId,
+						new CompoundPropertyModel(editUser),
+						roles,
+						departments,
+						editMessage);
+			}
+		};
+
+		tabbedPanel.getTabs().add(1, editUserTab);		
+	}
+	
+	/**
+	 * Add no user selected tab at position 1
+	 */
+	private void addNoUserTab()
+	{
+		removeTab(1);
+		
+		AbstractTab editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new NoUserSelected(panelId);
+			}
+		};
+
+		tabbedPanel.getTabs().add(1, editUserTab);		
+	}	
+	
+	/**
+	 * 
+	 * @param index
+	 */
+	private void removeTab(int index)
+	{
+		if (tabbedPanel.getTabs().size() >= index + 1)
+		{
+			tabbedPanel.getTabs().remove(index);;
+		}
+		
 	}
 	
 	/**
@@ -252,10 +310,11 @@ public class UserAdmin extends BaseAdminPage
 	private void persistUser(UserBackingBean userBackingBean)
 	{
 		logger.info(((userBackingBean == editUser) ? "Updating" : "Adding") + " user :" + userBackingBean.getUser());
-
-		if (userBackingBean != editUser && userBackingBean != addUser)
+		
+		if (userBackingBean.isPm())
 		{
-			logger.info("??? user: " + userBackingBean.getUser());
+			logger.debug("Readding PM role after edit");
+			userBackingBean.getUser().addUserRole(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		}
 		
 		try
@@ -263,7 +322,7 @@ public class UserAdmin extends BaseAdminPage
 			userService.persistUser(userBackingBean.getUser());
 		} catch (Exception e)
 		{
-			// TODO do something
+			addMessage = new Model(e.getMessage());
 		}
 	}
 	
@@ -301,7 +360,6 @@ public class UserAdmin extends BaseAdminPage
 	 */
 	private class NoUserSelected extends Panel
 	{
-
 		public NoUserSelected(String id)
 		{
 			super(id);
@@ -310,9 +368,6 @@ public class UserAdmin extends BaseAdminPage
 			add(greyBorder);
 
 			greyBorder.add(new Label("noUser", new ResourceModel("admin.user.noUserSelected")));
-			
-			setOutputMarkupId(true);
 		}
-		
 	}
 }

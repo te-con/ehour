@@ -35,11 +35,12 @@ import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -52,6 +53,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Objects;
@@ -68,15 +70,31 @@ import org.apache.wicket.validation.validator.StringValidator;
 public class UserFormPanel extends Panel
 {
 	private static final long serialVersionUID = -7427807216389657732L;
-	private	static final Logger	logger = Logger.getLogger(UserFormPanel.class);
 	
 	@SpringBean
 	private	UserService	userService;
 	
 	public UserFormPanel(String id,
+			CompoundPropertyModel userModel,
+			List<UserRole> roles,
+			List<UserDepartment> departments)
+	{
+		this(id, userModel, roles, departments, null);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param userModel
+	 * @param roles
+	 * @param departments
+	 * @param message
+	 */
+	public UserFormPanel(String id,
 							CompoundPropertyModel userModel,
 							List<UserRole> roles,
-							List<UserDepartment> departments)
+							List<UserDepartment> departments,
+							Model message)
 	{
 		super(id, userModel);
 		
@@ -142,6 +160,27 @@ public class UserFormPanel extends Panel
 		// active
 		form.add(new CheckBox("user.active"));
 		
+		// data save label
+		final Label dataSavedLabel = new Label("dataSaved", message);
+		form.add(dataSavedLabel);
+		if (message == null)
+		{
+			dataSavedLabel.setVisible(false);
+		}
+		else
+		{
+			dataSavedLabel.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(10))
+			{
+				@Override
+				protected void onPostProcessTarget(AjaxRequestTarget target)
+				{
+					dataSavedLabel.setVisible(false);
+				}
+			});
+		}
+		
+		
+		//
 		setSubmitActions(form);
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
