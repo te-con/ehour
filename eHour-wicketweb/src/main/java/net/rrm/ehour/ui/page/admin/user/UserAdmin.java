@@ -159,7 +159,6 @@ public class UserAdmin extends BaseAdminPage
 					public void onClick(AjaxRequestTarget target)
 					{
 						editUser = new UserBackingBean(userService.getUser(userId));
-//						editUserTab.
 						switchTab(target, 1, userId);
 					}
 				};

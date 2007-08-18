@@ -38,8 +38,11 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -51,7 +54,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Objects;
 import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -117,6 +119,20 @@ public class UserFormPanel extends Panel
 		form.add(emailField);
 		form.add(new AjaxFormComponentFeedbackIndicator("emailValidationError", emailField));
 		
+		// department
+		DropDownChoice userDepartment = new DropDownChoice("user.userDepartment", departments, new ChoiceRenderer("name"));
+		userDepartment.setRequired(true);
+		userDepartment.setLabel(new ResourceModel("admin.user.department"));
+		form.add(userDepartment);
+		form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
+		
+		// user roles
+		ListMultipleChoice	userRoles = new ListMultipleChoice("user.userRoles", roles, new ChoiceRenderer("roleName"));
+		userRoles.setMaxRows(4);
+		userRoles.setLabel(new ResourceModel("admin.user.roles"));
+		userRoles.setRequired(true);
+		form.add(userRoles);
+		form.add(new AjaxFormComponentFeedbackIndicator("rolesValidationError", userRoles));
 		
 		setSubmitActions(form);
 		
@@ -190,6 +206,7 @@ public class UserFormPanel extends Panel
 	 */
 	private class ConfirmPasswordValidator extends AbstractFormValidator
 	{
+		private static final long serialVersionUID = -7176398632862551019L;
 		private FormComponent[] components;
 		
 		/**
@@ -220,7 +237,7 @@ public class UserFormPanel extends Panel
 			String orgPassword = ((UserBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalPassword();
 			
 			if ("".equals(Objects.stringValue(components[0].getInput(), false))
-					&& orgPassword.equals(""))
+					&& (orgPassword == null || orgPassword.equals("")))
 			{
 				error(components[0], "Required");
 			}
