@@ -26,6 +26,7 @@ package net.rrm.ehour.ui.page.admin.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
@@ -48,7 +49,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -65,13 +65,12 @@ public class UserAdmin extends BaseAdminPage
 	private	UserService	userService;
 	private	ListView	userListView;
 	private	transient 	Logger	logger = Logger.getLogger(UserAdmin.class);
-	private	AbstractTab		addUserTab;
-	private	AbstractTab		editUserTab;
 	private	AjaxTabbedPanel	tabbedPanel;
 	private	UserBackingBean	addUser;
 	private	UserBackingBean	editUser;
 	private EntrySelectorFilter	currentFilter;
-	
+	private List<UserRole>	roles ;
+	private List<UserDepartment>	departments;
 	
 	/**
 	 * 
@@ -83,6 +82,9 @@ public class UserAdmin extends BaseAdminPage
 		super(new ResourceModel("admin.user.title"), null);
 		
 		List<User>	users;
+		
+		roles = userService.getUserRoles();
+		departments = userService.getUserDepartments();
 		
 		addUser = new UserBackingBean(new User());
 		addUser.getUser().setActive(true);
@@ -106,10 +108,8 @@ public class UserAdmin extends BaseAdminPage
 	private void setUpTabs()
 	{
 		List<AbstractTab>	tabs = new ArrayList<AbstractTab>();
-		final List<UserRole>		roles = userService.getUserRoles();
-		final List<UserDepartment>	departments = userService.getUserDepartments();
 		
-		addUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
+		AbstractTab addUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
 		{
 			@Override
 			public Panel getPanel(String panelId)
@@ -123,15 +123,12 @@ public class UserAdmin extends BaseAdminPage
 		};
 		tabs.add(addUserTab);
 
-		editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
+		AbstractTab editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
 		{
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new UserFormPanel(panelId,
-											new CompoundPropertyModel(editUser),
-											roles,
-											departments);
+				return new NoUserSelected(panelId);
 			}
 		};
 		
@@ -165,7 +162,7 @@ public class UserAdmin extends BaseAdminPage
 					public void onClick(AjaxRequestTarget target)
 					{
 						editUser = new UserBackingBean(userService.getUser(userId));
-						switchTab(target, 1, userId);
+						switchTab(target, 1);
 					}
 				};
 				
@@ -184,12 +181,30 @@ public class UserAdmin extends BaseAdminPage
 	 * @param tab
 	 * @param userId
 	 */
-	private void switchTab(AjaxRequestTarget target, int tab, Integer userId)
+	private void switchTab(AjaxRequestTarget target, int tabIndex)
 	{
-		tabbedPanel.setSelectedTab(tab);
+		if (tabIndex == 1)
+		{
+			tabbedPanel.getTabs().remove(1);;
+			
+			AbstractTab editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
+			{
+				@Override
+				public Panel getPanel(String panelId)
+				{
+					return new UserFormPanel(panelId,
+							new CompoundPropertyModel(editUser),
+							roles,
+							departments);
+				}
+			};
+	
+			tabbedPanel.getTabs().add(editUserTab);
+		}
+		
+		tabbedPanel.setSelectedTab(tabIndex);
 		target.addComponent(tabbedPanel);
 	}
-	
 	
 	/**
 	 * Handle Ajax request
@@ -218,6 +233,13 @@ public class UserAdmin extends BaseAdminPage
 				userListView.setList(users);
 				
 				((EntrySelectorPanel)get(USER_SELECTOR_ID)).refreshList(target);
+				
+				if (backingBean == addUser)
+				{
+					addUser = new UserBackingBean(new User());
+					addUser.getUser().setActive(true);
+					switchTab(target, 0);
+				}				
 				break;
 			}
 		}
@@ -270,5 +292,27 @@ public class UserAdmin extends BaseAdminPage
 		}
 		
 		return users;
+	}
+	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class NoUserSelected extends Panel
+	{
+
+		public NoUserSelected(String id)
+		{
+			super(id);
+			
+			GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
+			add(greyBorder);
+
+			greyBorder.add(new Label("noUser", new ResourceModel("admin.user.noUserSelected")));
+			
+			setOutputMarkupId(true);
+		}
+		
 	}
 }

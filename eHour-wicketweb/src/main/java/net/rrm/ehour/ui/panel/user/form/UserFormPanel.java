@@ -83,6 +83,8 @@ public class UserFormPanel extends Panel
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
 		add(greyBorder);
 		
+		setOutputMarkupId(true);
+		
 		Form form = new Form("userForm");
 
 		// username
