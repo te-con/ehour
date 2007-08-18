@@ -28,7 +28,9 @@ import java.util.List;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.user.form.dto.UserBackingBean;
+import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
@@ -38,6 +40,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -133,9 +136,11 @@ public class UserFormPanel extends Panel
 		userRoles.setRequired(true);
 		form.add(userRoles);
 		form.add(new AjaxFormComponentFeedbackIndicator("rolesValidationError", userRoles));
+
+		// active
+		form.add(new CheckBox("user.active"));
 		
 		setSubmitActions(form);
-		
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);
@@ -154,8 +159,7 @@ public class UserFormPanel extends Panel
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-//                persistTimesheetEntries(timesheet);
-//                moveToNextWeek(timesheet.getWeekStart(), target);
+				((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_FORM_SUBMIT, form.getModel());
             }
 
 			@Override
@@ -163,13 +167,6 @@ public class UserFormPanel extends Panel
 			{
 				return new LoadingSpinnerDecorator();
 			}			
-			
-			@Override
-			protected void onError(final AjaxRequestTarget target, Form form)
-			{
-				System.out.println("fe");
-//                form.visitFormComponents(new FormHighlighter(target));
-            }
         });
 	}	
 	

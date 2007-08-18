@@ -48,6 +48,8 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -57,7 +59,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class UserAdmin extends BaseAdminPage
 {
-
+	private final String	USER_SELECTOR_ID = "userSelector";
+	
 	@SpringBean
 	private	UserService	userService;
 	private	ListView	userListView;
@@ -67,6 +70,8 @@ public class UserAdmin extends BaseAdminPage
 	private	AjaxTabbedPanel	tabbedPanel;
 	private	UserBackingBean	addUser;
 	private	UserBackingBean	editUser;
+	private EntrySelectorFilter	currentFilter;
+	
 	
 	/**
 	 * 
@@ -80,12 +85,13 @@ public class UserAdmin extends BaseAdminPage
 		List<User>	users;
 		
 		addUser = new UserBackingBean(new User());
+		addUser.getUser().setActive(true);
 		editUser = new UserBackingBean(new User());
 		
-		users = getUsers(null, false);
+		users = getUsers();
 		Fragment userListHolder = getUserListHolder(users);
 		
-		add(new EntrySelectorPanel("userSelector",
+		add(new EntrySelectorPanel(USER_SELECTOR_ID,
 				new ResourceModel("admin.user.title"),
 				userListHolder,
 				getLocalizer().getString("admin.user.filter", this) + "...",
@@ -193,19 +199,51 @@ public class UserAdmin extends BaseAdminPage
 	@Override
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
 	{
-		if (type == CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE)
+		switch (type)
 		{
-			EntrySelectorFilter filter = (EntrySelectorFilter)param;
-
-			if (logger.isDebugEnabled())
+			case CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
 			{
-				logger.debug("Filtering on " + filter.getCleanFilterInput() + ", hide active: " + filter.isActivateToggle());
+				currentFilter = (EntrySelectorFilter)param;
+	
+				List<User> users = getUsers();
+				userListView.setList(users);
+				break;
 			}
-			
-			List<User> users = getUsers(filter.getCleanFilterInput(), filter.isActivateToggle());
-			userListView.setList(users);
+			case CommonStaticData.AJAX_FORM_SUBMIT:
+			{
+				UserBackingBean	backingBean = (UserBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
+				persistUser(backingBean);
+				
+				List<User> users = getUsers();
+				userListView.setList(users);
+				
+				((EntrySelectorPanel)get(USER_SELECTOR_ID)).refreshList(target);
+				break;
+			}
 		}
-	}	
+	}
+	
+	/**
+	 * Persist user
+	 * @param userBackingBean
+	 */
+	private void persistUser(UserBackingBean userBackingBean)
+	{
+		logger.info(((userBackingBean == editUser) ? "Updating" : "Adding") + " user :" + userBackingBean.getUser());
+
+		if (userBackingBean != editUser && userBackingBean != addUser)
+		{
+			logger.info("??? user: " + userBackingBean.getUser());
+		}
+		
+		try
+		{
+			userService.persistUser(userBackingBean.getUser());
+		} catch (Exception e)
+		{
+			// TODO do something
+		}
+	}
 	
 	/**
 	 * Get the users from the backend
@@ -213,17 +251,22 @@ public class UserAdmin extends BaseAdminPage
 	 * @param hideInactive
 	 * @return
 	 */
-	private List<User> getUsers(String filter, boolean hideInactive)
+	private List<User> getUsers()
 	{
 		List<User>	users;
 		
-		if (filter == null)
+		if (currentFilter == null)
 		{
 			users = userService.getUsers();
 		}
 		else
 		{
-			users = userService.getUsersByNameMatch(filter, hideInactive);
+			if (logger.isDebugEnabled())
+			{
+				logger.debug("Filtering on " + currentFilter.getCleanFilterInput() + ", hide active: " + currentFilter.isActivateToggle());
+			}
+			
+			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), currentFilter.isActivateToggle());
 		}
 		
 		return users;

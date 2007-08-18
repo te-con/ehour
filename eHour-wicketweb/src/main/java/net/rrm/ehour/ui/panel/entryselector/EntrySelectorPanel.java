@@ -36,7 +36,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -54,7 +53,7 @@ public class EntrySelectorPanel extends Panel
 	private	String	checkBoxPrefixText = "";
 	private	boolean	includeFilter;
 	private	boolean	includeCheckboxToggle;
-	
+	private GreyBlueRoundedBorder blueBorder;
 	private static final long serialVersionUID = -7928428437664050056L;
 
 	/**
@@ -108,6 +107,14 @@ public class EntrySelectorPanel extends Panel
 		setUpPanel(title, itemListHolder);
 	}	
 
+	/**
+	 * 
+	 * @param target
+	 */
+	public void refreshList(AjaxRequestTarget target)
+	{
+		target.addComponent(blueBorder);
+	}
 
 	/**
 	 * Setup page
@@ -115,7 +122,7 @@ public class EntrySelectorPanel extends Panel
 	private void setUpPanel(ResourceModel title, Fragment itemListHolder)
 	{
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title);
-		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
+		blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		blueBorder.setOutputMarkupId(true);
 		setUpFilterForm(greyBorder, blueBorder);
 		
