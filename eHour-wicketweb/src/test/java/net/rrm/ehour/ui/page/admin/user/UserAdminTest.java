@@ -46,7 +46,7 @@ public class UserAdminTest  extends BaseUITest
 	/**
 	 * Test render
 	 */
-	public void testMainConfigRender()
+	public void testUserAdminRender()
 	{
 		UserService userService = createMock(UserService.class);
 		mockContext.putBean("userService", userService);
@@ -61,6 +61,12 @@ public class UserAdminTest  extends BaseUITest
 		
 		expect(userService.getUsers())
 			.andReturn(users);
+
+		expect(userService.getUserRoles())
+				.andReturn(null);
+
+		expect(userService.getUserDepartments())
+			.andReturn(null);
 
 		replay(userService);
 		

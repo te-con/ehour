@@ -26,6 +26,7 @@ div.tabpanel div.tab-row a {
   padding:5px 15px 4px 6px;
   text-decoration:none;
   font-weight:bold;
+  font-size: 0.8em;
   white-space:nowrap;
   color:#eee;
   }

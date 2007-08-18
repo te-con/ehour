@@ -30,6 +30,7 @@ import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.panel.user.form.UserFormPanel;
+import net.rrm.ehour.ui.panel.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
@@ -64,8 +65,8 @@ public class UserAdmin extends BaseAdminPage
 	private	AbstractTab		addUserTab;
 	private	AbstractTab		editUserTab;
 	private	AjaxTabbedPanel	tabbedPanel;
-	private	User		addUser;
-	private	User		editUser;
+	private	UserBackingBean	addUser;
+	private	UserBackingBean	editUser;
 	
 	/**
 	 * 
@@ -78,8 +79,8 @@ public class UserAdmin extends BaseAdminPage
 		
 		List<User>	users;
 		
-		addUser = new User();
-		editUser = new User();
+		addUser = new UserBackingBean(new User());
+		editUser = new UserBackingBean(new User());
 		
 		users = getUsers(null, false);
 		Fragment userListHolder = getUserListHolder(users);
@@ -157,7 +158,7 @@ public class UserAdmin extends BaseAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						editUser = userService.getUser(userId);
+						editUser = new UserBackingBean(userService.getUser(userId));
 //						editUserTab.
 						switchTab(target, 1, userId);
 					}

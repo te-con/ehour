@@ -368,3 +368,9 @@ input
 	font: 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
 }
+
+.formValidationError
+{
+	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+	color: red;
+}

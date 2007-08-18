@@ -8,17 +8,30 @@
 <body>
 <wicket:panel>
 		<div wicket:id="border" style="clear: all">
+		
 			<form wicket:id="userForm">
 				<table class="contentTable">
 					<tr>
-						<td><wicket:message key="admin.user.username" />:</td>
-						<td><input class="textInputSmall" wicket:id="username" /></td>
+						<td valign="top"><wicket:message key="admin.user.username" />:</td>
+						<td><input class="textInputSmall" wicket:id="user.username" />
+							<span wicket:id="userValidationError"></span>
+						</td>
+					</tr>
+					
+					<tr> 
+						<td valign="top"><wicket:message key="admin.user.password" />:</td>
+						<td><input type="password" class="textInputSmall" wicket:id="user.password" />
+							<span wicket:id="passwordValidationError"></span>
+						</td>
 					</tr>
 
 					<tr>
-						<td><wicket:message key="admin.user.password" />:</td>
-						<td><input type="password" class="textInputSmall" wicket:id="password" /></td>
+						<td valign="top"><wicket:message key="admin.user.confirmPassword" />:</td>
+						<td><input type="password" class="textInputSmall" wicket:id="confirmPassword" />
+							<span wicket:id="confirmPasswordValidationError"></span>
+						</td>
 					</tr>
+
 					<tr>
 						<td colspan="2">
 							<br />
@@ -26,18 +39,30 @@
 					</tr>
 					
 					<tr>
-						<td><wicket:message key="admin.user.firstName" />:</td>
-						<td><input class="textInputSmall" wicket:id="firstName" /></td>
+						<td valign="top"><wicket:message key="admin.user.firstName" />:</td>
+						<td><input class="textInputSmall" wicket:id="user.firstName" />
+						</td>
 					</tr>
 					<tr>
 						<td><wicket:message key="admin.user.lastName" />:</td>
-						<td><input class="textInputSmall" wicket:id="lastName" /></td>
+						<td><input class="textInputSmall" wicket:id="user.lastName" />
+							<span wicket:id="lastNameValidationError"></span>
+						</td>
 					</tr>
 					<tr>
 						<td><wicket:message key="admin.user.email" />:</td>
-						<td><input class="textInputSmall" wicket:id="email" /></td>
+						<td><input class="textInputSmall" wicket:id="user.email" />
+							<span wicket:id="emailValidationError"></span>
+						</td>
 					</tr>
 
+					<tr>
+						<td colspan="2" align="right">
+							<br />
+							<input type="submit" wicket:id="submitButton" />
+						</td>
+					</tr>
+					
 				</table>
 			</form>		
 		</div>
