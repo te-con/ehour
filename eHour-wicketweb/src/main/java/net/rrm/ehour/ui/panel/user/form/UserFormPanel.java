@@ -40,6 +40,7 @@ import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -53,7 +54,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Objects;
@@ -64,23 +64,15 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 
 /**
- * User Panel 
+ * User Form Panel for admin
  **/
 
 public class UserFormPanel extends Panel
 {
 	private static final long serialVersionUID = -7427807216389657732L;
-	
+
 	@SpringBean
-	private	UserService	userService;
-	
-	public UserFormPanel(String id,
-			CompoundPropertyModel userModel,
-			List<UserRole> roles,
-			List<UserDepartment> departments)
-	{
-		this(id, userModel, roles, departments, null);
-	}
+	private UserService	userService;
 	
 	/**
 	 * 
@@ -88,13 +80,11 @@ public class UserFormPanel extends Panel
 	 * @param userModel
 	 * @param roles
 	 * @param departments
-	 * @param message
 	 */
 	public UserFormPanel(String id,
 							CompoundPropertyModel userModel,
 							List<UserRole> roles,
-							List<UserDepartment> departments,
-							Model message)
+							List<UserDepartment> departments)
 	{
 		super(id, userModel);
 		
@@ -103,7 +93,7 @@ public class UserFormPanel extends Panel
 		
 		setOutputMarkupId(true);
 		
-		Form form = new Form("userForm");
+		final Form form = new Form("userForm");
 
 		// username
 		RequiredTextField	usernameField = new RequiredTextField("user.username");
@@ -161,25 +151,8 @@ public class UserFormPanel extends Panel
 		form.add(new CheckBox("user.active"));
 		
 		// data save label
-		final Label dataSavedLabel = new Label("dataSaved", message);
-		form.add(dataSavedLabel);
-		if (message == null)
-		{
-			dataSavedLabel.setVisible(false);
-		}
-		else
-		{
-			dataSavedLabel.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(10))
-			{
-				@Override
-				protected void onPostProcessTarget(AjaxRequestTarget target)
-				{
-					dataSavedLabel.setVisible(false);
-				}
-			});
-		}
-		
-		
+		form.add(new ServerMessageLabel("serverMessage"));
+	
 		//
 		setSubmitActions(form);
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
@@ -285,5 +258,38 @@ public class UserFormPanel extends Panel
 				error(components[1], "admin.user.errorConfirmPassNeeded");
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class ServerMessageLabel extends Label
+	{
+		private boolean overrideVisibility = false;
+		
+		public ServerMessageLabel(String id)
+		{
+			super(id);
+
+			add(new SimpleAttributeModifier("class", "formValidationError"));
+			setOutputMarkupId(true);
+
+			add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5))
+				{
+					@Override
+					protected void onPostProcessTarget(AjaxRequestTarget target)
+					{
+						target.addComponent(ServerMessageLabel.this);
+						overrideVisibility = true;
+					}
+				});		
+		}
+
+		public boolean isVisible()
+		{
+			return overrideVisibility ? false : getModel().getObject()!= null;
+		}		
 	}
 }

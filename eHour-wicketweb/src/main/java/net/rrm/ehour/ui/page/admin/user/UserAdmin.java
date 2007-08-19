@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.component.CustomAjaxTabbedPanel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
@@ -51,7 +52,6 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IWrapModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -64,17 +64,15 @@ public class UserAdmin extends BaseAdminPage
 	private final String	USER_SELECTOR_ID = "userSelector";
 	
 	@SpringBean
-	private	UserService	userService;
-	private	ListView	userListView;
-	private	transient 	Logger	logger = Logger.getLogger(UserAdmin.class);
-	private	AjaxTabbedPanel	tabbedPanel;
-	private	UserBackingBean	addUser;
-	private	UserBackingBean	editUser;
-	private EntrySelectorFilter	currentFilter;
+	private	UserService				userService;
+	private	ListView				userListView;
+	private	transient 	Logger		logger = Logger.getLogger(UserAdmin.class);
+	private	AjaxTabbedPanel			tabbedPanel;
+	private	UserBackingBean			addUser;
+	private	UserBackingBean			editUser;
+	private EntrySelectorFilter		currentFilter;
 	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;
-	private Model			addMessage;
-	private	Model			editMessage;
 	
 	/**
 	 * 
@@ -90,8 +88,7 @@ public class UserAdmin extends BaseAdminPage
 		roles = userService.getUserRoles();
 		departments = userService.getUserDepartments();
 		
-		addUser = new UserBackingBean(new User());
-		addUser.getUser().setActive(true);
+		addUser = getAddUserBackingBean();
 		editUser = new UserBackingBean(new User());
 		
 		users = getUsers();
@@ -113,7 +110,24 @@ public class UserAdmin extends BaseAdminPage
 	{
 		List<AbstractTab>	tabs = new ArrayList<AbstractTab>(2);
 		
-		tabbedPanel = new AjaxTabbedPanel("tabs", tabs);
+		tabbedPanel = new CustomAjaxTabbedPanel("tabs", tabs)
+		{
+			@Override
+			protected void preProcessTabSwitch(int index)
+			{
+				// if "Add user" is clicked again, reset the backing bean as it's
+				// only way out if for some reason the save went wrong and the page is stuck on
+				// an error
+				if (getSelectedTab() == index && index == 0)
+				{
+					addUser = getAddUserBackingBean();
+				}
+				
+				// reset server messages
+				addUser.setServerMessage(null);
+				editUser.setServerMessage(null);
+			}
+		};
 
 		addAddTab();
 		addNoUserTab();
@@ -196,34 +210,35 @@ public class UserAdmin extends BaseAdminPage
 			case CommonStaticData.AJAX_FORM_SUBMIT:
 			{
 				UserBackingBean	backingBean = (UserBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
-				persistUser(backingBean);
-				
-				// update user list
-				List<User> users = getUsers();
-				userListView.setList(users);
-				
-				((EntrySelectorPanel)get(USER_SELECTOR_ID)).refreshList(target);
-				
-				if (backingBean == addUser)
+				try
 				{
-					addUser = new UserBackingBean(new User());
-					addUser.getUser().setActive(true);
-					updateTabsAfterSave(0);
+					persistUser(backingBean);
+
+					// update user list
+					List<User> users = getUsers();
+					userListView.setList(users);
+					
+					((EntrySelectorPanel)get(USER_SELECTOR_ID)).refreshList(target);
+					
+					addUser = getAddUserBackingBean();
+					addUser.setServerMessage(getLocalizer().getString("admin.user.dataSaved", this));
+					addAddTab();
+					tabbedPanel.setSelectedTab(0);
+					
 					target.addComponent(tabbedPanel);
-				}				
+				} catch (Exception e)
+				{
+					logger.error("While persisting user", e);
+					backingBean.setServerMessage(getLocalizer().getString("admin.user.saveError", this));
+					target.addComponent(tabbedPanel);
+				}
+				
 				break;
 			}
 		}
 	}
 	
-	private void updateTabsAfterSave(int updatedTab)
-	{
-		if (updatedTab == 0)
-		{
-			addMessage = new Model("Data saved");
-			addAddTab();
-		}
-	}
+
 	
 	/**
 	 * Add add tab at position 0
@@ -240,12 +255,11 @@ public class UserAdmin extends BaseAdminPage
 				return new UserFormPanel(panelId,
 						new CompoundPropertyModel(addUser),
 						roles,
-						departments,
-						addMessage);
+						departments);
 			}
 		};
 
-		tabbedPanel.getTabs().add(0, addUserTab);		
+		tabbedPanel.getTabs().add(0, addUserTab);	
 	}	
 	
 	/**
@@ -263,8 +277,7 @@ public class UserAdmin extends BaseAdminPage
 				return new UserFormPanel(panelId,
 						new CompoundPropertyModel(editUser),
 						roles,
-						departments,
-						editMessage);
+						departments);
 			}
 		};
 
@@ -304,10 +317,24 @@ public class UserAdmin extends BaseAdminPage
 	}
 	
 	/**
+	 * 
+	 * @return
+	 */
+	private UserBackingBean getAddUserBackingBean()
+	{
+		UserBackingBean	userBean;
+		
+		userBean = new UserBackingBean(new User());
+		userBean.getUser().setActive(true);
+
+		return userBean;
+	}
+	
+	/**
 	 * Persist user
 	 * @param userBackingBean
 	 */
-	private void persistUser(UserBackingBean userBackingBean)
+	private void persistUser(UserBackingBean userBackingBean) throws Exception
 	{
 		logger.info(((userBackingBean == editUser) ? "Updating" : "Adding") + " user :" + userBackingBean.getUser());
 		
@@ -317,13 +344,7 @@ public class UserAdmin extends BaseAdminPage
 			userBackingBean.getUser().addUserRole(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		}
 		
-		try
-		{
-			userService.persistUser(userBackingBean.getUser());
-		} catch (Exception e)
-		{
-			addMessage = new Model(e.getMessage());
-		}
+		userService.persistUser(userBackingBean.getUser());
 	}
 	
 	/**

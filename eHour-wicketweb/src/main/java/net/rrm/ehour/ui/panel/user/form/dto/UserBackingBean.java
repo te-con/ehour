@@ -29,6 +29,8 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
+import org.apache.wicket.model.IModel;
+
 /**
  * Backing bean for users
  **/
@@ -41,6 +43,7 @@ public class UserBackingBean extends User
 	private	String	originalUsername;
 	private	String	originalPassword;
 	private	boolean	isPm;
+	private String	serverMessage;
 	
 	
 	public UserBackingBean(User user)
@@ -100,5 +103,15 @@ public class UserBackingBean extends User
 	public boolean isPm()
 	{
 		return isPm;
+	}
+
+	public String getServerMessage()
+	{
+		return serverMessage;
+	}
+
+	public void setServerMessage(String serverMessage)
+	{
+		this.serverMessage = serverMessage;
 	}
 }
