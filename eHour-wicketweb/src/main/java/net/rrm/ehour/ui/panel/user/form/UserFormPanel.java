@@ -162,8 +162,8 @@ public class UserFormPanel extends Panel
 	
 	/**
 	 * Set submit actions for form
+	 * TODO need onError
 	 * @param form
-	 * @param timesheet
 	 */
 	private void setSubmitActions(Form form)
 	{
@@ -180,7 +180,7 @@ public class UserFormPanel extends Panel
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
 				return new LoadingSpinnerDecorator();
-			}			
+			}		
         });
 	}	
 	
@@ -261,7 +261,7 @@ public class UserFormPanel extends Panel
 	}
 	
 	/**
-	 * 
+	 * ServerMessage label which disappears after 5 seconds and is not visible when no content is provided
 	 * @author Thies
 	 *
 	 */

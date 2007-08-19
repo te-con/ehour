@@ -25,17 +25,16 @@ package net.rrm.ehour.ui.panel.user.form.dto;
 
 import java.util.ArrayList;
 
+import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
-
-import org.apache.wicket.model.IModel;
 
 /**
  * Backing bean for users
  **/
 
-public class UserBackingBean extends User
+public class UserBackingBean extends User implements AdminBackingBean
 {
 	private static final long serialVersionUID = 2781902854421696575L;
 	private User	user;

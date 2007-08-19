@@ -23,12 +23,11 @@
 
 package net.rrm.ehour.ui.page.admin.user;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.component.CustomAjaxTabbedPanel;
-import net.rrm.ehour.ui.page.admin.BaseAdminPage;
+import net.rrm.ehour.ui.model.AdminBackingBean;
+import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.panel.user.form.UserFormPanel;
@@ -44,7 +43,6 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -56,10 +54,10 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * Employee management page 
+ * User management page using 2 tabs, an entrySelector panel and the UserForm panel 
  **/
 
-public class UserAdmin extends BaseAdminPage
+public class UserAdmin extends BaseTabbedAdminPage
 {
 	private final String	USER_SELECTOR_ID = "userSelector";
 	
@@ -67,9 +65,6 @@ public class UserAdmin extends BaseAdminPage
 	private	UserService				userService;
 	private	ListView				userListView;
 	private	transient 	Logger		logger = Logger.getLogger(UserAdmin.class);
-	private	AjaxTabbedPanel			tabbedPanel;
-	private	UserBackingBean			addUser;
-	private	UserBackingBean			editUser;
 	private EntrySelectorFilter		currentFilter;
 	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;
@@ -81,15 +76,11 @@ public class UserAdmin extends BaseAdminPage
 
 	public UserAdmin()
 	{
-		super(new ResourceModel("admin.user.title"), null);
+		super(new ResourceModel("admin.user.title"),
+					new ResourceModel("admin.user.addUser"),
+					new ResourceModel("admin.user.editUser"));
 		
 		List<User>	users;
-		
-		roles = userService.getUserRoles();
-		departments = userService.getUserDepartments();
-		
-		addUser = getAddUserBackingBean();
-		editUser = new UserBackingBean(new User());
 		
 		users = getUsers();
 		Fragment userListHolder = getUserListHolder(users);
@@ -99,42 +90,7 @@ public class UserAdmin extends BaseAdminPage
 				userListHolder,
 				getLocalizer().getString("admin.user.filter", this) + "...",
 				getLocalizer().getString("admin.user.hideInactive", this)));
-		
-		setUpTabs();
 	}
-	
-	/**
-	 * Setup tabs
-	 */
-	private void setUpTabs()
-	{
-		List<AbstractTab>	tabs = new ArrayList<AbstractTab>(2);
-		
-		tabbedPanel = new CustomAjaxTabbedPanel("tabs", tabs)
-		{
-			@Override
-			protected void preProcessTabSwitch(int index)
-			{
-				// if "Add user" is clicked again, reset the backing bean as it's
-				// only way out if for some reason the save went wrong and the page is stuck on
-				// an error
-				if (getSelectedTab() == index && index == 0)
-				{
-					addUser = getAddUserBackingBean();
-				}
-				
-				// reset server messages
-				addUser.setServerMessage(null);
-				editUser.setServerMessage(null);
-			}
-		};
-
-		addAddTab();
-		addNoUserTab();
-		
-		add(tabbedPanel);
-	}
-
 	
 	/**
 	 * Get a the userListHolder fragment containing the listView
@@ -158,8 +114,8 @@ public class UserAdmin extends BaseAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						editUser = new UserBackingBean(userService.getUser(userId));
-						switchTab(target, 1);
+						setEditBackingBean(new UserBackingBean(userService.getUser(userId)));
+						switchTabOnAjaxTarget(target, 1);
 					}
 				};
 				
@@ -172,22 +128,7 @@ public class UserAdmin extends BaseAdminPage
 		
 		return fragment;
 	}
-	
-	/**
-	 * Switch tab
-	 * @param tab
-	 * @param userId
-	 */
-	private void switchTab(AjaxRequestTarget target, int tabIndex)
-	{
-		if (tabIndex == 1)
-		{
-			addEditTab();
-		}
-		
-		tabbedPanel.setSelectedTab(tabIndex);
-		target.addComponent(tabbedPanel);
-	}
+
 	
 	/**
 	 * Handle Ajax request
@@ -220,114 +161,16 @@ public class UserAdmin extends BaseAdminPage
 					
 					((EntrySelectorPanel)get(USER_SELECTOR_ID)).refreshList(target);
 					
-					addUser = getAddUserBackingBean();
-					addUser.setServerMessage(getLocalizer().getString("admin.user.dataSaved", this));
-					addAddTab();
-					tabbedPanel.setSelectedTab(0);
-					
-					target.addComponent(tabbedPanel);
+					succesfulSave(target);
 				} catch (Exception e)
 				{
 					logger.error("While persisting user", e);
-					backingBean.setServerMessage(getLocalizer().getString("admin.user.saveError", this));
-					target.addComponent(tabbedPanel);
+					failedSave(backingBean, target);
 				}
 				
 				break;
 			}
 		}
-	}
-	
-
-	
-	/**
-	 * Add add tab at position 0
-	 */
-	private void addAddTab()
-	{
-		removeTab(0);
-		
-		AbstractTab addUserTab = new AbstractTab(new ResourceModel("admin.user.addUser"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new UserFormPanel(panelId,
-						new CompoundPropertyModel(addUser),
-						roles,
-						departments);
-			}
-		};
-
-		tabbedPanel.getTabs().add(0, addUserTab);	
-	}	
-	
-	/**
-	 * Add edit tab at position 1
-	 */
-	private void addEditTab()
-	{
-		removeTab(1);
-		
-		AbstractTab editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new UserFormPanel(panelId,
-						new CompoundPropertyModel(editUser),
-						roles,
-						departments);
-			}
-		};
-
-		tabbedPanel.getTabs().add(1, editUserTab);		
-	}
-	
-	/**
-	 * Add no user selected tab at position 1
-	 */
-	private void addNoUserTab()
-	{
-		removeTab(1);
-		
-		AbstractTab editUserTab = new AbstractTab(new ResourceModel("admin.user.editUser"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new NoUserSelected(panelId);
-			}
-		};
-
-		tabbedPanel.getTabs().add(1, editUserTab);		
-	}	
-	
-	/**
-	 * 
-	 * @param index
-	 */
-	private void removeTab(int index)
-	{
-		if (tabbedPanel.getTabs().size() >= index + 1)
-		{
-			tabbedPanel.getTabs().remove(index);;
-		}
-		
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	private UserBackingBean getAddUserBackingBean()
-	{
-		UserBackingBean	userBean;
-		
-		userBean = new UserBackingBean(new User());
-		userBean.getUser().setActive(true);
-
-		return userBean;
 	}
 	
 	/**
@@ -336,7 +179,9 @@ public class UserAdmin extends BaseAdminPage
 	 */
 	private void persistUser(UserBackingBean userBackingBean) throws Exception
 	{
-		logger.info(((userBackingBean == editUser) ? "Updating" : "Adding") + " user :" + userBackingBean.getUser());
+		logger.info(((userBackingBean == getEditBackingBean()) 
+											? "Updating" 
+											: "Adding") + " user :" + userBackingBean.getUser());
 		
 		if (userBackingBean.isPm())
 		{
@@ -373,6 +218,98 @@ public class UserAdmin extends BaseAdminPage
 		
 		return users;
 	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 */
+	@Override
+	protected AdminBackingBean getNewAddBackingBean()
+	{
+		UserBackingBean	userBean;
+		
+		userBean = new UserBackingBean(new User());
+		userBean.getUser().setActive(true);
+
+		return userBean;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
+	 */
+	@Override
+	protected Panel getAddPanel(String panelId)
+	{
+		return new UserFormPanel(panelId,
+				new CompoundPropertyModel(getAddBackingBean()),
+				getUserRoles(),
+				getUserDepartments());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 */
+	@Override
+	protected AdminBackingBean getNewEditBackingBean()
+	{
+		return new UserBackingBean(new User());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
+	 */
+	@Override
+	protected Panel getEditPanel(String panelId)
+	{
+		return new UserFormPanel(panelId,
+				new CompoundPropertyModel(getEditBackingBean()),
+				getUserRoles(),
+				getUserDepartments());
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BasedTabbedAdminPage#getNoSelectionPanel(java.lang.String)
+	 */
+	@Override
+	protected Panel getNoSelectionPanel(String panelId)
+	{
+		return new NoUserSelected(panelId);
+	}
+
+	
+	/**
+	 * Get all the roles from the backend
+	 * @return
+	 */
+	private List<UserRole> getUserRoles()
+	{
+		if (roles == null)
+		{
+			roles = userService.getUserRoles();
+		}
+		
+		return roles;
+	}
+
+	/**
+	 * Get all departments from the backend
+	 * @return
+	 */
+	private List<UserDepartment> getUserDepartments()
+	{
+		if (departments == null)
+		{
+			departments = userService.getUserDepartments();
+		}
+		
+		return departments;
+	}
+	
 	
 	/**
 	 * 
@@ -381,6 +318,8 @@ public class UserAdmin extends BaseAdminPage
 	 */
 	private class NoUserSelected extends Panel
 	{
+		private static final long serialVersionUID = -4318947090257979895L;
+
 		public NoUserSelected(String id)
 		{
 			super(id);
@@ -390,5 +329,5 @@ public class UserAdmin extends BaseAdminPage
 
 			greyBorder.add(new Label("noUser", new ResourceModel("admin.user.noUserSelected")));
 		}
-	}
+	}	
 }
