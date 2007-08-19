@@ -94,6 +94,7 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 	/**
 	 * 
 	 */
+	@Override
     public boolean equals(Object obj)
     {
     	boolean isEqual = false;
@@ -113,6 +114,7 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
     /**
      * 
      */
+	@Override
     public int hashCode()
     {
     	return new HashCodeBuilder().append(role).append(roleName).toHashCode();

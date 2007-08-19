@@ -89,6 +89,15 @@ public class User extends DomainObject<Integer, User>
 		this.userDepartment = userDepartment;
 	}
 
+	public void addUserRole(UserRole role)
+	{
+		if (userRoles == null)
+		{
+			userRoles = new HashSet<UserRole>();
+		}
+		userRoles.add(role);
+	}
+	
 	/**
 	 * Get fullname
 	 * @return

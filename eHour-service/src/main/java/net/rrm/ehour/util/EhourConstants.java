@@ -40,6 +40,7 @@ public class EhourConstants
 	
 	public final static String	ROLE_CONSULTANT = "ROLE_CONSULTANT";
 	public final static String	ROLE_REPORT = "ROLE_REPORT";
+	public final static String	ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
 	
 }
 
