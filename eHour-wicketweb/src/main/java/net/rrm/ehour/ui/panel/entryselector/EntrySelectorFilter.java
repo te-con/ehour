@@ -56,7 +56,7 @@ public class EntrySelectorFilter implements Serializable
 	 */
 	public String getCleanFilterInput()
 	{
-		return filterInput.equals(defaultFilterInputText) ? "" : filterInput;
+		return (filterInput != null && filterInput.equals(defaultFilterInputText)) ? "" : filterInput;
 	}
 	
 	public boolean isActivateToggle()
