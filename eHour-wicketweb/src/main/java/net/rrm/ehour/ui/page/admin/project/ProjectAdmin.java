@@ -94,29 +94,27 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 */
 	@Override
 	protected AdminBackingBean getNewAddBackingBean()
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected AdminBackingBean getNewEditBackingBean()
-	{
-		// TODO Auto-generated method stub
-		return null;
+		Project	project = new Project();
+		project.setActive(true);
+		
+		return new ProjectAdminBackingBean(project);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNoSelectionPanel(java.lang.String)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected Panel getNoSelectionPanel(String panelId)
+	protected AdminBackingBean getNewEditBackingBean()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new ProjectAdminBackingBean(new Project());	
 	}
 
 	/**

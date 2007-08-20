@@ -99,25 +99,24 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 */
 	@Override
 	protected AdminBackingBean getNewAddBackingBean()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new DepartmentAdminBackingBean(new UserDepartment());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 */
 	@Override
 	protected AdminBackingBean getNewEditBackingBean()
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected Panel getNoSelectionPanel(String panelId)
-	{
-		// TODO Auto-generated method stub
-		return null;
+		return new DepartmentAdminBackingBean(new UserDepartment());
 	}
 	
 	/**

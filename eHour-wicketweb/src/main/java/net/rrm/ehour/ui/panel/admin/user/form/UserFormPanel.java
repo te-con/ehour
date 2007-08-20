@@ -28,6 +28,7 @@ import java.util.List;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.util.CommonStaticData;
@@ -36,12 +37,9 @@ import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -55,7 +53,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Objects;
@@ -264,38 +261,5 @@ public class UserFormPanel extends Panel
 				error(components[1], "admin.user.errorConfirmPassNeeded");
 			}
 		}
-	}
-	
-	/**
-	 * ServerMessage label which disappears after 5 seconds and is not visible when no content is provided
-	 * @author Thies
-	 *
-	 */
-	private class ServerMessageLabel extends Label
-	{
-		private boolean overrideVisibility = false;
-		
-		public ServerMessageLabel(String id)
-		{
-			super(id);
-
-			add(new SimpleAttributeModifier("class", "formValidationError"));
-			setOutputMarkupId(true);
-
-			add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5))
-				{
-					@Override
-					protected void onPostProcessTarget(AjaxRequestTarget target)
-					{
-						target.addComponent(ServerMessageLabel.this);
-						overrideVisibility = true;
-					}
-				});		
-		}
-
-		public boolean isVisible()
-		{
-			return overrideVisibility ? false : getModel().getObject()!= null;
-		}		
 	}
 }
