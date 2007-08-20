@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.user.form;
+package net.rrm.ehour.ui.panel.admin.user.form;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.panel.user.form.dto.UserBackingBean;
+import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;

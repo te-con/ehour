@@ -29,9 +29,17 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -42,24 +50,34 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ProjectAdmin  extends BaseTabbedAdminPage
 {
-	private static final long serialVersionUID = 9196677804018589806L;
+	private final String		PROJECT_SELECTOR_ID = "projectSelector";
+	private static final long 	serialVersionUID = 9196677804018589806L;
 	
 	@SpringBean
 	private ProjectService		projectService;
 	private	final static Logger	logger = Logger.getLogger(ProjectAdmin.class);
 	private EntrySelectorFilter	currentFilter;
-
+	private	ListView			projectListView;
+	
 	/**
 	 * 
 	 */
 	public ProjectAdmin()
 	{
-		super(new ResourceModel("admin.user.title"),
-				new ResourceModel("admin.user.addUser"),
-				new ResourceModel("admin.user.editUser"));
+		super(new ResourceModel("admin.project.title"),
+				new ResourceModel("admin.project.addProject"),
+				new ResourceModel("admin.project.editProject"));
 		
 		List<Project>	projects;
 		projects = getProjects();
+		
+		Fragment projectListHolder = getProjectListHolder(projects);
+		
+		add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
+				new ResourceModel("admin.project.title"),
+				projectListHolder,
+				getLocalizer().getString("admin.project.filter", this) + "...",
+				getLocalizer().getString("admin.project.hideInactive", this)));		
 	}
 
 	@Override
@@ -101,6 +119,44 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		return null;
 	}
 
+	/**
+	 * Get a the projectListHolder fragment containing the listView
+	 * @param users
+	 * @return
+	 */
+	private Fragment getProjectListHolder(List<Project> projects)
+	{
+		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdmin.this);
+		
+		projectListView = new ListView("itemList", projects)
+		{
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				Project 		project = (Project)item.getModelObject();
+				final Integer	projectId = project.getProjectId();
+				
+				AjaxLink	link = new AjaxLink("itemLink")
+				{
+					@Override
+					public void onClick(AjaxRequestTarget target)
+					{
+						setEditBackingBean(new ProjectAdminBackingBean(projectService.getProject(projectId)));
+						switchTabOnAjaxTarget(target, 1);
+					}
+				};
+				
+				item.add(link);
+				// TODO add project count
+				link.add(new Label("linkLabel", project.getProjectCode() + " - " + project.getName() + (project.isActive() ? "" : "*"))); 				
+			}
+		};
+		
+		fragment.add(projectListView);
+		
+		return fragment;
+	}	
+	
 	/**
 	 * Get the projects from the backend
 	 * @return

@@ -28,11 +28,19 @@ import java.util.List;
 
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -43,12 +51,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class DepartmentAdmin  extends BaseTabbedAdminPage
 {
-	private static final long serialVersionUID = -6686097898699382233L;
+	private final String		DEPT_SELECTOR_ID = "deptSelector";
+	private static final long 	serialVersionUID = -6686097898699382233L;
 
 	@SpringBean
 	private UserService			userService;
 	private	static final Logger	logger = Logger.getLogger(DepartmentAdmin.class);
-	
+	private	ListView			deptListView;
 	
 	/**
 	 * 
@@ -56,13 +65,20 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	 * @param addTabTitle
 	 * @param editTabTitle
 	 */
-	public DepartmentAdmin(ResourceModel pageTitle, ResourceModel addTabTitle, ResourceModel editTabTitle)
+	public DepartmentAdmin()
 	{
-		super(pageTitle, addTabTitle, editTabTitle);
+		super(new ResourceModel("admin.dept.title"),
+				new ResourceModel("admin.dept.addDepartment"),
+				new ResourceModel("admin.dept.editDepartment"));
 		
 		List<UserDepartment>	departments;
 		departments = getUserDepartments();
 
+		Fragment deptListHolder = getDepartmentListHolder(departments);
+
+		add(new EntrySelectorPanel(DEPT_SELECTOR_ID,
+				new ResourceModel("admin.dept.title"),
+				deptListHolder));		
 	}
 	
 	/*
@@ -104,6 +120,42 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 		return null;
 	}
 	
+	/**
+	 * Get a the departmentListHolder fragment containing the listView
+	 * @param users
+	 * @return
+	 */
+	private Fragment getDepartmentListHolder(List<UserDepartment> departments)
+	{
+		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", DepartmentAdmin.this);
+		
+		deptListView = new ListView("itemList", departments)
+		{
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				UserDepartment	dept = (UserDepartment)item.getModelObject();
+				final Integer	deptId = dept.getDepartmentId();
+				
+				AjaxLink	link = new AjaxLink("itemLink")
+				{
+					@Override
+					public void onClick(AjaxRequestTarget target)
+					{
+						setEditBackingBean(new DepartmentAdminBackingBean(userService.getUserDepartment(deptId)));
+						switchTabOnAjaxTarget(target, 1);
+					}
+				};
+				
+				item.add(link);
+				link.add(new Label("linkLabel", dept.getCode() + " - " + dept.getName()));				
+			}
+		};
+		
+		fragment.add(deptListView);
+		
+		return fragment;
+	}	
 
 	/**
 	 * Get the user departments from the backend

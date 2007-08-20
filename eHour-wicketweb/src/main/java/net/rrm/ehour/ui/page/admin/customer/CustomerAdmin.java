@@ -30,10 +30,17 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -44,12 +51,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class CustomerAdmin  extends BaseTabbedAdminPage
 {
+	private final String	CUSTOMER_SELECTOR_ID = "customerSelector";
+	
 	private static final long serialVersionUID = 3190421612132110664L;
 	
 	@SpringBean
 	private CustomerService		customerService;
 	private	static final Logger	logger = Logger.getLogger(CustomerAdmin.class);
-	private EntrySelectorFilter	currentFilter;
+	private	ListView			customerListView;
 	
 	/**
 	 * 
@@ -57,12 +66,22 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	 * @param addTabTitle
 	 * @param editTabTitle
 	 */
-	public CustomerAdmin(ResourceModel pageTitle, ResourceModel addTabTitle, ResourceModel editTabTitle)
+	public CustomerAdmin()
 	{
-		super(pageTitle, addTabTitle, editTabTitle);
+		super(new ResourceModel("admin.customer.title"),
+				new ResourceModel("admin.customer.addCustomer"),
+				new ResourceModel("admin.customer.editCustomer"));
 		
+		// setup the entry selector
 		List<Customer> customers;
 		customers = getCustomers();
+		
+		Fragment customerListHolder = getCustomerListHolder(customers);
+		
+		add(new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
+				new ResourceModel("admin.customer.title"),
+				customerListHolder));
+		
 	}
 
 	@Override
@@ -100,6 +119,44 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 		return null;
 	}
 
+	/**
+	 * Get a the customerListHolder fragment containing the listView
+	 * @param users
+	 * @return
+	 */
+	private Fragment getCustomerListHolder(List<Customer> customers)
+	{
+		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", CustomerAdmin.this);
+		
+		customerListView = new ListView("itemList", customers)
+		{
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				Customer		customer = (Customer)item.getModelObject();
+				final Integer	customerId = customer.getCustomerId();
+				
+				AjaxLink	link = new AjaxLink("itemLink")
+				{
+					@Override
+					public void onClick(AjaxRequestTarget target)
+					{
+						setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomer(customerId)));
+						switchTabOnAjaxTarget(target, 1);
+					}
+				};
+				
+				item.add(link);
+				// TODO add project count
+				link.add(new Label("linkLabel", customer.getCode() + " - " + customer.getName() + (customer.isActive() ? "" : "*")));				
+			}
+		};
+		
+		fragment.add(customerListView);
+		
+		return fragment;
+	}	
+	
 	/**
 	 * Get customers from the backend
 	 * 
