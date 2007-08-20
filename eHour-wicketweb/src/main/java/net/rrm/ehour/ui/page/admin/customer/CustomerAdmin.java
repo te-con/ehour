@@ -30,7 +30,9 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 
@@ -42,6 +44,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -84,18 +87,24 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
+	 */
 	@Override
 	protected Panel getAddPanel(String panelId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getAddBackingBean()));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
+	 */
 	@Override
 	protected Panel getEditPanel(String panelId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getEditBackingBean()));
 	}
 
 	/*

@@ -27,7 +27,11 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+
+import java.util.ArrayList;
+
 import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
 
@@ -40,13 +44,13 @@ public class DepartmentAdminTest extends BaseUITest
 	/**
 	 * Test render
 	 */
-	public void testUserAdminRender()
+	public void testDepartmentAdminRender()
 	{
 		UserService userService = createMock(UserService.class);
 		mockContext.putBean("userService", userService);
 		
 		expect(userService.getUserDepartments())
-			.andReturn(null);
+			.andReturn(new ArrayList<UserDepartment>());
 
 		replay(userService);
 		

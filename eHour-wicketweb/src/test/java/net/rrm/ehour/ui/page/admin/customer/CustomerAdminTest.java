@@ -44,11 +44,10 @@ public class CustomerAdminTest extends BaseUITest
 	/**
 	 * Test render
 	 */
-	public void testUserAdminRender()
+	public void testCustomerAdminRender()
 	{
 		CustomerService customerService = createMock(CustomerService.class);
 		mockContext.putBean("customerService", customerService);
-		
 		
 		expect(customerService.getCustomers()).andReturn(new ArrayList<Customer>());
 
