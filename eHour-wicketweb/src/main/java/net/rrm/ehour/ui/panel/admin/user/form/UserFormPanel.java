@@ -25,22 +25,16 @@ package net.rrm.ehour.ui.panel.admin.user.form;
 
 import java.util.List;
 
-import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
-import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
-import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -153,39 +147,12 @@ public class UserFormPanel extends Panel
 		form.add(new ServerMessageLabel("serverMessage"));
 	
 		//
-		setSubmitActions(form);
+		FormUtil.setSubmitActions(form);
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);
 	}
-	
-	/**
-	 * Set submit actions for form
-	 * TODO need onError
-	 * @param form
-	 */
-	private void setSubmitActions(Form form)
-	{
-		Button submitButton = new AjaxButton("submitButton", form)
-		{
-			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form form)
-			{
-				((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_FORM_SUBMIT, form.getModel());
-            }
 
-			@Override
-			protected IAjaxCallDecorator getAjaxCallDecorator()
-			{
-				return new LoadingSpinnerDecorator();
-			}		
-        };
-        
-        submitButton.setModel(new ResourceModel("general.save"));
-		
-		// default submit
-		form.add(submitButton);
-	}	
 	
 	/**
 	 * Duplicate username validator
