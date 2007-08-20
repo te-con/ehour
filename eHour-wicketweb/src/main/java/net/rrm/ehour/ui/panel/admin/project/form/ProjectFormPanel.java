@@ -23,6 +23,9 @@
 
 package net.rrm.ehour.ui.panel.admin.project.form;
 
+import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
@@ -42,6 +45,13 @@ public class ProjectFormPanel extends Panel
 	public ProjectFormPanel(String id, CompoundPropertyModel model)
 	{
 		super(id, model);
+		
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		add(greyBorder);
+		
+		setOutputMarkupId(true);
+		
+		final Form form = new Form("projectForm");		
 	}
 
 }

@@ -29,6 +29,7 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.project.form.ProjectFormPanel;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
@@ -41,6 +42,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -80,18 +82,24 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 				getLocalizer().getString("admin.project.hideInactive", this)));		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
+	 */
 	@Override
 	protected Panel getAddPanel(String panelId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getAddBackingBean()));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
+	 */
 	@Override
 	protected Panel getEditPanel(String panelId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getEditBackingBean()));
 	}
 
 	/*
