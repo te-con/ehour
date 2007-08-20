@@ -24,7 +24,10 @@
 package net.rrm.ehour.ui.panel.nav.admin;
 
 import net.rrm.ehour.ui.border.GreyNavBorder;
+import net.rrm.ehour.ui.page.admin.customer.CustomerAdmin;
+import net.rrm.ehour.ui.page.admin.department.DepartmentAdmin;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
+import net.rrm.ehour.ui.page.admin.project.ProjectAdmin;
 import net.rrm.ehour.ui.page.admin.user.UserAdmin;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -49,6 +52,9 @@ public class AdminNavPanel extends Panel
 		
 		greyNavBorder.add(new BookmarkablePageLink("mainConfig", MainConfig.class));
 		greyNavBorder.add(new BookmarkablePageLink("userAdmin", UserAdmin.class));
+		greyNavBorder.add(new BookmarkablePageLink("deptAdmin", DepartmentAdmin.class));
+		greyNavBorder.add(new BookmarkablePageLink("customerAdmin", CustomerAdmin.class));
+		greyNavBorder.add(new BookmarkablePageLink("projectAdmin", ProjectAdmin.class));
 	}
 
 }

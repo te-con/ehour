@@ -25,7 +25,6 @@ package net.rrm.ehour.ui.page.admin.user;
 
 import java.util.List;
 
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
@@ -42,7 +41,6 @@ import net.rrm.ehour.util.EhourConstants;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -69,11 +67,11 @@ public class UserAdmin extends BaseTabbedAdminPage
 	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;
 	
+	private static final long serialVersionUID = 1883278850247747252L;
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1883278850247747252L;
-
 	public UserAdmin()
 	{
 		super(new ResourceModel("admin.user.title"),
@@ -81,8 +79,8 @@ public class UserAdmin extends BaseTabbedAdminPage
 					new ResourceModel("admin.user.editUser"));
 		
 		List<User>	users;
-		
 		users = getUsers();
+		
 		Fragment userListHolder = getUserListHolder(users);
 		
 		add(new EntrySelectorPanel(USER_SELECTOR_ID,
@@ -194,8 +192,6 @@ public class UserAdmin extends BaseTabbedAdminPage
 	
 	/**
 	 * Get the users from the backend
-	 * @param filter
-	 * @param hideInactive
 	 * @return
 	 */
 	private List<User> getUsers()
@@ -271,17 +267,6 @@ public class UserAdmin extends BaseTabbedAdminPage
 				getUserDepartments());
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.page.admin.BasedTabbedAdminPage#getNoSelectionPanel(java.lang.String)
-	 */
-	@Override
-	protected Panel getNoSelectionPanel(String panelId)
-	{
-		return new NoUserSelected(panelId);
-	}
-
-	
 	/**
 	 * Get all the roles from the backend
 	 * @return
@@ -309,25 +294,4 @@ public class UserAdmin extends BaseTabbedAdminPage
 		
 		return departments;
 	}
-	
-	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class NoUserSelected extends Panel
-	{
-		private static final long serialVersionUID = -4318947090257979895L;
-
-		public NoUserSelected(String id)
-		{
-			super(id);
-			
-			GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
-			add(greyBorder);
-
-			greyBorder.add(new Label("noUser", new ResourceModel("admin.user.noUserSelected")));
-		}
-	}	
 }

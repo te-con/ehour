@@ -1,5 +1,5 @@
 /**
- * Created on Aug 13, 2007
+ * Created on Aug 20, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,60 +21,39 @@
  *
  */
 
-package net.rrm.ehour.ui.page.admin.user;
+package net.rrm.ehour.ui.page.admin.customer;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.ui.common.BaseUITest;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
-import net.rrm.ehour.user.domain.UserRole;
-import net.rrm.ehour.user.service.UserService;
 
 
 /**
- * TODO 
+ * Customer admin test render
  **/
 
-public class UserAdminTest extends BaseUITest
+public class CustomerAdminTest extends BaseUITest
 {
 	/**
 	 * Test render
 	 */
 	public void testUserAdminRender()
 	{
-		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
-		
-		List<User>	users = new ArrayList<User>();
-		User user = new User();
-		user.setFirstName("thies");
-		user.setUserId(1);
-		user.setLastName("Edeling");
-		users.add(user);
+		CustomerService customerService = createMock(CustomerService.class);
+		mockContext.putBean("customerService", customerService);
 		
 		
-		expect(userService.getUsers())
-			.andReturn(users);
+		expect(customerService.getCustomers());
 
-		expect(userService.getUserRoles())
-				.andReturn(new ArrayList<UserRole>());
-
-		expect(userService.getUserDepartments())
-			.andReturn(new ArrayList<UserDepartment>());
-
-		replay(userService);
+		replay(customerService);
 		
-		tester.startPage(UserAdmin.class);
-		tester.assertRenderedPage(UserAdmin.class);
+		tester.startPage(CustomerAdmin.class);
+		tester.assertRenderedPage(CustomerAdmin.class);
 		tester.assertNoErrorMessage();
 		
-		verify(userService);
+		verify(customerService);
 	}
 }

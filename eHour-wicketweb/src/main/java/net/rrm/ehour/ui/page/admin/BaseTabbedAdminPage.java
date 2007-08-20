@@ -26,12 +26,14 @@ package net.rrm.ehour.ui.page.admin;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.CustomAjaxTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -170,7 +172,10 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	 * @param panelId
 	 * @return
 	 */
-	protected abstract Panel getNoSelectionPanel(String panelId);
+	protected Panel getNoSelectionPanel(String panelId)
+	{
+		return new NoEntrySelected(panelId);
+	}
 	
 	/**
 	 * Add add tab at position 0
@@ -268,4 +273,24 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	{
 		this.editBackingBean = editBackingBean;
 	}	
+	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class NoEntrySelected extends Panel
+	{
+		private static final long serialVersionUID = -4318947090257979895L;
+
+		public NoEntrySelected(String id)
+		{
+			super(id);
+			
+			GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
+			add(greyBorder);
+
+			greyBorder.add(new Label("noUser", new ResourceModel("admin.noEditEntrySelected")));
+		}
+	}		
 }
