@@ -23,8 +23,15 @@
 
 package net.rrm.ehour.ui.panel.admin.customer.form;
 
+import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.validation.validator.StringValidator;
 
 /**
  * Customer admin form panel
@@ -42,6 +49,21 @@ public class CustomerFormPanel extends Panel
 	public CustomerFormPanel(String id, CompoundPropertyModel model)
 	{
 		super(id, model);
+		
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		add(greyBorder);
+		
+		setOutputMarkupId(true);
+		
+		final Form form = new Form("customerForm");
+		
+		// name
+		RequiredTextField	nameField = new RequiredTextField("customer.name");
+		form.add(nameField);
+		nameField.add(new StringValidator.MaximumLengthValidator(32));
+		nameField.setLabel(new ResourceModel("admin.customer.name"));
+		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
+			
 	}
 
 }

@@ -120,7 +120,7 @@ public class AggregateReportSectionTest
 		{
 			if (sectionChild.getChildValue().getName().equals("PA"))
 			{
-				assertEquals(6, sectionChild.getHours());
+				assertEquals(6, sectionChild.getHours(), 0);
 				
 			}
 
@@ -131,7 +131,7 @@ public class AggregateReportSectionTest
 
 			if (sectionChild.getChildValue().getName().equals("PC"))
 			{
-				assertEquals(5, sectionChild.getHours(), 0);
+				assertEquals(4, sectionChild.getHours(), 0);
 			}
 
 			

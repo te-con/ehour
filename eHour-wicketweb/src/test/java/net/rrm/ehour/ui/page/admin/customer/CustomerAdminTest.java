@@ -27,6 +27,10 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+
+import java.util.ArrayList;
+
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.ui.common.BaseUITest;
 
@@ -46,7 +50,7 @@ public class CustomerAdminTest extends BaseUITest
 		mockContext.putBean("customerService", customerService);
 		
 		
-		expect(customerService.getCustomers());
+		expect(customerService.getCustomers()).andReturn(new ArrayList<Customer>());
 
 		replay(customerService);
 		
