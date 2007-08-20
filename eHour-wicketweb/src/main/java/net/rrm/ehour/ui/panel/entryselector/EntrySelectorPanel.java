@@ -98,7 +98,7 @@ public class EntrySelectorPanel extends Panel
 			includeFilter = true;
 		}
 		
-		if (checkBoxPrefixText != null)
+		if (checkboxPrefix != null)
 		{
 			this.checkBoxPrefixText = checkboxPrefix;
 			includeCheckboxToggle = true;
@@ -155,7 +155,6 @@ public class EntrySelectorPanel extends Panel
 		};
 		deactivateBox.setVisible(includeCheckboxToggle);
 		filterForm.add(deactivateBox);
-		
 		
 		Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
 		filterForm.add(filterToggleText);

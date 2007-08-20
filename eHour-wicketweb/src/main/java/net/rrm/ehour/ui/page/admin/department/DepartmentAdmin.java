@@ -26,11 +26,17 @@ package net.rrm.ehour.ui.page.admin.department;
 import java.util.Collections;
 import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.department.form.DepartmentFormPanel;
 import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
+import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
@@ -42,6 +48,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -60,10 +68,7 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	private	ListView			deptListView;
 	
 	/**
-	 * 
-	 * @param pageTitle
-	 * @param addTabTitle
-	 * @param editTabTitle
+	 * Default constructor
 	 */
 	public DepartmentAdmin()
 	{
@@ -88,15 +93,17 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	@Override
 	protected Panel getAddPanel(String panelId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getAddBackingBean()));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
+	 */
 	@Override
 	protected Panel getEditPanel(String panelId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getEditBackingBean()));
 	}
 
 	/*
@@ -117,6 +124,51 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	protected AdminBackingBean getNewEditBackingBean()
 	{
 		return new DepartmentAdminBackingBean(new UserDepartment());
+	}
+	
+	/**
+	 * Handle Ajax request
+	 * @param target
+	 * @param type of ajax req
+	 */
+	@Override
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	{
+		switch (type)
+		{
+			case CommonStaticData.AJAX_FORM_SUBMIT:
+			{
+				DepartmentAdminBackingBean backingBean = (DepartmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
+				try
+				{
+					persistDepartment(backingBean);
+
+					// update customer list
+					List<UserDepartment> depts = getUserDepartments();
+					deptListView.setList(depts);
+					
+					((EntrySelectorPanel)get(DEPT_SELECTOR_ID)).refreshList(target);
+					
+					succesfulSave(target);
+				} catch (Exception e)
+				{
+					logger.error("While persisting user", e);
+					failedSave(backingBean, target);
+				}
+				
+				break;
+			}
+		}
+	}	
+	
+	/**
+	 * Persist dept
+	 * @param backingBean
+	 * @throws ObjectNotUniqueException 
+	 */
+	private void persistDepartment(DepartmentAdminBackingBean backingBean) throws ObjectNotUniqueException
+	{
+		userService.persistUserDepartment(backingBean.getDepartment());
 	}
 	
 	/**

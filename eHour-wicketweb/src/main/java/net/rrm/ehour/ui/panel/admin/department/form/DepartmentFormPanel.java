@@ -23,8 +23,19 @@
 
 package net.rrm.ehour.ui.panel.admin.department.form;
 
+import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+
+import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.util.time.Duration;
+import org.apache.wicket.validation.validator.StringValidator;
 
 /**
  * user department form panel
@@ -42,6 +53,38 @@ public class DepartmentFormPanel  extends Panel
 	public DepartmentFormPanel(String id, CompoundPropertyModel model)
 	{
 		super(id, model);
+		
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		add(greyBorder);
+		
+		setOutputMarkupId(true);
+		
+		final Form form = new Form("deptForm");
+		
+		// name
+		RequiredTextField	nameField = new RequiredTextField("department.name");
+		form.add(nameField);
+		nameField.add(new StringValidator.MaximumLengthValidator(64));
+		nameField.setLabel(new ResourceModel("admin.dept.name"));
+		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
+			
+		// code
+		RequiredTextField	codeField = new RequiredTextField("department.code");
+		form.add(codeField);
+		codeField.add(new StringValidator.MaximumLengthValidator(16));
+		codeField.setLabel(new ResourceModel("admin.dept.code"));
+		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
+		
+		// data save label
+		form.add(new ServerMessageLabel("serverMessage"));
+	
+		//
+		FormUtil.setSubmitActions(form);
+		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
+		
+		greyBorder.add(form);
+		
+		
 	}
 
 }

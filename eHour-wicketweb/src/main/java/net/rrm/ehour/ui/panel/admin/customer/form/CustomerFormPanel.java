@@ -94,7 +94,5 @@ public class CustomerFormPanel extends Panel
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);
-		
 	}
-
 }

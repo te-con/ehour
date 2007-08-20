@@ -49,7 +49,7 @@ public class CustomerAdminTest extends BaseUITest
 		CustomerService customerService = createMock(CustomerService.class);
 		mockContext.putBean("customerService", customerService);
 		
-		expect(customerService.getCustomers()).andReturn(new ArrayList<Customer>());
+		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
 
 		replay(customerService);
 		
