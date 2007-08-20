@@ -46,7 +46,7 @@ public interface CustomerService
 	 * @param active to true for active, false for inactive
 	 * @return
 	 */
-	public List<Customer> getCustomers(boolean active);
+	public List<Customer> getCustomers(boolean hideInactive);
 	
 	/**
 	 * Get customer on id

@@ -44,6 +44,8 @@ public class User extends DomainObject<Integer, User>
 	
 	private	Set<ProjectAssignment>	projectAssignments;
 	private	Set<ProjectAssignment>	inactiveProjectAssignments;
+	
+	private boolean	deletable;
 
 	// Constructors
 
@@ -300,5 +302,21 @@ public class User extends DomainObject<Integer, User>
 			.append(this.firstName, object.firstName)
 			.append(this.userDepartment, object.userDepartment)
 			.append(this.userId, object.userId).toComparison();
+	}
+
+	/**
+	 * @return the deletable
+	 */
+	public boolean isDeletable()
+	{
+		return deletable;
+	}
+
+	/**
+	 * @param deletable the deletable to set
+	 */
+	public void setDeletable(boolean deletable)
+	{
+		this.deletable = deletable;
 	}
 }

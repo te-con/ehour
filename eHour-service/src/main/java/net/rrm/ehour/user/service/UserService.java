@@ -47,6 +47,15 @@ public interface UserService
 	 */
     public User getUser(Integer userID);
     
+    /**
+     * Get user by userId and optional check if the user is deletable (as in, no hours booked on his/her
+     * assignments)
+     * @param userId
+     * @param checkIfDeletable
+     * @return
+     */
+    public User getUser(Integer userId, boolean checkIfDeletable);
+    
 	/**
 	 * Get user by username
 	 * @param userID

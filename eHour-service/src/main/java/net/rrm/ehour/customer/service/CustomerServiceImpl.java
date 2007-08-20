@@ -103,9 +103,13 @@ public class CustomerServiceImpl implements CustomerService
 		return customer;
 	}
 
-	public List<Customer> getCustomers(boolean active)
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomers(boolean)
+	 */
+	public List<Customer> getCustomers(boolean hideInactive)
 	{
-		return customerDAO.findAll(active);
+		return customerDAO.findAll(hideInactive);
 	}
 
 	

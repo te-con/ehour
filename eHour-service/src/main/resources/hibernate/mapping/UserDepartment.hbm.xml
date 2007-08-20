@@ -7,6 +7,7 @@
 		<!--  <cache usage="read-write" />  -->
 		<id name="departmentId" type="integer">
 			<column name="DEPARTMENT_ID" />
+			<generator class="native" />
 		</id>
 		<property name="name" type="string">
 			<column name="NAME" length="512" not-null="true">

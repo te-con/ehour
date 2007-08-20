@@ -31,7 +31,8 @@
 		<property name="userDepartmentDAO" ref="userDepartmentDAO" />	
 		<property name="userRoleDAO" ref="userRoleDAO" />
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
-		<property name="customerFoldPreferenceDAO" ref="customerFoldPreferenceDAO" />		
+		<property name="customerFoldPreferenceDAO" ref="customerFoldPreferenceDAO" />
+		<property name="reportService" ref="reportService" />		
 	</bean>
 
 	<!-- Report service -->

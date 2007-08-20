@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.user.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,8 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
@@ -59,6 +62,7 @@ public class UserServiceImpl implements UserService
 	private	UserRoleDAO			userRoleDAO;
 	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
 	private	ProjectAssignmentService		projectAssignmentService;
+	private	ReportService		reportService;
 
 	/**
 	 * Get user by userId 
@@ -87,6 +91,51 @@ public class UserServiceImpl implements UserService
 		user.getProjectAssignments().removeAll(inactiveAssignments);
 		
 		user.setInactiveProjectAssignments(inactiveAssignments);
+		
+		return user;
+	}
+	
+	/**
+	 * 
+	 * @param userId
+	 * @param checkIfDeletable
+	 * @return
+	 */
+	public User getUser(Integer userId, boolean checkIfDeletable)
+	{
+		User	user = getUser(userId);
+		
+		if ( (user.getProjectAssignments() == null || user.getProjectAssignments().size() == 0) &&
+			 (user.getInactiveProjectAssignments() == null || user.getInactiveProjectAssignments().size() == 0))
+		{
+			user.setDeletable(true);
+		}
+		else
+		{
+			// bummer, we need to check if the user booked any hours on the assignments
+
+			List<Integer>	assignmentIds = new ArrayList<Integer>();
+
+			if (user.getProjectAssignments() != null)
+			{
+				for (ProjectAssignment assignment : user.getProjectAssignments())
+				{
+					assignmentIds.add(assignment.getAssignmentId());
+				}
+			}
+
+			if (user.getInactiveProjectAssignments() != null)
+			{
+				for (ProjectAssignment assignment : user.getInactiveProjectAssignments())
+				{
+					assignmentIds.add(assignment.getAssignmentId());
+				}
+			}
+			
+			List<ProjectAssignmentAggregate> aggregates =reportService.getHoursPerAssignment(assignmentIds);
+			
+			user.setDeletable(aggregates == null || aggregates.size() == 0);
+		}
 		
 		return user;
 	}
@@ -408,5 +457,13 @@ public class UserServiceImpl implements UserService
 	public void setCustomerFoldPreferenceDAO(CustomerFoldPreferenceDAO customerFoldPreferenceDAO)
 	{
 		this.customerFoldPreferenceDAO = customerFoldPreferenceDAO;
+	}
+
+	/**
+	 * @param reportService the reportService to set
+	 */
+	public void setReportService(ReportService reportService)
+	{
+		this.reportService = reportService;
 	}
 }
