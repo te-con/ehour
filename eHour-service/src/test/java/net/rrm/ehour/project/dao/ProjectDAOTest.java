@@ -69,6 +69,12 @@ public class ProjectDAOTest extends BaseDAOTest
 		assertEquals(5, projects.size());
 	}
 
+	public void testFindAllFiltered()
+	{
+		List projects = dao.findProjects("days", true);
+		
+		assertEquals(2, projects.size());
+	}	
 
 	/**
 	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#findById(java.lang.Integer)}.

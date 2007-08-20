@@ -42,6 +42,14 @@ public interface ProjectService
 	public List<Project> getAllProjects(boolean hideInactive);
 	
 	/**
+	 * Get all (filtered) projects
+	 * @param filter
+	 * @param hideInactive
+	 * @return
+	 */
+	public List<Project> getProjects(String filter, boolean hideInactive);
+	
+	/**
 	 * Get project
 	 * @param projectId
 	 * @return

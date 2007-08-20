@@ -73,6 +73,14 @@ public class ProjectServiceImpl implements ProjectService
 		return res;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#getProjects(java.lang.String, boolean)
+	 */
+	public List<Project> getProjects(String filter, boolean hideInactive)
+	{
+		return projectDAO.findProjects(filter, hideInactive);
+	}
 
 	/**
 	 * Get all project assignments for user

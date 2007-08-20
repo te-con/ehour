@@ -99,4 +99,30 @@ public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, In
 		return getHibernateTemplate().findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM",
 																	"user", user);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.dao.ProjectDAO#findProjects(java.lang.String, boolean)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Project> findProjects(String pattern, boolean onlyActive)
+	{
+		String	hql;
+		
+		if (pattern != null && !pattern.trim().equals(""))
+		{
+			pattern = pattern.toLowerCase();
+			pattern = "%" + pattern + "%";
+		}
+		else
+		{
+			pattern = "%";
+		}
+		
+		hql = (onlyActive) ? "Project.findActiveByNamePattern" :
+							  "Project.findByNamePattern";
+		
+		return getHibernateTemplate().findByNamedQueryAndNamedParam(hql,
+																"pattern", pattern);		
+	}
 }

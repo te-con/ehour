@@ -14,6 +14,20 @@
 	    ORDER BY name
 	</query>	
 	
+	<query name="Project.findByNamePattern"> 
+		SELECT project
+		FROM Project as project
+	    WHERE lcase(name) like  :pattern
+	    ORDER BY name
+	</query>
+	
+	<query name="Project.findActiveByNamePattern"> 
+		SELECT project
+		FROM Project as project
+	    WHERE lcase(name) like  :pattern AND active = true
+	    ORDER BY name    
+	</query>	
+	
 	<query name="Project.findAllActiveDefault">
 		FROM Project project
 	    WHERE project.active is true AND 

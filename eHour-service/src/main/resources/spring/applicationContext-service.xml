@@ -34,7 +34,6 @@
 		<property name="customerFoldPreferenceDAO" ref="customerFoldPreferenceDAO" />		
 	</bean>
 
-
 	<!-- Report service -->
 	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl">
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	

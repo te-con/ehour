@@ -27,6 +27,14 @@ public interface ProjectDAO extends GenericDAO<Project, Integer>
 	public List<Project> findAllActive();
 	
 	/**
+	 * Get projects, filtered on name and active/inactive
+	 * @param filter
+	 * @param hideInactive
+	 * @return
+	 */
+	public List<Project> findProjects(String filter, boolean hideInactive);
+	
+	/**
 	 * Get all active default projects
 	 * @return
 	 */
