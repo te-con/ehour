@@ -74,6 +74,23 @@ div.GreyFrameContainer
 		width:expression(document.body.clientWidth > 1000? "750px": "auto" );
 } 
 
+div.GreyFrameContainerSquared
+{
+		background: url(../img/grey_frame/pixel_grey.gif);
+		max-width: 750px;
+		width:expression(document.body.clientWidth > 1000? "750px": "auto" );
+}
+
+div.GreyFrameContainerSquared h3
+{
+		background: 	url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
+		line-height:	16px;
+		padding:		0;
+		margin:			0 0 0px 16px;
+		font:  			bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
+		color: 			#536e87;
+} 
+
 div.GreyFrameContainer h3
 {
 		background: 	url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
@@ -84,7 +101,7 @@ div.GreyFrameContainer h3
 		color: 			#536e87;
 }
 
-div.GreyFrameContainer div.GreyFrameBody
+div.GreyFrameBody
 {
 		background: url(../img/grey_frame/pixel_grey.gif);
 		margin:0px;
@@ -92,7 +109,7 @@ div.GreyFrameContainer div.GreyFrameBody
 		clear: both;
 }
 
-div.GreyFrameContainer  div.GreyFrameBody p
+div.GreyFrameBody p
 {
 		margin: 0 0 0 16px;
 		padding: 0;
@@ -100,12 +117,12 @@ div.GreyFrameContainer  div.GreyFrameBody p
 		color: #536e87;
 }
 
-div.GreyFrameContainer div.GreyFrameFooter
+div.GreyFrameFooter
 {
 		background: url(../img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
 }
 
-div.GreyFrameContainer div.GreyFrameFooter p
+div.GreyFrameFooter p
 {
 		background: url(../img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
 		padding:	0px;
@@ -239,6 +256,26 @@ div.GreyNavFrameFooter p
 	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #576d83;
 }
+
+.submitButtonLightBackground
+{
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #576d83;
+	bordeR: 0;
+}
+
+.submitButtonLightBackground:hover
+{
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #a5bcd4;
+}
+
 
 div.Help
 {

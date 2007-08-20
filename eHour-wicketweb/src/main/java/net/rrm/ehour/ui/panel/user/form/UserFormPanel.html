@@ -7,10 +7,11 @@
 
 <body>
 <wicket:panel>
-		<div wicket:id="border" style="clear: all">
+		<br clear="all" />
+		<div wicket:id="border">
 		
 			<form wicket:id="userForm">
-				<table class="contentTable">
+				<table class="contentTable" style="padding-right: 10px">
 					<tr>
 						<td valign="top"><wicket:message key="admin.user.username" />:</td>
 						<td><input class="textInputSmall" wicket:id="user.username" style="width: 15em" />
@@ -104,8 +105,8 @@
 						<td>
 							<span wicket:id="serverMessage"></span>
 						</td>
-						<td align="right">
-							<input type="submit" wicket:id="submitButton" />
+						<td style="text-align: right">
+							<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
 						</td>
 					</tr>
 					

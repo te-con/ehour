@@ -26,7 +26,7 @@ package net.rrm.ehour.ui.panel.user.form;
 import java.util.List;
 
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.user.form.dto.UserBackingBean;
@@ -42,6 +42,7 @@ import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -54,6 +55,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Objects;
@@ -88,7 +90,7 @@ public class UserFormPanel extends Panel
 	{
 		super(id, userModel);
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 		
 		setOutputMarkupId(true);
@@ -167,8 +169,7 @@ public class UserFormPanel extends Panel
 	 */
 	private void setSubmitActions(Form form)
 	{
-		// default submit
-		form.add(new AjaxButton("submitButton", form)
+		Button submitButton = new AjaxButton("submitButton", form)
 		{
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
@@ -181,7 +182,12 @@ public class UserFormPanel extends Panel
 			{
 				return new LoadingSpinnerDecorator();
 			}		
-        });
+        };
+        
+        submitButton.setModel(new ResourceModel("general.save"));
+		
+		// default submit
+		form.add(submitButton);
 	}	
 	
 	/**
