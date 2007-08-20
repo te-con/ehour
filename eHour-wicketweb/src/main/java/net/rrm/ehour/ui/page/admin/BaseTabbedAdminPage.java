@@ -92,7 +92,7 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	 */
 	protected void succesfulSave(AjaxRequestTarget target)
 	{
-		getAddBackingBean().setServerMessage(getLocalizer().getString("admin.user.dataSaved", this));
+		getAddBackingBean().setServerMessage(getLocalizer().getString("dataSaved", this));
 		addAddTab();
 		tabbedPanel.setSelectedTab(0);
 		
@@ -105,7 +105,7 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	 */
 	protected void failedSave(AdminBackingBean backingBean, AjaxRequestTarget target)
 	{
-		backingBean.setServerMessage(getLocalizer().getString("admin.user.saveError", this));
+		backingBean.setServerMessage(getLocalizer().getString("saveError", this));
 		target.addComponent(tabbedPanel);
 	}
 	

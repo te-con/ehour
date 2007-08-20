@@ -51,8 +51,8 @@ public class EntrySelectorPanel extends Panel
 {
 	private	String	defaultFilterText = "";
 	private	String	checkBoxPrefixText = "";
-	private	boolean	includeFilter;
-	private	boolean	includeCheckboxToggle;
+	private	boolean	includeFilter = false;
+	private	boolean	includeCheckboxToggle = false;
 	private GreyBlueRoundedBorder blueBorder;
 	private static final long serialVersionUID = -7928428437664050056L;
 
@@ -67,7 +67,7 @@ public class EntrySelectorPanel extends Panel
 	{
 		this(id, title, itemListHolder, null);
 	}
-
+	
 	/**
 	 * EntrySelectorPanel with filter but without checkbox toggle
 	 * @param id
@@ -153,8 +153,9 @@ public class EntrySelectorPanel extends Panel
             	target.addComponent(border);
 			}
 		};
-		filterForm.add(deactivateBox);
 		deactivateBox.setVisible(includeCheckboxToggle);
+		filterForm.add(deactivateBox);
+		
 		
 		Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
 		filterForm.add(filterToggleText);

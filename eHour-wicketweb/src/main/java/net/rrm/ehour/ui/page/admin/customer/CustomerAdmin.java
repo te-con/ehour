@@ -28,13 +28,18 @@ import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
+import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
+import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.user.domain.User;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -45,6 +50,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -62,6 +68,7 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	private CustomerService		customerService;
 	private	static final Logger	logger = Logger.getLogger(CustomerAdmin.class);
 	private	ListView			customerListView;
+	private EntrySelectorFilter	currentFilter;
 	
 	/**
 	 * 
@@ -83,7 +90,10 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 		
 		add(new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
 				new ResourceModel("admin.customer.title"),
-				customerListHolder));
+				customerListHolder,
+				null,
+				getLocalizer().getString("admin.customer.hideInactive", this)
+				));
 		
 	}
 
@@ -131,6 +141,59 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	}
 
 	/**
+	 * Handle Ajax request
+	 * @param target
+	 * @param type of ajax req
+	 */
+	@Override
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	{
+		switch (type)
+		{
+			case CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			{
+				currentFilter = (EntrySelectorFilter)param;
+	
+				List<Customer> customers = getCustomers();
+				customerListView.setList(customers);
+				break;
+			}
+			case CommonStaticData.AJAX_FORM_SUBMIT:
+			{
+				CustomerAdminBackingBean backingBean = (CustomerAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
+				try
+				{
+					persistCustomer(backingBean);
+
+					// update customer list
+					List<Customer> customers = getCustomers();
+					customerListView.setList(customers);
+					
+					((EntrySelectorPanel)get(CUSTOMER_SELECTOR_ID)).refreshList(target);
+					
+					succesfulSave(target);
+				} catch (Exception e)
+				{
+					logger.error("While persisting user", e);
+					failedSave(backingBean, target);
+				}
+				
+				break;
+			}
+		}
+	}	
+	
+	/**
+	 * Persist customer to db
+	 * @param backingBean
+	 * @throws ObjectNotUniqueException 
+	 */
+	private void persistCustomer(CustomerAdminBackingBean backingBean) throws ObjectNotUniqueException
+	{
+		customerService.persistCustomer(backingBean.getCustomer());
+	}
+	
+	/**
 	 * Get a the customerListHolder fragment containing the listView
 	 * @param users
 	 * @return
@@ -175,7 +238,16 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	 */
 	private List<Customer> getCustomers()
 	{
-		List<Customer>	customers = customerService.getCustomers();
+		List<Customer>	customers;
+		
+		if (currentFilter != null && !currentFilter.isActivateToggle())
+		{
+			customers = customerService.getCustomers();
+		}
+		else
+		{
+			customers = customerService.getCustomers(true);
+		}
 		
 		Collections.sort(customers, new CustomerComparator());
 

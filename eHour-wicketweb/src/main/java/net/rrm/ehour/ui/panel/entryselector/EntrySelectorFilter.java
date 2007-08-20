@@ -35,7 +35,7 @@ public class EntrySelectorFilter implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = -7713534314686523511L;
-	private	boolean	activateToggle;
+	private	boolean	activateToggle = true;
 	private	String	filterInput;
 	private	String	defaultFilterInputText;
 	
