@@ -51,6 +51,26 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 	 * 
 	 * @throws Exception
 	 */
+	public void testGetUserIsDeletable() throws Exception
+	{
+		User	user = userService.getUserAndCheckDeletability(2);
+		assertTrue(user.isDeletable());
+	}	
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetUserIsNotDeletable() throws Exception
+	{
+		User	user = userService.getUserAndCheckDeletability(1);
+		assertFalse(user.isDeletable());
+	}	
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
 	public void testDeleteUserDepartment() throws Exception
 	{
 		userService.deleteUserDepartment(new Integer(2));

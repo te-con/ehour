@@ -54,7 +54,7 @@ public interface UserService
      * @param checkIfDeletable
      * @return
      */
-    public User getUser(Integer userId, boolean checkIfDeletable);
+    public User getUserAndCheckDeletability(Integer userId);
     
 	/**
 	 * Get user by username

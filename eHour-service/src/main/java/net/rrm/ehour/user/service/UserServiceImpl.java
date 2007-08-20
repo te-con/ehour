@@ -95,13 +95,11 @@ public class UserServiceImpl implements UserService
 		return user;
 	}
 	
-	/**
-	 * 
-	 * @param userId
-	 * @param checkIfDeletable
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#getUserAndCheckDeletability(java.lang.Integer)
 	 */
-	public User getUser(Integer userId, boolean checkIfDeletable)
+	public User getUserAndCheckDeletability(Integer userId)
 	{
 		User	user = getUser(userId);
 		
@@ -134,7 +132,14 @@ public class UserServiceImpl implements UserService
 			
 			List<ProjectAssignmentAggregate> aggregates =reportService.getHoursPerAssignment(assignmentIds);
 			
-			user.setDeletable(aggregates == null || aggregates.size() == 0);
+			float	hours = 0f;
+			
+			for (ProjectAssignmentAggregate projectAssignmentAggregate : aggregates)
+			{
+				hours += projectAssignmentAggregate.getHours().floatValue();
+			}
+			
+			user.setDeletable(hours == 0f);
 		}
 		
 		return user;
