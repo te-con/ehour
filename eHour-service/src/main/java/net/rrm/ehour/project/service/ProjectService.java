@@ -64,6 +64,13 @@ public interface ProjectService
 	public Project getProjectAndCheckDeletability(Integer projectId);
 	
 	/**
+	 * Set the project deletability flag
+	 * @param project
+	 * @return
+	 */
+	public void setProjectDeletability(Project project);
+	
+	/**
 	 * Persist the project and if a PM is assigned, give him a ROLE_PROJECTMANAGER role
 	 * @param project
 	 * @return

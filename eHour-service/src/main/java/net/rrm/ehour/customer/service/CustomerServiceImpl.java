@@ -29,16 +29,19 @@ import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.service.ProjectService;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
- * TODO 
+ * Customer service implementation 
  **/
 
 public class CustomerServiceImpl implements CustomerService
 {
-	private	CustomerDAO	customerDAO;
+	private	CustomerDAO		customerDAO;
+	private	ProjectService	projectService;
 	
 	
 	/* (non-Javadoc)
@@ -78,6 +81,41 @@ public class CustomerServiceImpl implements CustomerService
 		return customerDAO.findById(customerId);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomerAndCheckDeletability(java.lang.Integer)
+	 */
+	public Customer getCustomerAndCheckDeletability(Integer customerId)
+	{
+		Customer customer = customerDAO.findById(customerId);
+		
+		if (customer.getProjects() != null && customer.getProjects().size() > 0)
+		{
+			// okay, this is going to be pricey...
+			boolean	deletable = true;
+			
+			for (Project project : customer.getProjects())
+			{
+				projectService.setProjectDeletability(project);
+				
+				deletable = project.isDeletable();
+				
+				if (!deletable)
+				{
+					break;
+				}
+			}
+			
+			customer.setDeletable(deletable);
+		}
+		else
+		{
+			customer.setDeletable(true);
+		}
+		
+		return customer;
+	}	
+	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getCustomers()
 	 */
@@ -119,6 +157,15 @@ public class CustomerServiceImpl implements CustomerService
 	public void setCustomerDAO(CustomerDAO customerDAO)
 	{
 		this.customerDAO = customerDAO;
+	}
+
+
+	/**
+	 * @param projectService the projectService to set
+	 */
+	public void setProjectService(ProjectService projectService)
+	{
+		this.projectService = projectService;
 	}
 
 

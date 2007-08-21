@@ -66,10 +66,14 @@
 		<property name="projectDAO" ref="projectDAO" />	
 		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />		
 		<property name="userService" ref="userService" />
+		<property name="reportService" ref="reportService" />
 	</bean>
 	
 	<!-- Customer service -->
-	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl" />
+	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl">
+		<property name="projectService" ref="projectService" />
+		<property name="customerDAO" ref="customerDAO" />	
+	</bean>
 
 	<!-- Project assignment service -->
 	<bean id="projectAssignmentService" class="net.rrm.ehour.project.service.ProjectAssignmentServiceImpl">

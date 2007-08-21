@@ -49,11 +49,19 @@ public interface CustomerService
 	public List<Customer> getCustomers(boolean hideInactive);
 	
 	/**
+	 * Get customer on id and check deletability
+	 * @param customerId
+	 * @return
+	 */
+	public Customer getCustomerAndCheckDeletability(Integer customerId);
+
+	/**
 	 * Get customer on id
 	 * @param customerId
 	 * @return
 	 */
 	public Customer getCustomer(Integer customerId);
+	
 	
 	/**
 	 * Delete customer

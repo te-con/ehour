@@ -59,13 +59,13 @@ public class CustomerDAOTest  extends BaseDAOTest
 	public void testFindAll()
 	{
 		List customers = dao.findAll();
-		assertEquals(3, customers.size());
+		assertEquals(4, customers.size());
 	}
 
 	public void testFindAllActive()
 	{
 		List customers = dao.findAll(true);
-		assertEquals(2, customers.size());
+		assertEquals(3, customers.size());
 	}
 	
 	public void testFindById()

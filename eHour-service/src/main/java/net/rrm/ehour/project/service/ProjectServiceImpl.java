@@ -118,14 +118,23 @@ public class ProjectServiceImpl implements ProjectService
 		
 		if (project != null)
 		{
-			List<Integer> ids = ProjectAssignmentUtil.getAssignmentIds(project.getProjectAssignments());
-			
-			List<ProjectAssignmentAggregate> aggregates = reportService.getHoursPerAssignment(ids);
-			
-			project.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
+			setProjectDeletability(project);
 		}
 		
 		return project;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#setProjectDeletability(net.rrm.ehour.project.domain.Project)
+	 */
+	public void setProjectDeletability(Project project)
+	{
+		List<Integer> ids = ProjectAssignmentUtil.getAssignmentIds(project.getProjectAssignments());
+		
+		List<ProjectAssignmentAggregate> aggregates = reportService.getHoursPerAssignment(ids);
+		
+		project.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
 	}
 
 	/*

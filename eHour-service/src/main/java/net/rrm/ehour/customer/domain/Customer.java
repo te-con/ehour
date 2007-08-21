@@ -32,6 +32,8 @@ public class Customer extends DomainObject<Integer, Customer>
 
 	private	Set<Project>		projects;
 	
+	private boolean deletable;
+	
 	// Constructors
 
 	@Override
@@ -190,6 +192,22 @@ public class Customer extends DomainObject<Integer, Customer>
 		.append(this.name, object.name)
 			.append(this.customerId, object.customerId)
 			.append(this.code, object.code).toComparison();
+	}
+
+	/**
+	 * @return the deletable
+	 */
+	public boolean isDeletable()
+	{
+		return deletable;
+	}
+
+	/**
+	 * @param deletable the deletable to set
+	 */
+	public void setDeletable(boolean deletable)
+	{
+		this.deletable = deletable;
 	}	
 
 }

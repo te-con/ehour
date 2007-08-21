@@ -24,11 +24,13 @@
 package net.rrm.ehour;
 
 import net.rrm.ehour.customer.dao.CustomerDAOTest;
+import net.rrm.ehour.customer.service.CustomerServiceIntegrationTest;
 import net.rrm.ehour.mail.dao.MailLogDAOTest;
 import net.rrm.ehour.mail.service.MailServiceTest;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAOTest;
 import net.rrm.ehour.project.dao.ProjectDAOTest;
 import net.rrm.ehour.project.service.ProjectAssignmentServiceIntegrationTest;
+import net.rrm.ehour.project.service.ProjectServiceIntegrationTest;
 import net.rrm.ehour.report.dao.ReportAggregatedDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
@@ -58,7 +60,9 @@ import org.junit.runners.Suite.SuiteClasses;
 				TimesheetCommentDAOTest.class,
 				MailServiceTest.class,
 				MailLogDAOTest.class,
-				CustomerFoldPreferenceDAOImplTest.class
+				CustomerFoldPreferenceDAOImplTest.class,
+				CustomerServiceIntegrationTest.class,
+				ProjectServiceIntegrationTest.class
 				})
 //				ReportPerMonthDAOTest.class}) TODO fix the hibernate tx manager usage here (leave it out)
 
