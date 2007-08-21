@@ -74,6 +74,10 @@ public class Customer extends DomainObject<Integer, Customer>
 		this.active = customer.isActive();
 	}	
 
+	public String getFullName()
+	{
+		return getCode() + " - " + getName();
+	}
 	
 	// Property accessors
 	public Integer getCustomerId()

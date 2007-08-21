@@ -142,6 +142,8 @@ public class UserServiceImpl implements UserService
 			user.setDeletable(hours == 0f);
 		}
 		
+		logger.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());
+		
 		return user;
 	}
 	
