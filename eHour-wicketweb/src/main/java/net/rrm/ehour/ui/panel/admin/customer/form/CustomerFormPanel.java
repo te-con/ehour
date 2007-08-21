@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -90,7 +91,7 @@ public class CustomerFormPanel extends Panel
 		form.add(new ServerMessageLabel("serverMessage"));
 	
 		//
-		FormUtil.setSubmitActions(form);
+		FormUtil.setSubmitActions(form, ((CustomerAdminBackingBean)model.getObject()).getCustomer().isDeletable());
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);

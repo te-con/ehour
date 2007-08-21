@@ -45,7 +45,7 @@ public class FormUtil
 	 * TODO need onError
 	 * @param form
 	 */
-	public static void setSubmitActions(Form form)
+	public static void setSubmitActions(Form form, boolean includeDelete)
 	{
 		Button submitButton = new AjaxButton("submitButton", form)
 		{
@@ -63,8 +63,27 @@ public class FormUtil
         };
         
         submitButton.setModel(new ResourceModel("general.save"));
-		
 		// default submit
 		form.add(submitButton);
+
+        Button deleteButton = new AjaxButton("deleteButton", form)
+        {
+			@Override
+            protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_DELETE, form.getModel());
+            }
+
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator()
+			{
+				return new LoadingSpinnerDecorator();
+			}		
+        };
+        
+        deleteButton.setModel(new ResourceModel("general.delete"));
+        deleteButton.setVisible(includeDelete);
+        form.add(deleteButton);
+        
 	}	
 }

@@ -215,7 +215,7 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomer(customerId)));
+						setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
 						switchTabOnAjaxTarget(target, 1);
 					}
 				};

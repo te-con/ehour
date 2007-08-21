@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
 
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.Form;
@@ -79,7 +80,7 @@ public class DepartmentFormPanel  extends Panel
 		form.add(new ServerMessageLabel("serverMessage"));
 	
 		//
-		FormUtil.setSubmitActions(form);
+		FormUtil.setSubmitActions(form, ((DepartmentAdminBackingBean)model.getObject()).getDepartment().isDeletable());
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);

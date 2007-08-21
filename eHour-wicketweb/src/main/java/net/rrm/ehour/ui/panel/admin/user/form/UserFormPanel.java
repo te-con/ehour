@@ -147,7 +147,7 @@ public class UserFormPanel extends Panel
 		form.add(new ServerMessageLabel("serverMessage"));
 	
 		//
-		FormUtil.setSubmitActions(form);
+		FormUtil.setSubmitActions(form, ((UserBackingBean)userModel.getObject()).getUser().isDeletable());
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);
