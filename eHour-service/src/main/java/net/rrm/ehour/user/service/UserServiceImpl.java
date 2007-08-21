@@ -35,6 +35,7 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
@@ -111,35 +112,14 @@ public class UserServiceImpl implements UserService
 		else
 		{
 			// bummer, we need to check if the user booked any hours on the assignments
-
 			List<Integer>	assignmentIds = new ArrayList<Integer>();
 
-			if (user.getProjectAssignments() != null)
-			{
-				for (ProjectAssignment assignment : user.getProjectAssignments())
-				{
-					assignmentIds.add(assignment.getAssignmentId());
-				}
-			}
-
-			if (user.getInactiveProjectAssignments() != null)
-			{
-				for (ProjectAssignment assignment : user.getInactiveProjectAssignments())
-				{
-					assignmentIds.add(assignment.getAssignmentId());
-				}
-			}
+			assignmentIds.addAll(ProjectAssignmentUtil.getAssignmentIds(user.getProjectAssignments()));
+			assignmentIds.addAll(ProjectAssignmentUtil.getAssignmentIds(user.getInactiveProjectAssignments()));
 			
 			List<ProjectAssignmentAggregate> aggregates =reportService.getHoursPerAssignment(assignmentIds);
 			
-			float	hours = 0f;
-			
-			for (ProjectAssignmentAggregate projectAssignmentAggregate : aggregates)
-			{
-				hours += projectAssignmentAggregate.getHours().floatValue();
-			}
-			
-			user.setDeletable(hours == 0f);
+			user.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
 		}
 		
 		logger.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());
@@ -250,7 +230,11 @@ public class UserServiceImpl implements UserService
 	 */
 	public UserDepartment getUserDepartment(Integer departmentId)
 	{
-		return userDepartmentDAO.findById(departmentId);
+		UserDepartment userDepartment = userDepartmentDAO.findById(departmentId);
+		
+		userDepartment.setDeletable(userDepartment.getUsers() == null || userDepartment.getUsers().size() == 0);
+		
+		return userDepartment;
 	}
 
 	/**

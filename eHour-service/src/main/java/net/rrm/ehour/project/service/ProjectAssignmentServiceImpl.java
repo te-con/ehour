@@ -38,7 +38,7 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.dto.AssignmentStatus;
-import net.rrm.ehour.project.util.TimeAllottedUtil;
+import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.user.domain.User;
@@ -55,7 +55,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO			timesheetDAO;
 	private	ProjectDAO				projectDAO;
-	private	TimeAllottedUtil		timeAllottedUtil;
+	private	ProjectAssignmentUtil		timeAllottedUtil;
 	private	MailService				mailService;
 	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 	
@@ -290,7 +290,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	/**
 	 * @param timeAllottedUtil the timeAllottedUtil to set
 	 */
-	public void setTimeAllottedUtil(TimeAllottedUtil timeAllottedUtil)
+	public void setTimeAllottedUtil(ProjectAssignmentUtil timeAllottedUtil)
 	{
 		this.timeAllottedUtil = timeAllottedUtil;
 	}

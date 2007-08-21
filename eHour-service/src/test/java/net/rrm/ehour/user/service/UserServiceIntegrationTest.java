@@ -86,6 +86,29 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		}
 	}
 	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetUserDepartmentNoDelete() throws Exception
+	{
+		UserDepartment dept = userService.getUserDepartment(1);
+		
+		assertFalse(dept.isDeletable());
+	}
+		
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetUserDepartmentDelete() throws Exception
+	{
+		UserDepartment dept = userService.getUserDepartment(2);
+		
+		assertTrue(dept.isDeletable());
+	}
+
+	
 	public void testPersistUser() throws Exception
 	{
 		User user = new User();

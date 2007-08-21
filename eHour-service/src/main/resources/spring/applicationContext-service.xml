@@ -106,7 +106,7 @@
 	
 	<!-- Time allotted util class -->
 	<bean id="timeAllottedUtil"
-			class="net.rrm.ehour.project.util.TimeAllottedUtil">
+			class="net.rrm.ehour.project.util.ProjectAssignmentUtil">
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 	</bean>
 </beans>

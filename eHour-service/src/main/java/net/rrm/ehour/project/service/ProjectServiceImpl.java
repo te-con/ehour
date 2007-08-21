@@ -33,6 +33,9 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.util.ProjectAssignmentUtil;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
@@ -40,7 +43,7 @@ import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 
 /**
- * TODO 
+ * Project service
  **/
 
 public class ProjectServiceImpl implements ProjectService
@@ -51,6 +54,7 @@ public class ProjectServiceImpl implements ProjectService
 	private ProjectAssignmentService	projectAssignmentService;
 	private TimesheetDAO			timesheetDAO;
 	private	UserService				userService;
+	private	ReportService			reportService;
 	
 	/**
 	 * 
@@ -95,14 +99,35 @@ public class ProjectServiceImpl implements ProjectService
 		return results;
 	}
 	
-	/**
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#getProject(java.lang.Integer)
 	 */
 	public Project getProject(Integer projectId)
 	{
 		return projectDAO.findById(projectId);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
+	 */
+	public Project getProjectAndCheckDeletability(Integer projectId)
+	{
+		Project project = projectDAO.findById(projectId);
+		
+		if (project != null)
+		{
+			List<Integer> ids = ProjectAssignmentUtil.getAssignmentIds(project.getProjectAssignments());
+			
+			List<ProjectAssignmentAggregate> aggregates = reportService.getHoursPerAssignment(ids);
+			
+			project.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
+		}
+		
+		return project;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#persistProject(net.rrm.ehour.project.domain.Project)
@@ -208,6 +233,14 @@ public class ProjectServiceImpl implements ProjectService
 	public void setUserService(UserService userService)
 	{
 		this.userService = userService;
+	}
+
+	/**
+	 * @param reportService the reportService to set
+	 */
+	public void setReportService(ReportService reportService)
+	{
+		this.reportService = reportService;
 	}
 
 

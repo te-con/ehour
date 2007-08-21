@@ -44,13 +44,13 @@ import org.junit.Test;
 
 public class TimeAllottedUtilTest extends TestCase
 {
-	private	TimeAllottedUtil util;
+	private	ProjectAssignmentUtil util;
 	private	ReportAggregatedDAO	raDAO;
 	
 	@Before
 	public void setUp() throws Exception
 	{
-		util = new TimeAllottedUtil();
+		util = new ProjectAssignmentUtil();
 
 		raDAO = createMock(ReportAggregatedDAO.class);
 		util.setReportAggregatedDAO(raDAO);

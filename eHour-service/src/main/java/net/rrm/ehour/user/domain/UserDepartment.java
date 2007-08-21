@@ -22,6 +22,8 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 	 */
 	private static final long serialVersionUID = 7802944013593352L;
 
+
+	private boolean deletable;
 	
 	/**
 	 * @uml.property  name="departmentId"
@@ -153,5 +155,21 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 			.append(this.name, object.name)
 			.append(this.code, object.code)
 			.append(this.departmentId, object.departmentId).toComparison();
+	}
+
+	/**
+	 * @return the deletable
+	 */
+	public boolean isDeletable()
+	{
+		return deletable;
+	}
+
+	/**
+	 * @param deletable the deletable to set
+	 */
+	public void setDeletable(boolean deletable)
+	{
+		this.deletable = deletable;
 	}
 }

@@ -28,7 +28,7 @@ import net.rrm.ehour.mail.dao.MailLogDAOTest;
 import net.rrm.ehour.mail.service.MailServiceTest;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAOTest;
 import net.rrm.ehour.project.dao.ProjectDAOTest;
-import net.rrm.ehour.project.service.ProjectServiceIntegrationTest;
+import net.rrm.ehour.project.service.ProjectAssignmentServiceIntegrationTest;
 import net.rrm.ehour.report.dao.ReportAggregatedDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAOTest;
 import net.rrm.ehour.timesheet.dao.TimesheetDAOTest;
@@ -46,7 +46,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({TimesheetServiceIntegrationTest.class,
 				UserServiceIntegrationTest.class, 
-				ProjectServiceIntegrationTest.class, 
+				ProjectAssignmentServiceIntegrationTest.class, 
 				UserDAOTest.class,
 				UserDepartmentDAOTest.class,
 				TimesheetDAOTest.class,

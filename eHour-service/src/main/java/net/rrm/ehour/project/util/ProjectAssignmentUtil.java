@@ -23,6 +23,10 @@
 
 package net.rrm.ehour.project.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
@@ -30,13 +34,50 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
- * Time allotted util class (TODO rename to AssignmentUtil)
+ * Time allotted util class
  **/
 
-public class TimeAllottedUtil
+public class ProjectAssignmentUtil
 {
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 
+	/**
+	 * Check if aggregate list is empty
+	 * @param aggregates
+	 * @return
+	 */
+	public static boolean isEmptyAggregateList(Collection<ProjectAssignmentAggregate> aggregates)
+	{
+		float	hours = 0f;
+		
+		for (ProjectAssignmentAggregate projectAssignmentAggregate : aggregates)
+		{
+			hours += projectAssignmentAggregate.getHours().floatValue();
+		}
+		
+		return hours == 0f;
+	}
+	
+	/**
+	 * Get assignment id's (TODO make it generic for DO's?)
+	 * @param assignments
+	 * @return
+	 */
+	public static List<Integer> getAssignmentIds(Collection<ProjectAssignment> assignments)
+	{
+		List<Integer>	ids = new ArrayList<Integer>();
+		
+		if (assignments != null)
+		{
+			for (ProjectAssignment projectAssignment : assignments)
+			{
+				ids.add(projectAssignment.getAssignmentId());
+			}
+		}
+		
+		return ids;
+	}
+	
 	/**
 	 * Is time allotted assignment overrun
 	 * @param assignment

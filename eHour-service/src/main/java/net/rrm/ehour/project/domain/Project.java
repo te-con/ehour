@@ -36,6 +36,7 @@ public class Project extends DomainObject<Integer, Project>
 	private Customer customer;
 	private	Set<ProjectAssignment>		projectAssignments;
 	private User	projectManager;
+	private boolean	deletable;
 	
 	// Constructors
 
@@ -247,6 +248,22 @@ public class Project extends DomainObject<Integer, Project>
 		return new ToStringBuilder(this).append("active", this.active)
 				.append("PK", this.getPK()).append("defaultProject", this.defaultProject).append("fullname", this.getFullname()).append("projectCode", this.projectCode).append("name", this.name).append("customer", this.customer).append("projectId",
 						this.projectId).toString();
+	}
+
+	/**
+	 * @return the deletable
+	 */
+	public boolean isDeletable()
+	{
+		return deletable;
+	}
+
+	/**
+	 * @param deletable the deletable to set
+	 */
+	public void setDeletable(boolean deletable)
+	{
+		this.deletable = deletable;
 	}	
 
 }
