@@ -36,11 +36,10 @@ import net.rrm.ehour.user.domain.User;
  * TODO 
  **/
 
-public class ProjectServiceIntegrationTest extends BaseDAOTest
+public class ProjectAssignmentServiceIntegrationTest extends BaseDAOTest
 {
 	private	ProjectAssignmentService projectAssignmentService;
 
-	
 	public void setProjectAssignmentService(ProjectAssignmentService service)
 	{
 		this.projectAssignmentService=service;
