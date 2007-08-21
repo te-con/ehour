@@ -112,7 +112,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						setEditBackingBean(new UserBackingBean(userService.getUser(userId)));
+						setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId)));
 						switchTabOnAjaxTarget(target, 1);
 					}
 				};

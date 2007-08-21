@@ -29,11 +29,14 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.service.UserService;
 
 
 /**
@@ -49,12 +52,20 @@ public class ProjectAdminTest extends BaseUITest
 	{
 		ProjectService	projectService = createMock(ProjectService.class);
 		mockContext.putBean("projectService", projectService);
+
+		UserService		userService = createMock(UserService.class);
+		mockContext.putBean("userService", userService);
+
+		CustomerService	customerService = createMock(CustomerService.class);
+		mockContext.putBean("customerService", customerService);
 		
-		List<Project> prjs = new ArrayList<Project>();
-		Project prj = new Project();
-		prj.setName("Test");
-		prjs.add(prj);
+
+		expect(customerService.getCustomers(true))
+				.andReturn(new ArrayList<Customer>());
 		
+		expect(userService.getUsersWithEmailSet())
+				.andReturn(new ArrayList<User>());
+
 		expect(projectService.getAllProjects(true))
 				.andReturn(new ArrayList<Project>());
 		

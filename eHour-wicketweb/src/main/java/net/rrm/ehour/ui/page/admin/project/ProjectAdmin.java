@@ -23,8 +23,12 @@
 
 package net.rrm.ehour.ui.page.admin.project;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.model.AdminBackingBean;
@@ -33,6 +37,10 @@ import net.rrm.ehour.ui.panel.admin.project.form.ProjectFormPanel;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.sort.CustomerComparator;
+import net.rrm.ehour.ui.sort.UserComparator;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -57,9 +65,15 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	
 	@SpringBean
 	private ProjectService		projectService;
+	@SpringBean
+	private	UserService			userService;
+	@SpringBean
+	private	CustomerService		customerService;
 	private	final static Logger	logger = Logger.getLogger(ProjectAdmin.class);
 	private EntrySelectorFilter	currentFilter;
 	private	ListView			projectListView;
+	private	List<User>			users;
+	private	List<Customer>		customers;
 	
 	/**
 	 * 
@@ -89,7 +103,10 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	@Override
 	protected Panel getAddPanel(String panelId)
 	{
-		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getAddBackingBean()));
+		return new ProjectFormPanel(panelId,
+									new CompoundPropertyModel(getAddBackingBean()),
+									getUsers(),
+									getCustomers());
 	}
 
 	/*
@@ -99,7 +116,10 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	@Override
 	protected Panel getEditPanel(String panelId)
 	{
-		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getEditBackingBean()));
+		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getEditBackingBean()),
+				getUsers(),
+				getCustomers());
+				
 	}
 
 	/*
@@ -186,5 +206,50 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		}
 		
 		return projects;
+	}
+	
+	/**
+	 * Get users for PM selection
+	 * @return
+	 */
+	private List<User> getUsers()
+	{
+		if (users == null)
+		{
+			users = userService.getUsersWithEmailSet();
+			
+			if (users != null)
+			{
+				Collections.sort(users, new UserComparator(false));
+			}
+			else
+			{
+				users = new ArrayList<User>();
+			}
+		}
+		
+		return users;
+	}
+	
+	/**
+	 * Get customers for customer dropdown
+	 */
+	private List<Customer> getCustomers()
+	{
+		if (customers == null)
+		{
+			customers = customerService.getCustomers(true);
+			
+			if (customers != null)
+			{
+				Collections.sort(customers, new CustomerComparator());
+			}
+			else
+			{
+				customers = new ArrayList<Customer>();
+			}
+		}
+		
+		return customers;
 	}
 }
