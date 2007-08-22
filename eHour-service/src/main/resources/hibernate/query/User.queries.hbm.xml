@@ -21,12 +21,31 @@
 	    ORDER BY lastName, firstName
 	</query>
 	
+	<query name="User.findByUsernamePatternAndUserRole"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE lcase(firstName) like  :pattern 
+	    		OR lcase(lastName) like :pattern
+	    		AND :userRole in elements(user.userRoles)
+	    ORDER BY lastName, firstName
+	</query>	
+	
 	<query name="User.findActiveByUsernamePattern"> 
 		SELECT DISTINCT user
 		FROM User as user
 	    WHERE (lcase(firstName) like  :pattern OR lcase(lastName) like :pattern) AND active = true
 	    ORDER BY lastName, firstName	    
-	</query>	
+	</query>
+	
+	<query name="User.findActiveByUsernamePatternAndUserRole"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like  :pattern 
+	    		OR lcase(lastName) like :pattern) 
+	    		AND active = true
+	    		AND :userRole in elements(user.userRoles)
+	    ORDER BY lastName, firstName	    
+	</query>		
 
 	<query name="User.findAllActiveUsers"> 
 		SELECT user

@@ -109,15 +109,7 @@ public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, In
 	{
 		String	hql;
 		
-		if (pattern != null && !pattern.trim().equals(""))
-		{
-			pattern = pattern.toLowerCase();
-			pattern = "%" + pattern + "%";
-		}
-		else
-		{
-			pattern = "%";
-		}
+		pattern = patternToSqlPattern(pattern);
 		
 		hql = (onlyActive) ? "Project.findActiveByNamePattern" :
 							  "Project.findByNamePattern";

@@ -265,7 +265,6 @@ public class UserServiceImpl implements UserService
 		return userDAO.findAllActiveUsers();
 	}
 
-
 	/**
 	 * 
 	 */
@@ -456,5 +455,23 @@ public class UserServiceImpl implements UserService
 	public void setReportService(ReportService reportService)
 	{
 		this.reportService = reportService;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#getUsers(net.rrm.ehour.user.domain.UserRole)
+	 */
+	public List<User> getUsers(UserRole userRole)
+	{
+		return getUsersByNameMatch(null, true, userRole);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#getUsersByNameMatch(java.lang.String, boolean, net.rrm.ehour.user.domain.UserRole)
+	 */
+	public List<User> getUsersByNameMatch(String match, boolean inclInactive, UserRole userRole)
+	{
+		return userDAO.findUsersByNameMatch(match, inclInactive, userRole);
 	}
 }

@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserRole;
 
 
 public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer> implements UserDAO
@@ -107,6 +108,31 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 																"pattern", pattern);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.dao.UserDAO#findUsersByNameMatch(java.lang.String, boolean, net.rrm.ehour.user.domain.UserRole)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<User> findUsersByNameMatch(String pattern, boolean onlyActive, UserRole userRole)
+	{
+		String		hql;
+		String[]	keys = new String[2];
+		Object[]	params = new Object[2];
+
+		pattern = patternToSqlPattern(pattern);
+		
+		keys[0] = "pattern";
+		keys[1] = "userRole";
+		
+		params[0] = pattern;
+		params[1] = userRole;
+		
+		hql = (onlyActive) ? "User.findActiveByUsernamePatternAndUserRole" :
+							  "User.findByUsernamePatternAndUserRole";
+		
+		return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, keys, params);
+	}	
+
 	/**
 	 * 
 	 */
@@ -131,15 +157,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 		String[]	paramKeys;
 		Object[]	paramValues;
 		
-		if (pattern != null)
-		{
-			pattern = pattern.toLowerCase();
-			pattern = "%" + pattern + "%";
-		}
-		else
-		{
-			pattern = "%";
-		}		
+		pattern = patternToSqlPattern(pattern);		
 		
 		hql = (onlyActive) ? "User.findActiveByNamePatternForDepartment" :
 			  				 "User.findNamePatternForDepartment";

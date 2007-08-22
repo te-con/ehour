@@ -9,6 +9,8 @@ import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.util.EhourConstants;
 
 public class UserDAOTest extends BaseDAOTest 
 {
@@ -18,6 +20,14 @@ public class UserDAOTest extends BaseDAOTest
 	public void setUserDAO(UserDAO dao)
 	{
 		this.dao = dao;
+	}
+	
+	public void testFindUsersByPatternAndUserRole()
+	{
+		List<User>	results;
+		
+		results = dao.findUsersByNameMatch(null, true, new UserRole(EhourConstants.ROLE_REPORT));;
+		assertEquals(1, results.size());		
 	}
 	
 	public void testFindUsersByPattern()

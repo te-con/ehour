@@ -87,11 +87,26 @@ public interface UserService
     public List<User> getUsersByNameMatch(String match, boolean inclInactive);
     
     /**
+     * Get users where first name or last name matches with user role
+     * @param match
+     * @param inclInactive
+     * @param userRole
+     * @return
+     */
+    public List<User> getUsersByNameMatch(String match, boolean inclInactive, UserRole userRole);
+    
+    /**
      * Get all active users
      * @return
      */
     public List<User> getUsers();
     
+    /**
+     * Get all active users with userRole
+     * @param userRole
+     * @return
+     */
+    public List<User> getUsers(UserRole userRole);
     /**
      * Get all active users with email set
      * @return
