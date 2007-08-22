@@ -26,8 +26,10 @@ package net.rrm.ehour.ui.page.admin.assignment;
 import java.util.List;
 
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
+import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.util.CommonStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
@@ -40,6 +42,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -57,6 +60,7 @@ public class AssignmentAdmin extends BaseAdminPage
 	private	UserService				userService;
 	private EntrySelectorFilter		currentFilter;
 	private	transient 	Logger		logger = Logger.getLogger(AssignmentAdmin.class);
+	private ListView				userListView;
 	
 	/**
 	 * Default constructor
@@ -77,6 +81,27 @@ public class AssignmentAdmin extends BaseAdminPage
 	}
 	
 	/**
+	 * Handle Ajax request
+	 * @param target
+	 * @param type of ajax req
+	 */
+	@Override
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	{
+		switch (type)
+		{
+			case CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			{
+				currentFilter = (EntrySelectorFilter)param;
+	
+				List<User> users = getUsers();
+				userListView.setList(users);
+				break;
+			}
+		}
+	}	
+	
+	/**
 	 * Get a the userListHolder fragment containing the listView
 	 * @param users
 	 * @return
@@ -85,7 +110,7 @@ public class AssignmentAdmin extends BaseAdminPage
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
 		
-		ListView userListView = new ListView("itemList", users)
+		userListView = new ListView("itemList", users)
 		{
 			@Override
 			protected void populateItem(ListItem item)
