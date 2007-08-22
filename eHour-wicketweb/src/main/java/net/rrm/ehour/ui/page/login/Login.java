@@ -25,7 +25,7 @@ package net.rrm.ehour.ui.page.login;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.ui.page.admin.assignment.AssignmentPage;
+import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
@@ -181,7 +181,7 @@ public class Login extends WebPage
 			else if (roles.contains(CommonStaticData.ROLE_REPORT))
 			{
 				// TODO replace with report
-				homepage = AssignmentPage.class;
+				homepage = AssignmentAdmin.class;
 			}
 			else
 			{

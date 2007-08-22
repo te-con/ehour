@@ -1,5 +1,5 @@
 /**
- * Created on Aug 6, 2007
+ * Created on Aug 22, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,37 +21,51 @@
  *
  */
 
-package net.rrm.ehour.ui.page.admin;
+package net.rrm.ehour.ui.component;
 
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
-
-import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.nav.admin.AdminNavPanel;
+import org.apache.wicket.model.Model;
 
 /**
- * Base page for admin adding admin nav and contextual help
- **/
+ * Javascript confirmation dialog
+ */
 
-@AuthorizeInstantiation("ROLE_ADMIN")
-public class BaseAdminPage extends BasePage
+public class JavaScriptConfirmation extends AttributeModifier
 {
+	private static final long serialVersionUID = -4438660782434392618L;
+
 	/**
 	 * 
+	 * @param event
+	 * @param msg
 	 */
-	private static final long serialVersionUID = -1388562551962543722L;
-
-	public BaseAdminPage(ResourceModel pageTitle, IModel model)
+	public JavaScriptConfirmation(String event, String msg)
 	{
-		super(pageTitle, model);
-		
-		add(new AdminNavPanel("adminNav"));
-		
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
-
+		this(event, new Model(msg));
 	}
 
+	/**
+	 * 
+	 * @param event
+	 * @param msg
+	 */
+	public JavaScriptConfirmation(String event, IModel msg)
+	{
+		super(event, true, msg);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.AttributeModifier#newValue(java.lang.String, java.lang.String)
+	 */
+	protected String newValue(final String currentValue, final String replacementValue)
+	{
+		String result = "return confirm('" + replacementValue + "')";
+		if (currentValue != null)
+		{
+			result = currentValue + "; " + result;
+		}
+		return result;
+	}
 }

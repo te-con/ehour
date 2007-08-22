@@ -88,13 +88,13 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterText
 	 * @param checkboxPrefix
 	 */
-	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder, String defaultFilterText, String checkboxPrefix)
+	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder, String defaultFilter, String checkboxPrefix)
 	{
 		super(id);
 
-		if (defaultFilterText != null)
+		if (defaultFilter != null)
 		{
-			this.defaultFilterText = defaultFilterText;
+			this.defaultFilterText = defaultFilter;
 			includeFilter = true;
 		}
 		
@@ -144,6 +144,8 @@ public class EntrySelectorPanel extends Panel
 		parent.add(filterForm);
 		
 		final TextField		filterInputField = new TextField("filterInput", new PropertyModel(filter, "filterInput"));
+		filterInputField.setVisible(this.includeFilter);
+		
 		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel(filter, "activateToggle"))
 		{
 			@Override
@@ -158,7 +160,7 @@ public class EntrySelectorPanel extends Panel
 		
 		Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
 		filterForm.add(filterToggleText);
-		filterForm.setVisible(includeCheckboxToggle);
+//		filterForm.setVisible(includeCheckboxToggle);
 
 		// if filter included, attach onchange ajax behaviour otherwise hide it
 		if (includeFilter)

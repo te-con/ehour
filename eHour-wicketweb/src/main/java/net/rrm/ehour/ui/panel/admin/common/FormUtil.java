@@ -24,14 +24,17 @@
 package net.rrm.ehour.ui.panel.admin.common;
 
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.util.CommonStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -45,7 +48,7 @@ public class FormUtil
 	 * TODO need onError
 	 * @param form
 	 */
-	public static void setSubmitActions(Form form, boolean includeDelete)
+	public static void setSubmitActions(final Form form, boolean includeDelete)
 	{
 		Button submitButton = new AjaxButton("submitButton", form)
 		{
@@ -66,10 +69,10 @@ public class FormUtil
 		// default submit
 		form.add(submitButton);
 
-        Button deleteButton = new AjaxButton("deleteButton", form)
+		AjaxLink deleteButton = new AjaxLink("deleteButton", new ResourceModel("general.delete"))
         {
 			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form form)
+            public void onClick(AjaxRequestTarget target)
 			{
 				((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_DELETE, form.getModel());
             }
@@ -80,6 +83,8 @@ public class FormUtil
 				return new LoadingSpinnerDecorator();
 			}		
         };
+        
+        deleteButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("deleteConfirmation")));
         
         deleteButton.setModel(new ResourceModel("general.delete"));
         deleteButton.setVisible(includeDelete);
