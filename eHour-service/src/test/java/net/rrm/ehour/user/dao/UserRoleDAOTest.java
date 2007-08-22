@@ -58,7 +58,7 @@ public class UserRoleDAOTest extends BaseDAOTest
 	public void testFindUserRoles()
 	{
 		List list = userRoleDAO.findAll();
-		assertEquals(3, list.size());
+		assertEquals(4, list.size());
 	}
 
 }
