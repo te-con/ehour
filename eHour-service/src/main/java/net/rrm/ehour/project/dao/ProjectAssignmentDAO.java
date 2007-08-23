@@ -29,6 +29,7 @@ import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 
 /**
  * CRUD on ProjectAssignment domain object
@@ -75,4 +76,10 @@ public interface ProjectAssignmentDAO  extends GenericDAO<ProjectAssignment, Int
 	 * @return
 	 */
 	public List<ProjectAssignment> findProjectAssignmentsForProject(Project project, DateRange range);
+	
+	/**
+	 * Find all project assignment types (should be in a seperate DAO theoratically)
+	 * @return
+	 */
+	public List<ProjectAssignmentType>	findProjectAssignmentTypes();
 }

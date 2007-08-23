@@ -55,7 +55,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO			timesheetDAO;
 	private	ProjectDAO				projectDAO;
-	private	ProjectAssignmentUtil		timeAllottedUtil;
+	private	ProjectAssignmentUtil	timeAllottedUtil;
 	private	MailService				mailService;
 	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 	
@@ -260,8 +260,16 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		return projectAssignmentDAO.findProjectAssignmentsForProject(project, range);
 		
 	}
-	
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#getProjectAssignmentTypes()
+	 */
+	public List<ProjectAssignmentType> getProjectAssignmentTypes()
+	{
+		return projectAssignmentDAO.findProjectAssignmentTypes();
+	}
+	
 	/**
 	 * 
 	 * @param dao
@@ -302,6 +310,4 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	{
 		this.mailService = mailService;
 	}
-
-	
 }

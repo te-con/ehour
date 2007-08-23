@@ -29,6 +29,7 @@ import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 
 /**
  * CRUD stuff on PA do 
@@ -130,5 +131,16 @@ public class ProjectAssignmentDAOHibernateImpl
 		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForProjectInRange"
 																		, keys, params);		
 		
-		return results;	}
+		return results;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.dao.ProjectAssignmentDAO#findProjectAssignmentTypes()
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignmentType> findProjectAssignmentTypes()
+	{
+		return getHibernateTemplate().loadAll(ProjectAssignmentType.class);
+	}
 }

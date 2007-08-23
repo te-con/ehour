@@ -31,6 +31,7 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.user.domain.User;
 
 /**
@@ -84,4 +85,10 @@ public interface ProjectAssignmentService
 	 * @param project
 	 */
 	public List<ProjectAssignment>  getProjectAssignments(Project project, DateRange dateRange);
+	
+	/**
+	 * Get available project assignment types
+	 * @return
+	 */
+	public List<ProjectAssignmentType>	getProjectAssignmentTypes();
 }
