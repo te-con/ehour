@@ -43,7 +43,7 @@ import org.apache.wicket.model.ResourceModel;
 
 public abstract class BaseTabbedAdminPage extends BaseAdminPage
 {
-	private	AjaxTabbedPanel		tabbedPanel;
+	private	CustomAjaxTabbedPanel		tabbedPanel;
 	private AdminBackingBean	addBackingBean;
 	private AdminBackingBean	editBackingBean;
 	private	ResourceModel		addTabTitle;
@@ -182,7 +182,7 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	 */
 	private void addAddTab()
 	{
-		removeTab(0);
+		tabbedPanel.removeTab(0);
 		
 		AbstractTab addTab = new AbstractTab(addTabTitle)
 		{
@@ -201,7 +201,7 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	 */
 	private void addEditTab()
 	{
-		removeTab(1);
+		tabbedPanel.removeTab(1);
 		
 		AbstractTab editTab = new AbstractTab(editTabTitle)
 		{
@@ -220,7 +220,7 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	 */
 	private void addNoUserTab()
 	{
-		removeTab(1);
+		tabbedPanel.removeTab(1);
 		
 		AbstractTab editTab = new AbstractTab(editTabTitle)
 		{
@@ -233,19 +233,6 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 
 		tabbedPanel.getTabs().add(1, editTab);		
 	}	
-	
-	/**
-	 * 
-	 * @param index
-	 */
-	private void removeTab(int index)
-	{
-		if (tabbedPanel.getTabs().size() >= index + 1)
-		{
-			tabbedPanel.getTabs().remove(index);;
-		}
-		
-	}
 
 	/**
 	 * 

@@ -28,7 +28,10 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 /**
  * AjaxTabbedPanel that passes the index to a pre process method
@@ -77,4 +80,16 @@ public class CustomAjaxTabbedPanel extends AjaxTabbedPanel
 	protected void preProcessTabSwitch(int index)
 	{
 	}	
+	
+	/**
+	 * Removes tab from specified position
+	 * @param index
+	 */
+	public void removeTab(int index)
+	{
+		if (getTabs().size() >= index + 1)
+		{
+			getTabs().remove(index);;
+		}
+	}
 }

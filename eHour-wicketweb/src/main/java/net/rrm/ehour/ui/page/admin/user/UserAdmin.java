@@ -101,6 +101,8 @@ public class UserAdmin extends BaseTabbedAdminPage
 		
 		userListView = new ListView("itemList", users)
 		{
+			private static final long serialVersionUID = 5334338761736798802L;
+
 			@Override
 			protected void populateItem(ListItem item)
 			{
@@ -109,6 +111,8 @@ public class UserAdmin extends BaseTabbedAdminPage
 				
 				AjaxLink	link = new AjaxLink("itemLink")
 				{
+					private static final long serialVersionUID = -3898942767521616039L;
+
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
@@ -218,21 +222,6 @@ public class UserAdmin extends BaseTabbedAdminPage
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewAddBackingBean()
-	 */
-	@Override
-	protected AdminBackingBean getNewAddBackingBean()
-	{
-		UserBackingBean	userBean;
-		
-		userBean = new UserBackingBean(new User());
-		userBean.getUser().setActive(true);
-
-		return userBean;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.page.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
@@ -244,6 +233,21 @@ public class UserAdmin extends BaseTabbedAdminPage
 				getUserDepartments());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 */
+	@Override
+	protected AdminBackingBean getNewAddBackingBean()
+	{
+		UserBackingBean	userBean;
+		
+		userBean = new UserBackingBean(new User());
+		userBean.getUser().setActive(true);
+
+		return userBean;
+	}	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewEditBackingBean()

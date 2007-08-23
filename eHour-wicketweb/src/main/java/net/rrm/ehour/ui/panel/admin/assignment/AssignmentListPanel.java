@@ -23,11 +23,19 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment;
 
+import org.apache.wicket.markup.html.panel.Panel;
+
 /**
  * TODO 
  **/
 
-public class AssignmentListPanel
+public class AssignmentListPanel extends Panel
 {
+
+	public AssignmentListPanel(String id)
+	{
+		super(id);
+		// TODO Auto-generated constructor stub
+	}
 
 }
