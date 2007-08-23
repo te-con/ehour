@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/">
+
+<body>
+<wicket:panel>
+		<br clear="all" />
+		<div wicket:id="border">
+			<form wicket:id="assignmentForm">
+				<table class="contentTable" style="padding-right: 10px; width: 300px">
+					<tr>
+						<td valign="top"><wicket:message key="admin.project.customer" />:</td>
+						<td><select class="textInputSmall" style="width: 15em" wicket:id="project.customer"></select>
+							<span wicket:id="customerValidationError"></span>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<span wicket:id="serverMessage"></span>
+							<a class="submitButtonLightBackground" wicket:id="deleteButton" />
+						</td>
+						<td style="text-align: right">
+							<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
+						</td>
+					</tr>
+					
+				</table>
+			</form>		
+		</div>
+</wicket:panel>
+
+</body>
+
+</html>

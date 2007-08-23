@@ -25,8 +25,11 @@ package net.rrm.ehour.ui.page.admin.assignment;
 
 import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
-import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.util.CommonStaticData;
@@ -42,7 +45,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -57,10 +59,16 @@ public class AssignmentAdmin extends BaseAdminPage
 	private final String			USER_SELECTOR_ID = "userSelector";
 	
 	@SpringBean
-	private	UserService				userService;
-	private EntrySelectorFilter		currentFilter;
-	private	transient 	Logger		logger = Logger.getLogger(AssignmentAdmin.class);
-	private ListView				userListView;
+	private	UserService					userService;
+	@SpringBean
+	private	CustomerService				customerService;
+	@SpringBean
+	private ProjectAssignmentService	projectAssignmentService;
+	private EntrySelectorFilter			currentFilter;
+	private	transient 	Logger			logger = Logger.getLogger(AssignmentAdmin.class);
+	private ListView					userListView;
+	private	List<Customer>				customers;
+	private List<ProjectAssignmentType>	assignmentTypes;
 	
 	/**
 	 * Default constructor
@@ -129,7 +137,7 @@ public class AssignmentAdmin extends BaseAdminPage
 				};
 				
 				item.add(link);
-				link.add(new Label("linkLabel", user.getLastName() + ", " + user.getFirstName() + (user.isActive() ? "" : "*")));				
+				link.add(new Label("linkLabel", user.getLastName() + ", " + user.getFirstName()));				
 			}
 		};
 		
@@ -162,4 +170,33 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		return users;
 	}	
+	
+	/**
+	 * Get all customers
+	 * @return
+	 */
+	private List<Customer> getCustomers()
+	{
+		if (customers == null)
+		{
+			customers = customerService.getCustomers(true);
+		}
+		
+		return customers;
+	}
+	
+	/**
+	 * Get all project assignment types
+	 * @return
+	 */
+	private List<ProjectAssignmentType> getProjectAssignmentTypes()
+	{
+		if (assignmentTypes == null)
+		{
+			assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();
+		}
+		
+		return assignmentTypes;
+	}
+
 }
