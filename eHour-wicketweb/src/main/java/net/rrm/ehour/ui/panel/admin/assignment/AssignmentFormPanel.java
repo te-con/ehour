@@ -27,11 +27,10 @@ import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
-import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -62,17 +61,17 @@ public class AssignmentFormPanel extends Panel
 								List<Customer> customers,
 								List<ProjectAssignmentType> assignmenTypes)
 	{
-		super(id);
+		super(id, model);
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 		
 		setOutputMarkupId(true);
 		
-		final Form form = new Form("customerForm");
+		final Form form = new Form("assignmentForm");
 		
 		// customer
-		DropDownChoice customerChoice = new DropDownChoice("projectAssignment.customer", customers, new ChoiceRenderer("fullName"));
+		DropDownChoice customerChoice = new DropDownChoice("projectAssignment.project.customer", customers, new ChoiceRenderer("fullName"));
 		customerChoice.setRequired(true);
 		customerChoice.setLabel(new ResourceModel("admin.project.projectManager"));
 		form.add(customerChoice);
@@ -90,7 +89,7 @@ public class AssignmentFormPanel extends Panel
 		form.add(new ServerMessageLabel("serverMessage"));
 		
 		//
-		FormUtil.setSubmitActions(form, ((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable());
+		FormUtil.setSubmitActions(form, true);
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
 		
 		greyBorder.add(form);

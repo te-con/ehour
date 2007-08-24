@@ -32,17 +32,15 @@ import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.ui.component.CustomAjaxTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
- * Assignment panel displaying the list 
+ * Assignment panel displaying the list and the tabbed form for adding/editing
  **/
 
 public class AssignmentPanel extends Panel
@@ -52,6 +50,7 @@ public class AssignmentPanel extends Panel
 	private CustomAjaxTabbedPanel	tabbedPanel;
 	private List<Customer> 			customers;
 	private List<ProjectAssignmentType> types;
+	private	User					user;
 	
 	/**
 	 * 
@@ -59,11 +58,14 @@ public class AssignmentPanel extends Panel
 	 * @param model
 	 */
 	public AssignmentPanel(String id,
-							IModel model,
+							User user,
 							List<Customer> customers,
 							List<ProjectAssignmentType> types)
 	{
-		super(id, model);
+		super(id);
+		
+		setOutputMarkupId(true);
+		this.user = user;
 
 		this.customers = customers;
 		this.types = types;
@@ -83,7 +85,7 @@ public class AssignmentPanel extends Panel
 	{
 		List<AbstractTab>	tabs = new ArrayList<AbstractTab>(2);
 		
-		tabbedPanel = new CustomAjaxTabbedPanel("tabs", tabs)
+		tabbedPanel = new CustomAjaxTabbedPanel("assignmentTabs", tabs)
 		{
 //			@Override
 //			protected void preProcessTabSwitch(int index)
@@ -103,6 +105,7 @@ public class AssignmentPanel extends Panel
 		};
 		
 		addAddTab();
+		addEditTab();
 	}
 	
 	
@@ -130,17 +133,46 @@ public class AssignmentPanel extends Panel
 
 		tabbedPanel.getTabs().add(0, addTab);	
 	}		
+	
+	/**
+	 * Add edit tab at position 0
+	 */
+	@SuppressWarnings("unchecked")
+	private void addEditTab()
+	{
+		tabbedPanel.removeTab(1);
+		
+		AbstractTab addTab = new AbstractTab(new ResourceModel("admin.assignment.editAssignment"))
+		{
+			private static final long serialVersionUID = 6208220479189701348L;
+
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new AssignmentFormPanel(panelId,
+												new CompoundPropertyModel(getNewAddBackingBean()),
+												customers,
+												types);
+			}
+		};
+
+		tabbedPanel.getTabs().add(1, addTab);	
+	}		
 
 	/**
-	 * Get new add backing bean
+	 * Get new add backing bean prefilled with the user
 	 * @return
 	 */
 	private AdminBackingBean getNewAddBackingBean()
 	{
+		ProjectAssignment			projectAssignment;
 		AssignmentAdminBackingBean	assignmentBean;
 		
-		assignmentBean = new AssignmentAdminBackingBean(new ProjectAssignment());
-		assignmentBean.getProjectAssignment().setActive(true);
+		projectAssignment = new ProjectAssignment();
+		projectAssignment.setUser(user);
+		projectAssignment.setActive(true);
+		
+		assignmentBean = new AssignmentAdminBackingBean(projectAssignment);;
 
 		return assignmentBean;
 	}	

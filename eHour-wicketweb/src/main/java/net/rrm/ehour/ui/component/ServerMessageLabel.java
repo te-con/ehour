@@ -36,6 +36,7 @@ import org.apache.wicket.util.time.Duration;
  */
 public class ServerMessageLabel extends Label
 {
+	private static final long serialVersionUID = -6276174722682301972L;
 	private boolean overrideVisibility = false;
 	
 	public ServerMessageLabel(String id)
@@ -46,18 +47,20 @@ public class ServerMessageLabel extends Label
 		setOutputMarkupId(true);
 
 		add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5))
+		{
+			private static final long serialVersionUID = 3340397062856229947L;
+
+			@Override
+			protected void onPostProcessTarget(AjaxRequestTarget target)
 			{
-				@Override
-				protected void onPostProcessTarget(AjaxRequestTarget target)
-				{
-					target.addComponent(ServerMessageLabel.this);
-					overrideVisibility = true;
-				}
-			});		
+				target.addComponent(ServerMessageLabel.this);
+				overrideVisibility = true;
+			}
+		});		
 	}
 
 	public boolean isVisible()
 	{
-		return overrideVisibility ? false : getModel().getObject()!= null;
+		return overrideVisibility ? false : getModel() != null && getModel().getObject()!= null;
 	}		
 }

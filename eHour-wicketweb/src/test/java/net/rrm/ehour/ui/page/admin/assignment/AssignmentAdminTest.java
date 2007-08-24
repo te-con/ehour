@@ -30,6 +30,10 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 
+import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.common.BaseUITest;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
@@ -50,10 +54,25 @@ public class AssignmentAdminTest extends BaseUITest
 	{
 		UserService userService = createMock(UserService.class);
 		mockContext.putBean("userService", userService);
+
+		CustomerService customerService = createMock(CustomerService.class);
+		mockContext.putBean("customerService", customerService);
+
+		ProjectAssignmentService assignmentService = createMock(ProjectAssignmentService.class);
+		mockContext.putBean("assignmentService", assignmentService);
+
+		expect(assignmentService.getProjectAssignmentTypes())
+				.andReturn(new ArrayList<ProjectAssignmentType>());
+		
+		replay(assignmentService);
+		
+		expect(customerService.getCustomers(true))
+				.andReturn(new ArrayList<Customer>());
+		
+		replay(customerService);
 		
 		expect(userService.getUsers(new UserRole(EhourConstants.ROLE_CONSULTANT)))
 				.andReturn(new ArrayList<User>());
-					
 
 		replay(userService);
 		
@@ -62,5 +81,7 @@ public class AssignmentAdminTest extends BaseUITest
 		tester.assertNoErrorMessage();
 		
 		verify(userService);
+//		verify(customerService);
+//		verify(assignmentService);
 	}
 }

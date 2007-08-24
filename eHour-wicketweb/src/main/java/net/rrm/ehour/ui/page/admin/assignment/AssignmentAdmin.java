@@ -30,6 +30,8 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
+import net.rrm.ehour.ui.panel.admin.NoEntrySelectedPanel;
+import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.util.CommonStaticData;
@@ -45,6 +47,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -69,6 +72,7 @@ public class AssignmentAdmin extends BaseAdminPage
 	private ListView					userListView;
 	private	List<Customer>				customers;
 	private List<ProjectAssignmentType>	assignmentTypes;
+	private	Panel						assignmentPanel;		
 	
 	/**
 	 * Default constructor
@@ -86,6 +90,15 @@ public class AssignmentAdmin extends BaseAdminPage
 				new ResourceModel("admin.assignment.title"),
 				userListHolder,
 				getLocalizer().getString("admin.assignment.filter", this) + "..."));
+		
+//		assignmentPanel = new NoEntrySelectedPanel("assignmentPanel");
+//		assignmentPanel.setOutputMarkupId(true);
+		
+		assignmentPanel = new AssignmentPanel("assignmentPanel",
+				new User(),
+				getCustomers(), 
+				getProjectAssignmentTypes());;
+		add(assignmentPanel);
 	}
 	
 	/**
@@ -124,15 +137,13 @@ public class AssignmentAdmin extends BaseAdminPage
 			protected void populateItem(ListItem item)
 			{
 				final User		user = (User)item.getModelObject();
-				final Integer	userId = user.getUserId();
 				
 				AjaxLink	link = new AjaxLink("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-//						setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId)));
-//						switchTabOnAjaxTarget(target, 1);
+						replaceAssignmentPanel(target, user);
 					}
 				};
 				
@@ -145,6 +156,24 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		return fragment;
 	}	
+	
+	/**
+	 * Set assignment panel for particular user after selection in userList panel
+	 * @param target
+	 * @param user
+	 */
+	private void replaceAssignmentPanel(AjaxRequestTarget target, User user)
+	{
+		AssignmentPanel	newAssignmentPanel = new AssignmentPanel("assignmentPanel",
+																user,
+																getCustomers(), 
+																getProjectAssignmentTypes());
+		
+		assignmentPanel.replaceWith(newAssignmentPanel);
+		target.addComponent(newAssignmentPanel);
+		
+		assignmentPanel = newAssignmentPanel;
+	}
 	
 	/**
 	 * Get the users from the backend

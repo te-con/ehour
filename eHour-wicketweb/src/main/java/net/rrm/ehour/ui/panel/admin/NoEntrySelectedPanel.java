@@ -1,5 +1,5 @@
 /**
- * Created on Aug 23, 2007
+ * Created on Aug 24, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,41 +21,29 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.assignment;
+package net.rrm.ehour.ui.panel.admin;
 
-import java.util.Collections;
-import java.util.List;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
-import net.rrm.ehour.user.domain.User;
-
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.model.ResourceModel;
 
 /**
- * List of existing assignments 
+ * No entry selected
  **/
 
-public class AssignmentListPanel extends Panel
+public class NoEntrySelectedPanel extends Panel
 {
-	private static final long serialVersionUID = -8798859357268916546L;
+	private static final long serialVersionUID = -4318947090257979895L;
 
-	@SpringBean
-	private ProjectService	projectService;
-	
-	/**
-	 * 
-	 * @param id
-	 */
-	public AssignmentListPanel(String id, User user)
+	public NoEntrySelectedPanel(String id)
 	{
 		super(id);
 		
-		List<ProjectAssignment >assignments = projectService.getAllProjectsForUser(user.getUserId());
-		Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
-		
-	}
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
+		add(greyBorder);
 
+		greyBorder.add(new Label("noEntry", new ResourceModel("admin.noEditEntrySelected")));
+	}
 }
