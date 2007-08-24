@@ -176,7 +176,6 @@ public class ProjectServiceTest extends TestCase
 			// ok
 		}
 	}
-
 	
 	public void testGetProjectsForUser()
 	{

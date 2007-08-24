@@ -23,8 +23,12 @@
 
 package net.rrm.ehour.project.service;
 
+import java.util.List;
+
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * TODO 
@@ -54,6 +58,32 @@ public class ProjectServiceIntegrationTest  extends BaseDAOTest
 		Project prj = projectService.getProjectAndCheckDeletability(4);
 		
 		assertTrue(prj.isDeletable());
+	}
+	
+	public void testGetProjectManagerProjects()
+	{
+		User user;
+		
+		user = new User();
+		user.setUserId(2);
+		List<Project> prj = projectService.getProjectManagerProjects(user);
+		
+		assertEquals(1, prj.size());
+	}
+	
+	public void testGetProjectsWithFilter()
+	{
+		List<Project> projects = projectService.getProjects("days", true);
+		assertEquals(2, projects.size());
+	}
+	
+	
+	
+	
+	public void testGetAllProjectsForUser()
+	{
+		List<ProjectAssignment> pas = projectService.getAllProjectsForUser(1);
+		assertEquals(7, pas.size());
 	}
 	
 	protected String[] getConfigLocations()
