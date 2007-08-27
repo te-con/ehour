@@ -83,7 +83,7 @@ public class ProjectFormPanel extends Panel
 		RequiredTextField	codeField = new RequiredTextField("project.projectCode");
 		form.add(codeField);
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
-		codeField.setLabel(new ResourceModel("admin.project.projectCode"));
+		codeField.setLabel(new ResourceModel("admin.project.code"));
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 
 		// project manager

@@ -150,6 +150,7 @@ public class AssignmentFormPanel extends Panel
 	
 	/**
 	 * Add start & end dates
+	 * TODO create seperate component for date range selection out of it
 	 * @param form
 	 * @param model
 	 */
@@ -159,10 +160,13 @@ public class AssignmentFormPanel extends Panel
 		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", "dd/MM/yyyy");
 		dateStart.add(getValidateBehavior(form));
 		dateStart.setRequired(true);
-		
+		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
+
+		// container for hiding
 		final WebMarkupContainer	startDateHider = new WebMarkupContainer("startDateHider");
 		startDateHider.setOutputMarkupId(true);
 		
+		// indicator for validation issues
 		startDateHider.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart));
 		
 		// the inner hider is just there to hide the <br /> as well
@@ -191,9 +195,14 @@ public class AssignmentFormPanel extends Panel
 		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", "dd/MM/yyyy");
 		dateEnd.add(getValidateBehavior(form));
 		dateEnd.setRequired(true);
+		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
 		
 		final WebMarkupContainer	endDateHider = new WebMarkupContainer("endDateHider");
 		endDateHider.setOutputMarkupId(true);
+		
+		// indicator for validation issues
+		endDateHider.add(new AjaxFormComponentFeedbackIndicator("dateEndValidationError", dateEnd));
+		
 		
 		// the inner hider is just there to hide the <br /> as well
 		final WebMarkupContainer	innerEndDateHider = new WebMarkupContainer("innerEndDateHider");
@@ -271,6 +280,7 @@ public class AssignmentFormPanel extends Panel
 		projectChoice.setOutputMarkupId(true);
 		projectChoice.setNullValid(false);
 		projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
+		projectChoice.add(getValidateBehavior(form));
 		form.add(projectChoice);
 		form.add(new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice));
 		
@@ -281,6 +291,9 @@ public class AssignmentFormPanel extends Panel
             {
                 target.addComponent(projectChoice);
             }
-        });		
+        });	
+		
+		// adding validation seems to remove the updating behaviour :(
+//		customerChoice.add(getValidateBehavior(form));
 	}
 }
