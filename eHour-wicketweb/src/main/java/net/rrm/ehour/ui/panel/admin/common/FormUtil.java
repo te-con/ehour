@@ -34,18 +34,16 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
 
 /**
  * Common form stuff
  **/
-
+@SuppressWarnings("serial")
 public class FormUtil
 {
 	/**
 	 * Set submit actions for form
-	 * TODO need onError
 	 * @param form
 	 */
 	public static void setSubmitActions(final Form form, boolean includeDelete)
@@ -62,7 +60,14 @@ public class FormUtil
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
 				return new LoadingSpinnerDecorator();
-			}		
+			}
+			
+			@Override
+            protected void onError(AjaxRequestTarget target, Form form)
+			{
+				target.addComponent(form);
+            }
+			
         };
         
         submitButton.setModel(new ResourceModel("general.save"));
