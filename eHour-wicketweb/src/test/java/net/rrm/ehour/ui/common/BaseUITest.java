@@ -46,6 +46,7 @@ public class BaseUITest extends TestCase
 	
 		config = new EhourConfigStub();
 		
+		
 		mockContext = new AnnotApplicationContextMock();
 		mockContext.putBean("EhourConfig", config);
 

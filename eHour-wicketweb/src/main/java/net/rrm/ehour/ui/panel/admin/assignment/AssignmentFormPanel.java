@@ -36,6 +36,7 @@ import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
 
@@ -62,7 +63,7 @@ import org.apache.wicket.validation.validator.NumberValidator;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 
 /**
- * Assignment form
+ * Assignment form (and yes, it's a little big)
  **/
 
 public class AssignmentFormPanel extends Panel
@@ -87,8 +88,6 @@ public class AssignmentFormPanel extends Panel
 	{
 		super(id, model);
 		
-		
-		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 		
@@ -100,7 +99,7 @@ public class AssignmentFormPanel extends Panel
 		addCustomerAndProjectChoices(form, model, customers);
 		
 		// assignment type
-		DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmenTypes, new ChoiceRenderer("assignmentType"));
+		DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmenTypes, new ProjectAssignmentTypeRenderer(this));
 		assignmentTypeChoice.setRequired(true);
 		assignmentTypeChoice.setNullValid(false);
 		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));

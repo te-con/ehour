@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.ui.common;
+package net.rrm.ehour.ui.renderers;
 
 import net.rrm.ehour.project.domain.Project;
 

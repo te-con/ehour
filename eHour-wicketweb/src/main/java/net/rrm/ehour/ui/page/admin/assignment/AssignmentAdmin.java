@@ -30,7 +30,6 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
-import net.rrm.ehour.ui.panel.admin.NoEntrySelectedPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;

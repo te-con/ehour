@@ -24,8 +24,8 @@
 package net.rrm.ehour.ui.page.user.report.criteria;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.ProjectChoiceRender;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
+import net.rrm.ehour.ui.renderers.ProjectChoiceRender;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
