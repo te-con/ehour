@@ -70,7 +70,7 @@ public class AssignmentPanel extends Panel
 		this.customers = customers;
 		this.types = types;
 		
-		AssignmentListPanel	listPanel = new AssignmentListPanel("assignmentList");
+		AssignmentListPanel	listPanel = new AssignmentListPanel("assignmentList", user);
 		add(listPanel);
 		
 		setUpTabs();

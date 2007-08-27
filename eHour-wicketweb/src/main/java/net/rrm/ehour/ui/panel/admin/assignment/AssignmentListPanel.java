@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.user.domain.User;
 
@@ -54,8 +55,15 @@ public class AssignmentListPanel extends Panel
 		super(id);
 		
 		List<ProjectAssignment >assignments = projectService.getAllProjectsForUser(user.getUserId());
-		Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
 		
+		if (assignments != null && assignments.size() > 0)
+		{
+			Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
+		}
+	
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
+		add(greyBorder);
+
 	}
 
 }

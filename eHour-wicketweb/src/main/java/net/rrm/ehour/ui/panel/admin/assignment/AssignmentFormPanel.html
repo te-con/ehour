@@ -13,11 +13,56 @@
 				<table class="contentTable" style="padding-right: 10px; width: 300px">
 					<tr>
 						<td valign="top"><wicket:message key="admin.assignment.customer" />:</td>
-						<td><select class="textInputSmall" style="width: 15em" wicket:id="projectAssignment.project.customer"></select>
+						<td><select class="textInputSmall" style="width: 15em" wicket:id="customer"></select>
 							<span wicket:id="customerValidationError"></span>
 						</td>
 					</tr>
 
+					<tr>
+						<td valign="top"><wicket:message key="admin.assignment.project" />:</td>
+						<td><select class="textInputSmall" style="width: 15em" wicket:id="projectAssignment.project"></select>
+							<span wicket:id="projectValidationError"></span>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="2">
+							<br />
+						</td>
+					</tr>
+					
+					<tr>
+						<td valign="top"><wicket:message key="admin.assignment.type" />:</td>
+						<td><select class="textInputSmall" style="width: 15em" wicket:id="projectAssignment.assignmentType"></select>
+							<span wicket:id="typeValidationError"></span>
+						</td>
+					</tr>					
+
+					<tr>
+						<td colspan="2">
+							<br />
+						</td>
+					</tr>
+
+					<tr>
+						<td valign="top"><wicket:message key="admin.assignment.dateStart" />:</td>
+						<td><span wicket:id="startDateHider">
+								<input class="textInputSmall" style="width: 15em"  type="text" wicket:id="projectAssignment.dateStart" />
+							</span>
+						</td>
+					</tr>					
+
+					<tr>
+						<td valign="top"><wicket:message key="admin.assignment.infiniteStart" />:</td>
+						<td><input type="checkbox" wicket:id="infiniteStartDate" /></td>
+					</tr>					
+					
+					<tr>
+						<td valign="top"><wicket:message key="admin.assignment.dateEnd" />:</td>
+						<td><input type="text" wicket:id="projectAssignment.dateEnd" />
+						</td>
+					</tr>						
+					
 					<tr>
 						<td>
 							<span wicket:id="serverMessage"></span>

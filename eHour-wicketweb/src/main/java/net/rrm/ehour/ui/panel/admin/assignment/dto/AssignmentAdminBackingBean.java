@@ -41,7 +41,8 @@ public class AssignmentAdminBackingBean extends ProjectAssignment implements Adm
 	private	ProjectAssignment	projectAssignment;
 	private	List<Project>		projects;
 	private	Customer			customer;
-	
+	private	boolean				infiniteStartDate;
+	private	boolean				infiniteEndDate;
 	/**
 	 * 
 	 * @param assignment
@@ -49,6 +50,7 @@ public class AssignmentAdminBackingBean extends ProjectAssignment implements Adm
 	public AssignmentAdminBackingBean(ProjectAssignment assignment)
 	{
 		projectAssignment = assignment;
+		this.customer = (assignment.getProject() != null) ? assignment.getProject().getCustomer() : null;
 	}
 	
 	/**
@@ -108,5 +110,37 @@ public class AssignmentAdminBackingBean extends ProjectAssignment implements Adm
 	public void setCustomer(Customer customer)
 	{
 		this.customer = customer;
+	}
+
+	/**
+	 * @return the infiniteStartDate
+	 */
+	public boolean isInfiniteStartDate()
+	{
+		return infiniteStartDate;
+	}
+
+	/**
+	 * @param infiniteStartDate the infiniteStartDate to set
+	 */
+	public void setInfiniteStartDate(boolean infiniteStartDate)
+	{
+		this.infiniteStartDate = infiniteStartDate;
+	}
+
+	/**
+	 * @return the infiniteEndDate
+	 */
+	public boolean isInfiniteEndDate()
+	{
+		return infiniteEndDate;
+	}
+
+	/**
+	 * @param infiniteEndDate the infiniteEndDate to set
+	 */
+	public void setInfiniteEndDate(boolean infiniteEndDate)
+	{
+		this.infiniteEndDate = infiniteEndDate;
 	}
 }

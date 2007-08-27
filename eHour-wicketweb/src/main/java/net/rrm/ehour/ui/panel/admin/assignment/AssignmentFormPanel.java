@@ -23,23 +23,36 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
+import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.util.time.Duration;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 
 /**
  * Assignment form
@@ -48,7 +61,11 @@ import org.apache.wicket.util.time.Duration;
 public class AssignmentFormPanel extends Panel
 {
 	private static final long serialVersionUID = -85486044225123470L;
-
+	private	final static Logger	logger = Logger.getLogger(AssignmentFormPanel.class);
+	
+	@SpringBean
+	private CustomerService	customerService;
+	
 	/**
 	 * 
 	 * @param id
@@ -57,7 +74,7 @@ public class AssignmentFormPanel extends Panel
 	 * @param assignmenTypes
 	 */
 	public AssignmentFormPanel(String id,
-								CompoundPropertyModel model,
+								final CompoundPropertyModel model,
 								List<Customer> customers,
 								List<ProjectAssignmentType> assignmenTypes)
 	{
@@ -70,29 +87,127 @@ public class AssignmentFormPanel extends Panel
 		
 		final Form form = new Form("assignmentForm");
 		
-		// customer
-		DropDownChoice customerChoice = new DropDownChoice("projectAssignment.project.customer", customers, new ChoiceRenderer("fullName"));
-		customerChoice.setRequired(true);
-		customerChoice.setLabel(new ResourceModel("admin.project.projectManager"));
-		form.add(customerChoice);
-		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerChoice));
+		// setup the customer & project dropdowns
+		addCustomerAndProjectChoices(form, model, customers);
+		
+		// assignment type
+		DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmenTypes, new ChoiceRenderer("assignmentType"));
+		assignmentTypeChoice.setRequired(true);
+		assignmentTypeChoice.setNullValid(false);
+		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.assignmentType"));
+		form.add(assignmentTypeChoice);
+		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
+		
+		// start date
+		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", "dd/MM/yyyy");
+		dateStart.setRequired(true);
+		dateStart.setOutputMarkupId(true);
+		dateStart.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteStartDate());
+		final WebMarkupContainer	hider = new WebMarkupContainer("startDateHider");
+		hider.setOutputMarkupId(true);
+		hider.add(dateStart);
+		form.add(hider);
+		
+		
+		// infinite start date toggle
+		AjaxCheckBox infiniteStart = new AjaxCheckBox("infiniteStartDate")
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				target.addComponent(hider);
+				dateStart.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteStartDate());
+			}
+		};
+		
+		form.add(infiniteStart);
 
-		// project
-//		DropDownChoice projectChoice = new DropDownChoice("projects", , new ChoiceRenderer("fullName"));
-//		customerChoice.setRequired(true);
-//		customerChoice.setLabel(new ResourceModel("admin.project.projectManager"));
-//		form.add(customerChoice);
-//		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerChoice));
-		
-		
+		// end date
+		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", "dd/MM/yyyy");
+		dateEnd.setRequired(true);
+		form.add(dateEnd);
+
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage"));
 		
 		//
 		FormUtil.setSubmitActions(form, true);
-		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
-		
-		greyBorder.add(form);
+//		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
 
+		greyBorder.add(form);
+	}
+	
+	/**
+	 * Add customer & project dd's
+	 * @param form
+	 * @param model
+	 * @param customers
+	 */
+	private void addCustomerAndProjectChoices(Form form, 
+											final CompoundPropertyModel model,
+											List<Customer> customers)
+	{
+		// customer
+		DropDownChoice customerChoice = new DropDownChoice("customer", customers, new ChoiceRenderer("fullName"));
+		customerChoice.setRequired(true);
+		customerChoice.setNullValid(false);
+		customerChoice.setLabel(new ResourceModel("admin.assignment.customer"));
+		form.add(customerChoice);
+		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerChoice));
+
+		// project model
+		IModel	projectChoices = new AbstractReadOnlyModel()
+		{
+			@Override
+			public Object getObject()
+			{
+				// need to re-get it, project set is lazy
+				Customer selectedCustomer = ((AssignmentAdminBackingBean)model.getObject()).getCustomer();
+				Customer customer = null;
+				
+				if (selectedCustomer != null)
+				{
+					customer = customerService.getCustomer(selectedCustomer.getCustomerId());
+				}
+				
+				if (customer == null || customer.getProjects() == null || customer.getProjects().size() == 0)
+				{
+					logger.debug("Empty project set for customer: " + customer);
+					return Collections.EMPTY_LIST;
+				}
+				else
+				{
+					logger.debug("Project set size for customer: " + customer.getProjects().size());
+					return new ArrayList<Project>(customer.getProjects());
+				}
+			}
+		};
+		
+		// project
+		final DropDownChoice projectChoice = new DropDownChoice("projectAssignment.project", projectChoices, new ChoiceRenderer("fullname"));
+		projectChoice.setRequired(true);
+		projectChoice.setOutputMarkupId(true);
+		projectChoice.setNullValid(false);
+		projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
+		form.add(projectChoice);
+		form.add(new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice));
+		
+		// make project update automatically when customers changed
+		customerChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+                target.addComponent(projectChoice);
+            }
+        });		
+	}
+	
+	private class DateHider extends WebMarkupContainer
+	{
+
+		public DateHider(String id)
+		{
+			super(id);
+		}
 	}
 }
