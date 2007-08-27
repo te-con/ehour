@@ -36,6 +36,8 @@ import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.CommonStaticData;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -44,6 +46,7 @@ import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -84,6 +87,8 @@ public class AssignmentFormPanel extends Panel
 	{
 		super(id, model);
 		
+		
+		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 		
@@ -113,6 +118,11 @@ public class AssignmentFormPanel extends Panel
 		form.add(hourlyRate);
 		form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
 
+		// and currency
+		String currency = ((EhourWebSession)getSession()).getEhourConfig().getCurrency();
+		form.add(new Label("currency", CommonStaticData.getCurrencies().get(currency)));
+		
+		
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage"));
 		
