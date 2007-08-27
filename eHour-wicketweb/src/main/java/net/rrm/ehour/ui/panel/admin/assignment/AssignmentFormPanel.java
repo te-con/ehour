@@ -42,7 +42,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -98,34 +97,8 @@ public class AssignmentFormPanel extends Panel
 		form.add(assignmentTypeChoice);
 		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
 		
-		// start date
-		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", "dd/MM/yyyy");
-		dateStart.setRequired(true);
-		dateStart.setOutputMarkupId(true);
-		dateStart.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteStartDate());
-		final WebMarkupContainer	hider = new WebMarkupContainer("startDateHider");
-		hider.setOutputMarkupId(true);
-		hider.add(dateStart);
-		form.add(hider);
-		
-		
-		// infinite start date toggle
-		AjaxCheckBox infiniteStart = new AjaxCheckBox("infiniteStartDate")
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.addComponent(hider);
-				dateStart.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteStartDate());
-			}
-		};
-		
-		form.add(infiniteStart);
-
-		// end date
-		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", "dd/MM/yyyy");
-		dateEnd.setRequired(true);
-		form.add(dateEnd);
+		// add start & end dates
+		addDates(form, model);
 
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage"));
@@ -138,13 +111,78 @@ public class AssignmentFormPanel extends Panel
 	}
 	
 	/**
+	 * Add start & end dates
+	 * @param form
+	 * @param model
+	 */
+	private void addDates(Form form, final IModel model)
+	{
+		// start date
+		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", "dd/MM/yyyy");
+		dateStart.setRequired(true);
+		
+		final WebMarkupContainer	startDateHider = new WebMarkupContainer("startDateHider");
+		startDateHider.setOutputMarkupId(true);
+		
+		// the inner hider is just there to hide the <br /> as well
+		final WebMarkupContainer	innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
+		innerStartDateHider.setOutputMarkupId(true);
+		innerStartDateHider.add(dateStart);
+		innerStartDateHider.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteStartDate());
+		startDateHider.add(innerStartDateHider);
+
+		form.add(startDateHider);
+		
+		// infinite start date toggle
+		AjaxCheckBox infiniteStart = new AjaxCheckBox("infiniteStartDate")
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				target.addComponent(startDateHider);
+				innerStartDateHider.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteStartDate());
+			}
+		};
+		
+		startDateHider.add(infiniteStart);
+
+		// end date
+		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", "dd/MM/yyyy");
+		dateEnd.setRequired(true);
+		
+		final WebMarkupContainer	endDateHider = new WebMarkupContainer("endDateHider");
+		endDateHider.setOutputMarkupId(true);
+		
+		// the inner hider is just there to hide the <br /> as well
+		final WebMarkupContainer	innerEndDateHider = new WebMarkupContainer("innerEndDateHider");
+		innerEndDateHider.setOutputMarkupId(true);
+		innerEndDateHider.add(dateEnd);
+		innerEndDateHider.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteEndDate());
+		endDateHider.add(innerEndDateHider);		
+		form.add(endDateHider);	
+		
+		// infinite end date toggle
+		AjaxCheckBox infiniteEnd = new AjaxCheckBox("infiniteEndDate")
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				target.addComponent(endDateHider);
+				innerEndDateHider.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteEndDate());
+			}
+		};	
+
+		endDateHider.add(infiniteEnd);
+	}
+	
+	/**
 	 * Add customer & project dd's
 	 * @param form
 	 * @param model
 	 * @param customers
 	 */
 	private void addCustomerAndProjectChoices(Form form, 
-											final CompoundPropertyModel model,
+											final IModel model,
 											List<Customer> customers)
 	{
 		// customer

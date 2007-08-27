@@ -47,19 +47,24 @@
 					<tr>
 						<td valign="top"><wicket:message key="admin.assignment.dateStart" />:</td>
 						<td><span wicket:id="startDateHider">
-								<input class="textInputSmall" style="width: 15em"  type="text" wicket:id="projectAssignment.dateStart" />
+								<span wicket:id="innerStartDateHider">
+									<input class="textInputSmall" style="width: 15em; clear: all"  type="text" wicket:id="projectAssignment.dateStart" />
+									<br />
+								</span>
+								<input type="checkbox" wicket:id="infiniteStartDate" /> <wicket:message key="admin.assignment.infiniteStart" />
 							</span>
 						</td>
-					</tr>					
-
-					<tr>
-						<td valign="top"><wicket:message key="admin.assignment.infiniteStart" />:</td>
-						<td><input type="checkbox" wicket:id="infiniteStartDate" /></td>
 					</tr>					
 					
 					<tr>
 						<td valign="top"><wicket:message key="admin.assignment.dateEnd" />:</td>
-						<td><input type="text" wicket:id="projectAssignment.dateEnd" />
+						<td><span wicket:id="endDateHider">
+								<span wicket:id="innerEndDateHider">
+									<input class="textInputSmall" style="width: 15em; clear: all"  type="text" wicket:id="projectAssignment.dateEnd" />
+									<br />
+								</span>
+								<input type="checkbox" wicket:id="infiniteEndDate" /> <wicket:message key="admin.assignment.infiniteEnd" />
+							</span>
 						</td>
 					</tr>						
 					
