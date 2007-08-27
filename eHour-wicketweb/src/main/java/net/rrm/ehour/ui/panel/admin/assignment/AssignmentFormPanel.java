@@ -40,17 +40,22 @@ import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.time.Duration;
+import org.apache.wicket.validation.validator.NumberValidator;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 
 /**
@@ -93,21 +98,43 @@ public class AssignmentFormPanel extends Panel
 		DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmenTypes, new ChoiceRenderer("assignmentType"));
 		assignmentTypeChoice.setRequired(true);
 		assignmentTypeChoice.setNullValid(false);
-		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.assignmentType"));
+		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
+		assignmentTypeChoice.add(getValidateBehavior(form));
 		form.add(assignmentTypeChoice);
 		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
 		
 		// add start & end dates
 		addDates(form, model);
+		
+		// add hourly rate
+		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate");
+		hourlyRate.add(getValidateBehavior(form));
+		hourlyRate.add(NumberValidator.POSITIVE);
+		form.add(hourlyRate);
+		form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
 
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage"));
 		
 		//
 		FormUtil.setSubmitActions(form, true);
+		
+		// can't due the ajax dropdowns, will overwrite the onchange otherwise
 //		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
 
 		greyBorder.add(form);
+	}
+	
+	/**
+	 * Get validate behavior
+	 * @param form
+	 * @return
+	 */
+	private AjaxFormSubmitBehavior getValidateBehavior(Form form)
+	{
+		AjaxFormValidatingBehavior behavior = new AjaxFormValidatingBehavior(form, "onchange");
+		behavior.setThrottleDelay(Duration.ONE_SECOND);
+		return behavior;
 	}
 	
 	/**
@@ -238,14 +265,5 @@ public class AssignmentFormPanel extends Panel
                 target.addComponent(projectChoice);
             }
         });		
-	}
-	
-	private class DateHider extends WebMarkupContainer
-	{
-
-		public DateHider(String id)
-		{
-			super(id);
-		}
 	}
 }

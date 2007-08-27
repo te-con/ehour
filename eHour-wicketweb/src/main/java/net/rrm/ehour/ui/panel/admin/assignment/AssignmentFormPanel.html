@@ -69,6 +69,13 @@
 					</tr>						
 					
 					<tr>
+						<td valign="top"><wicket:message key="admin.assignment.rate" />:</td>
+						<td><input class="textInputSmall" wicket:id="projectAssignment.hourlyRate" style="width: 5em" />
+							<span wicket:id="rateValidationError"></span>
+						</td>
+					</tr>
+
+					<tr>
 						<td>
 							<span wicket:id="serverMessage"></span>
 							<a class="submitButtonLightBackground" wicket:id="deleteButton" />
