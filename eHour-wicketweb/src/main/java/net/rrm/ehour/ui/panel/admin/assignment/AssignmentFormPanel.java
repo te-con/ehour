@@ -35,6 +35,7 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.assignment.validator.DateOverlapValidator;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -63,9 +64,10 @@ import org.apache.wicket.validation.validator.NumberValidator;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 
 /**
- * Assignment form (and yes, it's a little big)
+ * Assignment form (and yes, it's a little (too) big)
  **/
 
+@SuppressWarnings("serial")
 public class AssignmentFormPanel extends Panel
 {
 	private static final long serialVersionUID = -85486044225123470L;
@@ -155,10 +157,13 @@ public class AssignmentFormPanel extends Panel
 	{
 		// start date
 		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", "dd/MM/yyyy");
+		dateStart.add(getValidateBehavior(form));
 		dateStart.setRequired(true);
 		
 		final WebMarkupContainer	startDateHider = new WebMarkupContainer("startDateHider");
 		startDateHider.setOutputMarkupId(true);
+		
+		startDateHider.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart));
 		
 		// the inner hider is just there to hide the <br /> as well
 		final WebMarkupContainer	innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
@@ -184,6 +189,7 @@ public class AssignmentFormPanel extends Panel
 
 		// end date
 		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", "dd/MM/yyyy");
+		dateEnd.add(getValidateBehavior(form));
 		dateEnd.setRequired(true);
 		
 		final WebMarkupContainer	endDateHider = new WebMarkupContainer("endDateHider");
@@ -209,6 +215,8 @@ public class AssignmentFormPanel extends Panel
 		};	
 
 		endDateHider.add(infiniteEnd);
+		
+		form.add(new DateOverlapValidator(dateStart, dateEnd));
 	}
 	
 	/**

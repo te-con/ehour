@@ -43,6 +43,7 @@ import org.apache.wicket.model.ResourceModel;
  * Assignment panel displaying the list and the tabbed form for adding/editing
  **/
 
+@SuppressWarnings("serial")
 public class AssignmentPanel extends Panel
 {
 	private static final long serialVersionUID = -3721224427697057895L;
