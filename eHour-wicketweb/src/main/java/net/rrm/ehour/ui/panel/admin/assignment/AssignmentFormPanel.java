@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.domain.Project;
@@ -35,6 +36,7 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
@@ -77,8 +79,8 @@ public class AssignmentFormPanel extends Panel
 	private	final static Logger	logger = Logger.getLogger(AssignmentFormPanel.class);
 	
 	@SpringBean
-	private CustomerService		customerService;
-	
+	private CustomerService	customerService;
+	private	EhourConfig		config;
 	/**
 	 * 
 	 * @param id
@@ -93,6 +95,8 @@ public class AssignmentFormPanel extends Panel
 	{
 		super(id, model);
 		
+		config = ((EhourWebSession)getSession()).getEhourConfig();
+		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 		
@@ -106,14 +110,21 @@ public class AssignmentFormPanel extends Panel
 		// setup the customer & project dropdowns
 		addCustomerAndProjectChoices(form, model, customers, projectDependentComponents);
 		
-
+		// add role
+		TextField role = new TextField("projectAssignment.role");
+		form.add(role);
+		
 		// add start & end dates
 		addDates(form, model);
 		
+		
 		// add hourly rate
-		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate");
+		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate",
+											new FloatModel(new PropertyModel(model, "projectAssignment.hourlyRate"), config, null));
+		hourlyRate.setType(Float.class);
 		hourlyRate.add(FormUtil.getValidateBehavior(form));
 		hourlyRate.add(NumberValidator.POSITIVE);
+//		hourlyRate.setRequired(false);
 		form.add(hourlyRate);
 		form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
 
@@ -152,7 +163,9 @@ public class AssignmentFormPanel extends Panel
 		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
 		
 		// allotted hours 
-		final TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours");
+		final TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours",
+												new FloatModel(new PropertyModel(model, "projectAssignment.allottedHours"), config, null));
+		allottedHours.setType(float.class);
 		allottedHours.add(FormUtil.getValidateBehavior(form));
 		allottedHours.add(NumberValidator.POSITIVE);
 		allottedHours.setOutputMarkupId(true);
@@ -168,7 +181,9 @@ public class AssignmentFormPanel extends Panel
 		form.add(allottedRow);
 		
 		// overrun hours 
-		final TextField overrunHours = new RequiredTextField("projectAssignment.allowedOverrun");
+		final TextField overrunHours = new RequiredTextField("projectAssignment.allowedOverrun",
+											new FloatModel(new PropertyModel(model, "projectAssignment.allowedOverrun"), config, null));
+		overrunHours.setType(float.class);
 		overrunHours.add(FormUtil.getValidateBehavior(form));
 		overrunHours.add(NumberValidator.POSITIVE);
 		overrunHours.setOutputMarkupId(true);
