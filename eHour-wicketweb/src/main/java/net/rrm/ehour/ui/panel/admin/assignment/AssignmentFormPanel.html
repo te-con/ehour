@@ -10,7 +10,7 @@
 		<br clear="all" />
 		<div wicket:id="border">
 			<form wicket:id="assignmentForm">
-				<table class="contentTable" style="padding-right: 10px; width: 300px">
+				<table class="contentTable" style="padding-right: 10px; width: 400px">
 					<tr>
 						<td valign="top"><wicket:message key="admin.assignment.customer" />:</td>
 						<td><select class="textInputSmall" style="width: 15em" wicket:id="customer"></select>
@@ -53,6 +53,13 @@
 			 				<span wicket:id="overrunHoursValidationError"></span>
 			 			</td>
 			 		</tr>			 		
+
+			 		<tr wicket:id="notifyPmRow">
+			 			<td valign="top"><wicket:message key="admin.assignment.notifyPm" /> :</td>
+			 			<td><input type="checkbox" wicket:id="projectAssignment.notifyPm"  />
+			 				<span wicket:id="notifyDisabled"></span>
+			 			</td>
+			 		</tr>
 
 					<tr>
 						<td colspan="2">

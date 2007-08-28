@@ -66,6 +66,17 @@ public class AssignmentAdminBackingBean extends ProjectAssignment implements Adm
 	}
 	
 	/**
+	 * Can notify pm be enabled? is a pm assigned?
+	 * @return
+	 */
+	public boolean isNotifyPmEnabled()
+	{
+		return (projectAssignment.getProject() != null)
+				? projectAssignment.getProject().getProjectManager() != null
+				: false;
+	}
+	
+	/**
 	 * Show overrun hours?
 	 * @return
 	 */

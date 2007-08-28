@@ -43,13 +43,14 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -67,7 +68,7 @@ import org.apache.wicket.validation.validator.NumberValidator;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 
 /**
- * Assignment form (and yes, it's a little (too) big)
+ * Assignment form (and yes, it's a little (too) big & complex)
  **/
 
 @SuppressWarnings("serial")
@@ -101,12 +102,13 @@ public class AssignmentFormPanel extends Panel
 		
 		final Form form = new Form("assignmentForm");
 		
-		// setup the customer & project dropdowns
-		addCustomerAndProjectChoices(form, model, customers);
-		
 		// assignment type
-		addAssignmentType(form, assignmenTypes, model);
+		Component[] projectDependentComponents = addAssignmentType(form, assignmenTypes, model);
+
+		// setup the customer & project dropdowns
+		addCustomerAndProjectChoices(form, model, customers, projectDependentComponents);
 		
+
 		// add start & end dates
 		addDates(form, model);
 		
@@ -135,11 +137,12 @@ public class AssignmentFormPanel extends Panel
 	}
 	
 	/**
-	 * Add assignment types
+	 * Add assignment types and options
 	 * @param form
 	 * @param assignmenTypes
+	 * @return the notify pm checkbox as it needs to be refreshed by the project dropdown
 	 */
-	private void addAssignmentType(final Form form, List<ProjectAssignmentType> assignmenTypes, IModel model)
+	private Component[] addAssignmentType(final Form form, List<ProjectAssignmentType> assignmenTypes, IModel model)
 	{
 		// assignment type
 		final DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmenTypes, new ProjectAssignmentTypeRenderer(this));
@@ -151,7 +154,7 @@ public class AssignmentFormPanel extends Panel
 		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
 		
 		// allotted hours 
-		final TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours");
+		TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours");
 		allottedHours.add(FormUtil.getValidateBehavior(form));
 		allottedHours.add(NumberValidator.POSITIVE);
 		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
@@ -165,7 +168,7 @@ public class AssignmentFormPanel extends Panel
 		form.add(allottedRow);
 		
 		// overrun hours 
-		final TextField overrunHours = new RequiredTextField("projectAssignment.allowedOverrun");
+		TextField overrunHours = new RequiredTextField("projectAssignment.allowedOverrun");
 		overrunHours.add(FormUtil.getValidateBehavior(form));
 		overrunHours.add(NumberValidator.POSITIVE);
 		overrunHours.setLabel(new ResourceModel("admin.assignment.allowedOverrun"));
@@ -178,14 +181,36 @@ public class AssignmentFormPanel extends Panel
 		overrunRow.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), new PropertyModel(model, "showOverrunHours")));
 		form.add(overrunRow);
 		
+		// notify PM when possible
+		CheckBox notifyPm = new CheckBox("projectAssignment.notifyPm");
+		notifyPm.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), new PropertyModel(model, "notifyPmEnabled")));
+		notifyPm.setOutputMarkupId(true);
+		
+		Label notifyDisabled = new Label("notifyDisabled", new ResourceModel("admin.assignment.cantNotify"));
+		notifyDisabled.add(new DynamicAttributeModifier("style", true, 
+														new Model("display: none;"), new PropertyModel(model, "notifyPmEnabled"), true));
+		notifyDisabled.setOutputMarkupId(true);
+		
+		// notify PM row
+		final WebMarkupContainer notifyPmRow = new WebMarkupContainer("notifyPmRow");
+		notifyPmRow.setOutputMarkupId(true);
+		notifyPmRow.add(notifyPm);
+		notifyPmRow.add(notifyDisabled);
+		notifyPmRow.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), new PropertyModel(model, "showAllottedHours")));
+		form.add(notifyPmRow);
+		
+		
 		assignmentTypeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
 			protected void onUpdate(AjaxRequestTarget target)
             {
 				target.addComponent(allottedRow);
 				target.addComponent(overrunRow);
+				target.addComponent(notifyPmRow);
             }
         });	
+		
+		return new Component[]{notifyPm, notifyDisabled};
 	}
 
 	/**
@@ -276,7 +301,8 @@ public class AssignmentFormPanel extends Panel
 	 */
 	private void addCustomerAndProjectChoices(Form form, 
 											final IModel model,
-											List<Customer> customers)
+											List<Customer> customers,
+											final Component[] projectDependentComponents)
 	{
 		// customer
 		DropDownChoice customerChoice = new DropDownChoice("customer", customers, new ChoiceRenderer("fullName"));
@@ -308,8 +334,7 @@ public class AssignmentFormPanel extends Panel
 				}
 				else
 				{
-					logger.debug("Project set size for customer: " + customer.getProjects().size());
-					return new ArrayList<Project>(customer.getProjects());
+					return new ArrayList<Project>(customer.getActiveProjects());
 				}
 			}
 		};
@@ -330,6 +355,17 @@ public class AssignmentFormPanel extends Panel
 			protected void onUpdate(AjaxRequestTarget target)
             {
                 target.addComponent(projectChoice);
+            }
+        });	
+
+		projectChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				for (Component component : projectDependentComponents)
+				{
+					target.addComponent(component);	
+				}
             }
         });	
 		

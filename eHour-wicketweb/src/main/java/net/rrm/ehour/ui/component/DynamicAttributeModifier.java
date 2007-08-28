@@ -38,7 +38,7 @@ public class DynamicAttributeModifier extends AttributeModifier
 	 */
 	private static final long serialVersionUID = 4038138991690100212L;
 	private IModel	enablingModel;
-	
+	private	boolean	reverseResult;
 	/**
 	 * 
 	 * @param attribute
@@ -49,10 +49,24 @@ public class DynamicAttributeModifier extends AttributeModifier
 	public DynamicAttributeModifier(String attribute, boolean addAttributeIfNotPresent,
 									IModel replaceModel, IModel enablingModel)
 	{
+		this(attribute, addAttributeIfNotPresent, replaceModel, enablingModel, false);
+	}
+
+	/**
+	 * 
+	 * @param attribute
+	 * @param addAttributeIfNotPresent
+	 * @param replaceModel
+	 * @param enablingModel
+	 * @param inverseResult inverse the result of the model
+	 */
+	public DynamicAttributeModifier(String attribute, boolean addAttributeIfNotPresent,
+			IModel replaceModel, IModel enablingModel, boolean reverseResult)
+	{
 		super(attribute, addAttributeIfNotPresent, replaceModel);
 		this.enablingModel = enablingModel;
-	}
-	
+		this.reverseResult = reverseResult;
+	}	
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.AttributeModifier#isEnabled(org.apache.wicket.Component)
@@ -60,6 +74,8 @@ public class DynamicAttributeModifier extends AttributeModifier
 	@Override
 	public boolean isEnabled(Component comp)
 	{
-		return !((Boolean)enablingModel.getObject()).booleanValue();
+		return (reverseResult) 
+				? ((Boolean)enablingModel.getObject()).booleanValue() 
+				: !((Boolean)enablingModel.getObject()).booleanValue();
 	}
 }
