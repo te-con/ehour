@@ -124,12 +124,11 @@ public class AssignmentFormPanel extends Panel
 		hourlyRate.setType(Float.class);
 		hourlyRate.add(FormUtil.getValidateBehavior(form));
 		hourlyRate.add(NumberValidator.POSITIVE);
-//		hourlyRate.setRequired(false);
 		form.add(hourlyRate);
 		form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
 
 		// and currency
-		String currency = ((EhourWebSession)getSession()).getEhourConfig().getCurrency();
+		String currency = config.getCurrency();
 		form.add(new Label("currency", CommonStaticData.getCurrencies().get(currency)));
 		
 		

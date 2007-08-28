@@ -80,7 +80,6 @@ public class FormUtil
 			@Override
             protected void onError(AjaxRequestTarget target, Form form)
 			{
-				System.err.println("err");
 				target.addComponent(form);
             }
 			

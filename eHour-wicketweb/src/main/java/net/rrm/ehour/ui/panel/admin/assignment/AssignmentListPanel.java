@@ -54,7 +54,7 @@ public class AssignmentListPanel extends Panel
 	{
 		super(id);
 		
-		List<ProjectAssignment >assignments = projectService.getAllProjectsForUser(user.getUserId());
+		List<ProjectAssignment> assignments = projectService.getAllProjectsForUser(user.getUserId());
 		
 		if (assignments != null && assignments.size() > 0)
 		{

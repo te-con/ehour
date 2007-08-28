@@ -31,6 +31,8 @@ import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
+import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.util.CommonStaticData;
@@ -47,6 +49,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -55,6 +59,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Project assignments page
  **/
 
+@SuppressWarnings("serial")
 public class AssignmentAdmin extends BaseAdminPage
 {
 	private static final long serialVersionUID = 566527529422873370L;
@@ -118,6 +123,13 @@ public class AssignmentAdmin extends BaseAdminPage
 				userListView.setList(users);
 				break;
 			}
+			case CommonStaticData.AJAX_FORM_SUBMIT:
+			{
+				AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
+				
+				System.out.println(backingBean.getProjectAssignment());
+				break;
+			}			
 		}
 	}	
 	
