@@ -156,12 +156,6 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.4.0</version>
 		</dependency>
-
-		<!-- only for profiling/dev! -->		
-		<dependency>
-		    <groupId>net.sourceforge.messadmin</groupId>
-		    <artifactId>MessAdmin-Core</artifactId>
-		    <version>4.0</version>
-		</dependency>		
+		
 	</dependencies>
 </project>

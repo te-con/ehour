@@ -23,15 +23,25 @@
 
 package net.rrm.ehour;
 
+import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
-import org.mortbay.xml.XmlConfiguration;
+import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.webapp.WebAppContext;
 
 /**
- * TODO 
+ * eHour standalone kickstarter
  **/
 
 public class KickStarter
 {
+	// TODO make configurable
+	public final static int PORT	= 8000;
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	
 	public void start() throws Exception
 	{
 //		initDerby();
@@ -45,11 +55,19 @@ public class KickStarter
 	
 	private void startJetty() throws Exception
 	{
-		Server server = new Server() ;
-		XmlConfiguration xmlConfig = new XmlConfiguration(ClassLoader.getSystemResource("jetty.xml"));
-		xmlConfig.configure(server);
+		Server server = new Server();
+        Connector connector = new SelectChannelConnector();
+        connector.setPort(PORT);
+        connector.setHost("127.0.0.1");
+        server.addConnector(connector);		
 		
-		server.start();
+        WebAppContext wac = new WebAppContext();
+        wac.setContextPath("/");
+        wac.setWar("../../ehour/eHour-wicketweb-0.7-SNAPSHOT.war");
+        server.setHandler(wac);
+        server.setStopAtShutdown(true);
+        
+        server.start();
 	}
 	
 	/**

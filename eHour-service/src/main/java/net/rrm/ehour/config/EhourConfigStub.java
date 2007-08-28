@@ -38,7 +38,7 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private static final long serialVersionUID = 3017492603595731493L;
 	private	String[] 	availableTranslations;
 	private	int			completeDayHours;
-	private	String		currency;
+	private	String		currency = "EUR";
 	private	String		localeCountry;
 	private String 		localeLanguage;
 	private	String		timeZone;
