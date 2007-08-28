@@ -160,7 +160,7 @@ public class AssignmentFormPanel extends Panel
 		allottedHours.add(NumberValidator.POSITIVE);
 		allottedHours.setOutputMarkupId(true);
 		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
-		allottedHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
+		allottedHours.setEnabled(((Boolean)showAllottedHoursModel.getObject()).booleanValue());
 		
 		// allotted hours row
 		final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
@@ -209,7 +209,7 @@ public class AssignmentFormPanel extends Panel
 			protected void onUpdate(AjaxRequestTarget target)
             {
 				// to disable the required validation
-				allottedHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
+				allottedHours.setEnabled(((Boolean)showAllottedHoursModel.getObject()).booleanValue());
 				overrunHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
 				target.addComponent(allottedHours);
 				target.addComponent(overrunHours);
