@@ -127,9 +127,6 @@ public class AssignmentFormPanel extends Panel
 		
 		//
 		FormUtil.setSubmitActions(form, true);
-		
-		// TODO fix: can't due the ajax dropdowns, will overwrite the onchange otherwise
-//		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
 
 		greyBorder.add(form);
 	}
@@ -358,7 +355,9 @@ public class AssignmentFormPanel extends Panel
 		projectChoice.add(FormUtil.getValidateBehavior(form));
 		form.add(projectChoice);
 		form.add(new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice));
-		
+
+		customerChoice.add(FormUtil.getValidateBehavior(form));
+
 		// make project update automatically when customers changed
 		customerChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
@@ -367,6 +366,9 @@ public class AssignmentFormPanel extends Panel
                 target.addComponent(projectChoice);
             }
         });	
+
+
+		projectChoice.add(FormUtil.getValidateBehavior(form));
 
 		// update any components that showed interest
 		projectChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
@@ -379,8 +381,5 @@ public class AssignmentFormPanel extends Panel
 				}
             }
         });	
-		
-		// TODO fix: adding validation seems to remove the updating behaviour :(
-//		customerChoice.add(getValidateBehavior(form));
 	}
 }
