@@ -43,6 +43,7 @@ public class AssignmentAdminBackingBean extends ProjectAssignment implements Adm
 	private	Customer			customer;
 	private	boolean				infiniteStartDate;
 	private	boolean				infiniteEndDate;
+	
 	/**
 	 * 
 	 * @param assignment
@@ -51,6 +52,17 @@ public class AssignmentAdminBackingBean extends ProjectAssignment implements Adm
 	{
 		projectAssignment = assignment;
 		this.customer = (assignment.getProject() != null) ? assignment.getProject().getCustomer() : null;
+	}
+	
+	/**
+	 * Show allotted hours?
+	 * @return
+	 */
+	public boolean isShowAllottedHours()
+	{
+		return (projectAssignment.getAssignmentType() != null)
+					? projectAssignment.getAssignmentType().isAllottedType()
+					: false;
 	}
 	
 	/**

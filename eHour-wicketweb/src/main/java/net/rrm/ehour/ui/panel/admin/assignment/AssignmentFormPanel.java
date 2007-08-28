@@ -33,6 +33,7 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.assignment.validator.DateOverlapValidator;
@@ -42,24 +43,26 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonStaticData;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.validator.NumberValidator;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 
@@ -74,7 +77,8 @@ public class AssignmentFormPanel extends Panel
 	private	final static Logger	logger = Logger.getLogger(AssignmentFormPanel.class);
 	
 	@SpringBean
-	private CustomerService	customerService;
+	private CustomerService		customerService;
+	private	WebMarkupContainer	assignmentOptions;
 	
 	/**
 	 * 
@@ -101,20 +105,14 @@ public class AssignmentFormPanel extends Panel
 		addCustomerAndProjectChoices(form, model, customers);
 		
 		// assignment type
-		DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmenTypes, new ProjectAssignmentTypeRenderer(this));
-		assignmentTypeChoice.setRequired(true);
-		assignmentTypeChoice.setNullValid(false);
-		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
-		assignmentTypeChoice.add(getValidateBehavior(form));
-		form.add(assignmentTypeChoice);
-		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
+		addAssignmentType(form, assignmenTypes, model);
 		
 		// add start & end dates
 		addDates(form, model);
 		
 		// add hourly rate
 		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate");
-		hourlyRate.add(getValidateBehavior(form));
+		hourlyRate.add(FormUtil.getValidateBehavior(form));
 		hourlyRate.add(NumberValidator.POSITIVE);
 		form.add(hourlyRate);
 		form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
@@ -130,24 +128,50 @@ public class AssignmentFormPanel extends Panel
 		//
 		FormUtil.setSubmitActions(form, true);
 		
-		// can't due the ajax dropdowns, will overwrite the onchange otherwise
+		// TODO fix: can't due the ajax dropdowns, will overwrite the onchange otherwise
 //		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
 
 		greyBorder.add(form);
 	}
 	
 	/**
-	 * Get validate behavior
+	 * Add assignment types
 	 * @param form
-	 * @return
+	 * @param assignmenTypes
 	 */
-	private AjaxFormSubmitBehavior getValidateBehavior(Form form)
+	private void addAssignmentType(final Form form, List<ProjectAssignmentType> assignmenTypes, IModel model)
 	{
-		AjaxFormValidatingBehavior behavior = new AjaxFormValidatingBehavior(form, "onchange");
-		behavior.setThrottleDelay(Duration.ONE_SECOND);
-		return behavior;
+		// assignment type
+		final DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmenTypes, new ProjectAssignmentTypeRenderer(this));
+		assignmentTypeChoice.setRequired(true);
+		assignmentTypeChoice.setNullValid(false);
+		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
+		assignmentTypeChoice.add(FormUtil.getValidateBehavior(form));
+		form.add(assignmentTypeChoice);
+		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
+		
+		// allotted hours 
+		final TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours");
+		allottedHours.add(FormUtil.getValidateBehavior(form));
+		allottedHours.add(NumberValidator.POSITIVE);
+		
+		// allotted hours row
+		final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
+		allottedRow.setOutputMarkupId(true);
+		allottedRow.add(allottedHours);
+		allottedRow.add(new AjaxFormComponentFeedbackIndicator("allottedHoursValidationError", allottedHours));
+		allottedRow.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), new PropertyModel(model, "showAllottedHours")));
+		form.add(allottedRow);
+		
+		assignmentTypeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				target.addComponent(allottedRow);
+            }
+        });	
 	}
-	
+
 	/**
 	 * Add start & end dates
 	 * TODO create seperate component for date range selection out of it
@@ -158,7 +182,7 @@ public class AssignmentFormPanel extends Panel
 	{
 		// start date
 		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", "dd/MM/yyyy");
-		dateStart.add(getValidateBehavior(form));
+		dateStart.add(FormUtil.getValidateBehavior(form));
 		dateStart.setRequired(true);
 		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
 
@@ -193,7 +217,7 @@ public class AssignmentFormPanel extends Panel
 
 		// end date
 		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", "dd/MM/yyyy");
-		dateEnd.add(getValidateBehavior(form));
+		dateEnd.add(FormUtil.getValidateBehavior(form));
 		dateEnd.setRequired(true);
 		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
 		
@@ -280,7 +304,7 @@ public class AssignmentFormPanel extends Panel
 		projectChoice.setOutputMarkupId(true);
 		projectChoice.setNullValid(false);
 		projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
-		projectChoice.add(getValidateBehavior(form));
+		projectChoice.add(FormUtil.getValidateBehavior(form));
 		form.add(projectChoice);
 		form.add(new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice));
 		
@@ -293,7 +317,7 @@ public class AssignmentFormPanel extends Panel
             }
         });	
 		
-		// adding validation seems to remove the updating behaviour :(
+		// TODO fix: adding validation seems to remove the updating behaviour :(
 //		customerChoice.add(getValidateBehavior(form));
 	}
 }

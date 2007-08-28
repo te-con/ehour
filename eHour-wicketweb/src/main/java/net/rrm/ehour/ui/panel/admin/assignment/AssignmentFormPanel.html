@@ -36,13 +36,14 @@
 						<td><select class="textInputSmall" style="width: 15em" wicket:id="projectAssignment.assignmentType"></select>
 							<span wicket:id="typeValidationError"></span>
 						</td>
-					</tr>					
-
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
 					</tr>
+					
+			 		<tr wicket:id="allottedRow">
+			 			<td><wicket:message key="admin.assignment.timeAllotted" /></td>
+			 			<td><input type="text" wicket:id="projectAssignment.allottedHours" style="width: 15em" class="textInputSmall" />
+			 				<span wicket:id="allottedHoursValidationError"></span>
+			 			</td>
+			 		</tr>
 
 					<tr>
 						<td valign="top"><wicket:message key="admin.assignment.dateStart" />:</td>
@@ -97,6 +98,7 @@
 				</table>
 			</form>		
 		</div>
+
 </wicket:panel>
 
 </body>

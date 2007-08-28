@@ -65,7 +65,7 @@ public class ProjectAssignmentTypeRenderer implements IChoiceRenderer
 			switch (pat.getAssignmentTypeId().intValue())
 			{
 				case EhourConstants.ASSIGNMENT_DATE:
-					key = "assignment.allotted";
+					key = "assignment.dateRange";
 					break;
 				case EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED:
 					key = "assignment.allottedFixed";
