@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.assignment.validator;
+package net.rrm.ehour.ui.validator;
 
 import java.util.Date;
 

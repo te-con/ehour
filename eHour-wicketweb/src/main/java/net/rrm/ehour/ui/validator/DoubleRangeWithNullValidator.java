@@ -33,9 +33,6 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 
 public class DoubleRangeWithNullValidator extends AbstractValidator implements INullAcceptingValidator
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8111638763473340175L;
 
 	private double minimum;
