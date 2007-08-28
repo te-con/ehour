@@ -1,5 +1,6 @@
 package net.rrm.ehour.customer.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import net.rrm.ehour.domain.DomainObject;
@@ -128,6 +129,26 @@ public class Customer extends DomainObject<Integer, Customer>
 	public Set<Project> getProjects()
 	{
 		return projects;
+	}
+	
+	/**
+	 * Get only active projects
+	 * @return
+	 */
+	public Set<Project> getActiveProjects()
+	{
+		Set<Project> activeProjects = new HashSet<Project>();
+		
+		for (Project project : getProjects())
+		{
+			if (project.isActive())
+			{
+				activeProjects.add(project);
+			}
+		}
+		
+		return activeProjects;
+		
 	}
 
 	/**
