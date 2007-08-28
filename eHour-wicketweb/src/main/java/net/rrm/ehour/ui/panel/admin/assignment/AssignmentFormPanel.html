@@ -39,17 +39,32 @@
 					</tr>
 					
 			 		<tr wicket:id="allottedRow">
-			 			<td><wicket:message key="admin.assignment.timeAllotted" /></td>
-			 			<td><input type="text" wicket:id="projectAssignment.allottedHours" style="width: 15em" class="textInputSmall" />
+			 			<td valign="top"><wicket:message key="admin.assignment.timeAllotted" /> :</td>
+			 			<td><input type="text" wicket:id="projectAssignment.allottedHours" style="width: 5em" class="textInputSmall" />
+			 				<wicket:message key="hours" />
 			 				<span wicket:id="allottedHoursValidationError"></span>
 			 			</td>
 			 		</tr>
+			 		
+			 		<tr wicket:id="overrunRow">
+			 			<td valign="top"><wicket:message key="admin.assignment.allowedOverrun" /> :</td>
+			 			<td><input type="text" wicket:id="projectAssignment.allowedOverrun" style="width: 5em" class="textInputSmall" />
+			 				<wicket:message key="hours" />
+			 				<span wicket:id="overrunHoursValidationError"></span>
+			 			</td>
+			 		</tr>			 		
+
+					<tr>
+						<td colspan="2">
+							<br />
+						</td>
+					</tr>
 
 					<tr>
 						<td valign="top"><wicket:message key="admin.assignment.dateStart" />:</td>
 						<td><span wicket:id="startDateHider">
 								<span wicket:id="innerStartDateHider">
-									<input class="textInputSmall" style="width: 15em; clear: all"  type="text" wicket:id="projectAssignment.dateStart" />
+									<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="projectAssignment.dateStart" />
 									<br />
 								</span>
 								<input type="checkbox" wicket:id="infiniteStartDate" /> <wicket:message key="admin.assignment.infiniteStart" />

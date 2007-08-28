@@ -66,6 +66,17 @@ public class AssignmentAdminBackingBean extends ProjectAssignment implements Adm
 	}
 	
 	/**
+	 * Show overrun hours?
+	 * @return
+	 */
+	public boolean isShowOverrunHours()
+	{
+		return (projectAssignment.getAssignmentType() != null)
+					? projectAssignment.getAssignmentType().isFlexAllottedType()
+					: false;
+	}	
+	
+	/**
 	 * @return the serverMessage
 	 */
 	public String getServerMessage()

@@ -154,6 +154,7 @@ public class AssignmentFormPanel extends Panel
 		final TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours");
 		allottedHours.add(FormUtil.getValidateBehavior(form));
 		allottedHours.add(NumberValidator.POSITIVE);
+		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
 		
 		// allotted hours row
 		final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
@@ -163,11 +164,26 @@ public class AssignmentFormPanel extends Panel
 		allottedRow.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), new PropertyModel(model, "showAllottedHours")));
 		form.add(allottedRow);
 		
+		// overrun hours 
+		final TextField overrunHours = new RequiredTextField("projectAssignment.allowedOverrun");
+		overrunHours.add(FormUtil.getValidateBehavior(form));
+		overrunHours.add(NumberValidator.POSITIVE);
+		overrunHours.setLabel(new ResourceModel("admin.assignment.allowedOverrun"));
+		
+		// overrun hours row
+		final WebMarkupContainer overrunRow = new WebMarkupContainer("overrunRow");
+		overrunRow.setOutputMarkupId(true);
+		overrunRow.add(overrunHours);
+		overrunRow.add(new AjaxFormComponentFeedbackIndicator("overrunHoursValidationError", overrunHours));
+		overrunRow.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), new PropertyModel(model, "showOverrunHours")));
+		form.add(overrunRow);
+		
 		assignmentTypeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
 			protected void onUpdate(AjaxRequestTarget target)
             {
 				target.addComponent(allottedRow);
+				target.addComponent(overrunRow);
             }
         });	
 	}
