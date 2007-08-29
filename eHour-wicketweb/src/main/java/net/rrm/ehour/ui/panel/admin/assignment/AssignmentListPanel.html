@@ -9,14 +9,23 @@
 <wicket:panel>
 	<div wicket:id="border">
 		<table class="contentTable">
-		<tr>
-			<th></th>
-			<th><wicket:message key="admin.assignment.projectHeader" /></th>
-			<th><wicket:message key="admin.assignment.projectCodeHeader" /></th>
-			<th><wicket:message key="admin.assignment.customerHeader" /></th>
-			<th><wicket:message key="admin.assignment.startHeader" /></th>
-			<th><wicket:message key="admin.assignment.endHeader" /></th>		
-		</tr>		
+			<tr>
+				<th></th>
+				<th><wicket:message key="admin.assignment.projectHeader" /></th>
+				<th><wicket:message key="admin.assignment.projectCodeHeader" /></th>
+				<th><wicket:message key="admin.assignment.customerHeader" /></th>
+				<th><wicket:message key="admin.assignment.startHeader" /></th>
+				<th><wicket:message key="admin.assignment.endHeader" /></th>		
+			</tr>
+			
+			<tr wicket:id="assignments">
+				<td><img src="img/assignment/grey_edit_assignment.png" /></td>
+				<td><a wicket:id="itemLink"><span wicket:id="project"></span></a></td>
+				<td wicket:id="code"></td>
+				<td wicket:id="customer"></td>
+				<td wicket:id="dateStart"></td>
+				<td wicket:id="dateEnd"></td>
+			</tr>
 		</table>
 	</div>
 </wicket:panel>
