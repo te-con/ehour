@@ -170,11 +170,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	{
 		return this.dateEnd;
 	}
-	
-	public Date getDateEndForDisplay()
-	{
-		return DateUtil.getDateEndForDisplay(getDateEnd());
-	}
+
 
 	public void setDateEnd(Date dateEnd)
 	{
