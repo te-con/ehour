@@ -36,7 +36,7 @@ import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -147,7 +147,7 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	{
 		switch (type)
 		{
-			case CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
 			{
 				currentFilter = (EntrySelectorFilter)param;
 	
@@ -155,7 +155,7 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 				customerListView.setList(customers);
 				break;
 			}
-			case CommonStaticData.AJAX_FORM_SUBMIT:
+			case CommonUIStaticData.AJAX_FORM_SUBMIT:
 			{
 				CustomerAdminBackingBean backingBean = (CustomerAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 				try
@@ -177,7 +177,7 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 				
 				break;
 			}
-			case CommonStaticData.AJAX_DELETE:
+			case CommonUIStaticData.AJAX_DELETE:
 			{
 				
 			}

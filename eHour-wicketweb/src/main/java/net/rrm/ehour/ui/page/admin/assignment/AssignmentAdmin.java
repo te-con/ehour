@@ -35,7 +35,7 @@ import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
@@ -115,7 +115,7 @@ public class AssignmentAdmin extends BaseAdminPage
 	{
 		switch (type)
 		{
-			case CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
 			{
 				currentFilter = (EntrySelectorFilter)param;
 	
@@ -123,7 +123,7 @@ public class AssignmentAdmin extends BaseAdminPage
 				userListView.setList(users);
 				break;
 			}
-			case CommonStaticData.AJAX_FORM_SUBMIT:
+			case CommonUIStaticData.AJAX_FORM_SUBMIT:
 			{
 				AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 				

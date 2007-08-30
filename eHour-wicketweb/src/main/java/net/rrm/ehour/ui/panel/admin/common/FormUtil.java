@@ -26,7 +26,7 @@ package net.rrm.ehour.ui.panel.admin.common;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -68,7 +68,7 @@ public class FormUtil
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_FORM_SUBMIT, form.getModel());
+				((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT, form.getModel());
             }
 
 			@Override
@@ -94,7 +94,7 @@ public class FormUtil
 			@Override
             public void onClick(AjaxRequestTarget target)
 			{
-				((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_DELETE, form.getModel());
+				((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_DELETE, form.getModel());
             }
 
 			@Override

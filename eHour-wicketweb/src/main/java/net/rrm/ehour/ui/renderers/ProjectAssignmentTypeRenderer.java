@@ -25,7 +25,7 @@ package net.rrm.ehour.ui.renderers;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.util.EhourConstants;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
@@ -60,23 +60,7 @@ public class ProjectAssignmentTypeRenderer implements IChoiceRenderer
 		{
 			ProjectAssignmentType	pat = (ProjectAssignmentType)object;
 			
-			String	key;
-			
-			switch (pat.getAssignmentTypeId().intValue())
-			{
-				case EhourConstants.ASSIGNMENT_DATE:
-					key = "assignment.dateRange";
-					break;
-				case EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED:
-					key = "assignment.allottedFixed";
-					break;
-				case EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX:
-					key = "assignment.allottedFlex";
-					break;
-				default:
-					key = "assignment.allotted";
-					break;
-			}
+			String	key = CommonUIStaticData.getResourceKeyForProjectAssignmentType(pat);
 			
 			Localizer localizer = Application.get().getResourceSettings().getLocalizer();
 			

@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -142,7 +142,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	{
 		switch (type)
 		{
-			case CommonStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
 			{
 				currentFilter = (EntrySelectorFilter)param;
 	
@@ -150,7 +150,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 				userListView.setList(users);
 				break;
 			}
-			case CommonStaticData.AJAX_FORM_SUBMIT:
+			case CommonUIStaticData.AJAX_FORM_SUBMIT:
 			{
 				UserBackingBean	backingBean = (UserBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 				try

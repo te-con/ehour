@@ -27,11 +27,14 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.util.EhourConstants;
+
 /**
  * Commons 
  **/
 
-public class CommonStaticData
+public class CommonUIStaticData
 {
 	public final static int	AJAX_CALENDARPANEL_MONTH_CHANGE = 1;
 	public final static int	AJAX_CALENDARPANEL_WEEK_CLICK = 2;
@@ -58,6 +61,33 @@ public class CommonStaticData
 		currencies.put("Pound", "&pound;");
 		
 		return currencies;
-	}	
+	}
+	
+	/**
+	 * Get resource key for project assignment type
+	 * @param type
+	 * @return
+	 */
+	public static String getResourceKeyForProjectAssignmentType(ProjectAssignmentType type)
+	{
+		String	key;
+		switch (type.getAssignmentTypeId().intValue())
+		{
+			case EhourConstants.ASSIGNMENT_DATE:
+				key = "assignment.dateRange";
+				break;
+			case EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED:
+				key = "assignment.allottedFixed";
+				break;
+			case EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX:
+				key = "assignment.allottedFlex";
+				break;
+			default:
+				key = "assignment.allotted";
+				break;
+		}
+		
+		return key;
+	}
 	
 }

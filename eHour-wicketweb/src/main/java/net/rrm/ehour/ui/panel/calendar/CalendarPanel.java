@@ -35,7 +35,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
@@ -278,7 +278,7 @@ public class CalendarPanel extends SidePanel
 			month.set(Calendar.DAY_OF_MONTH, 1);
 			session.setNavCalendar(month);
 
-			((BasePage)getPage()).ajaxRequestReceived(target, CommonStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
+			((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
         }
 		
 		@Override
@@ -316,7 +316,7 @@ public class CalendarPanel extends SidePanel
 			session.setNavCalendar(cal);
 			
 			((BasePage)getPage()).ajaxRequestReceived(target,
-														CommonStaticData.AJAX_CALENDARPANEL_WEEK_CLICK,
+														CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK,
 														cal
 			);
 			

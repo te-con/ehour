@@ -41,7 +41,7 @@ import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.panel.timesheet.FormHighlighter;
 import net.rrm.ehour.ui.sort.LocaleComparator;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -125,7 +125,7 @@ public class MainConfig extends BaseAdminPage
 		
 		// currency dropdown
 		configForm.add(new DropDownChoice("currency",
-											new ArrayList<String>(CommonStaticData.getCurrencies().keySet())));
+											new ArrayList<String>(CommonUIStaticData.getCurrencies().keySet())));
 		
 		// show turnover checkbox
 		configForm.add(new CheckBox("showTurnover"));

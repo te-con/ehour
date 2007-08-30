@@ -18,14 +18,29 @@
 				<th><wicket:message key="admin.assignment.endHeader" /></th>		
 			</tr>
 			
-			<tr wicket:id="assignments">
-				<td><img src="img/assignment/grey_edit_assignment.png" /></td>
-				<td><a wicket:id="itemLink"><span wicket:id="project"></span></a></td>
-				<td wicket:id="code"></td>
-				<td wicket:id="customer"></td>
-				<td wicket:id="dateStart"></td>
-				<td wicket:id="dateEnd"></td>
-			</tr>
+			<span wicket:id="assignments">
+				<tr>
+					<td valign="top" rowspan="2"><a wicket:id="imgLink"><img src="img/assignment/grey_edit_assignment.png" border="0"/></a></td>
+					<td class="main" style="padding-right: 1em"><a wicket:id="itemLink"><span wicket:id="project"></span></a></td>
+					<td class="main" style="padding-right: 1em" wicket:id="code"></td>
+					<td class="main" style="padding-right: 1em" wicket:id="customer"></td>
+					<td class="main" style="padding-right: 1em" wicket:id="dateStart"></td>
+					<td class="main" wicket:id="dateEnd"></td>
+				</tr>
+				<tr>
+					<td colspan="5" class="extra">
+						<wicket:message key="admin.assignment.typeHeader" />:
+						<span wicket:id="assignmentType"></span>
+						;&nbsp;&nbsp;
+						<wicket:message key="admin.assignment.roleHeader" />:
+						<span wicket:id="role"></span>
+						;&nbsp;&nbsp;
+						<wicket:message key="admin.assignment.rateHeader" />:
+						<span wicket:id="currency"></span>
+						<span wicket:id="rate"></span>
+					</td>
+				</tr>
+			</span>
 		</table>
 	</div>
 </wicket:panel>

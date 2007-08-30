@@ -36,7 +36,7 @@ import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBe
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
@@ -136,7 +136,7 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	{
 		switch (type)
 		{
-			case CommonStaticData.AJAX_FORM_SUBMIT:
+			case CommonUIStaticData.AJAX_FORM_SUBMIT:
 			{
 				DepartmentAdminBackingBean backingBean = (DepartmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 				try

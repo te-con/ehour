@@ -41,7 +41,7 @@ import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.ui.validator.DateOverlapValidator;
 
 import org.apache.log4j.Logger;
@@ -129,7 +129,7 @@ public class AssignmentFormPanel extends Panel
 
 		// and currency
 		String currency = config.getCurrency();
-		form.add(new Label("currency", CommonStaticData.getCurrencies().get(currency)));
+		form.add(new Label("currency", CommonUIStaticData.getCurrencies().get(currency)));
 		
 		
 		// data save label

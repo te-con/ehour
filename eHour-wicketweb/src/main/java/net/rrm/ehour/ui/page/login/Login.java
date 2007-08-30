@@ -28,7 +28,7 @@ import java.io.Serializable;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonStaticData;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
@@ -174,11 +174,11 @@ public class Login extends WebPage
 		{
 			Class<? extends WebPage>	homepage;
 			
-			if (roles.contains(CommonStaticData.ROLE_ADMIN))
+			if (roles.contains(CommonUIStaticData.ROLE_ADMIN))
 			{
 				homepage = MainConfig.class;
 			}
-			else if (roles.contains(CommonStaticData.ROLE_REPORT))
+			else if (roles.contains(CommonUIStaticData.ROLE_REPORT))
 			{
 				// TODO replace with report
 				homepage = AssignmentAdmin.class;

@@ -31,17 +31,19 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
+import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -56,6 +58,7 @@ public class AssignmentListPanel extends Panel
 	@SpringBean
 	private ProjectService	projectService;
 	private	EhourConfig		config;
+	
 	/**
 	 * 
 	 * @param id
@@ -93,7 +96,17 @@ public class AssignmentListPanel extends Panel
 //						replaceAssignmentPanel(target, user);
 					}
 				};
-				
+
+				AjaxLink	imgLink = new AjaxLink("imgLink")
+				{
+					@Override
+					public void onClick(AjaxRequestTarget target)
+					{
+//						replaceAssignmentPanel(target, user);
+					}
+				};
+
+				item.add(imgLink);
 				item.add(link);
 				link.add(new Label("project", assignment.getProject().getName()));				
 				item.add(new Label("code", assignment.getProject().getProjectCode()));
@@ -106,6 +119,17 @@ public class AssignmentListPanel extends Panel
 				Label dateEnd = new Label("dateEnd", new DateModel(assignment.getDateEnd(), config));
 				dateEnd.setEscapeModelStrings(false);
 				item.add(dateEnd);
+				
+				item.add(new Label("assignmentType", 
+							new ResourceModel(CommonUIStaticData.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
+				
+				item.add(new Label("role",
+									(assignment.getRole() == null || assignment.getRole().trim().isEmpty())
+										? "--"
+										: assignment.getRole()));
+				
+				item.add(new Label("currency", CommonUIStaticData.getCurrencies().get(config.getCurrency())));
+				item.add(new Label("rate", new FloatModel(assignment.getHourlyRate(), config)));
 
 			}
 		};
