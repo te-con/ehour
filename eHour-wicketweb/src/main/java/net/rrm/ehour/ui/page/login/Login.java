@@ -39,6 +39,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -48,6 +49,7 @@ import org.apache.wicket.model.ResourceModel;
  * Login page 
  **/
 
+@SuppressWarnings("unchecked")
 public class Login extends WebPage
 {
 	private static final long serialVersionUID = -134022212692477120L;
@@ -117,7 +119,9 @@ public class Login extends WebPage
 			feedback.setMaxMessages(1);
 			
 			add(feedback);
-			add(new TextField("username").setRequired(true));
+			TextField usernameInput = new RequiredTextField("username");
+			usernameInput.setPersistent(true);
+			add(usernameInput);
 			add(new PasswordTextField("password").setResetPassword(true));
 			add(new Button("signin", new ResourceModel("login.login.submit")));
 		}
@@ -165,7 +169,7 @@ public class Login extends WebPage
 		}
 		
 		/**
-		 * TODO externalize?
+		 * 
 		 * @param roles
 		 * @return
 		 */
@@ -192,8 +196,15 @@ public class Login extends WebPage
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
 	public final class LoginFeedbackPanel extends FeedbackPanel
 	{
+		private static final long serialVersionUID = 1931344611905158185L;
+
 		/**
 		 * @see org.apache.wicket.Component#Component(String)
 		 */
