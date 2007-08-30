@@ -115,6 +115,5 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
 		{
 			return messages != null && messages.size() > 0 ? messages.get(0).getMessage() : "";
 		}			
-		
 	}
 }

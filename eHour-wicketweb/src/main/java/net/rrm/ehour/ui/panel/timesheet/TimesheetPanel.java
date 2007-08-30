@@ -38,6 +38,7 @@ import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.ui.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
@@ -45,7 +46,6 @@ import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
-import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
@@ -234,7 +234,7 @@ public class TimesheetPanel extends Panel implements Serializable
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				// basically fake a week click
-				((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK);
+				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK);
             }			
 		};
 
@@ -295,7 +295,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		event = CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE;
 		session.setNavCalendar(cal);
 		
-		((BasePage)getPage()).ajaxRequestReceived(target, event);
+		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, event);
 	}
 	
 	/**

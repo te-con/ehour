@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.panel.entryselector;
 
+import net.rrm.ehour.ui.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.BasePage;
@@ -151,7 +152,7 @@ public class EntrySelectorPanel extends Panel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
+				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
             	target.addComponent(border);
 			}
 		};
@@ -178,7 +179,7 @@ public class EntrySelectorPanel extends Panel
 	            @Override
 	            protected void onUpdate(AjaxRequestTarget target)
 	            {
-					((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
+					((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
 	            	target.addComponent(border);
 	            }
 	        };

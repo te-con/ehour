@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.panel.admin.common;
 
+import net.rrm.ehour.ui.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.page.BasePage;
@@ -94,7 +95,7 @@ public class FormUtil
 			@Override
             public void onClick(AjaxRequestTarget target)
 			{
-				((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_DELETE, form.getModel());
+				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_DELETE, form.getModel());
             }
 
 			@Override

@@ -29,6 +29,7 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.ui.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
@@ -93,7 +94,8 @@ public class AssignmentListPanel extends Panel
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-//						replaceAssignmentPanel(target, user);
+						((AjaxAwareContainer)(AssignmentListPanel.this.getParent()))
+								.ajaxRequestReceived(target, CommonUIStaticData.AJAX_LIST_CHANGE, assignment);
 					}
 				};
 
@@ -102,7 +104,8 @@ public class AssignmentListPanel extends Panel
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-//						replaceAssignmentPanel(target, user);
+						((AjaxAwareContainer)(AssignmentListPanel.this.getParent()))
+								.ajaxRequestReceived(target, CommonUIStaticData.AJAX_LIST_CHANGE, assignment);
 					}
 				};
 

@@ -30,6 +30,7 @@ import java.util.List;
 
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.ui.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.BasePage;
@@ -278,7 +279,7 @@ public class CalendarPanel extends SidePanel
 			month.set(Calendar.DAY_OF_MONTH, 1);
 			session.setNavCalendar(month);
 
-			((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
+			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
         }
 		
 		@Override
@@ -315,7 +316,7 @@ public class CalendarPanel extends SidePanel
 			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 			session.setNavCalendar(cal);
 			
-			((BasePage)getPage()).ajaxRequestReceived(target,
+			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,
 														CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK,
 														cal
 			);

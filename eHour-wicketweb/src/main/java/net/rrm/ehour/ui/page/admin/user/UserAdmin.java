@@ -116,8 +116,8 @@ public class UserAdmin extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId)));
-						switchTabOnAjaxTarget(target, 1);
+						getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId)));
+						getTabbedPanel().switchTabOnAjaxTarget(target, 1);
 					}
 				};
 				
@@ -163,11 +163,11 @@ public class UserAdmin extends BaseTabbedAdminPage
 					
 					((EntrySelectorPanel)get(USER_SELECTOR_ID)).refreshList(target);
 					
-					succesfulSave(target);
+					getTabbedPanel().succesfulSave(target);
 				} catch (Exception e)
 				{
 					logger.error("While persisting user", e);
-					failedSave(backingBean, target);
+					getTabbedPanel().failedSave(backingBean, target);
 				}
 				
 				break;
@@ -181,7 +181,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	 */
 	private void persistUser(UserBackingBean userBackingBean) throws Exception
 	{
-		logger.info(((userBackingBean == getEditBackingBean()) 
+		logger.info(((userBackingBean == getTabbedPanel().getEditBackingBean()) 
 											? "Updating" 
 											: "Adding") + " user :" + userBackingBean.getUser());
 		
@@ -225,10 +225,10 @@ public class UserAdmin extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
-	protected Panel getAddPanel(String panelId)
+	protected Panel getBaseAddPanel(String panelId)
 	{
 		return new UserFormPanel(panelId,
-				new CompoundPropertyModel(getAddBackingBean()),
+				new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()),
 				getUserRoles(),
 				getUserDepartments());
 	}
@@ -238,7 +238,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewAddBackingBean()
+	protected AdminBackingBean getNewAddBaseBackingBean()
 	{
 		UserBackingBean	userBean;
 		
@@ -253,7 +253,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewEditBackingBean()
+	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
 		return new UserBackingBean(new User());
 	}
@@ -263,10 +263,10 @@ public class UserAdmin extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
-	protected Panel getEditPanel(String panelId)
+	protected Panel getBaseEditPanel(String panelId)
 	{
 		return new UserFormPanel(panelId,
-				new CompoundPropertyModel(getEditBackingBean()),
+				new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()),
 				getUserRoles(),
 				getUserDepartments());
 	}

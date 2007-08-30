@@ -23,29 +23,21 @@
 
 package net.rrm.ehour.ui.page.admin;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.rrm.ehour.ui.component.CustomAjaxTabbedPanel;
+import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.NoEntrySelectedPanel;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
  * Base admin page template with 2 tabs, add & edit
+ * TODO need refactor
  **/
 
+@SuppressWarnings({"unchecked", "serial"})
 public abstract class BaseTabbedAdminPage extends BaseAdminPage
 {
-	private	CustomAjaxTabbedPanel		tabbedPanel;
-	private AdminBackingBean	addBackingBean;
-	private AdminBackingBean	editBackingBean;
-	private	ResourceModel		addTabTitle;
-	private	ResourceModel		editTabTitle;
+	private	AddEditTabbedPanel	tabbedPanel;
 	
 	/**
 	 * 
@@ -59,204 +51,69 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	{
 		super(pageTitle, null);
 		
-		this.addTabTitle = addTabTitle;
-		this.editTabTitle = editTabTitle;
-		
-		addBackingBean = getNewAddBackingBean();
-		editBackingBean = getNewEditBackingBean();
-		
-		setUpTabs();
-	}
-
-	/**
-	 * Switch tab
-	 * @param tab
-	 * @param userId
-	 */
-	protected void switchTabOnAjaxTarget(AjaxRequestTarget target, int tabIndex)
-	{
-		if (tabIndex == 1)
-		{
-			addEditTab();
-		}
-		
-		tabbedPanel.setSelectedTab(tabIndex);
-		target.addComponent(tabbedPanel);
-	}	
-	
-	/**
-	 * Successful save
-	 * @param target
-	 */
-	protected void succesfulSave(AjaxRequestTarget target)
-	{
-		getAddBackingBean().setServerMessage(getLocalizer().getString("dataSaved", this));
-		addAddTab();
-		tabbedPanel.setSelectedTab(0);
-		
-		target.addComponent(tabbedPanel);
-	}
-
-	/**
-	 * Failed save
-	 * @param target
-	 */
-	protected void failedSave(AdminBackingBean backingBean, AjaxRequestTarget target)
-	{
-		backingBean.setServerMessage(getLocalizer().getString("saveError", this));
-		target.addComponent(tabbedPanel);
-	}
-	
-	/**
-	 * Setup tabs
-	 */
-	private void setUpTabs()
-	{
-		List<AbstractTab>	tabs = new ArrayList<AbstractTab>(2);
-		
-		tabbedPanel = new CustomAjaxTabbedPanel("tabs", tabs)
+		tabbedPanel = new AddEditTabbedPanel("tabs", addTabTitle, editTabTitle)
 		{
 			@Override
-			protected void preProcessTabSwitch(int index)
+			protected Panel getAddPanel(String panelId)
 			{
-				// if "Add user" is clicked again, reset the backing bean as it's
-				// only way out if for some reason the save went wrong and the page is stuck on
-				// an error
-				if (getSelectedTab() == index && index == 0)
-				{
-					addBackingBean = getNewAddBackingBean();
-				}
-				
-				// reset server messages
-				addBackingBean.setServerMessage(null);
-				editBackingBean.setServerMessage(null);
+				return getBaseAddPanel(panelId);
 			}
-		};
 
-		addAddTab();
-		addNoUserTab();
+			@Override
+			protected Panel getEditPanel(String panelId)
+			{
+				return getBaseEditPanel(panelId);
+			}
+
+			@Override
+			protected AdminBackingBean getNewAddBackingBean()
+			{
+				return getNewAddBaseBackingBean();
+			}
+
+			@Override
+			protected AdminBackingBean getNewEditBackingBean()
+			{
+				return getNewEditBaseBackingBean();
+			}
+			
+		};
 		
 		add(tabbedPanel);
-	}	
-	
+	}
+
 	/**
 	 * Get the backing bean for the add panel
 	 * @return
 	 */
-	protected abstract AdminBackingBean getNewAddBackingBean();
+	protected abstract AdminBackingBean getNewAddBaseBackingBean();
 	
 	/**
 	 * Get the backing bean for the edit panel
 	 * @return
 	 */
-	protected abstract AdminBackingBean getNewEditBackingBean();
+	protected abstract AdminBackingBean getNewEditBaseBackingBean();
 	
 	/**
 	 * Get the panel for the add tab
 	 * @param panelId
 	 * @return
 	 */
-	protected abstract Panel getAddPanel(String panelId);
+	protected abstract Panel getBaseAddPanel(String panelId);
 	
 	/**
 	 * Get the panel for the edit tab
 	 * @param panelId
 	 * @return
 	 */
-	protected abstract Panel getEditPanel(String panelId);
-	
-	/**
-	 * Get the panel for the no-selection-made-yet tab (edit tab but no entity selected yet)
-	 * @param panelId
-	 * @return
-	 */
-	protected Panel getNoSelectionPanel(String panelId)
-	{
-		return new NoEntrySelectedPanel(panelId);
-	}
-	
-	/**
-	 * Add add tab at position 0
-	 */
-	private void addAddTab()
-	{
-		tabbedPanel.removeTab(0);
-		
-		AbstractTab addTab = new AbstractTab(addTabTitle)
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getAddPanel(panelId);
-			}
-		};
-
-		tabbedPanel.getTabs().add(0, addTab);	
-	}	
-	
-	/**
-	 * Add edit tab at position 1
-	 */
-	private void addEditTab()
-	{
-		tabbedPanel.removeTab(1);
-		
-		AbstractTab editTab = new AbstractTab(editTabTitle)
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getEditPanel(panelId);
-			}
-		};
-
-		tabbedPanel.getTabs().add(1, editTab);		
-	}
-	
-	/**
-	 * Add no user selected tab at position 1
-	 */
-	private void addNoUserTab()
-	{
-		tabbedPanel.removeTab(1);
-		
-		AbstractTab editTab = new AbstractTab(editTabTitle)
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getNoSelectionPanel(panelId);
-			}
-		};
-
-		tabbedPanel.getTabs().add(1, editTab);		
-	}	
+	protected abstract Panel getBaseEditPanel(String panelId);
 
 	/**
-	 * 
-	 * @return
+	 * @return the tabbedPanel
 	 */
-	public AdminBackingBean getAddBackingBean()
+	public AddEditTabbedPanel getTabbedPanel()
 	{
-		return addBackingBean;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public AdminBackingBean getEditBackingBean()
-	{
-		return editBackingBean;
-	}
-
-	/**
-	 * 
-	 * @param editBackingBean
-	 */
-	public void setEditBackingBean(AdminBackingBean editBackingBean)
-	{
-		this.editBackingBean = editBackingBean;
+		return tabbedPanel;
 	}	
 	
 }

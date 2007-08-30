@@ -23,7 +23,6 @@
 
 package net.rrm.ehour.ui.page.user.report;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;

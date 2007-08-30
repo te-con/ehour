@@ -23,35 +23,37 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.ui.component.CustomAjaxTabbedPanel;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.ui.AjaxAwareContainer;
+import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
 
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Assignment panel displaying the list and the tabbed form for adding/editing
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentPanel extends Panel
+public class AssignmentPanel extends Panel implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = -3721224427697057895L;
 	
-	private CustomAjaxTabbedPanel	tabbedPanel;
-	private List<Customer> 			customers;
-	private List<ProjectAssignmentType> types;
-	private	User					user;
+	@SpringBean
+	private	ProjectAssignmentService	assignmentService;
+	private AddEditTabbedPanel			tabbedPanel;
 	
 	/**
 	 * 
@@ -59,132 +61,91 @@ public class AssignmentPanel extends Panel
 	 * @param model
 	 */
 	public AssignmentPanel(String id,
-							User user,
-							List<Customer> customers,
-							List<ProjectAssignmentType> types)
+							final User user,
+							final List<Customer> customers,
+							final List<ProjectAssignmentType> types)
 	{
 		super(id);
 		
 		setOutputMarkupId(true);
-		this.user = user;
 
-		this.customers = customers;
-		this.types = types;
-		
 		AssignmentListPanel	listPanel = new AssignmentListPanel("assignmentList", user);
 		add(listPanel);
 		
-		setUpTabs();
+		tabbedPanel = new AddEditTabbedPanel("assignmentTabs",
+											new ResourceModel("admin.assignment.newAssignment"),
+													new ResourceModel("admin.assignment.editAssignment"))
+		{
+
+			@Override
+			protected Panel getAddPanel(String panelId)
+			{
+				return new AssignmentFormPanel(panelId,
+												new CompoundPropertyModel(getAddBackingBean()),
+												customers,
+												types);
+			}
+
+			@Override
+			protected Panel getEditPanel(String panelId)
+			{
+				return new AssignmentFormPanel(panelId,
+												new CompoundPropertyModel(getEditBackingBean()),
+												customers,
+												types);			
+			}
+
+			@Override
+			protected AdminBackingBean getNewAddBackingBean()
+			{
+				ProjectAssignment			projectAssignment;
+				AssignmentAdminBackingBean	assignmentBean;
+				
+				projectAssignment = new ProjectAssignment();
+				projectAssignment.setUser(user);
+				projectAssignment.setActive(true);
+				
+				assignmentBean = new AssignmentAdminBackingBean(projectAssignment);;
+
+				return assignmentBean;			
+			}
+
+			@Override
+			protected AdminBackingBean getNewEditBackingBean()
+			{
+				return new AssignmentAdminBackingBean(new ProjectAssignment());
+			}
+			
+		};
 		
 		add(tabbedPanel);
 	}
-	
-	/**
-	 * Tabbed panels
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
-	private void setUpTabs()
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-		List<AbstractTab>	tabs = new ArrayList<AbstractTab>(2);
+		ProjectAssignment	assignment;
 		
-		tabbedPanel = new CustomAjaxTabbedPanel("assignmentTabs", tabs)
+		if (type == CommonUIStaticData.AJAX_LIST_CHANGE)
 		{
-//			@Override
-//			protected void preProcessTabSwitch(int index)
-//			{
-//				// if "Add user" is clicked again, reset the backing bean as it's
-//				// only way out if for some reason the save went wrong and the page is stuck on
-//				// an error
-//				if (getSelectedTab() == index && index == 0)
-//				{
-//					addBackingBean = getNewAddBackingBean();
-//				}
-//				
-//				// reset server messages
-//				addBackingBean.setServerMessage(null);
-//				editBackingBean.setServerMessage(null);
-//			}
-		};
-		
-		addAddTab();
-		addEditTab();
+			assignment = (ProjectAssignment)params;
+			
+			tabbedPanel.setEditBackingBean(
+							new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
+			tabbedPanel.switchTabOnAjaxTarget(target, 1);
+			
+		}
 	}
-	
-	
-	/**
-	 * Add add tab at position 0
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
 	 */
-	@SuppressWarnings("unchecked")
-	private void addAddTab()
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
 	{
-		tabbedPanel.removeTab(0);
-		
-		AbstractTab addTab = new AbstractTab(new ResourceModel("admin.assignment.newAssignment"))
-		{
-			private static final long serialVersionUID = 6208220479189701348L;
-
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel(getNewAddBackingBean()),
-												customers,
-												types);
-			}
-		};
-
-		tabbedPanel.getTabs().add(0, addTab);	
-	}		
-	
-	/**
-	 * Add edit tab at position 0
-	 */
-	@SuppressWarnings("unchecked")
-	private void addEditTab()
-	{
-		tabbedPanel.removeTab(1);
-		
-		AbstractTab addTab = new AbstractTab(new ResourceModel("admin.assignment.editAssignment"))
-		{
-			private static final long serialVersionUID = 6208220479189701348L;
-
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel(getNewAddBackingBean()),
-												customers,
-												types);
-			}
-		};
-
-		tabbedPanel.getTabs().add(1, addTab);	
-	}		
-
-	/**
-	 * Get new add backing bean prefilled with the user
-	 * @return
-	 */
-	private AdminBackingBean getNewAddBackingBean()
-	{
-		ProjectAssignment			projectAssignment;
-		AssignmentAdminBackingBean	assignmentBean;
-		
-		projectAssignment = new ProjectAssignment();
-		projectAssignment.setUser(user);
-		projectAssignment.setActive(true);
-		
-		assignmentBean = new AssignmentAdminBackingBean(projectAssignment);;
-
-		return assignmentBean;
+		ajaxRequestReceived(target, type, null);
 	}	
-	
-	/**
-	 * get new edit bean
-	 * @return
-	 */
-	private AdminBackingBean getNewEditBackingBean()
-	{
-		return new AssignmentAdminBackingBean(new ProjectAssignment());
-	}	
-	
 }

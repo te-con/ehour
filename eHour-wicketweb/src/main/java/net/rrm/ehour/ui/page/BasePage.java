@@ -24,6 +24,7 @@
 package net.rrm.ehour.ui.page;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.AjaxAwareContainer;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -37,7 +38,7 @@ import org.apache.wicket.model.ResourceModel;
  * Base layout of all pages, adds header panel
  **/
 
-public abstract class BasePage extends WebPage
+public abstract class BasePage extends WebPage implements AjaxAwareContainer
 {
 	/**
 	 * 

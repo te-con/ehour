@@ -55,7 +55,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Customer admin page
  **/
 
-public class CustomerAdmin  extends BaseTabbedAdminPage
+public class CustomerAdmin extends BaseTabbedAdminPage
 {
 	private final String	CUSTOMER_SELECTOR_ID = "customerSelector";
 	
@@ -99,9 +99,9 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
-	protected Panel getAddPanel(String panelId)
+	protected Panel getBaseAddPanel(String panelId)
 	{
-		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getAddBackingBean()));
+		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
 	}
 
 	/*
@@ -109,9 +109,9 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
-	protected Panel getEditPanel(String panelId)
+	protected Panel getBaseEditPanel(String panelId)
 	{
-		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getEditBackingBean()));
+		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
 	}
 
 	/*
@@ -119,7 +119,7 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewAddBackingBean()
+	protected AdminBackingBean getNewAddBaseBackingBean()
 	{
 		Customer	cust = new Customer();
 		cust.setActive(true);
@@ -132,7 +132,7 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewEditBackingBean()
+	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
 		return new CustomerAdminBackingBean(new Customer());
 	}
@@ -168,11 +168,11 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 					
 					((EntrySelectorPanel)get(CUSTOMER_SELECTOR_ID)).refreshList(target);
 					
-					succesfulSave(target);
+					getTabbedPanel().succesfulSave(target);
 				} catch (Exception e)
 				{
 					logger.error("While persisting user", e);
-					failedSave(backingBean, target);
+					getTabbedPanel().failedSave(backingBean, target);
 				}
 				
 				break;
@@ -216,8 +216,8 @@ public class CustomerAdmin  extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
-						switchTabOnAjaxTarget(target, 1);
+						getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
+						getTabbedPanel().switchTabOnAjaxTarget(target, 1);
 					}
 				};
 				

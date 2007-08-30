@@ -91,9 +91,9 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
-	protected Panel getAddPanel(String panelId)
+	protected Panel getBaseAddPanel(String panelId)
 	{
-		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getAddBackingBean()));
+		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
 	}
 
 	/*
@@ -101,9 +101,9 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
-	protected Panel getEditPanel(String panelId)
+	protected Panel getBaseEditPanel(String panelId)
 	{
-		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getEditBackingBean()));
+		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
 	}
 
 	/*
@@ -111,7 +111,7 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewAddBackingBean()
+	protected AdminBackingBean getNewAddBaseBackingBean()
 	{
 		return new DepartmentAdminBackingBean(new UserDepartment());
 	}
@@ -121,7 +121,7 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewEditBackingBean()
+	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
 		return new DepartmentAdminBackingBean(new UserDepartment());
 	}
@@ -149,11 +149,11 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 					
 					((EntrySelectorPanel)get(DEPT_SELECTOR_ID)).refreshList(target);
 					
-					succesfulSave(target);
+					getTabbedPanel().succesfulSave(target);
 				} catch (Exception e)
 				{
 					logger.error("While persisting user", e);
-					failedSave(backingBean, target);
+					getTabbedPanel().failedSave(backingBean, target);
 				}
 				
 				break;
@@ -193,8 +193,8 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						setEditBackingBean(new DepartmentAdminBackingBean(userService.getUserDepartment(deptId)));
-						switchTabOnAjaxTarget(target, 1);
+						getTabbedPanel().setEditBackingBean(new DepartmentAdminBackingBean(userService.getUserDepartment(deptId)));
+						getTabbedPanel().switchTabOnAjaxTarget(target, 1);
 					}
 				};
 				
