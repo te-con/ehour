@@ -30,6 +30,7 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.user.domain.User;
@@ -42,7 +43,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
@@ -52,7 +52,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * Project admin form
  **/
 
-public class ProjectFormPanel extends Panel
+public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = -8677950352090140144L;
 
@@ -118,7 +118,9 @@ public class ProjectFormPanel extends Panel
 			
 		
 		//
-		FormUtil.setSubmitActions(form, ((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable());
+		FormUtil.setSubmitActions(form
+									,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
+									,this);
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
 		
 		greyBorder.add(form);

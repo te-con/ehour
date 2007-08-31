@@ -23,10 +23,9 @@
 
 package net.rrm.ehour.ui.panel.admin.common;
 
-import net.rrm.ehour.ui.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
-import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -62,14 +61,16 @@ public class FormUtil
 	 * Set submit actions for form
 	 * @param form
 	 */
-	public static void setSubmitActions(final Form form, boolean includeDelete)
+	public static void setSubmitActions(final Form form, 
+										boolean includeDelete, 
+										final AjaxAwareContainer submitTarget)
 	{
 		Button submitButton = new AjaxButton("submitButton", form)
 		{
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				((BasePage)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT, form.getModel());
+				submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT, form.getModel());
             }
 
 			@Override
@@ -95,7 +96,7 @@ public class FormUtil
 			@Override
             public void onClick(AjaxRequestTarget target)
 			{
-				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_DELETE, form.getModel());
+				submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_DELETE, form.getModel());
             }
 
 			@Override
@@ -110,6 +111,5 @@ public class FormUtil
         deleteButton.setModel(new ResourceModel("general.delete"));
         deleteButton.setVisible(includeDelete);
         form.add(deleteButton);
-        
 	}	
 }

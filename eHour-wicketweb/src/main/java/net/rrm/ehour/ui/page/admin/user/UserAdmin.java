@@ -187,7 +187,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 		
 		if (userBackingBean.isPm())
 		{
-			logger.debug("Readding PM role after edit");
+			logger.debug("Re-adding PM role after edit");
 			userBackingBean.getUser().addUserRole(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		}
 		

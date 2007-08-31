@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.ui;
+package net.rrm.ehour.ui.ajax;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 

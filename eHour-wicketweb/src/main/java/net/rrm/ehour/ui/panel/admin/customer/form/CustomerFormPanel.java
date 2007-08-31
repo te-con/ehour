@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 
@@ -35,7 +36,6 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
@@ -45,7 +45,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * Customer admin form panel
  **/
 
-public class CustomerFormPanel extends Panel
+public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = 8536721437867359030L;
 
@@ -91,7 +91,9 @@ public class CustomerFormPanel extends Panel
 		form.add(new ServerMessageLabel("serverMessage"));
 	
 		//
-		FormUtil.setSubmitActions(form, ((CustomerAdminBackingBean)model.getObject()).getCustomer().isDeletable());
+		FormUtil.setSubmitActions(form 
+									,((CustomerAdminBackingBean)model.getObject()).getCustomer().isDeletable()
+									,this);
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);

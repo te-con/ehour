@@ -32,6 +32,7 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.DynamicAttributeModifier;
@@ -74,7 +75,7 @@ import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentFormPanel extends Panel
+public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = -85486044225123470L;
 	private	final static Logger	logger = Logger.getLogger(AssignmentFormPanel.class);
@@ -134,11 +135,12 @@ public class AssignmentFormPanel extends Panel
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage"));
 		
-		//
-		FormUtil.setSubmitActions(form, true);
+		// add submit form
+		FormUtil.setSubmitActions(form, true, this);
 
 		greyBorder.add(form);
 	}
+
 	
 	/**
 	 * Add assignment types and options
@@ -396,5 +398,27 @@ public class AssignmentFormPanel extends Panel
 				}
             }
         });	
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
+	 */
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
+	{
+		ajaxRequestReceived(target, type, null);
+		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 */
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	{
+		// tabs -> panel
+		((AjaxAwareContainer)AssignmentFormPanel.this.getParent().getParent()).ajaxRequestReceived(target, type, params);
+		
 	}
 }

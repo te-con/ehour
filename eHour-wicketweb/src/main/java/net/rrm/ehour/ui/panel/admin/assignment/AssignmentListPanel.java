@@ -29,7 +29,7 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
@@ -41,6 +41,7 @@ import net.rrm.ehour.user.domain.User;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -59,6 +60,8 @@ public class AssignmentListPanel extends Panel
 	@SpringBean
 	private ProjectService	projectService;
 	private	EhourConfig		config;
+	private	Border			greyBorder;
+	private ListView 		assignmentListView;
 	
 	/**
 	 * 
@@ -70,9 +73,20 @@ public class AssignmentListPanel extends Panel
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 	
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
+		greyBorder = new GreyRoundedBorder("border");
+		greyBorder.setOutputMarkupId(true);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
+	}
+	
+	/**
+	 * Update the list
+	 * @param user
+	 */
+	public void updateList(AjaxRequestTarget target, User user)
+	{
+		assignmentListView.setList(getProjectAssignments(user));
+		target.addComponent(greyBorder);
 	}
 
 	/**
@@ -82,7 +96,7 @@ public class AssignmentListPanel extends Panel
 	 */
 	private ListView getProjectAssignmentLists(User user)
 	{
-		ListView assignmentListView = new ListView("assignments", getProjectAssignments(user))
+		assignmentListView = new ListView("assignments", getProjectAssignments(user))
 		{
 			@Override
 			protected void populateItem(ListItem item)

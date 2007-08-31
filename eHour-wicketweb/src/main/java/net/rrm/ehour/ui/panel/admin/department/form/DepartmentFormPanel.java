@@ -26,13 +26,13 @@ package net.rrm.ehour.ui.panel.admin.department.form;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
 
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
@@ -42,7 +42,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * user department form panel
  **/
 
-public class DepartmentFormPanel  extends Panel
+public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = -6469066920645156569L;
 
@@ -80,12 +80,11 @@ public class DepartmentFormPanel  extends Panel
 		form.add(new ServerMessageLabel("serverMessage"));
 	
 		//
-		FormUtil.setSubmitActions(form, ((DepartmentAdminBackingBean)model.getObject()).getDepartment().isDeletable());
+		FormUtil.setSubmitActions(form
+									,((DepartmentAdminBackingBean)model.getObject()).getDepartment().isDeletable()
+									,this);
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);
-		
-		
 	}
-
 }

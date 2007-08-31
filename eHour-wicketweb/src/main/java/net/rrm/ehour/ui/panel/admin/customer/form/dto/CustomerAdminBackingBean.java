@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.ui.panel.admin.customer.form.dto;
 
+import java.io.Serializable;
+
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 
@@ -30,7 +32,7 @@ import net.rrm.ehour.ui.model.AdminBackingBean;
  * Backing bean for customer administration
  **/
 
-public class CustomerAdminBackingBean extends Customer implements AdminBackingBean
+public class CustomerAdminBackingBean implements AdminBackingBean, Serializable
 {
 	private static final long serialVersionUID = 343538274642620123L;
 	private	String		serverMessage;

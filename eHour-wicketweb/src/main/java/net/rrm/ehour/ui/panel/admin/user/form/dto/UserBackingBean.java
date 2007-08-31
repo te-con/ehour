@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.panel.admin.user.form.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import net.rrm.ehour.ui.model.AdminBackingBean;
@@ -34,7 +35,7 @@ import net.rrm.ehour.util.EhourConstants;
  * Backing bean for users
  **/
 
-public class UserBackingBean extends User implements AdminBackingBean
+public class UserBackingBean implements AdminBackingBean, Serializable
 {
 	private static final long serialVersionUID = 2781902854421696575L;
 	private User	user;

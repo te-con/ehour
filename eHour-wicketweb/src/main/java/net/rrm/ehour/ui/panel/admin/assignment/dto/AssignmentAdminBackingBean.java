@@ -23,6 +23,7 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
@@ -34,7 +35,7 @@ import net.rrm.ehour.ui.model.AdminBackingBean;
  * Backing bean for project assignments
  **/
 
-public class AssignmentAdminBackingBean extends ProjectAssignment implements AdminBackingBean
+public class AssignmentAdminBackingBean implements AdminBackingBean, Serializable
 {
 	private static final long serialVersionUID = 487430742116953930L;
 	private	String				serverMessage;

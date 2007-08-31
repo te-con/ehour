@@ -29,7 +29,7 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.ui.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
@@ -39,6 +39,7 @@ import net.rrm.ehour.user.domain.User;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -54,6 +55,7 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 	@SpringBean
 	private	ProjectAssignmentService	assignmentService;
 	private AddEditTabbedPanel			tabbedPanel;
+	private	AssignmentListPanel			listPanel;
 	
 	/**
 	 * 
@@ -69,7 +71,7 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 		
 		setOutputMarkupId(true);
 
-		AssignmentListPanel	listPanel = new AssignmentListPanel("assignmentList", user);
+		listPanel = new AssignmentListPanel("assignmentList", user);
 		add(listPanel);
 		
 		tabbedPanel = new AddEditTabbedPanel("assignmentTabs",
@@ -105,7 +107,7 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 				projectAssignment.setUser(user);
 				projectAssignment.setActive(true);
 				
-				assignmentBean = new AssignmentAdminBackingBean(projectAssignment);;
+				assignmentBean = new AssignmentAdminBackingBean(projectAssignment);
 
 				return assignmentBean;			
 			}
@@ -115,7 +117,6 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 			{
 				return new AssignmentAdminBackingBean(new ProjectAssignment());
 			}
-			
 		};
 		
 		add(tabbedPanel);
@@ -136,7 +137,17 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 			tabbedPanel.setEditBackingBean(
 							new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
 			tabbedPanel.switchTabOnAjaxTarget(target, 1);
+		}
+		else if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+		{
+			AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((((IWrapModel) params)).getWrappedModel()).getObject();
+			assignment = backingBean.getProjectAssignment();
 			
+			assignmentService.assignUserToProject(assignment);
+			
+			listPanel.updateList(target, assignment.getUser());
+			
+			tabbedPanel.succesfulSave(target);
 		}
 	}
 
