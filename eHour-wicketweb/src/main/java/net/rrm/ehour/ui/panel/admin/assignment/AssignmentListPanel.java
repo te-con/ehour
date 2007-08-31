@@ -73,8 +73,9 @@ public class AssignmentListPanel extends Panel
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 	
+		setOutputMarkupId(true);
+		
 		greyBorder = new GreyRoundedBorder("border");
-		greyBorder.setOutputMarkupId(true);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
 	}
@@ -86,9 +87,11 @@ public class AssignmentListPanel extends Panel
 	public void updateList(AjaxRequestTarget target, User user)
 	{
 		assignmentListView.setList(getProjectAssignments(user));
-		target.addComponent(greyBorder);
+		
+		target.addComponent(this);
 	}
 
+	
 	/**
 	 * Get listview for project assignments
 	 * @param user
@@ -166,6 +169,11 @@ public class AssignmentListPanel extends Panel
 		if (assignments != null && assignments.size() > 0)
 		{
 			Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
+			setVisible(true);
+		}
+		else
+		{
+			setVisible(false);
 		}
 		
 		return assignments;
