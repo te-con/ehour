@@ -28,7 +28,6 @@ import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
@@ -44,7 +43,7 @@ public interface ProjectAssignmentService
 	 * Assign user to project
 	 * @param projectAssignment
 	 */
-	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException;
+	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment);
 	
 	/**
 	 * Assign user to default projects

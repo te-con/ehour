@@ -30,7 +30,6 @@ import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
@@ -64,7 +63,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 *
 	 */
 	
-	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) throws ProjectAlreadyAssignedException
+	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) 
 	{
 		projectAssignmentDAO.persist(projectAssignment);
 		
