@@ -97,4 +97,10 @@ public interface EhourConfig
 	 * @return
 	 */
 	public boolean isRememberMeAvailable();
+	
+	/**
+	 * In demo mode ?
+	 * @return
+	 */
+	public boolean isInDemoMode();
 }

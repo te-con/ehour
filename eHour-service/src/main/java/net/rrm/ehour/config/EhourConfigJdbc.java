@@ -100,4 +100,9 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return getLocaleLanguage() != null ? new Locale(getLocaleLanguage()) : Locale.getDefault();
 	}
 
+	public boolean isInDemoMode()
+	{
+		return this.getBoolean("demoMode", false);
+	}
+
 }

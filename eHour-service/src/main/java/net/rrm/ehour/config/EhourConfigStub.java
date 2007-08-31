@@ -46,6 +46,7 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private	String		mailFrom;
 	private	String		mailSmtp;
 	private	boolean		rememberMeAvailable = true;
+	private boolean		demoMode = false;
 	
 	/**
 	 * @return the availableTranslations
@@ -180,6 +181,10 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	public Locale getLocale()
 	{
 		return getLocaleLanguage() != null ? new Locale(getLocaleLanguage()) : Locale.getDefault();
+	}
+	public boolean isInDemoMode()
+	{
+		return demoMode;
 	}
 	
 }

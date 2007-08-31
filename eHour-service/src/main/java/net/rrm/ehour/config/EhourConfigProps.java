@@ -93,5 +93,10 @@ public class EhourConfigProps implements EhourConfig
 	{
 		return getLocaleLanguage() != null ? new Locale(getLocaleLanguage()) : Locale.getDefault();
 	}
+
+	public boolean isInDemoMode()
+	{
+		return Boolean.valueOf(props.getProperty("demoMode"));
+	}
 	
 }
