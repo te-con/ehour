@@ -23,18 +23,22 @@
 
 package net.rrm.ehour.ui.panel.admin.common;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.DemoDecorator;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
+import org.apache.wicket.Application;
+import org.apache.wicket.Localizer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
@@ -63,20 +67,35 @@ public class FormUtil
 	 */
 	public static void setSubmitActions(final Form form, 
 										boolean includeDelete, 
-										final AjaxAwareContainer submitTarget)
+										final AjaxAwareContainer submitTarget,
+										final EhourConfig config)
 	{
-		Button submitButton = new AjaxButton("submitButton", form)
+		Localizer localizer = Application.get().getResourceSettings().getLocalizer();
+		final String	demoModeText = localizer.getString("demoMode", form);
+		
+		AjaxButton submitButton = new AjaxButton("submitButton", form)
 		{
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT, form.getModel());
+				if (!config.isInDemoMode())
+				{
+					submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT, form.getModel());
+				}
+				
             }
 
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
-				return new LoadingSpinnerDecorator();
+				if (config.isInDemoMode())
+				{
+					return new DemoDecorator(demoModeText);
+				}
+				else
+				{
+					return new LoadingSpinnerDecorator();
+				}
 			}
 			
 			@Override
@@ -84,8 +103,8 @@ public class FormUtil
 			{
 				target.addComponent(form);
             }
-			
         };
+        
         
         submitButton.setModel(new ResourceModel("general.save"));
 		// default submit
@@ -96,13 +115,24 @@ public class FormUtil
 			@Override
             public void onClick(AjaxRequestTarget target)
 			{
-				submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_DELETE, form.getModel());
+				if (!config.isInDemoMode())
+				{
+					submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_DELETE, form.getModel());
+				}
             }
+
 
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
-				return new LoadingSpinnerDecorator();
+				if (config.isInDemoMode())
+				{
+					return new DemoDecorator(demoModeText);
+				}
+				else
+				{
+					return new LoadingSpinnerDecorator();
+				}
 			}		
         };
         

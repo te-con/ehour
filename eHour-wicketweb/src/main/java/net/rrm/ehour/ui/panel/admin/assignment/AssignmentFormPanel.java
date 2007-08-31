@@ -136,7 +136,7 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 		form.add(new ServerMessageLabel("serverMessage"));
 		
 		// add submit form
-		FormUtil.setSubmitActions(form, true, this);
+		FormUtil.setSubmitActions(form, true, this, config);
 
 		greyBorder.add(form);
 	}

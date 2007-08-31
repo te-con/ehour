@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
+import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
@@ -149,7 +150,8 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		//
 		FormUtil.setSubmitActions(form
 									,((UserBackingBean)userModel.getObject()).getUser().isDeletable()
-									,this);
+									,this
+									,((EhourWebSession)getSession()).getEhourConfig());
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);

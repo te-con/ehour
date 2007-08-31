@@ -33,6 +33,7 @@ import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
+import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
@@ -120,7 +121,8 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		//
 		FormUtil.setSubmitActions(form
 									,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
-									,this);
+									,this
+									,((EhourWebSession)getSession()).getEhourConfig());
 		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
 		
 		greyBorder.add(form);

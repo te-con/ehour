@@ -124,6 +124,11 @@ public class Login extends WebPage
 			add(usernameInput);
 			add(new PasswordTextField("password").setResetPassword(true));
 			add(new Button("signin", new ResourceModel("login.login.submit")));
+			
+			// TODO layout is off when feedback panel uses its space
+			Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
+			add(demoMode);
+			demoMode.setVisible(((EhourWebSession)getSession()).getEhourConfig().isInDemoMode());
 		}
 
 		/**

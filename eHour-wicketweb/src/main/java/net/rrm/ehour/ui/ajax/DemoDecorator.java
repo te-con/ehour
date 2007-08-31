@@ -1,5 +1,5 @@
 /**
- * Created on Jul 4, 2007
+ * Created on Aug 31, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -21,21 +21,37 @@
  *
  */
 
-package net.rrm.ehour.ui.page.login;
+package net.rrm.ehour.ui.ajax;
 
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 
 /**
- * Session expired page
+ * Display demo decorator
  **/
 
-public class SessionExpiredPage extends Login
+public class DemoDecorator implements IAjaxCallDecorator
 {
-	private static final long serialVersionUID = -5670406541161451517L;
+	private static final long serialVersionUID = 1432993030793501257L;
 
-	public SessionExpiredPage()
+	private String	demoMsg;
+	
+	public DemoDecorator(String msg)
 	{
-		super(null);
+		this.demoMsg = msg;
+	}
+	
+	public CharSequence decorateOnFailureScript(CharSequence script)
+	{
+		return "alert('" + demoMsg + "');";
+	}
 
-		super.error(getLocalizer().getString("login.sessionexpired", this));
+	public CharSequence decorateOnSuccessScript(CharSequence script)
+	{
+		return "alert('" + demoMsg + "');";
+	}
+
+	public CharSequence decorateScript(CharSequence script)
+	{
+		return "alert('" + demoMsg + "');";
 	}
 }
