@@ -68,7 +68,9 @@ public class DateOverlapValidator extends AbstractFormValidator
 		if (components[0].isVisible() 
 				&& components[1].isVisible()
 				&& components[0].getInput() != null
-				&& components[1].getInput() != null)
+				&& components[0].getConvertedInput() != null
+				&& components[1].getInput() != null
+				&& components[1].getConvertedInput() != null)
 		{
 			Date startDate = (Date)components[0].getConvertedInput();
 			Date endDate = (Date)components[1].getConvertedInput();

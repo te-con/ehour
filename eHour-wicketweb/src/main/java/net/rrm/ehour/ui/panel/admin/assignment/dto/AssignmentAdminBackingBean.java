@@ -52,6 +52,9 @@ public class AssignmentAdminBackingBean extends ProjectAssignment implements Adm
 	{
 		projectAssignment = assignment;
 		this.customer = (assignment.getProject() != null) ? assignment.getProject().getCustomer() : null;
+		
+		infiniteStartDate = assignment.getDateStart() == null;
+		infiniteEndDate = assignment.getDateEnd() == null;
 	}
 	
 	/**

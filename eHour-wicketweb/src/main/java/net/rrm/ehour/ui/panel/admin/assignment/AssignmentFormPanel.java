@@ -42,6 +42,7 @@ import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.validator.DateOverlapValidator;
 
 import org.apache.log4j.Logger;
@@ -117,7 +118,6 @@ public class AssignmentFormPanel extends Panel
 		// add start & end dates
 		addDates(form, model);
 		
-		
 		// add hourly rate
 		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate",
 											new FloatModel(new PropertyModel(model, "projectAssignment.hourlyRate"), config, null));
@@ -130,7 +130,6 @@ public class AssignmentFormPanel extends Panel
 		// and currency
 		String currency = config.getCurrency();
 		form.add(new Label("currency", CommonUIStaticData.getCurrencies().get(currency)));
-		
 		
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage"));
@@ -243,10 +242,13 @@ public class AssignmentFormPanel extends Panel
 	 */
 	private void addDates(Form form, final IModel model)
 	{
+		PropertyModel	infiniteStartDateModel = new PropertyModel(model, "infiniteStartDate");
+		PropertyModel	infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
+		
 		// start date
 		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", "dd/MM/yyyy");
+		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
 		dateStart.add(FormUtil.getValidateBehavior(form));
-		dateStart.setRequired(true);
 		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
 
 		// container for hiding
@@ -260,7 +262,8 @@ public class AssignmentFormPanel extends Panel
 		final WebMarkupContainer	innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
 		innerStartDateHider.setOutputMarkupId(true);
 		innerStartDateHider.add(dateStart);
-		innerStartDateHider.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteStartDate());
+		innerStartDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteStartDateModel, true));
+
 		startDateHider.add(innerStartDateHider);
 
 		form.add(startDateHider);
@@ -272,7 +275,6 @@ public class AssignmentFormPanel extends Panel
 			protected void onUpdate(AjaxRequestTarget target)
 			{
 				target.addComponent(startDateHider);
-				innerStartDateHider.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteStartDate());
 			}
 		};
 		
@@ -281,7 +283,7 @@ public class AssignmentFormPanel extends Panel
 		// end date
 		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", "dd/MM/yyyy");
 		dateEnd.add(FormUtil.getValidateBehavior(form));
-		dateEnd.setRequired(true);
+		dateStart.add(new ConditionalRequiredValidator(infiniteEndDateModel));
 		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
 		
 		final WebMarkupContainer	endDateHider = new WebMarkupContainer("endDateHider");
@@ -294,7 +296,7 @@ public class AssignmentFormPanel extends Panel
 		final WebMarkupContainer	innerEndDateHider = new WebMarkupContainer("innerEndDateHider");
 		innerEndDateHider.setOutputMarkupId(true);
 		innerEndDateHider.add(dateEnd);
-		innerEndDateHider.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteEndDate());
+		innerEndDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteEndDateModel, true));
 		endDateHider.add(innerEndDateHider);		
 		form.add(endDateHider);	
 		
@@ -305,7 +307,6 @@ public class AssignmentFormPanel extends Panel
 			protected void onUpdate(AjaxRequestTarget target)
 			{
 				target.addComponent(endDateHider);
-				innerEndDateHider.setVisible(!((AssignmentAdminBackingBean)model.getObject()).isInfiniteEndDate());
 			}
 		};	
 
