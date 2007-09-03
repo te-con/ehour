@@ -11,15 +11,15 @@
 		</property>
 
 		<property name="url">
-			<value>jdbc:mysql://192.168.1.10/ehour</value>
+			<value>jdbc:mysql://127.0.0.1/ehour</value>
 		</property>
 
 		<property name="username">
-			<value>ehour_dev</value>
+			<value>root</value>
 		</property>
 
 		<property name="password">
-			<value>ehour_dev</value>
+			<value>admin</value>
 		</property>
 
 		<property name="validationQuery">
