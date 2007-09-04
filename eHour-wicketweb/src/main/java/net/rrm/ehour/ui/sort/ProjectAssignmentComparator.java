@@ -110,6 +110,11 @@ public class ProjectAssignmentComparator implements Comparator<ProjectAssignment
 		{
 			cmp = 1;
 		}
+		// default projects don't have a start date, they go first
+		else if (o1.getDateStart() == null && o2.getDateStart() == null)
+		{
+			cmp = 0;
+		}
 		// same start date, sort on name
 		else if (o1.getDateStart().equals(o2.getDateStart()))
 		{
