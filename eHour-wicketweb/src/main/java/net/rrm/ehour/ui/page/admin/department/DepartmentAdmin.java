@@ -19,14 +19,11 @@ package net.rrm.ehour.ui.page.admin.department;
 import java.util.Collections;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
-import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.department.form.DepartmentFormPanel;
 import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.util.CommonUIStaticData;

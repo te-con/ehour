@@ -412,6 +412,5 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 	{
 		// tabs -> panel
 		((AjaxAwareContainer)AssignmentFormPanel.this.getParent().getParent()).ajaxRequestReceived(target, type, params);
-		
 	}
 }

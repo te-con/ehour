@@ -66,7 +66,8 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	 */
 	public void succesfulSave(AjaxRequestTarget target)
 	{
-		getAddBackingBean().setServerMessage(getLocalizer().getString("dataSaved", this));
+		addBackingBean = getNewAddBackingBean();
+		addBackingBean.setServerMessage(getLocalizer().getString("dataSaved", this));
 		addAddTab();
 		setSelectedTab(0);
 		
