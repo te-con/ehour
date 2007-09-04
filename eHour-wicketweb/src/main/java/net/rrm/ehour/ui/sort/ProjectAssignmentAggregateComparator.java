@@ -27,6 +27,7 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 public class ProjectAssignmentAggregateComparator implements Comparator<ProjectAssignmentAggregate>, Serializable
 {
+	private static final long serialVersionUID = 8223481348525614968L;
 	public final static int SORT_ON_CUSTOMER = 1;
 	public final static int SORT_ON_PROJECT = 2;
 	

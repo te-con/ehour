@@ -54,10 +54,11 @@ public class JavaScriptConfirmation extends AttributeModifier
 	 */
 	protected String newValue(final String currentValue, final String replacementValue)
 	{
-		String result = "return confirm('" + replacementValue + "')";
+		String result = "if (confirm('" + replacementValue + "')) { ";
+		
 		if (currentValue != null)
 		{
-			result = currentValue + "; " + result;
+			result = result + currentValue + "; } else { return false; }";
 		}
 		return result;
 	}

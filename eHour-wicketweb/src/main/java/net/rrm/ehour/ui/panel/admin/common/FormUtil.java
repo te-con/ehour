@@ -102,7 +102,7 @@ public class FormUtil
 		// default submit
 		form.add(submitButton);
 
-		AjaxLink deleteButton = new AjaxLink("deleteButton", new ResourceModel("general.delete"))
+		AjaxLink deleteButton = new AjaxLink("deleteButton")
         {
 			@Override
             public void onClick(AjaxRequestTarget target)
@@ -129,8 +129,6 @@ public class FormUtil
         };
         
         deleteButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("deleteConfirmation")));
-        
-        deleteButton.setModel(new ResourceModel("general.delete"));
         deleteButton.setVisible(includeDelete);
         form.add(deleteButton);
 	}	
