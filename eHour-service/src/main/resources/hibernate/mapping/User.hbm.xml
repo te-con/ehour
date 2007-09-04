@@ -5,8 +5,8 @@
 <hibernate-mapping>
 
 <!-- User -->
-	<class name="net.rrm.ehour.user.domain.User" table="USERS">
-	    <!-- <cache usage="read-write" /> -->
+	<class name="net.rrm.ehour.user.domain.User" table="USERS" mutable="false">
+	    <cache usage="read-write" />
 		<id name="userId" column="USER_ID" type="java.lang.Integer">
 			<generator class="native" />
        	</id>
@@ -19,7 +19,7 @@
 		
 		<property name="active" column="ACTIVE" type="yes_no" index="IDX_USER_ACTIVE" />
 		
-        <set name="userRoles" table="USER_TO_USERROLE" lazy="true" cascade="delete">
+        <set name="userRoles" table="USER_TO_USERROLE" lazy="true">
            <key column="USER_ID" />
            <many-to-many column="ROLE" class="net.rrm.ehour.user.domain.UserRole"/>
         </set>		
