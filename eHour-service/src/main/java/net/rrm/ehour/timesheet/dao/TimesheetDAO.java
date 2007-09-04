@@ -65,4 +65,10 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	 */
 	public TimesheetEntry getLatestTimesheetEntryForAssignment(Integer assignmentId);
 	
+	/**
+	 * Delete timesheet entries for assignment
+	 * @param assignmentIds
+	 * @return entries deleted
+	 */
+	public int deleteTimesheetEntries(List<Integer> assignmentIds);
 }

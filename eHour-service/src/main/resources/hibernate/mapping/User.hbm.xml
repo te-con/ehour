@@ -19,7 +19,7 @@
 		
 		<property name="active" column="ACTIVE" type="yes_no" index="IDX_USER_ACTIVE" />
 		
-        <set name="userRoles" table="USER_TO_USERROLE" lazy="true">
+        <set name="userRoles" table="USER_TO_USERROLE" lazy="true" cascade="delete">
            <key column="USER_ID" />
            <many-to-many column="ROLE" class="net.rrm.ehour.user.domain.UserRole"/>
         </set>		
@@ -28,7 +28,7 @@
             <column name="DEPARTMENT_ID" not-null="true" />
         </many-to-one>         
 
-		<set name="projectAssignments" inverse="true" lazy="true" cascade="merge,persist,save-update">
+		<set name="projectAssignments" inverse="true" lazy="true" cascade="merge,persist,save-update,delete">
 			<key column="USER_ID" not-null="true" />
 	       	<one-to-many class="net.rrm.ehour.project.domain.ProjectAssignment"/>
 	   </set>         

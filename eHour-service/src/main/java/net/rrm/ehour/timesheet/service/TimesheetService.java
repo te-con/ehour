@@ -67,4 +67,11 @@ public interface TimesheetService
 	 * @param timesheetComment
 	 */
 	public void persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment timesheetComment);
+	
+	/**
+	 * Delete timesheet entries booked on assignments
+	 * @param assignments
+	 * @return
+	 */
+	public void deleteTimesheetEntries(User user);
 }

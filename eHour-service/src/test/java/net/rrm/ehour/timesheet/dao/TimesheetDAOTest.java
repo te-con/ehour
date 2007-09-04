@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.timesheet.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -24,6 +25,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
+@SuppressWarnings("unchecked")
 public class TimesheetDAOTest extends BaseDAOTest 
 {
 	private	TimesheetDAO	dao;
@@ -84,6 +86,15 @@ public class TimesheetDAOTest extends BaseDAOTest
 	{
 		TimesheetEntry entry = dao.getLatestTimesheetEntryForAssignment(1);
 		assertEquals(9.2f, entry.getHours(), 0.01f);
+	}
+	
+	public void testDeleteTimesheetEntries()
+	{
+		List ids = new ArrayList();
+		ids.add(5);
 		
+		int deleted = dao.deleteTimesheetEntries(ids);
+		
+		assertEquals(2, deleted);
 	}
 }

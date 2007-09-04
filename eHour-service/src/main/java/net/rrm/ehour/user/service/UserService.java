@@ -18,6 +18,7 @@ package net.rrm.ehour.user.service;
 import java.util.List;
 
 import net.rrm.ehour.exception.NoResultsException;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
@@ -37,7 +38,7 @@ public interface UserService
 	 * @return
 	 * @throws NoResultsException
 	 */
-    public User getUser(Integer userID);
+    public User getUser(Integer userID) throws ObjectNotFoundException;
     
     /**
      * Get user by userId and optional check if the user is deletable (as in, no hours booked on his/her
@@ -46,7 +47,7 @@ public interface UserService
      * @param checkIfDeletable
      * @return
      */
-    public User getUserAndCheckDeletability(Integer userId);
+    public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException;
     
 	/**
 	 * Get user by username
@@ -156,4 +157,10 @@ public interface UserService
      * @param customerFoldPreference
      */
     public void persistCustomerFoldPreference(CustomerFoldPreference customerFoldPreference);
+
+    /**
+     * Cascading delete of user
+     * @param user
+     */
+    public void deleteUser(Integer userId);
 }

@@ -33,6 +33,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
@@ -54,7 +55,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Provides services for displaying and manipulating timesheets.
- * Methods are organized by their functionality rather than technical impact. * @author Thies
+ * Methods are organized by their functionality rather than technical impact. 
+ * @author Thies
  *
  */
 
@@ -326,6 +328,16 @@ public class TimesheetServiceImpl implements TimesheetService
 		projectAssignmentService.checkForOverruns(projectAssignments);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.timesheet.service.TimesheetService#deleteTimesheetEntries(net.rrm.ehour.user.domain.User)
+	 */
+	public void deleteTimesheetEntries(User user)
+	{
+		timesheetCommentDAO.deleteCommentsForUser(user.getUserId());
+		
+		timesheetDAO.deleteTimesheetEntries(ProjectAssignmentUtil.getAssignmentIds(user.getProjectAssignments()));
+	}
 		
 	
 	/**

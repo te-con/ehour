@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
@@ -107,8 +108,9 @@ public class UserServiceTest extends TestCase
 	}
 	/**
 	 * Test method for {@link net.rrm.ehour.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
+	 * @throws ObjectNotFoundException 
 	 */
-	public void testGetUser()
+	public void testGetUser() throws ObjectNotFoundException
 	{
 		User				user;
 		ProjectAssignment	paA, paB;

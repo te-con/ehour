@@ -25,4 +25,10 @@ import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 
 public interface TimesheetCommentDAO  extends GenericDAO<TimesheetComment, TimesheetCommentId>
 {
+	/**
+	 * Delete comments for user
+	 * @param user
+	 * @return
+	 */
+	public int deleteCommentsForUser(Integer userId);
 }

@@ -30,7 +30,6 @@ public interface GenericDAO <T extends DomainObject, PK extends Serializable>
 	 * @return
 	 */
 	public List<T> findAll();
-		
 	
 	/**
 	 * Delete domain object

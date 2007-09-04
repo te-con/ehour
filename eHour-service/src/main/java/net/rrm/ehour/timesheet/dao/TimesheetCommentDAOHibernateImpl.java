@@ -19,6 +19,9 @@ import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 /**
  * CRUD on timesheetComment domain obj 
  **/
@@ -33,6 +36,21 @@ public class TimesheetCommentDAOHibernateImpl
 	public TimesheetCommentDAOHibernateImpl()
 	{
 		super(TimesheetComment.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.timesheet.dao.TimesheetCommentDAO#deleteCommentsForUser(net.rrm.ehour.user.domain.User)
+	 */
+	public int deleteCommentsForUser(Integer userId)
+	{
+		Session session = getSession();
+		Query	query = session.getNamedQuery("TimesheetComment.deleteUserId");
+		query.setParameter("userId", userId);
+		
+		int rowCount = query.executeUpdate();
+		
+		return rowCount;
 	}	
 
 }

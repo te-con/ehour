@@ -102,6 +102,7 @@ public class TimesheetDAOHibernateImpl
 	 * @param hql
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private List getListOnUserIdAndRange(Integer userId, DateRange dateRange, String hql)
 	{
 		List		results;
@@ -142,5 +143,20 @@ public class TimesheetDAOHibernateImpl
 						return ((results != null && results.size() > 0) ? results.get(0) : null);
 					}
 			}, true);		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#deleteTimesheetEntries(java.util.List)
+	 */
+	public int deleteTimesheetEntries(List<Integer> assignmentIds)
+	{
+		Session session = getSession();
+		Query	query = session.getNamedQuery("Timesheet.deleteOnAssignmentIds");
+		query.setParameterList("assignmentIds", assignmentIds);
+		
+		int rowCount = query.executeUpdate();
+		
+		return rowCount;
 	}
 }

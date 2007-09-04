@@ -47,4 +47,20 @@
     	WHERE entry.entryId.projectAssignment.assignmentId = :assignmentId
     	ORDER BY entry.entryId.entryDate DESC
 	</query>   
+	
+    <query name="Timesheet.deleteOnAssignmentIds">
+    <![CDATA[
+    	DELETE
+    	FROM TimesheetEntry entry
+    	WHERE entry.entryId.projectAssignment.assignmentId IN (:assignmentIds)
+    		 ]]>
+	</query>  	
+	
+    <query name="TimesheetComment.deleteUserId">
+    <![CDATA[
+    	DELETE 
+    	FROM TimesheetComment comment
+    	WHERE comment.commentId.userId = :userId
+    		 ]]>
+	</query>  		
 </hibernate-mapping>

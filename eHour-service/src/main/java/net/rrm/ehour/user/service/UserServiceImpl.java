@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.exception.NoResultsException;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
@@ -30,6 +31,7 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
@@ -56,6 +58,7 @@ public class UserServiceImpl implements UserService
 	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
 	private	ProjectAssignmentService		projectAssignmentService;
 	private	ReportService		reportService;
+	private TimesheetService	timesheetService;
 
 	/**
 	 * Get user by userId 
@@ -63,7 +66,7 @@ public class UserServiceImpl implements UserService
 	 * @return
 	 * @throws NoResultsException
 	 */	
-	public User getUser(Integer userId) 
+	public User getUser(Integer userId) throws ObjectNotFoundException
 	{
 		User 					user = userDAO.findById(userId);
 		Set<ProjectAssignment>	inactiveAssignments = new HashSet<ProjectAssignment>();
@@ -79,11 +82,15 @@ public class UserServiceImpl implements UserService
 					inactiveAssignments.add(assignment);
 				}
 			}
+			
+			user.getProjectAssignments().removeAll(inactiveAssignments);
+			user.setInactiveProjectAssignments(inactiveAssignments);
 		}
-		
-		user.getProjectAssignments().removeAll(inactiveAssignments);
-		
-		user.setInactiveProjectAssignments(inactiveAssignments);
+		else
+		{
+			throw new ObjectNotFoundException("User not found");
+		}
+			
 		
 		return user;
 	}
@@ -92,7 +99,7 @@ public class UserServiceImpl implements UserService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.user.service.UserService#getUserAndCheckDeletability(java.lang.Integer)
 	 */
-	public User getUserAndCheckDeletability(Integer userId)
+	public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException
 	{
 		User	user = getUser(userId);
 		
@@ -465,5 +472,26 @@ public class UserServiceImpl implements UserService
 	public List<User> getUsersByNameMatch(String match, boolean inclInactive, UserRole userRole)
 	{
 		return userDAO.findUsersByNameMatch(match, inclInactive, userRole);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#deleteUser(net.rrm.ehour.user.domain.User)
+	 */
+	public void deleteUser(Integer userId)
+	{
+		User	user = userDAO.findById(userId);
+
+		timesheetService.deleteTimesheetEntries(user);
+		
+		userDAO.delete(user);
+	}
+
+	/**
+	 * @param timesheetService the timesheetService to set
+	 */
+	public void setTimesheetService(TimesheetService timesheetService)
+	{
+		this.timesheetService = timesheetService;
 	}
 }

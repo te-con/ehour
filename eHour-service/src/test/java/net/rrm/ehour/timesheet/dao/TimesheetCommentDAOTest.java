@@ -18,7 +18,6 @@ package net.rrm.ehour.timesheet.dao;
 import java.util.Date;
 
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
 import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
 
@@ -44,11 +43,16 @@ public class TimesheetCommentDAOTest extends BaseDAOTest
 	 */
 	public void testGetTimesheetEntriesInRange()
 	{
-		DateRange			range;
 		TimesheetComment	comment;
 		
 		comment = dao.findById(new TimesheetCommentId(1, new Date(2007 - 1900, 1 - 1, 7)));
 		
 		assertNotNull(comment);
+	}
+	
+	public void testDeleteOnUser()
+	{
+		int rowCount = dao.deleteCommentsForUser(1);
+		assertEquals(2, rowCount);
 	}
 }
