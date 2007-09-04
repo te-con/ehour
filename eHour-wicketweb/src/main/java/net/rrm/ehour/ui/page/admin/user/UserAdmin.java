@@ -18,6 +18,9 @@ package net.rrm.ehour.ui.page.admin.user;
 
 import java.util.List;
 
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
@@ -109,8 +112,15 @@ public class UserAdmin extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId)));
-						getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+						try
+						{
+							getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId)));
+							getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+						} catch (ObjectNotFoundException e)
+						{
+							logger.error("User not found for id: " + userId);
+						}
+
 					}
 				};
 				
@@ -144,11 +154,21 @@ public class UserAdmin extends BaseTabbedAdminPage
 				break;
 			}
 			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+			case CommonUIStaticData.AJAX_DELETE:
 			{
 				UserBackingBean	backingBean = (UserBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
+				
 				try
 				{
-					persistUser(backingBean);
+					if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					{
+						persistUser(backingBean);
+					}
+					else if (type == CommonUIStaticData.AJAX_DELETE)
+					{
+						deleteUser(backingBean);
+					}
+						
 
 					// update user list
 					List<User> users = getUsers();
@@ -171,8 +191,10 @@ public class UserAdmin extends BaseTabbedAdminPage
 	/**
 	 * Persist user
 	 * @param userBackingBean
+	 * @throws ObjectNotUniqueException 
+	 * @throws PasswordEmptyException 
 	 */
-	private void persistUser(UserBackingBean userBackingBean) throws Exception
+	private void persistUser(UserBackingBean userBackingBean) throws PasswordEmptyException, ObjectNotUniqueException
 	{
 		logger.info(((userBackingBean == getTabbedPanel().getEditBackingBean()) 
 											? "Updating" 
@@ -185,6 +207,15 @@ public class UserAdmin extends BaseTabbedAdminPage
 		}
 		
 		userService.persistUser(userBackingBean.getUser());
+	}
+	
+	/**
+	 * 
+	 * @param userBackingBean
+	 */
+	private void deleteUser(UserBackingBean userBackingBean)
+	{
+		userService.deleteUser(userBackingBean.getUser().getUserId());
 	}
 	
 	/**

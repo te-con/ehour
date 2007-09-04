@@ -113,7 +113,6 @@ public class FormUtil
 				}
             }
 
-
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
