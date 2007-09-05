@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.page.admin.department;
 import java.util.Collections;
 import java.util.List;
 
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
@@ -126,12 +127,21 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	{
 		switch (type)
 		{
+			case CommonUIStaticData.AJAX_DELETE:
 			case CommonUIStaticData.AJAX_FORM_SUBMIT:
 			{
 				DepartmentAdminBackingBean backingBean = (DepartmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
+
 				try
 				{
-					persistDepartment(backingBean);
+					if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					{
+						persistDepartment(backingBean);
+					}
+					else if (type == CommonUIStaticData.AJAX_DELETE)
+					{
+						deleteDepartment(backingBean);
+					}					
 
 					// update customer list
 					List<UserDepartment> depts = getUserDepartments();
@@ -161,6 +171,18 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 		userService.persistUserDepartment(backingBean.getDepartment());
 	}
 	
+	
+	/**
+	 * Delete department
+	 * @param backingBean
+	 */
+	private void deleteDepartment(DepartmentAdminBackingBean backingBean)
+	{
+		userService.deleteDepartment(backingBean.getDepartment().getDepartmentId());
+	}
+	
+	
+	
 	/**
 	 * Get a the departmentListHolder fragment containing the listView
 	 * @param users
@@ -183,8 +205,15 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						getTabbedPanel().setEditBackingBean(new DepartmentAdminBackingBean(userService.getUserDepartment(deptId)));
-						getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+						try
+						{
+							getTabbedPanel().setEditBackingBean(new DepartmentAdminBackingBean(userService.getUserDepartment(deptId)));
+							getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+
+						} catch (ObjectNotFoundException e)
+						{
+							logger.error(e);
+						}
 					}
 				};
 				
