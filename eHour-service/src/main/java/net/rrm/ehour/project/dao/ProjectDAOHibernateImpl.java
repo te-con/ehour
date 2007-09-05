@@ -27,6 +27,8 @@ import net.rrm.ehour.user.domain.User;
 
 public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, Integer> implements ProjectDAO
 {
+	private final static String	CACHEREGION = "query.Project";
+	
 	/**
 	 * @todo fix this a bit better
 	 */
@@ -74,9 +76,11 @@ public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, In
 			hqlName = "Project.findActiveProjectsForCustomers";
 		}
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam(hqlName,
-																		"customerIds", 
-																		customerIds.toArray());
+		results = findByNamedQueryAndNamedParam(hqlName,
+													"customerIds", 
+													customerIds.toArray(),
+													true,
+													CACHEREGION);
 		
 		return results;			
 	}
@@ -88,8 +92,9 @@ public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, In
 	@SuppressWarnings("unchecked")
 	public List<Project> findActiveProjectsWhereUserIsPM(User user)
 	{
-		return getHibernateTemplate().findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM",
-																	"user", user);
+		return findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM",
+												"user", user,
+												true, CACHEREGION);
 	}
 
 	/*

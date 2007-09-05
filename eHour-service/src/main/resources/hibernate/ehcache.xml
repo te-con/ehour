@@ -6,7 +6,7 @@
         maxElementsInMemory="1000"
         eternal="false"
         timeToIdleSeconds="120"
-        timeToLiveSeconds="120"
+        timeToLiveSeconds="3600"
         overflowToDisk="false"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="120"
@@ -21,6 +21,22 @@
 	
 	<cache
 	    name="net.rrm.ehour.user.domain.User"
+	    maxElementsInMemory="50"
+        timeToIdleSeconds="600"
+        timeToLiveSeconds="3600"
+        overflowToDisk="true"
+	/>
+	
+	<cache
+	    name="net.rrm.ehour.project.domain.Project"
+	    maxElementsInMemory="50"
+        timeToIdleSeconds="600"
+        timeToLiveSeconds="3600"
+        overflowToDisk="true"
+	/>	
+
+	<cache
+	    name="net.rrm.ehour.customer.domain.Customer"
 	    maxElementsInMemory="50"
         timeToIdleSeconds="600"
         timeToLiveSeconds="3600"
@@ -76,10 +92,18 @@
 	
 	<cache
 		name="query.Customer"
-	    maxElementsInMemory="5"
+	    maxElementsInMemory="20"
 	    eternal="false"
 	    timeToLiveSeconds="3600"
 	    overflowToDisk="true"
 	/>
+	
+	<cache
+		name="query.Project"
+	    maxElementsInMemory="20"
+	    eternal="false"
+	    timeToLiveSeconds="3600"
+	    overflowToDisk="true"
+	/>	
 		
 </ehcache>

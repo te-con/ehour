@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
@@ -95,23 +96,27 @@ public class ProjectServiceImpl implements ProjectService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getProject(java.lang.Integer)
 	 */
-	public Project getProject(Integer projectId)
+	public Project getProject(Integer projectId) throws ObjectNotFoundException
 	{
-		return projectDAO.findById(projectId);
+		Project project = projectDAO.findById(projectId);
+		
+		if (project == null)
+		{
+			throw new ObjectNotFoundException("Project not found for id " + projectId);
+		}
+		
+		return project;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
 	 */
-	public Project getProjectAndCheckDeletability(Integer projectId)
+	public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException
 	{
-		Project project = projectDAO.findById(projectId);
+		Project project = getProject(projectId);
 		
-		if (project != null)
-		{
-			setProjectDeletability(project);
-		}
+		setProjectDeletability(project);
 		
 		return project;
 	}
@@ -123,8 +128,12 @@ public class ProjectServiceImpl implements ProjectService
 	public void setProjectDeletability(Project project)
 	{
 		List<Integer> ids = ProjectAssignmentUtil.getAssignmentIds(project.getProjectAssignments());
+		List<ProjectAssignmentAggregate> aggregates = null;
 		
-		List<ProjectAssignmentAggregate> aggregates = reportService.getHoursPerAssignment(ids);
+		if (ids != null && ids.size() > 0)
+		{
+			aggregates = reportService.getHoursPerAssignment(ids);
+		}
 		
 		project.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
 	}

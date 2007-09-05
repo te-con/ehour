@@ -18,6 +18,7 @@ package net.rrm.ehour.project.service;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.user.domain.User;
@@ -38,14 +39,14 @@ public class ProjectServiceIntegrationTest  extends BaseDAOTest
 		this.projectService = projectService;
 	}
 	
-	public void testGetProjectNotDeletable()
+	public void testGetProjectNotDeletable() throws ObjectNotFoundException
 	{
 		Project prj = projectService.getProjectAndCheckDeletability(2);
 		
 		assertFalse(prj.isDeletable());
 	}
 	
-	public void testGetProjectDeletable()
+	public void testGetProjectDeletable() throws ObjectNotFoundException
 	{
 		Project prj = projectService.getProjectAndCheckDeletability(4);
 		

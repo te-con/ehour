@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
@@ -46,14 +47,14 @@ public interface ProjectService
 	 * @param projectId
 	 * @return
 	 */
-	public Project getProject(Integer projectId);
+	public Project getProject(Integer projectId) throws ObjectNotFoundException;
 	
 	/**
 	 * Get project and check deletability
 	 * @param projectId
 	 * @return
 	 */
-	public Project getProjectAndCheckDeletability(Integer projectId);
+	public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException;
 	
 	/**
 	 * Set the project deletability flag

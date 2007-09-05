@@ -29,6 +29,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
@@ -105,8 +106,9 @@ public class ProjectServiceTest extends TestCase
 	 * Get project
 	 * @param projectId
 	 * @return
+	 * @throws ObjectNotFoundException 
 	 */
-	public void testGetProject()
+	public void testGetProject() throws ObjectNotFoundException
 	{
 		expect(projectDAO.findById(new Integer(1)))
 			.andReturn(new Project());
