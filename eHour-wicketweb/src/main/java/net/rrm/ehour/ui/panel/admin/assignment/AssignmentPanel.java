@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.panel.admin.assignment;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
@@ -29,6 +30,7 @@ import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -44,7 +46,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class AssignmentPanel extends Panel implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = -3721224427697057895L;
-	
+	private	final static Logger	logger = Logger.getLogger(AssignmentPanel.class);
 	@SpringBean
 	private	ProjectAssignmentService	assignmentService;
 	private AddEditTabbedPanel			tabbedPanel;
@@ -123,24 +125,51 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 	{
 		ProjectAssignment	assignment;
 		
-		if (type == CommonUIStaticData.AJAX_LIST_CHANGE)
+		switch (type)
 		{
-			assignment = (ProjectAssignment)params;
-			
-			tabbedPanel.setEditBackingBean(
-							new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
-			tabbedPanel.switchTabOnAjaxTarget(target, 1);
-		}
-		else if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
-		{
-			AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((((IWrapModel) params)).getWrappedModel()).getObject();
-			assignment = backingBean.getProjectAssignment();
-			
-			assignmentService.assignUserToProject(assignment);
-			
-			listPanel.updateList(target, assignment.getUser());
-			
-			tabbedPanel.succesfulSave(target);
+			case CommonUIStaticData.AJAX_LIST_CHANGE:
+			{
+				assignment = (ProjectAssignment)params;
+				
+				try
+				{
+					tabbedPanel.setEditBackingBean(
+									new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
+					tabbedPanel.switchTabOnAjaxTarget(target, 1);
+				} catch (ObjectNotFoundException e)
+				{
+					logger.error("While getting assignment", e);
+				}
+				break;
+			}
+			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+			case CommonUIStaticData.AJAX_DELETE:
+			{
+				AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((((IWrapModel) params)).getWrappedModel()).getObject();
+				assignment = backingBean.getProjectAssignment();
+
+				try
+				{
+					if (type == CommonUIStaticData.AJAX_DELETE)
+					{
+							assignmentService.deleteProjectAssignment(assignment.getAssignmentId());
+					}
+					else if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					{
+						assignmentService.assignUserToProject(assignment);
+					}
+					
+					listPanel.updateList(target, assignment.getUser());
+					
+					tabbedPanel.succesfulSave(target);
+				} catch (Exception e)
+				{
+					logger.error("While saving/deleting assignment", e);
+					tabbedPanel.failedSave(backingBean, target);
+				}
+				
+				break;
+			}
 		}
 	}
 

@@ -129,7 +129,10 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 		form.add(new ServerMessageLabel("serverMessage"));
 		
 		// add submit form
-		FormUtil.setSubmitActions(form, true, this, config);
+		FormUtil.setSubmitActions(form 
+									,((AssignmentAdminBackingBean)model.getObject()).getProjectAssignment().isDeletable() 
+									,this 
+									,config);
 
 		greyBorder.add(form);
 	}
