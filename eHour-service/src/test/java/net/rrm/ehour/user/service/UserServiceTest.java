@@ -166,10 +166,11 @@ public class UserServiceTest extends TestCase
 	}
 	
 	/**
+	 * @throws ObjectNotFoundException 
 	 * 
 	 *
 	 */
-	public void testGetUserDepartment()
+	public void testGetUserDepartment() throws ObjectNotFoundException
 	{
 		UserDepartment ud;
 

@@ -18,7 +18,6 @@ package net.rrm.ehour.user.service;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 
@@ -66,16 +65,16 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 	 */
 	public void testDeleteUserDepartment() throws Exception
 	{
-		userService.deleteUserDepartment(new Integer(2));
+		userService.deleteDepartment(new Integer(2));
 		
 		// should throw exception
 		try
 		{
-			userService.deleteUserDepartment(new Integer(1));
-			assertTrue(false);
-		} catch (ParentChildConstraintException pcce)
+			userService.getUserDepartment(2);
+			fail();
+		} catch (ObjectNotFoundException onfe) 
 		{
-			// 
+			// expected
 		}
 	}
 	

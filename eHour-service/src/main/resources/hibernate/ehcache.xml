@@ -18,6 +18,14 @@
 	    eternal="true"
 	    overflowToDisk="false"
 	/>
+	
+	<cache
+	    name="net.rrm.ehour.user.domain.User"
+	    maxElementsInMemory="50"
+        timeToIdleSeconds="60"
+        timeToLiveSeconds="240"
+        overflowToDisk="true"
+	/>	
 
 	<cache
 	    name="net.rrm.ehour.project.domain.ProjectAssignmentType"

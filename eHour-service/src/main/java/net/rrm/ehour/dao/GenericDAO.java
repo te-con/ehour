@@ -23,6 +23,7 @@ import net.rrm.ehour.domain.DomainObject;
 /**
  * GenericDAO interface for CRUD on domain objects **/
 
+@SuppressWarnings("unchecked")
 public interface GenericDAO <T extends DomainObject, PK extends Serializable>
 {
 	/**

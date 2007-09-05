@@ -28,6 +28,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  * GenericDAO interface for CRUD on domain objects
  **/
 
+@SuppressWarnings("unchecked")
 public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extends Serializable>
 			extends HibernateDaoSupport
 			implements GenericDAO<T, PK>

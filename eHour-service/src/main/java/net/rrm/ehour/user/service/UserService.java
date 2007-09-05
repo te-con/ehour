@@ -20,7 +20,6 @@ import java.util.List;
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
@@ -118,20 +117,13 @@ public interface UserService
      * @return List with userdepartments
      */
     public UserDepartment persistUserDepartment(UserDepartment department) throws ObjectNotUniqueException;
-    
-	/**
-	 * Delete user department on id
-	 * @param departmentId
-	 * @throws ParentChildConstraintException when there are still users attached to the department
-	 */
-    public void deleteUserDepartment(Integer  departmentId) throws ParentChildConstraintException;
-    
+	
     /**
      * Get user department on id 
      * @param departmentId
      * @return
      */
-    public UserDepartment getUserDepartment(Integer departmentId);
+    public UserDepartment getUserDepartment(Integer departmentId) throws ObjectNotFoundException;
     
     /**
      * Get userrole on Id
@@ -163,4 +155,11 @@ public interface UserService
      * @param user
      */
     public void deleteUser(Integer userId);
+    
+    
+    /**
+     * Cascading delete of department
+     * @param departmentId
+     */
+    public void deleteDepartment(Integer departmentId);
 }

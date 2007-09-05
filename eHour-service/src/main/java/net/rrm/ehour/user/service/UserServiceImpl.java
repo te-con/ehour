@@ -24,7 +24,6 @@ import java.util.Set;
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
@@ -173,30 +172,6 @@ public class UserServiceImpl implements UserService
 	}
 
 	/**
-	 * Delete user department on id
-	 * @param departmentId
-	 * @throws parentChildConstraintException when there are still users attached to the department
-	 */
-	public void deleteUserDepartment(Integer departmentId) throws ParentChildConstraintException
-	{
-		UserDepartment department;
-		
-		department = userDepartmentDAO.findById(departmentId);
-		
-		if (department != null)
-		{
-			if (department.getUsers().size() > 0)
-			{
-				throw new ParentChildConstraintException("Users are still attached to this department");
-			}
-			else
-			{
-				userDepartmentDAO.delete(department);
-			}
-		}
-	}
-
-	/**
 	 * @throws ObjectNotUniqueException 
 	 * 
 	 */
@@ -227,9 +202,14 @@ public class UserServiceImpl implements UserService
 	/**
 	 * Get user department by id
 	 */
-	public UserDepartment getUserDepartment(Integer departmentId)
+	public UserDepartment getUserDepartment(Integer departmentId) throws ObjectNotFoundException
 	{
 		UserDepartment userDepartment = userDepartmentDAO.findById(departmentId);
+		
+		if (userDepartment == null)
+		{
+			throw new ObjectNotFoundException("Department not found");
+		}
 		
 		userDepartment.setDeletable(userDepartment.getUsers() == null || userDepartment.getUsers().size() == 0);
 		
@@ -487,6 +467,26 @@ public class UserServiceImpl implements UserService
 		userDAO.delete(user);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.user.service.UserService#deleteDepartment(java.lang.Integer)
+	 */
+	public void deleteDepartment(Integer departmentId)
+	{
+		UserDepartment department = userDepartmentDAO.findById(departmentId);
+
+		logger.info("Deleting department: " + department);
+		
+		for (User user : department.getUsers()) 
+		{
+			logger.info("Deleting user: " + user);
+			
+			deleteUser(user.getUserId());
+		}
+		
+		userDepartmentDAO.delete(department);
+	}
+	
 	/**
 	 * @param timesheetService the timesheetService to set
 	 */
