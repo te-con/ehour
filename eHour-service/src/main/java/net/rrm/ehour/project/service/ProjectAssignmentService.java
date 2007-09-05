@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
@@ -57,13 +58,13 @@ public interface ProjectAssignmentService
 	 * @param assignmentId
 	 * @return
 	 */
-	public ProjectAssignment getProjectAssignment(Integer assignmentId);
+	public ProjectAssignment getProjectAssignment(Integer assignmentId)  throws ObjectNotFoundException;
 	
 	/**
 	 * Delete project assignment
 	 * @param assignmentId
 	 */
-	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException;
+	public void deleteProjectAssignment(Integer assignmentId) throws ObjectNotFoundException, ParentChildConstraintException;
 	
 	/**
 	 * Check for time allotted overruns and mail the PM when required

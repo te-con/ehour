@@ -82,6 +82,7 @@
 		<property name="projectDAO" ref="projectDAO" />		
 		<property name="timeAllottedUtil" ref="timeAllottedUtil" />
 		<property name="mailService" ref="mailService" />
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />		
 	</bean>
 
 	<!-- Report Criteria 

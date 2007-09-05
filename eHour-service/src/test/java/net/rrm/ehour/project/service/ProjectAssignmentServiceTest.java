@@ -19,9 +19,16 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import junit.framework.TestCase;
 
@@ -35,6 +42,7 @@ public class ProjectAssignmentServiceTest extends TestCase
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO 			timesheetDAO;
+	private ReportAggregatedDAO		reportAggregatedDAO;
 	
 	/**
 	 * 
@@ -51,28 +59,38 @@ public class ProjectAssignmentServiceTest extends TestCase
 		
 		timesheetDAO = createMock(TimesheetDAO.class);
 		((ProjectAssignmentServiceImpl)projectAssignmentService).setTimesheetDAO(timesheetDAO);
+		
+		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
+		((ProjectAssignmentServiceImpl)projectAssignmentService).setReportAggregatedDAO(reportAggregatedDAO);
+		
 	}
 	
 	/**
+	 * @throws ObjectNotFoundException 
 	 * 
 	 *
 	 */
-	public void testGetProjectAssignment()
+	public void testGetProjectAssignment() throws ObjectNotFoundException
 	{
 		ProjectAssignment pa = new ProjectAssignment();
 		
 		expect(projectAssignmentDAO.findById(new Integer(1)))
 			.andReturn(pa);
-		
-		expect(timesheetDAO.getTimesheetEntryCountForAssignment(1))
-			.andReturn(0);
+
+		List<Integer>	ids = new ArrayList<Integer>();
+		ids.add(1);
+
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids))
+				.andReturn(new ArrayList<ProjectAssignmentAggregate>());
 
 		replay(projectAssignmentDAO);
 		replay(timesheetDAO);
+		replay(reportAggregatedDAO);
 		
 		projectAssignmentService.getProjectAssignment(1);
 		
 		verify(projectAssignmentDAO);
-		verify(timesheetDAO);		
+		verify(timesheetDAO);
+		verify(reportAggregatedDAO);
 	}	
 }

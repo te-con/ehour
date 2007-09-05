@@ -67,22 +67,6 @@ public class TimesheetDAOHibernateImpl
 		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedDaysInRangeForUserId");
 	}
 
-
-	/**
-	 * Get timesheet entry count for an assignment
-	 */
-	@SuppressWarnings("unchecked")
-	public int getTimesheetEntryCountForAssignment(Integer assignmentId)
-	{
-		List	results;
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntryCountForAssignmentId",
-																		"assignmentId",
-																		assignmentId);
-		
-		return ((Long)results.get(0)).intValue();
-		
-	}
-
 	/**
 	 * Get list of project assignments booked on in a daterange
 	 * @param userId

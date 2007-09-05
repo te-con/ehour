@@ -36,13 +36,6 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	public List<TimesheetEntry> getTimesheetEntriesInRange(Integer userId, DateRange dateRange);
 	
 	/**
-	 * Get timesheet entry count for an assignment
-	 * @param assignmentId
-	 * @return
-	 */
-	public int getTimesheetEntryCountForAssignment(Integer assignmentId);
-	
-	/**
 	 * Get cumulated hours per day for a date range
 	 * @param userId
 	 * @param dateRange

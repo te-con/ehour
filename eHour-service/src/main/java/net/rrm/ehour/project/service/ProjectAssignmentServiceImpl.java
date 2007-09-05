@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
@@ -30,6 +31,8 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.user.domain.User;
@@ -38,7 +41,7 @@ import net.rrm.ehour.util.EhourConstants;
 import org.apache.log4j.Logger;
 
 /**
- * TODO 
+ * Project assignment service
  **/
 
 public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
@@ -49,6 +52,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	private	ProjectAssignmentUtil	timeAllottedUtil;
 	private	MailService				mailService;
 	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
+	private	ReportAggregatedDAO		reportAggregatedDAO;
 	
 	/**
 	 * Assign user to project
@@ -157,23 +161,33 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * Get project assignment on id
 	 * 
 	 */
-	public ProjectAssignment getProjectAssignment(Integer assignmentId)
+	public ProjectAssignment getProjectAssignment(Integer assignmentId) throws ObjectNotFoundException
 	{
 		ProjectAssignment 	assignment;
-		int					timesheetEntries;
 		
 		assignment = projectAssignmentDAO.findById(assignmentId);
-		timesheetEntries = timesheetDAO.getTimesheetEntryCountForAssignment(assignmentId);
 		
-		assignment.setDeletable(timesheetEntries == 0);
+		if (assignment == null)
+		{
+			throw new ObjectNotFoundException("Assignment not found for id: " + assignmentId);
+		}
+		
+		List<Integer>	ids = new ArrayList<Integer>();
+		ids.add(assignmentId);
+		List<ProjectAssignmentAggregate>	aggregates;
+		
+		// call to report service needed but due to circular reference go straight to DAO
+		aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids);
+		assignment.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
 		
 		return assignment;
 	}
 
 	/**
+	 * @throws ObjectNotFoundException 
 	 * 
 	 */
-	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException
+	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException, ObjectNotFoundException
 	{
 		ProjectAssignment pa = getProjectAssignment(assignmentId);
 		
@@ -300,5 +314,13 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	public void setMailService(MailService mailService)
 	{
 		this.mailService = mailService;
+	}
+
+	/**
+	 * @param reportAggregatedDAO the reportAggregatedDAO to set
+	 */
+	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
+	{
+		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
 }

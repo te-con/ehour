@@ -74,14 +74,7 @@ public class TimesheetDAOTest extends BaseDAOTest
 		bookedDay = (BookedDay)results.get(2);
 		assertEquals(5, bookedDay.getHours().doubleValue(), 0.01);
 	}
-	
-	public void testGetTimesheetEntryCountForAssignment()
-	{
-		int count = dao.getTimesheetEntryCountForAssignment(1);
-		
-		assertEquals(6, count);
-	}
-	
+
 	public void testGetLatestTimesheetEntryForAssignment()
 	{
 		TimesheetEntry entry = dao.getLatestTimesheetEntryForAssignment(1);
