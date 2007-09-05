@@ -24,6 +24,7 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 
+import org.apache.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
@@ -34,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService
 {
 	private	CustomerDAO		customerDAO;
 	private	ProjectService	projectService;
-	
+	private	Logger			logger = Logger.getLogger(this.getClass());
 	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#deleteCustomer(java.lang.Integer)
@@ -42,6 +43,8 @@ public class CustomerServiceImpl implements CustomerService
 	public void deleteCustomer(Integer customerId) throws ParentChildConstraintException
 	{
 		Customer customer = customerDAO.findById(customerId);
+		
+		logger.info("Deleting customer: " + customer);
 		
 		if (customer != null)
 		{
@@ -121,6 +124,8 @@ public class CustomerServiceImpl implements CustomerService
 	 */
 	public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException
 	{
+		logger.info("Persisting customer: " + customer);
+		
 		try
 		{
 			customerDAO.persist(customer);
