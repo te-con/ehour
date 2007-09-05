@@ -24,5 +24,6 @@ import org.apache.wicket.markup.html.WebPage;
 
 public class AccessDeniedPage extends WebPage
 {
+	private static final long serialVersionUID = -6150703462346258618L;
 
 }
