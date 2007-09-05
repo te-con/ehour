@@ -32,6 +32,8 @@ public class CustomerFoldPreferenceDAOHibernateImpl
 	extends GenericDAOHibernateImpl<CustomerFoldPreference, CustomerFoldPreferenceId> 
 	implements CustomerFoldPreferenceDAO
 {
+	private final static String	CACHEREGION = "query.CustomerFoldPreference";
+	
 	public CustomerFoldPreferenceDAOHibernateImpl()
 	{
 		super(CustomerFoldPreference.class);
@@ -46,14 +48,11 @@ public class CustomerFoldPreferenceDAOHibernateImpl
 	{
 		String[]	paramKeys;
 		Object[]	paramValues;
-		List<CustomerFoldPreference>		l;
 		
 		paramKeys = new String[]{"user", "customers"};
 		paramValues = new Object[]{user, customers};
 
-		l = getHibernateTemplate().findByNamedQueryAndNamedParam("CustomerFoldPreference.findForUserAndCustomers", paramKeys, paramValues);
-		
-		return l;
+		return findByNamedQueryAndNamedParam("CustomerFoldPreference.findForUserAndCustomers", paramKeys, paramValues, true, CACHEREGION);
 	}
 
 }

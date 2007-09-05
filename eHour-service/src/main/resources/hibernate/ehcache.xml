@@ -42,5 +42,28 @@
 	    overflowToDisk="true"
 	/>
 		
+	<cache
+		name="query.User"
+	    maxElementsInMemory="20"
+	    eternal="false"
+	    timeToLiveSeconds="120"
+	    overflowToDisk="true"
+	/>	
+	
+	<cache
+		name="query.Department"
+	    maxElementsInMemory="20"
+	    eternal="false"
+	    timeToLiveSeconds="120"
+	    overflowToDisk="true"
+	/>	
+	
+	<cache
+		name="query.CustomerFoldPreference"
+	    maxElementsInMemory="20"
+	    eternal="false"
+	    timeToLiveSeconds="120"
+	    overflowToDisk="true"
+	/>			
 		
 </ehcache>

@@ -27,6 +27,8 @@ import net.rrm.ehour.user.domain.UserDepartment;
 public class UserDepartmentDAOHibernateImpl 
 	extends GenericDAOHibernateImpl<UserDepartment, Integer> implements UserDepartmentDAO
 {
+	private final static String CACHEREGION = "query.Department";
+	
 	public UserDepartmentDAOHibernateImpl()
 	{
 		super(UserDepartment.class);
@@ -43,8 +45,8 @@ public class UserDepartmentDAOHibernateImpl
 		String[]	keys = new String[]{"name", "code"};
 		Object[]	params = new Object[]{name.toLowerCase(), code.toLowerCase()}; 
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("UserDepartment.findByNameAndCode"
-																		, keys, params);		
+		results = findByNamedQueryAndNamedParam("UserDepartment.findByNameAndCode"
+													, keys, params, true, CACHEREGION);		
 		
 		return (results.size() > 0) ? results.get(0) : null;
 	}	

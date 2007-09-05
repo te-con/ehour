@@ -44,7 +44,6 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 		
 		this.type = type;
 	}
-	
 
 	/**
 	 * 

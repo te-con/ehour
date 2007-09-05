@@ -24,6 +24,8 @@ import net.rrm.ehour.user.domain.UserRole;
 
 public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer> implements UserDAO
 {
+	private final static String	CACHEREGION = "query.User";
+	
 	public UserDAOHibernateImpl()
 	{
 		super(User.class);
@@ -39,7 +41,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 		User		user = null;
 		List<User>	l;
 		
-		l = getHibernateTemplate().findByNamedQueryAndNamedParam("User.findByUsername", "username", username);
+		l = findByNamedQueryAndNamedParam("User.findByUsername", "username", username, true, CACHEREGION);
 		
 		if (l.size() > 0)
 		{
@@ -64,7 +66,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 		paramKeys = new String[]{"username", "password"};
 		paramValues = new String[]{username, password};
 		
-		l = getHibernateTemplate().findByNamedQueryAndNamedParam("User.findByUsernameAndPassword", paramKeys, paramValues);
+		l = findByNamedQueryAndNamedParam("User.findByUsernameAndPassword", paramKeys, paramValues, true, CACHEREGION);
 		
 		if (l.size() > 0)
 		{
@@ -157,7 +159,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 		paramKeys = new String[]{"pattern", "departments"};
 		paramValues = new Object[]{pattern, (Integer[])departmentIds.toArray(new Integer[]{departmentIds.size()})};
 		
-		return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, paramKeys, paramValues);
+		return findByNamedQueryAndNamedParam(hql, paramKeys, paramValues, true, CACHEREGION);
 	}
 
 	/*
