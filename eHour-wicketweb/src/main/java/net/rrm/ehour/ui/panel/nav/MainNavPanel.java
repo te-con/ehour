@@ -39,9 +39,6 @@ import org.apache.wicket.model.Model;
 
 public class MainNavPanel extends Panel
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 854412484275829659L;
 
 	public MainNavPanel(String id)
