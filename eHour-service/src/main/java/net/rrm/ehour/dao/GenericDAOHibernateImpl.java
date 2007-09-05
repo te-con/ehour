@@ -20,6 +20,8 @@ import java.util.List;
 
 import net.rrm.ehour.domain.DomainObject;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -41,6 +43,68 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 		super();
 		
 		this.type = type;
+	}
+	
+
+	/**
+	 * 
+	 * @param queryName
+	 * @param param
+	 * @param value
+	 * @param isCaching
+	 * @param cachingRegion
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List findByNamedQueryAndNamedParam(final String queryName, 
+												final String param, 
+												final Object value,
+												final boolean isCaching,
+												final String cachingRegion)
+	{
+		return findByNamedQueryAndNamedParam(queryName, new String[]{param}, new Object[]{value}, isCaching, cachingRegion);
+	}
+	
+	/**
+	 * Find named query optionally with caching enabled
+	 * @param queryName
+	 * @param paramNames
+	 * @param values
+	 * @param isCaching
+	 * @param cachingRegion
+	 * @return
+	 * @throws DataAccessException
+	 */
+	@SuppressWarnings("unchecked")
+	public List findByNamedQueryAndNamedParam(final String queryName, 
+												final String[] paramNames, 
+												final Object[] values,
+												final boolean isCaching,
+												final String cachingRegion)
+					throws DataAccessException 
+	{
+		if (!isCaching)
+		{
+			return getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, paramNames, values);
+		}
+		else
+		{
+			HibernateTemplate template = new HibernateTemplate(getHibernateTemplate().getSessionFactory())
+			{
+				@Override
+				public boolean isCacheQueries()
+				{
+					return true;
+				}
+				
+				public String getQueryCacheRegion()
+				{
+					return cachingRegion;
+				}
+			};
+			
+			return template.findByNamedQueryAndNamedParam(queryName, paramNames, values);
+		}
 	}
 	
 	/**

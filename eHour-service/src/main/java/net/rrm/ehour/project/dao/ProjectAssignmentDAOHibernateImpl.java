@@ -31,6 +31,8 @@ public class ProjectAssignmentDAOHibernateImpl
 	extends GenericDAOHibernateImpl<ProjectAssignment, Integer> 
 	implements ProjectAssignmentDAO
 {
+	private final static String	CACHEREGION = "query.ProjectAssignment";
+	
 	/**
 	 * @todo fix this a bit better
 	 */
@@ -53,9 +55,13 @@ public class ProjectAssignmentDAOHibernateImpl
 		String[]	keys = new String[]{"dateStart", "dateEnd", "userId"};
 		Object[]	params = new Object[]{range.getDateStart(), range.getDateEnd(), userId}; 
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUserInRange"
-																		, keys, params);		
-	
+		results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUserInRange"
+				, keys
+				, params
+				, true
+				, CACHEREGION);			
+		
+		
 		return results;
 	}
 	
@@ -69,12 +75,15 @@ public class ProjectAssignmentDAOHibernateImpl
 	@SuppressWarnings("unchecked")
 	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId)
 	{
-		String[]	names = new String[]{"projectId", "userId"};
-		Integer[]	values = new Integer[]{projectId, userId};
+		String[]	keys = new String[]{"projectId", "userId"};
+		Integer[]	params = new Integer[]{projectId, userId};
 		List<ProjectAssignment>		results;
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUserForProject", 
-															 names, values);
+		results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUserForProject"
+				, keys
+				, params
+				, true
+				, CACHEREGION);		
 		
 		return results;
 	}
@@ -89,8 +98,11 @@ public class ProjectAssignmentDAOHibernateImpl
 	{
 		List<ProjectAssignment>		results;
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUser", 
-																		"userId", userId);
+		results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUser"
+				, "userId"
+				, userId
+				, true
+				, CACHEREGION);			
 		
 		return results;
 	}
@@ -104,7 +116,12 @@ public class ProjectAssignmentDAOHibernateImpl
 		List<ProjectAssignment>		results;
 		String[]	names = new String[]{"userId", "type"};
 		Integer[]	values = new Integer[]{userId, assignmentType};
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectsForUserForType", names, values); 
+		
+		results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectsForUserForType"
+				, names
+				, values
+				, true
+				, CACHEREGION);		
 		
 		return results;
 	}
@@ -120,8 +137,11 @@ public class ProjectAssignmentDAOHibernateImpl
 		String[]	keys = new String[]{"dateStart", "dateEnd", "project"};
 		Object[]	params = new Object[]{range.getDateStart(), range.getDateEnd(), project}; 
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForProjectInRange"
-																		, keys, params);		
+		results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForProjectInRange"
+													, keys
+													, params
+													, true
+													, CACHEREGION);
 		
 		return results;
 	}

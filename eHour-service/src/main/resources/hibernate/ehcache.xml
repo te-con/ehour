@@ -3,7 +3,7 @@
     <diskStore path="java.io.tmpdir"/>
 
     <defaultCache
-        maxElementsInMemory="10000"
+        maxElementsInMemory="1000"
         eternal="false"
         timeToIdleSeconds="120"
         timeToLiveSeconds="120"
@@ -13,20 +13,34 @@
         />
 
 	<cache
-	    name="net.rrm.user.domain.UserRole"
-	    maxElementsInMemory="10000"
-	    eternal="false"
-	    timeToIdleSeconds="300"
-	    timeToLiveSeconds="600"
+	    name="net.rrm.ehour.user.domain.UserRole"
+	    maxElementsInMemory="50"
+	    eternal="true"
 	    overflowToDisk="false"
 	/>
 
 	<cache
 	    name="net.rrm.ehour.project.domain.ProjectAssignmentType"
-	    maxElementsInMemory="10000"
-	    eternal="false"
-	    timeToIdleSeconds="300"
-	    timeToLiveSeconds="600"
+	    maxElementsInMemory="50"
+	    eternal="true"
 	    overflowToDisk="false"
 	/>
+	
+	<cache
+	    name="org.hibernate.cache.StandardQueryCache"
+	    maxElementsInMemory="20"
+	    eternal="false"
+	    timeToLiveSeconds="180"
+	    overflowToDisk="true"
+	/>
+	
+	<cache
+		name="query.ProjectAssignment"
+	    maxElementsInMemory="20"
+	    eternal="false"
+	    timeToLiveSeconds="120"
+	    overflowToDisk="true"
+	/>
+		
+		
 </ehcache>
