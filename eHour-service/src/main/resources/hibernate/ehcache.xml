@@ -22,8 +22,8 @@
 	<cache
 	    name="net.rrm.ehour.user.domain.User"
 	    maxElementsInMemory="50"
-        timeToIdleSeconds="60"
-        timeToLiveSeconds="240"
+        timeToIdleSeconds="600"
+        timeToLiveSeconds="3600"
         overflowToDisk="true"
 	/>	
 
@@ -38,7 +38,7 @@
 	    name="org.hibernate.cache.StandardQueryCache"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="180"
+	    timeToLiveSeconds="3600"
 	    overflowToDisk="true"
 	/>
 	
@@ -46,7 +46,7 @@
 		name="query.ProjectAssignment"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="120"
+	    timeToLiveSeconds="3600"
 	    overflowToDisk="true"
 	/>
 		
@@ -54,7 +54,7 @@
 		name="query.User"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="120"
+	    timeToLiveSeconds="3600"
 	    overflowToDisk="true"
 	/>	
 	
@@ -62,7 +62,7 @@
 		name="query.Department"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="120"
+	    timeToLiveSeconds="3600"
 	    overflowToDisk="true"
 	/>	
 	
@@ -70,8 +70,16 @@
 		name="query.CustomerFoldPreference"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="120"
+	    timeToLiveSeconds="3600"
 	    overflowToDisk="true"
-	/>			
+	/>	
+	
+	<cache
+		name="query.Customer"
+	    maxElementsInMemory="5"
+	    eternal="false"
+	    timeToLiveSeconds="3600"
+	    overflowToDisk="true"
+	/>
 		
 </ehcache>

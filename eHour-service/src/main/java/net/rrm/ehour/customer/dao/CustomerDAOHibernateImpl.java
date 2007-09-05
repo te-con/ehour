@@ -21,11 +21,13 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 
 /**
- * TODO 
+ * Customer DAO 
  **/
 
 public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, Integer> implements CustomerDAO
 {
+	private final static String	CACHEREGION = "query.Customer";
+	
 	/**
 	 * @todo fix this a bit better
 	 */
@@ -38,11 +40,7 @@ public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, 
 	@SuppressWarnings("unchecked")
 	public List<Customer> findAll(boolean active)
 	{
-		List	l;
-		
-		l = getHibernateTemplate().findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", active);
-		
-		return l;	
+		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", active, true, CACHEREGION);
 	}
 
 }
