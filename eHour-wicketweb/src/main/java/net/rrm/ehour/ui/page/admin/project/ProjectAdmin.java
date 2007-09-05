@@ -22,6 +22,8 @@ import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.model.AdminBackingBean;
@@ -32,6 +34,7 @@ import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
@@ -44,6 +47,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -88,6 +92,74 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 				getLocalizer().getString("admin.project.filter", this) + "...",
 				getLocalizer().getString("admin.project.hideInactive", this)));		
 	}
+	
+	/**
+	 * Handle Ajax request
+	 * @param target
+	 * @param type of ajax req
+	 */
+	@Override
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	{
+		switch (type)
+		{
+			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			{
+				currentFilter = (EntrySelectorFilter)param;
+	
+				List<Project> projects = getProjects();
+				projectListView.setList(projects);
+				break;
+			}
+			case CommonUIStaticData.AJAX_DELETE:
+			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+			{
+				ProjectAdminBackingBean backingBean = (ProjectAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
+				try
+				{
+					if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					{
+						persistProject(backingBean);
+					}
+					else if (type == CommonUIStaticData.AJAX_DELETE)
+					{
+						deleteProject(backingBean);
+					}					
+
+					// update project list
+					List<Project> projects = getProjects();
+					projectListView.setList(projects);
+					
+					((EntrySelectorPanel)get(PROJECT_SELECTOR_ID)).refreshList(target);
+					
+					getTabbedPanel().succesfulSave(target);
+				} catch (Exception e)
+				{
+					logger.error("While persisting/deleting project", e);
+					getTabbedPanel().failedSave(backingBean, target);
+				}
+				
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * Persist project
+	 */
+	private void persistProject(ProjectAdminBackingBean backingBean)
+	{
+		projectService.persistProject(backingBean.getProject());
+	}
+	
+	/**
+	 * Delete project
+	 * @throws ParentChildConstraintException 
+	 */
+	private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException
+	{
+		projectService.deleteProject(backingBean.getProject().getProjectId());
+	} 
 
 	/*
 	 * (non-Javadoc)
@@ -160,13 +232,19 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProject(projectId)));
-						getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+						try
+						{
+							getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)));
+							getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+						} catch (ObjectNotFoundException e)
+						{
+							logger.error(e);
+						}
 					}
 				};
 				
 				item.add(link);
-				// TODO add project count
+
 				link.add(new Label("linkLabel", project.getProjectCode() + " - " + project.getName() + (project.isActive() ? "" : "*"))); 				
 			}
 		};

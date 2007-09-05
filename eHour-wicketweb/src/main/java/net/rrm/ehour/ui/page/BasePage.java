@@ -21,6 +21,7 @@ import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -91,6 +92,6 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-		
+		Logger.getLogger(this.getClass()).warn("Uncaught ajax request received. This might be a bug");
 	}	
 }
