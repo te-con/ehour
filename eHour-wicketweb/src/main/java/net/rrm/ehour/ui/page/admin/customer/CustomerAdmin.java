@@ -22,6 +22,7 @@ import java.util.List;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
@@ -148,12 +149,20 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 				customerListView.setList(customers);
 				break;
 			}
+			case CommonUIStaticData.AJAX_DELETE:
 			case CommonUIStaticData.AJAX_FORM_SUBMIT:
 			{
 				CustomerAdminBackingBean backingBean = (CustomerAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 				try
 				{
-					persistCustomer(backingBean);
+					if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					{
+						persistCustomer(backingBean);
+					}
+					else if (type == CommonUIStaticData.AJAX_DELETE)
+					{
+						deleteCustomer(backingBean);
+					}					
 
 					// update customer list
 					List<Customer> customers = getCustomers();
@@ -164,15 +173,11 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 					getTabbedPanel().succesfulSave(target);
 				} catch (Exception e)
 				{
-					logger.error("While persisting user", e);
+					logger.error("While persisting/deleting user", e);
 					getTabbedPanel().failedSave(backingBean, target);
 				}
 				
 				break;
-			}
-			case CommonUIStaticData.AJAX_DELETE:
-			{
-				
 			}
 		}
 	}	
@@ -185,6 +190,16 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	private void persistCustomer(CustomerAdminBackingBean backingBean) throws ObjectNotUniqueException
 	{
 		customerService.persistCustomer(backingBean.getCustomer());
+	}
+	
+	/**
+	 * Delete customer
+	 * @param backingBean
+	 * @throws ParentChildConstraintException
+	 */
+	private void deleteCustomer(CustomerAdminBackingBean backingBean) throws ParentChildConstraintException
+	{
+		customerService.deleteCustomer(backingBean.getCustomer().getCustomerId());
 	}
 	
 	/**
