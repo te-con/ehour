@@ -44,11 +44,13 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
 /**
  * Panel showing overview
+ * TODO move to table layout
  */
 
 public class ProjectOverviewPanel extends Panel implements IHeaderContributor
@@ -68,8 +70,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		
 		EhourWebSession session = (EhourWebSession)getSession();
 		
-		// TODO i18n
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyBorder", "Aggregated per month");
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyBorder", new ResourceModel("projectoverview.aggregatedPerMonth"));
 
 		addTotals(greyBorder, projectStatusSet, session.getEhourConfig());
 		addColumnLabels(greyBorder, session.getEhourConfig());
@@ -158,6 +159,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	 * @param projectStatusSet
 	 * @param config
 	 */
+	@SuppressWarnings("serial")
 	private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
 	{
 		ListView view = new ListView("projectStatus", new ArrayList<UserProjectStatus>(projectStatusSet))

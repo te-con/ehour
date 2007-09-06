@@ -27,7 +27,7 @@ import net.rrm.ehour.config.EhourConfig;
 import org.apache.wicket.model.Model;
 
 /**
- * TODO 
+ * Date model 
  **/
 
 public class DateModel extends Model
@@ -35,6 +35,7 @@ public class DateModel extends Model
 	public final static int	DATESTYLE_LONG = 1;
 	public final static int	DATESTYLE_MONTHONLY = 2;
 	public final static int DATESTYLE_TIMESHEET_DAYLONG = 3;
+	public final static int DATESTYLE_TIMESHEET_DAYONLY = 4;
 	
 	private static final long serialVersionUID = 431440606497572025L;
 	private Date				value;
@@ -80,6 +81,9 @@ public class DateModel extends Model
 			case DATESTYLE_TIMESHEET_DAYLONG:
 				dateFormatter = new TimesheetLongFormatter("EEE d", config.getLocale());
 				break;
+			case DATESTYLE_TIMESHEET_DAYONLY:
+				dateFormatter = new TimesheetLongFormatter("EEE", config.getLocale());
+				break;
 			default:
 				dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
 				break;
@@ -114,7 +118,7 @@ public class DateModel extends Model
 	@Override
 	public void setObject(Object value)
 	{
-		// TODO parse it properly
+		// FIXME parse it properly
 		this.value = (Date)value;
 	}
 	
@@ -125,6 +129,8 @@ public class DateModel extends Model
 	 */
 	private class TimesheetLongFormatter extends SimpleDateFormat
 	{
+		private static final long serialVersionUID = 2697598002926018462L;
+
 		public TimesheetLongFormatter(String format, Locale locale)
 		{
 			super(format, locale);

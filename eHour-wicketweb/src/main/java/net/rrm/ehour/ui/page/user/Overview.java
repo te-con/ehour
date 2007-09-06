@@ -21,6 +21,7 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.overview.monthoverview.MonthOverviewPanel;
 import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -72,7 +73,7 @@ public class Overview extends BasePage
 		contentContainer = new WebMarkupContainer("contentContainer");
 		
 		// project overview panel
-		contentContainer = getProjectOverviewPanel();
+		contentContainer = getOverviewPanels();
 		
 		add(contentContainer);
 	}
@@ -129,7 +130,7 @@ public class Overview extends BasePage
 		}
 		else
 		{
-			replacementPanel = getProjectOverviewPanel();
+			replacementPanel = getOverviewPanels();
 		}
 		
 		contentContainer.replaceWith(replacementPanel);
@@ -150,10 +151,14 @@ public class Overview extends BasePage
 	 * Get project overview panel for current user for current month
 	 * @return
 	 */
-	private ProjectOverviewPanel getProjectOverviewPanel()
+	private WebMarkupContainer getOverviewPanels()
 	{
+		WebMarkupContainer container = new WebMarkupContainer("contentContainer");
 		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, session.getNavCalendar());
 		
-		return new ProjectOverviewPanel("contentContainer", timesheetOverview.getProjectStatus());
+		container.add(new ProjectOverviewPanel("projectOverview", timesheetOverview.getProjectStatus()));
+		container.add(new MonthOverviewPanel("monthOverview", timesheetOverview));
+		
+		return container;
 	}
 }

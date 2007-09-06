@@ -76,6 +76,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * TODO add 'data saved' feedback
  * TODO add week navigation
  * TODO change store & next week to store
+ * TODO add whole week to project
  **/
 
 public class TimesheetPanel extends Panel implements Serializable
