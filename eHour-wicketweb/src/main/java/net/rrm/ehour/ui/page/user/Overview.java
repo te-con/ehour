@@ -16,23 +16,18 @@
 
 package net.rrm.ehour.ui.page.user;
 
-import net.rrm.ehour.timesheet.dto.TimesheetOverview;
-import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.overview.monthoverview.MonthOverviewPanel;
-import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
+import net.rrm.ehour.ui.panel.overview.OverviewPanel;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Overview page
@@ -43,12 +38,8 @@ public class Overview extends BasePage
 {
 	private static final long serialVersionUID = -6873845464139697303L;
 
-	@SpringBean
-	private TimesheetService	timesheetService;
 	private CalendarPanel		calendarPanel;
 	private	WebMarkupContainer	contentContainer; // yeah yeah, bad name
-	private	User				user;
-	private EhourWebSession		session;
 	
 	/**
 	 * Setup the page
@@ -58,22 +49,15 @@ public class Overview extends BasePage
 	{
 		super(new ResourceModel("overview.title"), null);
 		
-		session = ((EhourWebSession)this.getSession());
-		
-		user = session.getUser().getUser();
-
 		// add calendar panel
-		calendarPanel = new CalendarPanel("sidePanel", user);
+		calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
 		add(calendarPanel);
 		
 		// contextual help
 		add(new ContextualHelpPanel("contextHelp"));
 		
 		// content
-		contentContainer = new WebMarkupContainer("contentContainer");
-		
-		// project overview panel
-		contentContainer = getOverviewPanels();
+		contentContainer = new OverviewPanel("contentContainer");
 		
 		add(contentContainer);
 	}
@@ -116,7 +100,7 @@ public class Overview extends BasePage
 	 */
 	private void calendarChanged(AjaxRequestTarget target)
 	{
-		CalendarPanel panel = new CalendarPanel("sidePanel", user);
+		CalendarPanel panel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
 		calendarPanel.replaceWith(panel);
 		calendarPanel = panel;
 		
@@ -130,7 +114,7 @@ public class Overview extends BasePage
 		}
 		else
 		{
-			replacementPanel = getOverviewPanels();
+			replacementPanel = new OverviewPanel("contentContainer");
 		}
 		
 		contentContainer.replaceWith(replacementPanel);
@@ -144,21 +128,17 @@ public class Overview extends BasePage
 	 */
 	private TimesheetPanel getTimesheetPanel()
 	{
-		return new TimesheetPanel("contentContainer", user, session.getNavCalendar());
+		return new TimesheetPanel("contentContainer", 
+					getEhourWebSession().getUser().getUser(), 
+					getEhourWebSession().getNavCalendar());
 	}
 	
 	/**
-	 * Get project overview panel for current user for current month
+	 * 
 	 * @return
 	 */
-	private WebMarkupContainer getOverviewPanels()
+	private EhourWebSession getEhourWebSession()
 	{
-		WebMarkupContainer container = new WebMarkupContainer("contentContainer");
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, session.getNavCalendar());
-		
-		container.add(new ProjectOverviewPanel("projectOverview", timesheetOverview.getProjectStatus()));
-		container.add(new MonthOverviewPanel("monthOverview", timesheetOverview));
-		
-		return container;
+		return ((EhourWebSession)this.getSession());
 	}
 }
