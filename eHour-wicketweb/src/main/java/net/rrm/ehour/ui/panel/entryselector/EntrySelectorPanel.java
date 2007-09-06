@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.panel.entryselector;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.AttributeModifier;

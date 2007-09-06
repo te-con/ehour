@@ -84,6 +84,7 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
 	 * @author Thies
 	 *
 	 */
+	@SuppressWarnings("serial")
 	private final class ErrorIndicator extends WebMarkupContainer
 	{
 		private static final long serialVersionUID = 4005048136024661255L;
@@ -91,6 +92,7 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
 		public ErrorIndicator(String id)
 		{
 			super(id);
+			
 			
 			add(new Label("errorText", new PropertyModel(this, "message"))
 			{

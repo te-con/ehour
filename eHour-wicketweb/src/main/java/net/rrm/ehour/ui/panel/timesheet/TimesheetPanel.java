@@ -62,7 +62,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
@@ -73,7 +72,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * The main panel - timesheet form
- * TODO split up
+ * TODO add feedback for invalid values
+ * TODO add 'data saved' feedback
+ * TODO add week navigation
+ * TODO change store & next week to store
  **/
 
 public class TimesheetPanel extends Panel implements Serializable
@@ -139,10 +141,10 @@ public class TimesheetPanel extends Panel implements Serializable
 		// attach onsubmit ajax events
 		setSubmitActions(timesheetForm, commentsFrame, timesheet);
 
-		// TODO replace with dojo widget
-		FeedbackPanel feedback = new FeedbackPanel("feedback");
-		feedback.setOutputMarkupId(true);
-		add(feedback);
+//		// TODO replace with dojo widget
+//		FeedbackPanel feedback = new FeedbackPanel("feedback");
+//		feedback.setOutputMarkupId(true);
+//		add(feedback);
 		
 		// add CSS & JS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));

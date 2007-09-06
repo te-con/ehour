@@ -188,6 +188,7 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	 * @param users
 	 * @return
 	 */
+	@SuppressWarnings("serial")
 	private Fragment getDepartmentListHolder(List<UserDepartment> departments)
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", DepartmentAdmin.this);

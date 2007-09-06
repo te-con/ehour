@@ -21,7 +21,6 @@ import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.FloatModel;
-import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode;
 import net.rrm.ehour.ui.report.reports.aggregate.CustomerReport;
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode.SectionChild;
@@ -51,6 +50,7 @@ public class UserReportTabularPanel extends Panel
 	 * @param id
 	 * @param reportData
 	 */
+	@SuppressWarnings("serial")
 	public UserReportTabularPanel(String id, ReportDataAggregate reportData)
 	{
 		super(id);
@@ -99,6 +99,7 @@ public class UserReportTabularPanel extends Panel
 		}
 
 		@Override
+		@SuppressWarnings("unchecked")
 		protected void populateItem(ListItem item)
 		{
 			SectionChild	child = (SectionChild)item.getModelObject();

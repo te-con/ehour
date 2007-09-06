@@ -137,6 +137,7 @@ public class MainConfig extends BaseAdminPage
 	 * @param form
 	 * @param dbConfig
 	 */
+	@SuppressWarnings("serial")
 	private void setSubmitButton(Form form, final EhourConfig dbConfig)
 	{
 		form.add(new AjaxButton("submitButton", form)
@@ -167,7 +168,7 @@ public class MainConfig extends BaseAdminPage
 	 * @param configForm
 	 * @param dbConfig
 	 */
-	
+	@SuppressWarnings("serial")
 	private void addLocaleSelections(Form configForm, final EhourConfig dbConfig)
 	{
 		final DropDownChoice	localeDropDownChoice;
@@ -217,6 +218,7 @@ public class MainConfig extends BaseAdminPage
     /**
      * Choice for a locale.
      */
+	@SuppressWarnings("serial")
     private final class LocaleChoiceRenderer extends ChoiceRenderer
     {
         /**

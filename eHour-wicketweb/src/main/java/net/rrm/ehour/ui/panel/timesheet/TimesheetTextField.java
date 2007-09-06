@@ -32,6 +32,7 @@ public class TimesheetTextField extends TextField
 	private	boolean	wasInvalid;
 	private Object	previousValue;
 	
+	@SuppressWarnings("unchecked")
 	public TimesheetTextField(final String id, IModel model, Class type)
 	{
 		super(id, model, type);

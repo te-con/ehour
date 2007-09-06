@@ -207,6 +207,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	 * @param users
 	 * @return
 	 */
+	@SuppressWarnings("serial")
 	private Fragment getCustomerListHolder(List<Customer> customers)
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", CustomerAdmin.this);

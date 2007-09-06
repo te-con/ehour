@@ -215,6 +215,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	 * @param users
 	 * @return
 	 */
+	@SuppressWarnings("serial")
 	private Fragment getProjectListHolder(List<Project> projects)
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdmin.this);

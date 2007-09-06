@@ -38,6 +38,7 @@ import org.junit.Test;
  * TODO 
  **/
 
+@SuppressWarnings("unchecked")
 public class AggregateReportSectionTest
 {
 	private	Customer	custA;
