@@ -56,6 +56,7 @@ public class OverviewPanel extends Panel
 	{
 		super(id);
 
+		setOutputMarkupId(true);
 		EhourWebSession session = ((EhourWebSession)this.getSession());
 		User user = session.getUser().getUser();
 		
