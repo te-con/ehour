@@ -106,6 +106,7 @@ public class CalendarPanel extends SidePanel
 	 * @param container
 	 * @param weeks
 	 */
+	@SuppressWarnings("serial")
 	private void addCalendarWeeks(WebMarkupContainer container, List<CalendarWeek> weeks)
 	{
 		ListView view = new ListView("weeks", weeks)

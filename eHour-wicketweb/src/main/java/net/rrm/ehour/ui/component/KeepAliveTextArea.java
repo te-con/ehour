@@ -46,6 +46,7 @@ public class KeepAliveTextArea extends TextArea
 		add(new KeepAliveBehavior());
 	}
 
+	@SuppressWarnings("serial")
 	private static class KeepAliveBehavior extends AbstractAjaxTimerBehavior
 	{
 		public KeepAliveBehavior()

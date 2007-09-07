@@ -23,6 +23,8 @@
 
 package net.rrm.ehour.ui.panel.overview;
 
+import java.util.Calendar;
+
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.panel.overview.monthoverview.MonthOverviewPanel;
@@ -57,12 +59,16 @@ public class OverviewPanel extends Panel
 		EhourWebSession session = ((EhourWebSession)this.getSession());
 		User user = session.getUser().getUser();
 		
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, session.getNavCalendar());
+		Calendar	overviewFor = session.getNavCalendar();
+		
+		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+		
+		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, overviewFor);
 		
 		add(new StyleSheetReference("overviewStyle", new CompressedResourceReference(OverviewPanel.class, "style/overview.css")));
 		
 		add(new ProjectOverviewPanel("projectOverview", timesheetOverview.getProjectStatus()));
-		add(new MonthOverviewPanel("monthOverview", timesheetOverview));
+		add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
 	}
 }
 

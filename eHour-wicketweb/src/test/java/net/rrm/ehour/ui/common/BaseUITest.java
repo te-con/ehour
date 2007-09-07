@@ -24,7 +24,7 @@ import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock
 import org.apache.wicket.util.tester.WicketTester;
 
 /**
- * TODO 
+ * Base class for wicket unit tests 
  **/
 
 public class BaseUITest extends TestCase 
@@ -38,7 +38,6 @@ public class BaseUITest extends TestCase
 		TestEhourWebApplication webapp =  new TestEhourWebApplication();
 	
 		config = new EhourConfigStub();
-		
 		
 		mockContext = new AnnotApplicationContextMock();
 		mockContext.putBean("EhourConfig", config);
