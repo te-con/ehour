@@ -161,26 +161,26 @@ public class MonthOverviewPanel extends Panel
 	            {
 	            	fragment = new Fragment(dayId, "noProjects");
 	            }
+	            
+	            row.add(fragment);
 	        }
 	        else
 	        {
+	        	Label label = HtmlUtil.getNbspLabel(dayId);
+	        	
             	if (monthIsBeforeCurrent(overviewFor, thisMonth, thisYear))
             	{
-            		fragment = new Fragment(dayId, "noMonthBefore");
-//            		sb.append("<td class='noMonthBefore'>" );
+            		label.add(new SimpleAttributeModifier("class", "noMonthBefore"));
             	}
             	else
             	{
-            		fragment = new Fragment(dayId, "noMonthAfter");
-//            		sb.append("<td class='noMonthAfter'>" );
+            		label.add(new SimpleAttributeModifier("class", "noMonthAfter"));
             	}
-            	
-//            	sb.append(HTML_NBSP + HTML_CELL_CLOSE);
+
+            	row.add(label);
 	        }
-
-            
-            row.add(fragment);
-
+	        
+	        overviewFor.add(Calendar.DATE, 1); 
 		}		
 	}
 	
