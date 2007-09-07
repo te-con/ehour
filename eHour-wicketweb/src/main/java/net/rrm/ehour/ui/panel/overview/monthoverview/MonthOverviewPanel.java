@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.panel.overview.monthoverview;
 
-import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -82,7 +81,7 @@ public class MonthOverviewPanel extends Panel
 		
 		addDayLabels(blueBorder, session.getEhourConfig());
 		
-		createMonthCalendar(blueBorder, overviewFor);
+		createMonthCalendar(blueBorder);
 	}
 
 	/**
@@ -90,17 +89,17 @@ public class MonthOverviewPanel extends Panel
 	 * @param parent
 	 * @param calendar
 	 */
-	private void createMonthCalendar(WebMarkupContainer parent, Calendar calendar)
+	private void createMonthCalendar(WebMarkupContainer parent)
 	{
-	    logger.debug("Creating month overview calendar for " + calendar.getTime().toString());
+	    logger.debug("Creating month overview calendar for " + overviewFor.getTime().toString());
 	    
-	    int currentColumn = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-	    calendar.add(Calendar.DATE, -1 * currentColumn);
+	    int currentColumn = overviewFor.get(Calendar.DAY_OF_WEEK) - 1;
+	    overviewFor.add(Calendar.DATE, -1 * currentColumn);
 	    
 	    RepeatingView	calendarView = new RepeatingView("calendarView");
 	    
-	    while ((calendar.get(Calendar.YEAR) == thisYear) &&
-	    		(calendar.get(Calendar.MONTH) <= thisMonth) || calendar.get(Calendar.YEAR) < thisYear)
+	    while ((overviewFor.get(Calendar.YEAR) == thisYear) &&
+	    		(overviewFor.get(Calendar.MONTH) <= thisMonth) || overviewFor.get(Calendar.YEAR) < thisYear)
 	    {
 			logger.debug("Adding month overview row for " + overviewFor.getTime().toString());
 			WebMarkupContainer	row = new WebMarkupContainer(calendarView.newChildId());
@@ -122,7 +121,6 @@ public class MonthOverviewPanel extends Panel
 	{
 		addDayNumbersToRow(row);
 		addDayValuesToRow(row);
-		overviewFor.add(Calendar.WEEK_OF_YEAR, 1);
 	}
 	
 	/**

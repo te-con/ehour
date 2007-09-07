@@ -177,13 +177,13 @@ div.MonthAggregateTable div.TotalRow
 .MonthOverviewMonthTable tr.hourRow td.sunday
 {
 	background-color: transparent;
-	background: url(<c:url value="/img/ovw/sunday_back.gif" />) left top no-repeat;
+	background: url(../monthoverview/img/sunday_back.gif) left top no-repeat;
 }
 
 .MonthOverviewMonthTable tr.hourRow td.saturday
 {
 	background-color: transparent;
-	background: url(<c:url value="/img/ovw/saturday_back.gif" />) right top no-repeat;
+	background: url(../monthoverview/img/saturday_back.gif) right top no-repeat;
 	border-right-width: 0;
 }
 
