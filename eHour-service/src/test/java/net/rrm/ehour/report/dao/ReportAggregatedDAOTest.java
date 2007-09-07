@@ -24,9 +24,10 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
- * TODO 
+ * 
  **/
 
+@SuppressWarnings("unchecked")
 public class ReportAggregatedDAOTest extends BaseDAOTest
 {
 	private	ReportAggregatedDAO	dao;

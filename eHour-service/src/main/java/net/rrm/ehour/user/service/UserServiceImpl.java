@@ -267,21 +267,24 @@ public class UserServiceImpl implements UserService
 
 	/**
 	 * Persist user
+	 * FIXME updating existing user doesn't work
 	 */
 
 	public User persistUser(User user) throws PasswordEmptyException, ObjectNotUniqueException
 	{
 		User	dbUser;
-		User	nameUser;
 
-		nameUser = userDAO.findByUsername(user.getUsername());
+		logger.info("Persisting user: " + user);
+
+		// check username uniqueness
+		dbUser = userDAO.findByUsername(user.getUsername());
 				
-		if (nameUser != null && !nameUser.getUserId().equals(user.getUserId()))
+		if (dbUser != null && !dbUser.getUserId().equals(user.getUserId()))
 		{
 			throw new ObjectNotUniqueException("Username already in use");
 		}
 		
-		
+		// copy over password or encrypt new one
 		if (user.getPassword() == null || user.getPassword().trim().equals(""))
 		{
 			// if password is empty and user is new we have a problem
@@ -290,34 +293,22 @@ public class UserServiceImpl implements UserService
 				throw new PasswordEmptyException("New users need a password");
 			}
 			
-			dbUser = userDAO.findById(user.getUserId());
-			
-			dbUser.setEmail(user.getEmail());
-			dbUser.setFirstName(user.getFirstName());
-			dbUser.setLastName(user.getLastName());
-			dbUser.setUserDepartment(user.getUserDepartment());
-			dbUser.setUsername(user.getUsername());
-			dbUser.setUserRoles(user.getUserRoles());
-			dbUser.setActive(user.isActive());
-			
-			userDAO.persist(dbUser);
-
-			return dbUser;
+			user.setPassword(dbUser.getPassword());
 		}
 		else
 		{
 			user.setPassword(encryptPassword(user.getPassword()));
-			
-			// new users
-			if (user.getUserId() == null)
-			{
-				projectAssignmentService.assignUserToDefaultProjects(user);
-			}
-			
-			userDAO.merge(user);
-			
-			return user;
 		}
+		
+		// assign new users to default projects
+		if (user.getUserId() == null)
+		{
+			projectAssignmentService.assignUserToDefaultProjects(user);
+		}
+		
+		userDAO.merge(user);
+			
+		return user;
 	}
 
 	/**

@@ -6,7 +6,6 @@
 
 <!-- User -->
 	<class name="net.rrm.ehour.user.domain.User" table="USERS" mutable="false">
-	    <cache usage="read-write" />
 		<id name="userId" column="USER_ID" type="java.lang.Integer">
 			<generator class="native" />
        	</id>

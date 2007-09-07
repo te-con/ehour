@@ -43,9 +43,10 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 
 /**
- * TODO 
+ * test case for report criteria 
  **/
 
+@SuppressWarnings("unchecked")
 public class ReportCriteriaServiceTest  extends TestCase
 {
 	private	ReportCriteriaService	reportCriteriaService;

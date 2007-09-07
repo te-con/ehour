@@ -22,12 +22,11 @@ import java.util.List;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
-
-import org.junit.Test;
 /**
  * TODO  use a diff tx manager than the hibernate one
  **/
 
+@SuppressWarnings("unchecked")
 public class ReportPerMonthDAOTest extends BaseDAOTest
 {
 	private	ReportPerMonthDAO	dao;

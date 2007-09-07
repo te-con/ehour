@@ -289,7 +289,11 @@ public class User extends DomainObject<Integer, User>
 	@Override
 	public String toString()
 	{
-		return new ToStringBuilder(this).append("userId", userId).append("username", username) .toString();
+		return new ToStringBuilder(this).append("userId", userId)
+						.append("username", username)
+						.append("lastName", lastName)
+						.append("firstName", firstName)
+						.toString();
 	}
 
 	/**

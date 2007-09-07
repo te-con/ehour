@@ -45,6 +45,7 @@ import net.rrm.ehour.util.DateUtil;
  *  
  **/
 
+@SuppressWarnings("unchecked")
 public class ReportServiceTest extends TestCase
 {
 	private	ReportService	reportService;
@@ -53,7 +54,7 @@ public class ReportServiceTest extends TestCase
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	ReportPerMonthDAO	reportMonthDAO;
 	private	ReportCriteria 	rc;
-	private ReportCriteriaService rsMock; 
+//	private ReportCriteriaService rsMock; 
 	/**
 	 * 
 	 */
@@ -74,8 +75,8 @@ public class ReportServiceTest extends TestCase
 		((ReportServiceImpl)reportService).setProjectDAO(projectDAO);
 
 	
-		rc = new ReportCriteria();
-		rsMock = createMock(ReportCriteriaService.class);
+//		rc = new ReportCriteria();
+//		rsMock = createMock(ReportCriteriaService.class);
 //		rc.setReportCriteriaService(rsMock);
 	}
 	
@@ -123,8 +124,6 @@ public class ReportServiceTest extends TestCase
 
 	public void testCreateProjectReportNoUserId()
 	{
-		Integer[] userID = new Integer[]{1};
-
 		DateRange dr = new DateRange();
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);

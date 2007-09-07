@@ -12,6 +12,7 @@ import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
+@SuppressWarnings("unchecked")
 public class UserDAOTest extends BaseDAOTest 
 {
 	private	UserDAO	dao;

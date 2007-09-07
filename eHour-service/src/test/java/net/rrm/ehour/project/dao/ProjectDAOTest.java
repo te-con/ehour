@@ -26,6 +26,7 @@ import net.rrm.ehour.project.domain.Project;
  * TODO 
  **/
 
+@SuppressWarnings("unchecked")
 public class ProjectDAOTest extends BaseDAOTest
 {
 	private	ProjectDAO	dao;

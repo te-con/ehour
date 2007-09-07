@@ -31,6 +31,7 @@ import net.rrm.ehour.data.DateRange;
 
 public class DateUtil
 {
+	public final static String[] daysInWeek = new String[]{"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
 	/**
 	 * Do not instantiate
 	 *

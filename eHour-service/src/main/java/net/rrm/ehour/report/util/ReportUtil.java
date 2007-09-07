@@ -33,6 +33,7 @@ public class ReportUtil
 	 * @param projects
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static<PK extends Serializable> List<PK> getPKsFromDomainObjects(List<? extends DomainObject> domainObjects)
 	{
 		List<PK> pks = new ArrayList<PK>();

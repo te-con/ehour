@@ -41,6 +41,8 @@ public abstract class DomainObject <PK extends Serializable, DO extends Serializ
 		{
 			return false;
 		}
+		
+		@SuppressWarnings("unchecked")
 		DomainObject rhs = (DomainObject) object;
 		return new EqualsBuilder()
 					.append(getPK(), rhs.getPK()).isEquals();

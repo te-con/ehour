@@ -143,6 +143,8 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	{
 		getHibernateTemplate().saveOrUpdate(domObj);
 		
+		getHibernateTemplate().flush();
+		
 		return domObj;
 	}	
 	
