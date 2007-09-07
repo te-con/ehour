@@ -28,9 +28,9 @@
 				<prop key="show_sql">false</prop>
 				<prop key="use_outer_join">true</prop>
 				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
-				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
 				<prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
-				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
   				<prop key="hibernate.hbm2ddl.auto">${hibernate.ddlpolicy}</prop>
 			</props>
 		</property>

@@ -71,14 +71,14 @@ public class UserDepartmentDAOTest extends BaseDAOTest
 	public void testPersist()
 	{
 		UserDepartment dept = new UserDepartment();
-		dept.setDepartmentId(new Integer(3));
+//		dept.setDepartmentId(new Integer(3));
 		dept.setName("test dept");
 		dept.setCode("code");
 		dao.persist(dept);
 		
-		dept =dao.findById(new Integer(3));
+		UserDepartment dept2 =dao.findById(dept.getDepartmentId());
 		
-		assertEquals("test dept", dept.getName());
+		assertEquals("test dept", dept2.getName());
 	}
 	
 	public void testFindByNameAndCode()

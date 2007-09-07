@@ -54,7 +54,7 @@ public class ReportServiceTest extends TestCase
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	ReportPerMonthDAO	reportMonthDAO;
 	private	ReportCriteria 	rc;
-//	private ReportCriteriaService rsMock; 
+	private ReportCriteriaService rsMock; 
 	/**
 	 * 
 	 */
@@ -73,10 +73,9 @@ public class ReportServiceTest extends TestCase
 
 		projectDAO = createMock(ProjectDAO.class);
 		((ReportServiceImpl)reportService).setProjectDAO(projectDAO);
-
 	
-//		rc = new ReportCriteria();
-//		rsMock = createMock(ReportCriteriaService.class);
+		rc = new ReportCriteria();
+		rsMock = createMock(ReportCriteriaService.class);
 //		rc.setReportCriteriaService(rsMock);
 	}
 	

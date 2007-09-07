@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -96,10 +98,14 @@ public class UserDAOTest extends BaseDAOTest
 		
 		ProjectAssignment pa = new ProjectAssignment();
 		pa.setAssignmentId(1);
+		pa.setProject(new Project(1));
+		pa.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
 		Set pas = new HashSet();
 		pas.add(pa);
 		
 		User user = new User();
+		pa.setUser(user);
+
 		user.setUsername("freggle");
 		user.setPassword("in the cave");
 		user.setFirstName("ollie");

@@ -79,10 +79,12 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	public List findByNamedQueryAndNamedParam(final String queryName, 
 												final String[] paramNames, 
 												final Object[] values,
-												final boolean isCaching,
+												boolean isCaching,
 												final String cachingRegion)
 					throws DataAccessException 
 	{
+		isCaching = false;
+		
 		if (!isCaching)
 		{
 			return getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, paramNames, values);
