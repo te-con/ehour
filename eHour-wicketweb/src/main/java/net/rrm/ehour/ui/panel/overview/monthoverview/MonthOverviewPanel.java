@@ -132,15 +132,11 @@ public class MonthOverviewPanel extends Panel
 	private void addDayValuesToRow(WebMarkupContainer row)
 	{
 		List<TimesheetEntry>	timesheetEntries;
-		// @todo use a localized version
-		DecimalFormat			df = new DecimalFormat();
-		df.setMaximumFractionDigits(2);
 		
 		for (String dayId : DateUtil.daysInWeek)
 		{
 			dayId += "Value";
 
-			System.out.println(dayId);
 			Fragment fragment;
 			
 	        if (overviewFor.get(Calendar.MONTH) == thisMonth)
@@ -165,23 +161,27 @@ public class MonthOverviewPanel extends Panel
 	            {
 	            	fragment = new Fragment(dayId, "noProjects");
 	            }
-	            
-	            row.add(fragment);
 	        }
 	        else
 	        {
-//            	if (monthIsBeforeCurrent(overviewFor, thisMonth, thisYear))
-//            	{
+            	if (monthIsBeforeCurrent(overviewFor, thisMonth, thisYear))
+            	{
+            		fragment = new Fragment(dayId, "noMonthBefore");
 //            		sb.append("<td class='noMonthBefore'>" );
-//            	}
-//            	else
-//            	{
+            	}
+            	else
+            	{
+            		fragment = new Fragment(dayId, "noMonthAfter");
 //            		sb.append("<td class='noMonthAfter'>" );
-//            	}
-//            	
+            	}
+            	
 //            	sb.append(HTML_NBSP + HTML_CELL_CLOSE);
 	        }
-	    }		
+
+            
+            row.add(fragment);
+
+		}		
 	}
 	
 	/**
