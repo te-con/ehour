@@ -19,7 +19,7 @@
 		</property>
 
 		<property name="password">
-			<value>admin</value>
+			<value></value>
 		</property>
 
 		<property name="validationQuery">
