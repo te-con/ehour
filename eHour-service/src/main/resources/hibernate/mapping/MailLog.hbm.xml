@@ -14,7 +14,7 @@
                 class="net.rrm.ehour.mail.domain.MailType" column="MAIL_TYPE_ID"/>
 
         <many-to-one name="toUser" outer-join="auto" fetch="join"
-                class="net.rrm.ehour.user.domain.User" column="TO_USER_ID" foreign-key="FK_MAILLOG_TO_USER" index="IDX_MAILLOG_TO_USER" />
+                class="net.rrm.ehour.user.domain.User" column="TO_USER_ID" index="IDX_MAILLOG_TO_USER" />
 
 		<property name="timestamp" column="TIMESTAMP" type="timestamp" />
 		
