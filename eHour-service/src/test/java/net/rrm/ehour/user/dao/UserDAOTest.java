@@ -82,6 +82,7 @@ public class UserDAOTest extends BaseDAOTest
 		assertEquals("thies", user.getUsername());
 	}
 	
+	// FIXME
 	// pwd needs encryption
 //	public void testFindByUsernameAndPassword()
 //	{
@@ -134,7 +135,7 @@ public class UserDAOTest extends BaseDAOTest
 		assertEquals(2, results.size());
 	}
 	
-	// @TODO FIX 
+	// FIXME 
 	
 //	public void testFindUsersWithPMRoleButNoProject()
 //	{

@@ -144,9 +144,6 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	public T persist(T domObj)
 	{
 		getHibernateTemplate().saveOrUpdate(domObj);
-		
-		getHibernateTemplate().flush();
-		
 		return domObj;
 	}	
 	

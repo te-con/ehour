@@ -5,7 +5,7 @@
 <hibernate-mapping>
 
 <!-- User -->
-	<class name="net.rrm.ehour.user.domain.User" table="USERS" mutable="false">
+	<class name="net.rrm.ehour.user.domain.User" table="USERS">
 		<id name="userId" column="USER_ID" type="java.lang.Integer">
 			<generator class="native" />
        	</id>
