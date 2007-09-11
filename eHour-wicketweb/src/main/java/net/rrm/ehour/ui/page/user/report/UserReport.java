@@ -16,21 +16,29 @@
 
 package net.rrm.ehour.ui.page.user.report;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.report.user.UserReportTabularPanel;
+import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
+import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
+import net.rrm.ehour.ui.reportchart.aggregate.CustomerTurnoverAggregateImage;
+import net.rrm.ehour.ui.reportchart.aggregate.ProjectHoursAggregateChartImage;
+import net.rrm.ehour.ui.reportchart.aggregate.ProjectTurnoverAggregateChartImage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -48,6 +56,9 @@ public class UserReport extends BasePage
 	private ReportService			reportService;
 	private	UserCriteria			userCriteria;
 	private transient Logger		logger = Logger.getLogger(UserReport.class);
+	private EhourConfig				config;
+	private int						chartWidth;
+	private int						chartHeight;
 	
 	/**
 	 * 
@@ -55,6 +66,11 @@ public class UserReport extends BasePage
 	public UserReport()
 	{
 		super("reporting", null);
+	
+		config = getEhourConfig();
+
+		chartWidth = !config.isShowTurnover() ? 600 : 350;
+		chartHeight = 200;
 		
 		ReportCriteria reportCriteria = getReportCriteria();
 		setModel(new CompoundPropertyModel(reportCriteria));
@@ -65,11 +81,65 @@ public class UserReport extends BasePage
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", reportCriteria));
 		
-		// 
+		// add data
 		ReportDataAggregate reportData = getReportData(reportCriteria);
-		add(new UserReportTabularPanel("reportTable", reportData));
+		add(new UserReportPanel("reportTable", reportData));
+		
+		// add charts
+		addCharts(reportData, null);
+	}
+
+	/**
+	 * Add charts
+	 * @param reportCriteria
+	 * @return
+	 */
+	private void addCharts(ReportDataAggregate data, Integer forId)
+	{
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("chartContainer");
+		add(greyBorder);
+		
+		// TODO cache the model
+		Model dataModel = new Model(data);
+		
+		// hours per customer
+		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, forId, chartWidth, chartHeight);
+		greyBorder.add(customerHoursChart);
+
+		// turnover per customer
+		if (config.isShowTurnover())
+		{
+			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, forId, chartWidth, chartHeight);
+			greyBorder.add(customerTurnoverChart);
+		}
+		else
+		{
+			// placeholder, not visible anyway
+			Image img = new Image("customerTurnoverChart");
+			img.setVisible(false);
+			greyBorder.add(img);
+		}
+
+		// hours per project
+		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, forId, chartWidth, chartHeight);
+		greyBorder.add(projectHoursChartFactory);
+
+		// turnover per project
+		if (config.isShowTurnover())
+		{
+			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, forId, chartWidth, chartHeight);
+			greyBorder.add(projectTurnoverChart);
+		}
+		else
+		{
+			// placeholder, not visible anyway
+			Image img = new Image("projectTurnoverChart");
+			img.setVisible(false);
+			greyBorder.add(img);
+		}		
 		
 	}
+
 	
 	/**
 	 * Get report data
@@ -83,7 +153,6 @@ public class UserReport extends BasePage
 		
 		return data;
 	}
-	
 	
 	/**
 	 * Get report criteria

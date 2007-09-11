@@ -18,14 +18,45 @@ package net.rrm.ehour.ui.reportchart.aggregate;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
-import net.rrm.ehour.ui.reportchart.rowkey.UserRowKey;
+import net.rrm.ehour.ui.reportchart.rowkey.CustomerRowKey;
+
+import org.apache.wicket.model.Model;
 
 /**
- * TODO 
+ * Customer turnover chart 
  **/
 
-public class UserTurnoverAggregateChartAction extends AbstractAggregateChart
+public class CustomerTurnoverAggregateImage extends AbstractAggregateChartImage
 {
+	private static final long serialVersionUID = -8028595697498908290L;
+
+	/**
+	 * 
+	 * @param id
+	 * @param reportDataAggregate
+	 * @param forId
+	 * @param width
+	 * @param height
+	 */
+	public CustomerTurnoverAggregateImage(String id, 
+											Model dataModel,
+											Integer forId,
+											int width,
+											int height)
+	{
+		super(id, dataModel, forId, width, height);	
+	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.reportchart.aggregate.AbstractAggregateChartFactory#getReportNameKey()
+	 */
+	@Override
+	protected String getReportNameKey()
+	{
+		return "report.turnoverCustomer";
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -39,23 +70,12 @@ public class UserTurnoverAggregateChartAction extends AbstractAggregateChart
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getReportName()
-	 */
-	@Override
-	protected String getReportName()
-	{
-		// TODO i18n
-		return "Turnover per employee";
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getRowKey(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
 	protected ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate)
 	{
-		return new UserRowKey(aggregate.getProjectAssignment().getUser());
+		return new CustomerRowKey(aggregate.getProjectAssignment().getProject().getCustomer());
 	}
 
 	/*
@@ -63,10 +83,8 @@ public class UserTurnoverAggregateChartAction extends AbstractAggregateChart
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getValueAxisLabel()
 	 */
 	@Override
-	protected String getValueAxisLabel()
+	protected String getValueAxisLabelKey()
 	{
-		// TODO: i18n
-		return "Turnover";
+		return "report.turnover";
 	}
-
 }

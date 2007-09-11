@@ -19,13 +19,42 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.CustomerRowKey;
 
-public class CustomerHoursAggregateChartAction extends AbstractAggregateChart
+import org.apache.wicket.model.Model;
+
+/**
+ * Factory for hours per customer chart
+ * @author Thies
+ *
+ */
+public class CustomerHoursAggregateChartImage extends AbstractAggregateChartImage
 {
-	// TODO i18n
-	@Override
-	protected String getReportName()
+	private static final long serialVersionUID = 8323295032556266163L;
+
+	/**
+	 * 
+	 * @param id
+	 * @param reportDataAggregate
+	 * @param forId
+	 * @param width
+	 * @param height
+	 */
+	public CustomerHoursAggregateChartImage(String id, 
+													Model dataModel,
+													Integer forId,
+													int width,
+													int height)
 	{
-		return "Hours per customer";
+		super(id, dataModel, forId, width, height);	
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.reportchart.aggregate.AbstractAggregateChartFactory#getReportNameKey()
+	 */
+	@Override
+	protected String getReportNameKey()
+	{
+		return "report.hoursCustomer";
 	}
 
 	/**
@@ -46,12 +75,13 @@ public class CustomerHoursAggregateChartAction extends AbstractAggregateChart
 		return new CustomerRowKey(aggregate.getProjectAssignment().getProject().getCustomer());
 	}
 
-	/**
-	 * TODO: i18n
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.reportchart.aggregate.AbstractAggregateChartFactory#getValueAxisLabel()
 	 */
 	@Override
-	protected String getValueAxisLabel()
+	protected String getValueAxisLabelKey()
 	{
-		return "Hours";
+		return "hours";
 	}
 }

@@ -18,16 +18,37 @@ package net.rrm.ehour.ui.reportchart.aggregate;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
-import net.rrm.ehour.ui.reportchart.rowkey.ProjectRowKey;
+import net.rrm.ehour.ui.reportchart.rowkey.UserRowKey;
+
+import org.apache.wicket.model.Model;
 
 /**
- * TODO 
+ * Turnover per employee 
  **/
 
-public class ProjectTurnoverAggregateChartAction extends AbstractAggregateChart
+public class UserTurnoverAggregateChartImage extends AbstractAggregateChartImage
 {
+	private static final long serialVersionUID = 5087769464635469476L;
 
-	/* (non-Javadoc)
+	/**
+	 * 
+	 * @param id
+	 * @param reportDataAggregate
+	 * @param forId
+	 * @param width
+	 * @param height
+	 */
+	public UserTurnoverAggregateChartImage(String id, 
+											Model dataModel,
+											Integer forId,
+											int width,
+											int height)
+	{
+		super(id, dataModel, forId, width, height);	
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getColumnValue(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
@@ -36,33 +57,34 @@ public class ProjectTurnoverAggregateChartAction extends AbstractAggregateChart
 		return aggregate.getTurnOver();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getReportName()
 	 */
 	@Override
-	protected String getReportName()
+	protected String getReportNameKey()
 	{
-		// TODO i18n
-		return "Turnover per project";
+		return "report.turnoverEmployee";
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getRowKey(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
 	protected ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate)
 	{
-		return new ProjectRowKey(aggregate.getProjectAssignment().getProject());
+		return new UserRowKey(aggregate.getProjectAssignment().getUser());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getValueAxisLabel()
 	 */
 	@Override
-	protected String getValueAxisLabel()
+	protected String getValueAxisLabelKey()
 	{
-		// TODO i18n
-		return "Turnover";
+		return "report.turnover";
 	}
 
 }

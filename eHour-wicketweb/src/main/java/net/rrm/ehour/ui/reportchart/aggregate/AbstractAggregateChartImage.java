@@ -31,6 +31,11 @@ import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.sort.StringComparator;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.Resource;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.protocol.http.WebResponse;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
@@ -42,22 +47,88 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * Base class for aggregated charts 
  **/
 
-public abstract class AbstractAggregateChart
+public abstract class AbstractAggregateChartImage extends Image
 {
-	private	final static Logger	logger = Logger.getLogger(AbstractAggregateChart.class);
+	private	final static Logger	logger = Logger.getLogger(AbstractAggregateChartImage.class);
+
+	private int			width;
+	private int			height;
+	private	Integer		forId;
 	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.charts.AbstractChartAction#getChart(net.rrm.ehour.report.reports.ReportData, java.lang.Integer)
+	/**
+	 * 
+	 * @param id
+	 * @param reportDataAggregate
+	 * @param forId
+	 * @param width
+	 * @param height
 	 */
-	protected JFreeChart getChart(ReportDataAggregate reportDataAggregate, Integer forId)
+	public AbstractAggregateChartImage(String id, 
+										Model dataModel,
+										Integer forId,
+										int width,
+										int height)
 	{
-		logger.debug("Creating " + getReportName() + " aggregate chart");
+		super(id, dataModel);
+
+		this.width = width;
+		this.height = height;
+		this.forId = forId;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.image.Image#getImageResource()
+	 */
+	@Override
+	@SuppressWarnings("serial")
+	protected Resource getImageResource()
+	{
+		return new DynamicImageResource()
+		{
+			@Override
+			protected byte[] getImageData()
+			{
+				ReportDataAggregate reportDataAggregate = (ReportDataAggregate)getModelObject();
+				
+				JFreeChart chart = getChart(reportDataAggregate, forId);
+				return toImageData(chart.createBufferedImage(width, height));
+			}
+
+			@Override
+			protected void setHeaders(WebResponse response)
+			{
+				if (isCacheable())
+				{
+					super.setHeaders(response);
+				} else
+				{
+					response.setHeader("Pragma", "no-cache");
+					response.setHeader("Cache-Control", "no-cache");
+					response.setDateHeader("Expires", 0);
+				}
+			}
+		};
+	}	
+	
+	/**
+	 * 
+	 * @param reportDataAggregate
+	 * @param forId
+	 * @param reportName
+	 * @return
+	 */
+	private JFreeChart getChart(ReportDataAggregate reportDataAggregate, Integer forId)
+	{
+		String reportNameKey = getReportNameKey();
+		String reportName = getLocalizer().getString(reportNameKey, this);
+		logger.debug("Creating " + reportName + " aggregate chart");
 		
 		DefaultCategoryDataset dataset = createDataset(reportDataAggregate, forId);
 
-		JFreeChart chart = ChartFactory.createBarChart(getReportName(), // chart title
+		JFreeChart chart = ChartFactory.createBarChart(reportName, // chart title
 				null, // domain axis label
-				getValueAxisLabel(), // range axis label
+				getLocalizer().getString(getValueAxisLabelKey(), this), // range axis label
 				dataset, // data
 				PlotOrientation.VERTICAL, // orientation
 				false, // include legend
@@ -94,7 +165,7 @@ public abstract class AbstractAggregateChart
 		Map<String, Number> valueMap = new HashMap<String, Number>();
 		ChartRowKey		rowKey;
 		Number 			value;
-		String			valueAxisLabel = getValueAxisLabel();
+		String			valueAxisLabel = getValueAxisLabelKey();
 		List<String>	keys;
 
 		dataset = new DefaultCategoryDataset();
@@ -141,13 +212,13 @@ public abstract class AbstractAggregateChart
 	 * Get report name
 	 * @return
 	 */
-	protected abstract String getReportName();
+	protected abstract String getReportNameKey();
 	
 	/**
 	 * Get value axis label
 	 * @return
 	 */
-	protected abstract String getValueAxisLabel();
+	protected abstract String getValueAxisLabelKey();
 	
 	/**
 	 * Get row key from aggregate

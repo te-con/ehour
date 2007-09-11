@@ -47,25 +47,25 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	public void init()
 	{
 		super.init();
-		
+
 		getMarkupSettings().setStripWicketTags(true);
-		
+
 		mount("/login", PackageName.forClass(Login.class));
 		mount("/admin", PackageName.forClass(MainConfig.class));
 		mount("/consultant", PackageName.forPackage(Overview.class.getPackage()));
 		mount("/consultant/report", PackageName.forPackage(UserReport.class.getPackage()));
 		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-		
+
 		springInjection();
 
 		setupSecurity();
 	}
-	
+
 	protected void springInjection()
 	{
 		addComponentInstantiationListener(new SpringComponentInjector(this));
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -76,19 +76,18 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
 
 		getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
-        {
-            public void onUnauthorizedInstantiation(final Component component)
-            {
-                if (component instanceof Page)
-                {
-                    throw new RestartResponseAtInterceptPageException(Login.class);
-                }
-                else
-                {
-                    throw new UnauthorizedInstantiationException(component.getClass());
-                }
-            }
-        });		
+		{
+			public void onUnauthorizedInstantiation(final Component component)
+			{
+				if (component instanceof Page)
+				{
+					throw new RestartResponseAtInterceptPageException(Login.class);
+				} else
+				{
+					throw new UnauthorizedInstantiationException(component.getClass());
+				}
+			}
+		});
 	}
 
 	/**

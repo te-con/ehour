@@ -11,21 +11,42 @@
  * thies@te-con.nl
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ *
  */
 
 package net.rrm.ehour.ui.reportchart.aggregate;
 
+import org.apache.wicket.model.Model;
+
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
-import net.rrm.ehour.ui.reportchart.rowkey.ProjectRowKey;
+import net.rrm.ehour.ui.reportchart.rowkey.UserRowKey;
 
 /**
- * TODO 
+ * Hours per user 
  **/
 
-public class ProjectHoursAggregateChartAction extends AbstractAggregateChart
+public class UserHoursAggregateChartImage extends AbstractAggregateChartImage
 {
+	private static final long serialVersionUID = 8394122720520275008L;
 
+	/**
+	 * 
+	 * @param id
+	 * @param reportDataAggregate
+	 * @param forId
+	 * @param width
+	 * @param height
+	 */
+	public UserHoursAggregateChartImage(String id, 
+											Model dataModel,
+											Integer forId,
+											int width,
+											int height)
+	{
+		super(id, dataModel, forId, width, height);	
+	}
+	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getColumnValue(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
@@ -39,10 +60,9 @@ public class ProjectHoursAggregateChartAction extends AbstractAggregateChart
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getReportName()
 	 */
 	@Override
-	protected String getReportName()
+	protected String getReportNameKey()
 	{
-		// TODO i18n
-		return "Hours per project";
+		return "report.hoursEmployee";
 	}
 
 	/* (non-Javadoc)
@@ -51,17 +71,16 @@ public class ProjectHoursAggregateChartAction extends AbstractAggregateChart
 	@Override
 	protected ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate)
 	{
-		return new ProjectRowKey(aggregate.getProjectAssignment().getProject());
+		return new UserRowKey(aggregate.getProjectAssignment().getUser());
 	}
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getValueAxisLabel()
 	 */
 	@Override
-	protected String getValueAxisLabel()
+	protected String getValueAxisLabelKey()
 	{
-		// TODO i18n
-		return "Hours";
+		return "hours";
 	}
 
 }

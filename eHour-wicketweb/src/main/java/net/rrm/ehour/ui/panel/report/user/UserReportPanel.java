@@ -38,7 +38,7 @@ import org.apache.wicket.model.PropertyModel;
  * Report table
  **/
 
-public class UserReportTabularPanel extends Panel
+public class UserReportPanel extends Panel
 {
 	private static final long serialVersionUID = -2740688272163704885L;
 
@@ -51,7 +51,7 @@ public class UserReportTabularPanel extends Panel
 	 * @param reportData
 	 */
 	@SuppressWarnings("serial")
-	public UserReportTabularPanel(String id, ReportDataAggregate reportData)
+	public UserReportPanel(String id, ReportDataAggregate reportData)
 	{
 		super(id);
 		
@@ -79,7 +79,7 @@ public class UserReportTabularPanel extends Panel
 		greyBorder.add(blueBorder);
 		blueBorder.add(report);
 		
-		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(UserReportTabularPanel.class, "style/reportStyle.css")));		
+		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(UserReportPanel.class, "style/reportStyle.css")));		
 	}
 
 	/**
