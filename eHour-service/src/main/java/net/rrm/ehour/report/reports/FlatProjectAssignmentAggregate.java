@@ -15,12 +15,15 @@
 
 package net.rrm.ehour.report.reports;
 
+import java.io.Serializable;
+
 /**
- * TODO 
+ * report DTO 
  **/
 
-public class FlatProjectAssignmentAggregate
+public class FlatProjectAssignmentAggregate implements Serializable
 {
+	private static final long serialVersionUID = -2146747873763924275L;
 	private	Integer	customerId;
 	private	String	customerName;
 	private	String	customerCode;
