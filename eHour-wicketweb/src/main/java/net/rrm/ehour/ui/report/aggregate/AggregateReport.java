@@ -1,6 +1,9 @@
 package net.rrm.ehour.ui.report.aggregate;
 
+import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User: Thies
@@ -20,4 +23,9 @@ import java.io.Serializable;
  */
 public interface AggregateReport extends Serializable
 {
+    /**
+     * Get report nodes
+     * @return
+     */
+    public List<ReportNode> getNodes();
 }

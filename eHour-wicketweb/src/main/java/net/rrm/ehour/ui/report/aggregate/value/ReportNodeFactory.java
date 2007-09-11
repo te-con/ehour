@@ -2,6 +2,8 @@ package net.rrm.ehour.ui.report.aggregate.value;
 
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
+import java.io.Serializable;
+
 /**
  * User: Thies
  * Date: Sep 11, 2007
@@ -26,4 +28,11 @@ public abstract class ReportNodeFactory
      * @return
      */
     public abstract ReportNode createReportNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel);
+
+    /**
+     * Get the id of an aggregate
+     * @param aggregate
+     * @return
+     */
+    public abstract Serializable getAssignmentId(ProjectAssignmentAggregate aggregate);
 }

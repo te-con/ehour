@@ -45,7 +45,7 @@ public class ReportBuilder
 	 * @param reportDataAggregate
 	 * @param forId the ID to generate the report for (null to ignore)
 	 */
-	public List<ReportNode> createReport(ReportDataAggregate reportDataAggregate, Comparable<Serializable> forId, ReportNodeFactory nodeFactory)
+	public List<ReportNode> createReport(ReportDataAggregate reportDataAggregate, Serializable forId, ReportNodeFactory nodeFactory)
 	{
 		Date profileStart = new Date();
 
@@ -53,6 +53,12 @@ public class ReportBuilder
 
         for (ProjectAssignmentAggregate aggregate : reportDataAggregate.getProjectAssignmentAggregates())
         {
+            if (forId != null &&
+                   !nodeFactory.getAssignmentId(aggregate).equals(forId))
+            {
+                continue;
+            }
+
             if (!processAggregate(aggregate, nodeFactory, reportNodes))
             {
                 ReportNode node = nodeFactory.createReportNode(aggregate, 0);

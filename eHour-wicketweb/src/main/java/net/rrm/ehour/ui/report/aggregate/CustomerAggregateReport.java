@@ -39,6 +39,16 @@ public class CustomerAggregateReport implements AggregateReport
     }
 
     /**
+     *
+     * @param reportDataAggregate
+     */
+    public CustomerAggregateReport(ReportDataAggregate reportDataAggregate, Integer forId)
+    {
+        ReportBuilder    reportBuilder = new ReportBuilder();
+        nodes = reportBuilder.createReport(reportDataAggregate, forId, new CustomerReportNodeFactory());
+    }
+
+    /**
      * Get nodes
      * @return
      */
@@ -67,6 +77,17 @@ public class CustomerAggregateReport implements AggregateReport
 
             throw new RuntimeException("Hierarchy level too deep");
         }
+
+        /**
+         * Only needed for the root node, customer
+         * @param aggregate
+         * @return
+         */
+
+        public Serializable getAssignmentId(ProjectAssignmentAggregate aggregate)
+        {
+            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
+        }
     }
 
     /**
@@ -80,10 +101,9 @@ public class CustomerAggregateReport implements AggregateReport
             this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
         }
 
-        @Override
-        protected boolean isProcessAggregate(ProjectAssignmentAggregate aggregate)
+        protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
         {
-            return this.id.equals(aggregate.getProjectAssignment().getProject().getCustomer().getPK());
+            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
         }
     }
 
@@ -100,9 +120,9 @@ public class CustomerAggregateReport implements AggregateReport
         }
 
         @Override
-        protected boolean isProcessAggregate(ProjectAssignmentAggregate aggregate)
+        protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
         {
-            return this.id.equals(aggregate.getProjectAssignment().getProject().getPK());
+            return aggregate.getProjectAssignment().getProject().getPK();
         }
     }
 
@@ -128,6 +148,13 @@ public class CustomerAggregateReport implements AggregateReport
         }
 
         @Override
+        protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
+        {
+            return aggregate.getProjectAssignment().getUser().getPK();
+        }
+
+
+        @Override
         public Number getHours()
         {
             return hours; 
@@ -137,12 +164,6 @@ public class CustomerAggregateReport implements AggregateReport
         public Number getTurnover()
         {
             return turnOver;
-        }
-
-        @Override
-        protected boolean isProcessAggregate(ProjectAssignmentAggregate aggregate)
-        {
-            return this.id.equals(aggregate.getProjectAssignment().getUser().getPK());
         }
 
         @Override

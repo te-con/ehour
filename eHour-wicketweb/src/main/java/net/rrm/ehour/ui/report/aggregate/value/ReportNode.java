@@ -73,11 +73,22 @@ public abstract class ReportNode implements Serializable
     }
 
     /**
-     * Process aggregate for this value ?
-      * @param aggregate
+     *
+     * @param aggregate
      * @return
      */
-    protected abstract boolean isProcessAggregate(ProjectAssignmentAggregate aggregate);
+    protected abstract Serializable getAggregateId(ProjectAssignmentAggregate aggregate);
+
+    /**
+     * Process aggregate for this value? By default ignored, override when needed
+     * @param aggregate
+     * @param forId
+     * @return
+     */
+    private boolean isProcessAggregate(ProjectAssignmentAggregate aggregate)
+    {
+        return  this.id.equals(getAggregateId(aggregate));
+    }
 
     /**
      * Is last node in the hierarchy ? Override for end node
