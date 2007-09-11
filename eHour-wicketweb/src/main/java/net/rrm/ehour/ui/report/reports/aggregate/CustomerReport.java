@@ -64,16 +64,6 @@ public class CustomerReport extends AggregateReport<Customer, Project, Integer>
 		return aggregate.getProjectAssignment().getProject().getCustomer();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.reports.AggregateReport#getComparator()
-	 */
-//	@Override
-//	public Comparator<Project> getComparator()
-//	{
-//		return new ProjectComparator();
-//	}
-
 	@Override
 	protected ReportValueWrapperFactory getChildValueWrapperFactory()
 	{

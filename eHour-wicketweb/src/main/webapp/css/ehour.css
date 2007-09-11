@@ -39,6 +39,14 @@ div.ContentPanelLoc
 	float:	left;
 }
 
+div.ContentPanelLocFixed
+{
+	width: 100%;
+	min-width: 500px;
+	max-width: 780px;
+	margin:	0;
+	padding: 0;
+}
 
 div.GreyFrame
 {

@@ -146,7 +146,7 @@ public abstract class AbstractAggregateChartImage extends Image
 		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
 		renderer.setItemLabelFont(chartTitleFont);
 		renderer.setItemLabelPaint(new Color(0xf9f9f9));
-
+	
 		// set up gradient paints for series...
 		GradientPaint gradientPaint = new GradientPaint(0.0f, 0.0f, new Color(0xbfd9f6), 0.0f, 0.0f, new Color(0xa3bcd8));
 		renderer.setPaint(gradientPaint);

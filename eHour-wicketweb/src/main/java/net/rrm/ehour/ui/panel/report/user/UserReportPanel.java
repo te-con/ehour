@@ -57,8 +57,6 @@ public class UserReportPanel extends Panel
 		
 		config = EhourWebSession.getSession().getEhourConfig();
 		
-//		this.reportData = reportData;
-		
 		CustomerReport	customerReport = new CustomerReport();
 		customerReport.initialize(reportData);
 		

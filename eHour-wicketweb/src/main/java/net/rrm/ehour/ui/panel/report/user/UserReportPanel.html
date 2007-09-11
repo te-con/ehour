@@ -14,14 +14,49 @@
 
 	<div wicket:id="reportFrame">
 		<div wicket:id="blueFrame">
-			<table wicket:id="report" class="reportTable">
-				<span wicket:id="customerList">
-					<tr class="dataRow">
-						<td wicket:id="customer">customer</td>
-						<td wicket:id="project">customer</td>
-						<td wicket:id="hours">customer</td>
-					</tr>
-				</span>
+			<table cellpadding="0" cellspacing="0" style="margin-top: -10px">
+				<tr>
+					<td width="5">&nbsp;</td>
+					<td>
+			
+						<table class="reportTable" cellpadding="0" cellspacing="0">
+							<tr>
+								<th>&nbsp;<wicket:message key="userReport.report.customer" /></th>
+								<th>&nbsp;<wicket:message key="userReport.report.project" /></th>
+								<th>&nbsp;<wicket:message key="userReport.report.projectCode" /></th>
+
+								<th style="text-align: right"><wicket:message key="userReport.report.hours" />&nbsp;</th>
+								<th style="text-align: right"><wicket:message key="userReport.report.turnover" />&nbsp;</th>
+							</tr>		
+			
+							<span wicket:id="customers">
+								<tr class="dataRow" wicket:id="projects">
+									<td wicket:id="customer">customer</td>
+									<td wicket:id="project">project</td>
+									<td wicket:id="projectCode">projectCode</td>
+									<td wicket:id="hours">hours</td>
+									<td wicket:id="turnover">turnover</td>
+								</tr>
+								
+								<tr class="totalRow">
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td align="right" wicket:id="totalHours"></td>
+									<td align="right" class="lastChild" wicket:id="totalTurnover"></td>
+								</tr>								
+							</span>
+							
+							<tr class="totalRow">
+								<td><b><wicket:message key="report.report.total" />:</b></td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td align="right"><b><span wicket:id="grandTotalHour"></span></b></td>
+								<td align="right" class="lastChild"><b><span wicket:id="grandTotalTurnOver"></span></b></td>
+							</tr>							
+						</table>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>
