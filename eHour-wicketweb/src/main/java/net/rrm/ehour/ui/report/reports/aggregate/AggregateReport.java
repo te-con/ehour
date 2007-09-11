@@ -63,7 +63,7 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	/**
 	 * Initialize the webreport for a specific id 
 	 * @param reportDataAggregate
-	 * @param forID the ID to generate the report for (null to ignore)
+	 * @param forId the ID to generate the report for (null to ignore)
 	 */
 	public void initialize(ReportDataAggregate reportDataAggregate, Comparable<IDK> forId)
 	{

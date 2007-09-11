@@ -62,7 +62,7 @@ public class ReportServiceImpl implements ReportService
 	/**
 	 * Get the booked hours per project assignment for a month
 	 * @param userId
-	 * @param calendar
+	 * @param 
 	 * @return SortedMap with ProjectAssignment on key and a Float representation of the booked hours as value
 	 */	
 	
@@ -87,7 +87,7 @@ public class ReportServiceImpl implements ReportService
 	/**
 	 * Get the booked hours per project assignment for a date range
 	 * @param userId
-	 * @param calendar
+	 * @param
 	 * @return 
 	 */		
 	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange)
@@ -154,7 +154,7 @@ public class ReportServiceImpl implements ReportService
 	
 	/**
 	 * Get project assignments aggregates
-	 * @param reportCriteria
+	 * @param
 	 * @return
 	 */
 	private List<ProjectAssignmentAggregate> getProjectAssignmentAggregates(List<Integer> userIds,
@@ -186,7 +186,7 @@ public class ReportServiceImpl implements ReportService
 	
 	/**
 	 * Get weekly project report
-	 * @param criteria
+	 * @param 
 	 * @return
 	 */
 	private List<FlatProjectAssignmentAggregate> getWeeklyReportData(List<Integer> userIds,

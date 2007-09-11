@@ -28,7 +28,7 @@ import net.rrm.ehour.ui.report.value.ReportValueWrapper;
 import net.rrm.ehour.ui.report.value.ReportValueWrapperFactory;
 
 /**
- * Representation of a node in the report
+ * Representation of a value in the report
  * TODO remove generics?
  **/
 
@@ -108,7 +108,7 @@ public class AggregateReportNode<RN extends DomainObject<? extends Serializable,
 	}
 
 	/**
-	 * @return the node
+	 * @return the value
 	 */
 	public ReportValueWrapper getRootValue()
 	{

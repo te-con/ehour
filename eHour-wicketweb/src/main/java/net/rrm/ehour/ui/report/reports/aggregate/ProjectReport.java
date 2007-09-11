@@ -54,7 +54,7 @@ public class ProjectReport extends AggregateReport<Project, Customer, Integer>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.reports.AggregateReport#getComparator()
+	 * @see net.rrm.ehour.web.report.reports.ReportBuilder#getComparator()
 	 */
 	@Override
 	public Comparator<Customer> getComparator()

@@ -29,11 +29,6 @@
 		</init-param>
 	</filter>
 
-	<filter-mapping>
-		<filter-name>hibernateFilter</filter-name>
-		<url-pattern>/eh/*</url-pattern>
-	</filter-mapping>
-
     <filter>
         <filter-name>Acegi HTTP Request Security Filter</filter-name>
         <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
@@ -42,11 +37,6 @@
             <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
         </init-param>
     </filter>
-
-    <filter-mapping>
-        <filter-name>Acegi HTTP Request Security Filter</filter-name>
-        <url-pattern>/eh/*</url-pattern>
-    </filter-mapping>
 
 	<filter>
 		<filter-name>EhourWebApplication</filter-name>
@@ -66,6 +56,15 @@
 		<url-pattern>/eh/*</url-pattern>
 	</filter-mapping>
 	
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>/eh/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>Acegi HTTP Request Security Filter</filter-name>
+        <url-pattern>/eh/*</url-pattern>
+    </filter-mapping>
 	
 	
 
