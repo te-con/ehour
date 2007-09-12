@@ -17,33 +17,26 @@
 package net.rrm.ehour.ui.panel.report.user;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode;
-import net.rrm.ehour.ui.report.reports.aggregate.CustomerReport;
 import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode.SectionChild;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
-import org.apache.wicket.model.PropertyModel;
 
 /**
  * Report table
  **/
 
-public class UserReportPanel extends Panel
+public class UserReportPanel extends AbstractAggregateReportPanel
 {
 	private static final long serialVersionUID = -2740688272163704885L;
 
-//	private	ReportDataAggregate	reportData;
-	private final EhourConfig	config;
+	private final EhourConfig		config;
+	private AggregateReportColumn[]	reportColumns;
 	
 	/**
 	 * 
@@ -51,33 +44,12 @@ public class UserReportPanel extends Panel
 	 * @param reportData
 	 */
 	@SuppressWarnings("serial")
-	public UserReportPanel(String id, ReportDataAggregate reportData)
+	public UserReportPanel(String id, CustomerAggregateReport reportData)
 	{
-		super(id);
+		super(id, reportData);
 		
 		config = EhourWebSession.getSession().getEhourConfig();
 		
-		CustomerReport	customerReport = new CustomerReport();
-		customerReport.initialize(reportData);
-		
-		ListView report = new ListView("report", new PropertyModel(customerReport, "reportNodes"))
-		{
-			@Override
-			protected void populateItem(ListItem item)
-			{
-				item.add(new CustomerBlock("customerList", (AggregateReportNode<?, ?>)item.getModelObject()));
-			}			
-		};
-
-		// TODO set title
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", "Report");
-		add(greyBorder);
-		
-		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
-		greyBorder.add(blueBorder);
-		blueBorder.add(report);
-		
-		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(UserReportPanel.class, "style/reportStyle.css")));		
 	}
 
 	/**
@@ -106,5 +78,26 @@ public class UserReportPanel extends Panel
 			item.add(new Label("project", child.getChildValue().getName()));
 			item.add(new Label("hours", new FloatModel(child.getHours(), config)));
 		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.report.user.AbstractAggregateReportPanel#getReportColumns()
+	 */
+	@Override
+	protected AggregateReportColumn[] getReportColumns()
+	{
+		if (reportColumns == null)
+		{
+			reportColumns = new AggregateReportColumn[]{
+									new AggregateReportColumn("userReport.report.customer"),
+									new AggregateReportColumn("userReport.report.project"),
+									new AggregateReportColumn("userReport.report.projectCode"),
+									new AggregateReportColumn("userReport.report.hours"),
+									new AggregateReportColumn("userReport.report.turnover", EhourWebSession.getSession().getEhourConfig().isShowTurnover())
+							};
+		}
+		
+		return reportColumns;
 	}
 }
