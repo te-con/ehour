@@ -17,8 +17,9 @@ public abstract class ReportNode implements Serializable
 {
     protected Serializable[]    columnValues;
     private List<ReportNode>    reportNodes = new ArrayList<ReportNode>();
-    protected Serializable        id;
-
+    protected Serializable      id;
+    protected int				hierarchyLevel;
+    
     /**
      * Process aggregate
      * @param aggregate
@@ -184,5 +185,12 @@ public abstract class ReportNode implements Serializable
     {
         this.id = id;
     }
-    
+
+	/**
+	 * @return the hierarchyLevel
+	 */
+	public int getHierarchyLevel()
+	{
+		return hierarchyLevel;
+	}
 }

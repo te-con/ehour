@@ -92,6 +92,7 @@ public class CustomerAggregateReport extends AggregateReport
         {
             this.id = aggregate.getProjectAssignment().getProject().getCustomer().getPK();
             this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
+            this.hierarchyLevel = 0;
         }
 
         protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
@@ -112,6 +113,7 @@ public class CustomerAggregateReport extends AggregateReport
             this.id = aggregate.getProjectAssignment().getProject().getPK();
             this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getName(),
                                              aggregate.getProjectAssignment().getProject().getProjectCode()};
+            this.hierarchyLevel = 1;
         }
 
         @Override
@@ -140,6 +142,8 @@ public class CustomerAggregateReport extends AggregateReport
                                                     aggregate.getProjectAssignment().getHourlyRate(),
                                                     aggregate.getHours(),
                                                     aggregate.getTurnOver()};
+            
+            this.hierarchyLevel = 2;
 
         }
 
