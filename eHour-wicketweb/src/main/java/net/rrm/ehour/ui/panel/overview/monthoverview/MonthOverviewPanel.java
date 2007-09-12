@@ -35,6 +35,8 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -146,14 +148,23 @@ public class MonthOverviewPanel extends Panel
 	            {
 	            	fragment = new Fragment(dayId, "showProjects");
 	            	
-	            	for (TimesheetEntry entry : timesheetEntries)
-					{
-	            		if (entry.getHours().intValue() != 0)
-	            		{
-	            			fragment.add(new Label("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode())); 
-	            			fragment.add(new Label("hours", new FloatModel(entry.getHours(), config)));
-	            		}
-					}
+	            	@SuppressWarnings("serial")
+	            	ListView projects = new ListView("projects", timesheetEntries)
+	            	{
+						@Override
+						protected void populateItem(ListItem item)
+						{
+							TimesheetEntry entry = (TimesheetEntry)item.getModelObject();
+
+		            		if (entry.getHours().intValue() != 0)
+		            		{
+		            			item.add(new Label("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode())); 
+		            			item.add(new Label("hours", new FloatModel(entry.getHours(), config)));
+		            		}
+						}
+	            	};
+	            	
+	            	fragment.add(projects);
 	            }
 	            else
 	            {
