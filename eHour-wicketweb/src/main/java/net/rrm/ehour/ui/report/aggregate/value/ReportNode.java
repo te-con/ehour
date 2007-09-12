@@ -1,11 +1,10 @@
 package net.rrm.ehour.ui.report.aggregate.value;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import org.apache.log4j.Logger;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
  * Created by IntelliJ IDEA.

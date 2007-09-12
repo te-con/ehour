@@ -1,12 +1,11 @@
 package net.rrm.ehour.ui.report.aggregate;
 
+import java.io.Serializable;
+
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * User: Thies
@@ -24,9 +23,9 @@ import java.util.List;
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  */
-public class CustomerAggregateReport implements AggregateReport
+public class CustomerAggregateReport extends AggregateReport
 {
-    private List<ReportNode>    nodes;
+	private static final long serialVersionUID = -3221674649410450972L;
 
     /**
      *
@@ -34,8 +33,7 @@ public class CustomerAggregateReport implements AggregateReport
      */
     public CustomerAggregateReport(ReportDataAggregate reportDataAggregate)
     {
-        ReportBuilder    reportBuilder = new ReportBuilder();
-        nodes = reportBuilder.createReport(reportDataAggregate, new CustomerReportNodeFactory());
+    	this(reportDataAggregate, null);
     }
 
     /**
@@ -44,50 +42,43 @@ public class CustomerAggregateReport implements AggregateReport
      */
     public CustomerAggregateReport(ReportDataAggregate reportDataAggregate, Integer forId)
     {
-        ReportBuilder    reportBuilder = new ReportBuilder();
-        nodes = reportBuilder.createReport(reportDataAggregate, forId, new CustomerReportNodeFactory());
-    }
-
-    /**
-     * Get nodes
-     * @return
-     */
-    public List<ReportNode> getNodes()
-    {
-        return nodes;
+    	super(reportDataAggregate, forId);
     }
 
     /**
      *
      */
-    private class CustomerReportNodeFactory extends ReportNodeFactory
+    public ReportNodeFactory getReportNodeFactory()
     {
-        @Override
-        public ReportNode createReportNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel)
-        {
-            switch (hierarchyLevel)
-            {
-                case 0:
-                    return new CustomerNode(aggregate);
-                case 1:
-                    return new ProjectNode(aggregate);
-                case 2:
-                    return new EndNode(aggregate);
-            }
-
-            throw new RuntimeException("Hierarchy level too deep");
-        }
-
-        /**
-         * Only needed for the root node, customer
-         * @param aggregate
-         * @return
-         */
-
-        public Serializable getAssignmentId(ProjectAssignmentAggregate aggregate)
-        {
-            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
-        }
+    	return new ReportNodeFactory()
+	    {
+	        @Override
+	        public ReportNode createReportNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel)
+	        {
+	            switch (hierarchyLevel)
+	            {
+	                case 0:
+	                    return new CustomerNode(aggregate);
+	                case 1:
+	                    return new ProjectNode(aggregate);
+	                case 2:
+	                    return new EndNode(aggregate);
+	            }
+	
+	            throw new RuntimeException("Hierarchy level too deep");
+	        }
+	
+	        /**
+	         * Only needed for the root node, customer
+	         * @param aggregate
+	         * @return
+	         */
+	
+	        public Serializable getAssignmentId(ProjectAssignmentAggregate aggregate)
+	        {
+	            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
+	        }
+	    };
     }
 
     /**
@@ -95,7 +86,9 @@ public class CustomerAggregateReport implements AggregateReport
      */
     private class CustomerNode extends ReportNode
     {
-        private CustomerNode(ProjectAssignmentAggregate aggregate)
+		private static final long serialVersionUID = -356525734449023397L;
+
+		private CustomerNode(ProjectAssignmentAggregate aggregate)
         {
             this.id = aggregate.getProjectAssignment().getProject().getCustomer().getPK();
             this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
@@ -112,7 +105,9 @@ public class CustomerAggregateReport implements AggregateReport
      */
     private class ProjectNode extends ReportNode
     {
-        private ProjectNode(ProjectAssignmentAggregate aggregate)
+		private static final long serialVersionUID = -8068372785700592324L;
+
+		private ProjectNode(ProjectAssignmentAggregate aggregate)
         {
             this.id = aggregate.getProjectAssignment().getProject().getPK();
             this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getName(),
@@ -131,7 +126,8 @@ public class CustomerAggregateReport implements AggregateReport
      */
     private class EndNode extends ReportNode
     {
-        private Number   hours;
+		private static final long serialVersionUID = 3861923371702158088L;
+		private Number   hours;
         private Number   turnOver;
 
         private EndNode(ProjectAssignmentAggregate aggregate)
