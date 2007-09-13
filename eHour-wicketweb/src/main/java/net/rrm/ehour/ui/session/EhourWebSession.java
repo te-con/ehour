@@ -192,14 +192,21 @@ public class EhourWebSession extends AuthenticatedWebSession
 			Roles roles = new Roles();
 			// Retrieve the granted authorities from the current authentication. These correspond one on
 			// one with user roles.
-			GrantedAuthority[] authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 			
-			for (int i = 0; i < authorities.length; i++)
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			
+			if (auth != null)
 			{
-				GrantedAuthority authority = authorities[i];
-				roles.add(authority.getAuthority());
+				
+				GrantedAuthority[] authorities = auth.getAuthorities();
+				
+				for (int i = 0; i < authorities.length; i++)
+				{
+					GrantedAuthority authority = authorities[i];
+					roles.add(authority.getAuthority());
+				}
+				return roles;
 			}
-			return roles;
 		}
 		return null;
 	}
