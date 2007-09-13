@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
+import net.rrm.ehour.ui.panel.report.AbstractAggregateReportPanel;
+import net.rrm.ehour.ui.panel.report.AggregateReportColumn;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -53,7 +55,7 @@ public class UserReportPanel extends AbstractAggregateReportPanel
 									new AggregateReportColumn("userReport.report.customer"),
 									new AggregateReportColumn("userReport.report.project"),
 									new AggregateReportColumn("userReport.report.projectCode"),
-									new AggregateReportColumn("userReport.report.rate"),
+									new AggregateReportColumn("userReport.report.rate", false),
 									new AggregateReportColumn("userReport.report.rate", false),
 									new AggregateReportColumn("userReport.report.hours"),
 									new AggregateReportColumn("userReport.report.turnover", EhourWebSession.getSession().getEhourConfig().isShowTurnover())

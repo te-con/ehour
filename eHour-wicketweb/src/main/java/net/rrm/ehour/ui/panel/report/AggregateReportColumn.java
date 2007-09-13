@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.user;
+package net.rrm.ehour.ui.panel.report;
 
 import java.io.Serializable;
 

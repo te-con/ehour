@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.user;
+package net.rrm.ehour.ui.panel.report;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -95,6 +95,8 @@ public abstract class AbstractAggregateReportPanel extends Panel
 		
 		ListView rootNodeView = new ListView("row", Arrays.asList(matrix))
 		{
+			private static final long serialVersionUID = 1243624764298227412L;
+
 			@Override
 			protected void populateItem(ListItem item)
 			{
@@ -104,11 +106,14 @@ public abstract class AbstractAggregateReportPanel extends Panel
 				
 				for (Serializable cellValue : rowValues)
 				{
-					// TODO use columnHeader model
-					Label cellLabel = new Label(Integer.toString(i++), new Model(cellValue));
+					if (getReportColumns()[i].isVisible())
+					{
+						// TODO use columnHeader model
+						Label cellLabel = new Label(Integer.toString(i), new Model(cellValue));
+						cells.add(cellLabel);
+					}
 					
-					cellLabel.setVisible(getReportColumns()[item.getIndex()].isVisible());
-					cells.add(cellLabel);
+					i++;
 				}
 				
 				item.add(cells);
