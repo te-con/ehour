@@ -44,6 +44,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Ehour Web session
+ * FIXME login is screwed
  **/
 
 public class EhourWebSession extends AuthenticatedWebSession
@@ -127,7 +128,11 @@ public class EhourWebSession extends AuthenticatedWebSession
 		if (isSignedIn())
 		{
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			user = (AuthUser) authentication.getPrincipal();
+			
+			if (authentication != null)
+			{
+				user = (AuthUser) authentication.getPrincipal();
+			}
 		}
 		return user;
 	}

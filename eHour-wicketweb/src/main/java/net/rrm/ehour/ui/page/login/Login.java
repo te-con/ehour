@@ -69,7 +69,7 @@ public class Login extends WebPage
 		{
 			if (logger.isInfoEnabled())
 			{
-				logger.info("User already signed in, logging out");
+				logger.info("User already signed in, logging out and redirecting to " + getApplication().getHomePage());
 			}
 			
 			session.signOut();
@@ -129,13 +129,13 @@ public class Login extends WebPage
 		 */
 		protected void onSubmit()
 		{
-//			if (EhourWebSession.getSession().isSignedIn())
-//			{
-//				// now this really shouldn't happen as the session is killed in the constructor
-//				error("already logged in");
-//
-//			} else
-//			{
+			if (EhourWebSession.getSession().isSignedIn())
+			{
+				// now this really shouldn't happen as the session is killed in the constructor
+				error("already logged in");
+
+			} else
+			{
 				SimpleUser user = ((SimpleUser) getModel().getObject());
 				String username = user.getUsername();
 				String password = user.getPassword();
@@ -159,7 +159,7 @@ public class Login extends WebPage
 				{
 					error(getLocalizer().getString("login.login.failed", this));
 				}
-//			}
+			}
 
 			// ALWAYS do a redirect, no matter where we are going to. The point is that the
 			// submitting page should be gone from the browsers history.
