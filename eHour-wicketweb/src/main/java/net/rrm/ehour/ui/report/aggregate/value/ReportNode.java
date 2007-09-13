@@ -9,11 +9,25 @@ import org.apache.log4j.Logger;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
- * Created by IntelliJ IDEA.
  * User: Thies
  * Date: Sep 11, 2007
  * Time: 6:52:18 PM
- * To change this template use File | Settings | File Templates.
+ *
+ * Copyright (C) 2005-2007 TE-CON, All Rights Reserved.
+ * <p/>
+ * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is
+ * available for educational purposes.
+ * TE-CON holds all the ownership rights on the Software.
+ * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for
+ * commercial use or open source, is subject to obtaining the prior express authorization of TE-CON.
+ * <p/>
+ * thies@te-con.nl
+ * TE-CON
+ * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ *
+ 
+ * Tree structure of abstract nodes for reporting purposes.
+ * Each node can have multiple reportnode children, for example customer -> projects -> users
  */
 public abstract class ReportNode implements Serializable
 {
@@ -25,7 +39,7 @@ public abstract class ReportNode implements Serializable
     protected int				hierarchyLevel;
     
     /**
-     * Get a matrix of the node and it's children. Repeating fields are nulled 
+     * Create node matrix flattening the whole tree. Repeating fields are null 
      * @return
      */
     public Serializable[][] getNodeMatrix(int matrixWidth)
@@ -38,7 +52,7 @@ public abstract class ReportNode implements Serializable
     }
     
     /**
-     * Create node matrix
+     * 
      * @param currentColumn
      * @param currentRow
      * @param matrix

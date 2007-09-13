@@ -16,16 +16,8 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
-import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
-import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode;
-import net.rrm.ehour.ui.report.reports.aggregate.AggregateReportNode.SectionChild;
 import net.rrm.ehour.ui.session.EhourWebSession;
-
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 
 /**
  * Report table
@@ -35,7 +27,6 @@ public class UserReportPanel extends AbstractAggregateReportPanel
 {
 	private static final long serialVersionUID = -2740688272163704885L;
 
-	private final EhourConfig		config;
 	private AggregateReportColumn[]	reportColumns;
 	
 	/**
@@ -47,37 +38,6 @@ public class UserReportPanel extends AbstractAggregateReportPanel
 	public UserReportPanel(String id, CustomerAggregateReport reportData)
 	{
 		super(id, reportData);
-		
-		config = EhourWebSession.getSession().getEhourConfig();
-		
-	}
-
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class CustomerBlock extends ListView
-	{
-		private static final long serialVersionUID = -1589085260912518831L;
-		private final AggregateReportNode<?, ?>	node;
-		
-		public CustomerBlock(String id, AggregateReportNode<?, ?> node)
-		{
-			super(id, node.getChildNodes());
-			this.node = node;
-		}
-
-		@Override
-		@SuppressWarnings("unchecked")
-		protected void populateItem(ListItem item)
-		{
-			SectionChild	child = (SectionChild)item.getModelObject();
-			
-			item.add(new Label("customer", node.getRootValue().getName()));
-			item.add(new Label("project", child.getChildValue().getName()));
-			item.add(new Label("hours", new FloatModel(child.getHours(), config)));
-		}
 	}
 	
 	/*
@@ -93,6 +53,8 @@ public class UserReportPanel extends AbstractAggregateReportPanel
 									new AggregateReportColumn("userReport.report.customer"),
 									new AggregateReportColumn("userReport.report.project"),
 									new AggregateReportColumn("userReport.report.projectCode"),
+									new AggregateReportColumn("userReport.report.rate"),
+									new AggregateReportColumn("userReport.report.rate", false),
 									new AggregateReportColumn("userReport.report.hours"),
 									new AggregateReportColumn("userReport.report.turnover", EhourWebSession.getSession().getEhourConfig().isShowTurnover())
 							};

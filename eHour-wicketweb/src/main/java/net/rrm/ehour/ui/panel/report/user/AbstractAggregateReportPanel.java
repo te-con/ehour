@@ -18,6 +18,7 @@
 package net.rrm.ehour.ui.panel.report.user;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
@@ -25,6 +26,7 @@ import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -33,6 +35,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -59,41 +62,61 @@ public abstract class AbstractAggregateReportPanel extends Panel
 		greyBorder.add(blueBorder);
 		
 		addHeaderColumns(blueBorder);
+		addReportData(report, blueBorder);
 		
 		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(this.getClass(), "style/reportStyle.css")));
 	}
 	
 	private void addReportData(AggregateReport report, WebMarkupContainer parent)
 	{
-		ListView viewNodes = new ListView("reportData", report.getNodes())
+		@SuppressWarnings("serial")
+		ListView rootNodeView = new ListView("reportData", report.getNodes())
 		{
-
 			@Override
 			protected void populateItem(ListItem item)
 			{
 				ReportNode rootNode = (ReportNode)item.getModelObject();
-				
+
+				item.add(getReportNodeRows(rootNode));
 			}
 		};
+		
+		parent.add(rootNodeView);
 	}
-	
-	private void addReportNodeColumns(int column, ReportNode node, int hideFromHierarchyLevel, WebMarkupContainer parent)
+
+	/**
+	 * Get root node rows & cells
+	 * @param reportNode
+	 * @return
+	 */
+	private Component getReportNodeRows(ReportNode reportNode)
 	{
-		for (Serializable columnValue : node.getColumnValues())
+		Serializable[][]	matrix = reportNode.getNodeMatrix(getReportColumns().length);
+		
+		ListView rootNodeView = new ListView("row", Arrays.asList(matrix))
 		{
-			if (!getReportColumns()[column].isVisible())
+			@Override
+			protected void populateItem(ListItem item)
 			{
-				// column not visible
+				RepeatingView cells = new RepeatingView("cell");
+				Serializable[] rowValues = (Serializable[])item.getModelObject();
+				int i = 0;
+				
+				for (Serializable cellValue : rowValues)
+				{
+					// TODO use columnHeader model
+					Label cellLabel = new Label(Integer.toString(i++), new Model(cellValue));
+					
+					cellLabel.setVisible(getReportColumns()[item.getIndex()].isVisible());
+					cells.add(cellLabel);
+				}
+				
+				item.add(cells);
 			}
-			else if (node.getHierarchyLevel() >= hideFromHierarchyLevel)
-			{
-				// show column
-			}
-			else
-			{
-				// add nbsp as column
-			}
-		}
+			
+		};
+
+		return rootNodeView;
 	}
 	
 	/**

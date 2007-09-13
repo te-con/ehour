@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
+import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerTurnoverAggregateImage;
 import net.rrm.ehour.ui.reportchart.aggregate.ProjectHoursAggregateChartImage;
@@ -83,7 +84,8 @@ public class UserReport extends BasePage
 		
 		// add data
 		ReportDataAggregate reportData = getReportData(reportCriteria);
-		add(new UserReportPanel("reportTable", reportData));
+		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
+		add(new UserReportPanel("reportTable", customerAggregateReport));
 		
 		// add charts
 		addCharts(reportData, null);
