@@ -37,6 +37,7 @@ import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
@@ -81,14 +82,17 @@ public class UserReport extends BasePage
 
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", reportCriteria));
-		
+
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", "Report");
+		add(greyBorder);
+
 		// add data
 		ReportDataAggregate reportData = getReportData(reportCriteria);
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
-		add(new UserReportPanel("reportTable", customerAggregateReport));
+		greyBorder.add(new UserReportPanel("reportTable", customerAggregateReport));
 		
 		// add charts
-		addCharts(reportData, null);
+		addCharts(reportData, null, greyBorder);
 	}
 
 	/**
@@ -96,48 +100,45 @@ public class UserReport extends BasePage
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addCharts(ReportDataAggregate data, Integer forId)
+	private void addCharts(ReportDataAggregate data, Integer forId, WebMarkupContainer parent)
 	{
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("chartContainer");
-		add(greyBorder);
-		
 		// TODO cache the model
 		Model dataModel = new Model(data);
 		
 		// hours per customer
 		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, forId, chartWidth, chartHeight);
-		greyBorder.add(customerHoursChart);
+		parent.add(customerHoursChart);
 
 		// turnover per customer
 		if (config.isShowTurnover())
 		{
 			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, forId, chartWidth, chartHeight);
-			greyBorder.add(customerTurnoverChart);
+			parent.add(customerTurnoverChart);
 		}
 		else
 		{
 			// placeholder, not visible anyway
 			Image img = new Image("customerTurnoverChart");
 			img.setVisible(false);
-			greyBorder.add(img);
+			parent.add(img);
 		}
 
 		// hours per project
 		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, forId, chartWidth, chartHeight);
-		greyBorder.add(projectHoursChartFactory);
+		parent.add(projectHoursChartFactory);
 
 		// turnover per project
 		if (config.isShowTurnover())
 		{
 			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, forId, chartWidth, chartHeight);
-			greyBorder.add(projectTurnoverChart);
+			parent.add(projectTurnoverChart);
 		}
 		else
 		{
 			// placeholder, not visible anyway
 			Image img = new Image("projectTurnoverChart");
 			img.setVisible(false);
-			greyBorder.add(img);
+			parent.add(img);
 		}		
 		
 	}

@@ -30,7 +30,7 @@ import net.rrm.ehour.user.domain.User;
  * UserReport (User -> Customer -> Project details)
  **/
 
-public class UserReport extends AggregateReport<User, Customer, Integer>
+public class UserReport extends AggregateReport
 {
 	private static final long serialVersionUID = -1983002053752895296L;
 

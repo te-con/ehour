@@ -21,7 +21,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 
@@ -55,11 +54,8 @@ public abstract class AbstractAggregateReportPanel extends Panel
 	{
 		super(id);
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", "Report");
-		add(greyBorder);
-		
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
-		greyBorder.add(blueBorder);
+		add(blueBorder);
 		
 		addHeaderColumns(blueBorder);
 		addReportData(report, blueBorder);

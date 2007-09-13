@@ -38,21 +38,18 @@ import org.apache.log4j.Logger;
 
 /**
  * Generic class for the aggregate 3 level (web)reports
- * RK = root key, CK = client key, PK = primary key of the root key
  **/
 
-public abstract class AggregateReport<PK extends DomainObject<? extends Serializable, ? extends Serializable>,
-										CK extends DomainObject<? extends Serializable, ? extends Serializable>,
-										IDK 
-											> implements Report
+@SuppressWarnings("unchecked")
+public abstract class AggregateReport implements Report
 {
-	protected ReportCriteria	reportCriteria;
-	protected transient Logger	logger = Logger.getLogger(this.getClass());
-	private	  Comparable<IDK>	forId;
-	private	  List<AggregateReportNode<PK, CK>>	reportNodes;
+	protected ReportCriteria			reportCriteria;
+	protected transient Logger			logger = Logger.getLogger(this.getClass());
+	private	  Comparable<Serializable>	forId;
+	private	  List<AggregateReportNode>	reportNodes;
 	
 	/**
-	 * Initialize the webreport
+	 * Initialize the report
 	 * @param reportDataAggregate
 	 */
 	public void initialize(ReportDataAggregate reportDataAggregate)
@@ -61,13 +58,13 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	}
 	
 	/**
-	 * Initialize the webreport for a specific id 
+	 * Initialize the report for a specific id 
 	 * @param reportDataAggregate
 	 * @param forId the ID to generate the report for (null to ignore)
 	 */
-	public void initialize(ReportDataAggregate reportDataAggregate, Comparable<IDK> forId)
+	public void initialize(ReportDataAggregate reportDataAggregate, Comparable<Serializable> forId)
 	{
-		Map<PK, Map<CK,Set<ProjectAssignmentAggregate>>>	reportMap;
+		Map<DomainObject, Map<DomainObject,Set<ProjectAssignmentAggregate>>>	reportMap;
 		Date								profileStart = new Date();
 
 		reportMap = generateReportMap(reportDataAggregate, forId);
@@ -79,18 +76,18 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	 * 
 	 * @param reportMap
 	 */
-	private void createReportNodes(Map<PK, Map<CK, Set<ProjectAssignmentAggregate>>> reportMap)
+	private void createReportNodes(Map<DomainObject, Map<DomainObject, Set<ProjectAssignmentAggregate>>> reportMap)
 	{
-		reportNodes = new ArrayList<AggregateReportNode<PK, CK>>();
+		reportNodes = new ArrayList<AggregateReportNode>();
 		
-		AggregateReportNode<PK, CK>	node;
+		AggregateReportNode	node;
 		
-		for (PK reportKey : reportMap.keySet())
+		for (DomainObject reportKey : reportMap.keySet())
 		{
-			node = new AggregateReportNode<PK, CK>(reportKey, 
-													reportMap.get(reportKey), 
-													getRootValueWrapperFactory(),
-													getChildValueWrapperFactory());
+			node = new AggregateReportNode((DomainObject)reportKey, 
+												reportMap.get(reportKey), 
+												getRootValueWrapperFactory(),
+												getChildValueWrapperFactory());
 			reportNodes.add(node);
 		}
 	}
@@ -102,18 +99,18 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	 * @param forId
 	 * @return
 	 */
-	private Map<PK, 
-				Map<CK, Set<ProjectAssignmentAggregate>>> 
-					generateReportMap(ReportDataAggregate reportDataAggregate, Comparable<IDK> forId) 
+	private Map<DomainObject, 
+				Map<DomainObject, Set<ProjectAssignmentAggregate>>> 
+					generateReportMap(ReportDataAggregate reportDataAggregate, Comparable<Serializable> forId) 
 	{
-		Map<PK, Map<CK, Set<ProjectAssignmentAggregate>>>	reportMap;
+		Map<DomainObject, Map<DomainObject, Set<ProjectAssignmentAggregate>>>	reportMap;
 		
-		PK rootKey;
-		CK childKey;
-		Map<CK, Set<ProjectAssignmentAggregate>>	childMap;
+		DomainObject rootKey;
+		DomainObject childKey;
+		Map<DomainObject, Set<ProjectAssignmentAggregate>>	childMap;
 		Set<ProjectAssignmentAggregate>		aggregatesPerChild;
 		
-		reportMap = new HashMap<PK, Map<CK, Set<ProjectAssignmentAggregate>>>();
+		reportMap = new HashMap<DomainObject, Map<DomainObject, Set<ProjectAssignmentAggregate>>>();
 
 		logger.debug("Initializing aggregate " + getReportName() + " report" + ((forId != null) ? " for id " + forId : ""));
 
@@ -138,7 +135,7 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 			}
 			else
 			{
-				childMap = new HashMap<CK, Set<ProjectAssignmentAggregate>>();
+				childMap = new HashMap<DomainObject, Set<ProjectAssignmentAggregate>>();
 			}
 			
 			// then check if the client is in the submap
@@ -174,7 +171,7 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	 * Get report nodes (the actual content)
 	 * @return
 	 */
-	public List<AggregateReportNode<PK, CK>> getReportNodes()
+	public List<AggregateReportNode> getReportNodes()
 	{
 		return reportNodes;
 	}
@@ -226,14 +223,14 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract PK getRootKey(ProjectAssignmentAggregate aggregate);
+	protected abstract DomainObject getRootKey(ProjectAssignmentAggregate aggregate);
 	
 	/**
 	 * Get child key from aggregate
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract CK getChildKey(ProjectAssignmentAggregate aggregate);
+	protected abstract DomainObject getChildKey(ProjectAssignmentAggregate aggregate);
 
 	/**
 	 * Get report name (used as attrib key in the request context)
@@ -273,7 +270,7 @@ public abstract class AggregateReport<PK extends DomainObject<? extends Serializ
 	/**
 	 * @return the forId
 	 */
-	protected Comparable<IDK> getForId()
+	protected Comparable<Serializable> getForId()
 	{
 		return forId;
 	}

@@ -11,30 +11,28 @@
 <body>
 
 <wicket:panel>
-	<div wicket:id="reportFrame">
-		<div wicket:id="blueFrame">
-			<table cellpadding="0" cellspacing="0" style="margin-top: -10px">
-				<tr>
-					<td width="5">&nbsp;</td>
-					<td>
-			
-						<table class="reportTable" cellpadding="0" cellspacing="0">
-							<tr>
-								<th wicket:id="columnHeaders"></th>
+	<div wicket:id="blueFrame">
+		<table cellpadding="0" cellspacing="0" style="margin-top: -10px">
+			<tr>
+				<td width="5">&nbsp;</td>
+				<td>
+		
+					<table class="reportTable" cellpadding="0" cellspacing="0">
+						<tr>
+							<th wicket:id="columnHeaders"></th>
+						</tr>
+						
+						<span wicket:id="reportData">
+						
+							<tr class="dataRow" wicket:id="row">
+								<td wicket:id="cell"></td>
 							</tr>
-							
-							<span wicket:id="reportData">
-							
-								<tr wicket:id="row">
-									<td wicket:id="cell"></td>
-								</tr>
-							</span>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>										
+						</span>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</div>
 </wicket:panel>
 
 </body>

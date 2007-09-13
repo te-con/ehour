@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.sort.ProjectComparator;
  * Structure: Customer -> Project -> Aggregate
  **/
 
-public class CustomerReport extends AggregateReport<Customer, Project, Integer>
+public class CustomerReport extends AggregateReport
 {
 	private static final long serialVersionUID = 6365903846883586472L;
 
