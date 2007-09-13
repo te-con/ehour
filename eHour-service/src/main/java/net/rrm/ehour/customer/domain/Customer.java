@@ -79,7 +79,7 @@ public class Customer extends DomainObject<Integer, Customer>
 
 	public String getFullName()
 	{
-		return getCode() + " - " + getName();
+		return (getCode() != null) ?  getCode() + " - " + getName() : getName();
 	}
 	
 	// Property accessors
