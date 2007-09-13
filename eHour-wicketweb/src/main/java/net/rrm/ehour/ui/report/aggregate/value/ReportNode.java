@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 /**
@@ -15,10 +17,103 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
  */
 public abstract class ReportNode implements Serializable
 {
+	private transient Logger logger = Logger.getLogger(ReportNode.class);
+	
     protected Serializable[]    columnValues;
     private List<ReportNode>    reportNodes = new ArrayList<ReportNode>();
     protected Serializable      id;
     protected int				hierarchyLevel;
+    
+    /**
+     * Get a matrix of the node and it's children. Repeating fields are nulled 
+     * @return
+     */
+    public Serializable[][] getNodeMatrix(int matrixWidth)
+    {
+    	Serializable[][] matrix = initMatrix(matrixWidth);
+    	
+    	createNodeMatrix(0, 0, matrix);
+    	
+    	return matrix;
+    }
+    
+    /**
+     * Create node matrix
+     * @param currentColumn
+     * @param currentRow
+     * @param matrix
+     * @return
+     */
+    private int createNodeMatrix(int currentColumn, int currentRow, Serializable[][] matrix)
+    {
+    	for (Serializable columnValue : columnValues)
+		{
+        	if (logger.isDebugEnabled())
+        	{
+        		logger.debug("Setting " + columnValue + " in matrix pos " 
+        						+ currentRow + "x" + currentColumn + " from node " + this.getClass());
+        	}
+    		
+    		matrix[currentRow][currentColumn++] = columnValue;
+		}
+    	
+    	if (isLastNode())
+    	{
+    		currentRow++;
+    	}
+    	else
+    	{
+    		for (ReportNode reportNode : reportNodes)
+			{
+    			currentRow = reportNode.createNodeMatrix(currentColumn, currentRow, matrix);
+			}
+    	}
+    	
+    	return currentRow;
+    }
+    
+    /**
+     * Initialize matrix if null
+     * @param matrixWidth
+     * @param matrix
+     * @return
+     */
+    private Serializable[][] initMatrix(int matrixWidth)
+    {
+		int matrixHeight = getEndNodeCount();
+		Serializable[][] matrix = new Serializable[matrixHeight][matrixWidth];
+    	
+    	if (logger.isDebugEnabled())
+    	{
+    		logger.debug("Initializing ReportNode matrix: " + matrixHeight + "x" + matrixWidth);
+    	}
+    	
+    	return matrix;
+    }
+    
+    
+    /**
+     * Get end node count
+     * @return
+     */
+    private int getEndNodeCount()
+    {
+    	int	childCount = 0;
+    	
+    	for (ReportNode node : reportNodes)
+		{
+    		if (node.isLastNode())
+    		{
+    			childCount++;
+    		}
+    		else
+    		{
+    			childCount += node.getEndNodeCount();
+    		}
+		}
+    	
+    	return childCount;
+    }
     
     /**
      * Process aggregate
@@ -31,16 +126,22 @@ public abstract class ReportNode implements Serializable
     {
         boolean processed = false;
 
+        // first check if we need to add the aggregate to his node
         if (isProcessAggregate(aggregate))
         {
+        	// was it added to one of the child nodes ?
             if (!(processed = processChildNodes(aggregate, hierarchyLevel + 1, nodeFactory)))
             {
+            	// if not make a new child node for this aggregate
                 ReportNode node = nodeFactory.createReportNode(aggregate, ++hierarchyLevel);
 
+                // if the new node is not the last child, check whether one
+                // of it's subschildren can process it
                 if (!node.isLastNode())
                 {
                     node.processAggregate(aggregate, hierarchyLevel, nodeFactory);
                 }
+                
                 reportNodes.add(node);
                 processed = true;
             }
@@ -62,7 +163,13 @@ public abstract class ReportNode implements Serializable
 
         for (ReportNode node : reportNodes)
         {
-            if (node.processAggregate(aggregate, hierarchyLevel + 1, nodeFactory))
+        	// if the children are last nodes don't bother checking
+        	if (node.isLastNode())
+        	{
+        		break;
+        	}
+        	
+            if (node.processAggregate(aggregate, hierarchyLevel, nodeFactory))
             {
                 processed = true;
                 break;
@@ -80,7 +187,7 @@ public abstract class ReportNode implements Serializable
     protected abstract Serializable getAggregateId(ProjectAssignmentAggregate aggregate);
 
     /**
-     * Process aggregate for this value? By default ignored, override when needed
+     * Process aggregate for this value? Only process aggregates that got the same id
      * @param aggregate
      * @param forId
      * @return

@@ -92,7 +92,8 @@ public class DummyDataGenerator
 		prj = new Project(projectId);
 		prj.setCustomer(cust);
 		prj.setActive(true);
-		prj.setName("tralala" + baseId);
+		prj.setName("prj:" + baseId);
+		prj.setProjectCode("code:" + baseId);
 		
 		prjAsg = new ProjectAssignment();
 		prjAsg.setProject(prj);
@@ -102,6 +103,7 @@ public class DummyDataGenerator
 		user.setUserId(userId);
 		
 		prjAsg.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
+		prjAsg.setHourlyRate(15.0f);
 
 		prjAsg.setUser(user);
 		prjAsg.setActive(true);
@@ -112,7 +114,7 @@ public class DummyDataGenerator
 	public static Customer getCustomer(int customerId)
 	{
 		Customer cust = new Customer(customerId);
-		cust.setName(customerId + "");
+		cust.setName("cust:" + Integer.toString(customerId));
 		cust.setActive(true);
 		
 		return cust;
