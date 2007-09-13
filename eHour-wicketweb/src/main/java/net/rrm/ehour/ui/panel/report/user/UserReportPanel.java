@@ -57,8 +57,11 @@ public class UserReportPanel extends AbstractAggregateReportPanel
 									new AggregateReportColumn("userReport.report.projectCode"),
 									new AggregateReportColumn("userReport.report.rate", false),
 									new AggregateReportColumn("userReport.report.rate", false),
-									new AggregateReportColumn("userReport.report.hours"),
-									new AggregateReportColumn("userReport.report.turnover", EhourWebSession.getSession().getEhourConfig().isShowTurnover())
+									new AggregateReportColumn("userReport.report.hours", AggregateReportColumn.ColumnType.HOUR),
+									new AggregateReportColumn("userReport.report.turnover", 
+																null, 
+																EhourWebSession.getSession().getEhourConfig().isShowTurnover(), 
+																AggregateReportColumn.ColumnType.TURNOVER)
 							};
 		}
 		

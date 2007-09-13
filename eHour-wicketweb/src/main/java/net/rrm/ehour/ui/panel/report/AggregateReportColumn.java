@@ -27,10 +27,14 @@ import org.apache.wicket.model.IModel;
 
 public class AggregateReportColumn implements Serializable
 {
+	public static enum ColumnType { OTHER, HOUR, TURNOVER };
+	
 	private static final long serialVersionUID = -6736366461333244457L;
-	private boolean	visible = true;
-	private	String	columnHeaderResourceKey;
-	private IModel	conversionModel;
+	private boolean		visible = true;
+	private	String		columnHeaderResourceKey;
+	private IModel		conversionModel;
+	private ColumnType	columnType = ColumnType.OTHER;
+	
 	
 	public AggregateReportColumn()
 	{
@@ -39,6 +43,11 @@ public class AggregateReportColumn implements Serializable
 	public AggregateReportColumn(String columnHeaderResourceKey)
 	{
 		this(columnHeaderResourceKey, true);
+	}
+
+	public AggregateReportColumn(String columnHeaderResourceKey, ColumnType columnType)
+	{
+		this(columnHeaderResourceKey, null, true, columnType);
 	}
 
 	public AggregateReportColumn(String columnHeaderResourceKey, boolean visible)
@@ -53,11 +62,17 @@ public class AggregateReportColumn implements Serializable
 
 	public AggregateReportColumn(String columnHeaderResourceKey, IModel conversionModel, boolean visible)
 	{
+		this(columnHeaderResourceKey, conversionModel, visible, ColumnType.OTHER);
+	}
+	
+	public AggregateReportColumn(String columnHeaderResourceKey, IModel conversionModel, boolean visible, ColumnType columnType)
+	{
 		this.columnHeaderResourceKey = columnHeaderResourceKey;
 		this.conversionModel = conversionModel;
 		this.visible = visible;
+		this.columnType = columnType;
 	}
-
+	
 	/**
 	 * @return the visible
 	 */
@@ -99,5 +114,21 @@ public class AggregateReportColumn implements Serializable
 	public void setConversionModel(IModel conversionModel)
 	{
 		this.conversionModel = conversionModel;
+	}
+
+	/**
+	 * @return the columnType
+	 */
+	public ColumnType getColumnType()
+	{
+		return columnType;
+	}
+
+	/**
+	 * @param columnType the columnType to set
+	 */
+	public void setColumnType(ColumnType columnType)
+	{
+		this.columnType = columnType;
 	}
 }

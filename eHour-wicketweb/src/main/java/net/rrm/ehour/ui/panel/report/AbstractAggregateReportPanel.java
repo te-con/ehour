@@ -23,6 +23,7 @@ import java.util.Arrays;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.util.HtmlUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -63,6 +64,11 @@ public abstract class AbstractAggregateReportPanel extends Panel
 		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(this.getClass(), "style/reportStyle.css")));
 	}
 	
+	/**
+	 * 
+	 * @param report
+	 * @param parent
+	 */
 	private void addReportData(AggregateReport report, WebMarkupContainer parent)
 	{
 		@SuppressWarnings("serial")
@@ -74,12 +80,47 @@ public abstract class AbstractAggregateReportPanel extends Panel
 				ReportNode rootNode = (ReportNode)item.getModelObject();
 
 				item.add(getReportNodeRows(rootNode));
+				item.add(getTotalRow(rootNode));
 			}
 		};
 		
 		parent.add(rootNodeView);
 	}
 
+	/**
+	 * 
+	 * @param reportNode
+	 * @return
+	 */
+	private Component getTotalRow(ReportNode reportNode)
+	{
+		RepeatingView	totalView = new RepeatingView("cell");
+		
+		int i = 0;
+		
+		for (AggregateReportColumn column : getReportColumns())
+		{
+			if (column.isVisible())
+			{
+				String	id = Integer.toString(i++);
+				if (column.getColumnType() == AggregateReportColumn.ColumnType.OTHER)
+				{
+					totalView.add(HtmlUtil.getNbspLabel(id));
+				}
+				else if (column.getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+				{
+					totalView.add(new Label(id, reportNode.getHours().toString()));
+				}
+				else if (column.getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
+				{
+					totalView.add(new Label(id, reportNode.getTurnover().toString()));
+				}
+			}
+		}
+		
+		return totalView;
+	}
+	
 	/**
 	 * Get root node rows & cells
 	 * @param reportNode
