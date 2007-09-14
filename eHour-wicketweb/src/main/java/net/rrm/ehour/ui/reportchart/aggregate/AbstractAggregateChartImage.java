@@ -41,6 +41,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
@@ -140,11 +141,22 @@ public abstract class AbstractAggregateChartImage extends Image
 		//	plot.setRangeGridlinePaint(Color.white);
 		//	plot.setBackgroundPaint(new Color(0x536e87));
 
+		TextTitle	title;
+		Font		chartTitleFont = new Font("SansSerif", Font.BOLD, 12);
+		
+		chart.setBackgroundPaint(new Color(0xf9f9f9));
+		chart.setAntiAlias(true);
+		title = chart.getTitle();
+		title.setFont(chartTitleFont);
+		title.setPaint(new Color(0x536e87));
+		
+		chart.setTitle(title);
+		
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
-		Font chartTitleFont = new Font("SansSerif", Font.PLAIN, 10);
-		renderer.setBaseItemLabelFont(chartTitleFont);
+		Font rendererTitleFont = new Font("SansSerif", Font.PLAIN, 10);
+		renderer.setBaseItemLabelFont(rendererTitleFont);
 		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
-		renderer.setItemLabelFont(chartTitleFont);
+		renderer.setItemLabelFont(rendererTitleFont);
 		renderer.setItemLabelPaint(new Color(0xf9f9f9));
 	
 		// set up gradient paints for series...
