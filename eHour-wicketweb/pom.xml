@@ -151,7 +151,7 @@
 		</dependency>
 		<dependency>
 			<groupId>jfree</groupId>
-			<artifactId>jfreechart-experimental</artifactId>
+			<artifactId>jfreechart</artifactId>
 			<version>1.0.5</version>
 		</dependency>
 	</dependencies>
