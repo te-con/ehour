@@ -22,7 +22,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
- * TODO 
+ * Base model for displaying numbers/currencies etc
+ * Implementing models should be cloneable with lazy instantation
  **/
 
 public abstract class AbstractNumberModel extends Model
@@ -74,7 +75,17 @@ public abstract class AbstractNumberModel extends Model
 	@Override
 	public void setObject(Object value)
 	{
-		nestedModel.setObject(getDefaultValue() != null && value.equals(getDefaultValue()) ? null : value);
+		if (value != null)
+		{
+			if (nestedModel == null)
+			{
+				this.value = (Number)value;
+			}
+			else
+			{
+				nestedModel.setObject(getDefaultValue() != null && value.equals(getDefaultValue()) ? null : value);
+			}
+		}
 	}
 	
 	/**

@@ -33,7 +33,16 @@ public class CurrencyModel extends AbstractNumberModel
 	private	transient Logger	logger = Logger.getLogger(CurrencyModel.class);
 
 	/**
-	 * 
+	 * Lazy instantation, provide value later
+	 * @param config
+	 */
+	public CurrencyModel(EhourConfig config)
+	{
+		this(null, config);
+	}
+	
+	/**
+	 * Static instantion
 	 * @param value
 	 * @param config
 	 */
@@ -41,8 +50,16 @@ public class CurrencyModel extends AbstractNumberModel
 	{
 		super(value);
 		
+		initFormatters(config);
+	}
+	
+	/**
+	 * Init formatters based on the config
+	 * @param config
+	 */
+	private void initFormatters(EhourConfig config)
+	{
 		Currency	currency;
-
 		
 		// TODO get it display the &euro; sign instead of EUR
 		try
@@ -58,6 +75,6 @@ public class CurrencyModel extends AbstractNumberModel
 		formatter = NumberFormat.getCurrencyInstance(config.getLocale());
 		formatter.setMaximumFractionDigits(2);
 		formatter.setMinimumFractionDigits(2);
-		formatter.setCurrency(currency);
+		formatter.setCurrency(currency);		
 	}
 }

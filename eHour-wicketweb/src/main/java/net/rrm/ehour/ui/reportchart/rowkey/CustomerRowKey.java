@@ -51,7 +51,10 @@ public class CustomerRowKey implements ChartRowKey
 		return customer.getCode();
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey#getId()
+	 */
 	public Integer getId()
 	{
 		return customer.getCustomerId();

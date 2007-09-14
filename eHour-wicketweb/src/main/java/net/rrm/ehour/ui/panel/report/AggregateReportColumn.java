@@ -23,6 +23,11 @@ import org.apache.wicket.model.IModel;
 
 /**
  * Report column
+ * 
+ * The conversionModelArgs may look iffy, cloning a model could as well be accomplished
+ * with a clone() however that also means that for each model the constructor args should
+ * be stored globally in the object. Now reflection is cpu wise more costly while storing
+ * constructor args is more memory costly. May matter with large reports 
  **/
 
 public class AggregateReportColumn implements Serializable
@@ -30,9 +35,11 @@ public class AggregateReportColumn implements Serializable
 	public static enum ColumnType { OTHER, HOUR, TURNOVER };
 	
 	private static final long serialVersionUID = -6736366461333244457L;
-	private boolean		visible = true;
-	private	String		columnHeaderResourceKey;
-	private IModel		conversionModel;
+	private boolean						visible = true;
+	private	String						columnHeaderResourceKey;
+	private Class<? extends IModel>		conversionModel;
+	private Object[]					conversionModelConstructorParams;
+	
 	private ColumnType	columnType = ColumnType.OTHER;
 	
 	
@@ -47,30 +54,31 @@ public class AggregateReportColumn implements Serializable
 
 	public AggregateReportColumn(String columnHeaderResourceKey, ColumnType columnType)
 	{
-		this(columnHeaderResourceKey, null, true, columnType);
+		this(columnHeaderResourceKey, null, null, true, columnType);
 	}
 
 	public AggregateReportColumn(String columnHeaderResourceKey, boolean visible)
 	{
-		this(columnHeaderResourceKey, null, visible);
+		this(columnHeaderResourceKey, null, null, visible);
 	}
 
-	public AggregateReportColumn(String columnHeaderResourceKey, IModel conversionModel)
+	public AggregateReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel)
 	{
-		this(columnHeaderResourceKey, conversionModel, true);
+		this(columnHeaderResourceKey, conversionModel, null, true);
 	}
 
-	public AggregateReportColumn(String columnHeaderResourceKey, IModel conversionModel, boolean visible)
+	public AggregateReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible)
 	{
-		this(columnHeaderResourceKey, conversionModel, visible, ColumnType.OTHER);
+		this(columnHeaderResourceKey, conversionModel, conversionModelArgs, visible, ColumnType.OTHER);
 	}
 	
-	public AggregateReportColumn(String columnHeaderResourceKey, IModel conversionModel, boolean visible, ColumnType columnType)
+	public AggregateReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible, ColumnType columnType)
 	{
 		this.columnHeaderResourceKey = columnHeaderResourceKey;
 		this.conversionModel = conversionModel;
 		this.visible = visible;
 		this.columnType = columnType;
+		this.conversionModelConstructorParams = conversionModelArgs;
 	}
 	
 	/**
@@ -104,14 +112,14 @@ public class AggregateReportColumn implements Serializable
 	/**
 	 * @return the conversionModel
 	 */
-	public IModel getConversionModel()
+	public Class<? extends IModel> getConversionModel()
 	{
 		return conversionModel;
 	}
 	/**
 	 * @param conversionModel the conversionModel to set
 	 */
-	public void setConversionModel(IModel conversionModel)
+	public void setConversionModel(Class<? extends IModel> conversionModel)
 	{
 		this.conversionModel = conversionModel;
 	}
@@ -130,5 +138,21 @@ public class AggregateReportColumn implements Serializable
 	public void setColumnType(ColumnType columnType)
 	{
 		this.columnType = columnType;
+	}
+
+	/**
+	 * @return the conversionModelConstructorParams
+	 */
+	public Object[] getConversionModelConstructorParams()
+	{
+		return conversionModelConstructorParams;
+	}
+
+	/**
+	 * @param conversionModelConstructorParams the conversionModelConstructorParams to set
+	 */
+	public void setConversionModelConstructorParams(Object[] conversionModelConstructorParams)
+	{
+		this.conversionModelConstructorParams = conversionModelConstructorParams;
 	}
 }
