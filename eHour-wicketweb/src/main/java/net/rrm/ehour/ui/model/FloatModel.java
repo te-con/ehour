@@ -21,6 +21,7 @@ import java.text.NumberFormat;
 import net.rrm.ehour.config.EhourConfig;
 
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * Convert floats to rounded 2 digits 
@@ -33,16 +34,23 @@ public class FloatModel extends AbstractNumberModel
 	
 	/**
 	 * 
+	 * @param config
+	 */
+	public FloatModel(EhourConfig config)
+	{
+		this(new Model(), config);
+	}
+	
+	/**
+	 * 
 	 * @param value
 	 * @param config
 	 */
 	public FloatModel(Number value, EhourConfig config)
 	{
 		super(value);
-		
-		formatter = NumberFormat.getNumberInstance(config.getLocale());
-		formatter.setMaximumFractionDigits(2);
-		formatter.setMinimumFractionDigits(2);
+
+		initFormatter(config);
 	}
 	
 	/**
@@ -54,10 +62,21 @@ public class FloatModel extends AbstractNumberModel
 	{
 		super(model);
 		
+		initFormatter(config);
+	}
+	
+	/**
+	 * Initialize number formatter
+	 * @param config
+	 */
+	
+	private void initFormatter(EhourConfig config)
+	{
 		formatter = NumberFormat.getNumberInstance(config.getLocale());
 		formatter.setMaximumFractionDigits(2);
 		formatter.setMinimumFractionDigits(2);
-	}
+		
+	}	
 	
 	/**
 	 * 
