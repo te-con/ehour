@@ -227,6 +227,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 		{
 			logger.info("Logout by user '" + user.getUsername() + "'.");
 		}
+		
 		setAuthentication(null);
 		invalidate();
 		super.signOut();

@@ -64,7 +64,7 @@ public class UserReportPanel extends AbstractAggregateReportPanel
 									new AggregateReportColumn("userReport.report.rate", false),
 									new AggregateReportColumn("userReport.report.hours",
 																FloatModel.class,
-																null,
+																new Object[]{config},
 																true,
 																AggregateReportColumn.ColumnType.HOUR),
 									new AggregateReportColumn("userReport.report.turnover", 

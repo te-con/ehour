@@ -22,13 +22,18 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.model.CurrencyModel;
+import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -100,6 +105,8 @@ public abstract class AbstractAggregateReportPanel extends Panel
 	{
 		RepeatingView	totalView = new RepeatingView("cell");
 		
+		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
+		
 		int i = 0;
 		
 		for (AggregateReportColumn column : getReportColumns())
@@ -113,11 +120,11 @@ public abstract class AbstractAggregateReportPanel extends Panel
 				}
 				else if (column.getColumnType() == AggregateReportColumn.ColumnType.HOUR)
 				{
-					totalView.add(new Label(id, reportNode.getHours().toString()));
+					totalView.add(new Label(id, new FloatModel(reportNode.getHours(), config)));
 				}
 				else if (column.getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
 				{
-					totalView.add(new Label(id, reportNode.getTurnover().toString()));
+					totalView.add(new Label(id, new CurrencyModel(reportNode.getTurnover(), config)));
 				}
 			}
 		}
@@ -134,11 +141,10 @@ public abstract class AbstractAggregateReportPanel extends Panel
 	{
 		Serializable[][]		matrix = reportNode.getNodeMatrix(getReportColumns().length);
 		final AggregateReportColumn[]	columnHeaders = getReportColumns();
-		
+	
+		@SuppressWarnings("serial")
 		ListView rootNodeView = new ListView("row", Arrays.asList(matrix))
 		{
-			private static final long serialVersionUID = 1243624764298227412L;
-
 			@Override
 			protected void populateItem(ListItem item)
 			{
@@ -166,12 +172,13 @@ public abstract class AbstractAggregateReportPanel extends Panel
 								model.setObject(cellValue);
 							} catch (Exception e)
 							{
-								e.printStackTrace();
+								logger.warn("Could not instantiate model", e);
 								model = new Model(cellValue);
 							}
 							
-							
 							cellLabel = new Label(Integer.toString(i), model);
+							addColumnTypeStyling(columnHeaders[i].getColumnType(), cellLabel);
+							
 						}
 						
 						cells.add(cellLabel);
@@ -181,6 +188,11 @@ public abstract class AbstractAggregateReportPanel extends Panel
 				}
 				
 				item.add(cells);
+				
+				if (item.getIndex() % 2 == 1)
+				{
+					item.add(new SimpleAttributeModifier("style", "background-color: #fefeff"));
+				}
 			}
 			
 		};
@@ -189,7 +201,7 @@ public abstract class AbstractAggregateReportPanel extends Panel
 	}
 
 	/**
-	 * 
+	 * Get a model instance
 	 * @param columnHeader
 	 * @return
 	 * @throws InstantiationException
@@ -212,7 +224,7 @@ public abstract class AbstractAggregateReportPanel extends Panel
 			
 			for (Constructor constructor : constructors)
 			{
-				// let's not make it too complex by checking types..
+				// let's not make it too complex, just check argument length and not check types..
 				if (constructor.getParameterTypes().length == columnHeader.getConversionModelConstructorParams().length)
 				{
 					model = (IModel)constructor.newInstance(columnHeader.getConversionModelConstructorParams());
@@ -239,12 +251,27 @@ public abstract class AbstractAggregateReportPanel extends Panel
 			Label columnHeader = new Label(Integer.toString(i++), new ResourceModel(aggregateReportColumn.getColumnHeaderResourceKey()));
 			columnHeader.setVisible(aggregateReportColumn.isVisible());
 			columnHeaders.add(columnHeader);
+			addColumnTypeStyling(aggregateReportColumn.getColumnType(), columnHeader);
 			
 			logger.debug("Adding report columnheader " + aggregateReportColumn.getColumnHeaderResourceKey() + ", visible: " +  columnHeader.isVisible());
 		}
 		
 		parent.add(columnHeaders);
 	}
+	
+	/**
+	 * Add column type specific styling
+	 * @param columnType
+	 * @param label
+	 */
+	private void addColumnTypeStyling(AggregateReportColumn.ColumnType columnType, Label label)
+	{
+		if (columnType != AggregateReportColumn.ColumnType.OTHER)
+		{
+			label.add(new SimpleAttributeModifier("style", "text-align: right"));
+		}
+	}
+	
 	
 	/**
 	 * Get report columns
