@@ -69,9 +69,64 @@ public abstract class AbstractAggregateReportPanel extends Panel
 		
 		addHeaderColumns(blueBorder);
 		addReportData(report, blueBorder);
+		addGrandTotal(report, blueBorder);
 		
 		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(this.getClass(), "style/reportStyle.css")));
 	}
+	
+	/**
+	 * Grand total row
+	 * @param report
+	 * @param parent
+	 */
+	private void addGrandTotal(AggregateReport report, WebMarkupContainer parent)
+	{
+		RepeatingView	totalView = new RepeatingView("cell");
+		int				i = 0;
+		AggregateReportColumn[]	reportColumns = getReportColumns();
+		float			hours = 0;
+		float			turnOver = 0;
+
+		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
+		
+		// get totals
+		for (ReportNode node : report.getNodes())
+		{
+			turnOver += node.getTurnover().floatValue();
+			hours += node.getHours().floatValue();
+		}
+		
+		// add cells
+		totalView.add(new Label(Integer.toString(i++), new ResourceModel("report.total")));
+		
+		for (; i < reportColumns.length; i++)
+		{
+			if (reportColumns[i].isVisible())
+			{
+				Label label = null;
+				
+				if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.OTHER)
+				{
+					label = HtmlUtil.getNbspLabel(Integer.toString(i));
+				}
+				else if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+				{
+					label = new Label(Integer.toString(i), new FloatModel(hours, config));
+				}
+				else if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
+				{
+					label = new Label(Integer.toString(i), new CurrencyModel(turnOver, config));
+				}
+				
+				addColumnTypeStyling(reportColumns[i].getColumnType(), label);
+				totalView.add(label);
+			}
+		}
+		
+		parent.add(totalView);
+	}
+	
+	
 	
 	/**
 	 * Add report data table to the component
