@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.panel.report;
 
 import net.rrm.ehour.ui.component.AbstractExcelReport;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
+import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -31,6 +32,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
+import org.apache.wicket.Session;
 
 /**
  * TODO 
@@ -51,24 +53,22 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	protected HSSFCellStyle	dateBoldCellStyle;	
 	private	AggregateReport	aggregateReport;
 	private	byte[]			excelData;
-	
-	/**
-	 * Filename of report
-	 * @param filename
-	 */
-	public AbstractAggregateExcelReport(String filename, AggregateReport report)
-	{
-		super(filename);
-		
-		this.aggregateReport = report;
-	}
 
 	/**
 	 * Get the excel data, cache once created
+	 * @throws Exception 
 	 */
 	@Override
-	protected byte[] getExcelData()
+	protected byte[] getExcelData(String reportId) throws Exception
 	{
+		EhourWebSession session = (EhourWebSession)Session.get();
+		AggregateReport report = (AggregateReport)session.getReportCache().getReportFromCache(reportId);
+		
+		if (report == null)
+		{
+			throw new Exception("No report found in cache");
+		}
+		
 		if (excelData == null)
 		{
 			logger.info("Creating excel report");
@@ -162,8 +162,6 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		rowNumber++;
 		
 		return rowNumber;
-		
-
 	}	
 	
 	/**

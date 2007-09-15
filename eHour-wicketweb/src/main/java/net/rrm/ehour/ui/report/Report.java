@@ -15,37 +15,33 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.user;
+package net.rrm.ehour.ui.report;
 
-import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
+import java.io.Serializable;
 
 /**
- * TODO 
+ * Type interface for reports 
  **/
 
-public class UserReportExcel extends AbstractAggregateExcelReport
+public abstract class Report implements Serializable
 {
-	private static final long serialVersionUID = 1427524857733863613L;
+	private String	reportId;
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport#getExcelReportName()
+	/**
+	 * @return the reportId
 	 */
-	@Override
-	protected String getExcelReportName()
+	public String getReportId()
 	{
-		// TODO i18n
-		return "User report";
+		return reportId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport#getHeaderReportName()
+	/**
+	 * @param reportId the reportId to set
 	 */
-	@Override
-	protected String getHeaderReportName()
+	public void setReportId(String reportId)
 	{
-		// TODO i18n
-		return "User report";
+		this.reportId = reportId;
 	}
+	
+
 }

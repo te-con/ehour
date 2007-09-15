@@ -80,7 +80,7 @@ public class CustomerAggregateReport extends AggregateReport
 	        }
 	    };
     }
-
+    
     /**
      * Customer node displaying customer full name
      */

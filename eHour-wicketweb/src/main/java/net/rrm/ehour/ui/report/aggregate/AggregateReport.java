@@ -1,10 +1,10 @@
 package net.rrm.ehour.ui.report.aggregate;
 
-import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.ui.report.Report;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
 
@@ -24,7 +24,7 @@ import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  */
-public abstract class AggregateReport implements Serializable
+public abstract class AggregateReport extends Report
 {
 	private List<ReportNode>    nodes;
 	private	DateRange			reportRange;

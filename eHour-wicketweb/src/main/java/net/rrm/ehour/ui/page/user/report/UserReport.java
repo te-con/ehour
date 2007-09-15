@@ -36,9 +36,12 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -83,12 +86,13 @@ public class UserReport extends BasePage
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", reportCriteria));
 
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", "Report");
-		add(greyBorder);
-
 		// add data
 		ReportDataAggregate reportData = getReportData(reportCriteria);
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
+
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", "Report");
+		add(greyBorder);
+
 		greyBorder.add(new UserReportPanel("reportTable", customerAggregateReport));
 		
 		// add charts
@@ -185,5 +189,27 @@ public class UserReport extends BasePage
 		userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
 		
 		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
+	}
+	
+	class ExcelReportLink extends Link
+	{
+		private String reportId;
+		
+		public ExcelReportLink(String id, String reportId)
+		{
+			super(id);
+			
+			this.reportId = reportId;
+		}
+
+		@Override
+		public void onClick()
+		{
+			ResourceReference excelResource = new ResourceReference("userReportExcel");
+			String url=RequestCycle.get().urlFor(excelResource)+"?reportId="+reportId;
+
+			// FIXME finish, out of time..
+		}
+		
 	}
 }

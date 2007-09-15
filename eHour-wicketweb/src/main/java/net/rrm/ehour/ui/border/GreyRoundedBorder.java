@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.border;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -27,11 +28,12 @@ import org.apache.wicket.model.Model;
 
 public class GreyRoundedBorder extends Border
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7184643596615028876L;
 
+	/**
+	 * 
+	 * @param id
+	 */
 	public GreyRoundedBorder(String id)
 	{
 		super(id);
@@ -40,21 +42,7 @@ public class GreyRoundedBorder extends Border
 		label.setVisible(false);
 		add(label);
 	}
-	
-	/**
-	 * 
-	 * @param id
-	 * @param forceWidth
-	 * @param forceHeight
-	 */
-	public GreyRoundedBorder(String id, Integer forceWidth, Integer forceHeight)
-	{
-		super(id);
-		
-		Label	label = new Label("greyTabTitle", new Model());
-		label.setVisible(false);
-		add(label);
-	}		
+
 	
 	/**
 	 * 
@@ -68,9 +56,50 @@ public class GreyRoundedBorder extends Border
 	
 	public GreyRoundedBorder(String id, IModel title)
 	{
+		this(id, title, null, null);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param title
+	 */
+	public GreyRoundedBorder(String id, IModel title, Link printLink, Link excelLink)
+	{
 		super(id);
 		
 		Label	label = new Label("greyTabTitle", title);
 		add(label);
+		
+		if (printLink == null)
+		{
+			printLink = new Link("printLink")
+			{
+				@Override
+				public void onClick()
+				{
+					// not visible anyway
+				}
+			};
+			printLink.setVisible(false);
+		}
+		
+		add(printLink);
+		
+		if (excelLink == null)
+		{
+			excelLink = new Link("excelLink")
+			{
+				@Override
+				public void onClick()
+				{
+					// not visible anyway
+				}
+			};
+			excelLink.setVisible(false);
+		}
+		
+		add(excelLink);		
 	}
+	
 }

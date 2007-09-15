@@ -159,10 +159,5 @@
 		    <artifactId>poi</artifactId>
 		    <version>3.0.1-FINAL</version>
 		</dependency>		
-		<dependency>
-		    <groupId>net.sf.ehcache</groupId>
-		    <artifactId>ehcache</artifactId>
-		    <version>1.2.3</version>
-		</dependency>		
 	</dependencies>
 </project>

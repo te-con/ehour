@@ -23,6 +23,8 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.wicket.markup.html.DynamicWebResource;
+import org.apache.wicket.util.time.Time;
+import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Abstract excel report which sets content type and rest
@@ -32,20 +34,45 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 {
 	private final static Logger logger = Logger.getLogger(AbstractExcelReport.class);
 	
-	/**
-	 * Filename of the downloadable resource
-	 * @param filename
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.DynamicWebResource#getResourceState()
 	 */
-	public AbstractExcelReport(String filename)
+	@Override
+	protected ResourceState getResourceState()
 	{
-		super(filename);
+		ValueMap 		params = getParameters();
+		ExcelResourceState	state = new ExcelResourceState();
+		
+		if (params.containsKey("reportId"))
+		{
+			String reportId = params.getString("reportId");
+			
+			try
+			{
+				byte[] data = getExcelData(reportId);
+				state.setData(data);
+				
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+				logger.error("While creating excel report", e);
+			}
+		}
+		else
+		{
+			logger.error("No reportId parameter provided");
+		}
+			
+		
+		return state;
 	}
-
+	
 	/**
 	 * Get excel data as a byte array
 	 * @return
 	 */
-	protected abstract byte[] getExcelData();
+	protected abstract byte[] getExcelData(String reportId) throws Exception;
 	
 	/**
 	 * Helper metod for poi workbook -> byte array
@@ -66,16 +93,6 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 		
 		return output.toByteArray();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.DynamicWebResource#getResourceState()
-	 */
-	@Override
-	protected ResourceState getResourceState()
-	{
-		return new ExcelResourceState();
-	}
 
 	/**
 	 * Resource state
@@ -84,7 +101,12 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 	 */
 	private class ExcelResourceState extends ResourceState
 	{
-
+		private byte[] data;
+		
+		/*
+		 * (non-Javadoc)
+		 * @see org.apache.wicket.markup.html.DynamicWebResource$ResourceState#getContentType()
+		 */
 		@Override
 		public String getContentType()
 		{
@@ -94,8 +116,24 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 		@Override
 		public byte[] getData()
 		{
-			return getExcelData();
+			return data;
+		}
+
+		void setData(byte[] data)
+		{
+			this.data = data;
+		}
+
+		@Override
+		public int getLength()
+		{
+			return data.length;
+		}
+
+		@Override
+		public Time lastModifiedTime()
+		{
+			return Time.now();
 		}
 	}
-
 }

@@ -15,37 +15,39 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.user;
+package net.rrm.ehour.ui.session;
 
-import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
+import java.util.Date;
 
+import net.rrm.ehour.ui.report.Report;
+
+import org.junit.Test;
+import static org.junit.Assert.* ;
 /**
  * TODO 
  **/
 
-public class UserReportExcel extends AbstractAggregateExcelReport
+public class ReportCacheTest
 {
-	private static final long serialVersionUID = 1427524857733863613L;
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport#getExcelReportName()
-	 */
-	@Override
-	protected String getExcelReportName()
+	@Test
+	public void testAddReportToCache()
 	{
-		// TODO i18n
-		return "User report";
+		ReportCache reportCache = new ReportCache();
+
+		MockReport report = new MockReport();
+		long id = report.id;
+		String cacheId = reportCache.addReportToCache(report);
+		
+		report = null;
+		
+		report = (MockReport)reportCache.getReportFromCache(cacheId);
+		
+		assertEquals(id, report.id);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport#getHeaderReportName()
-	 */
-	@Override
-	protected String getHeaderReportName()
+	
+	class MockReport implements Report
 	{
-		// TODO i18n
-		return "User report";
+		long id = new Date().getTime();
 	}
 }

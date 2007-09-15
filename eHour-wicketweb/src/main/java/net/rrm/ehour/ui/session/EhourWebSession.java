@@ -53,6 +53,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 	private EhourConfig 	ehourConfig;
 	private Calendar 		navCalendar;
 	private	UserCriteria	userCriteria;
+	private ReportCache		reportCache = new ReportCache();
 	
 	private	static Logger logger = Logger.getLogger(EhourWebSession.class);
 	
@@ -264,5 +265,13 @@ public class EhourWebSession extends AuthenticatedWebSession
 	public void setUserCriteria(UserCriteria userCriteria)
 	{
 		this.userCriteria = userCriteria;
+	}
+
+	/**
+	 * @return the reportCache
+	 */
+	public ReportCache getReportCache()
+	{
+		return reportCache;
 	}
 }
