@@ -36,13 +36,13 @@ public class GreyRoundedBorder extends Border
 	 */
 	public GreyRoundedBorder(String id)
 	{
-		super(id);
-		
-		Label	label = new Label("greyTabTitle", new Model());
-		label.setVisible(false);
-		add(label);
+		this(id, new Model(), false, null, null);
 	}
 
+	public GreyRoundedBorder(String id, Link printLink, Link excelLink)
+	{
+		this(id, new Model(), false, printLink, excelLink);
+	}
 	
 	/**
 	 * 
@@ -56,7 +56,7 @@ public class GreyRoundedBorder extends Border
 	
 	public GreyRoundedBorder(String id, IModel title)
 	{
-		this(id, title, null, null);
+		this(id, title, true, null, null);
 	}
 	
 	/**
@@ -64,12 +64,13 @@ public class GreyRoundedBorder extends Border
 	 * @param id
 	 * @param title
 	 */
-	public GreyRoundedBorder(String id, IModel title, Link printLink, Link excelLink)
+	public GreyRoundedBorder(String id, IModel title, boolean showTitle, Link printLink, Link excelLink)
 	{
 		super(id);
 		
 		Label	label = new Label("greyTabTitle", title);
 		add(label);
+		label.setVisible(showTitle);
 		
 		if (printLink == null)
 		{

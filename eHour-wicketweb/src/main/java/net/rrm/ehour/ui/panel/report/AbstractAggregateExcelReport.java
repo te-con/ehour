@@ -51,7 +51,6 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	protected HSSFCellStyle	defaultCellStyle;
 	protected HSSFCellStyle	currencyCellStyle;
 	protected HSSFCellStyle	dateBoldCellStyle;	
-	private	AggregateReport	aggregateReport;
 	private	byte[]			excelData;
 
 	/**
@@ -72,9 +71,9 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		if (excelData == null)
 		{
 			logger.info("Creating excel report");
-			HSSFWorkbook workbook = createWorkbook(aggregateReport);
+			HSSFWorkbook workbook = createWorkbook(report);
 			excelData = workbookToByteArray(workbook);
-			aggregateReport = null;
+			report = null;
 		}
 		
 		return excelData;

@@ -38,7 +38,7 @@ public abstract class AggregateReport extends Report
         ReportBuilder    reportBuilder = new ReportBuilder();
         nodes = reportBuilder.createReport(reportDataAggregate, forId, getReportNodeFactory());
         
-        reportRange = reportDataAggregate.getReportCriteria().getReportRange();
+        reportRange = reportDataAggregate.getReportCriteria().getUserCriteria().getReportRange();
     }	
 	
     /**

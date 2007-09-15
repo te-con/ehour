@@ -46,7 +46,7 @@ public class ReportCacheTest
 		assertEquals(id, report.id);
 	}
 	
-	class MockReport implements Report
+	class MockReport extends Report
 	{
 		long id = new Date().getTime();
 	}

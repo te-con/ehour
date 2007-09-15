@@ -36,15 +36,15 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Reporting for user
@@ -89,8 +89,14 @@ public class UserReport extends BasePage
 		// add data
 		ReportDataAggregate reportData = getReportData(reportCriteria);
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
+		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport);
 
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", "Report");
+		ResourceReference excelResource = new ResourceReference("userReportExcel");
+		ValueMap params = new ValueMap();
+		params.add("reportId", customerAggregateReport.getReportId());
+		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
+
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", new Model("Report"), true, null, excelLink);
 		add(greyBorder);
 
 		greyBorder.add(new UserReportPanel("reportTable", customerAggregateReport));
@@ -190,26 +196,5 @@ public class UserReport extends BasePage
 		
 		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
 	}
-	
-	class ExcelReportLink extends Link
-	{
-		private String reportId;
-		
-		public ExcelReportLink(String id, String reportId)
-		{
-			super(id);
-			
-			this.reportId = reportId;
-		}
 
-		@Override
-		public void onClick()
-		{
-			ResourceReference excelResource = new ResourceReference("userReportExcel");
-			String url=RequestCycle.get().urlFor(excelResource)+"?reportId="+reportId;
-
-			// FIXME finish, out of time..
-		}
-		
-	}
 }

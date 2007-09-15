@@ -80,9 +80,16 @@ public class ReportCache
 	 */
 	public Report getReportFromCache(String id)
 	{
+		Report	report;
+		
 		initCache();
 		
 		logger.debug("Retrieving report from cache with id " + id);
+		
+		if (!cache.containsKey(id))
+		{
+			logger.error("Cache doesn't contain report with id " + id);
+		}
 		
 		return cache.get(id).report;
 	}
