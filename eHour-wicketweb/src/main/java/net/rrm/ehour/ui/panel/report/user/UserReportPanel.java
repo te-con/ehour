@@ -17,8 +17,6 @@
 package net.rrm.ehour.ui.panel.report.user;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.model.CurrencyModel;
-import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.report.AbstractAggregateReportPanel;
 import net.rrm.ehour.ui.panel.report.AggregateReportColumn;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
@@ -39,7 +37,6 @@ public class UserReportPanel extends AbstractAggregateReportPanel
 	 * @param id
 	 * @param reportData
 	 */
-	@SuppressWarnings("serial")
 	public UserReportPanel(String id, CustomerAggregateReport reportData)
 	{
 		super(id, reportData);
@@ -56,23 +53,7 @@ public class UserReportPanel extends AbstractAggregateReportPanel
 		{
 			EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
 			
-			reportColumns = new AggregateReportColumn[]{
-									new AggregateReportColumn("userReport.report.customer"),
-									new AggregateReportColumn("userReport.report.project"),
-									new AggregateReportColumn("userReport.report.projectCode"),
-									new AggregateReportColumn("userReport.report.rate", false),
-									new AggregateReportColumn("userReport.report.rate", false),
-									new AggregateReportColumn("userReport.report.hours",
-																FloatModel.class,
-																new Object[]{config},
-																true,
-																AggregateReportColumn.ColumnType.HOUR),
-									new AggregateReportColumn("userReport.report.turnover", 
-																CurrencyModel.class,
-																new Object[]{config},
-																EhourWebSession.getSession().getEhourConfig().isShowTurnover(), 
-																AggregateReportColumn.ColumnType.TURNOVER)
-							};
+			reportColumns = UserReportUtil.getReportColumns(config);
 		}
 		
 		return reportColumns;

@@ -197,6 +197,7 @@ public abstract class AbstractAggregateReportPanel extends Panel
 		Serializable[][]		matrix = reportNode.getNodeMatrix(getReportColumns().length);
 		final AggregateReportColumn[]	columnHeaders = getReportColumns();
 	
+		// add rows per node
 		@SuppressWarnings("serial")
 		ListView rootNodeView = new ListView("row", Arrays.asList(matrix))
 		{
@@ -207,6 +208,7 @@ public abstract class AbstractAggregateReportPanel extends Panel
 				Serializable[] rowValues = (Serializable[])item.getModelObject();
 				int i = 0;
 				
+				// add cells for a row
 				for (Serializable cellValue : rowValues)
 				{
 					if (columnHeaders[i].isVisible())

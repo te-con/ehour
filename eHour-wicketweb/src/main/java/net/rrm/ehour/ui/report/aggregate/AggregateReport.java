@@ -3,6 +3,7 @@ package net.rrm.ehour.ui.report.aggregate;
 import java.io.Serializable;
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
@@ -26,6 +27,7 @@ import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
 public abstract class AggregateReport implements Serializable
 {
 	private List<ReportNode>    nodes;
+	private	DateRange			reportRange;
 	
     /**
      *
@@ -35,6 +37,8 @@ public abstract class AggregateReport implements Serializable
     {
         ReportBuilder    reportBuilder = new ReportBuilder();
         nodes = reportBuilder.createReport(reportDataAggregate, forId, getReportNodeFactory());
+        
+        reportRange = reportDataAggregate.getReportCriteria().getReportRange();
     }	
 	
     /**
@@ -51,4 +55,12 @@ public abstract class AggregateReport implements Serializable
      * @return
      */
     public abstract ReportNodeFactory getReportNodeFactory();
+
+	/**
+	 * @return the reportForRange
+	 */
+	public DateRange getReportRange()
+	{
+		return reportRange;
+	}
 }
