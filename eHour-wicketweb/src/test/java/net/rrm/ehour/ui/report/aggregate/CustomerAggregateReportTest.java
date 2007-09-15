@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
@@ -57,6 +59,11 @@ public class CustomerAggregateReportTest
     {
 
         ReportDataAggregate aggData = new ReportDataAggregate();
+        UserCriteria userCriteria = new UserCriteria();
+
+        ReportCriteria rc = new ReportCriteria();
+        rc.setUserCriteria(userCriteria);
+        aggData.setReportCriteria(rc);
         aggData.setProjectAssignmentAggregates(aggs);
         CustomerAggregateReport aggReport = new CustomerAggregateReport(aggData);
 
@@ -88,6 +95,10 @@ public class CustomerAggregateReportTest
     {
 
         ReportDataAggregate aggData = new ReportDataAggregate();
+        ReportCriteria rc = new ReportCriteria();
+        UserCriteria userCriteria = new UserCriteria();
+        rc.setUserCriteria(userCriteria);
+        aggData.setReportCriteria(rc);
         aggData.setProjectAssignmentAggregates(aggs);
         CustomerAggregateReport aggReport = new CustomerAggregateReport(aggData, 1);
 
