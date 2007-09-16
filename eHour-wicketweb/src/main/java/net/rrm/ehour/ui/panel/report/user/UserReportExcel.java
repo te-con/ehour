@@ -56,6 +56,10 @@ public class UserReportExcel extends AbstractAggregateExcelReport
 		return new ResourceModel("report.user.name");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport#getReportColumns()
+	 */
 	@Override
 	protected AggregateReportColumn[] getReportColumns()
 	{
