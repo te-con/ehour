@@ -17,8 +17,12 @@
 
 package net.rrm.ehour.ui.session;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.ui.report.Report;
@@ -33,8 +37,12 @@ import org.apache.log4j.Logger;
  * FIXME add refresh
  **/
 
-public class ReportCache
+public class ReportCache implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4289955073669895813L;
 	private final static int 	MAX_ENTRIES = 5;
 	private final static long 	INVALID_AFTER = 30 * 60 * 1000;
 	private final static Logger logger = Logger.getLogger(ReportCache.class);
@@ -58,8 +66,10 @@ public class ReportCache
 	{
 		initCache();
 		
+		checkCacheForAddition();
+		
 		CacheEntry	entry = new CacheEntry();
-		entry.addedTimestamp = new Date().getTime();
+		entry.addedTimstamp= new Date().getTime();
 		entry.report = report;
 		
 		String id = createId();
@@ -74,14 +84,56 @@ public class ReportCache
 	}
 
 	/**
+	 * Check cache for stale entries
+	 * TODO add Spring timer
+	 */
+	public void checkCache()
+	{
+		if (cache != null)
+		{
+			long expireBefore = new Date().getTime() - INVALID_AFTER;
+			
+			for (String id : cache.keySet())
+			{
+				CacheEntry cacheEntry = cache.get(id);
+				
+				if (cacheEntry.addedTimstamp < expireBefore)
+				{
+					logger.info("Removing id " + id + " from cache");
+					cache.remove(id);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Check the cache and remove the oldest entry if MAX_ENTRIES reached
+	 */
+	private void checkCacheForAddition()
+	{
+		if (cache != null)
+		{
+			if (cache.size() >= MAX_ENTRIES)
+			{
+				List<CacheEntry> entries = new ArrayList<CacheEntry>(cache.values());
+				Collections.sort(entries);
+				
+				String idToDelete = entries.get(0).report.getReportId();
+				
+				logger.debug("Removing oldest entry with id " + idToDelete);
+				
+				cache.remove(idToDelete);
+			}
+		}		
+	}
+	
+	/**
 	 * Get report from cache
 	 * @param id
 	 * @return
 	 */
 	public Report getReportFromCache(String id)
 	{
-		Report	report;
-		
 		initCache();
 		
 		logger.debug("Retrieving report from cache with id " + id);
@@ -118,9 +170,14 @@ public class ReportCache
 		}
 	}
 	
-	private class CacheEntry
+	private class CacheEntry implements Comparable<CacheEntry>
 	{
-		private long	addedTimestamp;
+		private long	addedTimstamp;
 		private Report	report;
+		
+		public int compareTo(CacheEntry o)
+		{
+			return (int)(addedTimstamp - o.addedTimstamp);
+		}
 	}
 }
