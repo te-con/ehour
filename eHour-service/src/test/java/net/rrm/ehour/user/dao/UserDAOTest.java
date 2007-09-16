@@ -29,8 +29,8 @@ public class UserDAOTest extends BaseDAOTest
 	{
 		List<User>	results;
 		
-		results = dao.findUsersByNameMatch(null, true, new UserRole(EhourConstants.ROLE_REPORT));;
-		assertEquals(1, results.size());		
+		results = dao.findUsersByNameMatch(null, true, new UserRole(EhourConstants.ROLE_CONSULTANT));;
+		assertEquals(4, results.size());		
 	}
 	
 	public void testFindUsersByPattern()
