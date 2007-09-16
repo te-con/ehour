@@ -56,6 +56,7 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 				
 			} catch (Exception e)
 			{
+				// FIXME handle better
 				e.printStackTrace();
 				logger.error("While creating excel report", e);
 			}
