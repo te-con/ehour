@@ -17,8 +17,12 @@
 
 package net.rrm.ehour.ui.panel.report;
 
+import java.io.Serializable;
+import java.util.List;
+
 import net.rrm.ehour.ui.component.AbstractExcelReport;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
+import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
@@ -33,9 +37,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
 import org.apache.wicket.Session;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
- * TODO 
+ * Abstract aggregate excel report
  **/
 
 public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
@@ -87,7 +93,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	private HSSFWorkbook createWorkbook(AggregateReport aggregateReport)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFSheet 	sheet = wb.createSheet(getExcelReportName());
+		HSSFSheet 	sheet = wb.createSheet((String)getExcelReportName().getObject());
 		int			rowNumber = 0;
 		short		column;
 		
@@ -105,23 +111,159 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		
 		rowNumber = createHeaders(rowNumber, sheet, aggregateReport);
 		
-//		fillReportSheet(report, sheet, rowNumber);
+		rowNumber = addColumnHeaders(rowNumber, sheet);
+		
+		fillReportSheet(aggregateReport, sheet, rowNumber);
 		
 		return wb;		
 	}
 	
+	/**
+	 * Get the report columns
+	 * @return
+	 */
+	protected abstract AggregateReportColumn[] getReportColumns();
 	
 	/**
 	 * Get report name for the filename
 	 * @return
 	 */
-	protected abstract String getExcelReportName();
+	protected abstract IModel getExcelReportName();
 	
 	/**
 	 * Get report header
 	 * @return
 	 */
-	protected abstract String getHeaderReportName();
+	protected abstract IModel getHeaderReportName();
+
+	
+	/**
+	 * Add column headers
+	 * @param rowNumber
+	 * @param sheet
+	 * @return
+	 */
+	private int addColumnHeaders(int rowNumber, HSSFSheet sheet)
+	{
+		HSSFRow		row;
+		HSSFCell	cell;
+		short		cellNumber = 0;
+		IModel		headerModel;
+		
+		row = sheet.createRow(rowNumber++);
+		
+		AggregateReportColumn[]	columnHeaders = getReportColumns();
+		
+		for (AggregateReportColumn aggregateReportColumn : columnHeaders)
+		{
+			if (aggregateReportColumn.isVisible())
+			{
+				headerModel = new ResourceModel(aggregateReportColumn.getColumnHeaderResourceKey());
+				
+				cell = row.createCell(cellNumber++);
+				cell.setCellStyle(headerCellStyle);
+				
+				cell.setCellValue(new HSSFRichTextString((String)headerModel.getObject()));
+			}
+		} 
+
+		return rowNumber;
+	}
+	
+	
+	/**
+	 * Fill report sheet
+	 * @param reportData
+	 * @param sheet
+	 * @param rowNumber
+	 */
+	protected void fillReportSheet(AggregateReport reportData, HSSFSheet sheet, int rowNumber)
+	{
+		List<ReportNode> nodes = reportData.getNodes();
+		
+		for (ReportNode reportNode : nodes)
+		{
+			rowNumber = addNodeToSheet(reportNode, sheet, rowNumber);
+		}
+	}	
+	
+	/**
+	 * 
+	 * @param node
+	 * @param sheet
+	 * @param rowNumber
+	 * @return
+	 */
+	private int addNodeToSheet(ReportNode reportNode, HSSFSheet sheet, int rowNumber)
+	{
+		Serializable[][]	matrix = reportNode.getNodeMatrix(getReportColumns().length);
+		AggregateReportColumn[]	columnHeaders = getReportColumns();
+		HSSFRow				row;
+		HSSFCell			cell;
+		short				cellNumber = 0;
+		
+		for (Serializable[] rowValues : matrix)
+		{
+			int i = 0;
+			
+			row = sheet.createRow(rowNumber++);
+			
+			// add cells for a row
+			for (Serializable cellValue : rowValues)
+			{
+				if (columnHeaders[i].isVisible())
+				{
+					cell = row.createCell(cellNumber++);
+					
+					if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+					{
+						cell.setCellStyle(valueDigitCellStyle);
+						
+						if (cellValue instanceof Float)
+						{
+							cell.setCellValue((Float)cellValue);
+						}
+						else
+						{
+							cell.setCellValue((Double)cellValue);
+						}
+					}
+					else if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER
+							 || columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.RATE)
+					{
+						cell.setCellStyle(currencyCellStyle);
+						if (cellValue instanceof Float)
+						{
+							cell.setCellValue((Float)cellValue);
+						}
+						else
+						{
+							cell.setCellValue((Double)cellValue);
+						}
+					}
+					else
+					{
+						cell.setCellStyle(defaultCellStyle);
+						cell.setCellValue(new HSSFRichTextString((String)cellValue));
+					}
+				}
+				
+				i++;
+			}
+		}
+		
+		return rowNumber;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.component.AbstractExcelReport#getFilename()
+	 */
+	@Override
+	protected String getFilename()
+	{
+		return ((String)(getExcelReportName().getObject())).toLowerCase().replace(' ', '_') + ".xls";
+	}
 	
 	
 	/**
@@ -136,8 +278,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		row = sheet.createRow(rowNumber++);
 		cell = row.createCell((short)0);
 		cell.setCellStyle(boldCellStyle);
-		// TODO i18n
-		cell.setCellValue(new HSSFRichTextString(getHeaderReportName()));
+		cell.setCellValue(new HSSFRichTextString((String)getHeaderReportName().getObject()));
 		sheet.addMergedRegion(new Region(0, (short)0, 0, (short)1));
 
 		row = sheet.createRow(rowNumber++);
@@ -205,12 +346,4 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		currencyCellStyle.setFont(normalFont);
 		currencyCellStyle.setDataFormat((short)0x7);
 	}
-
-	// FIXME
-//	private String getLocalizedString(String key)
-//	{
-//		Localizer localizer = EhourWebApplication.get().getResourceSettings().getLocalizer();
-//		
-//		localizer.getString(key, this);
-//	}
 }

@@ -17,25 +17,33 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
+import net.rrm.ehour.ui.panel.report.AggregateReportColumn;
+import net.rrm.ehour.ui.session.EhourWebSession;
+
+import org.apache.wicket.Session;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
- * TODO 
+ * User report
  **/
 
 public class UserReportExcel extends AbstractAggregateExcelReport
 {
 	private static final long serialVersionUID = 1427524857733863613L;
 
+	private AggregateReportColumn[]	reportColumns;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport#getExcelReportName()
 	 */
 	@Override
-	protected String getExcelReportName()
+	protected IModel getExcelReportName()
 	{
-		// TODO i18n
-		return "User report";
+		return new ResourceModel("report.user.name");
 	}
 
 	/*
@@ -43,9 +51,21 @@ public class UserReportExcel extends AbstractAggregateExcelReport
 	 * @see net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport#getHeaderReportName()
 	 */
 	@Override
-	protected String getHeaderReportName()
+	protected IModel getHeaderReportName()
 	{
-		// TODO i18n
-		return "User report";
+		return new ResourceModel("report.user.name");
+	}
+
+	@Override
+	protected AggregateReportColumn[] getReportColumns()
+	{
+		if (reportColumns == null)
+		{
+			EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
+			
+			reportColumns = UserReportUtil.getReportColumns(config);
+		}
+		
+		return reportColumns;
 	}
 }

@@ -141,9 +141,13 @@ public class ReportCache implements Serializable
 		if (!cache.containsKey(id))
 		{
 			logger.error("Cache doesn't contain report with id " + id);
+			return null;
+		}
+		else
+		{
+			return cache.get(id).report;
 		}
 		
-		return cache.get(id).report;
 	}
 	
 	/**

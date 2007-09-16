@@ -32,7 +32,7 @@ import org.apache.wicket.model.IModel;
 
 public class AggregateReportColumn implements Serializable
 {
-	public static enum ColumnType { OTHER, HOUR, TURNOVER };
+	public static enum ColumnType { OTHER, RATE, HOUR, TURNOVER };
 	
 	private static final long serialVersionUID = -6736366461333244457L;
 	private boolean						visible = true;

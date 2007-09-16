@@ -23,6 +23,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.wicket.markup.html.DynamicWebResource;
+import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.util.time.Time;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -63,7 +64,6 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 		{
 			logger.error("No reportId parameter provided");
 		}
-			
 		
 		return state;
 	}
@@ -73,6 +73,8 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 	 * @return
 	 */
 	protected abstract byte[] getExcelData(String reportId) throws Exception;
+	
+	protected abstract String getFilename();
 	
 	/**
 	 * Helper metod for poi workbook -> byte array
@@ -94,6 +96,16 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 		return output.toByteArray();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.DynamicWebResource#setHeaders(org.apache.wicket.protocol.http.WebResponse)
+	 */
+	protected void setHeaders(WebResponse response)
+	{
+		response.setHeader("Cache-Control", "no-cache, must-revalidate");
+		response.setAttachmentHeader(getFilename());
+	}
+	
 	/**
 	 * Resource state
 	 * @author Thies
