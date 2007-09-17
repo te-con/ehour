@@ -17,8 +17,12 @@
 				<wicket:message key="criteria.dateStart" /> :
 			</div>
 			
-			<div style="float: right;width :9em;padding-right: 10px">
-				<input wicket:id="userCriteria.reportRange.dateStart" type="text"></input>		
+			<div style="float: right;width :9em;padding-right: 10px" wicket:id="startDateHider">
+				<span wicket:id="innerStartDateHider">
+					<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="userCriteria.reportRange.dateStart" />
+					<br />
+				</span>
+				<input type="checkbox" wicket:id="userCriteria.infiniteStartDate" /> <wicket:message key="report.useEarliestAvailDate" />
 			</div>	
 	
 			<br clear="all" />
@@ -27,8 +31,12 @@
 				<wicket:message key="criteria.dateEnd" />:
 			</div>
 	
-			<div style="float: right;width :9em;padding-right: 10px">
-				<input wicket:id="userCriteria.reportRange.dateEnd" type="text"></input>		
+			<div style="float: right;width :9em;padding-right: 10px" wicket:id="endDateHider">
+				<span wicket:id="innerEndDateHider">
+					<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="userCriteria.reportRange.dateEnd" />
+					<br />
+				</span>
+				<input type="checkbox" wicket:id="userCriteria.infiniteEndDate" /> <wicket:message key="report.useLastAvailDate" />
 			</div>	
 	
 			<br clear="all" />

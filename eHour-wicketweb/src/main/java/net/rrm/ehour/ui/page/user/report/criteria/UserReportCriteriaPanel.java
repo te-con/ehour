@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.page.user.report.criteria;
 
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.renderers.ProjectChoiceRender;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
@@ -25,11 +26,14 @@ import net.rrm.ehour.ui.util.CommonUIStaticData;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
@@ -58,7 +62,7 @@ public class UserReportCriteriaPanel extends SidePanel
 											new ProjectChoiceRender());
 		form.add(projectDropDown);
 		
-		addDatePickers(form);
+		addDatePickers(form, model);
 		
 		@SuppressWarnings("serial")
 		AjaxButton submitButton = new AjaxButton("submitButton", form)
@@ -83,6 +87,8 @@ public class UserReportCriteriaPanel extends SidePanel
             }
         };
         
+        submitButton.setModel(new ResourceModel("report.createReport"));
+        
         form.add(submitButton);
 		
 		this.add(form);
@@ -93,16 +99,50 @@ public class UserReportCriteriaPanel extends SidePanel
 	 * @param parent
 	 * @param reportCriteria
 	 */
-	private void addDatePickers(WebMarkupContainer parent)
+	private void addDatePickers(WebMarkupContainer parent, IModel model)
 	{
-		DojoDatePicker dateStart = new DojoDatePicker("userCriteria.reportRange.dateStart", 
+		parent.add(addDate("Start", model));
+		parent.add(addDate("End", model));
+	}
+	
+	/**
+	 * Add date + infinite box
+	 * @param idPrefix
+	 * @param model
+	 * @return
+	 */
+	private WebMarkupContainer addDate(String idPrefix, IModel model)
+	{
+		PropertyModel	infiniteDateModel = new PropertyModel(model, "userCriteria.infinite" + idPrefix + "Date");
+		DojoDatePicker datePicker = new DojoDatePicker("userCriteria.reportRange.date" + idPrefix, 
 														"dd/MM/yyyy");
-		dateStart.setToggle(new DojoFadeToggle(200));
-		parent.add(dateStart);
+		datePicker.setToggle(new DojoFadeToggle(200));
+		
+		// container for hiding
+		final WebMarkupContainer dateHider = new WebMarkupContainer(idPrefix.toLowerCase() + "DateHider");
+		dateHider.setOutputMarkupId(true);
+		
+		// the inner hider is just there to hide the <br /> as well
+		final WebMarkupContainer	innerDateHider = new WebMarkupContainer("inner" + idPrefix + "DateHider");
+		innerDateHider.setOutputMarkupId(true);
+		innerDateHider.add(datePicker);
+		innerDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteDateModel, true));
 
-		DojoDatePicker dateEnd = new DojoDatePicker("userCriteria.reportRange.dateEnd", 
-													"dd/MM/yyyy");
-		dateEnd.setToggle(new DojoFadeToggle(600));
-		parent.add(dateEnd);
+		dateHider.add(innerDateHider);
+
+		// infinite start date toggle
+		@SuppressWarnings("serial")
+		AjaxCheckBox infiniteToggle = new AjaxCheckBox("userCriteria.infinite" + idPrefix + "Date")
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				target.addComponent(dateHider);
+			}
+		};
+		
+		dateHider.add(infiniteToggle);
+		
+		return dateHider;
 	}
 }

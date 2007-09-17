@@ -425,3 +425,10 @@ input
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 	color: red;
 }
+
+div.UserReportCriteria
+{
+	margin: 0 10px 0 10px;
+	color: #536e87;
+	font: 1em Arial, Geneva, Helvetica, sans-serif;	
+}
