@@ -74,33 +74,39 @@ public class GreyRoundedBorder extends Border
 		
 		if (printLink == null)
 		{
-			printLink = new Link("printLink")
-			{
-				@Override
-				public void onClick()
-				{
-					// not visible anyway
-				}
-			};
-			printLink.setVisible(false);
+			printLink = getInvisibleLink("printLink");
 		}
 		
 		add(printLink);
 		
 		if (excelLink == null)
 		{
-			excelLink = new Link("excelLink")
-			{
-				@Override
-				public void onClick()
-				{
-					// not visible anyway
-				}
-			};
-			excelLink.setVisible(false);
+			excelLink = getInvisibleLink("excelLink");
 		}
 		
 		add(excelLink);		
+	}
+
+	/**
+	 * Get an invisible link
+	 * @param id
+	 * @return
+	 */
+	@SuppressWarnings("serial")
+	private Link getInvisibleLink(String id)
+	{
+		Link link = new Link(id)
+		{
+			@Override
+			public void onClick()
+			{
+				// not visible anyway
+			}
+		};
+		
+		link.setVisible(false);
+		
+		return link;
 	}
 	
 }

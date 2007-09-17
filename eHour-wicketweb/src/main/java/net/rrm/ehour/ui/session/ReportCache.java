@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.report.Report;
 
 import org.apache.commons.codec.binary.Hex;
@@ -62,7 +63,7 @@ public class ReportCache implements Serializable
 	 * @param report
 	 * @return
 	 */
-	public String addReportToCache(Report report)
+	public String addReportToCache(Report report, ReportData reportData)
 	{
 		initCache();
 		
@@ -71,6 +72,7 @@ public class ReportCache implements Serializable
 		CacheEntry	entry = new CacheEntry();
 		entry.addedTimstamp= new Date().getTime();
 		entry.report = report;
+		entry.reportData = reportData;
 		
 		String id = createId();
 		
@@ -147,8 +149,29 @@ public class ReportCache implements Serializable
 		{
 			return cache.get(id).report;
 		}
-		
 	}
+	
+	/**
+	 * Get report from cache
+	 * @param id
+	 * @return
+	 */
+	public ReportData getReportDataFromCache(String id)
+	{
+		initCache();
+		
+		logger.debug("Retrieving report data from cache with id " + id);
+		
+		if (!cache.containsKey(id))
+		{
+			logger.error("Cache doesn't contain report data with id " + id);
+			return null;
+		}
+		else
+		{
+			return cache.get(id).reportData;
+		}
+	}	
 	
 	/**
 	 * Create id based on current timestamp
@@ -176,8 +199,9 @@ public class ReportCache implements Serializable
 	
 	private class CacheEntry implements Comparable<CacheEntry>
 	{
-		private long	addedTimstamp;
-		private Report	report;
+		private long		addedTimstamp;
+		private Report		report;
+		private ReportData	reportData;
 		
 		public int compareTo(CacheEntry o)
 		{

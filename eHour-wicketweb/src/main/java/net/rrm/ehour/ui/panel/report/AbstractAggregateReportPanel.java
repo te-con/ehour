@@ -126,8 +126,6 @@ public abstract class AbstractAggregateReportPanel extends Panel
 		parent.add(totalView);
 	}
 	
-	
-	
 	/**
 	 * Add report data table to the component
 	 * @param report

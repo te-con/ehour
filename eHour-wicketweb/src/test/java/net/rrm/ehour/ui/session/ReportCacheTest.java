@@ -37,7 +37,7 @@ public class ReportCacheTest
 
 		MockReport report = new MockReport();
 		long id = report.id;
-		String cacheId = reportCache.addReportToCache(report);
+		String cacheId = reportCache.addReportToCache(report, null);
 		
 		report = null;
 		

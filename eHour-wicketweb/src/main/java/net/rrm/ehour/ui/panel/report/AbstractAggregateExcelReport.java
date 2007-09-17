@@ -79,7 +79,6 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 			logger.info("Creating excel report");
 			HSSFWorkbook workbook = createWorkbook(report);
 			excelData = workbookToByteArray(workbook);
-			report = null;
 		}
 		
 		return excelData;
