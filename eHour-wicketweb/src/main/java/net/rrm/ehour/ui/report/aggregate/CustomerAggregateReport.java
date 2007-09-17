@@ -33,16 +33,7 @@ public class CustomerAggregateReport extends AggregateReport
      */
     public CustomerAggregateReport(ReportDataAggregate reportDataAggregate)
     {
-    	this(reportDataAggregate, null);
-    }
-
-    /**
-     *
-     * @param reportDataAggregate
-     */
-    public CustomerAggregateReport(ReportDataAggregate reportDataAggregate, Integer forId)
-    {
-    	super(reportDataAggregate, forId);
+    	super(reportDataAggregate);
     }
 
     /**

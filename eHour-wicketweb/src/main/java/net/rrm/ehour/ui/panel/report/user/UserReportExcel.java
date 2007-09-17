@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.panel.report.AggregateReportColumn;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.Session;
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -30,6 +31,7 @@ import org.apache.wicket.model.ResourceModel;
  * User report
  **/
 
+@AuthorizeInstantiation("ROLE_CONSULTANT")
 public class UserReportExcel extends AbstractAggregateExcelReport
 {
 	private static final long serialVersionUID = 1427524857733863613L;

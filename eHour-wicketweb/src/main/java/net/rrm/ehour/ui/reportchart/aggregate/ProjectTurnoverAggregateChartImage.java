@@ -40,11 +40,10 @@ public class ProjectTurnoverAggregateChartImage extends AbstractAggregateChartIm
 	 */
 	public ProjectTurnoverAggregateChartImage(String id, 
 											Model dataModel,
-											Integer forId,
 											int width,
 											int height)
 	{
-		super(id, dataModel, forId, width, height);	
+		super(id, dataModel, width, height);	
 	}	
 
 	/* (non-Javadoc)

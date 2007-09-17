@@ -34,6 +34,8 @@ import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListen
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.protocol.http.request.urlcompressing.UrlCompressingWebRequestProcessor;
+import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.PackageName;
 
@@ -136,4 +138,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		this.authenticationManager = authenticationManager;
 	}
+	
+	@Override
+	protected IRequestCycleProcessor newRequestCycleProcessor() 
+	{ 
+	    return new UrlCompressingWebRequestProcessor();
+	}	
 }

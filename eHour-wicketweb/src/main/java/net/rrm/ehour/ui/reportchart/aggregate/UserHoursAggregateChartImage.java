@@ -40,11 +40,10 @@ public class UserHoursAggregateChartImage extends AbstractAggregateChartImage
 	 */
 	public UserHoursAggregateChartImage(String id, 
 											Model dataModel,
-											Integer forId,
 											int width,
 											int height)
 	{
-		super(id, dataModel, forId, width, height);	
+		super(id, dataModel, width, height);	
 	}
 	
 	/* (non-Javadoc)

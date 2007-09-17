@@ -1,15 +1,15 @@
 package net.rrm.ehour.ui.report.aggregate;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
-import org.apache.log4j.Logger;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  * User: Thies
@@ -31,21 +31,13 @@ public class ReportBuilder
 {
 	protected transient Logger logger = Logger.getLogger(this.getClass());
 
-	/**
-	 * Initialize the webreport
-	 * @param reportDataAggregate
-	 */
-	public List<ReportNode> createReport(ReportDataAggregate reportDataAggregate, ReportNodeFactory nodeFactory)
-	{
-		return createReport(reportDataAggregate, null, nodeFactory);
-	}
 
 	/**
 	 * Initialize the webreport for a specific id
 	 * @param reportDataAggregate
 	 * @param forId the ID to generate the report for (null to ignore)
 	 */
-	public List<ReportNode> createReport(ReportDataAggregate reportDataAggregate, Serializable forId, ReportNodeFactory nodeFactory)
+	public List<ReportNode> createReport(ReportDataAggregate reportDataAggregate, ReportNodeFactory nodeFactory)
 	{
 		Date profileStart = new Date();
 
@@ -53,12 +45,6 @@ public class ReportBuilder
 
         for (ProjectAssignmentAggregate aggregate : reportDataAggregate.getProjectAssignmentAggregates())
         {
-            if (forId != null &&
-                   !nodeFactory.getAssignmentId(aggregate).equals(forId))
-            {
-                continue;
-            }
-
             if (!processAggregate(aggregate, nodeFactory, reportNodes))
             {
                 ReportNode node = nodeFactory.createReportNode(aggregate, 0);

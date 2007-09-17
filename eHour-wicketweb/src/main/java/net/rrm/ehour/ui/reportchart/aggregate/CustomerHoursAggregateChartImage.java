@@ -40,11 +40,10 @@ public class CustomerHoursAggregateChartImage extends AbstractAggregateChartImag
 	 */
 	public CustomerHoursAggregateChartImage(String id, 
 													Model dataModel,
-													Integer forId,
 													int width,
 													int height)
 	{
-		super(id, dataModel, forId, width, height);	
+		super(id, dataModel, width, height);	
 	}
 	
 	/*

@@ -33,10 +33,10 @@ public abstract class AggregateReport extends Report
      *
      * @param reportDataAggregate
      */
-    public AggregateReport(ReportDataAggregate reportDataAggregate, Integer forId)
+    public AggregateReport(ReportDataAggregate reportDataAggregate)
     {
         ReportBuilder    reportBuilder = new ReportBuilder();
-        nodes = reportBuilder.createReport(reportDataAggregate, forId, getReportNodeFactory());
+        nodes = reportBuilder.createReport(reportDataAggregate, getReportNodeFactory());
         
         reportRange = reportDataAggregate.getReportCriteria().getUserCriteria().getReportRange();
     }	

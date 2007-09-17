@@ -23,6 +23,7 @@ import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
@@ -37,12 +38,15 @@ import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -64,6 +68,7 @@ public class UserReport extends BasePage
 	private EhourConfig				config;
 	private int						chartWidth;
 	private int						chartHeight;
+	private WebMarkupContainer		reportDataPanel;
 	
 	/**
 	 * 
@@ -78,16 +83,43 @@ public class UserReport extends BasePage
 		chartHeight = 200;
 		
 		ReportCriteria reportCriteria = getReportCriteria();
-		setModel(new CompoundPropertyModel(reportCriteria));
+		IModel	model = new CompoundPropertyModel(reportCriteria);
+		setModel(model);
 		
 		// contextual help
 		add(new ContextualHelpPanel("contextHelp"));
 
 		// add criteria
-		add(new UserReportCriteriaPanel("sidePanel", reportCriteria));
+		add(new UserReportCriteriaPanel("sidePanel", model));
 
 		// add data
-		ReportDataAggregate reportData = getReportData(reportCriteria);
+		reportDataPanel = getReportPanel();
+		add(reportDataPanel);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.BasePage#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
+	 */
+	@Override
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
+	{
+		WebMarkupContainer	replacement = getReportPanel();
+		reportDataPanel.replaceWith(replacement);
+		reportDataPanel = replacement;
+		target.addComponent(replacement);
+	}
+	
+	/**
+	 * Get report panel
+	 * @return
+	 */
+	private WebMarkupContainer getReportPanel()
+	{
+		ReportCriteria criteria = (ReportCriteria)getModel().getObject();
+		
+		// add data
+		ReportDataAggregate reportData = getReportData(criteria);
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport);
 
@@ -96,13 +128,21 @@ public class UserReport extends BasePage
 		params.add("reportId", customerAggregateReport.getReportId());
 		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
 
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", new Model("Report"), true, null, excelLink);
-		add(greyBorder);
+		// Report model
+		StringResourceModel reportTitle = new StringResourceModel("userReport.title", 
+																this, null, 
+																new Object[]{new DateModel(criteria.getReportRange().getDateStart(), config),
+																			 new DateModel(criteria.getReportRange().getDateEnd(), config)});
+		
+		
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, null, excelLink);
+		greyBorder.setOutputMarkupId(true);
 
 		greyBorder.add(new UserReportPanel("reportTable", customerAggregateReport));
 		
-		// add charts
-		addCharts(reportData, null, greyBorder);
+		addCharts(reportData, greyBorder);
+		
+		return greyBorder;
 	}
 
 	/**
@@ -110,19 +150,18 @@ public class UserReport extends BasePage
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addCharts(ReportDataAggregate data, Integer forId, WebMarkupContainer parent)
+	private void addCharts(ReportDataAggregate data, WebMarkupContainer parent)
 	{
-		// TODO cache the model
 		Model dataModel = new Model(data);
 		
 		// hours per customer
-		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, forId, chartWidth, chartHeight);
+		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, chartWidth, chartHeight);
 		parent.add(customerHoursChart);
 
 		// turnover per customer
 		if (config.isShowTurnover())
 		{
-			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, forId, chartWidth, chartHeight);
+			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, chartWidth, chartHeight);
 			parent.add(customerTurnoverChart);
 		}
 		else
@@ -134,13 +173,13 @@ public class UserReport extends BasePage
 		}
 
 		// hours per project
-		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, forId, chartWidth, chartHeight);
+		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, chartWidth, chartHeight);
 		parent.add(projectHoursChartFactory);
 
 		// turnover per project
 		if (config.isShowTurnover())
 		{
-			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, forId, chartWidth, chartHeight);
+			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, chartWidth, chartHeight);
 			parent.add(projectTurnoverChart);
 		}
 		else
@@ -150,7 +189,6 @@ public class UserReport extends BasePage
 			img.setVisible(false);
 			parent.add(img);
 		}		
-		
 	}
 
 	
@@ -177,7 +215,8 @@ public class UserReport extends BasePage
 		
 		if (userCriteria == null)
 		{
-			initUserCritieria();
+			initUserCriteria();
+			EhourWebSession.getSession().setUserCriteria(userCriteria);
 		}
 		
 		userCriteria.setSingleUser(true);
@@ -188,7 +227,7 @@ public class UserReport extends BasePage
 	/**
 	 * Initialize user criteria 
 	 */
-	private void initUserCritieria()
+	private void initUserCriteria()
 	{
 		userCriteria = new UserCriteria();
 		userCriteria.setSingleUser(true);
@@ -196,5 +235,4 @@ public class UserReport extends BasePage
 		
 		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
 	}
-
 }

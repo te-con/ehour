@@ -90,28 +90,28 @@ public class CustomerAggregateReportTest
         }
     }
 
-    @Test
-    public void testCreateReportForId() throws Exception
-    {
-
-        ReportDataAggregate aggData = new ReportDataAggregate();
-        ReportCriteria rc = new ReportCriteria();
-        UserCriteria userCriteria = new UserCriteria();
-        rc.setUserCriteria(userCriteria);
-        aggData.setReportCriteria(rc);
-        aggData.setProjectAssignmentAggregates(aggs);
-        CustomerAggregateReport aggReport = new CustomerAggregateReport(aggData, 1);
-
-        assertEquals(1, aggReport.getNodes().size());
-
-        for (ReportNode node : aggReport.getNodes())
-        {
-            if (node.getId().equals(1))
-            {
-                assertEquals(51.0f, node.getHours().floatValue(), 0);
-                assertEquals(2, node.getReportNodes().size());
-                assertEquals(2, node.getReportNodes().get(0).getReportNodes().size());
-            }
-        }
-    }
+//    @Test
+//    public void testCreateReportForId() throws Exception
+//    {
+//
+//        ReportDataAggregate aggData = new ReportDataAggregate();
+//        ReportCriteria rc = new ReportCriteria();
+//        UserCriteria userCriteria = new UserCriteria();
+//        rc.setUserCriteria(userCriteria);
+//        aggData.setReportCriteria(rc);
+//        aggData.setProjectAssignmentAggregates(aggs);
+//        CustomerAggregateReport aggReport = new CustomerAggregateReport(aggData, 1);
+//
+//        assertEquals(1, aggReport.getNodes().size());
+//
+//        for (ReportNode node : aggReport.getNodes())
+//        {
+//            if (node.getId().equals(1))
+//            {
+//                assertEquals(51.0f, node.getHours().floatValue(), 0);
+//                assertEquals(2, node.getReportNodes().size());
+//                assertEquals(2, node.getReportNodes().get(0).getReportNodes().size());
+//            }
+//        }
+//    }
 }

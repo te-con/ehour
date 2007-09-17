@@ -16,20 +16,25 @@
 
 package net.rrm.ehour.ui.page.user.report.criteria;
 
-import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.renderers.ProjectChoiceRender;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
 /**
- * Date range selection
+ * Date range and project selection
  **/
 
 public class UserReportCriteriaPanel extends SidePanel
@@ -41,23 +46,45 @@ public class UserReportCriteriaPanel extends SidePanel
 	 * @param id
 	 * @param model
 	 */
-	public UserReportCriteriaPanel(String id, ReportCriteria reportCriteria)
+	public UserReportCriteriaPanel(String id, IModel model)
 	{
 		super(id);
 
 		Form form = new Form("criteriaForm");
 		
 		ListMultipleChoice projectDropDown;
-		projectDropDown = new ListMultipleChoice("project", 
-											new PropertyModel(reportCriteria, "userCriteria.projects"), 
-											reportCriteria.getAvailableCriteria().getProjects(),
+		projectDropDown = new ListMultipleChoice("userCriteria.projects", 
+											new PropertyModel(model, "availableCriteria.projects"),
 											new ProjectChoiceRender());
 		form.add(projectDropDown);
 		
-		addDatePickers(form, reportCriteria);
+		addDatePickers(form);
 		
-		this.add(new FeedbackPanel("feedback"));
+		@SuppressWarnings("serial")
+		AjaxButton submitButton = new AjaxButton("submitButton", form)
+		{
+			@Override
+            protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, 
+																	CommonUIStaticData.AJAX_FORM_SUBMIT);
+            }
 
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator()
+			{
+				return new LoadingSpinnerDecorator();
+			}
+			
+			@Override
+            protected void onError(AjaxRequestTarget target, Form form)
+			{
+				target.addComponent(form);
+            }
+        };
+        
+        form.add(submitButton);
+		
 		this.add(form);
 	}
 
@@ -66,16 +93,14 @@ public class UserReportCriteriaPanel extends SidePanel
 	 * @param parent
 	 * @param reportCriteria
 	 */
-	private void addDatePickers(WebMarkupContainer parent, ReportCriteria reportCriteria)
+	private void addDatePickers(WebMarkupContainer parent)
 	{
-		DojoDatePicker dateStart = new DojoDatePicker("dateStart", 
-														new PropertyModel(reportCriteria, "userCriteria.reportRange.dateStart"),
+		DojoDatePicker dateStart = new DojoDatePicker("userCriteria.reportRange.dateStart", 
 														"dd/MM/yyyy");
 		dateStart.setToggle(new DojoFadeToggle(200));
 		parent.add(dateStart);
 
-		DojoDatePicker dateEnd = new DojoDatePicker("dateEnd", 
-													new PropertyModel(reportCriteria, "userCriteria.reportRange.dateEnd"),
+		DojoDatePicker dateEnd = new DojoDatePicker("userCriteria.reportRange.dateEnd", 
 													"dd/MM/yyyy");
 		dateEnd.setToggle(new DojoFadeToggle(600));
 		parent.add(dateEnd);

@@ -54,7 +54,6 @@ public abstract class AbstractAggregateChartImage extends Image
 
 	private int			width;
 	private int			height;
-	private	Integer		forId;
 	
 	/**
 	 * 
@@ -66,7 +65,6 @@ public abstract class AbstractAggregateChartImage extends Image
 	 */
 	public AbstractAggregateChartImage(String id, 
 										Model dataModel,
-										Integer forId,
 										int width,
 										int height)
 	{
@@ -74,7 +72,6 @@ public abstract class AbstractAggregateChartImage extends Image
 
 		this.width = width;
 		this.height = height;
-		this.forId = forId;
 	}
 	
 	/*
@@ -92,7 +89,7 @@ public abstract class AbstractAggregateChartImage extends Image
 			{
 				ReportDataAggregate reportDataAggregate = (ReportDataAggregate)getModelObject();
 				
-				JFreeChart chart = getChart(reportDataAggregate, forId);
+				JFreeChart chart = getChart(reportDataAggregate);
 				return toImageData(chart.createBufferedImage(width, height));
 			}
 
@@ -119,13 +116,13 @@ public abstract class AbstractAggregateChartImage extends Image
 	 * @param reportName
 	 * @return
 	 */
-	private JFreeChart getChart(ReportDataAggregate reportDataAggregate, Integer forId)
+	private JFreeChart getChart(ReportDataAggregate reportDataAggregate)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
 		logger.debug("Creating " + reportName + " aggregate chart");
 		
-		DefaultCategoryDataset dataset = createDataset(reportDataAggregate, forId);
+		DefaultCategoryDataset dataset = createDataset(reportDataAggregate);
 
 		JFreeChart chart = ChartFactory.createBarChart(reportName, // chart title
 				null, // domain axis label
@@ -171,7 +168,7 @@ public abstract class AbstractAggregateChartImage extends Image
 	 * @param reportDataAggregate
 	 * @return
 	 */
-	private DefaultCategoryDataset createDataset(ReportDataAggregate reportDataAggregate, Integer forId)
+	private DefaultCategoryDataset createDataset(ReportDataAggregate reportDataAggregate)
 	{
 		DefaultCategoryDataset dataset;
 		Map<String, Number> valueMap = new HashMap<String, Number>();
@@ -187,11 +184,6 @@ public abstract class AbstractAggregateChartImage extends Image
 			rowKey = getRowKey(aggregate);
 			
 			value = getColumnValue(aggregate);
-			
-			if (forId != null && !rowKey.getId().equals(forId))
-			{
-				continue;
-			}
 
 			if (value == null)
 			{
