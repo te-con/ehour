@@ -15,7 +15,6 @@
 
 package net.rrm.ehour.report.reports;
 
-import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -24,7 +23,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
  * Data holder for aggregate reports
  **/
 
-public class ReportDataAggregate implements Serializable
+public class ReportDataAggregate implements ReportData
 {
 	private static final long serialVersionUID = -6344570520998830487L;
 	
