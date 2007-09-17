@@ -47,7 +47,8 @@ public class UserCriteria implements Serializable
 	private	List<Integer>		projectIds;
 	private	List<Integer>		customerIds;
 	private	List<Integer>		departmentIds;
-
+	private boolean 	infiniteStartDate;
+	private boolean		infiniteEndDate;
 	private	boolean		singleUser;
 
 	/**
@@ -59,6 +60,9 @@ public class UserCriteria implements Serializable
 		onlyActiveProjects = true;
 		onlyActiveCustomers = true;
 		onlyActiveUsers = true;
+		
+		infiniteStartDate = false;
+		infiniteEndDate = false;
 		
 		reportRange = new DateRange(new Date(), new Date());
 	}
@@ -343,5 +347,37 @@ public class UserCriteria implements Serializable
 	public void setDepartmentIds(List<Integer> departmentIds)
 	{
 		this.departmentIds = departmentIds;
+	}
+
+	/**
+	 * @return the infiniteStartDate
+	 */
+	public boolean isInfiniteStartDate()
+	{
+		return infiniteStartDate;
+	}
+
+	/**
+	 * @param infiniteStartDate the infiniteStartDate to set
+	 */
+	public void setInfiniteStartDate(boolean infiniteStartDate)
+	{
+		this.infiniteStartDate = infiniteStartDate;
+	}
+
+	/**
+	 * @return the infiniteEndDate
+	 */
+	public boolean isInfiniteEndDate()
+	{
+		return infiniteEndDate;
+	}
+
+	/**
+	 * @param infiniteEndDate the infiniteEndDate to set
+	 */
+	public void setInfiniteEndDate(boolean infiniteEndDate)
+	{
+		this.infiniteEndDate = infiniteEndDate;
 	}
 }

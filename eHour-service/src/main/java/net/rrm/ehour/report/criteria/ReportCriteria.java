@@ -66,7 +66,7 @@ public class ReportCriteria implements Serializable
 		{
 			reportRange = userCriteria.getReportRange();
 			
-			if (reportRange.getDateStart() == null)
+			if (reportRange.getDateStart() == null || userCriteria.isInfiniteStartDate())
 			{
 				if (availableCriteria == null || availableCriteria.getReportRange() == null)
 				{
@@ -78,7 +78,7 @@ public class ReportCriteria implements Serializable
 				}
 			}
 			
-			if (reportRange.getDateEnd() == null)
+			if (reportRange.getDateEnd() == null || userCriteria.isInfiniteEndDate())
 			{
 				if (availableCriteria == null || availableCriteria.getReportRange() == null)
 				{
@@ -128,8 +128,6 @@ public class ReportCriteria implements Serializable
 	}
 	
 	/**
-	 *  TODO use commons-collection ListUtils.retainAll however commons-config depends on collections 2.1 while
-	 *  retainAll is introduced in 3.2
 	 *
 	 */
 	private void checkUsers()
