@@ -32,6 +32,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
@@ -43,7 +44,7 @@ import org.apache.wicket.util.time.Duration;
 public class EntrySelectorPanel extends Panel
 {
 	private	String	defaultFilterText = "";
-	private	String	checkBoxPrefixText = "";
+	private	IModel	checkBoxPrefixText;
 	private	boolean	includeFilter = false;
 	private	boolean	includeCheckboxToggle = false;
 	private GreyBlueRoundedBorder blueBorder;
@@ -81,7 +82,7 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterText
 	 * @param checkboxPrefix
 	 */
-	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder, String defaultFilter, String checkboxPrefix)
+	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder, String defaultFilter, IModel checkboxPrefix)
 	{
 		super(id);
 

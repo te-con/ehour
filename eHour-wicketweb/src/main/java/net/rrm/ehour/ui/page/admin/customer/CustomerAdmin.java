@@ -83,7 +83,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 				new ResourceModel("admin.customer.title"),
 				customerListHolder,
 				null,
-				getLocalizer().getString("admin.customer.hideInactive", this)
+				new ResourceModel("admin.customer.hideInactive")
 				));
 		
 	}

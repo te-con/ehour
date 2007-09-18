@@ -211,7 +211,17 @@ public class EhourWebSession extends AuthenticatedWebSession
 					GrantedAuthority authority = authorities[i];
 					roles.add(authority.getAuthority());
 				}
+				
+				if (roles.size() == 0)
+				{
+					logger.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
+				}
+				
 				return roles;
+			}
+			else
+			{
+				logger.warn("User is signed in but authentication is not set!");
 			}
 		}
 		return null;

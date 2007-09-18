@@ -83,7 +83,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 				new ResourceModel("admin.user.title"),
 				userListHolder,
 				getLocalizer().getString("admin.user.filter", this) + "...",
-				getLocalizer().getString("admin.user.hideInactive", this)));
+				new ResourceModel("admin.user.hideInactive")));
 	}
 	
 	/**

@@ -90,7 +90,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 				new ResourceModel("admin.project.title"),
 				projectListHolder,
 				getLocalizer().getString("admin.project.filter", this) + "...",
-				getLocalizer().getString("admin.project.hideInactive", this)));		
+				new ResourceModel("admin.project.hideInactive")));		
 	}
 	
 	/**

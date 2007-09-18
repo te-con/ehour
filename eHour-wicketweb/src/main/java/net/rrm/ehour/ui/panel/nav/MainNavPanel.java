@@ -23,7 +23,6 @@ import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.util.AuthUtil;
 
-import org.apache.wicket.Localizer;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -33,6 +32,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 
 /**
  * Main navigation panel 
@@ -55,9 +55,8 @@ public class MainNavPanel extends Panel
 		addLink(this, "adminLink", MainConfig.class);
 		addLink(this, "logoffLink", Login.class);
 		
-		Localizer localizer = getLocalizer();
 		add(new Label("loggedInUser", 
-					localizer.getString("nav.loggedinas", this, new Model(AuthUtil.getUser()))));
+						new StringResourceModel("nav.loggedinas", this, new Model(AuthUtil.getUser()) )));
 		
 		add(new StyleSheetReference("headerStyle", headerStyle()));
 	}
