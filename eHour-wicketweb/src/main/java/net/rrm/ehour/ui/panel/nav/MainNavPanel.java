@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.panel.nav;
 
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.page.login.Login;
+import net.rrm.ehour.ui.page.report.ReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.util.AuthUtil;
@@ -41,12 +42,16 @@ public class MainNavPanel extends Panel
 {
 	private static final long serialVersionUID = 854412484275829659L;
 
+	/**
+	 * 
+	 * @param id
+	 */
 	public MainNavPanel(String id)
 	{
 		super(id);
 		
 		addLink(this, "overviewLink", Overview.class);
-		addLink(this, "userReportLink", UserReport.class);
+		addReportLink(this, "userReportLink");
 		addLink(this, "adminLink", MainConfig.class);
 		addLink(this, "logoffLink", Login.class);
 		
@@ -57,6 +62,27 @@ public class MainNavPanel extends Panel
 		add(new StyleSheetReference("headerStyle", headerStyle()));
 	}
 
+	/**
+	 * Add report link, global reporting when user has report role, user report when user is consultant
+	 * @param parent
+	 * @param id
+	 */
+	private void addReportLink(WebMarkupContainer parent, String id)
+	{
+		Class<? extends WebPage> 	linkPage;
+		
+		if (AuthUtil.userAuthorizedForPage(ReportPage.class))
+		{
+			linkPage = ReportPage.class;
+		}
+		else 
+		{
+			linkPage = UserReport.class;
+		}
+		
+		addLink(parent, id, linkPage);
+	}
+	
 	/**
 	 * Add link to hierarchy, visibility off if user is not authorized to view the page
 	 * @param parent
