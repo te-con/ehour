@@ -24,7 +24,7 @@ import org.apache.wicket.model.ResourceModel;
 
 /**
  * Base admin page template with 2 tabs, add & edit
- * TODO need refactor
+ * TODO need refactor, remove those Base methods
  **/
 
 @SuppressWarnings({"unchecked", "serial"})

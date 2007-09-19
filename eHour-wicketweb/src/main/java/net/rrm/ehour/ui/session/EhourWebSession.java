@@ -201,6 +201,11 @@ public class EhourWebSession extends AuthenticatedWebSession
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			
+//			if (auth == null)
+//			{
+//				getSession().getS
+//			}
+			
 			if (auth != null)
 			{
 				

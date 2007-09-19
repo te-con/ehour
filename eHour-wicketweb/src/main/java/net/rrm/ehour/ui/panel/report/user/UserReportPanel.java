@@ -104,7 +104,7 @@ public class UserReportPanel extends Panel
 																new Object[]{new DateModel(customerAggregateReport.getReportRange().getDateStart(), config),
 																			 new DateModel(customerAggregateReport.getReportRange().getDateEnd(), config)});
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, printLink, excelLink);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, printLink, excelLink);
 
 		greyBorder.add(new UserReportDataPanel("reportTable", customerAggregateReport));
 		

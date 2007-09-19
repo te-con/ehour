@@ -115,7 +115,7 @@ public class EntrySelectorPanel extends Panel
 	 */
 	private void setUpPanel(ResourceModel title, Fragment itemListHolder)
 	{
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title, 275);
 		blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		blueBorder.setOutputMarkupId(true);
 		setUpFilterForm(greyBorder, blueBorder);
