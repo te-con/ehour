@@ -5,9 +5,11 @@
 	xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
+
    	<head>
-        <title></title>
-        <link rel='stylesheet' type='text/css' href='style.css'/>
+		<wicket:head>
+			<link rel="stylesheet" type="text/css" href="css/ehourTabs.css" />
+		</wicket:head>    
     </head>
     
     <body>
@@ -22,7 +24,9 @@
 		    	</div>
 		    </div>
 		    	    	
-    		<div class="ContentPanelLoc" wicket:id="reportContainer" />
+    		<div class="ContentPanelLoc">
+    			<div wicket:id="reportContainer" class="tabpanel"></div>
+    		</div>
 	    	
     	</wicket:extend>
     </body>
