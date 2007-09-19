@@ -18,13 +18,16 @@
 package net.rrm.ehour.ui.page.report;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -32,7 +35,7 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @AuthorizeInstantiation("ROLE_REPORT")
-public class ReportPage extends BasePage
+public class ReportPage extends BaseReportPage
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 
@@ -46,8 +49,20 @@ public class ReportPage extends BasePage
 		// contextual help
 		add(new ContextualHelpPanel("contextHelp"));
 		
-		ReportTabbedPanel tabPanel = new ReportTabbedPanel("reportContainer", new ArrayList<AbstractTab>());
+		List<AbstractTab> tabList = new ArrayList<AbstractTab>();
+		
+		tabList.add(new AbstractTab(new ResourceModel("criteria.title"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new ReportCriteriaPanel(panelId, null);
+			}
+		});
+		
+		ReportTabbedPanel tabPanel = new ReportTabbedPanel("reportContainer", tabList);
 		add(tabPanel);
 		
+		add(new Label("sidePanel", "dummy"));
 	}
 }

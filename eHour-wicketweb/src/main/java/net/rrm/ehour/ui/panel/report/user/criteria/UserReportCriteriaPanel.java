@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.page.user.report.criteria;
+package net.rrm.ehour.ui.panel.report.user.criteria;
 
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;

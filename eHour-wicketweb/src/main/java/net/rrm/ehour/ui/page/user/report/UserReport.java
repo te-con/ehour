@@ -17,17 +17,14 @@
 package net.rrm.ehour.ui.page.user.report;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
-import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.page.user.report.criteria.UserReportCriteriaPanel;
+import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
+import net.rrm.ehour.ui.panel.report.user.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -35,6 +32,7 @@ import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInst
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -42,16 +40,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class UserReport extends BasePage
+public class UserReport extends BaseReportPage
 {
 	private static final long serialVersionUID = -8867366237264687482L;
-	
-	@SpringBean
-	private ReportCriteriaService	reportCriteriaService;
+
 	@SpringBean
 	private ReportService			reportService;
-	private	UserCriteria			userCriteria;
-	private transient Logger		logger = Logger.getLogger(UserReport.class);
+	private static final Logger		logger = Logger.getLogger(UserReport.class);
 	private WebMarkupContainer		reportDataPanel;
 	
 	/**
@@ -59,7 +54,7 @@ public class UserReport extends BasePage
 	 */
 	public UserReport()
 	{
-		super("reporting", null);
+		super(new ResourceModel("userreport.title"), null);
 		
 		ReportCriteria reportCriteria = getReportCriteria();
 		IModel	model = new CompoundPropertyModel(reportCriteria);
@@ -119,36 +114,5 @@ public class UserReport extends BasePage
 		ReportDataAggregate data = reportService.createAggregateReportData(reportCriteria);
 		
 		return data;
-	}
-	
-	/**
-	 * Get report criteria
-	 * @return
-	 */
-	private ReportCriteria getReportCriteria()
-	{
-		userCriteria = EhourWebSession.getSession().getUserCriteria();
-		
-		if (userCriteria == null)
-		{
-			initUserCriteria();
-			EhourWebSession.getSession().setUserCriteria(userCriteria);
-		}
-		
-		userCriteria.setSingleUser(true);
-		
-		return reportCriteriaService.getReportCriteria(userCriteria);
-	}
-	
-	/**
-	 * Initialize user criteria 
-	 */
-	private void initUserCriteria()
-	{
-		userCriteria = new UserCriteria();
-		userCriteria.setSingleUser(true);
-		userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
-		
-		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
 	}
 }
