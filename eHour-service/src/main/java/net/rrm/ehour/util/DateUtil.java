@@ -225,19 +225,7 @@ public class DateUtil
 		
 		return startMonth;
 	}
-	
-	/**
-	 * Get quarter for month
-	 * @param calendar
-	 * @return
-	 */
-	public static int getQuarterForMonth(Calendar calendar)
-	{
-		int month = calendar.get(Calendar.MONTH);
-		int quarter = month / 3;
 
-		return quarter;
-	}
 	
 	
 	/**
