@@ -11,15 +11,17 @@
 		<div wicket:id="border">
 			<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
 				<wicket:message key="report.criteria.reportRange" />:
-				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="userCriteria.userCriteria.reportRange.dateStart" />
+				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateStart" />
 			    <wicket:message key="report.criteria.until" />:
-				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="userCriteria.userCriteria.reportRange.dateEnd" />
+				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateEnd" />
 				<br />
 				<select wicket:id="quickWeek"></select>
+				<select wicket:id="quickMonth"></select>
+				<select wicket:id="quickQuarter"></select>
 			</div>
 		</div>
 </wicket:panel>
 
 </body>
 
-</html>
+</html>  

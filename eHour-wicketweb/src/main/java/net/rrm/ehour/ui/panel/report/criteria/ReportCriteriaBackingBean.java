@@ -19,30 +19,30 @@ package net.rrm.ehour.ui.panel.report.criteria;
 
 import java.io.Serializable;
 
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickPeriod;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
 
 /**
- * TODO 
+ * Backing bean for report criteria
  **/
 
 public class ReportCriteriaBackingBean implements Serializable
 {
 	private static final long serialVersionUID = 4417220135092280759L;
 
-	private UserCriteria	userCriteria;
+	private ReportCriteria	reportCriteria;
 	private QuickWeek		quickWeek;
+	private QuickMonth		quickMonth;
+	private QuickQuarter	quickQuarter;
 	
-	public ReportCriteriaBackingBean(UserCriteria userCriteria)
+	public ReportCriteriaBackingBean(ReportCriteria reportCriteria)
 	{
-		this.userCriteria = userCriteria;
-	}
-
-	/**
-	 * @return the userCriteria
-	 */
-	public UserCriteria getUserCriteria()
-	{
-		return userCriteria;
+		this.reportCriteria = reportCriteria;
 	}
 
 	/**
@@ -59,5 +59,51 @@ public class ReportCriteriaBackingBean implements Serializable
 	public void setQuickWeek(QuickWeek quickWeek)
 	{
 		this.quickWeek = quickWeek;
+		
+		setReportRangeForQuickie(quickWeek);
+	}
+	
+	/**
+	 * Set report range based on quickie
+	 * @param period
+	 */
+	private void setReportRangeForQuickie(QuickPeriod period)
+	{
+		UserCriteria userCriteria = reportCriteria.getUserCriteria(); 
+		
+		if (userCriteria.getReportRange() == null)
+		{
+			userCriteria.setReportRange(new DateRange());
+		}
+		
+		userCriteria.getReportRange().setDateStart(period.getPeriodStart());
+		userCriteria.getReportRange().setDateEnd(period.getPeriodEnd());		
+	}
+
+	public ReportCriteria getReportCriteria()
+	{
+		return reportCriteria;
+	}
+
+	public QuickMonth getQuickMonth()
+	{
+		return quickMonth;
+	}
+
+	public void setQuickMonth(QuickMonth quickMonth)
+	{
+		this.quickMonth = quickMonth;
+		setReportRangeForQuickie(quickMonth);
+	}
+
+	public QuickQuarter getQuickQuarter()
+	{
+		return quickQuarter;
+	}
+
+	public void setQuickQuarter(QuickQuarter quickQuarter)
+	{
+		this.quickQuarter = quickQuarter;
+		setReportRangeForQuickie(quickQuarter);
 	}
 }

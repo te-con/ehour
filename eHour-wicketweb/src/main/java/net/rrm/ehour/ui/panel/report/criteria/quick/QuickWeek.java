@@ -15,62 +15,27 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.criteria;
+package net.rrm.ehour.ui.panel.report.criteria.quick;
 
-import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
- * TODO 
+ * Quick week value object
  **/
 
-public class QuickWeek implements Serializable
+public class QuickWeek extends QuickPeriod
 {
 	private static final long serialVersionUID = -8803620859213666342L;
 
-	private Date	weekStart;
-	private Date	weekEnd;
-	
 	public QuickWeek(Calendar calendarOrig)
 	{
 		Calendar cal = (Calendar)calendarOrig.clone();
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		weekStart = cal.getTime();
+		setPeriodStart(cal.getTime());
+		
+		setPeriodIndex(cal.get(Calendar.WEEK_OF_YEAR));
 		
 		cal.add(Calendar.WEEK_OF_YEAR, 1);
-		weekEnd = cal.getTime();
-	}
-
-	/**
-	 * @return the weekStart
-	 */
-	public Date getWeekStart()
-	{
-		return weekStart;
-	}
-
-	/**
-	 * @param weekStart the weekStart to set
-	 */
-	public void setWeekStart(Date weekStart)
-	{
-		this.weekStart = weekStart;
-	}
-
-	/**
-	 * @return the weekEnd
-	 */
-	public Date getWeekEnd()
-	{
-		return weekEnd;
-	}
-
-	/**
-	 * @param weekEnd the weekEnd to set
-	 */
-	public void setWeekEnd(Date weekEnd)
-	{
-		this.weekEnd = weekEnd;
+		setPeriodEnd(cal.getTime());
 	}
 }

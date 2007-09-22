@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.page.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
@@ -46,6 +47,8 @@ public class ReportPage extends BaseReportPage
 	{
 		super(new ResourceModel("report.title"), null);
 		
+		final ReportCriteria reportCriteria = getReportCriteria();
+		
 		// contextual help
 		add(new ContextualHelpPanel("contextHelp"));
 		
@@ -56,7 +59,7 @@ public class ReportPage extends BaseReportPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new ReportCriteriaPanel(panelId, null);
+				return new ReportCriteriaPanel(panelId, reportCriteria);
 			}
 		});
 		

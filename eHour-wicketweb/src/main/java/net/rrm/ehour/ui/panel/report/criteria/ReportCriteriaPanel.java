@@ -17,15 +17,19 @@
 
 package net.rrm.ehour.ui.panel.report.criteria;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
+import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -33,7 +37,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
@@ -51,7 +54,7 @@ public class ReportCriteriaPanel extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public ReportCriteriaPanel(String id, UserCriteria criteria)
+	public ReportCriteriaPanel(String id, ReportCriteria criteria)
 	{
 		super(id, new CompoundPropertyModel(new ReportCriteriaBackingBean(criteria)));
 		
@@ -69,46 +72,126 @@ public class ReportCriteriaPanel extends Panel
 	 */
 	private void addDates(WebMarkupContainer parent)
 	{
-		startDatePicker = new DojoDatePicker("userCriteria.userCriteria.reportRange.dateStart", "dd/MM/yyyy");
+		startDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateStart", "dd/MM/yyyy");
 		startDatePicker.setToggle(new DojoFadeToggle(200));
 		startDatePicker.setOutputMarkupId(true);
 		parent.add(startDatePicker);
 
-		endDatePicker = new DojoDatePicker("userCriteria.userCriteria.reportRange.dateEnd", "dd/MM/yyyy");
+		endDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateEnd", "dd/MM/yyyy");
 		endDatePicker.setToggle(new DojoFadeToggle(200));
 		endDatePicker.setOutputMarkupId(true);
 		parent.add(endDatePicker);
 		
 		addQuickWeek(parent);
+		addQuickMonth(parent);
+		addQuickQuarter(parent);
 	}
 	
+	/**
+	 * Add quick week selection
+	 * @param parent
+	 */
 	private void addQuickWeek(WebMarkupContainer parent)
 	{
 		List<QuickWeek>	weeks = new ArrayList<QuickWeek>();	
 		Calendar		currentDate = new GregorianCalendar();
-		int 			currentWeek = -14;
+		int 			currentWeek = -8;
 		
 		currentDate.add(Calendar.WEEK_OF_YEAR, currentWeek);
 		
-		for (; currentWeek < -1; currentWeek++)
+		for (; currentWeek < 8; currentWeek++)
 		{
 			weeks.add(new QuickWeek(currentDate));
 			
 			currentDate.add(Calendar.WEEK_OF_YEAR, 1);
 		}
 		
-		final DropDownChoice quickWeekSelection = new DropDownChoice("quickWeek", new Model(), weeks);
+		final DropDownChoice quickWeekSelection = new DropDownChoice("quickWeek", weeks, new QuickWeekRenderer());
 
 		quickWeekSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
 		{
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				System.out.println( ((ReportCriteriaBackingBean)getModelObject()).getQuickWeek().getWeekStart());
+				target.addComponent(startDatePicker);
+				target.addComponent(endDatePicker);
 			}
 			
 		});
 		
 		parent.add(quickWeekSelection);
 	}
+	
+	/**
+	 * Add quick month selection
+	 * @param parent
+	 */
+	private void addQuickMonth(WebMarkupContainer parent)
+	{
+		List<QuickMonth>	months = new ArrayList<QuickMonth>();	
+		Calendar			currentDate = new GregorianCalendar();
+		int 				currentMonth = -6;
+		
+		currentDate.add(Calendar.MONTH, currentMonth);
+		
+		for (; currentMonth < 6; currentMonth++)
+		{
+			months.add(new QuickMonth(currentDate));
+			
+			currentDate.add(Calendar.MONTH, 1);
+		}
+		
+		final DropDownChoice quickMonthSelection = new DropDownChoice("quickMonth", months, new QuickMonthRenderer());
+
+		quickMonthSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				target.addComponent(startDatePicker);
+				target.addComponent(endDatePicker);
+			}
+			
+		});
+		
+		parent.add(quickMonthSelection);
+	}	
+	
+	
+	/**
+	 * Add quick month selection
+	 * @param parent
+	 */
+	private void addQuickQuarter(WebMarkupContainer parent)
+	{
+		List<QuickQuarter>	quarters = new ArrayList<QuickQuarter>();	
+		Calendar			currentDate = new GregorianCalendar();
+		int 				currentQuarter = -3;
+		
+		int quarter = currentDate.get(Calendar.MONTH) / 3;
+		currentDate.set(Calendar.MONTH, quarter * 3); // abuse rounding off
+		currentDate.add(Calendar.MONTH, currentQuarter * 3);
+		
+		for (; currentQuarter < 3; currentQuarter++)
+		{
+			quarters.add(new QuickQuarter(currentDate));
+			
+			currentDate.add(Calendar.MONTH, 3);
+		}
+		
+		final DropDownChoice quickQuarterSelection = new DropDownChoice("quickQuarter", quarters, new QuickQuarterRenderer());
+
+		quickQuarterSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				target.addComponent(startDatePicker);
+				target.addComponent(endDatePicker);
+			}
+			
+		});
+		
+		parent.add(quickQuarterSelection);
+	}	
 }
