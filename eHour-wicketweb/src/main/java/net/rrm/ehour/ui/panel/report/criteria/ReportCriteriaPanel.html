@@ -19,7 +19,17 @@
 				<select wicket:id="quickMonth"></select>
 				<select wicket:id="quickQuarter"></select>
 			</div>
+			
+			<br clear="all" />
+
+			<span wicket:id="customerList"></span>
 		</div>
+		
+    	<wicket:fragment wicket:id="customerListHolder">
+    		<form wicket:id="customerSelection">
+    			<select wicket:id="reportCriteria.availableCriteria.customers" class="criteriaInput"></select>
+    		</form>
+		</wicket:fragment>		
 </wicket:panel>
 
 </body>

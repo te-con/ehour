@@ -23,20 +23,29 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
+import net.rrm.ehour.ui.renderers.CustomerChoiceRenderer;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.ListMultipleChoice;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
@@ -47,9 +56,11 @@ import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 public class ReportCriteriaPanel extends Panel
 {
 	private static final long serialVersionUID = -7865322191390719584L;
-	private DojoDatePicker 	startDatePicker;
-	private DojoDatePicker 	endDatePicker;
 	
+	@SpringBean
+	private	ReportCriteriaService	reportCriteriaService;
+	private DojoDatePicker 			startDatePicker;
+	private DojoDatePicker 			endDatePicker;
 	
 	/**
 	 * 
@@ -66,7 +77,33 @@ public class ReportCriteriaPanel extends Panel
 		setOutputMarkupId(true);	
 		
 		addDates(greyBorder);
+		
+		addCustomerSelection(greyBorder);
 	}
+	
+	/**
+	 * Add customer selection
+	 * @param parent
+	 */
+	private void addCustomerSelection(WebMarkupContainer parent)
+	{
+		Fragment fragment = new Fragment("itemListHolder", "customerListHolder", ReportCriteriaPanel.this);
+		Form form = new Form("customerSelection");
+
+		ListMultipleChoice customers = new ListMultipleChoice("reportCriteria.availableCriteria.customers",
+								new PropertyModel(getModel(), "reportCriteria.userCriteria.projects"),
+								new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
+								new CustomerChoiceRenderer());
+		customers.setMaxRows(4);
+		customers.setLabel(new ResourceModel("admin.user.roles"));
+		customers.setRequired(true);
+		form.add(customers);
+		fragment.add(form);
+		
+		EntrySelectorPanel entrySelectorPanel = new EntrySelectorPanel("customerList", fragment);
+
+		parent.add(entrySelectorPanel);
+	}		
 
 	/**
 	 * Add dates

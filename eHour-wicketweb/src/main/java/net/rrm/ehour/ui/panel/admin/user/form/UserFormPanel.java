@@ -127,7 +127,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
 		
 		// user roles
-		ListMultipleChoice	userRoles = new ListMultipleChoice("user.userRoles", roles, new ChoiceRenderer("roleName"));
+		ListMultipleChoice userRoles = new ListMultipleChoice("user.userRoles", roles, new ChoiceRenderer("roleName"));
 		userRoles.setMaxRows(4);
 		userRoles.setLabel(new ResourceModel("admin.user.roles"));
 		userRoles.setRequired(true);

@@ -28,7 +28,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -57,7 +56,7 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterInputText
 	 * @param itemList
 	 */
-	public EntrySelectorPanel(String id, Fragment itemListHolder)
+	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder)
 	{
 		this(id, itemListHolder, null);
 	}
@@ -69,7 +68,7 @@ public class EntrySelectorPanel extends Panel
 	 * @param itemList
 	 * @param defaultFilterText
 	 */
-	public EntrySelectorPanel(String id, Fragment itemListHolder, String defaultFilterText)
+	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, String defaultFilterText)
 	{
 		this(id, itemListHolder, defaultFilterText, null);
 	}
@@ -82,7 +81,7 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterText
 	 * @param checkboxPrefix
 	 */
-	public EntrySelectorPanel(String id, Fragment itemListHolder, String defaultFilter, IModel checkboxPrefix)
+	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, String defaultFilter, IModel checkboxPrefix)
 	{
 		super(id);
 
@@ -113,7 +112,7 @@ public class EntrySelectorPanel extends Panel
 	/**
 	 * Setup page
 	 */
-	private void setUpPanel(Fragment itemListHolder)
+	private void setUpPanel(WebMarkupContainer itemListHolder)
 	{
 //		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title, 275);
 		WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");

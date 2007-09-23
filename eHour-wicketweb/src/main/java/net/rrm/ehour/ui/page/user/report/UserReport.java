@@ -56,7 +56,7 @@ public class UserReport extends BaseReportPage
 	{
 		super(new ResourceModel("userreport.title"), null);
 		
-		ReportCriteria reportCriteria = getReportCriteria();
+		ReportCriteria reportCriteria = getReportCriteria(true);
 		IModel	model = new CompoundPropertyModel(reportCriteria);
 		setModel(model);
 		

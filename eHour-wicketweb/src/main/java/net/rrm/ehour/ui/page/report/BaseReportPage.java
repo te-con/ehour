@@ -51,7 +51,7 @@ public abstract class BaseReportPage extends BasePage
 	 * Get report criteria
 	 * @return
 	 */
-	protected ReportCriteria getReportCriteria()
+	protected ReportCriteria getReportCriteria(boolean singleUser)
 	{
 		UserCriteria userCriteria = EhourWebSession.getSession().getUserCriteria();
 		
@@ -61,7 +61,7 @@ public abstract class BaseReportPage extends BasePage
 			EhourWebSession.getSession().setUserCriteria(userCriteria);
 		}
 		
-		userCriteria.setSingleUser(true);
+		userCriteria.setSingleUser(singleUser);
 		
 		return reportCriteriaService.getReportCriteria(userCriteria);
 	}

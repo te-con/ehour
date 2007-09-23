@@ -90,9 +90,9 @@ public class AssignmentAdmin extends BaseAdminPage
 				getLocalizer().getString("admin.assignment.filter", this) + "..."));
 		
 		assignmentPanel = new AssignmentPanel("assignmentPanel",
-				new User(),
-				getCustomers(), 
-				getProjectAssignmentTypes());;
+													new User(),
+													getCustomers(), 
+													getProjectAssignmentTypes());
 		add(assignmentPanel);
 	}
 	

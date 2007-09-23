@@ -47,7 +47,7 @@ public class ReportPage extends BaseReportPage
 	{
 		super(new ResourceModel("report.title"), null);
 		
-		final ReportCriteria reportCriteria = getReportCriteria();
+		final ReportCriteria reportCriteria = getReportCriteria(false);
 		
 		// contextual help
 		add(new ContextualHelpPanel("contextHelp"));
