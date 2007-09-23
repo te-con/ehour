@@ -21,6 +21,7 @@ import java.util.List;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
@@ -79,11 +80,15 @@ public class UserAdmin extends BaseTabbedAdminPage
 		
 		Fragment userListHolder = getUserListHolder(users);
 		
-		add(new EntrySelectorPanel(USER_SELECTOR_ID,
-				new ResourceModel("admin.user.title"),
-				userListHolder,
-				getLocalizer().getString("admin.user.filter", this) + "...",
-				new ResourceModel("admin.user.hideInactive")));
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
+															new ResourceModel("admin.user.title"), 
+															EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
+		add(greyBorder);		
+		
+		greyBorder.add(new EntrySelectorPanel(USER_SELECTOR_ID,
+						userListHolder,
+						getLocalizer().getString("admin.user.filter", this) + "...",
+						new ResourceModel("admin.user.hideInactive")));
 	}
 	
 	/**

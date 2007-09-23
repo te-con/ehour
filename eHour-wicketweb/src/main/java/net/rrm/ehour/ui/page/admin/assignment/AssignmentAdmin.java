@@ -25,7 +25,6 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
-import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
@@ -42,7 +41,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -82,8 +80,11 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		Fragment userListHolder = getUserListHolder(users);
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.assignment.title"), 275);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
+																new ResourceModel("admin.assignment.title"), 
+																EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
 		add(greyBorder);
+
 		greyBorder.add(new EntrySelectorPanel(USER_SELECTOR_ID,
 				userListHolder,
 				getLocalizer().getString("admin.assignment.filter", this) + "..."));
@@ -113,11 +114,6 @@ public class AssignmentAdmin extends BaseAdminPage
 				userListView.setList(users);
 				break;
 			}
-			case CommonUIStaticData.AJAX_FORM_SUBMIT:
-			{
-				AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
-				break;
-			}			
 		}
 	}	
 	
@@ -195,8 +191,6 @@ public class AssignmentAdmin extends BaseAdminPage
 			
 			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, new UserRole(EhourConstants.ROLE_CONSULTANT));
 		}
-		
-		System.out.println("xX: " + users.size());
 		
 		return users;
 	}	

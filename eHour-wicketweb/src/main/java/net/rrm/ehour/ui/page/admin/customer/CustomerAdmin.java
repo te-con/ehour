@@ -23,6 +23,7 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
@@ -79,12 +80,16 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 		
 		Fragment customerListHolder = getCustomerListHolder(customers);
 		
-		add(new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
-				new ResourceModel("admin.customer.title"),
-				customerListHolder,
-				null,
-				new ResourceModel("admin.customer.hideInactive")
-				));
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
+						new ResourceModel("admin.customer.title"), 
+						EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
+		add(greyBorder);			
+		
+		greyBorder.add(new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
+												customerListHolder,
+												null,
+												new ResourceModel("admin.customer.hideInactive")
+												));
 		
 	}
 

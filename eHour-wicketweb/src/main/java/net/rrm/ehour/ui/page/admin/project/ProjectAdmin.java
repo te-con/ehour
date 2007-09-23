@@ -26,6 +26,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.project.form.ProjectFormPanel;
@@ -86,11 +87,15 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		
 		Fragment projectListHolder = getProjectListHolder(projects);
 		
-		add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
-				new ResourceModel("admin.project.title"),
-				projectListHolder,
-				getLocalizer().getString("admin.project.filter", this) + "...",
-				new ResourceModel("admin.project.hideInactive")));		
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
+											new ResourceModel("admin.project.title"), 
+											EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
+		add(greyBorder);		
+		
+		greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
+											projectListHolder,
+											getLocalizer().getString("admin.project.filter", this) + "...",
+											new ResourceModel("admin.project.hideInactive")));		
 	}
 	
 	/**

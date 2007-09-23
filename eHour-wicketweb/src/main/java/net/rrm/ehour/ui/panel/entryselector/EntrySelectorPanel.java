@@ -41,6 +41,8 @@ import org.apache.wicket.util.time.Duration;
 
 public class EntrySelectorPanel extends Panel
 {
+	public final static int ENTRYSELECTOR_WIDTH = 250;
+	
 	private	String	defaultFilterText = "";
 	private	IModel	checkBoxPrefixText;
 	private	boolean	includeFilter = false;
@@ -153,7 +155,6 @@ public class EntrySelectorPanel extends Panel
 		
 		Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
 		filterForm.add(filterToggleText);
-//		filterForm.setVisible(includeCheckboxToggle);
 
 		// if filter included, attach onchange ajax behaviour otherwise hide it
 		if (includeFilter)
@@ -182,8 +183,12 @@ public class EntrySelectorPanel extends Panel
 		}
 		else
 		{
+			// hide everything 
 			filterInputField.setVisible(false);
 		}
+		
+		filterForm.setVisible(includeFilter || includeCheckboxToggle);
+		
 		filterForm.add(filterInputField);
 	}
 }

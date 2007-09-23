@@ -21,6 +21,7 @@ import java.util.List;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.department.form.DepartmentFormPanel;
@@ -72,8 +73,12 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 
 		Fragment deptListHolder = getDepartmentListHolder(departments);
 
-		add(new EntrySelectorPanel(DEPT_SELECTOR_ID,
-				new ResourceModel("admin.dept.title"),
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
+																new ResourceModel("admin.dept.title"),
+																EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
+		add(greyBorder);
+		
+		greyBorder.add(new EntrySelectorPanel(DEPT_SELECTOR_ID,
 				deptListHolder));		
 	}
 	
