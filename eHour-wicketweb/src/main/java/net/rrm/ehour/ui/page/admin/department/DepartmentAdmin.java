@@ -78,8 +78,7 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 																EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
 		add(greyBorder);
 		
-		greyBorder.add(new EntrySelectorPanel(DEPT_SELECTOR_ID,
-				deptListHolder));		
+		greyBorder.add(new EntrySelectorPanel(DEPT_SELECTOR_ID, deptListHolder));		
 	}
 	
 	/*
