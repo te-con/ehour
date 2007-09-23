@@ -59,7 +59,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	{
 		ReportCriteria criteria = new ReportCriteria();
 		criteria.setUserCriteria(userCriteria);
-		return syncUserReportCriteria(criteria);
+		return syncUserReportCriteria(criteria, ReportCriteriaUpdate.UPDATE_ALL);
 	}
 	
 	/*

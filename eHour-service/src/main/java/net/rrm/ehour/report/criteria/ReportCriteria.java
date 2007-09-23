@@ -154,19 +154,19 @@ public class ReportCriteria implements Serializable
 	 */
 	private void checkProjects()
 	{
-		List<Integer>	projectIdsValid = new ArrayList<Integer>();
+		List<Project>	validProjects = new ArrayList<Project>();
 		
-		if (userCriteria.getProjectIds() != null)
+		if (userCriteria.getProjects() != null)
 		{
-			for (Integer projectId : userCriteria.getProjectIds())
+			for (Project project : userCriteria.getProjects())
 			{
-				if (availableCriteria.getProjects().contains(new Project(projectId)))
+				if (availableCriteria.getProjects().contains(project))
 				{
-					projectIdsValid.add(projectId);
+					validProjects.add(project);
 				}
 			}
 			
-			userCriteria.setProjectIds(projectIdsValid);
+			userCriteria.setProjects(validProjects);
 		}
 	}
 

@@ -22,7 +22,6 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.report.util.ReportUtil;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -44,7 +43,7 @@ public class UserCriteria implements Serializable
 	private	int			userActivityFilter;
 	private	String		userFilter;
 	private	List<Integer>		userIds;
-	private	List<Integer>		projectIds;
+	private	List<Project>	projects;
 	private	List<Integer>		customerIds;
 	private	List<Integer>		departmentIds;
 	private boolean 	infiniteStartDate;
@@ -80,20 +79,7 @@ public class UserCriteria implements Serializable
 		
 		userIds.add(user.getUserId());
 	}
-	
-	/**
-	 * Adds project to the list
-	 * @param project
-	 */
-	public void setProject(Project project)
-	{
-		if (projectIds == null)
-		{
-			projectIds = new ArrayList<Integer>();
-		}
-		
-		projectIds.add(project.getProjectId());
-	}
+
 	
 	/**
 	 * 
@@ -104,7 +90,7 @@ public class UserCriteria implements Serializable
 		return new ToStringBuilder(this)
 			.append("reportRange", reportRange)
 			.append("userIds", userIds)
-			.append("projectIds", projectIds)
+			.append("projects", projects)
 			.append("customerIds", customerIds)			
 			.toString();
 	}
@@ -125,7 +111,7 @@ public class UserCriteria implements Serializable
 
 	public boolean isEmptyProjects()
 	{
-		return projectIds == null || projectIds.size() == 0;
+		return projects == null || projects.size() == 0;
 	}
 
 	/**
@@ -277,47 +263,6 @@ public class UserCriteria implements Serializable
 	}
 
 	/**
-	 * @return the projectIds
-	 */
-	public List<Integer> getProjectIds()
-	{
-		return projectIds;
-	}
-
-	public void setProjects(List<Project> projects)
-	{
-		setProjectIds(ReportUtil.getPKsFromDomainObjects(projects));
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public List<Project> getProjects()
-	{
-		List<Project>	projects = new ArrayList<Project>();
-	
-		if (projectIds != null)
-		{
-			for (Integer  id : projectIds)
-			{
-				projects.add(new Project(id));
-			}
-		}
-		
-		return projects;
-	}
-	
-	/**
-	 * @param projectIds the projectIds to set
-	 */
-	@SuppressWarnings("unchecked")
-	public void setProjectIds(List projectIds)
-	{
-		this.projectIds = projectIds;
-	}
-
-	/**
 	 * @return the customerIds
 	 */
 	public List<Integer> getCustomerIds()
@@ -379,5 +324,21 @@ public class UserCriteria implements Serializable
 	public void setInfiniteEndDate(boolean infiniteEndDate)
 	{
 		this.infiniteEndDate = infiniteEndDate;
+	}
+
+	/**
+	 * @return the projects
+	 */
+	public List<Project> getProjects()
+	{
+		return projects;
+	}
+
+	/**
+	 * @param projects the projects to set
+	 */
+	public void setProjects(List<Project> projects)
+	{
+		this.projects = projects;
 	}
 }

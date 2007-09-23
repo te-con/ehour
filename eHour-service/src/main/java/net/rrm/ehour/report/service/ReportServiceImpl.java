@@ -246,7 +246,7 @@ public class ReportServiceImpl implements ReportService
 		else
 		{
 			logger.debug("Using user provided projects");
-			projectIds = userCriteria.getProjectIds();
+			projectIds = ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects());
 		}
 		
 		return projectIds;
