@@ -49,6 +49,8 @@ public class ReportCriteriaPanel extends Panel
 	private static final long serialVersionUID = -7865322191390719584L;
 	private DojoDatePicker 	startDatePicker;
 	private DojoDatePicker 	endDatePicker;
+	
+	
 	/**
 	 * 
 	 * @param id

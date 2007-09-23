@@ -22,6 +22,7 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
@@ -81,8 +82,9 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		Fragment userListHolder = getUserListHolder(users);
 		
-		add(new EntrySelectorPanel(USER_SELECTOR_ID,
-				new ResourceModel("admin.assignment.title"),
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.assignment.title"), 275);
+		add(greyBorder);
+		greyBorder.add(new EntrySelectorPanel(USER_SELECTOR_ID,
 				userListHolder,
 				getLocalizer().getString("admin.assignment.filter", this) + "..."));
 		
@@ -114,8 +116,6 @@ public class AssignmentAdmin extends BaseAdminPage
 			case CommonUIStaticData.AJAX_FORM_SUBMIT:
 			{
 				AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
-				
-				System.out.println(backingBean.getProjectAssignment());
 				break;
 			}			
 		}
@@ -195,6 +195,8 @@ public class AssignmentAdmin extends BaseAdminPage
 			
 			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, new UserRole(EhourConstants.ROLE_CONSULTANT));
 		}
+		
+		System.out.println("xX: " + users.size());
 		
 		return users;
 	}	

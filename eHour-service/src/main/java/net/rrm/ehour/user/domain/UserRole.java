@@ -109,7 +109,7 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 	@Override
     public int hashCode()
     {
-    	return new HashCodeBuilder().append(role).append(roleName).toHashCode();
+    	return new HashCodeBuilder().append(role).toHashCode();
     }
 	
     public String toString()

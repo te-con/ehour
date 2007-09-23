@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.panel.entryselector;
 
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.AttributeModifier;
@@ -34,7 +33,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
 
 /**
@@ -57,9 +55,9 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterInputText
 	 * @param itemList
 	 */
-	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder)
+	public EntrySelectorPanel(String id, Fragment itemListHolder)
 	{
-		this(id, title, itemListHolder, null);
+		this(id, itemListHolder, null);
 	}
 	
 	/**
@@ -69,9 +67,9 @@ public class EntrySelectorPanel extends Panel
 	 * @param itemList
 	 * @param defaultFilterText
 	 */
-	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder, String defaultFilterText)
+	public EntrySelectorPanel(String id, Fragment itemListHolder, String defaultFilterText)
 	{
-		this(id, title, itemListHolder, defaultFilterText, null);
+		this(id, itemListHolder, defaultFilterText, null);
 	}
 
 	/**
@@ -82,7 +80,7 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterText
 	 * @param checkboxPrefix
 	 */
-	public EntrySelectorPanel(String id, ResourceModel title, Fragment itemListHolder, String defaultFilter, IModel checkboxPrefix)
+	public EntrySelectorPanel(String id, Fragment itemListHolder, String defaultFilter, IModel checkboxPrefix)
 	{
 		super(id);
 
@@ -98,7 +96,7 @@ public class EntrySelectorPanel extends Panel
 			includeCheckboxToggle = true;
 		}
 
-		setUpPanel(title, itemListHolder);
+		setUpPanel(itemListHolder);
 	}	
 
 	/**
@@ -113,15 +111,16 @@ public class EntrySelectorPanel extends Panel
 	/**
 	 * Setup page
 	 */
-	private void setUpPanel(ResourceModel title, Fragment itemListHolder)
+	private void setUpPanel(Fragment itemListHolder)
 	{
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title, 275);
+//		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title, 275);
+		WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
 		blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		blueBorder.setOutputMarkupId(true);
-		setUpFilterForm(greyBorder, blueBorder);
+		setUpFilterForm(selectorFrame, blueBorder);
 		
-		greyBorder.add(blueBorder);
-		add(greyBorder);
+		selectorFrame.add(blueBorder);
+		add(selectorFrame);
 		
 		blueBorder.add(itemListHolder);
 	}
