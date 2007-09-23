@@ -95,13 +95,12 @@
 	</query>
 
 	<query name="User.findUsersWhoDontHavePMRoleButProject"> 
-		SELECT user
+		SELECT DISTINCT user
 		FROM User as user,
 			 Project project
 	    WHERE 'ROLE_PROJECTMANAGER' not in elements (user.userRoles) AND
 				project.projectManager = user AND
 				user.active IS TRUE
-	    GROUP BY user
 	</query>
 	
 	<query name="CustomerFoldPreference.findForUserAndCustomers"> 

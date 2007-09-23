@@ -148,7 +148,7 @@ public class UserDAOTest extends BaseDAOTest
 		List<User> results = dao.findUsersWhoDontHavePMRoleButArePM();
 		
 		assertEquals(1, results.size());
-		assertEquals(1, results.get(0).getUserId().intValue());
+		assertEquals(3, results.get(0).getUserId().intValue());
 	}
 	
 	
