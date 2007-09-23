@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
@@ -53,7 +54,7 @@ import org.wicketstuff.dojo.toggle.DojoFadeToggle;
  * Report criteria panel
  **/
 
-public class ReportCriteriaPanel extends Panel
+public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = -7865322191390719584L;
 	
@@ -100,7 +101,11 @@ public class ReportCriteriaPanel extends Panel
 		form.add(customers);
 		fragment.add(form);
 		
-		EntrySelectorPanel entrySelectorPanel = new EntrySelectorPanel("customerList", fragment);
+		// TODO i18n
+		EntrySelectorPanel entrySelectorPanel = new EntrySelectorPanel("customerList", 
+																		fragment,
+																		"filter...",
+																		new ResourceModel("report.hideInactive"));
 
 		parent.add(entrySelectorPanel);
 	}		
@@ -232,5 +237,17 @@ public class ReportCriteriaPanel extends Panel
 		});
 		
 		parent.add(quickQuarterSelection);
+	}
+
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	{
+		// TODO Auto-generated method stub
+		
 	}	
 }

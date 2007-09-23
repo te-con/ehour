@@ -31,6 +31,7 @@ public class EntrySelectorFilter implements Serializable
 	private	boolean	activateToggle = true;
 	private	String	filterInput;
 	private	String	defaultFilterInputText;
+	private String	onId;
 	
 	public EntrySelectorFilter()
 	{
@@ -68,5 +69,21 @@ public class EntrySelectorFilter implements Serializable
 	public void setFilterInput(String filterInput)
 	{
 		this.filterInput = filterInput;
+	}
+
+	/**
+	 * @return the onId
+	 */
+	public String getOnId()
+	{
+		return onId;
+	}
+
+	/**
+	 * @param onId the onId to set
+	 */
+	public void setOnId(String onId)
+	{
+		this.onId = onId;
 	}
 }

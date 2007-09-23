@@ -112,9 +112,8 @@ public class EntrySelectorPanel extends Panel
 	/**
 	 * Setup page
 	 */
-	private void setUpPanel(WebMarkupContainer itemListHolder)
+	protected void setUpPanel(WebMarkupContainer itemListHolder)
 	{
-//		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", title, 275);
 		WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
 		blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		blueBorder.setOutputMarkupId(true);
@@ -130,9 +129,10 @@ public class EntrySelectorPanel extends Panel
 	 * Setup the filter form
 	 * @param parent
 	 */
-	private void setUpFilterForm(WebMarkupContainer parent, final GreyBlueRoundedBorder border)
+	private void setUpFilterForm(WebMarkupContainer parent, final WebMarkupContainer updateContainer)
 	{
 		final EntrySelectorFilter filter = new EntrySelectorFilter(defaultFilterText);
+		filter.setOnId(this.getId());
 		
 		Form	filterForm = new Form("filterForm");
 		parent.add(filterForm);
@@ -145,8 +145,8 @@ public class EntrySelectorPanel extends Panel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
-            	target.addComponent(border);
+            	callbackAfterFilter(target, filter);
+            	target.addComponent(updateContainer);
 			}
 		};
 		deactivateBox.setVisible(includeCheckboxToggle);
@@ -171,8 +171,8 @@ public class EntrySelectorPanel extends Panel
 	            @Override
 	            protected void onUpdate(AjaxRequestTarget target)
 	            {
-					((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
-	            	target.addComponent(border);
+	            	callbackAfterFilter(target, filter);
+	            	target.addComponent(updateContainer);
 	            }
 	        };
 	        
@@ -186,8 +186,18 @@ public class EntrySelectorPanel extends Panel
 			filterInputField.setVisible(false);
 		}
 		
-		filterForm.setVisible(includeFilter || includeCheckboxToggle);
-		
 		filterForm.add(filterInputField);
+		
+		filterForm.setVisible(includeFilter || includeCheckboxToggle);
+	}
+	
+	/**
+	 * Call back
+	 * @param target
+	 * @param filter
+	 */
+	protected void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter)
+	{
+		((AjaxAwareContainer)getParent()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
 	}
 }
