@@ -84,7 +84,7 @@ public class CustomerAggregateReportTest
                 
                 Serializable[][] matrix = node.getNodeMatrix(matrixWidth);
                 
-                assertEquals("Dummy TestUser", matrix[0][3]);
+                assertEquals("TestUser, Dummy", matrix[0][3]);
                 assertEquals(15.0f, matrix[2][6]);
             }
         }
