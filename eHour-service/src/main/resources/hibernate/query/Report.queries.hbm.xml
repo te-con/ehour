@@ -2,19 +2,19 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <query name="Report.getCumulatedHoursPerAssignmentOnDateForUserIds">
+    <query name="Report.getCumulatedHoursPerAssignmentOnDateForUsers">
          <![CDATA[SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours))
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
-                      entry.entryId.projectAssignment.user.userId IN (:userIds)
+                      entry.entryId.projectAssignment.user IN (:users)
                 GROUP BY entry.entryId.projectAssignment.assignmentId
         ]]></query>
 
-    <query name="Report.getCumulatedHoursPerAssignmentForUserIds">
+    <query name="Report.getCumulatedHoursPerAssignmentForUsers">
         SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours))
         FROM TimesheetEntry entry
-        WHERE entry.entryId.projectAssignment.user.userId IN (:userIds)
+        WHERE entry.entryId.projectAssignment.user IN (:users)
         GROUP BY entry.entryId.projectAssignment.assignmentId
 	</query>
 
@@ -25,21 +25,21 @@
         GROUP BY entry.entryId.projectAssignment.assignmentId
 	</query>
 
-    <query name="Report.getCumulatedHoursPerAssignmentForUserIdsAndProjectIds">
+    <query name="Report.getCumulatedHoursPerAssignmentForUsersAndProjects">
 		SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours))
         FROM TimesheetEntry entry
-        WHERE entry.entryId.projectAssignment.user.userId IN (:userIds) AND
-        	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
+        WHERE entry.entryId.projectAssignment.user IN (:users) AND
+        	  entry.entryId.projectAssignment.project IN (:projects)
         GROUP BY entry.entryId.projectAssignment.assignmentId
 	</query>
 
-    <query name="Report.getCumulatedHoursPerAssignmentOnDateForUserIdsAndProjectIds">
+    <query name="Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects">
          <![CDATA[SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours))
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
-                      entry.entryId.projectAssignment.user.userId IN (:userIds) AND
-                	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
+                      entry.entryId.projectAssignment.user IN (:users) AND
+                	  entry.entryId.projectAssignment.project IN (:projects)
                 GROUP BY entry.entryId.projectAssignment.assignmentId
         ]]></query>
         
@@ -53,12 +53,12 @@
         ]]>
 	</query>        
         
-    <query name="Report.getCumulatedHoursPerAssignmentOnDateForProjectIds">
+    <query name="Report.getCumulatedHoursPerAssignmentOnDateForProjects">
          <![CDATA[SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours))
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
-                	  entry.entryId.projectAssignment.project.projectId IN (:projectIds)
+                	  entry.entryId.projectAssignment.project IN (:projects)
                 GROUP BY entry.entryId.projectAssignment.assignmentId
         ]]>
 	</query>
@@ -80,7 +80,7 @@
     <query name="Report.getMinMaxTimesheetEntryDateForUser">
         SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
 		FROM TimesheetEntry entry
-        WHERE entry.entryId.projectAssignment.user.userId = :userId
+        WHERE entry.entryId.projectAssignment.user = :user
 	</query> 
 
     <query name="Report.getMinMaxTimesheetEntryDateForProject">

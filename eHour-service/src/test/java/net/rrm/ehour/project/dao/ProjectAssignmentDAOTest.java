@@ -57,7 +57,7 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 	 */
 	public void testFindProjectAssignmentsForUser()
 	{
-		List<ProjectAssignment> pas = dao.findProjectAssignmentsForUser(1);
+		List<ProjectAssignment> pas = dao.findProjectAssignmentsForUser(new User(1));
 		
 		assertEquals(7, pas.size());
 	}

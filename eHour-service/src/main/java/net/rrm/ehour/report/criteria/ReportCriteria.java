@@ -132,19 +132,19 @@ public class ReportCriteria implements Serializable
 	 */
 	private void checkUsers()
 	{
-		List<Integer>	userIdsValid = new ArrayList<Integer>();
+		List<User>	usersValid = new ArrayList<User>();
 		
-		if (userCriteria.getUserIds() != null)
+		if (userCriteria.getUsers() != null)
 		{
-			for (Integer userId : userCriteria.getUserIds())
+			for (User user : userCriteria.getUsers())
 			{
-				if (availableCriteria.getUsers().contains(new User(userId)))
+				if (availableCriteria.getUsers().contains(user))
 				{
-					userIdsValid.add(userId);
+					usersValid.add(user);
 				}
 			}
 			
-			userCriteria.setUserIds(userIdsValid);
+			userCriteria.setUsers(usersValid);
 		}
 	}
 		

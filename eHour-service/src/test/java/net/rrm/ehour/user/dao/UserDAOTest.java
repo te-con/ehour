@@ -122,7 +122,7 @@ public class UserDAOTest extends BaseDAOTest
 	public void testFindUsersForDepartments()
 	{
 		List ids = new ArrayList();
-		ids.add(1);
+		ids.add(new UserDepartment(1));
 		
 		List results = dao.findUsersForDepartments("in", ids, false);
 		

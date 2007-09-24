@@ -22,6 +22,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * CRUD on ProjectAssignment domain object
@@ -51,7 +52,7 @@ public interface ProjectAssignmentDAO  extends GenericDAO<ProjectAssignment, Int
 	 * @param userId
 	 * @return
 	 */
-	public List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId);
+	public List<ProjectAssignment> findProjectAssignmentsForUser(User user);
 	
 	/**
 	 * Find (active) projects for user in date range

@@ -24,6 +24,7 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -44,10 +45,10 @@ public class UserCriteria implements Serializable
 	private	int			userActivityFilter;
 	private	String		userFilter;
 	private	String		customerFilter;
-	private	List<Integer>		userIds;
-	private	List<Project>	projects;
-	private	List<Customer>	customers;
-	private	List<Integer>		departmentIds;
+	private	List<User>	users;
+	private	List<Project>		projects;
+	private	List<Customer>		customers;
+	private	List<UserDepartment>	departments;
 	private boolean 	infiniteStartDate;
 	private boolean		infiniteEndDate;
 	private	boolean		singleUser;
@@ -74,12 +75,12 @@ public class UserCriteria implements Serializable
 	 */
 	public void setUser(User user)
 	{
-		if (userIds == null)
+		if (users == null)
 		{
-			userIds = new ArrayList<Integer>();
+			users = new ArrayList<User>();
 		}
 		
-		userIds.add(user.getUserId());
+		users.add(user);
 	}
 
 	
@@ -91,9 +92,10 @@ public class UserCriteria implements Serializable
 	{
 		return new ToStringBuilder(this)
 			.append("reportRange", reportRange)
-			.append("userIds", userIds)
+			.append("users", users)
 			.append("projects", projects)
 			.append("customers", customers)			
+			.append("departments", departments)
 			.toString();
 	}
 	
@@ -123,7 +125,7 @@ public class UserCriteria implements Serializable
 
 	public boolean isEmptyDepartments()
 	{
-		return departmentIds == null || departmentIds.size() == 0;
+		return departments == null || departments.size() == 0;
 	}	
 	
 	/**
@@ -133,7 +135,7 @@ public class UserCriteria implements Serializable
 	
 	public boolean isEmptyUsers()
 	{
-		return userIds == null || userIds.size() == 0;
+		return users == null || users.size() == 0;
 	}
 	
 	/**
@@ -251,17 +253,17 @@ public class UserCriteria implements Serializable
 	/**
 	 * @return the userIds
 	 */
-	public List<Integer> getUserIds()
+	public List<User> getUsers()
 	{
-		return userIds;
+		return users;
 	}
 
 	/**
 	 * @param userIds the userIds to set
 	 */
-	public void setUserIds(List<Integer> userIds)
+	public void setUsers(List<User> users)
 	{
-		this.userIds = userIds;
+		this.users = users;
 	}
 
 	/**
@@ -283,17 +285,17 @@ public class UserCriteria implements Serializable
 	/**
 	 * @return the departmentIds
 	 */
-	public List<Integer> getDepartmentIds()
+	public List<UserDepartment> getDepartments()
 	{
-		return departmentIds;
+		return departments;
 	}
 
 	/**
 	 * @param departmentIds the departmentIds to set
 	 */
-	public void setDepartmentIds(List<Integer> departmentIds)
+	public void setDepartments(List<UserDepartment> departments)
 	{
-		this.departmentIds = departmentIds;
+		this.departments = departments;
 	}
 
 	/**

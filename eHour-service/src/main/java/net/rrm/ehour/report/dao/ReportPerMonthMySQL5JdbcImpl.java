@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.report.dao;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForUsers(java.lang.Integer[], java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userIds, List<Integer> projectIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userIds, List<Serializable> projectIds, DateRange dateRange)
 	{
 		ParameterizedRowMapper<FlatProjectAssignmentAggregate> 	mapper;
 		NamedParameterJdbcTemplate 	namedParamTemp; 
@@ -89,7 +90,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForUsers(java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Integer> userIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userIds, DateRange dateRange)
 	{
 		ParameterizedRowMapper<FlatProjectAssignmentAggregate> 	mapper;
 		NamedParameterJdbcTemplate 	namedParamTemp; 
@@ -138,7 +139,7 @@ public class ReportPerMonthMySQL5JdbcImpl extends SimpleJdbcDaoSupport implement
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForProjects(java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Integer> projectIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Serializable> projectIds, DateRange dateRange)
 	{
 		ParameterizedRowMapper<FlatProjectAssignmentAggregate> 	mapper;
 		NamedParameterJdbcTemplate 	namedParamTemp; 

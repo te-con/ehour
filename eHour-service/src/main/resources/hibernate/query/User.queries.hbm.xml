@@ -73,7 +73,7 @@
 		FROM User as user
 	    WHERE (lcase(firstName) like  :pattern OR lcase(lastName) like :pattern)
 	    		AND active = true
-	    		AND user.userDepartment.departmentId IN (:departments)
+	    		AND user.userDepartment IN (:departments)
 	    ORDER BY lastName, firstName	    
 	</query>
 
@@ -81,7 +81,7 @@
 		SELECT DISTINCT user
 		FROM User as user
 	    WHERE (lcase(firstName) like :pattern OR lcase(lastName) like :pattern)
-	    		AND user.userDepartment.departmentId IN (:departments)
+	    		AND user.userDepartment IN (:departments)
 	    ORDER BY lastName, firstName	    
 	</query>
 

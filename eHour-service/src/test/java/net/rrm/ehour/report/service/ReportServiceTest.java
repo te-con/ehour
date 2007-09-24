@@ -40,6 +40,7 @@ import net.rrm.ehour.report.dao.ReportPerMonthDAO;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.util.DateUtil;
 
 /**
@@ -92,7 +93,9 @@ public class ReportServiceTest extends TestCase
 		
 		results.add(new ProjectAssignmentAggregate());
 		
-		reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(getAsList(1), DateUtil.calendarToMonthRange(cal));
+		List<User> l = new ArrayList<User>();
+		l.add(new User(1));
+		reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(l, DateUtil.calendarToMonthRange(cal));
 		expectLastCall().andReturn(results);
 		
 		replay();
@@ -107,7 +110,9 @@ public class ReportServiceTest extends TestCase
 		DateRange dr = new DateRange();
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);
-		uc.setUserIds(getAsList(1));
+		List<User> l = new ArrayList<User>();
+		l.add(new User(1));
+		uc.setUsers(l);
 		rc.setUserCriteria(uc);
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		
@@ -149,7 +154,10 @@ public class ReportServiceTest extends TestCase
 		DateRange dr = new DateRange();
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);
-		uc.setDepartmentIds(getAsList(2));
+		List<UserDepartment> l = new ArrayList<UserDepartment>();
+		l.add(new UserDepartment(2));
+		
+		uc.setDepartments(l);
 		uc.setOnlyActiveUsers(true);
 		rc.setUserCriteria(uc);
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
@@ -161,7 +169,7 @@ public class ReportServiceTest extends TestCase
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
 		.andReturn(pags);
 		
-		expect(userDAO.findUsersForDepartments(null, getAsList(2), true)).andReturn(users);
+		expect(userDAO.findUsersForDepartments(null, l, true)).andReturn(users);
 		
 		replay(reportAggregatedDAO);
 		replay(userDAO);

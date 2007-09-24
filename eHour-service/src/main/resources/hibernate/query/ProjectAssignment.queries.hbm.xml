@@ -13,7 +13,7 @@
 		FROM ProjectAssignment pa
 		WHERE pa.project.active is true AND
 			  pa.project.customer.active is true AND 
-			  pa.user.userId = :userId
+			  pa.user = :user
 		ORDER BY pa.dateStart, pa.project.name
 	</query>	
 

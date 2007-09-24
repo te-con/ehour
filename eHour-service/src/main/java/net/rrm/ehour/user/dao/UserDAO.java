@@ -18,6 +18,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 
 public interface UserDAO extends GenericDAO<User, Integer>
@@ -69,11 +70,11 @@ public interface UserDAO extends GenericDAO<User, Integer>
 	/**
 	 * Find users for departments with filter pattern and active flag
 	 * @param pattern
-	 * @param departmentIds
+	 * @param departments
 	 * @param onlyActive
 	 * @return
 	 */
-	public List<User> findUsersForDepartments(String pattern, List<Integer> departmentIds, boolean onlyActive);
+	public List<User> findUsersForDepartments(String pattern, List<UserDepartment> departments, boolean onlyActive);
 	
 	/**
 	 * Find users with a PM role but no project

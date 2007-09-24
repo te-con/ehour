@@ -22,6 +22,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * CRUD stuff on PA do 
@@ -94,13 +95,13 @@ public class ProjectAssignmentDAOHibernateImpl
 	 * @return
 	 */	
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId)
+	public List<ProjectAssignment> findProjectAssignmentsForUser(User user)
 	{
 		List<ProjectAssignment>		results;
 		
 		results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUser"
-				, "userId"
-				, userId
+				, "user"
+				, user
 				, true
 				, CACHEREGION);			
 		

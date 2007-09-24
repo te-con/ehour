@@ -19,6 +19,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 
 
@@ -145,7 +146,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	 * @return
 	 */	
 	@SuppressWarnings("unchecked")
-	public List<User> findUsersForDepartments(String pattern, List<Integer> departmentIds, boolean onlyActive)
+	public List<User> findUsersForDepartments(String pattern, List<UserDepartment> departments, boolean onlyActive)
 	{
 		String		hql;
 		String[]	paramKeys;
@@ -157,7 +158,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 			  				 "User.findNamePatternForDepartment";
 		
 		paramKeys = new String[]{"pattern", "departments"};
-		paramValues = new Object[]{pattern, (Integer[])departmentIds.toArray(new Integer[]{departmentIds.size()})};
+		paramValues = new Object[]{pattern, departments.toArray()}; 
 		
 		return findByNamedQueryAndNamedParam(hql, paramKeys, paramValues, true, CACHEREGION);
 	}

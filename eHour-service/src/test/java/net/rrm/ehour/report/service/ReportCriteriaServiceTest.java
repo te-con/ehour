@@ -104,17 +104,17 @@ public class ReportCriteriaServiceTest  extends TestCase
 		userCriteria = new UserCriteria();
 		userCriteria.setSingleUser(true);
 		List ids = new ArrayList();
-		ids.add(1);
-		userCriteria.setUserIds(ids);
+		ids.add(new User(1));
+		userCriteria.setUsers(ids);
 		reportCriteria.setUserCriteria(userCriteria);
 		
 		availCriteria = new AvailableCriteria();
 		reportCriteria.setAvailableCriteria(availCriteria);
 		
-		prjAssignmentDAO.findProjectAssignmentsForUser(1);
+		prjAssignmentDAO.findProjectAssignmentsForUser(new User(1));
 		expectLastCall().andReturn(prjAsgs);
 
-		reportAggregatedDAO.getMinMaxDateTimesheetEntry(1);
+		reportAggregatedDAO.getMinMaxDateTimesheetEntry(new User(1));
 		expectLastCall().andReturn(null);
 		
 		replay(prjAssignmentDAO);

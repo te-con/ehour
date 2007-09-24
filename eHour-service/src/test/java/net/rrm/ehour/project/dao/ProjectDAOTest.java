@@ -114,8 +114,8 @@ public class ProjectDAOTest extends BaseDAOTest
 	public void testFindProjectForCustomersAll()
 	{
 		List	ids = new ArrayList();
-		ids.add(3);
-		ids.add(1);
+		ids.add(new Customer(3));
+		ids.add(new Customer(1));
 		List r = dao.findProjectForCustomers(ids, false);
 		
 		assertEquals(3, r.size());
@@ -124,8 +124,8 @@ public class ProjectDAOTest extends BaseDAOTest
 	public void testFindProjectForCustomersOnlyActive()
 	{
 		List	ids = new ArrayList();
-		ids.add(3);
-		ids.add(1);
+		ids.add(new Customer(3));
+		ids.add(new Customer(1));
 		List r = dao.findProjectForCustomers(ids, true);
 		
 		assertEquals(2, r.size());

@@ -21,6 +21,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * Reporting data operations 
@@ -36,7 +37,7 @@ public interface ReportAggregatedDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<Integer> userIds, DateRange dateRange);
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users, DateRange dateRange);
 
 	/**
 	 * Get cumulated hours per project assignment for users
@@ -44,7 +45,7 @@ public interface ReportAggregatedDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<Integer> userIds);
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users);
 	
 	/**
 	 * Get cumulated hours per project assignment for assignments
@@ -59,7 +60,7 @@ public interface ReportAggregatedDAO
 	 * @param projectId
 	 * @return
 	 */
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<Integer> userIds, List<Integer >projectIds);
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users, List<Project> projects);
 
 	/**
 	 * Get cumulated hours per project assignment for users, projects in a date range
@@ -68,7 +69,7 @@ public interface ReportAggregatedDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<Integer> userId, List<Integer>  projectId, DateRange dateRange);
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users, List<Project> projects, DateRange dateRange);
 
 	/**
 	 * Get cumulated hours per project assignment for all users, projects in a date range
@@ -76,7 +77,7 @@ public interface ReportAggregatedDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForProjects(List<Integer>  projectId, DateRange dateRange);
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForProjects(List<Project> projects, DateRange dateRange);
 
 	/**
 	 * Get cumulated hours for a project assignment
@@ -103,7 +104,7 @@ public interface ReportAggregatedDAO
 	 * Get the min/max timesheet date for a user
 	 * @return
 	 */
-	public DateRange getMinMaxDateTimesheetEntry(Integer userId);
+	public DateRange getMinMaxDateTimesheetEntry(User user);
 	
 	/**
 	 * Get the min/max timesheet date for a project

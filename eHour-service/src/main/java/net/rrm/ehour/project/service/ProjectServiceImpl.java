@@ -87,7 +87,7 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		List<ProjectAssignment>	results;
 		
-		results = projectAssignmentDAO.findProjectAssignmentsForUser(userId);
+		results = projectAssignmentDAO.findProjectAssignmentsForUser(new User(userId));
 		
 		return results;
 	}

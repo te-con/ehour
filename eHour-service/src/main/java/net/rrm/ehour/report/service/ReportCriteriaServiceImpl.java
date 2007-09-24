@@ -134,7 +134,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		{
 			logger.debug("Finding users for departments with filter '" + userCriteria.getUserFilter() + "'");
 			users = userDAO.findUsersForDepartments(userCriteria.getUserFilter()
-														, userCriteria.getDepartmentIds()
+														, userCriteria.getDepartments()
 														, userCriteria.isOnlyActiveUsers());
 		}
 		
@@ -208,11 +208,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		Set<Customer>			customers = new HashSet<Customer>();
 		Set<Project>			projects = new HashSet<Project>();
 		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
-		Integer					userId;
+		User					user;
 		
-		userId = reportCriteria.getUserCriteria().getUserIds().get(0);
+		user = reportCriteria.getUserCriteria().getUsers().get(0);
 		
-		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(userId);
+		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user);
 		
 		for (ProjectAssignment assignment : assignments)
 		{
@@ -223,7 +223,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		availCriteria.setCustomers(new ArrayList<Customer>(customers));
 		availCriteria.setProjects(new ArrayList<Project>(projects));
 		
-		availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry(userId));
+		availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry(user));
 	}
 
 	/**

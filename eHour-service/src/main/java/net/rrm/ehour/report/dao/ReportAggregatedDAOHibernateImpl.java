@@ -21,6 +21,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.user.domain.User;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -37,7 +38,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<Integer> userIds, DateRange dateRange)
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users, DateRange dateRange)
 	{
 		List		results;
 		String[]	keys = new String[3];
@@ -45,13 +46,13 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		
 		keys[0] = "dateStart";
 		keys[1] = "dateEnd";
-		keys[2] = "userIds";
+		keys[2] = "users";
 		
 		params[0] = dateRange.getDateStart();
 		params[1] = dateRange.getDateEnd();
-		params[2] = userIds.toArray();
+		params[2] = users.toArray();
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUserIds"
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsers"
 																		, keys, params);
 		
 		return results;		
@@ -62,12 +63,12 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<Integer> userIds)
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users)
 	{
 		List		results;
 
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUserIds"
-																		, "userIds", userIds.toArray());
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUsers"
+																		, "users", users.toArray());
 		
 		return results;		
 	}	
@@ -89,19 +90,19 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.util.List, java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<Integer> userIds, List<Integer> projectIds)
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users, List<Project> projects)
 	{
 		List		results;
 		String[]	keys = new String[2];
 		Object[]	params = new Object[2];
 		
-		keys[0] = "userIds";
-		keys[1] = "projectIds";
+		keys[0] = "users";
+		keys[1] = "projects";
 		
-		params[0] = userIds.toArray();
-		params[1] = projectIds.toArray();
+		params[0] = users.toArray();
+		params[1] = projects.toArray();
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUserIdsAndProjectIds"
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUsersAndProjects"
 																		, keys, params);
 		return results;
 	}
@@ -111,8 +112,8 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.util.List, java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<Integer> userIds,
-																					List<Integer> projectIds,
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users,
+																					List<Project> projects,
 																					DateRange dateRange)
 	{
 		List		results;
@@ -121,15 +122,15 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		
 		keys[0] = "dateStart";
 		keys[1] = "dateEnd";
-		keys[2] = "userIds";
-		keys[3] = "projectIds";
+		keys[2] = "users";
+		keys[3] = "projects";
 		
 		params[0] = dateRange.getDateStart();
 		params[1] = dateRange.getDateEnd();
-		params[2] = userIds.toArray();
-		params[3] = projectIds.toArray();
+		params[2] = users.toArray();
+		params[3] = projects.toArray();
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUserIdsAndProjectIds"
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects"
 																		, keys, params);
 		return results;
 	}
@@ -139,12 +140,11 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getMinMaxDateTimesheetEntry(java.lang.Integer)
 	 */
 	@SuppressWarnings("unchecked")
-	public DateRange getMinMaxDateTimesheetEntry(Integer userId)
+	public DateRange getMinMaxDateTimesheetEntry(User user)
 	{
 		List<DateRange>	results;
 		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getMinMaxTimesheetEntryDateForUser"
-																		, "userId",
-																		userId);
+																		, "user", user);
 		return results.get(0);
 	}
 
@@ -176,7 +176,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForProjects(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForProjects(List<Integer> projectIds, DateRange dateRange)
+	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForProjects(List<Project> projects, DateRange dateRange)
 	{
 		List		results;
 		String[]	keys = new String[3];
@@ -184,13 +184,13 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 		
 		keys[0] = "dateStart";
 		keys[1] = "dateEnd";		
-		keys[2] = "projectIds";
+		keys[2] = "projects";
 
 		params[0] = dateRange.getDateStart();
 		params[1] = dateRange.getDateEnd();
-		params[2] = projectIds.toArray();
+		params[2] = projects.toArray();
 		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForProjectIds"
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForProjects"
 																			, keys, params);
 		return results;
 	}
