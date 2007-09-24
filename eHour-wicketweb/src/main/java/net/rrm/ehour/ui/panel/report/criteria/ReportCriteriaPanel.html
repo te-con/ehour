@@ -24,6 +24,8 @@
 
 			<span wicket:id="customerList"></span>
 			<span wicket:id="projectList"></span>
+			<span wicket:id="departmentList"></span>
+			<span wicket:id="userList"></span>
 		</div>
 		
     	<wicket:fragment wicket:id="customerListHolder">
@@ -37,6 +39,18 @@
     			<select wicket:id="reportCriteria.availableCriteria.projects" class="criteriaInput"></select>
     		</form>
 		</wicket:fragment>
+		
+		<wicket:fragment wicket:id="departmentListHolder">
+    		<form wicket:id="departmentSelection">
+    			<select wicket:id="reportCriteria.availableCriteria.userDepartments" class="criteriaInput"></select>
+    		</form>
+		</wicket:fragment>
+		
+		<wicket:fragment wicket:id="userListHolder">
+    		<form wicket:id="userSelection">
+    			<select wicket:id="reportCriteria.availableCriteria.users" class="criteriaInput"></select>
+    		</form>
+		</wicket:fragment>		
 </wicket:panel>
 
 </body>

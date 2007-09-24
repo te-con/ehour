@@ -93,7 +93,8 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		
 		addCustomerSelection(greyBorder);
 		addProjectSelection(greyBorder);
-//		addUserDepartmentSelection(greyBorder);
+		addUserDepartmentSelection(greyBorder);
+		addUserSelection(greyBorder);
 	}
 	
 
@@ -115,19 +116,31 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	}	
 	
 	/**
-	 * 
+	 * Update the appropiate selector list
 	 * @param filter
 	 */
 	private void updateFilterChange(EntrySelectorFilter filter)
 	{
 		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
-		
+
+		// TODO this could be a bit cleaner by setting the target directly in the model
 		if (filter.getOnId().equals("projectList"))
 		{
-			// TODO this could be a bit cleaner by setting the target directly in the model
 			backingBean.getReportCriteria().getUserCriteria().setOnlyActiveProjects(filter.isActivateToggle());
 			updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
 		}
+		else if (filter.getOnId().equals("customerList"))
+		{
+			backingBean.getReportCriteria().getUserCriteria().setOnlyActiveCustomers(filter.isActivateToggle());
+			updateReportCriteria(ReportCriteriaUpdate.UPDATE_CUSTOMERS);
+		}
+		else if (filter.getOnId().equals("userList"))
+		{
+			backingBean.getReportCriteria().getUserCriteria().setOnlyActiveUsers(filter.isActivateToggle());
+			backingBean.getReportCriteria().getUserCriteria().setUserFilter(filter.getCleanFilterInput());
+			updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
+		}
+		
 	}
 	
 	/**
@@ -151,6 +164,33 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		return (ReportCriteriaBackingBean)getModel().getObject();
 	}
 	
+	/**
+	 * Add customer selection
+	 * @param parent
+	 */
+	private void addUserSelection(WebMarkupContainer parent)
+	{
+		Fragment fragment = new Fragment("itemListHolder", "userListHolder", ReportCriteriaPanel.this);
+		Form form = new Form("userSelection");
+
+		users = new ListMultipleChoice("reportCriteria.availableCriteria.users",
+								new PropertyModel(getModel(), "reportCriteria.userCriteria.users"),
+								new PropertyModel(getModel(), "reportCriteria.availableCriteria.users"),
+								new DomainObjectChoiceRenderer());
+		users.setOutputMarkupId(true);
+		users.setMaxRows(4);
+		
+		form.add(users);
+		fragment.add(form);
+		
+		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("userList", 
+																		fragment,
+																		new StringResourceModel("report.filter", this, null),
+																		new StringResourceModel("report.hideInactive", this, null),
+																		this);
+
+		parent.add(entrySelectorPanel);
+	}	
 	
 	/**
 	 * Add customer selection
@@ -161,26 +201,26 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		Fragment fragment = new Fragment("itemListHolder", "departmentListHolder", ReportCriteriaPanel.this);
 		Form form = new Form("departmentSelection");
 
-		ListMultipleChoice customers = new ListMultipleChoice("reportCriteria.availableCriteria.userDepartments",
-								new PropertyModel(getModel(), "reportCriteria.userCriteria.customers"),
-								new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
+		ListMultipleChoice depts = new ListMultipleChoice("reportCriteria.availableCriteria.userDepartments",
+								new PropertyModel(getModel(), "reportCriteria.userCriteria.userDepartments"),
+								new PropertyModel(getModel(), "reportCriteria.availableCriteria.userDepartments"),
 								new DomainObjectChoiceRenderer());
-		customers.setMaxRows(4);
+		depts.setMaxRows(4);
 		
-		customers.add(new AjaxFormComponentUpdatingBehavior("onchange")
+		depts.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
 			protected void onUpdate(AjaxRequestTarget target)
             {
-				// show only projects for selected customers
-				updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
-                target.addComponent(projects);
+				// show only projects for selected users
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
+                target.addComponent(users);
             }
         });	
 		
-		form.add(customers);
+		form.add(depts);
 		fragment.add(form);
 		
-		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("customerList", 
+		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("departmentList", 
 																		fragment,
 																		null,
 																		null,
@@ -203,6 +243,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 								new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
 								new DomainObjectChoiceRenderer());
 		customers.setMaxRows(4);
+		customers.setOutputMarkupId(true);
 		
 		customers.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
@@ -220,7 +261,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("customerList", 
 																		fragment,
 																		null,
-																		null,
+																		new StringResourceModel("report.hideInactive", this, null),
 																		this);
 
 		parent.add(entrySelectorPanel);
