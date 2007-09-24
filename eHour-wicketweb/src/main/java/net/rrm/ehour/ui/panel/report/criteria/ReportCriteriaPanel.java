@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.panel.report.criteria;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.report.criteria.filter.ReportCriteriaSelectorPanel;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
@@ -35,6 +37,11 @@ import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
+import net.rrm.ehour.ui.sort.CustomerComparator;
+import net.rrm.ehour.ui.sort.ProjectComparator;
+import net.rrm.ehour.ui.sort.UserComparator;
+import net.rrm.ehour.ui.sort.UserDepartmentComparator;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -46,6 +53,7 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
@@ -64,6 +72,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	private DojoDatePicker 			startDatePicker;
 	private DojoDatePicker 			endDatePicker;
 	private	ListMultipleChoice 		projects;
+	private	ListMultipleChoice 		users;
 	
 	/**
 	 * 
@@ -74,6 +83,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	{
 		super(id, new CompoundPropertyModel(new ReportCriteriaBackingBean(criteria)));
 		
+		sortReportCriteria(criteria);
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 		
@@ -83,6 +93,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		
 		addCustomerSelection(greyBorder);
 		addProjectSelection(greyBorder);
+//		addUserDepartmentSelection(greyBorder);
 	}
 	
 
@@ -92,29 +103,91 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-//		switch (type)
-//		{
-//			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
-//			{
-//				EntrySelectorFilter	filter = (EntrySelectorFilter)params;
-//				handleFilterChange(filter);
-//				break;
-//			}
-//		}
+		switch (type)
+		{
+			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			{
+				EntrySelectorFilter	filter = (EntrySelectorFilter)params;
+				updateFilterChange(filter);
+				break;
+			}
+		}
 	}	
 	
 	/**
-	 * Handle filter change
+	 * 
+	 * @param filter
+	 */
+	private void updateFilterChange(EntrySelectorFilter filter)
+	{
+		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
+		
+		if (filter.getOnId().equals("projectList"))
+		{
+			// TODO this could be a bit cleaner by setting the target directly in the model
+			backingBean.getReportCriteria().getUserCriteria().setOnlyActiveProjects(filter.isActivateToggle());
+			updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
+		}
+	}
+	
+	/**
+	 * Update report criteria
 	 * @param filter
 	 */
 	private void updateReportCriteria(ReportCriteriaUpdate updateType)
 	{
-		ReportCriteriaBackingBean backingBean;
-		
-		backingBean = (ReportCriteriaBackingBean)getModel().getObject();
+		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
 		ReportCriteria reportCriteria = reportCriteriaService.syncUserReportCriteria(backingBean.getReportCriteria(), updateType);
+		sortReportCriteria(reportCriteria);
 		backingBean.setReportCriteria(reportCriteria);
 	}
+
+	/**
+	 * Get backingbean from model
+	 * @return
+	 */
+	private ReportCriteriaBackingBean getBackingBeanFromModel()
+	{
+		return (ReportCriteriaBackingBean)getModel().getObject();
+	}
+	
+	
+	/**
+	 * Add customer selection
+	 * @param parent
+	 */
+	private void addUserDepartmentSelection(WebMarkupContainer parent)
+	{
+		Fragment fragment = new Fragment("itemListHolder", "departmentListHolder", ReportCriteriaPanel.this);
+		Form form = new Form("departmentSelection");
+
+		ListMultipleChoice customers = new ListMultipleChoice("reportCriteria.availableCriteria.userDepartments",
+								new PropertyModel(getModel(), "reportCriteria.userCriteria.customers"),
+								new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
+								new DomainObjectChoiceRenderer());
+		customers.setMaxRows(4);
+		
+		customers.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				// show only projects for selected customers
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
+                target.addComponent(projects);
+            }
+        });	
+		
+		form.add(customers);
+		fragment.add(form);
+		
+		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("customerList", 
+																		fragment,
+																		null,
+																		null,
+																		this);
+
+		parent.add(entrySelectorPanel);
+	}	
 	
 	/**
 	 * Add customer selection
@@ -174,7 +247,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("projectList", 
 																		fragment,
 																		null,
-																		null,
+																		new StringResourceModel("report.hideInactive", this, null),
 																		this);
 
 		parent.add(entrySelectorPanel);
@@ -307,6 +380,18 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		});
 		
 		parent.add(quickQuarterSelection);
+	}
+
+	/**
+	 * 
+	 * @param reportCriteria
+	 */
+	private void sortReportCriteria(ReportCriteria reportCriteria)
+	{
+		Collections.sort(reportCriteria.getAvailableCriteria().getCustomers(), new CustomerComparator());
+		Collections.sort(reportCriteria.getAvailableCriteria().getProjects(), new ProjectComparator());
+		Collections.sort(reportCriteria.getAvailableCriteria().getUserDepartments(), new UserDepartmentComparator());
+		Collections.sort(reportCriteria.getAvailableCriteria().getUsers(), new UserComparator(false));
 	}
 
 	/*
