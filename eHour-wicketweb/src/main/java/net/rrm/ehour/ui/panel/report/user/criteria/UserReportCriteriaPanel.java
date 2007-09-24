@@ -20,7 +20,7 @@ import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
-import net.rrm.ehour.ui.renderers.ProjectChoiceRender;
+import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -59,7 +59,7 @@ public class UserReportCriteriaPanel extends SidePanel
 		ListMultipleChoice projectDropDown;
 		projectDropDown = new ListMultipleChoice("userCriteria.projects", 
 											new PropertyModel(model, "availableCriteria.projects"),
-											new ProjectChoiceRender());
+											new DomainObjectChoiceRenderer());
 		form.add(projectDropDown);
 		
 		addDatePickers(form, model);

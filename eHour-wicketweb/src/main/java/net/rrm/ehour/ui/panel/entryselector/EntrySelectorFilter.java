@@ -18,6 +18,8 @@ package net.rrm.ehour.ui.panel.entryselector;
 
 import java.io.Serializable;
 
+import org.apache.wicket.model.StringResourceModel;
+
 /**
  * Value object for entry selection
  **/
@@ -30,7 +32,7 @@ public class EntrySelectorFilter implements Serializable
 	private static final long serialVersionUID = -7713534314686523511L;
 	private	boolean	activateToggle = true;
 	private	String	filterInput;
-	private	String	defaultFilterInputText;
+	private	StringResourceModel	defaultFilterInputText;
 	private String	onId;
 	
 	public EntrySelectorFilter()
@@ -38,9 +40,8 @@ public class EntrySelectorFilter implements Serializable
 		
 	}
 	
-	public EntrySelectorFilter(String defaultFilterInputText)
+	public EntrySelectorFilter(StringResourceModel defaultFilterInputText)
 	{
-		this.filterInput = defaultFilterInputText;
 		this.defaultFilterInputText = defaultFilterInputText;
 	}
 	
@@ -50,22 +51,41 @@ public class EntrySelectorFilter implements Serializable
 	 */
 	public String getCleanFilterInput()
 	{
-		return (filterInput != null && filterInput.equals(defaultFilterInputText)) ? "" : filterInput;
+		return (filterInput != null 
+					&& filterInput.equals(defaultFilterInputText)) ? "" : filterInput;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isActivateToggle()
 	{
 		return activateToggle;
 	}
+	
+	/**
+	 * 
+	 * @param activateToggle
+	 */
 	public void setActivateToggle(boolean activateToggle)
 	{
 		this.activateToggle = activateToggle;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getFilterInput()
 	{
-		return filterInput;
+		return filterInput == null ? defaultFilterInputText.toString() : filterInput;
 	}
 	
+	/**
+	 * 
+	 * @param filterInput
+	 */
 	public void setFilterInput(String filterInput)
 	{
 		this.filterInput = filterInput;

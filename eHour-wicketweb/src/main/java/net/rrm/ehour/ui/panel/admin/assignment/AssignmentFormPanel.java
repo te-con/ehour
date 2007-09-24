@@ -360,7 +360,7 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 		};
 		
 		// project
-		final DropDownChoice projectChoice = new DropDownChoice("projectAssignment.project", projectChoices, new ChoiceRenderer("fullname"));
+		final DropDownChoice projectChoice = new DropDownChoice("projectAssignment.project", projectChoices, new ChoiceRenderer("fullName"));
 		projectChoice.setRequired(true);
 		projectChoice.setOutputMarkupId(true);
 		projectChoice.setNullValid(false);

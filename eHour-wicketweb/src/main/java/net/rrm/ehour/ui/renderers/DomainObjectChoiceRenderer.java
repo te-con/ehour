@@ -1,8 +1,7 @@
 /**
- * Created on Sep 23, 2007
+ * Created on Jul 10, 2007
  * Created by Thies Edeling
- * Created by Thies Edeling
- * Copyright (C) 2007 TE-CON, All Rights Reserved.
+ * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
  * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
  * TE-CON holds all the ownership rights on the Software.
@@ -17,24 +16,23 @@
 
 package net.rrm.ehour.ui.renderers;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.domain.DomainObject;
 
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 /**
- * TODO 
+ * Domain object renderer choice renders
  **/
 
-public class CustomerChoiceRenderer implements IChoiceRenderer
+public class DomainObjectChoiceRenderer implements IChoiceRenderer
 {
 	private static final long serialVersionUID = 9021045667533511410L;
 
 	public Object getDisplayValue(Object object)
 	{
-		if  (object instanceof Customer)
+		if  (object instanceof DomainObject<?, ?>)
 		{
-			return ((Customer) object).getFullName();
+			return ((DomainObject<?, ?>) object).getFullName();
 		}
 
 		return object.toString();
@@ -42,9 +40,9 @@ public class CustomerChoiceRenderer implements IChoiceRenderer
 
 	public String getIdValue(Object object, int index)
 	{
-		if  (object instanceof Project)
+		if  (object instanceof DomainObject<?, ?>)
 		{
-			return ((Customer) object).getCustomerId().toString();
+			return ((DomainObject<?, ?>) object).getPK().toString();
 		}
 
 		return Integer.toString(index);

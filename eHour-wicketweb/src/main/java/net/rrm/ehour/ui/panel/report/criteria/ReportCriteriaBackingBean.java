@@ -106,4 +106,12 @@ public class ReportCriteriaBackingBean implements Serializable
 		this.quickQuarter = quickQuarter;
 		setReportRangeForQuickie(quickQuarter);
 	}
+
+	/**
+	 * @param reportCriteria the reportCriteria to set
+	 */
+	public void setReportCriteria(ReportCriteria reportCriteria)
+	{
+		this.reportCriteria = reportCriteria;
+	}
 }

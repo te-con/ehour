@@ -32,6 +32,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.time.Duration;
 
 /**
@@ -42,7 +43,7 @@ public class EntrySelectorPanel extends Panel
 {
 	public final static int ENTRYSELECTOR_WIDTH = 250;
 	
-	private	String	defaultFilterText = "";
+	private	StringResourceModel	defaultFilterText;
 	private	IModel	checkBoxPrefixText;
 	private	boolean	includeFilter = false;
 	private	boolean	includeCheckboxToggle = false;
@@ -68,7 +69,7 @@ public class EntrySelectorPanel extends Panel
 	 * @param itemList
 	 * @param defaultFilterText
 	 */
-	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, String defaultFilterText)
+	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, StringResourceModel defaultFilterText)
 	{
 		this(id, itemListHolder, defaultFilterText, null);
 	}
@@ -81,7 +82,7 @@ public class EntrySelectorPanel extends Panel
 	 * @param defaultFilterText
 	 * @param checkboxPrefix
 	 */
-	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, String defaultFilter, IModel checkboxPrefix)
+	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, StringResourceModel defaultFilter, IModel checkboxPrefix)
 	{
 		super(id);
 
@@ -115,11 +116,13 @@ public class EntrySelectorPanel extends Panel
 	protected void setUpPanel(WebMarkupContainer itemListHolder)
 	{
 		WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
+		
 		blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		blueBorder.setOutputMarkupId(true);
-		setUpFilterForm(selectorFrame, blueBorder);
-		
 		selectorFrame.add(blueBorder);
+		
+		selectorFrame.add(getFilterForm());
+		
 		add(selectorFrame);
 		
 		blueBorder.add(itemListHolder);
@@ -129,24 +132,24 @@ public class EntrySelectorPanel extends Panel
 	 * Setup the filter form
 	 * @param parent
 	 */
-	private void setUpFilterForm(WebMarkupContainer parent, final WebMarkupContainer updateContainer)
+	protected Form getFilterForm()
 	{
 		final EntrySelectorFilter filter = new EntrySelectorFilter(defaultFilterText);
 		filter.setOnId(this.getId());
 		
 		Form	filterForm = new Form("filterForm");
-		parent.add(filterForm);
 		
 		final TextField		filterInputField = new TextField("filterInput", new PropertyModel(filter, "filterInput"));
 		filterInputField.setVisible(this.includeFilter);
 		
 		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel(filter, "activateToggle"))
 		{
+			private static final long serialVersionUID = 2585047163449150793L;
+
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
             	callbackAfterFilter(target, filter);
-            	target.addComponent(updateContainer);
 			}
 		};
 		deactivateBox.setVisible(includeCheckboxToggle);
@@ -160,6 +163,7 @@ public class EntrySelectorPanel extends Panel
 		{
 			filterInputField.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel()
 	        {
+				private static final long serialVersionUID = -1;
 	            public Object getObject()
 	            {
 	                return "this.style.color='#233e55';if (this.value == '" + defaultFilterText + "') { this.value='';}";
@@ -168,11 +172,12 @@ public class EntrySelectorPanel extends Panel
 			
 			OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior()
 	        {
+				private static final long serialVersionUID = -1;
+				
 	            @Override
 	            protected void onUpdate(AjaxRequestTarget target)
 	            {
 	            	callbackAfterFilter(target, filter);
-	            	target.addComponent(updateContainer);
 	            }
 	        };
 	        
@@ -189,6 +194,8 @@ public class EntrySelectorPanel extends Panel
 		filterForm.add(filterInputField);
 		
 		filterForm.setVisible(includeFilter || includeCheckboxToggle);
+		
+		return filterForm;
 	}
 	
 	/**
@@ -198,6 +205,8 @@ public class EntrySelectorPanel extends Panel
 	 */
 	protected void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter)
 	{
-		((AjaxAwareContainer)getParent()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
+		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
+    	target.addComponent(blueBorder);
+
 	}
 }

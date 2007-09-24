@@ -46,6 +46,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -87,7 +88,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 		
 		greyBorder.add(new EntrySelectorPanel(USER_SELECTOR_ID,
 						userListHolder,
-						getLocalizer().getString("admin.user.filter", this) + "...",
+						new StringResourceModel("admin.user.filter", this, null),
 						new ResourceModel("admin.user.hideInactive")));
 	}
 	

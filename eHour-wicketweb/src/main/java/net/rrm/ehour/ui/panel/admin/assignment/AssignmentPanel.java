@@ -70,8 +70,8 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 		add(listPanel);
 		
 		tabbedPanel = new AddEditTabbedPanel("assignmentTabs",
-											new ResourceModel("admin.assignment.newAssignment"),
-													new ResourceModel("admin.assignment.editAssignment"))
+												new ResourceModel("admin.assignment.newAssignment"),
+												new ResourceModel("admin.assignment.editAssignment"))
 		{
 
 			@Override

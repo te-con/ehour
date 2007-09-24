@@ -42,6 +42,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 
@@ -80,14 +81,14 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		Fragment userListHolder = getUserListHolder(users);
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
+		GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame", 
 																new ResourceModel("admin.assignment.title"), 
 																EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
-		add(greyBorder);
+		add(grey);
 
-		greyBorder.add(new EntrySelectorPanel(USER_SELECTOR_ID,
-				userListHolder,
-				getLocalizer().getString("admin.assignment.filter", this) + "..."));
+		grey.add(new EntrySelectorPanel(USER_SELECTOR_ID,
+										userListHolder,
+										new StringResourceModel("admin.assignment.filter", this, null)));
 		
 		assignmentPanel = new AssignmentPanel("assignmentPanel",
 													new User(),

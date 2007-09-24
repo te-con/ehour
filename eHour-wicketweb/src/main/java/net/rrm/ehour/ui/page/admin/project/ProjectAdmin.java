@@ -50,6 +50,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -94,7 +95,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		
 		greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
 											projectListHolder,
-											getLocalizer().getString("admin.project.filter", this) + "...",
+											new StringResourceModel("admin.project.filter", this, null),
 											new ResourceModel("admin.project.hideInactive")));		
 	}
 	

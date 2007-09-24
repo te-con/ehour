@@ -23,13 +23,20 @@
 			<br clear="all" />
 
 			<span wicket:id="customerList"></span>
+			<span wicket:id="projectList"></span>
 		</div>
 		
     	<wicket:fragment wicket:id="customerListHolder">
     		<form wicket:id="customerSelection">
     			<select wicket:id="reportCriteria.availableCriteria.customers" class="criteriaInput"></select>
     		</form>
-		</wicket:fragment>		
+		</wicket:fragment>
+		
+		<wicket:fragment wicket:id="projectListHolder">
+    		<form wicket:id="projectSelection">
+    			<select wicket:id="reportCriteria.availableCriteria.projects" class="criteriaInput"></select>
+    		</form>
+		</wicket:fragment>
 </wicket:panel>
 
 </body>

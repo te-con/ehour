@@ -23,17 +23,18 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.panel.report.criteria.filter.ReportCriteriaSelectorPanel;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
-import net.rrm.ehour.ui.renderers.CustomerChoiceRenderer;
+import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -45,7 +46,6 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
@@ -54,6 +54,7 @@ import org.wicketstuff.dojo.toggle.DojoFadeToggle;
  * Report criteria panel
  **/
 
+@SuppressWarnings("serial")
 public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = -7865322191390719584L;
@@ -62,6 +63,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	private	ReportCriteriaService	reportCriteriaService;
 	private DojoDatePicker 			startDatePicker;
 	private DojoDatePicker 			endDatePicker;
+	private	ListMultipleChoice 		projects;
 	
 	/**
 	 * 
@@ -80,6 +82,38 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		addDates(greyBorder);
 		
 		addCustomerSelection(greyBorder);
+		addProjectSelection(greyBorder);
+	}
+	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 */
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	{
+//		switch (type)
+//		{
+//			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+//			{
+//				EntrySelectorFilter	filter = (EntrySelectorFilter)params;
+//				handleFilterChange(filter);
+//				break;
+//			}
+//		}
+	}	
+	
+	/**
+	 * Handle filter change
+	 * @param filter
+	 */
+	private void updateReportCriteria(ReportCriteriaUpdate updateType)
+	{
+		ReportCriteriaBackingBean backingBean;
+		
+		backingBean = (ReportCriteriaBackingBean)getModel().getObject();
+		ReportCriteria reportCriteria = reportCriteriaService.syncUserReportCriteria(backingBean.getReportCriteria(), updateType);
+		backingBean.setReportCriteria(reportCriteria);
 	}
 	
 	/**
@@ -92,23 +126,59 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		Form form = new Form("customerSelection");
 
 		ListMultipleChoice customers = new ListMultipleChoice("reportCriteria.availableCriteria.customers",
-								new PropertyModel(getModel(), "reportCriteria.userCriteria.projects"),
+								new PropertyModel(getModel(), "reportCriteria.userCriteria.customers"),
 								new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
-								new CustomerChoiceRenderer());
+								new DomainObjectChoiceRenderer());
 		customers.setMaxRows(4);
-		customers.setLabel(new ResourceModel("admin.user.roles"));
-		customers.setRequired(true);
+		
+		customers.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				// show only projects for selected customers
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
+                target.addComponent(projects);
+            }
+        });	
+		
 		form.add(customers);
 		fragment.add(form);
 		
-		// TODO i18n
-		EntrySelectorPanel entrySelectorPanel = new EntrySelectorPanel("customerList", 
+		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("customerList", 
 																		fragment,
-																		"filter...",
-																		new ResourceModel("report.hideInactive"));
+																		null,
+																		null,
+																		this);
 
 		parent.add(entrySelectorPanel);
-	}		
+	}
+	
+	/**
+	 * Add customer selection
+	 * @param parent
+	 */
+	private void addProjectSelection(WebMarkupContainer parent)
+	{
+		Fragment fragment = new Fragment("itemListHolder", "projectListHolder", ReportCriteriaPanel.this);
+		Form form = new Form("projectSelection");
+
+		projects = new ListMultipleChoice("reportCriteria.availableCriteria.projects",
+											new PropertyModel(getModel(), "reportCriteria.userCriteria.projects"),
+											new PropertyModel(getModel(), "reportCriteria.availableCriteria.projects"),
+											new DomainObjectChoiceRenderer());
+		projects.setMaxRows(4);
+		projects.setOutputMarkupId(true);
+		form.add(projects);
+		fragment.add(form);
+		
+		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("projectList", 
+																		fragment,
+																		null,
+																		null,
+																		this);
+
+		parent.add(entrySelectorPanel);
+	}	
 
 	/**
 	 * Add dates
@@ -239,15 +309,12 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		parent.add(quickQuarterSelection);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
+	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
 	{
-		// TODO Auto-generated method stub
-		
+		ajaxRequestReceived(target, type, null);
 	}
-
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
-	{
-		// TODO Auto-generated method stub
-		
-	}	
 }
