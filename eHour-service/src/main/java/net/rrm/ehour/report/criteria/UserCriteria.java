@@ -48,7 +48,7 @@ public class UserCriteria implements Serializable
 	private	List<User>	users;
 	private	List<Project>		projects;
 	private	List<Customer>		customers;
-	private	List<UserDepartment>	departments;
+	private	List<UserDepartment>	userDepartments;
 	private boolean 	infiniteStartDate;
 	private boolean		infiniteEndDate;
 	private	boolean		singleUser;
@@ -95,7 +95,7 @@ public class UserCriteria implements Serializable
 			.append("users", users)
 			.append("projects", projects)
 			.append("customers", customers)			
-			.append("departments", departments)
+			.append("departments", userDepartments)
 			.toString();
 	}
 	
@@ -125,7 +125,7 @@ public class UserCriteria implements Serializable
 
 	public boolean isEmptyDepartments()
 	{
-		return departments == null || departments.size() == 0;
+		return userDepartments == null || userDepartments.size() == 0;
 	}	
 	
 	/**
@@ -287,7 +287,7 @@ public class UserCriteria implements Serializable
 	 */
 	public List<UserDepartment> getDepartments()
 	{
-		return departments;
+		return userDepartments;
 	}
 
 	/**
@@ -295,7 +295,7 @@ public class UserCriteria implements Serializable
 	 */
 	public void setDepartments(List<UserDepartment> departments)
 	{
-		this.departments = departments;
+		this.userDepartments = departments;
 	}
 
 	/**
