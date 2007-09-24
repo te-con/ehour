@@ -106,7 +106,8 @@ public class User extends DomainObject<Integer, User>
 	 */
 	public String getFullName()
 	{
-		return ((firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "")).trim();
+		return (lastName != null ? lastName + ", ": "") 
+					+ (firstName != null ? firstName : "");
 	}
 	
 	// Property accessors
