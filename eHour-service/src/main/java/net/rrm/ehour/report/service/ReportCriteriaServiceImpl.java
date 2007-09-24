@@ -190,7 +190,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		{
 			logger.debug("Fetching projects for selected customers");
 			
-			projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(), 
+			projects = projectDAO.findProjectForCustomers(userCriteria.getCustomers(), 
 															userCriteria.isOnlyActiveProjects());
 		}
 		

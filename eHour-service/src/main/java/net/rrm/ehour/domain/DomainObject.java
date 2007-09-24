@@ -32,6 +32,15 @@ public abstract class DomainObject <PK extends Serializable, DO extends Serializ
 	public abstract PK getPK();
 
 	/**
+	 * 
+	 * @return
+	 */
+	public String getFullName()
+	{
+		return null;
+	}
+	
+	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
 	@Override

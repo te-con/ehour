@@ -29,6 +29,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
@@ -171,7 +172,9 @@ public class ReportServiceTest extends TestCase
 	
 	public void testCreateProjectReport()
 	{
-		List<Integer> customerID = getAsList(1);
+		Customer cust = new Customer(1);
+		List<Customer> customers = new ArrayList<Customer>();
+		customers.add(cust);
 
 		List<Project> prjs = new ArrayList<Project>();
 		Project prj = new Project(1);
@@ -180,7 +183,7 @@ public class ReportServiceTest extends TestCase
 		DateRange dr = new DateRange();
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);
-		uc.setCustomerIds(customerID);
+		uc.setCustomers(customers);
 		rc.setUserCriteria(uc);
 		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
 		
@@ -190,7 +193,7 @@ public class ReportServiceTest extends TestCase
 		
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(isA(List.class), isA(DateRange.class)))
 		.andReturn(pags);
-		expect(projectDAO.findProjectForCustomers(customerID, true)).andReturn(prjs);
+		expect(projectDAO.findProjectForCustomers(customers, true)).andReturn(prjs);
 		
 		replay(reportAggregatedDAO);
 		replay(projectDAO);

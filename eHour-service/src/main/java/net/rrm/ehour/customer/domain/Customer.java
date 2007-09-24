@@ -77,6 +77,11 @@ public class Customer extends DomainObject<Integer, Customer>
 		this.active = customer.isActive();
 	}	
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.domain.DomainObject#getFullName()
+	 */
+	@Override
 	public String getFullName()
 	{
 		return (getCode() != null) ?  getCode() + " - " + getName() : getName();

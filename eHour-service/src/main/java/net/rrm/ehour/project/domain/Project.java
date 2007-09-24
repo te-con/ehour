@@ -50,7 +50,7 @@ public class Project extends DomainObject<Integer, Project>
 		this.projectId = projectId;
 	}
 	
-	public String getFullname()
+	public String getFullName()
 	{
 		if (projectCode != null && 
 			!projectCode.equals(""))
@@ -246,7 +246,7 @@ public class Project extends DomainObject<Integer, Project>
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("active", this.active)
-				.append("PK", this.getPK()).append("defaultProject", this.defaultProject).append("fullname", this.getFullname()).append("projectCode", this.projectCode).append("name", this.name).append("customer", this.customer).append("projectId",
+				.append("PK", this.getPK()).append("defaultProject", this.defaultProject).append("fullname", this.getFullName()).append("projectCode", this.projectCode).append("name", this.name).append("customer", this.customer).append("projectId",
 						this.projectId).toString();
 	}
 

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
@@ -42,9 +43,10 @@ public class UserCriteria implements Serializable
 	private	boolean		onlyActiveUsers = true;
 	private	int			userActivityFilter;
 	private	String		userFilter;
+	private	String		customerFilter;
 	private	List<Integer>		userIds;
 	private	List<Project>	projects;
-	private	List<Integer>		customerIds;
+	private	List<Customer>	customers;
 	private	List<Integer>		departmentIds;
 	private boolean 	infiniteStartDate;
 	private boolean		infiniteEndDate;
@@ -91,7 +93,7 @@ public class UserCriteria implements Serializable
 			.append("reportRange", reportRange)
 			.append("userIds", userIds)
 			.append("projects", projects)
-			.append("customerIds", customerIds)			
+			.append("customers", customers)			
 			.toString();
 	}
 	
@@ -101,7 +103,7 @@ public class UserCriteria implements Serializable
 	 */
 	public boolean isEmptyCustomers()
 	{
-		return customerIds == null || customerIds.size() == 0;
+		return customers == null || customers.size() == 0;
 	}
 	
 	/**
@@ -265,17 +267,17 @@ public class UserCriteria implements Serializable
 	/**
 	 * @return the customerIds
 	 */
-	public List<Integer> getCustomerIds()
+	public List<Customer> getCustomers()
 	{
-		return customerIds;
+		return customers;
 	}
 
 	/**
 	 * @param customerIds the customerIds to set
 	 */
-	public void setCustomerIds(List<Integer> customerIds)
+	public void setCustomers(List<Customer> customers)
 	{
-		this.customerIds = customerIds;
+		this.customers = customers;
 	}
 
 	/**
@@ -340,5 +342,21 @@ public class UserCriteria implements Serializable
 	public void setProjects(List<Project> projects)
 	{
 		this.projects = projects;
+	}
+
+	/**
+	 * @return the customerFilter
+	 */
+	public String getCustomerFilter()
+	{
+		return customerFilter;
+	}
+
+	/**
+	 * @param customerFilter the customerFilter to set
+	 */
+	public void setCustomerFilter(String customerFilter)
+	{
+		this.customerFilter = customerFilter;
 	}
 }

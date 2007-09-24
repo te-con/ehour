@@ -103,6 +103,16 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 		return this.name;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.domain.DomainObject#getFullName()
+	 */
+	@Override
+	public String getFullName()
+	{
+		return getName();
+	}
+
 	/**
 	 * @param name  the name to set
 	 * @uml.property  name="name"

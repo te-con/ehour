@@ -2,6 +2,7 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
@@ -46,7 +47,7 @@ public interface ProjectDAO extends GenericDAO<Project, Integer>
 	 * @param active
 	 * @return
 	 */
-	public List<Project> findProjectForCustomers(List<Integer> customerIds, boolean onlyActive);
+	public List<Project> findProjectForCustomers(List<Customer> customers, boolean onlyActive);
 	
 	/**
 	 * Find projects where user is projectmanager

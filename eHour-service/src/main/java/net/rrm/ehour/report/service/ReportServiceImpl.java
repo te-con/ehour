@@ -232,7 +232,7 @@ public class ReportServiceImpl implements ReportService
 			if (!userCriteria.isEmptyCustomers())
 			{
 				logger.debug("Using customers to determine projects");
-				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomerIds(),
+				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomers(),
 																userCriteria.isOnlyActiveProjects());
 				
 				projectIds = ReportUtil.getPKsFromDomainObjects(projects);

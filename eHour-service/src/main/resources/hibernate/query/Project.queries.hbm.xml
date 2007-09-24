@@ -37,13 +37,13 @@
 
 	<query name="Project.findAllProjectsForCustomers">
 		FROM Project prj
-		WHERE prj.customer.customerId IN (:customerIds)
+		WHERE prj.customer IN (:customers)
 		ORDER BY prj.name
 	</query>	
 
 	<query name="Project.findActiveProjectsForCustomers">
 		FROM Project prj
-		WHERE prj.customer.customerId IN (:customerIds) AND
+		WHERE prj.customer IN (:customers) AND
 			  prj.active is true
 		ORDER BY prj.name			  
 	</query>	

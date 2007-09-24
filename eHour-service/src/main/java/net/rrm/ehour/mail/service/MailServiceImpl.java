@@ -77,14 +77,14 @@ public class MailServiceImpl implements MailService
 		
 		// TODO use templates
 		subject = "eHour: All allotted hours used for project " 
-					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullName()
 					+ " by "
 					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
 					+ " "
 					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
 		
 		body.append("Project warning for project " 
-						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullName()
 						+ " ("
 						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
 						+ ")"
@@ -131,14 +131,14 @@ public class MailServiceImpl implements MailService
 		
 		// and no, stringbuffers aren't faster anymore..
 		subject = "eHour: All allotted and overrun hours used for project " 
-					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullName()
 					+ " by "
 					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
 					+ " "
 					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
 		
 		body.append("Project warning for project " 
-						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullName()
 						+ " ("
 						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
 						+ ")"
@@ -189,14 +189,14 @@ public class MailServiceImpl implements MailService
 		
 		// and no, stringbuffers aren't faster anymore..
 		subject = "eHour: All allotted hours used for project " 
-					+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+					+ assignmentAggregate.getProjectAssignment().getProject().getFullName()
 					+ " by "
 					+ assignmentAggregate.getProjectAssignment().getUser().getFirstName()
 					+ " "
 					+ assignmentAggregate.getProjectAssignment().getUser().getLastName();
 		
 		body.append("Project warning for project " 
-						+ assignmentAggregate.getProjectAssignment().getProject().getFullname()
+						+ assignmentAggregate.getProjectAssignment().getProject().getFullName()
 						+ " ("
 						+ assignmentAggregate.getProjectAssignment().getProject().getCustomer().getName()
 						+ ")"
