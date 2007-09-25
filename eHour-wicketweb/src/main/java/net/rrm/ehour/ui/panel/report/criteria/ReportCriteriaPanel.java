@@ -45,6 +45,7 @@ import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -95,8 +96,24 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		addProjectSelection(greyBorder);
 		addUserDepartmentSelection(greyBorder);
 		addUserSelection(greyBorder);
+		
+		addCreateReportButton(greyBorder);
 	}
 	
+	private void addCreateReportButton(WebMarkupContainer parent)
+	{
+		AjaxLink	 link = new AjaxLink("createReport")
+		{
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				System.out.println("criteria: " + getBackingBeanFromModel().getReportCriteria().getUserCriteria().toString());
+			}
+			
+		};
+		
+		parent.add(link);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -183,6 +200,14 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		form.add(users);
 		fragment.add(form);
 		
+		users.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				// don't do anything, just update the model
+            }
+        });		
+		
 		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("userList", 
 																		fragment,
 																		new StringResourceModel("report.filter", this, null),
@@ -268,7 +293,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	}
 	
 	/**
-	 * Add customer selection
+	 * Add project selection
 	 * @param parent
 	 */
 	private void addProjectSelection(WebMarkupContainer parent)
@@ -284,6 +309,14 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		projects.setOutputMarkupId(true);
 		form.add(projects);
 		fragment.add(form);
+		
+		projects.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				// don't do anything, just update the model
+            }
+        });	
 		
 		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("projectList", 
 																		fragment,
@@ -303,11 +336,29 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		startDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateStart", "dd/MM/yyyy");
 		startDatePicker.setToggle(new DojoFadeToggle(200));
 		startDatePicker.setOutputMarkupId(true);
+		startDatePicker.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				// don't do anything, just update the model. bit of a workaround
+				// needed since everything is in it's own model
+            }
+        });			
+		
 		parent.add(startDatePicker);
 
 		endDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateEnd", "dd/MM/yyyy");
 		endDatePicker.setToggle(new DojoFadeToggle(200));
 		endDatePicker.setOutputMarkupId(true);
+		endDatePicker.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				// don't do anything, just update the model. bit of a workaround
+				// needed since everything is in it's own model
+            }
+        });			
+	
 		parent.add(endDatePicker);
 		
 		addQuickWeek(parent);

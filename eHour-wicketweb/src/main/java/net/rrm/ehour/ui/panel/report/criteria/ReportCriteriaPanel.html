@@ -22,11 +22,24 @@
 			
 			<br clear="all" />
 
-			<span wicket:id="customerList"></span>
-			<span wicket:id="projectList"></span>
-			<span wicket:id="departmentList"></span>
-			<span wicket:id="userList"></span>
+			<table class="reportCriteriaTable">
+				<tr>			
+					<th><span wicket:id="customerList"></span></th>
+					<th><span wicket:id="projectList"></span></th>
+				</tr>
+				
+				<tr>
+					<th><span wicket:id="departmentList"></span></th>
+					<th><span wicket:id="userList"></span></th>
+				</tr>
+				
+				<tr>
+					<td colspan="2"><a wicket:id="createReport">create report</a></td>
+				</tr>
+			</table>
 		</div>
+		
+		<br clear="all" />
 		
     	<wicket:fragment wicket:id="customerListHolder">
     		<form wicket:id="customerSelection">

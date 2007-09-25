@@ -432,3 +432,40 @@ div.UserReportCriteria
 	color: #536e87;
 	font: 1em Arial, Geneva, Helvetica, sans-serif;	
 }
+
+.reportCriteriaTableTable 
+{
+	margin: -0.5em 1em 0 0.5em;
+	width: 100%;
+}
+
+
+.reportCriteriaTable th
+{
+	padding: 5px 0 5px 0;
+	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;	
+	color: #233e55;
+	border: 0;
+	width: 20%;
+	text-align: left;
+}
+
+.reportCriteriaTable th.firstCell
+{
+	width: 40%;
+}
+
+.reportCriteriaTable td
+{
+	font:  1.0em Geneva, Arial, Helvetica, sans-serif;	
+	color: #233e55;
+	vertical-align: top;
+}
+
+.reportCriteriaTable td.result
+{
+	border-top-width: 1px;
+	border-top-color: #233e55;
+	border-top-style: solid;
+	font-weight: bold;
+}
