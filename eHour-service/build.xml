@@ -1,0 +1,29 @@
+<project name="eHourDdlExport" default="database-dump" basedir=".">
+	
+	<property environment="env" /> 	
+	<path id="classpath">
+		<fileset dir="env.M2_REPO/lib">
+			<include name="**/*.jar"/>
+
+			<include name="**/*.zip"/>
+		</fileset>
+	</path>
+
+	<target name="database-dump" description="Dumps the database structure">
+		<taskdef name="databaseToDdl"
+           classname="org.apache.ddlutils.task.DatabaseToDdlTask">
+			<classpath refid="runtime-classpath"/>
+
+		</taskdef>
+		<databaseToDdl modelName="MyModel">
+			<database url="jdbc:derby:ddlutils"
+              driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
+              username=""
+              password=""/>
+
+			<writeSchemaToFile outputFile="db-schema.xml"/>
+			<writeDataToFile outputFile="data.xml"/>
+		</databaseToDdl>
+
+	</target>
+</project>
