@@ -16,7 +16,7 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
-		</resources>	
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -24,7 +24,9 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>net.rrm.ehour.KickStarter</mainClass>
+							<mainClass>
+								net.rrm.ehour.KickStarter
+							</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
@@ -34,11 +36,11 @@
 	</build>
 
 	<dependencies>
-                <dependency>
-                        <groupId>org.apache.derby</groupId>
-                        <artifactId>derby</artifactId>
-                        <version>10.3.1.4</version>
-                </dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.3.1.4</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
@@ -80,9 +82,14 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-		    <groupId>tanukisoft</groupId>
-		    <artifactId>wrapper</artifactId>
-		    <version>3.2.0</version>
+			<groupId>tanukisoft</groupId>
+			<artifactId>wrapper</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ddlutils</groupId>
+			<artifactId>ddlutils</artifactId>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 </project>
