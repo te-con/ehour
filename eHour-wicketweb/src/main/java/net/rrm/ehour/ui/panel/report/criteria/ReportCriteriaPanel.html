@@ -9,61 +9,60 @@
 <wicket:panel>
 		<br clear="all" />
 		<div wicket:id="border">
-			<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
-				<wicket:message key="report.criteria.reportRange" />:
-				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateStart" />
-			    <wicket:message key="report.criteria.until" />:
-				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateEnd" />
+			<form wicket:id="criteriaForm">
+		
+				<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
+					<wicket:message key="report.criteria.reportRange" />:
+					<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateStart" />
+				    <wicket:message key="report.criteria.until" />:
+					<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateEnd" />
+					<br />
+					<select wicket:id="quickWeek"></select>
+					<select wicket:id="quickMonth"></select>
+					<select wicket:id="quickQuarter"></select>
+				</div>
+				
+				<br clear="all" />
+	
+				<div wicket:id="customerProjectsBorder">
+					<div style="float: left">
+						<select wicket:id="reportCriteria.userCriteria.customers" class="criteriaInput"></select>
+						<br />
+						
+						<span wicket:id="onlyActiveCustomersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveCustomers" type="checkbox" />
+					</div>
+					
+					<div>
+						<select wicket:id="reportCriteria.userCriteria.projects" class="criteriaInput"></select>
+						<br />
+						
+						<span wicket:id="onlyActiveProjectsLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveProjects" type="checkbox" />
+					</div>
+					
+					<br />
+				</div>
+				
 				<br />
-				<select wicket:id="quickWeek"></select>
-				<select wicket:id="quickMonth"></select>
-				<select wicket:id="quickQuarter"></select>
-			</div>
-			
-			<br clear="all" />
 
-			<table class="reportCriteriaTable">
-				<tr>			
-					<th><span wicket:id="customerList"></span></th>
-					<th><span wicket:id="projectList"></span></th>
-				</tr>
-				
-				<tr>
-					<th><span wicket:id="departmentList"></span></th>
-					<th><span wicket:id="userList"></span></th>
-				</tr>
-				
-				<tr>
-					<td colspan="2"><a wicket:id="createReport">create report</a></td>
-				</tr>
-			</table>
+				<div wicket:id="deptUserBorder">
+					<div style="float: left">
+						<select wicket:id="reportCriteria.userCriteria.userDepartments" class="criteriaInput"></select>
+						<br />
+					</div>
+					
+					<div>
+						<select wicket:id="reportCriteria.userCriteria.users" class="criteriaInput"></select>
+						<br />
+						
+						<span wicket:id="onlyActiveUsersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveUsers" type="checkbox" />
+					</div>
+					
+					<br />
+				</div>
+
+				<a wicket:id="createReport">create report</a>
+			</form>
 		</div>
-		
-		<br clear="all" />
-		
-    	<wicket:fragment wicket:id="customerListHolder">
-    		<form wicket:id="customerSelection">
-    			<select wicket:id="reportCriteria.availableCriteria.customers" class="criteriaInput"></select>
-    		</form>
-		</wicket:fragment>
-		
-		<wicket:fragment wicket:id="projectListHolder">
-    		<form wicket:id="projectSelection">
-    			<select wicket:id="reportCriteria.availableCriteria.projects" class="criteriaInput"></select>
-    		</form>
-		</wicket:fragment>
-		
-		<wicket:fragment wicket:id="departmentListHolder">
-    		<form wicket:id="departmentSelection">
-    			<select wicket:id="reportCriteria.availableCriteria.userDepartments" class="criteriaInput"></select>
-    		</form>
-		</wicket:fragment>
-		
-		<wicket:fragment wicket:id="userListHolder">
-    		<form wicket:id="userSelection">
-    			<select wicket:id="reportCriteria.availableCriteria.users" class="criteriaInput"></select>
-    		</form>
-		</wicket:fragment>		
 </wicket:panel>
 
 </body>

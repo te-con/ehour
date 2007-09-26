@@ -26,10 +26,8 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
-import net.rrm.ehour.ui.panel.report.criteria.filter.ReportCriteriaSelectorPanel;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
@@ -41,20 +39,20 @@ import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
@@ -64,7 +62,7 @@ import org.wicketstuff.dojo.toggle.DojoFadeToggle;
  **/
 
 @SuppressWarnings("serial")
-public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
+public class ReportCriteriaPanel extends Panel 
 {
 	private static final long serialVersionUID = -7865322191390719584L;
 	
@@ -90,16 +88,21 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		
 		setOutputMarkupId(true);	
 		
-		addDates(greyBorder);
+		Form form = new Form("criteriaForm");
+		greyBorder.add(form);
 		
-		addCustomerSelection(greyBorder);
-		addProjectSelection(greyBorder);
-		addUserDepartmentSelection(greyBorder);
-		addUserSelection(greyBorder);
+		addDates(form);
 		
-		addCreateReportButton(greyBorder);
+		addCustomerAndProjects(form);
+		addDepartmentsAndUsers(form);
+		
+		addCreateReportButton(form);
 	}
 	
+	/**
+	 * Add submit link
+	 * @param parent
+	 */
 	private void addCreateReportButton(WebMarkupContainer parent)
 	{
 		AjaxLink	 link = new AjaxLink("createReport")
@@ -115,50 +118,6 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		parent.add(link);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
-	{
-		switch (type)
-		{
-			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
-			{
-				EntrySelectorFilter	filter = (EntrySelectorFilter)params;
-				updateFilterChange(filter);
-				break;
-			}
-		}
-	}	
-	
-	/**
-	 * Update the appropiate selector list
-	 * @param filter
-	 */
-	private void updateFilterChange(EntrySelectorFilter filter)
-	{
-		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
-
-		// TODO this could be a bit cleaner by setting the target directly in the model
-		if (filter.getOnId().equals("projectList"))
-		{
-			backingBean.getReportCriteria().getUserCriteria().setOnlyActiveProjects(filter.isActivateToggle());
-			updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
-		}
-		else if (filter.getOnId().equals("customerList"))
-		{
-			backingBean.getReportCriteria().getUserCriteria().setOnlyActiveCustomers(filter.isActivateToggle());
-			updateReportCriteria(ReportCriteriaUpdate.UPDATE_CUSTOMERS);
-		}
-		else if (filter.getOnId().equals("userList"))
-		{
-			backingBean.getReportCriteria().getUserCriteria().setOnlyActiveUsers(filter.isActivateToggle());
-			backingBean.getReportCriteria().getUserCriteria().setUserFilter(filter.getCleanFilterInput());
-			updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
-		}
-		
-	}
 	
 	/**
 	 * Update report criteria
@@ -187,34 +146,42 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	 */
 	private void addUserSelection(WebMarkupContainer parent)
 	{
-		Fragment fragment = new Fragment("itemListHolder", "userListHolder", ReportCriteriaPanel.this);
-		Form form = new Form("userSelection");
-
-		users = new ListMultipleChoice("reportCriteria.availableCriteria.users",
-								new PropertyModel(getModel(), "reportCriteria.userCriteria.users"),
+		users = new ListMultipleChoice("reportCriteria.userCriteria.users",
 								new PropertyModel(getModel(), "reportCriteria.availableCriteria.users"),
 								new DomainObjectChoiceRenderer());
 		users.setOutputMarkupId(true);
 		users.setMaxRows(4);
+		parent.add(users);
 		
-		form.add(users);
-		fragment.add(form);
-		
-		users.add(new AjaxFormComponentUpdatingBehavior("onchange")
-        {
-			protected void onUpdate(AjaxRequestTarget target)
-            {
-				// don't do anything, just update the model
-            }
-        });		
-		
-		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("userList", 
-																		fragment,
-																		new StringResourceModel("report.filter", this, null),
-																		new StringResourceModel("report.hideInactive", this, null),
-																		this);
+		// hide active checkbox
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveUsers")
+		{
+			private static final long serialVersionUID = 2585047163449150793L;
 
-		parent.add(entrySelectorPanel);
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
+				target.addComponent(users);
+			}
+		};
+		
+		parent.add(deactivateBox);
+		
+		Label filterToggleText = new Label("onlyActiveUsersLabel", new ResourceModel("report.filter"));
+		parent.add(filterToggleText);
+		
+		// filter
+		
+//		
+//		
+//		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("userList", 
+//																		fragment,
+//																		new StringResourceModel("report.filter", this, null),
+//																		new StringResourceModel("report.hideInactive", this, null),
+//																		this);
+//
+//		parent.add(entrySelectorPanel);
 	}	
 	
 	/**
@@ -223,36 +190,50 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	 */
 	private void addUserDepartmentSelection(WebMarkupContainer parent)
 	{
-		Fragment fragment = new Fragment("itemListHolder", "departmentListHolder", ReportCriteriaPanel.this);
-		Form form = new Form("departmentSelection");
-
-		ListMultipleChoice depts = new ListMultipleChoice("reportCriteria.availableCriteria.userDepartments",
-								new PropertyModel(getModel(), "reportCriteria.userCriteria.userDepartments"),
+		ListMultipleChoice depts = new ListMultipleChoice("reportCriteria.userCriteria.userDepartments",
 								new PropertyModel(getModel(), "reportCriteria.availableCriteria.userDepartments"),
 								new DomainObjectChoiceRenderer());
 		depts.setMaxRows(4);
 		
+		// update projects when customer(s) selected
 		depts.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
 			protected void onUpdate(AjaxRequestTarget target)
             {
-				// show only projects for selected users
+				// show only projects for selected customers
 				updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
                 target.addComponent(users);
             }
-        });	
+        });			
 		
-		form.add(depts);
-		fragment.add(form);
-		
-		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("departmentList", 
-																		fragment,
-																		null,
-																		null,
-																		this);
-
-		parent.add(entrySelectorPanel);
+		parent.add(depts);
 	}	
+	
+	/**
+	 * Add customer and projects selection
+	 * @param form
+	 */
+	private void addCustomerAndProjects(Form form)
+	{
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("customerProjectsBorder");
+		form.add(blueBorder);
+		
+		addCustomerSelection(blueBorder);
+		addProjectSelection(blueBorder);
+	}
+
+	/**
+	 * Add user departments and users
+	 * @param form
+	 */
+	private void addDepartmentsAndUsers(Form form)
+	{
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("deptUserBorder");
+		form.add(blueBorder);
+		
+		addUserDepartmentSelection(blueBorder);
+		addUserSelection(blueBorder);
+	}
 	
 	/**
 	 * Add customer selection
@@ -260,16 +241,13 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	 */
 	private void addCustomerSelection(WebMarkupContainer parent)
 	{
-		Fragment fragment = new Fragment("itemListHolder", "customerListHolder", ReportCriteriaPanel.this);
-		Form form = new Form("customerSelection");
-
-		ListMultipleChoice customers = new ListMultipleChoice("reportCriteria.availableCriteria.customers",
-								new PropertyModel(getModel(), "reportCriteria.userCriteria.customers"),
+		final ListMultipleChoice customers = new ListMultipleChoice("reportCriteria.userCriteria.customers",
 								new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
 								new DomainObjectChoiceRenderer());
 		customers.setMaxRows(4);
 		customers.setOutputMarkupId(true);
-		
+
+		// update projects when customer(s) selected
 		customers.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
 			protected void onUpdate(AjaxRequestTarget target)
@@ -280,16 +258,25 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
             }
         });	
 		
-		form.add(customers);
-		fragment.add(form);
+		parent.add(customers);
 		
-		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("customerList", 
-																		fragment,
-																		null,
-																		new StringResourceModel("report.hideInactive", this, null),
-																		this);
+		// hide active/inactive customers checkbox 
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveCustomers")
+		{
+			private static final long serialVersionUID = 2585047163449150793L;
 
-		parent.add(entrySelectorPanel);
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_CUSTOMERS);
+				target.addComponent(customers);
+			}
+		};		
+		
+		parent.add(deactivateBox);
+		
+		Label filterToggleText = new Label("onlyActiveCustomersLabel", new ResourceModel("report.hideInactive"));
+		parent.add(filterToggleText);
 	}
 	
 	/**
@@ -298,40 +285,37 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 	 */
 	private void addProjectSelection(WebMarkupContainer parent)
 	{
-		Fragment fragment = new Fragment("itemListHolder", "projectListHolder", ReportCriteriaPanel.this);
-		Form form = new Form("projectSelection");
-
-		projects = new ListMultipleChoice("reportCriteria.availableCriteria.projects",
-											new PropertyModel(getModel(), "reportCriteria.userCriteria.projects"),
+		projects = new ListMultipleChoice("reportCriteria.userCriteria.projects",
 											new PropertyModel(getModel(), "reportCriteria.availableCriteria.projects"),
 											new DomainObjectChoiceRenderer());
 		projects.setMaxRows(4);
 		projects.setOutputMarkupId(true);
-		form.add(projects);
-		fragment.add(form);
+		parent.add(projects);
 		
-		projects.add(new AjaxFormComponentUpdatingBehavior("onchange")
-        {
-			protected void onUpdate(AjaxRequestTarget target)
-            {
-				// don't do anything, just update the model
-            }
-        });	
-		
-		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("projectList", 
-																		fragment,
-																		null,
-																		new StringResourceModel("report.hideInactive", this, null),
-																		this);
+		// hide active/inactive projects checkbox 
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveProjects")
+		{
+			private static final long serialVersionUID = 2585047163449150793L;
 
-		parent.add(entrySelectorPanel);
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
+				target.addComponent(projects);
+			}
+		};		
+		
+		parent.add(deactivateBox);
+		
+		Label filterToggleText = new Label("onlyActiveProjectsLabel", new ResourceModel("report.hideInactive"));
+		parent.add(filterToggleText);		
 	}	
 
 	/**
 	 * Add dates
 	 * @param parent
 	 */
-	private void addDates(WebMarkupContainer parent)
+	private void addDates(Form form)
 	{
 		startDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateStart", "dd/MM/yyyy");
 		startDatePicker.setToggle(new DojoFadeToggle(200));
@@ -345,7 +329,7 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
             }
         });			
 		
-		parent.add(startDatePicker);
+		form.add(startDatePicker);
 
 		endDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateEnd", "dd/MM/yyyy");
 		endDatePicker.setToggle(new DojoFadeToggle(200));
@@ -359,11 +343,11 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
             }
         });			
 	
-		parent.add(endDatePicker);
+		form.add(endDatePicker);
 		
-		addQuickWeek(parent);
-		addQuickMonth(parent);
-		addQuickQuarter(parent);
+		addQuickWeek(form);
+		addQuickMonth(form);
+		addQuickQuarter(form);
 	}
 	
 	/**
@@ -484,14 +468,5 @@ public class ReportCriteriaPanel extends Panel implements AjaxAwareContainer
 		Collections.sort(reportCriteria.getAvailableCriteria().getProjects(), new ProjectComparator());
 		Collections.sort(reportCriteria.getAvailableCriteria().getUserDepartments(), new UserDepartmentComparator());
 		Collections.sort(reportCriteria.getAvailableCriteria().getUsers(), new UserComparator(false));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
-	{
-		ajaxRequestReceived(target, type, null);
 	}
 }

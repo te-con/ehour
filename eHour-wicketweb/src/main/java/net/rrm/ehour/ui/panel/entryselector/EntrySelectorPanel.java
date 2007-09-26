@@ -152,6 +152,7 @@ public class EntrySelectorPanel extends Panel
             	callbackAfterFilter(target, filter);
 			}
 		};
+		
 		deactivateBox.setVisible(includeCheckboxToggle);
 		filterForm.add(deactivateBox);
 		
