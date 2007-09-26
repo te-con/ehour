@@ -17,16 +17,19 @@
 
 package net.rrm.ehour.ui.page.report;
 
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
+
+import org.apache.log4j.Logger;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Base page for report criteria
@@ -36,6 +39,10 @@ public abstract class BaseReportPage extends BasePage
 {
 	@SpringBean
 	private ReportCriteriaService	reportCriteriaService;
+	@SpringBean
+	private ReportService			reportService;
+
+	protected final transient Logger logger = Logger.getLogger(this.getClass()); 
 
 	/**
 	 * 
@@ -80,4 +87,16 @@ public abstract class BaseReportPage extends BasePage
 		return userCriteria;
 	}	
 	
+	/**
+	 * Get report data
+	 * @param reportCriteria
+	 * @return
+	 */
+	protected ReportDataAggregate getReportData(ReportCriteria reportCriteria)
+	{
+		logger.debug("Getting report data");
+		ReportDataAggregate data = reportService.createAggregateReportData(reportCriteria);
+		
+		return data;
+	}	
 }

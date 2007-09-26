@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.page.user.report;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
@@ -26,14 +25,12 @@ import net.rrm.ehour.ui.panel.report.user.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Reporting for user
@@ -44,9 +41,6 @@ public class UserReport extends BaseReportPage
 {
 	private static final long serialVersionUID = -8867366237264687482L;
 
-	@SpringBean
-	private ReportService			reportService;
-	private static final Logger		logger = Logger.getLogger(UserReport.class);
 	private WebMarkupContainer		reportDataPanel;
 	
 	/**
@@ -100,19 +94,5 @@ public class UserReport extends BaseReportPage
 		UserReportPanel panel = new UserReportPanel("userReportPanel", customerAggregateReport, reportData, true);
 		panel.setOutputMarkupId(true);
 		return panel;
-	}
-	
-
-	/**
-	 * Get report data
-	 * @param reportCriteria
-	 * @return
-	 */
-	private ReportDataAggregate getReportData(ReportCriteria reportCriteria)
-	{
-		logger.debug("Getting report data");
-		ReportDataAggregate data = reportService.createAggregateReportData(reportCriteria);
-		
-		return data;
 	}
 }

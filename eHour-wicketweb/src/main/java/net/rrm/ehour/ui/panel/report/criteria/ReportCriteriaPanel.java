@@ -26,6 +26,8 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
@@ -39,10 +41,12 @@ import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -50,7 +54,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -78,11 +82,12 @@ public class ReportCriteriaPanel extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public ReportCriteriaPanel(String id, ReportCriteria criteria)
+	public ReportCriteriaPanel(String id, IModel model)
 	{
-		super(id, new CompoundPropertyModel(new ReportCriteriaBackingBean(criteria)));
+		super(id, model);
 		
-		sortReportCriteria(criteria);
+		sortReportCriteria(getBackingBeanFromModel().getReportCriteria());
+		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 		
@@ -96,26 +101,33 @@ public class ReportCriteriaPanel extends Panel
 		addCustomerAndProjects(form);
 		addDepartmentsAndUsers(form);
 		
-		addCreateReportButton(form);
+		addCreateReportSubmit(form);
 	}
 	
 	/**
 	 * Add submit link
 	 * @param parent
 	 */
-	private void addCreateReportButton(WebMarkupContainer parent)
+	private void addCreateReportSubmit(Form form)
 	{
-		AjaxLink	 link = new AjaxLink("createReport")
+		AjaxButton submitButton = new AjaxButton("createReport", form)
 		{
 			@Override
-			public void onClick(AjaxRequestTarget target)
+            protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				System.out.println("criteria: " + getBackingBeanFromModel().getReportCriteria().getUserCriteria().toString());
+				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT);
+            }
+
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator()
+			{
+				return new LoadingSpinnerDecorator();
 			}
-			
-		};
-		
-		parent.add(link);
+        };
+        
+        submitButton.setModel(new ResourceModel("report.createReport"));
+		// default submit
+		form.add(submitButton);
 	}
 
 	

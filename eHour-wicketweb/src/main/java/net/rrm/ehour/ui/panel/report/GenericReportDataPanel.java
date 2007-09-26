@@ -14,19 +14,17 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.user;
+package net.rrm.ehour.ui.panel.report;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.panel.report.AbstractAggregateReportPanel;
-import net.rrm.ehour.ui.panel.report.AggregateReportColumn;
-import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
+import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 /**
  * Report table
  **/
 
-public class UserReportDataPanel extends AbstractAggregateReportPanel
+public class GenericReportDataPanel extends AbstractAggregateReportPanel
 {
 	private static final long serialVersionUID = -2740688272163704885L;
 
@@ -37,9 +35,13 @@ public class UserReportDataPanel extends AbstractAggregateReportPanel
 	 * @param id
 	 * @param reportData
 	 */
-	public UserReportDataPanel(String id, CustomerAggregateReport reportData)
+	public GenericReportDataPanel(String id, AggregateReport reportData, ReportType reportType)
 	{
 		super(id, reportData);
+		
+		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
+		
+		reportColumns = ReportColumnUtil.getReportColumns(config, reportType);
 	}
 	
 	/*
@@ -49,13 +51,6 @@ public class UserReportDataPanel extends AbstractAggregateReportPanel
 	@Override
 	protected AggregateReportColumn[] getReportColumns()
 	{
-		if (reportColumns == null)
-		{
-			EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
-			
-			reportColumns = UserReportUtil.getReportColumns(config);
-		}
-		
 		return reportColumns;
 	}
 }

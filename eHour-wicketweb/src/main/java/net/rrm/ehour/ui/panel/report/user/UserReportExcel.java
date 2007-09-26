@@ -20,6 +20,8 @@ package net.rrm.ehour.ui.panel.report.user;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
 import net.rrm.ehour.ui.panel.report.AggregateReportColumn;
+import net.rrm.ehour.ui.panel.report.ReportColumnUtil;
+import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.Session;
@@ -69,7 +71,7 @@ public class UserReportExcel extends AbstractAggregateExcelReport
 		{
 			EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
 			
-			reportColumns = UserReportUtil.getReportColumns(config);
+			reportColumns = ReportColumnUtil.getReportColumns(config, ReportType.AGGREGATE_CUSTOMER_SINGLE_USER);
 		}
 		
 		return reportColumns;

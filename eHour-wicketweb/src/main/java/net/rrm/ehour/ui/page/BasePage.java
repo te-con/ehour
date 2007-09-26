@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.page;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxRequestType;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
