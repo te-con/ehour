@@ -64,7 +64,7 @@ public abstract class BaseReportPage extends BasePage
 		
 		if (userCriteria == null)
 		{
-			userCriteria = initUserCriteria();
+			userCriteria = initUserCriteria(singleUser);
 			EhourWebSession.getSession().setUserCriteria(userCriteria);
 		}
 		
@@ -76,11 +76,16 @@ public abstract class BaseReportPage extends BasePage
 	/**
 	 * Initialize user criteria 
 	 */
-	private UserCriteria initUserCriteria()
+	private UserCriteria initUserCriteria(boolean singleUser)
 	{
 		UserCriteria userCriteria = new UserCriteria();
-		userCriteria.setSingleUser(true);
-		userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
+		
+		userCriteria.setSingleUser(singleUser);
+		
+		if (singleUser)
+		{
+			userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
+		}
 		
 		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
 		

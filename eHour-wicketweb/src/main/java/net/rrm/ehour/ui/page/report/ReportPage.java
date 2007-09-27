@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -88,13 +89,10 @@ public class ReportPage extends BaseReportPage
 	 * @see net.rrm.ehour.ui.page.BasePage#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-//		getReportPanel();
-		
-		List<AbstractTab> tabList = tabPanel.getTabs();
-		
-		tabList.add(new AbstractTab(new KeyResourceModel("report.title.customer"))
+		ITab	tab = new AbstractTab(new KeyResourceModel("report.title.customer"))
 		{
 			@Override
 			public Panel getPanel(String panelId)
@@ -102,16 +100,10 @@ public class ReportPage extends BaseReportPage
 				return getReportPanel(panelId);
 			}
 			
-		});
+		};
 		
+		tabPanel.addTab(tab);
 		target.addComponent(tabPanel);
-		tabPanel.setSelectedTab(tabList.size() - 1);
-		
-//		for (AbstractTab tab : tabList)
-//		{
-//			
-//			System.out.println(((KeyResourceModel)tab.getTitle()).getKey());
-//		}
 	}
 
 	/**

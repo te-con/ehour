@@ -19,8 +19,11 @@ package net.rrm.ehour.ui.panel.report.criteria;
 
 import java.util.List;
 
+import net.rrm.ehour.ui.model.KeyResourceModel;
+
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 
 /**
  * Ajax tabbed report panel
@@ -38,7 +41,39 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	public ReportTabbedPanel(String id, List<AbstractTab> tabs)
 	{
 		super(id, tabs);
-		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * Add tab, replacing any tabs that have the same title resource key
+	 * @param newTab make sure to use a KeyResourceModel for the title
+	 */
+	@SuppressWarnings("unchecked")
+	public void addTab(ITab newTab)
+	{
+		List<ITab> 	tabList = getTabs();
+		boolean		tabAdded = false;
+		String		key = ((KeyResourceModel)newTab.getTitle()).getKey();
+		int			tabIndex = 0;
+		
+		for (ITab tab : tabList)
+		{
+			if ( ((KeyResourceModel)tab.getTitle()).getKey().equals(key))
+			{
+				tabList.set(tabIndex, newTab);
+				this.setSelectedTab(tabIndex);
+
+				tabAdded = true;
+				break;
+			}
+			
+			tabIndex++;
+		}
+	
+		if (!tabAdded)
+		{
+			getTabs().add(newTab);
+			setSelectedTab(tabList.size() - 1);
+		}
 	}
 
 }
