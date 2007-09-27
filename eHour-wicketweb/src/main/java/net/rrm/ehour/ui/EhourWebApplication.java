@@ -24,6 +24,7 @@ import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.panel.report.user.UserReportExcel;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.panel.report.type.CustomerReportExcel;
 
 import org.acegisecurity.AuthenticationManager;
 import org.apache.wicket.Component;
@@ -67,6 +68,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		
 		// register excel report resources
 		getSharedResources().add("userReportExcel", new UserReportExcel());
+		getSharedResources().add("customerReportExcel", new CustomerReportExcel());
 	}
 
 	protected void springInjection()

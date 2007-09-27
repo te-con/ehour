@@ -7,61 +7,61 @@
 
 <body>
 <wicket:panel>
-		<div wicket:id="border">
-			<form wicket:id="criteriaForm">
-		
-				<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
-					<wicket:message key="report.criteria.reportRange" />:
-					<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateStart" />
-				    <wicket:message key="report.criteria.until" />:
-					<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateEnd" />
+	<div wicket:id="border">
+		<form wicket:id="criteriaForm">
+	
+			<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
+				<wicket:message key="report.criteria.reportRange" />:
+				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateStart" />
+			    <wicket:message key="report.criteria.until" />:
+				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateEnd" />
+				<br />
+				<select wicket:id="quickWeek"></select>
+				<select wicket:id="quickMonth"></select>
+				<select wicket:id="quickQuarter"></select>
+			</div>
+			
+			<br clear="all" />
+
+			<div wicket:id="customerProjectsBorder">
+				<div style="float: left">
+					<select wicket:id="reportCriteria.userCriteria.customers" class="criteriaInput"></select>
 					<br />
-					<select wicket:id="quickWeek"></select>
-					<select wicket:id="quickMonth"></select>
-					<select wicket:id="quickQuarter"></select>
+					
+					<span wicket:id="onlyActiveCustomersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveCustomers" type="checkbox" />
 				</div>
 				
-				<br clear="all" />
-	
-				<div wicket:id="customerProjectsBorder">
-					<div style="float: left">
-						<select wicket:id="reportCriteria.userCriteria.customers" class="criteriaInput"></select>
-						<br />
-						
-						<span wicket:id="onlyActiveCustomersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveCustomers" type="checkbox" />
-					</div>
-					
-					<div>
-						<select wicket:id="reportCriteria.userCriteria.projects" class="criteriaInput"></select>
-						<br />
-						
-						<span wicket:id="onlyActiveProjectsLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveProjects" type="checkbox" />
-					</div>
-					
+				<div>
+					<select wicket:id="reportCriteria.userCriteria.projects" class="criteriaInput"></select>
 					<br />
+					
+					<span wicket:id="onlyActiveProjectsLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveProjects" type="checkbox" />
 				</div>
 				
 				<br />
+			</div>
+			
+			<br />
 
-				<div wicket:id="deptUserBorder">
-					<div style="float: left">
-						<select wicket:id="reportCriteria.userCriteria.userDepartments" class="criteriaInput"></select>
-						<br />
-					</div>
-					
-					<div>
-						<select wicket:id="reportCriteria.userCriteria.users" class="criteriaInput"></select>
-						<br />
-						
-						<span wicket:id="onlyActiveUsersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveUsers" type="checkbox" />
-					</div>
-					
+			<div wicket:id="deptUserBorder">
+				<div style="float: left">
+					<select wicket:id="reportCriteria.userCriteria.userDepartments" class="criteriaInput"></select>
 					<br />
 				</div>
+				
+				<div>
+					<select wicket:id="reportCriteria.userCriteria.users" class="criteriaInput"></select>
+					<br />
+					
+					<span wicket:id="onlyActiveUsersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveUsers" type="checkbox" />
+				</div>
+				
+				<br />
+			</div>
 
-				<input type="submit" class="submitButtonLightBackground" wicket:id="createReport" />
-			</form>
-		</div>
+			<input type="submit" class="submitButtonLightBackground" wicket:id="createReport" />
+		</form>
+	</div>
 </wicket:panel>
 
 </body>
