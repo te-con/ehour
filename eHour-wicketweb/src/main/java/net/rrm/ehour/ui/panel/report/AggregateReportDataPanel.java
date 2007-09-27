@@ -47,25 +47,28 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 /**
- * Abstract report panel
+ * Aggregate report data panel
  **/
 
-public abstract class AbstractAggregateReportPanel extends Panel
+public class AggregateReportDataPanel extends Panel
 {
 	private static final long serialVersionUID = -6757047600645464803L;
-	private static final Logger	logger = Logger.getLogger(AbstractAggregateReportPanel.class);
+	private static final Logger	logger = Logger.getLogger(AggregateReportDataPanel.class);
+	private AggregateReportColumn[]	reportColumns;
 	
 	/**
 	 * Default constructor 
 	 * @param id
 	 * @param report report data
 	 */
-	public AbstractAggregateReportPanel(String id, AggregateReport report)
+	public AggregateReportDataPanel(String id, AggregateReport report, ReportType reportType)
 	{
 		super(id);
 		
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		add(blueBorder);
+		
+		initReportColumns(reportType);
 		
 		addHeaderColumns(blueBorder);
 		addReportData(report, blueBorder);
@@ -83,7 +86,6 @@ public abstract class AbstractAggregateReportPanel extends Panel
 	{
 		RepeatingView	totalView = new RepeatingView("cell");
 		int				i = 0;
-		AggregateReportColumn[]	reportColumns = getReportColumns();
 		float			hours = 0;
 		float			turnOver = 0;
 
@@ -162,7 +164,7 @@ public abstract class AbstractAggregateReportPanel extends Panel
 		
 		int i = 0;
 		
-		for (AggregateReportColumn column : getReportColumns())
+		for (AggregateReportColumn column : reportColumns)
 		{
 			if (column.isVisible())
 			{
@@ -192,8 +194,7 @@ public abstract class AbstractAggregateReportPanel extends Panel
 	 */
 	private Component getReportNodeRows(ReportNode reportNode)
 	{
-		Serializable[][]		matrix = reportNode.getNodeMatrix(getReportColumns().length);
-		final AggregateReportColumn[]	columnHeaders = getReportColumns();
+		Serializable[][]		matrix = reportNode.getNodeMatrix(reportColumns.length);
 	
 		// add rows per node
 		@SuppressWarnings("serial")
@@ -209,11 +210,11 @@ public abstract class AbstractAggregateReportPanel extends Panel
 				// add cells for a row
 				for (Serializable cellValue : rowValues)
 				{
-					if (columnHeaders[i].isVisible())
+					if (reportColumns[i].isVisible())
 					{
 						Label cellLabel;
 					
-						if (columnHeaders[i].getConversionModel() == null)
+						if (reportColumns[i].getConversionModel() == null)
 						{
 							cellLabel = new Label(Integer.toString(i), new Model(cellValue));
 						}
@@ -223,7 +224,7 @@ public abstract class AbstractAggregateReportPanel extends Panel
 
 							try
 							{
-								model = getModelInstance(columnHeaders[i]);
+								model = getModelInstance(reportColumns[i]);
 								model.setObject(cellValue);
 							} catch (Exception e)
 							{
@@ -232,7 +233,7 @@ public abstract class AbstractAggregateReportPanel extends Panel
 							}
 							
 							cellLabel = new Label(Integer.toString(i), model);
-							addColumnTypeStyling(columnHeaders[i].getColumnType(), cellLabel);
+							addColumnTypeStyling(reportColumns[i].getColumnType(), cellLabel);
 							
 						}
 						
@@ -297,7 +298,6 @@ public abstract class AbstractAggregateReportPanel extends Panel
 	 */
 	private void addHeaderColumns(WebMarkupContainer parent)
 	{
-		AggregateReportColumn[]	reportColumns = getReportColumns();
 		RepeatingView	columnHeaders = new RepeatingView("columnHeaders");
 		int				i = 0;
 		
@@ -327,10 +327,15 @@ public abstract class AbstractAggregateReportPanel extends Panel
 		}
 	}
 	
-	
 	/**
-	 * Get report columns
+	 * 
+	 * @param reportType
 	 * @return
 	 */
-	protected abstract AggregateReportColumn[] getReportColumns();
+	private void initReportColumns(ReportType reportType)
+	{
+		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
+		
+		reportColumns = ReportColumnUtil.getReportColumns(config, reportType);
+	}
 }

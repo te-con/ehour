@@ -105,6 +105,7 @@ public class ReportPage extends BaseReportPage
 		});
 		
 		target.addComponent(tabPanel);
+		tabPanel.setSelectedTab(tabList.size() - 1);
 		
 //		for (AbstractTab tab : tabList)
 //		{

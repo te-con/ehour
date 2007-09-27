@@ -40,7 +40,7 @@ public class ReportPanel extends Panel
 		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame");
 
-		greyBorder.add(new GenericReportDataPanel("reportTable", reportData, ReportType.AGGREGATE_CUSTOMER));
+		greyBorder.add(new AggregateReportDataPanel("reportTable", reportData, ReportType.AGGREGATE_CUSTOMER));
 		
 		add(greyBorder);
 	}
