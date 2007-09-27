@@ -7,90 +7,89 @@
 
 <body>
 <wicket:panel>
-		<br clear="all" />
-		<div wicket:id="border">
-			<form wicket:id="projectForm">
-				<table class="contentTable" style="padding-right: 10px; width: 300px">
-					<tr>
-						<td valign="top"><wicket:message key="admin.project.name" />:</td>
-						<td><input class="textInputSmall" wicket:id="project.name" style="width: 15em" />
-							<span wicket:id="nameValidationError"></span>
-						</td>
-					</tr>
-					
-					<tr> 
-						<td valign="top"><wicket:message key="admin.project.code" />:</td>
-						<td><input class="textInputSmall" wicket:id="project.projectCode" style="width: 15em" />
-							<span wicket:id="codeValidationError"></span>
-						</td>
-					</tr>
+	<div wicket:id="border">
+		<form wicket:id="projectForm">
+			<table class="contentTable" style="padding-right: 10px; width: 300px">
+				<tr>
+					<td valign="top"><wicket:message key="admin.project.name" />:</td>
+					<td><input class="textInputSmall" wicket:id="project.name" style="width: 15em" />
+						<span wicket:id="nameValidationError"></span>
+					</td>
+				</tr>
+				
+				<tr> 
+					<td valign="top"><wicket:message key="admin.project.code" />:</td>
+					<td><input class="textInputSmall" wicket:id="project.projectCode" style="width: 15em" />
+						<span wicket:id="codeValidationError"></span>
+					</td>
+				</tr>
 
-					<tr>
-						<td valign="top"><wicket:message key="admin.project.projectManager" />:</td>
-						<td><select class="textInputSmall" style="width: 15em" wicket:id="project.projectManager"></select>
-						</td>
-					</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.project.projectManager" />:</td>
+					<td><select class="textInputSmall" style="width: 15em" wicket:id="project.projectManager"></select>
+					</td>
+				</tr>
 
-					<tr>
-						<td valign="top"><wicket:message key="admin.project.description" />:</td>
-						<td><textarea name="comment" wicket:id="project.description"
-								rows="3" style="width:20em"
-								wrap="virtual"></textarea>
+				<tr>
+					<td valign="top"><wicket:message key="admin.project.description" />:</td>
+					<td><textarea name="comment" wicket:id="project.description"
+							rows="3" style="width:20em"
+							wrap="virtual"></textarea>
 
-						</td>
-					</tr>		
+					</td>
+				</tr>		
 
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
-					
-					<tr>
-						<td valign="top"><wicket:message key="admin.project.customer" />:</td>
-						<td><select class="textInputSmall" style="width: 15em" wicket:id="project.customer"></select>
-							<span wicket:id="customerValidationError"></span>
-						</td>
-					</tr>
-					
-					<tr> 
-						<td valign="top"><wicket:message key="admin.project.contact" />:</td>
-						<td><input class="textInputSmall" wicket:id="project.contact" style="width: 15em" />
-						</td>
-					</tr>					
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
+				
+				<tr>
+					<td valign="top"><wicket:message key="admin.project.customer" />:</td>
+					<td><select class="textInputSmall" style="width: 15em" wicket:id="project.customer"></select>
+						<span wicket:id="customerValidationError"></span>
+					</td>
+				</tr>
+				
+				<tr> 
+					<td valign="top"><wicket:message key="admin.project.contact" />:</td>
+					<td><input class="textInputSmall" wicket:id="project.contact" style="width: 15em" />
+					</td>
+				</tr>					
 
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
 
-					<tr>
-						<td valign="top"><wicket:message key="admin.project.defaultProject" />:</td>
-						<td><input type="checkbox" wicket:id="project.defaultProject" /></td>
-					</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.project.defaultProject" />:</td>
+					<td><input type="checkbox" wicket:id="project.defaultProject" /></td>
+				</tr>
 
 
-					<tr>
-						<td valign="top"><wicket:message key="admin.project.active" />:</td>
-						<td><input type="checkbox" wicket:id="project.active" /></td>
-					</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.project.active" />:</td>
+					<td><input type="checkbox" wicket:id="project.active" /></td>
+				</tr>
 
-					<tr>
-						<td>
-							<span wicket:id="serverMessage"></span>
-							<a class="submitButtonLightBackground" wicket:id="deleteButton">
-								<wicket:message key="general.delete" />
-							</a>
-						</td>
-						<td style="text-align: right">
-							<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
-						</td>
-					</tr>
-					
-				</table>
-			</form>		
-		</div>
+				<tr>
+					<td>
+						<span wicket:id="serverMessage"></span>
+						<a class="submitButtonLightBackground" wicket:id="deleteButton">
+							<wicket:message key="general.delete" />
+						</a>
+					</td>
+					<td style="text-align: right">
+						<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
+					</td>
+				</tr>
+				
+			</table>
+		</form>		
+	</div>
 </wicket:panel>
 
 </body>

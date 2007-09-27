@@ -7,7 +7,16 @@
 
 <body>
 <wicket:border>
-	<div class="GreyFrame">
+	<div class="GreyFrame" wicket:id="greyFrame">
+		<div class="ExportIcons">
+			<a wicket:id="printLink" target="_print"><img src="img/print_on.gif" border="0" /></a>
+			<a wicket:id="excelLink"><img src="img/excel_on.gif" border="0" /></a>
+		</div>	
+		
+		<span wicket:id="greyTabTitle"></span>
+	
+		<br clear="all" />
+	
 		<div class="GreyFrameContainerSquared">
 			<h3>&nbsp;</h3>
 			

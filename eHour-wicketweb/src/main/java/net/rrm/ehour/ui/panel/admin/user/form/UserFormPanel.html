@@ -7,115 +7,114 @@
 
 <body>
 <wicket:panel>
-		<br clear="all" />
-		<div wicket:id="border">
-		
-			<form wicket:id="userForm">
-				<table class="contentTable" style="padding-right: 10px">
-					<tr>
-						<td valign="top"><wicket:message key="admin.user.username" />:</td>
-						<td><input class="textInputSmall" wicket:id="user.username" style="width: 15em" />
-							<span wicket:id="userValidationError"></span>
-						</td>
-					</tr>
-					
-					<tr> 
-						<td valign="top"><wicket:message key="admin.user.password" />:</td>
-						<td><input type="password" class="textInputSmall" wicket:id="user.password" style="width: 15em" />
-							<span wicket:id="passwordValidationError"></span>
-						</td>
-					</tr>
+	<div wicket:id="border">
+	
+		<form wicket:id="userForm">
+			<table class="contentTable" style="padding-right: 10px">
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.username" />:</td>
+					<td><input class="textInputSmall" wicket:id="user.username" style="width: 15em" />
+						<span wicket:id="userValidationError"></span>
+					</td>
+				</tr>
+				
+				<tr> 
+					<td valign="top"><wicket:message key="admin.user.password" />:</td>
+					<td><input type="password" class="textInputSmall" wicket:id="user.password" style="width: 15em" />
+						<span wicket:id="passwordValidationError"></span>
+					</td>
+				</tr>
 
-					<tr>
-						<td valign="top"><wicket:message key="admin.user.confirmPassword" />:</td>
-						<td><input type="password" class="textInputSmall" wicket:id="confirmPassword" style="width: 15em" />
-							<span wicket:id="confirmPasswordValidationError"></span>
-						</td>
-					</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.confirmPassword" />:</td>
+					<td><input type="password" class="textInputSmall" wicket:id="confirmPassword" style="width: 15em" />
+						<span wicket:id="confirmPasswordValidationError"></span>
+					</td>
+				</tr>
 
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
-					
-					<tr>
-						<td valign="top"><wicket:message key="admin.user.firstName" />:</td>
-						<td><input class="textInputSmall" wicket:id="user.firstName" style="width: 15em" />
-						</td>
-					</tr>
-					<tr>
-						<td valign="top"><wicket:message key="admin.user.lastName" />:</td>
-						<td><input class="textInputSmall" wicket:id="user.lastName" style="width: 15em" />
-							<span wicket:id="lastNameValidationError"></span>
-						</td>
-					</tr>
-					<tr>
-						<td><wicket:message key="admin.user.email" />:</td>
-						<td><input class="textInputSmall" wicket:id="user.email" style="width: 15em" />
-							<span wicket:id="emailValidationError"></span>
-						</td>
-					</tr>
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
+				
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.firstName" />:</td>
+					<td><input class="textInputSmall" wicket:id="user.firstName" style="width: 15em" />
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.lastName" />:</td>
+					<td><input class="textInputSmall" wicket:id="user.lastName" style="width: 15em" />
+						<span wicket:id="lastNameValidationError"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><wicket:message key="admin.user.email" />:</td>
+					<td><input class="textInputSmall" wicket:id="user.email" style="width: 15em" />
+						<span wicket:id="emailValidationError"></span>
+					</td>
+				</tr>
 
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
 
-					<tr>
-						<td valign="top"><wicket:message key="admin.user.department" />:</td>
-						<td><select class="textInputSmall" style="width: 15em" wicket:id="user.userDepartment"></select>
-							<span wicket:id="departmentValidationError"></span>
-						</td>
-					</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.department" />:</td>
+					<td><select class="textInputSmall" style="width: 15em" wicket:id="user.userDepartment"></select>
+						<span wicket:id="departmentValidationError"></span>
+					</td>
+				</tr>
 
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
 
-					<tr>
-						<td valign="top"><wicket:message key="admin.user.roles" />:</td>
-						<td><select class="textInputSmall" style="width: 15em" wicket:id="user.userRoles"></select>
-							<span wicket:id="rolesValidationError"></span>
-						</td>
-					</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.roles" />:</td>
+					<td><select class="textInputSmall" style="width: 15em" wicket:id="user.userRoles"></select>
+						<span wicket:id="rolesValidationError"></span>
+					</td>
+				</tr>
 
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
 
-					<tr>
-						<td valign="top"><wicket:message key="admin.user.active" />:</td>
-						<td><input type="checkbox" wicket:id="user.active" /></td>
-					</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.active" />:</td>
+					<td><input type="checkbox" wicket:id="user.active" /></td>
+				</tr>
 
 
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
 
-					<tr>
-						<td>
-							<span wicket:id="serverMessage"></span>
-							<a class="submitButtonLightBackground" wicket:id="deleteButton">
-								<wicket:message key="general.delete" />
-							</a>
-						</td>
-						<td style="text-align: right">
-							<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
-						</td>
-					</tr>
-					
-				</table>
-			</form>		
-		</div>
+				<tr>
+					<td>
+						<span wicket:id="serverMessage"></span>
+						<a class="submitButtonLightBackground" wicket:id="deleteButton">
+							<wicket:message key="general.delete" />
+						</a>
+					</td>
+					<td style="text-align: right">
+						<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
+					</td>
+				</tr>
+				
+			</table>
+		</form>		
+	</div>
 </wicket:panel>
 
 </body>

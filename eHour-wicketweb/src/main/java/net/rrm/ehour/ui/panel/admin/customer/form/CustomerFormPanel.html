@@ -7,69 +7,68 @@
 
 <body>
 <wicket:panel>
-		<br clear="all" />
-		<div wicket:id="border">
-		
-			<form wicket:id="customerForm">
-				<table class="contentTable" style="padding-right: 10px">
-					<tr>
-						<td valign="top"><wicket:message key="admin.customer.name" />:</td>
-						<td><input class="textInputSmall" wicket:id="customer.name" style="width: 15em" />
-							<span wicket:id="nameValidationError"></span>
-						</td>
-					</tr>
+	<div wicket:id="border">
+	
+		<form wicket:id="customerForm">
+			<table class="contentTable" style="padding-right: 10px">
+				<tr>
+					<td valign="top"><wicket:message key="admin.customer.name" />:</td>
+					<td><input class="textInputSmall" wicket:id="customer.name" style="width: 15em" />
+						<span wicket:id="nameValidationError"></span>
+					</td>
+				</tr>
+				
+				<tr> 
+					<td valign="top"><wicket:message key="admin.customer.code" />:</td>
+					<td><input class="textInputSmall" wicket:id="customer.code" style="width: 15em" />
+						<span wicket:id="codeValidationError"></span>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td valign="top"><wicket:message key="admin.customer.description" />:</td>
+					<td><textarea name="comment" wicket:id="customer.description"
+							rows="3" style="width:20em"
+							wrap="virtual"></textarea>
+
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
+
+				<tr>
+					<td valign="top"><wicket:message key="admin.customer.active" />:</td>
+					<td><input type="checkbox" wicket:id="customer.active" /></td>
+				</tr>
+
+
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<span wicket:id="serverMessage"></span>
+						<a class="submitButtonLightBackground" wicket:id="deleteButton">
+							<wicket:message key="general.delete" />
+						</a>
+					</td>
 					
-					<tr> 
-						<td valign="top"><wicket:message key="admin.customer.code" />:</td>
-						<td><input class="textInputSmall" wicket:id="customer.code" style="width: 15em" />
-							<span wicket:id="codeValidationError"></span>
-						</td>
-					</tr>
-					
-					
-					<tr>
-						<td valign="top"><wicket:message key="admin.customer.description" />:</td>
-						<td><textarea name="comment" wicket:id="customer.description"
-								rows="3" style="width:20em"
-								wrap="virtual"></textarea>
-
-						</td>
-					</tr>
-
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
-
-					<tr>
-						<td valign="top"><wicket:message key="admin.customer.active" />:</td>
-						<td><input type="checkbox" wicket:id="customer.active" /></td>
-					</tr>
-
-
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
-
-					<tr>
-						<td>
-							<span wicket:id="serverMessage"></span>
-							<a class="submitButtonLightBackground" wicket:id="deleteButton">
-								<wicket:message key="general.delete" />
-							</a>
-						</td>
-						
-						<td style="text-align: right">
-							<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
-						</td>
-					</tr>
-					
-				</table>
-			</form>		
-		</div>
+					<td style="text-align: right">
+						<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
+					</td>
+				</tr>
+				
+			</table>
+		</form>		
+	</div>
 </wicket:panel>
 
 </body>

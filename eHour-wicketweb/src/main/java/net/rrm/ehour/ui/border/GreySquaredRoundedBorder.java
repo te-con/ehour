@@ -16,18 +16,25 @@
 
 package net.rrm.ehour.ui.border;
 
-import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
+
 
 /**
- * Rounded border with a square left top 
+ * Rounded border with a square left top mainly used for tabs 
  **/
 
-public class GreySquaredRoundedBorder extends Border
+public class GreySquaredRoundedBorder extends GreyRoundedBorder
 {
 	private static final long serialVersionUID = -793890240017442386L;
 
 	public GreySquaredRoundedBorder(String id)
 	{
 		super(id);
+	}
+	
+	public GreySquaredRoundedBorder(String id, Link printLink, Link excelLink, Integer width)
+	{
+		super(id, new Model("dumm"), false, printLink, excelLink, width);
 	}
 }

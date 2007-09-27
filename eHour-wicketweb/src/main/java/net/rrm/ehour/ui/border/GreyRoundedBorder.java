@@ -38,7 +38,7 @@ public class GreyRoundedBorder extends Border
 	 */
 	public GreyRoundedBorder(String id)
 	{
-		this(id, null, null, null);
+		this(id, new Model(), null, null);
 	}
 
 	/**
