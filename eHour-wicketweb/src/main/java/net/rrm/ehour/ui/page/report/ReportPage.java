@@ -24,11 +24,14 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.report.ReportPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
+import net.rrm.ehour.ui.panel.report.type.CustomerReportPanel;
+import net.rrm.ehour.ui.panel.report.type.ProjectReportPanel;
+import net.rrm.ehour.ui.panel.report.type.ReportPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
+import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -92,36 +95,71 @@ public class ReportPage extends BaseReportPage
 	@SuppressWarnings("unchecked")
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-		ITab	tab = new AbstractTab(new KeyResourceModel("report.title.customer"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getReportPanel(panelId);
-			}
-			
-		};
-		
-		tabPanel.addTab(tab);
+		addReportPanelTabs();
 		target.addComponent(tabPanel);
 	}
 
 	/**
-	 * Build report for criteria
+	 * Get the report panel
 	 */
-	private Panel getReportPanel(String id)
+	private void addReportPanelTabs()
 	{
 		ReportCriteria criteria = ((ReportCriteriaBackingBean)getModel().getObject()).getReportCriteria();
 		
-		// add data
-		ReportDataAggregate reportData = getReportData(criteria);
+		final ReportDataAggregate reportData = getReportData(criteria);
 		
+		ITab	customerTab = new AbstractTab(new KeyResourceModel("report.title.customer"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return getCustomerReportPanel(panelId, reportData);
+			}
+		};		
+		tabPanel.addTab(customerTab);
+		
+		ITab	projectTab = new AbstractTab(new KeyResourceModel("report.title.project"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return getProjectReportPanel(panelId, reportData);
+			}
+		};		
+		tabPanel.addTab(projectTab);		
+	}
+	
+	/**
+	 * Get customer report panel
+	 * @param id
+	 * @param reportData
+	 * @return
+	 */
+	private Panel getCustomerReportPanel(String id, ReportDataAggregate reportData)
+	{
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
 		
-		ReportPanel panel = new ReportPanel(id, customerAggregateReport);
+		ReportPanel panel = new CustomerReportPanel(id, customerAggregateReport, reportData);
 		panel.setOutputMarkupId(true);
 		
 		return panel;
 	}
+	
+	/**
+	 * Get customer report panel
+	 * @param id
+	 * @param reportData
+	 * @return
+	 */
+	private Panel getProjectReportPanel(String id, ReportDataAggregate reportData)
+	{
+		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportData);
+		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
+		
+		ReportPanel panel = new ProjectReportPanel(id, aggregateReport, reportData);
+		panel.setOutputMarkupId(true);
+		
+		return panel;
+	}	
 }

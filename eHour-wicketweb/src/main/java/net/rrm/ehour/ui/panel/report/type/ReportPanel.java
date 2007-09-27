@@ -15,33 +15,43 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report;
+package net.rrm.ehour.ui.panel.report.type;
 
+import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
+import net.rrm.ehour.ui.panel.report.AggregateReportDataPanel;
+import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 
 /**
  * Full report panel containing report data and the charts 
  **/
 
-public class ReportPanel extends Panel
+public abstract class ReportPanel extends AbstractReportPanel
 {
-	private static final long serialVersionUID = -1562027888605553288L;
-
 	/**
 	 * 
 	 * @param id
 	 */
-	public ReportPanel(String id, AggregateReport reportData)
+	public ReportPanel(String id, AggregateReport reportData, ReportDataAggregate data, ReportType reportType)
 	{
 		super(id);
 		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame");
-
-		greyBorder.add(new AggregateReportDataPanel("reportTable", reportData, ReportType.AGGREGATE_CUSTOMER));
-		
 		add(greyBorder);
+
+		greyBorder.add(new AggregateReportDataPanel("reportTable", reportData, reportType));
+		
+		addCharts(data, greyBorder);
 	}
+	
+	/**
+	 * Add charts
+	 * @param reportCriteria
+	 * @return
+	 */
+	protected abstract void addCharts(ReportDataAggregate data, WebMarkupContainer parent);
 }

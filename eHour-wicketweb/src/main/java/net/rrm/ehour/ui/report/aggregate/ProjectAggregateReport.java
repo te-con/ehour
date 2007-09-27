@@ -1,3 +1,20 @@
+/**
+ * Created on Sep 27, 2007
+ * Created by Thies Edeling
+ * Created by Thies Edeling
+ * Copyright (C) 2007 TE-CON, All Rights Reserved.
+ *
+ * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
+ * TE-CON holds all the ownership rights on the Software.
+ * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for commercial use or open source,
+ * is subject to obtaining the prior express authorization of TE-CON.
+ * 
+ * thies@te-con.nl
+ * TE-CON
+ * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ *
+ */
+
 package net.rrm.ehour.ui.report.aggregate;
 
 import java.io.Serializable;
@@ -11,39 +28,29 @@ import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
 
 /**
- * User: Thies
- * Date: Sep 11, 2007
- * Time: 9:26:29 PM
- * Copyright (C) 2005-2007 TE-CON, All Rights Reserved.
- * <p/>
- * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is
- * available for educational purposes.
- * TE-CON holds all the ownership rights on the Software.
- * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for
- * commercial use or open source, is subject to obtaining the prior express authorization of TE-CON.
- * <p/>
- * thies@te-con.nl
- * TE-CON
- * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
- */
-public class CustomerAggregateReport extends AggregateReport
+ * TODO 
+ **/
+
+public class ProjectAggregateReport extends AggregateReport
 {
-	private static final long serialVersionUID = -3221674649410450972L;
+	private static final long serialVersionUID = 6073113076906501807L;
 
-    /**
-     *
-     * @param reportDataAggregate
-     */
-    public CustomerAggregateReport(ReportDataAggregate reportDataAggregate)
-    {
-    	super(reportDataAggregate);
-    }
+	/**
+	 * 
+	 * @param reportDataAggregate
+	 */
+	public ProjectAggregateReport(ReportDataAggregate reportDataAggregate)
+	{
+		super(reportDataAggregate);
+	}
 
-    /**
-     *
-     */
-    public ReportNodeFactory getReportNodeFactory()
-    {
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.report.aggregate.AggregateReport#getReportNodeFactory()
+	 */
+	@Override
+	public ReportNodeFactory getReportNodeFactory()
+	{
     	return new ReportNodeFactory()
 	    {
 	        @Override
@@ -52,9 +59,9 @@ public class CustomerAggregateReport extends AggregateReport
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
-	                    return new CustomerNode(aggregate, 0);
+	                    return new ProjectNode(aggregate, 0);
 	                case 1:
-	                    return new ProjectNode(aggregate, 1);
+	                    return new CustomerNode(aggregate, 1);
 	                case 2:
 	                    return new UserEndNode(aggregate);
 	            }
@@ -73,5 +80,6 @@ public class CustomerAggregateReport extends AggregateReport
 	            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
 	        }
 	    };
-    }
+	}
+
 }
