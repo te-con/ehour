@@ -77,9 +77,8 @@ public class ProjectAggregateReport extends AggregateReport
 	
 	        public Serializable getAssignmentId(ProjectAssignmentAggregate aggregate)
 	        {
-	            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
+	            return aggregate.getProjectAssignment().getProject().getPK();
 	        }
 	    };
 	}
-
 }

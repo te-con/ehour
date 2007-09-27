@@ -94,7 +94,27 @@ public class ReportColumnUtil
 												true, 
 												AggregateReportColumn.ColumnType.TURNOVER)
 			};
-		}		
+		}	
+		else if (reportType == ReportType.AGGREGATE_USER)
+		{
+			return new AggregateReportColumn[]{
+					new AggregateReportColumn("userReport.report.user"),
+					new AggregateReportColumn("userReport.report.customer"),
+					new AggregateReportColumn("userReport.report.project"),
+					new AggregateReportColumn("userReport.report.projectCode"),
+					new AggregateReportColumn("userReport.report.rate"),
+					new AggregateReportColumn("userReport.report.hours",
+												FloatModel.class,
+												new Object[]{config},
+												true,
+												AggregateReportColumn.ColumnType.HOUR),
+					new AggregateReportColumn("userReport.report.turnover", 
+												CurrencyModel.class,
+												new Object[]{config},
+												true, 
+												AggregateReportColumn.ColumnType.TURNOVER)
+			};
+		}			
 		else
 		{
 			System.out.println("whoops");

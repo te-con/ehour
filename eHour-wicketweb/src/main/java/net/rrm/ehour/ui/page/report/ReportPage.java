@@ -28,10 +28,12 @@ import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.type.CustomerReportPanel;
+import net.rrm.ehour.ui.panel.report.type.EmployeeReportPanel;
 import net.rrm.ehour.ui.panel.report.type.ProjectReportPanel;
 import net.rrm.ehour.ui.panel.report.type.ReportPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
+import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -126,7 +128,17 @@ public class ReportPage extends BaseReportPage
 				return getProjectReportPanel(panelId, reportData);
 			}
 		};		
-		tabPanel.addTab(projectTab);		
+		tabPanel.addTab(projectTab);	
+		
+		ITab	employeeTab = new AbstractTab(new KeyResourceModel("report.title.employee"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return getUserReportPanel(panelId, reportData);
+			}
+		};		
+		tabPanel.addTab(employeeTab);		
 	}
 	
 	/**
@@ -147,7 +159,7 @@ public class ReportPage extends BaseReportPage
 	}
 	
 	/**
-	 * Get customer report panel
+	 * Get project report panel
 	 * @param id
 	 * @param reportData
 	 * @return
@@ -158,6 +170,25 @@ public class ReportPage extends BaseReportPage
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
 		
 		ReportPanel panel = new ProjectReportPanel(id, aggregateReport, reportData);
+		panel.setOutputMarkupId(true);
+		
+		return panel;
+	}	
+	
+	/**
+	 * Get user report panel
+	 * TODO too much repeating stuff here..
+	 * 
+	 * @param id
+	 * @param reportData
+	 * @return
+	 */
+	private Panel getUserReportPanel(String id, ReportDataAggregate reportData)
+	{
+		UserAggregateReport	aggregateReport = new UserAggregateReport(reportData);
+		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
+		
+		ReportPanel panel = new EmployeeReportPanel(id, aggregateReport, reportData);
 		panel.setOutputMarkupId(true);
 		
 		return panel;
