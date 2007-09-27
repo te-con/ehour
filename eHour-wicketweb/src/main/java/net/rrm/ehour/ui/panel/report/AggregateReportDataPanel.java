@@ -107,17 +107,17 @@ public class AggregateReportDataPanel extends Panel
 			{
 				Label label = null;
 				
-				if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.OTHER)
-				{
-					label = HtmlUtil.getNbspLabel(Integer.toString(i));
-				}
-				else if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+				if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.HOUR)
 				{
 					label = new Label(Integer.toString(i), new FloatModel(hours, config));
 				}
 				else if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
 				{
 					label = new Label(Integer.toString(i), new CurrencyModel(turnOver, config));
+				}
+				else
+				{
+					label = HtmlUtil.getNbspLabel(Integer.toString(i));
 				}
 				
 				addColumnTypeStyling(reportColumns[i].getColumnType(), label);
@@ -169,17 +169,18 @@ public class AggregateReportDataPanel extends Panel
 			if (column.isVisible())
 			{
 				String	id = Integer.toString(i++);
-				if (column.getColumnType() == AggregateReportColumn.ColumnType.OTHER)
-				{
-					totalView.add(HtmlUtil.getNbspLabel(id));
-				}
-				else if (column.getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+				
+				if (column.getColumnType() == AggregateReportColumn.ColumnType.HOUR)
 				{
 					totalView.add(new Label(id, new FloatModel(reportNode.getHours(), config)));
 				}
 				else if (column.getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
 				{
 					totalView.add(new Label(id, new CurrencyModel(reportNode.getTurnover(), config)));
+				}
+				else
+				{
+					totalView.add(HtmlUtil.getNbspLabel(id));
 				}
 			}
 		}
@@ -321,7 +322,7 @@ public class AggregateReportDataPanel extends Panel
 	 */
 	private void addColumnTypeStyling(AggregateReportColumn.ColumnType columnType, Label label)
 	{
-		if (columnType != AggregateReportColumn.ColumnType.OTHER)
+		if (columnType != AggregateReportColumn.ColumnType.OTHER && label != null)
 		{
 			label.add(new SimpleAttributeModifier("style", "text-align: right"));
 		}
