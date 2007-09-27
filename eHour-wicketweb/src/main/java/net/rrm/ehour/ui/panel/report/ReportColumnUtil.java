@@ -103,7 +103,7 @@ public class ReportColumnUtil
 												AggregateReportColumn.ColumnType.TURNOVER)
 			};
 		}	
-		else if (reportType == ReportType.AGGREGATE_USER)
+		else if (reportType == ReportType.AGGREGATE_EMPLOYEE)
 		{
 			return new AggregateReportColumn[]{
 					new AggregateReportColumn("userReport.report.user"),

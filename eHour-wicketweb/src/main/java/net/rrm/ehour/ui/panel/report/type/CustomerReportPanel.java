@@ -36,7 +36,8 @@ public class CustomerReportPanel extends ReportPanel
 
 	public CustomerReportPanel(String id, AggregateReport reportData, ReportDataAggregate data)
 	{
-		super(id, reportData, data, ReportType.AGGREGATE_CUSTOMER);
+		// TODO make customerReportExcel constant
+		super(id, reportData, data, ReportType.AGGREGATE_CUSTOMER, "customerReportExcel");
 	}
 
 	/*

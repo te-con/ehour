@@ -39,13 +39,13 @@ public abstract class ReportPanel extends AbstractReportPanel
 	 * 
 	 * @param id
 	 */
-	public ReportPanel(String id, AggregateReport reportData, ReportDataAggregate data, ReportType reportType)
+	public ReportPanel(String id, AggregateReport reportData, ReportDataAggregate data, ReportType reportType, String excelResourceName)
 	{
 		super(id);
 
 		final String reportId = reportData.getReportId();
 		
-		ResourceReference excelResource = new ResourceReference("customerReportExcel");
+		ResourceReference excelResource = new ResourceReference(excelResourceName);
 		ValueMap params = new ValueMap();
 		params.add("reportId", reportId);
 		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);

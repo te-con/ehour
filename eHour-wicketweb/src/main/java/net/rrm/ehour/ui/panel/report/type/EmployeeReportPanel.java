@@ -36,7 +36,7 @@ public class EmployeeReportPanel extends ReportPanel
 
 	public EmployeeReportPanel(String id, AggregateReport reportData, ReportDataAggregate data)
 	{
-		super(id, reportData, data, ReportType.AGGREGATE_USER);
+		super(id, reportData, data, ReportType.AGGREGATE_EMPLOYEE, "employeeReportExcel");
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class ProjectReportPanel extends ReportPanel
 
 	public ProjectReportPanel(String id, AggregateReport reportData, ReportDataAggregate data)
 	{
-		super(id, reportData, data, ReportType.AGGREGATE_PROJECT);
+		super(id, reportData, data, ReportType.AGGREGATE_PROJECT, "projectReportExcel");
 	}
 
 	@Override
