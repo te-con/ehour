@@ -19,11 +19,16 @@ package net.rrm.ehour.ui.panel.report.criteria;
 
 import java.util.List;
 
+import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 
 /**
  * Ajax tabbed report panel
@@ -42,6 +47,38 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	{
 		super(id, tabs);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel#newLink(java.lang.String, int)
+	 */
+	@Override
+	protected WebMarkupContainer newLink(String linkId, final int index)
+	{
+		return new AjaxFallbackLink(linkId)
+		{
+
+			private static final long serialVersionUID = 1L;
+
+			public void onClick(AjaxRequestTarget target)
+			{
+				setSelectedTab(index);
+				if (target != null)
+				{
+					target.addComponent(ReportTabbedPanel.this);
+				}
+				onAjaxUpdate(target);
+			}
+			
+			// only diff with overriden method
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator()
+			{
+				return new LoadingSpinnerDecorator();
+			}			
+
+		};
+	}	
 	
 	/**
 	 * Add tab, replacing any tabs that have the same title resource key

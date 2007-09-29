@@ -415,7 +415,7 @@ public class ReportCriteriaPanel extends Panel
 			
 			currentDate.add(Calendar.MONTH, 1);
 		}
-		
+
 		final DropDownChoice quickMonthSelection = new DropDownChoice("quickMonth", months, new QuickMonthRenderer());
 
 		quickMonthSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
@@ -426,7 +426,6 @@ public class ReportCriteriaPanel extends Panel
 				target.addComponent(startDatePicker);
 				target.addComponent(endDatePicker);
 			}
-			
 		});
 		
 		parent.add(quickMonthSelection);
