@@ -20,6 +20,7 @@ import java.text.NumberFormat;
 import java.util.Currency;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.log4j.Logger;
 
@@ -54,6 +55,26 @@ public class CurrencyModel extends AbstractNumberModel
 	}
 	
 	/**
+	 * Bit of a hack, replace the currency symbol with the UTF-8 code 
+	 */
+	@Override
+	public Object getObject()
+	{
+		String curr = (String)super.getObject();
+
+		for (String str : CommonUIStaticData.getCurrencyHTMLSymbols().keySet())
+		{
+			if (curr.startsWith(str))
+			{
+				curr = curr.replace(str, CommonUIStaticData.getCurrencyHTMLSymbols().get(str));
+				break;
+			}
+		}
+		
+		return curr;
+	}	
+	
+	/**
 	 * Init formatters based on the config
 	 * @param config
 	 */
@@ -61,7 +82,6 @@ public class CurrencyModel extends AbstractNumberModel
 	{
 		Currency	currency;
 		
-		// TODO get it display the &euro; sign instead of EUR
 		try
 		{
 			currency = Currency.getInstance(config.getCurrency());

@@ -180,7 +180,7 @@ public class ReportCriteriaPanel extends Panel
 		
 		parent.add(deactivateBox);
 		
-		Label filterToggleText = new Label("onlyActiveUsersLabel", new ResourceModel("report.filter"));
+		Label filterToggleText = new Label("onlyActiveUsersLabel", new ResourceModel("report.hideInactive"));
 		parent.add(filterToggleText);
 		
 		// filter

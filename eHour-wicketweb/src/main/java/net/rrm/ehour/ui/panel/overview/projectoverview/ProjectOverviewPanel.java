@@ -123,6 +123,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		
 		label = new Label("grandTotalTurnover", new CurrencyModel(totalTurnover, config));
 		label.setVisible(config.isShowTurnover());
+		label.setEscapeModelStrings(false);
 		container.add(label);
 	}
 	
@@ -196,6 +197,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				
 				label = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), session.getEhourConfig()));
 				label.setVisible(session.getEhourConfig().isShowTurnover());
+				label.setEscapeModelStrings(false);
 				item.add(label);
 
 				label = new Label("monthHours", new FloatModel(projectStatus.getHours(), session.getEhourConfig()));

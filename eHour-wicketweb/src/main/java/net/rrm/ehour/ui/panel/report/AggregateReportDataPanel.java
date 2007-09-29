@@ -114,6 +114,7 @@ public class AggregateReportDataPanel extends Panel
 				else if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
 				{
 					label = new Label(Integer.toString(i), new CurrencyModel(turnOver, config));
+					label.setEscapeModelStrings(false);
 				}
 				else
 				{
@@ -176,7 +177,9 @@ public class AggregateReportDataPanel extends Panel
 				}
 				else if (column.getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
 				{
-					totalView.add(new Label(id, new CurrencyModel(reportNode.getTurnover(), config)));
+					Label label = new Label(id, new CurrencyModel(reportNode.getTurnover(), config));
+					label.setEscapeModelStrings(false);
+					totalView.add(label);
 				}
 				else
 				{

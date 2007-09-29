@@ -58,6 +58,22 @@ public class CommonUIStaticData
 	}
 	
 	/**
+	 * Get currency HTML symbols
+	 * @return
+	 */
+	public static Map<String, String> getCurrencyHTMLSymbols()
+	{
+		SortedMap<String, String> currencies = new TreeMap<String,String>();
+		
+		currencies.put("USD", "$");
+		currencies.put("EUR", "&#8364;");
+		currencies.put("JPY", "&yen;");
+		currencies.put("GBP", "&pound;");
+		
+		return currencies;
+	}	
+	
+	/**
 	 * Get resource key for project assignment type
 	 * @param type
 	 * @return
