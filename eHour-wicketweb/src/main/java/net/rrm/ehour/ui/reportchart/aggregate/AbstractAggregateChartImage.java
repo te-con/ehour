@@ -32,7 +32,7 @@ import net.rrm.ehour.ui.sort.StringComparator;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Resource;
-import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebResponse;
@@ -48,7 +48,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * Base class for aggregated charts 
  **/
 
-public abstract class AbstractAggregateChartImage extends Image
+public abstract class AbstractAggregateChartImage extends NonCachingImage
 {
 	private	final static Logger	logger = Logger.getLogger(AbstractAggregateChartImage.class);
 

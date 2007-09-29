@@ -74,12 +74,9 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 			throw new Exception("No report found in cache");
 		}
 		
-		if (excelData == null)
-		{
-			logger.info("Creating excel report");
-			HSSFWorkbook workbook = createWorkbook(report);
-			excelData = workbookToByteArray(workbook);
-		}
+		logger.info("Creating excel report");
+		HSSFWorkbook workbook = createWorkbook(report);
+		excelData = workbookToByteArray(workbook);
 		
 		return excelData;
 	}
