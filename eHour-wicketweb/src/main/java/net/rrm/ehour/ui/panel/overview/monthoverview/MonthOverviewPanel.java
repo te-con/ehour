@@ -156,11 +156,8 @@ public class MonthOverviewPanel extends Panel
 						{
 							TimesheetEntry entry = (TimesheetEntry)item.getModelObject();
 
-		            		if (entry.getHours().intValue() != 0)
-		            		{
-		            			item.add(new Label("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode())); 
-		            			item.add(new Label("hours", new FloatModel(entry.getHours(), config)));
-		            		}
+	            			item.add(new Label("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode())); 
+	            			item.add(new Label("hours", new FloatModel(entry.getHours(), config)));
 						}
 	            	};
 	            	

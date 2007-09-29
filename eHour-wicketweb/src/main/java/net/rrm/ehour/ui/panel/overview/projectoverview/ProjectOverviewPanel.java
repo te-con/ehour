@@ -136,6 +136,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	{
 		Label	label;
 		
+		// TODO i18n
 		container.add(new Label("projectLabel", "Project"));
 		container.add(new Label("projectCodeLabel", "Project code"));
 		container.add(new Label("customerLabel", "Customer"));
