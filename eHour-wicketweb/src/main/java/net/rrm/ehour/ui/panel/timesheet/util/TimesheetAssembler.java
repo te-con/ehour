@@ -70,7 +70,6 @@ public class TimesheetAssembler
 		Timesheet											timesheet;
 		SortedMap<Customer, List<TimesheetRow>>				customerMap;
 		
-		// TODO move to joda
 		dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
 		
 		assignmentMap = createAssignmentMap(weekOverview);
@@ -128,8 +127,9 @@ public class TimesheetAssembler
 			else
 			{
 				timesheetRows = new ArrayList<TimesheetRow>();
-				timesheetRows.add(timesheetRow);
 			}
+
+			timesheetRows.add(timesheetRow);
 			
 			customerMap.put(customer, timesheetRows);
 		}
@@ -243,15 +243,14 @@ public class TimesheetAssembler
 	 */
 	private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
 	{
-		ProjectAssignment assignment;
 		Map<String, TimesheetEntry>	entryDateMap;	
 		Map<ProjectAssignment, Map<String, TimesheetEntry>>	assignmentMap;
 		
 		assignmentMap = new HashMap<ProjectAssignment, Map<String, TimesheetEntry>>();	
-		
+
 		for (TimesheetEntry entry : weekOverview.getTimesheetEntries())
 		{
-			assignment = entry.getEntryId().getProjectAssignment();
+			ProjectAssignment assignment = entry.getEntryId().getProjectAssignment();
 			
 			if (assignmentMap.containsKey(assignment))
 			{
