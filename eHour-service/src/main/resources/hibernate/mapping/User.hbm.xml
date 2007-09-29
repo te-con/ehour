@@ -18,7 +18,7 @@
 		
 		<property name="active" column="ACTIVE" type="yes_no" index="IDX_USER_ACTIVE" />
 		
-        <set name="userRoles" table="USER_TO_USERROLE" lazy="true">
+        <set name="userRoles" table="USER_TO_USERROLE" lazy="false">
            <key column="USER_ID" />
            <many-to-many column="ROLE" class="net.rrm.ehour.user.domain.UserRole"/>
         </set>		

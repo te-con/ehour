@@ -83,7 +83,7 @@ public interface ProjectService
 	 * @param userId
 	 * @return
 	 */
-	public List<ProjectAssignment> getAllProjectsForUser(Integer userId);
+	public List<ProjectAssignment> getAllProjectsForUser(User user);
 
 	
 	/**

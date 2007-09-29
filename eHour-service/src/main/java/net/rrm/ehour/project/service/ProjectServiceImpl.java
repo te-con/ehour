@@ -83,11 +83,11 @@ public class ProjectServiceImpl implements ProjectService
 	 * Get all project assignments for user
 	 * @param userId
 	 */
-	public List<ProjectAssignment> getAllProjectsForUser(Integer userId)
+	public List<ProjectAssignment> getAllProjectsForUser(User user)
 	{
 		List<ProjectAssignment>	results;
 		
-		results = projectAssignmentDAO.findProjectAssignmentsForUser(new User(userId));
+		results = projectAssignmentDAO.findProjectAssignmentsForUser(user);
 		
 		return results;
 	}

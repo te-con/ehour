@@ -75,7 +75,7 @@ public class ProjectServiceIntegrationTest  extends BaseDAOTest
 	
 	public void testGetAllProjectsForUser()
 	{
-		List<ProjectAssignment> pas = projectService.getAllProjectsForUser(1);
+		List<ProjectAssignment> pas = projectService.getAllProjectsForUser(new User(1));
 		assertEquals(7, pas.size());
 	}
 	
