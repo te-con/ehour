@@ -76,8 +76,11 @@ public class ReportCriteriaBackingBean implements Serializable
 			userCriteria.setReportRange(new DateRange());
 		}
 		
-		userCriteria.getReportRange().setDateStart(period.getPeriodStart());
-		userCriteria.getReportRange().setDateEnd(period.getPeriodEnd());		
+		if (period != null)
+		{
+			userCriteria.getReportRange().setDateStart(period.getPeriodStart());
+			userCriteria.getReportRange().setDateEnd(period.getPeriodEnd());
+		}
 	}
 
 	public ReportCriteria getReportCriteria()

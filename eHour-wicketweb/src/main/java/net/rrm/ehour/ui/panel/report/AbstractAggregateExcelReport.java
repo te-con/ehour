@@ -199,11 +199,11 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		AggregateReportColumn[]	columnHeaders = getReportColumns();
 		HSSFRow				row;
 		HSSFCell			cell;
-		short				cellNumber = 0;
 		
 		for (Serializable[] rowValues : matrix)
 		{
-			int i = 0;
+			int 	i = 0;
+			short	cellNumber = 0;
 			
 			row = sheet.createRow(rowNumber++);
 			
@@ -213,37 +213,41 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 				if (columnHeaders[i].isVisible())
 				{
 					cell = row.createCell(cellNumber++);
-					
-					if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+
+					if (cellValue != null)
 					{
-						cell.setCellStyle(valueDigitCellStyle);
-						
-						if (cellValue instanceof Float)
+						if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.HOUR)
 						{
-							cell.setCellValue((Float)cellValue);
+							cell.setCellStyle(valueDigitCellStyle);
+							
+							if (cellValue instanceof Float)
+							{
+								cell.setCellValue((Float)cellValue);
+							}
+							else
+							{
+								cell.setCellValue((Double)cellValue);
+							}
+						}
+						else if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER
+								 || columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.RATE)
+						{
+							cell.setCellStyle(currencyCellStyle);
+							
+							if (cellValue instanceof Float)
+							{
+								cell.setCellValue((Float)cellValue);
+							}
+							else 
+							{
+								cell.setCellValue( ((Number)cellValue).doubleValue());
+							}
 						}
 						else
 						{
-							cell.setCellValue((Double)cellValue);
+							cell.setCellStyle(defaultCellStyle);
+							cell.setCellValue(new HSSFRichTextString((String)cellValue));
 						}
-					}
-					else if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER
-							 || columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.RATE)
-					{
-						cell.setCellStyle(currencyCellStyle);
-						if (cellValue instanceof Float)
-						{
-							cell.setCellValue((Float)cellValue);
-						}
-						else
-						{
-							cell.setCellValue((Double)cellValue);
-						}
-					}
-					else
-					{
-						cell.setCellStyle(defaultCellStyle);
-						cell.setCellValue(new HSSFRichTextString((String)cellValue));
 					}
 				}
 				
