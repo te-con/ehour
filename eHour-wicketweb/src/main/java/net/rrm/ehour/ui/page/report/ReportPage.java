@@ -40,7 +40,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -75,6 +74,8 @@ public class ReportPage extends BaseReportPage
 		
 		tabList.add(new AbstractTab(new KeyResourceModel("criteria.title"))
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Panel getPanel(String panelId)
 			{
@@ -85,8 +86,6 @@ public class ReportPage extends BaseReportPage
 		tabPanel = new ReportTabbedPanel("reportContainer", tabList);
 		tabPanel.setOutputMarkupId(true);
 		add(tabPanel);
-		
-		add(new Label("sidePanel", "dummy"));
 	}
 	
 	/*
@@ -112,6 +111,8 @@ public class ReportPage extends BaseReportPage
 		
 		ITab	customerTab = new AbstractTab(new KeyResourceModel("report.title.customer"))
 		{
+			private static final long serialVersionUID = 1L;
+			
 			@Override
 			public Panel getPanel(String panelId)
 			{
@@ -122,6 +123,8 @@ public class ReportPage extends BaseReportPage
 		
 		ITab	projectTab = new AbstractTab(new KeyResourceModel("report.title.project"))
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Panel getPanel(String panelId)
 			{
@@ -132,13 +135,17 @@ public class ReportPage extends BaseReportPage
 		
 		ITab	employeeTab = new AbstractTab(new KeyResourceModel("report.title.employee"))
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Panel getPanel(String panelId)
 			{
 				return getUserReportPanel(panelId, reportData);
 			}
 		};		
-		tabPanel.addTab(employeeTab);		
+		
+		tabPanel.addTab(employeeTab);
+		tabPanel.setSelectedTab(1);
 	}
 	
 	/**
