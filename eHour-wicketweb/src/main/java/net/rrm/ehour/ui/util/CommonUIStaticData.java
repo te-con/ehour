@@ -41,18 +41,27 @@ public class CommonUIStaticData
 	public final static String ROLE_REPORT = "ROLE_REPORT";
 	public final static String ROLE_PM = "ROLE_PROJECTMANAGER";
 	
+	public final static String[] weekDays = new String[]{"sunday", "monday", "tuesday", 
+															"wednesday", "thursday", "friday", "saturday"};
+	
+	private static Map<String, String>			currencies;
+	private static SortedMap<String, String> 	currencySymbols;		
+	
 	/**
 	 * Get currencies
 	 * @return
 	 */
 	public static Map<String, String> getCurrencies()
 	{
-		SortedMap<String, String> currencies = new TreeMap<String,String>();
-		
-		currencies.put("Dollar", "$");
-		currencies.put("Euro", "&#8364;");
-		currencies.put("Yen", "&yen;");
-		currencies.put("Pound", "&pound;");
+		if (currencies == null)
+		{
+			currencies = new TreeMap<String,String>();
+			
+			currencies.put("Dollar", "$");
+			currencies.put("Euro", "&#8364;");
+			currencies.put("Yen", "&yen;");
+			currencies.put("Pound", "&pound;");
+		}
 		
 		return currencies;
 	}
@@ -63,14 +72,17 @@ public class CommonUIStaticData
 	 */
 	public static Map<String, String> getCurrencyHTMLSymbols()
 	{
-		SortedMap<String, String> currencies = new TreeMap<String,String>();
+		if (currencySymbols == null)
+		{
+			currencySymbols = new TreeMap<String,String>();
+			
+			currencySymbols.put("USD", "$");
+			currencySymbols.put("EUR", "&#8364;");
+			currencySymbols.put("JPY", "&yen;");
+			currencySymbols.put("GBP", "&pound;");
+		}
 		
-		currencies.put("USD", "$");
-		currencies.put("EUR", "&#8364;");
-		currencies.put("JPY", "&yen;");
-		currencies.put("GBP", "&pound;");
-		
-		return currencies;
+		return currencySymbols;
 	}	
 	
 	/**

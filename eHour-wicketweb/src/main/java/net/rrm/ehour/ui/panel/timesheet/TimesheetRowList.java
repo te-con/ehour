@@ -24,6 +24,7 @@ import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
 import org.apache.wicket.AttributeModifier;
@@ -95,7 +96,6 @@ public class TimesheetRowList extends ListView
 		// TODO use icon instead of project list
 		AjaxLink projectLink = new AjaxLink("bookWholeWeek")
 		{
-
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
@@ -171,7 +171,7 @@ public class TimesheetRowList extends ListView
 												.get("grandTotal"));
 				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
 												.get("blueFrame"))
-												.get(TimesheetPanel.dayTotalIds[index]));
+												.get(CommonUIStaticData.weekDays[index] + "Total"));
 				
 				form.visitFormComponents(new FormHighlighter(target));
 			}		

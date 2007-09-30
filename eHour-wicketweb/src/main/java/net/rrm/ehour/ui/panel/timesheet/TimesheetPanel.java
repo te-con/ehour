@@ -34,8 +34,8 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.ajax.OnClickDecorator;
+import net.rrm.ehour.ui.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.model.DateModel;
@@ -55,6 +55,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -62,6 +63,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
@@ -74,9 +76,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * The main panel - timesheet form
  * TODO add feedback for invalid values
  * TODO add 'data saved' feedback
- * TODO add week navigation
  * TODO change store & next week to store
- * TODO add whole week to project
  * TODO fold image itself should change and be clickable
  **/
 
@@ -90,8 +90,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	private UserService			userService;
 	
 	private	EhourConfig			config;
-	public static String[]		dayTotalIds = new String[]{"sundayTotal", "mondayTotal", "tuesdayTotal", 
-													"wednesdayTotal", "thursdayTotal", "fridayTotal", "saturdayTotal"};
 	
 	/**
 	 * Construct timesheetPanel for entering hours
@@ -104,21 +102,20 @@ public class TimesheetPanel extends Panel implements Serializable
 		super(id);
 		
 		EhourWebSession 	session = (EhourWebSession)getSession();
-		SimpleDateFormat	dateFormatter;
 		GrandTotal			grandTotals = new GrandTotal();
 		
 		config = session.getEhourConfig();
-		dateFormatter = new SimpleDateFormat("w, MMMM yyyy", config.getLocale());
 
 		// dom id's
 		this.setOutputMarkupId(true);
-		
-		// grey & blue frame border
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("timesheetFrame", "Week " + dateFormatter.format(forWeek.getTime()));
-		add(greyBorder);
 
 		// the timesheet we're working on
 		final Timesheet timesheet = getTimesheet(user,  forWeek);
+
+		// grey & blue frame border
+		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", 
+																				getWeekNavigation(forWeek, timesheet.getWeekStart()));
+		add(greyBorder);
 
 		// add form
 		Form timesheetForm = new Form("timesheetForm");
@@ -154,6 +151,46 @@ public class TimesheetPanel extends Panel implements Serializable
 	}
 
 	/**
+	 * Add week navigation to title
+	 * @param parent
+	 * @param forWeek
+	 */
+	private WebMarkupContainer getWeekNavigation(Calendar forWeek, final Date weekStart)
+	{
+		Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
+		SimpleDateFormat	dateFormatter;
+		dateFormatter = new SimpleDateFormat("w, MMMM yyyy", config.getLocale());
+
+		// TODO i18n
+		titleFragment.add(new Label("titleLabel", "Week " + dateFormatter.format(forWeek.getTime())));
+		
+		// TODO use icon for prev/next weeks
+		AjaxLink previousWeekLink = new AjaxLink("previousWeek")
+		{
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				moveWeek(weekStart, target, -1);
+			}
+		};
+		
+		titleFragment.add(previousWeekLink);
+		
+		AjaxLink nextWeekLink = new AjaxLink("nextWeek")
+		{
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				moveWeek(weekStart, target, 1);
+			}
+		};
+		
+		titleFragment.add(nextWeekLink);		
+		
+		return titleFragment;
+	}
+	
+	/**
 	 * Create comments input
 	 * @param parent
 	 * @param timesheet
@@ -184,9 +221,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		Label		total;
 		
-		for (int i = 0; i < dayTotalIds.length; i++)
+		for (int i = 0; i < CommonUIStaticData.weekDays.length; i++)
 		{
-			total = new Label(dayTotalIds[i], new FloatModel(new PropertyModel(grandTotals, "getValues[" + i + "]"), config));
+			total = new Label(CommonUIStaticData.weekDays[i] + "Total", new FloatModel(new PropertyModel(grandTotals, "getValues[" + i + "]"), config));
 			total.setOutputMarkupId(true);
 			parent.add(total);
 		}
@@ -210,7 +247,7 @@ public class TimesheetPanel extends Panel implements Serializable
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
                 persistTimesheetEntries(timesheet);
-                moveToNextWeek(timesheet.getWeekStart(), target);
+                moveWeek(timesheet.getWeekStart(), target, 1);
             }
 
 			@Override
@@ -250,47 +287,26 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		Label	label;
 		
-		label = new Label("sundayLabel", new DateModel(timesheet.getDateSequence()[0], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-		label.setEscapeModelStrings(false);
-		parent.add(label);
-
-		label = new Label("mondayLabel", new DateModel(timesheet.getDateSequence()[1], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-		label.setEscapeModelStrings(false);
-		parent.add(label);
-
-		label = new Label("tuesdayLabel", new DateModel(timesheet.getDateSequence()[2], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-		label.setEscapeModelStrings(false);
-		parent.add(label);
-
-		label = new Label("wednesdayLabel", new DateModel(timesheet.getDateSequence()[3], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-		label.setEscapeModelStrings(false);
-		parent.add(label);
-
-		Label labelA = new Label("thursdayLabel", new DateModel(timesheet.getDateSequence()[4], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-		labelA.setEscapeModelStrings(false);
-		parent.add(labelA);
-		
-		label = new Label("fridayLabel", new DateModel(timesheet.getDateSequence()[5], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-		label.setEscapeModelStrings(false);
-		parent.add(label);
-
-		label = new Label("saturdayLabel", new DateModel(timesheet.getDateSequence()[6], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-		label.setEscapeModelStrings(false);
-		parent.add(label);
+		for (int i = 0; i < CommonUIStaticData.weekDays.length; i++)
+		{
+			label = new Label(CommonUIStaticData.weekDays[i] + "Label", new DateModel(timesheet.getDateSequence()[i], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+			label.setEscapeModelStrings(false);
+			parent.add(label);
+		}
 	}
 	
 	/**
 	 * Move to next week after succesfull form submit
 	 * @param target
 	 */
-	private void moveToNextWeek(Date onScreenDate, AjaxRequestTarget target)
+	private void moveWeek(Date onScreenDate, AjaxRequestTarget target, int weekDiff)
 	{
 		EhourWebSession session = (EhourWebSession)getSession();
 		Calendar	cal = DateUtil.getCalendar(config);
 		int			event;
 
 		cal.setTime(onScreenDate);
-		cal.add(Calendar.WEEK_OF_YEAR, 1);
+		cal.add(Calendar.WEEK_OF_YEAR, weekDiff);
 
 		// should update calendar as well
 		event = CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE;

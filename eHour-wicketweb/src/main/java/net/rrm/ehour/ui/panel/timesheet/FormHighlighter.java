@@ -80,7 +80,9 @@ public class FormHighlighter implements FormComponent.IVisitor, Serializable
     {
     	return new AttributeModifier("style", true, new AbstractReadOnlyModel()
         {
-            public Object getObject()
+			private static final long serialVersionUID = 1L;
+
+			public Object getObject()
             {
                 return "color: " + color;
             }
