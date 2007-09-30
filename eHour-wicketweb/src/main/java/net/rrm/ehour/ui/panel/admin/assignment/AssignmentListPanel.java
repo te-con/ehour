@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -157,7 +158,13 @@ public class AssignmentListPanel extends Panel
 	 */
 	private List<ProjectAssignment> getProjectAssignments(User user)
 	{
-		List<ProjectAssignment> assignments = projectService.getAllProjectsForUser(user.getUserId());
+		List<ProjectAssignment> assignments;
+		
+		if (user.getUserId() == null)
+		{
+			return new ArrayList<ProjectAssignment>();
+		}
+		assignments = projectService.getAllProjectsForUser(user);
 		
 		if (assignments != null && assignments.size() > 0)
 		{

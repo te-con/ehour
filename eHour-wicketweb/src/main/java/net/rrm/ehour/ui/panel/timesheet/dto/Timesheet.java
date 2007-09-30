@@ -42,8 +42,33 @@ public class Timesheet implements Serializable
 	private	User				user;
 	private	TimesheetComment	comment;
 	private	CustomerFoldPreferenceList foldPreferences;	
+	private	int					maxHoursPerDay; // TODO int? should change to float
 
-
+	/**
+	 * Get remaining hours for a day based on maxHoursPerDay
+	 * @param day
+	 * @return
+	 */
+	public Float getRemainingHoursForDay(int day)
+	{
+		float remainingHours = maxHoursPerDay;
+		
+		for (Customer customer : customers.keySet())
+		{
+			for (TimesheetRow row: customers.get(customer))
+			{
+				TimesheetCell cell = row.getTimesheetCells()[day];
+				
+				if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null)
+				{
+					remainingHours -= cell.getTimesheetEntry().getHours().floatValue();
+				}
+			}
+		}
+		
+		return remainingHours;
+	}
+	
 	/**
 	 * @return the weekStart
 	 */
@@ -127,6 +152,14 @@ public class Timesheet implements Serializable
 	public void setUser(User user)
 	{
 		this.user = user;
+	}
+	public int getMaxHoursPerDay()
+	{
+		return maxHoursPerDay;
+	}
+	public void setMaxHoursPerDay(int maxHoursPerDay)
+	{
+		this.maxHoursPerDay = maxHoursPerDay;
 	}
 
 }

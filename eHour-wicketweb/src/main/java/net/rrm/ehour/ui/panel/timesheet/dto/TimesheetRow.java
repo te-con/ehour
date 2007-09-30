@@ -38,7 +38,41 @@ public class TimesheetRow implements Serializable
 	private ProjectAssignment	projectAssignment;
 	private	TimesheetCell[]		timesheetCells;
 	private	Calendar			sundayDate;
+	private Timesheet			timesheet; // parent timesheet
 
+	/**
+	 * 
+	 */
+	public void bookRemainingHoursOnRow()
+	{
+		// only for monday - friday
+		for (int day = 1; day <= 5; day++)
+		{
+			float remaining = timesheet.getRemainingHoursForDay(day);
+			
+			if (remaining > 0)
+			{
+				TimesheetEntry  entry = timesheetCells[day].getTimesheetEntry();
+				
+				if (entry == null)
+				{
+					entry = new TimesheetEntry();
+				}
+				
+				if (entry.getHours() == null)
+				{
+					entry.setHours(remaining);
+				}
+				else
+				{
+					entry.setHours(entry.getHours().floatValue() + remaining);
+				}
+				
+				timesheetCells[day].setTimesheetEntry(entry);
+			}
+		}
+	}
+	
 	/**
 	 * @return the projectAssignment
 	 */
@@ -101,7 +135,7 @@ public class TimesheetRow implements Serializable
 		{
 			for (int i =0; i < timesheetCells.length; i++)
 			{
-				// as timesheet entry is lazy fetched in a subsequent request assignment is not set
+				// as timesheet entry is lazy fetched in a subsequent http request assignment is not set
 				if (timesheetCells[i] != null
 						&& timesheetCells[i].getTimesheetEntry() != null) 
 				{
@@ -141,6 +175,14 @@ public class TimesheetRow implements Serializable
 	public void setSundayDate(Calendar sundayDate)
 	{
 		this.sundayDate = sundayDate;
+	}
+	public Timesheet getTimesheet()
+	{
+		return timesheet;
+	}
+	public void setTimesheet(Timesheet timesheet)
+	{
+		this.timesheet = timesheet;
 	}
 
 

@@ -77,6 +77,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * TODO add week navigation
  * TODO change store & next week to store
  * TODO add whole week to project
+ * TODO fold image itself should change and be clickable
  **/
 
 public class TimesheetPanel extends Panel implements Serializable
@@ -340,10 +341,8 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		ListView customers = new ListView("customers", new ArrayList<Customer>(timesheet.getCustomers().keySet()))
 		{
-			{
-				setReuseItems(true);
-			}
-			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void populateItem(ListItem item)
 			{
@@ -365,6 +364,7 @@ public class TimesheetPanel extends Panel implements Serializable
 				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
 			}
 		};
+		customers.setReuseItems(true);
 		
 		parent.add(customers);
 		

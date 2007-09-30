@@ -71,17 +71,19 @@ public class TimesheetAssembler
 		SortedMap<Customer, List<TimesheetRow>>				customerMap;
 		
 		dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
-		
+
+		timesheet = new Timesheet();
+		timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
+	
 		assignmentMap = createAssignmentMap(weekOverview);
 		mergeUnbookedAssignments(weekOverview, assignmentMap);
 		
-		timesheetRows = createTimesheetRows(assignmentMap, dateSequence, weekOverview.getProjectAssignments());
+		timesheetRows = createTimesheetRows(assignmentMap, dateSequence, weekOverview.getProjectAssignments(), timesheet);
 		
 		customerMap = structureRowsPerCustomer(timesheetRows);
 		
 		sortCustomerMap(customerMap);
 		
-		timesheet = new Timesheet();
 		timesheet.setCustomers(customerMap);
 		timesheet.setDateSequence((Date[])dateSequence.toArray(new Date[7]));
 		timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());		
@@ -145,7 +147,8 @@ public class TimesheetAssembler
 	 */
 	private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap, 
 													List<Date> dateSequence,
-													List<ProjectAssignment> validProjectAssignments)
+													List<ProjectAssignment> validProjectAssignments,
+													Timesheet timesheet)
 	{
 		List<TimesheetRow> 	timesheetRows = new ArrayList<TimesheetRow>();
 		TimesheetRow		timesheetRow;
@@ -157,6 +160,7 @@ public class TimesheetAssembler
 		for (ProjectAssignment assignment : assignmentMap.keySet())
 		{
 			timesheetRow = new TimesheetRow();
+			timesheetRow.setTimesheet(timesheet);
 			timesheetRow.setProjectAssignment(assignment);
 			timesheetRow.setSundayDate(sundayDate);
 			

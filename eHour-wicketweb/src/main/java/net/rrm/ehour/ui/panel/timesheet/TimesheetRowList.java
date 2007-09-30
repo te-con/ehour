@@ -30,6 +30,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -82,13 +83,30 @@ public class TimesheetRowList extends ListView
 		// add id to row
 		item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
 		{
+			private static final long serialVersionUID = 1L;
+
 			public Object getObject()
 			{
 				return "pw" + row.getProjectAssignment().getProject().getCustomer().getCustomerId().toString() + counter++;
 			}
 		}));
 
-		item.add(new Label("project", row.getProjectAssignment().getProject().getName()));
+		// add project + link to book whole week on project
+		// TODO use icon instead of project list
+		AjaxLink projectLink = new AjaxLink("bookWholeWeek")
+		{
+
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				row.bookRemainingHoursOnRow();
+				target.addComponent(form);
+			}
+			
+		};
+		
+		projectLink.add(new Label("project", row.getProjectAssignment().getProject().getName()));
+		item.add(projectLink);
 		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 
 		item.add(createValidatedTextField("sunday", row, 0));
