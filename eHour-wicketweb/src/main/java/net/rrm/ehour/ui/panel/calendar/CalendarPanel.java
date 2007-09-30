@@ -289,6 +289,8 @@ public class CalendarPanel extends SidePanel
 	 */
 	private class WeekClick extends AjaxEventBehavior
 	{
+		private static final long serialVersionUID = 9164386260367481606L;
+		
 		private int week, year;
 		
 		public WeekClick(String id, int week, int year)
