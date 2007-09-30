@@ -53,7 +53,7 @@ public class CurrencyModel extends AbstractNumberModel
 		
 		initFormatters(config);
 	}
-	
+
 	/**
 	 * Bit of a hack, replace the currency symbol with the UTF-8 code 
 	 */
