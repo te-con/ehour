@@ -45,16 +45,7 @@ public interface UserDAO extends GenericDAO<User, Integer>
 	 * @return
 	 */
 	public List<User> findUsersByNameMatch(String pattern, boolean onlyActive);
-	
-	/**
-	 * Find users where pattern matches either first name or last name and have user ROle
-	 * @param pattern
-	 * @param onlyActive
-	 * @param role
-	 * @return
-	 */
-	public List<User> findUsersByNameMatch(String pattern, boolean onlyActive, UserRole role);
-	
+
 	/**
 	 * Find all users
 	 * @return

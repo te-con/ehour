@@ -29,7 +29,6 @@ public class ReportUtil
 {
 	/**
 	 * Convert list of projects to id
-	 * TODO: this broken (oh?)
 	 * @param projects
 	 * @return
 	 */

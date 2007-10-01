@@ -340,6 +340,7 @@ public class UserServiceImpl implements UserService
 		Set<UserRole>	userRoles;
 		
 		// invalids
+		// FIXME
 		invalidUsers = userDAO.findUsersWithPMRoleButNoProject();
 		
 		for (User user : invalidUsers)
@@ -443,7 +444,19 @@ public class UserServiceImpl implements UserService
 	 */
 	public List<User> getUsersByNameMatch(String match, boolean inclInactive, UserRole userRole)
 	{
-		return userDAO.findUsersByNameMatch(match, inclInactive, userRole);
+		List<User> users = userDAO.findUsersByNameMatch(match, inclInactive);
+		List<User> validUsers = new ArrayList<User>();
+		
+		// result of bad many-to-many mapping. should fix once..
+		for (User user : users)
+		{
+			if (user.getUserRoles().contains(userRole))
+			{
+				validUsers.add(user);
+			}
+		}
+		
+		return validUsers;
 	}
 
 	/*

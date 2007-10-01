@@ -15,11 +15,15 @@
 
 package net.rrm.ehour.user.service;
 
+import java.util.List;
+
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.util.EhourConstants;
 
 /**
  * Small unit test to test service <-> dao interaction with tx 
@@ -127,6 +131,16 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		{
 		}
 	}
+	
+	
+	// FIXME fails on buildserver?
+	public void testFindUsersByPatternAndUserRole()
+	{
+		List<User>	results;
+		
+		results = userService.getUsersByNameMatch(null, true, new UserRole(EhourConstants.ROLE_CONSULTANT));
+		assertEquals(4, results.size());		
+	}	
 	
 	/**
 	 * 

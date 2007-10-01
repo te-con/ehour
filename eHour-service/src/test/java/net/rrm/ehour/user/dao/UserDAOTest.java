@@ -24,15 +24,7 @@ public class UserDAOTest extends BaseDAOTest
 	{
 		this.dao = dao;
 	}
-	
-	// FIXME fails on buildserver?
-//	public void testFindUsersByPatternAndUserRole()
-//	{
-//		List<User>	results;
-//		
-//		results = dao.findUsersByNameMatch(null, true, new UserRole(EhourConstants.ROLE_CONSULTANT));;
-//		assertEquals(4, results.size());		
-//	}
+
 	
 	public void testFindUsersByPattern()
 	{
@@ -140,7 +132,7 @@ public class UserDAOTest extends BaseDAOTest
 //	public void testFindUsersWithPMRoleButNoProject()
 //	{
 //		List<User> results = dao.findUsersWithPMRoleButNoProject();
-//
+//		setComplete();
 //		assertEquals(1, results.size());
 //	}
 //	
