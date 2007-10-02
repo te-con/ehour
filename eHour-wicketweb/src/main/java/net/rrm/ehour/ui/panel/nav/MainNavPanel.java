@@ -20,6 +20,7 @@ import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.page.login.Login;
 import net.rrm.ehour.ui.page.report.ReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
+import net.rrm.ehour.ui.page.user.print.PrintMonth;
 import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.util.AuthUtil;
 
@@ -51,12 +52,12 @@ public class MainNavPanel extends Panel
 		super(id);
 		
 		addLink(this, "overviewLink", Overview.class);
+		addLink(this, "printLink", PrintMonth.class);
 		addReportLink(this, "userReportLink");
 		addLink(this, "adminLink", MainConfig.class);
 		addLink(this, "logoffLink", Login.class);
 		
-		add(new Label("loggedInUser", 
-						new StringResourceModel("nav.loggedinas", this, new Model(AuthUtil.getUser()) )));
+		add(new Label("loggedInUser", new StringResourceModel("nav.loggedinas", this, new Model(AuthUtil.getUser()) )));
 		
 		add(new StyleSheetReference("headerStyle", headerStyle()));
 	}

@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.overview.OverviewPanel;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -38,8 +37,8 @@ public class Overview extends BasePage
 {
 	private static final long serialVersionUID = -6873845464139697303L;
 
-	private CalendarPanel		calendarPanel;
 	private	WebMarkupContainer	contentContainer; // yeah yeah, bad name
+	private CalendarPanel		calendarPanel;
 	
 	/**
 	 * Setup the page
@@ -77,6 +76,9 @@ public class Overview extends BasePage
 			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK:
 				calendarWeekClicked(target);
 				break;
+			case CommonUIStaticData.AJAX_CALENDARDATA_CHANGED:
+				calendarPanel.refreshCalendar(target);
+				break;
 		}
 	}
 	
@@ -100,12 +102,6 @@ public class Overview extends BasePage
 	 */
 	private void calendarChanged(AjaxRequestTarget target)
 	{
-		CalendarPanel panel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
-		calendarPanel.replaceWith(panel);
-		calendarPanel = panel;
-		
-		target.addComponent(panel);
-
 		WebMarkupContainer	replacementPanel;
 		
 		if (this.get("contentContainer") instanceof TimesheetPanel)
@@ -133,12 +129,5 @@ public class Overview extends BasePage
 					getEhourWebSession().getNavCalendar());
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	private EhourWebSession getEhourWebSession()
-	{
-		return ((EhourWebSession)this.getSession());
-	}
+
 }

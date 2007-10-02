@@ -11,7 +11,7 @@
 
 <body>
 <wicket:extend>
-	<div class="Calendar">
+	<div class="Calendar" wicket:id="calendarFrame">
 	
 		<div class="CalendarHeader">
 			<div class="PreviousMonth">
@@ -31,10 +31,7 @@
 		</div>
 		
 		<div class="CalendarBody">
-			<div class="CalendarWeek" wicket:id="weeks" 
-					onmouseover="backgroundOn(this)"
-					onmouseout="backgroundOff(this)"
-					>
+			<div class="CalendarWeek" wicket:id="weeks">
 				<div class="SundayDay">
 					<span wicket:id="sunday"></span>
 				</div>

@@ -44,7 +44,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Ehour Web session
- * FIXME login is screwed
  **/
 
 public class EhourWebSession extends AuthenticatedWebSession

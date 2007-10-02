@@ -27,14 +27,17 @@ import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.page.user.print.PrintMonth;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -75,7 +78,16 @@ public class MonthOverviewPanel extends Panel
 		EhourWebSession session = (EhourWebSession)getSession();
 		config = session.getEhourConfig();
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyFrame", new ResourceModel("monthoverview.overview"));
+		BookmarkablePageLink   printLink = new BookmarkablePageLink("printLink", 
+																	PrintMonth.class, 
+																	new PageParameters("monthYear=" 
+																						+ (overviewFor.get(Calendar.MONTH) + 1) 
+																						+ "-" 
+																						+ overviewFor.get(Calendar.YEAR)));
+		
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyFrame", 
+												new ResourceModel("monthoverview.overview"),
+												printLink, null);
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		
 		greyBorder.add(blueBorder);

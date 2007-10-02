@@ -35,6 +35,7 @@ public class CommonUIStaticData
 	public final static int	AJAX_FORM_SUBMIT = 4;
 	public final static int	AJAX_DELETE = 5;
 	public final static int AJAX_LIST_CHANGE = 6;
+	public final static int AJAX_CALENDARDATA_CHANGED = 7;
 	
 	public final static String ROLE_CONSULTANT = "ROLE_CONSULTANT";
 	public final static String ROLE_ADMIN = "ROLE_ADMIN";

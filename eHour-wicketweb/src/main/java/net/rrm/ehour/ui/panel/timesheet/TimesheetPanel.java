@@ -139,11 +139,6 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		// attach onsubmit ajax events
 		setSubmitActions(timesheetForm, commentsFrame, timesheet);
-
-//		// TODO replace with dojo widget
-//		FeedbackPanel feedback = new FeedbackPanel("feedback");
-//		feedback.setOutputMarkupId(true);
-//		add(feedback);
 		
 		// add CSS & JS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
@@ -309,7 +304,8 @@ public class TimesheetPanel extends Panel implements Serializable
 		cal.add(Calendar.WEEK_OF_YEAR, weekDiff);
 
 		// should update calendar as well
-		event = CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE;
+		// FIXME
+		event = CommonUIStaticData.AJAX_CALENDARDATA_CHANGED;
 		session.setNavCalendar(cal);
 		
 		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, event);

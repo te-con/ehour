@@ -94,4 +94,13 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	{
 		Logger.getLogger(this.getClass()).warn("Uncaught ajax request received. This might be a bug");
 	}	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected EhourWebSession getEhourWebSession()
+	{
+		return ((EhourWebSession)this.getSession());
+	}	
 }

@@ -60,46 +60,100 @@ public class CalendarPanel extends SidePanel
 	private transient Logger logger = Logger.getLogger(CalendarPanel.class);
 
 	@SpringBean
-	private TimesheetService timesheetService;
-
+	private TimesheetService 	timesheetService;
+	private WebMarkupContainer	calendarFrame;
+	private	User				user;
+	private boolean				fireWeekClicks;
+	
 	/**
-	 * 
+	 * Calendar firing off week clicks as well
 	 * @param id
 	 */
 	public CalendarPanel(String id, User user)
 	{
+		this(id, user, true);
+	}
+	
+	/**
+	 * Calendar with optional week click events
+	 * @param id
+	 * @param user
+	 * @param allowWeekClicks
+	 */
+	public CalendarPanel(String id, User user, boolean allowWeekClicks)
+	{
 		super(id);
 		
+		setOutputMarkupId(true);
+		
+		this.user = user;
+		fireWeekClicks = allowWeekClicks;
+
+		// CSS
+		add(new StyleSheetReference("calendarStyle", calendarStyle()));
+
+		// 
+		calendarFrame = getFrame();
+		add(calendarFrame);
+		
+		buildCalendar(calendarFrame);
+	}
+	
+	/**
+	 * Refresh calendar
+	 * @param target
+	 */
+	public void refreshCalendar(AjaxRequestTarget target)
+	{
+		WebMarkupContainer replacementFrame = getFrame();
+		buildCalendar(replacementFrame);
+
+		calendarFrame.replaceWith(replacementFrame);
+		calendarFrame = replacementFrame;
+		target.addComponent(replacementFrame);
+	}
+	
+	/**
+	 * Get frame
+	 * @return
+	 */
+	private WebMarkupContainer getFrame()
+	{
+		WebMarkupContainer calendarFrame = new WebMarkupContainer("calendarFrame");
+		calendarFrame.setOutputMarkupId(true);
+		
+		return calendarFrame;
+	}
+	
+	/**
+	 * Build calendar
+	 * @param parent
+	 * @param user
+	 */
+	private void buildCalendar(WebMarkupContainer parent)
+	{
+		// first get the data 
 		Calendar month = ((EhourWebSession)this.getSession()).getNavCalendar();
-		this.setOutputMarkupId(true);
-		
-		EhourWebSession 	session = (EhourWebSession)getSession();
 		List<CalendarWeek>	weeks;
-		
+		weeks = createWeeks(user.getUserId(), month);
+
 		logger.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
-		
+
 		// set month label
-		add(new Label("currentMonth", new DateModel(month, session.getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
+		parent.add(new Label("currentMonth", new DateModel(month, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
 		
 		// previous & next month links
 		AjaxLink previousMonthLink = new ChangeMonthLink("previousMonthLink", -1);
 		previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
-		add(previousMonthLink);
+		parent.add(previousMonthLink);
 
 		AjaxLink nextMonthLink = new ChangeMonthLink("nextMonthLink", 1);
 		nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
-		add(nextMonthLink);
+		parent.add(nextMonthLink);
 
-		// CSS
-		add(new StyleSheetReference("calendarStyle", calendarStyle()));
-		
 		// content
-		weeks = createWeeks(user.getUserId(), month);
-		addCalendarWeeks(this, weeks);
-		
-		logger.debug("Weeks filled: " + weeks.size());
+		addCalendarWeeks(parent, weeks);
 	}
-	
 
 	/**
 	 * Add the calendar weeks
@@ -124,7 +178,14 @@ public class CalendarPanel extends SidePanel
 				item.add(getLabel("saturday", week, 6));
 				
 		        item.setOutputMarkupId(true);
-				item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
+		        
+		        if (fireWeekClicks)
+		        {
+					item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
+					item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
+					item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
+		        }
+				
 			}
 
 			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
@@ -254,6 +315,7 @@ public class CalendarPanel extends SidePanel
 	 */
 	private class ChangeMonthLink extends AjaxLink
 	{
+		private static final long serialVersionUID = 1L;
 		private	int monthChange;
 		
 		public ChangeMonthLink(String id, int monthChange)
@@ -272,7 +334,11 @@ public class CalendarPanel extends SidePanel
 			month.set(Calendar.DAY_OF_MONTH, 1);
 			session.setNavCalendar(month);
 
+			// do it before it gets replaced, otherwise getPage is  null due to new instantiation of links
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
+			
+			refreshCalendar(target);
+			
         }
 		
 		@Override
