@@ -68,8 +68,9 @@ public class AssignmentListPanel extends Panel
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 	
 		setOutputMarkupId(true);
-		
-		greyBorder = new GreyRoundedBorder("border");
+	
+		// TODO	
+		greyBorder = new GreyRoundedBorder("border", 500);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
 	}
