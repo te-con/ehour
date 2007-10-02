@@ -40,6 +40,10 @@ import org.apache.commons.lang.IncompleteArgumentException;
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -80,13 +84,30 @@ public class PrintMonth extends BasePage
 		add(new ContextualHelpPanel("contextHelp"));
 		
 		DateRange	printRange = getPrintRange(parameters);
-		List<ProjectAssignment>	assignments = getAssignments(printRange);
 
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("printSelectionFrame", new ResourceModel("printMonth.title"));
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		greyBorder.add(blueBorder);
 		add(greyBorder);
 	}
+	
+	private void addAssignments(WebMarkupContainer parent, DateRange printRange)
+	{
+		List<ProjectAssignment>	assignments = getAssignments(printRange);
+		
+		ListView view = new ListView("assignments", assignments)
+		{
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
+				
+				item.add(new Label("assignment", assignment.getProject().getFullName()));
+			}
+			
+		};
+	}
+	
 	
 	/**
 	 * Get assignments
