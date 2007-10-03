@@ -197,8 +197,9 @@ public class ReportCache implements Serializable
 		}
 	}
 	
-	private class CacheEntry implements Comparable<CacheEntry>
+	private class CacheEntry implements Comparable<CacheEntry>, Serializable
 	{
+		private static final long serialVersionUID = 1L;
 		private long		addedTimstamp;
 		private Report		report;
 		private ReportData	reportData;

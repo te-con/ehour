@@ -135,7 +135,7 @@ public class CalendarPanel extends SidePanel
 		// first get the data 
 		Calendar month = ((EhourWebSession)this.getSession()).getNavCalendar();
 		List<CalendarWeek>	weeks;
-		weeks = createWeeks(user.getUserId(), month);
+		weeks = createWeeks(user.getUserId(), ((GregorianCalendar)month.clone()));
 
 		logger.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
 
@@ -223,6 +223,7 @@ public class CalendarPanel extends SidePanel
 		int currentMonth;
 		int dayInMonth;
 		int dayInWeek;
+		
 
 		// grab date
 		bookedDays = getMonthNavCalendar(userId, month);

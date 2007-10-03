@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.page.user.print;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -36,15 +37,16 @@ import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.util.AuthUtil;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.commons.lang.IncompleteArgumentException;
-import org.apache.log4j.Logger;
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -55,23 +57,24 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class PrintMonth extends BasePage
 {
 	private static final long serialVersionUID = 1891959724639181159L;
-	private	static final Logger logger = Logger.getLogger(PrintMonth.class);
 	
 	@SpringBean
 	private ProjectService	projectService;
+	
+	private SelectionForm	form;
 	
 	/**
 	 * 
 	 */
 	public PrintMonth()
 	{	
-		this(new PageParameters());
+		this(new Model(new GregorianCalendar()));
 	}
 	
 	/**
 	 * 
 	 */
-	public PrintMonth(PageParameters parameters)
+	public PrintMonth(IModel requestModel)
 	{
 		super(new ResourceModel("printMonth.title"), null);
 		
@@ -84,38 +87,30 @@ public class PrintMonth extends BasePage
 		// contextual help
 		add(new ContextualHelpPanel("contextHelp"));
 		
-		DateRange	printRange = getPrintRange(parameters);
+		DateRange printRange = DateUtil.getDateRangeForMonth((Calendar)requestModel.getObject());
 
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("printSelectionFrame", new ResourceModel("printMonth.title"));
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		greyBorder.add(blueBorder);
 		add(greyBorder);
 		
-		Form form = new Form("printSelectionForm");
+		form = new SelectionForm("printSelectionForm", getAssignments(printRange));
 		blueBorder.add(form);
-		
-		addAssignments(form, printRange);
 	}
 	
-	private void addAssignments(WebMarkupContainer parent, DateRange printRange)
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.BasePage#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 */
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-		List<ProjectAssignment>	assignments = getAssignments(printRange);
+		DateRange printRange = DateUtil.getDateRangeForMonth(getEhourWebSession().getNavCalendar());
 		
-		ListView view = new ListView("assignments", assignments)
-		{
-			@Override
-			protected void populateItem(ListItem item)
-			{
-				ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
-				
-				item.add(new Label("assignment", assignment.getProject().getFullName()));
-			}
-			
-		};
-		
-		parent.add(view);
-	}
-	
+		SelectionForm newForm = new SelectionForm("printSelectionForm", getAssignments(printRange));
+		form.replaceWith(newForm);
+		target.addComponent(newForm);
+		form = newForm;
+	}		
 	
 	/**
 	 * Get assignments
@@ -136,68 +131,131 @@ public class PrintMonth extends BasePage
 		return sortedAssignments;
 	}
 	
-
 	/**
-	 * Get the print range
-	 * @param parameters
-	 * @return
+	 * 
+	 * @author Thies
+	 *
 	 */
-	private DateRange getPrintRange(PageParameters parameters)
+	private class SelectionForm extends Form
 	{
-		Calendar cal;
+		private static final long serialVersionUID = 1L;
 		
-		try
+		private List<AssignmentWrapper>	wrappers;
+		private boolean					includeSignOff;
+		
+		public SelectionForm(String id, List<ProjectAssignment> assignments)
 		{
-			cal = parseParameters(parameters);
-		}
-		catch (IncompleteArgumentException iae)
-		{
-			logger.debug("Print page did not have proper parameters. Defaulting to current month", iae);
+			super(id);
 			
-			cal = new GregorianCalendar();
+			setOutputMarkupId(true);
+			wrappers = new ArrayList<AssignmentWrapper>();
+			
+			for (ProjectAssignment projectAssignment : assignments)
+			{
+				wrappers.add(new AssignmentWrapper(projectAssignment));
+			}
+			
+			add(new ListView("assignments", wrappers)
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void populateItem(ListItem item)
+				{
+					AssignmentWrapper wrapper = (AssignmentWrapper) item.getModelObject();
+
+					item.add(new Label("project", wrapper.getAssignment().getProject().getFullName()));
+					
+					Label label = new Label("role", "( " +  wrapper.getAssignment().getRole() + " )");
+					label.setVisible(wrapper.getAssignment().getRole() != null && !wrapper.getAssignment().getRole().trim().equals("")); 
+					item.add(label);
+					item.add(new CheckBox("check", new PropertyModel(wrapper, "selected")));
+				}
+			});
+			
+			// signoff
+			
+			add(new CheckBox("signOff", new PropertyModel(this, "includeSignOff")));
 		}
 		
-		return DateUtil.getDateRangeForMonth(cal);
+		/*
+		 * (non-Javadoc)
+		 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
+		 */
+		@Override
+		public void onSubmit()
+		{
+			System.out.println("sign: " + isIncludeSignOff());
+		}
+
+		/**
+		 * @return the includeSignOff
+		 */
+		public boolean isIncludeSignOff()
+		{
+			return includeSignOff;
+		}
+
+		/**
+		 * @param includeSignOff the includeSignOff to set
+		 */
+		public void setIncludeSignOff(boolean includeSignOff)
+		{
+			this.includeSignOff = includeSignOff;
+		}
 	}
 	
 	/**
-	 * Parse parameters.
-	 * @param parameters should contain a monthYear with format mm-yyyy
-	 * @return
-	 * @throws IncompleteArgumentException
+	 * 
+	 * @author Thies
+	 *
 	 */
-	private Calendar parseParameters(PageParameters parameters) throws IncompleteArgumentException
+	private class AssignmentWrapper implements Serializable
 	{
-		String 		params = parameters.getString("monthYear");
-		Calendar	reqMonth;
+		private static final long serialVersionUID = 1L;
 		
-		if (params == null)
-		{
-			throw new IncompleteArgumentException("No parameters provided");
-		}
-			
-		String splitted[] = params.split("-");
+		private ProjectAssignment assignment;
+		private	boolean	selected;
 		
-		if (splitted.length != 2)
+		AssignmentWrapper(ProjectAssignment assignment)
 		{
-			throw new IncompleteArgumentException("Invalid parameters provided: " + params);
+			this.assignment = assignment;
 		}
-		
-		try
-		{
-			int month = Integer.parseInt(splitted[0]);
-			int year = Integer.parseInt(splitted[1]);
-			
-			reqMonth = new GregorianCalendar();
-			reqMonth.set(Calendar.MONTH, month - 1);
-			reqMonth.set(Calendar.YEAR, year);
-		}
-		catch (NumberFormatException nfe)
-		{
-			throw new IncompleteArgumentException("Invalid parameters provided: " + params);
-		}
-		
-		return reqMonth;
-	}
 
+
+		/**
+		 * @return the selected
+		 */
+		public boolean isSelected()
+		{
+			return selected;
+		}
+
+		/**
+		 * @param selected the selected to set
+		 */
+		public void setSelected(boolean selected)
+		{
+			this.selected = selected;
+		}
+
+
+		/**
+		 * @return the assignment
+		 */
+		public ProjectAssignment getAssignment()
+		{
+			return assignment;
+		}
+
+
+		/**
+		 * @param assignment the assignment to set
+		 */
+		public void setAssignment(ProjectAssignment assignment)
+		{
+			this.assignment = assignment;
+		}
+		
+	}
 }
