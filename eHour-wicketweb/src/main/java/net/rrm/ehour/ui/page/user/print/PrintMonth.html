@@ -19,7 +19,44 @@
 		    	    	
     		<div class="ContentPanelLoc" wicket:id="printSelectionFrame">
    				<div wicket:id="blueBorder">
-   				
+					<form wicket:id="printSelectionForm">
+						<table class="TimesheetPrintFormTable">
+							<tr>
+								<td style="border: 0;padding-right: 20px" valign="top">
+									<nobr><wicket:message key="printMonth.selectProjects" /></nobr>
+								</td>
+			
+								<td style="padding-left: 5px">
+									<span wicket:id="assignments">
+										<span wicket:id="assignment"></span>
+										<br />
+									</span>
+								</td>
+							</tr>
+			
+							<tr>
+								<td colspan="2" style="border: 0">
+									<br />
+								</td>
+							</tr>
+				
+							<tr>
+								<td style="border: 0;padding-right: 20px">
+									<nobr><wicket:message key="printMonth.inclSignatureSpace" /></nobr>
+								</td>
+								
+								<td style="padding-left: 5px">
+									<input type="checkbox" name="signatureSpace" />
+								</td>
+							</tr>
+							
+							<tr>
+								<td style="border: 0" colspan="2" align="right">
+									<input type="submit" id="submitButton" value="submit >>" />
+								></td>
+							</tr>
+						</table>			
+					</form>
    				</div>
     		</div>
 	    	
