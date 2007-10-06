@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.reportchart.aggregate.ProjectTurnoverAggregateChartImage
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
@@ -98,6 +99,9 @@ public class UserReportPanel extends Panel
 					setResponsePage(new UserReportPrint(reportId));
 				}
 			};
+			
+			printLink.add(new SimpleAttributeModifier("target", "_print"));
+			
 		}
 
 		// Report model
