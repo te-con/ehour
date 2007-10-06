@@ -17,10 +17,23 @@
 
 package net.rrm.ehour.ui.page.pm;
 
+import java.util.List;
+
+import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.report.user.criteria.UserReportCriteriaPanel;
+import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Project management base station :)
@@ -30,6 +43,9 @@ public class ProjectManagement extends BasePage
 {
 	private static final long serialVersionUID = 898442184509251553L;
 
+	@SpringBean
+	private ProjectService	projectService;
+	
 	/**
 	 * Default constructor 
 	 * @param pageTitle
@@ -38,6 +54,34 @@ public class ProjectManagement extends BasePage
 	public ProjectManagement()
 	{
 		super(new ResourceModel("pmReport.title"), null);
+		
+		ReportCriteria reportCriteria = getReportCriteria();
+		
+		IModel	model = new CompoundPropertyModel(reportCriteria);
+		setModel(model);
+		
+		// contextual help
+		add(new ContextualHelpPanel("contextHelp"));
+
+		// add criteria
+		add(new UserReportCriteriaPanel("sidePanel", model));
 	}
 
+	/**
+	 * Get report criteria
+	 * @return
+	 */
+	private ReportCriteria getReportCriteria()
+	{
+		ReportCriteria reportCriteria = new ReportCriteria();
+		
+		User user = ((EhourWebSession)getSession()).getUser().getUser();
+		
+		List<Project> projects = projectService.getProjectManagerProjects(user);
+		
+		AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
+		availCriteria.setProjects(projects);
+		
+		return reportCriteria;
+	}
 }

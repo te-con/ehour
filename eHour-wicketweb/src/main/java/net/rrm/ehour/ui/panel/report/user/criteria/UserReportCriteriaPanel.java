@@ -64,6 +64,17 @@ public class UserReportCriteriaPanel extends SidePanel
 		
 		addDatePickers(form, model);
 		
+		addSubmits(form);
+		
+		this.add(form);
+	}
+	
+	/**
+	 * Add submits
+	 * @param form
+	 */
+	protected void addSubmits(Form form)
+	{
 		@SuppressWarnings("serial")
 		AjaxButton submitButton = new AjaxButton("submitButton", form)
 		{
@@ -89,9 +100,7 @@ public class UserReportCriteriaPanel extends SidePanel
         
         submitButton.setModel(new ResourceModel("report.createReport"));
         
-        form.add(submitButton);
-		
-		this.add(form);
+        form.add(submitButton);		
 	}
 
 	/**
