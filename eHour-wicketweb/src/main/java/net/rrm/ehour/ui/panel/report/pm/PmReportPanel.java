@@ -26,10 +26,12 @@ import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
 /**
@@ -73,7 +75,7 @@ public class PmReportPanel extends AbstractReportPanel
 				
 				item.add(new Label("user", aggregate.getProjectAssignment().getUser().getFullName()));
 				item.add(new Label("role", aggregate.getProjectAssignment().getRole()));
-				item.add(new Label("type", aggregate.getProjectAssignment().getAssignmentType().getFullName()));
+				item.add(new Label("type", new ResourceModel(CommonUIStaticData.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType()))));
 				item.add(new Label("booked", new FloatModel(aggregate.getHours(), config)));
 				item.add(new Label("allotted", new FloatModel(aggregate.getProjectAssignment().getAllottedHours(), config)));
 				item.add(new Label("overrun", new FloatModel(aggregate.getProjectAssignment().getAllowedOverrun(), config)));
