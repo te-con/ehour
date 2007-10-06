@@ -21,6 +21,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 /**
  *  
@@ -28,7 +29,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 public abstract class AbstractReportPanel extends Panel
 {
-	private EhourConfig	config;
+	protected EhourConfig	config;
 	protected int		chartWidth;
 	protected int		chartHeight;
 	
@@ -38,12 +39,21 @@ public abstract class AbstractReportPanel extends Panel
 	 */
 	public AbstractReportPanel(String id)
 	{
-		super(id);
+		this(id, null);
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 */
+	public AbstractReportPanel(String id, IModel model)
+	{
+		super(id, model);
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 
 		chartWidth = !config.isShowTurnover() ? 600 : 310;
 		chartHeight = 200;		
 	}
-
 }

@@ -19,17 +19,23 @@ package net.rrm.ehour.ui.page.pm;
 
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.report.pm.PmReportPanel;
 import net.rrm.ehour.ui.panel.report.user.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.domain.User;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -45,6 +51,9 @@ public class ProjectManagement extends BasePage
 
 	@SpringBean
 	private ProjectService	projectService;
+	@SpringBean
+	private ReportService	reportService;
+	private WebMarkupContainer	reportPanel;
 	
 	/**
 	 * Default constructor 
@@ -65,6 +74,23 @@ public class ProjectManagement extends BasePage
 
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model));
+		
+		reportPanel = new WebMarkupContainer("reportPanel");
+		reportPanel.setOutputMarkupId(true);
+		add(reportPanel);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.BasePage#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 */
+	@Override
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	{
+		WebMarkupContainer replacement = new PmReportPanel("reportPanel", getReportData());
+		reportPanel.replaceWith(replacement);
+		reportPanel = replacement;
+		target.addComponent(replacement);
 	}
 
 	/**
@@ -84,4 +110,25 @@ public class ProjectManagement extends BasePage
 		
 		return reportCriteria;
 	}
+	
+	/**
+	 * Get report data for  model
+	 * @return
+	 */
+	private ProjectManagerReport getReportData()
+	{
+		ReportCriteria 	criteria = (ReportCriteria)(getModel().getObject());
+		ProjectManagerReport reportData = null;
+		DateRange	reportRange = criteria.getUserCriteria().getReportRange();
+		
+		if (criteria.getUserCriteria().getProjects() != null)
+		{
+			// only one can be there
+			Project project = criteria.getUserCriteria().getProjects().get(0);
+			
+			reportData = reportService.getProjectManagerReport(reportRange, project.getPK());
+		}
+		
+		return reportData;
+	}	
 }

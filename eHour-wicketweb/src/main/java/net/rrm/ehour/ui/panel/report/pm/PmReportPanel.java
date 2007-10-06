@@ -17,19 +17,70 @@
 
 package net.rrm.ehour.ui.panel.report.pm;
 
-import org.apache.wicket.markup.html.panel.Panel;
+import java.util.ArrayList;
+
+import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.model.DateModel;
+import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
+
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.StringResourceModel;
 
 /**
- * TODO 
+ * PM Report panel
  **/
 
-public class PmReportPanel extends Panel
+public class PmReportPanel extends AbstractReportPanel
 {
-
-	public PmReportPanel(String id)
+	private static final long serialVersionUID = -1735419536027937563L;
+	
+	/**
+	 * 
+	 * @param id
+	 */
+	public PmReportPanel(String id, ProjectManagerReport report)
 	{
 		super(id);
-		// TODO Auto-generated constructor stub
-	}
 
+		setOutputMarkupId(true);
+		
+		// Report model
+		StringResourceModel reportTitle = new StringResourceModel("pmReport.header", 
+																this, null, 
+																new Object[]{report.getProject().getFullName(),
+																			 new DateModel(report.getReportRange().getDateStart(), config),
+																			 new DateModel(report.getReportRange().getDateEnd(), config)});
+		
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, null, null);
+		add(greyBorder);
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
+		greyBorder.add(blueBorder);
+		
+		blueBorder.add(new ListView("report", new ArrayList<ProjectAssignmentAggregate>(report.getAggregates()))
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				ProjectAssignmentAggregate aggregate = (ProjectAssignmentAggregate)item.getModelObject();
+				
+				item.add(new Label("user", aggregate.getProjectAssignment().getUser().getFullName()));
+				item.add(new Label("role", aggregate.getProjectAssignment().getRole()));
+				item.add(new Label("type", aggregate.getProjectAssignment().getAssignmentType().getFullName()));
+				item.add(new Label("booked", new FloatModel(aggregate.getHours(), config)));
+				item.add(new Label("allotted", new FloatModel(aggregate.getProjectAssignment().getAllottedHours(), config)));
+				item.add(new Label("overrun", new FloatModel(aggregate.getProjectAssignment().getAllowedOverrun(), config)));
+				item.add(new Label("available", new FloatModel(aggregate.getAvailableHours(), config)));
+				item.add(new Label("percentageUsed", new FloatModel(aggregate.getProgressPercentage(), config)));
+				
+			}
+		});
+	}
 }

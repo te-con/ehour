@@ -21,6 +21,7 @@ import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.user.report.UserReportPrint;
+import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.AggregateReportDataPanel;
 import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
@@ -28,7 +29,6 @@ import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerTurnoverAggregateImage;
 import net.rrm.ehour.ui.reportchart.aggregate.ProjectHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.ProjectTurnoverAggregateChartImage;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -36,7 +36,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.value.ValueMap;
@@ -45,13 +44,11 @@ import org.apache.wicket.util.value.ValueMap;
  * Report table
  **/
 
-public class UserReportPanel extends Panel
+public class UserReportPanel extends AbstractReportPanel
 {
 	private static final long serialVersionUID = -2660092982421858132L;
 
 	private EhourConfig	config;
-	private int			chartWidth;
-	private int			chartHeight;
 	
 	/**
 	 * 
@@ -61,11 +58,6 @@ public class UserReportPanel extends Panel
 	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, ReportDataAggregate reportData, boolean inclLinks)
 	{
 		super(id);
-		
-		config = ((EhourWebSession)getSession()).getEhourConfig();
-
-		chartWidth = !config.isShowTurnover() ? 600 : 350;
-		chartHeight = 200;
 		
 		add(getReportPanel(aggregateReport, reportData, inclLinks));
 	}
