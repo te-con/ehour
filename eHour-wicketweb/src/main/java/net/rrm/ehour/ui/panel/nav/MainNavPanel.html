@@ -4,36 +4,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 	
-<wicket:head>
-	<link wicket:id="headerStyle" rel="stylesheet" type="text/css" href="style/header.css"/>
-</wicket:head>
-	
 <body>
 
-<wicket:panel>
-
-<div class="NavHeader">
-	<div class="Logo">
-		<img src="img/ehour.gif" width="80" height="28" />
-	</div>
+	<wicket:panel>
 	
-	<div class="LoadingSpinner" id="LoadingSpinner">
-		<img src="img/loading.gif" />
-	</div>
+		<div class="NavHeader">
+			<div class="Logo">
+				<img src="img/ehour.gif" width="80" height="28" />
+			</div>
+			
+			<div class="LoadingSpinner" id="LoadingSpinner">
+				<img src="img/loading.gif" />
+			</div>
+			
+			<div class="Navigation">
+				<a wicket:id="overviewLink"><wicket:message key="nav.overview" /></a>
+				<span wicket:id="overviewSeparator"></span>
+				
+				<a wicket:id="printLink"><wicket:message key="nav.print" /></a>
+				<span wicket:id="printSeparator"></span>
+				
+				<a wicket:id="pmLink"><wicket:message key="nav.pm" /></a>
+				<span wicket:id="pmSeparator"></span>
+				
+				<a wicket:id="userReportLink"><wicket:message key="nav.reporting" /></a>
+				<span wicket:id="userReportSeparator"></span>
+				
+				<a wicket:id="adminLink"><wicket:message key="nav.admin" /></a>
+				<span wicket:id="adminSeparator"></span>
+				
+				<a wicket:id="logoffLink"><wicket:message key="nav.logoff" /></a>
+			</div>
+		</div>
+		
+		<div class="LoggedInAs" wicket:id="loggedInUser">
+			Thies Edeling
+		</div>
 	
-	<div class="Navigation">
-		<a wicket:id="overviewLink"><wicket:message key="nav.overview" />  |</a>
-		<a wicket:id="printLink"><wicket:message key="nav.print" />  |</a>
-		<a wicket:id="userReportLink"><wicket:message key="nav.reporting" />  |</a>
-		<a wicket:id="adminLink"><wicket:message key="nav.admin" />  |</a>
-		<a wicket:id="logoffLink"><wicket:message key="nav.logoff" /></a>
-	</div>
-</div>
-
-<div class="LoggedInAs" wicket:id="loggedInUser">
-	Thies Edeling
-</div>
-
-</wicket:panel>
+	</wicket:panel>
 </body>
 </html>

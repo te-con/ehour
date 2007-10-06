@@ -18,20 +18,18 @@ package net.rrm.ehour.ui.panel.nav;
 
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.page.login.Login;
+import net.rrm.ehour.ui.page.pm.ProjectManagement;
 import net.rrm.ehour.ui.page.report.ReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.util.AuthUtil;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
@@ -51,15 +49,14 @@ public class MainNavPanel extends Panel
 	{
 		super(id);
 		
-		addLink(this, "overviewLink", Overview.class);
-		addLink(this, "printLink", PrintMonthSelection.class);
-		addReportLink(this, "userReportLink");
-		addLink(this, "adminLink", MainConfig.class);
-		addLink(this, "logoffLink", Login.class);
+		addLink(this, "overview", Overview.class);
+		addLink(this, "print", PrintMonthSelection.class);
+		addReportLink(this, "userReport");
+		addLink(this, "pm", ProjectManagement.class);
+		addLink(this, "admin", MainConfig.class);
+		add(new BookmarkablePageLink("logoffLink", Login.class));
 		
 		add(new Label("loggedInUser", new StringResourceModel("nav.loggedinas", this, new Model(AuthUtil.getUser()) )));
-		
-		add(new StyleSheetReference("headerStyle", headerStyle()));
 	}
 
 	/**
@@ -93,19 +90,15 @@ public class MainNavPanel extends Panel
 	{
 		BookmarkablePageLink	link;
 		
-		link = new BookmarkablePageLink(id, linkPage);
-		link.setVisible(AuthUtil.userAuthorizedForPage(linkPage));
-	
+		boolean isVisible = AuthUtil.userAuthorizedForPage(linkPage);
+		
+		link = new BookmarkablePageLink(id + "Link", linkPage);
+		link.setVisible(isVisible);
 		parent.add(link);
-	}
-	
-	/**
-	 * Create a style
-	 * 
-	 * @return a style
-	 */
-	public final ResourceReference headerStyle()
-	{
-		return new CompressedResourceReference(MainNavPanel.class, "style/header.css");
+		
+		Label label = new Label(id + "Separator", "&nbsp;&nbsp;|&nbsp;&nbsp;");
+		label.setEscapeModelStrings(false);
+		label.setVisible(isVisible);
+		parent.add(label);
 	}	
 }
