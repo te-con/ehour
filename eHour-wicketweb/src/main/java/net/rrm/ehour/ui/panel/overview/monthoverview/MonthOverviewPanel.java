@@ -27,22 +27,22 @@ import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
-import net.rrm.ehour.ui.page.user.print.PrintMonth;
+import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -64,26 +64,29 @@ public class MonthOverviewPanel extends Panel
 	 * 
 	 * @param id
 	 */
-	public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, Calendar overviewFor)
+	public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, Calendar overviewForMonth)
 	{
 		super(id);
 		
 		this.timesheetOverview = timesheetOverview;
-	    thisMonth = overviewFor.get(Calendar.MONTH);
-	    thisYear = overviewFor.get(Calendar.YEAR);
-	    this.overviewFor = overviewFor;
+	    thisMonth = overviewForMonth.get(Calendar.MONTH);
+	    thisYear = overviewForMonth.get(Calendar.YEAR);
+	    this.overviewFor = overviewForMonth;
 	    
 		setOutputMarkupId(true);
 		
 		EhourWebSession session = (EhourWebSession)getSession();
 		config = session.getEhourConfig();
 		
-		BookmarkablePageLink   printLink = new BookmarkablePageLink("printLink", 
-																	PrintMonth.class, 
-																	new PageParameters("monthYear=" 
-																						+ (overviewFor.get(Calendar.MONTH) + 1) 
-																						+ "-" 
-																						+ overviewFor.get(Calendar.YEAR)));
+		Link   printLink = new Link("printLink")
+		{
+			@Override
+			public void onClick()
+			{
+				setResponsePage(new PrintMonthSelection(new Model(overviewFor)));
+			}
+			
+		};
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyFrame", 
 												new ResourceModel("monthoverview.overview"),

@@ -24,21 +24,23 @@ import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
 
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
  * Date model 
  **/
 
-public class DateModel extends Model
+public class DateModel implements IModel
 {
 	public final static int	DATESTYLE_LONG = 1;
 	public final static int	DATESTYLE_MONTHONLY = 2;
 	public final static int DATESTYLE_TIMESHEET_DAYLONG = 3;
 	public final static int DATESTYLE_TIMESHEET_DAYONLY = 4;
+	public final static int	DATESTYLE_DAYONLY = 5;
 	
 	private static final long serialVersionUID = 431440606497572025L;
-	private Date				value;
+	private IModel					model;
 	private	final SimpleDateFormat	dateFormatter;
 	
 	/**
@@ -71,23 +73,7 @@ public class DateModel extends Model
 	 */
 	public DateModel(Date date, EhourConfig config, int dateStyle)
 	{
-		this.value = date;
-		
-		switch (dateStyle)
-		{
-			case DATESTYLE_MONTHONLY:
-				dateFormatter = new SimpleDateFormat("MMMM yyyy", config.getLocale());
-				break;
-			case DATESTYLE_TIMESHEET_DAYLONG:
-				dateFormatter = new TimesheetLongFormatter("EEE d", config.getLocale());
-				break;
-			case DATESTYLE_TIMESHEET_DAYONLY:
-				dateFormatter = new TimesheetLongFormatter("EEE", config.getLocale());
-				break;
-			default:
-				dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
-				break;
-		}
+		this(new Model(date), config, dateStyle);
 	}
 	
 	/**
@@ -100,26 +86,56 @@ public class DateModel extends Model
 	{
 		this(calendar.getTime(), config, dateStyle);
 	}
+
+	/**
+	 * 
+	 * @param model
+	 * @param config
+	 * @param dateStyle
+	 */
+	public DateModel(IModel model, EhourConfig config, int dateStyle)
+	{
+		this.model = model;
+		
+		switch (dateStyle)
+		{
+			case DATESTYLE_MONTHONLY:
+				dateFormatter = new SimpleDateFormat("MMMM yyyy", config.getLocale());
+				break;
+			case DATESTYLE_TIMESHEET_DAYLONG:
+				dateFormatter = new TimesheetLongFormatter("EEE d", config.getLocale());
+				break;
+			case DATESTYLE_TIMESHEET_DAYONLY:
+				dateFormatter = new TimesheetLongFormatter("EEE", config.getLocale());
+				break;
+			case DATESTYLE_DAYONLY:
+				dateFormatter = new TimesheetLongFormatter("dd", config.getLocale());
+				break;
+				
+			default:
+				dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
+				break;
+		}		
+		
+	}
+	
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.wicket.model.Model#getObject()
+	 * @see org.apache.wicket.model.IModel#getObject()
 	 */
-	@Override
 	public Object getObject()
 	{
-		return (value == null) ? "&infin;" : dateFormatter.format(value);
+		return (model == null || model.getObject() == null) ? "&infin;" : dateFormatter.format((Date)model.getObject());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.model.Model#setObject(java.lang.Object)
 	 */
-	@Override
 	public void setObject(Object value)
 	{
-		// FIXME parse it properly
-		this.value = (Date)value;
+		this.model = (IModel)value;
 	}
 	
 	/**
@@ -145,5 +161,13 @@ public class DateModel extends Model
 			
 			return new StringBuffer(formatted.replace(" ", "<br />"));
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.model.IDetachable#detach()
+	 */
+	public void detach()
+	{
 	}
 }

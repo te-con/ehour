@@ -18,13 +18,14 @@ package net.rrm.ehour.ui.panel.overview.projectoverview;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.model.CurrencyModel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
@@ -42,7 +43,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
@@ -60,15 +61,20 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	 * @param id
 	 * @param projectStatus
 	 */
-	public ProjectOverviewPanel(String id, Collection<UserProjectStatus> projectStatusSet)
+	public ProjectOverviewPanel(String id, Calendar overviewFor, Collection<UserProjectStatus> projectStatusSet)
 	{
 		super(id);
 		
 		this.setOutputMarkupId(true);
 		
 		EhourWebSession session = (EhourWebSession)getSession();
+
+		// this should be easier..
+		Label label = new Label("title", new StringResourceModel("projectoverview.aggregatedPerMonth", 
+																	this,  null,
+																	new Object[]{new DateModel(overviewFor, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)}));
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyBorder", new ResourceModel("projectoverview.aggregatedPerMonth"));
+		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", label); 
 
 		addTotals(greyBorder, projectStatusSet, session.getEhourConfig());
 		addColumnLabels(greyBorder, session.getEhourConfig());

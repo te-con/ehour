@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.border;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.border.Border;
 
 /**
@@ -32,7 +32,7 @@ public class CustomTitledGreyRoundedBorder extends Border
 	 */
 	private static final long serialVersionUID = -7069112450640627111L;
 
-	public CustomTitledGreyRoundedBorder(String id, WebMarkupContainer title)
+	public CustomTitledGreyRoundedBorder(String id, Component title)
 	{
 		super(id);
 		add(title);

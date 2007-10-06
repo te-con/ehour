@@ -17,245 +17,227 @@
 
 package net.rrm.ehour.ui.page.user.print;
 
-import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
-import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
-import net.rrm.ehour.ui.util.AuthUtil;
+import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.ui.model.DateModel;
+import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.report.trend.PrintReport;
+import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Print month page
  **/
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class PrintMonth extends BasePage
+public class PrintMonth extends WebPage
 {
 	private static final long serialVersionUID = 1891959724639181159L;
 	
 	@SpringBean
-	private ProjectService	projectService;
-	
-	private SelectionForm	form;
-	
-	/**
-	 * 
-	 */
-	public PrintMonth()
-	{	
-		this(new Model(new GregorianCalendar()));
-	}
+	private ReportService	reportService;
+	private EhourConfig		config;
 	
 	/**
 	 * 
 	 */
-	public PrintMonth(IModel requestModel)
+	public PrintMonth(List<Integer> assignmentIds, DateRange printRange, boolean inclSignOffSpace)
 	{
-		super(new ResourceModel("printMonth.title"), null);
-		
-		// add calendar panel
-		CalendarPanel calendarPanel = new CalendarPanel("sidePanel", 
-														getEhourWebSession().getUser().getUser(), 
-														false);
-		add(calendarPanel);
-		
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
-		
-		DateRange printRange = DateUtil.getDateRangeForMonth((Calendar)requestModel.getObject());
+		super();
 
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("printSelectionFrame", new ResourceModel("printMonth.title"));
-		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
-		greyBorder.add(blueBorder);
-		add(greyBorder);
+		EhourWebSession session = (EhourWebSession)getSession();
+		config = session.getEhourConfig();
 		
-		form = new SelectionForm("printSelectionForm", getAssignments(printRange));
-		blueBorder.add(form);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.page.BasePage#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
-	{
-		DateRange printRange = DateUtil.getDateRangeForMonth(getEhourWebSession().getNavCalendar());
-		
-		SelectionForm newForm = new SelectionForm("printSelectionForm", getAssignments(printRange));
-		form.replaceWith(newForm);
-		target.addComponent(newForm);
-		form = newForm;
-	}		
-	
-	/**
-	 * Get assignments
-	 * @param printRange
-	 * @return
-	 */
-	private List<ProjectAssignment> getAssignments(DateRange printRange)
-	{
-		Set<ProjectAssignment>	projectAssignments;
-		List<ProjectAssignment>	sortedAssignments;
-		
-		projectAssignments = projectService.getProjectsForUser(AuthUtil.getUser().getUserId(), printRange);
-		
-		sortedAssignments = new ArrayList<ProjectAssignment>(projectAssignments);
-		
-		Collections.sort(sortedAssignments, new ProjectAssignmentComparator());
-
-		return sortedAssignments;
-	}
-	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class SelectionForm extends Form
-	{
-		private static final long serialVersionUID = 1L;
-		
-		private List<AssignmentWrapper>	wrappers;
-		private boolean					includeSignOff;
-		
-		public SelectionForm(String id, List<ProjectAssignment> assignments)
+		try
 		{
-			super(id);
+			PrintReport printReport = initReport(assignmentIds, printRange);
+
+			IModel printTitle = new StringResourceModel("printMonth.printHeader",
+					this,
+					null,
+					new Object[]{session.getUser().getUser().getFullName(),
+								 new DateModel(printRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
 			
-			setOutputMarkupId(true);
-			wrappers = new ArrayList<AssignmentWrapper>();
+			Label pageTitle = new Label("pageTitle", printTitle);
+			add(pageTitle);
 			
-			for (ProjectAssignment projectAssignment : assignments)
+			Label reportHeader = new Label("printHeader", printTitle);
+			add(reportHeader);
+
+			List<Date> dates = DateUtil.createDateSequence(printRange, config);
+			
+			addDateLabels(dates);
+			addProjects(printReport, dates);
+			addGrandTotal(printReport, dates);
+			
+			addSignOff(inclSignOffSpace, dates);
+			
+			add(new Label("printedOn", new StringResourceModel("printMonth.printedOn",
+					this,
+					null,
+					new Object[]{new DateModel(new GregorianCalendar() , config)})));
+			
+		} catch (ParseException e)
+		{
+			// TODO Auto-generated catch block. Handle better
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * @param inclSignOffSpace
+	 * @param days
+	 */
+	private void addSignOff(boolean inclSignOffSpace, List<Date> days)
+	{
+		WebMarkupContainer signOff = new WebMarkupContainer("signOff");
+		signOff.setVisible(inclSignOffSpace);
+		add(signOff);
+		
+		signOff.add(new Label("userFullName", ((EhourWebSession)getSession()).getUser().getUser().getFullName()));
+		
+		WebMarkupContainer colspanner = new WebMarkupContainer("colspanner");
+		// got 16 cells left, 16 cells right
+		colspanner.add(new SimpleAttributeModifier("colspan", Integer.toString(1 + days.size() -15 -16 )));
+		signOff.add(colspanner);
+	}
+	
+	/**
+	 * Add grand total
+	 * @param report
+	 * @param days
+	 */
+	private void addGrandTotal(PrintReport report, final List<Date> days)
+	{
+		Label label = new Label("grandTotal", new FloatModel(report.getGrandTotalHours(), config));
+		label.add(new SimpleAttributeModifier("colspan", Integer.toString(days.size() + 2)));
+		add(label);
+	}
+	
+	/**
+	 * Add projects
+	 * @param report
+	 */
+	private void addProjects(final PrintReport report, final List<Date> days)
+	{
+		ListView reports = new ListView("projects", new ArrayList<ProjectAssignment>(report.getValues().keySet()))
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(ListItem item)
 			{
-				wrappers.add(new AssignmentWrapper(projectAssignment));
+				addProjectRow(item, days, report);
+			}
+		};
+		
+		add(reports);
+	}
+	
+	/**
+	 * Add rows per project
+	 * @param item
+	 * @param days
+	 * @param report
+	 */
+	private void addProjectRow(ListItem item, List<Date> days, PrintReport report)
+	{
+		ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
+
+		item.add(new Label("project", assignment.getProject().getFullName()));
+		
+		Label role = new Label("role", "( " + assignment.getRole() + " )");
+		role.setVisible(assignment.getRole() != null && !assignment.getRole().trim().equals(""));
+		item.add(role);
+		
+		Map<Date, FlatProjectAssignmentAggregate> assignmentMap = report.getValues().get(assignment);
+		
+		RepeatingView dateLabels = new RepeatingView("days");
+		
+		float total = 0;
+		
+		for (Date day : days)
+		{
+			Label label = null;
+			
+			if (assignmentMap.containsKey(day))
+			{
+				FlatProjectAssignmentAggregate aggregate = assignmentMap.get(day);
+				
+				if (aggregate.getTotalHours() > 0)
+				{
+					label = new Label(dateLabels.newChildId(), new FloatModel(aggregate.getTotalHours(), config));
+					
+					total += aggregate.getTotalHours();
+				}
 			}
 			
-			add(new ListView("assignments", wrappers)
+			if (label == null)
 			{
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected void populateItem(ListItem item)
-				{
-					AssignmentWrapper wrapper = (AssignmentWrapper) item.getModelObject();
-
-					item.add(new Label("project", wrapper.getAssignment().getProject().getFullName()));
-					
-					Label label = new Label("role", "( " +  wrapper.getAssignment().getRole() + " )");
-					label.setVisible(wrapper.getAssignment().getRole() != null && !wrapper.getAssignment().getRole().trim().equals("")); 
-					item.add(label);
-					item.add(new CheckBox("check", new PropertyModel(wrapper, "selected")));
-				}
-			});
+				label = HtmlUtil.getNbspLabel(dateLabels.newChildId());
+			}
 			
-			// signoff
-			
-			add(new CheckBox("signOff", new PropertyModel(this, "includeSignOff")));
+			dateLabels.add(label);
+		}		
+		
+		item.add(dateLabels);
+		
+		item.add(new Label("total", new FloatModel(total, config)));
+	}
+	
+	
+	/**
+	 * Add date labels
+	 * @param printRange
+	 */
+	private void addDateLabels(List<Date> dates)
+	{
+		RepeatingView dateLabels = new RepeatingView("days");
+		
+		for (Date date : dates)
+		{
+			dateLabels.add(new Label(dateLabels.newChildId(), new DateModel(date, config, DateModel.DATESTYLE_DAYONLY)));
 		}
 		
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
-		 */
-		@Override
-		public void onSubmit()
-		{
-			System.out.println("sign: " + isIncludeSignOff());
-		}
-
-		/**
-		 * @return the includeSignOff
-		 */
-		public boolean isIncludeSignOff()
-		{
-			return includeSignOff;
-		}
-
-		/**
-		 * @param includeSignOff the includeSignOff to set
-		 */
-		public void setIncludeSignOff(boolean includeSignOff)
-		{
-			this.includeSignOff = includeSignOff;
-		}
+		add(dateLabels);
 	}
 	
 	/**
 	 * 
-	 * @author Thies
-	 *
+	 * @param assignmentIds
+	 * @param printRange
+	 * @return
+	 * @throws ParseException
 	 */
-	private class AssignmentWrapper implements Serializable
+	private PrintReport initReport(List<Integer> assignmentIds, DateRange printRange) throws ParseException
 	{
-		private static final long serialVersionUID = 1L;
+		List<FlatProjectAssignmentAggregate> results = reportService.getPrintReportData(assignmentIds, printRange);
+		PrintReport printReport = new PrintReport();
+		printReport.initialize(results);
 		
-		private ProjectAssignment assignment;
-		private	boolean	selected;
-		
-		AssignmentWrapper(ProjectAssignment assignment)
-		{
-			this.assignment = assignment;
-		}
-
-
-		/**
-		 * @return the selected
-		 */
-		public boolean isSelected()
-		{
-			return selected;
-		}
-
-		/**
-		 * @param selected the selected to set
-		 */
-		public void setSelected(boolean selected)
-		{
-			this.selected = selected;
-		}
-
-
-		/**
-		 * @return the assignment
-		 */
-		public ProjectAssignment getAssignment()
-		{
-			return assignment;
-		}
-
-
-		/**
-		 * @param assignment the assignment to set
-		 */
-		public void setAssignment(ProjectAssignment assignment)
-		{
-			this.assignment = assignment;
-		}
-		
+		return printReport;
 	}
 }

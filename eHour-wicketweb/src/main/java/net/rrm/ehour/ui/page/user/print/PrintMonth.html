@@ -5,64 +5,94 @@
 	xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
-    <body>
-    	<wicket:extend>
-    	 	<div style="float: left">
-	    		<div class="SidePanelLoc" wicket:id="sidePanel">
-		    	</div>
+	<head>
+		<title wicket:id="pageTitle">[title]</title>
+		
+		<link rel="stylesheet" type="text/css" href="css/ehourPrint.css" />
+	</head>
 
-		    	<br clear="all" />
-		    	
-	    		<div class="ContextualHelp" wicket:id="contextHelp">
-		    	</div>
-		    </div>
-		    	    	
-    		<div class="ContentPanelLoc" wicket:id="printSelectionFrame">
-   				<div wicket:id="blueBorder">
-					<form wicket:id="printSelectionForm" target="_print">
-						<table class="TimesheetPrintFormTable">
-							<tr>
-								<td style="border: 0;padding-right: 20px" valign="top">
-									<nobr><wicket:message key="printMonth.selectProjects" /></nobr>
-								</td>
-			
-								<td style="padding-left: 5px">
-									<span wicket:id="assignments">
-										<input type="checkbox" wicket:id="check" />
-										<span wicket:id="project"></span>
-										<span wicket:id="role"></span>
-										
-										<br />
-									</span>
-								</td>
-							</tr>
-			
-							<tr>
-								<td colspan="2" style="border: 0">
-									<br />
-								</td>
-							</tr>
+	<body onload="window.print()">
+	
+		<div class="Header">
+			<img src="img/print/ehour.png" />
+		</div>
+		
+		<hr />
+		
+		<br />
+		
+		<div class="Content">
+		
+			<h1 wicket:id="printHeader"></h1>
+			<br />
+			<center>
+				<table class="sheetTable" cellpadding="0" cellspacing="0">
 				
-							<tr>
-								<td style="border: 0;padding-right: 20px">
-									<nobr><wicket:message key="printMonth.inclSignatureSpace" /></nobr>
-								</td>
-								
-								<td style="padding-left: 5px">
-									<input type="checkbox" wicket:id="signOff" />
-								</td>
-							</tr>
-							
-							<tr>
-								<td style="border: 0" colspan="2" align="right">
-									<input type="submit" id="submitButton" value="submit >>" />
-								</td>
-							</tr>
-						</table>			
-					</form>
-   				</div>
-    		</div>
-	    	
-    	</wicket:extend>
-    </body>
+					<tr>
+						<td class="dateRowFirstCell">&nbsp;</td>
+						<td class="dateRow" wicket:id="days">[]</td>
+						<td style="padding-left: 10px">Total</td>
+					</tr>
+	
+					<tr wicket:id="projects">
+						<td class="firstCell">
+							<span wicket:id="project"></span>
+							<span wicket:id="role"></span>
+						</td>
+			
+						<td wicket:id="days"></td>
+						
+						<td class="dateRow" style="text-align:right" wicket:id="total">
+						</td>
+					</tr>
+					
+		
+					<tr>
+						<td style="border: 0;text-align:right;font-weight: bold" wicket:id="grandTotal">
+						</td>
+					</tr>					
+					
+					<tr wicket:id="signOff">
+						<td style="border: 0">
+							&nbsp;
+						</td>
+						
+						<td colspan="15" style="border: 0;text-align: left">
+							<br /><br /><br />
+							<wicket:message key="printMonth.managerSignature" />
+							<br /><br /><br /><br />
+							<wicket:message key="printMonth.date" />:
+						</td>
+						
+						<td wicket:id="colspanner" style="border: 0">
+							&nbsp;
+						</td>
+						
+						<td colspan="16" style="border: 0;text-align: left">
+							<br /><br /><br />
+							<span wicket:id="userFullName"></span>
+							<wicket:message key="print.userSignature" />
+							<br /><br /><br /><br />
+							<wicket:message key="printMonth.date" />:
+						</td>		
+					</tr>					
+					
+				</table>
+			</center>
+
+			<br />
+			<br /><br />
+		</div>
+		
+		<div class="Footer">
+			<hr />
+			<div style="float: left; padding-left: 15px;" wicket:id="printedOn">
+				[printed on]
+			</div>
+		
+			<div style="float: right; padding-right: 15px">
+				eHour - http://www.ehour.nl/
+			</div>
+		</div>
+	</body>
 </html>

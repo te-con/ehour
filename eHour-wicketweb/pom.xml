@@ -161,9 +161,9 @@
 			<version>1.0.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi</artifactId>
-		    <version>3.0.1-FINAL</version>
-		</dependency>		
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.0.1-FINAL</version>
+		</dependency>
 	</dependencies>
 </project>

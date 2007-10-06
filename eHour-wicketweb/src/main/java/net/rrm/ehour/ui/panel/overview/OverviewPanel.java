@@ -60,7 +60,7 @@ public class OverviewPanel extends Panel
 		EhourWebSession session = ((EhourWebSession)this.getSession());
 		User user = session.getUser().getUser();
 		
-		Calendar	overviewFor = session.getNavCalendar();
+		Calendar overviewFor = session.getNavCalendar();
 		
 		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
 		
@@ -68,7 +68,7 @@ public class OverviewPanel extends Panel
 		
 		add(new StyleSheetReference("overviewStyle", new CompressedResourceReference(OverviewPanel.class, "style/overview.css")));
 		
-		add(new ProjectOverviewPanel("projectOverview", timesheetOverview.getProjectStatus()));
+		add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
 		add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
 	}
 }
