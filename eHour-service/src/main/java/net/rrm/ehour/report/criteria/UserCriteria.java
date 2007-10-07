@@ -17,7 +17,7 @@ package net.rrm.ehour.report.criteria;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
@@ -25,6 +25,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -52,6 +53,7 @@ public class UserCriteria implements Serializable
 	private boolean 	infiniteStartDate;
 	private boolean		infiniteEndDate;
 	private	boolean		singleUser;
+	private Project		project;
 
 	/**
 	 * 
@@ -66,7 +68,7 @@ public class UserCriteria implements Serializable
 		infiniteStartDate = false;
 		infiniteEndDate = false;
 		
-		reportRange = new DateRange(new Date(), new Date());
+		reportRange = DateUtil.getDateRangeForMonth(new GregorianCalendar());
 	}
 	
 	/**
@@ -346,6 +348,7 @@ public class UserCriteria implements Serializable
 		this.projects = projects;
 	}
 
+
 	/**
 	 * @return the customerFilter
 	 */
@@ -360,5 +363,15 @@ public class UserCriteria implements Serializable
 	public void setCustomerFilter(String customerFilter)
 	{
 		this.customerFilter = customerFilter;
+	}
+
+	public Project getProject()
+	{
+		return project;
+	}
+
+	public void setProject(Project project)
+	{
+		this.project = project;
 	}
 }
