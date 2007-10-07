@@ -15,10 +15,12 @@
 
 package net.rrm.ehour.report.criteria;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.util.DateUtil;
 
 /**
  * TODO 
@@ -39,7 +41,7 @@ public class ReportCriteriaTest extends TestCase
 	
 	public void testGetReportRange()
 	{
-		DateRange dr = new DateRange(new Date(), new Date());
+		DateRange dr = DateUtil.calendarToMonthRange(new GregorianCalendar());
 		
 		reportCriteria.setUserCriteria(new UserCriteria());
 		AvailableCriteria availCriteria = new AvailableCriteria();
