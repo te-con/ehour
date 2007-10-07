@@ -31,39 +31,45 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.component.FadeLabel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.sort.LocaleComparator;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 
 /**
  * Main config page
- * TODO need fixing
  **/
 public class MainConfig extends BaseAdminPage
 {
 	private static final long serialVersionUID = 8613594529875207988L;
-
+	private static final Logger logger = Logger.getLogger(MainConfig.class);
+	
 	@SpringBean
 	private ConfigurationService	configService;
 
 	private	final MainConfigBackingBean	configBackingBean = new MainConfigBackingBean();
+	private Label	serverMessage;
 	
 	/**
 	 * 
@@ -113,7 +119,8 @@ public class MainConfig extends BaseAdminPage
 	private void createForm(WebMarkupContainer parent, final EhourConfig dbConfig)
 	{
 		Form configForm = new Form("configForm", new CompoundPropertyModel(dbConfig));
-
+		configForm.setOutputMarkupId(true);
+		
 		addLocaleSelections(configForm, dbConfig);
 		
 		// currency dropdown
@@ -124,12 +131,21 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(new CheckBox("showTurnover"));
 		
 		// reply sender
-		configForm.add(new RequiredTextField("mailFrom"));
+		RequiredTextField mailFrom = new RequiredTextField("mailFrom");
+		mailFrom.add(EmailAddressValidator.getInstance());
+		configForm.add(mailFrom);
+		configForm.add(new AjaxFormComponentFeedbackIndicator("mailFromError", mailFrom));
+		
 		configForm.add(new RequiredTextField("mailSmtp"));
 		
 		setSubmitButton(configForm, dbConfig);
 		
 		parent.add(configForm);
+		
+		serverMessage = new FadeLabel("serverMessage", "&nbsp;");
+		serverMessage.setEscapeModelStrings(false);
+		serverMessage.setOutputMarkupId(true);
+		configForm.add(serverMessage);
 	}
 	
 	/**
@@ -145,9 +161,26 @@ public class MainConfig extends BaseAdminPage
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
+				IModel msgModel;
+				
 				((EhourConfigStub)dbConfig).setLocaleLanguage(configBackingBean.isDontForceLocale() ? "noForce" : configBackingBean.getLocale().getLanguage());
-				configService.persistConfiguration(dbConfig);
-            }
+				
+				try
+				{
+					configService.persistConfiguration(dbConfig);
+					msgModel = new ResourceModel("dataSaved");
+				}
+				catch (Throwable t)
+				{
+					logger.error("While saving config", t);
+					msgModel = new ResourceModel("saveError");
+				}
+				
+				getEhourWebSession().reloadConfig();
+				
+				serverMessage.setModel(msgModel);
+				target.addComponent(serverMessage);
+            }		
 
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
@@ -159,7 +192,6 @@ public class MainConfig extends BaseAdminPage
 			protected void onError(final AjaxRequestTarget target, Form form)
 			{
 				target.addComponent(form);
-//                form.visitFormComponents(new FormHighlighter(target));
             }
         });		
 	}
@@ -188,8 +220,6 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(new AjaxFormComponentFeedbackIndicator("localeValidationError", localeDropDownChoice));
 		configForm.add(localeDropDownChoice);
 		
-        setOutputMarkupId(true);
-
 		// only translations
 		onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel(configBackingBean, "translationsOnly"))
 		{

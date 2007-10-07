@@ -20,7 +20,7 @@
 					</tr>
 				
 					<tr>
-						<td><wicket:message key="admin.config.locale.language" />:</td>
+						<td valign="top"><wicket:message key="admin.config.locale.language" />:</td>
 						<td><select style="width: 15em"  class="textInputSmall"  wicket:id="localeSelection"></select>
 							<span wicket:id="localeValidationError"></span>
 						</td>
@@ -54,8 +54,10 @@
 					</tr>
 
 					<tr>
-						<td><wicket:message key="admin.config.mailFrom" />:</td>
-						<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="mailFrom" /></td>
+						<td valign="top"><wicket:message key="admin.config.mailFrom" />:</td>
+						<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="mailFrom" />
+							<span wicket:id="mailFromError"></span>
+						</td>
 					</tr>						
 	
 					<tr>
@@ -66,12 +68,14 @@
 					<tr>
 						<td>
 							<br />
-							
+							<span wicket:id="serverMessage"></span>
 						</td>
 
 						<td>
 							<br />
-							<input type="submit" value="submit" wicket:id="submitButton" />
+							<button type="submit" class="submitButtonBlue" wicket:id="submitButton">
+								<img src="img/icons/save.gif" />
+							save</button>
 						</td>
 					</tr>
 											

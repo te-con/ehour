@@ -24,6 +24,8 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.common.BaseUITest;
 
+import org.apache.wicket.util.tester.FormTester;
+
 /**
  * TODO 
  **/
@@ -52,9 +54,9 @@ public class MainConfigTest extends BaseUITest
 //	
 //	/**
 //	 * 
-//	 */
-////	public void testSubmitOKNoLocale()
-////	{
+////	 */
+//	public void testSubmitOKNoLocale()
+//	{
 //		FormTester	form = tester.newFormTester("configForm");
 //	
 //		form.setValue("dontForceLocale", "true");

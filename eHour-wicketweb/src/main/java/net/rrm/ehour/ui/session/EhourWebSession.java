@@ -67,6 +67,14 @@ public class EhourWebSession extends AuthenticatedWebSession
 	{
 		super(application, req);
 		
+		reloadConfig();
+	}
+	
+	/**
+	 * 
+	 */
+	public void reloadConfig()
+	{
 		InjectorHolder.getInjector().inject(this);
 		
 		if (ehourConfig.getLocaleLanguage() == null || !ehourConfig.getLocaleLanguage().equals("noForce"))
@@ -83,7 +91,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 		if (ehourConfig.isInDemoMode())
 		{
 			logger.info("eHour is in demo mode ! All 'save' functionality in the admin pages is disabled.");
-		}
+		}		
 	}
 
 	/**

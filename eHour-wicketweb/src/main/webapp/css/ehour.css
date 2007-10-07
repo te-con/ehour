@@ -267,6 +267,32 @@ div.GreyNavFrameFooter p
 	color: #576d83;
 }
 
+.submitButtonBlue
+{
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #283e52;
+	border: 0;
+}
+
+
+.submitButtonBlue img
+{
+	vertical-align: top;
+	margin-top: 2px;
+}
+
+.submitButtonBlue:hover
+{
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	color: #8aa0b8;
+}
+
 .submitButtonLightBackground
 {
 	background-color: transparent;
