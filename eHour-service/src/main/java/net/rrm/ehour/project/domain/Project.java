@@ -246,7 +246,7 @@ public class Project extends DomainObject<Integer, Project>
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("active", this.active)
-				.append("PK", this.getPK()).append("defaultProject", this.defaultProject).append("fullname", this.getFullName()).append("projectCode", this.projectCode).append("name", this.name).append("customer", this.customer).append("projectId",
+				.append("PK", this.getPK()).append("defaultProject", this.defaultProject).append("fullname", this.getFullName()).append("projectCode", this.projectCode).append("name", this.name).append("projectId",
 						this.projectId).toString();
 	}
 
