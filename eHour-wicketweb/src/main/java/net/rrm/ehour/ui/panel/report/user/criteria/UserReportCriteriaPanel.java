@@ -29,6 +29,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -52,22 +53,49 @@ public class UserReportCriteriaPanel extends SidePanel
 	 */
 	public UserReportCriteriaPanel(String id, IModel model)
 	{
+		this(id, model, true);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 */
+	public UserReportCriteriaPanel(String id, IModel model, boolean multipleChoice)
+	{
 		super(id);
 
 		Form form = new Form("criteriaForm");
 		
-		ListMultipleChoice projectDropDown;
-		projectDropDown = new ListMultipleChoice("userCriteria.projects", 
+		if (multipleChoice)
+		{
+			ListMultipleChoice projectDropDown;
+			projectDropDown = new ListMultipleChoice("userCriteria.projects", 
+												new PropertyModel(model, "availableCriteria.projects"),
+												new DomainObjectChoiceRenderer());
+			projectDropDown.setMaxRows(3);
+			form.add(projectDropDown);
+		}
+		else
+		{
+			ListChoice projectDropDown;
+			projectDropDown = new ListChoice("userCriteria.projects", 
+											new PropertyModel(model, "userCriteria.project"),
 											new PropertyModel(model, "availableCriteria.projects"),
 											new DomainObjectChoiceRenderer());
-		form.add(projectDropDown);
+			projectDropDown.setNullValid(false);
+			projectDropDown.setMaxRows(1);
+			projectDropDown.setRequired(true);
+			form.add(projectDropDown);
+		}
+		
 		
 		addDatePickers(form, model);
 		
 		addSubmits(form);
 		
 		this.add(form);
-	}
+	}	
 	
 	/**
 	 * Add submits

@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
@@ -47,8 +46,6 @@ import org.apache.wicket.util.value.ValueMap;
 public class UserReportPanel extends AbstractReportPanel
 {
 	private static final long serialVersionUID = -2660092982421858132L;
-
-	private EhourConfig	config;
 	
 	/**
 	 * 

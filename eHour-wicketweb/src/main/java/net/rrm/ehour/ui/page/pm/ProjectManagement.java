@@ -73,7 +73,7 @@ public class ProjectManagement extends BasePage
 		add(new ContextualHelpPanel("contextHelp"));
 
 		// add criteria
-		add(new UserReportCriteriaPanel("sidePanel", model));
+		add(new UserReportCriteriaPanel("sidePanel", model, false));
 		
 		reportPanel = new WebMarkupContainer("reportPanel");
 		reportPanel.setOutputMarkupId(true);
@@ -121,10 +121,10 @@ public class ProjectManagement extends BasePage
 		ProjectManagerReport reportData = null;
 		DateRange	reportRange = criteria.getUserCriteria().getReportRange();
 		
-		if (criteria.getUserCriteria().getProjects() != null)
+		if (criteria.getUserCriteria().getProject() != null)
 		{
 			// only one can be there
-			Project project = criteria.getUserCriteria().getProjects().get(0);
+			Project project = criteria.getUserCriteria().getProject();
 			
 			reportData = reportService.getProjectManagerReport(reportRange, project.getPK());
 		}
