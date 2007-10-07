@@ -21,7 +21,9 @@
 				
 					<tr>
 						<td><wicket:message key="admin.config.locale.language" />:</td>
-						<td><select style="width: 15em"  class="textInputSmall"  wicket:id="localeSelection"></select></td>
+						<td><select style="width: 15em"  class="textInputSmall"  wicket:id="localeSelection"></select>
+							<span wicket:id="localeValidationError"></span>
+						</td>
 					</tr>
 
 					<tr>
@@ -62,7 +64,12 @@
 					</tr>
 
 					<tr>
-						<td colspan="2">
+						<td>
+							<br />
+							
+						</td>
+
+						<td>
 							<br />
 							<input type="submit" value="submit" wicket:id="submitButton" />
 						</td>

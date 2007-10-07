@@ -30,9 +30,9 @@ import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
-import net.rrm.ehour.ui.panel.timesheet.FormHighlighter;
 import net.rrm.ehour.ui.sort.LocaleComparator;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
@@ -158,7 +158,8 @@ public class MainConfig extends BaseAdminPage
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form form)
 			{
-                form.visitFormComponents(new FormHighlighter(target));
+				target.addComponent(form);
+//                form.visitFormComponents(new FormHighlighter(target));
             }
         });		
 	}
@@ -182,6 +183,9 @@ public class MainConfig extends BaseAdminPage
 													new LocaleChoiceRenderer()); 
 		localeDropDownChoice.setEnabled(!configBackingBean.isDontForceLocale());
 		localeDropDownChoice.setOutputMarkupId(true);
+		localeDropDownChoice.setRequired(true);
+		localeDropDownChoice.setLabel(new ResourceModel("admin.config.locale.languageLabel"));
+		configForm.add(new AjaxFormComponentFeedbackIndicator("localeValidationError", localeDropDownChoice));
 		configForm.add(localeDropDownChoice);
 		
         setOutputMarkupId(true);
