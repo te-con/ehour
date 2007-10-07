@@ -55,8 +55,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class UserAdmin extends BaseTabbedAdminPage
 {
-	private final String	USER_SELECTOR_ID = "userSelector";
-	
 	@SpringBean
 	private	UserService				userService;
 	private	ListView				userListView;
@@ -64,6 +62,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	private EntrySelectorFilter		currentFilter;
 	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;
+	private EntrySelectorPanel		selectorPanel;
 	
 	private static final long serialVersionUID = 1883278850247747252L;
 
@@ -86,10 +85,11 @@ public class UserAdmin extends BaseTabbedAdminPage
 															EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
 		add(greyBorder);		
 		
-		greyBorder.add(new EntrySelectorPanel(USER_SELECTOR_ID,
+		selectorPanel = new EntrySelectorPanel("userSelector",
 						userListHolder,
 						new StringResourceModel("admin.user.filter", this, null),
-						new ResourceModel("admin.user.hideInactive")));
+						new ResourceModel("admin.user.hideInactive"));
+		greyBorder.add(selectorPanel);
 	}
 	
 	/**
@@ -174,17 +174,17 @@ public class UserAdmin extends BaseTabbedAdminPage
 					{
 						deleteUser(backingBean);
 					}
-						
 
 					// update user list
 					List<User> users = getUsers();
 					userListView.setList(users);
 					
-					((EntrySelectorPanel)get(USER_SELECTOR_ID)).refreshList(target);
+					selectorPanel.refreshList(target);
 					
 					getTabbedPanel().succesfulSave(target);
 				} catch (Exception e)
 				{
+					e.printStackTrace();
 					logger.error("While persisting user", e);
 					getTabbedPanel().failedSave(backingBean, target);
 				}
