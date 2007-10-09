@@ -17,9 +17,13 @@ package net.rrm.ehour.user.service;
 
 import java.util.List;
 
+import org.omg.CORBA.COMM_FAILURE;
+
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -132,8 +136,20 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		}
 	}
 	
+	public void testUpdateUser() throws ObjectNotFoundException, PasswordEmptyException, ObjectNotUniqueException
+	{
+		User user = userService.getUser(1);
+		
+		user.getUserRoles().clear();
+		user.getUserRoles().add(new UserRole("ROLE_ADMIN"));
+		
+		User user2 = userService.persistUser(user);
+		
+		assertEquals("ROLE_ADMIN", user.getUserRoles().iterator().next().getRole());
+		
+		
+	}
 	
-	// FIXME fails on buildserver?
 	public void testFindUsersByPatternAndUserRole()
 	{
 		List<User>	results;
