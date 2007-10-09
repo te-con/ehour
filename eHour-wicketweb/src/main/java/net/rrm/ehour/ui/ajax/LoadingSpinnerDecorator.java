@@ -34,7 +34,7 @@ public class LoadingSpinnerDecorator implements IAjaxCallDecorator
 	public CharSequence decorateOnSuccessScript(CharSequence script)
 	{
 		// TODO fix for IE !
-		return "document.getElementById('LoadingSpinner').style.visibility = 'hidden';" + script;
+		return "alert(document.getElementById('LoadingSpinner'));document.getElementById('LoadingSpinner').style.visibility = 'hidden';" + script;
 	}
 
 	public CharSequence decorateScript(CharSequence script)
