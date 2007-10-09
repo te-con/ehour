@@ -21,6 +21,7 @@ import java.util.List;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.user.domain.User;
 
 /**
  * TODO 
@@ -129,5 +130,11 @@ public class ProjectDAOTest extends BaseDAOTest
 		List r = dao.findProjectForCustomers(ids, true);
 		
 		assertEquals(2, r.size());
+	}
+	
+	public void testFindActiveProjectsWhereUserIsPM()
+	{
+		List<Project> res = dao.findActiveProjectsWhereUserIsPM(new User(1));
+		assertEquals(new Integer(1), res.iterator().next().getPK());
 	}
 }

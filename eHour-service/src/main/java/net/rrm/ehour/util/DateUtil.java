@@ -352,7 +352,6 @@ public class DateUtil
 		
 		calendar = new GregorianCalendar(timeZone);
 		calendar.setFirstDayOfWeek(Calendar.SUNDAY);
-		
 		return calendar;
 	}
 }
