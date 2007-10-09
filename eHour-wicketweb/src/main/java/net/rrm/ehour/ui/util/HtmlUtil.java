@@ -32,6 +32,7 @@ import org.apache.wicket.markup.html.basic.Label;
 public class HtmlUtil
 {
 	public final static String HTML_NBSP = "&nbsp;";
+	public final static String HTML_BR = "<br />";
 	
 	/**
 	 * Get a &ampnbsp;label
@@ -45,4 +46,18 @@ public class HtmlUtil
 		
 		return label;
 	}
+	
+	/**
+	 * Get a <br />label
+	 * @param id
+	 * @return
+	 */
+	public static Label getBrLabel(String id)
+	{
+		Label label = new Label(id, HTML_BR);
+		label.setEscapeModelStrings(false);
+		
+		return label;
+	}
+
 }

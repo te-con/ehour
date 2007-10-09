@@ -27,6 +27,7 @@ import java.util.TreeSet;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.ui.ajax.DemoDecorator;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
@@ -162,30 +163,41 @@ public class MainConfig extends BaseAdminPage
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				IModel msgModel;
-				
-				((EhourConfigStub)dbConfig).setLocaleLanguage(configBackingBean.isDontForceLocale() ? "noForce" : configBackingBean.getLocale().getLanguage());
-				
-				try
+
+				if (!dbConfig.isInDemoMode())
 				{
-					configService.persistConfiguration(dbConfig);
-					msgModel = new ResourceModel("dataSaved");
+					((EhourConfigStub)dbConfig).setLocaleLanguage(configBackingBean.isDontForceLocale() ? "noForce" : configBackingBean.getLocale().getLanguage());
+					
+					try
+					{
+						configService.persistConfiguration(dbConfig);
+						msgModel = new ResourceModel("dataSaved");
+					}
+					catch (Throwable t)
+					{
+						logger.error("While saving config", t);
+						msgModel = new ResourceModel("saveError");
+					}
+					
+					getEhourWebSession().reloadConfig();
+					
+					serverMessage.setModel(msgModel);
+					target.addComponent(serverMessage);
 				}
-				catch (Throwable t)
-				{
-					logger.error("While saving config", t);
-					msgModel = new ResourceModel("saveError");
-				}
-				
-				getEhourWebSession().reloadConfig();
-				
-				serverMessage.setModel(msgModel);
-				target.addComponent(serverMessage);
             }		
+
 
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
-				return new LoadingSpinnerDecorator();
+				if (dbConfig.isInDemoMode())
+				{
+					return new DemoDecorator(new ResourceModel("demoModel"));
+				}
+				else
+				{
+					return new LoadingSpinnerDecorator();
+				}
 			}			
 			
 			@Override

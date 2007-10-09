@@ -20,6 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.ui.util.HtmlUtil;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -92,6 +94,19 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
 		public ErrorIndicator(String id)
 		{
 			super(id);
+
+			// bit lame..
+			Label brLabel = new Label("errorTextBr", HtmlUtil.HTML_BR)
+			{
+				@Override
+				public boolean isVisible()
+				{
+					return messages != null && messages.size() > 0;
+				}
+			};
+			brLabel.setEscapeModelStrings(false);
+			add(brLabel);
+			
 			
 			
 			add(new Label("errorText", new PropertyModel(this, "message"))

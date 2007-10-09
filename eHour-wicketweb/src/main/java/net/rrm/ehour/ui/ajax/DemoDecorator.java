@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.ajax;
 
 import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.model.IModel;
 
 /**
  * Display demo decorator
@@ -26,25 +27,25 @@ public class DemoDecorator implements IAjaxCallDecorator
 {
 	private static final long serialVersionUID = 1432993030793501257L;
 
-	private String	demoMsg;
+	private IModel	msgModel;
 	
-	public DemoDecorator(String msg)
+	public DemoDecorator(IModel msgModel)
 	{
-		this.demoMsg = msg;
+		this.msgModel = msgModel;
 	}
 	
 	public CharSequence decorateOnFailureScript(CharSequence script)
 	{
-		return "alert('" + demoMsg + "');";
+		return "alert('" + msgModel.getObject() + "');";
 	}
 
 	public CharSequence decorateOnSuccessScript(CharSequence script)
 	{
-		return "alert('" + demoMsg + "');";
+		return "alert('" +  msgModel.getObject() + "');";
 	}
 
 	public CharSequence decorateScript(CharSequence script)
 	{
-		return "alert('" + demoMsg + "');";
+		return "alert('" +  msgModel.getObject() + "');";
 	}
 }

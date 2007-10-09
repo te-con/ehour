@@ -448,6 +448,16 @@ input
 	color: #233e55;
 }
 
+
+input[type="checkbox"], input[type="radio"]
+{
+	background: transparent;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	color: #233e55;
+}
+
 .formValidationError
 {
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
