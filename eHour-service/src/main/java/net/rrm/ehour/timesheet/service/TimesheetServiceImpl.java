@@ -336,7 +336,10 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		timesheetCommentDAO.deleteCommentsForUser(user.getUserId());
 		
-		timesheetDAO.deleteTimesheetEntries(ProjectAssignmentUtil.getAssignmentIds(user.getProjectAssignments()));
+		if (user.getProjectAssignments() != null && user.getProjectAssignments().size() > 0)
+		{
+			timesheetDAO.deleteTimesheetEntries(ProjectAssignmentUtil.getAssignmentIds(user.getProjectAssignments()));
+		}
 	}
 		
 	
