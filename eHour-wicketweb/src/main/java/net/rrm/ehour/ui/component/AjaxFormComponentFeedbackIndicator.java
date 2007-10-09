@@ -95,20 +95,6 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
 		{
 			super(id);
 
-			// bit lame..
-			Label brLabel = new Label("errorTextBr", HtmlUtil.HTML_BR)
-			{
-				@Override
-				public boolean isVisible()
-				{
-					return messages != null && messages.size() > 0;
-				}
-			};
-			brLabel.setEscapeModelStrings(false);
-			add(brLabel);
-			
-			
-			
 			add(new Label("errorText", new PropertyModel(this, "message"))
 			{
 				@Override
