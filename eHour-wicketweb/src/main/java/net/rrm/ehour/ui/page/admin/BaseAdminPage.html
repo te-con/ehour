@@ -8,19 +8,17 @@
     <body>
     
     	<wicket:extend>
-    		<div style="float: left">
-	    		<div class="SidePanelLoc" wicket:id="adminNav">
-		    	</div>
+    		<div class="navColumn">
+	    		<div class="SidePanelLoc" wicket:id="adminNav"></div>
 	
 				<br clear="all" />
 	
-	    		<div class="ContextualHelp" wicket:id="contextHelp">
-		    	</div>
+	    		<div class="ContextualHelp" wicket:id="contextHelp"></div>
 		    </div>
 		    
-			<wicket:child />
-
-	    	<br clear="all" />   	
+		    <div class="mainColumn">
+		    	<wicket:child />
+		    </div>
     	</wicket:extend>
     </body>
 </html>

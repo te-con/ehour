@@ -29,7 +29,7 @@ body
 div.SidePanelLoc
 {
 	width: 243px;
-	margin:	19px 0 0 5px;
+	margin:	0 0 0 5px;
 	padding: 0;
 	float:	left;
 }
@@ -52,20 +52,20 @@ div.ContentPanelLocFixed
 
 div.GreyFrame
 {
-		text-align: left;
-		margin: 0;
-		padding: 0;
-		background-color: white;
+	text-align: left;
+	margin: 0 20px 0 0;
+	padding: 0;
+	background-color: white;
 }
 
 
 div.GreyFrame h1
 {
-		text-align: left;
-		font:  bold 1.0em Arial, Geneva, Helvetica, sans-serif;	
-		color: #536e87;
-		margin: 0 0 3px 16px;
-		padding: 0;
+	text-align: left;
+	font:  bold 1.0em Arial, Geneva, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0 0 3px 16px;
+	padding: 0;
 }
 
 div.GreyFrame div.ExportIcons
@@ -82,6 +82,7 @@ div.GreyFrameContainer
 div.GreyFrameContainerSquared
 {
 		background: url(../img/grey_frame/pixel_grey.gif);
+		width: 400px;
 }
 
 div.GreyFrameContainerSquared h3
@@ -570,3 +571,16 @@ div.LoggedInAs
 	padding-right: 7px;
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 	color: #536e87;
+}
+
+.navColumn
+{
+	float: left;
+	width: 250px;
+	margin-left: 10px;
+}
+
+.mainColumn
+{
+	float: left;
+}
