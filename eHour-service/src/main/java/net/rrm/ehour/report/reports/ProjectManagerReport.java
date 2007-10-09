@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.report.reports;
 
+import java.io.Serializable;
 import java.util.SortedSet;
 
 import net.rrm.ehour.data.DateRange;
@@ -25,8 +26,10 @@ import net.rrm.ehour.project.domain.Project;
  * Project manager report 
  **/
 
-public class ProjectManagerReport
+public class ProjectManagerReport implements Serializable
 {
+	private static final long serialVersionUID = 1768574303126675320L;
+	
 	private Project									project;
 	private	SortedSet<ProjectAssignmentAggregate>	aggregates;
 	private	DateRange								reportRange;
