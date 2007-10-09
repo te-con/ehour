@@ -267,7 +267,6 @@ public class UserServiceImpl implements UserService
 
 	/**
 	 * Persist user
-	 * FIXME updating existing user doesn't work
 	 */
 
 	public User persistUser(User user) throws PasswordEmptyException, ObjectNotUniqueException
@@ -306,29 +305,9 @@ public class UserServiceImpl implements UserService
 			projectAssignmentService.assignUserToDefaultProjects(user);
 		}
 		
-		if (dbUser == null)
-		{
-			userDAO.persist(user);
+		userDAO.merge(user);
 			
-			return user;
-		}
-		else
-		{
-			// when merge fails..
-			dbUser.setActive(user.isActive());
-			dbUser.setEmail(user.getEmail());
-			dbUser.setFirstName(user.getFirstName());
-			dbUser.setLastName(user.getLastName());
-			dbUser.setPassword(user.getPassword());
-			dbUser.setUserDepartment(user.getUserDepartment());
-			dbUser.setUsername(user.getUsername());
-			dbUser.getUserRoles().clear();
-			dbUser.getUserRoles().addAll(user.getUserRoles());
-			
-			userDAO.persist(dbUser);
-			
-			return dbUser;
-		}
+		return user;
 	}
 
 	/**

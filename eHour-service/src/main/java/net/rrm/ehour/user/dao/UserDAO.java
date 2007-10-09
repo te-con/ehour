@@ -19,7 +19,6 @@ import java.util.List;
 import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
-import net.rrm.ehour.user.domain.UserRole;
 
 public interface UserDAO extends GenericDAO<User, Integer>
 {

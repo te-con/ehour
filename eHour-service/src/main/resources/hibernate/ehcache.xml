@@ -21,7 +21,7 @@
 	
 	<cache
 	    name="net.rrm.ehour.user.domain.User"
-	    maxElementsInMemory="50"
+	    maxElementsInMemory="100"
         timeToIdleSeconds="600"
         timeToLiveSeconds="3600"
         overflowToDisk="true"

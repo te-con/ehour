@@ -37,6 +37,20 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 {
 	private UserService userService;
 	
+	public void testUpdateUser() throws ObjectNotFoundException, PasswordEmptyException, ObjectNotUniqueException
+	{
+		User user = new User(1);
+		user.setUsername("thies");
+		
+		user.addUserRole(new UserRole("ROLE_ADMIN"));
+		
+		user = userService.persistUser(user);
+		
+		assertEquals("ROLE_ADMIN", user.getUserRoles().iterator().next().getRole());
+		
+		
+	}	
+	
 	/**
 	 * 
 	 * @throws Exception
@@ -136,19 +150,7 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		}
 	}
 	
-	public void testUpdateUser() throws ObjectNotFoundException, PasswordEmptyException, ObjectNotUniqueException
-	{
-		User user = userService.getUser(1);
-		
-		user.getUserRoles().clear();
-		user.getUserRoles().add(new UserRole("ROLE_ADMIN"));
-		
-		User user2 = userService.persistUser(user);
-		
-		assertEquals("ROLE_ADMIN", user.getUserRoles().iterator().next().getRole());
-		
-		
-	}
+
 	
 	public void testFindUsersByPatternAndUserRole()
 	{
