@@ -9,17 +9,17 @@
 <wicket:panel>
 	<span wicket:id="entrySelectorFrame">
 	
-		<form onsubmit="return false;" wicket:id="filterForm">
+		<form onsubmit="return false;" wicket:id="filterForm" style="margin: 0; padding: 0">
 			<p>
 				<input class="textInput" 
 						type="text" 
 						wicket:id="filterInput"
-						style="width: 220px; margin-bottom: 0;color: #aaaaaa; margin-bottom: 3px"
+						style="width: 220px; background-color: #fefefe;margin: 0 0 3px 0; padding: 0;color: #aaaaaa; "
 						size="25" 
 						/>
 				<br />
 				
-				<span wicket:id="filterToggleText"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="filterToggle" type="checkbox" />
+				<span wicket:id="filterToggleText"></span>&nbsp;&nbsp;&nbsp;<input style="border:0" wicket:id="filterToggle" type="checkbox" />
 			</p>
 		</form>	
 	

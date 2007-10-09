@@ -53,9 +53,6 @@ div.ContentPanelLocFixed
 div.GreyFrame
 {
 		text-align: left;
-		//min-width: 500px;
-		max-width: 780px;
-		width:expression(document.body.clientWidth > 1000? "780px": "auto" );
 		margin: 0;
 		padding: 0;
 		background-color: white;
@@ -73,22 +70,18 @@ div.GreyFrame h1
 
 div.GreyFrame div.ExportIcons
 {
-		float: right;
-		padding-right: 16px;
+	float: right;
+	padding-right: 16px;
 }
 
 div.GreyFrameContainer
 {
 		background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
-		max-width: 750px;
-		width:expression(document.body.clientWidth > 1000? "750px": "auto" );
 } 
 
 div.GreyFrameContainerSquared
 {
 		background: url(../img/grey_frame/pixel_grey.gif);
-		max-width: 750px;
-		width:expression(document.body.clientWidth > 1000? "750px": "auto" );
 }
 
 div.GreyFrameContainerSquared h3
