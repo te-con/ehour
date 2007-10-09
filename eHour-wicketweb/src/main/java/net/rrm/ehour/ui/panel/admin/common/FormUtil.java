@@ -62,9 +62,6 @@ public class FormUtil
 										final AjaxAwareContainer submitTarget,
 										final EhourConfig config)
 	{
-		Localizer localizer = Application.get().getResourceSettings().getLocalizer();
-		final String	demoModeText = localizer.getString("demoMode", form);
-		
 		AjaxButton submitButton = new AjaxButton("submitButton", form)
 		{
 			@Override
@@ -82,7 +79,7 @@ public class FormUtil
 			{
 				if (config.isInDemoMode())
 				{
-					return new DemoDecorator(demoModeText);
+					return new DemoDecorator(new ResourceModel("demoMode"));
 				}
 				else
 				{
@@ -118,7 +115,7 @@ public class FormUtil
 			{
 				if (config.isInDemoMode())
 				{
-					return new DemoDecorator(demoModeText);
+					return new DemoDecorator(new ResourceModel("demoMode"));
 				}
 				else
 				{
