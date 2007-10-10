@@ -8,8 +8,8 @@
 <body>
 <wicket:panel>
 	<div wicket:id="border">
-		<form wicket:id="projectForm">
-			<table class="contentTable" style="padding-right: 10px; width: 300px">
+		<form style="margin: 0; padding: 0" wicket:id="projectForm">
+			<table class="contentTable" style="padding: 0 10px 0 0">
 				<tr>
 					<td valign="top"><wicket:message key="admin.project.name" />:</td>
 					<td><input class="textInputSmall" wicket:id="project.name" style="width: 15em" />
@@ -76,8 +76,14 @@
 				</tr>
 
 				<tr>
-					<td>
+					<td colspan="2">
+						<br />
 						<span wicket:id="serverMessage"></span>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
 						<a class="submitButtonLightBackground" wicket:id="deleteButton">
 							<wicket:message key="general.delete" />
 						</a>

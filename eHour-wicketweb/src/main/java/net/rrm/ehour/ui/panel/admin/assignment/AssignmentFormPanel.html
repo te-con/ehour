@@ -8,8 +8,8 @@
 <body>
 <wicket:panel>
 		<div wicket:id="border">
-			<form wicket:id="assignmentForm">
-				<table class="contentTable" style="padding-right: 10px; width: 400px">
+			<form wicket:id="assignmentForm" style="margin: 0; padding: 0">
+			<table class="contentTable" style="padding: 0 10px 0 0">
 					<tr>
 						<td valign="top"><wicket:message key="admin.assignment.customer" />:</td>
 						<td><select class="textInputSmall" style="width: 15em" wicket:id="customer"></select>
@@ -118,8 +118,21 @@
 					</tr>
 
 					<tr>
-						<td>
+						<td colspan="2">
+							<br />
+						</td>
+					</tr>					
+
+					
+					<tr>
+						<td colspan="2">
+							<br />
 							<span wicket:id="serverMessage"></span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td>
 							<a class="submitButtonLightBackground" wicket:id="deleteButton">
 								<wicket:message key="general.delete" />
 							</a>
