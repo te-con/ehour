@@ -16,7 +16,11 @@
 
 package net.rrm.ehour.ui;
 
+import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
+import net.rrm.ehour.ui.page.admin.customer.CustomerAdmin;
+import net.rrm.ehour.ui.page.admin.department.DepartmentAdmin;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
+import net.rrm.ehour.ui.page.admin.project.ProjectAdmin;
 import net.rrm.ehour.ui.page.admin.user.UserAdmin;
 import net.rrm.ehour.ui.page.login.Login;
 import net.rrm.ehour.ui.page.login.SessionExpiredPage;
@@ -62,6 +66,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount("/login", PackageName.forClass(Login.class));
 		mount("/admin", PackageName.forClass(MainConfig.class));
 		mount("/admin/employee", PackageName.forClass(UserAdmin.class));
+		mount("/admin/department", PackageName.forClass(DepartmentAdmin.class));
+		mount("/admin/customer", PackageName.forClass(CustomerAdmin.class));
+		mount("/admin/project", PackageName.forClass(ProjectAdmin.class));
+		mount("/admin/assignment", PackageName.forClass(AssignmentAdmin.class));
 		mount("/consultant", PackageName.forPackage(Overview.class.getPackage()));
 		mount("/consultant/report", PackageName.forPackage(UserReport.class.getPackage()));
 		mount("/consultant/print", PackageName.forPackage(PrintMonthSelection.class.getPackage()));

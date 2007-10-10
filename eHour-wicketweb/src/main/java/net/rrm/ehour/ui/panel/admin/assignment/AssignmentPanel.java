@@ -114,6 +114,8 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 			}
 		};
 		
+//		tabbedPanel.setVisible(user.getUserId() != null)
+		
 		add(tabbedPanel);
 	}
 
