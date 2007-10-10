@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.panel.admin;
 
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -34,7 +34,7 @@ public class NoEntrySelectedPanel extends Panel
 	{
 		super(id);
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("border");
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 
 		greyBorder.add(new Label("noEntry", new ResourceModel("admin.noEditEntrySelected")));
