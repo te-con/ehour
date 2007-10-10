@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class AssignmentListPanel extends Panel
 	
 		setOutputMarkupId(true);
 	
-		// TODO	
+		// TODO	fixed size
 		greyBorder = new GreyRoundedBorder("border", 500);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
@@ -159,13 +158,13 @@ public class AssignmentListPanel extends Panel
 	 */
 	private List<ProjectAssignment> getProjectAssignments(User user)
 	{
-		List<ProjectAssignment> assignments;
+		List<ProjectAssignment> assignments = null;
 		
-		if (user.getUserId() == null)
+		if (user.getUserId() != null)
 		{
-			return new ArrayList<ProjectAssignment>();
+			assignments = projectService.getAllProjectsForUser(user);		
 		}
-		assignments = projectService.getAllProjectsForUser(user);
+		
 		
 		if (assignments != null && assignments.size() > 0)
 		{
