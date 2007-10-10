@@ -20,6 +20,14 @@
 	/>
 	
 	<cache
+	    name="net.rrm.ehour.config.domain.Configuration"
+	    maxElementsInMemory="50"
+        timeToIdleSeconds="6000"
+        timeToLiveSeconds="36000"
+	    overflowToDisk="false"
+	/>	
+	
+	<cache
 	    name="net.rrm.ehour.user.domain.User"
 	    maxElementsInMemory="100"
         timeToIdleSeconds="600"
