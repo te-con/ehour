@@ -23,8 +23,6 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.Localizer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
