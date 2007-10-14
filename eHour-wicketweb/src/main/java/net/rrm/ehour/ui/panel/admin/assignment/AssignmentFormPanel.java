@@ -123,7 +123,9 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 
 		// and currency
 		String currency = config.getCurrency();
-		form.add(new Label("currency", CommonUIStaticData.getCurrencies().get(currency)));
+		Label currencyLabel = new Label("currency", CommonUIStaticData.getCurrencies().get(currency));
+		currencyLabel.setEscapeModelStrings(false);
+		form.add(currencyLabel);
 		
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage"));
