@@ -23,15 +23,19 @@
 
 package net.rrm.ehour.db;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
 
 import javax.sql.DataSource;
 
 import org.apache.ddlutils.Platform;
 import org.apache.ddlutils.PlatformFactory;
+import org.apache.ddlutils.io.DataReader;
+import org.apache.ddlutils.io.DatabaseDataIO;
 import org.apache.ddlutils.io.DatabaseIO;
 import org.apache.ddlutils.model.Database;
 import org.apache.log4j.Logger;
@@ -61,7 +65,7 @@ public class DbValidator
 			
 			currentVersion = getCurrentVersion(connection);
 			
-			databaseInState = currentVersion.equalsIgnoreCase(version);
+			databaseInState = (currentVersion != null) ? currentVersion.equalsIgnoreCase(version) : false;
 		} catch (SQLException e)
 		{
 			logger.info("Could not determine datamodel's version, recreating..");
@@ -101,12 +105,23 @@ public class DbValidator
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
 		Database ddlModel = readModelFromXML(DDL_XML);
 		platform.createTables(ddlModel, false, false);
+
+		insertData(platform, ddlModel);
+	}
+
+	/**
+	 * Insert data
+	 * @param platform
+	 * @param model
+	 */
+	private void insertData(Platform platform, Database model)
+	{
+		DatabaseDataIO	dataIO = new DatabaseDataIO();
 		
-		// insert data
-//		Database dmlModel = readModelFromXML(DML_XML);
-//		Table[] tables = dmlModel.getTables();
-//		
-//		platform.insert(dmlModel, tables);
+		DataReader dataReader = dataIO.getConfiguredDataReader(platform, model);
+        dataReader.getSink().start();
+        
+        dataIO.writeDataToDatabase(dataReader, new File(DML_XML).getAbsolutePath());
 	}
 	
 //	private void backupCurrentModel()
