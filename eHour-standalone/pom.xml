@@ -45,17 +45,17 @@
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
-			<version>6.1.3</version>
+			<version>6.1.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty-naming</artifactId>
-			<version>6.1.3</version>
+			<version>6.1.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty-plus</artifactId>
-			<version>6.1.3</version>
+			<version>6.1.5</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
