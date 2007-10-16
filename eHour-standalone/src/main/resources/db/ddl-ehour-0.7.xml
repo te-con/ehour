@@ -123,13 +123,9 @@
       <column name="ASSIGNMENT_TYPE" primaryKey="false" required="false" type="VARCHAR" size="64" autoIncrement="false"/>
     </table>
     <table name="timesheet_comment">
-      <column name="USER_ID" required="true" type="INTEGER" size="10" autoIncrement="false"/>
-      <column name="COMMENT_DATE" required="true" type="DATE" autoIncrement="false"/>
-      <column name="COMMENT" primaryKey="false" required="false" type="VARCHAR" size="1024" autoIncrement="false"/>
-      <unique name="PRIMARY">
-        <unique-column name="COMMENT_DATE"/>
-        <unique-column name="USER_ID"/>
-      </unique>
+      <column name="USER_ID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="false"/>
+      <column name="COMMENT_DATE" primaryKey="true" required="true" type="DATE" autoIncrement="false"/>
+      <column name="COMMENT" required="false" type="VARCHAR" size="2048" autoIncrement="false"/>
     </table>
     <table name="timesheet_entry">
       <column name="ASSIGNMENT_ID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="false"/>
@@ -138,10 +134,10 @@
       <foreign-key foreignTable="project_assignment" name="TIMESHEET_ENTRY_fk">
         <reference local="ASSIGNMENT_ID" foreign="ASSIGNMENT_ID"/>
       </foreign-key>
-      <unique name="PRIMARY">
-        <unique-column name="ENTRY_DATE"/>
-        <unique-column name="ASSIGNMENT_ID"/>
-      </unique>
+      <index name="ENTRY">
+        <index-column name="ENTRY_DATE"/>
+        <index-column name="ASSIGNMENT_ID"/>
+      </index>
       <index name="ASSIGNMENT_ID">
         <index-column name="ASSIGNMENT_ID"/>
       </index>
@@ -167,7 +163,7 @@
       <index name="ROLE">
         <index-column name="ROLE"/>
       </index>
-      <index name="USER_ID">
+      <index name="ROLE_USER_ID">
         <index-column name="USER_ID"/>
       </index>
     </table>
