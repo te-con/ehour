@@ -31,6 +31,7 @@ import org.mortbay.component.AbstractLifeCycle;
 
 public class DbValidatorLifeCycle extends AbstractLifeCycle
 {
+	private String	xmlPath;
 	private String	requiredVersion;
 	private final static Logger logger = Logger.getLogger(DbValidatorLifeCycle.class);
 	
@@ -44,10 +45,7 @@ public class DbValidatorLifeCycle extends AbstractLifeCycle
 		DataSource dataSource = getDataSource();
 
 		
-		new DbValidator().checkDatabaseState(dataSource, requiredVersion);
-		
-//		stop();
-//		throw new Exception("failed to init db");
+		new DbValidator().checkDatabaseState(dataSource, requiredVersion, xmlPath);
     }
 
     
@@ -71,5 +69,14 @@ public class DbValidatorLifeCycle extends AbstractLifeCycle
 	public void setRequiredVersion(String requiredVersion)
 	{
 		this.requiredVersion = requiredVersion;
+	}
+
+
+	/**
+	 * @param xmlPath the xmlPath to set
+	 */
+	public void setXmlPath(String xmlPath)
+	{
+		this.xmlPath = xmlPath;
 	}
 }

@@ -59,6 +59,7 @@
 		<Arg>
 			<New class="net.rrm.ehour.db.DbValidatorLifeCycle">
 				<Set name="requiredVersion">0.7</Set>
+				<Set name="xmlPath">db/</Set>
 			</New>
 		</Arg>
 	</Call>

@@ -35,6 +35,57 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>env-prod-derby</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>prod-derby</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<inherited>true</inherited>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<debug>false</debug>
+							<optimize>true</optimize>
+						</configuration>
+					</plugin>
+				</plugins>
+
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/prod/
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>env-dev-derby</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev-derby</value>
+				</property>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/dev/
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.derby</groupId>

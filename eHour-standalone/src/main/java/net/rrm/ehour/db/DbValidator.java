@@ -28,7 +28,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Iterator;
 
 import javax.sql.DataSource;
 
@@ -46,18 +45,22 @@ import org.apache.log4j.Logger;
 
 public class DbValidator 
 {
+	private String	xmlPath;
+	
 	private final static Logger logger = Logger.getLogger(DbValidator.class);
-	private final static String DDL_XML = "src/main/resources/db/ddl-ehour-0.7.xml";
-	private final static String DML_XML = "src/main/resources/db/dml-ehour-0.7.xml";
+	private final static String DDL_XML = "ddl-ehour-0.7.xml";
+	private final static String DML_XML = "dml-ehour-0.7.xml";
 	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.db.DbAccessor#checkDatabaseState(javax.sql.DataSource, java.lang.String)
 	 */
-	public void checkDatabaseState(DataSource dataSource, String version)
+	public void checkDatabaseState(DataSource dataSource, String version, String xmlPath)
 	{
 		boolean databaseInState = false;
 		String 	currentVersion = null;
+		
+		this.xmlPath = xmlPath;
 		
 		try
 		{
@@ -103,7 +106,7 @@ public class DbValidator
 	private void createDatamodel(DataSource dataSource)
 	{
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
-		Database ddlModel = readModelFromXML(DDL_XML);
+		Database ddlModel = readModelFromXML(xmlPath + DDL_XML);
 		platform.createTables(ddlModel, false, false);
 
 		insertData(platform, ddlModel);
@@ -121,13 +124,8 @@ public class DbValidator
 		DataReader dataReader = dataIO.getConfiguredDataReader(platform, model);
         dataReader.getSink().start();
         
-        dataIO.writeDataToDatabase(dataReader, new File(DML_XML).getAbsolutePath());
+        dataIO.writeDataToDatabase(dataReader, new File(xmlPath + DML_XML).getAbsolutePath());
 	}
-	
-//	private void backupCurrentModel()
-//	{
-//		
-//	}
 	
 	private Database readModelFromXML(String fileName)
 	{
@@ -154,5 +152,21 @@ public class DbValidator
 		
 		return version;
 		
+	}
+
+	/**
+	 * @return the xmlPath
+	 */
+	public String getXmlPath()
+	{
+		return xmlPath;
+	}
+
+	/**
+	 * @param xmlPath the xmlPath to set
+	 */
+	public void setXmlPath(String xmlPath)
+	{
+		this.xmlPath = xmlPath;
 	}
 }
