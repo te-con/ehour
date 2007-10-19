@@ -47,7 +47,7 @@
     <table name="mail_log_assignment">
       <column name="MAIL_LOG_ID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="false"/>
       <column name="PROJECT_ASSIGNMENT_ID" primaryKey="false" required="true" type="INTEGER" size="10" autoIncrement="false"/>
-      <column name="BOOKED_HOURS" primaryKey="false" required="false" type="REAL" size="9,3" autoIncrement="false"/>
+      <column name="BOOKED_HOURS" primaryKey="false" required="false" type="FLOAT" size="9,3" autoIncrement="false"/>
       <column name="BOOK_DATE" primaryKey="false" required="false" type="TIMESTAMP" autoIncrement="false"/>
       <foreign-key foreignTable="mail_log" name="MAIL_LOG_ASSIGNMENT_fk">
         <reference local="MAIL_LOG_ID" foreign="MAIL_LOG_ID"/>
@@ -89,15 +89,15 @@
     <table name="project_assignment">
       <column name="ASSIGNMENT_ID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
       <column name="PROJECT_ID" primaryKey="false" required="true" type="INTEGER" size="10" autoIncrement="false"/>
-      <column name="HOURLY_RATE" primaryKey="false" required="false" type="REAL" size="9,3" autoIncrement="false"/>
+      <column name="HOURLY_RATE" primaryKey="false" required="false" type="FLOAT" size="9,3" autoIncrement="false"/>
       <column name="DATE_START" primaryKey="false" required="false" type="DATE" autoIncrement="false"/>
       <column name="DATE_END" primaryKey="false" required="false" type="DATE" autoIncrement="false"/>
       <column name="ROLE" primaryKey="false" required="false" type="VARCHAR" size="255" autoIncrement="false"/>
       <column name="USER_ID" primaryKey="false" required="true" type="INTEGER" size="10" autoIncrement="false"/>
       <column name="ACTIVE" primaryKey="false" required="true" type="CHAR" size="1" default="Y" autoIncrement="false"/>
       <column name="ASSIGNMENT_TYPE_ID" primaryKey="false" required="true" type="INTEGER" size="10" autoIncrement="false"/>
-      <column name="ALLOTTED_HOURS" primaryKey="false" required="false" type="REAL" size="9,3" autoIncrement="false"/>
-      <column name="ALLOTTED_HOURS_OVERRUN" primaryKey="false" required="false" type="REAL" size="9,3" autoIncrement="false"/>
+      <column name="ALLOTTED_HOURS" primaryKey="false" required="false" type="FLOAT" size="9,3" autoIncrement="false"/>
+      <column name="ALLOTTED_HOURS_OVERRUN" primaryKey="false" required="false" type="FLOAT" size="9,3" autoIncrement="false"/>
       <column name="NOTIFY_PM_ON_OVERRUN" primaryKey="false" required="true" type="CHAR" size="1" default="N" autoIncrement="false"/>
       <foreign-key foreignTable="project" name="PROJECT_ASSIGNMENT_fk">
         <reference local="PROJECT_ID" foreign="PROJECT_ID"/>
@@ -130,7 +130,7 @@
     <table name="timesheet_entry">
       <column name="ASSIGNMENT_ID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="false"/>
       <column name="ENTRY_DATE" primaryKey="true" required="true" type="DATE" autoIncrement="false"/>
-      <column name="HOURS" primaryKey="false" required="true" type="REAL" size="9,3" autoIncrement="false"/>
+      <column name="HOURS" primaryKey="false" required="true" type="FLOAT" size="9,3" autoIncrement="false"/>
       <foreign-key foreignTable="project_assignment" name="TIMESHEET_ENTRY_fk">
         <reference local="ASSIGNMENT_ID" foreign="ASSIGNMENT_ID"/>
       </foreign-key>

@@ -31,7 +31,6 @@
 				<prop key="hibernate.cache.use_second_level_cache">true</prop>
 				<prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
-  				<prop key="hibernate.hbm2ddl.auto">${hibernate.ddlpolicy}</prop>
 			</props>
 		</property>
 	</bean>
