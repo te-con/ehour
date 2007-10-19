@@ -29,7 +29,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
+import javax.sql.PooledConnection;
 
 import org.apache.ddlutils.Platform;
 import org.apache.ddlutils.PlatformFactory;
@@ -37,6 +39,7 @@ import org.apache.ddlutils.io.DataReader;
 import org.apache.ddlutils.io.DatabaseDataIO;
 import org.apache.ddlutils.io.DatabaseIO;
 import org.apache.ddlutils.model.Database;
+import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.apache.log4j.Logger;
 
 /**
@@ -59,6 +62,8 @@ public class DbValidator
 	{
 		boolean databaseInState = false;
 		String 	currentVersion = null;
+		
+		((EmbeddedConnectionPoolDataSource)dataSource).setCreateDatabase("create");
 		
 		this.xmlPath = xmlPath;
 		
@@ -89,7 +94,9 @@ public class DbValidator
 		else
 		{
 			logger.info("Datamodel is the requested version.");
-		}			
+		}		
+		
+		((EmbeddedConnectionPoolDataSource)dataSource).setCreateDatabase("");
 	}
 	
 	/**

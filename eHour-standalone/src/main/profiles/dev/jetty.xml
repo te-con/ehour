@@ -48,9 +48,8 @@
 		class="org.mortbay.jetty.plus.naming.Resource">
 		<Arg>jdbc/eHourDS</Arg>
 		<Arg>
-			<New class="org.apache.derby.jdbc.EmbeddedDataSource">
+			<New class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource">
 				<Set name="DatabaseName">ehourDb</Set>
-				<Set name="createDatabase">create</Set>
 			</New>
 		</Arg>
 	</New>
