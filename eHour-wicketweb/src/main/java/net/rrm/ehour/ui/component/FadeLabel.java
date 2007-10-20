@@ -21,7 +21,7 @@ public class FadeLabel extends Label
 	public FadeLabel(String id, IModel model)
 	{
 		super(id, model);
-		
+
 		this.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5))
 		{
 			private static final long serialVersionUID = -625918309980847595L;
@@ -30,10 +30,11 @@ public class FadeLabel extends Label
 			protected void onPostProcessTarget(final AjaxRequestTarget target)
 			{
 				setModel(new Model(HtmlUtil.HTML_NBSP));
+				target.addComponent(FadeLabel.this);
 			}
 		});
 	}
-	
+
 	/**
 	 * 
 	 * @param id
@@ -42,6 +43,6 @@ public class FadeLabel extends Label
 	public FadeLabel(String id, String value)
 	{
 		this(id, new Model(value));
-	}	
+	}
 
 }

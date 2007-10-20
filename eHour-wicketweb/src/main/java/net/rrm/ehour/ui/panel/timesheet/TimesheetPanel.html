@@ -87,7 +87,7 @@
 		<br />
 
 		<div wicket:id="commentsFrame">
-			<table class="timesheetCommentsTable" cellpadding="0" cellspacing="0">
+			<table class="timesheetCommentsTable" style="margin:0 padding:0" cellpadding="0" cellspacing="0">
 
 			<tr>
 				<td style="width: 12px" rowspan="2">&nbsp;</td>
@@ -96,7 +96,7 @@
 					Comments:
 				</td>
 				
-				<td align="right">
+				<td align="right" colspan="2">
 					<textarea name="comment" wicket:id="commentsArea"
 								rows="3" style="width: 400px"
 								wrap="virtual"></textarea>
@@ -106,8 +106,9 @@
 			</tr>
 
 			<tr>
-				<td><input type="reset" value="reset" class="submitButton" wicket:id="resetButton" /></td>
-				<td align="right"><input type="submit" class="submitButton" wicket:id="submitButton" value="Save" /></td>
+				<td width="30%"><input type="reset" value="reset" class="submitButton" wicket:id="resetButton" /></td>
+				<td style="text-align: center" wicket:id="serverMessage"></td>
+				<td  width="30%" align="right"><input type="submit" class="submitButton" wicket:id="submitButton" value="Save" /></td>
 			</tr>
 
 			</table>

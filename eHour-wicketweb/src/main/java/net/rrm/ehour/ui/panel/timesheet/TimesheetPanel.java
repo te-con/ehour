@@ -36,6 +36,7 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.component.FadeLabel;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.model.DateModel;
@@ -46,6 +47,7 @@ import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
@@ -74,10 +76,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * The main panel - timesheet form
- * TODO add feedback for invalid values
- * TODO add 'data saved' feedback
- * TODO change store & next week to store
  * TODO fold image itself should change and be clickable
+ * TODO better icons
  **/
 
 public class TimesheetPanel extends Panel implements Serializable
@@ -90,6 +90,8 @@ public class TimesheetPanel extends Panel implements Serializable
 	private UserService			userService;
 	
 	private	EhourConfig			config;
+	private String				serverMsg  = HtmlUtil.HTML_NBSP;
+	private FadeLabel			serverMsgLabel;
 	
 	/**
 	 * Construct timesheetPanel for entering hours
@@ -140,6 +142,12 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		// attach onsubmit ajax events
 		setSubmitActions(timesheetForm, commentsFrame, timesheet);
+		
+		// server message
+		serverMsgLabel = new FadeLabel("serverMessage", "&nbsp;");
+		serverMsgLabel.setEscapeModelStrings(false);
+		serverMsgLabel.setOutputMarkupId(true);
+		commentsFrame.add(serverMsgLabel);
 		
 		// add CSS & JS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
@@ -242,8 +250,16 @@ public class TimesheetPanel extends Panel implements Serializable
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
                 persistTimesheetEntries(timesheet);
-                //FIXME
-                moveWeek(timesheet.getWeekStart(), target, 1);
+                ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT);
+                
+                // need to readd due to timer
+                FadeLabel serverMsgLabelNew = new FadeLabel("serverMessage", "data saved");
+                serverMsgLabelNew.setOutputMarkupId(true);
+                serverMsgLabel.replaceWith(serverMsgLabelNew);
+                serverMsgLabel = serverMsgLabelNew;
+                
+                target.addComponent(serverMsgLabelNew);
+                
             }
 
 			@Override
@@ -431,5 +447,13 @@ public class TimesheetPanel extends Panel implements Serializable
 		timesheet = assembler.createTimesheetForm(weekOverview);
 		
 		return timesheet;
+	}
+
+	/**
+	 * @return the serverMsg
+	 */
+	public String getServerMsg()
+	{
+		return serverMsg;
 	}	
 }

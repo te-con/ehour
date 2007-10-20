@@ -50,9 +50,10 @@ public class CustomTitledGreyRoundedBorder extends Border
 			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.toString() + "px"));
 		}
 		
-		
 		greyFrame.add(title);
 		add(greyFrame);
+		
+		greyFrame.add(getBodyContainer());
 	}
 
 }

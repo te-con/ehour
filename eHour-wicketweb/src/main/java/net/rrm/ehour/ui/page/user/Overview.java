@@ -80,6 +80,10 @@ public class Overview extends BasePage
 				calendarWeekClicked(target);
 				calendarPanel.refreshCalendar(target);
 				break;
+			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+				calendarPanel.refreshCalendar(target);
+				break;
+				
 		}
 	}
 	
