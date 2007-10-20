@@ -26,7 +26,7 @@ div.timesheet
 
 .timesheetTable tr.weekColumnRow td
 {
-	font:  bold 16px/16px Geneva, Arial, Helvetica, sans-serif;	
+	font:  16px/16px Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
 	padding: 0;
@@ -133,7 +133,7 @@ div.timesheet
 
 .timesheetTable tr.projectRow td
 {
-	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  normal  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
 	padding: 0 0 1px 0;
@@ -170,7 +170,7 @@ div.timesheet
 
 .timesheetTable tr.projectRow td.sunday
 {
-	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
 	padding: 0;
@@ -220,7 +220,7 @@ div.timesheet
 
 .timesheetTable tr.customerRow td.customerCell
 {
-	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	background-color: #fefeff;
 	margin: 0;
@@ -231,7 +231,7 @@ div.timesheet
 
 .timesheetTable tr.projectRow td.weekday
 {
-	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
 	padding: 0;

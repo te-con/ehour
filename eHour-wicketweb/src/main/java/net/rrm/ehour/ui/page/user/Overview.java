@@ -76,7 +76,8 @@ public class Overview extends BasePage
 			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK:
 				calendarWeekClicked(target);
 				break;
-			case CommonUIStaticData.AJAX_CALENDARDATA_CHANGED:
+			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_NAV:
+				calendarWeekClicked(target);
 				calendarPanel.refreshCalendar(target);
 				break;
 		}

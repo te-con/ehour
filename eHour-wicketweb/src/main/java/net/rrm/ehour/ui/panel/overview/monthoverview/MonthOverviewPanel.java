@@ -29,6 +29,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 
@@ -90,7 +91,9 @@ public class MonthOverviewPanel extends Panel
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyFrame", 
 												new ResourceModel("monthoverview.overview"),
-												printLink, null);
+												true,
+												printLink, null,
+												CommonUIStaticData.GREYFRAME_WIDTH);
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		
 		greyBorder.add(blueBorder);

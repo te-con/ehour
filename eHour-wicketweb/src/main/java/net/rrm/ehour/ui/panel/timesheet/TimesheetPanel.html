@@ -38,7 +38,7 @@
 					
 					<div wicket:id="customers">
 						<tr class="customerRow">
-							<td class="saturday" style="width: 16px"><img src="img/icon_down_off.gif" /></td>	
+							<td class="saturday" style="padding-left: 3px;width: 16px"><img src="img/icon_up_off.gif" /></td>	
 							<td class="customerCell" colspan="4" wicket:id="customer">customer</td>
 							<td class="weekday">&nbsp;</td>
 							<td class="weekday">&nbsp;</td>
@@ -98,7 +98,7 @@
 				
 				<td align="right">
 					<textarea name="comment" wicket:id="commentsArea"
-								rows="3" cols="40"
+								rows="3" style="width: 400px"
 								wrap="virtual"></textarea>
 				</td>
 
@@ -118,9 +118,9 @@
 	
    	<wicket:fragment wicket:id="title">
    		<h1>
-	   		<a wicket:id="previousWeek">&lt;&lt;</a>
+	   		<a wicket:id="previousWeek"><img src="img/icon_left.gif" border="0" /></a>
 	   		<span wicket:id="titleLabel"></span>
-	   		<a wicket:id="nextWeek">&gt;&gt;</a>
+	   		<a wicket:id="nextWeek"><img src="img/icon_right.gif" border="0" /></a>
    		</h1>
 	</wicket:fragment>
 	

@@ -114,7 +114,8 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		// grey & blue frame border
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", 
-																				getWeekNavigation(forWeek, timesheet.getWeekStart()));
+																				getWeekNavigation(forWeek, timesheet.getWeekStart()),
+																				CommonUIStaticData.GREYFRAME_WIDTH);
 		add(greyBorder);
 
 		// add form
@@ -159,7 +160,6 @@ public class TimesheetPanel extends Panel implements Serializable
 		// TODO i18n
 		titleFragment.add(new Label("titleLabel", "Week " + dateFormatter.format(forWeek.getTime())));
 		
-		// TODO use icon for prev/next weeks
 		AjaxLink previousWeekLink = new AjaxLink("previousWeek")
 		{
 			@Override
@@ -242,6 +242,7 @@ public class TimesheetPanel extends Panel implements Serializable
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
                 persistTimesheetEntries(timesheet);
+                //FIXME
                 moveWeek(timesheet.getWeekStart(), target, 1);
             }
 
@@ -291,7 +292,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	}
 	
 	/**
-	 * Move to next week after succesfull form submit
+	 * Move to next week after succesfull form submit or week navigation
 	 * @param target
 	 */
 	private void moveWeek(Date onScreenDate, AjaxRequestTarget target, int weekDiff)
@@ -304,8 +305,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		cal.add(Calendar.WEEK_OF_YEAR, weekDiff);
 
 		// should update calendar as well
-		// FIXME
-		event = CommonUIStaticData.AJAX_CALENDARDATA_CHANGED;
+		event = CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_NAV;
 		session.setNavCalendar(cal);
 		
 		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, event);
