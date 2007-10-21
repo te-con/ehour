@@ -27,7 +27,7 @@
 							class="org.mortbay.jetty.handler.ContextHandlerCollection">
 							<New
 								class="org.mortbay.jetty.webapp.WebAppContext">
-								<Set name="contextPath">/test</Set>
+								<Set name="contextPath">/</Set>
 							</New>
 						</New>
 					</Item>
@@ -43,47 +43,39 @@
 			</Set>
 		</New>
 	</Set>
-	
+
 	<New id="Datasource"
 		class="org.mortbay.jetty.plus.naming.Resource">
 		<Arg>jdbc/eHourDS</Arg>
 		<Arg>
-			<New class="org.apache.derby.jdbc.EmbeddedDataSource">
+			<New class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource">
 				<Set name="DatabaseName">ehourDb</Set>
-				<Set name="createDatabase">create</Set>
 			</New>
 		</Arg>
-	</New>	
-	
+	</New>
+
 	<Call name="addLifeCycle">
 		<Arg>
 			<New class="net.rrm.ehour.db.DbValidatorLifeCycle">
 				<Set name="requiredVersion">0.7</Set>
-				<Set name="xmlPath">db/</Set>
+				<Set name="xmlPath">../../conf/db/</Set>
 			</New>
 		</Arg>
 	</Call>
 
 	<Call name="addLifeCycle">
 		<Arg>
-			<New class="org.mortbay.jetty.deployer.WebAppDeployer">
+			<New class="org.mortbay.jetty.deployer.ContextDeployer">
 				<Set name="contexts">
-					<Ref id="Contexts"></Ref>
+					<Ref id="Contexts" />
 				</Set>
-				<Set name="webAppDir">../../ehour</Set>
-				<Set name="parentLoaderPriority">false</Set>
-				<Set name="extract">true</Set>
-				<Set name="allowDuplicates">false</Set>
+				<Set name="configurationDir">
+					../../conf/contexts/
+				</Set>
+				<Set name="scanInterval">1</Set>
 			</New>
 		</Arg>
 	</Call>
-
-	<Set name="ThreadPool">
-		<New class="org.mortbay.thread.BoundedThreadPool">
-			<Set name="minThreads">10</Set>
-			<Set name="maxThreads">100</Set>
-		</New>
-	</Set>
 
 	<Set name="ThreadPool">
 		<New class="org.mortbay.thread.BoundedThreadPool">

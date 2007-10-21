@@ -83,11 +83,4 @@
 			<Set name="maxThreads">100</Set>
 		</New>
 	</Set>
-
-	<Set name="ThreadPool">
-		<New class="org.mortbay.thread.BoundedThreadPool">
-			<Set name="minThreads">10</Set>
-			<Set name="maxThreads">100</Set>
-		</New>
-	</Set>
 </Configure>
