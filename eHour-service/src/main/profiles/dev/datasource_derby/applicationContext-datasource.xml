@@ -5,7 +5,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 					       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
-        <jee:jndi-lookup id="eHourDataSource"
-                         jndi-name="jdbc/eHourDS" />
+
+	<bean id="eHourDataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>org.apache.derby.jdbc.EmbeddedDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:derby:ehourDb;create=true</value>
+		</property>
+	</bean>
 
 </beans>

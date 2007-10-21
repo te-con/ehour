@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -173,7 +174,9 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 					List<Customer> customers = getCustomers();
 					customerListView.setList(customers);
 					
-					((EntrySelectorPanel)get(CUSTOMER_SELECTOR_ID)).refreshList(target);
+					((EntrySelectorPanel)
+							((MarkupContainer)get("entrySelectorFrame"))
+								.get(CUSTOMER_SELECTOR_ID)).refreshList(target);					
 					
 					getTabbedPanel().succesfulSave(target);
 				} catch (Exception e)

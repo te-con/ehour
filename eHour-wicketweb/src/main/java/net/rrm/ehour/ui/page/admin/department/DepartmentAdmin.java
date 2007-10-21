@@ -33,6 +33,7 @@ import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -151,7 +152,9 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 					List<UserDepartment> depts = getUserDepartments();
 					deptListView.setList(depts);
 					
-					((EntrySelectorPanel)get(DEPT_SELECTOR_ID)).refreshList(target);
+					((EntrySelectorPanel)
+							((MarkupContainer)get("entrySelectorFrame"))
+								.get(DEPT_SELECTOR_ID)).refreshList(target);
 					
 					getTabbedPanel().succesfulSave(target);
 				} catch (Exception e)

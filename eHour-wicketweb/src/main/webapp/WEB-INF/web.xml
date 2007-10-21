@@ -67,7 +67,7 @@
 		<filter-name>hibernateFilter</filter-name>
 		<url-pattern>/eh/*</url-pattern>
 	</filter-mapping>
-	
+
 	<filter-mapping>
 		<filter-name>Acegi HTTP Request Security Filter</filter-name>
 		<url-pattern>/eh/*</url-pattern>
@@ -83,4 +83,10 @@
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
+
+	<resource-ref>
+		<res-ref-name>jdbc/dbase</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>container</res-auth>
+	</resource-ref>
 </web-app>
