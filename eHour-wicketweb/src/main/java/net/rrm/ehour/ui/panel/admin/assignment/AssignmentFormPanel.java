@@ -98,7 +98,7 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 		setOutputMarkupId(true);
 		
 		final Form form = new Form("assignmentForm");
-		
+		form.setEnabled(false);
 		// assignment type
 		Component[] projectDependentComponents = addAssignmentType(form, assignmenTypes, model);
 

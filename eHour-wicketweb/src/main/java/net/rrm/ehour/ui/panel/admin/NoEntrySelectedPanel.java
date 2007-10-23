@@ -16,9 +16,11 @@
 
 package net.rrm.ehour.ui.panel.admin;
 
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -32,11 +34,16 @@ public class NoEntrySelectedPanel extends Panel
 
 	public NoEntrySelectedPanel(String id)
 	{
+		this(id, false);
+	}
+	
+	public NoEntrySelectedPanel(String id, boolean useRoundBorder)
+	{
 		super(id);
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		Border greyBorder = (useRoundBorder) ? new GreyRoundedBorder("border", 500) : new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 
 		greyBorder.add(new Label("noEntry", new ResourceModel("admin.noEditEntrySelected")));
-	}
+	}	
 }

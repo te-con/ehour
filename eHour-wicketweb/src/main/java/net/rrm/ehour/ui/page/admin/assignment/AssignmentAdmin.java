@@ -25,6 +25,7 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
+import net.rrm.ehour.ui.panel.admin.assignment.NoUserSelectedPanel;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
@@ -90,10 +91,8 @@ public class AssignmentAdmin extends BaseAdminPage
 										userListHolder,
 										new StringResourceModel("admin.assignment.filter", this, null)));
 		
-		assignmentPanel = new AssignmentPanel("assignmentPanel",
-													new User(),
-													getCustomers(), 
-													getProjectAssignmentTypes());
+		assignmentPanel = new NoUserSelectedPanel("assignmentPanel");
+		
 		add(assignmentPanel);
 	}
 	

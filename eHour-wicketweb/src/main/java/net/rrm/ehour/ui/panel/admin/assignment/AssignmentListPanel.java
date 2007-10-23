@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +39,9 @@ import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -69,7 +72,10 @@ public class AssignmentListPanel extends Panel
 		setOutputMarkupId(true);
 	
 		// TODO	fixed size
-		greyBorder = new GreyRoundedBorder("border", 500);
+		greyBorder = new GreyRoundedBorder("border",
+				 							new StringResourceModel("admin.assignment.assignmentsFor", 
+				 											this, null, new Object[]{new Model(user.getFullName())}),
+											500);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
 	}
@@ -166,14 +172,14 @@ public class AssignmentListPanel extends Panel
 		}
 		
 		
-		if (assignments != null && assignments.size() > 0)
+		if (assignments != null)
 		{
 			Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
 			setVisible(true);
 		}
 		else
 		{
-			setVisible(false);
+			assignments = new ArrayList<ProjectAssignment>();
 		}
 		
 		return assignments;
