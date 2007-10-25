@@ -49,6 +49,11 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 		Map<Date, FlatProjectAssignmentAggregate>	rowAggregates;
 		Date	aggregateDate;
 		RK		rowKey;
+
+		if (aggregateData == null)
+		{
+			return;
+		}
 		
 		rowMap = new TreeMap<RK, Map<Date, FlatProjectAssignmentAggregate>>(getRKComparator());
 
@@ -91,7 +96,12 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 			{
 				if (aggMap.containsKey(date))
 				{
-					total += aggMap.get(date).getTotalHours();	
+					Number n = aggMap.get(date).getTotalHours();
+					
+					if (n != null)
+					{
+						total+= n.floatValue();
+					}
 				}
 			}
 		}

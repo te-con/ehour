@@ -187,11 +187,11 @@ public class PrintMonth extends WebPage
 			{
 				FlatProjectAssignmentAggregate aggregate = assignmentMap.get(day);
 				
-				if (aggregate.getTotalHours() > 0)
+				if (aggregate.getTotalHours() != null && aggregate.getTotalHours().floatValue() > 0)
 				{
 					label = new Label(dateLabels.newChildId(), new FloatModel(aggregate.getTotalHours(), config));
 					
-					total += aggregate.getTotalHours();
+					total += aggregate.getTotalHours().floatValue();
 				}
 			}
 			
