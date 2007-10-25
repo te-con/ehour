@@ -40,12 +40,6 @@ import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 public class PrintReport extends TrendReport<ProjectAssignment>
 {
 	private static final long serialVersionUID = 6099016674849151669L;
-	private SimpleDateFormat	dateParser;
-	
-	public PrintReport()
-	{
-		dateParser = new SimpleDateFormat("ddMMyyyy");
-	}
 	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.web.report.reports.TimelineReport#getRowKey(net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate)
@@ -74,7 +68,7 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	@Override
 	protected Date getAggregateDate(FlatProjectAssignmentAggregate aggregate) throws ParseException
 	{
-		return dateParser.parse(aggregate.getEntryDate());
+		return aggregate.getDayDate();
 	}
 
 	/**
