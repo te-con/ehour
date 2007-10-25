@@ -41,6 +41,7 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	private	String	projectName;
 	private	Integer	assignmentId;
 	private	String	assignmentDesc;
+	private Date	dayDate;
 	
 	/**
 	 * Minimal constructor
@@ -49,17 +50,6 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	public FlatProjectAssignmentAggregate()
 	{
 	}
-	
-	public FlatProjectAssignmentAggregate(Number totalHours, Number totalTurnOver, Date entryDate,
-											ProjectAssignment assignment)
-	{
-		SimpleDateFormat sdf = new SimpleDateFormat("ww yyyy");
-		
-		this.totalHours = (totalHours != null) ?  totalHours.floatValue() : 0;
-		this.totalTurnOver = (totalTurnOver != null) ? totalTurnOver.floatValue() : 0;
-		this.entryDate = (entryDate != null) ? sdf.format(entryDate) : null;
-	}
-
 
 	/**
 	 * @return the customerName
@@ -258,5 +248,21 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	public void setAssignmentId(Integer assignmentId)
 	{
 		this.assignmentId = assignmentId;
+	}
+
+	/**
+	 * @return the dayDate
+	 */
+	public Date getDayDate()
+	{
+		return dayDate;
+	}
+
+	/**
+	 * @param dayDate the dayDate to set
+	 */
+	public void setDayDate(Date dayDate)
+	{
+		this.dayDate = dayDate;
 	}
 }

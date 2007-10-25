@@ -6,17 +6,7 @@
 	<![CDATA[
 		SELECT SUM(ENTRY.HOURS) AS totalHours,
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS totalTurnOver,
-		       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS entryDate,
-		       CUST.CUSTOMER_ID AS customerId,
-		       CUST.NAME AS customerName,
-		       CUST.CODE AS customerCode,
-		       PAG.PROJECT_ID AS projectId,
-		       PAG.USER_ID AS userId,
-		       USR.FIRST_NAME AS userFirstName,
-		       USR.LAST_NAME AS userLastName,
-		       PAG.ROLE AS assignmentDesc,
-		       PRJ.PROJECT_ID AS projectId,
-		       PRJ.NAME AS projectName,
+		       MONTH(ENTRY_DATE) + YEAR(ENTRY_DATE) ,
 		       PAG.ASSIGNMENT_ID AS assignmentId
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
@@ -32,7 +22,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-		         DATE_FORMAT(ENTRY_DATE, '%U %Y')
+		         MONTH(ENTRY_DATE) + YEAR(ENTRY_DATE)
 		         ]]>
 	</sql-query>
 	
@@ -136,20 +126,10 @@
 
     <sql-query name="Report.getHoursPerDayForAssignment">
 	<![CDATA[	
-		SELECT SUM(ENTRY.HOURS) AS totalHours,
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS totalTurnOver,
-		       ENTRY_DATE AS dayDate,
-		       CUST.CUSTOMER_ID AS customerId,
-		       CUST.NAME AS customerName,
-		       CUST.CODE AS customerCode,
-		       PAG.PROJECT_ID AS projectId,
-		       PAG.USER_ID AS userId,
-		       USR.FIRST_NAME AS userFirstName,
-		       USR.LAST_NAME AS userLastName,
-		       PAG.ROLE AS assignmentDesc,
-		       PRJ.PROJECT_ID AS projectId,
-		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       ENTRY_DATE AS "dayDate",
+		       PAG.ASSIGNMENT_ID AS "assignmentId"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -163,7 +143,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-		         ENTRY_DATE
+				ENTRY_DATE
 		         ]]>		         
 	</sql-query>	
 	
