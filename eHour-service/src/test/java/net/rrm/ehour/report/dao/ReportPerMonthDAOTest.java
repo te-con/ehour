@@ -25,7 +25,7 @@ import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 
 import org.junit.Test;
 /**
- * TODO  use a diff tx manager than the hibernate one
+ * 
  **/
 
 @SuppressWarnings("unchecked")
@@ -33,24 +33,27 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 {
 	private	ReportPerMonthDAO	dao;
 	
-	@Test
-	public void testGetHoursPerMonthPerAssignmentForUsersIntegerArrayDateRange()
+	
+	public void testGetHoursPerMonthPerAssignmentForUsers()
 	{
 		List userIds = new ArrayList();
-		userIds.add(2);
+		userIds.add(1);
+		
+		List projectIds = new ArrayList();
+		projectIds.add(1);
 		
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 12 - 1, 1), // deprecated? hmm ;) 
-			    new Date(2007 - 1900, 10, 30));
+			    new Date(2007 - 1900, 12 -1 , 30));
 
+		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, 
+				projectIds, 
+																								dateRange);
 		
-		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerMonthPerAssignmentForUsers(userIds, dateRange);
+
 		
 		assertEquals(1, results.size());
-		
-		endTransaction();
 	}
 
-	@Test
 	public void testGetHoursPerMonthPerAssignmentForUsersIntegerArrayIntegerArrayDateRange()
 	{
 		List userIds = new ArrayList();
@@ -93,6 +96,18 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 		
 		assertEquals(6, results.size());		
 	}
+	
+	@Test
+	public void testGetHoursPerDayForAssignment()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2008 - 1900, 1, 3));
+		List projectIds = new ArrayList();
+		projectIds.add(1);
+		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerDayForAssignment(projectIds, dateRange);
+		
+		assertEquals(6, results.size());		
+	}	
 	
 	/**
 	 * @param dao the dao to set

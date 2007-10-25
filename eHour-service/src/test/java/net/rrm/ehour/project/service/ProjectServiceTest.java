@@ -132,14 +132,14 @@ public class ProjectServiceTest extends TestCase
 		expect(projectDAO.persist(prj))
 			.andReturn(prj);
 		
-		userService.checkProjectManagementRolesValid();
-	
-		replay(userService);
+//		userService.checkProjectManagementRolesValid();
+//	
+//		replay(userService);
 		replay(projectDAO);
 	
 		projectService.persistProject(prj);
 	
-		verify(userService);
+//		verify(userService);
 		verify(projectDAO);
 	}
 	

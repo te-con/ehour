@@ -16,6 +16,10 @@
 package net.rrm.ehour.report.reports;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import net.rrm.ehour.project.domain.ProjectAssignment;
 
 /**
  * report DTO 
@@ -27,8 +31,8 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	private	Integer	customerId;
 	private	String	customerName;
 	private	String	customerCode;
-	private	float	totalHours;
-	private	float	totalTurnOver;
+	private	Number	totalHours;
+	private	Number	totalTurnOver;
 	private	String	entryDate;
 	private	Integer	userId;
 	private	String	userLastName;
@@ -44,7 +48,16 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	 */
 	public FlatProjectAssignmentAggregate()
 	{
+	}
+	
+	public FlatProjectAssignmentAggregate(Number totalHours, Number totalTurnOver, Date entryDate,
+											ProjectAssignment assignment)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("ww yyyy");
 		
+		this.totalHours = (totalHours != null) ?  totalHours.floatValue() : 0;
+		this.totalTurnOver = (totalTurnOver != null) ? totalTurnOver.floatValue() : 0;
+		this.entryDate = (entryDate != null) ? sdf.format(entryDate) : null;
 	}
 
 
@@ -93,28 +106,28 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	/**
 	 * @return the totalHours
 	 */
-	public float getTotalHours()
+	public Number getTotalHours()
 	{
 		return totalHours;
 	}
 	/**
 	 * @param totalHours the totalHours to set
 	 */
-	public void setTotalHours(float totalHours)
+	public void setTotalHours(Number totalHours)
 	{
 		this.totalHours = totalHours;
 	}
 	/**
 	 * @return the totalTurnOver
 	 */
-	public float getTotalTurnOver()
+	public Number getTotalTurnOver()
 	{
 		return totalTurnOver;
 	}
 	/**
 	 * @param totalTurnOver the totalTurnOver to set
 	 */
-	public void setTotalTurnOver(float totalTurnOver)
+	public void setTotalTurnOver(Number totalTurnOver)
 	{
 		this.totalTurnOver = totalTurnOver;
 	}

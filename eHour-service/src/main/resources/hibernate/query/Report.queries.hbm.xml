@@ -64,7 +64,8 @@
 	</query>
     
     <query name="Report.getCumulatedHoursForAssignment">
-         <![CDATA[SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours))
+         <![CDATA[
+         SELECT new net.rrm.ehour.report.reports.ProjectAssignmentAggregate(entry.entryId.projectAssignment, SUM(entry.hours))
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.projectAssignment = :assignment
                 GROUP BY entry.entryId.projectAssignment.assignmentId                
@@ -88,5 +89,4 @@
 		FROM TimesheetEntry entry
         WHERE entry.entryId.projectAssignment.project = :project
 	</query> 
-
 </hibernate-mapping>
