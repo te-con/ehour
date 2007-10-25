@@ -22,6 +22,8 @@ import java.util.List;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+
+import org.junit.Test;
 /**
  * TODO  use a diff tx manager than the hibernate one
  **/
@@ -31,8 +33,8 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 {
 	private	ReportPerMonthDAO	dao;
 	
-//	@Test
-	public void disabledGetHoursPerMonthPerAssignmentForUsersIntegerArrayDateRange()
+	@Test
+	public void testGetHoursPerMonthPerAssignmentForUsersIntegerArrayDateRange()
 	{
 		List userIds = new ArrayList();
 		userIds.add(2);
@@ -48,12 +50,8 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 		endTransaction();
 	}
 
-	/**
-	 * 
-	 * TODO fix dbunit + jdbctemplate
-	 */
-	//@Test
-	public void disabledGetHoursPerMonthPerAssignmentForUsersIntegerArrayIntegerArrayDateRange()
+	@Test
+	public void testGetHoursPerMonthPerAssignmentForUsersIntegerArrayIntegerArrayDateRange()
 	{
 		List userIds = new ArrayList();
 		userIds.add(1);
@@ -70,7 +68,8 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 		assertEquals(1, results.size());
 	}
 
-	public void disabledGetHoursPerMonthPerAssignmentForProjects()
+	@Test
+	public void testGetHoursPerMonthPerAssignmentForProjects()
 	{
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
 			    new Date(2008 - 1900, 1, 3));
@@ -84,7 +83,8 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 
 	}
 	
-	public void disabledGetHoursPerMonthPerAssignment()
+	@Test
+	public void testGetHoursPerMonthPerAssignment()
 	{
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
 			    new Date(2008 - 1900, 1, 3));

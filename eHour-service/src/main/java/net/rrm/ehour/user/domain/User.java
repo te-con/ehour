@@ -6,6 +6,7 @@ import java.util.Set;
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -106,8 +107,24 @@ public class User extends DomainObject<Integer, User>
 	 */
 	public String getFullName()
 	{
-		return (lastName != null ? lastName + ", ": "") 
-					+ (firstName != null ? firstName : "");
+		StringBuffer fullName = new StringBuffer();
+		
+		if (!StringUtils.isBlank(lastName))
+		{
+			fullName.append(lastName);
+			
+			if (!StringUtils.isBlank(firstName))
+			{
+				fullName.append(", ");
+			}
+		}
+		
+		if (!StringUtils.isBlank(firstName))
+		{
+			fullName.append(firstName);
+		}
+		
+		return fullName.toString();
 	}
 	
 	// Property accessors

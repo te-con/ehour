@@ -146,7 +146,7 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		projectDAO.persist(project);
 
-		userService.checkProjectManagementRolesValid();
+//		userService.checkProjectManagementRolesValid();
 		
 		return project;
 	}
