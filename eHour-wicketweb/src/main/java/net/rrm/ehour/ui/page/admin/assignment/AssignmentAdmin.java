@@ -143,7 +143,7 @@ public class AssignmentAdmin extends BaseAdminPage
 				};
 				
 				item.add(link);
-				link.add(new Label("linkLabel", user.getLastName() + ", " + user.getFirstName()));				
+				link.add(new Label("linkLabel", user.getFullName()));				
 			}
 		};
 		

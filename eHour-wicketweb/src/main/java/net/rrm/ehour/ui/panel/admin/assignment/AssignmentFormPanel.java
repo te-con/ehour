@@ -98,7 +98,7 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 		setOutputMarkupId(true);
 		
 		final Form form = new Form("assignmentForm");
-		form.setEnabled(false);
+
 		// assignment type
 		Component[] projectDependentComponents = addAssignmentType(form, assignmenTypes, model);
 
@@ -126,6 +126,9 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 		Label currencyLabel = new Label("currency", CommonUIStaticData.getCurrencies().get(currency));
 		currencyLabel.setEscapeModelStrings(false);
 		form.add(currencyLabel);
+		
+		// active
+		form.add(new CheckBox("projectAssignment.active"));
 		
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage"));

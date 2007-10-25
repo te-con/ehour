@@ -131,7 +131,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 				};
 				
 				item.add(link);
-				link.add(new Label("linkLabel", user.getLastName() + ", " + user.getFirstName() + (user.isActive() ? "" : "*")));				
+				link.add(new Label("linkLabel", user.getFullName() + (user.isActive() ? "" : "*")));				
 			}
 		};
 		
