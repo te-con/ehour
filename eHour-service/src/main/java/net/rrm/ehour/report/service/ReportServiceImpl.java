@@ -146,7 +146,7 @@ public class ReportServiceImpl implements ReportService
 		}		
 		
 		reportDataAggregate.setProjectAssignmentAggregates(getProjectAssignmentAggregates(users, projects, reportRange));
-		reportDataAggregate.setFlatProjectAssignmentAggregates(getWeeklyReportData(users, projects, reportRange));
+//		reportDataAggregate.setFlatProjectAssignmentAggregates(getWeeklyReportData(users, projects, reportRange));
 		reportDataAggregate.setReportCriteria(reportCriteria);
 		
 		return reportDataAggregate;
@@ -189,32 +189,32 @@ public class ReportServiceImpl implements ReportService
 	 * @param 
 	 * @return
 	 */
-	private List<FlatProjectAssignmentAggregate> getWeeklyReportData(List<User> users,
-																	 List<Project> projects,
-																		DateRange reportRange)
-	{
-		List<FlatProjectAssignmentAggregate> aggregates = null;
-
-		if (users == null && projects == null)
-		{
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignment(reportRange);
-		}
-		else if (projects == null && users != null)
-		{		
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(ReportUtil.getPKsFromDomainObjects(users), reportRange);
-		}
-		else if (projects != null && users == null)
-		{
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(ReportUtil.getPKsFromDomainObjects(projects), reportRange);
-		}
-		else
-		{
-			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(ReportUtil.getPKsFromDomainObjects(users),
-																					ReportUtil.getPKsFromDomainObjects(projects), reportRange);
-		}	
-		
-		return aggregates;
-	}	
+//	private List<FlatProjectAssignmentAggregate> getWeeklyReportData(List<User> users,
+//																	 List<Project> projects,
+//																		DateRange reportRange)
+//	{
+//		List<FlatProjectAssignmentAggregate> aggregates = null;
+//
+//		if (users == null && projects == null)
+//		{
+//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignment(reportRange);
+//		}
+//		else if (projects == null && users != null)
+//		{		
+//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(ReportUtil.getPKsFromDomainObjects(users), reportRange);
+//		}
+//		else if (projects != null && users == null)
+//		{
+//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(ReportUtil.getPKsFromDomainObjects(projects), reportRange);
+//		}
+//		else
+//		{
+//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(ReportUtil.getPKsFromDomainObjects(users),
+//																					ReportUtil.getPKsFromDomainObjects(projects), reportRange);
+//		}	
+//		
+//		return aggregates;
+//	}	
 
 	/**
 	 * Get project id's based on selected customers

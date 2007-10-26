@@ -35,13 +35,13 @@ public interface ReportPerMonthDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userId, List<Serializable> projectId, DateRange dateRange);
-	
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userId, DateRange dateRange);
-	
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignment(DateRange dateRange);
-	
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Serializable> projectId, DateRange dateRange);
+//	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userId, List<Serializable> projectId, DateRange dateRange);
+//	
+//	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userId, DateRange dateRange);
+//	
+//	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignment(DateRange dateRange);
+//	
+//	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Serializable> projectId, DateRange dateRange);
 	
 	/**
 	 * Get hours per day for assignments
