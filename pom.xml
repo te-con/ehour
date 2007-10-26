@@ -160,7 +160,8 @@
 			    <groupId>com.atlassian.maven.plugins</groupId>
 			    <configuration>
 				<licenseLocation>${clover.licenseLocation}</licenseLocation>
-				<jdk>1.5</jdk>
+				<generateHistorical>true</generateHistorical>
+				<historyDir>/home/java/continuum/cloverhistory/</historyDir>
 			    </configuration>
 				<executions>
 					<execution>
@@ -169,6 +170,22 @@
 							<goal>instrument</goal>
 						</goals>
 					</execution>
+                    <execution>
+                        <id>main</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>instrument</goal>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>site</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>instrument</goal>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
 				</executions>
 			</plugin>
 			<plugin>
