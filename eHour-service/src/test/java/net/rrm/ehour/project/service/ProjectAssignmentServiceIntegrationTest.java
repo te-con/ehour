@@ -15,9 +15,12 @@
 
 package net.rrm.ehour.project.service;
 
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
@@ -52,6 +55,18 @@ public class ProjectAssignmentServiceIntegrationTest extends BaseDAOTest
 		pa.setUser(user);
 		
 		projectAssignmentService.assignUserToProject(pa);
+	}
+	
+	public void testGetProjectAssignmentsForUser()
+	{
+		DateRange dateRange = new DateRange();
+		
+		dateRange.setDateStart(new Date(2007 - 1900, 0, 1));
+		dateRange.setDateEnd(new Date(2008 - 1900, 0, 1));
+		
+		List l = projectAssignmentService.getProjectAssignmentsForUser(1, dateRange);
+	
+		assertEquals(3, l.size());
 	}
 
 //	public void testAssignUserToProjectFailure()
