@@ -195,7 +195,6 @@
 					<includes>
 						<include>**/*Tests.java</include>
 					</includes>
-					<disableXmlReport>true</disableXmlReport>
 				</configuration>
 			</plugin>
 		</plugins>
