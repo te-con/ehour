@@ -11,15 +11,25 @@
 		<form wicket:id="criteriaForm">
 	
 			<div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
-				<wicket:message key="report.criteria.reportRange" />:
+			
+				<div style="width: 10em;float:left">
+					<wicket:message key="report.criteria.reportRange" />:
+				</div>
 				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateStart" />
+				&nbsp;&nbsp;
 			    <wicket:message key="report.criteria.until" />:
+			    &nbsp;&nbsp;
 				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateEnd" />
+				
 				<br />
-				<select wicket:id="quickWeek"></select>
-				<select wicket:id="quickMonth"></select>
-				<select wicket:id="quickQuarter"></select>
+				
+				<div style="width: 10em;float:left"><wicket:message key="quickDates" />:</div>
+					<select class="textInputSmall" wicket:id="quickWeek"></select>
+					<select class="textInputSmall" wicket:id="quickMonth"></select>
+					<select class="textInputSmall" wicket:id="quickQuarter"></select>
 			</div>
+			
+			<br /><br />
 			
 			<br clear="all" />
 
