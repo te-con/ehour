@@ -31,7 +31,8 @@ import org.apache.wicket.model.Model;
 public class GreyRoundedBorder extends Border
 {
 	private static final long serialVersionUID = 7184643596615028876L;
-
+	protected WebMarkupContainer greyFrame;
+	
 	/**
 	 * Default border. No title, links and default width 
 	 * @param id
@@ -118,7 +119,7 @@ public class GreyRoundedBorder extends Border
 	{
 		super(id);
 		
-		WebMarkupContainer greyFrame = new WebMarkupContainer("greyFrame");
+		greyFrame = new WebMarkupContainer("greyFrame");
 		
 		if (width != null)
 		{

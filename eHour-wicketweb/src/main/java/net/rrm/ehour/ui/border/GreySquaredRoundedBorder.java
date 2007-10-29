@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.border;
 
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 
@@ -30,11 +32,21 @@ public class GreySquaredRoundedBorder extends GreyRoundedBorder
 
 	public GreySquaredRoundedBorder(String id)
 	{
-		super(id);
+		this(id, null, null, null);
 	}
 	
 	public GreySquaredRoundedBorder(String id, Link printLink, Link excelLink, Integer width)
 	{
 		super(id, new Model("dumm"), false, printLink, excelLink, width);
+		
+		WebMarkupContainer greySquaredFrame = new WebMarkupContainer("greySquaredFrame");
+		
+		if (width != null)
+		{
+			greySquaredFrame.add(new SimpleAttributeModifier("style", "width: " + width.toString() + "px"));
+		}
+		
+		greySquaredFrame.add(getBodyContainer());
+		greyFrame.add(greySquaredFrame);
 	}
 }
