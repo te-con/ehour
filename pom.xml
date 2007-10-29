@@ -161,6 +161,7 @@
 			    <configuration>
 				<licenseLocation>${clover.licenseLocation}</licenseLocation>
 				<generateHistorical>true</generateHistorical>
+				<generateXml>true</generateXml>
 				<historyDir>/home/java/continuum/cloverhistory/</historyDir>
 			    </configuration>
 				<executions>
