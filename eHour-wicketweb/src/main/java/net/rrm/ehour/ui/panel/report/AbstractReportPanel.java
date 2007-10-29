@@ -53,7 +53,7 @@ public abstract class AbstractReportPanel extends Panel
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 
-		chartWidth = !config.isShowTurnover() ? 600 : 310;
+		chartWidth = !config.isShowTurnover() ? 700 : 350;
 		chartHeight = 200;		
 	}
 }

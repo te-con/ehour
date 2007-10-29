@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerTurnoverAggregateImage;
 import net.rrm.ehour.ui.reportchart.aggregate.ProjectHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.ProjectTurnoverAggregateChartImage;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -99,7 +100,7 @@ public class UserReportPanel extends AbstractReportPanel
 																new Object[]{new DateModel(customerAggregateReport.getReportRange().getDateStart(), config),
 																			 new DateModel(customerAggregateReport.getReportRange().getDateEnd(), config)});
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, printLink, excelLink);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, printLink, excelLink, CommonUIStaticData.GREYFRAME_WIDTH);
 
 		greyBorder.add(new AggregateReportDataPanel("reportTable", customerAggregateReport, ReportType.AGGREGATE_CUSTOMER_SINGLE_USER));
 		

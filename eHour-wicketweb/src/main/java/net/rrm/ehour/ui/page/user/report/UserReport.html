@@ -11,17 +11,22 @@
     </head>
     <body>
     	<wicket:extend>
-    		<div class="SidePanelLoc">
-	    		<span wicket:id="sidePanel"></span>
-	    	</div>
+	    	<div style="float: left">
+	    		<br />
+	    		<div class="SidePanelLoc">
+		    		<span wicket:id="sidePanel"></span>
+		    	</div>
 
+		    	<br clear="all" />
+		    	
+	    		<div class="ContextualHelp" wicket:id="contextHelp">
+		    	</div>
+		    </div>
+		    
 			<div class="ContentPanelLoc" wicket:id="userReportPanel">
 			</div>
 							    	
-	    	<br clear="all" />
-	    	
-    		<div class="ContextualHelp" wicket:id="contextHelp">
-	    	</div>
+
     	</wicket:extend>
     </body>
 </html>
