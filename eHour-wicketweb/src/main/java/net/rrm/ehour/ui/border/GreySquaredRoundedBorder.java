@@ -18,26 +18,42 @@ package net.rrm.ehour.ui.border;
 
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.Model;
 
 
 /**
  * Rounded border with a square left top mainly used for tabs 
  **/
 
-public class GreySquaredRoundedBorder extends GreyRoundedBorder
+public class GreySquaredRoundedBorder extends Border
 {
 	private static final long serialVersionUID = -793890240017442386L;
 
 	public GreySquaredRoundedBorder(String id)
 	{
-		this(id, null, null, null);
+		this(id, null, null);
 	}
 	
-	public GreySquaredRoundedBorder(String id, Link printLink, Link excelLink, Integer width)
+	public GreySquaredRoundedBorder(String id, Link excelLink, Integer width)
 	{
-		super(id, new Model("dumm"), false, printLink, excelLink, width);
+		super(id);
+		
+		WebMarkupContainer greyFrame = new WebMarkupContainer("greyFrame");
+		
+		if (width != null)
+		{
+			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.toString() + "px"));
+		}
+		
+		if (excelLink == null)
+		{
+			excelLink = getInvisibleLink("excelLink");
+		}
+		
+		add(excelLink);
+		
+		add(greyFrame);
 		
 		WebMarkupContainer greySquaredFrame = new WebMarkupContainer("greySquaredFrame");
 		
@@ -49,4 +65,26 @@ public class GreySquaredRoundedBorder extends GreyRoundedBorder
 		greySquaredFrame.add(getBodyContainer());
 		greyFrame.add(greySquaredFrame);
 	}
+	
+	/**
+	 * Get an invisible link
+	 * @param id
+	 * @return
+	 */
+	@SuppressWarnings("serial")
+	private Link getInvisibleLink(String id)
+	{
+		Link link = new Link(id)
+		{
+			@Override
+			public void onClick()
+			{
+				// not visible anyway
+			}
+		};
+		
+		link.setVisible(false);
+		
+		return link;
+	}	
 }
