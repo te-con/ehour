@@ -38,13 +38,19 @@ import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.util.AuthUtil;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitButton;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -65,6 +71,7 @@ public class PrintMonthSelection extends BasePage
 	
 	private SelectionForm	form;
 	private Label			titleLabel;
+	private List<AssignmentWrapper>	wrappers;
 	
 	/**
 	 * 
@@ -163,7 +170,6 @@ public class PrintMonthSelection extends BasePage
 	{
 		private static final long serialVersionUID = 1L;
 		
-		private List<AssignmentWrapper>	wrappers;
 		private boolean					includeSignOff;
 		private DateRange				printRange;
 		
@@ -181,6 +187,8 @@ public class PrintMonthSelection extends BasePage
 				wrappers.add(new AssignmentWrapper(projectAssignment));
 			}
 			
+			final List<Component> components = new ArrayList<Component>();
+			
 			add(new ListView("assignments", wrappers)
 			{
 				private static final long serialVersionUID = 1L;
@@ -195,13 +203,18 @@ public class PrintMonthSelection extends BasePage
 					Label label = new Label("role", "( " +  wrapper.getAssignment().getRole() + " )");
 					label.setVisible(wrapper.getAssignment().getRole() != null && !wrapper.getAssignment().getRole().trim().equals("")); 
 					item.add(label);
-					item.add(new CheckBox("check", new PropertyModel(wrapper, "selected")));
+					CheckBox checkbox = new CheckBox("check", new PropertyModel(wrapper, "selected"));
+					components.add(checkbox);
+					item.add(checkbox);
 				}
 			});
 			
 			// signoff
-			
 			add(new CheckBox("signOff", new PropertyModel(this, "includeSignOff")));
+			
+			add(new CheckForAnySelectionValidator(components.toArray(new FormComponent[components.size()])));
+			
+			add(new FeedbackPanel("formError"));
 		}
 		
 		/*
@@ -243,6 +256,55 @@ public class PrintMonthSelection extends BasePage
 			this.includeSignOff = includeSignOff;
 		}
 	}
+	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class CheckForAnySelectionValidator implements IFormValidator
+	{
+		private static final long 	serialVersionUID = -7176398632862551019L;
+		private FormComponent[] 	components;
+		
+		public CheckForAnySelectionValidator(FormComponent[] components)
+		{
+			this.components = components;			
+		}
+		
+		/*
+		 * (non-Javadoc)
+		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
+		 */
+		public FormComponent[] getDependentFormComponents()
+		{
+			return components;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
+		 */
+		public void validate(Form form)
+		{
+			boolean selected = false;
+			
+			for (AssignmentWrapper wrapper : wrappers)
+			{
+				selected = wrapper.isSelected();
+				
+				if (selected)
+				{
+					break;
+				}
+			}
+			
+			if (!selected)
+			{
+				error("Required");
+			}
+		}
+	}	
 	
 	/**
 	 * 
@@ -295,6 +357,5 @@ public class PrintMonthSelection extends BasePage
 		{
 			this.assignment = assignment;
 		}
-		
 	}
 }

@@ -21,7 +21,7 @@
 		    	    	
     		<div class="ContentPanelLoc" wicket:id="printSelectionFrame">
    				<div wicket:id="blueBorder">
-					<form wicket:id="printSelectionForm" target="_print">
+					<form wicket:id="printSelectionForm">
 						<table class="contentTable">
 							<tr>
 								<td style="border: 0;padding-right: 20px" valign="top">
@@ -57,9 +57,15 @@
 							
 							<tr>
 								<td style="border: 0" colspan="2" align="right">
-									<input type="submit" id="submitButton" value="submit >>" />
+									<input type="submit" id="submitButton" />
+									
+									<br />
+									<span wicket:id="formError"></span>
 								</td>
 							</tr>
+							
+								
+							
 						</table>			
 					</form>
    				</div>
