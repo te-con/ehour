@@ -84,6 +84,9 @@ div.GreyFrameContainerSquared
 {
 		background: url(../img/grey_frame/pixel_grey.gif);
 		width: 400px;
+		font:  1.0em Geneva, Arial, Helvetica, sans-serif;	
+		color: #3b556d;
+		
 }
 
 div.GreyFrameContainerSquared h3
@@ -119,7 +122,7 @@ div.GreyFrameBody p
 		margin: 0 0 0 16px;
 		padding: 0;
 		font:  1.0em/0.9 Geneva, Arial, Helvetica, sans-serif;	
-		color: #536e87;
+		color: #3b556d;
 }
 
 div.GreyFrameFooter

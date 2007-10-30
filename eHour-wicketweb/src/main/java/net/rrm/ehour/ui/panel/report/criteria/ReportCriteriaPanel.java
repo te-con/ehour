@@ -88,7 +88,7 @@ public class ReportCriteriaPanel extends Panel
 		
 		sortReportCriteria(getBackingBeanFromModel().getReportCriteria());
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", null, 710);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", null, 600);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);	

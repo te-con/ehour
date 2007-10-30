@@ -34,21 +34,23 @@
 			<br clear="all" />
 
 			<div wicket:id="customerProjectsBorder">
-				<div style="float: left">
-					<select wicket:id="reportCriteria.userCriteria.customers" class="criteriaInput"></select>
+				<div style="float: left;width: 45%;padding-left: 10px">
+					<b>Customer filter</b><br />
+					<select wicket:id="reportCriteria.userCriteria.customers" class="textInputSmall" style="width: 80%"></select>
 					<br />
 					
 					<span wicket:id="onlyActiveCustomersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveCustomers" type="checkbox" />
 				</div>
 				
-				<div>
-					<select wicket:id="reportCriteria.userCriteria.projects" class="criteriaInput"></select>
+				<div style="padding-right: 10px;width: 45%;float:right">
+					<b>Project filter</b><br />
+					<select wicket:id="reportCriteria.userCriteria.projects" class="textInputSmall"  style="width: 80%"></select>
 					<br />
 					
 					<span wicket:id="onlyActiveProjectsLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveProjects" type="checkbox" />
 				</div>
 				
-				<br />
+				<br clear="all" />
 			</div>
 			
 			<br />
