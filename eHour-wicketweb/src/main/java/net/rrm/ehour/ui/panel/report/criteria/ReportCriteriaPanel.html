@@ -34,8 +34,8 @@
 			<br clear="all" />
 
 			<div wicket:id="customerProjectsBorder">
-				<div style="float: left;width: 45%;padding-left: 10px">
-					<b>Customer filter</b><br />
+				<div style="float: left;width: 45%;padding-left: 10px;">
+					<b><wicket:message key="filter.customer" /></b><br />
 					<select wicket:id="reportCriteria.userCriteria.customers" class="textInputSmall" style="width: 80%"></select>
 					<br />
 					
@@ -43,8 +43,8 @@
 				</div>
 				
 				<div style="padding-right: 10px;width: 45%;float:right">
-					<b>Project filter</b><br />
-					<select wicket:id="reportCriteria.userCriteria.projects" class="textInputSmall"  style="width: 80%"></select>
+					<b><wicket:message key="filter.project" /></b><br />
+					<select wicket:id="reportCriteria.userCriteria.projects" class="textInputSmall" style="width: 80%"></select>
 					<br />
 					
 					<span wicket:id="onlyActiveProjectsLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveProjects" type="checkbox" />
@@ -56,22 +56,25 @@
 			<br />
 
 			<div wicket:id="deptUserBorder">
-				<div style="float: left">
-					<select wicket:id="reportCriteria.userCriteria.userDepartments" class="criteriaInput"></select>
+				<div style="float: left;width: 45%;padding-left: 10px">
+					<b><wicket:message key="filter.department" /></b><br />
+					<select wicket:id="reportCriteria.userCriteria.userDepartments" class="textInputSmall" style="width: 80%"></select>
 					<br />
 				</div>
 				
-				<div>
-					<select wicket:id="reportCriteria.userCriteria.users" class="criteriaInput"></select>
+				<div style="padding-right: 10px;width: 45%;float:right">
+					<b><wicket:message key="filter.user" /></b><br />
+					<select wicket:id="reportCriteria.userCriteria.users" class="textInputSmall" style="width: 80%"></select>
 					<br />
 					
 					<span wicket:id="onlyActiveUsersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveUsers" type="checkbox" />
 				</div>
 				
-				<br />
+				<br clear="all" />
 			</div>
 
-			<input type="submit" class="submitButtonLightBackground" wicket:id="createReport" />
+			<input style="Float:right;padding-right: 30px" type="submit" class="submitButtonLightBackground" wicket:id="createReport" />
+			<br />
 		</form>
 	</div>
 </wicket:panel>

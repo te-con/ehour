@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.border;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.markup.html.link.Link;
 
 
 /**
@@ -32,10 +31,10 @@ public class GreySquaredRoundedBorder extends Border
 
 	public GreySquaredRoundedBorder(String id)
 	{
-		this(id, null, null);
+		this(id, null);
 	}
 	
-	public GreySquaredRoundedBorder(String id, Link excelLink, Integer width)
+	public GreySquaredRoundedBorder(String id, Integer width)
 	{
 		super(id);
 		
@@ -45,13 +44,6 @@ public class GreySquaredRoundedBorder extends Border
 		{
 			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.toString() + "px"));
 		}
-		
-		if (excelLink == null)
-		{
-			excelLink = getInvisibleLink("excelLink");
-		}
-		
-		add(excelLink);
 		
 		add(greyFrame);
 		
@@ -65,26 +57,5 @@ public class GreySquaredRoundedBorder extends Border
 		greySquaredFrame.add(getBodyContainer());
 		greyFrame.add(greySquaredFrame);
 	}
-	
-	/**
-	 * Get an invisible link
-	 * @param id
-	 * @return
-	 */
-	@SuppressWarnings("serial")
-	private Link getInvisibleLink(String id)
-	{
-		Link link = new Link(id)
-		{
-			@Override
-			public void onClick()
-			{
-				// not visible anyway
-			}
-		};
-		
-		link.setVisible(false);
-		
-		return link;
-	}	
+
 }

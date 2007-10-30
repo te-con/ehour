@@ -25,10 +25,7 @@ import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.ResourceLink;
-import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Full report panel containing report data and the charts 
@@ -44,17 +41,17 @@ public abstract class ReportPanel extends AbstractReportPanel
 	{
 		super(id);
 
-		final String reportId = reportData.getReportId();
-		
-		ResourceReference excelResource = new ResourceReference(excelResourceName);
-		ValueMap params = new ValueMap();
-		params.add("reportId", reportId);
-		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
-		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", excelLink, CommonUIStaticData.GREYFRAME_WIDTH);
+//		final String reportId = reportData.getReportId();
+//		
+//		ResourceReference excelResource = new ResourceReference(excelResourceName);
+//		ValueMap params = new ValueMap();
+//		params.add("reportId", reportId);
+//		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
+//		
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonUIStaticData.GREYFRAME_WIDTH);
 		add(greyBorder);
 
-		greyBorder.add(new AggregateReportDataPanel("reportTable", reportData, reportType));
+		greyBorder.add(new AggregateReportDataPanel("reportTable", reportData, reportType, excelResourceName));
 		
 		addCharts(data, greyBorder);
 		

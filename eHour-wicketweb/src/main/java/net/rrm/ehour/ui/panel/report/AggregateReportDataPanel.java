@@ -25,6 +25,7 @@ import java.util.Arrays;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.model.CurrencyModel;
+import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
@@ -33,9 +34,11 @@ import net.rrm.ehour.ui.util.HtmlUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -45,6 +48,8 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Aggregate report data panel
@@ -61,13 +66,27 @@ public class AggregateReportDataPanel extends Panel
 	 * @param id
 	 * @param report report data
 	 */
-	public AggregateReportDataPanel(String id, AggregateReport report, ReportType reportType)
+	public AggregateReportDataPanel(String id, AggregateReport report, ReportType reportType, String excelResourceName)
 	{
 		super(id);
 		
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		add(blueBorder);
 		
+		final String reportId = report.getReportId();
+		
+		ResourceReference excelResource = new ResourceReference(excelResourceName);
+		ValueMap params = new ValueMap();
+		params.add("reportId", reportId);
+		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
+		add(excelLink);
+		
+		EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
+		
+		add(new Label("reportHeader",new StringResourceModel("report.header", 
+										this, null, 
+												new Object[]{new DateModel(report.getReportRange().getDateStart(), config),
+									 			new DateModel(report.getReportRange().getDateEnd(), config)})));		
 		initReportColumns(reportType);
 		
 		addHeaderColumns(blueBorder);

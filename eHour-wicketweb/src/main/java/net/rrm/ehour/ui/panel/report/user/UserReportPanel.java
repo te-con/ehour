@@ -102,7 +102,7 @@ public class UserReportPanel extends AbstractReportPanel
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, printLink, excelLink, CommonUIStaticData.GREYFRAME_WIDTH);
 
-		greyBorder.add(new AggregateReportDataPanel("reportTable", customerAggregateReport, ReportType.AGGREGATE_CUSTOMER_SINGLE_USER));
+		greyBorder.add(new AggregateReportDataPanel("reportTable", customerAggregateReport, ReportType.AGGREGATE_CUSTOMER_SINGLE_USER, null));
 		
 		addCharts(reportData, greyBorder);
 		
