@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.page.admin.mainconfig.MainConfigTest;
 import net.rrm.ehour.ui.page.admin.project.ProjectAdminTest;
 import net.rrm.ehour.ui.page.admin.user.UserAdminTest;
 import net.rrm.ehour.ui.page.login.LoginTest;
+import net.rrm.ehour.ui.page.report.ReportPageTest;
 import net.rrm.ehour.ui.page.user.report.UserReportTest;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReportTest;
 
@@ -40,7 +41,8 @@ import org.junit.runners.Suite.SuiteClasses;
 				LoginTest.class,
 				AssignmentAdminTest.class,
                 CustomerAggregateReportTest.class,
-                UserReportTest.class
+                UserReportTest.class,
+                ReportPageTest.class
                 })
 public class AllUITests
 {
