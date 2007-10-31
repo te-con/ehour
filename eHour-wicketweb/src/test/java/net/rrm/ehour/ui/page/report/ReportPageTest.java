@@ -15,37 +15,33 @@
  *
  */
 
-package net.rrm.ehour.ui.page.user.report;
+package net.rrm.ehour.ui.page.report;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.ui.page.report.BaseTestReport;
+
 
 
 /**
  * TODO 
  **/
 
-public class UserReportTest extends BaseTestReport
+public class ReportPageTest extends BaseTestReport
 {
-	public void testUserReportPageRender()
+	public void testReportPageRender()
 	{
 		expect(reportCriteriaService.getReportCriteria(isA(UserCriteria.class)))
-				.andReturn(reportCriteria);					
-
-		expect(reportService.createAggregateReportData(reportCriteria))
-				.andReturn(data);
+		.andReturn(reportCriteria);	
 		
 		replay(reportCriteriaService);
-		replay(reportService);
 		
-		tester.startPage(UserReport.class);
-		tester.assertRenderedPage(UserReport.class);
+		tester.startPage(ReportPage.class);
+		tester.assertRenderedPage(ReportPage.class);
 		tester.assertNoErrorMessage();
 		
 		verify(reportCriteriaService);
-		verify(reportService);
-	}}
+	}
+}
