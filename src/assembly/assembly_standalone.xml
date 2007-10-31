@@ -1,5 +1,5 @@
 <assembly>
-	<id>${parent.version}-standalone</id>
+	<id>${pom.version}-standalone</id>
 	<formats>
 		<format>tar.gz</format>
 		<format>zip</format>
@@ -63,6 +63,11 @@
 		<fileSet>
 			<directory>eHour-standalone/src/assembly/conf</directory>
 			<outputDirectory>/conf</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>eHour-standalone/src/main/profiles/prod</directory>
+			<outputDirectory>/conf</outputDirectory>
+			<fileMode>750</fileMode>
 		</fileSet>
 	</fileSets>
 </assembly>
