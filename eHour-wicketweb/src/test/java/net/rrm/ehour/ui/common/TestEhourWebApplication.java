@@ -16,11 +16,22 @@
 
 package net.rrm.ehour.ui.common;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.EhourWebApplication;
+import net.rrm.ehour.ui.authorization.AuthUser;
 import net.rrm.ehour.ui.page.login.SessionExpiredPage;
+import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.user.domain.UserRole;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Request;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -69,4 +80,31 @@ public class TestEhourWebApplication extends EhourWebApplication
 	{
 		return mockContext;
 	}
+	@Override
+	public Session newSession(final Request request, final Response response)
+	{
+		EhourWebSession session = new EhourWebSession(this, request)
+		{
+			public AuthUser getUser()
+			{
+				User user = new User(1);
+				user.setUsername("thies");
+				user.setPassword("secret");
+				
+				Set<UserRole> userRoles = new HashSet<UserRole>();
+				userRoles.add(new UserRole(CommonUIStaticData.ROLE_CONSULTANT));
+				userRoles.add(new UserRole(CommonUIStaticData.ROLE_ADMIN));
+				userRoles.add(new UserRole(CommonUIStaticData.ROLE_REPORT));
+				user.setUserRoles(userRoles);
+				
+				AuthUser authUser = new AuthUser(user);
+				return authUser;
+				
+			}
+		};
+		
+		return session;
+	}
+	
+	
 }

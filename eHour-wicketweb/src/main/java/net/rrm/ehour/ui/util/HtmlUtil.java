@@ -24,6 +24,7 @@
 package net.rrm.ehour.ui.util;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 
 /**
  * HTML utility methods & constants
@@ -57,6 +58,39 @@ public class HtmlUtil
 		Label label = new Label(id, HTML_BR);
 		label.setEscapeModelStrings(false);
 		
+		return label;
+	}
+	
+	/**
+	 * Get an invisible link
+	 * @param id
+	 * @return
+	 */
+	public static Link getInvisibleLink(String id)
+	{
+		Link link = new Link(id)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick()
+			{
+				// not visible anyway
+			}
+		};
+		
+		link.setVisible(false);
+		
+		return link;
+	}	
+	
+	/**
+	 * Get an invisible label
+	 */
+	public static Label getInvisibleLabel(String id)
+	{
+		Label label = new Label(id, "");
+		label.setVisible(false);
 		return label;
 	}
 

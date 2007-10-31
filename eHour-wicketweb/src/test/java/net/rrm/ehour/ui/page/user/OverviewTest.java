@@ -26,7 +26,7 @@ import net.rrm.ehour.ui.common.BaseUITest;
 
 public class OverviewTest extends BaseUITest
 {
-	public void testLoginPageRender()
+	public void testOverviewPageRender()
 	{
 		tester.startPage(Overview.class);
 		tester.assertRenderedPage(Overview.class);

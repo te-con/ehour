@@ -42,17 +42,19 @@ public class ReportBuilder
 		Date profileStart = new Date();
 
         List<ReportNode> reportNodes = new ArrayList<ReportNode>();
-
-        for (ProjectAssignmentAggregate aggregate : reportDataAggregate.getProjectAssignmentAggregates())
+        
+        if (reportDataAggregate != null)
         {
-            if (!processAggregate(aggregate, nodeFactory, reportNodes))
-            {
-                ReportNode node = nodeFactory.createReportNode(aggregate, 0);
-                node.processAggregate(aggregate, 0, nodeFactory);
-                reportNodes.add(node);
-            }
+	        for (ProjectAssignmentAggregate aggregate : reportDataAggregate.getProjectAssignmentAggregates())
+	        {
+	            if (!processAggregate(aggregate, nodeFactory, reportNodes))
+	            {
+	                ReportNode node = nodeFactory.createReportNode(aggregate, 0);
+	                node.processAggregate(aggregate, 0, nodeFactory);
+	                reportNodes.add(node);
+	            }
+	        }
         }
-
 		logger.debug("Report took " + (new Date().getTime() - profileStart.getTime()) + "ms to create");
 
         return reportNodes;

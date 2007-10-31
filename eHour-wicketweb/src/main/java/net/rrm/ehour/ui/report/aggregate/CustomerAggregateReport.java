@@ -52,7 +52,14 @@ public class CustomerAggregateReport extends AggregateReport
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
-	                    return new CustomerNode(aggregate, 0);
+	                	if (aggregate != null)
+	                	{
+	                		return new CustomerNode(aggregate, 0);
+	                	}
+	                	else
+	                	{
+	                		return null;
+	                	}
 	                case 1:
 	                    return new ProjectNode(aggregate, 1);
 	                case 2:

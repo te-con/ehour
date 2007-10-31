@@ -73,20 +73,30 @@ public class AggregateReportDataPanel extends Panel
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		add(blueBorder);
 		
-		final String reportId = report.getReportId();
+		if (excelResourceName != null)
+		{
+			final String reportId = report.getReportId();
+			
+			ResourceReference excelResource = new ResourceReference(excelResourceName);
+			ValueMap params = new ValueMap();
+			params.add("reportId", reportId);
+			ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
+			add(excelLink);
+
+			EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
+			
+			add(new Label("reportHeader",new StringResourceModel("report.header", 
+											this, null, 
+													new Object[]{new DateModel(report.getReportRange().getDateStart(), config),
+										 			new DateModel(report.getReportRange().getDateEnd(), config)})));		
+		}
+		else
+		{
+			add(HtmlUtil.getInvisibleLink("excelLink"));
+			add(HtmlUtil.getInvisibleLabel("reportHeader"));
+		}
 		
-		ResourceReference excelResource = new ResourceReference(excelResourceName);
-		ValueMap params = new ValueMap();
-		params.add("reportId", reportId);
-		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
-		add(excelLink);
 		
-		EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
-		
-		add(new Label("reportHeader",new StringResourceModel("report.header", 
-										this, null, 
-												new Object[]{new DateModel(report.getReportRange().getDateStart(), config),
-									 			new DateModel(report.getReportRange().getDateEnd(), config)})));		
 		initReportColumns(reportType);
 		
 		addHeaderColumns(blueBorder);

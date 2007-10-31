@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.border;
 
+import net.rrm.ehour.ui.util.HtmlUtil;
+
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -132,14 +134,14 @@ public class GreyRoundedBorder extends Border
 		
 		if (printLink == null)
 		{
-			printLink = getInvisibleLink("printLink");
+			printLink = HtmlUtil.getInvisibleLink("printLink");
 		}
 		
 		greyFrame.add(printLink);
 		
 		if (excelLink == null)
 		{
-			excelLink = getInvisibleLink("excelLink");
+			excelLink = HtmlUtil.getInvisibleLink("excelLink");
 		}
 		
 		greyFrame.add(excelLink);
@@ -148,27 +150,4 @@ public class GreyRoundedBorder extends Border
 		
 		greyFrame.add(getBodyContainer());
 	}
-
-	/**
-	 * Get an invisible link
-	 * @param id
-	 * @return
-	 */
-	@SuppressWarnings("serial")
-	private Link getInvisibleLink(String id)
-	{
-		Link link = new Link(id)
-		{
-			@Override
-			public void onClick()
-			{
-				// not visible anyway
-			}
-		};
-		
-		link.setVisible(false);
-		
-		return link;
-	}
-	
 }

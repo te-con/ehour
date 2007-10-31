@@ -32,9 +32,12 @@ public class CustomerNode extends ReportNode
 
 	public CustomerNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel)
     {
-        this.id = aggregate.getProjectAssignment().getProject().getCustomer().getPK();
-        this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
-        this.hierarchyLevel = hierarchyLevel;
+		if (aggregate.getProjectAssignment() != null)
+		{
+	        this.id = aggregate.getProjectAssignment().getProject().getCustomer().getPK();
+	        this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
+	        this.hierarchyLevel = hierarchyLevel;
+		}
     }
 
 	/*
@@ -44,6 +47,13 @@ public class CustomerNode extends ReportNode
 	@Override
     protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
     {
-        return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
+		if (aggregate.getProjectAssignment() != null)
+		{
+			return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
+		}
+		else
+		{
+			return new Integer(1);
+		}
     }
 }
