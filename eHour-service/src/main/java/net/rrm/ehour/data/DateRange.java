@@ -83,6 +83,8 @@ public class DateRange implements Serializable
 	 */
 	public final void setDateEnd(Date dateEnd)
 	{
+		this.dateEnd  = dateEnd;
+		
 		if (dateEnd != null)
 		{
 			this.dateEnd = DateUtil.maximizeTime(dateEnd);
@@ -104,6 +106,8 @@ public class DateRange implements Serializable
 	 */
 	public final void setDateStart(Date dateStart)
 	{
+		this.dateStart  = dateStart;
+		
 		if (dateStart != null)
 		{
 			this.dateStart = DateUtil.nullifyTime(dateStart);
