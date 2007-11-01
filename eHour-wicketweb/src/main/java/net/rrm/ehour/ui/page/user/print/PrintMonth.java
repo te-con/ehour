@@ -234,7 +234,17 @@ public class PrintMonth extends WebPage
 	 */
 	private PrintReport initReport(List<Integer> assignmentIds, DateRange printRange) throws ParseException
 	{
-		List<FlatProjectAssignmentAggregate> results = reportService.getPrintReportData(assignmentIds, printRange);
+		List<FlatProjectAssignmentAggregate> results = null;
+		
+		if (assignmentIds != null && assignmentIds.size() > 0)
+		{
+			results = reportService.getPrintReportData(assignmentIds, printRange);
+		}
+		else
+		{
+			results = new ArrayList<FlatProjectAssignmentAggregate>();
+		}
+		
 		PrintReport printReport = new PrintReport();
 		printReport.initialize(results);
 		
