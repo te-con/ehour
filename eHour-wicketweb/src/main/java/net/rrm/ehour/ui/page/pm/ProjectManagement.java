@@ -121,6 +121,16 @@ public class ProjectManagement extends BasePage
 		ProjectManagerReport reportData = null;
 		DateRange	reportRange = criteria.getUserCriteria().getReportRange();
 		
+		if (criteria.getUserCriteria().isInfiniteStartDate())
+		{
+			reportRange.setDateStart(null);
+		}
+
+		if (criteria.getUserCriteria().isInfiniteEndDate())
+		{
+			reportRange.setDateEnd(null);
+		}
+
 		if (criteria.getUserCriteria().getProject() != null)
 		{
 			// only one can be there
