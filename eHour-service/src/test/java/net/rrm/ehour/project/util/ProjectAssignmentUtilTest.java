@@ -36,6 +36,8 @@ import org.junit.Test;
 
 public class ProjectAssignmentUtilTest
 {
+	
+	
 	@Test
 	public void testIsEmptyAggregateList()
 	{
@@ -72,14 +74,4 @@ public class ProjectAssignmentUtilTest
 		assertEquals(2, ProjectAssignmentUtil.getAssignmentIds(assignments).size());
 	}
 
-	@Test
-	public void testGetAssignmentStatusDate()
-	{
-		ProjectAssignment assignment = new ProjectAssignment();
-		assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
-		
-		AssignmentStatus status = new ProjectAssignmentUtil().getAssignmentStatus(assignment);
-		
-		assertEquals(AssignmentStatus.IN_DATERANGE_PHASE, status.getAssignmentPhase());
-	}
 }
