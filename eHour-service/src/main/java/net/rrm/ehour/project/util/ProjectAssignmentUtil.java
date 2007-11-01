@@ -46,7 +46,10 @@ public class ProjectAssignmentUtil
 		{
 			for (ProjectAssignmentAggregate projectAssignmentAggregate : aggregates)
 			{
-				hours += projectAssignmentAggregate.getHours().floatValue();
+				if (projectAssignmentAggregate.getHours() != null)
+				{
+					hours += projectAssignmentAggregate.getHours().floatValue();
+				}
 			}
 		}
 		
