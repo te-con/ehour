@@ -1,1 +1,0 @@
-alter table USER rename USERS;
