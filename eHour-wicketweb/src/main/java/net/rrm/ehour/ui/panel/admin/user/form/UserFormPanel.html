@@ -103,14 +103,15 @@
 
 				<tr>
 					<td>
-						<a class="submitButtonLightBackground" wicket:id="deleteButton">
-							<wicket:message key="general.delete" />
+						<a class="button" wicket:id="deleteButton">
+							<span><wicket:message key="general.delete" /></span>
 						</a>
 					</td>
 					<td style="text-align: right">
-						<input type="submit" class="submitButtonLightBackground" wicket:id="submitButton" />
+						<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+							<span><wicket:message key="general.save" /></span></a>
 					</td>
-				</tr>
+				</tr>	
 				
 			</table>
 		</form>		
