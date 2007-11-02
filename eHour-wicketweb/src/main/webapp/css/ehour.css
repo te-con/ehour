@@ -602,10 +602,10 @@ a.button
     color: #536e87;
     display: block;
     float: left;
-    font: bold 12px geneva, sans-serif;
+    font: bold 11px geneva, sans-serif;
     height: 20px;
     margin-right: 6px;
-    padding-right: 15px; /* sliding doors padding */
+    padding-right: 10px; /* sliding doors padding */
     text-decoration: none;
 }
 
@@ -613,19 +613,57 @@ a.button span {
     background: transparent url('../img/grey_button_span.gif') no-repeat;
     display: block;
     line-height: 10px;
-    padding: 4px 0 6px 15px;
+    padding: 4px 0 6px 10px;
     cursor: pointer;
+    letter-spacing: +1.5px;
     
 }
 
 a.button:active {
     background-position: bottom right;
-    color: #000;
+    color: #536e87;
     outline: none; /* hide dotted outline in Firefox */
 }
 
 a.button:active span {
     background-position: bottom left;
-    padding: 5px 0 5px 15px; /* push text down 1px */
+    padding: 5px 0 5px 10px; /* push text down 1px */
     cursor: pointer;
+    letter-spacing: +1.5px;
+}
+
+a.bluebutton
+{
+    background: transparent url('../img/blue_button_a.gif') no-repeat scroll top right;
+    color: #536e87;
+    display: block;
+    float: left;
+    font: bold 11px geneva, sans-serif;
+    height: 20px;
+    margin-right: 6px;
+    padding-right: 10px; /* sliding doors padding */
+    text-decoration: none;
+}
+
+a.bluebutton span {
+    background: transparent url('../img/blue_button_span.gif') no-repeat;
+    display: block;
+    line-height: 10px;
+    padding: 4px 0 6px 10px;
+    cursor: pointer;
+    letter-spacing: +1.5px;
+    
+}
+
+a.bluebutton:active {
+    background-position: bottom right;
+    color: #536e87;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+a.bluebutton:active span {
+    background-position: bottom left;
+    padding: 5px 0 5px 10px; /* push text down 1px */
+    cursor: pointer;
+    letter-spacing: +1.5px;
 }
