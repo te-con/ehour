@@ -47,7 +47,9 @@ public class ContextualHelpPanel extends Panel
 		super(id);
 		
 		add(new Label("header", new ResourceModel(headerResourceId)));
-		add(new Label("body", new ResourceModel(bodyResourceId)));
+		Label body = new Label("body", new ResourceModel(bodyResourceId));
+		body.setEscapeModelStrings(false);
+		add(body);
 	}
 
 }

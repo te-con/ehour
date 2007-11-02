@@ -75,7 +75,7 @@ public class AssignmentListPanel extends Panel
 		greyBorder = new GreyRoundedBorder("border",
 				 							new StringResourceModel("admin.assignment.assignmentsFor", 
 				 											this, null, new Object[]{new Model(user.getFullName())}),
-											500);
+											450);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
 	}
@@ -128,15 +128,14 @@ public class AssignmentListPanel extends Panel
 
 				item.add(imgLink);
 				item.add(link);
-				link.add(new Label("project", assignment.getProject().getName()));				
-				item.add(new Label("code", assignment.getProject().getProjectCode()));
+				link.add(new Label("project", assignment.getProject().getFullName()));				
 				item.add(new Label("customer", assignment.getProject().getCustomer().getFullName()));
 				
-				Label dateStart = new Label("dateStart", new DateModel(assignment.getDateStart(), config));
+				Label dateStart = new Label("dateStart", new DateModel(assignment.getDateStart(), config, DateModel.DATESTYLE_FULL_SHORT));
 				dateStart.setEscapeModelStrings(false);
 				item.add(dateStart);
 				
-				Label dateEnd = new Label("dateEnd", new DateModel(assignment.getDateEnd(), config));
+				Label dateEnd = new Label("dateEnd", new DateModel(assignment.getDateEnd(), config, DateModel.DATESTYLE_FULL_SHORT));
 				dateEnd.setEscapeModelStrings(false);
 				item.add(dateEnd);
 				

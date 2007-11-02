@@ -43,7 +43,7 @@ public class NoUserSelectedPanel extends Panel
 		super(id);
 		
 		this.setOutputMarkupId(true);
-		Border greyBorder = new GreyRoundedBorder("border", 500);
+		Border greyBorder = new GreyRoundedBorder("border", 450);
 		add(greyBorder);
 
 		greyBorder.add(new Label("noEntry", new ResourceModel("admin.assignment.noUserSelected")));

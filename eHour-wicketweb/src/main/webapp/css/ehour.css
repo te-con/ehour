@@ -581,10 +581,51 @@ div.LoggedInAs
 {
 	float: left;
 	width: 250px;
-	margin-left: 10px;
+	margin-left: 5px;
 }
 
 .mainColumn
 {
 	float: left;
+}
+
+/* from http://www.oscaralexander.com/tutorials/how-to-make-sexy-buttons-with-css.html */
+.clear
+{
+    overflow: hidden;
+    width: 100%;
+}
+
+a.button
+{
+    background: transparent url('../img/grey_button_a.gif') no-repeat scroll top right;
+    color: #536e87;
+    display: block;
+    float: left;
+    font: bold 12px geneva, sans-serif;
+    height: 20px;
+    margin-right: 6px;
+    padding-right: 15px; /* sliding doors padding */
+    text-decoration: none;
+}
+
+a.button span {
+    background: transparent url('../img/grey_button_span.gif') no-repeat;
+    display: block;
+    line-height: 10px;
+    padding: 4px 0 6px 15px;
+    cursor: pointer;
+    
+}
+
+a.button:active {
+    background-position: bottom right;
+    color: #000;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+a.button:active span {
+    background-position: bottom left;
+    padding: 5px 0 5px 15px; /* push text down 1px */
+    cursor: pointer;
 }

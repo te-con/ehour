@@ -12,7 +12,6 @@
 			<tr>
 				<th></th>
 				<th><wicket:message key="admin.assignment.projectHeader" /></th>
-				<th><wicket:message key="admin.assignment.projectCodeHeader" /></th>
 				<th><wicket:message key="admin.assignment.customerHeader" /></th>
 				<th><wicket:message key="admin.assignment.startHeader" /></th>
 				<th><wicket:message key="admin.assignment.endHeader" /></th>		
@@ -22,13 +21,12 @@
 				<tr>
 					<td valign="top" rowspan="2"><a wicket:id="imgLink"><img src="img/assignment/grey_edit_assignment.png" border="0"/></a></td>
 					<td class="main" style="padding-right: 1em"><a wicket:id="itemLink"><span wicket:id="project"></span></a></td>
-					<td class="main" style="padding-right: 1em" wicket:id="code"></td>
 					<td class="main" style="padding-right: 1em" wicket:id="customer"></td>
 					<td class="main" style="padding-right: 1em" wicket:id="dateStart"></td>
 					<td class="main" wicket:id="dateEnd"></td>
 				</tr>
 				<tr>
-					<td colspan="5" class="extra">
+					<td colspan="4" class="extra">
 						<wicket:message key="admin.assignment.typeHeader" />:
 						<span wicket:id="assignmentType"></span>
 						;&nbsp;

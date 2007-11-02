@@ -92,7 +92,7 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", 450);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);

@@ -96,7 +96,6 @@ public class AggregateReportDataPanel extends Panel
 			add(HtmlUtil.getInvisibleLabel("reportHeader"));
 		}
 		
-		
 		initReportColumns(reportType);
 		
 		addHeaderColumns(blueBorder);
