@@ -33,7 +33,6 @@ import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
-import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.util.AuthUtil;
 import net.rrm.ehour.util.DateUtil;
@@ -44,6 +43,7 @@ import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInst
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -88,9 +88,6 @@ public class PrintMonthSelection extends BasePage
 														getEhourWebSession().getUser().getUser(), 
 														false);
 		add(calendarPanel);
-		
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
 		
 		DateRange printRange = DateUtil.getDateRangeForMonth((Calendar)requestModel.getObject());
 
@@ -206,6 +203,8 @@ public class PrintMonthSelection extends BasePage
 			
 			// signoff
 			add(new CheckBox("signOff", new PropertyModel(this, "includeSignOff")));
+			
+			add(new SubmitLink("submitButton"));
 		}
 		
 		/*
@@ -260,6 +259,7 @@ public class PrintMonthSelection extends BasePage
 		AssignmentWrapper(ProjectAssignment assignment)
 		{
 			this.assignment = assignment;
+			this.selected = true;
 		}
 
 
