@@ -106,9 +106,17 @@
 			</tr>
 
 			<tr>
-				<td width="30%"><input type="reset" value="reset" class="submitButton" wicket:id="resetButton" /></td>
-				<td style="text-align: center" wicket:id="serverMessage"></td>
-				<td  width="30%" align="right"><input type="submit" class="submitButton" wicket:id="submitButton" value="Save" /></td>
+				<td width="30%">
+					<a class="bluebutton" onclick="this.blur();" wicket:id="resetButton" >
+						<span><wicket:message key="timesheet.reset" /></span>
+					</a>
+				</td>				
+				<td style="text-align: center"><span wicket:id="serverMessage"></span></td>
+				<td  width="30%" align="right">
+					<a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+						<span><wicket:message key="timesheet.store" /></span>
+					</a>
+				</td>
 			</tr>
 
 			</table>

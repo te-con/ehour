@@ -39,6 +39,7 @@ public class DateModel implements IModel
 	public final static int DATESTYLE_TIMESHEET_DAYONLY = 4;
 	public final static int	DATESTYLE_DAYONLY = 5;
 	public final static int	DATESTYLE_FULL_SHORT = 6;
+	public final static int	DATESTYLE_WEEK= 7;
 	
 	private static final long serialVersionUID = 431440606497572025L;
 	private IModel					model;
@@ -114,6 +115,9 @@ public class DateModel implements IModel
 				break;
 			case DATESTYLE_FULL_SHORT:
 				dateFormatter = new TimesheetLongFormatter("dd/MM/yyyy", config.getLocale());
+				break;
+			case DATESTYLE_WEEK:
+				dateFormatter = new TimesheetLongFormatter("w", config.getLocale());
 				break;
 			default:
 				dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());

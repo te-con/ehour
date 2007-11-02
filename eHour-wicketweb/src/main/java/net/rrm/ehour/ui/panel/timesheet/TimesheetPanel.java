@@ -47,7 +47,6 @@ import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
-import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
@@ -70,9 +69,12 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.wicketstuff.scriptaculous.effect.Effect;
 
 /**
  * The main panel - timesheet form
@@ -90,7 +92,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	private UserService			userService;
 	
 	private	EhourConfig			config;
-	private String				serverMsg  = HtmlUtil.HTML_NBSP;
 	private FadeLabel			serverMsgLabel;
 	
 	/**
@@ -252,13 +253,16 @@ public class TimesheetPanel extends Panel implements Serializable
                 persistTimesheetEntries(timesheet);
                 ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT);
                 
-                // need to readd due to timer
-                FadeLabel serverMsgLabelNew = new FadeLabel("serverMessage", "data saved");
-                serverMsgLabelNew.setOutputMarkupId(true);
-                serverMsgLabel.replaceWith(serverMsgLabelNew);
-                serverMsgLabel = serverMsgLabelNew;
+                serverMsgLabel.setModel(new StringResourceModel("timesheet.weekSaved", 
+											TimesheetPanel.this, 
+											null,
+											new Object[]{new DateModel(timesheet.getWeekStart(), config, DateModel.DATESTYLE_WEEK)}));
+
+                // FIXME scriptaculous lib should be preloaded
+//                serverMsgLabel.startFade();
+//                target.appendJavascript(new Effect.Fade(serverMsgLabel).toJavascript());
                 
-                target.addComponent(serverMsgLabelNew);
+                target.addComponent(serverMsgLabel);
                 
             }
 
@@ -407,7 +411,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	private Label getCustomerLabel(final Customer customer, final CustomerFoldPreference foldPreference)
 	{
 		Label	label;
-		
 		label = new Label("customer", customer.getName());
 
 		label.add(new AjaxEventBehavior("onclick")
@@ -448,12 +451,4 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		return timesheet;
 	}
-
-	/**
-	 * @return the serverMsg
-	 */
-	public String getServerMsg()
-	{
-		return serverMsg;
-	}	
 }

@@ -1,13 +1,13 @@
 package net.rrm.ehour.ui.component;
 
-import net.rrm.ehour.ui.util.HtmlUtil;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
+import org.wicketstuff.scriptaculous.effect.Effect;
 
 public class FadeLabel extends Label
 {
@@ -21,7 +21,12 @@ public class FadeLabel extends Label
 	public FadeLabel(String id, IModel model)
 	{
 		super(id, model);
+		
+		this.add(new SimpleAttributeModifier("style", "color:white"));
+	}
 
+	public void startFade()
+	{
 		this.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5))
 		{
 			private static final long serialVersionUID = -625918309980847595L;
@@ -29,12 +34,12 @@ public class FadeLabel extends Label
 			@Override
 			protected void onPostProcessTarget(final AjaxRequestTarget target)
 			{
-				setModel(new Model(HtmlUtil.HTML_NBSP));
-				target.addComponent(FadeLabel.this);
+				target.appendJavascript(new Effect.Fade(FadeLabel.this).toJavascript());
 			}
 		});
+		
 	}
-
+	
 	/**
 	 * 
 	 * @param id
