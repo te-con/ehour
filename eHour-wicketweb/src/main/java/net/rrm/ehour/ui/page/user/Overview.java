@@ -39,6 +39,7 @@ public class Overview extends BasePage
 
 	private	WebMarkupContainer	contentContainer; // yeah yeah, bad name
 	private CalendarPanel		calendarPanel;
+	private ContextualHelpPanel	helpPanel;
 	
 	/**
 	 * Setup the page
@@ -53,7 +54,10 @@ public class Overview extends BasePage
 		add(calendarPanel);
 		
 		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
+		helpPanel = new ContextualHelpPanel("contextHelp");
+		helpPanel.setOutputMarkupId(true);
+		add(helpPanel);
+		
 		
 		// content
 		contentContainer = new OverviewPanel("contentContainer");
@@ -97,8 +101,17 @@ public class Overview extends BasePage
 		
 		contentContainer.replaceWith(panel);
 		contentContainer = panel;
-		
+
 		target.addComponent(panel);
+		
+		ContextualHelpPanel replacementHelp = new ContextualHelpPanel("contextHelp", 
+																		"timesheet.help.header",
+																		"timesheet.help.body");
+		replacementHelp.setOutputMarkupId(true);
+		helpPanel.replaceWith(replacementHelp);
+		helpPanel = replacementHelp;
+		target.addComponent(replacementHelp);
+		
 	}
 	
 	/**

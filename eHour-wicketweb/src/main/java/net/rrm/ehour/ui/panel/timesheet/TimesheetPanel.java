@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.customer.domain.Customer;
@@ -58,6 +60,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -67,19 +70,18 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.scriptaculous.effect.Effect;
+import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
 /**
  * The main panel - timesheet form
- * TODO fold image itself should change and be clickable
- * TODO better icons
+ * TODO fold image itself be clickable and start in the right direction and be hoverable ;)
  **/
 
 public class TimesheetPanel extends Panel implements Serializable
@@ -152,7 +154,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		// add CSS & JS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
-		add(new JavaScriptReference("timesheetJS", new CompressedResourceReference(TimesheetPanel.class, "js/timesheet.js")));
+		addJavascript(this);
 	}
 
 	/**
@@ -160,6 +162,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param parent
 	 * @param forWeek
 	 */
+	@SuppressWarnings("serial")
 	private WebMarkupContainer getWeekNavigation(Calendar forWeek, final Date weekStart)
 	{
 		Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
@@ -247,6 +250,8 @@ public class TimesheetPanel extends Panel implements Serializable
 		// default submit
 		parent.add(new AjaxButton("submitButton", form)
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
@@ -282,6 +287,8 @@ public class TimesheetPanel extends Panel implements Serializable
 		// reset, should fetch the original contents
 		AjaxButton resetButton = new AjaxButton("resetButton", form)
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
@@ -380,6 +387,10 @@ public class TimesheetPanel extends Panel implements Serializable
 			{
 				final Customer	customer = (Customer)item.getModelObject();
 
+				WebMarkupContainer imgId = new WebMarkupContainer("foldImgId");
+				imgId.add(new SimpleAttributeModifier("id", "img" + customer.getCustomerId()));
+				item.add(imgId);
+
 				// check for any preference
 				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
 				
@@ -415,6 +426,8 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		label.add(new AjaxEventBehavior("onclick")
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
@@ -438,7 +451,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param user
 	 * @param forWeek
 	 */
-	
 	private Timesheet getTimesheet(User user, Calendar forWeek)
 	{
 		WeekOverview	weekOverview;
@@ -451,4 +463,26 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		return timesheet;
 	}
+	
+	/**
+	 * Add javascript with replaced images
+	 * @param container
+	 */
+	private void addJavascript(WebMarkupContainer container)
+	{
+//		CharSequence iconUpOn = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_up_on.gif";
+		CharSequence iconUpOff = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_up_off.gif";
+//		CharSequence iconDownOn = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_down_on.gif";
+		CharSequence iconDownOff = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_down_off.gif";
+		
+		PackagedTextTemplate js = new PackagedTextTemplate(TimesheetPanel.class, "js/timesheet.js");
+
+		Map<String, CharSequence> map = new HashMap<String, CharSequence>();
+//		map.put("iconUpOn", iconUpOn);
+		map.put("iconUpOff", iconUpOff);
+//		map.put("iconDownOn", iconDownOn);
+		map.put("iconDownOff", iconDownOff);
+		
+		add(TextTemplateHeaderContributor.forJavaScript(js, new Model((Serializable)map)));
+	}	
 }
