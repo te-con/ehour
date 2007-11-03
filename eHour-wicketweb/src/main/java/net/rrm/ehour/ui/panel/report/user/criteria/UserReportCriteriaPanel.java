@@ -34,7 +34,6 @@ import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
@@ -125,8 +124,6 @@ public class UserReportCriteriaPanel extends SidePanel
 				target.addComponent(form);
             }
         };
-        
-        submitButton.setModel(new ResourceModel("report.createReport"));
         
         form.add(submitButton);		
 	}

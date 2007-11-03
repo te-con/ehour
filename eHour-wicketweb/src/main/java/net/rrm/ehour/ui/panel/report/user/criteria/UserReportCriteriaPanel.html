@@ -4,10 +4,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 
-<wicket:head>
-
-</wicket:head>
-
 <body>
 
 <wicket:extend>
@@ -56,7 +52,9 @@
 			<br />
 			
 			<div style="float: right;vertical-align: bottom;height: 1.5em">
-				<input type="submit" class="submitButton" wicket:id="submitButton" />
+				<a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+					<span><wicket:message key="report.createReport" /></span>
+				</a>			
 			</div>
 			<br />
 		</div>
