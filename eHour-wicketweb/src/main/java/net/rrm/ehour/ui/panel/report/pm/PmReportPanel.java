@@ -31,6 +31,8 @@ import net.rrm.ehour.ui.util.CommonUIStaticData;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
@@ -84,5 +86,8 @@ public class PmReportPanel extends AbstractReportPanel
 				
 			}
 		});
+		
+		// borrow css from the general reports.
+		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(AbstractReportPanel.class, "style/reportStyle.css")));
 	}
 }
