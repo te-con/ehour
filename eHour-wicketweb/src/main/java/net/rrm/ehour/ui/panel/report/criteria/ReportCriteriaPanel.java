@@ -125,7 +125,6 @@ public class ReportCriteriaPanel extends Panel
 			}
         };
         
-        submitButton.setModel(new ResourceModel("report.createReport"));
 		// default submit
 		form.add(submitButton);
 	}
