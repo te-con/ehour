@@ -35,13 +35,13 @@
 			<outputDirectory>/conf</outputDirectory>
 			<lineEnding>dos</lineEnding>
 		</fileSet>
-
+<!--
 		<fileSet>
 			<directory>eHour-service/src/test/performance</directory>
 			<outputDirectory>util/performance</outputDirectory>
 			<lineEnding>dos</lineEnding>
 		</fileSet>
-
+-->
 		<fileSet>
 			<directory>src/main/assembly/sql/sql</directory>
 			<outputDirectory>sql</outputDirectory>
