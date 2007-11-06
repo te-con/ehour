@@ -155,6 +155,13 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+        <plugin>
+            <artifactId>maven-clover-plugin</artifactId>
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <configuration>
+                <licenseLocation>${clover.licenseLocation}</licenseLocation>
+            </configuration>
+        </plugin>
 	
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
