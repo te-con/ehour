@@ -1,9 +1,8 @@
-eHour 0.7 changelog - 6 November 2007
+eHour 0.7 release notes - 6 November 2007
 
 General
 -------
-Complete rewrite of the user interface
-
+The user interface is completely rewritten using Apache Wicket.
 
 Bugs fixed
 ----------
@@ -20,3 +19,8 @@ Bugs fixed
 #1688620 - Project assignment date mismatch
 #1668143 - Admin, assignment showns non-consultant roles
 #1670797 - submitted hours not checked on server 
+
+Known issues
+------------
+Print timesheet doesn't work in the standalone version.
+All pages containing a dropdown date picker load slowly.
