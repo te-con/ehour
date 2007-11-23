@@ -23,10 +23,14 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.IFeedback;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -34,11 +38,12 @@ import org.apache.wicket.model.PropertyModel;
  * 
  **/
 
-public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackIndicator
+public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedback
 {
 
 	private static final long serialVersionUID = 7840885174109746055L;
 	private	List<FeedbackMessage>	messages = new ArrayList<FeedbackMessage>();
+	private IFeedbackMessageFilter filter;
 	
 	/**
 	 * 
@@ -60,24 +65,39 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
 		
 		setOutputMarkupId(true);
 		
+		indicatorFor.setOutputMarkupId(true);
+		
 		if (indicatorFor != null)
 		{
-			setIndicatorFor(indicatorFor);
+			filter = new ComponentFeedbackMessageFilter(indicatorFor);
 		}
 		
 		add(new ErrorIndicator("errorIndicator"));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator#updateFeedback()
+	 * @see org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator#onBeforeRender()
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public void updateFeedback()
+	public void onBeforeRender()
 	{
-		messages = Session.get().getFeedbackMessages().messages(getFeedbackMessageFilter());
-	}
+		super.onBeforeRender();
+		// Get the messages for the current page
+		messages = Session.get().getFeedbackMessages().messages(filter);
+	}	
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * @see org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator#updateFeedback()
+//	 */
+//	@Override
+//	@SuppressWarnings("unchecked")
+//	public void updateFeedback()
+//	{
+//		messages = Session.get().getFeedbackMessages().messages(getFeedbackMessageFilter());
+//	}
 	
 	/**
 	 * 
