@@ -29,12 +29,13 @@ import org.apache.wicket.feedback.IFeedback;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 
 /**
  * Displays error indicator when indicated field does not validate
+ * 
+ * Not extending FormComponentFeedbackIndicator because that sets visible in onBeforeRender
  * 
  **/
 
@@ -87,17 +88,7 @@ public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedba
 		// Get the messages for the current page
 		messages = Session.get().getFeedbackMessages().messages(filter);
 	}	
-//
-//	/*
-//	 * (non-Javadoc)
-//	 * @see org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator#updateFeedback()
-//	 */
-//	@Override
-//	@SuppressWarnings("unchecked")
-//	public void updateFeedback()
-//	{
-//		messages = Session.get().getFeedbackMessages().messages(getFeedbackMessageFilter());
-//	}
+
 	
 	/**
 	 * 
