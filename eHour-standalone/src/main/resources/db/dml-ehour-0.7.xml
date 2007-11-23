@@ -23,6 +23,6 @@
   <user_role ROLE="ROLE_CONSULTANT" NAME="Consultant"></user_role>
   <user_role ROLE="ROLE_PROJECTMANAGER" NAME="PM"></user_role>
   <user_role ROLE="ROLE_REPORT" NAME="Report role"></user_role>
-  <users USER_ID="1" USERNAME="admin" PASSWORD="a94a8fe5ccb19ba61c4c0873d391e987982fbbd3" FIRST_NAME="eHour" LAST_NAME="Admin" DEPARTMENT_ID="1" ACTIVE="Y"></users>
+  <users USER_ID="1" USERNAME="admin" PASSWORD="d033e22ae348aeb5660fc2140aec35850c4da997" FIRST_NAME="eHour" LAST_NAME="Admin" DEPARTMENT_ID="1" ACTIVE="Y"></users>
   <user_to_userrole ROLE="ROLE_ADMIN" USER_ID="1"></user_to_userrole>
 </data>

@@ -181,10 +181,11 @@ public class ProjectServiceImpl implements ProjectService
 	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange)
 	{
 		List<ProjectAssignment>	activeProjectAssignments = projectAssignmentService.getProjectAssignmentsForUser(userId, dateRange);
-		List<ProjectAssignment> bookedProjectAssignments = timesheetDAO.getBookedProjectAssignmentsInRange(userId, dateRange);
+		// FIXME Derby breaks on it
+//		List<ProjectAssignment> bookedProjectAssignments = timesheetDAO.getBookedProjectAssignmentsInRange(userId, dateRange);
 		
 		Set<ProjectAssignment> mergedAssignments = new HashSet<ProjectAssignment>(activeProjectAssignments);
-		mergedAssignments.addAll(bookedProjectAssignments);
+//		mergedAssignments.addAll(bookedProjectAssignments);
 		
 		return mergedAssignments;
 	}	
