@@ -44,7 +44,8 @@ import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock
 public class TestEhourWebApplication extends EhourWebApplication
 {
 	private AnnotApplicationContextMock	mockContext;
-
+	private EhourWebSession				session;
+	
 
 	/**
 	 * When not authorized, just let it pass
@@ -80,10 +81,11 @@ public class TestEhourWebApplication extends EhourWebApplication
 	{
 		return mockContext;
 	}
+	
 	@Override
 	public Session newSession(final Request request, final Response response)
 	{
-		EhourWebSession session = new EhourWebSession(this, request)
+		session = new EhourWebSession(this, request)
 		{
 			public AuthUser getUser()
 			{
@@ -103,6 +105,11 @@ public class TestEhourWebApplication extends EhourWebApplication
 			}
 		};
 		
+		return session;
+	}
+
+	public EhourWebSession getSession()
+	{
 		return session;
 	}
 	

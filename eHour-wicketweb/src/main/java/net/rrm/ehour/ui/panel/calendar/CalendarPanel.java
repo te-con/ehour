@@ -181,6 +181,7 @@ public class CalendarPanel extends SidePanel
 		        
 		        if (fireWeekClicks)
 		        {
+		        	System.out.println(week.getWeek() + "=" + week.getYear());
 					item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
 					item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
 					item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));

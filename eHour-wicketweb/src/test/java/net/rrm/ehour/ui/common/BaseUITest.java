@@ -32,17 +32,19 @@ public class BaseUITest extends TestCase
 	protected WicketTester	tester;
 	protected AnnotApplicationContextMock	mockContext;
 	protected EhourConfig	config;
+	protected TestEhourWebApplication webapp;
 	
 	protected void setUp() throws Exception
 	{
-		TestEhourWebApplication webapp =  new TestEhourWebApplication();
-	
+		webapp =  new TestEhourWebApplication();
+		
 		config = new EhourConfigStub();
 		
 		mockContext = new AnnotApplicationContextMock();
 		mockContext.putBean("EhourConfig", config);
 
 		tester = new EhourWicketTester(webapp);
+		
 		mockContext = ((TestEhourWebApplication)tester.getApplication()).getMockContext();
 	}
 }
