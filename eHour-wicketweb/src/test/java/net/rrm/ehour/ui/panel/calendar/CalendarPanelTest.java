@@ -9,7 +9,9 @@ import static org.easymock.EasyMock.replay;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
@@ -47,10 +49,15 @@ public class CalendarPanelTest extends BaseUITest
 	@Test
 	public void testCalendarPanelStringUser()
 	{
-		Calendar requestedMonth = GregorianCalendar.getInstance();
+		Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
+		List<BookedDay> days = new ArrayList<BookedDay>();
+		BookedDay day = new BookedDay();
+		day.setDate(new Date(2007 - 1900, 12 - 1, 15));
+		day.setHours(8);
+		days.add(day);
 		
 		expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
-				.andReturn(new ArrayList<BookedDay>());					
+				.andReturn(days);					
 
 		replay(timesheetService);
 
