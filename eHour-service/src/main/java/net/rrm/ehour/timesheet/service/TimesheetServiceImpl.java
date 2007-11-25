@@ -286,7 +286,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		for (TimesheetEntry entry : timesheetEntries)
 		{
-			if (entry.getHours() == null || entry.getHours().intValue() == 0)
+			if (entry.getHours() == null || entry.getHours().equals(0f))
 			{
 				logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
 						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
