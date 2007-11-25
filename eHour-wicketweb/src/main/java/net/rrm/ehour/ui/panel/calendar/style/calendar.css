@@ -46,6 +46,7 @@ div.Calendar div.CalendarBody div.CalendarWeek
 	color: #536e87;
 	font: 1em/1.5 Arial, Helvetica, sans-serif;
 	margin-bottom: 1px;
+	cursor: pointer;
 }
 
 div.Calendar div.CalendarBody div.SundayDay
