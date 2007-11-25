@@ -181,7 +181,6 @@ public class CalendarPanel extends SidePanel
 		        
 		        if (fireWeekClicks)
 		        {
-		        	System.out.println(week.getWeek() + "=" + week.getYear());
 					item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
 					item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
 					item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
@@ -225,17 +224,17 @@ public class CalendarPanel extends SidePanel
 		int dayInMonth;
 		int dayInWeek;
 		
-
 		// grab date
 		bookedDays = getMonthNavCalendar(userId, month);
-
-		week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
-		week.setYear(month.get(Calendar.YEAR));
 
 		currentMonth = month.get(Calendar.MONTH);
 
 		month.set(Calendar.DAY_OF_MONTH, 1);
+		week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
+		week.setYear(month.get(Calendar.YEAR));
 
+		int previousWeek = -1;
+		
 		do
 		{
 			dayInMonth = month.get(Calendar.DAY_OF_MONTH);
@@ -252,7 +251,18 @@ public class CalendarPanel extends SidePanel
 
 				week = new CalendarWeek();
 				week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
-				week.setYear(month.get(Calendar.YEAR));
+
+				// fix that the year is still the old year but the week is already in the next year
+				if (previousWeek != -1 && previousWeek > month.get(Calendar.WEEK_OF_YEAR))
+				{
+					week.setYear(month.get(Calendar.YEAR) + 1);
+				}
+				else
+				{
+					week.setYear(month.get(Calendar.YEAR));
+				}
+				
+				previousWeek = month.get(Calendar.WEEK_OF_YEAR);
 			}
 
 		} while (month.get(Calendar.MONTH) == currentMonth);
