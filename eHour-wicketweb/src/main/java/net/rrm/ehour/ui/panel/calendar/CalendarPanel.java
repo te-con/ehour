@@ -186,6 +186,13 @@ public class CalendarPanel extends SidePanel
 					item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
 					item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
 		        }
+		        else
+		        {
+		        	item.add(new SimpleAttributeModifier("style", "cursor:default"));
+		        }
+		        	
+		        
+		        
 			}
 
 			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
