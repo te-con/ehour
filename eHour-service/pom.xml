@@ -233,6 +233,12 @@
 			<artifactId>dbunit</artifactId>
 			<version>2.2</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>poi</artifactId>
+					<groupId>poi</groupId>
+				</exclusion>
+			</exclusions>			
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -298,6 +304,11 @@
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.5</version>
+		</dependency>		
 	</dependencies>
 	<reporting>
 		<plugins>

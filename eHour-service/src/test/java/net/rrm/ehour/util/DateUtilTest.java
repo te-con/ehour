@@ -19,12 +19,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 /**
@@ -59,6 +59,15 @@ public class DateUtilTest extends TestCase
 		cal = new GregorianCalendar(2007, 2 - 1, 5);
 		assertEquals(28, DateUtil.getDaysInMonth(cal));
 	}
+	
+	public void testGetDaysInMonthJoda()
+	{
+		DateTime date = new DateTime(2006, 11 , 4, 0, 0, 0, 0);
+		assertEquals(30, DateUtil.getDaysInMonth(date));
+		
+		date = new DateTime(2007, 2, 5, 0, 0, 0, 0);
+		assertEquals(28, DateUtil.getDaysInMonth(date));
+	}	
 
 	public void testIsDateWithinRange()
 	{

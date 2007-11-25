@@ -25,6 +25,9 @@ import java.util.TimeZone;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 /**
  * Various static methods for date manipulation
  **/
@@ -56,8 +59,23 @@ public class DateUtil
         cal.add(Calendar.DAY_OF_MONTH, -1);
         
         return cal.get(Calendar.DATE);
-		
 	}
+	
+	/**
+	 * Get days in month
+	 * @param calendar
+	 * @return
+	 */
+	public static int getDaysInMonth(DateTime calendar)
+	{
+		DateTime start = new DateTime(calendar.getYear(), calendar.getMonthOfYear(), 1, 0, 0, 0, 0);
+		DateTime end = start.plusMonths(1);
+
+		Days days = Days.daysBetween(start, end);
+		
+		return days.getDays();
+	}
+	
 	
 	/**
 	 * Converts a calendar to a range covering that month
