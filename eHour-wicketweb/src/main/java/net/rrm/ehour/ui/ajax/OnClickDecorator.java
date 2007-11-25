@@ -43,7 +43,13 @@ public class OnClickDecorator  implements IAjaxCallDecorator
 		this(preAjaxMethod, arguments, null, null);
 	}
 	
-	
+	/**
+	 * 
+	 * @param preAjaxMethod JS method to be invoked before the ajax request is made
+	 * @param arguments arguments to be passed to pre-ajax
+	 * @param postSuccesMethod JS method called after ajax req
+	 * @param postFailMethod upon failure
+	 */
 	public OnClickDecorator(String preAjaxMethod, String[] arguments, String postSuccesMethod, String postFailMethod)
 	{
 		this.arguments = arguments;
@@ -91,14 +97,22 @@ public class OnClickDecorator  implements IAjaxCallDecorator
 		if (preAjaxMethod != null)
 		{
 			StringBuffer	sb = new StringBuffer(preAjaxMethod);
-			sb.append("(");
 			
-			for (int i = 0; i < arguments.length; i++, sb.append(((i < arguments.length) ? "," : "")))
+			if (arguments != null)
 			{
-				sb.append(arguments[i]);
+				sb.append("(");
+				
+				for (int i = 0; i < arguments.length; i++, sb.append(((i < arguments.length) ? "," : "")))
+				{
+					sb.append(arguments[i]);
+				}
+				
+				sb.append(");");
 			}
-			
-			sb.append(");");
+			else
+			{
+				sb.append(";");
+			}
 			sb.append(script);
 			
 			return sb.toString();

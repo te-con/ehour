@@ -25,6 +25,7 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -185,7 +186,6 @@ public class CalendarPanel extends SidePanel
 					item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
 					item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
 		        }
-				
 			}
 
 			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
@@ -325,7 +325,7 @@ public class CalendarPanel extends SidePanel
 	 * @author Thies
 	 *
 	 */
-	private class ChangeMonthLink extends AjaxLink
+	private class ChangeMonthLink extends DisablingAjaxLink
 	{
 		private static final long serialVersionUID = 1L;
 		private	int monthChange;
@@ -350,6 +350,8 @@ public class CalendarPanel extends SidePanel
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
 			
 			refreshCalendar(target);
+			
+			this.setEnabled(false);
 			
         }
 		
