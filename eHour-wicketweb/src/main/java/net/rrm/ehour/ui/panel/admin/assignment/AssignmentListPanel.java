@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -143,11 +144,11 @@ public class AssignmentListPanel extends Panel
 							new ResourceModel(CommonUIStaticData.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
 				
 				item.add(new Label("role",
-									(assignment.getRole() == null || assignment.getRole().trim().isEmpty())
+									(StringUtils.isBlank(assignment.getRole()))
 										? "--"
 										: assignment.getRole()));
 				
-				item.add(new Label("currency", CommonUIStaticData.getCurrencies().get(config.getCurrency())));
+				item.add(new Label("currency", CommonUIStaticData.getCurrencies().get(config.getLocaleCurrency())));
 				item.add(new Label("rate", new FloatModel(assignment.getHourlyRate(), config)));
 
 			}
