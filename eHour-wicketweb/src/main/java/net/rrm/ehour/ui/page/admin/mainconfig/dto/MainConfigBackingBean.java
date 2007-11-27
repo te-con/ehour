@@ -17,8 +17,17 @@
 package net.rrm.ehour.ui.page.admin.mainconfig.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Currency;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
+import net.rrm.ehour.ui.sort.LocaleComparator;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * TODO 
@@ -34,6 +43,7 @@ public class MainConfigBackingBean implements Serializable
 	private	List<Locale>	availableLanguages;
 	private	boolean			dontForceLocale;
 	private	String			locale;
+	private Locale			localeLanguage;
 	
 	public boolean isTranslationsOnly()
 	{
@@ -70,6 +80,61 @@ public class MainConfigBackingBean implements Serializable
 	public void setLocale(Locale locale)
 	{
 		this.locale = locale.getLanguage();
-	}	
+	}
 	
+	/**
+	 * Available locales
+	 * @return
+	 */
+	public List<Locale> getAvailableLocales()
+	{
+		List<Locale> locales = new ArrayList<Locale>();
+		
+		for (Locale locale : Locale.getAvailableLocales())
+		{
+			if (!StringUtils.isBlank(locale.getDisplayCountry()))
+			{
+				locales.add(locale);
+			}
+		}
+		
+		Collections.sort(locales, new LocaleComparator(LocaleComparator.CompareType.COUNTRY));
+		
+		return locales;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<String> getAvailableCurrencies()
+	{
+		List<Locale> 	locales = getAvailableLocales();
+		Set<String>		currencies = new HashSet<String>(); 
+		
+		for (Locale locale : locales)
+		{
+			Currency curr = Currency.getInstance(locale);
+			currencies.add(curr.getSymbol(locale));
+		}
+		
+		List<String> currList = new ArrayList<String>(currencies);
+		Collections.sort(currList);
+		
+		return currList;
+	}
+	/**
+	 * @return the localeLanguage
+	 */
+	public Locale getLocaleLanguage()
+	{
+		return localeLanguage;
+	}
+	/**
+	 * @param localeLanguage the localeLanguage to set
+	 */
+	public void setLocaleLanguage(Locale localeLanguage)
+	{
+		this.localeLanguage = localeLanguage;
+	}
 }

@@ -136,9 +136,9 @@ public class CalendarPanel extends SidePanel
 		// first get the data 
 		Calendar month = ((EhourWebSession)this.getSession()).getNavCalendar();
 		List<CalendarWeek>	weeks;
-		weeks = createWeeks(user.getUserId(), ((GregorianCalendar)month.clone()));
-
+		
 		logger.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
+		weeks = createWeeks(user.getUserId(), ((GregorianCalendar)month.clone()));
 
 		// set month label
 		parent.add(new Label("currentMonth", new DateModel(month, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));

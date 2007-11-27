@@ -20,18 +20,33 @@ import java.util.Comparator;
 import java.util.Locale;
 
 /**
- * TODO 
+ *  
  **/
 
 public class LocaleComparator implements Comparator<Locale>
 {
+	public enum CompareType { COUNTRY, LANGUAGE };
 
+	private CompareType selectedCompareType;
+	
+	public LocaleComparator(CompareType compareType)
+	{
+		this.selectedCompareType = compareType;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	public int compare(Locale l1, Locale l2)
 	{
-		return l1.getDisplayName().compareTo(l2.getDisplayName());
+		if (selectedCompareType == CompareType.COUNTRY)
+		{
+			return l1.getDisplayCountry().compareTo(l2.getDisplayCountry());
+		}
+		else
+		{
+			return l1.getDisplayName().compareTo(l2.getDisplayName());
+		}
 	}
 
 }

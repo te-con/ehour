@@ -21,7 +21,7 @@ import java.io.Serializable;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 
 /**
- * TODO 
+ * Representation of a cell (day in a project) in the timesheet
  **/
 
 public class TimesheetCell implements Comparable<TimesheetCell>, Serializable

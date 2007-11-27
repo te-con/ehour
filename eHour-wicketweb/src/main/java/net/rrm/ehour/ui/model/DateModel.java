@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.model;
 
+import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +44,7 @@ public class DateModel implements IModel
 	
 	private static final long serialVersionUID = 431440606497572025L;
 	private IModel					model;
-	private	final SimpleDateFormat	dateFormatter;
+	private	final DateFormat	dateFormatter;
 	
 	/**
 	 * 
@@ -97,35 +98,46 @@ public class DateModel implements IModel
 	 */
 	public DateModel(IModel model, EhourConfig config, int dateStyle)
 	{
+		this(model, config.getLocale(), dateStyle);
+		
+	}
+	
+	/**
+	 * 
+	 * @param model
+	 * @param locale
+	 * @param dateStyle
+	 */
+	public DateModel(IModel model, Locale locale, int dateStyle)
+	{
 		this.model = model;
 		
 		switch (dateStyle)
 		{
 			case DATESTYLE_MONTHONLY:
-				dateFormatter = new SimpleDateFormat("MMMM yyyy", config.getLocale());
+				dateFormatter = new SimpleDateFormat("MMMM yyyy", locale);
 				break;
 			case DATESTYLE_TIMESHEET_DAYLONG:
-				dateFormatter = new TimesheetLongFormatter("EEE d", config.getLocale());
+				dateFormatter = new TimesheetLongFormatter("EEE d", locale);
 				break;
 			case DATESTYLE_TIMESHEET_DAYONLY:
-				dateFormatter = new TimesheetLongFormatter("EEE", config.getLocale());
+				dateFormatter = new TimesheetLongFormatter("EEE", locale);
 				break;
 			case DATESTYLE_DAYONLY:
-				dateFormatter = new TimesheetLongFormatter("dd", config.getLocale());
+				dateFormatter = new TimesheetLongFormatter("dd", locale);
 				break;
 			case DATESTYLE_FULL_SHORT:
-				dateFormatter = new TimesheetLongFormatter("dd/MM/yyyy", config.getLocale());
+				dateFormatter = new TimesheetLongFormatter("dd/MM/yyyy", locale);
 				break;
 			case DATESTYLE_WEEK:
-				dateFormatter = new TimesheetLongFormatter("w", config.getLocale());
+				dateFormatter = new TimesheetLongFormatter("w", locale);
 				break;
+			case DATESTYLE_LONG:
 			default:
-				dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
+				dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT, locale);
 				break;
 		}		
-		
 	}
-	
 	
 	/*
 	 * (non-Javadoc)

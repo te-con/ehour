@@ -32,6 +32,8 @@ public class CurrencyModel extends AbstractNumberModel
 {
 	private static final long serialVersionUID = -3297133594178935106L;
 	private	transient Logger	logger = Logger.getLogger(CurrencyModel.class);
+	
+	private EhourConfig	config;
 
 	/**
 	 * Lazy instantation, provide value later
@@ -51,7 +53,7 @@ public class CurrencyModel extends AbstractNumberModel
 	{
 		super(value);
 		
-		initFormatters(config);
+		this.config = config;
 	}
 
 	/**
@@ -61,7 +63,7 @@ public class CurrencyModel extends AbstractNumberModel
 	public Object getObject()
 	{
 		String curr = (String)super.getObject();
-
+		
 		for (String str : CommonUIStaticData.getCurrencyHTMLSymbols().keySet())
 		{
 			if (curr.startsWith(str))
@@ -84,7 +86,7 @@ public class CurrencyModel extends AbstractNumberModel
 		
 		try
 		{
-			currency = Currency.getInstance(config.getCurrency());
+			currency = Currency.getInstance(config.getLocaleCurrency());
 		}
 		catch (IllegalArgumentException iae)
 		{
