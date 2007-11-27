@@ -46,14 +46,9 @@ public class EhourConfigProps implements EhourConfig
 		return props.getProperty("timezone");
 	}
 
-	public String getCurrency()
+	public String getLocaleCurrency()
 	{
-		return props.getProperty("currency");
-	}
-
-	public String getLocaleCountry()
-	{
-		return props.getProperty("localeCountry");
+		return props.getProperty("localeCurrency");
 	}
 
 	public String getLocaleLanguage()
@@ -83,7 +78,11 @@ public class EhourConfigProps implements EhourConfig
 	
 	public Locale getLocale()
 	{
-		return getLocaleLanguage() != null ? new Locale(getLocaleLanguage()) : Locale.getDefault();
+		String localeCode = props.getProperty("locale");
+		
+		String[] localeCodes = localeCode.split("_");
+		
+		return new Locale(localeCodes[0], localeCodes[1]);	
 	}
 
 	public boolean isInDemoMode()

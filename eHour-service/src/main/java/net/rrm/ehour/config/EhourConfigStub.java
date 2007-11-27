@@ -31,7 +31,6 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private	String[] 	availableTranslations;
 	private	int			completeDayHours;
 	private	String		currency = "EUR";
-	private	String		localeCountry;
 	private String 		localeLanguage;
 	private	String		timeZone;
 	private	boolean		showTurnover;
@@ -71,31 +70,18 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	/**
 	 * @return the currency
 	 */
-	public String getCurrency()
+	public String getLocaleCurrency()
 	{
 		return currency;
 	}
 	/**
 	 * @param currency the currency to set
 	 */
-	public void setCurrency(String currency)
+	public void setLocaleCurrency(String currency)
 	{
 		this.currency = currency;
 	}
-	/**
-	 * @return the localeCountry
-	 */
-	public String getLocaleCountry()
-	{
-		return localeCountry;
-	}
-	/**
-	 * @param localeCountry the localeCountry to set
-	 */
-	public void setLocaleCountry(String localeCountry)
-	{
-		this.localeCountry = localeCountry;
-	}
+
 	/**
 	 * @return the localeLanguage
 	 */

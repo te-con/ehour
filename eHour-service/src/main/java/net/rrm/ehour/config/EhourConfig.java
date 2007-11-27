@@ -47,12 +47,6 @@ public interface EhourConfig
 	 * @return
 	 */
 	public String getLocaleLanguage();
-	
-	/**
-	 * Get configured country
-	 * @return
-	 */
-	public String getLocaleCountry();
 
 	/**
 	 * Get locale based on langauge
@@ -64,7 +58,7 @@ public interface EhourConfig
 	 * Get configured currency
 	 * @return
 	 */
-	public String getCurrency();
+	public String getLocaleCurrency();
 	
 	/**
 	 * Get available translations

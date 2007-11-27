@@ -25,7 +25,7 @@ import net.rrm.ehour.config.domain.Configuration;
 import org.apache.log4j.Logger;
 
 /**
- * TODO 
+ * Configuration service
  **/
 
 public class ConfigurationServiceImpl implements ConfigurationService
@@ -55,13 +55,9 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			{
 				config.setCompleteDayHours(Integer.parseInt(value));
 			}
-			else if (key.equalsIgnoreCase("currency"))
+			else if (key.equalsIgnoreCase("localeCurrency"))
 			{
-				config.setCurrency(value);
-			}
-			else if (key.equalsIgnoreCase("localeCountry"))
-			{
-				config.setLocaleCountry(value);
+				config.setLocaleCurrency(value);
 			}
 			else if (key.equalsIgnoreCase("localeLanguage"))
 			{
@@ -98,16 +94,14 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	public void persistConfiguration(EhourConfig config)
 	{
 		logger.debug("Persisting config");
-		persistConfig("currency", config.getCurrency());
+		persistConfig("localeCurrency", config.getLocaleCurrency());
 		
 		// TODO change to Integer and use null
 		if (config.getCompleteDayHours() != 0)
 		{
 			persistConfig("completeDayHours", config.getCompleteDayHours());
 		}
-		persistConfig("localeCountry", config.getLocaleCountry());
 		persistConfig("localeLanguage", config.getLocaleLanguage());
-//		persistConfig("timeZone", config.getTimeZone());
 		persistConfig("showTurnOver", config.isShowTurnover());
 		persistConfig("mailFrom", config.getMailFrom());
 		persistConfig("mailSmtp", config.getMailSmtp());
