@@ -20,10 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import net.rrm.ehour.ui.sort.LocaleComparator;
 
@@ -107,21 +105,20 @@ public class MainConfigBackingBean implements Serializable
 	 * 
 	 * @return
 	 */
-	public List<String> getAvailableCurrencies()
+	public List<CurrencyChoice> getAvailableCurrencies()
 	{
-		List<Locale> 	locales = getAvailableLocales();
-		Set<String>		currencies = new HashSet<String>(); 
+		List<Locale> 			locales = getAvailableLocales();
+		List<CurrencyChoice>	currencies = new ArrayList<CurrencyChoice>(); 
 		
 		for (Locale locale : locales)
 		{
 			Currency curr = Currency.getInstance(locale);
-			currencies.add(curr.getSymbol(locale));
+			currencies.add(new CurrencyChoice(locale.getDisplayCountry() + ": " + curr.getSymbol(locale), curr.getSymbol(locale)));
 		}
 		
-		List<String> currList = new ArrayList<String>(currencies);
-		Collections.sort(currList);
+		Collections.sort(currencies);
 		
-		return currList;
+		return currencies;
 	}
 	/**
 	 * @return the localeLanguage
@@ -136,5 +133,29 @@ public class MainConfigBackingBean implements Serializable
 	public void setLocaleLanguage(Locale localeLanguage)
 	{
 		this.localeLanguage = localeLanguage;
+	}
+
+	/**
+	 * 
+	 * @author Thies
+	 * (sometimes getters & setters are overrated)
+	 *
+	 */
+	public class CurrencyChoice implements Comparable<CurrencyChoice>
+	{
+		public String displayName;
+		public String localizedSymbol;
+		
+		public CurrencyChoice(String displayName, String localizedSymbol)
+		{
+			this.displayName = displayName;
+			this.localizedSymbol = localizedSymbol;
+		
+		}
+
+		public int compareTo(CurrencyChoice o)
+		{
+			return displayName.compareTo(o.displayName);
+		}
 	}
 }

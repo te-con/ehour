@@ -164,5 +164,12 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	{
 		return demoMode;
 	}
+	/**
+	 * @param demoMode the demoMode to set
+	 */
+	public void setDemoMode(boolean demoMode)
+	{
+		this.demoMode = demoMode;
+	}
 	
 }

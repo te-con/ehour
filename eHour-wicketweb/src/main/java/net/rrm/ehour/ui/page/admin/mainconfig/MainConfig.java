@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.page.admin.mainconfig;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +37,7 @@ import net.rrm.ehour.ui.component.FadeLabel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
+import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean.CurrencyChoice;
 import net.rrm.ehour.ui.sort.LocaleComparator;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -226,6 +226,13 @@ public class MainConfig extends BaseAdminPage
 		
 		configForm.setOutputMarkupId(true);
 
+		// currency dropdown
+		currencyDropDownChoice = new DropDownChoice("currency",
+											new PropertyModel(configBackingBean, "availableCurrencies"),
+											new CurrencyChoiceRenderer());
+		currencyDropDownChoice.setOutputMarkupId(true);
+		configForm.add(currencyDropDownChoice);
+		
 		// date format example
 		dateFormat = new Label("dateFormat", 
 							new DateModel(new Model(new Date()), configBackingBean.getLocale(), DateModel.DATESTYLE_LONG ) );
@@ -256,6 +263,9 @@ public class MainConfig extends BaseAdminPage
 				// set the language
 				configBackingBean.setLocaleLanguage(configBackingBean.getLocale());
 				target.addComponent(languageDropDownChoice);
+				
+				// and currency
+				target.addComponent(currencyDropDownChoice);
 			}
 		});
 		
@@ -280,11 +290,6 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(new AjaxFormComponentFeedbackIndicator("localeLanguageValidationError", localeDropDownChoice));
 		configForm.add(languageDropDownChoice);		
 		
-		
-		// currency dropdown
-		configForm.add(new DropDownChoice("currency",
-											new PropertyModel(configBackingBean, "availableCurrencies")));
-		
 		// only translations
 		onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel(configBackingBean, "translationsOnly"))
 		{
@@ -305,7 +310,7 @@ public class MainConfig extends BaseAdminPage
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				localeDropDownChoice.setEnabled(!configBackingBean.isDontForceLocale());
+				languageDropDownChoice.setEnabled(!configBackingBean.isDontForceLocale());
 				target.addComponent(languageDropDownChoice);
 				
 				onlyTranslationsBox.setEnabled(!configBackingBean.isDontForceLocale());
@@ -376,17 +381,29 @@ public class MainConfig extends BaseAdminPage
 	@SuppressWarnings("serial")
     private final class CurrencyChoiceRenderer extends ChoiceRenderer
     {
-        /**
-         * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(Object)
-         */
+		/*
+		 * (non-Javadoc)
+		 * @see org.apache.wicket.markup.html.form.ChoiceRenderer#getDisplayValue(java.lang.Object)
+		 */
     	@Override
         public Object getDisplayValue(Object object)
         {
-            Currency currency = (Currency)object;
-            String display = currency.getSymbol();
+            CurrencyChoice currencyChoice = (CurrencyChoice)object;
 
-            return display;
+            return currencyChoice.displayName;
         }
+
+    	/*
+    	 * (non-Javadoc)
+    	 * @see org.apache.wicket.markup.html.form.ChoiceRenderer#getIdValue(java.lang.Object, int)
+    	 */
+    	@Override
+    	public String getIdValue(Object object, int index)
+    	{
+            CurrencyChoice currencyChoice = (CurrencyChoice)object;
+
+            return currencyChoice.localizedSymbol;
+    	}
     }
 
 	

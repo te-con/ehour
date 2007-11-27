@@ -83,6 +83,10 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			{
 				config.setRememberMeAvailable(Boolean.parseBoolean(value));
 			}
+			else if (key.equalsIgnoreCase("demoMode"))
+			{
+				config.setDemoMode(Boolean.parseBoolean(value));
+			}			
 		}
 		
 		return config;
