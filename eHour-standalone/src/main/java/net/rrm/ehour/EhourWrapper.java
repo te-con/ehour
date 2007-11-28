@@ -35,7 +35,6 @@ public class EhourWrapper
 		Server server = new Server();
 		
 		File file = new File(filename);
-		System.out.println(file.getAbsolutePath());
 		
 		XmlConfiguration configuration = new XmlConfiguration(new FileInputStream(filename));
 		configuration.configure(server);
