@@ -79,7 +79,7 @@ public class EntrySelectorFilter implements Serializable
 	 */
 	public String getFilterInput()
 	{
-		return filterInput == null ? defaultFilterInputText.toString() : filterInput;
+		return filterInput == null ? defaultFilterInputText.getString() : filterInput;
 	}
 	
 	/**
