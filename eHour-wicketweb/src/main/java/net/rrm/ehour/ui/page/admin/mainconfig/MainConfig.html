@@ -16,7 +16,7 @@
 
 					<tr>
 						<td valign="top"><wicket:message key="admin.config.locale" />:</td>
-						<td><select style="width: 15em"  class="textInputSmall"  wicket:id="locale"></select>
+						<td><select style="width: 15em"  class="textInputSmall"  wicket:id="localeCountry"></select>
 						</td>
 					</tr>
 
@@ -45,7 +45,7 @@
 
 					<tr>
 						<td><wicket:message key="admin.config.locale.language.noForce" />:</td>
-						<td><input wicket:id="dontForceLocale" type="checkbox" /></td>
+						<td><input wicket:id="config.dontForceLanguage" type="checkbox" /></td>
 					</tr>
 
 					<tr>
@@ -54,7 +54,7 @@
 
 					<tr>
 						<td><wicket:message key="admin.config.locale.currency" />:</td>
-						<td><select style="width: 15em" class="textInputSmall" wicket:id="currency"></select></td>
+						<td><select style="width: 15em" class="textInputSmall" wicket:id="currencyChoice"></select></td>
 					</tr>
 					
 					<tr>
@@ -63,7 +63,7 @@
 					
 					<tr>
 						<td><wicket:message key="admin.config.showTurnover" />:</td>
-						<td><input type="checkbox" wicket:id="showTurnover" /></td>
+						<td><input type="checkbox" wicket:id="config.showTurnover" /></td>
 					</tr>						
 
 					<tr>
@@ -72,14 +72,14 @@
 
 					<tr>
 						<td valign="top"><wicket:message key="admin.config.mailFrom" />:</td>
-						<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="mailFrom" />
+						<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="config.mailFrom" />
 							<span wicket:id="mailFromError"></span>
 						</td>
 					</tr>						
 	
 					<tr>
 						<td><wicket:message key="admin.config.mailSmtp" />:</td>
-						<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="mailSmtp" /></td>
+						<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="config.mailSmtp" /></td>
 					</tr>
 
 					<tr>

@@ -148,7 +148,8 @@ public class AssignmentListPanel extends Panel
 										? "--"
 										: assignment.getRole()));
 				
-				item.add(new Label("currency", CommonUIStaticData.getCurrencies().get(config.getLocaleCurrency())));
+				//FIXME
+				item.add(new Label("currency", CommonUIStaticData.getCurrencies().get(config.getCurrency())));
 				item.add(new Label("rate", new FloatModel(assignment.getHourlyRate(), config)));
 
 			}

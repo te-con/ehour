@@ -16,16 +16,10 @@
 
 package net.rrm.ehour.ui.page.admin.mainconfig;
 
-import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.ajax.DemoDecorator;
@@ -38,9 +32,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean.CurrencyChoice;
-import net.rrm.ehour.ui.sort.LocaleComparator;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -75,7 +67,7 @@ public class MainConfig extends BaseAdminPage
 	private ConfigurationService	configService;
 
 	private Label	serverMessage;
-	private	final MainConfigBackingBean	configBackingBean = new MainConfigBackingBean();
+	private	final 	MainConfigBackingBean configBackingBean;
 	
 	/**
 	 * 
@@ -84,37 +76,22 @@ public class MainConfig extends BaseAdminPage
 	{
 		super(new ResourceModel("admin.config.title"), null);
 		
-		EhourConfig	dbConfig;
+		configBackingBean = new MainConfigBackingBean(getDbConfig());
 		
-		dbConfig = getDbConfig();
-		updateBackingBean(dbConfig, false);
-		
-		setUpPage(dbConfig);
-	}
-	
-	/**
-	 * 
-	 * @param config
-	 */
-	private void updateBackingBean(EhourConfig config, boolean translationsOnly)
-	{
-		configBackingBean.setDontForceLocale(config.getLocaleLanguage() == null || config.getLocaleLanguage().equals("noForce"));
-		configBackingBean.setTranslationsOnly(translationsOnly);
-		configBackingBean.setAvailableLanguages(getAvailableLanguages(config));
-		configBackingBean.setLocale(config.getLocaleLanguage());
+		setUpPage();
 	}
 	
 	/**
 	 * Setup page
 	 */
-	private void setUpPage(EhourConfig dbConfig)
+	private void setUpPage()
 	{
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("configFrame", new ResourceModel("admin.config.title"));
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
 		greyBorder.add(blueBorder);
 		add(greyBorder);
 
-		createForm(blueBorder, dbConfig);
+		createForm(blueBorder);
 	}
 
 	/**
@@ -122,26 +99,26 @@ public class MainConfig extends BaseAdminPage
 	 * 
 	 * @param parent
 	 */
-	private void createForm(WebMarkupContainer parent, final EhourConfig dbConfig)
+	private void createForm(WebMarkupContainer parent)
 	{
-		Form configForm = new Form("configForm", new CompoundPropertyModel(dbConfig));
+		Form configForm = new Form("configForm", new CompoundPropertyModel(configBackingBean));
 		configForm.setOutputMarkupId(true);
 
 		// show locale selections (currency, language, date format)
-		addLocaleSelections(configForm, dbConfig);
+		addLocaleSelections(configForm);
 		
 		// show turnover checkbox
-		configForm.add(new CheckBox("showTurnover"));		
+		configForm.add(new CheckBox("config.showTurnover"));		
 		
 		// reply sender
-		RequiredTextField mailFrom = new RequiredTextField("mailFrom");
+		RequiredTextField mailFrom = new RequiredTextField("config.mailFrom");
 		mailFrom.add(EmailAddressValidator.getInstance());
 		configForm.add(mailFrom);
 		configForm.add(new AjaxFormComponentFeedbackIndicator("mailFromError", mailFrom));
 		
-		configForm.add(new RequiredTextField("mailSmtp"));
+		configForm.add(new RequiredTextField("config.mailSmtp"));
 		
-		setSubmitButton(configForm, dbConfig);
+		setSubmitButton(configForm);
 		
 		parent.add(configForm);
 		
@@ -157,7 +134,7 @@ public class MainConfig extends BaseAdminPage
 	 * @param dbConfig
 	 */
 	@SuppressWarnings("serial")
-	private void setSubmitButton(Form form, final EhourConfig dbConfig)
+	private void setSubmitButton(Form form)
 	{
 		form.add(new AjaxButton("submitButton", form)
 		{
@@ -166,13 +143,11 @@ public class MainConfig extends BaseAdminPage
 			{
 				IModel msgModel;
 
-				if (!dbConfig.isInDemoMode())
+				if (!configBackingBean.getConfig().isInDemoMode())
 				{
-					((EhourConfigStub)dbConfig).setLocaleLanguage(configBackingBean.isDontForceLocale() ? "noForce" : configBackingBean.getLocale().getLanguage());
-					
 					try
 					{
-						configService.persistConfiguration(dbConfig);
+						configService.persistConfiguration(configBackingBean.getConfig());
 						msgModel = new ResourceModel("dataSaved");
 					}
 					catch (Throwable t)
@@ -192,7 +167,7 @@ public class MainConfig extends BaseAdminPage
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
-				if (dbConfig.isInDemoMode())
+				if (configBackingBean.getConfig().isInDemoMode())
 				{
 					return new DemoDecorator(new ResourceModel("demoModel"));
 				}
@@ -216,7 +191,7 @@ public class MainConfig extends BaseAdminPage
 	 * @param dbConfig
 	 */
 	@SuppressWarnings("serial")
-	private void addLocaleSelections(Form configForm, final EhourConfig dbConfig)
+	private void addLocaleSelections(Form configForm)
 	{
 		final DropDownChoice	localeDropDownChoice;
 		final DropDownChoice	languageDropDownChoice;
@@ -227,7 +202,7 @@ public class MainConfig extends BaseAdminPage
 		configForm.setOutputMarkupId(true);
 
 		// currency dropdown
-		currencyDropDownChoice = new DropDownChoice("currency",
+		currencyDropDownChoice = new DropDownChoice("currencyChoice",
 											new PropertyModel(configBackingBean, "availableCurrencies"),
 											new CurrencyChoiceRenderer());
 		currencyDropDownChoice.setOutputMarkupId(true);
@@ -235,7 +210,7 @@ public class MainConfig extends BaseAdminPage
 		
 		// date format example
 		dateFormat = new Label("dateFormat", 
-							new DateModel(new Model(new Date()), configBackingBean.getLocale(), DateModel.DATESTYLE_LONG ) );
+							new DateModel(new Model(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
 		dateFormat.setOutputMarkupId(true);
 		configForm.add(dateFormat);
 
@@ -246,8 +221,7 @@ public class MainConfig extends BaseAdminPage
 													new LocaleChoiceRenderer(1)); 
 
 		// locale selection
-		localeDropDownChoice = new DropDownChoice("locale",
-													new PropertyModel(configBackingBean, "locale"),
+		localeDropDownChoice = new DropDownChoice("localeCountry",
 													new PropertyModel(configBackingBean, "availableLocales"),
 													new LocaleChoiceRenderer(0)); 
 		localeDropDownChoice.setOutputMarkupId(true);
@@ -257,15 +231,18 @@ public class MainConfig extends BaseAdminPage
 			protected void onUpdate(AjaxRequestTarget target)
 			{
 				// update the date format example
-				dateFormat.setModel(new DateModel(new Model(new Date()), configBackingBean.getLocale(), DateModel.DATESTYLE_LONG ) );
+				dateFormat.setModel(new DateModel(new Model(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
 				target.addComponent(dateFormat);
 				
-				// set the language
-				configBackingBean.setLocaleLanguage(configBackingBean.getLocale());
+				// refresh langugae
 				target.addComponent(languageDropDownChoice);
 				
 				// and currency
-				target.addComponent(currencyDropDownChoice);
+				if (configBackingBean.getLocaleCountry().getCountry() != null)
+				{
+					configBackingBean.setCurrency(Currency.getInstance(configBackingBean.getLocaleCountry()).getCurrencyCode());
+					target.addComponent(currencyDropDownChoice);
+				}
 			}
 		});
 		
@@ -276,16 +253,6 @@ public class MainConfig extends BaseAdminPage
 		languageDropDownChoice.setOutputMarkupId(true);
 		languageDropDownChoice.setRequired(true);
 		languageDropDownChoice.setLabel(new ResourceModel("admin.config.locale.languageLabel"));
-//		languageDropDownChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
-//		{
-//			@Override
-//			protected void onUpdate(AjaxRequestTarget target)
-//			{
-//				// update the example
-//				dateFormat.setModel(new DateModel(new Model(new Date()), configBackingBean.getLocale(), DateModel.DATESTYLE_LONG ) );
-//				target.addComponent(dateFormat);
-//			}
-//		});
 		
 		configForm.add(new AjaxFormComponentFeedbackIndicator("localeLanguageValidationError", localeDropDownChoice));
 		configForm.add(languageDropDownChoice);		
@@ -296,7 +263,6 @@ public class MainConfig extends BaseAdminPage
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				configBackingBean.setAvailableLanguages(getAvailableLanguages(dbConfig));
 				target.addComponent(languageDropDownChoice);
 			}
 		};
@@ -305,7 +271,7 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(onlyTranslationsBox);
 		
 		// don't force locale checkbox
-		configForm.add(new AjaxCheckBox("dontForceLocale", new PropertyModel(configBackingBean, "dontForceLocale"))
+		configForm.add(new AjaxCheckBox("config.dontForceLanguage")
 		{
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
@@ -370,7 +336,15 @@ public class MainConfig extends BaseAdminPage
     	public String getIdValue(Object o, int index)
     	{
     		Locale locale = (Locale)o;
-    		return locale.toString();
+    		
+    		if (type == 0)
+    		{
+    			return locale.getCountry();
+    		}
+    		else
+    		{
+    			return locale.getLanguage();
+    		}
     	}
     }
 	
@@ -406,55 +380,11 @@ public class MainConfig extends BaseAdminPage
     	}
     }
 
-	
-	/**
-	 * Get available languages
-	 * @param config
-	 * @param onlyAvailable
-	 * @return
-	 */
-	private List<Locale> getAvailableLanguages(EhourConfig config)
-	{
-		Locale[]			locales = Locale.getAvailableLocales();
-		Map<String, Locale>	localeMap = new HashMap<String, Locale>();
-		
-		// remove all variants
-		for (Locale locale : locales)
-		{
-			if (configBackingBean.isTranslationsOnly()
-					&& !ArrayUtils.contains(config.getAvailableTranslations(), locale.getLanguage()))
-			{
-				continue;
-			}
-			
-			if (localeMap.containsKey(locale.getLanguage()))
-			{
-				if (locale.getDisplayName().indexOf('(') != -1)
-				{
-					continue;
-				}
-			}
-
-			localeMap.put(locale.getLanguage(), locale);
-		}
-		
-		
-		SortedSet<Locale>	localeSet = new TreeSet<Locale>(new LocaleComparator(LocaleComparator.CompareType.LANGUAGE));
-		
-		for (Locale locale : localeMap.values())
-		{
-			localeSet.add(locale);
-		}
-		
-		
-		return new ArrayList<Locale>(localeSet);
-	}	
-	
 	/**
 	 * 
 	 * @return
 	 */
-	private EhourConfig getDbConfig()
+	private EhourConfigStub getDbConfig()
 	{
 		return configService.getConfiguration();
 	}

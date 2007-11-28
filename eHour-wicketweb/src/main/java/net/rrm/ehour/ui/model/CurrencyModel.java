@@ -86,7 +86,7 @@ public class CurrencyModel extends AbstractNumberModel
 		
 		try
 		{
-			currency = Currency.getInstance(config.getLocaleCurrency());
+			currency = Currency.getInstance(config.getCurrency());
 		}
 		catch (IllegalArgumentException iae)
 		{

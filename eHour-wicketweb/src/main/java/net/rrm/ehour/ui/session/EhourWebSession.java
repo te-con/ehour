@@ -77,9 +77,9 @@ public class EhourWebSession extends AuthenticatedWebSession
 	{
 		InjectorHolder.getInjector().inject(this);
 		
-		if (ehourConfig.getLocaleLanguage() == null || !ehourConfig.getLocaleLanguage().equals("noForce"))
+		if (!ehourConfig.isDontForceLanguage())
 		{
-			logger.debug("Setting locale to " + ehourConfig.getLocaleLanguage());
+			logger.debug("Setting locale to " + ehourConfig.getLocale().getDisplayLanguage());
 
 			Locale.setDefault(ehourConfig.getLocale());
 			setLocale(ehourConfig.getLocale());
