@@ -54,27 +54,21 @@ public class CurrencyModel extends AbstractNumberModel
 		super(value);
 		
 		this.config = config;
+		
+		initFormatters(config);
 	}
 
 	/**
 	 * Bit of a hack, replace the currency symbol with the UTF-8 code 
 	 */
-	@Override
-	public Object getObject()
-	{
-		String curr = (String)super.getObject();
-		
-		for (String str : CommonUIStaticData.getCurrencyHTMLSymbols().keySet())
-		{
-			if (curr.startsWith(str))
-			{
-				curr = curr.replace(str, CommonUIStaticData.getCurrencyHTMLSymbols().get(str));
-				break;
-			}
-		}
-		
-		return curr;
-	}	
+//	@Override
+//	public Object getObject()
+//	{
+//		String curr = (String)super.getObject();
+//
+//		
+//		return curr;
+//	}	
 	
 	/**
 	 * Init formatters based on the config
@@ -87,6 +81,7 @@ public class CurrencyModel extends AbstractNumberModel
 		try
 		{
 			currency = Currency.getInstance(config.getCurrency());
+			System.out.println(currency);
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -94,9 +89,9 @@ public class CurrencyModel extends AbstractNumberModel
 			currency = Currency.getInstance("EUR");
 		}
 		
-		formatter = NumberFormat.getCurrencyInstance(config.getLocale());
-		formatter.setMaximumFractionDigits(2);
-		formatter.setMinimumFractionDigits(2);
+		formatter = NumberFormat.getCurrencyInstance(config.getCurrency());
+//		formatter.setMaximumFractionDigits(2);
+//		formatter.setMinimumFractionDigits(2);
 		formatter.setCurrency(currency);		
 	}
 }

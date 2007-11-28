@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.panel.admin.assignment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -35,7 +36,6 @@ import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.ui.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.validator.DateOverlapValidator;
 
@@ -122,11 +122,7 @@ public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
 		form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
 
 		// and currency
-		//FIXME
-		String currency = config.getCurrency();
-		Label currencyLabel = new Label("currency", CommonUIStaticData.getCurrencies().get(currency));
-		currencyLabel.setEscapeModelStrings(false);
-		form.add(currencyLabel);
+		form.add(new Label("currency",  Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
 		
 		// active
 		form.add(new CheckBox("projectAssignment.active"));

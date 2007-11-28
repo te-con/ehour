@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.ui.util;
 
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -46,47 +42,6 @@ public class CommonUIStaticData
 	
 	public final static String[] weekDays = new String[]{"sunday", "monday", "tuesday", 
 															"wednesday", "thursday", "friday", "saturday"};
-	
-	private static Map<String, String>			currencies;
-	private static SortedMap<String, String> 	currencySymbols;		
-	
-	/**
-	 * Get currencies
-	 * @return
-	 */
-	public static Map<String, String> getCurrencies()
-	{
-		if (currencies == null)
-		{
-			currencies = new TreeMap<String,String>();
-			
-			currencies.put("Dollar", "$");
-			currencies.put("Euro", "&#8364;");
-			currencies.put("Yen", "&yen;");
-			currencies.put("Pound", "&pound;");
-		}
-		
-		return currencies;
-	}
-	
-	/**
-	 * Get currency HTML symbols
-	 * @return
-	 */
-	public static Map<String, String> getCurrencyHTMLSymbols()
-	{
-		if (currencySymbols == null)
-		{
-			currencySymbols = new TreeMap<String,String>();
-			
-			currencySymbols.put("USD", "$");
-			currencySymbols.put("EUR", "&#8364;");
-			currencySymbols.put("JPY", "&yen;");
-			currencySymbols.put("GBP", "&pound;");
-		}
-		
-		return currencySymbols;
-	}	
 	
 	/**
 	 * Get resource key for project assignment type

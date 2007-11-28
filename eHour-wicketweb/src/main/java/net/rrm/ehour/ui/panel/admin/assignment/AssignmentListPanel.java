@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.panel.admin.assignment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -148,8 +149,7 @@ public class AssignmentListPanel extends Panel
 										? "--"
 										: assignment.getRole()));
 				
-				//FIXME
-				item.add(new Label("currency", CommonUIStaticData.getCurrencies().get(config.getCurrency())));
+				item.add(new Label("currency",  Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
 				item.add(new Label("rate", new FloatModel(assignment.getHourlyRate(), config)));
 
 			}

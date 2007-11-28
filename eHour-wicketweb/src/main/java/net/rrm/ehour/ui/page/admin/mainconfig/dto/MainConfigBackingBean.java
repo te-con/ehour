@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.page.admin.mainconfig.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +46,6 @@ public class MainConfigBackingBean implements Serializable
 	 */
 	private static final long serialVersionUID = -682573285773646807L;
 	private	boolean			translationsOnly = false;
-	private	boolean			dontForceLocale;
-	private	String			locale;
-	private Locale			localeLanguage;
 	private EhourConfigStub	config;
 
 	/**
@@ -109,15 +107,6 @@ public class MainConfigBackingBean implements Serializable
 		this.translationsOnly = translationsOnly;
 	}
 
-
-	public boolean isDontForceLocale()
-	{
-		return dontForceLocale;
-	}
-	public void setDontForceLocale(boolean dontForceLocale)
-	{
-		this.dontForceLocale = dontForceLocale;
-	}
 	
 	/**
 	 * Available locales
@@ -144,28 +133,33 @@ public class MainConfigBackingBean implements Serializable
 	 * 
 	 * @return
 	 */
-	public List<CurrencyChoice> getAvailableCurrencies()
+	public List<Locale> getAvailableCurrencies()
 	{
-		List<Locale> 			locales = getAvailableLocales();
-		Map<String, CurrencyChoice>	currencies = new HashMap<String, CurrencyChoice>();
+		List<Locale>		locales = getAvailableLocales();
+		SortedSet<Locale>	currencyLocales = new TreeSet<Locale>(new Comparator<Locale>()
+				{
+					public int compare(Locale o1, Locale o2)
+					{
+						Currency curr1 = Currency.getInstance(o1);
+						Currency curr2 = Currency.getInstance(o2);
+						
+						return (o1.getDisplayCountry() + ": " +  curr1.getSymbol(o1))
+								.compareTo(o2.getDisplayCountry() + ": " +  curr2.getSymbol(o2));
+					}
+				}
+		);
+		
 		for (Locale locale : locales)
 		{
-			Currency curr = Currency.getInstance(locale);
-			
-			if (!curr.getCurrencyCode().equals("EUR"))
+			if (!StringUtils.isBlank(locale.getCountry()))
 			{
-				currencies.put(locale.getCountry(), new CurrencyChoice(locale.getDisplayCountry() + ": " + curr.getSymbol(locale), 
-													curr.getCurrencyCode()));
+				currencyLocales.add(locale);
 			}
 		}
+
+		List<Locale> locList = new ArrayList<Locale>(currencyLocales);
 		
-		List<CurrencyChoice> uniqueCurrencies = new ArrayList<CurrencyChoice>(currencies.values());
-		
-		uniqueCurrencies.add(new CurrencyChoice("Euro: &#8364;", "EUR"));
-		
-		Collections.sort(uniqueCurrencies);
-		
-		return uniqueCurrencies;
+		return locList;
 	}
 	/**
 	 * @return the localeLanguage
@@ -192,54 +186,8 @@ public class MainConfigBackingBean implements Serializable
 		config.setLocaleCountry(localeCountry.getCountry());
 		config.setLocaleLanguage(localeCountry.getLanguage());
 	}
-
-	/**
-	 * 
-	 * @author Thies
-	 * (sometimes getters & setters are overrated)
-	 *
-	 */
-	public class CurrencyChoice implements Comparable<CurrencyChoice>
-	{
-		public String displayName;
-		public String localizedSymbol;
-		
-		public CurrencyChoice(String displayName, String localizedSymbol)
-		{
-			this.displayName = displayName;
-			this.localizedSymbol = localizedSymbol;
-		
-		}
-
-		public int compareTo(CurrencyChoice o)
-		{
-			return displayName.compareTo(o.displayName);
-		}
-	}
-
-	/**
-	 * @return the currencyChoice
-	 */
-	public CurrencyChoice getCurrencyChoice()
-	{
-		Currency curr = Currency.getInstance(config.getCurrency());
-		
-		Locale locale = config.getLocale();
-		
-		CurrencyChoice choice = new CurrencyChoice(locale.getDisplayCountry() + ": " + curr.getSymbol(locale), 
-				 									config.getCurrency());
-		
-		return choice;
-	}
-	/**
-	 * @param currencyChoice the currencyChoice to set
-	 */
-	public void setCurrencyChoice(CurrencyChoice currencyChoice)
-	{
-		this.config.setCurrency(currencyChoice.localizedSymbol);
-	}
 	
-	public void setCurrency(String currencySymbol)
+	public void setCurrency(Locale currencySymbol)
 	{
 		this.config.setCurrency(currencySymbol);
 	}

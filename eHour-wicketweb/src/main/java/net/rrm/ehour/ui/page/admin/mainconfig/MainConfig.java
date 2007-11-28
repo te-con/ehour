@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.component.FadeLabel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
-import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean.CurrencyChoice;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -202,9 +201,9 @@ public class MainConfig extends BaseAdminPage
 		configForm.setOutputMarkupId(true);
 
 		// currency dropdown
-		currencyDropDownChoice = new DropDownChoice("currencyChoice",
+		currencyDropDownChoice = new DropDownChoice("config.currency",
 											new PropertyModel(configBackingBean, "availableCurrencies"),
-											new CurrencyChoiceRenderer());
+											new LocaleChoiceRenderer(2));
 		currencyDropDownChoice.setOutputMarkupId(true);
 		configForm.add(currencyDropDownChoice);
 		
@@ -240,7 +239,7 @@ public class MainConfig extends BaseAdminPage
 				// and currency
 				if (configBackingBean.getLocaleCountry().getCountry() != null)
 				{
-					configBackingBean.setCurrency(Currency.getInstance(configBackingBean.getLocaleCountry()).getCurrencyCode());
+					configBackingBean.setCurrency(configBackingBean.getLocaleCountry());
 					target.addComponent(currencyDropDownChoice);
 				}
 			}
@@ -249,7 +248,7 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(localeDropDownChoice);
 
 		// behaviour for language selection
-		languageDropDownChoice.setEnabled(!configBackingBean.isDontForceLocale());
+		languageDropDownChoice.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
 		languageDropDownChoice.setOutputMarkupId(true);
 		languageDropDownChoice.setRequired(true);
 		languageDropDownChoice.setLabel(new ResourceModel("admin.config.locale.languageLabel"));
@@ -267,7 +266,7 @@ public class MainConfig extends BaseAdminPage
 			}
 		};
 		onlyTranslationsBox.setOutputMarkupId(true);
-		onlyTranslationsBox.setEnabled(!configBackingBean.isDontForceLocale());
+		onlyTranslationsBox.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
 		configForm.add(onlyTranslationsBox);
 		
 		// don't force locale checkbox
@@ -276,10 +275,10 @@ public class MainConfig extends BaseAdminPage
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				languageDropDownChoice.setEnabled(!configBackingBean.isDontForceLocale());
+				languageDropDownChoice.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
 				target.addComponent(languageDropDownChoice);
 				
-				onlyTranslationsBox.setEnabled(!configBackingBean.isDontForceLocale());
+				onlyTranslationsBox.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
 				target.addComponent(onlyTranslationsBox);
 			}
 		});				
@@ -293,7 +292,7 @@ public class MainConfig extends BaseAdminPage
     {
 		int type;
 		
-		// type == 0 -> country, 1 => language
+		// type == 0 -> country, 1 => language, 2=> currency
 		public LocaleChoiceRenderer(int type)
 		{
 			this.type = type;
@@ -320,9 +319,14 @@ public class MainConfig extends BaseAdminPage
 	            
 	            display += ")";
             }
-            else
+            else if (type == 1)
             {
 	            display = locale.getDisplayLanguage();
+            }
+            else
+            {
+            	Currency curr = Currency.getInstance(locale);
+            	display = locale.getDisplayCountry() + ": " +  curr.getSymbol(locale);
             }
 
             return display;
@@ -339,44 +343,16 @@ public class MainConfig extends BaseAdminPage
     		
     		if (type == 0)
     		{
-    			return locale.getCountry();
+    			return locale.getCountry() + "_" + locale.getLanguage();
     		}
-    		else
+    		else if (type == 1)
     		{
     			return locale.getLanguage();
     		}
-    	}
-    }
-	
-	
-    /**
-     * Choice for a locale.
-     */
-	@SuppressWarnings("serial")
-    private final class CurrencyChoiceRenderer extends ChoiceRenderer
-    {
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.ChoiceRenderer#getDisplayValue(java.lang.Object)
-		 */
-    	@Override
-        public Object getDisplayValue(Object object)
-        {
-            CurrencyChoice currencyChoice = (CurrencyChoice)object;
-
-            return currencyChoice.displayName;
-        }
-
-    	/*
-    	 * (non-Javadoc)
-    	 * @see org.apache.wicket.markup.html.form.ChoiceRenderer#getIdValue(java.lang.Object, int)
-    	 */
-    	@Override
-    	public String getIdValue(Object object, int index)
-    	{
-            CurrencyChoice currencyChoice = (CurrencyChoice)object;
-
-            return currencyChoice.localizedSymbol;
+    		else
+    		{
+    			return locale.getCountry();
+    		}
     	}
     }
 
