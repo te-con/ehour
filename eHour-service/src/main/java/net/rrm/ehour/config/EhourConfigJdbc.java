@@ -52,14 +52,9 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("timezone");
 	}
 
-	public String getLocaleCurrency()
+	public String getCurrency()
 	{
 		return this.getString("currency", "EUR");
-	}
-
-	public String getLocaleLanguage()
-	{
-		return this.getString("localeLanguage", "en");
 	}
 
 	public String[] getAvailableTranslations()
@@ -84,16 +79,20 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	public Locale getLocale()
 	{
-		String localeCode = this.getString("locale", "en_US");
+		String country = this.getString("localeCountry", "US");
+		String language = this.getString("localeLanguage", "en");
 		
-		String[] localeCodes = localeCode.split("_");
-		
-		return new Locale(localeCodes[0], localeCodes[1]);
+		return new Locale(language, country);
 	}
 
 	public boolean isInDemoMode()
 	{
 		return this.getBoolean("demoMode", false);
+	}
+
+	public boolean isDontForceLanguage()
+	{
+		return this.getBoolean("dontForceLanguage", false);
 	}
 
 }

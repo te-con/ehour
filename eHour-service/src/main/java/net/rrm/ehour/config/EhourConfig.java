@@ -41,15 +41,9 @@ public interface EhourConfig
 	 * @return
 	 */
 	public String getTimeZone();
-	
-	/**
-	 * Get configured language
-	 * @return
-	 */
-	public String getLocaleLanguage();
 
 	/**
-	 * Get locale based on langauge
+	 * Get locale based on language and country
 	 * @return
 	 */
 	public Locale getLocale();
@@ -58,7 +52,7 @@ public interface EhourConfig
 	 * Get configured currency
 	 * @return
 	 */
-	public String getLocaleCurrency();
+	public String getCurrency();
 	
 	/**
 	 * Get available translations
@@ -89,4 +83,10 @@ public interface EhourConfig
 	 * @return
 	 */
 	public boolean isInDemoMode();
+	
+	/**
+	 * Don't force language ?
+	 * @return
+	 */
+	public boolean isDontForceLanguage();
 }

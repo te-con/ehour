@@ -31,13 +31,15 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private	String[] 	availableTranslations;
 	private	int			completeDayHours;
 	private	String		currency = "EUR";
-	private String 		localeLanguage;
+	private String		localeLanguage ="en";
+	private String		localeCountry = "NL";
 	private	String		timeZone;
 	private	boolean		showTurnover;
 	private	String		mailFrom;
 	private	String		mailSmtp;
 	private	boolean		rememberMeAvailable = true;
 	private boolean		demoMode = false;
+	private boolean		dontForceLanguage;
 	
 	/**
 	 * @return the availableTranslations
@@ -70,32 +72,18 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	/**
 	 * @return the currency
 	 */
-	public String getLocaleCurrency()
+	public String getCurrency()
 	{
 		return currency;
 	}
 	/**
 	 * @param currency the currency to set
 	 */
-	public void setLocaleCurrency(String currency)
+	public void setCurrency(String currency)
 	{
 		this.currency = currency;
 	}
 
-	/**
-	 * @return the localeLanguage
-	 */
-	public String getLocaleLanguage()
-	{
-		return localeLanguage;
-	}
-	/**
-	 * @param localeLanguage the localeLanguage to set
-	 */
-	public void setLocaleLanguage(String localeLanguage)
-	{
-		this.localeLanguage = localeLanguage;
-	}
 	/**
 	 * @return the showTurnover
 	 */
@@ -158,8 +146,9 @@ public class EhourConfigStub implements EhourConfig, Serializable
 
 	public Locale getLocale()
 	{
-		return getLocaleLanguage() != null ? new Locale(getLocaleLanguage()) : Locale.getDefault();
+		return new Locale(localeLanguage, localeCountry);
 	}
+	
 	public boolean isInDemoMode()
 	{
 		return demoMode;
@@ -170,6 +159,31 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	public void setDemoMode(boolean demoMode)
 	{
 		this.demoMode = demoMode;
+	}
+	/**
+	 * @param localeLanguage the localeLanguage to set
+	 */
+	public void setLocaleLanguage(String localeLanguage)
+	{
+		this.localeLanguage = localeLanguage;
+	}
+	/**
+	 * @param localeCountry the localeCountry to set
+	 */
+	public void setLocaleCountry(String localeCountry)
+	{
+		this.localeCountry = localeCountry;
+	}
+	public boolean isDontForceLanguage()
+	{
+		return dontForceLanguage;
+	}
+	/**
+	 * @param dontForceLanguage the dontForceLanguage to set
+	 */
+	public void setDontForceLanguage(boolean dontForceLanguage)
+	{
+		this.dontForceLanguage = dontForceLanguage;
 	}
 	
 }

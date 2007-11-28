@@ -36,7 +36,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
 	 */
-	public EhourConfig getConfiguration()
+	public EhourConfigStub getConfiguration()
 	{
 		List<Configuration> configs = configDAO.findAll();
 		EhourConfigStub		config = new EhourConfigStub();
@@ -57,11 +57,15 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			}
 			else if (key.equalsIgnoreCase("localeCurrency"))
 			{
-				config.setLocaleCurrency(value);
+				config.setCurrency(value);
 			}
 			else if (key.equalsIgnoreCase("localeLanguage"))
 			{
 				config.setLocaleLanguage(value);
+			}
+			else if (key.equalsIgnoreCase("localeCountry"))
+			{
+				config.setLocaleCountry(value);
 			}
 			else if (key.equalsIgnoreCase("showTurnOver"))
 			{
@@ -98,14 +102,16 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	public void persistConfiguration(EhourConfig config)
 	{
 		logger.debug("Persisting config");
-		persistConfig("localeCurrency", config.getLocaleCurrency());
+		persistConfig("localeCurrency", config.getCurrency());
 		
 		// TODO change to Integer and use null
 		if (config.getCompleteDayHours() != 0)
 		{
 			persistConfig("completeDayHours", config.getCompleteDayHours());
 		}
-		persistConfig("localeLanguage", config.getLocaleLanguage());
+		persistConfig("localeCountry", config.getLocale().getCountry());
+		persistConfig("localeLanguage", config.getLocale().getLanguage());
+		persistConfig("dontForceLanguage", config.isDontForceLanguage());
 		persistConfig("showTurnOver", config.isShowTurnover());
 		persistConfig("mailFrom", config.getMailFrom());
 		persistConfig("mailSmtp", config.getMailSmtp());

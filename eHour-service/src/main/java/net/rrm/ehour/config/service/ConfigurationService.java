@@ -16,6 +16,7 @@
 package net.rrm.ehour.config.service;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.EhourConfigStub;
 
 /**
  * Service for modifying the configuration
@@ -27,7 +28,7 @@ public interface ConfigurationService
 	 * Get all configuration items
 	 * @return
 	 */
-	public EhourConfig getConfiguration();
+	public EhourConfigStub getConfiguration();
 	
 	/**
 	 * Persist all configuration items
