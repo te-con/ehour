@@ -129,7 +129,6 @@ public class ReportColumnUtil
 		}			
 		else
 		{
-			System.out.println("whoops");
 			return null;
 		}
 	}

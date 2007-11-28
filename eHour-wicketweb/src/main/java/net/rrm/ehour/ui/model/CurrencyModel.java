@@ -20,7 +20,6 @@ import java.text.NumberFormat;
 import java.util.Currency;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.log4j.Logger;
 
@@ -32,8 +31,6 @@ public class CurrencyModel extends AbstractNumberModel
 {
 	private static final long serialVersionUID = -3297133594178935106L;
 	private	transient Logger	logger = Logger.getLogger(CurrencyModel.class);
-	
-	private EhourConfig	config;
 
 	/**
 	 * Lazy instantation, provide value later
@@ -53,22 +50,8 @@ public class CurrencyModel extends AbstractNumberModel
 	{
 		super(value);
 		
-		this.config = config;
-		
 		initFormatters(config);
 	}
-
-	/**
-	 * Bit of a hack, replace the currency symbol with the UTF-8 code 
-	 */
-//	@Override
-//	public Object getObject()
-//	{
-//		String curr = (String)super.getObject();
-//
-//		
-//		return curr;
-//	}	
 	
 	/**
 	 * Init formatters based on the config
@@ -81,7 +64,6 @@ public class CurrencyModel extends AbstractNumberModel
 		try
 		{
 			currency = Currency.getInstance(config.getCurrency());
-			System.out.println(currency);
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -90,8 +72,6 @@ public class CurrencyModel extends AbstractNumberModel
 		}
 		
 		formatter = NumberFormat.getCurrencyInstance(config.getCurrency());
-//		formatter.setMaximumFractionDigits(2);
-//		formatter.setMinimumFractionDigits(2);
 		formatter.setCurrency(currency);		
 	}
 }

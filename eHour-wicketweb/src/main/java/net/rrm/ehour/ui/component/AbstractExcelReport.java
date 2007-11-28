@@ -146,7 +146,6 @@ public abstract class AbstractExcelReport extends DynamicWebResource
 		@Override
 		public Time lastModifiedTime()
 		{
-			System.out.println("returning modified time: " + Time.now());
 			return Time.now();
 		}
 	}

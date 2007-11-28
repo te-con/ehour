@@ -278,7 +278,6 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		row = sheet.createRow(rowNumber++);
 		cell = row.createCell((short)0);
 		cell.setCellStyle(boldCellStyle);
-		System.out.println((String)getHeaderReportName().getObject());
 		cell.setCellValue(new HSSFRichTextString((String)getHeaderReportName().getObject()));
 		sheet.addMergedRegion(new Region(0, (short)0, 0, (short)1));
 
