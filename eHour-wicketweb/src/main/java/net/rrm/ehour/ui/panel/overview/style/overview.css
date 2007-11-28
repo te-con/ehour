@@ -52,6 +52,8 @@ div.MonthAggregateTable div.TotalRow
 	width: 16px;
 	height: 1em;
 	float: 	left;
+	margin: 1px;
+	padding-top: 1px;
 }
 
 #textCell
@@ -60,6 +62,8 @@ div.MonthAggregateTable div.TotalRow
 	width: 15%;
 	float: left;
 	padding-right: 5px;
+	margin: 1px;
+	line-height: 1;
 }
 
 #numbCell
