@@ -148,7 +148,7 @@ public class AssignmentPanel extends Panel implements AjaxAwareContainer
 			case CommonUIStaticData.AJAX_DELETE:
 			{
 				AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((((IWrapModel) params)).getWrappedModel()).getObject();
-				assignment = backingBean.getProjectAssignment();
+				assignment = backingBean.getProjectAssignmentForSave();
 
 				try
 				{

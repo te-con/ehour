@@ -105,6 +105,27 @@ public class AssignmentAdminBackingBean implements AdminBackingBean, Serializabl
 	{
 		return projectAssignment;
 	}
+	
+	/**
+	 * Get project assignment for saving
+	 * @return
+	 */
+	public ProjectAssignment getProjectAssignmentForSave()
+	{
+		if (isInfiniteStartDate())
+		{
+			projectAssignment.setDateStart(null);
+		}
+		
+
+		if (isInfiniteEndDate())
+		{
+			projectAssignment.setDateEnd(null);
+		}
+		
+		return projectAssignment;
+	}
+	
 	/**
 	 * @param projectAssignment the projectAssignment to set
 	 */
