@@ -128,7 +128,7 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 				null, // domain axis label
 				getLocalizer().getString(getValueAxisLabelKey(), this), // range axis label
 				dataset, // data
-				PlotOrientation.VERTICAL, // orientation
+				PlotOrientation.HORIZONTAL, // orientation
 				false, // include legend
 				false, // tooltips?
 				false // URLs?
@@ -157,7 +157,8 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 		renderer.setItemLabelPaint(new Color(0xf9f9f9));
 	
 		// set up gradient paints for series...
-		GradientPaint gradientPaint = new GradientPaint(0.0f, 0.0f, new Color(0xbfd9f6), 0.0f, 0.0f, new Color(0xa3bcd8));
+		GradientPaint gradientPaint = new GradientPaint(0.0f, 0.0f, new Color(0xbfd9f6), 
+														0.0f, 0.0f, new Color(0xa3bcd8));
 		renderer.setPaint(gradientPaint);
 		
 		return chart;
