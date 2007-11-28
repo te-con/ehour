@@ -128,7 +128,7 @@ public class Project extends DomainObject<Integer, Project>
 		return this.defaultProject;
 	}
 
-	public void setDefaultProject(Boolean defaultProject)
+	public void setDefaultProject(boolean defaultProject)
 	{
 		this.defaultProject = defaultProject;
 	}
