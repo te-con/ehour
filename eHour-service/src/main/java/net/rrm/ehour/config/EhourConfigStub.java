@@ -30,7 +30,7 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private static final long serialVersionUID = 3017492603595731493L;
 	private	String[] 	availableTranslations;
 	private	int			completeDayHours;
-	private	String		currency = "EUR";
+	private	Locale		currency = new Locale("nl", "NL");
 	private String		localeLanguage ="en";
 	private String		localeCountry = "NL";
 	private	String		timeZone;
@@ -72,14 +72,14 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	/**
 	 * @return the currency
 	 */
-	public String getCurrency()
+	public Locale getCurrency()
 	{
 		return currency;
 	}
 	/**
 	 * @param currency the currency to set
 	 */
-	public void setCurrency(String currency)
+	public void setCurrency(Locale currency)
 	{
 		this.currency = currency;
 	}

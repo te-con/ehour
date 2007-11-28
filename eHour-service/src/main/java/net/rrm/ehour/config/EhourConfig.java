@@ -52,7 +52,7 @@ public interface EhourConfig
 	 * Get configured currency
 	 * @return
 	 */
-	public String getCurrency();
+	public Locale getCurrency();
 	
 	/**
 	 * Get available translations

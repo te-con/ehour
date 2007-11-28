@@ -52,9 +52,12 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("timezone");
 	}
 
-	public String getCurrency()
+	public Locale getCurrency()
 	{
-		return this.getString("currency", "EUR");
+		String split = this.getString("localeCurrency", "nl_NL");
+		String[] splitted = split.split("_");
+		
+		return new Locale(splitted[0], splitted[1]);
 	}
 
 	public String[] getAvailableTranslations()

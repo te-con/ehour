@@ -16,6 +16,7 @@
 package net.rrm.ehour.config.service;
 
 import java.util.List;
+import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
@@ -57,7 +58,19 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			}
 			else if (key.equalsIgnoreCase("localeCurrency"))
 			{
-				config.setCurrency(value);
+				Locale locale;
+				
+				if (value != null && value.contains("_"))
+				{
+					String[] split = value.split("_");
+					locale = new Locale(split[0], split[1]);
+				}
+				else
+				{
+					locale = new Locale("nl", "NL");
+				}
+				
+				config.setCurrency(locale);
 			}
 			else if (key.equalsIgnoreCase("localeLanguage"))
 			{
@@ -102,7 +115,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	public void persistConfiguration(EhourConfig config)
 	{
 		logger.debug("Persisting config");
-		persistConfig("localeCurrency", config.getCurrency());
+		persistConfig("localeCurrency", config.getCurrency().getLanguage() + "_" + config.getCurrency().getCountry());
 		
 		// TODO change to Integer and use null
 		if (config.getCompleteDayHours() != 0)

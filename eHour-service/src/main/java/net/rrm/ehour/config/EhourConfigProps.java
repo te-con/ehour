@@ -46,9 +46,14 @@ public class EhourConfigProps implements EhourConfig
 		return props.getProperty("timezone");
 	}
 
-	public String getCurrency()
+	public Locale getCurrency()
 	{
-		return props.getProperty("currency");
+		String split = props.getProperty("currency");
+		
+		String[] splitted = split.split("_");
+		
+		return new Locale(splitted[0], splitted[1]);
+
 	}
 
 	public String[] getAvailableTranslations()
