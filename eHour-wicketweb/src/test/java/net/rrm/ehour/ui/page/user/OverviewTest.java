@@ -16,20 +16,53 @@
 
 package net.rrm.ehour.ui.page.user;
 
-import net.rrm.ehour.ui.common.BaseUITest;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import net.rrm.ehour.timesheet.dto.BookedDay;
+import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.session.EhourWebSession;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 
 /**
  * Overview page test
- * FIXME this unit test will fail due to the lack of a websession
  **/
 
-public class OverviewTest extends BaseUITest
+public class OverviewTest extends BaseUIWicketTester
 {
 	public void testOverviewPageRender()
 	{
+		TimesheetService timesheetService = createMock(TimesheetService.class);
+		mockContext.putBean("timesheetService", timesheetService);
+		
+		Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
+		List<BookedDay> days = new ArrayList<BookedDay>();
+		BookedDay day = new BookedDay();
+		day.setDate(new Date(2007 - 1900, 12 - 1, 15));
+		day.setHours(8);
+		days.add(day);
+		
+		expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
+				.andReturn(days);					
+
+		EhourWebSession session = webapp.getSession();
+		session.setNavCalendar(requestedMonth);
+		
+		replay(timesheetService);
+		
 		tester.startPage(Overview.class);
 		tester.assertRenderedPage(Overview.class);
 		tester.assertNoErrorMessage();
+		
+//		verify(timesheetService);
 	}
 }

@@ -23,7 +23,7 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
@@ -32,7 +32,7 @@ import net.rrm.ehour.user.service.UserService;
  * TODO 
  **/
 
-public class DepartmentAdminTest extends BaseUITest
+public class DepartmentAdminTest extends BaseUIWicketTester
 {
 	/**
 	 * Test render

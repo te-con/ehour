@@ -25,14 +25,14 @@ import java.util.ArrayList;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 
 /**
  * Customer admin test render
  **/
 
-public class CustomerAdminTest extends BaseUITest
+public class CustomerAdminTest extends BaseUIWicketTester
 {
 	/**
 	 * Test render

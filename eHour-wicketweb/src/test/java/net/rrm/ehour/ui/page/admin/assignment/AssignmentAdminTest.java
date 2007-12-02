@@ -30,7 +30,7 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
@@ -41,7 +41,7 @@ import net.rrm.ehour.util.EhourConstants;
  * TODO 
  **/
 
-public class AssignmentAdminTest extends BaseUITest
+public class AssignmentAdminTest extends BaseUIWicketTester
 {
 	/**
 	 * Test render

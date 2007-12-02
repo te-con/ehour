@@ -112,6 +112,4 @@ public class TestEhourWebApplication extends EhourWebApplication
 	{
 		return session;
 	}
-	
-	
 }

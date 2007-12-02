@@ -24,7 +24,7 @@ import static org.easymock.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -35,7 +35,7 @@ import net.rrm.ehour.user.service.UserService;
  * TODO 
  **/
 
-public class UserAdminTest extends BaseUITest
+public class UserAdminTest extends BaseUIWicketTester
 {
 	/**
 	 * Test render
@@ -51,7 +51,6 @@ public class UserAdminTest extends BaseUITest
 		user.setUserId(1);
 		user.setLastName("Edeling");
 		users.add(user);
-		
 		
 		expect(userService.getUsers())
 			.andReturn(users);

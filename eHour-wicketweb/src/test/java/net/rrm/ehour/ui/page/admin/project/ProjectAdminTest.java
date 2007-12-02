@@ -27,7 +27,7 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
@@ -36,7 +36,7 @@ import net.rrm.ehour.user.service.UserService;
  * Render testcase for project admin page
  **/
 
-public class ProjectAdminTest extends BaseUITest
+public class ProjectAdminTest extends BaseUIWicketTester
 {
 	/**
 	 * Test render

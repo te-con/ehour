@@ -15,7 +15,7 @@ import java.util.List;
 
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.domain.User;
 
@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author thies
  *
  */
-public class CalendarPanelTest extends BaseUITest
+public class CalendarPanelTest extends BaseUIWicketTester
 {
 	private TimesheetService	timesheetService;
 	
@@ -65,8 +65,6 @@ public class CalendarPanelTest extends BaseUITest
 		session.setNavCalendar(requestedMonth);
 		
 		CalendarPanel panel = new CalendarPanel("id", new User(1));
-
-		
 	}
 //
 //	/**

@@ -22,7 +22,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 import org.apache.wicket.util.tester.FormTester;
 
@@ -30,7 +30,7 @@ import org.apache.wicket.util.tester.FormTester;
  * TODO 
  **/
 
-public class MainConfigTest extends BaseUITest
+public class MainConfigTest extends BaseUIWicketTester
 {
 	/**
 	 * Test render

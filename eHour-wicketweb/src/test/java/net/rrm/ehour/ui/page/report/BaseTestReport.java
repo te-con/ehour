@@ -31,7 +31,7 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 
@@ -39,7 +39,7 @@ import net.rrm.ehour.user.domain.UserDepartment;
  * TODO 
  **/
 
-public class BaseTestReport extends BaseUITest
+public class BaseTestReport extends BaseUIWicketTester
 {
 	protected ReportCriteriaService reportCriteriaService;
 	protected ReportService  reportService;

@@ -27,7 +27,7 @@ import org.apache.wicket.util.tester.WicketTester;
  * Base class for wicket unit tests 
  **/
 
-public class BaseUITest extends TestCase 
+public class BaseUIWicketTester extends TestCase 
 {
 	protected WicketTester	tester;
 	protected AnnotApplicationContextMock	mockContext;

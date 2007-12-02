@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.page.login;
 
-import net.rrm.ehour.ui.common.BaseUITest;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 import org.apache.wicket.util.tester.FormTester;
 
@@ -25,7 +25,7 @@ import org.apache.wicket.util.tester.FormTester;
  * Tests the login tests
  **/
 
-public class LoginTest extends BaseUITest 
+public class LoginTest extends BaseUIWicketTester 
 {
 	public void testLoginPageRender()
 	{
