@@ -37,7 +37,7 @@ import org.apache.ddlutils.io.DataReader;
 import org.apache.ddlutils.io.DatabaseDataIO;
 import org.apache.ddlutils.io.DatabaseIO;
 import org.apache.ddlutils.model.Database;
-import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
+import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.apache.log4j.Logger;
 
 /**
@@ -52,16 +52,19 @@ public class DbValidator
 	private final static String DDL_XML = "ddl-ehour-0.7.xml";
 	private final static String DML_XML = "dml-ehour-0.7.xml";
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.db.DbAccessor#checkDatabaseState(javax.sql.DataSource, java.lang.String)
+
+	/**
+	 * 
+	 * @param dataSource
+	 * @param version
+	 * @param xmlPath
 	 */
 	public void checkDatabaseState(DataSource dataSource, String version, String xmlPath)
 	{
 		boolean databaseInState = false;
 		String 	currentVersion = null;
 		
-		((EmbeddedConnectionPoolDataSource)dataSource).setCreateDatabase("create");
+		((EmbeddedDataSource)dataSource).setCreateDatabase("create");
 		
 		this.xmlPath = xmlPath;
 		
@@ -94,7 +97,7 @@ public class DbValidator
 			logger.info("Datamodel is the requested version.");
 		}		
 		
-		((EmbeddedConnectionPoolDataSource)dataSource).setCreateDatabase("");
+		((EmbeddedDataSource)dataSource).setCreateDatabase("");
 	}
 	
 	/**
@@ -132,6 +135,11 @@ public class DbValidator
         dataIO.writeDataToDatabase(dataReader, new File(xmlPath + DML_XML).getAbsolutePath());
 	}
 	
+	/**
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	private Database readModelFromXML(String fileName)
 	{
 	    return new DatabaseIO().read(fileName);
@@ -157,21 +165,5 @@ public class DbValidator
 		
 		return version;
 		
-	}
-
-	/**
-	 * @return the xmlPath
-	 */
-	public String getXmlPath()
-	{
-		return xmlPath;
-	}
-
-	/**
-	 * @param xmlPath the xmlPath to set
-	 */
-	public void setXmlPath(String xmlPath)
-	{
-		this.xmlPath = xmlPath;
 	}
 }

@@ -43,7 +43,6 @@ public class DbValidatorLifeCycle extends AbstractLifeCycle
     	logger.info("Verifying installed datamodel. Required version is v" + requiredVersion);
 		
 		DataSource dataSource = getDataSource();
-
 		
 		new DbValidator().checkDatabaseState(dataSource, requiredVersion, xmlPath);
     }
