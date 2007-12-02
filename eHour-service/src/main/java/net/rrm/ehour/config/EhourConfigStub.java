@@ -18,6 +18,8 @@ package net.rrm.ehour.config;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Stub for config 
  **/
@@ -146,6 +148,16 @@ public class EhourConfigStub implements EhourConfig, Serializable
 
 	public Locale getLocale()
 	{
+		if (StringUtils.isBlank(localeLanguage))
+		{
+			localeLanguage = "en";
+		}
+		
+		if (StringUtils.isBlank(localeCountry))
+		{
+			localeCountry = "NL";
+		}
+		
 		return new Locale(localeLanguage, localeCountry);
 	}
 	
