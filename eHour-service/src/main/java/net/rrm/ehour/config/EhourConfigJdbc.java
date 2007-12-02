@@ -75,11 +75,6 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("mailSmtp", "127.0.0.1");
 	}
 
-	public boolean isRememberMeAvailable()
-	{
-		return this.getBoolean("rememberMeAvailable", true);
-	}
-
 	public Locale getLocale()
 	{
 		String country = this.getString("localeCountry", "US");

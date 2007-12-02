@@ -39,7 +39,6 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private	boolean		showTurnover;
 	private	String		mailFrom;
 	private	String		mailSmtp;
-	private	boolean		rememberMeAvailable = true;
 	private boolean		demoMode = false;
 	private boolean		dontForceLanguage;
 	
@@ -135,15 +134,6 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	public void setMailSmtp(String mailSmtp)
 	{
 		this.mailSmtp = mailSmtp;
-	}
-	public boolean isRememberMeAvailable()
-	{
-		return this.rememberMeAvailable;
-	}
-
-	public void setRememberMeAvailable(boolean rma)
-	{
-		this.rememberMeAvailable = rma;
 	}
 
 	public Locale getLocale()

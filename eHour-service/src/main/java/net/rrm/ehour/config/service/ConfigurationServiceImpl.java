@@ -96,10 +96,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			{
 				config.setMailSmtp(value);
 			}
-			else if (key.equalsIgnoreCase("rememberMeAvailable"))
-			{
-				config.setRememberMeAvailable(Boolean.parseBoolean(value));
-			}
 			else if (key.equalsIgnoreCase("demoMode"))
 			{
 				config.setDemoMode(Boolean.parseBoolean(value));
@@ -128,8 +124,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig("showTurnOver", config.isShowTurnover());
 		persistConfig("mailFrom", config.getMailFrom());
 		persistConfig("mailSmtp", config.getMailSmtp());
-		persistConfig("rememberMeAvailable", config.isRememberMeAvailable());
-
 	}
 	
 	private void persistConfig(String key, String value)
