@@ -159,12 +159,19 @@ public class MonthOverviewPanel extends Panel
 			
 	        if (overviewFor.get(Calendar.MONTH) == thisMonth)
 	        {
-	        	timesheetEntries = timesheetOverview.getTimesheetEntries().get(overviewFor.get(Calendar.DAY_OF_MONTH));
+	        	if (timesheetOverview.getTimesheetEntries() != null)
+	        	{
+	        		timesheetEntries = timesheetOverview.getTimesheetEntries().get(overviewFor.get(Calendar.DAY_OF_MONTH));
+	        	}
+	        	else
+	        	{
+	        		timesheetEntries = null;
+	        	}
 	        	
 	            if (timesheetEntries != null
 	            		&& timesheetEntries.size() > 0)
 	            {
-	            	fragment = new Fragment(dayId, "showProjects");
+	            	fragment = new Fragment(dayId, "showProjects", this);
 	            	
 	            	@SuppressWarnings("serial")
 	            	ListView projects = new ListView("projects", timesheetEntries)
@@ -183,7 +190,7 @@ public class MonthOverviewPanel extends Panel
 	            }
 	            else
 	            {
-	            	fragment = new Fragment(dayId, "noProjects");
+	            	fragment = new Fragment(dayId, "noProjects", this);
 	            }
 	            
 	            row.add(fragment);

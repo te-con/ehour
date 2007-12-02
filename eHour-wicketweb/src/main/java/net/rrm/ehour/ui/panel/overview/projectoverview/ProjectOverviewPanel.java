@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -120,10 +121,13 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		float	totalTurnover = 0;
 		Label	label;
 
-		for (UserProjectStatus status : projectStatusSet)
+		if (projectStatusSet != null)
 		{
-			totalHours += (status.getHours() != null) ?  status.getHours().floatValue() : 0;
-			totalTurnover += (status.getTurnOver() != null) ? status.getTurnOver().floatValue() : 0;
+			for (UserProjectStatus status : projectStatusSet)
+			{
+				totalHours += (status.getHours() != null) ?  status.getHours().floatValue() : 0;
+				totalTurnover += (status.getTurnOver() != null) ? status.getTurnOver().floatValue() : 0;
+			}
 		}
 		
 		container.add(new Label("grandTotalHours", new FloatModel(totalHours, config)));
@@ -168,7 +172,19 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	@SuppressWarnings("serial")
 	private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
 	{
-		ListView view = new ListView("projectStatus", new ArrayList<UserProjectStatus>(projectStatusSet))
+		List<UserProjectStatus> stati;
+		
+		if (projectStatusSet == null)
+		{
+			stati = new ArrayList<UserProjectStatus>();
+		}
+		else
+		{
+			stati = new ArrayList<UserProjectStatus>(projectStatusSet);
+		}
+			
+		
+		ListView view = new ListView("projectStatus", stati)
 		{
 			private static final long serialVersionUID = -2544424604230082804L;
 			EhourWebSession session = (EhourWebSession)getSession();

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,14 +39,13 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 
 /**
- * TODO 
+ * 
  **/
 
-public class TestEhourWebApplication extends EhourWebApplication
+public class TestEhourWebApplication extends EhourWebApplication implements Serializable 
 {
-	private AnnotApplicationContextMock	mockContext;
+	private transient AnnotApplicationContextMock	mockContext;
 	private EhourWebSession				session;
-	
 
 	/**
 	 * When not authorized, just let it pass
