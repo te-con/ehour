@@ -40,13 +40,6 @@
 					<value>prod-derby</value>
 				</property>
 			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.apache.derby</groupId>
-					<artifactId>derby</artifactId>
-					<version>10.3.1.4</version>
-				</dependency>
-			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
@@ -60,12 +53,17 @@
 					</plugin>
 				</plugins>
 
-				<finalName>ehour-service_prod-derby-${version}</finalName>
+				<finalName>
+					ehour-service_prod-derby-${version}
+				</finalName>
 				<resources>
 					<resource>
 						<directory>
 							src/main/profiles/prod/datasource
 						</directory>
+					</resource>
+					<resource>
+						<directory>src/main/profiles/derby</directory>
 					</resource>
 					<resource>
 						<directory>
@@ -109,7 +107,9 @@
 					</plugin>
 				</plugins>
 
-				<finalName>ehour-service_prod-mysql-${version}</finalName>
+				<finalName>
+					ehour-service_prod-mysql-${version}
+				</finalName>
 				<resources>
 					<resource>
 						<directory>
@@ -137,20 +137,18 @@
 					<value>dev-derby</value>
 				</property>
 			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.apache.derby</groupId>
-					<artifactId>derby</artifactId>
-					<version>10.3.1.4</version>
-				</dependency>
-			</dependencies>
 			<build>
-				<finalName>ehour-service_dev-derby-${version}</finalName>
+				<finalName>
+					ehour-service_dev-derby-${version}
+				</finalName>
 				<resources>
 					<resource>
 						<directory>
 							src/main/profiles/dev/datasource_derby
 						</directory>
+					</resource>
+					<resource>
+						<directory>src/main/profiles/derby</directory>
 					</resource>
 					<resource>
 						<directory>
@@ -182,7 +180,9 @@
 				</dependency>
 			</dependencies>
 			<build>
-				<finalName>ehour-service_dev-mysql-${version}</finalName>
+				<finalName>
+					ehour-service_dev-mysql-${version}
+				</finalName>
 				<resources>
 					<resource>
 						<directory>
@@ -201,7 +201,7 @@
 					</resource>
 				</resources>
 			</build>
-		</profile>		
+		</profile>
 	</profiles>
 	<dependencies>
 		<dependency>
@@ -238,12 +238,12 @@
 					<artifactId>poi</artifactId>
 					<groupId>poi</groupId>
 				</exclusion>
-			</exclusions>			
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
-			<version>2.0.6</version>
+			<version>2.0.7</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>org.springframework</artifactId>
@@ -258,21 +258,21 @@
 					<groupId>cglib</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
-			<version>2.0.6</version>
+			<version>2.0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-hibernate3</artifactId>
-			<version>2.0.6</version>
+			<version>2.0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>2.0.6</version>
+			<version>2.0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -308,7 +308,17 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>1.5</version>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.3.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ddlutils</groupId>
+			<artifactId>ddlutils</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>
