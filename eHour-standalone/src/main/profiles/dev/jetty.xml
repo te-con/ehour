@@ -56,15 +56,6 @@
 
 	<Call name="addLifeCycle">
 		<Arg>
-			<New class="net.rrm.ehour.db.DbValidatorLifeCycle">
-				<Set name="requiredVersion">0.7</Set>
-				<Set name="xmlPath">src/main/resources/db/</Set>
-			</New>
-		</Arg>
-	</Call>
-
-	<Call name="addLifeCycle">
-		<Arg>
 			<New class="org.mortbay.jetty.deployer.ContextDeployer">
 				<Set name="contexts">
 					<Ref id="Contexts" />

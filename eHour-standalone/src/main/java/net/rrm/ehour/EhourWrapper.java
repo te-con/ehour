@@ -17,7 +17,6 @@
 
 package net.rrm.ehour;
 
-import java.io.File;
 import java.io.FileInputStream;
 
 import org.mortbay.jetty.Server;
@@ -33,8 +32,6 @@ public class EhourWrapper
 	public void start(String filename) throws Exception
 	{
 		Server server = new Server();
-		
-		File file = new File(filename);
 		
 		XmlConfiguration configuration = new XmlConfiguration(new FileInputStream(filename));
 		configuration.configure(server);

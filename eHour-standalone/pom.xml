@@ -19,6 +19,13 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
@@ -59,9 +66,7 @@
 
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/prod/
-						</directory>
+						<directory>src/main/profiles/prod/</directory>
 					</resource>
 				</resources>
 			</build>
@@ -77,9 +82,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/dev/
-						</directory>
+						<directory>src/main/profiles/dev/</directory>
 					</resource>
 				</resources>
 			</build>
