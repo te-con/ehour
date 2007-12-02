@@ -160,6 +160,8 @@
             <groupId>com.atlassian.maven.plugins</groupId>
             <configuration>
                 <licenseLocation>${clover.licenseLocation}</licenseLocation>
+				  <jdk>1.5</jdk>
+				  <generateXml>true</generateXml>
             </configuration>
         </plugin>
 	
