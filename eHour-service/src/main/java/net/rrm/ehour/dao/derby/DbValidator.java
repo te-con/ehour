@@ -151,8 +151,6 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
 		
 		Resource resource = this.resourceLoader.getResource(ddlFile);
-        System.err.println("X: " + resource.getFile());
-        
 
 		Database ddlModel = new DatabaseIO().read(resource.getFile());
 		platform.createTables(ddlModel, false, false);
@@ -178,6 +176,8 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
         Resource resource = this.resourceLoader.getResource(dmlFile);
         
         dataIO.writeDataToDatabase(dataReader, new FileReader(resource.getFile()));
+        
+        logger.info("Data inserted");
 	}
 	
 	/**
