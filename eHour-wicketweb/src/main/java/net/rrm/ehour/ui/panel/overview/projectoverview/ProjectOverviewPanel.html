@@ -11,10 +11,10 @@
 		<div class="MonthAggregateTable">
 
 			<div class="AggregateHeader">
-				<div id="foldCell">&nbsp;</div>
-				<div class="textCell" style="width: 19%;margin-top:0" wicket:id="projectLabel">Project</div>
+				<div class="foldCell">&nbsp;</div>
+				<div class="textCell" style="width: 19%;margin-top:0;" wicket:id="projectLabel">Project</div>
 				<div class="textCell" style="margin-top:0" wicket:id="projectCodeLabel">Project code</div>
-				<div class="textCell" style="width: 17%;margin-top:0" wicket:id="customerLabel">Customer</div>
+				<div class="textCell" style="width: 17%;margin-top:0;" wicket:id="customerLabel">Customer</div>
 				<div class="numbCell" style="margin-top:0" wicket:id="rateLabel">Rate</div>
 				<div class="numbCell" style="margin-top:0" wicket:id="bookedHoursLabel">Hours</div>
 				<div class="numbCell" style="width: 19%;margin-top:0;" wicket:id="turnoverLabel">Turnover</div>
@@ -22,7 +22,7 @@
 
 			<span wicket:id="projectStatus">
 				<div class="AggregateRow" onclick="foldSummary(this)">
-					<div id="foldCell"><img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" /></div>
+					<div class="foldCell"><img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" /></div>
 					<div class="textCell" style="width: 19%;overflow:hidden" wicket:id="projectName">[projectName]</div>
 					<div class="textCell" wicket:id="projectCode">[projectCode]</div>
 					<div class="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
@@ -32,7 +32,7 @@
 				</div>
 	
 				<div class="SummaryRow" wicket:id="summaryRow">
-					<div id="foldCell">&nbsp;</div>
+					<div class="foldCell">&nbsp;</div>
 					Valid from:	<span wicket:id="validStart"></span> &nbsp;to&nbsp; 
 					<span wicket:id="validEnd"></span>. 
 					<span wicket:id="remainingHoursLabel">
@@ -43,7 +43,7 @@
 			</span>
 			
 			<div class="TotalRow">
-				<div id="foldCell">&nbsp;</div>
+				<div class="foldCell">&nbsp;</div>
 				<div class="textCell" style="width: 19%">&nbsp;</div>
 				<div class="textCell">&nbsp;</div>
 				<div class="textCell" style="width: 17%">&nbsp;</div>
