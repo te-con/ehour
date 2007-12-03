@@ -16,10 +16,10 @@
 package net.rrm.ehour.report.reports;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * report DTO 
@@ -264,5 +264,39 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	public void setDayDate(Date dayDate)
 	{
 		this.dayDate = dayDate;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object)
+	{
+		if (!(object instanceof FlatProjectAssignmentAggregate))
+		{
+			return false;
+		}
+		
+		FlatProjectAssignmentAggregate rhs = (FlatProjectAssignmentAggregate) object;
+		return new EqualsBuilder()
+			.append(this.assignmentId, rhs.getAssignmentId())
+			.append(this.dayDate, rhs.getDayDate())
+			.append(this.entryDate, rhs.getEntryDate())
+			.append(this.totalHours, rhs.getTotalHours())
+			.append(this.totalTurnOver, rhs.getTotalTurnOver())
+			.isEquals();
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder()
+				.append(this.assignmentId)
+				.append(this.dayDate)
+				.append(this.entryDate)
+				.append(this.totalHours)
+				.append(this.totalTurnOver)
+				.toHashCode();
 	}
 }

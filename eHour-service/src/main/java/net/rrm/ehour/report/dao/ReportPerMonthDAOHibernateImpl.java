@@ -16,7 +16,6 @@
 package net.rrm.ehour.report.dao;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -24,7 +23,6 @@ import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.transform.ResultTransformer;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 

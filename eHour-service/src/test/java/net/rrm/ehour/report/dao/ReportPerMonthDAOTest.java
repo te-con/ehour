@@ -106,7 +106,9 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 		projectIds.add(1);
 		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerDayForAssignment(projectIds, dateRange);
 		
-		assertEquals(6, results.size());		
+		assertEquals(6, results.size());
+		
+		assertNotNull(results.get(0).getProjectId());
 	}	
 	
 	/**

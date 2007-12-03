@@ -15,7 +15,6 @@
 
 package net.rrm.ehour.report.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
