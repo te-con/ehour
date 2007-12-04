@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
@@ -184,14 +185,9 @@ public class CalendarPanel extends SidePanel
 		        
 		        if (fireWeekClicks)
 		        {
-		        	System.out.println(week.getWeekStart());
-		        	if (highlightWeekStartingAt != null &&
-		        			DateUtil.isDateWithinRange(week.getWeekStart(), highlightWeekStartingAt))
+		        	if (highlightWeekStartingAt == null ||
+		        			!DateUtil.isDateWithinRange(week.getWeekStart(), highlightWeekStartingAt))
         			{
-		        		item.add(new SimpleAttributeModifier("style", "background-color: '#edf5fe'"));
-        			}
-		        	else
-		        	{
 						item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
 						item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
 						item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
@@ -203,18 +199,37 @@ public class CalendarPanel extends SidePanel
 		        }
 			}
 
+			/**
+			 * 
+			 * @param id
+			 * @param week
+			 * @param dayInWeek
+			 * @return
+			 */
 			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
 			{
-				Label label = new Label(id, new PropertyModel(week, "days[" + dayInWeek + "]"));
+				Label 	label;
 
 				if (week.getDays()[dayInWeek] == 0)
 				{
-					label.setVisible(false);
+					label = HtmlUtil.getNbspLabel(id);
 				}
-				else if (week.getDaysBooked()[dayInWeek])
+				else
+				{
+					label = new Label(id, new PropertyModel(week, "days[" + dayInWeek + "]"));
+				}
+				
+				
+				if (week.getDaysBooked()[dayInWeek])
 				{
 					label.add(new SimpleAttributeModifier("style", "font-weight: bold"));
 				}
+				
+	        	if (highlightWeekStartingAt != null &&
+	        			DateUtil.isDateWithinRange(week.getWeekStart(), highlightWeekStartingAt))
+    			{
+	        		label.add(new SimpleAttributeModifier("style", "background-color: #edf5fe"));
+    			}				
 
 				return label;
 			}

@@ -79,13 +79,10 @@ public class Overview extends BasePage
 			case CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE:
 				calendarChanged(target);
 				break;
+			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_NAV:
 			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK:
 				calendarWeekClicked(target);
 				calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
-				calendarPanel.refreshCalendar(target);
-				break;
-			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_NAV:
-				calendarWeekClicked(target);
 				calendarPanel.refreshCalendar(target);
 				break;
 			case CommonUIStaticData.AJAX_FORM_SUBMIT:
