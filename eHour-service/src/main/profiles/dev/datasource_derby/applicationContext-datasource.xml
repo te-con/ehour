@@ -5,7 +5,7 @@
 
 	<bean id="eHourDataSource"
 		class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource">
-		<property name="databaseName" value="c:/ehourDb" />
+		<property name="databaseName" value="ehourDb" />
 		<property name="createDatabase" value="create" />
 	</bean>
 
