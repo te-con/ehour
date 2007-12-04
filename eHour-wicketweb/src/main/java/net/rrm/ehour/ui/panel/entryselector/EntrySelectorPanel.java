@@ -167,7 +167,7 @@ public class EntrySelectorPanel extends Panel
 				private static final long serialVersionUID = -1;
 	            public Object getObject()
 	            {
-	                return "this.style.color='#233e55';if (this.value == '" + defaultFilterText + "') { this.value='';}";
+	                return "this.style.color='#233e55';if (this.value == '" + defaultFilterText.getString() + "') { this.value='';}";
 	            }
 	        }));
 			
