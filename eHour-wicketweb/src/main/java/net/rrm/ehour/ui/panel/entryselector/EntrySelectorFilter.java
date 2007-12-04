@@ -35,11 +35,6 @@ public class EntrySelectorFilter implements Serializable
 	private	StringResourceModel	defaultFilterInputText;
 	private String	onId;
 	
-	public EntrySelectorFilter()
-	{
-		
-	}
-	
 	public EntrySelectorFilter(StringResourceModel defaultFilterInputText)
 	{
 		this.defaultFilterInputText = defaultFilterInputText;
