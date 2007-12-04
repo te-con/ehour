@@ -5,7 +5,7 @@
 
 	<context-param>
 		<param-name>configuration</param-name>
-		<param-value>development</param-value>
+		<param-value>deployment</param-value>
 	</context-param>
 
 	<context-param>
@@ -83,9 +83,8 @@
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
-
 	<resource-ref>
-		<res-ref-name>jdbc/dbase</res-ref-name>
+		<res-ref-name>jdbc/eHourDS</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>container</res-auth>
 	</resource-ref>
