@@ -23,22 +23,75 @@
 
 package net.rrm.ehour.ui.reportchart.rowkey;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
+
 
 /**
  * RowKey wrapper 
  **/
 
-public interface ChartRowKey
+public abstract class ChartRowKey implements Comparable<ChartRowKey>
 {
 	/**
 	 * Get identifier
 	 * @return
 	 */
-	public Integer getId();
+	public abstract Integer getId();
 	
 	/**
 	 * Get row name
 	 * @return
 	 */
-	public String getName();
+	public abstract String getName();
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return getName();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object object)
+	{
+		if (!(object instanceof ChartRowKey))
+		{
+			return false;
+		}
+		ChartRowKey rhs = (ChartRowKey) object;
+		return new EqualsBuilder()
+					.append(getId(), rhs.getId())
+					.isEquals();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder(2072873729, -1118826425)
+						.append(getId())
+						.toHashCode();
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(ChartRowKey object)
+	{
+		return new CompareToBuilder()
+					.append(this.getName().toLowerCase(), object.getName().toLowerCase())
+					.toComparison();
+	}
 }

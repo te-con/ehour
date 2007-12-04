@@ -29,7 +29,7 @@ import net.rrm.ehour.customer.domain.Customer;
  * TODO 
  **/
 
-public class CustomerRowKey implements ChartRowKey
+public class CustomerRowKey extends ChartRowKey
 {
 	private Customer	customer;
 	

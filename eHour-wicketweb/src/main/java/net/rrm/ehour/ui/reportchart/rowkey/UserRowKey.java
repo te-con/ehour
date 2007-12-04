@@ -25,11 +25,13 @@ package net.rrm.ehour.ui.reportchart.rowkey;
 
 import net.rrm.ehour.user.domain.User;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * TODO 
  **/
 
-public class UserRowKey implements ChartRowKey
+public class UserRowKey extends ChartRowKey
 {
 	private	User 	user;
 	
@@ -43,7 +45,14 @@ public class UserRowKey implements ChartRowKey
 	 */
 	public String getName()
 	{
-		return user.getLastName();
+		if (StringUtils.isBlank(user.getFirstName()))
+		{
+			return user.getLastName();
+		}
+		else
+		{
+			return user.getLastName() +", " + user.getFirstName().substring(0, 1).toUpperCase() + ".";
+		}
 	}
 
 	public Integer getId()

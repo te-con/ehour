@@ -28,7 +28,6 @@ import java.util.Map;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
-import net.rrm.ehour.ui.sort.StringComparator;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Resource;
@@ -172,11 +171,11 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	private DefaultCategoryDataset createDataset(ReportDataAggregate reportDataAggregate)
 	{
 		DefaultCategoryDataset dataset;
-		Map<String, Number> valueMap = new HashMap<String, Number>();
+		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
 		ChartRowKey		rowKey;
 		Number 			value;
 		String			valueAxisLabel = getValueAxisLabelKey();
-		List<String>	keys;
+		List<ChartRowKey>	keys;
 
 		dataset = new DefaultCategoryDataset();
 
@@ -191,20 +190,20 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 				value = new Double(0);
 			}
 
-			if (valueMap.containsKey(rowKey.getName()))
+			if (valueMap.containsKey(rowKey))
 			{
-				value = value.doubleValue() + valueMap.get(rowKey.getName()).doubleValue();
-				valueMap.put(rowKey.getName(), value);
+				value = value.doubleValue() + valueMap.get(rowKey).doubleValue();
+				valueMap.put(rowKey, value);
 			} else
 			{
-				valueMap.put(rowKey.getName(), value);
+				valueMap.put(rowKey, value);
 			}
 		}
 
-		keys = new ArrayList<String>(valueMap.keySet());
-		Collections.sort(keys, new StringComparator());
+		keys = new ArrayList<ChartRowKey>(valueMap.keySet());
+		Collections.sort(keys);
 		
-		for (String rowKeyAgg : keys)
+		for (ChartRowKey rowKeyAgg : keys)
 		{
 			dataset.addValue(valueMap.get(rowKeyAgg), valueAxisLabel, rowKeyAgg);
 		}

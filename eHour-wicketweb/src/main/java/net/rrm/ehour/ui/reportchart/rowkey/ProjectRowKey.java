@@ -29,7 +29,7 @@ import net.rrm.ehour.project.domain.Project;
  * RowKey decorator for project 
  **/
 
-public class ProjectRowKey implements ChartRowKey
+public class ProjectRowKey extends ChartRowKey
 {
 	private	Project	project;
 	
