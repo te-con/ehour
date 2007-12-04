@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.panel.calendar;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Representation of a week
@@ -30,6 +31,7 @@ public class CalendarWeek implements Serializable
 	private static final long serialVersionUID = -6927161077692797646L;
 	private	int		week;
 	private	int		year;
+	private Date	weekStart;
 	
 	private	int[]		days = new int[7];
 	private	boolean[]	daysBooked = new boolean[7];
@@ -95,6 +97,16 @@ public class CalendarWeek implements Serializable
 	public void setYear(int year)
 	{
 		this.year = year;
+	}
+
+	public Date getWeekStart()
+	{
+		return weekStart;
+	}
+
+	public void setWeekStart(Date weekStart)
+	{
+		this.weekStart = weekStart;
 	}
 
 }

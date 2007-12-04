@@ -21,7 +21,9 @@ import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.overview.OverviewPanel;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
+import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -79,6 +81,8 @@ public class Overview extends BasePage
 				break;
 			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK:
 				calendarWeekClicked(target);
+				calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
+				calendarPanel.refreshCalendar(target);
 				break;
 			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_NAV:
 				calendarWeekClicked(target);

@@ -119,7 +119,9 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		// grey & blue frame border
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", 
-																				getWeekNavigation(forWeek, timesheet.getWeekStart()),
+																				getWeekNavigation(forWeek, 
+																									timesheet.getWeekStart(), 
+																									timesheet.getWeekEnd()),
 																				CommonUIStaticData.GREYFRAME_WIDTH);
 		add(greyBorder);
 
@@ -163,14 +165,22 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param forWeek
 	 */
 	@SuppressWarnings("serial")
-	private WebMarkupContainer getWeekNavigation(Calendar forWeek, final Date weekStart)
+	private WebMarkupContainer getWeekNavigation(Calendar forWeek, final Date weekStart, final Date weekEnd)
 	{
 		Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
-		SimpleDateFormat	dateFormatter;
-		dateFormatter = new SimpleDateFormat("w, MMMM yyyy", config.getLocale());
-
+		SimpleDateFormat	weekDateFormatter, dateFormatter;
+		weekDateFormatter = new SimpleDateFormat("w", config.getLocale());
+		dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
+		
 		// TODO i18n
-		titleFragment.add(new Label("titleLabel", "Week " + dateFormatter.format(forWeek.getTime())));
+		StringBuilder weekLabel = new StringBuilder("Week ");
+		weekLabel.append(weekDateFormatter.format(forWeek.getTime()));
+		weekLabel.append(": ");
+		weekLabel.append(dateFormatter.format(weekStart));
+		weekLabel.append(" - ");
+		weekLabel.append(dateFormatter.format(weekEnd));
+
+		titleFragment.add(new Label("titleLabel", weekLabel.toString()));
 		
 		AjaxLink previousWeekLink = new AjaxLink("previousWeek")
 		{

@@ -39,6 +39,7 @@ public class Timesheet implements Serializable
 	private SortedMap<Customer, List<TimesheetRow>>	customers;
 	private	Date[]				dateSequence;
 	private	Date				weekStart;
+	private	Date				weekEnd;
 	private	User				user;
 	private	TimesheetComment	comment;
 	private	CustomerFoldPreferenceList foldPreferences;	
@@ -160,6 +161,16 @@ public class Timesheet implements Serializable
 	public void setMaxHoursPerDay(int maxHoursPerDay)
 	{
 		this.maxHoursPerDay = maxHoursPerDay;
+	}
+
+	public Date getWeekEnd()
+	{
+		return weekEnd;
+	}
+
+	public void setWeekEnd(Date weekEnd)
+	{
+		this.weekEnd = weekEnd;
 	}
 
 }

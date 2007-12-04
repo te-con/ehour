@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
@@ -65,6 +66,7 @@ public class CalendarPanel extends SidePanel
 	private WebMarkupContainer	calendarFrame;
 	private	User				user;
 	private boolean				fireWeekClicks;
+	private	DateRange			highlightWeekStartingAt;
 	
 	/**
 	 * Calendar firing off week clicks as well
@@ -182,17 +184,23 @@ public class CalendarPanel extends SidePanel
 		        
 		        if (fireWeekClicks)
 		        {
-					item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
-					item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
-					item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
+		        	System.out.println(week.getWeekStart());
+		        	if (highlightWeekStartingAt != null &&
+		        			DateUtil.isDateWithinRange(week.getWeekStart(), highlightWeekStartingAt))
+        			{
+		        		item.add(new SimpleAttributeModifier("style", "background-color: '#edf5fe'"));
+        			}
+		        	else
+		        	{
+						item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
+						item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
+						item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
+		        	}
 		        }
 		        else
 		        {
 		        	item.add(new SimpleAttributeModifier("style", "cursor:default"));
 		        }
-		        	
-		        
-		        
 			}
 
 			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
@@ -239,6 +247,7 @@ public class CalendarPanel extends SidePanel
 		month.set(Calendar.DAY_OF_MONTH, 1);
 		week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
 		week.setYear(month.get(Calendar.YEAR));
+		week.setWeekStart(month.getTime());
 
 		int previousWeek = -1;
 		
@@ -257,6 +266,7 @@ public class CalendarPanel extends SidePanel
 				calendarWeeks.add(week);
 
 				week = new CalendarWeek();
+				week.setWeekStart(month.getTime());
 				week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
 
 				// fix that the year is still the old year but the week is already in the next year
@@ -396,13 +406,13 @@ public class CalendarPanel extends SidePanel
 			cal.set(Calendar.YEAR, year);
 			cal.set(Calendar.WEEK_OF_YEAR, week);
 			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+			
 			session.setNavCalendar(cal);
 			
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,
 														CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK,
 														cal
 			);
-			
 		}
 		
 		@Override
@@ -410,5 +420,15 @@ public class CalendarPanel extends SidePanel
 		{
 			return new LoadingSpinnerDecorator();
 		}		
-	}				
+	}
+
+	public DateRange getHighlightWeekStartingAt()
+	{
+		return highlightWeekStartingAt;
+	}
+
+	public void setHighlightWeekStartingAt(DateRange highlightWeekStartingAt)
+	{
+		this.highlightWeekStartingAt = highlightWeekStartingAt;
+	}
 }

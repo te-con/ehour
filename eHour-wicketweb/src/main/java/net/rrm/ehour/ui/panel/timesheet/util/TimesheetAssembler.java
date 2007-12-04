@@ -87,6 +87,7 @@ public class TimesheetAssembler
 		timesheet.setCustomers(customerMap);
 		timesheet.setDateSequence((Date[])dateSequence.toArray(new Date[7]));
 		timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());		
+		timesheet.setWeekEnd(weekOverview.getWeekRange().getDateEnd());
 	
 		timesheet.setComment(weekOverview.getComment());
 		timesheet.setUser(weekOverview.getUser());
