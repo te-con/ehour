@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>eHour</artifactId>
 		<groupId>net.rrm.ehour</groupId>
-		<version>0.7.1-SNAPSHOT</version>
+		<version>0.7.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
@@ -99,17 +99,17 @@
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
-			<version>6.1.5</version>
+			<version>6.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty-naming</artifactId>
-			<version>6.1.5</version>
+			<version>6.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty-plus</artifactId>
-			<version>6.1.5</version>
+			<version>6.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
