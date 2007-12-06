@@ -23,9 +23,12 @@
 
 package net.rrm.ehour.dao.derby;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -90,6 +93,8 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		
 		logger.info("Verifying Derby database version. Minimum version: " + version);
 
+		((EmbeddedDataSource)dataSource).setCreateDatabase("create");
+		
 		try
 		{
 			Connection connection = dataSource.getConnection();
@@ -106,13 +111,8 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 			try
 			{
 				createDatamodel(dataSource);
-			} catch (DdlUtilsException e1)
+			} catch (Exception e1)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1)
-			{
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
@@ -152,7 +152,7 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		
 		Resource resource = this.resourceLoader.getResource(ddlFile);
 
-		Database ddlModel = new DatabaseIO().read(resource.getFile());
+		Database ddlModel = new DatabaseIO().read(new InputStreamReader(resource.getInputStream()));
 		platform.createTables(ddlModel, false, false);
 
 		insertData(platform, ddlModel);
@@ -175,7 +175,7 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
         
         Resource resource = this.resourceLoader.getResource(dmlFile);
         
-        dataIO.writeDataToDatabase(dataReader, new FileReader(resource.getFile()));
+        dataIO.writeDataToDatabase(dataReader, new InputStreamReader(resource.getInputStream()));
         
         logger.info("Data inserted");
 	}

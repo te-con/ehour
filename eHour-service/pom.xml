@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.7.1-SNAPSHOT</version>
+		<version>0.7.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
@@ -59,9 +59,9 @@
 				<resources>
 					<resource>
 						<directory>
-							src/main/profiles/prod/datasource
+							src/main/profiles/prod/datasource_derby
 						</directory>
-					</resource>
+					</resource>				
 					<resource>
 						<directory>src/main/profiles/derby</directory>
 					</resource>
@@ -137,9 +137,9 @@
 				<resources>
 					<resource>
 						<directory>
-							src/main/profiles/prod/datasource
+							src/main/profiles/prod/datasource_mysql
 						</directory>
-					</resource>
+					</resource>				
 					<resource>
 						<directory>
 							src/main/profiles/prod/log4j

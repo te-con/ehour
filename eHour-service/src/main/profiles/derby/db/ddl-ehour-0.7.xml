@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database.dtd">
   <database name="ehour-0.7">
     <table name="hibernate_unique_key">
 		<column name="next_hi" primaryKey="false" required="false" type="INTEGER" size="10" autoIncrement="false"/>
