@@ -168,7 +168,7 @@ public class MainConfig extends BaseAdminPage
 			{
 				if (configBackingBean.getConfig().isInDemoMode())
 				{
-					return new DemoDecorator(new ResourceModel("demoModel"));
+					return new DemoDecorator(new ResourceModel("demoMode"));
 				}
 				else
 				{
