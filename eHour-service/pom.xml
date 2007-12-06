@@ -77,6 +77,18 @@
 					</resource>
 				</resources>
 			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.3.1.4</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.ddlutils</groupId>
+					<artifactId>ddlutils</artifactId>
+					<version>1.0</version>
+				</dependency>
+			</dependencies>
 		</profile>
 		<profile>
 			<id>env-prod-mysql</id>
@@ -92,6 +104,18 @@
 					<artifactId>mysql-connector-java</artifactId>
 					<version>5.0.5</version>
 					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.3.1.4</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.ddlutils</groupId>
+					<artifactId>ddlutils</artifactId>
+					<version>1.0</version>
+					<scope>provided</scope>
 				</dependency>
 			</dependencies>
 			<build>
@@ -162,6 +186,18 @@
 					</resource>
 				</resources>
 			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.3.1.4</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.ddlutils</groupId>
+					<artifactId>ddlutils</artifactId>
+					<version>1.0</version>
+				</dependency>
+			</dependencies>
 		</profile>
 		<profile>
 			<id>env-dev-mysql</id>
@@ -177,6 +213,18 @@
 					<artifactId>mysql-connector-java</artifactId>
 					<version>5.0.5</version>
 					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.3.1.4</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.ddlutils</groupId>
+					<artifactId>ddlutils</artifactId>
+					<version>1.0</version>
+					<scope>provided</scope>
 				</dependency>
 			</dependencies>
 			<build>
@@ -308,16 +356,6 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>1.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>10.3.1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.ddlutils</groupId>
-			<artifactId>ddlutils</artifactId>
-			<version>1.0</version>
 		</dependency>
 	</dependencies>
 	<reporting>
