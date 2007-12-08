@@ -39,6 +39,8 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
 	/** identifier field */
 	private ProjectAssignment projectAssignment;
 
+	private Integer displayOrder;
+	
 	/** full constructor */
 	public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment)
 	{
@@ -65,7 +67,9 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("entryDate", getEntryDate())
-										.append("assignment", getProjectAssignment()).toString();
+															.append("assignment", getProjectAssignment())
+															.append("displayOrder", getDisplayOrder())
+															.toString();
 	}
 
 	@Override
@@ -77,6 +81,7 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
 			return false;
 		TimesheetEntryId castOther = (TimesheetEntryId) other;
 		return new EqualsBuilder().append(this.getEntryDate(), castOther.getEntryDate())
+									.append(this.getDisplayOrder(), castOther.getDisplayOrder())
 								  .append(this.getProjectAssignment(), castOther.getProjectAssignment()).isEquals();
 	}
 
@@ -84,6 +89,7 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
 	public int hashCode()
 	{
 		return new HashCodeBuilder().append(getEntryDate())
+									.append(getDisplayOrder())
 									.append(getProjectAssignment()).toHashCode();
 	}
 
@@ -104,7 +110,19 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
 	{
 		return new CompareToBuilder()
 			.append(this.projectAssignment, object.projectAssignment)
-			.append(this.entryDate, object.entryDate).toComparison();
+			.append(this.entryDate, object.entryDate)
+			.append(this.displayOrder, object.displayOrder)
+			.toComparison();
+	}
+
+	public Integer getDisplayOrder()
+	{
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(Integer displayOrder)
+	{
+		this.displayOrder = displayOrder;
 	}
 
 }

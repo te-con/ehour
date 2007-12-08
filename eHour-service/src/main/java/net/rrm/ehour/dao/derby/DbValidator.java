@@ -23,10 +23,7 @@
 
 package net.rrm.ehour.dao.derby;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -64,6 +61,8 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 	private	String		version;
 	private ResourceLoader	resourceLoader;
 	
+	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
+	
 	private final static Logger logger = Logger.getLogger(DbValidator.class);
 	
 
@@ -90,6 +89,7 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 	{
 		boolean databaseInState = false;
 		String 	currentVersion = null;
+		DdlType ddlType = DdlType.CREATE_TABLE;
 		
 		logger.info("Verifying Derby database version. Minimum version: " + version);
 
@@ -102,43 +102,42 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 			currentVersion = getCurrentVersion(connection);
 			
 			databaseInState = (currentVersion != null) ? currentVersion.equalsIgnoreCase(version) : false;
+			
+			if (databaseInState)
+			{
+				ddlType = DdlType.NONE;
+				logger.info("Datamodel is the requested version.");
+			}
+			else
+			{
+				logger.info("Datamodel of version " + currentVersion + " found. Upgrading to " + version);
+
+				ddlType = DdlType.ALTER_TABLE;
+			}
+			
+			
 		} catch (SQLException e)
 		{
+			ddlType = DdlType.CREATE_TABLE;
 			logger.info("Could not determine datamodel's version, recreating..");
+		}
+		
+		if (ddlType != DdlType.NONE)
+		{
+			
 			currentVersion = "unknown";
-			logger.debug(e);
 			
 			try
 			{
-				createDatamodel(dataSource);
-			} catch (Exception e1)
+				createOrAlterDatamodel(dataSource, ddlType);
+			} catch (Exception e)
 			{
-				e1.printStackTrace();
+				System.err.println("Failed to create or upgrad datamodel");
+				e.printStackTrace();
 			}
-			
-			databaseInState = true;
 		}
-
-		if (!databaseInState)
-		{
-			logger.info("Datamodel of version " + currentVersion + " found. Upgrading to " + version);
-			
-			upgradeDatamodel(dataSource);
-		}
-		else
-		{
-			logger.info("Datamodel is the requested version.");
-		}		
 		
 		((EmbeddedDataSource)dataSource).setCreateDatabase("");
-	}
-	
-	/**
-	 * 
-	 */
-	private void upgradeDatamodel(DataSource dataSource)
-	{
-		// TODO implement in 0.8
 	}
 
 	/**
@@ -146,16 +145,23 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 	 * @throws IOException 
 	 * @throws DdlUtilsException 
 	 */
-	private void createDatamodel(DataSource dataSource) throws DdlUtilsException, IOException
+	private void createOrAlterDatamodel(DataSource dataSource, DdlType ddlType) throws DdlUtilsException, IOException
 	{
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
 		
 		Resource resource = this.resourceLoader.getResource(ddlFile);
 
 		Database ddlModel = new DatabaseIO().read(new InputStreamReader(resource.getInputStream()));
-		platform.createTables(ddlModel, false, false);
-
-		insertData(platform, ddlModel);
+		
+		if (ddlType == DdlType.CREATE_TABLE)
+		{
+			platform.createTables(ddlModel, false, false);
+			insertData(platform, ddlModel);
+		}
+		else
+		{
+			platform.alterTables(ddlModel, false);
+		}
 	}
 
 	/**

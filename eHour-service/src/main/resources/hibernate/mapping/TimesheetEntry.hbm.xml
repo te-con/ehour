@@ -9,8 +9,11 @@
         <composite-id name="entryId" class="net.rrm.ehour.timesheet.domain.TimesheetEntryId">
 		    <key-property name="entryDate" column="ENTRY_DATE" type="date" />
 		    <key-many-to-one name="projectAssignment" class="net.rrm.ehour.project.domain.ProjectAssignment" column="ASSIGNMENT_ID" lazy="false" />
+		    <key-property name="displayOrder" column="DISPLAY_ORDER" type="integer"  />
         </composite-id>
 
 		<property name="hours" column="HOURS" type="float"/>
+		
+		<property name="comment" column="COMMENT" type="string"/>
 	</class>	
 </hibernate-mapping>

@@ -20,6 +20,8 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
 	/** nullable persistent field */
 	private Float hours;
+	
+	private String comment;
 
 	/** full constructor */
 	public TimesheetEntry(TimesheetEntryId entryId, Float hours)
@@ -97,5 +99,15 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("hours", this.hours).append("entryId", this.entryId).toString();
+	}
+
+	public String getComment()
+	{
+		return comment;
+	}
+
+	public void setComment(String comment)
+	{
+		this.comment = comment;
 	}
 }

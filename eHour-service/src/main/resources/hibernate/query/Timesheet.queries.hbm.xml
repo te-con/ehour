@@ -10,12 +10,12 @@
         ]]></query>
 
     <query name="Timesheet.getBookedProjectsInRangeForUserId">
-        <![CDATA[SELECT entry.entryId.projectAssignment.assignmentId
+        <![CDATA[SELECT entry.entryId.projectAssignment.assignmentId,entry.entryId.displayOrder
         		 FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate >= :dateStart AND
                        entry.entryId.entryDate <= :dateEnd AND
                        entry.entryId.projectAssignment.user.userId = :userId
-                 GROUP BY entry.entryId.projectAssignment.assignmentId
+                 GROUP BY entry.entryId.projectAssignment.assignmentId,entry.entryId.displayOrder
         ]]></query>
         
     <query name="Timesheet.getBookedDaysInRangeForUserId">

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database.dtd">
+<data>
+  <hibernate_unique_key next_hi="1000"></hibernate_unique_key>
+  <configuration config_key="version" config_value="0.7.2"></configuration>
+  /data>
