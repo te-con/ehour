@@ -105,7 +105,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new ConfirmPasswordValidator(passwordTextField, confirmPasswordTextField));
 		
 		// first & last name
-		TextField	firstNameField = new RequiredTextField("user.firstName");
+		TextField	firstNameField = new TextField("user.firstName");
 		form.add(firstNameField);
 
 		TextField	lastNameField = new RequiredTextField("user.lastName");
