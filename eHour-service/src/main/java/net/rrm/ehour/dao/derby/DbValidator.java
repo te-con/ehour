@@ -33,6 +33,7 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.beanutils.DynaBean;
 import org.apache.ddlutils.DdlUtilsException;
 import org.apache.ddlutils.Platform;
 import org.apache.ddlutils.PlatformFactory;
@@ -56,8 +57,7 @@ import org.springframework.core.io.ResourceLoader;
 public class DbValidator implements ApplicationListener, ResourceLoaderAware  
 {
 	private String		ddlFile;
-	private String		dmlFileNew;
-	private String		dmlFileUpgrade;
+	private String		dmlFile;
 	private DataSource	dataSource;
 	private	String		version;
 	private ResourceLoader	resourceLoader;
@@ -94,20 +94,22 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		
 		logger.info("Verifying datamodel version. Minimum version: " + version);
 
-		((EmbeddedDataSource)dataSource).setCreateDatabase("create");
-		
 		try
 		{
+			((EmbeddedDataSource)dataSource).setCreateDatabase("create");
+
 			Connection connection = dataSource.getConnection();
 			
 			currentVersion = getCurrentVersion(connection);
 			
+			((EmbeddedDataSource)dataSource).setCreateDatabase("");
+
 			databaseInState = (currentVersion != null) ? currentVersion.equalsIgnoreCase(version) : false;
 			
 			if (databaseInState)
 			{
 				ddlType = DdlType.NONE;
-				logger.info("Datamodel is the requested version.");
+				logger.info("Datamodel is the required version.");
 			}
 			else
 			{
@@ -130,12 +132,9 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 				createOrAlterDatamodel(dataSource, ddlType);
 			} catch (Exception e)
 			{
-				System.err.println("Failed to create or upgrad datamodel");
-				e.printStackTrace();
+				logger.error("Failed to create or upgrade datamodel", e);
 			}
 		}
-		
-		((EmbeddedDataSource)dataSource).setCreateDatabase("");
 	}
 
 	/**
@@ -154,12 +153,12 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		if (ddlType == DdlType.CREATE_TABLE)
 		{
 			platform.createTables(ddlModel, false, false);
-			insertData(platform, ddlModel, dmlFileNew);
+			insertData(platform, ddlModel, dmlFile);
 		}
 		else
 		{
 			platform.alterTables(ddlModel, false);
-			insertData(platform, ddlModel, dmlFileUpgrade);
+			updateVersion(dataSource, ddlModel, platform);
 		}
 	}
 
@@ -203,10 +202,30 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 			version = results.getString("config_value");
 		}
 		
-		return version;
 		
+		results.close();
+		stmt.close();
+		
+		return version;
 	}
 
+	/**
+	 * 
+	 * @param dataSource
+	 * @param database
+	 * @param platform
+	 */
+	private void updateVersion(DataSource dataSource, Database database, Platform platform)
+	{
+		DynaBean configuration = database.createDynaBeanFor("CONFIGURATION", false);
+		configuration.set("config_key", "version");
+		platform.delete(database, configuration);
+
+		configuration.set("config_value", version);
+
+		platform.insert(database, configuration);
+	}
+	
 	/**
 	 * @param dataSource the dataSource to set
 	 */
@@ -240,19 +259,8 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		this.ddlFile = ddlFile;
 	}
 
-	/**
-	 * @param dmlFileNew the dmlFileNew to set
-	 */
-	public void setDmlFileNew(String dmlFileNew)
+	public void setDmlFile(String dmlFile)
 	{
-		this.dmlFileNew = dmlFileNew;
-	}
-
-	/**
-	 * @param dmlFileUpgrade the dmlFileUpgrade to set
-	 */
-	public void setDmlFileUpgrade(String dmlFileUpgrade)
-	{
-		this.dmlFileUpgrade = dmlFileUpgrade;
+		this.dmlFile = dmlFile;
 	}
 }
