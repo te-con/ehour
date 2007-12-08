@@ -15,6 +15,7 @@
 		<property name="dataSource" ref="eHourDataSource" />
 		<property name="version" value="0.7.2" />
 		<property name="ddlFile" value="classpath:db/ddl-ehour-0.7.2.xml" />
-		<property name="dmlFile" value="classpath:db/dml-ehour-0.7.2.xml" />
+		<property name="dmlFileNew" value="classpath:db/dml_new/dml-ehour-0.7.2.xml" />
+		<property name="dmlFileUpgrade" value="classpath:db/dml_upgrade_0.7/dml-ehour-0.7.2.xml" />
 	</bean>
 </beans>

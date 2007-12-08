@@ -56,7 +56,8 @@ import org.springframework.core.io.ResourceLoader;
 public class DbValidator implements ApplicationListener, ResourceLoaderAware  
 {
 	private String		ddlFile;
-	private String		dmlFile;
+	private String		dmlFileNew;
+	private String		dmlFileUpgrade;
 	private DataSource	dataSource;
 	private	String		version;
 	private ResourceLoader	resourceLoader;
@@ -91,7 +92,7 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		String 	currentVersion = null;
 		DdlType ddlType = DdlType.CREATE_TABLE;
 		
-		logger.info("Verifying Derby database version. Minimum version: " + version);
+		logger.info("Verifying datamodel version. Minimum version: " + version);
 
 		((EmbeddedDataSource)dataSource).setCreateDatabase("create");
 		
@@ -124,9 +125,6 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		
 		if (ddlType != DdlType.NONE)
 		{
-			
-			currentVersion = "unknown";
-			
 			try
 			{
 				createOrAlterDatamodel(dataSource, ddlType);
@@ -150,17 +148,18 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
 		
 		Resource resource = this.resourceLoader.getResource(ddlFile);
-
+		
 		Database ddlModel = new DatabaseIO().read(new InputStreamReader(resource.getInputStream()));
 		
 		if (ddlType == DdlType.CREATE_TABLE)
 		{
 			platform.createTables(ddlModel, false, false);
-			insertData(platform, ddlModel);
+			insertData(platform, ddlModel, dmlFileNew);
 		}
 		else
 		{
 			platform.alterTables(ddlModel, false);
+			insertData(platform, ddlModel, dmlFileUpgrade);
 		}
 	}
 
@@ -172,7 +171,7 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 	 * @throws FileNotFoundException 
 	 * @throws DdlUtilsException 
 	 */
-	private void insertData(Platform platform, Database model) throws DdlUtilsException, FileNotFoundException, IOException
+	private void insertData(Platform platform, Database model, String dmlFile) throws DdlUtilsException, FileNotFoundException, IOException
 	{
 		DatabaseDataIO	dataIO = new DatabaseDataIO();
 		
@@ -242,10 +241,18 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 	}
 
 	/**
-	 * @param dmlFile the dmlFile to set
+	 * @param dmlFileNew the dmlFileNew to set
 	 */
-	public void setDmlFile(String dmlFile)
+	public void setDmlFileNew(String dmlFileNew)
 	{
-		this.dmlFile = dmlFile;
+		this.dmlFileNew = dmlFileNew;
+	}
+
+	/**
+	 * @param dmlFileUpgrade the dmlFileUpgrade to set
+	 */
+	public void setDmlFileUpgrade(String dmlFileUpgrade)
+	{
+		this.dmlFileUpgrade = dmlFileUpgrade;
 	}
 }
