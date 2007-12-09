@@ -16,12 +16,13 @@
 
 package net.rrm.ehour.ui.panel.admin.customer.form;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
@@ -128,7 +129,10 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 				deleteCustomer(backingBean);
 			}
 			
-			((AjaxAwareContainer)getPage()).publishAjaxEvent(new AjaxEvent(target, AjaxEventType.ADMIN_CUSTOMER_UPDATED));
+			((AjaxAwareContainer)getPage()).publishAjaxEvent(
+						new PayloadAjaxEvent<Customer>(target, 
+														AjaxEventType.ADMIN_CUSTOMER_UPDATED,
+														backingBean.getCustomer()));
 		}
 		catch (Exception e)
 		{

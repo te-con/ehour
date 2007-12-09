@@ -28,6 +28,8 @@ import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
+import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.domain.User;
@@ -35,6 +37,7 @@ import net.rrm.ehour.user.domain.User;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -42,6 +45,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
@@ -140,4 +144,32 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		greyBorder.add(form);
 	}
+	
+	/**
+	 * Add new customer tab
+	 * @param target
+	 */
+	private void addNewCustomerTab(AjaxRequestTarget target)
+	{
+		final Customer	cust = new Customer();
+		cust.setActive(true);
+		
+		new CustomerAdminBackingBean(cust);		
+		
+		AbstractTab tab = new AbstractTab(new ResourceModel("admin.customer.addCustomer"))
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new CustomerFormPanel(panelId, new CompoundPropertyModel(new CustomerAdminBackingBean(cust)));
+			}
+		};
+		
+		getTabbedPanel().addTab(tab, TABPOS_NEW_CUSTOMER);
+		getTabbedPanel().setSelectedTab(TABPOS_NEW_CUSTOMER);
+		
+		target.addComponent(getTabbedPanel());
+	}	
 }

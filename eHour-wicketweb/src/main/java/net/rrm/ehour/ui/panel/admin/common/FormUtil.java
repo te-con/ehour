@@ -69,7 +69,6 @@ public class FormUtil
 				{
 					submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT, form.getModel());
 				}
-				
             }
 
 			@Override

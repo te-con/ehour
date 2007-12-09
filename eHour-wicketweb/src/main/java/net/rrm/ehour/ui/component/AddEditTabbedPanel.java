@@ -238,7 +238,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 		setSelectedTab(tabIndex);
 		target.addComponent(this);
 	}
-	
+
 	/**
 	 * Add edit tab at position 1
 	 */
@@ -289,7 +289,6 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	{
 		return editBackingBean;
 	}	
-	
 	
 	/**
 	 * Get the backing bean for the edit panel

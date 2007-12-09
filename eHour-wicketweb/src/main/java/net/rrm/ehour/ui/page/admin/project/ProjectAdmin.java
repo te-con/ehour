@@ -28,6 +28,7 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
@@ -66,7 +67,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ProjectAdmin  extends BaseTabbedAdminPage
 {
-	private static final int	TABPOS_NEW_CUSTOMER  = 3;
+	private static final int	TABPOS_NEW_CUSTOMER  = 2;
 	private static final String	PROJECT_SELECTOR_ID = "projectSelector";
 	private static final long 	serialVersionUID = 9196677804018589806L;
 	
@@ -164,6 +165,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void ajaxEventReceived(AjaxEvent event)
 	{
@@ -171,6 +173,23 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		{
 			addNewCustomerTab(event.getTarget());
 		}
+		else if (event.getEventType() == AjaxEventType.ADMIN_CUSTOMER_UPDATED)
+		{
+			PayloadAjaxEvent<Customer> payloadEvent = (PayloadAjaxEvent<Customer>)event;
+			newCustomerAdded(payloadEvent.getTarget(), payloadEvent.getPayload());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param customer
+	 */
+	private void newCustomerAdded(AjaxRequestTarget target, Customer customer)
+	{
+		// first remove the tab
+		getTabbedPanel().removeTab(TABPOS_NEW_CUSTOMER);
+		target.addComponent(getTabbedPanel());
 	}
 	
 	/**
@@ -200,7 +219,6 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		
 		target.addComponent(getTabbedPanel());
 	}
-	
 	
 	/**
 	 * Persist project

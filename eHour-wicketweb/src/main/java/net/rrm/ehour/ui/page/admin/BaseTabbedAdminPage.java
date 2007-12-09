@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.page.admin;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -107,6 +108,12 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	public AddEditTabbedPanel getTabbedPanel()
 	{
 		return tabbedPanel;
-	}	
+	}
+	
+	public int addExtraTab(ITab tab)
+	{
+		return 0;
+	}
+	
 	
 }
