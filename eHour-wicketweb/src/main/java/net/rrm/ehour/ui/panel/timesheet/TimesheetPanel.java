@@ -115,7 +115,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		this.setOutputMarkupId(true);
 
 		// the timesheet we're working on
-		final Timesheet timesheet = getTimesheet(user,  forWeek);
+		final Timesheet timesheet = getTimesheet(user, forWeek);
 
 		// grey & blue frame border
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", 

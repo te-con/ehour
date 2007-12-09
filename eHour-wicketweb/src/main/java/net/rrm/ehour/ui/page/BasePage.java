@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.page;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -75,25 +76,41 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 		return session.getEhourConfig();
 	}
 	
-	/**
-	 * Handle Ajax request
-	 * @param target
-	 * @param type of ajax req
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
 	{
 		ajaxRequestReceived(target, type, null);
 	}
 	
-	/**
-	 * Handle Ajax request
-	 * @param target
-	 * @param type of ajax req
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
 		Logger.getLogger(this.getClass()).warn("Uncaught ajax request received. This might be a bug");
 	}	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 */
+	public void ajaxEventReceived(AjaxEvent ajaxEvent)
+	{
+		Logger.getLogger(this.getClass()).warn("Uncaught ajax event received. This might be a bug");
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#publishAjaxEvent(net.rrm.ehour.ui.ajax.AjaxEvent)
+	 */
+	public void publishAjaxEvent(AjaxEvent ajaxEvent)
+	{
+		ajaxEventReceived(ajaxEvent);
+	}
 	
 	/**
 	 * 

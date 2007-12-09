@@ -19,6 +19,9 @@ package net.rrm.ehour.ui.panel.admin.project.form;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
@@ -29,7 +32,9 @@ import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.domain.User;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -96,6 +101,21 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		customerDropdown.setLabel(new ResourceModel("admin.project.customer"));
 		form.add(customerDropdown);
 		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
+		
+		
+		// add new customer link
+		AjaxLink newCustomerLink = new AjaxLink("newCustomer")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				((AjaxAwareContainer)getPage()).publishAjaxEvent(new AjaxEvent(target, AjaxEventType.ADMIN_CUSTOMER_NEW_PANEL_REQUEST));
+			}
+		};
+		
+		form.add(newCustomerLink);
 		
 		// contact
 		TextField	contactField = new TextField("project.contact");

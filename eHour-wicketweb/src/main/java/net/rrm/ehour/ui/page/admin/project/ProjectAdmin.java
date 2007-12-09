@@ -26,9 +26,13 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
+import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.ProjectFormPanel;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
@@ -43,6 +47,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -60,7 +65,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ProjectAdmin  extends BaseTabbedAdminPage
 {
-	private final String		PROJECT_SELECTOR_ID = "projectSelector";
+	private static final int	TABPOS_NEW_CUSTOMER  = 3;
+	private static final String	PROJECT_SELECTOR_ID = "projectSelector";
 	private static final long 	serialVersionUID = 9196677804018589806L;
 	
 	@SpringBean
@@ -152,6 +158,47 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 			}
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
+	 */
+	@Override
+	public void ajaxEventReceived(AjaxEvent event)
+	{
+		if (event.getEventType() == AjaxEventType.ADMIN_CUSTOMER_NEW_PANEL_REQUEST)
+		{
+			addNewCustomerTab(event.getTarget());
+		}
+	}
+	
+	/**
+	 * Add new customer tab
+	 * @param target
+	 */
+	private void addNewCustomerTab(AjaxRequestTarget target)
+	{
+		final Customer	cust = new Customer();
+		cust.setActive(true);
+		
+		new CustomerAdminBackingBean(cust);		
+		
+		AbstractTab tab = new AbstractTab(new ResourceModel("admin.customer.addCustomer"))
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new CustomerFormPanel(panelId, new CompoundPropertyModel(new CustomerAdminBackingBean(cust)));
+			}
+		};
+		
+		getTabbedPanel().addTab(tab, 2);
+		
+		target.addComponent(getTabbedPanel());
+	}
+	
 	
 	/**
 	 * Persist project

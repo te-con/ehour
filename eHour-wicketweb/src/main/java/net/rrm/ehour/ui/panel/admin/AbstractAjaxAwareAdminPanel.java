@@ -17,7 +17,9 @@
 package net.rrm.ehour.ui.panel.admin;
 
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -29,6 +31,11 @@ import org.apache.wicket.model.IModel;
 
 public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxAwareContainer
 {
+	public AbstractAjaxAwareAdminPanel(String id)
+	{
+		super(id);
+	}	
+	
 	public AbstractAjaxAwareAdminPanel(String id, IModel model)
 	{
 		super(id, model);
@@ -52,4 +59,23 @@ public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxA
 	{
 		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, type, params);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 */
+	public void ajaxEventReceived(AjaxEvent ajaxEvent)
+	{
+		Logger.getLogger(this.getClass()).warn("Uncaught ajax event received. This might be a bug");
+	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#publishAjaxEvent(net.rrm.ehour.ui.ajax.AjaxEvent)
+	 */
+	public void publishAjaxEvent(AjaxEvent ajaxEvent)
+	{
+		ajaxEventReceived(ajaxEvent);
+	}	
 }

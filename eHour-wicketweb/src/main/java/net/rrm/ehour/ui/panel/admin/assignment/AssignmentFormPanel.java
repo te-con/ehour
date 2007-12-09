@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
@@ -52,7 +53,6 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -68,7 +68,7 @@ import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentFormPanel extends Panel implements AjaxAwareContainer
+public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = -85486044225123470L;
 	private	final static Logger	logger = Logger.getLogger(AssignmentFormPanel.class);

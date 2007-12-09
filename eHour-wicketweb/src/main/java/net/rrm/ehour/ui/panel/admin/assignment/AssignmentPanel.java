@@ -23,9 +23,9 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.user.domain.User;
@@ -43,7 +43,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentPanel extends Panel implements AjaxAwareContainer
+public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = -3721224427697057895L;
 	private	final static Logger	logger = Logger.getLogger(AssignmentPanel.class);

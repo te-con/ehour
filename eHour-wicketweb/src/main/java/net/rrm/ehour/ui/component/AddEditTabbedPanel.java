@@ -37,6 +37,9 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 {
 	private static final long serialVersionUID = -2437819961082840272L;
 
+	private static final int TABPOS_ADD = 0;
+	private static final int TABPOS_EDIT = 0;
+	
 	private AdminBackingBean	addBackingBean;
 	private AdminBackingBean	editBackingBean;
 	private	ResourceModel		addTabTitle;
@@ -69,7 +72,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 		addBackingBean = getNewAddBackingBean();
 		addBackingBean.setServerMessage(getLocalizer().getString("dataSaved", this));
 		addAddTab();
-		setSelectedTab(0);
+		setSelectedTab(TABPOS_ADD);
 		
 		target.addComponent(this);
 	}
@@ -93,13 +96,25 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 		addAddTab();
 		addNoUserTab();
 	}	
+
+	/**
+	 * Add tab on tab index in panel. Removes any tab at the tabIndex first
+	 * @param tab
+	 * @param tabIndex
+	 */
+	public void addTab(AbstractTab tab, int tabIndex)
+	{
+		removeTab(tabIndex);
+		
+		getTabs().add(tabIndex, tab);
+	}
 	
 	/**
 	 * Add add tab at position 0
 	 */
 	private void addAddTab()
 	{
-		removeTab(0);
+		removeTab(TABPOS_ADD);
 		
 		AbstractTab addTab = new AbstractTab(addTabTitle)
 		{
@@ -110,7 +125,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 			}
 		};
 
-		getTabs().add(0, addTab);	
+		getTabs().add(TABPOS_ADD, addTab);	
 	}	
 	
 	/**
@@ -125,7 +140,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	 */
 	protected void addNoUserTab()
 	{
-		removeTab(1);
+		removeTab(TABPOS_EDIT);
 		
 		AbstractTab editTab = new AbstractTab(editTabTitle)
 		{
@@ -136,7 +151,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 			}
 		};
 
-		getTabs().add(1, editTab);		
+		getTabs().add(TABPOS_EDIT, editTab);		
 	}	
 	
 	/**
@@ -173,7 +188,6 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 				}
 				onAjaxUpdate(target);
 			}
-
 		};
 	}
 	
@@ -184,7 +198,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	 */
 	protected void preProcessTabSwitch(int index)
 	{
-		// if "Add" tab is clicked again, reset the backing bean as it's
+		// if "Add" tab is clicked again, reset the backing bean as it's the
 		// only way out if for some reason the save went wrong and the page is stuck on
 		// an error
 		if (getSelectedTab() == index && index == 0)
@@ -216,7 +230,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	 */
 	public void switchTabOnAjaxTarget(AjaxRequestTarget target, int tabIndex)
 	{
-		if (tabIndex == 1)
+		if (tabIndex == TABPOS_EDIT)
 		{
 			addEditTab();
 		}
@@ -230,7 +244,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	 */
 	private void addEditTab()
 	{
-		removeTab(1);
+		removeTab(TABPOS_EDIT);
 		
 		AbstractTab editTab = new AbstractTab(editTabTitle)
 		{
@@ -241,7 +255,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 			}
 		};
 
-		getTabs().add(1, editTab);		
+		getTabs().add(TABPOS_EDIT, editTab);		
 	}	
 	
 	/**

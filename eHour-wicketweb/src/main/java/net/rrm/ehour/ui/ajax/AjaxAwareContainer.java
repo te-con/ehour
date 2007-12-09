@@ -38,4 +38,18 @@ public interface AjaxAwareContainer
 	 * @param params
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params);
+	
+	/**
+	 * Ajax event received
+	 * @param ajaxEvent
+	 * @since 0.7.2 (replacement of the ajaxRequestReceived methods)
+	 */
+	public void ajaxEventReceived(AjaxEvent ajaxEvent);
+	
+	/**
+	 * Publish Ajax event
+	 * @param ajaxEvent
+	 * @since 0.7.2
+	 */
+	public void publishAjaxEvent(AjaxEvent ajaxEvent);
 }
