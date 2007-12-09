@@ -37,8 +37,8 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 {
 	private static final long serialVersionUID = -2437819961082840272L;
 
-	private static final int TABPOS_ADD = 0;
-	private static final int TABPOS_EDIT = 0;
+	 static final int TABPOS_ADD = 0;
+	public static final int TABPOS_EDIT = 1;
 	
 	private AdminBackingBean	addBackingBean;
 	private AdminBackingBean	editBackingBean;

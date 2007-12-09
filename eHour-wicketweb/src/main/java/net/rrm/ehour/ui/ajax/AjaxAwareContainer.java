@@ -28,6 +28,7 @@ public interface AjaxAwareContainer
 	 * Ajax request received
 	 * @param target
 	 * @param type
+	 * @deprecated use ajaxEventReceived
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type);
 	
@@ -36,6 +37,7 @@ public interface AjaxAwareContainer
 	 * @param target
 	 * @param type
 	 * @param params
+	 * @deprecated use ajaxEventReceived
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params);
 	

@@ -29,6 +29,7 @@ import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
@@ -194,7 +195,8 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 			}
 		};
 		
-		getTabbedPanel().addTab(tab, 2);
+		getTabbedPanel().addTab(tab, TABPOS_NEW_CUSTOMER);
+		getTabbedPanel().setSelectedTab(TABPOS_NEW_CUSTOMER);
 		
 		target.addComponent(getTabbedPanel());
 	}
@@ -292,7 +294,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 						try
 						{
 							getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)));
-							getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+							getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
 						} catch (ObjectNotFoundException e)
 						{
 							logger.error(e);

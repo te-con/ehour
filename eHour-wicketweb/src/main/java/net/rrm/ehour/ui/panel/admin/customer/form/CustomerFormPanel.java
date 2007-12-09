@@ -16,6 +16,12 @@
 
 package net.rrm.ehour.ui.panel.admin.customer.form;
 
+import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
@@ -24,14 +30,19 @@ import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
 
+import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.validator.StringValidator;
 
@@ -43,6 +54,10 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = 8536721437867359030L;
 
+	@SpringBean
+	private CustomerService		customerService;
+	private	static final Logger	logger = Logger.getLogger(CustomerFormPanel.class);
+	
 	/**
 	 * 
 	 * @param id
@@ -93,4 +108,54 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		greyBorder.add(form);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 */
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	{
+		CustomerAdminBackingBean backingBean = (CustomerAdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
+		
+		try
+		{
+			if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+			{
+				persistCustomer(backingBean);
+			}
+			else if (type == CommonUIStaticData.AJAX_DELETE)
+			{
+				deleteCustomer(backingBean);
+			}
+			
+			((AjaxAwareContainer)getPage()).publishAjaxEvent(new AjaxEvent(target, AjaxEventType.ADMIN_CUSTOMER_UPDATED));
+		}
+		catch (Exception e)
+		{
+			logger.error("While persisting/deleting user", e);
+			backingBean.setServerMessage(getLocalizer().getString("saveError", this));
+			target.addComponent(this);
+		}
+	}	
+	
+	/**
+	 * Persist customer to db
+	 * @param backingBean
+	 * @throws ObjectNotUniqueException 
+	 */
+	private void persistCustomer(CustomerAdminBackingBean backingBean) throws ObjectNotUniqueException
+	{
+		customerService.persistCustomer(backingBean.getCustomer());
+	}
+	
+	/**
+	 * Delete customer
+	 * @param backingBean
+	 * @throws ParentChildConstraintException
+	 */
+	private void deleteCustomer(CustomerAdminBackingBean backingBean) throws ParentChildConstraintException
+	{
+		customerService.deleteCustomer(backingBean.getCustomer().getCustomerId());
+	}	
+	
 }

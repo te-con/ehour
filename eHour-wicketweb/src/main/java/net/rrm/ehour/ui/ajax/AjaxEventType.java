@@ -23,5 +23,6 @@ package net.rrm.ehour.ui.ajax;
 
 public enum AjaxEventType
 {
-	ADMIN_CUSTOMER_NEW_PANEL_REQUEST;
+	ADMIN_CUSTOMER_NEW_PANEL_REQUEST,
+	ADMIN_CUSTOMER_UPDATED;
 }
