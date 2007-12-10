@@ -110,6 +110,11 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 		return tabbedPanel;
 	}
 	
+	/**
+	 * 
+	 * @param tab
+	 * @return
+	 */
 	public int addExtraTab(ITab tab)
 	{
 		return 0;

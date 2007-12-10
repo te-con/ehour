@@ -19,13 +19,14 @@ package net.rrm.ehour.ui.panel.admin.project.form;
 import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.ajax.AjaxEvent;
-import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.component.AbstractIdTab;
+import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
@@ -57,6 +58,7 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 {
+	private static final String CUSTOMER_PANEL_TAB_ID = "newCustTab";
 	private static final long serialVersionUID = -8677950352090140144L;
 
 	/**
@@ -108,14 +110,14 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		
 		// add new customer link
-		AjaxLink newCustomerLink = new AjaxLink("newCustomer")
+		AjaxLink newCustomerLink = new DisablingAjaxLink("newCustomer")
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
-				((AjaxAwareContainer)getPage()).publishAjaxEvent(new AjaxEvent(target, AjaxEventType.ADMIN_CUSTOMER_NEW_PANEL_REQUEST));
+				addNewCustomerTab(target);
 			}
 		};
 		
@@ -151,25 +153,34 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	 */
 	private void addNewCustomerTab(AjaxRequestTarget target)
 	{
-		final Customer	cust = new Customer();
-		cust.setActive(true);
+		AddEditTabbedPanel tabPanel = ((BaseTabbedAdminPage)getPage()).getTabbedPanel();
 		
-		new CustomerAdminBackingBean(cust);		
-		
-		AbstractTab tab = new AbstractTab(new ResourceModel("admin.customer.addCustomer"))
+		if (!tabPanel.isTabIdAdded(CUSTOMER_PANEL_TAB_ID))
 		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Panel getPanel(String panelId)
+			final Customer	cust = new Customer();
+			cust.setActive(true);
+			
+			new CustomerAdminBackingBean(cust);		
+			
+			AbstractTab tab = new AbstractIdTab(new ResourceModel("admin.customer.addCustomer"), CUSTOMER_PANEL_TAB_ID)
 			{
-				return new CustomerFormPanel(panelId, new CompoundPropertyModel(new CustomerAdminBackingBean(cust)));
-			}
-		};
-		
-		getTabbedPanel().addTab(tab, TABPOS_NEW_CUSTOMER);
-		getTabbedPanel().setSelectedTab(TABPOS_NEW_CUSTOMER);
-		
-		target.addComponent(getTabbedPanel());
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				public Panel getPanel(String panelId)
+				{
+					return new CustomerFormPanel(panelId, new CompoundPropertyModel(new CustomerAdminBackingBean(cust)));
+				}
+			};
+			
+			int tabPos = tabPanel.addTab(tab);
+			tabPanel.setSelectedTab(tabPos);
+			target.addComponent(tabPanel);
+		}
+		else
+		{
+			tabPanel.setSelectedTabOnId(CUSTOMER_PANEL_TAB_ID);
+			target.addComponent(tabPanel);
+		}
 	}	
 }

@@ -25,6 +25,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
@@ -127,6 +128,67 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 
 		getTabs().add(TABPOS_ADD, addTab);	
 	}	
+	
+	/**
+	 * Add tab at the end of the list
+	 * @param tab
+	 */
+	public int addTab(ITab tab)
+	{
+		getTabs().add(tab);
+		
+		return getTabs().size() - 1;
+	}
+
+	/**
+	 * Set selected tab based on id
+	 * @param title
+	 */
+	public void setSelectedTabOnId(String id)
+	{
+		int i = 0;
+		
+		for (Object tabObj : getTabs())
+		{
+			if (tabObj instanceof AbstractIdTab)
+			{
+				AbstractIdTab idTab = (AbstractIdTab)tabObj;
+				
+				if (idTab.getId().equals(id))
+				{
+					setSelectedTab(i);
+					break;
+				}
+			}
+			
+			i++;
+		}
+	}
+	
+	/**
+	 * Is the with the id already added
+	 * @param id
+	 * @return
+	 */
+	public boolean isTabIdAdded(String id)
+	{
+		for (Object tabObj : getTabs())
+		{
+			if (tabObj instanceof AbstractIdTab)
+			{
+				AbstractIdTab idTab = (AbstractIdTab)tabObj;
+				
+				if (idTab.getId().equals(id))
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+		
+	}
+	
 	
 	/**
 	 * Get the panel for the add tab
@@ -302,7 +364,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	public void setEditBackingBean(AdminBackingBean editBackingBean)
 	{
 		this.editBackingBean = editBackingBean;
-	}	
+	}
 }
 
 
