@@ -23,6 +23,8 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 
+import org.apache.wicket.util.tester.FormTester;
+
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
@@ -52,4 +54,26 @@ public class CustomerAdminTest extends BaseUIWicketTester
 		
 		verify(customerService);
 	}
+	
+//	/**
+//	 * Test render
+//	 */
+//	public void testFormSubmit()
+//	{
+//		CustomerService customerService = createMock(CustomerService.class);
+//		mockContext.putBean("customerService", customerService);
+//		
+//		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
+//
+//		replay(customerService);
+//		
+//		FormTester form = tester.newFormTester("tabs.customerForm");
+//		form.submit();
+//		
+//		tester.startPage(CustomerAdmin.class);
+//		tester.assertRenderedPage(CustomerAdmin.class);
+//		tester.assertNoErrorMessage();
+//		
+//		verify(customerService);
+//	}	
 }

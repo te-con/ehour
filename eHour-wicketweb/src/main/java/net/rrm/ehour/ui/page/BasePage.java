@@ -98,9 +98,10 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
-	public void ajaxEventReceived(AjaxEvent ajaxEvent)
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		Logger.getLogger(this.getClass()).warn("Uncaught ajax event received. This might be a bug");
+		return true;
 	}
 	
 	/*

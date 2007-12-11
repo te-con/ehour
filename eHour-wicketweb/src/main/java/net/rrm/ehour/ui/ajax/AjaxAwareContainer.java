@@ -44,14 +44,8 @@ public interface AjaxAwareContainer
 	/**
 	 * Ajax event received
 	 * @param ajaxEvent
+	 * @return true to proceed with other events or false to stop after this component
 	 * @since 0.7.2 (replacement of the ajaxRequestReceived methods)
 	 */
-	public void ajaxEventReceived(AjaxEvent ajaxEvent);
-	
-	/**
-	 * Publish Ajax event
-	 * @param ajaxEvent
-	 * @since 0.7.2
-	 */
-	public void publishAjaxEvent(AjaxEvent ajaxEvent);
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent);
 }

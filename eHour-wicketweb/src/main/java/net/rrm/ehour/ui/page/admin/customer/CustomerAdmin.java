@@ -160,7 +160,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	 * @see net.rrm.ehour.ui.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
 	 */
 	@Override
-	public void ajaxEventReceived(AjaxEvent event)
+	public boolean ajaxEventReceived(AjaxEvent event)
 	{
 		if (event.getEventType() == AjaxEventType.ADMIN_CUSTOMER_UPDATED)
 		{
@@ -175,6 +175,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 			getTabbedPanel().succesfulSave(event.getTarget());
 		}
 
+		return true;
 	}
 
 	

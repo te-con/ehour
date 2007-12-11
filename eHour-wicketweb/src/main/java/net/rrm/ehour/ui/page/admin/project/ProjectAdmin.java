@@ -167,17 +167,23 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void ajaxEventReceived(AjaxEvent event)
+	public boolean ajaxEventReceived(AjaxEvent event)
 	{
 		if (event.getEventType() == AjaxEventType.ADMIN_CUSTOMER_NEW_PANEL_REQUEST)
 		{
 			addNewCustomerTab(event.getTarget());
+			
+			return false;
 		}
 		else if (event.getEventType() == AjaxEventType.ADMIN_CUSTOMER_UPDATED)
 		{
 			PayloadAjaxEvent<Customer> payloadEvent = (PayloadAjaxEvent<Customer>)event;
 			newCustomerAdded(payloadEvent.getTarget(), payloadEvent.getPayload());
+			
+			return false;
 		}
+		
+		return true;
 	}
 	
 	/**
