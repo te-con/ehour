@@ -39,7 +39,7 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
 	/** identifier field */
 	private ProjectAssignment projectAssignment;
 
-	private Integer displayOrder;
+	private Integer displayOrder = 1;
 	
 	/** full constructor */
 	public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment)
