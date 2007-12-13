@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfigStub;
@@ -255,5 +256,12 @@ public class DateUtilTest extends TestCase
 		assertEquals(2007, q.get(Calendar.YEAR));
 		assertEquals(4 - 1, q.get(Calendar.MONTH));
 		assertEquals(1, q.get(Calendar.DATE));
+	}
+	
+	@Test
+	public void testGetPatternForDateLocale()
+	{
+		assertEquals("MM/dd/yyyy", DateUtil.getPatternForDateLocale(Locale.US));
+		assertEquals("dd.MM.yyyy", DateUtil.getPatternForDateLocale(Locale.GERMANY));
 	}
 }

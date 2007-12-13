@@ -15,11 +15,13 @@
 
 package net.rrm.ehour.util;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import net.rrm.ehour.config.EhourConfig;
@@ -371,5 +373,53 @@ public class DateUtil
 		calendar = new GregorianCalendar(timeZone);
 		calendar.setFirstDayOfWeek(Calendar.SUNDAY);
 		return calendar;
+	}
+	
+	/**
+	 * Get the dd/mm/yyyy date formatting pattern for a given locale
+	 * This is a bit of a hack..
+	 * @param dateLocale
+	 * @return the pattern using DateFormatSymbols
+	 */
+	public static String getPatternForDateLocale(Locale dateLocale)
+	{
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.MONTH, 4);
+		cal.set(Calendar.DAY_OF_MONTH, 30);
+		cal.set(Calendar.YEAR, 2007);
+		
+		String formatted = DateFormat.getDateInstance(DateFormat.SHORT, dateLocale).format(cal.getTime());
+
+		// first get the separator
+		String f = formatted.replaceAll("\\d", "");
+		char separator = f.charAt(0);
+		
+		String[] parts = formatted.split("\\" + separator);
+		
+		StringBuilder pattern = new StringBuilder();
+		
+		for (int j = 0; j < parts.length; j++)
+		{
+			int i = Integer.parseInt(parts[j]); 
+		
+			if (i == cal.get(Calendar.DAY_OF_MONTH))
+			{
+				pattern.append("dd");
+			}
+			else if (i == 1 + cal.get(Calendar.MONTH))
+			{
+				pattern.append("MM");
+			}
+			else
+			{
+				pattern.append("yyyy");
+			}
+			
+			pattern.append(separator);
+		}
+		
+		pattern.deleteCharAt(pattern.length() - 1);
+
+		return pattern.toString();
 	}
 }
