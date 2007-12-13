@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
@@ -37,11 +38,13 @@ import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
+import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -328,7 +331,11 @@ public class ReportCriteriaPanel extends Panel
 	 */
 	private void addDates(Form form)
 	{
-		startDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateStart", "dd/MM/yyyy");
+		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+		
+		startDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateStart", 
+				DateUtil.getPatternForDateLocale(config.getLocale()));
+		
 		startDatePicker.setToggle(new DojoFadeToggle(200));
 		startDatePicker.setOutputMarkupId(true);
 		startDatePicker.add(new AjaxFormComponentUpdatingBehavior("onchange")
@@ -342,7 +349,8 @@ public class ReportCriteriaPanel extends Panel
 		
 		form.add(startDatePicker);
 
-		endDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateEnd", "dd/MM/yyyy");
+		endDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateEnd",
+											DateUtil.getPatternForDateLocale(config.getLocale()));
 		endDatePicker.setToggle(new DojoFadeToggle(200));
 		endDatePicker.setOutputMarkupId(true);
 		endDatePicker.add(new AjaxFormComponentUpdatingBehavior("onchange")

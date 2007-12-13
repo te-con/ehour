@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -127,7 +128,7 @@ public class DateModel implements IModel
 				dateFormatter = new TimesheetLongFormatter("dd", locale);
 				break;
 			case DATESTYLE_FULL_SHORT:
-				dateFormatter = new TimesheetLongFormatter("dd/MM/yyyy", locale);
+				dateFormatter = new TimesheetLongFormatter(DateUtil.getPatternForDateLocale(locale), locale);
 				break;
 			case DATESTYLE_WEEK:
 				dateFormatter = new TimesheetLongFormatter("w", locale);

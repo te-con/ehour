@@ -39,6 +39,7 @@ import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.validator.DateOverlapValidator;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -236,7 +237,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 
 	/**
 	 * Add start & end dates
-	 * TODO create seperate component for date range selection out of it
+	 * TODO create separate component for date range selection 
 	 * @param form
 	 * @param model
 	 */
@@ -246,7 +247,9 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		PropertyModel	infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
 		
 		// start date
-		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", "dd/MM/yyyy");
+		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", 
+																DateUtil.getPatternForDateLocale(config.getLocale()));
+		
 		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
 		dateStart.add(FormUtil.getValidateBehavior(form));
 		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
@@ -281,7 +284,8 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		startDateHider.add(infiniteStart);
 
 		// end date
-		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", "dd/MM/yyyy");
+		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", 
+														DateUtil.getPatternForDateLocale(config.getLocale()));
 		dateEnd.add(FormUtil.getValidateBehavior(form));
 		dateStart.add(new ConditionalRequiredValidator(infiniteEndDateModel));
 		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
