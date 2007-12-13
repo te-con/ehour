@@ -108,7 +108,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(customerDropdown);
 		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
 		
-		
+		/*
 		// add new customer link
 		AjaxLink newCustomerLink = new DisablingAjaxLink("newCustomer")
 		{
@@ -122,7 +122,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		};
 		
 		form.add(newCustomerLink);
-		
+		*/
 		// contact
 		TextField	contactField = new TextField("project.contact");
 		form.add(contactField);

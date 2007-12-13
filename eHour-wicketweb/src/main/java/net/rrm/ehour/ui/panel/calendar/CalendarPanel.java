@@ -220,16 +220,23 @@ public class CalendarPanel extends SidePanel
 				}
 				
 				
+				StringBuilder style = new StringBuilder();
+				
 				if (week.getDaysBooked()[dayInWeek])
 				{
-					label.add(new SimpleAttributeModifier("style", "font-weight: bold"));
+					style.append("font-weight: bold;");
 				}
 				
 	        	if (highlightWeekStartingAt != null &&
 	        			DateUtil.isDateWithinRange(week.getWeekStart(), highlightWeekStartingAt))
     			{
-	        		label.add(new SimpleAttributeModifier("style", "background-color: #edf5fe"));
+	        		style.append("background-color: #edf5fe;");
     			}				
+	        	
+	        	if (style.length() > 0)
+	        	{
+	        		label.add(new SimpleAttributeModifier("style", style.toString()));
+	        	}
 
 				return label;
 			}
@@ -384,7 +391,6 @@ public class CalendarPanel extends SidePanel
 			refreshCalendar(target);
 			
 			this.setEnabled(false);
-			
         }
 		
 		@Override
