@@ -287,7 +287,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", 
 														DateUtil.getPatternForDateLocale(config.getLocale()));
 		dateEnd.add(FormUtil.getValidateBehavior(form));
-		dateStart.add(new ConditionalRequiredValidator(infiniteEndDateModel));
+		dateEnd.add(new ConditionalRequiredValidator(infiniteEndDateModel));
 		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
 		
 		final WebMarkupContainer	endDateHider = new WebMarkupContainer("endDateHider");
