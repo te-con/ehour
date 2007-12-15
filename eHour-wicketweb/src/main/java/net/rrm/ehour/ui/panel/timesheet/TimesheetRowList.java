@@ -173,15 +173,14 @@ public class TimesheetRowList extends ListView
 		
 		final IModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours");
 		
-		modalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
-		{
-			public boolean onCloseButtonClicked(AjaxRequestTarget target)
-			{
-				System.out.println(commentModel.getObject());
-				return true;
-			}
-			
-		});
+//		modalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
+//		{
+//			public boolean onCloseButtonClicked(AjaxRequestTarget target)
+//			{
+//				System.out.println(commentModel.getObject());
+//				return true;
+//			}
+//		});
 		
 		item.add(modalWindow);
 		

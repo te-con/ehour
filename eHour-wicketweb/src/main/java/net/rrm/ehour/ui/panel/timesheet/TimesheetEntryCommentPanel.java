@@ -22,6 +22,7 @@ import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Button;
@@ -50,10 +51,10 @@ public class TimesheetEntryCommentPanel extends Panel
 		TextArea textArea = new KeepAliveTextArea("comment", model);
 		form.add(textArea);
 		
-		Button submitButton = new AjaxButton("submit")
+		AjaxLink submitButton = new AjaxLink("submit")
 		{
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form)
+			public void onClick(AjaxRequestTarget target)
 			{
 				System.out.println(model.getObject());
 				
