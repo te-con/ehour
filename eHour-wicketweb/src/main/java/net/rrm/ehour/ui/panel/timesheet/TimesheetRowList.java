@@ -159,13 +159,15 @@ public class TimesheetRowList extends ListView
 	private void createTimesheetEntryComment(String id, TimesheetRow row, final int index, ListItem item)
 	{
 		final ModalWindow	modalWindow;
-		
+
+		System.out.println(id);
 		modalWindow = new ModalWindow(id + "Win");
 		modalWindow.setMinimalWidth(200);
 		modalWindow.setMinimalHeight(100);
-		
-		modalWindow.add(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
+		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 														row, index));
+		
+		item.add(modalWindow);
 		
 		AjaxLink commentLink = new AjaxLink(id + "Link")
 		{

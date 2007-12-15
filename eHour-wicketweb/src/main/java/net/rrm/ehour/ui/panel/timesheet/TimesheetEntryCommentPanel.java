@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.panel.timesheet;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
@@ -36,9 +37,13 @@ public class TimesheetEntryCommentPanel extends Panel
 	{
 		super(id);
 		
-		TextArea	textArea = new KeepAliveTextArea("comments", 
-														new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comments"));
+		Form form = new Form("commentForm");
+		
+		TextArea textArea = new KeepAliveTextArea("comment", 
+														new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment"));
 
-		add(textArea);
+		form.add(textArea);
+		
+		add(form);
 	}
 }

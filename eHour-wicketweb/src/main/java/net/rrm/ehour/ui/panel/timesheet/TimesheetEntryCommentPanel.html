@@ -5,10 +5,17 @@
 	xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
+<head>
+</head>
+
 <body>
-	<textarea name="comment" wicket:id="comments"
-				rows="3" style="width: 200px"
-				wrap="virtual"></textarea>
+<wicket:panel>
+	<form wicket:id="commentForm">
+		<textarea name="comment" wicket:id="comment"
+					rows="3" style="width: 200px"
+					wrap="virtual"></textarea>
+	</form>
+</wicket:panel>
 </body>	
 	
 </html>
