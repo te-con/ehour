@@ -97,6 +97,8 @@ public class TimesheetRowList extends ListView
 		// TODO use icon instead of project list
 		AjaxLink projectLink = new AjaxLink("bookWholeWeek")
 		{
+			private static final long serialVersionUID = -663239917205218384L;
+
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
@@ -156,16 +158,26 @@ public class TimesheetRowList extends ListView
 	 * @param row
 	 * @param index
 	 */
-	private void createTimesheetEntryComment(String id, TimesheetRow row, final int index, ListItem item)
+	private void createTimesheetEntryComment(String id, final TimesheetRow row, final int index, ListItem item)
 	{
 		final ModalWindow	modalWindow;
 
-		System.out.println(id);
 		modalWindow = new ModalWindow(id + "Win");
 		modalWindow.setMinimalWidth(200);
 		modalWindow.setMinimalHeight(100);
+		modalWindow.setInitialHeight(100);
+		modalWindow.setInitialWidth(200);
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 														row, index));
+		modalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
+		{
+			public boolean onCloseButtonClicked(AjaxRequestTarget target)
+			{
+				System.out.println(row.getTimesheetCells()[index].getTimesheetEntry().getComment());
+				return true;
+			}
+			
+		});
 		
 		item.add(modalWindow);
 		
