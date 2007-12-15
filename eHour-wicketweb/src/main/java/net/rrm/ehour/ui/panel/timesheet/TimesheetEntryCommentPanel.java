@@ -18,19 +18,14 @@
 package net.rrm.ehour.ui.panel.timesheet;
 
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
-import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 /**
  * Comments panel for timesheet entries
@@ -40,35 +35,34 @@ public class TimesheetEntryCommentPanel extends Panel
 {
 	private static final long serialVersionUID = -3287327439195576543L;
 
-	public TimesheetEntryCommentPanel(String id, TimesheetRow row, int index)
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 */
+	public TimesheetEntryCommentPanel(String id, final IModel model)
 	{
 		super(id);
-		
-		Form form = new Form("commentForm");
 
-		final IModel model = new Model();
-		
 		TextArea textArea = new KeepAliveTextArea("comment", model);
-		form.add(textArea);
+		add(textArea);
 		
 		AjaxLink submitButton = new AjaxLink("submit")
 		{
+			private static final long serialVersionUID = 4796005602570042916L;
+
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
-				System.out.println(model.getObject());
-				
 				closeCommentPanel(target);
 			}
 		};
 		
-		form.add(submitButton);
-		
-		add(form);
+		add(submitButton);
 	}
 	
 	/**
-	 * 
+	 * Close parent modal window (if it exists)
 	 * @param target
 	 */
 	private void closeCommentPanel(AjaxRequestTarget target)
@@ -78,7 +72,6 @@ public class TimesheetEntryCommentPanel extends Panel
 		if (parent instanceof ModalWindow)
 		{
 			((ModalWindow)parent).close(target);
-			System.out.println("Closing");
 		}
 	}
 }

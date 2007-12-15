@@ -39,7 +39,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -163,15 +162,15 @@ public class TimesheetRowList extends ListView
 	{
 		final ModalWindow	modalWindow;
 
+		final PropertyModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment");
+		
 		modalWindow = new ModalWindow(id + "Win");
 		modalWindow.setMinimalWidth(200);
 		modalWindow.setMinimalHeight(100);
 		modalWindow.setInitialHeight(250);
 		modalWindow.setInitialWidth(300);
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
-														row, index));
-		
-		final IModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours");
+																		commentModel));
 		
 //		modalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
 //		{
@@ -232,7 +231,6 @@ public class TimesheetRowList extends ListView
 				target.addComponent(dayInput.getParent().get("total"));
 				
 				// update the grand total & day total
-				// TODO bit brittle
 				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
 												.get("blueFrame"))
 												.get("grandTotal"));

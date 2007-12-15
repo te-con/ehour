@@ -32,8 +32,10 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 public class FormHighlighter implements FormComponent.IVisitor, Serializable 
 {
 	private static final long serialVersionUID = 6905807838333630105L;
+	
 	private transient AjaxRequestTarget	target;
 
+	
 	public FormHighlighter(AjaxRequestTarget target)
 	{
 		this.target = target;
