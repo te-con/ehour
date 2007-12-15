@@ -98,7 +98,11 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	 */
 	public String toString()
 	{
-		return new ToStringBuilder(this).append("hours", this.hours).append("entryId", this.entryId).toString();
+		return new ToStringBuilder(this)
+				.append("hours", this.hours)
+				.append("entryId", this.entryId)
+				.append("comment", this.comment)
+				.toString();
 	}
 
 	public String getComment()

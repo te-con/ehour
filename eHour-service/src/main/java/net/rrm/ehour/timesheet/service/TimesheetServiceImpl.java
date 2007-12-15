@@ -51,6 +51,7 @@ import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -173,7 +174,8 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		for (BookedDay bookedDay : bookedDays)
 		{
-			if (bookedDay.getHours().doubleValue() >= configuration.getCompleteDayHours())
+			if (bookedDay.getHours() != null &&
+					bookedDay.getHours().doubleValue() >= configuration.getCompleteDayHours())
 			{
 				bookedDaysReturn.add(bookedDay);
 			}
@@ -286,17 +288,26 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		for (TimesheetEntry entry : timesheetEntries)
 		{
-			if (entry.getHours() == null || entry.getHours().equals(0f))
+			if (StringUtils.isBlank(entry.getComment())
+					&& (entry.getHours() == null || entry.getHours().equals(0f)))
 			{
-				logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+				if (logger.isDebugEnabled())
+				{
+					logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+				}
 				timesheetDAO.delete(entry);
 				
 			}
 			else
 			{
-				logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+				if (logger.isDebugEnabled())
+				{
+					logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours()
+							+ ", comment: " + entry.getComment()
+					);
+				}
 				timesheetDAO.persist(entry);
 			}
 		}
