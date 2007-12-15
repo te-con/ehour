@@ -20,10 +20,16 @@ package net.rrm.ehour.ui.panel.timesheet;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * Comments panel for timesheet entries
@@ -38,12 +44,40 @@ public class TimesheetEntryCommentPanel extends Panel
 		super(id);
 		
 		Form form = new Form("commentForm");
-		
-		TextArea textArea = new KeepAliveTextArea("comment", 
-														new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment"));
 
+		final IModel model = new Model();
+		
+		TextArea textArea = new KeepAliveTextArea("comment", model);
 		form.add(textArea);
 		
+		Button submitButton = new AjaxButton("submit")
+		{
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				System.out.println(model.getObject());
+				
+				closeCommentPanel(target);
+			}
+		};
+		
+		form.add(submitButton);
+		
 		add(form);
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 */
+	private void closeCommentPanel(AjaxRequestTarget target)
+	{
+		MarkupContainer parent = getParent();
+		
+		if (parent instanceof ModalWindow)
+		{
+			((ModalWindow)parent).close(target);
+			System.out.println("Closing");
+		}
 	}
 }

@@ -39,6 +39,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -165,15 +166,18 @@ public class TimesheetRowList extends ListView
 		modalWindow = new ModalWindow(id + "Win");
 		modalWindow.setMinimalWidth(200);
 		modalWindow.setMinimalHeight(100);
-		modalWindow.setInitialHeight(100);
-		modalWindow.setInitialWidth(200);
+		modalWindow.setInitialHeight(250);
+		modalWindow.setInitialWidth(300);
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 														row, index));
+		
+		final IModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours");
+		
 		modalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
 		{
 			public boolean onCloseButtonClicked(AjaxRequestTarget target)
 			{
-				System.out.println(row.getTimesheetCells()[index].getTimesheetEntry().getComment());
+				System.out.println(commentModel.getObject());
 				return true;
 			}
 			
