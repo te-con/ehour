@@ -667,3 +667,11 @@ a.bluebutton:active span {
     cursor: pointer;
     letter-spacing: +1.5px;
 }
+
+/* shouldn't be here but quite convenient */
+a.timesheetEntryComment { background: url(../img/comment/comment_blue_on.gif); }
+a.timesheetEntryComment:link,
+a.timesheetEntryComment:visited  { background: url(../img/comment/comment_blue_off.gif); }
+a.timesheetEntryComment:hover,
+a.timesheetEntryComment:focus { background: url(../img/comment/comment_blue_on.gif); }
+

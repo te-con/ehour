@@ -39,7 +39,7 @@ public class CommonUIStaticData
 	public final static String ROLE_REPORT = "ROLE_REPORT";
 	public final static String ROLE_PM = "ROLE_PROJECTMANAGER";
 	
-	public final static int GREYFRAME_WIDTH = 710;
+	public final static int GREYFRAME_WIDTH = 730;
 	
 	public final static String[] weekDays = new String[]{"sunday", "monday", "tuesday", 
 															"wednesday", "thursday", "friday", "saturday"};

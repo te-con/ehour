@@ -54,13 +54,20 @@
 							<td class="project"><a wicket:id="bookWholeWeek"><span wicket:id="project"></span></a></td>
 							<td class="spacer">&nbsp;</td>
 							
-							<td class="sunday" ><input wicket:id="sunday" size="2" /><img style="padding-left: 1px;valign:middle" src="img/comment.gif" /></td>
-							<td class="weekday"><input wicket:id="monday" size="2" /><img src="img/comment.gif" /></td>
-							<td class="weekday"><input wicket:id="tuesday" size="2" /><img src="img/comment.gif" /></td>
-							<td class="weekday"><input wicket:id="wednesday" size="2" /><img src="img/comment.gif" /></td>
-							<td class="weekday"><input wicket:id="thursday" size="2" /><img src="img/comment.gif" /></td>
-							<td class="weekday"><input wicket:id="friday" size="2" /><img src="img/comment.gif" /></td>
-							<td class="saturday"><input wicket:id="saturday" size="2" /><img src="img/comment.gif" /></td>
+							<td class="sunday" ><input wicket:id="sunday" size="2" /><a class="timesheetEntryComment" wicket:id="sundayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+							<div wicket:id="sundayWin"></div>
+							<td class="weekday"><input wicket:id="monday" size="2" /><a class="timesheetEntryComment" wicket:id="mondayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+							<div wicket:id="mondayWin"></div>
+							<td class="weekday"><input wicket:id="tuesday" size="2" /><a class="timesheetEntryComment" wicket:id="tuesdayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+							<div wicket:id="tuesdayWin"></div>
+							<td class="weekday"><input wicket:id="wednesday" size="2" /><a class="timesheetEntryComment" wicket:id="wednesdayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+							<div wicket:id="wednesdayWin"></div>
+							<td class="weekday"><input wicket:id="thursday" size="2" /><a class="timesheetEntryComment" wicket:id="thursdayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+							<div wicket:id="thursdayWin"></div>
+							<td class="weekday"><input wicket:id="friday" size="2" /><a class="timesheetEntryComment" wicket:id="fridayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+							<div wicket:id="fridayWin"></div>
+							<td class="saturday"><input wicket:id="saturday" size="2" /><a class="timesheetEntryComment" wicket:id="saturdayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+							<div wicket:id="saturdayWin"></div>
 							<td class="total" style="text-align: right;padding-right: 10px" wicket:id="total"></td>
 						</tr>
 					</div>

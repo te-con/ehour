@@ -32,6 +32,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -108,14 +109,14 @@ public class TimesheetRowList extends ListView
 		projectLink.add(new Label("project", row.getProjectAssignment().getProject().getName()));
 		item.add(projectLink);
 		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
-
-		item.add(createValidatedTextField("sunday", row, 0));
-		item.add(createValidatedTextField("monday", row, 1));
-		item.add(createValidatedTextField("tuesday", row, 2));
-		item.add(createValidatedTextField("wednesday", row, 3));
-		item.add(createValidatedTextField("thursday", row, 4));
-		item.add(createValidatedTextField("friday", row, 5));
-		item.add(createValidatedTextField("saturday", row, 6));
+		
+		
+		for (int i = 0; 
+			 i < CommonUIStaticData.weekDays.length; // I take it that this is 7 ;)
+			 i++)
+		{
+			createTimesheetEntryItems(CommonUIStaticData.weekDays[i], row, i, item);
+		}
 
 		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
 		totalHours.setOutputMarkupId(true);
@@ -125,6 +126,8 @@ public class TimesheetRowList extends ListView
 		{
 			item.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
 			{
+				private static final long serialVersionUID = -6996376634435316294L;
+
 				public Object getObject()
 				{
 					return "display: none";
@@ -135,6 +138,51 @@ public class TimesheetRowList extends ListView
 	
 	/**
 	 * Get validated text field
+	 * @param id
+	 * @param row
+	 * @param index
+	 * @return
+	 */
+	private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem item)
+	{
+		item.add(createValidatedTextField(id, row, index));
+		
+		createTimesheetEntryComment(id, row, index, item);
+	}
+
+	/**
+	 * Create comment box for timesheet entry
+	 * @param id
+	 * @param row
+	 * @param index
+	 */
+	private void createTimesheetEntryComment(String id, TimesheetRow row, final int index, ListItem item)
+	{
+		final ModalWindow	modalWindow;
+		
+		modalWindow = new ModalWindow(id + "Win");
+		modalWindow.setMinimalWidth(200);
+		modalWindow.setMinimalHeight(100);
+		
+		modalWindow.add(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
+														row, index));
+		
+		AjaxLink commentLink = new AjaxLink(id + "Link")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				modalWindow.show(target);
+			}
+		};
+		
+		item.add(commentLink);
+	}
+	
+	/**
+	 * Create a validating text field for row[index]
 	 * @param id
 	 * @param row
 	 * @param index
@@ -158,6 +206,8 @@ public class TimesheetRowList extends ListView
 		// make sure values are checked
 		AjaxFormValidatingBehavior behavior = new AjaxFormValidatingBehavior(form, "onchange")
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onSubmit(AjaxRequestTarget target)
 			{

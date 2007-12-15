@@ -250,6 +250,7 @@ div.timesheet
 	width: 3em;
 	size: 3;
 	text-align: right;
+	margin-right: 1px;
 }
 
 .timesheetTable tr.totalRow
@@ -291,3 +292,4 @@ div.timesheet
 	color: #536e87;
 	background-color: white;
 }
+
