@@ -20,6 +20,7 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
+import net.rrm.ehour.ui.component.ModalWindowFix;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
@@ -47,7 +48,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -229,11 +229,12 @@ public class TimesheetRowList extends ListView
 		final AjaxLink commentLink;
 		final PropertyModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 		
-		modalWindow = new ModalWindow(id + "Win");
+		modalWindow = new ModalWindowFix(id + "Win");
 		modalWindow.setMinimalWidth(200);
 		modalWindow.setMinimalHeight(100);
 		modalWindow.setInitialHeight(250);
 		modalWindow.setInitialWidth(300);
+		modalWindow.setTitle("Comment");
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 																		commentModel, modalWindow));
 
@@ -288,33 +289,44 @@ public class TimesheetRowList extends ListView
 	 */
 	class TimesheetEntryCommentPanel extends Panel
 	{
-//		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 
 		public TimesheetEntryCommentPanel(String id, final IModel model, final ModalWindow window)
 		{
 			super(id);
 			
+//			add(new Label(""))
+			
 			Form form = new Form("commentForm");
 			
-			final Model m = new Model("String");
-			
-			final TextArea textArea = new KeepAliveTextArea("comment", m);
+			final TextArea textArea = new KeepAliveTextArea("comment", model);
 			form.add(textArea);
 			
 			AbstractLink submitButton = new AjaxSubmitLink("submit", form)
 			{
-//				private static final long serialVersionUID = 4796005602570042916L;
+				private static final long serialVersionUID = 4796005602570042916L;
 	
 				@Override
 				public void onSubmit(AjaxRequestTarget target, Form form)
 				{
 					window.close(target);
-					System.out.println(m.getObject());
 				}
 			};
 			
-//			form.add(submitButton);
 			add(submitButton);
+
+			AbstractLink cancelButton = new AjaxLink("cancel")
+			{
+				private static final long serialVersionUID = 4796005602570042916L;
+	
+				@Override
+				public void onClick(AjaxRequestTarget target)
+				{
+					window.close(target);
+				}
+			};
+			add(cancelButton);
+			
 			add(form);
 		}
 	}

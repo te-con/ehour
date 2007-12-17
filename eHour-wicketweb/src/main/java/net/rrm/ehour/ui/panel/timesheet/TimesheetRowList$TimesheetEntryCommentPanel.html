@@ -10,14 +10,31 @@
 
 <body>
 <wicket:panel>
-	<form wicket:id="commentForm">
-		<textarea name="comment" wicket:id="comment"
-					rows="3" style="width: 200px"
-					wrap="virtual"></textarea>
-	</form>					
-					
 
-		<a wicket:id="submit" class="bluebutton"  />
+	<div class="commentBody">
+	
+		<form wicket:id="commentForm">
+		<p>
+			Additional comments for
+			
+			<textarea name="comment" wicket:id="comment"
+						rows="3" style="width: 220px" class="timesheetTextarea"
+						wrap="virtual"></textarea>
+		</p>		
+
+		</form>					
+	
+		<p>
+			<a wicket:id="cancel" class="bluebutton" style="float:left"><span>cancel</span></a>
+			<a wicket:id="submit" class="bluebutton" style="float:right"><span>ok</span></a>
+			<br clear="both" />
+			
+			<br /><br />
+			After clicking OK you still need to store the whole week to save
+			your comments.
+		</p>
+		
+		</div>
 </wicket:panel>
 </body>	
 	

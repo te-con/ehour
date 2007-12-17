@@ -54,8 +54,8 @@
 							<td class="project"><a wicket:id="bookWholeWeek"><span wicket:id="project"></span></a></td>
 							<td class="spacer">&nbsp;</td>
 							
-							<td class="sunday" ><input wicket:id="sunday" size="2" /><a class="timesheetEntryComment" wicket:id="sundayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
-							<div wicket:id="sundayWin"></div>
+							<td class="sunday" ><input wicket:id="sunday" size="2" /><a class="timesheetEntryComment" wicket:id="sundayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a><div wicket:id="sundayWin"></div></td>
+							
 							<td class="weekday"><input wicket:id="monday" size="2" /><a class="timesheetEntryComment" wicket:id="mondayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
 							<div wicket:id="mondayWin"></div>
 							<td class="weekday"><input wicket:id="tuesday" size="2" /><a class="timesheetEntryComment" wicket:id="tuesdayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
@@ -104,7 +104,7 @@
 				
 				<td align="right" colspan="2">
 					<textarea name="comment" wicket:id="commentsArea"
-								rows="3" style="width: 400px"
+								rows="3" style="width: 400px" class="timesheetTextarea"
 								wrap="virtual"></textarea>
 				</td>
 
