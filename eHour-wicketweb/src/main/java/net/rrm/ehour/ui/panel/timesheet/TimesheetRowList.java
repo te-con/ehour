@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.panel.timesheet;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
@@ -27,18 +28,26 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -151,51 +160,6 @@ public class TimesheetRowList extends ListView
 		
 		createTimesheetEntryComment(id, row, index, item);
 	}
-
-	/**
-	 * Create comment box for timesheet entry
-	 * @param id
-	 * @param row
-	 * @param index
-	 */
-	private void createTimesheetEntryComment(String id, final TimesheetRow row, final int index, ListItem item)
-	{
-		final ModalWindow	modalWindow;
-
-		final PropertyModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment");
-		
-		modalWindow = new ModalWindow(id + "Win");
-		modalWindow.setMinimalWidth(200);
-		modalWindow.setMinimalHeight(100);
-		modalWindow.setInitialHeight(250);
-		modalWindow.setInitialWidth(300);
-		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
-																		commentModel));
-		
-//		modalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback()
-//		{
-//			public boolean onCloseButtonClicked(AjaxRequestTarget target)
-//			{
-//				System.out.println(commentModel.getObject());
-//				return true;
-//			}
-//		});
-		
-		item.add(modalWindow);
-		
-		AjaxLink commentLink = new AjaxLink(id + "Link")
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target)
-			{
-				modalWindow.show(target);
-			}
-		};
-		
-		item.add(commentLink);
-	}
 	
 	/**
 	 * Create a validating text field for row[index]
@@ -251,5 +215,107 @@ public class TimesheetRowList extends ListView
 		dayInput.add(behavior);
 
 		return dayInput;
+	}
+	
+	/**
+	 * Create comment box for timesheet entry
+	 * @param id
+	 * @param row
+	 * @param index
+	 */
+	private void createTimesheetEntryComment(String id, final TimesheetRow row, final int index, ListItem item)
+	{
+		final ModalWindow modalWindow;
+		final AjaxLink commentLink;
+		final PropertyModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment");
+		
+		modalWindow = new ModalWindow(id + "Win");
+		modalWindow.setMinimalWidth(200);
+		modalWindow.setMinimalHeight(100);
+		modalWindow.setInitialHeight(250);
+		modalWindow.setInitialWidth(300);
+		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
+																		commentModel, modalWindow));
+
+		commentLink = new AjaxLink(id + "Link")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				modalWindow.show(target);
+			}
+		};		
+		
+		modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback()
+		{
+			private static final long serialVersionUID = 1L;
+
+			public void onClose(AjaxRequestTarget target)
+			{
+				setCommentLinkClass(commentModel, commentLink);
+				
+				target.addComponent(commentLink);
+			}
+		});
+		
+		item.add(modalWindow);
+		
+		commentLink.setOutputMarkupId(true);
+		
+		setCommentLinkClass(commentModel, commentLink);
+		
+		item.add(commentLink);
+	}
+	
+	/**
+	 * Set comment link css class
+	 * @param commentModel
+	 * @param commentLink
+	 */
+	private void setCommentLinkClass(IModel commentModel, AjaxLink commentLink)
+	{
+		commentLink.add(new SimpleAttributeModifier("class"
+				, StringUtils.isBlank((String)commentModel.getObject()) ? "timesheetEntryComment"
+				: "timesheetEntryCommented"));
+	}	
+	
+	/**
+	 * Comments panel for timesheet entries
+	 * @author Thies
+	 *
+	 */
+	class TimesheetEntryCommentPanel extends Panel
+	{
+//		private static final long serialVersionUID = 1L;
+
+		public TimesheetEntryCommentPanel(String id, final IModel model, final ModalWindow window)
+		{
+			super(id);
+			
+			Form form = new Form("commentForm");
+			
+			final Model m = new Model("String");
+			
+			final TextArea textArea = new KeepAliveTextArea("comment", m);
+			form.add(textArea);
+			
+			AbstractLink submitButton = new AjaxSubmitLink("submit", form)
+			{
+//				private static final long serialVersionUID = 4796005602570042916L;
+	
+				@Override
+				public void onSubmit(AjaxRequestTarget target, Form form)
+				{
+					window.close(target);
+					System.out.println(m.getObject());
+				}
+			};
+			
+//			form.add(submitButton);
+			add(submitButton);
+			add(form);
+		}
 	}
 }

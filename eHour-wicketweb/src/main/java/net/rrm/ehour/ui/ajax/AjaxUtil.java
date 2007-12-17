@@ -14,7 +14,6 @@ public class AjaxUtil
 	public static void publishEvents(WebMarkupContainer parent, AjaxEvent event)
 	{
 		parent.getPage().getParent();
-		System.out.println("starting at " + parent.getPage().getParent());
 		parent.getPage().visitChildren(new AjaxEventVisitor(event));
 	}
 	
@@ -36,8 +35,6 @@ public class AjaxUtil
 		{
 			if (component instanceof AjaxAwareContainer)
 			{
-				System.out.println("found component: " + component.getId());
-				
 				((AjaxAwareContainer)component).ajaxEventReceived(event);
 			}
 			
