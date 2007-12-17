@@ -230,13 +230,13 @@ public class TimesheetRowList extends ListView
 		final PropertyModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 		
 		modalWindow = new ModalWindowFix(id + "Win");
-		modalWindow.setMinimalWidth(200);
-		modalWindow.setMinimalHeight(100);
-		modalWindow.setInitialHeight(250);
-		modalWindow.setInitialWidth(300);
+		modalWindow.setResizable(false);
+		modalWindow.setInitialWidth(350);
+		modalWindow.setInitialHeight(225);
 		modalWindow.setTitle("Comment");
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 																		commentModel, modalWindow));
+		modalWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
 
 		commentLink = new AjaxLink(id + "Link")
 		{
