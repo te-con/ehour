@@ -42,6 +42,7 @@ public class DateModel implements IModel
 	public final static int	DATESTYLE_DAYONLY = 5;
 	public final static int	DATESTYLE_FULL_SHORT = 6;
 	public final static int	DATESTYLE_WEEK= 7;
+	public final static int	DATESTYLE_DAYONLY_LONG = 8;
 	
 	private static final long serialVersionUID = 431440606497572025L;
 	private IModel					model;
@@ -126,6 +127,9 @@ public class DateModel implements IModel
 				break;
 			case DATESTYLE_DAYONLY:
 				dateFormatter = new TimesheetLongFormatter("dd", locale);
+				break;
+			case DATESTYLE_DAYONLY_LONG:
+				dateFormatter = new TimesheetLongFormatter("EEEE", locale);
 				break;
 			case DATESTYLE_FULL_SHORT:
 				dateFormatter = new TimesheetLongFormatter(DateUtil.getPatternForDateLocale(locale), locale);

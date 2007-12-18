@@ -290,9 +290,13 @@ div.timesheet
 
 .commentBody p
 {
-	background-color: #bed8f4;
-	font:  1.0em/0.9 Geneva, Arial, Helvetica, sans-serif;	
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #3b556d;
 	padding: 5px 5px 0 5px;
 	margin: 0;
+}
+
+div.wicket-modal div.w_content_3 {
+	border:  0;
+	padding: 0px;	
 }

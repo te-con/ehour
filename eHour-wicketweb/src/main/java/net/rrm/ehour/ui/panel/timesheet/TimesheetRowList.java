@@ -16,11 +16,13 @@
 
 package net.rrm.ehour.ui.panel.timesheet;
 
+import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ModalWindowFix;
+import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
@@ -49,6 +51,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 
 /**
  * Representation of a timesheet row
@@ -231,13 +234,13 @@ public class TimesheetRowList extends ListView
 		
 		modalWindow = new ModalWindowFix(id + "Win");
 		modalWindow.setResizable(false);
-		modalWindow.setInitialWidth(350);
+		modalWindow.setInitialWidth(400);
 		modalWindow.setInitialHeight(225);
-		modalWindow.setTitle("Comment");
+		
+		modalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
-																		commentModel, modalWindow));
-		modalWindow.setCssClassName(ModalWindow.CSS_CLASS_GRAY);
-
+																		commentModel, row, index, modalWindow));
+		
 		commentLink = new AjaxLink(id + "Link")
 		{
 			private static final long serialVersionUID = 1L;
@@ -291,13 +294,21 @@ public class TimesheetRowList extends ListView
 	{
 		private static final long serialVersionUID = 1L;
 
-		public TimesheetEntryCommentPanel(String id, final IModel model, final ModalWindow window)
+		public TimesheetEntryCommentPanel(String id, final IModel model, TimesheetRow row, int index, final ModalWindow window)
 		{
 			super(id);
-			
-//			add(new Label(""))
+
+			Calendar thisDate = (Calendar)row.getSundayDate().clone();
+			thisDate.add(Calendar.DAY_OF_YEAR, index);
 			
 			Form form = new Form("commentForm");
+
+			form.add(new Label("dayComments",
+					new StringResourceModel("timesheet.dayComments",
+												this,
+												null,
+												new Object[]{row.getProjectAssignment().getFullName(),
+															 new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
 			
 			final TextArea textArea = new KeepAliveTextArea("comment", model);
 			form.add(textArea);
