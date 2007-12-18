@@ -6,6 +6,7 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.user.domain.User;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -52,16 +53,7 @@ public class Project extends DomainObject<Integer, Project>
 	
 	public String getFullName()
 	{
-		if (projectCode != null && 
-			!projectCode.equals(""))
-		{
-			return projectCode + " - " + name;
-		}
-		else
-		{
-			return name;
-		}
-			
+		return (StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name; 
 	}	
 	
 	/**

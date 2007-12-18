@@ -98,6 +98,16 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 		this.role = description;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.domain.DomainObject#getFullName()
+	 */
+	@Override
+	public String getFullName()
+	{
+		return getProject().getFullName();
+	}
+	
 	// Property accessors
 	public Integer getAssignmentId()
 	{
