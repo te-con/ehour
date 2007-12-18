@@ -39,7 +39,7 @@ function toggleProjectRow(customerId)
 }
 
 // count all booked hours and update the total
-function updateTotal()
+function updatffeTotal()
 {
 	var form = document.getElementById('timesheetFormId');
     var elements = form.elements;

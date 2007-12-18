@@ -81,6 +81,8 @@ public class MonthOverviewPanel extends Panel
 		
 		Link printLink = new Link("printLink")
 		{
+			private static final long serialVersionUID = 4816200369282788652L;
+
 			@Override
 			public void onClick()
 			{

@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.component.CommonModifiers;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ModalWindowFix;
 import net.rrm.ehour.ui.model.DateModel;
@@ -124,7 +125,6 @@ public class TimesheetRowList extends ListView
 		item.add(projectLink);
 		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 		
-		
 		for (int i = 0; 
 			 i < CommonUIStaticData.weekDays.length; // I take it that this is 7 ;)
 			 i++)
@@ -182,7 +182,7 @@ public class TimesheetRowList extends ListView
 		grandTotals.addValue(index, cellModel);
 		
 		// list it on the page
-		dayInput = new TimesheetTextField(id, new FloatModel(cellModel, config, null), Float.class);
+		dayInput = new TimesheetTextField(id, new FloatModel(cellModel, config, null), Float.class, 1);
 		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
 		dayInput.setOutputMarkupId(true);
 		
@@ -267,6 +267,7 @@ public class TimesheetRowList extends ListView
 		item.add(modalWindow);
 		
 		commentLink.setOutputMarkupId(true);
+		commentLink.add(CommonModifiers.tabIndexModifier(255));
 		
 		setCommentLinkClass(commentModel, commentLink);
 		

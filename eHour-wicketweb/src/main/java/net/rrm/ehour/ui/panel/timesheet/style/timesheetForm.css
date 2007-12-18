@@ -206,11 +206,26 @@ div.timesheet
 	margin-top: 10px;
 	background-color: #fefeff;
 }
+
 .timesheetTable tr.customerRow td.saturday
 {
 	margin-top: 10px;
 	background-color: #fefeff;
 	border-right-width: 0;
+}
+
+.timesheetTable tr.customerRow td.foldIcon
+{
+	margin-top: 10px;
+	background-color: #fefeff;
+	border-right-width: 0;
+	padding-left: 3px;
+	width: 16px
+}
+
+.timesheetTable tr.customerRow td.foldIcon a
+{
+	color: red;
 }
 
 .timesheetTable tr.customerRow td.customerCell
@@ -221,7 +236,7 @@ div.timesheet
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	
+	cursor: pointer;
 }
 
 .timesheetTable tr.projectRow td.weekday

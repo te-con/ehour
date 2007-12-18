@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.panel.timesheet;
 
+import net.rrm.ehour.ui.component.CommonModifiers;
+
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 
@@ -33,7 +35,7 @@ public class TimesheetTextField extends TextField
 	private Object	previousValue;
 	
 	@SuppressWarnings("unchecked")
-	public TimesheetTextField(final String id, IModel model, Class type)
+	public TimesheetTextField(final String id, IModel model, Class type, int tabIndex)
 	{
 		super(id, model, type);
 		
@@ -43,6 +45,8 @@ public class TimesheetTextField extends TextField
 		{
 			previousValue = model.getObject();
 		}
+		
+		add(CommonModifiers.tabIndexModifier(tabIndex)); 
 	}
 
 	public boolean isChanged()

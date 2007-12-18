@@ -38,6 +38,7 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.component.CommonModifiers;
 import net.rrm.ehour.ui.component.FadeLabel;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
@@ -224,7 +225,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		}
 		
 		TextArea	textArea = new KeepAliveTextArea("commentsArea", new PropertyModel(timesheet, "comment.comment"));
-		
+		textArea.add(CommonModifiers.tabIndexModifier(2));
 		blueBorder.add(textArea);
 		parent.add(blueBorder);
 		
