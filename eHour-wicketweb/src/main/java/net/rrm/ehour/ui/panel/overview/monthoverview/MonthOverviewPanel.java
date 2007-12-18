@@ -65,28 +65,27 @@ public class MonthOverviewPanel extends Panel
 	 * 
 	 * @param id
 	 */
-	public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, Calendar overviewForMonth)
+	public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, final Calendar overviewForMonth)
 	{
 		super(id);
 		
 		this.timesheetOverview = timesheetOverview;
 	    thisMonth = overviewForMonth.get(Calendar.MONTH);
 	    thisYear = overviewForMonth.get(Calendar.YEAR);
-	    this.overviewFor = overviewForMonth;
-	    
+	    this.overviewFor = (Calendar)overviewForMonth.clone();
+	   
 		setOutputMarkupId(true);
 		
 		EhourWebSession session = (EhourWebSession)getSession();
 		config = session.getEhourConfig();
 		
-		Link   printLink = new Link("printLink")
+		Link printLink = new Link("printLink")
 		{
 			@Override
 			public void onClick()
 			{
-				setResponsePage(new PrintMonthSelection(new Model(overviewFor)));
+				setResponsePage(new PrintMonthSelection(new Model(overviewForMonth)));
 			}
-			
 		};
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyFrame", 
