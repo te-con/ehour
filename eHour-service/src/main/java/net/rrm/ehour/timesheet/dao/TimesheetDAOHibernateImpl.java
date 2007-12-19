@@ -121,6 +121,7 @@ public class TimesheetDAOHibernateImpl
 						List<TimesheetEntry> results;
 						
 						Query queryObject = session.getNamedQuery("Timesheet.getLatestEntryForAssignmentId");
+						
 						queryObject.setInteger("assignmentId", assignmentId);
 						queryObject.setMaxResults(1);
 						results = (List<TimesheetEntry>)queryObject.list();

@@ -310,7 +310,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring</artifactId>
-			<version>2.0.7</version>
+			<version>2.5</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>org.springframework</artifactId>
@@ -326,20 +326,23 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<version>2.0.7</version>
+			<artifactId>spring-test</artifactId>
+			<version>2.5</version>
+			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-hibernate3</artifactId>
-			<version>2.0.7</version>
+			<artifactId>spring-orm</artifactId>
+			<version>2.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>2.0.7</version>
+			<version>2.5</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
