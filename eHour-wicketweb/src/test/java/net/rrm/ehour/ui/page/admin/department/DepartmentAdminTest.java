@@ -22,35 +22,58 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
-
-/**
- * TODO 
- **/
+import org.junit.Before;
+import org.junit.Test;
 
 public class DepartmentAdminTest extends BaseUIWicketTester
 {
+	private UserService	userService;
+	
+	@Before
+	public void setUp() throws Exception
+	{
+		super.setUp();
+		
+		userService = createMock(UserService.class);
+		mockContext.putBean("userService", userService);
+
+		List<UserDepartment> depts = new ArrayList<UserDepartment>();
+		depts.add(new UserDepartment(1, "user", "DPT"));
+		
+		expect(userService.getUserDepartments()).andReturn(depts);
+	}
+	
 	/**
-	 * Test render
+	 * 
 	 */
+	@Test
 	public void testDepartmentAdminRender()
 	{
-		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
-		
-		expect(userService.getUserDepartments())
-			.andReturn(new ArrayList<UserDepartment>());
-
 		replay(userService);
 		
 		tester.startPage(DepartmentAdmin.class);
 		tester.assertRenderedPage(DepartmentAdmin.class);
 		tester.assertNoErrorMessage();
 		
+		verify(userService);
+	}
+	
+	@Test
+	public void testEditTabClick()
+	{
+		replay(userService);
+
+		tester.startPage(DepartmentAdmin.class);
+		tester.assertRenderedPage(DepartmentAdmin.class);
+		tester.assertNoErrorMessage();
+		
+		tester.clickLink("tabs.tabcontainer", true);
 		verify(userService);
 	}
 }
