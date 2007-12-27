@@ -19,13 +19,9 @@ package net.rrm.ehour.ui.page.admin;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.util.lang.Classes;
-import org.apache.wicket.util.string.StringValue;
 
 /**
  * Base admin page template with 2 tabs, add & edit
@@ -78,30 +74,27 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 			
 		};
 		
-		printHierarchy(tabbedPanel);
-
-		
 		add(tabbedPanel);
 	}
-
-	private void printHierarchy(MarkupContainer container)
-	{
-		final StringBuffer buffer = new StringBuffer();
-		buffer.append("Page " + getId() + " (version " + getCurrentVersionNumber() + ")");
-		container.visitChildren(new IVisitor()
-		{
-			public Object component(Component component)
-			{
-				int levels = 0;
-				for (Component current = component; current != null; current = current.getParent())
-				{
-					levels++;
-				}
-				System.out.println(StringValue.repeat(levels, "	") + component.getPageRelativePath() + ":" + Classes.simpleName(component.getClass()));
-				return null;
-			}
-		});
-	}
+//
+//	private void printHierarchy(MarkupContainer container)
+//	{
+//		final StringBuffer buffer = new StringBuffer();
+//		buffer.append("Page " + getId() + " (version " + getCurrentVersionNumber() + ")");
+//		container.visitChildren(new IVisitor()
+//		{
+//			public Object component(Component component)
+//			{
+//				int levels = 0;
+//				for (Component current = component; current != null; current = current.getParent())
+//				{
+//					levels++;
+//				}
+//				System.out.println(StringValue.repeat(levels, "	") + component.getPageRelativePath() + ":" + Classes.simpleName(component.getClass()));
+//				return null;
+//			}
+//		});
+//	}
 	
 	
 	/**

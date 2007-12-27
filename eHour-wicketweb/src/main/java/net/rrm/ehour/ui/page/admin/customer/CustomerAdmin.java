@@ -152,6 +152,19 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 				customerListView.setList(customers);
 				break;
 			}
+			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+			{
+				List<Customer> customers = getCustomers();
+				customerListView.setList(customers);
+				
+				((EntrySelectorPanel)
+						((MarkupContainer)get("entrySelectorFrame"))
+							.get(CUSTOMER_SELECTOR_ID)).refreshList(target);					
+				
+				getTabbedPanel().succesfulSave(target);
+				break;
+				
+			}
 		}
 	}
 	

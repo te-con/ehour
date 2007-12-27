@@ -21,6 +21,7 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
@@ -130,9 +131,11 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 				deleteCustomer(backingBean);
 			}
 			
-			AjaxUtil.publishEvents(this,	new PayloadAjaxEvent<Customer>(target, 
-																					AjaxEventType.ADMIN_CUSTOMER_UPDATED,
-																					backingBean.getCustomer()));
+			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonUIStaticData.AJAX_FORM_SUBMIT);
+			
+//			AjaxUtil.publishEvents(this,	new PayloadAjaxEvent<Customer>(target, 
+//																					AjaxEventType.ADMIN_CUSTOMER_UPDATED,
+//																					backingBean.getCustomer()));
 		}
 		catch (Exception e)
 		{
@@ -141,6 +144,13 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 			target.addComponent(this);
 		}
 	}	
+	
+	@Override
+	public boolean ajaxEventReceived(AjaxEvent event)
+	{
+		return true;
+	}
+	
 	
 	/**
 	 * Persist customer to db

@@ -13,7 +13,9 @@ public class AjaxUtil
 {
 	public static void publishEvents(WebMarkupContainer parent, AjaxEvent event)
 	{
-		parent.getPage().getParent();
+		IVisitor visitor = new AjaxEventVisitor(event);
+		
+		visitor.component(parent.getPage());
 		parent.getPage().visitChildren(new AjaxEventVisitor(event));
 	}
 	
