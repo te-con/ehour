@@ -73,7 +73,21 @@ public class DepartmentAdminTest extends BaseUIWicketTester
 		tester.assertRenderedPage(DepartmentAdmin.class);
 		tester.assertNoErrorMessage();
 		
-		tester.clickLink("tabs.tabcontainer", true);
+		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
 		verify(userService);
 	}
+	
+	
+	@Test
+	public void testSelectDepartment()
+	{
+		replay(userService);
+
+		tester.startPage(DepartmentAdmin.class);
+		tester.assertRenderedPage(DepartmentAdmin.class);
+		tester.assertNoErrorMessage();
+		
+		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
+		verify(userService);
+	}	
 }
