@@ -20,12 +20,11 @@ import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 import org.apache.wicket.util.tester.FormTester;
 
-
 /**
  * Tests the login tests
  **/
 
-public class LoginTest extends BaseUIWicketTester 
+public class LoginTest extends BaseUIWicketTester
 {
 	public void testLoginPageRender()
 	{
@@ -33,17 +32,12 @@ public class LoginTest extends BaseUIWicketTester
 		tester.assertRenderedPage(Login.class);
 		tester.assertNoErrorMessage();
 
-		try
-		{
-			FormTester	form = tester.newFormTester("loginform");
-			form.setValue("username", "thies");
-			form.setValue("password", "Ttst");
-			form.submit();
-		}
-		catch (Exception ase)
-		{
-			// hmm
-		}
+		FormTester form = tester.newFormTester("loginform");
+		form.setValue("username", "thies");
+		form.setValue("password", "Ttst");
+		// FIXME: https://issues.apache.org/jira/browse/WICKET-861?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+//		form.submit();
+
+		
 	}
 }
-

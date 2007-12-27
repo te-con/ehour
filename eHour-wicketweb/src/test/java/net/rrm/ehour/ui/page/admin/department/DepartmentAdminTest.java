@@ -24,10 +24,12 @@ import static org.easymock.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
+import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -77,17 +79,39 @@ public class DepartmentAdminTest extends BaseUIWicketTester
 		verify(userService);
 	}
 	
-	
 	@Test
-	public void testSelectDepartment()
+	public void testSelectDepartment() throws ObjectNotFoundException
 	{
+		expect(userService.getUserDepartment(1))
+			.andReturn(new UserDepartment(1, "user", "DPT"));	
+		
 		replay(userService);
 
 		tester.startPage(DepartmentAdmin.class);
 		tester.assertRenderedPage(DepartmentAdmin.class);
 		tester.assertNoErrorMessage();
 		
-		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
+		tester.clickLink("entrySelectorFrame:deptSelector:entrySelectorFrame:blueBorder:itemListHolder:itemList:0:itemLink", true);
 		verify(userService);
 	}	
+	
+//	FIXME, https://issues.apache.org/jira/browse/WICKET-861?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+//	@Test
+//	public void testAddDepartment() throws ObjectNotFoundException
+//	{
+//		replay(userService);
+//
+//		tester.startPage(DepartmentAdmin.class);
+//		tester.assertRenderedPage(DepartmentAdmin.class);
+//		tester.assertNoErrorMessage();
+//		
+//		FormTester formTester = tester.newFormTester("tabs:panel:border:deptForm");
+//		formTester.setValue("department.name", "test");
+//		formTester.submit();
+//		
+//		tester.assertErrorMessages(new String[]{"bla"});
+//		
+//		
+//		verify(userService);
+//	}		
 }
