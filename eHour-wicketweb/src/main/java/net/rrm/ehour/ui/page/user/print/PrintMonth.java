@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.page.user.print;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,7 +64,7 @@ public class PrintMonth extends WebPage
 	/**
 	 * 
 	 */
-	public PrintMonth(List<Integer> assignmentIds, DateRange printRange, boolean inclSignOffSpace)
+	public PrintMonth(List<Serializable> assignmentIds, DateRange printRange, boolean inclSignOffSpace)
 	{
 		super();
 
@@ -232,13 +233,13 @@ public class PrintMonth extends WebPage
 	 * @return
 	 * @throws ParseException
 	 */
-	private PrintReport initReport(List<Integer> assignmentIds, DateRange printRange) throws ParseException
+	private PrintReport initReport(List<Serializable> assignmentIds, DateRange printRange) throws ParseException
 	{
 		List<FlatProjectAssignmentAggregate> results = null;
 		
 		if (assignmentIds != null && assignmentIds.size() > 0)
 		{
-			results = reportService.getPrintReportData(assignmentIds, printRange);
+			results = reportService.getReportData(assignmentIds, printRange);
 		}
 		else
 		{

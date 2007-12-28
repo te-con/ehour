@@ -31,13 +31,17 @@ import org.apache.wicket.util.convert.IConverter;
 
 public class TimesheetTextField extends TextField
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7033801704569935582L;
 	private	boolean	wasInvalid;
 	private Object	previousValue;
-	
+
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 * @param type
+	 * @param tabIndex
+	 */
 	@SuppressWarnings("unchecked")
 	public TimesheetTextField(final String id, IModel model, Class type, int tabIndex)
 	{
@@ -53,6 +57,7 @@ public class TimesheetTextField extends TextField
 		add(CommonModifiers.tabIndexModifier(tabIndex)); 
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.Component#getConverter(java.lang.Class)
@@ -63,10 +68,10 @@ public class TimesheetTextField extends TextField
 	{
 		return new IConverter()
 		{
+			private static final long serialVersionUID = 1L;
+
 			public Object convertToObject(String value, Locale locale)
 			{
-				System.out.println("1: " + value);
-				
 				if (!StringUtils.isBlank(value))
 				{
 					return Float.parseFloat(value.replace(",", "."));

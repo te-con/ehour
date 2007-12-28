@@ -214,7 +214,7 @@ public class PrintMonthSelection extends BasePage
 		@Override
 		public void onSubmit()
 		{
-			List<Integer>	assignmentIds = new ArrayList<Integer>();
+			List<Serializable>	assignmentIds = new ArrayList<Serializable>();
 			
 			for (AssignmentWrapper wrapper : wrappers)
 			{
