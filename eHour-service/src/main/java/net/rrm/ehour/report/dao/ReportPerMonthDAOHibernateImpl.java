@@ -113,7 +113,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 	 * @return
 	 */	
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Integer> assignmentIds, DateRange dateRange)
+	public List<FlatProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Serializable> assignmentIds, DateRange dateRange)
 	{
 		Session session = this.getSession();
 		

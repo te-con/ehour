@@ -167,7 +167,7 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	{
 		return (T)getHibernateTemplate().merge(domobj);
 	}
-
+	
 	/**
 	 * Convert pattern to sql pattern prefixing and suffixing with %
 	 * @param pattern

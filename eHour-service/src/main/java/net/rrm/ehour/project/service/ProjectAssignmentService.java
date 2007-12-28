@@ -76,11 +76,11 @@ public interface ProjectAssignmentService
 	 * Get project assignments for project
 	 * @param project
 	 */
-	public List<ProjectAssignment>  getProjectAssignments(Project project, DateRange dateRange);
+	public List<ProjectAssignment> getProjectAssignments(Project project, DateRange dateRange);
 	
 	/**
 	 * Get available project assignment types
 	 * @return
 	 */
-	public List<ProjectAssignmentType>	getProjectAssignmentTypes();
+	public List<ProjectAssignmentType> getProjectAssignmentTypes();
 }

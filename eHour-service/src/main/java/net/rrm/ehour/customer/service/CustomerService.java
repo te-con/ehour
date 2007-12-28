@@ -54,7 +54,6 @@ public interface CustomerService
 	 */
 	public Customer getCustomer(Integer customerId);
 	
-	
 	/**
 	 * Delete customer
 	 * @param customerId

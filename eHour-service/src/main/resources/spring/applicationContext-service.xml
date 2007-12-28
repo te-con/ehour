@@ -42,6 +42,7 @@
 		<property name="projectDAO" ref="projectDAO" />	
 		<property name="mailService" ref="mailService" />
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
+		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />
 	</bean>
 
 	<!-- Report criteria service -->
@@ -84,16 +85,6 @@
 		<property name="mailService" ref="mailService" />
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />		
 	</bean>
-
-	<!-- Report Criteria 
-	<bean id="reportCriteria"
-			class="net.rrm.ehour.report.criteria.ReportCriteria"
-			scope="session"
-			init-method="initialize">
-		<aop:scoped-proxy/>
-		<property name="reportCriteriaService" ref="reportCriteriaService" />
-	</bean>
-	-->
 	
 	<!-- Configuration service -->
 	<bean id="configurationService"

@@ -17,6 +17,7 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.GenericDAO;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
@@ -69,6 +70,14 @@ public interface ProjectAssignmentDAO  extends GenericDAO<ProjectAssignment, Int
 	 * @return
 	 */
 	public List<ProjectAssignment> findProjectAssignmentsForProject(Project project, DateRange range);
+	
+	/**
+	 * Find project assignments for customer in date range
+	 * @param project
+	 * @param range
+	 * @return
+	 */
+	public List<ProjectAssignment> findProjectAssignmentsForCustomer(Customer customer, DateRange range);
 	
 	/**
 	 * Find all project assignment types (should be in a seperate DAO theoratically)

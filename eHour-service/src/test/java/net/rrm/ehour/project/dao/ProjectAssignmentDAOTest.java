@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
@@ -29,9 +30,9 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
- * TODO 
+ * ProjectAssignmentDAO junit tests
  **/
-
+@SuppressWarnings("unchecked")
 public class ProjectAssignmentDAOTest extends BaseDAOTest
 {
 	private	ProjectAssignmentDAO	dao;
@@ -70,7 +71,7 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 	{
 		List<ProjectAssignment> pas = dao.findAll();
 		
-		assertEquals(10, pas.size());
+		assertEquals(11, pas.size());
 	}
 
 	/**
@@ -118,6 +119,9 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 		assertEquals("eHour", pa.getProject().getName());
 	}
 
+	/**
+	 * 
+	 */
 	public void testFindProjectAssignmentsForUserInRange()
 	{
 		List<ProjectAssignment> results;
@@ -126,5 +130,16 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 		results = dao.findProjectAssignmentsForUser(1, range);
 
 		assertEquals(5, results.size());
+	}
+	
+	public void testFindProjectAssignmentsForCustomer()
+	{
+		Customer cust = new Customer(3);
+		List<ProjectAssignment> results;
+		DateRange range = new DateRange(new Date(2006 - 1900, 8 - 1, 24), new Date(2007 - 1900, 1 - 1, 10));
+		
+		results = dao.findProjectAssignmentsForCustomer(cust, range);
+		
+		assertEquals(2, results.size());
 	}
 }

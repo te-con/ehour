@@ -42,6 +42,8 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	private	Integer	assignmentId;
 	private	String	assignmentDesc;
 	private Date	dayDate;
+	private String	comment;
+	private int		displayOrder;
 	
 	/**
 	 * Minimal constructor
@@ -283,6 +285,7 @@ public class FlatProjectAssignmentAggregate implements Serializable
 			.append(this.entryDate, rhs.getEntryDate())
 			.append(this.totalHours, rhs.getTotalHours())
 			.append(this.totalTurnOver, rhs.getTotalTurnOver())
+			.append(this.displayOrder, rhs.getDisplayOrder())
 			.isEquals();
 	}
 
@@ -297,6 +300,39 @@ public class FlatProjectAssignmentAggregate implements Serializable
 				.append(this.entryDate)
 				.append(this.totalHours)
 				.append(this.totalTurnOver)
+				.append(this.displayOrder)
 				.toHashCode();
+	}
+
+	/**
+	 * @return the comment
+	 */
+	public String getComment()
+	{
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment)
+	{
+		this.comment = comment;
+	}
+
+	/**
+	 * @return the displayOrder
+	 */
+	public int getDisplayOrder()
+	{
+		return displayOrder;
+	}
+
+	/**
+	 * @param displayOrder the displayOrder to set
+	 */
+	public void setDisplayOrder(int displayOrder)
+	{
+		this.displayOrder = displayOrder;
 	}
 }

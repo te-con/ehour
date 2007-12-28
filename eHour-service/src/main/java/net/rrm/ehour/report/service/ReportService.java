@@ -15,10 +15,13 @@
 
 package net.rrm.ehour.report.service;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
@@ -65,14 +68,30 @@ public interface ReportService
 	 */
 	public ReportDataAggregate createAggregateReportData(ReportCriteria criteria);
 	
-	
 	/**
-	 * Create report for printing
+	 * Get report data
 	 * @param projectAssignmentIds
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatProjectAssignmentAggregate> getPrintReportData(List<Integer> projectAssignmentIds, DateRange dateRange);
+	public List<FlatProjectAssignmentAggregate> getReportData(List<Serializable> projectAssignmentIds, DateRange dateRange);
+
+	/**
+	 * Get report data for customer 
+	 * @param customer
+	 * @param dateRange
+	 * @return
+	 */
+	public List<FlatProjectAssignmentAggregate> getReportData(Customer customer, DateRange dateRange);
+	
+	/**
+	 * Get report data for project
+	 * @param project
+	 * @param dateRange
+	 * @return
+	 */
+	public List<FlatProjectAssignmentAggregate> getReportData(Project project, DateRange dateRange);
+	
 	
 	/**
 	 * Get project manager report
