@@ -16,10 +16,14 @@
 
 package net.rrm.ehour.ui.panel.timesheet;
 
+import java.util.Locale;
+
 import net.rrm.ehour.ui.component.CommonModifiers;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.convert.IConverter;
 
 /**
  * Timesheet textfield which remembers its previous validation state
@@ -49,6 +53,42 @@ public class TimesheetTextField extends TextField
 		add(CommonModifiers.tabIndexModifier(tabIndex)); 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.Component#getConverter(java.lang.Class)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public IConverter getConverter(Class c)
+	{
+		return new IConverter()
+		{
+			public Object convertToObject(String value, Locale locale)
+			{
+				System.out.println("1: " + value);
+				
+				if (!StringUtils.isBlank(value))
+				{
+					return Float.parseFloat(value.replace(",", "."));
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			public String convertToString(Object value, Locale locale)
+			{
+				return (String)value;
+			}
+			
+		};
+	}
+	
+	/**
+	 * Is changed since previous submit
+	 * @return
+	 */
 	public boolean isChanged()
 	{
 		if (this.getModel() != null && this.getModel().getObject() != null)
