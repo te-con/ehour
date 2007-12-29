@@ -17,7 +17,6 @@
 
 package net.rrm.ehour.ui.page.report;
 
-import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
