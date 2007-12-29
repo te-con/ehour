@@ -52,12 +52,12 @@ public class UserReport extends BaseReportPage
 	{
 		super(new ResourceModel("userreport.title"));
 		
+		add(new ContextualHelpPanel("contextHelp"));
+		
+		
 		ReportCriteria reportCriteria = getReportCriteria(true);
 		IModel	model = new CompoundPropertyModel(reportCriteria);
 		setModel(model);
-		
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
 
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model));

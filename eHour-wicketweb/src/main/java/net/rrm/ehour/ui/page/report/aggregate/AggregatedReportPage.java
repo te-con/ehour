@@ -26,6 +26,8 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
+import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.criteria.aggregate.AggregateReportCriteriaPanel;
@@ -43,6 +45,8 @@ import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInst
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -62,6 +66,13 @@ public class AggregatedReportPage extends BaseReportPage
 	public AggregatedReportPage()
 	{
 		super(new ResourceModel("report.title"));
+		
+		add(new ReportNavPanel("reportNav"));
+		add(new ContextualHelpPanel("contextHelp"));
+		
+		final ReportCriteria reportCriteria = getReportCriteria(false);
+		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));
+		setModel(model);		
 		
 		List<AbstractTab> tabList = new ArrayList<AbstractTab>();
 		

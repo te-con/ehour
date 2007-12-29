@@ -20,25 +20,16 @@ import java.util.List;
 
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.component.AbstractIdTab;
-import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
-import net.rrm.ehour.ui.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
-import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
-import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
-import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.domain.User;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -46,7 +37,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.time.Duration;
@@ -58,7 +48,7 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 {
-	private static final String CUSTOMER_PANEL_TAB_ID = "newCustTab";
+//	private static final String CUSTOMER_PANEL_TAB_ID = "newCustTab";
 	private static final long serialVersionUID = -8677950352090140144L;
 
 	/**
@@ -151,36 +141,36 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	 * Add new customer tab
 	 * @param target
 	 */
-	private void addNewCustomerTab(AjaxRequestTarget target)
-	{
-		AddEditTabbedPanel tabPanel = ((BaseTabbedAdminPage)getPage()).getTabbedPanel();
-		
-		if (!tabPanel.isTabIdAdded(CUSTOMER_PANEL_TAB_ID))
-		{
-			final Customer	cust = new Customer();
-			cust.setActive(true);
-			
-			new CustomerAdminBackingBean(cust);		
-			
-			AbstractTab tab = new AbstractIdTab(new ResourceModel("admin.customer.addCustomer"), CUSTOMER_PANEL_TAB_ID)
-			{
-				private static final long serialVersionUID = 1L;
-	
-				@Override
-				public Panel getPanel(String panelId)
-				{
-					return new CustomerFormPanel(panelId, new CompoundPropertyModel(new CustomerAdminBackingBean(cust)));
-				}
-			};
-			
-			int tabPos = tabPanel.addTab(tab);
-			tabPanel.setSelectedTab(tabPos);
-			target.addComponent(tabPanel);
-		}
-		else
-		{
-			tabPanel.setSelectedTabOnId(CUSTOMER_PANEL_TAB_ID);
-			target.addComponent(tabPanel);
-		}
-	}	
+//	private void addNewCustomerTab(AjaxRequestTarget target)
+//	{
+//		AddEditTabbedPanel tabPanel = ((BaseTabbedAdminPage)getPage()).getTabbedPanel();
+//		
+//		if (!tabPanel.isTabIdAdded(CUSTOMER_PANEL_TAB_ID))
+//		{
+//			final Customer	cust = new Customer();
+//			cust.setActive(true);
+//			
+//			new CustomerAdminBackingBean(cust);		
+//			
+//			AbstractTab tab = new AbstractIdTab(new ResourceModel("admin.customer.addCustomer"), CUSTOMER_PANEL_TAB_ID)
+//			{
+//				private static final long serialVersionUID = 1L;
+//	
+//				@Override
+//				public Panel getPanel(String panelId)
+//				{
+//					return new CustomerFormPanel(panelId, new CompoundPropertyModel(new CustomerAdminBackingBean(cust)));
+//				}
+//			};
+//			
+//			int tabPos = tabPanel.addTab(tab);
+//			tabPanel.setSelectedTab(tabPos);
+//			target.addComponent(tabPanel);
+//		}
+//		else
+//		{
+//			tabPanel.setSelectedTabOnId(CUSTOMER_PANEL_TAB_ID);
+//			target.addComponent(tabPanel);
+//		}
+//	}	
 }
