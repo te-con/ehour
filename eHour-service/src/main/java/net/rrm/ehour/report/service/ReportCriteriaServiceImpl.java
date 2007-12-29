@@ -27,6 +27,7 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -66,8 +67,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	
 	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdate updateType)
 	{
-		UserCriteria				userCriteria = reportCriteria.getUserCriteria();
-		AggregateAvailableCriteria	availCriteria = (AggregateAvailableCriteria)reportCriteria.getAvailableCriteria();
+		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
+		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
 		
 		if (userCriteria.isSingleUser())
 		{
@@ -75,12 +76,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		}
 		else
 		{
-			if (updateType == ReportCriteriaUpdate.UPDATE_USERS ||
-				updateType == ReportCriteriaUpdate.UPDATE_ALL)
-			{
-				availCriteria.setUsers(getAvailableUsers(userCriteria));
-			}
-
 			if (updateType == ReportCriteriaUpdate.UPDATE_CUSTOMERS ||
 				updateType == ReportCriteriaUpdate.UPDATE_ALL)
 			{
@@ -95,9 +90,26 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 			
 			if (updateType == ReportCriteriaUpdate.UPDATE_ALL)
 			{
-				availCriteria.setUserDepartments(userDepartmentDAO.findAll());
+				// TODO ugly
+				if (availCriteria instanceof AggregateAvailableCriteria)
+				{
+					((AggregateAvailableCriteria)availCriteria).setUserDepartments(userDepartmentDAO.findAll());
+				}
+				
 				availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry());
 			}
+
+			// TODO ugly
+			if (availCriteria instanceof AggregateAvailableCriteria)
+			{
+				if (updateType == ReportCriteriaUpdate.UPDATE_USERS ||
+						updateType == ReportCriteriaUpdate.UPDATE_ALL)
+				{
+					((AggregateAvailableCriteria)availCriteria).setUsers(getAvailableUsers(userCriteria));
+				}
+			}
+
+			
 			
 			// not entirely useful but for clarity
 			reportCriteria.setAvailableCriteria(availCriteria);

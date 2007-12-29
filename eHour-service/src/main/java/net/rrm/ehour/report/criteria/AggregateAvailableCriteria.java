@@ -19,8 +19,6 @@ package net.rrm.ehour.report.criteria;
 
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 
@@ -34,37 +32,6 @@ public class AggregateAvailableCriteria extends AvailableCriteria
 	
 	private List<User>				users;
 	private List<UserDepartment>	userDepartments;
-	private List<Customer>			customers;
-	private List<Project>			projects;
-
-	/**
-	 * @return the customers
-	 */
-	public List<Customer> getCustomers()
-	{
-		return customers;
-	}
-	/**
-	 * @param customers the customers to set
-	 */
-	public void setCustomers(List<Customer> customers)
-	{
-		this.customers = customers;
-	}
-	/**
-	 * @return the projects
-	 */
-	public List<Project> getProjects()
-	{
-		return projects;
-	}
-	/**
-	 * @param projects the projects to set
-	 */
-	public void setProjects(List<Project> projects)
-	{
-		this.projects = projects;
-	}
 
 	/**
 	 * @return the userDepartments

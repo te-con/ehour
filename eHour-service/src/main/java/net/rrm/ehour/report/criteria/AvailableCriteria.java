@@ -16,8 +16,11 @@
 package net.rrm.ehour.report.criteria;
 
 import java.io.Serializable;
+import java.util.List;
 
+import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.Project;
 
 /**
  * ReportData Criteria
@@ -27,6 +30,8 @@ import net.rrm.ehour.data.DateRange;
 public abstract class AvailableCriteria implements Serializable
 {
 	private DateRange				reportRange;
+	private List<Customer>			customers;
+	private List<Project>			projects;
 
 	/**
 	 * @return the reportRange
@@ -42,4 +47,34 @@ public abstract class AvailableCriteria implements Serializable
 	{
 		this.reportRange = reportRange;
 	}
+	
+	/**
+	 * @return the customers
+	 */
+	public List<Customer> getCustomers()
+	{
+		return customers;
+	}
+	/**
+	 * @param customers the customers to set
+	 */
+	public void setCustomers(List<Customer> customers)
+	{
+		this.customers = customers;
+	}
+	/**
+	 * @return the projects
+	 */
+	public List<Project> getProjects()
+	{
+		return projects;
+	}
+	/**
+	 * @param projects the projects to set
+	 */
+	public void setProjects(List<Project> projects)
+	{
+		this.projects = projects;
+	}	
+	
 }
