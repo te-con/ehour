@@ -26,10 +26,8 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
-import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
-import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
+import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.criteria.aggregate.AggregateReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.type.CustomerReportPanel;
 import net.rrm.ehour.ui.panel.report.type.EmployeeReportPanel;
@@ -45,8 +43,6 @@ import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInst
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -65,16 +61,7 @@ public class AggregatedReportPage extends BaseReportPage
 	 */
 	public AggregatedReportPage()
 	{
-		super(new ResourceModel("report.title"), null);
-		
-		add(new ReportNavPanel("reportNav"));
-		
-		final ReportCriteria reportCriteria = getReportCriteria(false);
-		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));
-		setModel(model);
-		
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
+		super(new ResourceModel("report.title"));
 		
 		List<AbstractTab> tabList = new ArrayList<AbstractTab>();
 		
@@ -85,7 +72,7 @@ public class AggregatedReportPage extends BaseReportPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new AggregateReportCriteriaPanel(panelId, model);
+				return new AggregateReportCriteriaPanel(panelId, getModel());
 			}
 		});
 		

@@ -25,10 +25,14 @@ import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
+import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -51,9 +55,18 @@ public abstract class BaseReportPage extends BasePage
 	 * @param pageTitle
 	 * @param model
 	 */
-	public BaseReportPage(ResourceModel pageTitle, IModel model)
+	public BaseReportPage(ResourceModel pageTitle)
 	{
-		super(pageTitle, model);
+		super(pageTitle, null);
+		
+		add(new ReportNavPanel("reportNav"));
+		
+		final ReportCriteria reportCriteria = getReportCriteria(false);
+		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));
+		setModel(model);
+		
+		// contextual help
+		add(new ContextualHelpPanel("contextHelp"));
 	}
 
 	/**
