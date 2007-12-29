@@ -32,6 +32,7 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
@@ -88,7 +89,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 	{
 		ReportCriteria		reportCriteria;
 		UserCriteria		userCriteria;
-		AvailableCriteria	availCriteria;
+		AggregateAvailableCriteria	availCriteria;
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
@@ -108,7 +109,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		userCriteria.setUsers(ids);
 		reportCriteria.setUserCriteria(userCriteria);
 		
-		availCriteria = new AvailableCriteria();
+		availCriteria = new AggregateAvailableCriteria();
 		reportCriteria.setAvailableCriteria(availCriteria);
 		
 		prjAssignmentDAO.findProjectAssignmentsForUser(new User(1));
@@ -136,7 +137,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 	{
 		ReportCriteria		reportCriteria;
 		UserCriteria		userCriteria;
-		AvailableCriteria	availCriteria;
+		AggregateAvailableCriteria	availCriteria;
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
@@ -154,7 +155,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		userCriteria.setOnlyActiveProjects(false);
 		reportCriteria.setUserCriteria(userCriteria);
 		
-		availCriteria = new AvailableCriteria();
+		availCriteria = new AggregateAvailableCriteria();
 		reportCriteria.setAvailableCriteria(availCriteria);
 		
 		expect(userDAO.findUsersByNameMatch(null, false) ).andReturn(new ArrayList<User>());

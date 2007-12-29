@@ -16,57 +16,18 @@
 package net.rrm.ehour.report.criteria;
 
 import java.io.Serializable;
-import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
 
 /**
  * ReportData Criteria
  * Contains input as well as output
  **/
 
-public class AvailableCriteria implements Serializable
+public abstract class AvailableCriteria implements Serializable
 {
-	private static final long serialVersionUID = -6687214845760958691L;
-	
-	private List<User>				users;
-	private List<UserDepartment>	userDepartments;
-	private List<Customer>			customers;
-	private List<Project>			projects;
 	private DateRange				reportRange;
 
-	/**
-	 * @return the customers
-	 */
-	public List<Customer> getCustomers()
-	{
-		return customers;
-	}
-	/**
-	 * @param customers the customers to set
-	 */
-	public void setCustomers(List<Customer> customers)
-	{
-		this.customers = customers;
-	}
-	/**
-	 * @return the projects
-	 */
-	public List<Project> getProjects()
-	{
-		return projects;
-	}
-	/**
-	 * @param projects the projects to set
-	 */
-	public void setProjects(List<Project> projects)
-	{
-		this.projects = projects;
-	}
 	/**
 	 * @return the reportRange
 	 */
@@ -80,33 +41,5 @@ public class AvailableCriteria implements Serializable
 	public void setReportRange(DateRange reportRange)
 	{
 		this.reportRange = reportRange;
-	}
-	/**
-	 * @return the userDepartments
-	 */
-	public List<UserDepartment> getUserDepartments()
-	{
-		return userDepartments;
-	}
-	/**
-	 * @param userDepartments the userDepartments to set
-	 */
-	public void setUserDepartments(List<UserDepartment> userDepartments)
-	{
-		this.userDepartments = userDepartments;
-	}
-	/**
-	 * @return the users
-	 */
-	public List<User> getUsers()
-	{
-		return users;
-	}
-	/**
-	 * @param users the users to set
-	 */
-	public void setUsers(List<User> users)
-	{
-		this.users = users;
 	}
 }

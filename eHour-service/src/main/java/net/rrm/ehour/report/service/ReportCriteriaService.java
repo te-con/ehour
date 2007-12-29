@@ -17,19 +17,11 @@ package net.rrm.ehour.report.service;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
-import net.rrm.ehour.report.criteria.UserCriteria;
 
 /** **/
 
 public interface ReportCriteriaService
 {
-	/**
-	 * 
-	 * @param reportCriteria
-	 * @return
-	 */
-	public ReportCriteria getReportCriteria(UserCriteria reportCriteria);
-	
 	/**
 	 * 
 	 * @param reportCriteria

@@ -26,7 +26,7 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.criteria.AvailableCriteria;
+import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -53,17 +53,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.ReportCriteriaService#getReportCriteria(net.rrm.ehour.report.criteria.UserCriteria)
-	 */
-	public ReportCriteria getReportCriteria(UserCriteria userCriteria)
-	{
-		ReportCriteria criteria = new ReportCriteria();
-		criteria.setUserCriteria(userCriteria);
-		return syncUserReportCriteria(criteria, ReportCriteriaUpdate.UPDATE_ALL);
-	}
-	
-	/*
-	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportCriteriaService#syncUserReportCriteria(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
 	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria)
@@ -77,8 +66,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	
 	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdate updateType)
 	{
-		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
-		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
+		UserCriteria				userCriteria = reportCriteria.getUserCriteria();
+		AggregateAvailableCriteria	availCriteria = (AggregateAvailableCriteria)reportCriteria.getAvailableCriteria();
 		
 		if (userCriteria.isSingleUser())
 		{
@@ -207,7 +196,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		List<ProjectAssignment>	assignments = null;
 		Set<Customer>			customers = new HashSet<Customer>();
 		Set<Project>			projects = new HashSet<Project>();
-		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
+		AggregateAvailableCriteria		availCriteria = (AggregateAvailableCriteria)reportCriteria.getAvailableCriteria();
 		User					user;
 		
 		user = reportCriteria.getUserCriteria().getUsers().get(0);

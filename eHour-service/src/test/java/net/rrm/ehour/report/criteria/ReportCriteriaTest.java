@@ -35,6 +35,7 @@ public class ReportCriteriaTest extends TestCase
 	{
 		super.setUp();
 		reportCriteria = new ReportCriteria();
+		reportCriteria.setAvailableCriteria(new AggregateAvailableCriteria());
 	}
 
 
@@ -44,7 +45,7 @@ public class ReportCriteriaTest extends TestCase
 		DateRange dr = DateUtil.calendarToMonthRange(new GregorianCalendar());
 		
 		reportCriteria.setUserCriteria(new UserCriteria());
-		AvailableCriteria availCriteria = new AvailableCriteria();
+		AvailableCriteria availCriteria = new AggregateAvailableCriteria();
 		availCriteria.setReportRange(dr);
 		reportCriteria.setAvailableCriteria(availCriteria);
 		
