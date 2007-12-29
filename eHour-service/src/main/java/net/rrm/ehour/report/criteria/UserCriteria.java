@@ -49,6 +49,7 @@ public class UserCriteria implements Serializable
 	private	List<User>	users;
 	private	List<Project>		projects;
 	private	List<Customer>		customers;
+	private Customer	customer;
 	private	List<UserDepartment>	userDepartments;
 	private boolean 	infiniteStartDate;
 	private boolean		infiniteEndDate;
@@ -373,5 +374,21 @@ public class UserCriteria implements Serializable
 	public void setProject(Project project)
 	{
 		this.project = project;
+	}
+
+	/**
+	 * @return the customer
+	 */
+	public Customer getCustomer()
+	{
+		return customer;
+	}
+
+	/**
+	 * @param customer the customer to set
+	 */
+	public void setCustomer(Customer customer)
+	{
+		this.customer = customer;
 	}
 }
