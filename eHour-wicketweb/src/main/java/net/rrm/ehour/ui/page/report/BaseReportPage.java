@@ -18,6 +18,7 @@
 package net.rrm.ehour.ui.page.report;
 
 import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -73,11 +74,17 @@ public abstract class BaseReportPage extends BasePage
 		userCriteria.setSingleUser(singleUser);
 		
 		ReportCriteria criteria = new ReportCriteria();
-		criteria.setAvailableCriteria(new AggregateAvailableCriteria());
+		criteria.setAvailableCriteria(getAvailableCriteria());
 		criteria.setUserCriteria(userCriteria);
 		
 		return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdate.UPDATE_ALL);
 	}
+	
+	/**
+	 * Get a fresh new shiny AvailableCriteria obj
+	 * @return
+	 */
+	public abstract AvailableCriteria getAvailableCriteria();
 	
 	/**
 	 * Initialize user criteria 

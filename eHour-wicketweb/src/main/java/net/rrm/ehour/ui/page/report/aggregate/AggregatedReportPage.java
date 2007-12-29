@@ -20,6 +20,8 @@ package net.rrm.ehour.ui.page.report.aggregate;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.model.KeyResourceModel;
@@ -27,8 +29,8 @@ import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
-import net.rrm.ehour.ui.panel.report.criteria.aggregate.ReportCriteriaPanel;
-import net.rrm.ehour.ui.panel.report.criteria.aggregate.ReportTabbedPanel;
+import net.rrm.ehour.ui.panel.report.criteria.aggregate.AggregateReportCriteriaPanel;
+import net.rrm.ehour.ui.panel.report.criteria.aggregate.AggregateReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.type.CustomerReportPanel;
 import net.rrm.ehour.ui.panel.report.type.EmployeeReportPanel;
 import net.rrm.ehour.ui.panel.report.type.ProjectReportPanel;
@@ -56,7 +58,7 @@ public class AggregatedReportPage extends BaseReportPage
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 	
-	private ReportTabbedPanel	tabPanel;
+	private AggregateReportTabbedPanel	tabPanel;
 
 	/**
 	 * 
@@ -83,11 +85,11 @@ public class AggregatedReportPage extends BaseReportPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new ReportCriteriaPanel(panelId, model);
+				return new AggregateReportCriteriaPanel(panelId, model);
 			}
 		});
 		
-		tabPanel = new ReportTabbedPanel("reportContainer", tabList);
+		tabPanel = new AggregateReportTabbedPanel("reportContainer", tabList);
 		tabPanel.setOutputMarkupId(true);
 		add(tabPanel);
 	}
@@ -203,5 +205,15 @@ public class AggregatedReportPage extends BaseReportPage
 		panel.setOutputMarkupId(true);
 		
 		return panel;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.report.BaseReportPage#getAvailableCriteria()
+	 */
+	@Override
+	public AvailableCriteria getAvailableCriteria()
+	{
+		return new AggregateAvailableCriteria();
 	}	
 }

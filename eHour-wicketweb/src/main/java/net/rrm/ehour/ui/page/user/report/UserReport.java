@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.page.user.report;
 
+import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
@@ -95,4 +97,14 @@ public class UserReport extends BaseReportPage
 		panel.setOutputMarkupId(true);
 		return panel;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.report.BaseReportPage#getAvailableCriteria()
+	 */
+	@Override
+	public AvailableCriteria getAvailableCriteria()
+	{
+		return new AggregateAvailableCriteria();
+	}	
 }

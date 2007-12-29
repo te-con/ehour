@@ -34,7 +34,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * Ajax tabbed report panel
  **/
 
-public class ReportTabbedPanel extends AjaxTabbedPanel
+public class AggregateReportTabbedPanel extends AjaxTabbedPanel
 {
 	private static final long serialVersionUID = 5957279200970383021L;
 
@@ -43,7 +43,7 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	 * @param id
 	 * @param tabs
 	 */
-	public ReportTabbedPanel(String id, List<AbstractTab> tabs)
+	public AggregateReportTabbedPanel(String id, List<AbstractTab> tabs)
 	{
 		super(id, tabs);
 	}
@@ -65,7 +65,7 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 				setSelectedTab(index);
 				if (target != null)
 				{
-					target.addComponent(ReportTabbedPanel.this);
+					target.addComponent(AggregateReportTabbedPanel.this);
 				}
 				onAjaxUpdate(target);
 			}

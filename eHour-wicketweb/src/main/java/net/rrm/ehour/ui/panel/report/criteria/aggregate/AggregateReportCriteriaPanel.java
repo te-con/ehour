@@ -17,68 +17,44 @@
 
 package net.rrm.ehour.ui.panel.report.criteria.aggregate;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.List;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.panel.report.criteria.BaseReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
-import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
-import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
-import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
-import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
-import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
-import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
-import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
-import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
 /**
  * Report criteria panel
  **/
 
 @SuppressWarnings("serial")
-public class ReportCriteriaPanel extends Panel 
+public class AggregateReportCriteriaPanel extends BaseReportCriteriaPanel 
 {
 	private static final long serialVersionUID = -7865322191390719584L;
 	
 	@SpringBean
 	private	ReportCriteriaService	reportCriteriaService;
-	private DojoDatePicker 			startDatePicker;
-	private DojoDatePicker 			endDatePicker;
 	private	ListMultipleChoice 		projects;
 	private	ListMultipleChoice 		users;
 	
@@ -87,51 +63,11 @@ public class ReportCriteriaPanel extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public ReportCriteriaPanel(String id, IModel model)
+	public AggregateReportCriteriaPanel(String id, IModel model)
 	{
 		super(id, model);
 		
 		sortReportCriteria(getBackingBeanFromModel().getReportCriteria());
-		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", 600);
-		add(greyBorder);
-		
-		setOutputMarkupId(true);	
-		
-		Form form = new Form("criteriaForm");
-		greyBorder.add(form);
-		
-		addDates(form);
-		
-		addCustomerAndProjects(form);
-		addDepartmentsAndUsers(form);
-		
-		addCreateReportSubmit(form);
-	}
-	
-	/**
-	 * Add submit link
-	 * @param parent
-	 */
-	private void addCreateReportSubmit(Form form)
-	{
-		AjaxButton submitButton = new AjaxButton("createReport", form)
-		{
-			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form form)
-			{
-				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT);
-            }
-
-			@Override
-			protected IAjaxCallDecorator getAjaxCallDecorator()
-			{
-				return new LoadingSpinnerDecorator();
-			}
-        };
-        
-		// default submit
-		form.add(submitButton);
 	}
 
 	
@@ -327,156 +263,6 @@ public class ReportCriteriaPanel extends Panel
 		parent.add(filterToggleText);		
 	}	
 
-	/**
-	 * Add dates
-	 * @param parent
-	 */
-	private void addDates(Form form)
-	{
-		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-		
-		startDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateStart", 
-				DateUtil.getPatternForDateLocale(config.getLocale()));
-		
-		startDatePicker.setToggle(new DojoFadeToggle(200));
-		startDatePicker.setOutputMarkupId(true);
-		startDatePicker.add(new AjaxFormComponentUpdatingBehavior("onchange")
-        {
-			protected void onUpdate(AjaxRequestTarget target)
-            {
-				// don't do anything, just update the model. bit of a workaround
-				// needed since everything is in it's own model
-            }
-        });			
-		
-		form.add(startDatePicker);
-
-		endDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateEnd",
-											DateUtil.getPatternForDateLocale(config.getLocale()));
-		endDatePicker.setToggle(new DojoFadeToggle(200));
-		endDatePicker.setOutputMarkupId(true);
-		endDatePicker.add(new AjaxFormComponentUpdatingBehavior("onchange")
-        {
-			protected void onUpdate(AjaxRequestTarget target)
-            {
-				// don't do anything, just update the model. bit of a workaround
-				// needed since everything is in it's own model
-            }
-        });			
-	
-		form.add(endDatePicker);
-		
-		addQuickWeek(form);
-		addQuickMonth(form);
-		addQuickQuarter(form);
-	}
-	
-	/**
-	 * Add quick week selection
-	 * @param parent
-	 */
-	private void addQuickWeek(WebMarkupContainer parent)
-	{
-		List<QuickWeek>	weeks = new ArrayList<QuickWeek>();	
-		Calendar		currentDate = new GregorianCalendar();
-		int 			currentWeek = -8;
-		
-		currentDate.add(Calendar.WEEK_OF_YEAR, currentWeek);
-		
-		for (; currentWeek < 8; currentWeek++)
-		{
-			weeks.add(new QuickWeek(currentDate));
-			
-			currentDate.add(Calendar.WEEK_OF_YEAR, 1);
-		}
-		
-		final DropDownChoice quickWeekSelection = new DropDownChoice("quickWeek", weeks, new QuickWeekRenderer());
-
-		quickWeekSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.addComponent(startDatePicker);
-				target.addComponent(endDatePicker);
-			}
-			
-		});
-		
-		parent.add(quickWeekSelection);
-	}
-	
-	/**
-	 * Add quick month selection
-	 * @param parent
-	 */
-	private void addQuickMonth(WebMarkupContainer parent)
-	{
-		List<QuickMonth>	months = new ArrayList<QuickMonth>();	
-		Calendar			currentDate = new GregorianCalendar();
-		int 				currentMonth = -6;
-		
-		currentDate.add(Calendar.MONTH, currentMonth);
-		
-		for (; currentMonth < 6; currentMonth++)
-		{
-			months.add(new QuickMonth(currentDate));
-			
-			currentDate.add(Calendar.MONTH, 1);
-		}
-
-		final DropDownChoice quickMonthSelection = new DropDownChoice("quickMonth", months, new QuickMonthRenderer());
-
-		quickMonthSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.addComponent(startDatePicker);
-				target.addComponent(endDatePicker);
-			}
-		});
-		
-		parent.add(quickMonthSelection);
-	}	
-	
-	
-	/**
-	 * Add quick month selection
-	 * @param parent
-	 */
-	private void addQuickQuarter(WebMarkupContainer parent)
-	{
-		List<QuickQuarter>	quarters = new ArrayList<QuickQuarter>();	
-		Calendar			currentDate = new GregorianCalendar();
-		int 				currentQuarter = -3;
-		
-		int quarter = currentDate.get(Calendar.MONTH) / 3;
-		currentDate.set(Calendar.MONTH, quarter * 3); // abuse rounding off
-		currentDate.add(Calendar.MONTH, currentQuarter * 3);
-		
-		for (; currentQuarter < 3; currentQuarter++)
-		{
-			quarters.add(new QuickQuarter(currentDate));
-			
-			currentDate.add(Calendar.MONTH, 3);
-		}
-		
-		final DropDownChoice quickQuarterSelection = new DropDownChoice("quickQuarter", quarters, new QuickQuarterRenderer());
-
-		quickQuarterSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.addComponent(startDatePicker);
-				target.addComponent(endDatePicker);
-			}
-			
-		});
-		
-		parent.add(quickQuarterSelection);
-	}
 
 	/**
 	 * 
@@ -488,5 +274,16 @@ public class ReportCriteriaPanel extends Panel
 		Collections.sort(((AggregateAvailableCriteria)reportCriteria.getAvailableCriteria()).getProjects(), new ProjectComparator());
 		Collections.sort(((AggregateAvailableCriteria)reportCriteria.getAvailableCriteria()).getUserDepartments(), new UserDepartmentComparator());
 		Collections.sort(((AggregateAvailableCriteria)reportCriteria.getAvailableCriteria()).getUsers(), new UserComparator(false));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.report.criteria.BaseReportCriteriaPanel#fillCriteriaForm(org.apache.wicket.markup.html.form.Form)
+	 */
+	@Override
+	protected void fillCriteriaForm(Form form)
+	{
+		addCustomerAndProjects(form);
+		addDepartmentsAndUsers(form);
 	}
 }
