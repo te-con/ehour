@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.page.login;
 import java.io.Serializable;
 
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.page.report.ReportPage;
+import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
@@ -182,7 +182,7 @@ public class Login extends WebPage
 			}
 			else if (roles.contains(CommonUIStaticData.ROLE_REPORT))
 			{
-				homepage = ReportPage.class;
+				homepage = AggregatedReportPage.class;
 			}
 			else
 			{

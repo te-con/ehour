@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.criteria;
+package net.rrm.ehour.ui.panel.report.criteria.aggregate;
 
 import java.util.List;
 

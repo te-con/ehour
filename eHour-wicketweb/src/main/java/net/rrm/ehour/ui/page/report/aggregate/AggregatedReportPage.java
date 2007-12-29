@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.page.report;
+package net.rrm.ehour.ui.page.report.aggregate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +23,12 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.ui.model.KeyResourceModel;
+import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
-import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
-import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
+import net.rrm.ehour.ui.panel.report.criteria.aggregate.ReportCriteriaPanel;
+import net.rrm.ehour.ui.panel.report.criteria.aggregate.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.type.CustomerReportPanel;
 import net.rrm.ehour.ui.panel.report.type.EmployeeReportPanel;
 import net.rrm.ehour.ui.panel.report.type.ProjectReportPanel;
@@ -50,7 +52,7 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @AuthorizeInstantiation("ROLE_REPORT")
-public class ReportPage extends BaseReportPage
+public class AggregatedReportPage extends BaseReportPage
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 	
@@ -59,9 +61,11 @@ public class ReportPage extends BaseReportPage
 	/**
 	 * 
 	 */
-	public ReportPage()
+	public AggregatedReportPage()
 	{
 		super(new ResourceModel("report.title"), null);
+		
+		add(new ReportNavPanel("reportNav"));
 		
 		final ReportCriteria reportCriteria = getReportCriteria(false);
 		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));

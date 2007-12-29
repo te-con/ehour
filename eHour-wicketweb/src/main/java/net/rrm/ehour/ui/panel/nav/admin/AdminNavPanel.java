@@ -29,7 +29,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
- * TODO 
+ * Navigation panel for admin
  **/
 
 public class AdminNavPanel extends Panel
@@ -51,5 +51,4 @@ public class AdminNavPanel extends Panel
 		greyNavBorder.add(new BookmarkablePageLink("projectAdmin", ProjectAdmin.class));
 		greyNavBorder.add(new BookmarkablePageLink("assignmentAdmin", AssignmentAdmin.class));
 	}
-
 }

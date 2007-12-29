@@ -17,7 +17,9 @@
 
 package net.rrm.ehour.ui.page.report;
 
+import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
@@ -70,7 +72,11 @@ public abstract class BaseReportPage extends BasePage
 		
 		userCriteria.setSingleUser(singleUser);
 		
-		return reportCriteriaService.getReportCriteria(userCriteria);
+		ReportCriteria criteria = new ReportCriteria();
+		criteria.setAvailableCriteria(new AggregateAvailableCriteria());
+		criteria.setUserCriteria(userCriteria);
+		
+		return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdate.UPDATE_ALL);
 	}
 	
 	/**

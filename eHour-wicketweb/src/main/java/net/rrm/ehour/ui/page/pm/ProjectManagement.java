@@ -22,7 +22,7 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.report.criteria.AvailableCriteria;
+import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.ReportService;
@@ -105,7 +105,7 @@ public class ProjectManagement extends BasePage
 		
 		List<Project> projects = projectService.getProjectManagerProjects(user);
 		
-		AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
+		AggregateAvailableCriteria availCriteria = (AggregateAvailableCriteria)reportCriteria.getAvailableCriteria();
 		availCriteria.setProjects(projects);
 		
 		return reportCriteria;

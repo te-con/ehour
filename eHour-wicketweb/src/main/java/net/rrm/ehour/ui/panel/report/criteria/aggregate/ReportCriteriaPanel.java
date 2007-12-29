@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.criteria;
+package net.rrm.ehour.ui.panel.report.criteria.aggregate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.service.ReportCriteriaService;
@@ -31,6 +32,7 @@ import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
@@ -482,9 +484,9 @@ public class ReportCriteriaPanel extends Panel
 	 */
 	private void sortReportCriteria(ReportCriteria reportCriteria)
 	{
-		Collections.sort(reportCriteria.getAvailableCriteria().getCustomers(), new CustomerComparator());
-		Collections.sort(reportCriteria.getAvailableCriteria().getProjects(), new ProjectComparator());
-		Collections.sort(reportCriteria.getAvailableCriteria().getUserDepartments(), new UserDepartmentComparator());
-		Collections.sort(reportCriteria.getAvailableCriteria().getUsers(), new UserComparator(false));
+		Collections.sort(((AggregateAvailableCriteria)reportCriteria.getAvailableCriteria()).getCustomers(), new CustomerComparator());
+		Collections.sort(((AggregateAvailableCriteria)reportCriteria.getAvailableCriteria()).getProjects(), new ProjectComparator());
+		Collections.sort(((AggregateAvailableCriteria)reportCriteria.getAvailableCriteria()).getUserDepartments(), new UserDepartmentComparator());
+		Collections.sort(((AggregateAvailableCriteria)reportCriteria.getAvailableCriteria()).getUsers(), new UserComparator(false));
 	}
 }

@@ -17,11 +17,14 @@
 
 package net.rrm.ehour.ui.page.report;
 
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
+import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
 
 
 
@@ -33,13 +36,13 @@ public class ReportPageTest extends BaseTestReport
 {
 	public void testReportPageRender()
 	{
-		expect(reportCriteriaService.getReportCriteria(isA(UserCriteria.class)))
-		.andReturn(reportCriteria);	
+		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdate.UPDATE_ALL)))
+			.andReturn(reportCriteria);
 		
 		replay(reportCriteriaService);
 		
-		tester.startPage(ReportPage.class);
-		tester.assertRenderedPage(ReportPage.class);
+		tester.startPage(AggregatedReportPage.class);
+		tester.assertRenderedPage(AggregatedReportPage.class);
 		tester.assertNoErrorMessage();
 		
 		verify(reportCriteriaService);
