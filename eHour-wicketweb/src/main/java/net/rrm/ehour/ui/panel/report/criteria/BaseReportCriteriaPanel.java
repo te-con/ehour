@@ -53,6 +53,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -81,6 +83,17 @@ public abstract class BaseReportCriteriaPanel extends Panel
 	 */
 	public BaseReportCriteriaPanel(String id, IModel model)
 	{
+		this(id, model, true);
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 * @param multipleCustomer
+	 */
+	public BaseReportCriteriaPanel(String id, IModel model, boolean multipleCustomer)
+	{
 		super(id, model);
 		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", 600);
@@ -92,36 +105,42 @@ public abstract class BaseReportCriteriaPanel extends Panel
 		greyBorder.add(form);
 		
 		addDates(form);
-		addCustomerAndProjects(form);
+
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("customerProjectsBorder");
+		form.add(blueBorder);
+
+		addCustomerSelection(blueBorder, multipleCustomer);
+		addProjectSelection(blueBorder);
 
 		fillCriteriaForm(form);
 		
 		addCreateReportSubmit(form);		
-	}
+	}	
 
-	/**
-	 * Add customer and projects selection
-	 * @param form
-	 */
-	private void addCustomerAndProjects(Form form)
-	{
-		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("customerProjectsBorder");
-		form.add(blueBorder);
-		
-		addCustomerSelection(blueBorder);
-		addProjectSelection(blueBorder);
-	}
-	
 	/**
 	 * Add customer selection
 	 * @param parent
 	 */
-	private void addCustomerSelection(WebMarkupContainer parent)
+	private void addCustomerSelection(WebMarkupContainer parent, boolean multipleCustomer)
 	{
-		final ListMultipleChoice customers = new ListMultipleChoice("reportCriteria.userCriteria.customers",
-								new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
-								new DomainObjectChoiceRenderer());
-		customers.setMaxRows(4);
+		final FormComponent customers;
+		
+		if (!multipleCustomer)
+		{
+			customers = new ListChoice("reportCriteria.userCriteria.customer",
+					new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
+					new DomainObjectChoiceRenderer());
+			((ListChoice)customers).setMaxRows(4);
+		}
+		else
+		{
+			customers = new ListMultipleChoice("reportCriteria.userCriteria.customers",
+					new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
+					new DomainObjectChoiceRenderer());
+			
+			((ListMultipleChoice)customers).setMaxRows(4);	
+		}
+		
 		customers.setOutputMarkupId(true);
 
 		// update projects when customer(s) selected

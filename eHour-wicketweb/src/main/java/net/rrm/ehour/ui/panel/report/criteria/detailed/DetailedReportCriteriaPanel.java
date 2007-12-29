@@ -32,7 +32,7 @@ public class DetailedReportCriteriaPanel extends BaseReportCriteriaPanel
 
 	public DetailedReportCriteriaPanel(String id, IModel model)
 	{
-		super(id, model);
+		super(id, model, false);
 	}
 
 	/*
