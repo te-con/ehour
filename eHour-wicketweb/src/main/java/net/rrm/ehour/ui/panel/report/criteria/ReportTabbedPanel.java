@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.criteria.aggregate;
+package net.rrm.ehour.ui.panel.report.criteria;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * Ajax tabbed report panel
  **/
 
-public class AggregateReportTabbedPanel extends AjaxTabbedPanel
+public class ReportTabbedPanel extends AjaxTabbedPanel
 {
 	private static final long serialVersionUID = 5957279200970383021L;
 
@@ -43,9 +43,11 @@ public class AggregateReportTabbedPanel extends AjaxTabbedPanel
 	 * @param id
 	 * @param tabs
 	 */
-	public AggregateReportTabbedPanel(String id, List<AbstractTab> tabs)
+	public ReportTabbedPanel(String id, List<AbstractTab> tabs)
 	{
 		super(id, tabs);
+		
+		setOutputMarkupId(true);
 	}
 	
 	/*
@@ -57,7 +59,6 @@ public class AggregateReportTabbedPanel extends AjaxTabbedPanel
 	{
 		return new AjaxFallbackLink(linkId)
 		{
-
 			private static final long serialVersionUID = 1L;
 
 			public void onClick(AjaxRequestTarget target)
@@ -65,7 +66,7 @@ public class AggregateReportTabbedPanel extends AjaxTabbedPanel
 				setSelectedTab(index);
 				if (target != null)
 				{
-					target.addComponent(AggregateReportTabbedPanel.this);
+					target.addComponent(ReportTabbedPanel.this);
 				}
 				onAjaxUpdate(target);
 			}

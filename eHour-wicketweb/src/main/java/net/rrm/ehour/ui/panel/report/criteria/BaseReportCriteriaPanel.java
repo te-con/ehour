@@ -19,12 +19,17 @@ package net.rrm.ehour.ui.panel.report.criteria;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
+import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
@@ -32,7 +37,10 @@ import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
+import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.sort.CustomerComparator;
+import net.rrm.ehour.ui.sort.ProjectComparator;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 import net.rrm.ehour.util.DateUtil;
 
@@ -40,11 +48,17 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
@@ -54,9 +68,11 @@ import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
 public abstract class BaseReportCriteriaPanel extends Panel
 {
+	@SpringBean
+	private	ReportCriteriaService	reportCriteriaService;
 	private DojoDatePicker 			startDatePicker;
 	private DojoDatePicker 			endDatePicker;
-
+	private	ListMultipleChoice 		projects;
 	
 	/**
 	 * Constructor which sets up the basic borded form
@@ -76,6 +92,7 @@ public abstract class BaseReportCriteriaPanel extends Panel
 		greyBorder.add(form);
 		
 		addDates(form);
+		addCustomerAndProjects(form);
 
 		fillCriteriaForm(form);
 		
@@ -83,10 +100,123 @@ public abstract class BaseReportCriteriaPanel extends Panel
 	}
 
 	/**
+	 * Add customer and projects selection
+	 * @param form
+	 */
+	private void addCustomerAndProjects(Form form)
+	{
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("customerProjectsBorder");
+		form.add(blueBorder);
+		
+		addCustomerSelection(blueBorder);
+		addProjectSelection(blueBorder);
+	}
+	
+	/**
+	 * Add customer selection
+	 * @param parent
+	 */
+	private void addCustomerSelection(WebMarkupContainer parent)
+	{
+		final ListMultipleChoice customers = new ListMultipleChoice("reportCriteria.userCriteria.customers",
+								new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
+								new DomainObjectChoiceRenderer());
+		customers.setMaxRows(4);
+		customers.setOutputMarkupId(true);
+
+		// update projects when customer(s) selected
+		customers.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			private static final long serialVersionUID = -5588313671121851508L;
+
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				// show only projects for selected customers
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
+                target.addComponent(projects);
+            }
+        });	
+		
+		parent.add(customers);
+		
+		// hide active/inactive customers checkbox 
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveCustomers")
+		{
+			private static final long serialVersionUID = 2585047163449150793L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_CUSTOMERS);
+				target.addComponent(customers);
+			}
+		};		
+		
+		parent.add(deactivateBox);
+		
+		Label filterToggleText = new Label("onlyActiveCustomersLabel", new ResourceModel("report.hideInactive"));
+		parent.add(filterToggleText);
+	}
+	
+	/**
+	 * Add project selection
+	 * @param parent
+	 */
+	private void addProjectSelection(WebMarkupContainer parent)
+	{
+		projects = new ListMultipleChoice("reportCriteria.userCriteria.projects",
+											new PropertyModel(getModel(), "reportCriteria.availableCriteria.projects"),
+											new DomainObjectChoiceRenderer());
+		projects.setMaxRows(4);
+		projects.setOutputMarkupId(true);
+		parent.add(projects);
+		
+		// hide active/inactive projects checkbox 
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveProjects")
+		{
+			private static final long serialVersionUID = 2585047163449150793L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
+				target.addComponent(projects);
+			}
+		};		
+		
+		parent.add(deactivateBox);
+		
+		Label filterToggleText = new Label("onlyActiveProjectsLabel", new ResourceModel("report.hideInactive"));
+		parent.add(filterToggleText);		
+	}		
+	
+	/**
 	 * Add specific criteria to form
 	 * @param form
 	 */
 	protected abstract void fillCriteriaForm(Form form);
+	
+	
+	/**
+	 * Update report criteria
+	 * @param filter
+	 */
+	protected void updateReportCriteria(ReportCriteriaUpdate updateType)
+	{
+		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
+		ReportCriteria reportCriteria = reportCriteriaService.syncUserReportCriteria(backingBean.getReportCriteria(), updateType);
+		sortReportCriteria(reportCriteria);
+		backingBean.setReportCriteria(reportCriteria);
+	}
+	
+	/**
+	 * Get backingbean from model
+	 * @return
+	 */
+	protected ReportCriteriaBackingBean getBackingBeanFromModel()
+	{
+		return (ReportCriteriaBackingBean)getModel().getObject();
+	}	
 	
 	/**
 	 * Add submit link
@@ -274,6 +404,14 @@ public abstract class BaseReportCriteriaPanel extends Panel
 		
 		parent.add(quickQuarterSelection);
 	}	
-	
-	
+
+	/**
+	 * Sort available report criteria
+	 * @param reportCriteria
+	 */
+	protected void sortReportCriteria(ReportCriteria reportCriteria)
+	{
+		Collections.sort((reportCriteria.getAvailableCriteria()).getCustomers(), new CustomerComparator());
+		Collections.sort((reportCriteria.getAvailableCriteria()).getProjects(), new ProjectComparator());
+	}
 }

@@ -28,9 +28,9 @@ import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
+import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.aggregate.AggregateReportCriteriaPanel;
-import net.rrm.ehour.ui.panel.report.criteria.aggregate.AggregateReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.type.CustomerReportPanel;
 import net.rrm.ehour.ui.panel.report.type.EmployeeReportPanel;
 import net.rrm.ehour.ui.panel.report.type.ProjectReportPanel;
@@ -58,7 +58,7 @@ public class AggregatedReportPage extends BaseReportPage
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 	
-	private AggregateReportTabbedPanel	tabPanel;
+	private ReportTabbedPanel	tabPanel;
 
 	/**
 	 * 
@@ -89,8 +89,7 @@ public class AggregatedReportPage extends BaseReportPage
 			}
 		});
 		
-		tabPanel = new AggregateReportTabbedPanel("reportContainer", tabList);
-		tabPanel.setOutputMarkupId(true);
+		tabPanel = new ReportTabbedPanel("reportContainer", tabList);
 		add(tabPanel);
 	}
 	
