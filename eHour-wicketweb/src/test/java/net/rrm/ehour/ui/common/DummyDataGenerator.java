@@ -115,6 +115,7 @@ public class DummyDataGenerator
 	{
 		Customer cust = new Customer(customerId);
 		cust.setName("cust:" + Integer.toString(customerId));
+		cust.setCode("co" + Integer.toString(customerId));
 		cust.setActive(true);
 		
 		return cust;

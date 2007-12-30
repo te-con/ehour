@@ -116,7 +116,7 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	 * @param reportName
 	 * @return
 	 */
-	private JFreeChart getChart(ReportData reportData)
+	public JFreeChart getChart(ReportData reportData)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
@@ -204,6 +204,7 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 		}
 
 		keys = new ArrayList<ChartRowKey>(valueMap.keySet());
+		
 		Collections.sort(keys);
 		
 		for (ChartRowKey rowKeyAgg : keys)
