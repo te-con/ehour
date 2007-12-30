@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.mail.domain.MailLogAssignment;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.domain.User;
 
 /**

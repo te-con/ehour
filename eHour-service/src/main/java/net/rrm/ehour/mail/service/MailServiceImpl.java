@@ -27,7 +27,7 @@ import net.rrm.ehour.mail.domain.MailLogAssignment;
 import net.rrm.ehour.mail.domain.MailType;
 import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.EhourConstants;
 

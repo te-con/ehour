@@ -24,9 +24,9 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.reports.dto.FlatReportElement;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 
 /**
@@ -66,7 +66,7 @@ public interface ReportService
 	 * @param criteria
 	 * @return
 	 */
-	public ReportDataAggregate createAggregateReportData(ReportCriteria criteria);
+	public ReportData createAggregateReportData(ReportCriteria criteria);
 	
 	/**
 	 * Get report data

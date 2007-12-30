@@ -28,7 +28,7 @@ import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;

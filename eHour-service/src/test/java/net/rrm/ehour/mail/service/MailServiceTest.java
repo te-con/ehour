@@ -19,7 +19,7 @@ import java.util.Date;
 
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.ArrayUtils;

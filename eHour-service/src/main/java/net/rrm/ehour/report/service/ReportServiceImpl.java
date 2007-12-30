@@ -36,9 +36,9 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.dao.ReportPerMonthDAO;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.reports.dto.FlatReportElement;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.util.ReportUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.domain.User;
@@ -110,9 +110,9 @@ public class ReportServiceImpl implements ReportService
 	 * Create report data based on criteria 
 	 * @return
 	 */
-	public ReportDataAggregate createAggregateReportData(ReportCriteria reportCriteria)
+	public ReportData createAggregateReportData(ReportCriteria reportCriteria)
 	{
-		ReportDataAggregate		reportDataAggregate = new ReportDataAggregate();
+		ReportData reportData = new ReportData();
 		UserCriteria	userCriteria;
 		List<Project>	projects = null;
 		List<User>		users = null;
@@ -149,10 +149,10 @@ public class ReportServiceImpl implements ReportService
 			projects = getProjects(userCriteria);
 		}		
 		
-		reportDataAggregate.setProjectAssignmentAggregates(getProjectAssignmentAggregates(users, projects, reportRange));
-		reportDataAggregate.setReportCriteria(reportCriteria);
+		reportData.setReportElements(getProjectAssignmentAggregates(users, projects, reportRange));
+		reportData.setReportCriteria(reportCriteria);
 		
-		return reportDataAggregate;
+		return reportData;
 	}
 	
 	/**

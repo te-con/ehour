@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForUsers">
-         <![CDATA[SELECT new net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
@@ -12,21 +12,21 @@
         ]]></query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUsers">
-        SELECT new net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+        SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
         FROM TimesheetEntry entry
         WHERE entry.entryId.projectAssignment.user IN (:users)
         GROUP BY entry.entryId.projectAssignment.assignmentId
 	</query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForAssignmentIds">
-        SELECT new net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+        SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
         FROM TimesheetEntry entry
         WHERE entry.entryId.projectAssignment.assignmentId IN (:assignmentIds)
         GROUP BY entry.entryId.projectAssignment.assignmentId
 	</query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUsersAndProjects">
-		SELECT new net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+		SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
         FROM TimesheetEntry entry
         WHERE entry.entryId.projectAssignment.user IN (:users) AND
         	  entry.entryId.projectAssignment.project IN (:projects)
@@ -34,7 +34,7 @@
 	</query>
 
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects">
-         <![CDATA[SELECT new net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
@@ -45,7 +45,7 @@
         
     <query name="Report.getCumulatedHoursPerAssignment">
         <![CDATA[
-        SELECT new net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+        SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
         FROM TimesheetEntry entry
         WHERE entry.entryId.entryDate >= :dateStart AND
               entry.entryId.entryDate <= :dateEnd 
@@ -54,7 +54,7 @@
 	</query>        
         
     <query name="Report.getCumulatedHoursPerAssignmentOnDateForProjects">
-         <![CDATA[SELECT new net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
@@ -65,7 +65,7 @@
     
     <query name="Report.getCumulatedHoursForAssignment">
          <![CDATA[
-         SELECT new net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+         SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.projectAssignment = :assignment
                 GROUP BY entry.entryId.projectAssignment.assignmentId                

@@ -15,7 +15,7 @@
 
 package net.rrm.ehour.timesheet.dto;
 
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 /**
  * Value object for timesheet overview. While the hours in an aggregate

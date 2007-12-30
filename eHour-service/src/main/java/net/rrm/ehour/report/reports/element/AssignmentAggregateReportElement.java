@@ -13,7 +13,7 @@
  *
  */
 
-package net.rrm.ehour.report.reports.dto;
+package net.rrm.ehour.report.reports.element;
 
 import java.util.Date;
 
@@ -27,7 +27,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * ReportElement for aggregate reports
  **/
 
-public class AssignmentAggregateReportElement extends ReportElement<AssignmentAggregateReportElement>
+public class AssignmentAggregateReportElement 
+			extends ReportElement 
+			implements Comparable<AssignmentAggregateReportElement>
 {
 	private static final long serialVersionUID = -7175763322632066925L;
 	private ProjectAssignment 	projectAssignment;

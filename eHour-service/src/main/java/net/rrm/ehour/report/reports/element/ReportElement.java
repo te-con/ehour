@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.report.reports.dto;
+package net.rrm.ehour.report.reports.element;
 
 import java.io.Serializable;
 
@@ -23,7 +23,7 @@ import java.io.Serializable;
  * Report element 
  **/
 
-public abstract class ReportElement<T> implements Comparable<T>, Serializable
+public abstract class ReportElement implements Serializable
 {
 	protected Number 				hours;
 

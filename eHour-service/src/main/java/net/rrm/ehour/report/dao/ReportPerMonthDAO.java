@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.dto.FlatReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 /**
  * TODO 

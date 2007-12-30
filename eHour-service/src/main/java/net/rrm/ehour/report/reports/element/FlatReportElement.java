@@ -13,7 +13,7 @@
  *
  */
 
-package net.rrm.ehour.report.reports.dto;
+package net.rrm.ehour.report.reports.element;
 
 import java.util.Date;
 
@@ -24,7 +24,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * Report element for trend reports (more data so each element is flattened)
  **/
 
-public class FlatReportElement extends ReportElement<FlatReportElement>
+public class FlatReportElement extends ReportElement
 {
 	private static final long serialVersionUID = -2146747873763924275L;
 	private	Integer	customerId;
@@ -333,14 +333,5 @@ public class FlatReportElement extends ReportElement<FlatReportElement>
 	public void setDisplayOrder(int displayOrder)
 	{
 		this.displayOrder = displayOrder;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(FlatReportElement o)
-	{
-		return getAssignmentId().compareTo(o.getAssignmentId());
 	}
 }

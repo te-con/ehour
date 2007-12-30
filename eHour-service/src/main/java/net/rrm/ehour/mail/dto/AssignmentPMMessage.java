@@ -17,7 +17,7 @@ package net.rrm.ehour.mail.dto;
 
 import java.util.Date;
 
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 
 /**
