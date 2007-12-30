@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report.aggregate.node;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 
 /**
@@ -30,7 +30,7 @@ public class CustomerNode extends ReportNode
 {
 	private static final long serialVersionUID = -356525734449023397L;
 
-	public CustomerNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel)
+	public CustomerNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
     {
 		if (aggregate.getProjectAssignment() != null)
 		{
@@ -45,7 +45,7 @@ public class CustomerNode extends ReportNode
 	 * @see net.rrm.ehour.ui.report.aggregate.value.ReportNode#getAggregateId(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
-    protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
+    protected Serializable getAggregateId(AssignmentAggregateReportElement aggregate)
     {
 		if (aggregate.getProjectAssignment() != null)
 		{

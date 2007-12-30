@@ -29,7 +29,7 @@ import java.util.Date;
 
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.FlatReportElement;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 
 /**
@@ -44,7 +44,7 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	 * @see net.rrm.ehour.web.report.reports.TimelineReport#getRowKey(net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate)
 	 */
 	@Override
-	protected ProjectAssignment getRowKey(FlatProjectAssignmentAggregate aggregate)
+	protected ProjectAssignment getRowKey(FlatReportElement aggregate)
 	{
 		ProjectAssignment pa = new ProjectAssignment();
 		
@@ -65,7 +65,7 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	 * @throws ParseException 
 	 */
 	@Override
-	protected Date getAggregateDate(FlatProjectAssignmentAggregate aggregate) throws ParseException
+	protected Date getAggregateDate(FlatReportElement aggregate) throws ParseException
 	{
 		return aggregate.getDayDate();
 	}

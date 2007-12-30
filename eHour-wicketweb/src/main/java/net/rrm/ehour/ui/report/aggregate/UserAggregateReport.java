@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.report.aggregate;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
@@ -52,7 +52,7 @@ public class UserAggregateReport extends AggregateReport
     	return new ReportNodeFactory()
 	    {
 	        @Override
-	        public ReportNode createReportNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel)
+	        public ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
 	        {
 	            switch (hierarchyLevel)
 	            {
@@ -73,7 +73,7 @@ public class UserAggregateReport extends AggregateReport
 	         * @return
 	         */
 	
-	        public Serializable getAssignmentId(ProjectAssignmentAggregate aggregate)
+	        public Serializable getAssignmentId(AssignmentAggregateReportElement aggregate)
 	        {
 	            return aggregate.getProjectAssignment().getUser().getPK();
 	        }
@@ -89,7 +89,7 @@ public class UserAggregateReport extends AggregateReport
 	{
 		private static final long serialVersionUID = 8534482324216994500L;
 
-		private UserNode(ProjectAssignmentAggregate aggregate)
+		private UserNode(AssignmentAggregateReportElement aggregate)
 		{
 	        this.id = aggregate.getProjectAssignment().getUser().getPK();
 	        this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName()};
@@ -98,7 +98,7 @@ public class UserAggregateReport extends AggregateReport
 		}
 
 		@Override
-		protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
+		protected Serializable getAggregateId(AssignmentAggregateReportElement aggregate)
 		{
 			return aggregate.getProjectAssignment().getUser().getPK();		
 		}
@@ -116,7 +116,7 @@ public class UserAggregateReport extends AggregateReport
 		private Number   hours;
 	    private Number   turnOver;		
 		
-	    private ProjectEndNode(ProjectAssignmentAggregate aggregate)
+	    private ProjectEndNode(AssignmentAggregateReportElement aggregate)
 	    {
 	        hours = aggregate.getHours();
 	        turnOver = aggregate.getTurnOver();
@@ -135,7 +135,7 @@ public class UserAggregateReport extends AggregateReport
 	    }
 		
 		@Override
-		protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
+		protected Serializable getAggregateId(AssignmentAggregateReportElement aggregate)
 		{
 			return aggregate.getProjectAssignment().getProject().getPK();
 		}

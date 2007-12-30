@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.reportchart.aggregate;
 
 import org.apache.wicket.model.Model;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.ProjectRowKey;
 
@@ -50,7 +50,7 @@ public class ProjectTurnoverAggregateChartImage extends AbstractAggregateChartIm
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getColumnValue(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
-	protected Number getColumnValue(ProjectAssignmentAggregate aggregate)
+	protected Number getColumnValue(AssignmentAggregateReportElement aggregate)
 	{
 		return aggregate.getTurnOver();
 	}
@@ -68,7 +68,7 @@ public class ProjectTurnoverAggregateChartImage extends AbstractAggregateChartIm
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getRowKey(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
-	protected ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate)
+	protected ChartRowKey getRowKey(AssignmentAggregateReportElement aggregate)
 	{
 		return new ProjectRowKey(aggregate.getProjectAssignment().getProject());
 	}

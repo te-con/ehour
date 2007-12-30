@@ -1,15 +1,3 @@
-package net.rrm.ehour.ui.report.aggregate;
-
-import java.io.Serializable;
-
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
-import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
-import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
-
 /**
  * User: Thies
  * Date: Sep 11, 2007
@@ -26,6 +14,19 @@ import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  */
+
+package net.rrm.ehour.ui.report.aggregate;
+
+import java.io.Serializable;
+
+import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
+import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
+import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
+import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
+
 public class CustomerAggregateReport extends AggregateReport
 {
 	private static final long serialVersionUID = -3221674649410450972L;
@@ -47,7 +48,7 @@ public class CustomerAggregateReport extends AggregateReport
     	return new ReportNodeFactory()
 	    {
 	        @Override
-	        public ReportNode createReportNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel)
+	        public ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
 	        {
 	            switch (hierarchyLevel)
 	            {
@@ -75,7 +76,7 @@ public class CustomerAggregateReport extends AggregateReport
 	         * @return
 	         */
 	
-	        public Serializable getAssignmentId(ProjectAssignmentAggregate aggregate)
+	        public Serializable getAssignmentId(AssignmentAggregateReportElement aggregate)
 	        {
 	            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
 	        }

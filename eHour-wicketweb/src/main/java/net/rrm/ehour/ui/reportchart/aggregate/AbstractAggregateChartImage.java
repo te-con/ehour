@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 
 import org.apache.log4j.Logger;
@@ -179,7 +179,7 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 
 		dataset = new DefaultCategoryDataset();
 
-		for (ProjectAssignmentAggregate aggregate : reportDataAggregate.getProjectAssignmentAggregates())
+		for (AssignmentAggregateReportElement aggregate : reportDataAggregate.getProjectAssignmentAggregates())
 		{
 			rowKey = getRowKey(aggregate);
 			
@@ -229,12 +229,12 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate);
+	protected abstract ChartRowKey getRowKey(AssignmentAggregateReportElement aggregate);
 
 	/**
 	 * Get column value from aggregate
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract Number getColumnValue(ProjectAssignmentAggregate aggregate);
+	protected abstract Number getColumnValue(AssignmentAggregateReportElement aggregate);
 }

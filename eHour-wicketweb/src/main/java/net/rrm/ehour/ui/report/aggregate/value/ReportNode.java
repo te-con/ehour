@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 /**
  * User: Thies
@@ -134,7 +134,7 @@ public abstract class ReportNode implements Serializable
      * @param aggregate
      * @return
      */
-    public boolean processAggregate(ProjectAssignmentAggregate aggregate,
+    public boolean processAggregate(AssignmentAggregateReportElement aggregate,
                                     int hierarchyLevel,
                                     ReportNodeFactory nodeFactory)
     {
@@ -169,7 +169,7 @@ public abstract class ReportNode implements Serializable
      * @param aggregate
      * @return
      */
-    private boolean processChildNodes(ProjectAssignmentAggregate aggregate,
+    private boolean processChildNodes(AssignmentAggregateReportElement aggregate,
                                       int hierarchyLevel,
                                       ReportNodeFactory nodeFactory)
     {
@@ -198,7 +198,7 @@ public abstract class ReportNode implements Serializable
      * @param aggregate
      * @return
      */
-    protected abstract Serializable getAggregateId(ProjectAssignmentAggregate aggregate);
+    protected abstract Serializable getAggregateId(AssignmentAggregateReportElement aggregate);
 
     /**
      * Process aggregate for this value? Only process aggregates that got the same id
@@ -206,7 +206,7 @@ public abstract class ReportNode implements Serializable
      * @param forId
      * @return
      */
-    private boolean isProcessAggregate(ProjectAssignmentAggregate aggregate)
+    private boolean isProcessAggregate(AssignmentAggregateReportElement aggregate)
     {
         return  this.id.equals(getAggregateId(aggregate));
     }

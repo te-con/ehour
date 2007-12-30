@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.FlatReportElement;
 import net.rrm.ehour.ui.report.Report;
 import net.rrm.ehour.util.DateUtil;
 
@@ -37,16 +37,16 @@ import net.rrm.ehour.util.DateUtil;
 @SuppressWarnings("unchecked")
 public abstract class TrendReport<RK extends Comparable> extends Report
 {
-	protected SortedMap<RK, Map<Date, FlatProjectAssignmentAggregate>>	rowMap;
+	protected SortedMap<RK, Map<Date, FlatReportElement>>	rowMap;
 
 	/**
 	 * Initialize the report
 	 * @param aggregateData
 	 * @throws ParseException 
 	 */
-	public void initialize(List<FlatProjectAssignmentAggregate> aggregateData) throws ParseException
+	public void initialize(List<FlatReportElement> aggregateData) throws ParseException
 	{
-		Map<Date, FlatProjectAssignmentAggregate>	rowAggregates;
+		Map<Date, FlatReportElement>	rowAggregates;
 		Date	aggregateDate;
 		RK		rowKey;
 
@@ -55,9 +55,9 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 			return;
 		}
 		
-		rowMap = new TreeMap<RK, Map<Date, FlatProjectAssignmentAggregate>>(getRKComparator());
+		rowMap = new TreeMap<RK, Map<Date, FlatReportElement>>(getRKComparator());
 
-		for (FlatProjectAssignmentAggregate aggregate : aggregateData)
+		for (FlatReportElement aggregate : aggregateData)
 		{
 			rowKey = getRowKey(aggregate);
 			
@@ -67,7 +67,7 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 			}
 			else
 			{
-				rowAggregates = new HashMap<Date, FlatProjectAssignmentAggregate>();
+				rowAggregates = new HashMap<Date, FlatReportElement>();
 			}
 			
 			aggregateDate = getAggregateDate(aggregate);
@@ -86,7 +86,7 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 	public float getGrandTotalHours()
 	{
 		float total = 0;
-		Map<Date, FlatProjectAssignmentAggregate>	aggMap;
+		Map<Date, FlatReportElement>	aggMap;
 		
 		for (RK key : rowMap.keySet())
 		{
@@ -113,7 +113,7 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 	 * Get the values
 	 * @return
 	 */
-	public SortedMap<RK, Map<Date, FlatProjectAssignmentAggregate>> getValues()
+	public SortedMap<RK, Map<Date, FlatReportElement>> getValues()
 	{
 		return rowMap;
 	}
@@ -123,14 +123,14 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract Date getAggregateDate(FlatProjectAssignmentAggregate aggregate) throws ParseException;
+	protected abstract Date getAggregateDate(FlatReportElement aggregate) throws ParseException;
 	
 	/**
 	 * Get the row key
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract RK getRowKey(FlatProjectAssignmentAggregate aggregate);
+	protected abstract RK getRowKey(FlatReportElement aggregate);
 	
 	/**
 	 * Get row key comparator for sorting

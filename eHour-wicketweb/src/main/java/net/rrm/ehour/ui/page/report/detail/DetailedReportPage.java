@@ -23,6 +23,8 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.DetailedAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
@@ -31,12 +33,14 @@ import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.criteria.detailed.DetailedReportCriteriaPanel;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Detailed report 
@@ -47,6 +51,8 @@ public class DetailedReportPage extends BaseReportPage
 {
 	private static final long serialVersionUID = 187757929348342350L;
 	
+	@SpringBean
+	private ReportService		reportService;
 	private ReportTabbedPanel	tabPanel;
 
 	/**
@@ -80,6 +86,31 @@ public class DetailedReportPage extends BaseReportPage
 		add(tabPanel);		
 	}
 
+	/**
+	 * Get report data
+	 * @param reportCriteria
+	 * @return
+	 */
+	protected ReportDataAggregate getReportData(ReportCriteria reportCriteria)
+	{
+		logger.debug("Getting report data");
+		ReportDataAggregate data = reportService.createAggregateReportData(reportCriteria);
+		
+//		reportService.getReportData(project, dateRange)
+		
+		return data;
+	}		
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.BasePage#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 */
+	@Override
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	{
+		target.addComponent(tabPanel);
+	}	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.page.report.BaseReportPage#getAvailableCriteria()

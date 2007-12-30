@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
 
@@ -45,7 +45,7 @@ public class ReportBuilder
         
         if (reportDataAggregate != null)
         {
-	        for (ProjectAssignmentAggregate aggregate : reportDataAggregate.getProjectAssignmentAggregates())
+	        for (AssignmentAggregateReportElement aggregate : reportDataAggregate.getProjectAssignmentAggregates())
 	        {
 	            if (!processAggregate(aggregate, nodeFactory, reportNodes))
 	            {
@@ -66,7 +66,7 @@ public class ReportBuilder
      * @param factory
      * @return
      */
-    private boolean processAggregate(ProjectAssignmentAggregate aggregate, ReportNodeFactory factory, List<ReportNode> reportNodes)
+    private boolean processAggregate(AssignmentAggregateReportElement aggregate, ReportNodeFactory factory, List<ReportNode> reportNodes)
     {
         boolean processed = false;
 

@@ -54,7 +54,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -127,10 +126,9 @@ public abstract class BaseReportCriteriaPanel extends Panel
 		
 		if (!multipleCustomer)
 		{
-			customers = new ListChoice("reportCriteria.userCriteria.customer",
+			customers = new DropDownChoice("reportCriteria.userCriteria.customer",
 					new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
 					new DomainObjectChoiceRenderer());
-			((ListChoice)customers).setMaxRows(4);
 		}
 		else
 		{
@@ -223,6 +221,9 @@ public abstract class BaseReportCriteriaPanel extends Panel
 	protected void updateReportCriteria(ReportCriteriaUpdate updateType)
 	{
 		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
+		
+		System.out.println(backingBean.getReportCriteria().getUserCriteria().getCustomers());
+		
 		ReportCriteria reportCriteria = reportCriteriaService.syncUserReportCriteria(backingBean.getReportCriteria(), updateType);
 		sortReportCriteria(reportCriteria);
 		backingBean.setReportCriteria(reportCriteria);

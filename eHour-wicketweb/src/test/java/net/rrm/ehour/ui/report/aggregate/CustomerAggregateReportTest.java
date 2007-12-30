@@ -8,8 +8,8 @@ import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 
@@ -25,8 +25,8 @@ import org.junit.Test;
  */
 public class CustomerAggregateReportTest 
 {
-	private ProjectAssignmentAggregate pagA, pagB, pagC, pagD, pagE, pagF;
-    private List<ProjectAssignmentAggregate> aggs;
+	private AssignmentAggregateReportElement pagA, pagB, pagC, pagD, pagE, pagF;
+    private List<AssignmentAggregateReportElement> aggs;
 
     @Before
 	public void setUp()
@@ -41,7 +41,7 @@ public class CustomerAggregateReportTest
         pagD = DummyDataGenerator.getProjectAssignmentAggregate(4, 2, 2);
         pagE = DummyDataGenerator.getProjectAssignmentAggregate(5, 3, 3);
 
-        aggs = new ArrayList<ProjectAssignmentAggregate>();
+        aggs = new ArrayList<AssignmentAggregateReportElement>();
         aggs.add(pagE);
         aggs.add(pagD);
         aggs.add(pagB);

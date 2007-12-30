@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report.aggregate.node;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 
 /**
@@ -32,7 +32,7 @@ public class UserEndNode extends ReportNode
 	private Number   hours;
     private Number   turnOver;
 
-    public UserEndNode(ProjectAssignmentAggregate aggregate)
+    public UserEndNode(AssignmentAggregateReportElement aggregate)
     {
         hours = aggregate.getHours();
         turnOver = aggregate.getTurnOver();
@@ -48,7 +48,7 @@ public class UserEndNode extends ReportNode
     }
 
     @Override
-    protected Serializable getAggregateId(ProjectAssignmentAggregate aggregate)
+    protected Serializable getAggregateId(AssignmentAggregateReportElement aggregate)
     {
         return aggregate.getProjectAssignment().getUser().getPK();
     }

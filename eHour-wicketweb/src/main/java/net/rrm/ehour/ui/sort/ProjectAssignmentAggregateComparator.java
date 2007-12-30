@@ -19,13 +19,13 @@ package net.rrm.ehour.ui.sort;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 /**
  * Project Assignment aggregate comparator 
  **/
 
-public class ProjectAssignmentAggregateComparator implements Comparator<ProjectAssignmentAggregate>, Serializable
+public class ProjectAssignmentAggregateComparator implements Comparator<AssignmentAggregateReportElement>, Serializable
 {
 	private static final long serialVersionUID = 8223481348525614968L;
 	public final static int SORT_ON_CUSTOMER = 1;
@@ -50,7 +50,7 @@ public class ProjectAssignmentAggregateComparator implements Comparator<ProjectA
 	/**
 	 * Compare on project name or customer name
 	 */
-	public int compare(ProjectAssignmentAggregate o1, ProjectAssignmentAggregate o2)
+	public int compare(AssignmentAggregateReportElement o1, AssignmentAggregateReportElement o2)
 	{
 		int	compare = 0;
 		
@@ -79,7 +79,7 @@ public class ProjectAssignmentAggregateComparator implements Comparator<ProjectA
 	 * @param o2
 	 * @return
 	 */
-	private int compareOnProject(ProjectAssignmentAggregate o1, ProjectAssignmentAggregate o2)
+	private int compareOnProject(AssignmentAggregateReportElement o1, AssignmentAggregateReportElement o2)
 	{
 		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
 				o2.getProjectAssignment().getProject().getName());

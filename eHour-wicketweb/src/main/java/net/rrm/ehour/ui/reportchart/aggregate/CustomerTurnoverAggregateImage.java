@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.reportchart.aggregate;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.CustomerRowKey;
 
@@ -62,7 +62,7 @@ public class CustomerTurnoverAggregateImage extends AbstractAggregateChartImage
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getColumnValue(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
-	protected Number getColumnValue(ProjectAssignmentAggregate aggregate)
+	protected Number getColumnValue(AssignmentAggregateReportElement aggregate)
 	{
 		return aggregate.getTurnOver();
 	}
@@ -72,7 +72,7 @@ public class CustomerTurnoverAggregateImage extends AbstractAggregateChartImage
 	 * @see net.rrm.ehour.web.report.charts.AbstractAggregateChartAction#getRowKey(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
 	 */
 	@Override
-	protected ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate)
+	protected ChartRowKey getRowKey(AssignmentAggregateReportElement aggregate)
 	{
 		return new CustomerRowKey(aggregate.getProjectAssignment().getProject().getCustomer());
 	}

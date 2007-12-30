@@ -1,13 +1,3 @@
-package net.rrm.ehour.ui.report.aggregate;
-
-import java.util.List;
-
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.ui.report.Report;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
-
 /**
  * User: Thies
  * Date: Sep 11, 2007
@@ -24,6 +14,17 @@ import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  */
+
+package net.rrm.ehour.ui.report.aggregate;
+
+import java.util.List;
+
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.ui.report.Report;
+import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
+
 public abstract class AggregateReport extends Report
 {
 	private List<ReportNode>    nodes;
@@ -35,7 +36,7 @@ public abstract class AggregateReport extends Report
      */
     public AggregateReport(ReportDataAggregate reportDataAggregate)
     {
-        ReportBuilder    reportBuilder = new ReportBuilder();
+        ReportBuilder reportBuilder = new ReportBuilder();
         nodes = reportBuilder.createReport(reportDataAggregate, getReportNodeFactory());
         
         reportRange = reportDataAggregate.getReportCriteria().getUserCriteria().getReportRange();

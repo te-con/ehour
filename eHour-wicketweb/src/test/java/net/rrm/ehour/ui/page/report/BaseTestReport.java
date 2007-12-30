@@ -27,8 +27,8 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
@@ -79,8 +79,8 @@ public class BaseTestReport extends BaseUIWicketTester
 		
 		data = new ReportDataAggregate();
 		data.setReportCriteria(reportCriteria);
-		List<ProjectAssignmentAggregate> agg = new ArrayList<ProjectAssignmentAggregate>();
-		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
+		List<AssignmentAggregateReportElement> agg = new ArrayList<AssignmentAggregateReportElement>();
+		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		ProjectAssignment ass = new ProjectAssignment(1);
 		User user = new User(1);
 		ass.setUser(user);

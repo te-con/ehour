@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.report.aggregate.value;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 import java.io.Serializable;
 
@@ -27,12 +27,12 @@ public abstract class ReportNodeFactory
      * @param hierarchyLevel
      * @return
      */
-    public abstract ReportNode createReportNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel);
+    public abstract ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel);
 
     /**
      * Get the id of an aggregate
      * @param aggregate
      * @return
      */
-    public abstract Serializable getAssignmentId(ProjectAssignmentAggregate aggregate);
+    public abstract Serializable getAssignmentId(AssignmentAggregateReportElement aggregate);
 }

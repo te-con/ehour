@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.panel.report.pm;
 
 import java.util.ArrayList;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
@@ -66,14 +66,14 @@ public class PmReportPanel extends AbstractReportPanel
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		greyBorder.add(blueBorder);
 		
-		blueBorder.add(new ListView("report", new ArrayList<ProjectAssignmentAggregate>(report.getAggregates()))
+		blueBorder.add(new ListView("report", new ArrayList<AssignmentAggregateReportElement>(report.getAggregates()))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem item)
 			{
-				ProjectAssignmentAggregate aggregate = (ProjectAssignmentAggregate)item.getModelObject();
+				AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)item.getModelObject();
 				
 				item.add(new Label("user", aggregate.getProjectAssignment().getUser().getFullName()));
 				item.add(new Label("role", aggregate.getProjectAssignment().getRole()));

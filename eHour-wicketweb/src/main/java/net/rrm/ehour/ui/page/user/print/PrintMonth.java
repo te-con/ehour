@@ -28,7 +28,7 @@ import java.util.Map;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.FlatReportElement;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
@@ -174,7 +174,7 @@ public class PrintMonth extends WebPage
 		role.setVisible(assignment.getRole() != null && !assignment.getRole().trim().equals(""));
 		item.add(role);
 		
-		Map<Date, FlatProjectAssignmentAggregate> assignmentMap = report.getValues().get(assignment);
+		Map<Date, FlatReportElement> assignmentMap = report.getValues().get(assignment);
 		
 		RepeatingView dateLabels = new RepeatingView("days");
 		
@@ -186,7 +186,7 @@ public class PrintMonth extends WebPage
 			
 			if (assignmentMap.containsKey(day))
 			{
-				FlatProjectAssignmentAggregate aggregate = assignmentMap.get(day);
+				FlatReportElement aggregate = assignmentMap.get(day);
 				
 				if (aggregate.getTotalHours() != null && aggregate.getTotalHours().floatValue() > 0)
 				{
@@ -235,7 +235,7 @@ public class PrintMonth extends WebPage
 	 */
 	private PrintReport initReport(List<Serializable> assignmentIds, DateRange printRange) throws ParseException
 	{
-		List<FlatProjectAssignmentAggregate> results = null;
+		List<FlatReportElement> results = null;
 		
 		if (assignmentIds != null && assignmentIds.size() > 0)
 		{
@@ -243,7 +243,7 @@ public class PrintMonth extends WebPage
 		}
 		else
 		{
-			results = new ArrayList<FlatProjectAssignmentAggregate>();
+			results = new ArrayList<FlatReportElement>();
 		}
 		
 		PrintReport printReport = new PrintReport();

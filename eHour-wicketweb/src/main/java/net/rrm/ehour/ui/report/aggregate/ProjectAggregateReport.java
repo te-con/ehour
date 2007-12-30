@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.report.aggregate;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
 import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
@@ -54,7 +54,7 @@ public class ProjectAggregateReport extends AggregateReport
     	return new ReportNodeFactory()
 	    {
 	        @Override
-	        public ReportNode createReportNode(ProjectAssignmentAggregate aggregate, int hierarchyLevel)
+	        public ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
 	        {
 	            switch (hierarchyLevel)
 	            {
@@ -75,7 +75,7 @@ public class ProjectAggregateReport extends AggregateReport
 	         * @return
 	         */
 	
-	        public Serializable getAssignmentId(ProjectAssignmentAggregate aggregate)
+	        public Serializable getAssignmentId(AssignmentAggregateReportElement aggregate)
 	        {
 	            return aggregate.getProjectAssignment().getProject().getPK();
 	        }

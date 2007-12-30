@@ -15,7 +15,7 @@
  */
 package net.rrm.ehour.ui.reportchart.aggregate;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.CustomerRowKey;
 
@@ -60,7 +60,7 @@ public class CustomerHoursAggregateChartImage extends AbstractAggregateChartImag
 	 * Get the hours from the aggregate
 	 */
 	@Override
-	protected Number getColumnValue(ProjectAssignmentAggregate aggregate)
+	protected Number getColumnValue(AssignmentAggregateReportElement aggregate)
 	{
 		return aggregate.getHours();
 	}
@@ -69,7 +69,7 @@ public class CustomerHoursAggregateChartImage extends AbstractAggregateChartImag
 	 * Get the customerrowkey decorator from the aggregate
 	 */
 	@Override
-	protected ChartRowKey getRowKey(ProjectAssignmentAggregate aggregate)
+	protected ChartRowKey getRowKey(AssignmentAggregateReportElement aggregate)
 	{
 		return new CustomerRowKey(aggregate.getProjectAssignment().getProject().getCustomer());
 	}
