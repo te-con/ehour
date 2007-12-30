@@ -21,7 +21,7 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.page.BasePage;
@@ -108,10 +108,10 @@ public abstract class BaseReportPage extends BasePage
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected ReportDataAggregate getReportData(ReportCriteria reportCriteria)
+	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
 		logger.debug("Getting report data");
-		ReportDataAggregate data = reportService.createAggregateReportData(reportCriteria);
+		ReportData data = reportService.createAggregateReportData(reportCriteria);
 		
 		return data;
 	}	

@@ -23,7 +23,7 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.DetailedAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
@@ -91,10 +91,10 @@ public class DetailedReportPage extends BaseReportPage
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected ReportDataAggregate getReportData(ReportCriteria reportCriteria)
+	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
 		logger.debug("Getting report data");
-		ReportDataAggregate data = reportService.createAggregateReportData(reportCriteria);
+		ReportData data = reportService.createAggregateReportData(reportCriteria);
 		
 //		reportService.getReportData(project, dateRange)
 		

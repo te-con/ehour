@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.user.report.UserReportPrint;
@@ -53,7 +53,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param id
 	 * @param reportData
 	 */
-	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, ReportDataAggregate reportData, boolean inclLinks)
+	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, ReportData reportData, boolean inclLinks)
 	{
 		super(id);
 		
@@ -65,7 +65,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param customerAggregateReport
 	 * @return
 	 */
-	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, ReportDataAggregate reportData, boolean inclLinks)
+	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, ReportData reportData, boolean inclLinks)
 	{
 		ResourceLink 	excelLink = null;
 		Link			printLink = null;
@@ -114,7 +114,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addCharts(ReportDataAggregate data, WebMarkupContainer parent)
+	private void addCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 		

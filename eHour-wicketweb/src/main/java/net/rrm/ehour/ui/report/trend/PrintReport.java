@@ -29,7 +29,7 @@ import java.util.Date;
 
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.reports.dto.FlatReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 
 /**

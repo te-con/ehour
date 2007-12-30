@@ -8,8 +8,8 @@ import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 
@@ -58,13 +58,13 @@ public class CustomerAggregateReportTest
     public void testCreateReport() throws Exception
     {
 
-        ReportDataAggregate aggData = new ReportDataAggregate();
+        ReportData aggData = new ReportData();
         UserCriteria userCriteria = new UserCriteria();
 
         ReportCriteria rc = new ReportCriteria();
         rc.setUserCriteria(userCriteria);
         aggData.setReportCriteria(rc);
-        aggData.setProjectAssignmentAggregates(aggs);
+        aggData.setReportElements(aggs);
         CustomerAggregateReport aggReport = new CustomerAggregateReport(aggData);
 
         assertEquals(3, aggReport.getNodes().size());

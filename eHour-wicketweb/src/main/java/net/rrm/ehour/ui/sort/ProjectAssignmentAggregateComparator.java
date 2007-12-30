@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.sort;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 /**
  * Project Assignment aggregate comparator 

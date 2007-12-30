@@ -27,8 +27,8 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
@@ -43,7 +43,7 @@ public class BaseTestReport extends BaseUIWicketTester
 {
 	protected ReportCriteriaService reportCriteriaService;
 	protected ReportService  reportService;
-	protected ReportDataAggregate data;
+	protected ReportData data;
 	protected ReportCriteria reportCriteria;
 	
 	protected void setUp() throws Exception
@@ -77,7 +77,7 @@ public class BaseTestReport extends BaseUIWicketTester
 		
 		reportCriteria.setAvailableCriteria(availCriteria);
 		
-		data = new ReportDataAggregate();
+		data = new ReportData();
 		data.setReportCriteria(reportCriteria);
 		List<AssignmentAggregateReportElement> agg = new ArrayList<AssignmentAggregateReportElement>();
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
@@ -92,6 +92,6 @@ public class BaseTestReport extends BaseUIWicketTester
 		pag.setProjectAssignment(ass);
 		
 		agg.add(pag);
-		data.setProjectAssignmentAggregates(agg);		
+		data.setReportElements(agg);		
 	}
 }

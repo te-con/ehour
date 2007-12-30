@@ -23,7 +23,7 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
@@ -110,7 +110,7 @@ public class AggregatedReportPage extends BaseReportPage
 	{
 		ReportCriteria criteria = ((ReportCriteriaBackingBean)getModel().getObject()).getReportCriteria();
 		
-		final ReportDataAggregate reportData = getReportData(criteria);
+		final ReportData reportData = getReportData(criteria);
 		
 		ITab	customerTab = new AbstractTab(new KeyResourceModel("report.title.customer"))
 		{
@@ -157,7 +157,7 @@ public class AggregatedReportPage extends BaseReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getCustomerReportPanel(String id, ReportDataAggregate reportData)
+	private Panel getCustomerReportPanel(String id, ReportData reportData)
 	{
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
@@ -174,7 +174,7 @@ public class AggregatedReportPage extends BaseReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getProjectReportPanel(String id, ReportDataAggregate reportData)
+	private Panel getProjectReportPanel(String id, ReportData reportData)
 	{
 		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
@@ -193,7 +193,7 @@ public class AggregatedReportPage extends BaseReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getUserReportPanel(String id, ReportDataAggregate reportData)
+	private Panel getUserReportPanel(String id, ReportData reportData)
 	{
 		UserAggregateReport	aggregateReport = new UserAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);

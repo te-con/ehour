@@ -19,8 +19,9 @@ package net.rrm.ehour.ui.report.aggregate;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
 import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
@@ -33,11 +34,11 @@ public class CustomerAggregateReport extends AggregateReport
 
     /**
      *
-     * @param reportDataAggregate
+     * @param reportData
      */
-    public CustomerAggregateReport(ReportDataAggregate reportDataAggregate)
+    public CustomerAggregateReport(ReportData reportData)
     {
-    	super(reportDataAggregate);
+    	super(reportData);
     }
 
     /**
@@ -48,8 +49,10 @@ public class CustomerAggregateReport extends AggregateReport
     	return new ReportNodeFactory()
 	    {
 	        @Override
-	        public ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
+	        public ReportNode createReportNode(ReportElement element, int hierarchyLevel)
 	        {
+	        	AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+	        	
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
@@ -75,9 +78,9 @@ public class CustomerAggregateReport extends AggregateReport
 	         * @param aggregate
 	         * @return
 	         */
-	
-	        public Serializable getAssignmentId(AssignmentAggregateReportElement aggregate)
+	        public Serializable getElementId(ReportElement element)
 	        {
+	        	AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
 	            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
 	        }
 	    };

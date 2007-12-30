@@ -19,7 +19,8 @@ package net.rrm.ehour.ui.report.aggregate.node;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 
 /**
@@ -42,11 +43,13 @@ public class CustomerNode extends ReportNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.aggregate.value.ReportNode#getAggregateId(net.rrm.ehour.report.reports.ProjectAssignmentAggregate)
+	 * @see net.rrm.ehour.ui.report.aggregate.value.ReportNode#getElementId(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
-    protected Serializable getAggregateId(AssignmentAggregateReportElement aggregate)
+    protected Serializable getElementId(ReportElement element)
     {
+		AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+		
 		if (aggregate.getProjectAssignment() != null)
 		{
 			return aggregate.getProjectAssignment().getProject().getCustomer().getPK();

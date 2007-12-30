@@ -1,16 +1,3 @@
-package net.rrm.ehour.ui.report.aggregate;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
-
-import org.apache.log4j.Logger;
-
 /**
  * User: Thies
  * Date: Sep 11, 2007
@@ -27,6 +14,25 @@ import org.apache.log4j.Logger;
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  */
+
+package net.rrm.ehour.ui.report.aggregate;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
+
+import org.apache.log4j.Logger;
+
+/**
+ * ReportBuilder
+ * @author Thies
+ *
+ */
 public class ReportBuilder
 {
 	protected transient Logger logger = Logger.getLogger(this.getClass());
@@ -34,23 +40,23 @@ public class ReportBuilder
 
 	/**
 	 * Initialize the webreport for a specific id
-	 * @param reportDataAggregate
+	 * @param reportData
 	 * @param forId the ID to generate the report for (null to ignore)
 	 */
-	public List<ReportNode> createReport(ReportDataAggregate reportDataAggregate, ReportNodeFactory nodeFactory)
+	public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory)
 	{
 		Date profileStart = new Date();
 
         List<ReportNode> reportNodes = new ArrayList<ReportNode>();
         
-        if (reportDataAggregate != null)
+        if (reportData != null)
         {
-	        for (AssignmentAggregateReportElement aggregate : reportDataAggregate.getProjectAssignmentAggregates())
+	        for (ReportElement reportElement : reportData.getReportElements() )
 	        {
-	            if (!processAggregate(aggregate, nodeFactory, reportNodes))
+	            if (!processElement(reportElement, nodeFactory, reportNodes))
 	            {
-	                ReportNode node = nodeFactory.createReportNode(aggregate, 0);
-	                node.processAggregate(aggregate, 0, nodeFactory);
+	                ReportNode node = nodeFactory.createReportNode(reportElement, 0);
+	                node.processElement(reportElement, 0, nodeFactory);
 	                reportNodes.add(node);
 	            }
 	        }
@@ -66,13 +72,13 @@ public class ReportBuilder
      * @param factory
      * @return
      */
-    private boolean processAggregate(AssignmentAggregateReportElement aggregate, ReportNodeFactory factory, List<ReportNode> reportNodes)
+    private boolean processElement(ReportElement aggregate, ReportNodeFactory factory, List<ReportNode> reportNodes)
     {
         boolean processed = false;
 
         for(ReportNode reportNode : reportNodes)
         {
-            if (reportNode.processAggregate(aggregate, 0, factory))
+            if (reportNode.processElement(aggregate, 0, factory))
             {
                 processed = true;
                 break;

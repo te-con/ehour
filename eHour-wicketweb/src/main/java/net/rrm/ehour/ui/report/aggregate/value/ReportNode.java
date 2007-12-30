@@ -1,13 +1,3 @@
-package net.rrm.ehour.ui.report.aggregate.value;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
-
 /**
  * User: Thies
  * Date: Sep 11, 2007
@@ -24,8 +14,20 @@ import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
  * thies@te-con.nl
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ */
+
+package net.rrm.ehour.ui.report.aggregate.value;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.rrm.ehour.report.reports.element.ReportElement;
+
+import org.apache.log4j.Logger;
+
+/**
  *
- 
  * Tree structure of abstract nodes for reporting purposes.
  * Each node can have multiple reportnode children, for example customer -> projects -> users
  */
@@ -134,26 +136,26 @@ public abstract class ReportNode implements Serializable
      * @param aggregate
      * @return
      */
-    public boolean processAggregate(AssignmentAggregateReportElement aggregate,
+    public boolean processElement(ReportElement reportElement,
                                     int hierarchyLevel,
                                     ReportNodeFactory nodeFactory)
     {
         boolean processed = false;
 
         // first check if we need to add the aggregate to his node
-        if (isProcessAggregate(aggregate))
+        if (isProcessElement(reportElement))
         {
         	// was it added to one of the child nodes ?
-            if (!(processed = processChildNodes(aggregate, hierarchyLevel + 1, nodeFactory)))
+            if (!(processed = processChildNodes(reportElement, hierarchyLevel + 1, nodeFactory)))
             {
             	// if not make a new child node for this aggregate
-                ReportNode node = nodeFactory.createReportNode(aggregate, ++hierarchyLevel);
+                ReportNode node = nodeFactory.createReportNode(reportElement, ++hierarchyLevel);
 
                 // if the new node is not the last child, check whether one
                 // of it's subschildren can process it
                 if (!node.isLastNode())
                 {
-                    node.processAggregate(aggregate, hierarchyLevel, nodeFactory);
+                    node.processElement(reportElement, hierarchyLevel, nodeFactory);
                 }
                 
                 reportNodes.add(node);
@@ -166,10 +168,10 @@ public abstract class ReportNode implements Serializable
 
     /**
      * Is the aggregate processed by the childnodes?
-     * @param aggregate
+     * @param element
      * @return
      */
-    private boolean processChildNodes(AssignmentAggregateReportElement aggregate,
+    private boolean processChildNodes(ReportElement element,
                                       int hierarchyLevel,
                                       ReportNodeFactory nodeFactory)
     {
@@ -183,7 +185,7 @@ public abstract class ReportNode implements Serializable
         		break;
         	}
         	
-            if (node.processAggregate(aggregate, hierarchyLevel, nodeFactory))
+            if (node.processElement(element, hierarchyLevel, nodeFactory))
             {
                 processed = true;
                 break;
@@ -194,11 +196,11 @@ public abstract class ReportNode implements Serializable
     }
 
     /**
-     *
-     * @param aggregate
+     * Get id for element
+     * @param element
      * @return
      */
-    protected abstract Serializable getAggregateId(AssignmentAggregateReportElement aggregate);
+    protected abstract Serializable getElementId(ReportElement element);
 
     /**
      * Process aggregate for this value? Only process aggregates that got the same id
@@ -206,9 +208,9 @@ public abstract class ReportNode implements Serializable
      * @param forId
      * @return
      */
-    private boolean isProcessAggregate(AssignmentAggregateReportElement aggregate)
+    private boolean isProcessElement(ReportElement reportElement)
     {
-        return  this.id.equals(getAggregateId(aggregate));
+        return  this.id.equals(getElementId(reportElement));
     }
 
     /**

@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.panel.report.type;
 
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
@@ -34,7 +34,7 @@ public class CustomerReportPanel extends ReportPanel
 {
 	private static final long serialVersionUID = 8422287988040603274L;
 
-	public CustomerReportPanel(String id, AggregateReport reportData, ReportDataAggregate data)
+	public CustomerReportPanel(String id, AggregateReport reportData, ReportData data)
 	{
 		// TODO make customerReportExcel constant
 		super(id, reportData, data, ReportType.AGGREGATE_CUSTOMER, "customerReportExcel");
@@ -45,7 +45,7 @@ public class CustomerReportPanel extends ReportPanel
 	 * @see net.rrm.ehour.ui.panel.report.type.ReportPanel#addCharts(net.rrm.ehour.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
-	protected void addCharts(ReportDataAggregate data, WebMarkupContainer parent)
+	protected void addCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 

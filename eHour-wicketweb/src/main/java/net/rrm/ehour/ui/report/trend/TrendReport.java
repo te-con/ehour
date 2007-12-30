@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import net.rrm.ehour.report.reports.dto.FlatReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.report.Report;
 import net.rrm.ehour.util.DateUtil;
 

@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.page.user.report;
 import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
@@ -89,7 +89,7 @@ public class UserReport extends BaseReportPage
 		ReportCriteria criteria = (ReportCriteria)getModel().getObject();
 		
 		// add data
-		ReportDataAggregate reportData = getReportData(criteria);
+		ReportData reportData = getReportData(criteria);
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
 		

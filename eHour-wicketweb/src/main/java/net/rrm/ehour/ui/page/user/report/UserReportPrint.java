@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.page.user.report;
 
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -56,7 +56,7 @@ public class UserReportPrint extends WebPage
 		
 		EhourWebSession session = (EhourWebSession)Session.get();
 		CustomerAggregateReport report = (CustomerAggregateReport)session.getReportCache().getReportFromCache(reportId);
-		ReportDataAggregate reportData = (ReportDataAggregate)session.getReportCache().getReportDataFromCache(reportId);
+		ReportData reportData = (ReportData)session.getReportCache().getReportDataFromCache(reportId);
 		
 		if (report == null)
 		{

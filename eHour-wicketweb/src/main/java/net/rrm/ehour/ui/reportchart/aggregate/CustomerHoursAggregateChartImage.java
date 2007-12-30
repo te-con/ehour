@@ -15,7 +15,7 @@
  */
 package net.rrm.ehour.ui.reportchart.aggregate;
 
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.CustomerRowKey;
 

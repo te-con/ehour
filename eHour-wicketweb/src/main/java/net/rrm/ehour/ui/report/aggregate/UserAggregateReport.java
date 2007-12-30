@@ -19,8 +19,9 @@ package net.rrm.ehour.ui.report.aggregate;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
@@ -35,11 +36,11 @@ public class UserAggregateReport extends AggregateReport
 
 	/**
 	 * 
-	 * @param reportDataAggregate
+	 * @param reportData
 	 */
-	public UserAggregateReport(ReportDataAggregate reportDataAggregate)
+	public UserAggregateReport(ReportData reportData)
 	{
-		super(reportDataAggregate);
+		super(reportData);
 	}
 
 	/*
@@ -52,8 +53,10 @@ public class UserAggregateReport extends AggregateReport
     	return new ReportNodeFactory()
 	    {
 	        @Override
-	        public ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
+	        public ReportNode createReportNode(ReportElement element, int hierarchyLevel)
 	        {
+	        	AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+	        	
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
@@ -73,8 +76,9 @@ public class UserAggregateReport extends AggregateReport
 	         * @return
 	         */
 	
-	        public Serializable getAssignmentId(AssignmentAggregateReportElement aggregate)
+	        public Serializable getElementId(ReportElement element)
 	        {
+	        	AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
 	            return aggregate.getProjectAssignment().getUser().getPK();
 	        }
 	    };
@@ -98,8 +102,10 @@ public class UserAggregateReport extends AggregateReport
 		}
 
 		@Override
-		protected Serializable getAggregateId(AssignmentAggregateReportElement aggregate)
+		protected Serializable getElementId(ReportElement element)
 		{
+			AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+			
 			return aggregate.getProjectAssignment().getUser().getPK();		
 		}
 	}
@@ -135,8 +141,10 @@ public class UserAggregateReport extends AggregateReport
 	    }
 		
 		@Override
-		protected Serializable getAggregateId(AssignmentAggregateReportElement aggregate)
+		protected Serializable getElementId(ReportElement element)
 		{
+			AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+			
 			return aggregate.getProjectAssignment().getProject().getPK();
 		}
 		

@@ -20,7 +20,7 @@ package net.rrm.ehour.ui.report.aggregate;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.report.Report;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
 import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
@@ -32,14 +32,14 @@ public abstract class AggregateReport extends Report
 	
     /**
      *
-     * @param reportDataAggregate
+     * @param reportData
      */
-    public AggregateReport(ReportDataAggregate reportDataAggregate)
+    public AggregateReport(ReportData reportData)
     {
         ReportBuilder reportBuilder = new ReportBuilder();
-        nodes = reportBuilder.createReport(reportDataAggregate, getReportNodeFactory());
+        nodes = reportBuilder.createReport(reportData, getReportNodeFactory());
         
-        reportRange = reportDataAggregate.getReportCriteria().getUserCriteria().getReportRange();
+        reportRange = reportData.getReportCriteria().getUserCriteria().getReportRange();
     }	
 	
     /**

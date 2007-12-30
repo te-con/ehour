@@ -25,8 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.report.reports.ReportDataAggregate;
-import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 
 import org.apache.log4j.Logger;
@@ -86,9 +87,9 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 			@Override
 			protected byte[] getImageData()
 			{
-				ReportDataAggregate reportDataAggregate = (ReportDataAggregate)getModelObject();
+				ReportData reportData = (ReportData)getModelObject();
 				
-				JFreeChart chart = getChart(reportDataAggregate);
+				JFreeChart chart = getChart(reportData);
 				return toImageData(chart.createBufferedImage(width, height));
 			}
 
@@ -110,18 +111,18 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	
 	/**
 	 * 
-	 * @param reportDataAggregate
+	 * @param reportData
 	 * @param forId
 	 * @param reportName
 	 * @return
 	 */
-	private JFreeChart getChart(ReportDataAggregate reportDataAggregate)
+	private JFreeChart getChart(ReportData reportData)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
 		logger.debug("Creating " + reportName + " aggregate chart");
 		
-		DefaultCategoryDataset dataset = createDataset(reportDataAggregate);
+		DefaultCategoryDataset dataset = createDataset(reportData);
 
 		JFreeChart chart = ChartFactory.createBarChart(reportName, // chart title
 				null, // domain axis label
@@ -165,10 +166,10 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	
 	/**
 	 * Create dataset for this aggregate chart
-	 * @param reportDataAggregate
+	 * @param reportData
 	 * @return
 	 */
-	private DefaultCategoryDataset createDataset(ReportDataAggregate reportDataAggregate)
+	private DefaultCategoryDataset createDataset(ReportData reportData)
 	{
 		DefaultCategoryDataset dataset;
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
@@ -179,8 +180,10 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 
 		dataset = new DefaultCategoryDataset();
 
-		for (AssignmentAggregateReportElement aggregate : reportDataAggregate.getProjectAssignmentAggregates())
+		for (ReportElement element : reportData.getReportElements())
 		{
+			AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+			
 			rowKey = getRowKey(aggregate);
 			
 			value = getColumnValue(aggregate);

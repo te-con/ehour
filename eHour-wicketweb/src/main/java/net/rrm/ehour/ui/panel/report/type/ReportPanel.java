@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.panel.report.type;
 
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.AggregateReportDataPanel;
@@ -37,7 +37,7 @@ public abstract class ReportPanel extends AbstractReportPanel
 	 * 
 	 * @param id
 	 */
-	public ReportPanel(String id, AggregateReport reportData, ReportDataAggregate data, ReportType reportType, String excelResourceName)
+	public ReportPanel(String id, AggregateReport reportData, ReportData data, ReportType reportType, String excelResourceName)
 	{
 		super(id);
 
@@ -63,5 +63,5 @@ public abstract class ReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected abstract void addCharts(ReportDataAggregate data, WebMarkupContainer parent);
+	protected abstract void addCharts(ReportData data, WebMarkupContainer parent);
 }

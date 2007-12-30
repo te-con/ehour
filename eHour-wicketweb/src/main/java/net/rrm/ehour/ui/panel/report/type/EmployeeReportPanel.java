@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.panel.report.type;
 
-import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.report.aggregate.AggregateReport;
 import net.rrm.ehour.ui.reportchart.aggregate.UserHoursAggregateChartImage;
@@ -34,13 +34,13 @@ public class EmployeeReportPanel extends ReportPanel
 {
 	private static final long serialVersionUID = 2594554714722639450L;
 
-	public EmployeeReportPanel(String id, AggregateReport reportData, ReportDataAggregate data)
+	public EmployeeReportPanel(String id, AggregateReport reportData, ReportData data)
 	{
 		super(id, reportData, data, ReportType.AGGREGATE_EMPLOYEE, "employeeReportExcel");
 	}
 
 	@Override
-	protected void addCharts(ReportDataAggregate data, WebMarkupContainer parent)
+	protected void addCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 
