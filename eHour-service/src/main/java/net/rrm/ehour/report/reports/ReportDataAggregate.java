@@ -18,6 +18,7 @@ package net.rrm.ehour.report.reports;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 /**
  * Data holder for aggregate reports
@@ -27,44 +28,23 @@ public class ReportDataAggregate implements ReportData
 {
 	private static final long serialVersionUID = -6344570520998830487L;
 	
-	private List<ProjectAssignmentAggregate>		projectAssignmentAggregates;
-	private List<FlatProjectAssignmentAggregate>	flatProjectAssignmentAggregates;
+	private List<AssignmentAggregateReportElement>		assignmentAggregateReportElements;
 	private	ReportCriteria							reportCriteria;
-	
-	/**
-	 * Default constructor
-	 */
-	public ReportDataAggregate()
-	{
-	}
-	
-	/**
-	 * Full constructor
-	 * @param pag projectAssignmentAggregates
-	 * @param wpag
-	 * @param criteria
-	 */
-	public ReportDataAggregate(List<ProjectAssignmentAggregate> pag, List<FlatProjectAssignmentAggregate> wpag, ReportCriteria criteria)
-	{
-		projectAssignmentAggregates = pag;
-		flatProjectAssignmentAggregates = wpag;
-		reportCriteria = criteria;
-	}
 	
 	/**
 	 * @return the projectAssignmentAggregates
 	 */
-	public List<ProjectAssignmentAggregate> getProjectAssignmentAggregates()
+	public List<AssignmentAggregateReportElement> getProjectAssignmentAggregates()
 	{
-		return projectAssignmentAggregates;
+		return assignmentAggregateReportElements;
 	}
 	/**
-	 * @param projectAssignmentAggregates the projectAssignmentAggregates to set
+	 * @param assignmentAggregateReportElements the projectAssignmentAggregates to set
 	 */
 	public void setProjectAssignmentAggregates(
-			List<ProjectAssignmentAggregate> projectAssignmentAggregates)
+			List<AssignmentAggregateReportElement> assignmentAggregateReportElements)
 	{
-		this.projectAssignmentAggregates = projectAssignmentAggregates;
+		this.assignmentAggregateReportElements = assignmentAggregateReportElements;
 	}
 	/**
 	 * @return the reportCriteria
@@ -79,20 +59,5 @@ public class ReportDataAggregate implements ReportData
 	public void setReportCriteria(ReportCriteria reportCriteria)
 	{
 		this.reportCriteria = reportCriteria;
-	}
-	/**
-	 * @return the flatProjectAssignmentAggregates
-	 */
-	public List<FlatProjectAssignmentAggregate> getFlatProjectAssignmentAggregates()
-	{
-		return flatProjectAssignmentAggregates;
-	}
-	/**
-	 * @param flatProjectAssignmentAggregates the flatProjectAssignmentAggregates to set
-	 */
-	public void setFlatProjectAssignmentAggregates(
-			List<FlatProjectAssignmentAggregate> flatProjectAssignmentAggregates)
-	{
-		this.flatProjectAssignmentAggregates = flatProjectAssignmentAggregates;
 	}
 }

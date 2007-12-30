@@ -35,10 +35,10 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.dao.ReportPerMonthDAO;
-import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.FlatReportElement;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.util.ReportUtil;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.domain.User;
@@ -70,7 +70,7 @@ public class ReportServiceImpl implements ReportService
 	 * @return SortedMap with ProjectAssignment on key and a Float representation of the booked hours as value
 	 */	
 	
-	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInMonth(Integer userId, Calendar requestedDate)
+	public List<AssignmentAggregateReportElement> getHoursPerAssignmentInMonth(Integer userId, Calendar requestedDate)
 	{
 		DateRange	monthRange;
 		
@@ -83,7 +83,7 @@ public class ReportServiceImpl implements ReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
 	 */
-	public List<ProjectAssignmentAggregate> getHoursPerAssignment(List<Integer> projectAssignmentIds)
+	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds)
 	{
 		return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
 	}
@@ -94,15 +94,15 @@ public class ReportServiceImpl implements ReportService
 	 * @param
 	 * @return 
 	 */		
-	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange)
+	public List<AssignmentAggregateReportElement> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange)
 	{
-		List<ProjectAssignmentAggregate>	projectAssignmentAggregates;
+		List<AssignmentAggregateReportElement>	assignmentAggregateReportElements;
 
 		List<User>	users = new ArrayList<User>();
 		users.add(new User(userId));
-		projectAssignmentAggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, dateRange);
+		assignmentAggregateReportElements = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, dateRange);
 
-		return projectAssignmentAggregates;
+		return assignmentAggregateReportElements;
 	}	
 	
 	
@@ -150,7 +150,6 @@ public class ReportServiceImpl implements ReportService
 		}		
 		
 		reportDataAggregate.setProjectAssignmentAggregates(getProjectAssignmentAggregates(users, projects, reportRange));
-//		reportDataAggregate.setFlatProjectAssignmentAggregates(getWeeklyReportData(users, projects, reportRange));
 		reportDataAggregate.setReportCriteria(reportCriteria);
 		
 		return reportDataAggregate;
@@ -161,11 +160,11 @@ public class ReportServiceImpl implements ReportService
 	 * @param
 	 * @return
 	 */
-	private List<ProjectAssignmentAggregate> getProjectAssignmentAggregates(List<User> users,
+	private List<AssignmentAggregateReportElement> getProjectAssignmentAggregates(List<User> users,
 																			List<Project >projects,
 																			DateRange reportRange)
 	{
-		List<ProjectAssignmentAggregate>	aggregates;
+		List<AssignmentAggregateReportElement>	aggregates;
 		
 		if (users == null && projects == null)
 		{
@@ -293,12 +292,12 @@ public class ReportServiceImpl implements ReportService
 	public ProjectManagerReport getProjectManagerReport(DateRange reportRange, Integer projectId)
 	{
 		ProjectManagerReport	report = new ProjectManagerReport();
-		SortedSet<ProjectAssignmentAggregate>	aggregates;
+		SortedSet<AssignmentAggregateReportElement>	aggregates;
 		List<MailLogAssignment>	sentMail;
 		Project					project;
 		List<Integer>			assignmentIds = new ArrayList<Integer>();
 		List<ProjectAssignment>	allAssignments;
-		ProjectAssignmentAggregate	emptyAggregate;
+		AssignmentAggregateReportElement	emptyAggregate;
 		
 		// get the project
 		project = projectDAO.findById(projectId);
@@ -312,10 +311,10 @@ public class ReportServiceImpl implements ReportService
 		// get all aggregates
 		List<Project>	projects = new ArrayList<Project>();
 		projects.add(new Project(projectId));
-		aggregates = new TreeSet<ProjectAssignmentAggregate>(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, reportRange));
+		aggregates = new TreeSet<AssignmentAggregateReportElement>(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, reportRange));
 
 		// filter out just the id's
-		for (ProjectAssignmentAggregate aggregate : aggregates)
+		for (AssignmentAggregateReportElement aggregate : aggregates)
 		{
 			assignmentIds.add(aggregate.getProjectAssignment().getAssignmentId());
 		}		
@@ -327,7 +326,7 @@ public class ReportServiceImpl implements ReportService
 		{
 			if (!assignmentIds.contains(assignment.getAssignmentId()))
 			{
-				emptyAggregate = new ProjectAssignmentAggregate();
+				emptyAggregate = new AssignmentAggregateReportElement();
 				emptyAggregate.setProjectAssignment(assignment);
 			
 				aggregates.add(emptyAggregate);	
@@ -433,7 +432,7 @@ public class ReportServiceImpl implements ReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getReportData(net.rrm.ehour.customer.domain.Customer, net.rrm.ehour.data.DateRange)
 	 */
-	public List<FlatProjectAssignmentAggregate> getReportData(Customer customer, DateRange dateRange)
+	public List<FlatReportElement> getReportData(Customer customer, DateRange dateRange)
 	{
 		List<ProjectAssignment> assignments = projectAssignmentDAO.findProjectAssignmentsForCustomer(customer, dateRange);
 		List<Serializable> assignmentIds = ReportUtil.getPKsFromDomainObjects(assignments);
@@ -445,7 +444,7 @@ public class ReportServiceImpl implements ReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getReportData(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
-	public List<FlatProjectAssignmentAggregate> getReportData(List<Serializable> projectAssignmentIds, DateRange dateRange)
+	public List<FlatReportElement> getReportData(List<Serializable> projectAssignmentIds, DateRange dateRange)
 	{
 		return reportPerMonthDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange);
 	}
@@ -454,7 +453,7 @@ public class ReportServiceImpl implements ReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getReportData(net.rrm.ehour.project.domain.Project, net.rrm.ehour.data.DateRange)
 	 */
-	public List<FlatProjectAssignmentAggregate> getReportData(Project project, DateRange dateRange)
+	public List<FlatReportElement> getReportData(Project project, DateRange dateRange)
 	{
 		List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignments(project, dateRange);
 		List<Serializable> assignmentIds = ReportUtil.getPKsFromDomainObjects(assignments);

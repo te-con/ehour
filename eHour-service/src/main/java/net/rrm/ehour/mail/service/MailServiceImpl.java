@@ -27,7 +27,7 @@ import net.rrm.ehour.mail.domain.MailLogAssignment;
 import net.rrm.ehour.mail.domain.MailType;
 import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -68,7 +68,7 @@ public class MailServiceImpl implements MailService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.mail.service.MailService#mailPMFixedAllottedReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
 	 */
-	public void mailPMFixedAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	public void mailPMFixedAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
 	{
 		String	subject;
 		StringBuffer	body = new StringBuffer();
@@ -120,7 +120,7 @@ public class MailServiceImpl implements MailService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
 	 */
-	public void mailPMFlexOverrunReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	public void mailPMFlexOverrunReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
 	{
 		String	subject;
 		StringBuffer	body = new StringBuffer();
@@ -178,7 +178,7 @@ public class MailServiceImpl implements MailService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
 	 */
-	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignmentAggregate, Date bookDate, User user)
+	public void mailPMFlexAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
 	{
 		String	subject;
 		StringBuffer	body = new StringBuffer();
@@ -233,7 +233,7 @@ public class MailServiceImpl implements MailService
 	 * @param mailTypeId
 	 * @param user
 	 */
-	private void mailPMAggregateMessage(ProjectAssignmentAggregate assignmentAggregate,
+	private void mailPMAggregateMessage(AssignmentAggregateReportElement assignmentAggregate,
 										String subject,
 										String mailBody, int mailTypeId, Date bookDate, User user)
 	{
@@ -264,7 +264,7 @@ public class MailServiceImpl implements MailService
 	 * 
 	 * @return
 	 */
-	private boolean isAssignmentMailAlreadySent(ProjectAssignmentAggregate aggregate, int mailTypeId)
+	private boolean isAssignmentMailAlreadySent(AssignmentAggregateReportElement aggregate, int mailTypeId)
 	{
 		List<MailLogAssignment> mlaList = mailLogDAO.findMailLogOnAssignmentIds(new Integer[]{aggregate.getProjectAssignment().getAssignmentId()});
 		boolean	alreadySent = false;

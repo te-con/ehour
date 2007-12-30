@@ -25,7 +25,7 @@ import java.util.List;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.dto.AssignmentStatus;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Test;
@@ -41,13 +41,13 @@ public class ProjectAssignmentUtilTest
 	@Test
 	public void testIsEmptyAggregateList()
 	{
-		List<ProjectAssignmentAggregate> aggs = new ArrayList<ProjectAssignmentAggregate>();
+		List<AssignmentAggregateReportElement> aggs = new ArrayList<AssignmentAggregateReportElement>();
 		
-		ProjectAssignmentAggregate agg = new ProjectAssignmentAggregate();
+		AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
 		agg.setHours(0);
 		aggs.add(agg);
 		
-		agg = new ProjectAssignmentAggregate();
+		agg = new AssignmentAggregateReportElement();
 		aggs.add(agg);
 		
 		assertTrue(ProjectAssignmentUtil.isEmptyAggregateList(aggs));

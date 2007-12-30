@@ -32,7 +32,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -127,7 +127,7 @@ public class TimesheetServiceTest  extends TestCase
 	public void testGetTimesheetOverview() throws Exception
 	{
 		List<TimesheetEntry>	daoResults = new ArrayList<TimesheetEntry>();	
-		List<ProjectAssignmentAggregate>		reportResults = new ArrayList<ProjectAssignmentAggregate>();
+		List<AssignmentAggregateReportElement>		reportResults = new ArrayList<AssignmentAggregateReportElement>();
 		Calendar	cal = new GregorianCalendar();
 		
 		TimesheetOverview	retObj;
@@ -146,7 +146,7 @@ public class TimesheetServiceTest  extends TestCase
 		entryB.setHours(new Float(3));
 		daoResults.add(entryB);
 		
-		ProjectAssignmentAggregate agg = new ProjectAssignmentAggregate();
+		AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
 		ProjectAssignmentType type = new ProjectAssignmentType(0);
 		ProjectAssignment pa = new ProjectAssignment();
 		pa.setAssignmentType(type);

@@ -22,7 +22,7 @@ import java.util.List;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.domain.User;
 
 /**
@@ -74,10 +74,10 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		List ids = new ArrayList();
 		ids.add(new User(1));
 
-		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, dateRange);
+		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, dateRange);
 
 		// test if collection is properly initialized
-		ProjectAssignmentAggregate rep = results.get(0);
+		AssignmentAggregateReportElement rep = results.get(0);
 		assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
 		
 		rep = results.get(0);
@@ -96,10 +96,10 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		ids.add(new User(1));
 		ids.add(new User(2));
 		
-		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(ids);
+		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForUsers(ids);
 
 		// test if collection is properly initialized
-		ProjectAssignmentAggregate rep = results.get(0);
+		AssignmentAggregateReportElement rep = results.get(0);
 		assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
 		
 		assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
@@ -119,10 +119,10 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		List<Project> pids = new ArrayList<Project>();
 		pids.add(new Project(1));		
 		
-		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, pids);
+		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, pids);
 
 		// test if collection is properly initialized
-		ProjectAssignmentAggregate rep = results.get(0);
+		AssignmentAggregateReportElement rep = results.get(0);
 		assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
 		
 		assertEquals(2, results.size());
@@ -140,10 +140,10 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		ids.add(new User(1));
 		List<Project> pids = new ArrayList<Project>();
 		pids.add(new Project(1));
-		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, pids, dateRange);
+		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, pids, dateRange);
 
 		// test if collection is properly initialized
-		ProjectAssignmentAggregate rep = results.get(0);
+		AssignmentAggregateReportElement rep = results.get(0);
 		assertEquals(14f, rep.getHours().floatValue(), 0.1);
 		
 		assertEquals(2, results.size());
@@ -154,7 +154,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
 			    new Date(2006 - 1900, 10 - 1, 4));
 		
-		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignment(dateRange);
+		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignment(dateRange);
 		
 		assertEquals(3, results.size());
 	}
@@ -166,7 +166,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		List<Project> pids = new ArrayList<Project>();
 		pids.add(new Project(1));
 
-		List<ProjectAssignmentAggregate> results = dao.getCumulatedHoursPerAssignmentForProjects(pids, dateRange);
+		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForProjects(pids, dateRange);
 		
 		assertEquals(2, results.size());
 	}

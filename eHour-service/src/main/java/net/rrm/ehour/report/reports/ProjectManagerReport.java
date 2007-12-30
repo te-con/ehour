@@ -21,6 +21,7 @@ import java.util.SortedSet;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.mail.domain.MailLogAssignment;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 /**
  * Project manager report 
@@ -31,7 +32,7 @@ public class ProjectManagerReport implements Serializable
 	private static final long serialVersionUID = 1768574303126675320L;
 	
 	private Project									project;
-	private	SortedSet<ProjectAssignmentAggregate>	aggregates;
+	private	SortedSet<AssignmentAggregateReportElement>	aggregates;
 	private	DateRange								reportRange;
 	private	SortedSet<MailLogAssignment>			sentMail;
 	private	Float									totalHoursBooked;
@@ -48,7 +49,7 @@ public class ProjectManagerReport implements Serializable
 		
 		if (aggregates != null)
 		{
-			for (ProjectAssignmentAggregate aggregate : aggregates)
+			for (AssignmentAggregateReportElement aggregate : aggregates)
 			{
 				if (aggregate.getHours() == null)
 				{
@@ -71,14 +72,14 @@ public class ProjectManagerReport implements Serializable
 	/**
 	 * @return the aggregates
 	 */
-	public SortedSet<ProjectAssignmentAggregate> getAggregates()
+	public SortedSet<AssignmentAggregateReportElement> getAggregates()
 	{
 		return aggregates;
 	}
 	/**
 	 * @param aggregates the aggregates to set
 	 */
-	public void setAggregates(SortedSet<ProjectAssignmentAggregate> aggregates)
+	public void setAggregates(SortedSet<AssignmentAggregateReportElement> aggregates)
 	{
 		this.aggregates = aggregates;
 	}

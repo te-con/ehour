@@ -13,19 +13,18 @@
  *
  */
 
-package net.rrm.ehour.report.reports;
+package net.rrm.ehour.report.reports.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
- * report DTO 
+ * Report element for trend reports (more data so each element is flattened)
  **/
 
-public class FlatProjectAssignmentAggregate implements Serializable
+public class FlatReportElement extends ReportElement<FlatReportElement>
 {
 	private static final long serialVersionUID = -2146747873763924275L;
 	private	Integer	customerId;
@@ -49,7 +48,7 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	 * Minimal constructor
 	 *
 	 */
-	public FlatProjectAssignmentAggregate()
+	public FlatReportElement()
 	{
 	}
 
@@ -273,12 +272,12 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	 */
 	public boolean equals(Object object)
 	{
-		if (!(object instanceof FlatProjectAssignmentAggregate))
+		if (!(object instanceof FlatReportElement))
 		{
 			return false;
 		}
 		
-		FlatProjectAssignmentAggregate rhs = (FlatProjectAssignmentAggregate) object;
+		FlatReportElement rhs = (FlatReportElement) object;
 		return new EqualsBuilder()
 			.append(this.assignmentId, rhs.getAssignmentId())
 			.append(this.dayDate, rhs.getDayDate())
@@ -334,5 +333,14 @@ public class FlatProjectAssignmentAggregate implements Serializable
 	public void setDisplayOrder(int displayOrder)
 	{
 		this.displayOrder = displayOrder;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public int compareTo(FlatReportElement o)
+	{
+		return getAssignmentId().compareTo(o.getAssignmentId());
 	}
 }

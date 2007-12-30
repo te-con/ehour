@@ -28,7 +28,7 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import junit.framework.TestCase;
 
@@ -81,7 +81,7 @@ public class ProjectAssignmentServiceTest extends TestCase
 		ids.add(1);
 
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids))
-				.andReturn(new ArrayList<ProjectAssignmentAggregate>());
+				.andReturn(new ArrayList<AssignmentAggregateReportElement>());
 
 		replay(projectAssignmentDAO);
 		replay(timesheetDAO);

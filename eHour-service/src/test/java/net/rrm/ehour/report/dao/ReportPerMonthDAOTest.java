@@ -21,7 +21,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.FlatReportElement;
 
 import org.junit.Test;
 /**
@@ -104,7 +104,7 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 			    new Date(2008 - 1900, 1, 3));
 		List projectIds = new ArrayList();
 		projectIds.add(1);
-		List<FlatProjectAssignmentAggregate> results = dao.getHoursPerDayForAssignment(projectIds, dateRange);
+		List<FlatReportElement> results = dao.getHoursPerDayForAssignment(projectIds, dateRange);
 		
 		assertEquals(6, results.size());
 		

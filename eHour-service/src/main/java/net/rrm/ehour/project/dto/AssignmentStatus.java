@@ -15,7 +15,7 @@
 
 package net.rrm.ehour.project.dto;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 /**
  * ProjectAssignment status 
@@ -41,7 +41,7 @@ public class AssignmentStatus
 	public final static int IN_DATERANGE_PHASE = 4;
 	public final static int OUT_DATERANGE_PHASE = 4;
 	
-	private ProjectAssignmentAggregate	aggregate;
+	private AssignmentAggregateReportElement	aggregate;
 	private int assignmentPhase;
 	
 	/**
@@ -58,14 +58,14 @@ public class AssignmentStatus
 	/**
 	 * @return the aggregate
 	 */
-	public ProjectAssignmentAggregate getAggregate()
+	public AssignmentAggregateReportElement getAggregate()
 	{
 		return aggregate;
 	}
 	/**
 	 * @param aggregate the aggregate to set
 	 */
-	public void setAggregate(ProjectAssignmentAggregate aggregate)
+	public void setAggregate(AssignmentAggregateReportElement aggregate)
 	{
 		this.aggregate = aggregate;
 	}

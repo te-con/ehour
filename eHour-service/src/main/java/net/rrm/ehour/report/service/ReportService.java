@@ -23,10 +23,10 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportDataAggregate;
+import net.rrm.ehour.report.reports.dto.FlatReportElement;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 
 /**
@@ -43,7 +43,7 @@ public interface ReportService
 	 * @param calendar
 	 * @return List with projectReport objects
 	 */
-	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInMonth(Integer userId, Calendar calendar);
+	public List<AssignmentAggregateReportElement> getHoursPerAssignmentInMonth(Integer userId, Calendar calendar);
 
 	/**
 	 * Get the booked hours per project assignment for a date range
@@ -52,14 +52,14 @@ public interface ReportService
 	 * @return List with projectReport objects
 	 */
 
-	public List<ProjectAssignmentAggregate> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
+	public List<AssignmentAggregateReportElement> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
 	
 	/**
 	 * Get all booked hours for assignments
 	 * @param projectAssignmentIds
 	 * @return
 	 */
-	public List<ProjectAssignmentAggregate> getHoursPerAssignment(List<Integer> projectAssignmentIds);
+	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds);
 	
 	/**
 	 * Get project report for reporting role
@@ -74,7 +74,7 @@ public interface ReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatProjectAssignmentAggregate> getReportData(List<Serializable> projectAssignmentIds, DateRange dateRange);
+	public List<FlatReportElement> getReportData(List<Serializable> projectAssignmentIds, DateRange dateRange);
 
 	/**
 	 * Get report data for customer 
@@ -82,7 +82,7 @@ public interface ReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatProjectAssignmentAggregate> getReportData(Customer customer, DateRange dateRange);
+	public List<FlatReportElement> getReportData(Customer customer, DateRange dateRange);
 	
 	/**
 	 * Get report data for project
@@ -90,7 +90,7 @@ public interface ReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatProjectAssignmentAggregate> getReportData(Project project, DateRange dateRange);
+	public List<FlatReportElement> getReportData(Project project, DateRange dateRange);
 	
 	
 	/**

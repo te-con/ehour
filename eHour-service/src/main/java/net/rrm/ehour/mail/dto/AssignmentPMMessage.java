@@ -17,7 +17,7 @@ package net.rrm.ehour.mail.dto;
 
 import java.util.Date;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 
 /**
@@ -26,13 +26,13 @@ import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
 
 public class AssignmentPMMessage extends MailTaskMessage
 {
-	private ProjectAssignmentAggregate	aggregate;
+	private AssignmentAggregateReportElement	aggregate;
 	private	Date						bookDate;
 	
 	/**
 	 * @return the aggregate
 	 */
-	public ProjectAssignmentAggregate getAggregate()
+	public AssignmentAggregateReportElement getAggregate()
 	{
 		return aggregate;
 	}
@@ -40,7 +40,7 @@ public class AssignmentPMMessage extends MailTaskMessage
 	/**
 	 * @param aggregate the aggregate to set
 	 */
-	public void setAggregate(ProjectAssignmentAggregate aggregate)
+	public void setAggregate(AssignmentAggregateReportElement aggregate)
 	{
 		this.aggregate = aggregate;
 	}

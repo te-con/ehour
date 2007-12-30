@@ -32,7 +32,7 @@ import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.user.domain.User;
@@ -174,7 +174,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		List<Integer>	ids = new ArrayList<Integer>();
 		ids.add(assignmentId);
-		List<ProjectAssignmentAggregate>	aggregates;
+		List<AssignmentAggregateReportElement>	aggregates;
 		
 		// call to report service needed but due to circular reference go straight to DAO
 		aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids);

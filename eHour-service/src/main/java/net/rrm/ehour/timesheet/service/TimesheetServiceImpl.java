@@ -34,7 +34,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -109,11 +109,11 @@ public class TimesheetServiceImpl implements TimesheetService
 	 */
 	private SortedSet<UserProjectStatus> getProjectStatus(Integer userId, DateRange monthRange)
 	{
-		List<ProjectAssignmentAggregate>	aggregates;
+		List<AssignmentAggregateReportElement>	aggregates;
 		List<Integer>						assignmentIds = new ArrayList<Integer>();
 		SortedSet<UserProjectStatus>		userProjectStatus = new TreeSet<UserProjectStatus>();
-		List<ProjectAssignmentAggregate> 	timeAllottedAggregates;
-		Map<Integer, ProjectAssignmentAggregate>	originalAggregates = new HashMap<Integer, ProjectAssignmentAggregate>();
+		List<AssignmentAggregateReportElement> 	timeAllottedAggregates;
+		Map<Integer, AssignmentAggregateReportElement>	originalAggregates = new HashMap<Integer, AssignmentAggregateReportElement>();
 		Integer 							assignmentId;
 		
 		aggregates = reportService.getHoursPerAssignmentInRange(userId, monthRange);
@@ -121,7 +121,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		logger.debug("Getting project status for " + aggregates.size() + " assignments");
 		
 		// only flex & fixed needed, others can already be added to the returned list
-		for (ProjectAssignmentAggregate aggregate : aggregates)
+		for (AssignmentAggregateReportElement aggregate : aggregates)
 		{
 			if (aggregate.getProjectAssignment().getAssignmentType().isFixedAllottedType() ||
 				aggregate.getProjectAssignment().getAssignmentType().isFlexAllottedType())
@@ -143,7 +143,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		{
 			timeAllottedAggregates = reportService.getHoursPerAssignment(assignmentIds);
 			
-			for (ProjectAssignmentAggregate aggregate : timeAllottedAggregates)
+			for (AssignmentAggregateReportElement aggregate : timeAllottedAggregates)
 			{
 				userProjectStatus.add(new UserProjectStatus(originalAggregates.get(aggregate.getProjectAssignment().getAssignmentId()),
 																					aggregate.getHours()));

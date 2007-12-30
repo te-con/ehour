@@ -15,14 +15,14 @@
 
 package net.rrm.ehour.timesheet.dto;
 
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 
 /**
  * Value object for timesheet overview. While the hours in an aggregate
  * reflect only a certain period, totalBookedHours is all hours booked on this assignment
  **/
 
-public class UserProjectStatus extends ProjectAssignmentAggregate
+public class UserProjectStatus extends AssignmentAggregateReportElement
 {
 	/**
 	 * 
@@ -35,12 +35,12 @@ public class UserProjectStatus extends ProjectAssignmentAggregate
 		
 	}
 	
-	public UserProjectStatus(ProjectAssignmentAggregate aggregate)
+	public UserProjectStatus(AssignmentAggregateReportElement aggregate)
 	{
 		this(aggregate, null);
 	}
 	
-	public UserProjectStatus(ProjectAssignmentAggregate aggregate, Number totalBookedHours)
+	public UserProjectStatus(AssignmentAggregateReportElement aggregate, Number totalBookedHours)
 	{
 		super(aggregate.getProjectAssignment(), aggregate.getHours());
 		this.totalBookedHours = totalBookedHours;

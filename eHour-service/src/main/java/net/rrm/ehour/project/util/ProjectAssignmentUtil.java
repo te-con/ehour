@@ -22,7 +22,7 @@ import java.util.List;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
@@ -38,17 +38,17 @@ public class ProjectAssignmentUtil
 	 * @param aggregates
 	 * @return
 	 */
-	public static boolean isEmptyAggregateList(Collection<ProjectAssignmentAggregate> aggregates)
+	public static boolean isEmptyAggregateList(Collection<AssignmentAggregateReportElement> aggregates)
 	{
 		float	hours = 0f;
 		
 		if (aggregates != null)
 		{
-			for (ProjectAssignmentAggregate projectAssignmentAggregate : aggregates)
+			for (AssignmentAggregateReportElement assignmentAggregateReportElement : aggregates)
 			{
-				if (projectAssignmentAggregate.getHours() != null)
+				if (assignmentAggregateReportElement.getHours() != null)
 				{
-					hours += projectAssignmentAggregate.getHours().floatValue();
+					hours += assignmentAggregateReportElement.getHours().floatValue();
 				}
 			}
 		}
@@ -112,7 +112,7 @@ public class ProjectAssignmentUtil
 	private AssignmentStatus getFixedAssignmentStatus(ProjectAssignment assignment)
 	{
 		AssignmentStatus	status = new AssignmentStatus();
-		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
+		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		status.setAggregate(aggregate);
 		
 		status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
@@ -137,7 +137,7 @@ public class ProjectAssignmentUtil
 	{
 		AssignmentStatus	status = new AssignmentStatus();
 		
-		ProjectAssignmentAggregate aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
+		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		status.setAggregate(aggregate);
 		
 		if (aggregate != null)

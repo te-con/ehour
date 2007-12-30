@@ -23,7 +23,7 @@ import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.user.domain.User;
@@ -117,9 +117,9 @@ public class DummyDataGenerator
 		return cust;
 	}
 
-	public static ProjectAssignmentAggregate getProjectAssignmentAggregate(int baseId, int customerId, int userId)
+	public static AssignmentAggregateReportElement getProjectAssignmentAggregate(int baseId, int customerId, int userId)
 	{
-		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
+		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		pag.setHours(baseId);
 		pag.setProjectAssignment(getProjectAssignment(baseId, customerId, userId));
 		return pag;

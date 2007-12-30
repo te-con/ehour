@@ -13,9 +13,8 @@
  *
  */
 
-package net.rrm.ehour.report.reports;
+package net.rrm.ehour.report.reports.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
@@ -25,32 +24,29 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * TODO 
+ * ReportElement for aggregate reports
  **/
 
-public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentAggregate>, Serializable
+public class AssignmentAggregateReportElement extends ReportElement<AssignmentAggregateReportElement>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7175763322632066925L;
 	private ProjectAssignment 	projectAssignment;
-	private Number 				hours;
 
+	
 	/**
-	 * empty constructor
-	 *
+	 * default construct
 	 */
-	public ProjectAssignmentAggregate()
+	public AssignmentAggregateReportElement()
 	{
+		
 	}
-
+	
 	/**
 	 * full constructor
 	 * @param projectAssignment
 	 * @param hours
 	 */
-	public ProjectAssignmentAggregate(ProjectAssignment projectAssignment, Number hours)
+	public AssignmentAggregateReportElement(ProjectAssignment projectAssignment, Number hours)
 	{
 		this.hours = hours;
 		this.projectAssignment = projectAssignment;
@@ -125,37 +121,31 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 					projectAssignment.getAllottedHours() != null &&
 					hours.floatValue() > 0 &&
 					projectAssignment.getAllottedHours().floatValue() > 0)
-				{
-					
-					available = (projectAssignment.getAllottedHours().floatValue() +
-								 ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun().floatValue() : 0))
-								 - hours.floatValue();
-				}
+			{
+				
+				available = (projectAssignment.getAllottedHours().floatValue() +
+							 ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun().floatValue() : 0))
+							 - hours.floatValue();
+			}
 			
 		}
 		
 		return available;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public Number getHours()
-	{
-		return hours;
-	}
-
-	public void setHours(Number hours)
-	{
-		this.hours = hours;
-	}
-
 	public ProjectAssignment getProjectAssignment()
 	{
 		return projectAssignment;
 	}
 
+	/**
+	 * 
+	 * @param projectAssignment
+	 */
 	public void setProjectAssignment(ProjectAssignment projectAssignment)
 	{
 		this.projectAssignment = projectAssignment;
@@ -179,7 +169,7 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 	/**
 	 * 
 	 */
-	public int compareTo(ProjectAssignmentAggregate pagO)
+	public int compareTo(AssignmentAggregateReportElement pagO)
 	{
 		return this.getProjectAssignment().compareTo(pagO.getProjectAssignment());
 	}
@@ -197,11 +187,11 @@ public class ProjectAssignmentAggregate implements Comparable<ProjectAssignmentA
 	 */
 	public boolean equals(Object object)
 	{
-		if (!(object instanceof ProjectAssignmentAggregate))
+		if (!(object instanceof AssignmentAggregateReportElement))
 		{
 			return false;
 		}
-		ProjectAssignmentAggregate rhs = (ProjectAssignmentAggregate) object;
+		AssignmentAggregateReportElement rhs = (AssignmentAggregateReportElement) object;
 		return new EqualsBuilder().appendSuper(super.equals(object)).append(this.projectAssignment, rhs.projectAssignment).isEquals();
 	}
 

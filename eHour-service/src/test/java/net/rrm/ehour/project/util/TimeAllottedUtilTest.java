@@ -24,7 +24,7 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
@@ -51,7 +51,7 @@ public class TimeAllottedUtilTest extends TestCase
 	@Test
 	public final void testGetAssignmentStatusFixed()
 	{
-		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
+		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		pag.setHours(new Double(25));
 		
 		ProjectAssignment assignment = new ProjectAssignment();
@@ -75,7 +75,7 @@ public class TimeAllottedUtilTest extends TestCase
 	@Test
 	public final void testGetAssignmentStatusFixedOverAllotted()
 	{
-		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
+		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		pag.setHours(new Double(260));
 		
 		ProjectAssignment assignment = new ProjectAssignment();
@@ -99,7 +99,7 @@ public class TimeAllottedUtilTest extends TestCase
 	@Test
 	public final void testGetAssignmentStatusFlex()
 	{
-		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
+		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		pag.setHours(new Double(25));
 		
 		ProjectAssignment assignment = new ProjectAssignment();
@@ -124,7 +124,7 @@ public class TimeAllottedUtilTest extends TestCase
 	@Test
 	public final void testGetAssignmentStatusFlexOverrun()
 	{
-		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
+		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		pag.setHours(new Double(260));
 		
 		ProjectAssignment assignment = new ProjectAssignment();
@@ -149,7 +149,7 @@ public class TimeAllottedUtilTest extends TestCase
 	@Test
 	public final void testGetAssignmentStatusFlexOverOverrun()
 	{
-		ProjectAssignmentAggregate pag = new ProjectAssignmentAggregate();
+		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		pag.setHours(new Double(560));
 		
 		ProjectAssignment assignment = new ProjectAssignment();

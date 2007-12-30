@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.mail.domain.MailLogAssignment;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.domain.User;
 
 /**
@@ -34,7 +34,7 @@ public interface MailService
 	 * @param bookDate
 	 * @param mailToUser
 	 */
-	public void mailPMFixedAllottedReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
+	public void mailPMFixedAllottedReached(AssignmentAggregateReportElement assignment, Date bookDate, User mailToUser);
 	
 	/**
 	 * Send project assignment overrun e-mail for flex assignments, overrun reached
@@ -42,7 +42,7 @@ public interface MailService
 	 * @param bookDate
 	 * @param mailToUser
 	 */
-	public void mailPMFlexOverrunReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
+	public void mailPMFlexOverrunReached(AssignmentAggregateReportElement assignment, Date bookDate, User mailToUser);
 
 
 	/**
@@ -51,7 +51,7 @@ public interface MailService
 	 * @param bookDate
 	 * @param mailToUser
 	 */
-	public void mailPMFlexAllottedReached(ProjectAssignmentAggregate assignment, Date bookDate, User mailToUser);
+	public void mailPMFlexAllottedReached(AssignmentAggregateReportElement assignment, Date bookDate, User mailToUser);
 	
 	/**
 	 * Get sent mail for assignments

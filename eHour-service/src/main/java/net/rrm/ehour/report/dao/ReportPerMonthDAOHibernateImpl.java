@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.FlatReportElement;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -36,7 +36,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForUsers(java.lang.Integer[], java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userIds, List<Serializable> projectIds, DateRange dateRange)
+	public List<FlatReportElement> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userIds, List<Serializable> projectIds, DateRange dateRange)
 	{
 		// FIXME, derby queries don't work
 		Session session = this.getSession();
@@ -46,7 +46,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 						.setDate("dateEnd", dateRange.getDateEnd())
 						.setParameterList("userIdList", userIds)
 						.setParameterList("projectIdList", projectIds)
-						.setResultTransformer(Transformers.aliasToBean(FlatProjectAssignmentAggregate.class));
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
 
 		return query.list();
 	}
@@ -55,7 +55,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForUsers(java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userIds, DateRange dateRange)
+	public List<FlatReportElement> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userIds, DateRange dateRange)
 	{
 		// FIXME, derby queries don't work
 		Session session = this.getSession();
@@ -64,7 +64,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 						.setDate("dateStart", dateRange.getDateStart())
 						.setDate("dateEnd", dateRange.getDateEnd())
 						.setParameterList("userIdList", userIds)
-						.setResultTransformer(Transformers.aliasToBean(FlatProjectAssignmentAggregate.class));
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
 
 		return query.list();
 	}
@@ -73,7 +73,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForProjects(java.lang.Integer[], net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignmentForProjects(List<Serializable> projectIds, DateRange dateRange)
+	public List<FlatReportElement> getHoursPerMonthPerAssignmentForProjects(List<Serializable> projectIds, DateRange dateRange)
 	{
 		// FIXME, derby queries don't work		
 		Session session = this.getSession();
@@ -82,7 +82,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 						.setDate("dateStart", dateRange.getDateStart())
 						.setDate("dateEnd", dateRange.getDateEnd())
 						.setParameterList("projectIdList", projectIds)
-						.setResultTransformer(Transformers.aliasToBean(FlatProjectAssignmentAggregate.class));
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
 
 		return query.list();		
 	}
@@ -92,7 +92,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignment(net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerMonthPerAssignment(DateRange dateRange)
+	public List<FlatReportElement> getHoursPerMonthPerAssignment(DateRange dateRange)
 	{
 		// FIXME, derby queries don't work		
 		Session session = this.getSession();
@@ -100,7 +100,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 		Query query = session.getNamedQuery("Report.getHoursPerMonthPerAssignment")
 						.setDate("dateStart", dateRange.getDateStart())
 						.setDate("dateEnd", dateRange.getDateEnd())
-						.setResultTransformer(Transformers.aliasToBean(FlatProjectAssignmentAggregate.class));
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
 
 		return query.list();
 	}	
@@ -113,7 +113,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 	 * @return
 	 */	
 	@SuppressWarnings("unchecked")
-	public List<FlatProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Serializable> assignmentIds, DateRange dateRange)
+	public List<FlatReportElement> getHoursPerDayForAssignment(List<Serializable> assignmentIds, DateRange dateRange)
 	{
 		Session session = this.getSession();
 		
@@ -121,7 +121,7 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 						.setDate("dateStart", dateRange.getDateStart())
 						.setDate("dateEnd", dateRange.getDateEnd())
 						.setParameterList("assignmentId", assignmentIds)
-						.setResultTransformer(Transformers.aliasToBean(FlatProjectAssignmentAggregate.class));
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
 
 		return query.list();
 	}

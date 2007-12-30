@@ -20,7 +20,7 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.domain.User;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -38,7 +38,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users, DateRange dateRange)
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users, DateRange dateRange)
 	{
 		List		results;
 		String[]	keys = new String[3];
@@ -63,7 +63,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users)
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users)
 	{
 		List		results;
 
@@ -90,7 +90,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.util.List, java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users, List<Project> projects)
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users, List<Project> projects)
 	{
 		List		results;
 		String[]	keys = new String[2];
@@ -112,7 +112,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForUsers(java.util.List, java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForUsers(List<User> users,
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users,
 																					List<Project> projects,
 																					DateRange dateRange)
 	{
@@ -154,7 +154,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignment(net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignment(DateRange dateRange)
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignment(DateRange dateRange)
 	{
 		List		results;
 		String[]	keys = new String[2];
@@ -176,7 +176,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForProjects(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForProjects(List<Project> projects, DateRange dateRange)
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForProjects(List<Project> projects, DateRange dateRange)
 	{
 		List		results;
 		String[]	keys = new String[3];
@@ -200,9 +200,9 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursForAssignmentForUser(java.lang.Integer)
 	 */
 	@SuppressWarnings("unchecked")
-	public ProjectAssignmentAggregate getCumulatedHoursForAssignment(ProjectAssignment projectAssignment)
+	public AssignmentAggregateReportElement getCumulatedHoursForAssignment(ProjectAssignment projectAssignment)
 	{
-		List<ProjectAssignmentAggregate>	results;
+		List<AssignmentAggregateReportElement>	results;
 		
 		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursForAssignment",
 																		"assignment",
@@ -216,7 +216,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForAssignments(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<ProjectAssignmentAggregate> getCumulatedHoursPerAssignmentForAssignments(List<Integer> projectAssignmentIds)
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForAssignments(List<Integer> projectAssignmentIds)
 	{
 		List		results;
 		

@@ -37,7 +37,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.dao.ReportPerMonthDAO;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
@@ -88,10 +88,10 @@ public class ReportServiceTest extends TestCase
 	
 	public void testGetHoursPerAssignmentOnMonth()
 	{
-		List<ProjectAssignmentAggregate>	results = new ArrayList<ProjectAssignmentAggregate>();
+		List<AssignmentAggregateReportElement>	results = new ArrayList<AssignmentAggregateReportElement>();
 		Calendar	cal = new GregorianCalendar();
 		
-		results.add(new ProjectAssignmentAggregate());
+		results.add(new AssignmentAggregateReportElement());
 		
 		List<User> l = new ArrayList<User>();
 		l.add(new User(1));
@@ -114,7 +114,7 @@ public class ReportServiceTest extends TestCase
 		l.add(new User(1));
 		uc.setUsers(l);
 		rc.setUserCriteria(uc);
-		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
@@ -133,7 +133,7 @@ public class ReportServiceTest extends TestCase
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);
 		rc.setUserCriteria(uc);
-		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
@@ -160,7 +160,7 @@ public class ReportServiceTest extends TestCase
 		uc.setDepartments(l);
 		uc.setOnlyActiveUsers(true);
 		rc.setUserCriteria(uc);
-		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
@@ -193,7 +193,7 @@ public class ReportServiceTest extends TestCase
 		uc.setReportRange(dr);
 		uc.setCustomers(customers);
 		rc.setUserCriteria(uc);
-		List<ProjectAssignmentAggregate> pags = new ArrayList<ProjectAssignmentAggregate>();
+		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));

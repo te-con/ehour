@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.FlatReportElement;
 
 /**
  * TODO 
@@ -49,6 +49,6 @@ public interface ReportPerMonthDAO
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatProjectAssignmentAggregate> getHoursPerDayForAssignment(List<Serializable> assignmentId, DateRange dateRange);
+	public List<FlatReportElement> getHoursPerDayForAssignment(List<Serializable> assignmentId, DateRange dateRange);
 	
 }

@@ -19,7 +19,7 @@ import java.util.Date;
 
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.report.reports.ProjectAssignmentAggregate;
+import net.rrm.ehour.report.reports.dto.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -65,7 +65,7 @@ public class MailServiceTest extends BaseDAOTest
 		User	user = new User(1);
 		user.setEmail("spam@rrm.net");
 		
-		ProjectAssignmentAggregate asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
+		AssignmentAggregateReportElement asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
 		asg.getProjectAssignment().setAssignmentId(1);
 		asg.setHours(new Float(121.1f));
 		asg.getProjectAssignment().setAllottedHours(100f);
@@ -92,7 +92,7 @@ public class MailServiceTest extends BaseDAOTest
 		User	user = new User(1);
 		user.setEmail("unknownemailaddress@rrm.net");
 		
-		ProjectAssignmentAggregate asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
+		AssignmentAggregateReportElement asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
 		asg.getProjectAssignment().setAssignmentId(1);
 		asg.setHours(new Float(121.1f));
 		asg.getProjectAssignment().setAllottedHours(100f);
