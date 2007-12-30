@@ -64,7 +64,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	 * @throws Exception 
 	 */
 	@Override
-	protected byte[] getExcelData(String reportId) throws Exception
+	public byte[] getExcelData(String reportId) throws Exception
 	{
 		EhourWebSession session = (EhourWebSession)Session.get();
 		AggregateReport report = (AggregateReport)session.getReportCache().getReportFromCache(reportId);
@@ -223,7 +223,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 							}
 							else
 							{
-								cell.setCellValue((Double)cellValue);
+								cell.setCellValue(((Number)cellValue).doubleValue());
 							}
 						}
 						else if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER

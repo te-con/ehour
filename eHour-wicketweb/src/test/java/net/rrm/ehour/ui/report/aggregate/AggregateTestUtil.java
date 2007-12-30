@@ -18,8 +18,13 @@
 package net.rrm.ehour.ui.report.aggregate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
 
@@ -53,5 +58,23 @@ public class AggregateTestUtil
         aggs.add(pagF);		
         
         return aggs;
+	}
+	
+	/**
+	 * Get some dummy report data
+	 * @return
+	 */
+	public static ReportData getReportData()
+	{
+		ReportData reportData = new ReportData();
+		reportData.setReportElements(AggregateTestUtil.getAssignmentAggregateReportElements());
+		
+		ReportCriteria criteria = new ReportCriteria();
+		UserCriteria userCriteria = new UserCriteria();
+		userCriteria.setReportRange(new DateRange(new Date(), new Date()));
+		criteria.setUserCriteria(userCriteria);
+		reportData.setReportCriteria(criteria);
+
+		return reportData;
 	}
 }
