@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.type;
+package net.rrm.ehour.ui.panel.report.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.panel.report.ReportType;

@@ -15,11 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.type;
-
-import org.apache.wicket.Session;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
+package net.rrm.ehour.ui.panel.report.aggregate;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
@@ -28,29 +24,32 @@ import net.rrm.ehour.ui.panel.report.ReportColumnUtil;
 import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
+import org.apache.wicket.Session;
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
+
 /**
- * TODO 
+ * TODO auth not used.. 
  **/
 
-public class ProjectReportExcel extends AbstractAggregateExcelReport
+@AuthorizeInstantiation("ROLE_REPORT")
+public class CustomerReportExcel extends AbstractAggregateExcelReport
 {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7211392869328367507L;
+	
 	private AggregateReportColumn[]	reportColumns;
 	
 	@Override
 	protected IModel getExcelReportName()
 	{
-		return new ResourceModel("report.title.project");
+		return new ResourceModel("report.title.customer");
 	}
 
 	@Override
 	protected IModel getHeaderReportName()
 	{
-		return new ResourceModel("report.title.project");
+		return new ResourceModel("report.title.customer");
 	}
 
 	@Override
@@ -60,7 +59,7 @@ public class ProjectReportExcel extends AbstractAggregateExcelReport
 		{
 			EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
 			
-			reportColumns = ReportColumnUtil.getReportColumns(config, ReportType.AGGREGATE_PROJECT);
+			reportColumns = ReportColumnUtil.getReportColumns(config, ReportType.AGGREGATE_CUSTOMER);
 		}
 		
 		return reportColumns;

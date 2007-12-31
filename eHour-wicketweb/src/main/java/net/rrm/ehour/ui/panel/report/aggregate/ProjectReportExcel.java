@@ -15,7 +15,11 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.type;
+package net.rrm.ehour.ui.panel.report.aggregate;
+
+import org.apache.wicket.Session;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
@@ -24,29 +28,29 @@ import net.rrm.ehour.ui.panel.report.ReportColumnUtil;
 import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.Session;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
-
 /**
  * TODO 
  **/
 
-public class EmployeeReportExcel extends AbstractAggregateExcelReport
+public class ProjectReportExcel extends AbstractAggregateExcelReport
 {
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private AggregateReportColumn[]	reportColumns;
 	
 	@Override
 	protected IModel getExcelReportName()
 	{
-		return new ResourceModel("report.title.employee");
+		return new ResourceModel("report.title.project");
 	}
 
 	@Override
 	protected IModel getHeaderReportName()
 	{
-		return new ResourceModel("report.title.employee");
+		return new ResourceModel("report.title.project");
 	}
 
 	@Override
@@ -56,9 +60,10 @@ public class EmployeeReportExcel extends AbstractAggregateExcelReport
 		{
 			EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
 			
-			reportColumns = ReportColumnUtil.getReportColumns(config, ReportType.AGGREGATE_EMPLOYEE);
+			reportColumns = ReportColumnUtil.getReportColumns(config, ReportType.AGGREGATE_PROJECT);
 		}
 		
 		return reportColumns;
 	}
+
 }

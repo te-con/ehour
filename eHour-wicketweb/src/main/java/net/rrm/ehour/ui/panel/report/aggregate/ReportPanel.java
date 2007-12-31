@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.report.type;
+package net.rrm.ehour.ui.panel.report.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
@@ -54,8 +54,6 @@ public abstract class ReportPanel extends AbstractReportPanel
 		greyBorder.add(new AggregateReportDataPanel("reportTable", reportData, reportType, excelResourceName));
 		
 		addCharts(data, greyBorder);
-		
-		
 	}
 	
 	/**

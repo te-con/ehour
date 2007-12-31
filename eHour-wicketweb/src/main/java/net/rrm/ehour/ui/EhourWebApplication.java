@@ -29,9 +29,9 @@ import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;
-import net.rrm.ehour.ui.panel.report.type.CustomerReportExcel;
-import net.rrm.ehour.ui.panel.report.type.EmployeeReportExcel;
-import net.rrm.ehour.ui.panel.report.type.ProjectReportExcel;
+import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportExcel;
+import net.rrm.ehour.ui.panel.report.aggregate.EmployeeReportExcel;
+import net.rrm.ehour.ui.panel.report.aggregate.ProjectReportExcel;
 import net.rrm.ehour.ui.panel.report.user.UserReportExcel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
