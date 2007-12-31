@@ -17,7 +17,9 @@
 		       PAG.ROLE AS assignmentDesc,
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId
+		       PAG.ASSIGNMENT_ID AS assignmentId,
+		       ENTRY.COMMENT AS "comment",
+		       ENTRY.DISPLAY_ORDER AS "displayOrder"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -51,7 +53,9 @@
 		       PAG.ROLE AS assignmentDesc,
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId
+		       PAG.ASSIGNMENT_ID AS assignmentId,
+		       ENTRY.COMMENT AS "comment",
+		       ENTRY.DISPLAY_ORDER AS "displayOrder"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -84,7 +88,9 @@
 		       PAG.ROLE AS assignmentDesc,
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId
+		       PAG.ASSIGNMENT_ID AS assignmentId,
+		       ENTRY.COMMENT AS "comment",
+		       ENTRY.DISPLAY_ORDER AS "displayOrder"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -117,7 +123,9 @@
 		       PAG.ROLE AS assignmentDesc,
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId
+		       PAG.ASSIGNMENT_ID AS assignmentId,
+		       ENTRY.COMMENT AS "comment",
+		       ENTRY.DISPLAY_ORDER AS "displayOrder"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -149,7 +157,9 @@
 		       PAG.ROLE AS assignmentDesc,
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId
+		       PAG.ASSIGNMENT_ID AS assignmentId,
+		       ENTRY.COMMENT AS "comment",
+		       ENTRY.DISPLAY_ORDER AS "displayOrder"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
