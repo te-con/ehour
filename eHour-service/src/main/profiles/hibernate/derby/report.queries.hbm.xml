@@ -42,8 +42,8 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS comment,
+		       ENTRY.DISPLAY_ORDER AS displayOrder
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -77,8 +77,8 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS comment,
+		       ENTRY.DISPLAY_ORDER AS displayOrder
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -112,8 +112,8 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS comment,
+		       ENTRY.DISPLAY_ORDER AS displayOrder
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -171,9 +171,9 @@
 				USR.LAST_NAME,
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
-				PRJ.NAME
+				PRJ.NAME,
+				ENTRY.COMMENT,
+				ENTRY.DISPLAY_ORDER
          ]]>		         
 	</sql-query>	
-	
-	
 </hibernate-mapping>
