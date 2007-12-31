@@ -40,7 +40,7 @@ public class FlatEntryEndNode extends ReportNode
 	 */
 	public FlatEntryEndNode(FlatReportElement element, int hierarchyLevel)
     {
-        hours = element.getTotalHours();
+        hours = element.getHours();
         turnOver = element.getTotalTurnOver();
 		
 		this.id = element.getDisplayOrder();

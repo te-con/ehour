@@ -50,7 +50,7 @@ public class ReportBuilder
 
         List<ReportNode> reportNodes = new ArrayList<ReportNode>();
         
-        if (reportData != null)
+        if (reportData != null && reportData.getReportElements() != null)
         {
 	        for (ReportElement reportElement : reportData.getReportElements() )
 	        {

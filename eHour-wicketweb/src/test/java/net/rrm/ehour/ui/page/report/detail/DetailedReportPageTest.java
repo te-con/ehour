@@ -52,5 +52,4 @@ public class DetailedReportPageTest extends BaseTestReport
 
 		verify(reportCriteriaService);
 	}
-
 }
