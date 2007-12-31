@@ -48,6 +48,7 @@ public class ReportCacheTest
 	
 	class MockReport extends Report
 	{
+		private static final long serialVersionUID = 1L;
 		long id = new Date().getTime();
 	}
 }

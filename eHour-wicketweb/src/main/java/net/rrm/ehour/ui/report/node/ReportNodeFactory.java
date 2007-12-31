@@ -1,9 +1,3 @@
-package net.rrm.ehour.ui.report.aggregate.value;
-
-import java.io.Serializable;
-
-import net.rrm.ehour.report.reports.element.ReportElement;
-
 /**
  * User: Thies
  * Date: Sep 11, 2007
@@ -19,6 +13,18 @@ import net.rrm.ehour.report.reports.element.ReportElement;
  * thies@te-con.nl
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ */
+
+package net.rrm.ehour.ui.report.node;
+
+import java.io.Serializable;
+
+import net.rrm.ehour.report.reports.element.ReportElement;
+
+/**
+ * Factory for report nodes
+ * @author Thies
+ *
  */
 public abstract class ReportNodeFactory
 {

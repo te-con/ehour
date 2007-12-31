@@ -22,13 +22,14 @@ import java.io.Serializable;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
 import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
+import net.rrm.ehour.ui.report.node.ReportNode;
+import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
-public class CustomerAggregateReport extends AggregateReport
+public class CustomerAggregateReport extends TreeReport
 {
 	private static final long serialVersionUID = -3221674649410450972L;
 
@@ -58,16 +59,16 @@ public class CustomerAggregateReport extends AggregateReport
 	                case 0:
 	                	if (aggregate != null)
 	                	{
-	                		return new CustomerNode(aggregate, 0);
+	                		return new CustomerNode(aggregate, hierarchyLevel);
 	                	}
 	                	else
 	                	{
 	                		return null;
 	                	}
 	                case 1:
-	                    return new ProjectNode(aggregate, 1);
+	                    return new ProjectNode(aggregate, hierarchyLevel);
 	                case 2:
-	                    return new UserEndNode(aggregate);
+	                    return new UserEndNode(aggregate, hierarchyLevel);
 	            }
 	
 	            throw new RuntimeException("Hierarchy level too deep");

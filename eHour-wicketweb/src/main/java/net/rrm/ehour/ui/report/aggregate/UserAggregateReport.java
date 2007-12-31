@@ -22,15 +22,16 @@ import java.io.Serializable;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
+import net.rrm.ehour.ui.report.node.ReportNode;
+import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
 /**
  * TODO 
  **/
 
-public class UserAggregateReport extends AggregateReport
+public class UserAggregateReport extends TreeReport
 {
 	private static final long serialVersionUID = 2883703894793044411L;
 
@@ -60,11 +61,11 @@ public class UserAggregateReport extends AggregateReport
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
-	                    return new UserNode(aggregate);
+	                    return new UserNode(aggregate, hierarchyLevel);
 	                case 1:
-	                    return new CustomerNode(aggregate, 1);
+	                    return new CustomerNode(aggregate, hierarchyLevel);
 	                case 2:
-	                    return new ProjectEndNode(aggregate);
+	                    return new ProjectEndNode(aggregate, hierarchyLevel);
 	            }
 	
 	            throw new RuntimeException("Hierarchy level too deep");
@@ -93,12 +94,12 @@ public class UserAggregateReport extends AggregateReport
 	{
 		private static final long serialVersionUID = 8534482324216994500L;
 
-		private UserNode(AssignmentAggregateReportElement aggregate)
+		private UserNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
 		{
 	        this.id = aggregate.getProjectAssignment().getUser().getPK();
 	        this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName()};
 			
-			this.hierarchyLevel = 0;
+			this.hierarchyLevel = hierarchyLevel;
 		}
 
 		@Override
@@ -122,7 +123,7 @@ public class UserAggregateReport extends AggregateReport
 		private Number   hours;
 	    private Number   turnOver;		
 		
-	    private ProjectEndNode(AssignmentAggregateReportElement aggregate)
+	    private ProjectEndNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
 	    {
 	        hours = aggregate.getHours();
 	        turnOver = aggregate.getTurnOver();
@@ -136,7 +137,7 @@ public class UserAggregateReport extends AggregateReport
 	                                         		aggregate.getHours(),
 	                                         		aggregate.getTurnOver()};
 	        
-	        this.hierarchyLevel = 2;
+	        this.hierarchyLevel = hierarchyLevel;
 
 	    }
 		

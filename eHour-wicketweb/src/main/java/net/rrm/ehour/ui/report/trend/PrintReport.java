@@ -78,5 +78,4 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	{
 		return new ProjectAssignmentComparator();
 	}
-
 }

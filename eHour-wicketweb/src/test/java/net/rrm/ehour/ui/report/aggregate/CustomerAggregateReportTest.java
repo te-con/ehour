@@ -7,7 +7,8 @@ import java.io.Serializable;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.panel.report.ReportTestUtil;
+import net.rrm.ehour.ui.report.node.ReportNode;
 
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class CustomerAggregateReportTest
         ReportCriteria rc = new ReportCriteria();
         rc.setUserCriteria(userCriteria);
         aggData.setReportCriteria(rc);
-        aggData.setReportElements(AggregateTestUtil.getAssignmentAggregateReportElements());
+        aggData.setReportElements(ReportTestUtil.getAssignmentAggregateReportElements());
         CustomerAggregateReport aggReport = new CustomerAggregateReport(aggData);
 
         assertEquals(3, aggReport.getNodes().size());

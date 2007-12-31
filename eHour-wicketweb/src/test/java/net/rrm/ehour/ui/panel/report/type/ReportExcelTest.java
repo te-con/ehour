@@ -20,8 +20,8 @@ package net.rrm.ehour.ui.panel.report.type;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.report.aggregate.AggregateReport;
-import net.rrm.ehour.ui.report.aggregate.AggregateTestUtil;
+import net.rrm.ehour.ui.panel.report.ReportTestUtil;
+import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
@@ -47,13 +47,13 @@ public class ReportExcelTest extends BaseUIWicketTester
 		
 		EhourWebSession session = this.webapp.getSession();
 		cache = session.getReportCache();
-		reportData = AggregateTestUtil.getReportData();
+		reportData = ReportTestUtil.getAssignmentReportData();
 	}
 
 	@Test
 	public void testCustomerReportExcel() throws Exception
 	{
-		AggregateReport report = new CustomerAggregateReport(reportData);
+		TreeReport report = new CustomerAggregateReport(reportData);
 		String reportCacheId = cache.addReportToCache(report, reportData);
 
 		new CustomerReportExcel().getExcelData(reportCacheId);
@@ -62,7 +62,7 @@ public class ReportExcelTest extends BaseUIWicketTester
 	@Test
 	public void testEmployeeReportExcel() throws Exception
 	{
-		AggregateReport report = new UserAggregateReport(reportData);
+		TreeReport report = new UserAggregateReport(reportData);
 		String reportCacheId = cache.addReportToCache(report, reportData);
 
 		new EmployeeReportExcel().getExcelData(reportCacheId);
@@ -71,7 +71,7 @@ public class ReportExcelTest extends BaseUIWicketTester
 	@Test
 	public void testProjectReportExcel() throws Exception
 	{
-		AggregateReport report = new ProjectAggregateReport(reportData);
+		TreeReport report = new ProjectAggregateReport(reportData);
 		String reportCacheId = cache.addReportToCache(report, reportData);
 
 		new ProjectReportExcel().getExcelData(reportCacheId);

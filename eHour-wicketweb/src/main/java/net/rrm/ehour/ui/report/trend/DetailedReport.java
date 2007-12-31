@@ -1,7 +1,7 @@
 /**
- * Created on Sep 27, 2007
- * Created by Thies Edeling
- * Created by Thies Edeling
+ * Created on Dec 31, 2007
+ * Author: Thies
+ *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
  *
  * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
@@ -15,40 +15,48 @@
  *
  */
 
-package net.rrm.ehour.ui.report.aggregate;
+package net.rrm.ehour.ui.report.trend;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
-import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
-import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
+import net.rrm.ehour.ui.report.trend.node.FlatCustomerNode;
+import net.rrm.ehour.ui.report.trend.node.FlatDateNode;
+import net.rrm.ehour.ui.report.trend.node.FlatEntryEndNode;
+import net.rrm.ehour.ui.report.trend.node.FlatProjectNode;
+import net.rrm.ehour.ui.report.trend.node.FlatUserNode;
 
 /**
- * TODO 
+ * Detailed report
  **/
 
-public class ProjectAggregateReport extends TreeReport
+public class DetailedReport extends TreeReport
 {
-	private static final long serialVersionUID = 6073113076906501807L;
-
+	private static final long serialVersionUID = -21703820501429504L;
+	private Locale locale;
+	
 	/**
 	 * 
 	 * @param reportData
 	 */
-	public ProjectAggregateReport(ReportData reportData)
+	public DetailedReport(ReportData reportData, Locale locale)
 	{
-		super(reportData);
+		super();
+		
+		this.locale = locale;
+		
+		this.initializeReport(reportData);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.aggregate.AggregateReport#getReportNodeFactory()
+	 * @see net.rrm.ehour.ui.report.TreeReport#getReportNodeFactory()
 	 */
 	@Override
 	public ReportNodeFactory getReportNodeFactory()
@@ -58,16 +66,20 @@ public class ProjectAggregateReport extends TreeReport
 	        @Override
 	        public ReportNode createReportNode(ReportElement element, int hierarchyLevel)
 	        {
-	        	AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+	        	FlatReportElement flatElement = (FlatReportElement)element;
 	        	
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
-	                    return new ProjectNode(aggregate, hierarchyLevel);
+	                	return new FlatCustomerNode(flatElement, hierarchyLevel);
 	                case 1:
-	                    return new CustomerNode(aggregate, hierarchyLevel);
+	                    return new FlatProjectNode(flatElement, hierarchyLevel);
 	                case 2:
-	                    return new UserEndNode(aggregate, hierarchyLevel);
+	                    return new FlatDateNode(flatElement, hierarchyLevel, locale);
+	                case 3:
+	                	return new FlatUserNode(flatElement, hierarchyLevel);
+	                case 4:
+	                	return new FlatEntryEndNode(flatElement, hierarchyLevel);
 	            }
 	
 	            throw new RuntimeException("Hierarchy level too deep");
@@ -78,13 +90,11 @@ public class ProjectAggregateReport extends TreeReport
 	         * @param aggregate
 	         * @return
 	         */
-	
 	        public Serializable getElementId(ReportElement element)
 	        {
-	        	AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
-	        	
-	            return aggregate.getProjectAssignment().getProject().getPK();
+	        	FlatReportElement flatElement = (FlatReportElement)element;
+	            return flatElement.getCustomerId();
 	        }
-	    };
-	}
+	    };	
+    }
 }

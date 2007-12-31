@@ -1,5 +1,5 @@
 /**
- * Created on Dec 30, 2007
+ * Created on Dec 31, 2007
  * Author: Thies
  *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
@@ -15,29 +15,33 @@
  *
  */
 
-package net.rrm.ehour.ui.reportchart.aggregate;
+package net.rrm.ehour.ui.report.trend;
 
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Locale;
+
 import net.rrm.ehour.ui.panel.report.ReportTestUtil;
 
-import org.apache.wicket.model.Model;
 import org.junit.Test;
 
 /**
- * TODO 
+ * Test of detailed report 
  **/
 
-public class UserTurnoverAggregateChartImageTest extends BaseUIWicketTester
+public class DetailedReportTest
 {
+
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@Test
-	public void testChartImage() throws Exception
+	public void testCreateDetailedReport()
 	{
-		ReportData reportData = new ReportData();
-		reportData.setReportElements(ReportTestUtil.getAssignmentAggregateReportElements());
+		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getFlatReportData(), Locale.ENGLISH);
 		
-		UserTurnoverAggregateChartImage img = new UserTurnoverAggregateChartImage("image", new Model(reportData), 200, 100);
-		img.getChart(reportData);
+		// customer = root
+		assertEquals(2, detailedReport.getNodes().size());
 	}
 }

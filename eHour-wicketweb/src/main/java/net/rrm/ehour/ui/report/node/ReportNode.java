@@ -16,7 +16,7 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  */
 
-package net.rrm.ehour.ui.report.aggregate.value;
+package net.rrm.ehour.ui.report.node;
 
 import java.io.Serializable;
 import java.util.ArrayList;

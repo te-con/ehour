@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.AggregateReportDataPanel;
 import net.rrm.ehour.ui.panel.report.ReportType;
-import net.rrm.ehour.ui.report.aggregate.AggregateReport;
+import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -37,7 +37,7 @@ public abstract class ReportPanel extends AbstractReportPanel
 	 * 
 	 * @param id
 	 */
-	public ReportPanel(String id, AggregateReport reportData, ReportData data, ReportType reportType, String excelResourceName)
+	public ReportPanel(String id, TreeReport reportData, ReportData data, ReportType reportType, String excelResourceName)
 	{
 		super(id);
 

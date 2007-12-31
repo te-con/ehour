@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.report.node.ReportNode;
 
 /**
  * Project node displaying project full name 

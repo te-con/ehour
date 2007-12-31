@@ -21,8 +21,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.ui.component.AbstractExcelReport;
-import net.rrm.ehour.ui.report.aggregate.AggregateReport;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
@@ -67,7 +67,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	public byte[] getExcelData(String reportId) throws Exception
 	{
 		EhourWebSession session = (EhourWebSession)Session.get();
-		AggregateReport report = (AggregateReport)session.getReportCache().getReportFromCache(reportId);
+		TreeReport report = (TreeReport)session.getReportCache().getReportFromCache(reportId);
 		
 		if (report == null)
 		{
@@ -83,10 +83,10 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	
 	/**
 	 * Create the workbook
-	 * @param aggregateReport
+	 * @param treeReport
 	 * @return
 	 */
-	private HSSFWorkbook createWorkbook(AggregateReport aggregateReport)
+	private HSSFWorkbook createWorkbook(TreeReport treeReport)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet 	sheet = wb.createSheet((String)getExcelReportName().getObject());
@@ -105,11 +105,11 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 
 		initCellStyles(wb);
 		
-		rowNumber = createHeaders(rowNumber, sheet, aggregateReport);
+		rowNumber = createHeaders(rowNumber, sheet, treeReport);
 		
 		rowNumber = addColumnHeaders(rowNumber, sheet);
 		
-		fillReportSheet(aggregateReport, sheet, rowNumber);
+		fillReportSheet(treeReport, sheet, rowNumber);
 		
 		return wb;		
 	}
@@ -173,7 +173,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	 * @param sheet
 	 * @param rowNumber
 	 */
-	protected void fillReportSheet(AggregateReport reportData, HSSFSheet sheet, int rowNumber)
+	protected void fillReportSheet(TreeReport reportData, HSSFSheet sheet, int rowNumber)
 	{
 		List<ReportNode> nodes = reportData.getNodes();
 		
@@ -270,7 +270,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	 * Create header containing report date
 	 * @param sheet
 	 */
-	private int createHeaders(int rowNumber, HSSFSheet sheet, AggregateReport report)
+	private int createHeaders(int rowNumber, HSSFSheet sheet, TreeReport report)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;

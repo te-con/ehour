@@ -15,32 +15,48 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  */
 
-package net.rrm.ehour.ui.report.aggregate;
+package net.rrm.ehour.ui.report;
 
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.report.Report;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
+import net.rrm.ehour.ui.report.node.ReportNode;
+import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
-public abstract class AggregateReport extends Report
+public abstract class TreeReport extends Report
 {
 	private List<ReportNode>    nodes;
 	private	DateRange			reportRange;
+	
+	/**
+	 * Default constructor which doesn't initialize the report
+	 */
+	public TreeReport()
+	{
+	}
 	
     /**
      *
      * @param reportData
      */
-    public AggregateReport(ReportData reportData)
+    public TreeReport(ReportData reportData)
+    {
+    	initializeReport(reportData);
+    }
+
+    /**
+     * Initialize report
+     * @param reportData
+     */
+    protected void initializeReport(ReportData reportData)
     {
         ReportBuilder reportBuilder = new ReportBuilder();
         nodes = reportBuilder.createReport(reportData, getReportNodeFactory());
         
         reportRange = reportData.getReportCriteria().getUserCriteria().getReportRange();
-    }	
+    	
+    }
 	
     /**
      * Get report nodes

@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.report.node.ReportNode;
 
 /**
  * End node displaying user's full name, hours and turnover 
@@ -33,7 +33,7 @@ public class UserEndNode extends ReportNode
 	private Number   hours;
     private Number   turnOver;
 
-    public UserEndNode(AssignmentAggregateReportElement aggregate)
+    public UserEndNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
     {
         hours = aggregate.getHours();
         turnOver = aggregate.getTurnOver();
@@ -44,7 +44,7 @@ public class UserEndNode extends ReportNode
                                                 aggregate.getHours(),
                                                 aggregate.getTurnOver()};
         
-        this.hierarchyLevel = 2;
+        this.hierarchyLevel = hierarchyLevel;
 
     }
 

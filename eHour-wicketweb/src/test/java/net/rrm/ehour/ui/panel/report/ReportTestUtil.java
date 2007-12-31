@@ -1,0 +1,180 @@
+/**
+ * Created on Dec 30, 2007
+ * Author: Thies
+ *
+ * Copyright (C) 2007 TE-CON, All Rights Reserved.
+ *
+ * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
+ * TE-CON holds all the ownership rights on the Software.
+ * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for commercial use or open source,
+ * is subject to obtaining the prior express authorization of TE-CON.
+ * 
+ * thies@te-con.nl
+ * TE-CON
+ * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ *
+ */
+
+package net.rrm.ehour.ui.panel.report;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.ui.common.DummyDataGenerator;
+
+/**
+ * Test data
+ **/
+
+public class ReportTestUtil
+{
+	public static List<FlatReportElement> getFlatReportElements()
+	{
+		List<FlatReportElement> els = new ArrayList<FlatReportElement>();
+		
+		{
+			FlatReportElement fre = new FlatReportElement();
+			fre.setAssignmentId(1);
+			fre.setComment("ja hallo");
+			fre.setCustomerCode("AA");
+			fre.setCustomerId(1);
+			fre.setCustomerName("A Company");
+			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 31));
+			fre.setDisplayOrder(1);
+			fre.setEntryDate("492007");
+			fre.setHours(5);
+			fre.setProjectId(1);
+			fre.setProjectName("PRJ");
+			fre.setUserId(5);
+			els.add(fre);
+		}
+
+		{
+			FlatReportElement fre = new FlatReportElement();
+			fre.setAssignmentId(1);
+			fre.setComment("ja hallo");
+			fre.setCustomerCode("AA");
+			fre.setCustomerId(1);
+			fre.setCustomerName("A Company");
+			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 30));
+			fre.setDisplayOrder(1);
+			fre.setEntryDate("492007");
+			fre.setHours(5);
+			fre.setProjectId(1);
+			fre.setProjectName("PRJ");
+			fre.setUserId(5);
+			els.add(fre);
+		}
+		
+		{
+			FlatReportElement fre = new FlatReportElement();
+			fre.setAssignmentId(2);
+			fre.setComment("ja hallo");
+			fre.setCustomerCode("AA");
+			fre.setCustomerId(1);
+			fre.setCustomerName("A Company");
+			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 30));
+			fre.setDisplayOrder(1);
+			fre.setEntryDate("492007");
+			fre.setHours(5);
+			fre.setProjectId(1);
+			fre.setProjectName("PRJ");
+			fre.setUserId(6);
+			els.add(fre);
+		}		
+
+		{
+			FlatReportElement fre = new FlatReportElement();
+			fre.setAssignmentId(3);
+			fre.setComment("ja hallo");
+			fre.setCustomerCode("AA");
+			fre.setCustomerId(2);
+			fre.setCustomerName("A Company");
+			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 29));
+			fre.setDisplayOrder(1);
+			fre.setEntryDate("492007");
+			fre.setHours(5);
+			fre.setProjectId(2);
+			fre.setProjectName("PRJ");
+			fre.setUserId(5);
+			els.add(fre);
+		}		
+		
+		return els;
+	}
+	
+	public static ReportData getFlatReportData()
+	{
+		ReportData reportData = new ReportData();
+		reportData.setReportElements(ReportTestUtil.getFlatReportElements());
+		
+		reportData.setReportCriteria(getReportCriteria());
+
+		return reportData;		
+	}
+	
+	/**
+	 * Get assignment report dummy data stuff
+	 * @return
+	 */
+	public static List<AssignmentAggregateReportElement> getAssignmentAggregateReportElements()
+	{
+		AssignmentAggregateReportElement pagA, pagB, pagC, pagD, pagE, pagF;
+	    List<AssignmentAggregateReportElement> aggs;
+		
+        pagA = DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1);
+        pagA.getProjectAssignment().getProject().setProjectId(1);
+        pagB = DummyDataGenerator.getProjectAssignmentAggregate(20, 1, 2);
+        pagB.getProjectAssignment().getProject().setProjectId(2);
+        pagF = DummyDataGenerator.getProjectAssignmentAggregate(30, 1, 3);
+        pagF.getProjectAssignment().getProject().setProjectId(2);
+        pagC = DummyDataGenerator.getProjectAssignmentAggregate(3, 2, 1);
+        pagD = DummyDataGenerator.getProjectAssignmentAggregate(4, 2, 2);
+        pagE = DummyDataGenerator.getProjectAssignmentAggregate(5, 3, 3);
+
+        aggs = new ArrayList<AssignmentAggregateReportElement>();
+        aggs.add(pagE);
+        aggs.add(pagD);
+        aggs.add(pagB);
+        aggs.add(pagC);
+        aggs.add(pagA);
+        aggs.add(pagF);		
+        
+        return aggs;
+	}
+	
+	/**
+	 * Get some dummy report data
+	 * @return
+	 */
+	public static ReportData getAssignmentReportData()
+	{
+		ReportData reportData = new ReportData();
+		reportData.setReportElements(ReportTestUtil.getAssignmentAggregateReportElements());
+		
+		reportData.setReportCriteria(getReportCriteria());
+
+		return reportData;
+	}
+	
+	/**
+	 * Get report criteria
+	 * @return
+	 */
+	public static ReportCriteria getReportCriteria()
+	{
+		ReportCriteria criteria = new ReportCriteria();
+		UserCriteria userCriteria = new UserCriteria();
+		userCriteria.setReportRange(new DateRange(new Date(), new Date()));
+		criteria.setUserCriteria(userCriteria);
+
+		return criteria;
+	}
+}

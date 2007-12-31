@@ -15,7 +15,7 @@
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  */
 
-package net.rrm.ehour.ui.report.aggregate;
+package net.rrm.ehour.ui.report;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +23,8 @@ import java.util.List;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNodeFactory;
+import net.rrm.ehour.ui.report.node.ReportNode;
+import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
 import org.apache.log4j.Logger;
 
@@ -39,9 +39,10 @@ public class ReportBuilder
 
 
 	/**
-	 * Initialize the webreport for a specific id
+	 * Create report
 	 * @param reportData
-	 * @param forId the ID to generate the report for (null to ignore)
+	 * @param nodeFactory
+	 * @return
 	 */
 	public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory)
 	{

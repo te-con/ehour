@@ -27,8 +27,8 @@ import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.model.CurrencyModel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
-import net.rrm.ehour.ui.report.aggregate.AggregateReport;
-import net.rrm.ehour.ui.report.aggregate.value.ReportNode;
+import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
 
@@ -66,7 +66,7 @@ public class AggregateReportDataPanel extends Panel
 	 * @param id
 	 * @param report report data
 	 */
-	public AggregateReportDataPanel(String id, AggregateReport report, ReportType reportType, String excelResourceName)
+	public AggregateReportDataPanel(String id, TreeReport report, ReportType reportType, String excelResourceName)
 	{
 		super(id);
 		
@@ -110,7 +110,7 @@ public class AggregateReportDataPanel extends Panel
 	 * @param report
 	 * @param parent
 	 */
-	private void addGrandTotal(AggregateReport report, WebMarkupContainer parent)
+	private void addGrandTotal(TreeReport report, WebMarkupContainer parent)
 	{
 		RepeatingView	totalView = new RepeatingView("cell");
 		int				i = 0;
@@ -162,7 +162,7 @@ public class AggregateReportDataPanel extends Panel
 	 * @param report
 	 * @param parent
 	 */
-	private void addReportData(AggregateReport report, WebMarkupContainer parent)
+	private void addReportData(TreeReport report, WebMarkupContainer parent)
 	{
 		@SuppressWarnings("serial")
 		ListView rootNodeView = new ListView("reportData", report.getNodes())
