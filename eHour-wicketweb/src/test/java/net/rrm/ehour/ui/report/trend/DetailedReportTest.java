@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Locale;
 
 import net.rrm.ehour.ui.panel.report.ReportTestUtil;
+import net.rrm.ehour.ui.report.node.ReportNode;
 
 import org.junit.Test;
 
@@ -43,5 +44,21 @@ public class DetailedReportTest
 		
 		// customer = root
 		assertEquals(2, detailedReport.getNodes().size());
+		
+		for (ReportNode node : detailedReport.getNodes())
+		{
+			if (((Number)node.getId()).intValue() == 1)
+			{
+				assertEquals(2, node.getReportNodes().size());
+				
+				for (ReportNode projectNode : node.getReportNodes())
+				{
+					if (((Number)projectNode.getId()).intValue() == 1)
+					{
+						assertEquals(2, projectNode.getReportNodes().size());
+					}
+				}
+			}
+		}
 	}
 }

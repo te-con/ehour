@@ -88,7 +88,42 @@ public class ReportTestUtil
 			fre.setProjectName("PRJ");
 			fre.setUserId(6);
 			els.add(fre);
-		}		
+		}
+		
+		{
+			FlatReportElement fre = new FlatReportElement();
+			fre.setAssignmentId(2);
+			fre.setComment("ja hallo");
+			fre.setCustomerCode("AA");
+			fre.setCustomerId(1);
+			fre.setCustomerName("A Company");
+			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 30));
+			fre.setDisplayOrder(2);
+			fre.setEntryDate("492007");
+			fre.setHours(5);
+			fre.setProjectId(1);
+			fre.setProjectName("PRJ");
+			fre.setUserId(6);
+			els.add(fre);
+		}	
+		
+		
+		{
+			FlatReportElement fre = new FlatReportElement();
+			fre.setAssignmentId(2);
+			fre.setComment("ja hallo");
+			fre.setCustomerCode("AA");
+			fre.setCustomerId(1);
+			fre.setCustomerName("A Company");
+			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 30));
+			fre.setDisplayOrder(1);
+			fre.setEntryDate("492007");
+			fre.setHours(5);
+			fre.setProjectId(3);
+			fre.setProjectName("PRJ");
+			fre.setUserId(6);
+			els.add(fre);
+		}			
 
 		{
 			FlatReportElement fre = new FlatReportElement();

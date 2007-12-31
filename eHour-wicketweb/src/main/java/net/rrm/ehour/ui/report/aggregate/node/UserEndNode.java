@@ -45,7 +45,6 @@ public class UserEndNode extends ReportNode
                                                 aggregate.getTurnOver()};
         
         this.hierarchyLevel = hierarchyLevel;
-
     }
 
     @Override

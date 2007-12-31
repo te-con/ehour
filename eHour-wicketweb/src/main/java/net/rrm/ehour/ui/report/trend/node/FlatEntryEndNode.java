@@ -30,6 +30,8 @@ import net.rrm.ehour.ui.report.node.ReportNode;
 public class FlatEntryEndNode extends ReportNode
 {
 	private static final long serialVersionUID = 7854152602780377915L;
+	private Number hours;
+	private Number turnOver;
 	
 	/**
 	 * 
@@ -38,8 +40,13 @@ public class FlatEntryEndNode extends ReportNode
 	 */
 	public FlatEntryEndNode(FlatReportElement element, int hierarchyLevel)
     {
-		this.id = element.getCustomerId();
-		this.columnValues = new String[]{element.getCustomerCode(), element.getCustomerName()};
+        hours = element.getHours();
+        // FIXME sure?
+        turnOver = element.getTotalTurnOver();
+		
+		this.id = element.getDisplayOrder();
+		this.columnValues = new Serializable[]{element.getComment(), 
+												element.getHours(), element.getTotalTurnOver()};
 		this.hierarchyLevel = hierarchyLevel;
     }
 
@@ -50,8 +57,28 @@ public class FlatEntryEndNode extends ReportNode
 	@Override
 	protected Serializable getElementId(ReportElement element)
 	{
-		return ((FlatReportElement)element).getCustomerId();
+		return ((FlatReportElement)element).getDisplayOrder();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.report.node.ReportNode#getHours()
+	 */
+    @Override
+    public Number getHours()
+    {
+        return hours; 
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see net.rrm.ehour.ui.report.node.ReportNode#getTurnover()
+     */
+    @Override
+    public Number getTurnover()
+    {
+        return turnOver;
+    }	
 	
 	/*
 	 * (non-Javadoc)
