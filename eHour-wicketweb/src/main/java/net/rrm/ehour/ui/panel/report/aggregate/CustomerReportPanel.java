@@ -30,7 +30,7 @@ import org.apache.wicket.model.Model;
  * Customer report panel
  **/
 
-public class CustomerReportPanel extends ReportPanel
+public class CustomerReportPanel extends AggregateReportPanel
 {
 	private static final long serialVersionUID = 8422287988040603274L;
 

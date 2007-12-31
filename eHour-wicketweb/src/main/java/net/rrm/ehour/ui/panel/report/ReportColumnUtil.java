@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.panel.report;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.model.CurrencyModel;
+import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -33,100 +34,125 @@ public class ReportColumnUtil
 	 * @param config
 	 * @return
 	 */
-	public static AggregateReportColumn[] getReportColumns(EhourConfig config, ReportType reportType)
+	public static TreeReportColumn[] getReportColumns(EhourConfig config, ReportType reportType)
 	{
 		if (reportType == ReportType.AGGREGATE_CUSTOMER_SINGLE_USER)
 		{
-			return new AggregateReportColumn[]{
-					new AggregateReportColumn("userReport.report.customer"),
-					new AggregateReportColumn("userReport.report.project"),
-					new AggregateReportColumn("userReport.report.projectCode"),
-					new AggregateReportColumn("userReport.report.rate", false),
-					new AggregateReportColumn("userReport.report.rate", false),
-					new AggregateReportColumn("userReport.report.hours",
+			return new TreeReportColumn[]{
+					new TreeReportColumn("userReport.report.customer"),
+					new TreeReportColumn("userReport.report.project"),
+					new TreeReportColumn("userReport.report.projectCode"),
+					new TreeReportColumn("userReport.report.rate", false),
+					new TreeReportColumn("userReport.report.rate", false),
+					new TreeReportColumn("userReport.report.hours",
 												FloatModel.class,
 												new Object[]{config},
 												true,
-												AggregateReportColumn.ColumnType.HOUR),
-					new AggregateReportColumn("userReport.report.turnover", 
+												TreeReportColumn.ColumnType.HOUR),
+					new TreeReportColumn("userReport.report.turnover", 
 												CurrencyModel.class,
 												new Object[]{config},
 												EhourWebSession.getSession().getEhourConfig().isShowTurnover(), 
-												AggregateReportColumn.ColumnType.TURNOVER)
+												TreeReportColumn.ColumnType.TURNOVER)
 			};		
 		}
 		else if (reportType == ReportType.AGGREGATE_CUSTOMER)
 		{
-			return new AggregateReportColumn[]{
-					new AggregateReportColumn("userReport.report.customer"),
-					new AggregateReportColumn("userReport.report.project"),
-					new AggregateReportColumn("userReport.report.projectCode"),
-					new AggregateReportColumn("userReport.report.user"),
-					new AggregateReportColumn("userReport.report.rate",
+			return new TreeReportColumn[]{
+					new TreeReportColumn("userReport.report.customer"),
+					new TreeReportColumn("userReport.report.project"),
+					new TreeReportColumn("userReport.report.projectCode"),
+					new TreeReportColumn("userReport.report.user"),
+					new TreeReportColumn("userReport.report.rate",
 												CurrencyModel.class,
 												new Object[]{config},
 												true,
-												AggregateReportColumn.ColumnType.RATE),
-					new AggregateReportColumn("userReport.report.hours",
+												TreeReportColumn.ColumnType.RATE),
+					new TreeReportColumn("userReport.report.hours",
 												FloatModel.class,
 												new Object[]{config},
 												true,
-												AggregateReportColumn.ColumnType.HOUR),
-					new AggregateReportColumn("userReport.report.turnover", 
+												TreeReportColumn.ColumnType.HOUR),
+					new TreeReportColumn("userReport.report.turnover", 
 												CurrencyModel.class,
 												new Object[]{config},
 												true, 
-												AggregateReportColumn.ColumnType.TURNOVER)
+												TreeReportColumn.ColumnType.TURNOVER)
 			};
 		}
 		else if (reportType == ReportType.AGGREGATE_PROJECT)
 		{
-			return new AggregateReportColumn[]{
-					new AggregateReportColumn("userReport.report.project"),
-					new AggregateReportColumn("userReport.report.projectCode"),
-					new AggregateReportColumn("userReport.report.customer"),
-					new AggregateReportColumn("userReport.report.user"),
-					new AggregateReportColumn("userReport.report.rate",
+			return new TreeReportColumn[]{
+					new TreeReportColumn("userReport.report.project"),
+					new TreeReportColumn("userReport.report.projectCode"),
+					new TreeReportColumn("userReport.report.customer"),
+					new TreeReportColumn("userReport.report.user"),
+					new TreeReportColumn("userReport.report.rate",
 												CurrencyModel.class,
 												new Object[]{config},
 												true,
-												AggregateReportColumn.ColumnType.RATE),
-					new AggregateReportColumn("userReport.report.hours",
+												TreeReportColumn.ColumnType.RATE),
+					new TreeReportColumn("userReport.report.hours",
 												FloatModel.class,
 												new Object[]{config},
 												true,
-												AggregateReportColumn.ColumnType.HOUR),
-					new AggregateReportColumn("userReport.report.turnover", 
+												TreeReportColumn.ColumnType.HOUR),
+					new TreeReportColumn("userReport.report.turnover", 
 												CurrencyModel.class,
 												new Object[]{config},
 												true, 
-												AggregateReportColumn.ColumnType.TURNOVER)
+												TreeReportColumn.ColumnType.TURNOVER)
 			};
 		}	
 		else if (reportType == ReportType.AGGREGATE_EMPLOYEE)
 		{
-			return new AggregateReportColumn[]{
-					new AggregateReportColumn("userReport.report.user"),
-					new AggregateReportColumn("userReport.report.customer"),
-					new AggregateReportColumn("userReport.report.project"),
-					new AggregateReportColumn("userReport.report.projectCode"),
-					new AggregateReportColumn("userReport.report.rate",
+			return new TreeReportColumn[]{
+					new TreeReportColumn("userReport.report.user"),
+					new TreeReportColumn("userReport.report.customer"),
+					new TreeReportColumn("userReport.report.project"),
+					new TreeReportColumn("userReport.report.projectCode"),
+					new TreeReportColumn("userReport.report.rate",
 												CurrencyModel.class,
 												new Object[]{config},
 												true,
-												AggregateReportColumn.ColumnType.RATE),							
-					new AggregateReportColumn("userReport.report.hours",
+												TreeReportColumn.ColumnType.RATE),							
+					new TreeReportColumn("userReport.report.hours",
 												FloatModel.class,
 												new Object[]{config},
 												true,
-												AggregateReportColumn.ColumnType.HOUR),
-					new AggregateReportColumn("userReport.report.turnover", 
+												TreeReportColumn.ColumnType.HOUR),
+					new TreeReportColumn("userReport.report.turnover", 
 												CurrencyModel.class,
 												new Object[]{config},
 												true, 
-												AggregateReportColumn.ColumnType.TURNOVER)
+												TreeReportColumn.ColumnType.TURNOVER)
 			};
-		}			
+		}	
+		else if (reportType == ReportType.DETAILED_REPORT)
+		{
+			return new TreeReportColumn[]{
+					new TreeReportColumn("userReport.report.customer"),
+					new TreeReportColumn("userReport.report.project"),
+					new TreeReportColumn("userReport.report.date",
+												DateModel.class,
+												new Object[]{config},
+												true,
+												TreeReportColumn.ColumnType.OTHER),
+					new TreeReportColumn("userReport.report.user"),
+					new TreeReportColumn("userReport.report.comment"),
+					new TreeReportColumn("userReport.report.hours",
+												FloatModel.class,
+												new Object[]{config},
+												true,
+												TreeReportColumn.ColumnType.HOUR),
+					new TreeReportColumn("userReport.report.turnover", 
+												CurrencyModel.class,
+												new Object[]{config},
+												true, 
+												TreeReportColumn.ColumnType.TURNOVER)
+			};
+			
+		}		
 		else
 		{
 			return null;

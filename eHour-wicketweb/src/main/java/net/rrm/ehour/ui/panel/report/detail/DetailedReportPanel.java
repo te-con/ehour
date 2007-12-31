@@ -17,11 +17,29 @@
 
 package net.rrm.ehour.ui.panel.report.detail;
 
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
+import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
+import net.rrm.ehour.ui.panel.report.ReportType;
+import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.util.CommonUIStaticData;
+
 /**
- * TODO 
+ * Detailed report
  **/
 
-public class DetailedReportPanel
+public class DetailedReportPanel extends AbstractReportPanel
 {
-
+	private static final long serialVersionUID = 1L;
+	
+	public DetailedReportPanel(String id, TreeReport reportData, ReportData data)
+	{
+		super(id);
+		
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonUIStaticData.GREYFRAME_WIDTH);
+		add(greyBorder);
+		
+		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportType.DETAILED_REPORT, null));
+	}
 }

@@ -24,6 +24,7 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.DetailedAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
@@ -32,10 +33,14 @@ import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.criteria.detailed.DetailedReportCriteriaPanel;
+import net.rrm.ehour.ui.panel.report.detail.DetailedReportPanel;
+import net.rrm.ehour.ui.report.trend.DetailedReport;
+import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -93,13 +98,59 @@ public class DetailedReportPage extends BaseReportPage
 	 */
 	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
-		logger.debug("Getting report data");
-		ReportData data = reportService.createAggregateReportData(reportCriteria);
+		logger.debug("Getting report data: " + reportCriteria.getUserCriteria().getReportRange());
+				
+		List<FlatReportElement> data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
+														reportCriteria.getUserCriteria().getReportRange());
 		
-//		reportService.getReportData(project, dateRange)
 		
-		return data;
-	}		
+		ReportData reportData = new ReportData();
+		reportData.setReportElements(data);
+		reportData.setReportCriteria(reportCriteria);
+		return reportData;
+	}	
+	
+	/**
+	 * Get the report panel
+	 */
+	private void addReportPanelTabs()
+	{
+		ReportCriteria criteria = ((ReportCriteriaBackingBean)getModel().getObject()).getReportCriteria();
+		
+		final ReportData reportData = getReportData(criteria);
+		
+		ITab detailedTab = new AbstractTab(new KeyResourceModel("report.title.detailed"))
+		{
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return getDetailedReportPanel(panelId, reportData);
+			}
+		};		
+		tabPanel.addTab(detailedTab);
+		tabPanel.setSelectedTab(1);
+	}	
+	
+	/**
+	 * Get detailed report panel
+	 * @param id
+	 * @param reportData
+	 * @return
+	 */
+	private Panel getDetailedReportPanel(String id, ReportData reportData)
+	{
+		DetailedReport detailedReport = new DetailedReport(reportData, this.getConfig().getLocale());
+		
+		// for excel reporting
+		((EhourWebSession)(getSession())).getReportCache().addReportToCache(detailedReport, reportData);
+		
+		DetailedReportPanel panel = new DetailedReportPanel(id, detailedReport, reportData);
+		panel.setOutputMarkupId(true);
+		
+		return panel;
+	}	
 	
 	/*
 	 * (non-Javadoc)
@@ -108,6 +159,7 @@ public class DetailedReportPage extends BaseReportPage
 	@Override
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
+		addReportPanelTabs();
 		target.addComponent(tabPanel);
 	}	
 	

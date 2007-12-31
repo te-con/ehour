@@ -118,7 +118,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	 * Get the report columns
 	 * @return
 	 */
-	protected abstract AggregateReportColumn[] getReportColumns();
+	protected abstract TreeReportColumn[] getReportColumns();
 	
 	/**
 	 * Get report name for the filename
@@ -148,13 +148,13 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		
 		row = sheet.createRow(rowNumber++);
 		
-		AggregateReportColumn[]	columnHeaders = getReportColumns();
+		TreeReportColumn[]	columnHeaders = getReportColumns();
 		
-		for (AggregateReportColumn aggregateReportColumn : columnHeaders)
+		for (TreeReportColumn treeReportColumn : columnHeaders)
 		{
-			if (aggregateReportColumn.isVisible())
+			if (treeReportColumn.isVisible())
 			{
-				headerModel = new ResourceModel(aggregateReportColumn.getColumnHeaderResourceKey());
+				headerModel = new ResourceModel(treeReportColumn.getColumnHeaderResourceKey());
 				
 				cell = row.createCell(cellNumber++);
 				cell.setCellStyle(headerCellStyle);
@@ -193,7 +193,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	private int addNodeToSheet(ReportNode reportNode, HSSFSheet sheet, int rowNumber)
 	{
 		Serializable[][]	matrix = reportNode.getNodeMatrix(getReportColumns().length);
-		AggregateReportColumn[]	columnHeaders = getReportColumns();
+		TreeReportColumn[]	columnHeaders = getReportColumns();
 		HSSFRow				row;
 		HSSFCell			cell;
 		
@@ -213,7 +213,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 
 					if (cellValue != null)
 					{
-						if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+						if (columnHeaders[i].getColumnType() == TreeReportColumn.ColumnType.HOUR)
 						{
 							cell.setCellStyle(valueDigitCellStyle);
 							
@@ -226,8 +226,8 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 								cell.setCellValue(((Number)cellValue).doubleValue());
 							}
 						}
-						else if (columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER
-								 || columnHeaders[i].getColumnType() == AggregateReportColumn.ColumnType.RATE)
+						else if (columnHeaders[i].getColumnType() == TreeReportColumn.ColumnType.TURNOVER
+								 || columnHeaders[i].getColumnType() == TreeReportColumn.ColumnType.RATE)
 						{
 							cell.setCellStyle(currencyCellStyle);
 							

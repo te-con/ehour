@@ -55,18 +55,18 @@ import org.apache.wicket.util.value.ValueMap;
  * Aggregate report data panel
  **/
 
-public class AggregateReportDataPanel extends Panel
+public class TreeReportDataPanel extends Panel
 {
 	private static final long serialVersionUID = -6757047600645464803L;
-	private static final Logger	logger = Logger.getLogger(AggregateReportDataPanel.class);
-	private AggregateReportColumn[]	reportColumns;
+	private static final Logger	logger = Logger.getLogger(TreeReportDataPanel.class);
+	private TreeReportColumn[]	reportColumns;
 	
 	/**
 	 * Default constructor 
 	 * @param id
 	 * @param report report data
 	 */
-	public AggregateReportDataPanel(String id, TreeReport report, ReportType reportType, String excelResourceName)
+	public TreeReportDataPanel(String id, TreeReport report, ReportType reportType, String excelResourceName)
 	{
 		super(id);
 		
@@ -135,11 +135,11 @@ public class AggregateReportDataPanel extends Panel
 			{
 				Label label = null;
 				
-				if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+				if (reportColumns[i].getColumnType() == TreeReportColumn.ColumnType.HOUR)
 				{
 					label = new Label(Integer.toString(i), new FloatModel(hours, config));
 				}
-				else if (reportColumns[i].getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
+				else if (reportColumns[i].getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
 				{
 					label = new Label(Integer.toString(i), new CurrencyModel(turnOver, config));
 					label.setEscapeModelStrings(false);
@@ -193,17 +193,17 @@ public class AggregateReportDataPanel extends Panel
 		
 		int i = 0;
 		
-		for (AggregateReportColumn column : reportColumns)
+		for (TreeReportColumn column : reportColumns)
 		{
 			if (column.isVisible())
 			{
 				String	id = Integer.toString(i++);
 				
-				if (column.getColumnType() == AggregateReportColumn.ColumnType.HOUR)
+				if (column.getColumnType() == TreeReportColumn.ColumnType.HOUR)
 				{
 					totalView.add(new Label(id, new FloatModel(reportNode.getHours(), config)));
 				}
-				else if (column.getColumnType() == AggregateReportColumn.ColumnType.TURNOVER)
+				else if (column.getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
 				{
 					Label label = new Label(id, new CurrencyModel(reportNode.getTurnover(), config));
 					label.setEscapeModelStrings(false);
@@ -226,7 +226,7 @@ public class AggregateReportDataPanel extends Panel
 	 */
 	private Component getReportNodeRows(ReportNode reportNode)
 	{
-		Serializable[][]		matrix = reportNode.getNodeMatrix(reportColumns.length);
+		Serializable[][] matrix = reportNode.getNodeMatrix(reportColumns.length);
 	
 		// add rows per node
 		@SuppressWarnings("serial")
@@ -260,7 +260,7 @@ public class AggregateReportDataPanel extends Panel
 								model.setObject(cellValue);
 							} catch (Exception e)
 							{
-								logger.warn("Could not instantiate model", e);
+								logger.warn("Could not instantiate model for " + reportColumns[i], e);
 								model = new Model(cellValue);
 							}
 							
@@ -298,7 +298,7 @@ public class AggregateReportDataPanel extends Panel
 	 * @throws IllegalArgumentException 
 	 */
 	@SuppressWarnings("unchecked")
-	private IModel getModelInstance(AggregateReportColumn columnHeader) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	private IModel getModelInstance(TreeReportColumn columnHeader) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		IModel model = null;
 		
@@ -333,14 +333,14 @@ public class AggregateReportDataPanel extends Panel
 		RepeatingView	columnHeaders = new RepeatingView("columnHeaders");
 		int				i = 0;
 		
-		for (AggregateReportColumn aggregateReportColumn : reportColumns)
+		for (TreeReportColumn treeReportColumn : reportColumns)
 		{
-			Label columnHeader = new Label(Integer.toString(i++), new ResourceModel(aggregateReportColumn.getColumnHeaderResourceKey()));
-			columnHeader.setVisible(aggregateReportColumn.isVisible());
+			Label columnHeader = new Label(Integer.toString(i++), new ResourceModel(treeReportColumn.getColumnHeaderResourceKey()));
+			columnHeader.setVisible(treeReportColumn.isVisible());
 			columnHeaders.add(columnHeader);
-			addColumnTypeStyling(aggregateReportColumn.getColumnType(), columnHeader);
+			addColumnTypeStyling(treeReportColumn.getColumnType(), columnHeader);
 			
-			logger.debug("Adding report columnheader " + aggregateReportColumn.getColumnHeaderResourceKey() + ", visible: " +  columnHeader.isVisible());
+			logger.debug("Adding report columnheader " + treeReportColumn.getColumnHeaderResourceKey() + ", visible: " +  columnHeader.isVisible());
 		}
 		
 		parent.add(columnHeaders);
@@ -351,9 +351,9 @@ public class AggregateReportDataPanel extends Panel
 	 * @param columnType
 	 * @param label
 	 */
-	private void addColumnTypeStyling(AggregateReportColumn.ColumnType columnType, Label label)
+	private void addColumnTypeStyling(TreeReportColumn.ColumnType columnType, Label label)
 	{
-		if (columnType != AggregateReportColumn.ColumnType.OTHER && label != null)
+		if (columnType != TreeReportColumn.ColumnType.OTHER && label != null)
 		{
 			label.add(new SimpleAttributeModifier("style", "text-align: right"));
 		}

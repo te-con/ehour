@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.EmployeeReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.ProjectReportPanel;
-import net.rrm.ehour.ui.panel.report.aggregate.ReportPanel;
+import net.rrm.ehour.ui.panel.report.aggregate.AggregateReportPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.panel.report.criteria.aggregate.AggregateReportCriteriaPanel;
@@ -162,7 +162,7 @@ public class AggregatedReportPage extends BaseReportPage
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
 		
-		ReportPanel panel = new CustomerReportPanel(id, customerAggregateReport, reportData);
+		AggregateReportPanel panel = new CustomerReportPanel(id, customerAggregateReport, reportData);
 		panel.setOutputMarkupId(true);
 		
 		return panel;
@@ -179,7 +179,7 @@ public class AggregatedReportPage extends BaseReportPage
 		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
 		
-		ReportPanel panel = new ProjectReportPanel(id, aggregateReport, reportData);
+		AggregateReportPanel panel = new ProjectReportPanel(id, aggregateReport, reportData);
 		panel.setOutputMarkupId(true);
 		
 		return panel;
@@ -198,7 +198,7 @@ public class AggregatedReportPage extends BaseReportPage
 		UserAggregateReport	aggregateReport = new UserAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
 		
-		ReportPanel panel = new EmployeeReportPanel(id, aggregateReport, reportData);
+		AggregateReportPanel panel = new EmployeeReportPanel(id, aggregateReport, reportData);
 		panel.setOutputMarkupId(true);
 		
 		return panel;

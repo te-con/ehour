@@ -23,7 +23,7 @@ import org.apache.wicket.model.ResourceModel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
-import net.rrm.ehour.ui.panel.report.AggregateReportColumn;
+import net.rrm.ehour.ui.panel.report.TreeReportColumn;
 import net.rrm.ehour.ui.panel.report.ReportColumnUtil;
 import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -39,7 +39,7 @@ public class ProjectReportExcel extends AbstractAggregateExcelReport
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private AggregateReportColumn[]	reportColumns;
+	private TreeReportColumn[]	reportColumns;
 	
 	@Override
 	protected IModel getExcelReportName()
@@ -54,7 +54,7 @@ public class ProjectReportExcel extends AbstractAggregateExcelReport
 	}
 
 	@Override
-	protected AggregateReportColumn[] getReportColumns()
+	protected TreeReportColumn[] getReportColumns()
 	{
 		if (reportColumns == null)
 		{

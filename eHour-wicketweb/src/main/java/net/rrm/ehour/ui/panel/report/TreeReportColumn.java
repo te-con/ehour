@@ -30,7 +30,7 @@ import org.apache.wicket.model.IModel;
  * constructor args is more memory costly. May matter with large reports 
  **/
 
-public class AggregateReportColumn implements Serializable
+public class TreeReportColumn implements Serializable
 {
 	public static enum ColumnType { OTHER, RATE, HOUR, TURNOVER };
 	
@@ -43,36 +43,36 @@ public class AggregateReportColumn implements Serializable
 	private ColumnType	columnType = ColumnType.OTHER;
 	
 	
-	public AggregateReportColumn()
+	public TreeReportColumn()
 	{
 	}
 
-	public AggregateReportColumn(String columnHeaderResourceKey)
+	public TreeReportColumn(String columnHeaderResourceKey)
 	{
 		this(columnHeaderResourceKey, true);
 	}
 
-	public AggregateReportColumn(String columnHeaderResourceKey, ColumnType columnType)
+	public TreeReportColumn(String columnHeaderResourceKey, ColumnType columnType)
 	{
 		this(columnHeaderResourceKey, null, null, true, columnType);
 	}
 
-	public AggregateReportColumn(String columnHeaderResourceKey, boolean visible)
+	public TreeReportColumn(String columnHeaderResourceKey, boolean visible)
 	{
 		this(columnHeaderResourceKey, null, null, visible);
 	}
 
-	public AggregateReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel)
+	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel)
 	{
 		this(columnHeaderResourceKey, conversionModel, null, true);
 	}
 
-	public AggregateReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible)
+	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible)
 	{
 		this(columnHeaderResourceKey, conversionModel, conversionModelArgs, visible, ColumnType.OTHER);
 	}
 	
-	public AggregateReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible, ColumnType columnType)
+	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible, ColumnType columnType)
 	{
 		this.columnHeaderResourceKey = columnHeaderResourceKey;
 		this.conversionModel = conversionModel;

@@ -23,6 +23,7 @@ package net.rrm.ehour.ui.panel.report;
 
 public enum ReportType
 {
+	DETAILED_REPORT,
 	AGGREGATE_CUSTOMER,
 	AGGREGATE_PROJECT,
 	AGGREGATE_EMPLOYEE,

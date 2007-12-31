@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.panel.report.user;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
-import net.rrm.ehour.ui.panel.report.AggregateReportColumn;
+import net.rrm.ehour.ui.panel.report.TreeReportColumn;
 import net.rrm.ehour.ui.panel.report.ReportColumnUtil;
 import net.rrm.ehour.ui.panel.report.ReportType;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -38,7 +38,7 @@ public class UserReportExcel extends AbstractAggregateExcelReport
 {
 	private static final long serialVersionUID = 1427524857733863613L;
 
-	private AggregateReportColumn[]	reportColumns;
+	private TreeReportColumn[]	reportColumns;
 	
 	/*
 	 * (non-Javadoc)
@@ -65,7 +65,7 @@ public class UserReportExcel extends AbstractAggregateExcelReport
 	 * @see net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport#getReportColumns()
 	 */
 	@Override
-	protected AggregateReportColumn[] getReportColumns()
+	protected TreeReportColumn[] getReportColumns()
 	{
 		if (reportColumns == null)
 		{

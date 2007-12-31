@@ -39,7 +39,7 @@ public class FlatCustomerNode extends ReportNode
 	public FlatCustomerNode(FlatReportElement element, int hierarchyLevel)
     {
 		this.id = element.getCustomerId();
-		this.columnValues = new String[]{element.getCustomerCode(), element.getCustomerName()};
+		this.columnValues = new String[]{element.getCustomerName()};
 		this.hierarchyLevel = hierarchyLevel;
     }
 

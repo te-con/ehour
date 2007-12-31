@@ -120,5 +120,14 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	protected EhourWebSession getEhourWebSession()
 	{
 		return ((EhourWebSession)this.getSession());
-	}	
+	}
+	
+	/**
+	 * Get this user's config
+	 * @return
+	 */
+	protected EhourConfig getConfig()
+	{
+		return EhourWebSession.getSession().getEhourConfig();
+	}
 }
