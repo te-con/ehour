@@ -32,6 +32,7 @@ public class FloatModel extends AbstractNumberModel
 {
 	private static final long serialVersionUID = -3297133594178935106L;
 	private String defaultValue = "--";
+	private EhourConfig	config;
 	
 	/**
 	 * 
@@ -39,7 +40,7 @@ public class FloatModel extends AbstractNumberModel
 	 */
 	public FloatModel()
 	{
-		this(new Model(), EhourWebSession.getSession().getEhourConfig());
+		super(new Model());
 	}	
 	
 	/**
@@ -60,7 +61,7 @@ public class FloatModel extends AbstractNumberModel
 	{
 		super(value);
 
-		initFormatter(config);
+		this.config = config;
 	}
 	
 	/**
@@ -72,19 +73,26 @@ public class FloatModel extends AbstractNumberModel
 	{
 		super(model);
 		
-		initFormatter(config);
+		this.config = config;
 	}
 	
-	/**
-	 * Initialize number formatter
-	 * @param config
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.model.AbstractNumberModel#getFormatter()
 	 */
-	
-	private void initFormatter(EhourConfig config)
+	@Override
+	protected NumberFormat getFormatter()
 	{
+		if (config == null)
+		{
+			config = EhourWebSession.getSession().getEhourConfig();
+		}
+		
 		formatter = NumberFormat.getNumberInstance(config.getLocale());
 		formatter.setMaximumFractionDigits(2);
 		formatter.setMinimumFractionDigits(2);
+		
+		return formatter;
 	}	
 	
 	/**

@@ -49,8 +49,9 @@ public class DateModel implements IModel
 	private String nullString = "&infin;";
 	
 	private static final long serialVersionUID = 431440606497572025L;
-	private IModel					model;
-	private	final DateFormat	dateFormatter;
+	private IModel		model;
+	private	DateFormat	dateFormatter;
+	private int			dateStyle;
 	
 	/**
 	 * 
@@ -59,7 +60,7 @@ public class DateModel implements IModel
 	 */
 	public DateModel(int dateStyle, String nullString)
 	{
-		this(EhourWebSession.getSession().getEhourConfig().getLocale(), dateStyle);
+		this.dateStyle = dateStyle;
 		this.nullString = nullString;
 	}
 	
@@ -139,6 +140,25 @@ public class DateModel implements IModel
 	 */
 	public DateModel(Locale locale, int dateStyle)
 	{
+		initFormatter(locale, dateStyle);
+	}
+	
+	/**
+	 * Init formatter and fetch locale from session's config
+	 * @param dateStyle
+	 */
+	private void initFormatter(int dateStyle)
+	{
+		initFormatter(EhourWebSession.getSession().getEhourConfig().getLocale(), dateStyle);
+	}
+	
+	/**
+	 * Init simple date formatter
+	 * @param locale
+	 * @param dateStyle
+	 */
+	private void initFormatter(Locale locale, int dateStyle)
+	{
 		switch (dateStyle)
 		{
 			case DATESTYLE_MONTHONLY:
@@ -175,6 +195,11 @@ public class DateModel implements IModel
 	 */
 	public Object getObject()
 	{
+		if (dateFormatter == null)
+		{
+			initFormatter(dateStyle);
+		}
+		
 		return (model == null || model.getObject() == null) ? nullString : dateFormatter.format((Date)model.getObject());
 	}
 

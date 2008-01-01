@@ -65,7 +65,7 @@ public abstract class AbstractNumberModel extends Model
 			fmt = value;
 		}
 			
-		return (fmt == null) ? getDefaultValue() : formatter.format(fmt); 
+		return (fmt == null) ? getDefaultValue() : getFormatter().format(fmt); 
 	}
 
 	/*
@@ -87,6 +87,8 @@ public abstract class AbstractNumberModel extends Model
 			}
 		}
 	}
+	
+	protected abstract NumberFormat getFormatter();
 	
 	/**
 	 * 

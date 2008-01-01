@@ -20,8 +20,10 @@ import java.text.NumberFormat;
 import java.util.Currency;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.model.Model;
 
 /**
  * Currency formatting model
@@ -31,14 +33,15 @@ public class CurrencyModel extends AbstractNumberModel
 {
 	private static final long serialVersionUID = -3297133594178935106L;
 	private	transient Logger	logger = Logger.getLogger(CurrencyModel.class);
-
+	private EhourConfig	config;
+	
 	/**
 	 * Lazy instantation, provide value later
 	 * @param config
 	 */
-	public CurrencyModel(EhourConfig config)
+	public CurrencyModel()
 	{
-		this(null, config);
+		super(new Model());
 	}
 	
 	/**
@@ -50,16 +53,22 @@ public class CurrencyModel extends AbstractNumberModel
 	{
 		super(value);
 		
-		initFormatters(config);
+		this.config = config;
 	}
 	
-	/**
-	 * Init formatters based on the config
-	 * @param config
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.model.AbstractNumberModel#getFormatter()
 	 */
-	private void initFormatters(EhourConfig config)
+	@Override
+	protected NumberFormat getFormatter()
 	{
 		Currency	currency;
+		
+		if (config == null)
+		{
+			config = EhourWebSession.getSession().getEhourConfig();
+		}
 		
 		try
 		{
@@ -73,5 +82,7 @@ public class CurrencyModel extends AbstractNumberModel
 		
 		formatter = NumberFormat.getCurrencyInstance(config.getCurrency());
 		formatter.setCurrency(currency);		
+		
+		return formatter;
 	}
 }
