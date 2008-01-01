@@ -45,7 +45,7 @@ public class FlatEntryEndNode extends ReportNode
         
 		this.id = element.getDisplayOrder();
 		this.columnValues = new Serializable[]{element.getComment(), 
-												element.getHours(), element.getTotalTurnOver()};
+												element.getTotalHours(), element.getTotalTurnOver()};
 		this.hierarchyLevel = hierarchyLevel;
     }
 

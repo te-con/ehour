@@ -50,6 +50,7 @@ public class ReportTestUtil
 			fre.setDisplayOrder(1);
 			fre.setEntryDate("492007");
 			fre.setHours(5);
+			fre.setTotalHours(5);
 			fre.setProjectId(1);
 			fre.setProjectName("PRJ");
 			fre.setUserId(5);
@@ -67,6 +68,7 @@ public class ReportTestUtil
 			fre.setDisplayOrder(1);
 			fre.setEntryDate("492007");
 			fre.setHours(5);
+			fre.setTotalHours(5);
 			fre.setProjectId(1);
 			fre.setProjectName("PRJ");
 			fre.setUserId(5);
@@ -84,6 +86,7 @@ public class ReportTestUtil
 			fre.setDisplayOrder(1);
 			fre.setEntryDate("492007");
 			fre.setHours(5);
+			fre.setTotalHours(5);
 			fre.setProjectId(1);
 			fre.setProjectName("PRJ");
 			fre.setUserId(6);
@@ -101,6 +104,7 @@ public class ReportTestUtil
 			fre.setDisplayOrder(2);
 			fre.setEntryDate("492007");
 			fre.setHours(5);
+			fre.setTotalHours(5);
 			fre.setProjectId(1);
 			fre.setProjectName("PRJ");
 			fre.setUserId(6);
@@ -119,6 +123,7 @@ public class ReportTestUtil
 			fre.setDisplayOrder(1);
 			fre.setEntryDate("492007");
 			fre.setHours(5);
+			fre.setTotalHours(5);
 			fre.setProjectId(3);
 			fre.setProjectName("PRJ");
 			fre.setUserId(6);
@@ -136,6 +141,7 @@ public class ReportTestUtil
 			fre.setDisplayOrder(1);
 			fre.setEntryDate("492007");
 			fre.setHours(5);
+			fre.setTotalHours(5);
 			fre.setProjectId(2);
 			fre.setProjectName("PRJ");
 			fre.setUserId(5);

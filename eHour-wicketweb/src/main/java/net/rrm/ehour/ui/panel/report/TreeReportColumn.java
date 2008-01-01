@@ -80,7 +80,7 @@ public class TreeReportColumn implements Serializable
 	
 	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible, ColumnType columnType)
 	{
-		this(columnHeaderResourceKey, conversionModel, conversionModelArgs, null, visible, ColumnType.OTHER);
+		this(columnHeaderResourceKey, conversionModel, conversionModelArgs, null, visible, columnType);
 	}
 	
 	/**
