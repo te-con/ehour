@@ -27,7 +27,7 @@ import org.apache.wicket.model.IModel;
  * The conversionModelArgs may look iffy, cloning a model could as well be accomplished
  * with a clone() however that also means that for each model the constructor args should
  * be stored globally in the object. Now reflection is cpu wise more costly while storing
- * constructor args is more memory costly. May matter with large reports 
+ * constructor args is more memory costly. May matter with large reports.
  **/
 
 public class TreeReportColumn implements Serializable
@@ -39,6 +39,7 @@ public class TreeReportColumn implements Serializable
 	private	String						columnHeaderResourceKey;
 	private Class<? extends IModel>		conversionModel;
 	private Object[]					conversionModelConstructorParams;
+	private Class<?>[]					conversionModelConstructorParamTypes; // needed because types can't always be determined of proxied objects 
 	
 	private ColumnType	columnType = ColumnType.OTHER;
 	
@@ -74,12 +75,31 @@ public class TreeReportColumn implements Serializable
 	
 	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible, ColumnType columnType)
 	{
+		this(columnHeaderResourceKey, conversionModel, conversionModelArgs, null, visible, ColumnType.OTHER);
+	}
+	
+	/**
+	 * 
+	 * @param columnHeaderResourceKey
+	 * @param conversionModel
+	 * @param conversionModelArgs
+	 * @param conversionModelArgsTypes
+	 * @param visible
+	 * @param columnType
+	 */
+	@SuppressWarnings("unchecked")
+	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, 
+							Object[] conversionModelArgs, 
+							Class[] conversionModelArgsTypes,
+							boolean visible, ColumnType columnType)
+	{
 		this.columnHeaderResourceKey = columnHeaderResourceKey;
 		this.conversionModel = conversionModel;
 		this.visible = visible;
 		this.columnType = columnType;
 		this.conversionModelConstructorParams = conversionModelArgs;
-	}
+		this.conversionModelConstructorParamTypes = conversionModelArgsTypes;
+	}	
 	
 	/**
 	 * @return the visible
@@ -154,5 +174,21 @@ public class TreeReportColumn implements Serializable
 	public void setConversionModelConstructorParams(Object[] conversionModelConstructorParams)
 	{
 		this.conversionModelConstructorParams = conversionModelConstructorParams;
+	}
+
+	/**
+	 * @return the conversionModelConstructorParamTypes
+	 */
+	public Class<?>[] getConversionModelConstructorParamTypes()
+	{
+		return conversionModelConstructorParamTypes;
+	}
+
+	/**
+	 * @param conversionModelConstructorParamTypes the conversionModelConstructorParamTypes to set
+	 */
+	public void setConversionModelConstructorParamTypes(Class<?>[] conversionModelConstructorParamTypes)
+	{
+		this.conversionModelConstructorParamTypes = conversionModelConstructorParamTypes;
 	}
 }

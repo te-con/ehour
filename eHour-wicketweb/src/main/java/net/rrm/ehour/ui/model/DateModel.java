@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.model;
 
 import java.text.DateFormat;
 import java.text.FieldPosition;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,9 +45,22 @@ public class DateModel implements IModel
 	public final static int	DATESTYLE_WEEK= 7;
 	public final static int	DATESTYLE_DAYONLY_LONG = 8;
 	
+	private String nullString = "&infin;";
+	
 	private static final long serialVersionUID = 431440606497572025L;
 	private IModel					model;
 	private	final DateFormat	dateFormatter;
+	
+	/**
+	 * 
+	 * @param config
+	 * @param dateStyle
+	 */
+	public DateModel(EhourConfig config, int dateStyle, String nullString)
+	{
+		this(config.getLocale(), dateStyle);
+		this.nullString = nullString;
+	}
 	
 	/**
 	 * 
@@ -112,8 +126,18 @@ public class DateModel implements IModel
 	 */
 	public DateModel(IModel model, Locale locale, int dateStyle)
 	{
+		this(locale, dateStyle);
 		this.model = model;
 		
+	}
+	
+	/**
+	 * 
+	 * @param locale
+	 * @param dateStyle
+	 */
+	public DateModel(Locale locale, int dateStyle)
+	{
 		switch (dateStyle)
 		{
 			case DATESTYLE_MONTHONLY:
@@ -150,7 +174,7 @@ public class DateModel implements IModel
 	 */
 	public Object getObject()
 	{
-		return (model == null || model.getObject() == null) ? "&infin;" : dateFormatter.format((Date)model.getObject());
+		return (model == null || model.getObject() == null) ? nullString : dateFormatter.format((Date)model.getObject());
 	}
 
 	/*
@@ -159,7 +183,25 @@ public class DateModel implements IModel
 	 */
 	public void setObject(Object value)
 	{
-		this.model = (IModel)value;
+		if (value instanceof String)
+		{
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
+			try
+			{
+				this.model = new Model(format.parse((String)value));
+			} catch (ParseException e)
+			{
+				this.model = null;
+			}
+		}
+		else if (value instanceof Date)
+		{
+			this.model = new Model((Date)value);
+		}
+		else if (value instanceof IModel)
+		{
+			this.model = (IModel)value;
+		}
 	}
 	
 	/**

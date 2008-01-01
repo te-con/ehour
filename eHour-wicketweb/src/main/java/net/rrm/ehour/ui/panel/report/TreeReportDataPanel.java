@@ -266,7 +266,6 @@ public class TreeReportDataPanel extends Panel
 							
 							cellLabel = new Label(Integer.toString(i), model);
 							addColumnTypeStyling(reportColumns[i].getColumnType(), cellLabel);
-							
 						}
 						
 						cells.add(cellLabel);
@@ -289,7 +288,7 @@ public class TreeReportDataPanel extends Panel
 	}
 
 	/**
-	 * Get a model instance
+	 * Get a model instance based on the TreeReportColumn arguments
 	 * @param columnHeader
 	 * @return
 	 * @throws InstantiationException
@@ -312,8 +311,11 @@ public class TreeReportDataPanel extends Panel
 			
 			for (Constructor constructor : constructors)
 			{
-				// let's not make it too complex, just check argument length and not check types..
-				if (constructor.getParameterTypes().length == columnHeader.getConversionModelConstructorParams().length)
+				// when no parameter type classes are defined, match only on parameter length,
+				// otherwise check the supplied parameter types against the constructor's types
+				if (constructor.getParameterTypes().length == columnHeader.getConversionModelConstructorParams().length
+						&& (columnHeader.getConversionModelConstructorParamTypes() == null || 
+								matchConstructorParamTypes(constructor.getParameterTypes(), columnHeader.getConversionModelConstructorParamTypes())))
 				{
 					model = (IModel)constructor.newInstance(columnHeader.getConversionModelConstructorParams());
 					break;
@@ -323,6 +325,26 @@ public class TreeReportDataPanel extends Panel
 		
 		return model;
 	}
+
+	/**
+	 * Check if the constructor parameters match the defined parameters
+	 * @param constructParamTypes
+	 * @param definedParams
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private boolean matchConstructorParamTypes(Class[] constructParamTypes, Class[] definedParams)
+	{
+		boolean match = true;
+		
+		for (int i = 0; i < constructParamTypes.length; i++)
+		{
+			match &= definedParams[i].getName().equals(constructParamTypes[i].getName());
+		}
+		
+		return match;
+	}
+	
 	
 	/**
 	 * Add header columns to parent

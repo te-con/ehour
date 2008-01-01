@@ -18,8 +18,8 @@
 package net.rrm.ehour.ui.report.trend.node;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import net.rrm.ehour.report.reports.element.FlatReportElement;
@@ -33,7 +33,8 @@ import net.rrm.ehour.ui.report.node.ReportNode;
 public class FlatDateNode extends ReportNode
 {
 	private static final long serialVersionUID = 7854152602780377915L;
-	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd"); 
+	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+	
 	/**
 	 * 
 	 * @param element
@@ -41,10 +42,8 @@ public class FlatDateNode extends ReportNode
 	 */
 	public FlatDateNode(FlatReportElement element, int hierarchyLevel, Locale locale)
     {
-		DateFormat displayFormatter = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
-		
 		this.id = formatter.format(element.getDayDate());
-		this.columnValues = new String[]{displayFormatter.format(element.getDayDate())};
+		this.columnValues = new Date[]{element.getDayDate()};
 		this.hierarchyLevel = hierarchyLevel;
     }
 

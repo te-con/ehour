@@ -365,11 +365,6 @@ public class TimesheetPanel extends Panel implements Serializable
 		{
 			for (TimesheetRow timesheetRow : list)
 			{
-				if (logger.isDebugEnabled())
-				{
-					logger.debug("Persisting: " + timesheetRow.getTimesheetEntries());
-				}				
-				
 				timesheetEntries.addAll(timesheetRow.getTimesheetEntries());
 			}
 		}

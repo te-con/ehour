@@ -53,7 +53,7 @@ public class QuickMonthRenderer implements IChoiceRenderer
 			{
 				EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
 				
-				SimpleDateFormat format = new SimpleDateFormat("MMMMM", config.getLocale());
+				SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getLocale());
 				label = format.format(quickMonth.getPeriodStart());
 			}
 		}
