@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.user.report.UserReportPrint;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
-import net.rrm.ehour.ui.panel.report.ReportType;
+import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerTurnoverAggregateImage;
@@ -102,7 +102,7 @@ public class UserReportPanel extends AbstractReportPanel
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, printLink, excelLink, CommonUIStaticData.GREYFRAME_WIDTH);
 
-		greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportType.AGGREGATE_CUSTOMER_SINGLE_USER, null));
+		greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportConfig.AGGREGATE_CUSTOMER_SINGLE_USER, null));
 		
 		addCharts(reportData, greyBorder);
 		

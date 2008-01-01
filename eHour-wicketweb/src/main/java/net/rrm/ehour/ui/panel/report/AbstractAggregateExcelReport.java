@@ -58,7 +58,17 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	protected HSSFCellStyle	currencyCellStyle;
 	protected HSSFCellStyle	dateBoldCellStyle;	
 	private	byte[]			excelData;
-
+	private ReportConfig	reportConfig;
+	
+	/**
+	 * 
+	 * @param reportConfig
+	 */
+	public AbstractAggregateExcelReport(ReportConfig reportConfig)
+	{
+		this.reportConfig = reportConfig;
+	}	
+	
 	/**
 	 * Get the excel data, cache once created
 	 * @throws Exception 
@@ -115,12 +125,6 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	}
 	
 	/**
-	 * Get the report columns
-	 * @return
-	 */
-	protected abstract TreeReportColumn[] getReportColumns();
-	
-	/**
 	 * Get report name for the filename
 	 * @return
 	 */
@@ -148,9 +152,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		
 		row = sheet.createRow(rowNumber++);
 		
-		TreeReportColumn[]	columnHeaders = getReportColumns();
-		
-		for (TreeReportColumn treeReportColumn : columnHeaders)
+		for (TreeReportColumn treeReportColumn : reportConfig.getReportColumns())
 		{
 			if (treeReportColumn.isVisible())
 			{
@@ -192,8 +194,8 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	 */
 	private int addNodeToSheet(ReportNode reportNode, HSSFSheet sheet, int rowNumber)
 	{
-		Serializable[][]	matrix = reportNode.getNodeMatrix(getReportColumns().length);
-		TreeReportColumn[]	columnHeaders = getReportColumns();
+		Serializable[][]	matrix = reportNode.getNodeMatrix(reportConfig.getReportColumns().length);
+		TreeReportColumn[]	columnHeaders = reportConfig.getReportColumns();
 		HSSFRow				row;
 		HSSFCell			cell;
 		

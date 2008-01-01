@@ -21,7 +21,7 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
-import net.rrm.ehour.ui.panel.report.ReportType;
+import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
@@ -37,7 +37,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * 
 	 * @param id
 	 */
-	public AggregateReportPanel(String id, TreeReport reportData, ReportData data, ReportType reportType, String excelResourceName)
+	public AggregateReportPanel(String id, TreeReport reportData, ReportData data, ReportConfig reportConfig, String excelResourceName)
 	{
 		super(id);
 
@@ -51,7 +51,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonUIStaticData.GREYFRAME_WIDTH);
 		add(greyBorder);
 
-		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportType, excelResourceName));
+		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportConfig, excelResourceName));
 		
 		addCharts(data, greyBorder);
 	}

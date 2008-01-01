@@ -18,7 +18,7 @@
 package net.rrm.ehour.ui.panel.report.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.panel.report.ReportType;
+import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.reportchart.aggregate.ProjectHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.ProjectTurnoverAggregateChartImage;
@@ -36,7 +36,7 @@ public class ProjectReportPanel extends AggregateReportPanel
 
 	public ProjectReportPanel(String id, TreeReport reportData, ReportData data)
 	{
-		super(id, reportData, data, ReportType.AGGREGATE_PROJECT, "projectReportExcel");
+		super(id, reportData, data, ReportConfig.AGGREGATE_PROJECT, "projectReportExcel");
 	}
 
 	@Override

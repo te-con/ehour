@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.model.IModel;
@@ -56,9 +57,9 @@ public class DateModel implements IModel
 	 * @param config
 	 * @param dateStyle
 	 */
-	public DateModel(EhourConfig config, int dateStyle, String nullString)
+	public DateModel(int dateStyle, String nullString)
 	{
-		this(config.getLocale(), dateStyle);
+		this(EhourWebSession.getSession().getEhourConfig().getLocale(), dateStyle);
 		this.nullString = nullString;
 	}
 	

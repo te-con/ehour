@@ -59,16 +59,19 @@ public class TreeReportDataPanel extends Panel
 {
 	private static final long serialVersionUID = -6757047600645464803L;
 	private static final Logger	logger = Logger.getLogger(TreeReportDataPanel.class);
-	private TreeReportColumn[]	reportColumns;
+	
+	private ReportConfig reportConfig;
 	
 	/**
 	 * Default constructor 
 	 * @param id
 	 * @param report report data
 	 */
-	public TreeReportDataPanel(String id, TreeReport report, ReportType reportType, String excelResourceName)
+	public TreeReportDataPanel(String id, TreeReport report, ReportConfig reportConfig, String excelResourceName)
 	{
 		super(id);
+		
+		this.reportConfig = reportConfig;
 		
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		add(blueBorder);
@@ -95,8 +98,6 @@ public class TreeReportDataPanel extends Panel
 			add(HtmlUtil.getInvisibleLink("excelLink"));
 			add(HtmlUtil.getInvisibleLabel("reportHeader"));
 		}
-		
-		initReportColumns(reportType);
 		
 		addHeaderColumns(blueBorder);
 		addReportData(report, blueBorder);
@@ -129,17 +130,17 @@ public class TreeReportDataPanel extends Panel
 		// add cells
 		totalView.add(new Label(Integer.toString(i++), new ResourceModel("report.total")));
 		
-		for (; i < reportColumns.length; i++)
+		for (; i < reportConfig.getReportColumns().length; i++)
 		{
-			if (reportColumns[i].isVisible())
+			if (reportConfig.getReportColumns()[i].isVisible())
 			{
 				Label label = null;
 				
-				if (reportColumns[i].getColumnType() == TreeReportColumn.ColumnType.HOUR)
+				if (reportConfig.getReportColumns()[i].getColumnType() == TreeReportColumn.ColumnType.HOUR)
 				{
 					label = new Label(Integer.toString(i), new FloatModel(hours, config));
 				}
-				else if (reportColumns[i].getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
+				else if (reportConfig.getReportColumns()[i].getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
 				{
 					label = new Label(Integer.toString(i), new CurrencyModel(turnOver, config));
 					label.setEscapeModelStrings(false);
@@ -149,7 +150,7 @@ public class TreeReportDataPanel extends Panel
 					label = HtmlUtil.getNbspLabel(Integer.toString(i));
 				}
 				
-				addColumnTypeStyling(reportColumns[i].getColumnType(), label);
+				addColumnTypeStyling(reportConfig.getReportColumns()[i].getColumnType(), label);
 				totalView.add(label);
 			}
 		}
@@ -193,7 +194,7 @@ public class TreeReportDataPanel extends Panel
 		
 		int i = 0;
 		
-		for (TreeReportColumn column : reportColumns)
+		for (TreeReportColumn column : reportConfig.getReportColumns())
 		{
 			if (column.isVisible())
 			{
@@ -226,7 +227,7 @@ public class TreeReportDataPanel extends Panel
 	 */
 	private Component getReportNodeRows(ReportNode reportNode)
 	{
-		Serializable[][] matrix = reportNode.getNodeMatrix(reportColumns.length);
+		Serializable[][] matrix = reportNode.getNodeMatrix(reportConfig.getReportColumns().length);
 	
 		// add rows per node
 		@SuppressWarnings("serial")
@@ -242,11 +243,11 @@ public class TreeReportDataPanel extends Panel
 				// add cells for a row
 				for (Serializable cellValue : rowValues)
 				{
-					if (reportColumns[i].isVisible())
+					if (reportConfig.getReportColumns()[i].isVisible())
 					{
 						Label cellLabel;
 					
-						if (reportColumns[i].getConversionModel() == null)
+						if (reportConfig.getReportColumns()[i].getConversionModel() == null)
 						{
 							cellLabel = new Label(Integer.toString(i), new Model(cellValue));
 						}
@@ -256,16 +257,16 @@ public class TreeReportDataPanel extends Panel
 
 							try
 							{
-								model = getModelInstance(reportColumns[i]);
+								model = getModelInstance(reportConfig.getReportColumns()[i]);
 								model.setObject(cellValue);
 							} catch (Exception e)
 							{
-								logger.warn("Could not instantiate model for " + reportColumns[i], e);
+								logger.warn("Could not instantiate model for " + reportConfig.getReportColumns()[i], e);
 								model = new Model(cellValue);
 							}
 							
 							cellLabel = new Label(Integer.toString(i), model);
-							addColumnTypeStyling(reportColumns[i].getColumnType(), cellLabel);
+							addColumnTypeStyling(reportConfig.getReportColumns()[i].getColumnType(), cellLabel);
 						}
 						
 						cells.add(cellLabel);
@@ -355,7 +356,7 @@ public class TreeReportDataPanel extends Panel
 		RepeatingView	columnHeaders = new RepeatingView("columnHeaders");
 		int				i = 0;
 		
-		for (TreeReportColumn treeReportColumn : reportColumns)
+		for (TreeReportColumn treeReportColumn : reportConfig.getReportColumns())
 		{
 			Label columnHeader = new Label(Integer.toString(i++), new ResourceModel(treeReportColumn.getColumnHeaderResourceKey()));
 			columnHeader.setVisible(treeReportColumn.isVisible());
@@ -379,17 +380,5 @@ public class TreeReportDataPanel extends Panel
 		{
 			label.add(new SimpleAttributeModifier("style", "text-align: right"));
 		}
-	}
-	
-	/**
-	 * 
-	 * @param reportType
-	 * @return
-	 */
-	private void initReportColumns(ReportType reportType)
-	{
-		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
-		
-		reportColumns = ReportColumnUtil.getReportColumns(config, reportType);
 	}
 }

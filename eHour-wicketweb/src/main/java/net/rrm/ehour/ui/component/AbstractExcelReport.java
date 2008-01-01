@@ -20,6 +20,8 @@ package net.rrm.ehour.ui.component;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import net.rrm.ehour.ui.panel.report.ReportConfig;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.wicket.markup.html.DynamicWebResource;

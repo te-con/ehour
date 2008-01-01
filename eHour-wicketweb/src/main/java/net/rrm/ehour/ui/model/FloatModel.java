@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.model;
 import java.text.NumberFormat;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -31,6 +32,15 @@ public class FloatModel extends AbstractNumberModel
 {
 	private static final long serialVersionUID = -3297133594178935106L;
 	private String defaultValue = "--";
+	
+	/**
+	 * 
+	 * @param config
+	 */
+	public FloatModel()
+	{
+		this(new Model(), EhourWebSession.getSession().getEhourConfig());
+	}	
 	
 	/**
 	 * 

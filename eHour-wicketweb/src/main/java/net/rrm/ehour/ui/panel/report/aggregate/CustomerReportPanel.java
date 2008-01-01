@@ -18,7 +18,7 @@
 package net.rrm.ehour.ui.panel.report.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.panel.report.ReportType;
+import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerTurnoverAggregateImage;
@@ -37,7 +37,7 @@ public class CustomerReportPanel extends AggregateReportPanel
 	public CustomerReportPanel(String id, TreeReport reportData, ReportData data)
 	{
 		// TODO make customerReportExcel constant
-		super(id, reportData, data, ReportType.AGGREGATE_CUSTOMER, "customerReportExcel");
+		super(id, reportData, data, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel");
 	}
 
 	/*

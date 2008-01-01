@@ -17,14 +17,9 @@
 
 package net.rrm.ehour.ui.panel.report.aggregate;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.panel.report.AbstractAggregateExcelReport;
-import net.rrm.ehour.ui.panel.report.TreeReportColumn;
-import net.rrm.ehour.ui.panel.report.ReportColumnUtil;
-import net.rrm.ehour.ui.panel.report.ReportType;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.panel.report.ReportConfig;
 
-import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -35,7 +30,11 @@ import org.apache.wicket.model.ResourceModel;
 public class EmployeeReportExcel extends AbstractAggregateExcelReport
 {
 	private static final long serialVersionUID = 1L;
-	private TreeReportColumn[]	reportColumns;
+	
+	public EmployeeReportExcel()
+	{
+		super(ReportConfig.AGGREGATE_EMPLOYEE);
+	}	
 	
 	@Override
 	protected IModel getExcelReportName()
@@ -47,18 +46,5 @@ public class EmployeeReportExcel extends AbstractAggregateExcelReport
 	protected IModel getHeaderReportName()
 	{
 		return new ResourceModel("report.title.employee");
-	}
-
-	@Override
-	protected TreeReportColumn[] getReportColumns()
-	{
-		if (reportColumns == null)
-		{
-			EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
-			
-			reportColumns = ReportColumnUtil.getReportColumns(config, ReportType.AGGREGATE_EMPLOYEE);
-		}
-		
-		return reportColumns;
 	}
 }
