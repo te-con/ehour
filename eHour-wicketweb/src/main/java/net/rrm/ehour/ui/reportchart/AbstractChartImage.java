@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.reportchart.aggregate;
+package net.rrm.ehour.ui.reportchart;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 
@@ -45,12 +44,12 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- * Base class for aggregated charts 
+ * Base class for charts 
  **/
 
-public abstract class AbstractAggregateChartImage extends NonCachingImage
+public abstract class AbstractChartImage<EL extends ReportElement> extends NonCachingImage
 {
-	private	final static Logger	logger = Logger.getLogger(AbstractAggregateChartImage.class);
+	private	final static Logger	logger = Logger.getLogger(AbstractChartImage.class);
 
 	private int			width;
 	private int			height;
@@ -58,15 +57,14 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	/**
 	 * 
 	 * @param id
-	 * @param reportDataAggregate
-	 * @param forId
+	 * @param dataModel
 	 * @param width
 	 * @param height
 	 */
-	public AbstractAggregateChartImage(String id, 
-										Model dataModel,
-										int width,
-										int height)
+	public AbstractChartImage(String id, 
+								Model dataModel,
+								int width,
+								int height)
 	{
 		super(id, dataModel);
 
@@ -120,7 +118,7 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
-		logger.debug("Creating " + reportName + " aggregate chart");
+		logger.debug("Creating " + reportName + " chart");
 		
 		DefaultCategoryDataset dataset = createDataset(reportData);
 
@@ -165,7 +163,7 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	}
 	
 	/**
-	 * Create dataset for this aggregate chart
+	 * Create dataset for this chart
 	 * @param reportData
 	 * @return
 	 */
@@ -182,11 +180,9 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 
 		for (ReportElement element : reportData.getReportElements())
 		{
-			AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+			rowKey = getRowKey((EL)element);
 			
-			rowKey = getRowKey(aggregate);
-			
-			value = getColumnValue(aggregate);
+			value = getColumnValue((EL)element);
 
 			if (value == null)
 			{
@@ -229,16 +225,16 @@ public abstract class AbstractAggregateChartImage extends NonCachingImage
 	protected abstract String getValueAxisLabelKey();
 	
 	/**
-	 * Get row key from aggregate
+	 * Get row key from report element
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract ChartRowKey getRowKey(AssignmentAggregateReportElement aggregate);
+	protected abstract ChartRowKey getRowKey(EL element);
 
 	/**
-	 * Get column value from aggregate
+	 * Get column value from report element
 	 * @param aggregate
 	 * @return
 	 */
-	protected abstract Number getColumnValue(AssignmentAggregateReportElement aggregate);
+	protected abstract Number getColumnValue(EL element);
 }

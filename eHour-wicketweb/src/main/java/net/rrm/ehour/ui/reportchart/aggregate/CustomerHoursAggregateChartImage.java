@@ -16,6 +16,7 @@
 package net.rrm.ehour.ui.reportchart.aggregate;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.ui.reportchart.AbstractChartImage;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.CustomerRowKey;
 
@@ -26,7 +27,7 @@ import org.apache.wicket.model.Model;
  * @author Thies
  *
  */
-public class CustomerHoursAggregateChartImage extends AbstractAggregateChartImage
+public class CustomerHoursAggregateChartImage extends AbstractChartImage<AssignmentAggregateReportElement>
 {
 	private static final long serialVersionUID = 8323295032556266163L;
 
