@@ -30,14 +30,12 @@ public class DateRowKey extends ChartRowKey
 {
 	private static final DateFormat format = new SimpleDateFormat("yyyyMMdd");
 	private Integer id;
-	private String name;
+	private Date name;
 	
 	public DateRowKey(Date date, Locale locale)
 	{
 		id = Integer.parseInt(format.format(date));
-		
-		DateFormat formatter = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
-		name = formatter.format(date);
+		name = date;
 	}
 
 	@Override
@@ -47,7 +45,7 @@ public class DateRowKey extends ChartRowKey
 	}
 
 	@Override
-	public String getName()
+	public Date getName()
 	{
 		return name;
 	}

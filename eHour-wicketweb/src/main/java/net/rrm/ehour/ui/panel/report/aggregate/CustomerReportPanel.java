@@ -56,5 +56,4 @@ public class CustomerReportPanel extends AggregateReportPanel
 		CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("turnoverChart", dataModel, chartWidth, chartHeight);
 		parent.add(customerTurnoverChart);
 	}
-
 }

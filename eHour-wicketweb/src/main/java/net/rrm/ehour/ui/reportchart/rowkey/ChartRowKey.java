@@ -23,9 +23,11 @@
 
 package net.rrm.ehour.ui.reportchart.rowkey;
 
+import java.io.Serializable;
+
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.CompareToBuilder;
 
 
 /**
@@ -44,7 +46,7 @@ public abstract class ChartRowKey implements Comparable<ChartRowKey>
 	 * Get row name
 	 * @return
 	 */
-	public abstract String getName();
+	public abstract Serializable getName();
 	
 	/*
 	 * (non-Javadoc)
@@ -53,7 +55,7 @@ public abstract class ChartRowKey implements Comparable<ChartRowKey>
 	@Override
 	public String toString()
 	{
-		return getName();
+		return (String)getName();
 	}
 
 	/*
@@ -91,7 +93,7 @@ public abstract class ChartRowKey implements Comparable<ChartRowKey>
 	public int compareTo(ChartRowKey object)
 	{
 		return new CompareToBuilder()
-					.append(this.getName().toLowerCase(), object.getName().toLowerCase())
+					.append(this.getName().toString().toLowerCase(), object.getName().toString().toLowerCase())
 					.toComparison();
 	}
 }

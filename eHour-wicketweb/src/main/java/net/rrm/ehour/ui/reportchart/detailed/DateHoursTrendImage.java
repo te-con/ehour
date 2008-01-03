@@ -20,7 +20,6 @@ package net.rrm.ehour.ui.reportchart.detailed;
 import java.util.Locale;
 
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.ui.reportchart.AbstractChartImage;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.DateRowKey;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -31,7 +30,7 @@ import org.apache.wicket.model.Model;
  * Hours per date chart
  **/
 
-public class DateHoursTrendImage extends AbstractChartImage<FlatReportElement>
+public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportElement>
 {
 	private static final long serialVersionUID = -7877973718547907932L;
 	private Locale locale;

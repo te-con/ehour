@@ -98,8 +98,6 @@ public class DetailedReportPage extends BaseReportPage
 	 */
 	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
-		logger.debug("Getting report data: " + reportCriteria.getUserCriteria().getReportRange());
-				
 		List<FlatReportElement> data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
 														reportCriteria.getUserCriteria().getReportRange());
 		

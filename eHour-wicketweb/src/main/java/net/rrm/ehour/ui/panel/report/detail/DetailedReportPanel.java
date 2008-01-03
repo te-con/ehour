@@ -20,10 +20,13 @@ package net.rrm.ehour.ui.panel.report.detail;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
-import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
+import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.reportchart.detailed.DateHoursTrendImage;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
+
+import org.apache.wicket.model.Model;
 
 /**
  * Detailed report
@@ -41,5 +44,11 @@ public class DetailedReportPanel extends AbstractReportPanel
 		add(greyBorder);
 		
 		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, null));
+		
+		Model dataModel = new Model(data);
+
+		// hours per customer
+		DateHoursTrendImage chart = new DateHoursTrendImage("hoursChart", dataModel, 700, chartHeight);
+		greyBorder.add(chart);		
 	}
 }
