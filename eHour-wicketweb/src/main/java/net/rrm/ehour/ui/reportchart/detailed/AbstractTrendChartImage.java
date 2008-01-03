@@ -27,10 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.reportchart.AbstractChartImage;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
+import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.model.Model;
 import org.jfree.chart.ChartFactory;
@@ -72,8 +75,9 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
+		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 		
-		TimeSeriesCollection dataset = createDataset(reportData);
+		TimeSeriesCollection dataset = createDataset(reportData, config);
 
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(reportName, // chart title
 				"Date", // domain axis label
@@ -128,15 +132,24 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private TimeSeriesCollection createDataset(ReportData reportData)
+	private TimeSeriesCollection createDataset(ReportData reportData, EhourConfig config)
 	{
 		TimeSeries 		dataset;
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
 		ChartRowKey		rowKey;
 		Number 			value;
 		List<ChartRowKey>	keys;
-
+		
+		List<Date> dates = DateUtil.createDateSequence(reportData.getReportCriteria().getReportRange(), config);
+		
 		dataset = new TimeSeries("test");
+		
+		for (Date date : dates)
+		{
+			dataset.add(new Day(date), 0);
+		}
+
+		
 
 		for (ReportElement element : reportData.getReportElements())
 		{
@@ -165,7 +178,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 		
 		for (ChartRowKey rowKeyDate : keys)
 		{
-			dataset.add(new Day((Date)rowKeyDate.getName()), valueMap.get(rowKeyDate));
+			dataset.addOrUpdate(new Day((Date)rowKeyDate.getName()), valueMap.get(rowKeyDate));
 		}
 
 		TimeSeriesCollection collection = new TimeSeriesCollection();
