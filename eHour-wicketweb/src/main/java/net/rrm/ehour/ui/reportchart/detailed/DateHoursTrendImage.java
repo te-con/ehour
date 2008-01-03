@@ -17,24 +17,30 @@
 
 package net.rrm.ehour.ui.reportchart.detailed;
 
-import org.apache.wicket.model.Model;
+import java.util.Locale;
 
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.reportchart.AbstractChartImage;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
+import net.rrm.ehour.ui.reportchart.rowkey.DateRowKey;
+import net.rrm.ehour.ui.session.EhourWebSession;
+
+import org.apache.wicket.model.Model;
 
 /**
- * TODO 
+ * Hours per date chart
  **/
 
 public class DateHoursTrendImage extends AbstractChartImage<FlatReportElement>
 {
 	private static final long serialVersionUID = -7877973718547907932L;
-
+	private Locale locale;
+	
 	public DateHoursTrendImage(String id, Model dataModel, int width, int height)
 	{
 		super(id, dataModel, width, height);
+		
+		locale = EhourWebSession.getSession().getEhourConfig().getLocale();
 	}
 
 	/* (non-Javadoc)
@@ -43,8 +49,7 @@ public class DateHoursTrendImage extends AbstractChartImage<FlatReportElement>
 	@Override
 	protected Number getColumnValue(FlatReportElement element)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return element.getTotalHours();
 	}
 
 	/* (non-Javadoc)
@@ -53,8 +58,7 @@ public class DateHoursTrendImage extends AbstractChartImage<FlatReportElement>
 	@Override
 	protected String getReportNameKey()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return "report.hoursDay";
 	}
 
 	/* (non-Javadoc)
@@ -63,8 +67,7 @@ public class DateHoursTrendImage extends AbstractChartImage<FlatReportElement>
 	@Override
 	protected ChartRowKey getRowKey(FlatReportElement element)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new DateRowKey(element.getDayDate(), locale);
 	}
 
 	/* (non-Javadoc)
@@ -73,8 +76,8 @@ public class DateHoursTrendImage extends AbstractChartImage<FlatReportElement>
 	@Override
 	protected String getValueAxisLabelKey()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		// TODO i18n
+		return "hours";
 	}
 
 }

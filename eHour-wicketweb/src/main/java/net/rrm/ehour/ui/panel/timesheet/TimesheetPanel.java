@@ -55,7 +55,6 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -89,7 +88,6 @@ import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 public class TimesheetPanel extends Panel implements Serializable
 {
 	private static final long serialVersionUID = 7704288648724599187L;
-	private static final Logger logger = Logger.getLogger(TimesheetPanel.class);
 	
 	@SpringBean
 	private TimesheetService	timesheetService;

@@ -36,8 +36,8 @@ public class DateRowKey extends ChartRowKey
 	{
 		id = Integer.parseInt(format.format(date));
 		
-		
-		
+		DateFormat formatter = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
+		name = formatter.format(date);
 	}
 
 	@Override
@@ -49,8 +49,7 @@ public class DateRowKey extends ChartRowKey
 	@Override
 	public String getName()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 }

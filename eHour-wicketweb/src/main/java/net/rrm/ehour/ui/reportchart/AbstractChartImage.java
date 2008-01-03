@@ -167,6 +167,7 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 	 * @param reportData
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private DefaultCategoryDataset createDataset(ReportData reportData)
 	{
 		DefaultCategoryDataset dataset;
