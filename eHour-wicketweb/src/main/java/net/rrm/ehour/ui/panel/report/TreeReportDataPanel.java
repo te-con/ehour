@@ -117,8 +117,6 @@ public class TreeReportDataPanel extends Panel
 	{
 		RepeatingView	totalView = new RepeatingView("cell");
 		int				i = 0;
-		float			hours = 0;
-		float			turnOver = 0;
 
 		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
 		
@@ -133,11 +131,11 @@ public class TreeReportDataPanel extends Panel
 				
 				if (reportConfig.getReportColumns()[i].getColumnType() == TreeReportColumn.ColumnType.HOUR)
 				{
-					label = new Label(Integer.toString(i), new FloatModel(hours, config));
+					label = new Label(Integer.toString(i), new FloatModel(report.getTotalHours() , config));
 				}
 				else if (reportConfig.getReportColumns()[i].getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
 				{
-					label = new Label(Integer.toString(i), new CurrencyModel(turnOver, config));
+					label = new Label(Integer.toString(i), new CurrencyModel(report.getTotalTurnover(), config));
 					label.setEscapeModelStrings(false);
 				}
 				else
