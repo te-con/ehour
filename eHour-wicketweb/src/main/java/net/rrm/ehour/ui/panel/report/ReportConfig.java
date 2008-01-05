@@ -37,7 +37,7 @@ public enum ReportConfig
 													new Object[]{DateModel.DATESTYLE_FULL_SHORT, ""},
 													new Class[]{int.class, String.class},
 													TreeReportColumn.COLUMN_VISIBLE,
-													TreeReportColumn.ColumnType.OTHER),
+													TreeReportColumn.ColumnType.DATE),
 						new TreeReportColumn("userReport.report.user",
 													TreeReportColumn.COLUMN_VISIBLE,
 													TreeReportColumn.COLUMN_ALLOWDUPLICATES),

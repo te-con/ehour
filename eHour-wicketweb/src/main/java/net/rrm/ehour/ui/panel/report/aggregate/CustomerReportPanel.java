@@ -36,7 +36,6 @@ public class CustomerReportPanel extends AggregateReportPanel
 
 	public CustomerReportPanel(String id, TreeReport reportData, ReportData data)
 	{
-		// TODO make customerReportExcel constant
 		super(id, reportData, data, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel");
 	}
 

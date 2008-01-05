@@ -43,7 +43,7 @@ public class DetailedReportPanel extends AbstractReportPanel
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonUIStaticData.GREYFRAME_WIDTH);
 		add(greyBorder);
 		
-		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, null));
+		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel"));
 		
 		Model dataModel = new Model(data);
 

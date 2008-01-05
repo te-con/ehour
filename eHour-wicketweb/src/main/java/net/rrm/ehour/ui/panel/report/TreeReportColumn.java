@@ -32,7 +32,7 @@ import org.apache.wicket.model.IModel;
 
 public class TreeReportColumn implements Serializable
 {
-	public static enum ColumnType { OTHER, RATE, HOUR, TURNOVER };
+	public static enum ColumnType { OTHER, DATE, RATE, HOUR, TURNOVER };
 	public static boolean COLUMN_VISIBLE = true;
 	public static boolean COLUMN_INVISIBLE = true;
 	public static boolean COLUMN_ALLOWDUPLICATES = true;

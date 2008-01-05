@@ -40,7 +40,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
@@ -88,7 +87,6 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 				false // URLs?
 				);
 
-//		CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		XYPlot plot = (XYPlot) chart.getPlot();
 		plot.setRangeGridlinePaint(Color.white);
 		plot.setBackgroundPaint(new Color(0x536e87));
@@ -110,13 +108,6 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
 		renderer.setItemLabelFont(rendererTitleFont);
 		renderer.setItemLabelPaint(new Color(0xf9f9f9));
-	
-//		if (renderer instanceof XYLineAndShapeRenderer)
-//		{
-//			XYLineAndShapeRenderer lineRenderer = (XYLineAndShapeRenderer) renderer;
-//			lineRenderer.setBaseShapesVisible(true);
-//			lineRenderer.setBaseShapesFilled(true);
-//		}		
 		
 		// set up gradient paints for series...
 		GradientPaint gradientPaint = new GradientPaint(0.0f, 0.0f, new Color(0xbfd9f6), 
@@ -148,8 +139,6 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 		{
 			dataset.add(new Day(date), 0);
 		}
-
-		
 
 		for (ReportElement element : reportData.getReportElements())
 		{

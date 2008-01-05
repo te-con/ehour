@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportExcel;
 import net.rrm.ehour.ui.panel.report.aggregate.EmployeeReportExcel;
 import net.rrm.ehour.ui.panel.report.aggregate.ProjectReportExcel;
+import net.rrm.ehour.ui.panel.report.detail.DetailedReportExcel;
 import net.rrm.ehour.ui.panel.report.user.UserReportExcel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -87,6 +88,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		getSharedResources().add("customerReportExcel", new CustomerReportExcel());
 		getSharedResources().add("employeeReportExcel", new EmployeeReportExcel());
 		getSharedResources().add("projectReportExcel", new ProjectReportExcel());
+		getSharedResources().add("detailedReportExcel", new DetailedReportExcel());
 	}
 
 	protected void springInjection()

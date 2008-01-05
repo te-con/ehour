@@ -28,12 +28,12 @@ import org.apache.wicket.util.time.Time;
 import org.apache.wicket.util.value.ValueMap;
 
 /**
- * Abstract excel report which sets content type and rest
+ * Abstract excel resource which sets content type and rest
  **/
 
-public abstract class AbstractExcelReport extends DynamicWebResource
+public abstract class AbstractExcelResource extends DynamicWebResource
 {
-	private final static Logger logger = Logger.getLogger(AbstractExcelReport.class);
+	private final static Logger logger = Logger.getLogger(AbstractExcelResource.class);
 	
 	/*
 	 * (non-Javadoc)

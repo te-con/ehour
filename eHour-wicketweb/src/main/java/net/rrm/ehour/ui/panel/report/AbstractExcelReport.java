@@ -18,9 +18,10 @@
 package net.rrm.ehour.ui.panel.report;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.ui.component.AbstractExcelReport;
+import net.rrm.ehour.ui.component.AbstractExcelResource;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -43,9 +44,9 @@ import org.apache.wicket.model.ResourceModel;
  * Abstract aggregate excel report
  **/
 
-public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
+public abstract class AbstractExcelReport extends AbstractExcelResource
 {
-	private final static Logger logger = Logger.getLogger(AbstractAggregateExcelReport.class);
+	private final static Logger logger = Logger.getLogger(AbstractExcelReport.class);
 	
 	private final String	FONT_TYPE = "Arial";
 	private HSSFFont		boldFont;
@@ -55,7 +56,8 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	protected HSSFCellStyle	valueDigitCellStyle;
 	protected HSSFCellStyle	defaultCellStyle;
 	protected HSSFCellStyle	currencyCellStyle;
-	protected HSSFCellStyle	dateBoldCellStyle;	
+	protected HSSFCellStyle	dateBoldCellStyle;
+	protected HSSFCellStyle	dateCellStyle;	
 	private	byte[]			excelData;
 	private ReportConfig	reportConfig;
 	
@@ -63,7 +65,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	 * 
 	 * @param reportConfig
 	 */
-	public AbstractAggregateExcelReport(ReportConfig reportConfig)
+	public AbstractExcelReport(ReportConfig reportConfig)
 	{
 		this.reportConfig = reportConfig;
 	}	
@@ -224,6 +226,11 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 								cell.setCellValue( ((Number)cellValue).doubleValue());
 							}
 						}
+						else if (columnHeaders[i].getColumnType() == TreeReportColumn.ColumnType.DATE)
+						{
+							cell.setCellStyle(dateCellStyle);
+							cell.setCellValue((Date)cellValue);
+						}
 						else
 						{
 							cell.setCellStyle(defaultCellStyle);
@@ -327,5 +334,9 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 		currencyCellStyle= workbook.createCellStyle();
 		currencyCellStyle.setFont(normalFont);
 		currencyCellStyle.setDataFormat((short)0x7);
+		
+		dateCellStyle = workbook.createCellStyle();
+		dateCellStyle.setFont(normalFont);
+		dateCellStyle.setDataFormat((short)0xf);		
 	}
 }
