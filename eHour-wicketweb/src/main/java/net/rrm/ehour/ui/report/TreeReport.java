@@ -17,17 +17,22 @@
 
 package net.rrm.ehour.ui.report;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
 public abstract class TreeReport extends Report
 {
-	private List<ReportNode>    nodes;
-	private	DateRange			reportRange;
+	private	DateRange				reportRange;
+	private List<Serializable[]> 	reportMatrix;
+	private float					totalHours;
+	private float					totalTurnover;
 	
 	/**
 	 * Default constructor which doesn't initialize the report
@@ -40,31 +45,51 @@ public abstract class TreeReport extends Report
      *
      * @param reportData
      */
-    public TreeReport(ReportData reportData)
+    public TreeReport(ReportData reportData, ReportConfig reportConfig)
     {
-    	initializeReport(reportData);
+    	initializeReport(reportData, reportConfig);
     }
 
     /**
      * Initialize report
      * @param reportData
      */
-    protected void initializeReport(ReportData reportData)
+    protected void initializeReport(ReportData reportData, ReportConfig reportConfig)
     {
         ReportBuilder reportBuilder = new ReportBuilder();
-        nodes = reportBuilder.createReport(reportData, getReportNodeFactory());
+        List<ReportNode> rootNodes = reportBuilder.createReport(reportData, getReportNodeFactory());
+        
+        createMatrix(rootNodes, reportConfig.getReportColumns().length);
+        calcTotals(rootNodes);
         
         reportRange = reportData.getReportCriteria().getUserCriteria().getReportRange();
-    	
     }
-	
+    
     /**
-     * Get report nodes
-     * @return
+     * Calculate total turnover & hours booked
+     * @param rootNodes
      */
-    public List<ReportNode> getNodes()
+    private void calcTotals(List<ReportNode> rootNodes)
     {
-    	return nodes;
+    	for (ReportNode reportNode : rootNodes)
+		{
+    		totalTurnover += reportNode.getTurnover().floatValue();
+			totalHours += reportNode.getHours().floatValue();
+		}
+    }
+    /**
+     * 
+     * @param rootNodes
+     * @param matrixWidth
+     */
+    private void createMatrix(List<ReportNode> rootNodes, int matrixWidth)
+    {
+    	reportMatrix = new ArrayList<Serializable[]>();
+    	
+    	for (ReportNode reportNode : rootNodes)
+		{
+    		reportMatrix.addAll(reportNode.getNodeMatrix(matrixWidth));
+		}
     }
     
     /**
@@ -79,5 +104,29 @@ public abstract class TreeReport extends Report
 	public DateRange getReportRange()
 	{
 		return reportRange;
+	}
+
+	/**
+	 * @return the reportMatrix
+	 */
+	public List<Serializable[]> getReportMatrix()
+	{
+		return reportMatrix;
+	}
+
+	/**
+	 * @return the totalHours
+	 */
+	public float getTotalHours()
+	{
+		return totalHours;
+	}
+
+	/**
+	 * @return the totalTurnover
+	 */
+	public float getTotalTurnover()
+	{
+		return totalTurnover;
 	}
 }

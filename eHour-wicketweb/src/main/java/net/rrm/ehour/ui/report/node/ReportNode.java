@@ -27,7 +27,6 @@ import net.rrm.ehour.report.reports.element.ReportElement;
 import org.apache.log4j.Logger;
 
 /**
- *
  * Tree structure of abstract nodes for reporting purposes.
  * Each node can have multiple reportnode children, for example customer -> projects -> users
  */
@@ -44,11 +43,11 @@ public abstract class ReportNode implements Serializable
      * Create node matrix flattening the whole tree. Repeating fields are null 
      * @return
      */
-    public Serializable[][] getNodeMatrix(int matrixWidth)
+    public List<Serializable[]> getNodeMatrix(int matrixWidth)
     {
-    	Serializable[][] matrix = initMatrix(matrixWidth);
+    	List<Serializable[]> matrix = new ArrayList<Serializable[]>();
     	
-    	createNodeMatrix(0, 0, matrix);
+    	createNodeMatrix(0, new Serializable[matrixWidth], matrix, matrixWidth);
     	
     	return matrix;
     }
@@ -60,75 +59,32 @@ public abstract class ReportNode implements Serializable
      * @param matrix
      * @return
      */
-    private int createNodeMatrix(int currentColumn, int currentRow, Serializable[][] matrix)
+    private Serializable[] createNodeMatrix(int currentColumn, Serializable[] columns, List<Serializable[]> matrix, int matrixWidth)
     {
     	for (Serializable columnValue : columnValues)
 		{
         	if (logger.isDebugEnabled())
         	{
-        		logger.debug("Setting " + columnValue + " in matrix pos " 
-        						+ currentRow + "x" + currentColumn + " from node " + this.getClass());
+        		logger.debug("Setting " + columnValue + " on column " + currentColumn + " from node " + this.getClass());
         	}
-    		
-    		matrix[currentRow][currentColumn++] = columnValue;
+        	
+        	columns[currentColumn++] = columnValue;
 		}
     	
     	if (isLastNode())
     	{
-    		currentRow++;
+    		matrix.add(columns);
+    		columns = new Serializable[matrixWidth];
     	}
     	else
     	{
     		for (ReportNode reportNode : reportNodes)
 			{
-    			currentRow = reportNode.createNodeMatrix(currentColumn, currentRow, matrix);
+    			columns = reportNode.createNodeMatrix(currentColumn, columns, matrix, matrixWidth);
 			}
     	}
     	
-    	return currentRow;
-    }
-    
-    /**
-     * Initialize matrix if null
-     * @param matrixWidth
-     * @param matrix
-     * @return
-     */
-    private Serializable[][] initMatrix(int matrixWidth)
-    {
-		int matrixHeight = getEndNodeCount();
-		Serializable[][] matrix = new Serializable[matrixHeight][matrixWidth];
-    	
-    	if (logger.isDebugEnabled())
-    	{
-    		logger.debug("Initializing ReportNode matrix: " + matrixHeight + "x" + matrixWidth);
-    	}
-    	
-    	return matrix;
-    }
-    
-    
-    /**
-     * Get end node count
-     * @return
-     */
-    private int getEndNodeCount()
-    {
-    	int	childCount = 0;
-    	
-    	for (ReportNode node : reportNodes)
-		{
-    		if (node.isLastNode())
-    		{
-    			childCount++;
-    		}
-    		else
-    		{
-    			childCount += node.getEndNodeCount();
-    		}
-		}
-    	
-    	return childCount;
+    	return columns;
     }
     
     /**

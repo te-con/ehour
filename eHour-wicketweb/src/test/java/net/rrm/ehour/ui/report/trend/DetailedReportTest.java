@@ -47,27 +47,27 @@ public class DetailedReportTest
 		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getFlatReportData(), Locale.ENGLISH);
 		
 		// customer = root
-		assertEquals(2, detailedReport.getNodes().size());
-		
-		for (ReportNode node : detailedReport.getNodes())
-		{
-			if (((Number)node.getId()).intValue() == 1)
-			{
-				assertEquals(2, node.getReportNodes().size());
-				
-				for (ReportNode projectNode : node.getReportNodes())
-				{
-					if (((Number)projectNode.getId()).intValue() == 1)
-					{
-						assertEquals(2, projectNode.getReportNodes().size());
-						
-						  ReportNode nodeEnd = projectNode.getReportNodes().get(0).getReportNodes().get(0).getReportNodes().get(0);
-						  
-						  assertNotNull( ((FlatEntryEndNode)nodeEnd).getHours());
-					}
-				}
-			}
-		}
+		assertEquals(6, detailedReport.getReportMatrix().size());
+//		
+//		for (ReportNode node : detailedReport.getNodes())
+//		{
+//			if (((Number)node.getId()).intValue() == 1)
+//			{
+//				assertEquals(2, node.getReportNodes().size());
+//				
+//				for (ReportNode projectNode : node.getReportNodes())
+//				{
+//					if (((Number)projectNode.getId()).intValue() == 1)
+//					{
+//						assertEquals(2, projectNode.getReportNodes().size());
+//						
+//						  ReportNode nodeEnd = projectNode.getReportNodes().get(0).getReportNodes().get(0).getReportNodes().get(0);
+//						  
+//						  assertNotNull( ((FlatEntryEndNode)nodeEnd).getHours());
+//					}
+//				}
+//			}
+//		}
 	}
 	
 	@Test

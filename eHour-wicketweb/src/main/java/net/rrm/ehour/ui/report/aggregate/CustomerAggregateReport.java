@@ -22,6 +22,7 @@ import java.io.Serializable;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
@@ -39,7 +40,7 @@ public class CustomerAggregateReport extends TreeReport
      */
     public CustomerAggregateReport(ReportData reportData)
     {
-    	super(reportData);
+    	super(reportData, ReportConfig.AGGREGATE_CUSTOMER);
     }
 
     /**

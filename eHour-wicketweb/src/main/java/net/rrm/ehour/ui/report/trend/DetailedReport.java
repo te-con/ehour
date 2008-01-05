@@ -23,6 +23,7 @@ import java.util.Locale;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
@@ -51,7 +52,7 @@ public class DetailedReport extends TreeReport
 		
 		this.locale = locale;
 		
-		this.initializeReport(reportData);
+		this.initializeReport(reportData, ReportConfig.DETAILED_REPORT);
 	}
 
 	/*

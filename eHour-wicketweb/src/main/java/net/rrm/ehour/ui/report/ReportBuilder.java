@@ -37,7 +37,6 @@ public class ReportBuilder
 {
 	protected transient Logger logger = Logger.getLogger(this.getClass());
 
-
 	/**
 	 * Create report
 	 * @param reportData
@@ -62,6 +61,7 @@ public class ReportBuilder
 	            }
 	        }
         }
+        
 		logger.debug("Report took " + (new Date().getTime() - profileStart.getTime()) + "ms to create");
 
         return reportNodes;
@@ -88,4 +88,6 @@ public class ReportBuilder
 
         return processed;
     }
+    
+    
 }

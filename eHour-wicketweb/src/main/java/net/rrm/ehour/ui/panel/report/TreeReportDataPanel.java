@@ -20,7 +20,6 @@ package net.rrm.ehour.ui.panel.report;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
@@ -29,19 +28,15 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
-import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ResourceLink;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
@@ -124,13 +119,6 @@ public class TreeReportDataPanel extends Panel
 
 		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
 		
-		// get totals
-		for (ReportNode node : report.getNodes())
-		{
-			turnOver += node.getTurnover().floatValue();
-			hours += node.getHours().floatValue();
-		}
-		
 		// add cells
 		totalView.add(new Label(Integer.toString(i++), new ResourceModel("report.total")));
 		
@@ -161,88 +149,93 @@ public class TreeReportDataPanel extends Panel
 		
 		parent.add(totalView);
 	}
+
 	
 	/**
 	 * Add report data table to the component
 	 * @param report
 	 * @param parent
 	 */
-	private void addReportData(TreeReport report, WebMarkupContainer parent)
-	{
-		@SuppressWarnings("serial")
-		DataView dataView = new DataView("reportData", new TreeReportDataProvider(report.getNodes()))
-		{
-//		
-//		ListView rootNodeView = new ListView("reportData", report.getNodes())
+//	private void addReportData(TreeReport report, WebMarkupContainer parent)
+//	{
+//		@SuppressWarnings("serial")
+//		DataView dataView = new DataView("reportData", new TreeReportDataProvider(report.getNodes()))
 //		{
-			@Override
-			protected void populateItem(Item item)
-			{
-				ReportNode rootNode = (ReportNode)item.getModelObject();
-
-				item.add(getReportNodeRows(rootNode));
-				item.add(getTotalRow(rootNode));
-			}
-		};
-		dataView.setItemsPerPage(8);
-		add(new PagingNavigator("navigator", dataView));
-		parent.add(dataView);
-	}
-
-	/**
-	 * Add the total row for a block (root node)
-	 * @param reportNode
-	 * @return
-	 */
-	private Component getTotalRow(ReportNode reportNode)
-	{
-		RepeatingView	totalView = new RepeatingView("cell");
-		
-		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
-		
-		int i = 0;
-		
-		for (TreeReportColumn column : reportConfig.getReportColumns())
-		{
-			if (column.isVisible())
-			{
-				String	id = Integer.toString(i++);
-				
-				if (column.getColumnType() == TreeReportColumn.ColumnType.HOUR)
-				{
-					totalView.add(new Label(id, new FloatModel(reportNode.getHours(), config)));
-				}
-				else if (column.getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
-				{
-					Label label = new Label(id, new CurrencyModel(reportNode.getTurnover(), config));
-					label.setEscapeModelStrings(false);
-					totalView.add(label);
-				}
-				else
-				{
-					totalView.add(HtmlUtil.getNbspLabel(id));
-				}
-			}
-		}
-		
-		return totalView;
-	}
+////		
+////		ListView rootNodeView = new ListView("reportData", report.getNodes())
+////		{
+//			@Override
+//			protected void populateItem(Item item)
+//			{
+//				ReportNode rootNode = (ReportNode)item.getModelObject();
+//
+//				item.add(getReportNodeRows(rootNode));
+//				item.add(getTotalRow(rootNode));
+//			}
+//		};
+//		dataView.setItemsPerPage(8);
+//		
+//		parent.add(new PagingNavigator("navigator", dataView));
+//		parent.add(dataView);
+//	}	
+	
+//	/**
+//	 * Add the total row for a block (root node)
+//	 * @param reportNode
+//	 * @return
+//	 */
+//	private Component getTotalRow(ReportNode reportNode)
+//	{
+//		RepeatingView	totalView = new RepeatingView("cell");
+//		
+//		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
+//		
+//		int i = 0;
+//		
+//		for (TreeReportColumn column : reportConfig.getReportColumns())
+//		{
+//			if (column.isVisible())
+//			{
+//				String	id = Integer.toString(i++);
+//				
+//				if (column.getColumnType() == TreeReportColumn.ColumnType.HOUR)
+//				{
+//					totalView.add(new Label(id, new FloatModel(reportNode.getHours(), config)));
+//				}
+//				else if (column.getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
+//				{
+//					Label label = new Label(id, new CurrencyModel(reportNode.getTurnover(), config));
+//					label.setEscapeModelStrings(false);
+//					totalView.add(label);
+//				}
+//				else
+//				{
+//					totalView.add(HtmlUtil.getNbspLabel(id));
+//				}
+//			}
+//		}
+//		
+//		return totalView;
+//	}
 	
 	/**
 	 * Get root node rows & cells
 	 * @param reportNode
 	 * @return
 	 */
-	private Component getReportNodeRows(ReportNode reportNode)
+	private void addReportData(TreeReport report, WebMarkupContainer parent)
 	{
-		Serializable[][] matrix = reportNode.getNodeMatrix(reportConfig.getReportColumns().length);
-	
-		// add rows per node
-		@SuppressWarnings("serial")
-		ListView rootNodeView = new ListView("row", Arrays.asList(matrix))
+		DataView dataView = new DataView("reportData", new TreeReportDataProvider(report.getReportMatrix()))
 		{
+			private static final long serialVersionUID = 1L;
+
+			//
+//		
+//		// add rows per node
+//		@SuppressWarnings("serial")
+//		ListView rootNodeView = new ListView("row", Arrays.asList(matrix))
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(Item item)
 			{
 				RepeatingView cells = new RepeatingView("cell");
 				Serializable[] rowValues = (Serializable[])item.getModelObject();
@@ -293,7 +286,10 @@ public class TreeReportDataPanel extends Panel
 			
 		};
 
-		return rootNodeView;
+		dataView.setItemsPerPage(8);
+		
+		parent.add(new PagingNavigator("navigator", dataView));
+		parent.add(dataView);
 	}
 
 	/**

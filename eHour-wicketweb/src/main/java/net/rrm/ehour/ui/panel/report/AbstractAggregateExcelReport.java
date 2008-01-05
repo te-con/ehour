@@ -177,24 +177,7 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 	 */
 	protected void fillReportSheet(TreeReport reportData, HSSFSheet sheet, int rowNumber)
 	{
-		List<ReportNode> nodes = reportData.getNodes();
-		
-		for (ReportNode reportNode : nodes)
-		{
-			rowNumber = addNodeToSheet(reportNode, sheet, rowNumber);
-		}
-	}	
-	
-	/**
-	 * 
-	 * @param node
-	 * @param sheet
-	 * @param rowNumber
-	 * @return
-	 */
-	private int addNodeToSheet(ReportNode reportNode, HSSFSheet sheet, int rowNumber)
-	{
-		Serializable[][]	matrix = reportNode.getNodeMatrix(reportConfig.getReportColumns().length);
+		List<Serializable[]>	matrix = reportData.getReportMatrix();
 		TreeReportColumn[]	columnHeaders = reportConfig.getReportColumns();
 		HSSFRow				row;
 		HSSFCell			cell;
@@ -253,8 +236,6 @@ public abstract class AbstractAggregateExcelReport extends AbstractExcelReport
 				i++;
 			}
 		}
-		
-		return rowNumber;
 	}
 	
 	/*
