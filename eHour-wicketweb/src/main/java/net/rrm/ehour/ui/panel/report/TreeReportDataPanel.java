@@ -286,7 +286,7 @@ public class TreeReportDataPanel extends Panel
 			
 		};
 
-		dataView.setItemsPerPage(8);
+		dataView.setItemsPerPage(20);
 		
 		parent.add(new PagingNavigator("navigator", dataView));
 		parent.add(dataView);
