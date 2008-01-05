@@ -41,6 +41,7 @@ public abstract class ReportNode implements Serializable
     
     /**
      * Create node matrix flattening the whole tree.
+     * 
      * @return
      */
     public List<Serializable[]> getNodeMatrix(int matrixWidth)

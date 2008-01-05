@@ -33,6 +33,11 @@ import org.apache.wicket.model.IModel;
 public class TreeReportColumn implements Serializable
 {
 	public static enum ColumnType { OTHER, RATE, HOUR, TURNOVER };
+	public static boolean COLUMN_VISIBLE = true;
+	public static boolean COLUMN_INVISIBLE = true;
+	public static boolean COLUMN_ALLOWDUPLICATES = true;
+	public static boolean COLUMN_NODUPLICATES = true;
+	
 	
 	private static final long serialVersionUID = -6736366461333244457L;
 	private boolean						visible = true;
@@ -41,6 +46,8 @@ public class TreeReportColumn implements Serializable
 	private Object[]					conversionModelConstructorParams;
 	private Class<?>[]					conversionModelConstructorParamTypes; // needed because types can't always be determined of proxied objects 
 	private boolean						allowDuplicates;
+	
+	
 	
 	private ColumnType	columnType = ColumnType.OTHER;
 	
@@ -64,6 +71,11 @@ public class TreeReportColumn implements Serializable
 		this(columnHeaderResourceKey, null, null, visible);
 	}
 
+	public TreeReportColumn(String columnHeaderResourceKey, boolean visible, boolean allowDuplicates)
+	{
+		this(columnHeaderResourceKey, null, visible, allowDuplicates, ColumnType.OTHER);
+	}	
+
 	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel)
 	{
 		this(columnHeaderResourceKey, conversionModel, null, true);
@@ -73,6 +85,11 @@ public class TreeReportColumn implements Serializable
 	{
 		this(columnHeaderResourceKey, conversionModel, new Object[]{}, visible, columnType);
 	}
+	
+	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, boolean visible, boolean allowDuplicates, ColumnType columnType)
+	{
+		this(columnHeaderResourceKey, conversionModel, new Object[]{}, null, visible, allowDuplicates, columnType);
+	}	
 	
 	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible)
 	{

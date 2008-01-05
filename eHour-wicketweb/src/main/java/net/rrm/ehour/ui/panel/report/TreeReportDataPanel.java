@@ -20,6 +20,8 @@ package net.rrm.ehour.ui.panel.report;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
@@ -44,6 +46,7 @@ import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -157,61 +160,7 @@ public class TreeReportDataPanel extends Panel
 	 */
 	private void addReportData(TreeReport report, WebMarkupContainer parent)
 	{
-		DataView dataView = new DataView("reportData", new TreeReportDataProvider(report.getReportMatrix()))
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void populateItem(Item item)
-			{
-				RepeatingView cells = new RepeatingView("cell");
-				Serializable[] rowValues = (Serializable[])item.getModelObject();
-				int i = 0;
-				
-				// add cells for a row
-				for (Serializable cellValue : rowValues)
-				{
-					if (reportConfig.getReportColumns()[i].isVisible())
-					{
-						Label cellLabel;
-					
-						if (reportConfig.getReportColumns()[i].getConversionModel() == null)
-						{
-							cellLabel = new Label(Integer.toString(i), new Model(cellValue));
-						}
-						else
-						{
-							IModel model;
-
-							try
-							{
-								model = getModelInstance(reportConfig.getReportColumns()[i]);
-								model.setObject(cellValue);
-							} catch (Exception e)
-							{
-								logger.warn("Could not instantiate model for " + reportConfig.getReportColumns()[i], e);
-								model = new Model(cellValue);
-							}
-							
-							cellLabel = new Label(Integer.toString(i), model);
-							addColumnTypeStyling(reportConfig.getReportColumns()[i].getColumnType(), cellLabel);
-						}
-						
-						cells.add(cellLabel);
-					}
-					
-					i++;
-				}
-				
-				item.add(cells);
-				
-				if (item.getIndex() % 2 == 1)
-				{
-					item.add(new SimpleAttributeModifier("style", "background-color: #fefeff"));
-				}
-			}
-			
-		};
+		DataView dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(report.getReportMatrix()));
 
 		dataView.setItemsPerPage(20);
 		
@@ -312,4 +261,111 @@ public class TreeReportDataPanel extends Panel
 			label.add(new SimpleAttributeModifier("style", "text-align: right"));
 		}
 	}
+
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class TreeReportDataView extends DataView
+	{
+		private static final long serialVersionUID = 1L;
+		
+		private int previousForPage = -1;
+		private List<Serializable> previousCellValues;
+		
+		public TreeReportDataView(String id, IDataProvider dataProvider)
+		{
+			super(id, dataProvider);
+		}	
+		
+		/*
+		 * (non-Javadoc)
+		 * @see org.apache.wicket.markup.repeater.RefreshingView#populateItem(org.apache.wicket.markup.repeater.Item)
+		 */
+		@Override
+		protected void populateItem(Item item)
+		{
+			RepeatingView cells = new RepeatingView("cell");
+			Serializable[] rowValues = (Serializable[])item.getModelObject();
+			int i = 0;
+			
+			List<Serializable> thisCellValues = new ArrayList<Serializable>();
+			
+			// add cells for a row
+			for (Serializable cellValue : rowValues)
+			{
+				if (reportConfig.getReportColumns()[i].isVisible())
+				{
+					Label cellLabel;
+					
+					thisCellValues.add(cellValue);
+				
+					if (isDuplicate(i, cellValue))
+					{
+						cellLabel = new Label(Integer.toString(i), new Model(""));
+					}
+					else if (reportConfig.getReportColumns()[i].getConversionModel() == null)
+					{
+						cellLabel = new Label(Integer.toString(i), new Model(cellValue));
+					}
+					else
+					{
+						IModel model;
+
+						try
+						{
+							model = getModelInstance(reportConfig.getReportColumns()[i]);
+							model.setObject(cellValue);
+						} catch (Exception e)
+						{
+							logger.warn("Could not instantiate model for " + reportConfig.getReportColumns()[i], e);
+							model = new Model(cellValue);
+						}
+						
+						cellLabel = new Label(Integer.toString(i), model);
+						addColumnTypeStyling(reportConfig.getReportColumns()[i].getColumnType(), cellLabel);
+					}
+					
+					
+					cells.add(cellLabel);
+				}
+				
+				i++;
+			}
+			
+			item.add(cells);
+			
+			setCssStyle(item);
+			previousForPage = getCurrentPage();
+			previousCellValues = thisCellValues;
+		}
+		
+		/**
+		 * Set css style
+		 * @param item
+		 */
+		private void setCssStyle(Item item)
+		{
+			if (item.getIndex() % 2 == 1)
+			{
+				item.add(new SimpleAttributeModifier("style", "background-color: #fefeff"));
+			}
+			
+		}
+		
+		/**
+		 * Is cellvalue a duplicate
+		 * @param i
+		 * @param cellValue
+		 * @return
+		 */
+		private boolean isDuplicate(int i, Serializable cellValue)
+		{
+			return (!reportConfig.getReportColumns()[i].isAllowDuplicates()
+					&& previousCellValues != null
+					&& previousForPage == getCurrentPage()
+					&& previousCellValues.get(i).equals(cellValue));			
+		}
+	};		
 }

@@ -22,7 +22,6 @@ import java.util.List;
 
 import net.rrm.ehour.ui.component.AbstractExcelReport;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
