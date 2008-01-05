@@ -40,7 +40,7 @@ public abstract class ReportNode implements Serializable
     protected int				hierarchyLevel;
     
     /**
-     * Create node matrix flattening the whole tree. Repeating fields are null 
+     * Create node matrix flattening the whole tree.
      * @return
      */
     public List<Serializable[]> getNodeMatrix(int matrixWidth)
@@ -61,6 +61,36 @@ public abstract class ReportNode implements Serializable
      */
     private Serializable[] createNodeMatrix(int currentColumn, Serializable[] columns, List<Serializable[]> matrix, int matrixWidth)
     {
+    	if (isLastNode())
+    	{
+    		Serializable[] returnCols = columns.clone();
+    		
+    		setMatrixColumns(columns, currentColumn);
+    		
+    		matrix.add(columns);
+    		return returnCols;
+    	}
+    	else
+    	{
+    		currentColumn = setMatrixColumns(columns, currentColumn);
+    		
+    		for (ReportNode reportNode : reportNodes)
+			{
+    			
+    			columns = reportNode.createNodeMatrix(currentColumn, columns, matrix, matrixWidth);
+			}
+    	}
+    	
+    	return columns;
+    }
+
+    /**
+     * 
+     * @param columns
+     * @param currentColumn
+     */
+    private int setMatrixColumns(Serializable[] columns, int currentColumn)
+    {
     	for (Serializable columnValue : columnValues)
 		{
         	if (logger.isDebugEnabled())
@@ -69,23 +99,11 @@ public abstract class ReportNode implements Serializable
         	}
         	
         	columns[currentColumn++] = columnValue;
-		}
+		}    	
     	
-    	if (isLastNode())
-    	{
-    		matrix.add(columns);
-    		columns = new Serializable[matrixWidth];
-    	}
-    	else
-    	{
-    		for (ReportNode reportNode : reportNodes)
-			{
-    			columns = reportNode.createNodeMatrix(currentColumn, columns, matrix, matrixWidth);
-			}
-    	}
-    	
-    	return columns;
+    	return currentColumn;
     }
+    
     
     /**
      * Process aggregate
