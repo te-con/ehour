@@ -35,11 +35,11 @@ import net.rrm.ehour.ui.util.HtmlUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ResourceLink;
-import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
@@ -77,6 +77,8 @@ public class TreeReportDataPanel extends Panel
 		
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		add(blueBorder);
+		blueBorder.setOutputMarkupId(true);
+		
 		
 		if (excelResourceName != null)
 		{
@@ -159,10 +161,10 @@ public class TreeReportDataPanel extends Panel
 	private void addReportData(TreeReport report, WebMarkupContainer parent)
 	{
 		DataView dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(report.getReportMatrix()));
-
+		dataView.setOutputMarkupId(true);
 		dataView.setItemsPerPage(20);
 		
-		parent.add(new PagingNavigator("navigator", dataView));
+		parent.add(new AjaxPagingNavigator("navigator", dataView));
 		parent.add(dataView);
 	}
 
