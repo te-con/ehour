@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.model.CurrencyModel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.report.TreeReportDataProvider;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
@@ -41,10 +42,13 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -166,10 +170,13 @@ public class TreeReportDataPanel extends Panel
 	private void addReportData(TreeReport report, WebMarkupContainer parent)
 	{
 		@SuppressWarnings("serial")
-		ListView rootNodeView = new ListView("reportData", report.getNodes())
+		DataView dataView = new DataView("reportData", new TreeReportDataProvider(report.getNodes()))
 		{
+//		
+//		ListView rootNodeView = new ListView("reportData", report.getNodes())
+//		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(Item item)
 			{
 				ReportNode rootNode = (ReportNode)item.getModelObject();
 
@@ -177,8 +184,9 @@ public class TreeReportDataPanel extends Panel
 				item.add(getTotalRow(rootNode));
 			}
 		};
-		
-		parent.add(rootNodeView);
+		dataView.setItemsPerPage(8);
+		add(new PagingNavigator("navigator", dataView));
+		parent.add(dataView);
 	}
 
 	/**
