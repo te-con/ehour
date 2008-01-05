@@ -40,6 +40,7 @@ public class TreeReportColumn implements Serializable
 	private Class<? extends IModel>		conversionModel;
 	private Object[]					conversionModelConstructorParams;
 	private Class<?>[]					conversionModelConstructorParamTypes; // needed because types can't always be determined of proxied objects 
+	private boolean						allowDuplicates;
 	
 	private ColumnType	columnType = ColumnType.OTHER;
 	
@@ -98,13 +99,34 @@ public class TreeReportColumn implements Serializable
 							Class[] conversionModelArgsTypes,
 							boolean visible, ColumnType columnType)
 	{
+		this(columnHeaderResourceKey, conversionModel, conversionModelArgs, conversionModelArgsTypes, visible, false, columnType);
+	}
+	
+	/**
+	 * 
+	 * @param columnHeaderResourceKey
+	 * @param conversionModel
+	 * @param conversionModelArgs
+	 * @param conversionModelArgsTypes
+	 * @param visible
+	 * @param allowDuplicates
+	 * @param columnType
+	 */
+	@SuppressWarnings("unchecked")
+	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, 
+							Object[] conversionModelArgs, 
+							Class[] conversionModelArgsTypes,
+							boolean visible, boolean allowDuplicates, ColumnType columnType)
+	{
 		this.columnHeaderResourceKey = columnHeaderResourceKey;
 		this.conversionModel = conversionModel;
 		this.visible = visible;
+		this.allowDuplicates = allowDuplicates;
 		this.columnType = columnType;
 		this.conversionModelConstructorParams = conversionModelArgs;
 		this.conversionModelConstructorParamTypes = conversionModelArgsTypes;
-	}	
+		
+	}
 	
 	/**
 	 * @return the visible
@@ -195,5 +217,21 @@ public class TreeReportColumn implements Serializable
 	public void setConversionModelConstructorParamTypes(Class<?>[] conversionModelConstructorParamTypes)
 	{
 		this.conversionModelConstructorParamTypes = conversionModelConstructorParamTypes;
+	}
+
+	/**
+	 * @return the allowDuplicates
+	 */
+	public boolean isAllowDuplicates()
+	{
+		return allowDuplicates;
+	}
+
+	/**
+	 * @param allowDuplicates the allowDuplicates to set
+	 */
+	public void setAllowDuplicates(boolean allowDuplicates)
+	{
+		this.allowDuplicates = allowDuplicates;
 	}
 }

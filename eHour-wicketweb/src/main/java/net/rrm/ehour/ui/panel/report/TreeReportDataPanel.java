@@ -149,74 +149,6 @@ public class TreeReportDataPanel extends Panel
 		
 		parent.add(totalView);
 	}
-
-	
-	/**
-	 * Add report data table to the component
-	 * @param report
-	 * @param parent
-	 */
-//	private void addReportData(TreeReport report, WebMarkupContainer parent)
-//	{
-//		@SuppressWarnings("serial")
-//		DataView dataView = new DataView("reportData", new TreeReportDataProvider(report.getNodes()))
-//		{
-////		
-////		ListView rootNodeView = new ListView("reportData", report.getNodes())
-////		{
-//			@Override
-//			protected void populateItem(Item item)
-//			{
-//				ReportNode rootNode = (ReportNode)item.getModelObject();
-//
-//				item.add(getReportNodeRows(rootNode));
-//				item.add(getTotalRow(rootNode));
-//			}
-//		};
-//		dataView.setItemsPerPage(8);
-//		
-//		parent.add(new PagingNavigator("navigator", dataView));
-//		parent.add(dataView);
-//	}	
-	
-//	/**
-//	 * Add the total row for a block (root node)
-//	 * @param reportNode
-//	 * @return
-//	 */
-//	private Component getTotalRow(ReportNode reportNode)
-//	{
-//		RepeatingView	totalView = new RepeatingView("cell");
-//		
-//		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
-//		
-//		int i = 0;
-//		
-//		for (TreeReportColumn column : reportConfig.getReportColumns())
-//		{
-//			if (column.isVisible())
-//			{
-//				String	id = Integer.toString(i++);
-//				
-//				if (column.getColumnType() == TreeReportColumn.ColumnType.HOUR)
-//				{
-//					totalView.add(new Label(id, new FloatModel(reportNode.getHours(), config)));
-//				}
-//				else if (column.getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
-//				{
-//					Label label = new Label(id, new CurrencyModel(reportNode.getTurnover(), config));
-//					label.setEscapeModelStrings(false);
-//					totalView.add(label);
-//				}
-//				else
-//				{
-//					totalView.add(HtmlUtil.getNbspLabel(id));
-//				}
-//			}
-//		}
-//		
-//		return totalView;
-//	}
 	
 	/**
 	 * Get root node rows & cells
@@ -229,11 +161,6 @@ public class TreeReportDataPanel extends Panel
 		{
 			private static final long serialVersionUID = 1L;
 
-			//
-//		
-//		// add rows per node
-//		@SuppressWarnings("serial")
-//		ListView rootNodeView = new ListView("row", Arrays.asList(matrix))
 			@Override
 			protected void populateItem(Item item)
 			{
