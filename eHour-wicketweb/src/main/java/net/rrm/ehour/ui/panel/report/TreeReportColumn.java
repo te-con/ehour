@@ -34,9 +34,9 @@ public class TreeReportColumn implements Serializable
 {
 	public static enum ColumnType { OTHER, DATE, RATE, HOUR, TURNOVER };
 	public static boolean COLUMN_VISIBLE = true;
-	public static boolean COLUMN_INVISIBLE = true;
+	public static boolean COLUMN_INVISIBLE = false;
 	public static boolean COLUMN_ALLOWDUPLICATES = true;
-	public static boolean COLUMN_NODUPLICATES = true;
+	public static boolean COLUMN_NODUPLICATES = false;
 	
 	
 	private static final long serialVersionUID = -6736366461333244457L;
