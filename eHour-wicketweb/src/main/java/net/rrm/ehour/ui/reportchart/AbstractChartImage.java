@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.Resource;
 import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -51,8 +51,8 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 {
 	private	final static Logger	logger = Logger.getLogger(AbstractChartImage.class);
 
-	private int			width;
-	private int			height;
+	private int		width;
+	private int		height;
 	
 	/**
 	 * 
@@ -62,7 +62,7 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 	 * @param height
 	 */
 	public AbstractChartImage(String id, 
-								Model dataModel,
+								IModel dataModel,
 								int width,
 								int height)
 	{
@@ -71,9 +71,10 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 		this.width = width;
 		this.height = height;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.wicket.markup.html.image.Image#getImageResource()
 	 */
 	@Override
@@ -86,7 +87,6 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 			protected byte[] getImageData()
 			{
 				ReportData reportData = (ReportData)getModelObject();
-				
 				JFreeChart chart = getChart(reportData);
 				return toImageData(chart.createBufferedImage(width, height));
 			}
@@ -151,13 +151,11 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 		Font rendererTitleFont = new Font("SansSerif", Font.PLAIN, 10);
 		renderer.setBaseItemLabelFont(rendererTitleFont);
 		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
-		renderer.setItemLabelFont(rendererTitleFont);
-		renderer.setItemLabelPaint(new Color(0xf9f9f9));
 	
 		// set up gradient paints for series...
 		GradientPaint gradientPaint = new GradientPaint(0.0f, 0.0f, new Color(0xbfd9f6), 
 														0.0f, 0.0f, new Color(0xa3bcd8));
-		renderer.setPaint(gradientPaint);
+		renderer.setSeriesPaint(0, gradientPaint);
 		
 		return chart;
 	}
@@ -238,4 +236,20 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 	 * @return
 	 */
 	protected abstract Number getColumnValue(EL element);
+
+	/**
+	 * @return the width
+	 */
+	public int getWidth()
+	{
+		return width;
+	}
+
+	/**
+	 * @return the height
+	 */
+	public int getHeight()
+	{
+		return height;
+	}
 }

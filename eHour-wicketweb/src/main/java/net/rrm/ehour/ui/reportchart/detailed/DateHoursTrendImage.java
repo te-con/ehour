@@ -24,7 +24,7 @@ import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.DateRowKey;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.IModel;
 
 /**
  * Hours per date chart
@@ -35,12 +35,9 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	private static final long serialVersionUID = -7877973718547907932L;
 	private Locale locale;
 	
-	
-//	private 
-	
-	public DateHoursTrendImage(String id, Model dataModel, int width, int height)
+	public DateHoursTrendImage(String id, IModel dataModel, int width, int height, int seriesColumn)
 	{
-		super(id, dataModel, width, height);
+		super(id, dataModel, width, height, seriesColumn);
 		
 		locale = EhourWebSession.getSession().getEhourConfig().getLocale();
 	}
@@ -93,6 +90,8 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 		{
 			default:
 				return element.getProjectName();
+			case 4:
+				return element.getUserLastName();
 		}
 	}
 }

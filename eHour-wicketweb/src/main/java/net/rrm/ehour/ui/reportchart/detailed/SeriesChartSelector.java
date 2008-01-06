@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.panel.report.TreeReportColumn;
 
@@ -21,9 +22,11 @@ import org.apache.wicket.model.ResourceModel;
  * @author Thies
  *
  */
-public class SeriesChartSelector extends Panel
+public class SeriesChartSelector<RE extends ReportElement> extends Panel
 {
 	private static final long serialVersionUID = 1L;
+	private AbstractTrendChartImage<RE>	img;
+	
 
 	/**
 	 * 
@@ -31,9 +34,11 @@ public class SeriesChartSelector extends Panel
 	 * @param config
 	 * @param targetImage
 	 */
-	public SeriesChartSelector(String id, ReportConfig config, final AbstractTrendChartImage<?> targetImage)
+	public SeriesChartSelector(String id, ReportConfig config, final AbstractTrendChartImage<RE> targetImage, final TrendChartImageFactory<RE> imgFactory)
 	{
 		super(id);
+		
+		this.img = targetImage;
 		
 		List<Serializable> columns = new ArrayList<Serializable>();
 		
@@ -56,7 +61,14 @@ public class SeriesChartSelector extends Panel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				System.out.println(columnSelection.getInput());
+				int idx = (columnSelection.getInput() != null) ? Integer.parseInt(columnSelection.getInput()) : 0;
+				
+				AbstractTrendChartImage<RE> newImg = imgFactory.getTrendChartImage(idx, targetImage.getModel());
+				
+				img.replaceWith(newImg);
+				target.addComponent(newImg);
+				
+				img = newImg;
 			}
 		});	
 		

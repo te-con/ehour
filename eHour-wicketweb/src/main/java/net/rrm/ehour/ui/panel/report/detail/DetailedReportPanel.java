@@ -18,15 +18,19 @@
 package net.rrm.ehour.ui.panel.report.detail;
 
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.reportchart.detailed.AbstractTrendChartImage;
 import net.rrm.ehour.ui.reportchart.detailed.DateHoursTrendImage;
 import net.rrm.ehour.ui.reportchart.detailed.SeriesChartSelector;
+import net.rrm.ehour.ui.reportchart.detailed.TrendChartImageFactory;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
@@ -47,11 +51,23 @@ public class DetailedReportPanel extends AbstractReportPanel
 		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel"));
 		
 		Model dataModel = new Model(data);
+		
+		DateHoursTrendImageFactory chartFactory = new DateHoursTrendImageFactory();
 
 		// hours per customer
-		DateHoursTrendImage chart = new DateHoursTrendImage("hoursChart", dataModel, 700, chartHeight);
+		AbstractTrendChartImage<FlatReportElement> chart = chartFactory.getTrendChartImage(0, dataModel);
 		greyBorder.add(chart);	
 		
-		greyBorder.add(new SeriesChartSelector("serieChartSelector", ReportConfig.DETAILED_REPORT, chart));
+		greyBorder.add(new SeriesChartSelector<FlatReportElement>("serieChartSelector", ReportConfig.DETAILED_REPORT, chart, chartFactory));
+	}
+	
+	class DateHoursTrendImageFactory implements TrendChartImageFactory<FlatReportElement>
+	{
+
+		public AbstractTrendChartImage<FlatReportElement> getTrendChartImage(int seriesColumn, IModel model)
+		{
+			return  new DateHoursTrendImage("hoursChart", model, 700, chartHeight, seriesColumn);
+		}
+		
 	}
 }

@@ -34,7 +34,7 @@ import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.IModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
@@ -61,9 +61,13 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 * @param width
 	 * @param height
 	 */
-	public AbstractTrendChartImage(String id, Model dataModel, int width, int height)
+	public AbstractTrendChartImage(String id, IModel dataModel, int width, int height, int seriesColumn)
 	{
 		super(id, dataModel, width, height);
+		
+		setOutputMarkupId(true);
+		
+		this.seriesColumnIndex = seriesColumn;
 	}
 	
 	/**
@@ -194,13 +198,4 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 */
 	@SuppressWarnings("unchecked")
 	protected abstract Comparable getSeriesKey(EL element);
-
-	/**
-	 * Set column for series
-	 * @param column
-	 */
-	public void setSeriesColumn(int columnIndex)
-	{
-		seriesColumnIndex = columnIndex;
-	}
 }
