@@ -31,8 +31,14 @@ public enum ReportConfig
 	// constructors like these might be a bit over the top..
 	// take note, the columnResourceKey is used for serie creation with trend charts (pardon my English, it's late.. or early in the morning)
 	DETAILED_REPORT (new TreeReportColumn[]{
-						new TreeReportColumn("userReport.report.customer"),
-						new TreeReportColumn("userReport.report.project"),
+						new TreeReportColumn("userReport.report.customer",
+													TreeReportColumn.COLUMN_VISIBLE,
+													TreeReportColumn.COLUMN_NODUPLICATES,
+													true),
+						new TreeReportColumn("userReport.report.project",
+													TreeReportColumn.COLUMN_VISIBLE,
+													TreeReportColumn.COLUMN_NODUPLICATES,
+													true),
 						new TreeReportColumn("userReport.report.date",
 													DateModel.class,
 													new Object[]{DateModel.DATESTYLE_FULL_SHORT, ""},
@@ -41,7 +47,8 @@ public enum ReportConfig
 													TreeReportColumn.ColumnType.DATE),
 						new TreeReportColumn("userReport.report.user",
 													TreeReportColumn.COLUMN_VISIBLE,
-													TreeReportColumn.COLUMN_ALLOWDUPLICATES),
+													TreeReportColumn.COLUMN_ALLOWDUPLICATES,
+													true),
 						new TreeReportColumn("userReport.report.comment",
 													TreeReportColumn.COLUMN_VISIBLE,
 													TreeReportColumn.COLUMN_ALLOWDUPLICATES),

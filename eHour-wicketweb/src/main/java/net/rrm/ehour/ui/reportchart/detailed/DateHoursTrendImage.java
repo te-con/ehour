@@ -90,6 +90,10 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 		{
 			return element.getUserLastName();	
 		}
+		else if (seriesColumnIndex.equals("userReport.report.customer") )
+		{
+			return element.getCustomerName();
+		}
 		else
 		{
 			return element.getProjectName();

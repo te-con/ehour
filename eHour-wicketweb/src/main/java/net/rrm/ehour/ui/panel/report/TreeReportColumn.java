@@ -46,16 +46,10 @@ public class TreeReportColumn implements Serializable
 	private Object[]						conversionModelConstructorParams;
 	private Class<?>[]					conversionModelConstructorParamTypes; // needed because types can't always be determined of proxied objects 
 	private boolean					allowDuplicates;
-	private boolean					chartSeriesColumn = true;
-	
-	
+	private boolean					chartSeriesColumn;
 	
 	private ColumnType	columnType = ColumnType.OTHER;
 	
-	
-	public TreeReportColumn()
-	{
-	}
 
 	public TreeReportColumn(String columnHeaderResourceKey)
 	{
@@ -71,12 +65,20 @@ public class TreeReportColumn implements Serializable
 	{
 		this(columnHeaderResourceKey, null, null, visible);
 	}
-
+	
 	public TreeReportColumn(String columnHeaderResourceKey, boolean visible, boolean allowDuplicates)
 	{
 		this(columnHeaderResourceKey, null, visible, allowDuplicates, ColumnType.OTHER);
 	}	
 
+	public TreeReportColumn(String columnHeaderResourceKey, boolean visible, boolean allowDuplicates, boolean chartSeriesColumn)
+	{
+		this(columnHeaderResourceKey, null, visible, allowDuplicates, ColumnType.OTHER);
+		
+		this.chartSeriesColumn = chartSeriesColumn;
+	}	
+	
+	
 	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel)
 	{
 		this(columnHeaderResourceKey, conversionModel, null, true);
