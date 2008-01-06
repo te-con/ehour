@@ -61,14 +61,22 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				int idx = (columnSelection.getInput() != null) ? Integer.parseInt(columnSelection.getInput()) : 0;
+				String selectedColumn = null;
 				
-				AbstractTrendChartImage<RE> newImg = imgFactory.getTrendChartImage(idx, targetImage.getModel());
+				if (model.getObject() != null)
+				{
+					selectedColumn = ((TreeReportColumn) model.getObject()).getColumnHeaderResourceKey();
+				}
 				
-				img.replaceWith(newImg);
-				target.addComponent(newImg);
-				
-				img = newImg;
+				if (selectedColumn != null)
+				{
+					AbstractTrendChartImage<RE> newImg = imgFactory.getTrendChartImage(selectedColumn, targetImage.getModel());
+					
+					img.replaceWith(newImg);
+					target.addComponent(newImg);
+					
+					img = newImg;
+				}
 			}
 		});	
 		

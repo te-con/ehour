@@ -8,5 +8,11 @@ import org.apache.wicket.model.IModel;
 
 public interface TrendChartImageFactory<RE extends ReportElement> extends Serializable
 {
-	public AbstractTrendChartImage<RE> getTrendChartImage(int seriesColumn, IModel model);
+	/**
+	 * Create image
+	 * @param seriesColumn column resource key of selected column for series separation
+	 * @param model
+	 * @return
+	 */
+	public AbstractTrendChartImage<RE> getTrendChartImage(String seriesColumn, IModel model);
 }

@@ -52,7 +52,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 {
 	private static final Paint[] seriePaints = new Paint[]{new Color(0xa3bcd8), new Color(0x65d460), new Color(0xbebd4a), new Color(0xff6b51), new Color(0x519fff)};
 	
-	protected int seriesColumnIndex = 0;
+	protected String seriesColumnIndex;
 	
 	/**
 	 * 
@@ -61,7 +61,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 * @param width
 	 * @param height
 	 */
-	public AbstractTrendChartImage(String id, IModel dataModel, int width, int height, int seriesColumn)
+	public AbstractTrendChartImage(String id, IModel dataModel, int width, int height, String seriesColumn)
 	{
 		super(id, dataModel, width, height);
 		

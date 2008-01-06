@@ -50,21 +50,25 @@ public class DetailedReportPanel extends AbstractReportPanel
 		
 		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel"));
 		
-		Model dataModel = new Model(data);
-		
 		DateHoursTrendImageFactory chartFactory = new DateHoursTrendImageFactory();
 
 		// hours per customer
-		AbstractTrendChartImage<FlatReportElement> chart = chartFactory.getTrendChartImage(0, dataModel);
+		AbstractTrendChartImage<FlatReportElement> chart = chartFactory.getTrendChartImage("userReport.report.project", new Model(data));
 		greyBorder.add(chart);	
 		
 		greyBorder.add(new SeriesChartSelector<FlatReportElement>("serieChartSelector", ReportConfig.DETAILED_REPORT, chart, chartFactory));
 	}
-	
+
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
 	class DateHoursTrendImageFactory implements TrendChartImageFactory<FlatReportElement>
 	{
+		private static final long serialVersionUID = 1L;
 
-		public AbstractTrendChartImage<FlatReportElement> getTrendChartImage(int seriesColumn, IModel model)
+		public AbstractTrendChartImage<FlatReportElement> getTrendChartImage(String seriesColumn, IModel model)
 		{
 			return  new DateHoursTrendImage("hoursChart", model, 700, chartHeight, seriesColumn);
 		}

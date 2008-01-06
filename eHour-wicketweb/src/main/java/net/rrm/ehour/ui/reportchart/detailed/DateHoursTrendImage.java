@@ -35,7 +35,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	private static final long serialVersionUID = -7877973718547907932L;
 	private Locale locale;
 	
-	public DateHoursTrendImage(String id, IModel dataModel, int width, int height, int seriesColumn)
+	public DateHoursTrendImage(String id, IModel dataModel, int width, int height, String seriesColumn)
 	{
 		super(id, dataModel, width, height, seriesColumn);
 		
@@ -86,12 +86,13 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	@Override
 	protected Comparable<?> getSeriesKey(FlatReportElement element)
 	{
-		switch (seriesColumnIndex)
+		if (seriesColumnIndex.equals("userReport.report.user") )
 		{
-			default:
-				return element.getProjectName();
-			case 4:
-				return element.getUserLastName();
+			return element.getUserLastName();	
+		}
+		else
+		{
+			return element.getProjectName();
 		}
 	}
 }

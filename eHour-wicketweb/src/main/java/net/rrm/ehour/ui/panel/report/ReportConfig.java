@@ -29,6 +29,7 @@ import net.rrm.ehour.ui.panel.report.user.TurnoverTreeReportColumn;
 public enum ReportConfig
 {
 	// constructors like these might be a bit over the top..
+	// take note, the columnResourceKey is used for serie creation with trend charts (pardon my English, it's late.. or early in the morning)
 	DETAILED_REPORT (new TreeReportColumn[]{
 						new TreeReportColumn("userReport.report.customer"),
 						new TreeReportColumn("userReport.report.project"),
