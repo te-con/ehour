@@ -20,8 +20,6 @@ package net.rrm.ehour.ui.reportchart.detailed;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +29,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.reportchart.AbstractChartImage;
+import net.rrm.ehour.ui.reportchart.UpdatingTimeSeries;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
@@ -82,7 +81,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 				"Date", // domain axis label
 				getLocalizer().getString(getValueAxisLabelKey(), this), // range axis label
 				dataset, // data
-				false, // include legend
+				true, // include legend
 				false, // tooltips?
 				false // URLs?
 				);
@@ -105,7 +104,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 		XYItemRenderer renderer = (XYItemRenderer) plot.getRenderer();
 		Font rendererTitleFont = new Font("SansSerif", Font.PLAIN, 10);
 		renderer.setBaseItemLabelFont(rendererTitleFont);
-		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
+//		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
 		renderer.setItemLabelFont(rendererTitleFont);
 		renderer.setItemLabelPaint(new Color(0xf9f9f9));
 		
@@ -125,54 +124,74 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	@SuppressWarnings("unchecked")
 	private TimeSeriesCollection createDataset(ReportData reportData, EhourConfig config)
 	{
-		TimeSeries 		dataset;
-		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
-		ChartRowKey		rowKey;
-		Number 			value;
-		List<ChartRowKey>	keys;
+		Map<Comparable, TimeSeries> timeSeries = new HashMap<Comparable, TimeSeries>();
 		
+		ChartRowKey			rowKey;
+		Number 					value;
+		
+		// 
 		List<Date> dates = DateUtil.createDateSequence(reportData.getReportCriteria().getReportRange(), config);
-		
-		dataset = new TimeSeries("test");
-		
-		for (Date date : dates)
-		{
-			dataset.add(new Day(date), 0);
-		}
 
+		//
 		for (ReportElement element : reportData.getReportElements())
 		{
-			rowKey = getRowKey((EL)element);
+			EL castedElement = (EL)element;
 			
-			value = getColumnValue((EL)element);
+			TimeSeries timeSerie;
+			
+			Comparable seriesKey = getSeriesKey(castedElement);
+			
+			if (timeSeries.containsKey(seriesKey))
+			{
+				timeSerie = timeSeries.get(seriesKey);
+			}
+			else
+			{
+				timeSerie = new UpdatingTimeSeries(seriesKey);
+				nullifyTimeSeries(timeSerie, dates);
+				timeSeries.put(seriesKey, timeSerie);
+			}
+			
+			rowKey = getRowKey(castedElement);
+			value = getColumnValue(castedElement);
 
 			if (value == null)
 			{
 				value = new Double(0);
 			}
-
-			if (valueMap.containsKey(rowKey))
-			{
-				value = value.doubleValue() + valueMap.get(rowKey).doubleValue();
-				valueMap.put(rowKey, value);
-			} else
-			{
-				valueMap.put(rowKey, value);
-			}
-		}
-
-		keys = new ArrayList<ChartRowKey>(valueMap.keySet());
-		
-		Collections.sort(keys);
-		
-		for (ChartRowKey rowKeyDate : keys)
-		{
-			dataset.addOrUpdate(new Day((Date)rowKeyDate.getName()), valueMap.get(rowKeyDate));
+			
+			timeSerie.addOrUpdate(new Day((Date) rowKey.getName()), value);
 		}
 
 		TimeSeriesCollection collection = new TimeSeriesCollection();
-		collection.addSeries(dataset);
+
+		for (TimeSeries timeSerie : timeSeries.values())
+		{
+			collection.addSeries(timeSerie);	
+		}
+		
+		
 		return collection;
-	}	
+	}
+	
+	/**
+	 * Set all dates in a series to 0
+	 * @param series
+	 * @param dates
+	 */
+	private void nullifyTimeSeries(TimeSeries series, List<Date> dates)
+	{
+		for (Date date : dates)
+		{
+			series.add(new Day(date), 0);
+		}		
+	}
+	
+	/**
+	 * Get series key
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected abstract Comparable getSeriesKey(EL element);
 
 }

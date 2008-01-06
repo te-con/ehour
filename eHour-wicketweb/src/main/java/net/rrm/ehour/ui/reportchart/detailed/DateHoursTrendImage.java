@@ -79,4 +79,15 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 		return "hours";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.reportchart.detailed.AbstractTrendChartImage#getSeriesKey(net.rrm.ehour.report.reports.element.ReportElement)
+	 */
+	@Override
+	protected Comparable getSeriesKey(FlatReportElement element)
+	{
+		// TODO Auto-generated method stub
+		return element.getUserLastName();
+	}
+
 }
