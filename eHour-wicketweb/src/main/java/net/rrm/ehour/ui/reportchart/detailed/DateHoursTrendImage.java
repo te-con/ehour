@@ -84,7 +84,28 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	 * @see net.rrm.ehour.ui.reportchart.detailed.AbstractTrendChartImage#getSeriesKey(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
-	protected Comparable<?> getSeriesKey(FlatReportElement element)
+	protected Object getSeriesKey(FlatReportElement element)
+	{
+		if (seriesColumnIndex.equals("userReport.report.user") )
+		{
+			return element.getUserId();	
+		}
+		else if (seriesColumnIndex.equals("userReport.report.customer") )
+		{
+			return element.getCustomerId();
+		}
+		else
+		{
+			return element.getProjectId();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.reportchart.detailed.AbstractTrendChartImage#getSeriesName(net.rrm.ehour.report.reports.element.ReportElement)
+	 */
+	@Override
+	protected Comparable<?> getSeriesName(FlatReportElement element)
 	{
 		if (seriesColumnIndex.equals("userReport.report.user") )
 		{

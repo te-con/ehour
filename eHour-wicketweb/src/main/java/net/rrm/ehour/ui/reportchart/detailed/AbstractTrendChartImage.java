@@ -50,7 +50,7 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 public abstract class AbstractTrendChartImage<EL extends ReportElement> extends AbstractChartImage<EL>
 {
-	private static final Paint[] seriePaints = new Paint[]{new Color(0xa3bcd8), new Color(0x65d460), new Color(0xbebd4a), new Color(0xff6b51), new Color(0x519fff)};
+	private static final Paint[] seriePaints = new Paint[]{new Color(0xa3bcd8), new Color(0xff6b51), new Color(0xbebd4a), new Color(0x65d460), new Color(0x519fff)};
 	
 	protected String seriesColumnIndex;
 	
@@ -129,7 +129,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	@SuppressWarnings("unchecked")
 	private TimeSeriesCollection createDataset(ReportData reportData, EhourConfig config)
 	{
-		Map<Comparable, TimeSeries> timeSeries = new HashMap<Comparable, TimeSeries>();
+		Map<Object, TimeSeries> timeSeries = new HashMap<Object, TimeSeries>();
 		
 		ChartRowKey			rowKey;
 		Number 					value;
@@ -144,7 +144,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 			
 			TimeSeries timeSerie;
 			
-			Comparable seriesKey = getSeriesKey(castedElement);
+			Object seriesKey = getSeriesKey(castedElement);
 			
 			if (timeSeries.containsKey(seriesKey))
 			{
@@ -152,7 +152,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 			}
 			else
 			{
-				timeSerie = new UpdatingTimeSeries(seriesKey);
+				timeSerie = new UpdatingTimeSeries(getSeriesName(castedElement));
 				nullifyTimeSeries(timeSerie, dates);
 				timeSeries.put(seriesKey, timeSerie);
 			}
@@ -196,6 +196,12 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 * Get series key
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	protected abstract Comparable getSeriesKey(EL element);
+	protected abstract Object getSeriesKey(EL element);
+	
+	/**
+	 * Get series name
+	 * @param element
+	 * @return
+	 */
+	protected abstract Comparable<?> getSeriesName(EL element);
 }
