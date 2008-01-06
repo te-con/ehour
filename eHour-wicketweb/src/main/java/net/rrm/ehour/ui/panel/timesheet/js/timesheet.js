@@ -37,25 +37,3 @@ function toggleProjectRow(customerId)
 	var imgRow = document.getElementById("img" + customerId);
 	imgRow.childNodes[0].src = (toUp) ? imgUpOff.src : imgDownOff.src;
 }
-
-// count all booked hours and update the total
-function updatffeTotal()
-{
-	var form = document.getElementById('timesheetFormId');
-    var elements = form.elements;
-    var i;
-    var totalHours = 0;
-
-    for (i = 0;
-         i < elements.length;
-         i++)
-     {
-        if (elements[i].name.substr(0, 5) == "ehts_" ||
-	        elements[i].name.substr(0, 9) == "inactive_")
-        {
-            totalHours += elements[i].value * 1;
-        }
-     }
-
-    document.getElementById("totalHours").innerHTML = totalHours.toFixed(2);
-}

@@ -23,23 +23,22 @@
 
 	<scm>
 		<connection>
-			scm:svn:http://ehour.svn.sourceforge.net/svnroot/ehour/trunk
+			scm:svn:http://svn.te-con.nl/repos/ehour/
 		</connection>
 		<developerConnection>
-			scm:svn:https://ehour.svn.sourceforge.net/svnroot/ehour/trunk
+			scm:svn:http://svn.te-con.nl/repos/ehour/trunk/
 		</developerConnection>
-		<url>http://svn.sourceforge.net/ehour/</url>
 	</scm>
 
 	<issueManagement>
-		<system>Sourceforge bugtracker</system>
+		<system>eHour bugtracker</system>
 		<url>
-			http://sourceforge.net/tracker/?group_id=167867&amp;atid=844648/
+			http://www.ehour.nl/defects/
 		</url>
 	</issueManagement>
 	<ciManagement>
 		<system>continuum</system>
-		<url>http://www.ehour.nl/continuum/</url>
+		<url>http://dev.ehour.nl/continuum/</url>
 		<notifiers>
 			<notifier>
 				<configuration>
@@ -48,18 +47,9 @@
 			</notifier>
 		</notifiers>
 	</ciManagement>
-	<mailingLists>
-		<mailingList>
-			<name>eHour user support mailing list</name>
-			<post>ehour-users@lists.sourceforge.net</post>
-			<archive>
-				https://lists.sourceforge.net/lists/listinfo/ehour-users
-			</archive>
-		</mailingList>
-	</mailingLists>
 	<developers>
 		<developer>
-			<id>thiesede</id>
+			<id>thies</id>
 			<name>Thies Edeling</name>
 			<email>thies@te-con.nl</email>
 			<roles>
@@ -68,12 +58,6 @@
 			</roles>
 		</developer>
 	</developers>
-	<licenses>
-		<license>
-			<name>GPL</name>
-			<url>LICENSE.txt</url>
-		</license>
-	</licenses>
 
 	<dependencies>
 		<dependency>

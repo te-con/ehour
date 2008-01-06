@@ -173,9 +173,8 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-		         ENTRY_DATE
+		         ENTRY_DATE,
+		         ENTRY.DISPLAY_ORDER
 		         ]]>		         
 	</sql-query>	
-	
-	
 </hibernate-mapping>
