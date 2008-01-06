@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.reportchart.detailed;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GradientPaint;
+import java.awt.Paint;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +50,8 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 public abstract class AbstractTrendChartImage<EL extends ReportElement> extends AbstractChartImage<EL>
 {
+	private static final Paint[] seriePaints = new Paint[]{new Color(0xa3bcd8), new Color(0x65d460), new Color(0xbebd4a), new Color(0xff6b51), new Color(0x519fff)};
+	
 	/**
 	 * 
 	 * @param id
@@ -87,8 +89,6 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 				);
 
 		XYPlot plot = (XYPlot) chart.getPlot();
-		plot.setRangeGridlinePaint(Color.white);
-		plot.setBackgroundPaint(new Color(0x536e87));
 
 		TextTitle	title;
 		Font		chartTitleFont = new Font("SansSerif", Font.BOLD, 12);
@@ -104,14 +104,13 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 		XYItemRenderer renderer = (XYItemRenderer) plot.getRenderer();
 		Font rendererTitleFont = new Font("SansSerif", Font.PLAIN, 10);
 		renderer.setBaseItemLabelFont(rendererTitleFont);
-//		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
-		renderer.setItemLabelFont(rendererTitleFont);
-		renderer.setItemLabelPaint(new Color(0xf9f9f9));
+		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
 		
 		// set up gradient paints for series...
-		GradientPaint gradientPaint = new GradientPaint(0.0f, 0.0f, new Color(0xbfd9f6), 
-														0.0f, 0.0f, new Color(0xa3bcd8));
-		renderer.setPaint(gradientPaint);
+		for (int i = 0; i < dataset.getSeriesCount(); i++)
+		{
+			renderer.setSeriesPaint(i, seriePaints[i % seriePaints.length]);
+		}
 		
 		return chart;
 	}	

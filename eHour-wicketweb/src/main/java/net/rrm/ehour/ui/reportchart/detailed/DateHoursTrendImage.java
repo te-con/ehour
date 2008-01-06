@@ -87,7 +87,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	protected Comparable getSeriesKey(FlatReportElement element)
 	{
 		// TODO Auto-generated method stub
-		return element.getUserLastName();
+		return element.getProjectName();
 	}
 
 }
