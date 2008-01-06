@@ -40,12 +40,13 @@ public class TreeReportColumn implements Serializable
 	
 	
 	private static final long serialVersionUID = -6736366461333244457L;
-	private boolean						visible = true;
+	private boolean					visible = true;
 	private	String						columnHeaderResourceKey;
 	private Class<? extends IModel>		conversionModel;
-	private Object[]					conversionModelConstructorParams;
+	private Object[]						conversionModelConstructorParams;
 	private Class<?>[]					conversionModelConstructorParamTypes; // needed because types can't always be determined of proxied objects 
-	private boolean						allowDuplicates;
+	private boolean					allowDuplicates;
+	private boolean					chartSeriesColumn = true;
 	
 	
 	
@@ -250,5 +251,21 @@ public class TreeReportColumn implements Serializable
 	public void setAllowDuplicates(boolean allowDuplicates)
 	{
 		this.allowDuplicates = allowDuplicates;
+	}
+
+	/**
+	 * @return the chartSeriesColumn
+	 */
+	public boolean isChartSeriesColumn()
+	{
+		return chartSeriesColumn;
+	}
+
+	/**
+	 * @param chartSeriesColumn the chartSeriesColumn to set
+	 */
+	public void setChartSeriesColumn(boolean chartSeriesColumn)
+	{
+		this.chartSeriesColumn = chartSeriesColumn;
 	}
 }

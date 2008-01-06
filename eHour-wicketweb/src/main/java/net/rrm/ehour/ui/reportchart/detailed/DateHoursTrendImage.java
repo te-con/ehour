@@ -35,6 +35,9 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	private static final long serialVersionUID = -7877973718547907932L;
 	private Locale locale;
 	
+	
+//	private 
+	
 	public DateHoursTrendImage(String id, Model dataModel, int width, int height)
 	{
 		super(id, dataModel, width, height);
@@ -84,10 +87,12 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	 * @see net.rrm.ehour.ui.reportchart.detailed.AbstractTrendChartImage#getSeriesKey(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
-	protected Comparable getSeriesKey(FlatReportElement element)
+	protected Comparable<?> getSeriesKey(FlatReportElement element)
 	{
-		// TODO Auto-generated method stub
-		return element.getProjectName();
+		switch (seriesColumnIndex)
+		{
+			default:
+				return element.getProjectName();
+		}
 	}
-
 }

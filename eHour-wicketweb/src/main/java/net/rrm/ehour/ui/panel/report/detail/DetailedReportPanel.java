@@ -24,6 +24,7 @@ import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.reportchart.detailed.DateHoursTrendImage;
+import net.rrm.ehour.ui.reportchart.detailed.SeriesChartSelector;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
 import org.apache.wicket.model.Model;
@@ -49,6 +50,8 @@ public class DetailedReportPanel extends AbstractReportPanel
 
 		// hours per customer
 		DateHoursTrendImage chart = new DateHoursTrendImage("hoursChart", dataModel, 700, chartHeight);
-		greyBorder.add(chart);		
+		greyBorder.add(chart);	
+		
+		greyBorder.add(new SeriesChartSelector("serieChartSelector", ReportConfig.DETAILED_REPORT, chart));
 	}
 }
