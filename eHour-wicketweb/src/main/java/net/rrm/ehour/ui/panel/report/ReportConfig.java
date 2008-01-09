@@ -22,6 +22,8 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.report.user.TurnoverTreeReportColumn;
 
+import org.apache.wicket.model.Model;
+
 /**
  * All report types 
  **/
@@ -32,9 +34,7 @@ public enum ReportConfig
 	// take note, the columnResourceKey is used for serie creation with trend charts (pardon my English, it's late.. or early in the morning)
 	DETAILED_REPORT (new TreeReportColumn[]{
 						new TreeReportColumn("userReport.report.customer",
-													TreeReportColumn.COLUMN_VISIBLE,
-													TreeReportColumn.COLUMN_NODUPLICATES,
-													true),
+													TreeReportColumn.COLUMN_INVISIBLE),
 						new TreeReportColumn("userReport.report.project",
 													TreeReportColumn.COLUMN_VISIBLE,
 													TreeReportColumn.COLUMN_NODUPLICATES,
@@ -50,8 +50,10 @@ public enum ReportConfig
 													TreeReportColumn.COLUMN_ALLOWDUPLICATES,
 													true),
 						new TreeReportColumn("userReport.report.comment",
+													Model.class,
 													TreeReportColumn.COLUMN_VISIBLE,
-													TreeReportColumn.COLUMN_ALLOWDUPLICATES),
+													TreeReportColumn.COLUMN_ALLOWDUPLICATES,
+													TreeReportColumn.ColumnType.COMMENT),
 						new TreeReportColumn("userReport.report.hours",
 													FloatModel.class,
 													TreeReportColumn.COLUMN_VISIBLE,

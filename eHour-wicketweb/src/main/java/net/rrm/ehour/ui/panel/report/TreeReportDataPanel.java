@@ -118,34 +118,39 @@ public class TreeReportDataPanel extends Panel
 	private void addGrandTotal(TreeReport report, WebMarkupContainer parent)
 	{
 		RepeatingView	totalView = new RepeatingView("cell");
-		int				i = 0;
+		int				id = 0;
+		boolean			totalLabelAdded = false;
 
 		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
 		
 		// add cells
-		totalView.add(new Label(Integer.toString(i++), new ResourceModel("report.total")));
 		
-		for (; i < reportConfig.getReportColumns().length; i++)
+		
+		for (int column = 0; column < reportConfig.getReportColumns().length; column++, id++)
 		{
-			if (reportConfig.getReportColumns()[i].isVisible())
+			if (reportConfig.getReportColumns()[column].isVisible())
 			{
-				Label label = null;
+				Label label;
 				
-				if (reportConfig.getReportColumns()[i].getColumnType() == TreeReportColumn.ColumnType.HOUR)
+				if (reportConfig.getReportColumns()[column].getColumnType() == TreeReportColumn.ColumnType.HOUR)
 				{
-					label = new Label(Integer.toString(i), new FloatModel(report.getTotalHours() , config));
+					label = new Label(Integer.toString(id), new FloatModel(report.getTotalHours() , config));
 				}
-				else if (reportConfig.getReportColumns()[i].getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
+				else if (reportConfig.getReportColumns()[column].getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
 				{
-					label = new Label(Integer.toString(i), new CurrencyModel(report.getTotalTurnover(), config));
+					label = new Label(Integer.toString(id), new CurrencyModel(report.getTotalTurnover(), config));
 					label.setEscapeModelStrings(false);
+				}
+				else if (!totalLabelAdded)
+				{
+					label = new Label(Integer.toString(id), new ResourceModel("report.total"));
 				}
 				else
 				{
-					label = HtmlUtil.getNbspLabel(Integer.toString(i));
+					label = HtmlUtil.getNbspLabel(Integer.toString(id));
 				}
 				
-				addColumnTypeStyling(reportConfig.getReportColumns()[i].getColumnType(), label);
+				addColumnTypeStyling(reportConfig.getReportColumns()[column].getColumnType(), label);
 				totalView.add(label);
 			}
 		}
@@ -256,9 +261,34 @@ public class TreeReportDataPanel extends Panel
 	 */
 	private void addColumnTypeStyling(TreeReportColumn.ColumnType columnType, Label label)
 	{
-		if (columnType != TreeReportColumn.ColumnType.OTHER && label != null)
+		StringBuilder style = new StringBuilder();
+		
+		if (label != null)
 		{
-			label.add(new SimpleAttributeModifier("style", "text-align: right"));
+			if (columnType != TreeReportColumn.ColumnType.OTHER)
+			{
+				style.append("text-align: right;");
+			}
+			
+			if (columnType == TreeReportColumn.ColumnType.HOUR)
+			{
+				style.append("width: 40px;");
+			}
+			
+			if (columnType == TreeReportColumn.ColumnType.TURNOVER)
+			{
+				style.append("width: 75px;");
+			}
+			
+			if (columnType == TreeReportColumn.ColumnType.COMMENT)
+			{
+				style.append("width: 300px;");
+			}			
+			
+			if (!style.toString().isEmpty())
+			{
+				label.add(new SimpleAttributeModifier("style", style.toString()));
+			}
 		}
 	}
 
@@ -295,11 +325,11 @@ public class TreeReportDataPanel extends Panel
 			// add cells for a row
 			for (Serializable cellValue : rowValues)
 			{
+				thisCellValues.add(cellValue);
+
 				if (reportConfig.getReportColumns()[i].isVisible())
 				{
 					Label cellLabel;
-					
-					thisCellValues.add(cellValue);
 				
 					if (isDuplicate(i, cellValue))
 					{
@@ -326,7 +356,6 @@ public class TreeReportDataPanel extends Panel
 						cellLabel = new Label(Integer.toString(i), model);
 						addColumnTypeStyling(reportConfig.getReportColumns()[i].getColumnType(), cellLabel);
 					}
-					
 					
 					cells.add(cellLabel);
 				}
@@ -362,6 +391,11 @@ public class TreeReportDataPanel extends Panel
 		 */
 		private boolean isDuplicate(int i, Serializable cellValue)
 		{
+//			if (previousCellValues != null)
+//			{
+//				System.out.println(previousCellValues.get(i)+ " & " + cellValue);
+//			}
+			
 			return (!reportConfig.getReportColumns()[i].isAllowDuplicates()
 					&& previousCellValues != null
 					&& previousForPage == getCurrentPage()

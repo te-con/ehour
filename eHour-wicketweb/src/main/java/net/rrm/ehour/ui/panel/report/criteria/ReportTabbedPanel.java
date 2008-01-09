@@ -43,7 +43,7 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	 * @param id
 	 * @param tabs
 	 */
-	public ReportTabbedPanel(String id, List<AbstractTab> tabs)
+	public ReportTabbedPanel(final String id, final List<AbstractTab> tabs)
 	{
 		super(id, tabs);
 		
@@ -55,13 +55,13 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	 * @see org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel#newLink(java.lang.String, int)
 	 */
 	@Override
-	protected WebMarkupContainer newLink(String linkId, final int index)
+	protected WebMarkupContainer newLink(final String linkId, final int index)
 	{
 		return new AjaxFallbackLink(linkId)
 		{
 			private static final long serialVersionUID = 1L;
 
-			public void onClick(AjaxRequestTarget target)
+			public void onClick(final AjaxRequestTarget target)
 			{
 				setSelectedTab(index);
 				if (target != null)
@@ -86,14 +86,14 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	 * @param newTab make sure to use a KeyResourceModel for the title
 	 */
 	@SuppressWarnings("unchecked")
-	public void addTab(ITab newTab)
+	public void addTab(final ITab newTab)
 	{
-		List<ITab> 	tabList = getTabs();
+		final List<ITab> 	tabList = getTabs();
 		boolean		tabAdded = false;
-		String		key = ((KeyResourceModel)newTab.getTitle()).getKey();
+		final String		key = ((KeyResourceModel)newTab.getTitle()).getKey();
 		int			tabIndex = 0;
 		
-		for (ITab tab : tabList)
+		for (final ITab tab : tabList)
 		{
 			if ( ((KeyResourceModel)tab.getTitle()).getKey().equals(key))
 			{
