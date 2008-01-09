@@ -144,6 +144,7 @@ public class TreeReportDataPanel extends Panel
 				else if (!totalLabelAdded)
 				{
 					label = new Label(Integer.toString(id), new ResourceModel("report.total"));
+					totalLabelAdded = true;
 				}
 				else
 				{
@@ -272,17 +273,17 @@ public class TreeReportDataPanel extends Panel
 			
 			if (columnType == TreeReportColumn.ColumnType.HOUR)
 			{
-				style.append("width: 40px;");
+				style.append("max-width: 40px;");
 			}
 			
 			if (columnType == TreeReportColumn.ColumnType.TURNOVER)
 			{
-				style.append("width: 75px;");
+				style.append("max-width: 75px;");
 			}
 			
 			if (columnType == TreeReportColumn.ColumnType.COMMENT)
 			{
-				style.append("width: 300px;");
+				style.append("max-width: 300px;");
 			}			
 			
 			if (!style.toString().isEmpty())
