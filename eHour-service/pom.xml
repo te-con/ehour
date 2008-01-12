@@ -42,6 +42,13 @@
 			</activation>
 			<build>
 				<plugins>
+			      <plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-jar-plugin</artifactId>	
+						<configuration>
+							<fileName>eHour-prod-derby-${parent.version}</fileName>
+						</configuration>
+					</plugin>
 					<plugin>
 						<inherited>true</inherited>
 						<groupId>org.apache.maven.plugins</groupId>

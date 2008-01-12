@@ -13,6 +13,7 @@
 	<modules>
 		<module>eHour-service</module>
 		<module>eHour-wicketweb</module>
+		<module>eHour-web</module>
 		<module>eHour-standalone</module>		
 	</modules>
 
