@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
 	<version>0.7.2-SNAPSHOT</version>
@@ -9,19 +7,16 @@
 	<packaging>pom</packaging>
 	<name>eHour</name>
 	<url>http://www.ehour.nl/</url>
-
 	<modules>
 		<module>eHour-service</module>
 		<module>eHour-wicketweb</module>
 		<module>eHour-web</module>
-		<module>eHour-standalone</module>		
+		<module>eHour-standalone</module>
 	</modules>
-
 	<description>
 		eHour - web-based time registration for consultancy companies
 		and other project based businesses
 	</description>
-
 	<scm>
 		<connection>
 			scm:svn:http://svn.te-con.nl/repos/ehour/
@@ -30,7 +25,6 @@
 			scm:svn:http://svn.te-con.nl/repos/ehour/trunk/
 		</developerConnection>
 	</scm>
-
 	<issueManagement>
 		<system>eHour bugtracker</system>
 		<url>
@@ -59,7 +53,6 @@
 			</roles>
 		</developer>
 	</developers>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -92,34 +85,33 @@
 			<groupId>org.acegisecurity</groupId>
 			<artifactId>acegi-security</artifactId>
 			<version>1.0.6</version>
-                        <exclusions>
-                                <exclusion>
-                                        <groupId>org.springframework</groupId>
-                                        <artifactId>spring-remoting</artifactId>
-                                </exclusion>
-                                <exclusion>
-                                        <groupId>org.springframework</groupId>
-                                        <artifactId>spring-support</artifactId>
-                                </exclusion>
-                                <exclusion>
-                                        <groupId>org.springframework</groupId>
-                                        <artifactId>spring-web</artifactId>
-                                </exclusion>
-                                <exclusion>
-                                        <groupId>org.springframework</groupId>
-                                        <artifactId>spring-mock</artifactId>
-                                </exclusion>
-                                <exclusion>
-                                        <groupId>org.springframework</groupId>
-                                        <artifactId>spring-jdbc</artifactId>
-                                </exclusion>								
-                                <exclusion>
-                                        <groupId>org.springframework</groupId>
-                                        <artifactId>spring-core</artifactId>
-                                </exclusion>								
-                        </exclusions>
-                			
-		</dependency>		
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-remoting</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-support</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-mock</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-jdbc</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -130,26 +122,35 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-        <plugin>
-            <artifactId>maven-clover-plugin</artifactId>
-            <groupId>com.atlassian.maven.plugins</groupId>
-            <configuration>
-                <licenseLocation>${clover.licenseLocation}</licenseLocation>
-				  <jdk>1.5</jdk>
-				  <generateXml>true</generateXml>
-				  <generateHistorical>true</generateHistorical>
-            </configuration>
-        <executions>
-          <execution>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>instrument</goal>
-			<goal>aggregate</goal>
-            </goals>
-          </execution>
-        </executions>			
-        </plugin>
-	
+			<plugin>
+				<artifactId>maven-clover-plugin</artifactId>
+				<groupId>com.atlassian.maven.plugins</groupId>
+				<configuration>
+					<licenseLocation>${clover.licenseLocation}</licenseLocation>
+					<jdk>1.5</jdk>
+					<generateXml>true</generateXml>
+					<generateHistorical>true</generateHistorical>
+					<historyDir>/home/java/clover/history/ehour/</historyDir>
+				</configuration>
+				<executions>
+					<execution>
+						<id>main</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>instrument</goal>
+							<goal>aggregate</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>site</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>instrument</goal>
+							<goal>aggregate</goal>
+						</goals>
+					</execution>
+				</executions>				
+			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
@@ -158,17 +159,15 @@
 					</includes>
 				</configuration>
 			</plugin>
-			
-      <plugin>
-       <groupId>org.apache.maven.plugins</groupId>
-       <artifactId>maven-site-plugin</artifactId>			
-	   <configuration>
-		<stagingDirectory>/home/www/dev/ehour.nl/html/ehoursite</stagingDirectory>
-	   </configuration>
-      </plugin>	   
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<stagingDirectory>/home/www/dev/ehour.nl/html/ehoursite</stagingDirectory>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 	<profiles>
 		<profile>
 			<id>env-prod-derby</id>
@@ -190,7 +189,7 @@
 							</descriptors>
 						</configuration>
 					</plugin>
-			</plugins>
+				</plugins>
 			</build>
 		</profile>
 		<profile>
@@ -262,9 +261,7 @@
 				</plugins>
 			</build>
 		</profile>
-
-	</profiles>		
-	
+	</profiles>
 	<reporting>
 		<plugins>
 			<plugin>
@@ -292,9 +289,12 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>com.atlassian.maven.plugins</groupId>
+				<artifactId>maven-clover-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</reporting>
-
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
