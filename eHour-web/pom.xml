@@ -15,7 +15,7 @@
 	<version>${parent.version}</version>
 
 	<build>
-		<finalName>eHour-wicketweb</finalName>
+		<finalName>eHour-web</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
