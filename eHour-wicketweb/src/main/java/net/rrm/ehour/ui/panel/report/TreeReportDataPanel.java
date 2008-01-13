@@ -284,17 +284,17 @@ public class TreeReportDataPanel extends Panel
 			
 			if (columnType == TreeReportColumn.ColumnType.HOUR)
 			{
-				style.append("max-width: 40px;");
+				style.append("width: 40px;");
 			}
 			
 			if (columnType == TreeReportColumn.ColumnType.TURNOVER)
 			{
-				style.append("max-width: 75px;");
+				style.append("width: 70px;");
 			}
 			
 			if (columnType == TreeReportColumn.ColumnType.COMMENT)
 			{
-				style.append("max-width: 300px;");
+				style.append("width: 300px;");
 			}			
 			
 			if (!style.toString().isEmpty())
