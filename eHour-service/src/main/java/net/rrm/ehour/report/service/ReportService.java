@@ -86,12 +86,11 @@ public interface ReportService
 	
 	/**
 	 * Get report data for project
-	 * @param project
+	 * @param projects
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatReportElement> getReportData(Project project, DateRange dateRange);
-	
+	public List<FlatReportElement> getReportData(Project[] projects, DateRange dateRange);
 	
 	/**
 	 * Get project manager report

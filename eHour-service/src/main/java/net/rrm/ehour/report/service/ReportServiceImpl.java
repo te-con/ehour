@@ -436,8 +436,15 @@ public class ReportServiceImpl implements ReportService
 	{
 		List<ProjectAssignment> assignments = projectAssignmentDAO.findProjectAssignmentsForCustomer(customer, dateRange);
 		List<Serializable> assignmentIds = ReportUtil.getPKsFromDomainObjects(assignments);
-
-		return getReportData(assignmentIds, dateRange);
+		
+		if (assignmentIds.isEmpty())
+		{
+			return new ArrayList<FlatReportElement>();
+		}
+		else
+		{
+			return getReportData(assignmentIds, dateRange);
+		}
 	}
 
 	/*
@@ -453,10 +460,15 @@ public class ReportServiceImpl implements ReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getReportData(net.rrm.ehour.project.domain.Project, net.rrm.ehour.data.DateRange)
 	 */
-	public List<FlatReportElement> getReportData(Project project, DateRange dateRange)
+	public List<FlatReportElement> getReportData(Project[] projects, DateRange dateRange)
 	{
-		List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignments(project, dateRange);
-		List<Serializable> assignmentIds = ReportUtil.getPKsFromDomainObjects(assignments);
+		List<Serializable> assignmentIds = new ArrayList<Serializable>();
+		
+		for (Project project : projects)
+		{
+			List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignments(project, dateRange);
+			assignmentIds.addAll(ReportUtil.getPKsFromDomainObjects(assignments));
+		}
 
 		return getReportData(assignmentIds, dateRange);
 	}
