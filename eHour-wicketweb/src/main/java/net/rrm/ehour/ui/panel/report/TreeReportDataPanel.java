@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.model.CurrencyModel;
 import net.rrm.ehour.ui.model.DateModel;
@@ -79,7 +80,6 @@ public class TreeReportDataPanel extends Panel
 		add(blueBorder);
 		blueBorder.setOutputMarkupId(true);
 		
-		
 		if (excelResourceName != null)
 		{
 			final String reportId = report.getReportId();
@@ -92,10 +92,7 @@ public class TreeReportDataPanel extends Panel
 
 			EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
 			
-			add(new Label("reportHeader",new StringResourceModel("report.header", 
-											this, null, 
-													new Object[]{new DateModel(report.getReportRange().getDateStart(), config),
-										 			new DateModel(report.getReportRange().getDateEnd(), config)})));		
+			add(getReportHeaderLabel("reportHeader", report.getReportRange(), config));
 		}
 		else
 		{
@@ -107,7 +104,21 @@ public class TreeReportDataPanel extends Panel
 		addReportData(report, blueBorder);
 		addGrandTotal(report, blueBorder);
 		
-		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(this.getClass(), "style/reportStyle.css")));
+		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
+	}
+	
+	/**
+	 * Get report header label
+	 * @param reportRange
+	 * @param config
+	 * @return
+	 */
+	protected Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config)
+	{
+		return new Label(id, new StringResourceModel("report.header", 
+													this, null, 
+													new Object[]{new DateModel(reportRange.getDateStart(), config),
+												 	new DateModel(reportRange.getDateEnd(), config)}));	
 	}
 	
 	/**

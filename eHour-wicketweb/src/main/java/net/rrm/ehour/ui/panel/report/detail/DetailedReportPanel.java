@@ -17,9 +17,12 @@
 
 package net.rrm.ehour.ui.panel.report.detail;
 
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
@@ -30,8 +33,10 @@ import net.rrm.ehour.ui.reportchart.detailed.SeriesChartSelector;
 import net.rrm.ehour.ui.reportchart.detailed.TrendChartImageFactory;
 import net.rrm.ehour.ui.util.CommonUIStaticData;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 
 /**
  * Detailed report
@@ -41,14 +46,27 @@ public class DetailedReportPanel extends AbstractReportPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	public DetailedReportPanel(String id, TreeReport reportData, ReportData data)
+	public DetailedReportPanel(String id, final TreeReport reportData, final ReportData data)
 	{
 		super(id);
 		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonUIStaticData.GREYFRAME_WIDTH);
 		add(greyBorder);
 		
-		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel"));
+		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel")
+		{
+			private static final long serialVersionUID = 1L;
+
+			protected Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config)
+			{
+				return new Label(id, new StringResourceModel("detailed.report.header", 
+						this, null, 
+						new Object[]{data.getReportCriteria().getUserCriteria().getCustomer().getName(),
+										new DateModel(reportRange.getDateStart(), config),
+					 					new DateModel(reportRange.getDateEnd(), config)}));	
+			}
+		}
+		);
 		
 		DateHoursTrendImageFactory chartFactory = new DateHoursTrendImageFactory();
 
