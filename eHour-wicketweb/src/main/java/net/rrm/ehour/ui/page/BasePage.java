@@ -17,8 +17,10 @@
 package net.rrm.ehour.ui.page;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.config.PageConfig;
 import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -26,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -35,9 +38,6 @@ import org.apache.wicket.model.ResourceModel;
 
 public abstract class BasePage extends WebPage implements AjaxAwareContainer
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7090746921483608658L;
 
 	/**
@@ -49,7 +49,7 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	{
 		super(model);
 
-		add(new MainNavPanel("mainNav"));
+		add(getMainNavPanel("mainNav"));
 		add(new Label("pageTitle", pageTitle));
 	}
 	
@@ -67,13 +67,32 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	}	
 	
 	/**
-	 * Get config
+	 * Get main navigation panel
+	 * @param id
+	 * @return
+	 */
+	protected Panel getMainNavPanel(String id)
+	{
+		return getPageConfig().getMainNavPanel(id);
+	}
+	
+	/**
+	 * Get ehour application config
 	 * @return
 	 */
 	protected EhourConfig getEhourConfig()
 	{
 		EhourWebSession session = (EhourWebSession)getSession();
 		return session.getEhourConfig();
+	}
+	
+	/**
+	 * Get page config
+	 * @return
+	 */
+	protected PageConfig getPageConfig()
+	{
+		return ((EhourWebApplication)getApplication()).getPageConfig();
 	}
 	
 	/*

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui;
 
+import net.rrm.ehour.ui.config.PageConfig;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
 import net.rrm.ehour.ui.page.admin.customer.CustomerAdmin;
 import net.rrm.ehour.ui.page.admin.department.DepartmentAdmin;
@@ -60,6 +61,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	private AuthenticationManager authenticationManager;
 	protected Class<? extends WebPage>	login = Login.class;
 	private String version;
+	private PageConfig pageConfig;
 	
 	public EhourWebApplication()
 	{
@@ -208,5 +210,21 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	public void setVersion(String version)
 	{
 		this.version = version;
+	}
+
+	/**
+	 * @return the pageConfig
+	 */
+	public PageConfig getPageConfig()
+	{
+		return pageConfig;
+	}
+
+	/**
+	 * @param pageConfig the pageConfig to set
+	 */
+	public void setPageConfig(PageConfig pageConfig)
+	{
+		this.pageConfig = pageConfig;
 	}	
 }

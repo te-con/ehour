@@ -60,7 +60,6 @@ public class Overview extends BasePage
 		helpPanel.setOutputMarkupId(true);
 		add(helpPanel);
 		
-		
 		// content
 		contentContainer = new OverviewPanel("contentContainer");
 		
