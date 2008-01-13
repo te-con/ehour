@@ -148,6 +148,14 @@
 					</includes>
 				</configuration>
 			</plugin>
+			
+      <plugin>
+       <groupId>org.apache.maven.plugins</groupId>
+       <artifactId>maven-site-plugin</artifactId>			
+	   <configuration>
+		<stagingDirectory>/home/www/dev/ehour.nl/html/ehoursite</stagingDirectory>
+	   </configuration>
+      </plugin>	   
 		</plugins>
 	</build>
 
