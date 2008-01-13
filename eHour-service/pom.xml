@@ -30,6 +30,17 @@
 				<directory>src/main/resources/log4j</directory>
 			</resource>
 		</resources>
+		<plugins>
+		        <plugin>
+            <artifactId>maven-clover-plugin</artifactId>
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <configuration>
+                <licenseLocation>${clover.licenseLocation}</licenseLocation>
+				  <jdk>1.5</jdk>
+				  <generateXml>true</generateXml>
+            </configuration>
+        </plugin>
+		</plugins>
 	</build>
 	<profiles>
 		<profile>

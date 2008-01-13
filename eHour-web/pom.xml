@@ -24,21 +24,6 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<additionalProjectnatures>
-						<projectnature>
-							wicketbench.wicketnature
-						</projectnature>
-					</additionalProjectnatures>
-					<additionalBuildcommands>
-						<buildcommand>
-							wicketbench.associatedMarkupAuditor
-						</buildcommand>
-					</additionalBuildcommands>
-				</configuration>
-			</plugin>
 		</plugins>
 
 		<resources>
