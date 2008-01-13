@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
@@ -130,6 +131,9 @@ public abstract class BaseReportCriteriaPanel extends Panel
 					new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
 					new DomainObjectChoiceRenderer());
 			customers.setRequired(true);
+			customers.setLabel(new ResourceModel("filter.customer"));
+			
+			parent.add(new AjaxFormComponentFeedbackIndicator("customerValidation", customers));
 		}
 		else
 		{
@@ -223,8 +227,6 @@ public abstract class BaseReportCriteriaPanel extends Panel
 	{
 		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
 		
-		System.out.println(backingBean.getReportCriteria().getUserCriteria().getCustomers());
-		
 		ReportCriteria reportCriteria = reportCriteriaService.syncUserReportCriteria(backingBean.getReportCriteria(), updateType);
 		sortReportCriteria(reportCriteria);
 		backingBean.setReportCriteria(reportCriteria);
@@ -260,6 +262,13 @@ public abstract class BaseReportCriteriaPanel extends Panel
 			{
 				return new LoadingSpinnerDecorator();
 			}
+			
+			
+			@Override
+            protected void onError(AjaxRequestTarget target, Form form)
+			{
+				target.addComponent(form);
+            }			
         };
         
 		// default submit
