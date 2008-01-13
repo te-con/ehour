@@ -129,6 +129,7 @@ public abstract class BaseReportCriteriaPanel extends Panel
 			customers = new DropDownChoice("reportCriteria.userCriteria.customer",
 					new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
 					new DomainObjectChoiceRenderer());
+			customers.setRequired(true);
 		}
 		else
 		{

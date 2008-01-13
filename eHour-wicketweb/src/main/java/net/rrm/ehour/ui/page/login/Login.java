@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.page.login;
 
 import java.io.Serializable;
 
+import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -83,11 +84,8 @@ public class Login extends WebPage
 	
 	private void setupForm()
 	{
-		//add(new StyleSheetReference("loginStyle", new CompressedResourceReference(LoginPage.class, "style/ehourLogin.css")));
-
 		add(new Label("pageTitle", new ResourceModel("login.login.header")));
 		add(new SignInForm("loginform", new SimpleUser()));
-
 	}
 
 	/**
@@ -122,6 +120,9 @@ public class Login extends WebPage
 			Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
 			add(demoMode);
 			demoMode.setVisible(((EhourWebSession)getSession()).getEhourConfig().isInDemoMode());
+			
+			add(new Label("version", ((EhourWebApplication)this.getApplication()).getVersion()));
+
 		}
 
 		/**

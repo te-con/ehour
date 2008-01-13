@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.page.report.detail;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.DetailedAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -98,9 +99,19 @@ public class DetailedReportPage extends BaseReportPage
 	 */
 	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
-		List<FlatReportElement> data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
-														reportCriteria.getUserCriteria().getReportRange());
+		List<FlatReportElement> data;
 		
+		if (reportCriteria.getUserCriteria().getProjects().isEmpty())
+		{
+			data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
+												reportCriteria.getUserCriteria().getReportRange());
+		}
+		else
+		{
+			
+			data = reportService.getReportData((Project[])reportCriteria.getUserCriteria().getProjects().toArray(new Project[reportCriteria.getUserCriteria().getProjects().size()]), 
+													reportCriteria.getUserCriteria().getReportRange());
+		}
 		
 		ReportData reportData = new ReportData();
 		reportData.setReportElements(data);

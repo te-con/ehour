@@ -42,8 +42,5 @@ public class DetailedReportCriteriaPanel extends BaseReportCriteriaPanel
 	@Override
 	protected void fillCriteriaForm(Form form)
 	{
-		// TODO Auto-generated method stub
-		
 	}
-
 }

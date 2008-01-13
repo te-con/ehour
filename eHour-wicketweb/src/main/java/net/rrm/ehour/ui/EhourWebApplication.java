@@ -58,14 +58,48 @@ import org.apache.wicket.util.lang.PackageName;
 public class EhourWebApplication extends AuthenticatedWebApplication
 {
 	private AuthenticationManager authenticationManager;
+	protected Class<? extends WebPage>	login = Login.class;
+	private String version;
+	
+	public EhourWebApplication()
+	{
+		
+	}
+
+	public EhourWebApplication(Class<? extends WebPage> loginClass)
+	{
+		this.login = loginClass;
+	}
 
 	public void init()
 	{
 		super.init();
 
 		getMarkupSettings().setStripWicketTags(true);
+		mountPages();
+		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
+		springInjection();
+		setupSecurity();
+		registerSharedResources();
+	}
 
-		mount("/login", PackageName.forClass(Login.class));
+	/**
+	 * 
+	 */
+	protected void registerSharedResources()
+	{
+		getSharedResources().add("userReportExcel", new UserReportExcel());
+		getSharedResources().add("customerReportExcel", new CustomerReportExcel());
+		getSharedResources().add("employeeReportExcel", new EmployeeReportExcel());
+		getSharedResources().add("projectReportExcel", new ProjectReportExcel());
+		getSharedResources().add("detailedReportExcel", new DetailedReportExcel());		
+	}
+	/**
+	 * Mount pages
+	 */
+	protected void mountPages()
+	{
+		mount("/login", PackageName.forClass(login));
 		mount("/admin", PackageName.forClass(MainConfig.class));
 		mount("/admin/employee", PackageName.forClass(UserAdmin.class));
 		mount("/admin/department", PackageName.forClass(DepartmentAdmin.class));
@@ -76,21 +110,12 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount("/consultant/report", PackageName.forPackage(UserReport.class.getPackage()));
 		mount("/consultant/print", PackageName.forPackage(PrintMonthSelection.class.getPackage()));
 		mount("/report", PackageName.forPackage(AggregatedReportPage.class.getPackage()));
-		mount("/projectManagement", PackageName.forPackage(ProjectManagement.class.getPackage()));
-		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-
-		springInjection();
-
-		setupSecurity();
-		
-		// register excel report resources
-		getSharedResources().add("userReportExcel", new UserReportExcel());
-		getSharedResources().add("customerReportExcel", new CustomerReportExcel());
-		getSharedResources().add("employeeReportExcel", new EmployeeReportExcel());
-		getSharedResources().add("projectReportExcel", new ProjectReportExcel());
-		getSharedResources().add("detailedReportExcel", new DetailedReportExcel());
+		mount("/projectManagement", PackageName.forPackage(ProjectManagement.class.getPackage()));		
 	}
-
+	
+	/**
+	 * 
+	 */
 	protected void springInjection()
 	{
 		addComponentInstantiationListener(new SpringComponentInjector(this));
@@ -111,7 +136,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 			{
 				if (component instanceof Page)
 				{
-					throw new RestartResponseAtInterceptPageException(Login.class);
+					throw new RestartResponseAtInterceptPageException(login);
 				} else
 				{
 					throw new UnauthorizedInstantiationException(component.getClass());
@@ -134,7 +159,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	 */
 	protected Class<? extends WebPage> getSignInPageClass()
 	{
-		return Login.class;
+		return login;
 	}
 
 	/*
@@ -167,5 +192,21 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	protected IRequestCycleProcessor newRequestCycleProcessor() 
 	{ 
 	    return new UrlCompressingWebRequestProcessor();
+	}
+
+	/**
+	 * @return the version
+	 */
+	public String getVersion()
+	{
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(String version)
+	{
+		this.version = version;
 	}	
 }
