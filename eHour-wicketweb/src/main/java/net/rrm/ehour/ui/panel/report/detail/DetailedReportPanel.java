@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.reportchart.detailed.AbstractTrendChartImage;
 import net.rrm.ehour.ui.reportchart.detailed.DateHoursTrendImage;
 import net.rrm.ehour.ui.reportchart.detailed.SeriesChartSelector;
 import net.rrm.ehour.ui.reportchart.detailed.TrendChartImageFactory;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -50,7 +50,7 @@ public class DetailedReportPanel extends AbstractReportPanel
 	{
 		super(id);
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonUIStaticData.GREYFRAME_WIDTH);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonWebUtil.GREYFRAME_WIDTH);
 		add(greyBorder);
 		
 		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel")

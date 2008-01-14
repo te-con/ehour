@@ -29,7 +29,7 @@ import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -118,16 +118,16 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		try
 		{
-			if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+			if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
 			{
 				persistCustomer(backingBean);
 			}
-			else if (type == CommonUIStaticData.AJAX_DELETE)
+			else if (type == CommonWebUtil.AJAX_DELETE)
 			{
 				deleteCustomer(backingBean);
 			}
 			
-			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonUIStaticData.AJAX_FORM_SUBMIT);
+			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT);
 			
 //			AjaxUtil.publishEvents(this,	new PayloadAjaxEvent<Customer>(target, 
 //																					AjaxEventType.ADMIN_CUSTOMER_UPDATED,

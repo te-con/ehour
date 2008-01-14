@@ -42,7 +42,7 @@ import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -254,7 +254,7 @@ public abstract class BaseReportCriteriaPanel extends Panel
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT);
+				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
             }
 
 			@Override

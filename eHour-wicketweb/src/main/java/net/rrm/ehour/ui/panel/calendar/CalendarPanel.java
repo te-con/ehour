@@ -30,7 +30,7 @@ import net.rrm.ehour.ui.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
@@ -386,7 +386,7 @@ public class CalendarPanel extends SidePanel
 			session.setNavCalendar(month);
 
 			// do it before it gets replaced, otherwise getPage is  null due to new instantiation of links
-			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE);
+			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_CALENDARPANEL_MONTH_CHANGE);
 			
 			refreshCalendar(target);
 			
@@ -431,7 +431,7 @@ public class CalendarPanel extends SidePanel
 			session.setNavCalendar(cal);
 			
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,
-														CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK,
+														CommonWebUtil.AJAX_CALENDARPANEL_WEEK_CLICK,
 														cal
 			);
 		}

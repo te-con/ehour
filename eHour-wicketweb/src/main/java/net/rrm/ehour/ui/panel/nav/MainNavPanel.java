@@ -23,13 +23,13 @@ import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;
+import net.rrm.ehour.ui.panel.BasePanel;
 import net.rrm.ehour.ui.util.AuthUtil;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
@@ -37,7 +37,7 @@ import org.apache.wicket.model.StringResourceModel;
  * Main navigation panel 
  **/
 
-public class MainNavPanel extends Panel
+public class MainNavPanel extends BasePanel
 {
 	private static final long serialVersionUID = 854412484275829659L;
 
@@ -49,16 +49,25 @@ public class MainNavPanel extends Panel
 	{
 		super(id);
 		
+		addLinks();
+		addLoggedInUser();
+	}
+
+	protected void addLinks()
+	{
 		addLink(this, "overview", Overview.class);
 		addLink(this, "print", PrintMonthSelection.class);
 		addReportLink(this, "userReport");
 		addLink(this, "pm", ProjectManagement.class);
 		addLink(this, "admin", MainConfig.class);
 		add(new BookmarkablePageLink("logoffLink", Login.class));
-		
+	}
+	
+	protected void addLoggedInUser()
+	{
 		add(new Label("loggedInUser", new StringResourceModel("nav.loggedinas", this, new Model(AuthUtil.getUser()) )));
 	}
-
+	
 	/**
 	 * Add report link, global reporting when user has report role, user report when user is consultant
 	 * @param parent

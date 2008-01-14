@@ -30,7 +30,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.StringUtils;
@@ -114,7 +114,7 @@ public class AssignmentListPanel extends Panel
 					public void onClick(AjaxRequestTarget target)
 					{
 						((AjaxAwareContainer)(AssignmentListPanel.this.getParent()))
-								.ajaxRequestReceived(target, CommonUIStaticData.AJAX_LIST_CHANGE, assignment);
+								.ajaxRequestReceived(target, CommonWebUtil.AJAX_LIST_CHANGE, assignment);
 					}
 				};
 
@@ -124,7 +124,7 @@ public class AssignmentListPanel extends Panel
 					public void onClick(AjaxRequestTarget target)
 					{
 						((AjaxAwareContainer)(AssignmentListPanel.this.getParent()))
-								.ajaxRequestReceived(target, CommonUIStaticData.AJAX_LIST_CHANGE, assignment);
+								.ajaxRequestReceived(target, CommonWebUtil.AJAX_LIST_CHANGE, assignment);
 					}
 				};
 
@@ -142,7 +142,7 @@ public class AssignmentListPanel extends Panel
 				item.add(dateEnd);
 				
 				item.add(new Label("assignmentType", 
-							new ResourceModel(CommonUIStaticData.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
+							new ResourceModel(CommonWebUtil.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
 				
 				item.add(new Label("role",
 									(StringUtils.isBlank(assignment.getRole()))

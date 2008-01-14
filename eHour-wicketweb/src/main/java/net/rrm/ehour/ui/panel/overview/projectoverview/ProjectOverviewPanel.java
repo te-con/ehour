@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.model.CurrencyModel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -76,7 +76,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 																	this,  null,
 																	new Object[]{new DateModel(overviewFor, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)}));
 		
-		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", label, CommonUIStaticData.GREYFRAME_WIDTH); 
+		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", label, CommonWebUtil.GREYFRAME_WIDTH); 
 
 		addTotals(greyBorder, projectStatusSet, session.getEhourConfig());
 		addColumnLabels(greyBorder, session.getEhourConfig());

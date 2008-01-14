@@ -25,7 +25,7 @@ import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.authorization.AuthUser;
 import net.rrm.ehour.ui.page.login.SessionExpiredPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
 
@@ -94,9 +94,9 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 				user.setPassword("secret");
 				
 				Set<UserRole> userRoles = new HashSet<UserRole>();
-				userRoles.add(new UserRole(CommonUIStaticData.ROLE_CONSULTANT));
-				userRoles.add(new UserRole(CommonUIStaticData.ROLE_ADMIN));
-				userRoles.add(new UserRole(CommonUIStaticData.ROLE_REPORT));
+				userRoles.add(new UserRole(CommonWebUtil.ROLE_CONSULTANT));
+				userRoles.add(new UserRole(CommonWebUtil.ROLE_ADMIN));
+				userRoles.add(new UserRole(CommonWebUtil.ROLE_REPORT));
 				user.setUserRoles(userRoles);
 				
 				AuthUser authUser = new AuthUser(user);

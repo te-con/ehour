@@ -29,7 +29,7 @@ import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
 import org.apache.commons.lang.StringUtils;
@@ -126,10 +126,10 @@ public class TimesheetRowList extends ListView
 		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 		
 		for (int i = 0; 
-			 i < CommonUIStaticData.weekDays.length; // I take it that this is 7 ;)
+			 i < CommonWebUtil.weekDays.length; // I take it that this is 7 ;)
 			 i++)
 		{
-			createTimesheetEntryItems(CommonUIStaticData.weekDays[i], row, i, item);
+			createTimesheetEntryItems(CommonWebUtil.weekDays[i], row, i, item);
 		}
 
 		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
@@ -203,7 +203,7 @@ public class TimesheetRowList extends ListView
 												.get("grandTotal"));
 				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
 												.get("blueFrame"))
-												.get(CommonUIStaticData.weekDays[index] + "Total"));
+												.get(CommonWebUtil.weekDays[index] + "Total"));
 				
 				form.visitFormComponents(new FormHighlighter(target));
 			}		

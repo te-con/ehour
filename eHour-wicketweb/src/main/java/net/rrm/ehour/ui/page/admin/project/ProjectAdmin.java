@@ -41,7 +41,7 @@ import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
@@ -118,7 +118,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	{
 		switch (type)
 		{
-			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			case CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
 			{
 				currentFilter = (EntrySelectorFilter)param;
 	
@@ -126,17 +126,17 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 				projectListView.setList(projects);
 				break;
 			}
-			case CommonUIStaticData.AJAX_DELETE:
-			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+			case CommonWebUtil.AJAX_DELETE:
+			case CommonWebUtil.AJAX_FORM_SUBMIT:
 			{
 				ProjectAdminBackingBean backingBean = (ProjectAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 				try
 				{
-					if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
 					{
 						persistProject(backingBean);
 					}
-					else if (type == CommonUIStaticData.AJAX_DELETE)
+					else if (type == CommonWebUtil.AJAX_DELETE)
 					{
 						deleteProject(backingBean);
 					}					

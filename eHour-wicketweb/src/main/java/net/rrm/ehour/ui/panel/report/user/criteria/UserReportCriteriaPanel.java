@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -112,7 +112,7 @@ public class UserReportCriteriaPanel extends SidePanel
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, 
-																	CommonUIStaticData.AJAX_FORM_SUBMIT);
+																	CommonWebUtil.AJAX_FORM_SUBMIT);
             }
 
 			@Override

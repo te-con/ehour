@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -144,7 +144,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	{
 		switch (type)
 		{
-			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			case CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
 			{
 				currentFilter = (EntrySelectorFilter)param;
 	
@@ -152,7 +152,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 				customerListView.setList(customers);
 				break;
 			}
-			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+			case CommonWebUtil.AJAX_FORM_SUBMIT:
 			{
 				List<Customer> customers = getCustomers();
 				customerListView.setList(customers);

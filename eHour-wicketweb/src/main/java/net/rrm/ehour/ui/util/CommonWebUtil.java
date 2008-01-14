@@ -23,7 +23,7 @@ import net.rrm.ehour.util.EhourConstants;
  * Commons 
  **/
 
-public class CommonUIStaticData
+public class CommonWebUtil
 {
 	public final static int	AJAX_CALENDARPANEL_MONTH_CHANGE = 1;
 	public final static int	AJAX_CALENDARPANEL_WEEK_CLICK = 2;

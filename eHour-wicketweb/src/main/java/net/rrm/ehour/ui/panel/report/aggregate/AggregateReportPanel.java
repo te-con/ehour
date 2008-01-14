@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -48,7 +48,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 //		params.add("reportId", reportId);
 //		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
 //		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonUIStaticData.GREYFRAME_WIDTH);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonWebUtil.GREYFRAME_WIDTH);
 		add(greyBorder);
 
 		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportConfig, excelResourceName));

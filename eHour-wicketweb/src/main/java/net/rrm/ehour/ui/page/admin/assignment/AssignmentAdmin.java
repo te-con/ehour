@@ -28,7 +28,7 @@ import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.NoUserSelectedPanel;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
@@ -106,7 +106,7 @@ public class AssignmentAdmin extends BaseAdminPage
 	{
 		switch (type)
 		{
-			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			case CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
 			{
 				currentFilter = (EntrySelectorFilter)param;
 	

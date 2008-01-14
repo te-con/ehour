@@ -28,7 +28,7 @@ import net.rrm.ehour.ui.panel.admin.department.form.DepartmentFormPanel;
 import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
@@ -134,18 +134,18 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	{
 		switch (type)
 		{
-			case CommonUIStaticData.AJAX_DELETE:
-			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+			case CommonWebUtil.AJAX_DELETE:
+			case CommonWebUtil.AJAX_FORM_SUBMIT:
 			{
 				DepartmentAdminBackingBean backingBean = (DepartmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 
 				try
 				{
-					if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
 					{
 						persistDepartment(backingBean);
 					}
-					else if (type == CommonUIStaticData.AJAX_DELETE)
+					else if (type == CommonWebUtil.AJAX_DELETE)
 					{
 						deleteDepartment(backingBean);
 					}					

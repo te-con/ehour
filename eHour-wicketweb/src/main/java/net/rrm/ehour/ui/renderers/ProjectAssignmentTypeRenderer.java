@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.renderers;
 
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
@@ -53,7 +53,7 @@ public class ProjectAssignmentTypeRenderer implements IChoiceRenderer
 		{
 			ProjectAssignmentType	pat = (ProjectAssignmentType)object;
 			
-			String	key = CommonUIStaticData.getResourceKeyForProjectAssignmentType(pat);
+			String	key = CommonWebUtil.getResourceKeyForProjectAssignmentType(pat);
 			
 			Localizer localizer = Application.get().getResourceSettings().getLocalizer();
 			

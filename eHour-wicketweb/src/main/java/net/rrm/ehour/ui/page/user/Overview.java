@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.overview.OverviewPanel;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -75,16 +75,16 @@ public class Overview extends BasePage
 	{
 		switch (type)
 		{
-			case CommonUIStaticData.AJAX_CALENDARPANEL_MONTH_CHANGE:
+			case CommonWebUtil.AJAX_CALENDARPANEL_MONTH_CHANGE:
 				calendarChanged(target);
 				break;
-			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_NAV:
-			case CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK:
+			case CommonWebUtil.AJAX_CALENDARPANEL_WEEK_NAV:
+			case CommonWebUtil.AJAX_CALENDARPANEL_WEEK_CLICK:
 				calendarWeekClicked(target);
 				calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
 				calendarPanel.refreshCalendar(target);
 				break;
-			case CommonUIStaticData.AJAX_FORM_SUBMIT:
+			case CommonWebUtil.AJAX_FORM_SUBMIT:
 				calendarPanel.refreshCalendar(target);
 				break;
 				

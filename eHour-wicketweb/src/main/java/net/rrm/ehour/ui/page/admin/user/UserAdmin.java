@@ -28,7 +28,7 @@ import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
@@ -151,7 +151,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	{
 		switch (type)
 		{
-			case CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
+			case CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
 			{
 				currentFilter = (EntrySelectorFilter)param;
 	
@@ -159,18 +159,18 @@ public class UserAdmin extends BaseTabbedAdminPage
 				userListView.setList(users);
 				break;
 			}
-			case CommonUIStaticData.AJAX_FORM_SUBMIT:
-			case CommonUIStaticData.AJAX_DELETE:
+			case CommonWebUtil.AJAX_FORM_SUBMIT:
+			case CommonWebUtil.AJAX_DELETE:
 			{
 				UserBackingBean	backingBean = (UserBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
 				
 				try
 				{
-					if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
 					{
 						persistUser(backingBean);
 					}
-					else if (type == CommonUIStaticData.AJAX_DELETE)
+					else if (type == CommonWebUtil.AJAX_DELETE)
 					{
 						deleteUser(backingBean);
 					}

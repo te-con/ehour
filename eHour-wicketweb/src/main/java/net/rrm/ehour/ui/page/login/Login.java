@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
@@ -177,11 +177,11 @@ public class Login extends WebPage
 		{
 			Class<? extends WebPage>	homepage;
 			
-			if (roles.contains(CommonUIStaticData.ROLE_ADMIN))
+			if (roles.contains(CommonWebUtil.ROLE_ADMIN))
 			{
 				homepage = MainConfig.class;
 			}
-			else if (roles.contains(CommonUIStaticData.ROLE_REPORT))
+			else if (roles.contains(CommonWebUtil.ROLE_REPORT))
 			{
 				homepage = AggregatedReportPage.class;
 			}

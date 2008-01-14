@@ -21,7 +21,7 @@ import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.DemoDecorator;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -67,7 +67,7 @@ public class FormUtil
 			{
 				if (!config.isInDemoMode())
 				{
-					submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT, form.getModel());
+					submitTarget.ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT, form.getModel());
 				}
             }
 
@@ -103,7 +103,7 @@ public class FormUtil
 			{
 				if (!config.isInDemoMode())
 				{
-					submitTarget.ajaxRequestReceived(target, CommonUIStaticData.AJAX_DELETE, form.getModel());
+					submitTarget.ajaxRequestReceived(target, CommonWebUtil.AJAX_DELETE, form.getModel());
 				}
             }
 

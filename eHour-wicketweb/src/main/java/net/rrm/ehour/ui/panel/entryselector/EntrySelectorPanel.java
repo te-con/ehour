@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.panel.entryselector;
 
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -206,7 +206,7 @@ public class EntrySelectorPanel extends Panel
 	 */
 	protected void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter)
 	{
-		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
+		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
     	target.addComponent(blueBorder);
 
 	}

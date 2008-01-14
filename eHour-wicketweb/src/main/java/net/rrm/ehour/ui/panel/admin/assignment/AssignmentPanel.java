@@ -27,7 +27,7 @@ import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.domain.User;
 
 import org.apache.log4j.Logger;
@@ -129,7 +129,7 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 		
 		switch (type)
 		{
-			case CommonUIStaticData.AJAX_LIST_CHANGE:
+			case CommonWebUtil.AJAX_LIST_CHANGE:
 			{
 				assignment = (ProjectAssignment)params;
 				
@@ -144,19 +144,19 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 				}
 				break;
 			}
-			case CommonUIStaticData.AJAX_FORM_SUBMIT:
-			case CommonUIStaticData.AJAX_DELETE:
+			case CommonWebUtil.AJAX_FORM_SUBMIT:
+			case CommonWebUtil.AJAX_DELETE:
 			{
 				AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((((IWrapModel) params)).getWrappedModel()).getObject();
 				assignment = backingBean.getProjectAssignmentForSave();
 
 				try
 				{
-					if (type == CommonUIStaticData.AJAX_DELETE)
+					if (type == CommonWebUtil.AJAX_DELETE)
 					{
 							assignmentService.deleteProjectAssignment(assignment.getAssignmentId());
 					}
-					else if (type == CommonUIStaticData.AJAX_FORM_SUBMIT)
+					else if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
 					{
 						assignmentService.assignUserToProject(assignment);
 					}

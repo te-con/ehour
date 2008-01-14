@@ -49,7 +49,7 @@ import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonUIStaticData;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.domain.CustomerFoldPreference;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
@@ -123,7 +123,7 @@ public class TimesheetPanel extends Panel implements Serializable
 																				getWeekNavigation(forWeek, 
 																									timesheet.getWeekStart(), 
 																									timesheet.getWeekEnd()),
-																				CommonUIStaticData.GREYFRAME_WIDTH);
+																				CommonWebUtil.GREYFRAME_WIDTH);
 		add(greyBorder);
 
 		// add form
@@ -239,9 +239,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		Label		total;
 		
-		for (int i = 0; i < CommonUIStaticData.weekDays.length; i++)
+		for (int i = 0; i < CommonWebUtil.weekDays.length; i++)
 		{
-			total = new Label(CommonUIStaticData.weekDays[i] + "Total", new FloatModel(new PropertyModel(grandTotals, "getValues[" + i + "]"), config));
+			total = new Label(CommonWebUtil.weekDays[i] + "Total", new FloatModel(new PropertyModel(grandTotals, "getValues[" + i + "]"), config));
 			total.setOutputMarkupId(true);
 			parent.add(total);
 		}
@@ -267,7 +267,7 @@ public class TimesheetPanel extends Panel implements Serializable
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
                 persistTimesheetEntries(timesheet);
-                ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_FORM_SUBMIT);
+                ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
                 
                 serverMsgLabel.setModel(new StringResourceModel("timesheet.weekSaved", 
 											TimesheetPanel.this, 
@@ -304,7 +304,7 @@ public class TimesheetPanel extends Panel implements Serializable
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				// basically fake a week click
-				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_CLICK);
+				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_CALENDARPANEL_WEEK_CLICK);
             }			
 		};
 
@@ -321,9 +321,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		Label	label;
 		
-		for (int i = 0; i < CommonUIStaticData.weekDays.length; i++)
+		for (int i = 0; i < CommonWebUtil.weekDays.length; i++)
 		{
-			label = new Label(CommonUIStaticData.weekDays[i] + "Label", new DateModel(timesheet.getDateSequence()[i], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+			label = new Label(CommonWebUtil.weekDays[i] + "Label", new DateModel(timesheet.getDateSequence()[i], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
 			label.setEscapeModelStrings(false);
 			parent.add(label);
 		}
@@ -343,7 +343,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		cal.add(Calendar.WEEK_OF_YEAR, weekDiff);
 
 		// should update calendar as well
-		event = CommonUIStaticData.AJAX_CALENDARPANEL_WEEK_NAV;
+		event = CommonWebUtil.AJAX_CALENDARPANEL_WEEK_NAV;
 		session.setNavCalendar(cal);
 		
 		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, event);
