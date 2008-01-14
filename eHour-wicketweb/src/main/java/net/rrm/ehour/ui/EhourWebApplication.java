@@ -76,11 +76,11 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	public void init()
 	{
 		super.init();
+		springInjection();
 
 		getMarkupSettings().setStripWicketTags(true);
 		mountPages();
 		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-		springInjection();
 		setupSecurity();
 		registerSharedResources();
 	}
@@ -225,6 +225,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	 */
 	public void setPageConfig(PageConfig pageConfig)
 	{
+		System.out.println("config");
 		this.pageConfig = pageConfig;
 	}	
 }

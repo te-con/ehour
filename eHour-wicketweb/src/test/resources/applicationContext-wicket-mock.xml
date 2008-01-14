@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="authenticationManager" class="org.acegisecurity.MockAuthenticationManager">
+	<bean id="authenticationManager"
+		class="org.acegisecurity.MockAuthenticationManager">
 	</bean>
 
-	<bean id="wicketApplication" class="net.rrm.ehour.ui.EhourWebApplication">
-		<property name="authenticationManager" ref="authenticationManager" />
+	<bean id="wicketApplication"
+		class="net.rrm.ehour.ui.EhourWebApplication">
+		<property name="authenticationManager"
+			ref="authenticationManager" />
+		<property name="version" value="X.X.X"></property>
+		<property name="pageConfig" ref="pageConfig" />
+
 	</bean>
-	
+
 	<!-- Ehour Config -->
-	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigStub "/>
+	<bean id="ehourConfig"
+		class="net.rrm.ehour.config.EhourConfigStub " />
+	<bean id="pageConfig"
+		class="net.rrm.ehour.ui.config.PageConfigImpl" />
 </beans>

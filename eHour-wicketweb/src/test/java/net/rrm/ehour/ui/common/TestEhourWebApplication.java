@@ -37,6 +37,8 @@ import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
+import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
+import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 
@@ -83,7 +85,22 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	{
 		return mockContext;
 	}
+
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.EhourWebApplication#newRequestCycleProcessor()
+	 */
+	@Override
+	protected IRequestCycleProcessor newRequestCycleProcessor() 
+	{ 
+	    return new WebRequestCycleProcessor();
+	}	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.authentication.AuthenticatedWebApplication#newSession(org.apache.wicket.Request, org.apache.wicket.Response)
+	 */
 	@Override
 	public Session newSession(final Request request, final Response response)
 	{
