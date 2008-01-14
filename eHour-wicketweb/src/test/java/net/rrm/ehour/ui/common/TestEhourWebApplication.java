@@ -23,6 +23,8 @@ import java.util.Set;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.authorization.AuthUser;
+import net.rrm.ehour.ui.config.PageConfig;
+import net.rrm.ehour.ui.config.PageConfigImpl;
 import net.rrm.ehour.ui.page.login.SessionExpiredPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
@@ -112,4 +114,10 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	{
 		return session;
 	}
+	
+	@Override
+	public PageConfig getPageConfig()
+	{
+		return new PageConfigImpl();
+	}	
 }
