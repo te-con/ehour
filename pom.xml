@@ -126,7 +126,7 @@
 				<artifactId>maven-clover-plugin</artifactId>
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<configuration>
-					<licenseLocation>${clover.licenseLocation}</licenseLocation>
+					<licenseLocation>/opt/clover2.license</licenseLocation>
 					<jdk>1.5</jdk>
 					<generateXml>true</generateXml>
 					<generateHistorical>true</generateHistorical>
@@ -292,6 +292,12 @@
 			<plugin>
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
+				<configuration>
+					<licenseLocation>/opt/clover2.license</licenseLocation>
+					<generateXml>true</generateXml>
+					<generateHistorical>true</generateHistorical>
+					<historyDir>/home/java/clover/history/ehour/</historyDir>
+				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>
