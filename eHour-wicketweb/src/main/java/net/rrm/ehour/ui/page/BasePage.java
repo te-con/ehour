@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.config.PageConfig;
-import net.rrm.ehour.ui.panel.nav.MainNavPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
@@ -62,7 +61,7 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	{
 		super(model);
 
-		add(new MainNavPanel("mainNav"));
+		add(getMainNavPanel("mainNav"));
 		add(new Label("pageTitle", pageTitle));
 	}	
 	

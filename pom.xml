@@ -134,14 +134,6 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>main</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>instrument</goal>
-							<goal>aggregate</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>site</id>
 						<phase>pre-site</phase>
 						<goals>
@@ -149,7 +141,7 @@
 							<goal>aggregate</goal>
 						</goals>
 					</execution>
-				</executions>				
+				</executions>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
