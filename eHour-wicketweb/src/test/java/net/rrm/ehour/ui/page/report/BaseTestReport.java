@@ -25,7 +25,7 @@ import java.util.List;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -57,7 +57,7 @@ public class BaseTestReport extends BaseUIWicketTester
 		mockContext.putBean("reportService", reportService);
 		
 		reportCriteria = new ReportCriteria();
-		AggregateAvailableCriteria availCriteria = new AggregateAvailableCriteria();
+		AvailableCriteria availCriteria = new AvailableCriteria();
 
 		List<Customer> customers = new ArrayList<Customer>();
 		customers.add(new Customer(1));
