@@ -39,21 +39,38 @@ public abstract class AbstractReportPanel extends Panel
 	 */
 	public AbstractReportPanel(String id)
 	{
-		this(id, null);
+		this(id, -1);
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 */
+	public AbstractReportPanel(String id, int chartWidth)
+	{
+		this(id, null, chartWidth);
+	}	
 
 	/**
 	 * 
 	 * @param id
 	 * @param model
 	 */
-	public AbstractReportPanel(String id, IModel model)
+	public AbstractReportPanel(String id, IModel model, int chartWidth)
 	{
 		super(id, model);
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 
-		chartWidth = !config.isShowTurnover() ? 700 : 350;
+		if (chartWidth == -1)
+		{
+			this.chartWidth = !config.isShowTurnover() ? 700 : 350;
+		}
+		else
+		{
+			this.chartWidth = chartWidth;
+		}
+		
 		chartHeight = 200;		
 	}
 }

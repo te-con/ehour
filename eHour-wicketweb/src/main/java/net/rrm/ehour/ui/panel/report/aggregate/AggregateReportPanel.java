@@ -20,10 +20,9 @@ package net.rrm.ehour.ui.panel.report.aggregate;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
-import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
+import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -39,16 +38,9 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 */
 	public AggregateReportPanel(String id, TreeReport reportData, ReportData data, ReportConfig reportConfig, String excelResourceName)
 	{
-		super(id);
+		super(id, 460);
 
-//		final String reportId = reportData.getReportId();
-//		
-//		ResourceReference excelResource = new ResourceReference(excelResourceName);
-//		ValueMap params = new ValueMap();
-//		params.add("reportId", reportId);
-//		ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
-//		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", CommonWebUtil.GREYFRAME_WIDTH);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", 950);
 		add(greyBorder);
 
 		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportConfig, excelResourceName));

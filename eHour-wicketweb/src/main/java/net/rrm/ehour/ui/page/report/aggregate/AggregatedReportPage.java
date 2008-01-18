@@ -24,8 +24,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
-import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.AggregateReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.EmployeeReportPanel;
@@ -64,9 +62,6 @@ public class AggregatedReportPage extends BaseReportPage
 	public AggregatedReportPage()
 	{
 		super(new ResourceModel("report.title"));
-		
-		add(new ReportNavPanel("reportNav"));
-		add(new ContextualHelpPanel("contextHelp"));
 		
 		final ReportCriteria reportCriteria = getReportCriteria(false);
 		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));

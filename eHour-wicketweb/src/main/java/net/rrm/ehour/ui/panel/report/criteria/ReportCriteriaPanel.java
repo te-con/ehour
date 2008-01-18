@@ -102,7 +102,7 @@ public class ReportCriteriaPanel extends Panel
 	{
 		super(id, model);
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", 600);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", 950);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);	
