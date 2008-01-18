@@ -36,11 +36,10 @@
 			<div wicket:id="customerProjectsBorder">
 				<div style="float: left;width: 45%;padding-left: 10px;">
 					<b><wicket:message key="filter.customer" /></b><br />
-					<select wicket:id="reportCriteria.userCriteria.customer" class="textInputSmall" style="width: 80%"></select>
+					<select wicket:id="reportCriteria.userCriteria.customers" class="textInputSmall" style="width: 80%"></select>
 					<br />
 					
 					<span wicket:id="onlyActiveCustomersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveCustomers" type="checkbox" />
-					<span wicket:id="customerValidation"></span>
 				</div>
 				
 				<div style="padding-right: 10px;width: 45%;float:right">
@@ -53,9 +52,32 @@
 				
 				<br clear="all" />
 			</div>
+			
+			<br />
 
+			<div wicket:id="deptUserBorder">
+				<div style="float: left;width: 45%;padding-left: 10px">
+					<b><wicket:message key="filter.department" /></b><br />
+					<select wicket:id="reportCriteria.userCriteria.userDepartments" class="textInputSmall" style="width: 80%"></select>
+					<br />
+				</div>
+				
+				<div style="padding-right: 10px;width: 45%;float:right">
+					<b><wicket:message key="filter.user" /></b><br />
+					<select wicket:id="reportCriteria.userCriteria.users" class="textInputSmall" style="width: 80%"></select>
+					<br />
+					
+					<span wicket:id="onlyActiveUsersLabel"></span>&nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveUsers" type="checkbox" />
+				</div>
+				
+				<br clear="all" />
+			</div>
 
 			<div style="padding-right: 30px;padding-top: 5px;">
+			<a class="button" style="float:left;" onclick="this.blur();" wicket:id="resetCriteria" >
+				<span><wicket:message key="report.resetCriteria" /></span>
+			</a>
+			
 			<a class="button" style="float:right;" onclick="this.blur();" wicket:id="createReport" >
 				<span><wicket:message key="report.createReport" /></span>
 			</a>

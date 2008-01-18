@@ -82,7 +82,10 @@ public abstract class BaseReportPage extends BasePage
 	 * Get a fresh new shiny AvailableCriteria obj
 	 * @return
 	 */
-	public abstract AvailableCriteria getAvailableCriteria();
+	protected AvailableCriteria getAvailableCriteria()
+	{
+		return new AvailableCriteria();
+	}
 	
 	/**
 	 * Initialize user criteria 

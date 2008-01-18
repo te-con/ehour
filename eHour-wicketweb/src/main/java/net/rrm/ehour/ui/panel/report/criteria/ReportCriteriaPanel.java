@@ -26,6 +26,7 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
@@ -68,20 +69,25 @@ import org.wicketstuff.dojo.toggle.DojoFadeToggle;
  * Base report criteria panel which adds the quick date selections
  **/
 
-public abstract class BaseReportCriteriaPanel extends Panel
+public class ReportCriteriaPanel extends Panel
 {
+	private static final long serialVersionUID = 161160822264046559L;
+	
 	@SpringBean
 	private	ReportCriteriaService	reportCriteriaService;
 	private DojoDatePicker 			startDatePicker;
 	private DojoDatePicker 			endDatePicker;
 	private	ListMultipleChoice 		projects;
+	private FormComponent 			customers;
+	private	ListMultipleChoice 		users;
+	private ListMultipleChoice 		departments;
 	
 	/**
 	 * Constructor which sets up the basic borded form
 	 * @param id
 	 * @param model
 	 */
-	public BaseReportCriteriaPanel(String id, IModel model)
+	public ReportCriteriaPanel(String id, IModel model)
 	{
 		this(id, model, true);
 	}
@@ -92,7 +98,7 @@ public abstract class BaseReportCriteriaPanel extends Panel
 	 * @param model
 	 * @param multipleCustomer
 	 */
-	public BaseReportCriteriaPanel(String id, IModel model, boolean multipleCustomer)
+	public ReportCriteriaPanel(String id, IModel model, boolean multipleCustomer)
 	{
 		super(id, model);
 		
@@ -111,8 +117,7 @@ public abstract class BaseReportCriteriaPanel extends Panel
 
 		addCustomerSelection(blueBorder, multipleCustomer);
 		addProjectSelection(blueBorder);
-
-		fillCriteriaForm(form);
+		addDepartmentsAndUsers(form);
 		
 		addCreateReportSubmit(form);		
 	}	
@@ -123,8 +128,6 @@ public abstract class BaseReportCriteriaPanel extends Panel
 	 */
 	private void addCustomerSelection(WebMarkupContainer parent, boolean multipleCustomer)
 	{
-		final FormComponent customers;
-		
 		if (!multipleCustomer)
 		{
 			customers = new DropDownChoice("reportCriteria.userCriteria.customer",
@@ -212,11 +215,90 @@ public abstract class BaseReportCriteriaPanel extends Panel
 		parent.add(filterToggleText);		
 	}		
 	
+
 	/**
-	 * Add specific criteria to form
+	 * Add customer selection
+	 * @param parent
+	 */
+	private void addUserSelection(WebMarkupContainer parent)
+	{
+		users = new ListMultipleChoice("reportCriteria.userCriteria.users",
+								new PropertyModel(getModel(), "reportCriteria.availableCriteria.users"),
+								new DomainObjectChoiceRenderer());
+		users.setOutputMarkupId(true);
+		users.setMaxRows(4);
+		parent.add(users);
+		
+		// hide active checkbox
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveUsers")
+		{
+			private static final long serialVersionUID = 2585047163449150793L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
+				target.addComponent(users);
+			}
+		};
+		
+		parent.add(deactivateBox);
+		
+		Label filterToggleText = new Label("onlyActiveUsersLabel", new ResourceModel("report.hideInactive"));
+		parent.add(filterToggleText);
+		
+		// filter
+		
+//		
+//		
+//		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("userList", 
+//																		fragment,
+//																		new StringResourceModel("report.filter", this, null),
+//																		new StringResourceModel("report.hideInactive", this, null),
+//																		this);
+//
+//		parent.add(entrySelectorPanel);
+	}	
+	
+	/**
+	 * Add customer selection
+	 * @param parent
+	 */
+	private void addUserDepartmentSelection(WebMarkupContainer parent)
+	{
+		departments = new ListMultipleChoice("reportCriteria.userCriteria.userDepartments",
+								new PropertyModel(getModel(), "reportCriteria.availableCriteria.userDepartments"),
+								new DomainObjectChoiceRenderer());
+		departments.setMaxRows(4);
+		
+		// update projects when customer(s) selected
+		departments.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+			private static final long serialVersionUID = 1L;
+
+			protected void onUpdate(AjaxRequestTarget target)
+            {
+				// show only projects for selected customers
+				updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
+                target.addComponent(users);
+            }
+        });			
+		
+		parent.add(departments);
+	}	
+
+	/**
+	 * Add user departments and users
 	 * @param form
 	 */
-	protected abstract void fillCriteriaForm(Form form);
+	private void addDepartmentsAndUsers(Form form)
+	{
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("deptUserBorder");
+		form.add(blueBorder);
+		
+		addUserDepartmentSelection(blueBorder);
+		addUserSelection(blueBorder);
+	}	
 	
 	
 	/**
@@ -247,6 +329,7 @@ public abstract class BaseReportCriteriaPanel extends Panel
 	 */
 	private void addCreateReportSubmit(Form form)
 	{
+		// Submit
 		AjaxButton submitButton = new AjaxButton("createReport", form)
 		{
 			private static final long serialVersionUID = 4373085964708354107L;
@@ -273,6 +356,28 @@ public abstract class BaseReportCriteriaPanel extends Panel
         
 		// default submit
 		form.add(submitButton);
+		
+		// reset button
+		AjaxButton resetButton = new AjaxButton("resetCriteria")
+		{
+			private static final long serialVersionUID = 4373085964708354107L;
+
+			@Override
+            protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				// reset user criteria
+				getBackingBeanFromModel().getReportCriteria().setUserCriteria(new UserCriteria());
+				
+				target.addComponent(projects);
+				target.addComponent(startDatePicker);
+				target.addComponent(endDatePicker);
+				target.addComponent(customers);
+				target.addComponent(users);
+				target.addComponent(departments);
+            }
+        };	
+        
+        form.add(resetButton);
 	}	
 	
 	/**

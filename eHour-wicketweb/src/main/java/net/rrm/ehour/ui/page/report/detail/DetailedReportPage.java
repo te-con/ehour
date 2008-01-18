@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.report.criteria.AvailableCriteria;
-import net.rrm.ehour.report.criteria.DetailedAvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
@@ -32,8 +30,8 @@ import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
+import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
-import net.rrm.ehour.ui.panel.report.criteria.detailed.DetailedReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.detail.DetailedReportPanel;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -84,7 +82,7 @@ public class DetailedReportPage extends BaseReportPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new DetailedReportCriteriaPanel(panelId, getModel());
+				return new ReportCriteriaPanel(panelId, getModel());
 			}
 		});
 		
@@ -171,14 +169,4 @@ public class DetailedReportPage extends BaseReportPage
 		addReportPanelTabs();
 		target.addComponent(tabPanel);
 	}	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.page.report.BaseReportPage#getAvailableCriteria()
-	 */
-	@Override
-	public AvailableCriteria getAvailableCriteria()
-	{
-		return new DetailedAvailableCriteria();
-	}
 }
