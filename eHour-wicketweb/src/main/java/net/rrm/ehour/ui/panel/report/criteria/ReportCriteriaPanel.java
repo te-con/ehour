@@ -366,7 +366,11 @@ public class ReportCriteriaPanel extends Panel
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				// reset user criteria
-				getBackingBeanFromModel().getReportCriteria().setUserCriteria(new UserCriteria());
+				ReportCriteria criteria = getBackingBeanFromModel().getReportCriteria();
+				
+				criteria.setUserCriteria(new UserCriteria());
+				
+				reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdate.UPDATE_ALL);
 				
 				target.addComponent(projects);
 				target.addComponent(startDatePicker);
