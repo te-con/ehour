@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
+import net.rrm.ehour.ui.page.report.global.AggregatedReportPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 

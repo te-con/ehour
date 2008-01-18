@@ -15,12 +15,15 @@
 				<div style="width: 10em;float:left">
 					<wicket:message key="report.criteria.reportRange" />:
 				</div>
+				
 				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateStart" />
 				&nbsp;&nbsp;
 			    <wicket:message key="report.criteria.until" />:
 			    &nbsp;&nbsp;
 				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateEnd" />
-				
+			
+				<select class="textInputSmall" wicket:id="reportType"></select>
+			
 				<br />
 				
 				<div style="width: 10em;float:left"><wicket:message key="quickDates" />:</div>

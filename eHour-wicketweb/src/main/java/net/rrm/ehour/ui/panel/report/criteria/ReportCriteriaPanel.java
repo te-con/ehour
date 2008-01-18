@@ -32,13 +32,13 @@ import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
+import net.rrm.ehour.ui.panel.report.criteria.type.ReportType;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
@@ -115,37 +115,35 @@ public class ReportCriteriaPanel extends Panel
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("customerProjectsBorder");
 		form.add(blueBorder);
 
-		addCustomerSelection(blueBorder, multipleCustomer);
+		addCustomerSelection(blueBorder);
 		addProjectSelection(blueBorder);
 		addDepartmentsAndUsers(form);
 		
 		addCreateReportSubmit(form);		
 	}	
 
+	private void addReportTypeSelection(WebMarkupContainer parent)
+	{
+		List<ReportType>	reportTypes = new ArrayList<ReportType>();	
+
+		reportTypes.add(ReportType.AGGREGATE);
+		reportTypes.add(ReportType.DETAILED);
+		
+		final DropDownChoice reportTypeSelection = new DropDownChoice("reportType", reportTypes, new QuickWeekRenderer());
+		parent.add(reportTypeSelection);		
+	}
+	
 	/**
 	 * Add customer selection
 	 * @param parent
 	 */
-	private void addCustomerSelection(WebMarkupContainer parent, boolean multipleCustomer)
+	private void addCustomerSelection(WebMarkupContainer parent)
 	{
-		if (!multipleCustomer)
-		{
-			customers = new DropDownChoice("reportCriteria.userCriteria.customer",
-					new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
-					new DomainObjectChoiceRenderer());
-			customers.setRequired(true);
-			customers.setLabel(new ResourceModel("filter.customer"));
-			
-			parent.add(new AjaxFormComponentFeedbackIndicator("customerValidation", customers));
-		}
-		else
-		{
-			customers = new ListMultipleChoice("reportCriteria.userCriteria.customers",
-					new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
-					new DomainObjectChoiceRenderer());
-			
-			((ListMultipleChoice)customers).setMaxRows(4);	
-		}
+		customers = new ListMultipleChoice("reportCriteria.userCriteria.customers",
+				new PropertyModel(getModel(), "reportCriteria.availableCriteria.customers"),
+				new DomainObjectChoiceRenderer());
+		
+		((ListMultipleChoice)customers).setMaxRows(4);	
 		
 		customers.setOutputMarkupId(true);
 

@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.panel.nav;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.page.login.Login;
 import net.rrm.ehour.ui.page.pm.ProjectManagement;
-import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
+import net.rrm.ehour.ui.page.report.global.AggregatedReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;

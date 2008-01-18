@@ -18,8 +18,8 @@
 package net.rrm.ehour.ui.panel.nav.report;
 
 import net.rrm.ehour.ui.border.GreyNavBorder;
-import net.rrm.ehour.ui.page.report.aggregate.AggregatedReportPage;
 import net.rrm.ehour.ui.page.report.detail.DetailedReportPage;
+import net.rrm.ehour.ui.page.report.global.AggregatedReportPage;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;

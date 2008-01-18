@@ -15,13 +15,16 @@
  *
  */
 
-package net.rrm.ehour.ui.page.report.aggregate;
+package net.rrm.ehour.ui.page.report.global;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.report.aggregate.AggregateReportPanel;
@@ -31,9 +34,11 @@ import net.rrm.ehour.ui.panel.report.aggregate.ProjectReportPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
+import net.rrm.ehour.ui.panel.report.detail.DetailedReportPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
+import net.rrm.ehour.ui.report.trend.DetailedReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -44,6 +49,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Reporting 
@@ -54,6 +60,8 @@ public class AggregatedReportPage extends BaseReportPage
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 	
+	@SpringBean
+	private ReportService		reportService;
 	private ReportTabbedPanel	tabPanel;
 
 	/**
@@ -92,16 +100,26 @@ public class AggregatedReportPage extends BaseReportPage
 	@SuppressWarnings("unchecked")
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-		addReportPanelTabs();
+		ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getModel().getObject();
+
+		if (backingBean.getReportType() == 0)
+		{
+			addAggregateReportPanelTabs	(backingBean);
+		}
+		else
+		{
+			addDetailedReportPanelTabs(backingBean);
+		}
+		
 		target.addComponent(tabPanel);
 	}
 
 	/**
 	 * Get the report panel
 	 */
-	private void addReportPanelTabs()
+	private void addAggregateReportPanelTabs(ReportCriteriaBackingBean backingBean)
 	{
-		ReportCriteria criteria = ((ReportCriteriaBackingBean)getModel().getObject()).getReportCriteria();
+		ReportCriteria criteria = backingBean.getReportCriteria();
 		
 		final ReportData reportData = getReportData(criteria);
 		
@@ -138,11 +156,61 @@ public class AggregatedReportPage extends BaseReportPage
 			{
 				return getUserReportPanel(panelId, reportData);
 			}
-		};		
-		
+		};	
 		tabPanel.addTab(employeeTab);
+		
 		tabPanel.setSelectedTab(1);
 	}
+	
+	/**
+	 * Get the report panel
+	 */
+	private void addDetailedReportPanelTabs(ReportCriteriaBackingBean backingBean)
+	{
+		ReportCriteria criteria = backingBean.getReportCriteria();
+		
+		final ReportData reportData = getDetailedReportData(criteria);	
+
+		ITab	detailedTab = new AbstractTab(new KeyResourceModel("report.title.detailed"))
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return getDetailedReportPanel(panelId, reportData);
+			}
+		};			
+		tabPanel.addTab(detailedTab);	
+	}
+	
+	/**
+	 * Get report data
+	 * @param reportCriteria
+	 * @return
+	 */
+	protected ReportData getDetailedReportData(ReportCriteria reportCriteria)
+	{
+		List<FlatReportElement> data;
+		
+		if (reportCriteria.getUserCriteria().getProjects().isEmpty())
+		{
+			data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
+												reportCriteria.getUserCriteria().getReportRange());
+		}
+		else
+		{
+			
+			data = reportService.getReportData((Project[])reportCriteria.getUserCriteria().getProjects().toArray(new Project[reportCriteria.getUserCriteria().getProjects().size()]), 
+													reportCriteria.getUserCriteria().getReportRange());
+		}
+		
+		ReportData reportData = new ReportData();
+		reportData.setReportElements(data);
+		reportData.setReportCriteria(reportCriteria);
+		return reportData;
+	}	
+	
 	
 	/**
 	 * Get customer report panel
@@ -180,7 +248,6 @@ public class AggregatedReportPage extends BaseReportPage
 	
 	/**
 	 * Get user report panel
-	 * TODO too much repeating stuff here..
 	 * 
 	 * @param id
 	 * @param reportData
@@ -196,4 +263,23 @@ public class AggregatedReportPage extends BaseReportPage
 		
 		return panel;
 	}
+	
+	/**
+	 * Get detailed report panel
+	 * @param id
+	 * @param reportData
+	 * @return
+	 */
+	private Panel getDetailedReportPanel(String id, ReportData reportData)
+	{
+		DetailedReport detailedReport = new DetailedReport(reportData, this.getConfig().getLocale());
+		
+		// for excel reporting
+		((EhourWebSession)(getSession())).getReportCache().addReportToCache(detailedReport, reportData);
+		
+		DetailedReportPanel panel = new DetailedReportPanel(id, detailedReport, reportData);
+		panel.setOutputMarkupId(true);
+		
+		return panel;
+	}		
 }

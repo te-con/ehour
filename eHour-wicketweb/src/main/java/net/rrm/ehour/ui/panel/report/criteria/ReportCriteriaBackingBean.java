@@ -40,6 +40,8 @@ public class ReportCriteriaBackingBean implements Serializable
 	private QuickMonth		quickMonth;
 	private QuickQuarter	quickQuarter;
 	
+	private int				reportType = 1;
+	
 	public ReportCriteriaBackingBean(ReportCriteria reportCriteria)
 	{
 		this.reportCriteria = reportCriteria;
@@ -116,5 +118,21 @@ public class ReportCriteriaBackingBean implements Serializable
 	public void setReportCriteria(ReportCriteria reportCriteria)
 	{
 		this.reportCriteria = reportCriteria;
+	}
+
+	/**
+	 * @return the reportType
+	 */
+	public int getReportType()
+	{
+		return reportType;
+	}
+
+	/**
+	 * @param reportType the reportType to set
+	 */
+	public void setReportType(int reportType)
+	{
+		this.reportType = reportType;
 	}
 }
