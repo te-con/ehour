@@ -26,7 +26,6 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.report.criteria.AggregateAvailableCriteria;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
@@ -90,23 +89,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 			
 			if (updateType == ReportCriteriaUpdate.UPDATE_ALL)
 			{
-				// TODO ugly
-				if (availCriteria instanceof AggregateAvailableCriteria)
-				{
-					((AggregateAvailableCriteria)availCriteria).setUserDepartments(userDepartmentDAO.findAll());
-				}
+				availCriteria.setUserDepartments(userDepartmentDAO.findAll());
 				
 				availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry());
 			}
 
-			// TODO ugly
-			if (availCriteria instanceof AggregateAvailableCriteria)
+			if (updateType == ReportCriteriaUpdate.UPDATE_USERS ||
+					updateType == ReportCriteriaUpdate.UPDATE_ALL)
 			{
-				if (updateType == ReportCriteriaUpdate.UPDATE_USERS ||
-						updateType == ReportCriteriaUpdate.UPDATE_ALL)
-				{
-					((AggregateAvailableCriteria)availCriteria).setUsers(getAvailableUsers(userCriteria));
-				}
+				availCriteria.setUsers(getAvailableUsers(userCriteria));
 			}
 
 			
@@ -208,7 +199,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		List<ProjectAssignment>	assignments = null;
 		Set<Customer>			customers = new HashSet<Customer>();
 		Set<Project>			projects = new HashSet<Project>();
-		AggregateAvailableCriteria		availCriteria = (AggregateAvailableCriteria)reportCriteria.getAvailableCriteria();
+		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
 		User					user;
 		
 		user = reportCriteria.getUserCriteria().getUsers().get(0);
