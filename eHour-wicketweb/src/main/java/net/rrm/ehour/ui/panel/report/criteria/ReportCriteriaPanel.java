@@ -119,9 +119,15 @@ public class ReportCriteriaPanel extends Panel
 		addProjectSelection(blueBorder);
 		addDepartmentsAndUsers(form);
 		
-		addCreateReportSubmit(form);		
+		addCreateReportSubmit(form);	
+		
+		addReportTypeSelection(form);
 	}	
 
+	/**
+	 * Add report type selection to form
+	 * @param parent
+	 */
 	private void addReportTypeSelection(WebMarkupContainer parent)
 	{
 		List<ReportType>	reportTypes = new ArrayList<ReportType>();	
@@ -129,8 +135,10 @@ public class ReportCriteriaPanel extends Panel
 		reportTypes.add(ReportType.AGGREGATE);
 		reportTypes.add(ReportType.DETAILED);
 		
-		final DropDownChoice reportTypeSelection = new DropDownChoice("reportType", reportTypes, new QuickWeekRenderer());
-		parent.add(reportTypeSelection);		
+		final DropDownChoice reportTypeSelection = new DropDownChoice("reportType", reportTypes);
+		reportTypeSelection.setRequired(true);
+		parent.add(reportTypeSelection);	
+		
 	}
 	
 	/**

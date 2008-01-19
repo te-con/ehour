@@ -18,16 +18,23 @@
 package net.rrm.ehour.ui.panel.report.criteria.type;
 
 /**
- * TODO 
+ * Report type
  **/
 
 public enum ReportType
 {
-	AGGREGATE,
-	DETAILED;
+	AGGREGATE("report.type.aggregate"),
+	DETAILED("report.type.detailed");
+	
+	private String resourceKey;
+	
+	private ReportType(String resourceKey)
+	{
+		this.resourceKey = resourceKey;
+	}
 	
 	public String toString()
 	{
-		return null;
+		return resourceKey;
 	}
 }

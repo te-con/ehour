@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.panel.report.aggregate.ProjectReportPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
+import net.rrm.ehour.ui.panel.report.criteria.type.ReportType;
 import net.rrm.ehour.ui.panel.report.detail.DetailedReportPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
@@ -102,7 +103,7 @@ public class AggregatedReportPage extends BaseReportPage
 	{
 		ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getModel().getObject();
 
-		if (backingBean.getReportType() == 0)
+		if (backingBean.getReportType().equals(ReportType.AGGREGATE))
 		{
 			addAggregateReportPanelTabs	(backingBean);
 		}
@@ -121,7 +122,7 @@ public class AggregatedReportPage extends BaseReportPage
 	{
 		ReportCriteria criteria = backingBean.getReportCriteria();
 		
-		final ReportData reportData = getReportData(criteria);
+		final ReportData reportData = getAggregateReportData(criteria);
 		
 		ITab	customerTab = new AbstractTab(new KeyResourceModel("report.title.customer"))
 		{
@@ -281,5 +282,18 @@ public class AggregatedReportPage extends BaseReportPage
 		panel.setOutputMarkupId(true);
 		
 		return panel;
-	}		
+	}	
+	
+	/**
+	 * Get aggregated report data
+	 * @param reportCriteria
+	 * @return
+	 */
+	private ReportData getAggregateReportData(ReportCriteria reportCriteria)
+	{
+		logger.debug("Getting aggregated report data");
+		ReportData data = reportService.createAggregateReportData(reportCriteria);
+		
+		return data;
+	}	
 }

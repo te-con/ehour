@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.page.user.report;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
@@ -31,6 +32,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Reporting for user
@@ -42,7 +44,9 @@ public class UserReport extends BaseReportPage
 	private static final long serialVersionUID = -8867366237264687482L;
 
 	private WebMarkupContainer		reportDataPanel;
-	
+	@SpringBean
+	private ReportService		reportService;
+
 	/**
 	 * 
 	 */
@@ -87,7 +91,7 @@ public class UserReport extends BaseReportPage
 		ReportCriteria criteria = (ReportCriteria)getModel().getObject();
 		
 		// add data
-		ReportData reportData = getReportData(criteria);
+		ReportData reportData = getAggregateReportData(criteria);
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
 		
@@ -95,4 +99,19 @@ public class UserReport extends BaseReportPage
 		panel.setOutputMarkupId(true);
 		return panel;
 	}
+	
+	/**
+	 * Get aggregated report data
+	 * @param reportCriteria
+	 * @return
+	 */
+	private ReportData getAggregateReportData(ReportCriteria reportCriteria)
+	{
+		logger.debug("Getting aggregated report data");
+		ReportData data = reportService.createAggregateReportData(reportCriteria);
+		
+		return data;
+	}	
+	
+	
 }

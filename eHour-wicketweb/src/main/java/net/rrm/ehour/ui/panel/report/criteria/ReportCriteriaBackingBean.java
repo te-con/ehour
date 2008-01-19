@@ -26,6 +26,7 @@ import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickPeriod;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
+import net.rrm.ehour.ui.panel.report.criteria.type.ReportType;
 
 /**
  * Backing bean for report criteria
@@ -40,7 +41,7 @@ public class ReportCriteriaBackingBean implements Serializable
 	private QuickMonth		quickMonth;
 	private QuickQuarter	quickQuarter;
 	
-	private int				reportType = 1;
+	private ReportType		reportType;
 	
 	public ReportCriteriaBackingBean(ReportCriteria reportCriteria)
 	{
@@ -123,7 +124,7 @@ public class ReportCriteriaBackingBean implements Serializable
 	/**
 	 * @return the reportType
 	 */
-	public int getReportType()
+	public ReportType getReportType()
 	{
 		return reportType;
 	}
@@ -131,7 +132,7 @@ public class ReportCriteriaBackingBean implements Serializable
 	/**
 	 * @param reportType the reportType to set
 	 */
-	public void setReportType(int reportType)
+	public void setReportType(ReportType reportType)
 	{
 		this.reportType = reportType;
 	}

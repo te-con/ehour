@@ -21,9 +21,7 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.report.service.ReportService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
@@ -40,8 +38,6 @@ public abstract class BaseReportPage extends BasePage
 {
 	@SpringBean
 	private ReportCriteriaService	reportCriteriaService;
-	@SpringBean
-	private ReportService			reportService;
 
 	protected final transient Logger logger = Logger.getLogger(this.getClass()); 
 
@@ -104,18 +100,5 @@ public abstract class BaseReportPage extends BasePage
 		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
 		
 		return userCriteria;
-	}	
-	
-	/**
-	 * Get report data
-	 * @param reportCriteria
-	 * @return
-	 */
-	protected ReportData getReportData(ReportCriteria reportCriteria)
-	{
-		logger.debug("Getting report data");
-		ReportData data = reportService.createAggregateReportData(reportCriteria);
-		
-		return data;
 	}	
 }
