@@ -26,7 +26,7 @@ import net.rrm.ehour.ui.page.admin.user.UserAdmin;
 import net.rrm.ehour.ui.page.login.Login;
 import net.rrm.ehour.ui.page.login.SessionExpiredPage;
 import net.rrm.ehour.ui.page.pm.ProjectManagement;
-import net.rrm.ehour.ui.page.report.global.AggregatedReportPage;
+import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;
@@ -111,7 +111,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount("/consultant", PackageName.forPackage(Overview.class.getPackage()));
 		mount("/consultant/report", PackageName.forPackage(UserReport.class.getPackage()));
 		mount("/consultant/print", PackageName.forPackage(PrintMonthSelection.class.getPackage()));
-		mount("/report", PackageName.forPackage(AggregatedReportPage.class.getPackage()));
+		mount("/report", PackageName.forPackage(GlobalReportPage.class.getPackage()));
 		mount("/projectManagement", PackageName.forPackage(ProjectManagement.class.getPackage()));		
 	}
 	

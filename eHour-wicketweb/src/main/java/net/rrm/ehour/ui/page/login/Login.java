@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.page.report.global.AggregatedReportPage;
+import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
@@ -183,7 +183,7 @@ public class Login extends WebPage
 			}
 			else if (roles.contains(CommonWebUtil.ROLE_REPORT))
 			{
-				homepage = AggregatedReportPage.class;
+				homepage = GlobalReportPage.class;
 			}
 			else
 			{

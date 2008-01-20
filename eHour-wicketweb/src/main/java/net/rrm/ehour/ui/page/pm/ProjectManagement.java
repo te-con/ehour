@@ -25,7 +25,7 @@ import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.pm.PmReportPanel;
@@ -52,7 +52,7 @@ public class ProjectManagement extends BasePage
 	@SpringBean
 	private ProjectService	projectService;
 	@SpringBean
-	private ReportService	reportService;
+	private AggregateReportService	aggregateReportService;
 	private WebMarkupContainer	reportPanel;
 	
 	/**
@@ -136,7 +136,7 @@ public class ProjectManagement extends BasePage
 			// only one can be there
 			Project project = criteria.getUserCriteria().getProject();
 			
-			reportData = reportService.getProjectManagerReport(reportRange, project.getPK());
+			reportData = aggregateReportService.getProjectManagerReport(reportRange, project.getPK());
 		}
 		
 		return reportData;

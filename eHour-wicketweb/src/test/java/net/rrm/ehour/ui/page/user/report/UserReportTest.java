@@ -38,16 +38,16 @@ public class UserReportTest extends BaseTestReport
 		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdate.UPDATE_ALL)))
 		.andReturn(reportCriteria);	
 
-		expect(reportService.createAggregateReportData(reportCriteria))
+		expect(aggregateReportService.getAggregateReportData(reportCriteria))
 				.andReturn(data);
 		
 		replay(reportCriteriaService);
-		replay(reportService);
+		replay(aggregateReportService);
 		
 		tester.startPage(UserReport.class);
 		tester.assertRenderedPage(UserReport.class);
 		tester.assertNoErrorMessage();
 		
 		verify(reportCriteriaService);
-		verify(reportService);
+		verify(aggregateReportService);
 	}}

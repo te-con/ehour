@@ -24,7 +24,7 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.report.aggregate.AggregateReportPanel;
@@ -57,18 +57,18 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @AuthorizeInstantiation("ROLE_REPORT")
-public class AggregatedReportPage extends BaseReportPage
+public class GlobalReportPage extends BaseReportPage
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 	
 	@SpringBean
-	private ReportService		reportService;
+	private AggregateReportService		aggregateReportService;
 	private ReportTabbedPanel	tabPanel;
 
 	/**
 	 * 
 	 */
-	public AggregatedReportPage()
+	public GlobalReportPage()
 	{
 		super(new ResourceModel("report.title"));
 		
@@ -190,21 +190,21 @@ public class AggregatedReportPage extends BaseReportPage
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected ReportData getDetailedReportData(ReportCriteria reportCriteria)
+	private ReportData getDetailedReportData(ReportCriteria reportCriteria)
 	{
-		List<FlatReportElement> data;
+		List<FlatReportElement> data = null;
 		
-		if (reportCriteria.getUserCriteria().getProjects().isEmpty())
-		{
-			data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
-												reportCriteria.getUserCriteria().getReportRange());
-		}
-		else
-		{
-			
-			data = reportService.getReportData((Project[])reportCriteria.getUserCriteria().getProjects().toArray(new Project[reportCriteria.getUserCriteria().getProjects().size()]), 
-													reportCriteria.getUserCriteria().getReportRange());
-		}
+//		if (reportCriteria.getUserCriteria().getProjects().isEmpty())
+//		{
+//			data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
+//												reportCriteria.getUserCriteria().getReportRange());
+//		}
+//		else
+//		{
+//			
+//			data = reportService.getReportData((Project[])reportCriteria.getUserCriteria().getProjects().toArray(new Project[reportCriteria.getUserCriteria().getProjects().size()]), 
+//													reportCriteria.getUserCriteria().getReportRange());
+//		}
 		
 		ReportData reportData = new ReportData();
 		reportData.setReportElements(data);
@@ -292,7 +292,7 @@ public class AggregatedReportPage extends BaseReportPage
 	private ReportData getAggregateReportData(ReportCriteria reportCriteria)
 	{
 		logger.debug("Getting aggregated report data");
-		ReportData data = reportService.createAggregateReportData(reportCriteria);
+		ReportData data = aggregateReportService.getAggregateReportData(reportCriteria);
 		
 		return data;
 	}	

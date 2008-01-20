@@ -24,11 +24,9 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
-import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.nav.report.ReportNavPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
@@ -56,7 +54,7 @@ public class DetailedReportPage extends BaseReportPage
 	private static final long serialVersionUID = 187757929348342350L;
 	
 	@SpringBean
-	private ReportService		reportService;
+	private AggregateReportService		aggregateReportService;
 	private ReportTabbedPanel	tabPanel;
 
 	/**
@@ -66,8 +64,6 @@ public class DetailedReportPage extends BaseReportPage
 	{
 		super(new ResourceModel("report.title"));
 		
-		add(new ReportNavPanel("reportNav"));
-		add(new ContextualHelpPanel("contextHelp"));
 		
 		final ReportCriteria reportCriteria = getReportCriteria(false);
 		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));
@@ -97,19 +93,19 @@ public class DetailedReportPage extends BaseReportPage
 	 */
 	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
-		List<FlatReportElement> data;
+		List<FlatReportElement> data = null;
 		
-		if (reportCriteria.getUserCriteria().getProjects().isEmpty())
-		{
-			data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
-												reportCriteria.getUserCriteria().getReportRange());
-		}
-		else
-		{
-			
-			data = reportService.getReportData((Project[])reportCriteria.getUserCriteria().getProjects().toArray(new Project[reportCriteria.getUserCriteria().getProjects().size()]), 
-													reportCriteria.getUserCriteria().getReportRange());
-		}
+//		if (reportCriteria.getUserCriteria().getProjects().isEmpty())
+//		{
+//			data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
+//												reportCriteria.getUserCriteria().getReportRange());
+//		}
+//		else
+//		{
+//			
+//			data = reportService.getReportData((Project[])reportCriteria.getUserCriteria().getProjects().toArray(new Project[reportCriteria.getUserCriteria().getProjects().size()]), 
+//													reportCriteria.getUserCriteria().getReportRange());
+//		}
 		
 		ReportData reportData = new ReportData();
 		reportData.setReportElements(data);

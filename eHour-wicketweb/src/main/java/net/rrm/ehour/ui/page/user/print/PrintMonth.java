@@ -29,7 +29,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.report.trend.PrintReport;
@@ -58,8 +58,8 @@ public class PrintMonth extends WebPage
 	private static final long serialVersionUID = 1891959724639181159L;
 	
 	@SpringBean
-	private ReportService	reportService;
-	private EhourConfig		config;
+	private DetailedReportService	detailedReportService;
+	private EhourConfig				config;
 	
 	/**
 	 * 
@@ -239,7 +239,7 @@ public class PrintMonth extends WebPage
 		
 		if (assignmentIds != null && assignmentIds.size() > 0)
 		{
-			results = reportService.getReportData(assignmentIds, printRange);
+			results = detailedReportService.getDetailedReportData(assignmentIds, printRange);
 		}
 		else
 		{

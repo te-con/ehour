@@ -24,7 +24,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
-import net.rrm.ehour.ui.page.report.global.AggregatedReportPage;
+import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 
 
 
@@ -41,8 +41,8 @@ public class ReportPageTest extends BaseTestReport
 		
 		replay(reportCriteriaService);
 		
-		tester.startPage(AggregatedReportPage.class);
-		tester.assertRenderedPage(AggregatedReportPage.class);
+		tester.startPage(GlobalReportPage.class);
+		tester.assertRenderedPage(GlobalReportPage.class);
 		tester.assertNoErrorMessage();
 		
 		verify(reportCriteriaService);

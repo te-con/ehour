@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.page.user.report;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
@@ -45,7 +45,7 @@ public class UserReport extends BaseReportPage
 
 	private WebMarkupContainer		reportDataPanel;
 	@SpringBean
-	private ReportService		reportService;
+	private AggregateReportService		aggregateReportService;
 
 	/**
 	 * 
@@ -108,7 +108,7 @@ public class UserReport extends BaseReportPage
 	private ReportData getAggregateReportData(ReportCriteria reportCriteria)
 	{
 		logger.debug("Getting aggregated report data");
-		ReportData data = reportService.createAggregateReportData(reportCriteria);
+		ReportData data = aggregateReportService.getAggregateReportData(reportCriteria);
 		
 		return data;
 	}	
