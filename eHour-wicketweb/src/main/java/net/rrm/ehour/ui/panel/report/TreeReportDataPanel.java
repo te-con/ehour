@@ -27,6 +27,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.model.CurrencyModel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
@@ -37,7 +38,6 @@ import net.rrm.ehour.ui.util.HtmlUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -136,8 +136,6 @@ public class TreeReportDataPanel extends Panel
 		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
 		
 		// add cells
-		
-		
 		for (int column = 0; column < reportConfig.getReportColumns().length; column++, id++)
 		{
 			if (reportConfig.getReportColumns()[column].isVisible())
@@ -182,7 +180,7 @@ public class TreeReportDataPanel extends Panel
 		dataView.setOutputMarkupId(true);
 		dataView.setItemsPerPage(20);
 		
-		parent.add(new AjaxPagingNavigator("navigator", dataView));
+		parent.add(new HoverPagingNavigator("navigator", dataView));
 		parent.add(dataView);
 	}
 
