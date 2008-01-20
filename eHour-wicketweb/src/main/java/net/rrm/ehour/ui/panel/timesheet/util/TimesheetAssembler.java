@@ -232,18 +232,21 @@ public class TimesheetAssembler
 	private void mergeUnbookedAssignments(WeekOverview weekOverview,
 											Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap)
 	{
-		for (ProjectAssignment assignment : weekOverview.getProjectAssignments())
+		if (weekOverview.getProjectAssignments() != null)
 		{
-			if (!assignmentMap.containsKey(assignment))
+			for (ProjectAssignment assignment : weekOverview.getProjectAssignments())
 			{
-				assignmentMap.put(assignment, new HashMap<String, TimesheetEntry>());
+				if (!assignmentMap.containsKey(assignment))
+				{
+					assignmentMap.put(assignment, new HashMap<String, TimesheetEntry>());
+				}
 			}
 		}
 	}	
 	
 	/**
-	 * Create a map of the project assignments and the timesheet entries
 	 * @param weekOverview
+	 * Create a map of the project assignments and the timesheet entries
 	 * @return
 	 */
 	private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
