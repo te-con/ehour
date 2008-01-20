@@ -22,6 +22,7 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 /**
@@ -36,7 +37,7 @@ public interface DetailedReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatReportElement> getDetailedReportData(List<Serializable> projectAssignmentIds, DateRange dateRange);
+	public ReportData<FlatReportElement> getDetailedReportData(List<Serializable> projectAssignmentIds, DateRange dateRange);
 
 	/**
 	 * Get report data for customer 
@@ -44,5 +45,5 @@ public interface DetailedReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatReportElement> getDetailedReportData(ReportCriteria criteria);
+	public ReportData<FlatReportElement> getDetailedReportData(ReportCriteria criteria);
 }

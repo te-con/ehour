@@ -84,9 +84,9 @@ public class AggregateReportServiceImpl implements AggregateReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getAggregateReportData(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
-	public ReportData getAggregateReportData(ReportCriteria reportCriteria)
+	public ReportData<AssignmentAggregateReportElement>  getAggregateReportData(ReportCriteria reportCriteria)
 	{
-		ReportData reportData = new ReportData();
+		ReportData<AssignmentAggregateReportElement> reportData = new ReportData<AssignmentAggregateReportElement>();
 		UserCriteria	userCriteria;
 		List<Project>	projects = null;
 		List<User>		users = null;

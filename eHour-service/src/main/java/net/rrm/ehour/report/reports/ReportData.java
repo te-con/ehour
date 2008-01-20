@@ -25,11 +25,11 @@ import net.rrm.ehour.report.reports.element.ReportElement;
  * Data holder for aggregate reports
  **/
 
-public class ReportData implements Serializable
+public class ReportData<RE extends ReportElement> implements Serializable
 {
 	private static final long serialVersionUID = -6344570520998830487L;
 	
-	private List<? extends ReportElement>		reportElements;
+	private List<RE>		reportElements;
 	private	ReportCriteria	reportCriteria;
 
 	/**
@@ -49,14 +49,14 @@ public class ReportData implements Serializable
 	/**
 	 * @return the reportElements
 	 */
-	public List<? extends ReportElement> getReportElements()
+	public List<RE> getReportElements()
 	{
 		return reportElements;
 	}
 	/**
 	 * @param reportElements the reportElements to set
 	 */
-	public void setReportElements(List<? extends ReportElement> reportElements)
+	public void setReportElements(List<RE> reportElements)
 	{
 		this.reportElements = reportElements;
 	}

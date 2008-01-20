@@ -53,7 +53,7 @@ public interface AggregateReportService
 	 * @param criteria
 	 * @return
 	 */
-	public ReportData getAggregateReportData(ReportCriteria criteria);
+	public ReportData<AssignmentAggregateReportElement> getAggregateReportData(ReportCriteria criteria);
 	
 	/**
 	 * Get project manager report

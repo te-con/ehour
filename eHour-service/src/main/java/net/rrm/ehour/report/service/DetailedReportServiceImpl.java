@@ -24,6 +24,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.DetailedReportDAO;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.util.ReportUtil;
 
@@ -42,13 +43,14 @@ public class DetailedReportServiceImpl implements DetailedReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.DetailedReportService#getDetailedReportData(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
-	public List<FlatReportElement> getDetailedReportData(ReportCriteria reportCriteria)
+	public ReportData<FlatReportElement> getDetailedReportData(ReportCriteria reportCriteria)
 	{
 		UserCriteria	userCriteria;
 		boolean			ignoreUsers;
 		boolean			ignoreProjects;
 		DateRange		reportRange;
-		List<FlatReportElement>	reportData;
+		List<FlatReportElement>	reportElements;
+		ReportData<FlatReportElement>		reportData;
 		
 		userCriteria = reportCriteria.getUserCriteria();
 		logger.debug("Getting detailed report data for " + userCriteria);
@@ -61,29 +63,33 @@ public class DetailedReportServiceImpl implements DetailedReportService
 		if (ignoreProjects && ignoreUsers)
 		{
 			logger.debug("creating full detailed report");
-			reportData = detailedReportDAO.getHoursPerDay(reportRange);
+			reportElements = detailedReportDAO.getHoursPerDay(reportRange);
 		}
 		else if (ignoreProjects && !ignoreUsers)
 		{
 			logger.debug("creating report for only selected users");
 			
-			reportData = detailedReportDAO.getHoursPerDayForUsers(ReportUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
+			reportElements = detailedReportDAO.getHoursPerDayForUsers(ReportUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
 																	reportRange);
 		}
 		else if (!ignoreProjects && ignoreUsers)
 		{
 			logger.debug("creating report for only selected project");
-			reportData = detailedReportDAO.getHoursPerDayForProjects(ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
+			reportElements = detailedReportDAO.getHoursPerDayForProjects(ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
 															reportRange);
 		}
 		else
 		{
 			logger.debug("creating report for selected users & projects");
 
-			reportData = detailedReportDAO.getHoursPerDayForProjectsAndUsers(ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
+			reportElements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
 																	ReportUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
 																	reportRange);
 		}		
+		
+		reportData = new ReportData<FlatReportElement>();
+		reportData.setReportElements(reportElements);
+		reportData.setReportCriteria(reportCriteria); 
 		
 		return reportData;
 	}
@@ -92,9 +98,14 @@ public class DetailedReportServiceImpl implements DetailedReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getReportData(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
-	public List<FlatReportElement> getDetailedReportData(List<Serializable> projectAssignmentIds, DateRange dateRange)
+	public ReportData<FlatReportElement> getDetailedReportData(List<Serializable> projectAssignmentIds, DateRange dateRange)
 	{
-		return detailedReportDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange);
+		ReportData<FlatReportElement> reportData;
+		
+		reportData = new ReportData<FlatReportElement>();
+		reportData.setReportElements(detailedReportDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange));
+		
+		return reportData;
 	}
 
 	/**
