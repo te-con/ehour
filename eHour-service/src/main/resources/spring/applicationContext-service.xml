@@ -64,6 +64,7 @@
 	<bean id="timesheetService" class="net.rrm.ehour.timesheet.service.TimesheetServiceImpl">
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
 		<property name="customerFoldPreferenceDAO" ref="customerFoldPreferenceDAO" />
+		<property name="aggregateReportService" ref="aggregateReportService" />
 	</bean>
 
 	<!-- Project service -->

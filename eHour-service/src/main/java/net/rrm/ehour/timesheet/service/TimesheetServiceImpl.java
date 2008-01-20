@@ -405,4 +405,12 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		this.customerFoldPreferenceDAO = customerFoldPreferenceDAO;
 	}
+
+	/**
+	 * @param aggregateReportService the aggregateReportService to set
+	 */
+	public void setAggregateReportService(AggregateReportService aggregateReportService)
+	{
+		this.aggregateReportService = aggregateReportService;
+	}
 }
