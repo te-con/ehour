@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
+import net.rrm.ehour.ui.util.HtmlUtil;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -45,13 +46,13 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
 /**
  * Panel showing overview
- * TODO move to table layout
  */
 
 public class ProjectOverviewPanel extends Panel implements IHeaderContributor
@@ -136,6 +137,22 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		label.setVisible(config.isShowTurnover());
 		label.setEscapeModelStrings(false);
 		container.add(label);
+		
+		label = HtmlUtil.getNbspLabel("grandRate");
+		label.setVisible(config.isShowTurnover());
+		label.setEscapeModelStrings(false);
+		container.add(label);
+
+		Label projectLabel = HtmlUtil.getNbspLabel("grandProject");
+		Label customerLabel = HtmlUtil.getNbspLabel("grandCustomer");
+		
+		if (!config.isShowTurnover())
+		{
+			customerLabel.add(new SimpleAttributeModifier("style", "width: 30%"));
+			projectLabel.add(new SimpleAttributeModifier("style", "width: 35%"));
+		}
+		container.add(customerLabel);
+		container.add(projectLabel);
 	}
 	
 	/**
@@ -147,10 +164,17 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	{
 		Label	label;
 		
-		// TODO i18n
-		container.add(new Label("projectLabel", "Project"));
-		container.add(new Label("projectCodeLabel", "Project code"));
-		container.add(new Label("customerLabel", "Customer"));
+		Label projectLabel = new Label("projectLabel", new ResourceModel("overview.project"));
+		Label customerLabel = new Label("customerLabel", new ResourceModel("overview.customer"));
+		
+		if (!config.isShowTurnover())
+		{
+			customerLabel.add(new SimpleAttributeModifier("style", "width: 30%;margin-top: 0;"));
+			projectLabel.add(new SimpleAttributeModifier("style", "width: 35%;margin-top: 0;"));
+		}
+
+		container.add(projectLabel);
+		container.add(customerLabel);
 		
 		label = new Label("rateLabel", "Rate");
 		label.setVisible(config.isShowTurnover());
@@ -192,7 +216,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 			public void populateItem(final ListItem item)
 			{
 				UserProjectStatus projectStatus = (UserProjectStatus) item.getModelObject();
-				// add id to AggreagteRow
+				// add id to AggregateRow
 				item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
 				{
 					public Object getObject()
@@ -213,13 +237,21 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				
 				item.add(img);
 				
-				item.add(new Label("projectName", projectStatus.getProjectAssignment().getProject().getName()));
+				Label projectLabel = new Label("projectName", projectStatus.getProjectAssignment().getProject().getName());
+				Label customerLabel = new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()); 
+				
+				if (!session.getEhourConfig().isShowTurnover())
+				{
+					customerLabel.add(new SimpleAttributeModifier("style", "width: 30%;"));
+					projectLabel.add(new SimpleAttributeModifier("style", "width: 35%;"));
+				}
+				
+				item.add(projectLabel);
+				item.add(customerLabel);
 				item.add(new Label("projectCode", projectStatus.getProjectAssignment().getProject().getProjectCode()));
 				
-				Label label = new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName());
-				item.add(label);
 				
-				label = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), session.getEhourConfig()));
+				Label label = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), session.getEhourConfig()));
 				label.setVisible(session.getEhourConfig().isShowTurnover());
 				label.setEscapeModelStrings(false);
 				item.add(label);

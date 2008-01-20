@@ -12,9 +12,9 @@
 
 			<div class="AggregateHeader">
 				<div class="foldCell">&nbsp;</div>
-				<div class="textCell" style="width: 19%;margin-top:0;" wicket:id="projectLabel">Project</div>
-				<div class="textCell" style="margin-top:0" wicket:id="projectCodeLabel">Project code</div>
 				<div class="textCell" style="width: 17%;margin-top:0;" wicket:id="customerLabel">Customer</div>
+				<div class="textCell" style="margin-top:0"><wicket:message key="overview.projectCode" /></div>
+				<div class="textCell" style="width: 19%;margin-top:0;" wicket:id="projectLabel">Project</div>
 				<div class="numbCell" style="margin-top:0" wicket:id="rateLabel">Rate</div>
 				<div class="numbCell" style="margin-top:0" wicket:id="bookedHoursLabel">Hours</div>
 				<div class="numbCell" style="width: 19%;margin-top:0;" wicket:id="turnoverLabel">Turnover</div>
@@ -23,9 +23,9 @@
 			<span wicket:id="projectStatus">
 				<div class="AggregateRow" onclick="foldSummary(this)">
 					<div class="foldCell"><img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" /></div>
-					<div class="textCell" style="width: 19%;overflow:hidden;cursor:pointer" wicket:id="projectName">[projectName]</div>
-					<div class="textCell" wicket:id="projectCode">[projectCode]</div>
 					<div class="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
+					<div class="textCell" wicket:id="projectCode">[projectCode]</div>
+					<div class="textCell" style="width: 19%;overflow:hidden;cursor:pointer" wicket:id="projectName">[projectName]</div>
 					<div class="numbCell" wicket:id="rate"></div>
 					<div class="numbCell" wicket:id="monthHours">24.50</div>
 					<div class="numbCell" style="width: 19%" wicket:id="turnover">&euro; 16.000</div>
@@ -44,10 +44,10 @@
 			
 			<div class="TotalRow">
 				<div class="foldCell">&nbsp;</div>
-				<div class="textCell" style="width: 19%">&nbsp;</div>
+				<div class="textCell" style="width: 17%" wicket:id="grandCustomer">&nbsp;</div>
+				<div class="textCell" style="width: 19%" wicket:id="grandProject">&nbsp;</div>
 				<div class="textCell">&nbsp;</div>
-				<div class="textCell" style="width: 17%">&nbsp;</div>
-				<div class="numbCell">&nbsp;</div>
+				<div class="numbCell" wicket:id="grandRate">&nbsp;</div>
 				<div class="numbCell" style="margin-top:2px" wicket:id="grandTotalHours"></div>
 				<div class="numbCell" style="margin-top:2px;width: 19%" wicket:id="grandTotalTurnover"></div>
 			</div>
