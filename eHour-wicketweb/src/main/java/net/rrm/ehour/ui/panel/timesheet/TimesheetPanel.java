@@ -398,22 +398,22 @@ public class TimesheetPanel extends Panel implements Serializable
 			{
 				final Customer	customer = (Customer)item.getModelObject();
 
-				WebMarkupContainer imgId = new WebMarkupContainer("foldImgId");
-				imgId.add(new SimpleAttributeModifier("id", "img" + customer.getCustomerId()));
-				item.add(imgId);
-
 				// check for any preference
 				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
 				
 				if (foldPreference == null)
 				{
 					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
-				}
+				}				
+				
+				boolean hidden = (foldPreference != null && foldPreference.isFolded());
+				
+				AjaxLink foldLink = getFoldLink(customer.getCustomerId().toString(), foldPreference);
+				foldLink.add(new SimpleAttributeModifier("class", hidden ? "timesheetFoldedImg" : "timesheetFoldImg"));
+				item.add(foldLink);
 				
 				item.add(getCustomerLabel(customer, foldPreference));
 //				item.add(new Label("customerDesc", customer.getDescription()));
-
-				boolean hidden = (foldPreference != null && foldPreference.isFolded());
 				
 				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
 			}
@@ -425,6 +425,37 @@ public class TimesheetPanel extends Panel implements Serializable
 		return grandTotals;
 	}
 
+	/**
+	 * Add fold link
+	 * @param id
+	 * @param foldPreference
+	 * @return
+	 */
+	private AjaxLink getFoldLink(final String id, final CustomerFoldPreference foldPreference)
+	{
+		AjaxLink foldLink = new AjaxLink("foldLink")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				foldPreference.toggleFolded();
+				userService.persistCustomerFoldPreference(foldPreference);
+			}
+			
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator()
+			{
+				return new OnClickDecorator("toggleProjectRow", id);
+			}					
+		};
+		
+		foldLink.add(new SimpleAttributeModifier("id", "foldcss" + id));
+		
+		return foldLink;
+	}
+	
 	/**
 	 * Get customer label
 	 * @param customer
@@ -443,7 +474,6 @@ public class TimesheetPanel extends Panel implements Serializable
 			protected void onEvent(AjaxRequestTarget target)
 			{
 				foldPreference.toggleFolded();
-				
 				userService.persistCustomerFoldPreference(foldPreference);
 			}
 
@@ -477,22 +507,14 @@ public class TimesheetPanel extends Panel implements Serializable
 	
 	/**
 	 * Add javascript with replaced images
+	 * TODO add js directly to header
 	 * @param container
 	 */
 	private void addJavascript(WebMarkupContainer container)
 	{
-//		CharSequence iconUpOn = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_up_on.gif";
-		CharSequence iconUpOff = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_up_off.gif";
-//		CharSequence iconDownOn = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_down_on.gif";
-		CharSequence iconDownOff = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_down_off.gif";
-		
 		PackagedTextTemplate js = new PackagedTextTemplate(TimesheetPanel.class, "js/timesheet.js");
 
 		Map<String, CharSequence> map = new HashMap<String, CharSequence>();
-//		map.put("iconUpOn", iconUpOn);
-		map.put("iconUpOff", iconUpOff);
-//		map.put("iconDownOn", iconDownOn);
-		map.put("iconDownOff", iconDownOff);
 		
 		add(TextTemplateHeaderContributor.forJavaScript(js, new Model((Serializable)map)));
 	}	

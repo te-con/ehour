@@ -1,8 +1,3 @@
-var imgDownOff = new Image();
-imgDownOff.src = '${iconDownOff}';
-var imgUpOff= new Image();
-imgUpOff.src = '${iconUpOff}';
-
 function toggleProjectRow(customerId)
 {
 	var i = 1;
@@ -34,6 +29,7 @@ function toggleProjectRow(customerId)
 		}
 	}
 	
-	var imgRow = document.getElementById("img" + customerId);
-	imgRow.childNodes[0].src = (toUp) ? imgUpOff.src : imgDownOff.src;
+	var imgRow = document.getElementById("foldcss" + customerId);
+	imgRow.className = (toUp) ? "timesheetFoldedImg" : "timesheetFoldImg";
+	imgRow.blur();
 }
