@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.panel.report.aggregate;
 
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.panel.report.AbstractExcelReport;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
 
@@ -27,7 +28,7 @@ import org.apache.wicket.model.ResourceModel;
  * TODO 
  **/
 
-public class ProjectReportExcel extends AbstractExcelReport
+public class ProjectReportExcel extends AbstractExcelReport<AssignmentAggregateReportElement>
 {
 	private static final long serialVersionUID = 1L;
 

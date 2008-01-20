@@ -21,9 +21,7 @@
 			    <wicket:message key="report.criteria.until" />:
 			    &nbsp;&nbsp;
 				<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="reportCriteria.userCriteria.reportRange.dateEnd" />
-			
-				<select class="textInputSmall" wicket:id="reportType"></select>
-			
+
 				<br />
 				
 				<div style="width: 10em;float:left"><wicket:message key="quickDates" />:</div>
@@ -31,6 +29,13 @@
 					<select class="textInputSmall" wicket:id="quickMonth"></select>
 					<select class="textInputSmall" wicket:id="quickQuarter"></select>
 			</div>
+			
+			<div style="float: right; margin-right: 15px">
+				<wicket:message key="report.type" />:
+				<select class="textInputSmall" wicket:id="reportType"></select>
+				<span wicket:id="reportTypeSelectionError"></span>
+			</div>
+			
 			
 			<br /><br />
 			

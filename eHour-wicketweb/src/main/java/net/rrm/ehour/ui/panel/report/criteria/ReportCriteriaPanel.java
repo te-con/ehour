@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonthRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarter;
@@ -39,6 +40,7 @@ import net.rrm.ehour.ui.panel.report.criteria.quick.QuickQuarterRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeek;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.type.ReportType;
+import net.rrm.ehour.ui.panel.report.criteria.type.ReportTypeRenderer;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
@@ -135,8 +137,10 @@ public class ReportCriteriaPanel extends Panel
 		reportTypes.add(ReportType.AGGREGATE);
 		reportTypes.add(ReportType.DETAILED);
 		
-		final DropDownChoice reportTypeSelection = new DropDownChoice("reportType", reportTypes);
+		final DropDownChoice reportTypeSelection = new DropDownChoice("reportType", reportTypes, new ReportTypeRenderer());
 		reportTypeSelection.setRequired(true);
+		reportTypeSelection.setLabel(new ResourceModel("report.type.name"));
+		parent.add(new AjaxFormComponentFeedbackIndicator("reportTypeSelectionError", reportTypeSelection));
 		parent.add(reportTypeSelection);	
 		
 	}

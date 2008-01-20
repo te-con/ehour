@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.model.CurrencyModel;
 import net.rrm.ehour.ui.model.DateModel;
@@ -70,7 +71,7 @@ public class TreeReportDataPanel extends Panel
 	 * @param id
 	 * @param report report data
 	 */
-	public TreeReportDataPanel(String id, TreeReport report, ReportConfig reportConfig, String excelResourceName)
+	public TreeReportDataPanel(String id, TreeReport<? extends ReportElement> report, ReportConfig reportConfig, String excelResourceName)
 	{
 		super(id);
 		
@@ -126,7 +127,7 @@ public class TreeReportDataPanel extends Panel
 	 * @param report
 	 * @param parent
 	 */
-	private void addGrandTotal(TreeReport report, WebMarkupContainer parent)
+	private void addGrandTotal(TreeReport<? extends ReportElement> report, WebMarkupContainer parent)
 	{
 		RepeatingView	totalView = new RepeatingView("cell");
 		int				id = 0;
@@ -175,7 +176,7 @@ public class TreeReportDataPanel extends Panel
 	 * @param reportNode
 	 * @return
 	 */
-	private void addReportData(TreeReport report, WebMarkupContainer parent)
+	private void addReportData(TreeReport<? extends ReportElement> report, WebMarkupContainer parent)
 	{
 		DataView dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(report.getReportMatrix()));
 		dataView.setOutputMarkupId(true);
@@ -392,7 +393,6 @@ public class TreeReportDataPanel extends Panel
 			{
 				item.add(new SimpleAttributeModifier("style", "background-color: #fefeff"));
 			}
-			
 		}
 		
 		/**
@@ -403,14 +403,10 @@ public class TreeReportDataPanel extends Panel
 		 */
 		private boolean isDuplicate(int i, Serializable cellValue)
 		{
-//			if (previousCellValues != null)
-//			{
-//				System.out.println(previousCellValues.get(i)+ " & " + cellValue);
-//			}
-			
 			return (!reportConfig.getReportColumns()[i].isAllowDuplicates()
 					&& previousCellValues != null
 					&& previousForPage == getCurrentPage()
+					&& previousCellValues.get(i) != null
 					&& previousCellValues.get(i).equals(cellValue));			
 		}
 	};		

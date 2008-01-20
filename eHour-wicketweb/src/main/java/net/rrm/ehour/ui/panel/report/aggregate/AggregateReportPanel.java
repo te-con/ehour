@@ -18,6 +18,7 @@
 package net.rrm.ehour.ui.panel.report.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
@@ -36,11 +37,12 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * 
 	 * @param id
 	 */
-	public AggregateReportPanel(String id, TreeReport reportData, ReportData data, ReportConfig reportConfig, String excelResourceName)
+	public AggregateReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData,
+									ReportData<AssignmentAggregateReportElement> data, ReportConfig reportConfig, String excelResourceName)
 	{
 		super(id, 460);
 
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", 950);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", REPORT_WIDTH);
 		add(greyBorder);
 
 		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportConfig, excelResourceName));
@@ -53,5 +55,5 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected abstract void addCharts(ReportData data, WebMarkupContainer parent);
+	protected abstract void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent);
 }

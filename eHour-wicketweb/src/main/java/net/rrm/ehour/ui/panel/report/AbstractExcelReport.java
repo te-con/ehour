@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.component.AbstractExcelResource;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -44,7 +45,7 @@ import org.apache.wicket.model.ResourceModel;
  * Abstract aggregate excel report
  **/
 
-public abstract class AbstractExcelReport extends AbstractExcelResource
+public abstract class AbstractExcelReport<RE extends ReportElement> extends AbstractExcelResource
 {
 	private final static Logger logger = Logger.getLogger(AbstractExcelReport.class);
 	
@@ -75,10 +76,11 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * @throws Exception 
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public byte[] getExcelData(String reportId) throws Exception
 	{
 		EhourWebSession session = (EhourWebSession)Session.get();
-		TreeReport report = (TreeReport)session.getReportCache().getReportFromCache(reportId);
+		TreeReport<RE> report = (TreeReport<RE>)session.getReportCache().getReportFromCache(reportId);
 		
 		if (report == null)
 		{
@@ -97,7 +99,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * @param treeReport
 	 * @return
 	 */
-	private HSSFWorkbook createWorkbook(TreeReport treeReport)
+	private HSSFWorkbook createWorkbook(TreeReport<RE> treeReport)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet 	sheet = wb.createSheet((String)getExcelReportName().getObject());
@@ -176,9 +178,9 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * @param sheet
 	 * @param rowNumber
 	 */
-	protected void fillReportSheet(TreeReport reportData, HSSFSheet sheet, int rowNumber)
+	protected void fillReportSheet(TreeReport<RE> reportData, HSSFSheet sheet, int rowNumber)
 	{
-		List<Serializable[]>	matrix = reportData.getReportMatrix();
+		List<Serializable[]> matrix = reportData.getReportMatrix();
 		TreeReportColumn[]	columnHeaders = reportConfig.getReportColumns();
 		HSSFRow				row;
 		HSSFCell			cell;
@@ -259,7 +261,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * Create header containing report date
 	 * @param sheet
 	 */
-	private int createHeaders(int rowNumber, HSSFSheet sheet, TreeReport report)
+	private int createHeaders(int rowNumber, HSSFSheet sheet, TreeReport<RE> report)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;

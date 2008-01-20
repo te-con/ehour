@@ -106,6 +106,8 @@ public class GlobalReportPage extends BaseReportPage
 	{
 		ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getModel().getObject();
 
+		clearTabs();
+		
 		if (backingBean.getReportType().equals(ReportType.AGGREGATE))
 		{
 			addAggregateReportPanelTabs	(backingBean);
@@ -118,6 +120,20 @@ public class GlobalReportPage extends BaseReportPage
 		target.addComponent(tabPanel);
 	}
 
+	/**
+	 * Clear tabs except for the first one
+	 */
+	@SuppressWarnings("unchecked")
+	private void clearTabs()
+	{
+		List<AbstractTab> tabs = tabPanel.getTabs();
+		
+		while (tabs.size() > 1)
+		{
+			tabs.remove(1);
+		}
+	}
+	
 	/**
 	 * Get the report panel
 	 */

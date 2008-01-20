@@ -29,6 +29,8 @@ import org.apache.wicket.model.IModel;
 
 public abstract class AbstractReportPanel extends Panel
 {
+	protected final static int REPORT_WIDTH = 950;
+	
 	protected EhourConfig	config;
 	protected int		chartWidth;
 	protected int		chartHeight;
