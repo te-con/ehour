@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.timesheet.domain.TimesheetEntry;
@@ -36,6 +35,7 @@ import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.DummyDataGenerator;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
