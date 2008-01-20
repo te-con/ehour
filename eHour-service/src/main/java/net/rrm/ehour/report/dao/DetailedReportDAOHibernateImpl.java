@@ -30,11 +30,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  * PerMonth DAO impl using sql-queries  
  **/
 
-public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implements ReportPerMonthDAO
+public class DetailedReportDAOHibernateImpl extends HibernateDaoSupport implements DetailedReportDAO
 {
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.report.dao.ReportPerMonthDAO#getHoursPerMonthPerAssignmentForUsers(java.lang.Integer[], java.lang.Integer[], net.rrm.ehour.data.DateRange)
-	 */
 	@SuppressWarnings("unchecked")
 	public List<FlatReportElement> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userIds, List<Serializable> projectIds, DateRange dateRange)
 	{
@@ -126,4 +123,58 @@ public class ReportPerMonthDAOHibernateImpl extends HibernateDaoSupport implemen
 		return query.list();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.DetailedReportDAO#getHoursPerDayForUsers(java.util.List, net.rrm.ehour.data.DateRange)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<FlatReportElement> getHoursPerDayForUsers(List<Serializable> userIds, DateRange dateRange)
+	{
+		Session session = this.getSession();
+		
+		Query query = session.getNamedQuery("Report.getHoursPerDayForUsers")
+						.setDate("dateStart", dateRange.getDateStart())
+						.setDate("dateEnd", dateRange.getDateEnd())
+						.setParameterList("userIds", userIds)
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
+
+		return query.list();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.DetailedReportDAO#getHoursPerDayForProjects(java.util.List, net.rrm.ehour.data.DateRange)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<FlatReportElement> getHoursPerDayForProjects(List<Serializable> projectIds, DateRange dateRange)
+	{
+		Session session = this.getSession();
+		
+		Query query = session.getNamedQuery("Report.getHoursPerDayForProjects")
+						.setDate("dateStart", dateRange.getDateStart())
+						.setDate("dateEnd", dateRange.getDateEnd())
+						.setParameterList("projectIds", projectIds)
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
+
+		return query.list();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.DetailedReportDAO#getHoursPerDayForProjectsAndUsers(java.util.List, java.util.List, net.rrm.ehour.data.DateRange)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<Serializable> projectIds, List<Serializable> userIds, DateRange dateRange)
+	{
+		Session session = this.getSession();
+		
+		Query query = session.getNamedQuery("Report.getHoursPerDayForProjectsAndUsers")
+						.setDate("dateStart", dateRange.getDateStart())
+						.setDate("dateEnd", dateRange.getDateEnd())
+						.setParameterList("projectIds", projectIds)
+						.setParameterList("userIds", userIds)
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
+
+		return query.list();
+	}
 }

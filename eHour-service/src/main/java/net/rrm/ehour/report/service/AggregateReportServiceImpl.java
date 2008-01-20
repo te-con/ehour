@@ -95,7 +95,7 @@ public class AggregateReportServiceImpl implements AggregateReportService
 		DateRange		reportRange;
 		
 		userCriteria = reportCriteria.getUserCriteria();
-		logger.debug("Getting aggregare report data for " + userCriteria);
+		logger.debug("Getting aggregate report data for " + userCriteria);
 		
 		reportRange = reportCriteria.getReportRange();
 		

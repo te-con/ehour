@@ -25,7 +25,7 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
  * TODO 
  **/
 
-public interface ReportPerMonthDAO
+public interface DetailedReportDAO
 {
 	
 	/**
@@ -50,5 +50,29 @@ public interface ReportPerMonthDAO
 	 * @return
 	 */
 	public List<FlatReportElement> getHoursPerDayForAssignment(List<Serializable> assignmentId, DateRange dateRange);
-	
+
+	/**
+	 * Get hours per day for users
+	 * @param userIds
+	 * @param dateRange
+	 * @return
+	 */
+	public List<FlatReportElement> getHoursPerDayForUsers(List<Serializable> userIds, DateRange dateRange);
+
+	/**
+	 * Get hours per day for projects
+	 * @param userIds
+	 * @param dateRange
+	 * @return
+	 */
+	public List<FlatReportElement> getHoursPerDayForProjects(List<Serializable> projectIds, DateRange dateRange);
+
+	/**
+	 * Get hours per day for projects & users
+	 * @param userIds
+	 * @param dateRange
+	 * @return
+	 */
+	public List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<Serializable> projectIds, List<Serializable> userIds, DateRange dateRange);
+
 }

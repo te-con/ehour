@@ -46,7 +46,7 @@
 
 	<!-- Detailed Report service -->
 	<bean id="detailedReportService" class="net.rrm.ehour.report.service.DetailedReportServiceImpl">
-		<property name="reportPerMonthDAO" ref="reportPerMonthDAO" />
+		<property name="detailedReportDAO" ref="detailedReportDAO" />
 	</bean>
 
 	<!-- Report criteria service -->

@@ -71,7 +71,7 @@ public class ProjectAssignmentDAOTest extends BaseDAOTest
 	{
 		List<ProjectAssignment> pas = dao.findAll();
 		
-		assertEquals(11, pas.size());
+		assertEquals(12, pas.size());
 	}
 
 	/**

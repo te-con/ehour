@@ -113,8 +113,8 @@
 	</bean>
 
 	<!-- ReportPerMonth DAO -->
-	<bean id="reportPerMonthDAO"
-		class="net.rrm.ehour.report.dao.ReportPerMonthDAOHibernateImpl"
+	<bean id="detailedReportDAO"
+		class="net.rrm.ehour.report.dao.DetailedReportDAOHibernateImpl"
 		parent="abstractDAOTarget" />
 		
 	<!-- Configuration DAO -->

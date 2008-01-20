@@ -104,7 +104,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		
 		assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
 		
-		assertEquals(3, results.size());
+		assertEquals(5, results.size());
 	}
 	
 	

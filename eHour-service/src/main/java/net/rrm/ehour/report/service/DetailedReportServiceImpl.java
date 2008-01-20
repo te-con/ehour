@@ -21,9 +21,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.dao.ReportPerMonthDAO;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.dao.DetailedReportDAO;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.user.domain.User;
 
 import org.apache.log4j.Logger;
 
@@ -33,7 +37,7 @@ import org.apache.log4j.Logger;
 
 public class DetailedReportServiceImpl implements DetailedReportService
 {
-	private	ReportPerMonthDAO	reportPerMonthDAO;
+	private	DetailedReportDAO	detailedReportDAO;
 	private	Logger				logger = Logger.getLogger(DetailedReportServiceImpl.class);
 
 	/*
@@ -42,18 +46,46 @@ public class DetailedReportServiceImpl implements DetailedReportService
 	 */
 	public List<FlatReportElement> getDetailedReportData(ReportCriteria reportCriteria)
 	{
-		logger.debug("Getting detailed report data");
-//		List<ProjectAssignment> assignments = projectAssignmentDAO.findProjectAssignmentsForCustomer(customer, dateRange);
-//		List<Serializable> assignmentIds = ReportUtil.getPKsFromDomainObjects(assignments);
+//		UserCriteria	userCriteria;
+//		List<Project>	projects = null;
+//		List<User>		users = null;
+//		boolean			ignoreUsers;
+//		boolean			ignoreProjects;
+//		DateRange		reportRange;
 //		
-//		if (assignmentIds.isEmpty())
+//		userCriteria = reportCriteria.getUserCriteria();
+//		logger.debug("Getting detailed report data for " + userCriteria);
+//		
+//		reportRange = reportCriteria.getReportRange();
+//		
+//		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
+//		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
+//		
+//		if (ignoreProjects && ignoreUsers)
 //		{
-//			return new ArrayList<FlatReportElement>();
+//			logger.debug("creating full report");
+//		}
+//		else if (ignoreProjects && !ignoreUsers)
+//		{
+//			logger.debug("creating report for only selected users");
+//			users = getUsers(userCriteria);
+//		}
+//		else if (!ignoreProjects && ignoreUsers)
+//		{
+//			logger.debug("creating report for only selected project");
+//			projects = getProjects(userCriteria);
 //		}
 //		else
 //		{
-//			return getDetailedReportData(assignmentIds, dateRange);
-//		}
+//			logger.debug("creating report for selected users & projects");
+//			users = getUsers(userCriteria);
+//			projects = getProjects(userCriteria);
+//		}		
+//		
+//		reportData.setReportElements(getProjectAssignmentAggregates(users, projects, reportRange));
+//		reportData.setReportCriteria(reportCriteria);
+//		
+//		return reportData;
 		
 		return null;
 	}
@@ -64,14 +96,14 @@ public class DetailedReportServiceImpl implements DetailedReportService
 	 */
 	public List<FlatReportElement> getDetailedReportData(List<Serializable> projectAssignmentIds, DateRange dateRange)
 	{
-		return reportPerMonthDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange);
+		return detailedReportDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange);
 	}
 
 	/**
-	 * @param reportPerMonthDAO the reportPerMonthDAO to set
+	 * @param detailedReportDAO the detailedReportDAO to set
 	 */
-	public void setReportPerMonthDAO(ReportPerMonthDAO reportPerMonthDAO)
+	public void setDetailedReportDAO(DetailedReportDAO detailedReportDAO)
 	{
-		this.reportPerMonthDAO = reportPerMonthDAO;
+		this.detailedReportDAO = detailedReportDAO;
 	}
 }

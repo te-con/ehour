@@ -29,9 +29,9 @@ import org.junit.Test;
  **/
 
 @SuppressWarnings("unchecked")
-public class ReportPerMonthDAOTest extends BaseDAOTest
+public class DetailedReportDAOTest extends BaseDAOTest
 {
-	private	ReportPerMonthDAO	dao;
+	private	DetailedReportDAO	dao;
 	
 	
 //	public void testGetHoursPerMonthPerAssignmentForUsers()
@@ -111,10 +111,56 @@ public class ReportPerMonthDAOTest extends BaseDAOTest
 		assertNotNull(results.get(0).getProjectId());
 	}	
 	
+	@Test
+	public void testGetHoursPerDayForUsers()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2008 - 1900, 1, 3));
+		List userIds = new ArrayList();
+		userIds.add(1);
+		List<FlatReportElement> results = dao.getHoursPerDayForUsers(userIds, dateRange);
+		
+		assertEquals(10, results.size());
+		
+		assertNotNull(results.get(0).getProjectId());
+	}	
+	
+	@Test
+	public void testGetHoursPerDayForProjects()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2008 - 1900, 1, 3));
+		List projectIds = new ArrayList();
+		projectIds.add(2);
+		List<FlatReportElement> results = dao.getHoursPerDayForProjects(projectIds, dateRange);
+		
+		assertEquals(4, results.size());
+		
+		assertEquals(2, results.get(0).getProjectId().intValue());
+	}	
+	
+	
+	@Test
+	public void testGetHoursPerDayForProjectsAndUsers()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2008 - 1900, 1, 3));
+		List projectIds = new ArrayList();
+		projectIds.add(2);
+		List userIds = new ArrayList();
+		userIds.add(1);		
+		
+		List<FlatReportElement> results = dao.getHoursPerDayForProjectsAndUsers(projectIds, userIds, dateRange);
+		
+		assertEquals(2, results.size());
+		
+		assertEquals(2, results.get(0).getProjectId().intValue());
+	}	
+	
 	/**
 	 * @param dao the dao to set
 	 */
-	public void setDao(ReportPerMonthDAO dao)
+	public void setDetailedReportDAO(DetailedReportDAO dao)
 	{
 		this.dao = dao;
 	}
