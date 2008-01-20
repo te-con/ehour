@@ -70,7 +70,6 @@ public class AggregateReportServiceTest extends TestCase
 		
 		rc = new ReportCriteria();
 		rsMock = createMock(ReportCriteriaService.class);
-		
 	}
 	
 //	/**
