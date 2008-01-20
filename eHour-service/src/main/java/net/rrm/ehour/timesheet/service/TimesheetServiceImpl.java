@@ -35,7 +35,7 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
@@ -66,7 +66,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	private CustomerFoldPreferenceDAO	customerFoldPreferenceDAO;
 	private	TimesheetDAO		timesheetDAO;
 	private TimesheetCommentDAO	timesheetCommentDAO;
-	private	ReportService		reportService;
+	private	AggregateReportService		aggregateReportService;
 	private ProjectAssignmentService	projectAssignmentService;
 	private	EhourConfig			configuration;
 	private	Logger				logger = Logger.getLogger(TimesheetServiceImpl.class);
@@ -116,7 +116,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		Map<Integer, AssignmentAggregateReportElement>	originalAggregates = new HashMap<Integer, AssignmentAggregateReportElement>();
 		Integer 							assignmentId;
 		
-		aggregates = reportService.getHoursPerAssignmentInRange(userId, monthRange);
+		aggregates = aggregateReportService.getHoursPerAssignmentInRange(userId, monthRange);
 		
 		logger.debug("Getting project status for " + aggregates.size() + " assignments");
 		
@@ -141,7 +141,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		// fetch total hours for flex/fixed assignments
 		if (assignmentIds.size() > 0)
 		{
-			timeAllottedAggregates = reportService.getHoursPerAssignment(assignmentIds);
+			timeAllottedAggregates = aggregateReportService.getHoursPerAssignment(assignmentIds);
 			
 			for (AssignmentAggregateReportElement aggregate : timeAllottedAggregates)
 			{
@@ -368,9 +368,9 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param dao
 	 */	
 	
-	public void setReportService(ReportService reportService)
+	public void setReportService(AggregateReportService aggregateReportService)
 	{
-		this.reportService = reportService;
+		this.aggregateReportService = aggregateReportService;
 	}
 	
 	/**

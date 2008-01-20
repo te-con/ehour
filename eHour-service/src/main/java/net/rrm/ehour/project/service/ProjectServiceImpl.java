@@ -28,10 +28,8 @@ import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.service.ReportService;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 
@@ -41,13 +39,11 @@ import org.apache.log4j.Logger;
 
 public class ProjectServiceImpl implements ProjectService
 {
-	private	ProjectDAO				projectDAO;
-	private ProjectAssignmentDAO	projectAssignmentDAO;
-	private	Logger					logger = Logger.getLogger(ProjectServiceImpl.class);
+	private	ProjectDAO					projectDAO;
+	private ProjectAssignmentDAO		projectAssignmentDAO;
+	private	Logger						logger = Logger.getLogger(ProjectServiceImpl.class);
 	private ProjectAssignmentService	projectAssignmentService;
-	private TimesheetDAO			timesheetDAO;
-	private	UserService				userService;
-	private	ReportService			reportService;
+	private	AggregateReportService		aggregateReportService;
 	
 	/**
 	 * 
@@ -132,7 +128,7 @@ public class ProjectServiceImpl implements ProjectService
 		
 		if (ids != null && ids.size() > 0)
 		{
-			aggregates = reportService.getHoursPerAssignment(ids);
+			aggregates = aggregateReportService.getHoursPerAssignment(ids);
 		}
 		
 		project.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
@@ -228,31 +224,11 @@ public class ProjectServiceImpl implements ProjectService
 		this.projectAssignmentService = projectAssignmentService;
 	}
 
-
 	/**
-	 * @param timesheetDAO the timesheetDAO to set
+	 * @param aggregateReportService the aggregateReportService to set
 	 */
-	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
+	public void setAggregateReportService(AggregateReportService aggregateReportService)
 	{
-		this.timesheetDAO = timesheetDAO;
+		this.aggregateReportService = aggregateReportService;
 	}
-
-
-	/**
-	 * @param userService the userService to set
-	 */
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}
-
-	/**
-	 * @param reportService the reportService to set
-	 */
-	public void setReportService(ReportService reportService)
-	{
-		this.reportService = reportService;
-	}
-
-
 }

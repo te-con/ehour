@@ -15,18 +15,13 @@
 
 package net.rrm.ehour.report.service;
 
-import java.io.Serializable;
-import java.util.Calendar;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 
 /**
@@ -34,16 +29,8 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
  *
  */
 
-public interface ReportService
+public interface AggregateReportService
 {
-	
-	/**
-	 * Get the booked hours per project assignment for a month
-	 * @param userId
-	 * @param calendar
-	 * @return List with projectReport objects
-	 */
-	public List<AssignmentAggregateReportElement> getHoursPerAssignmentInMonth(Integer userId, Calendar calendar);
 
 	/**
 	 * Get the booked hours per project assignment for a date range
@@ -62,35 +49,11 @@ public interface ReportService
 	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds);
 	
 	/**
-	 * Get project report for reporting role
+	 * Get aggregate report data
 	 * @param criteria
 	 * @return
 	 */
-	public ReportData createAggregateReportData(ReportCriteria criteria);
-	
-	/**
-	 * Get report data
-	 * @param projectAssignmentIds
-	 * @param dateRange
-	 * @return
-	 */
-	public List<FlatReportElement> getReportData(List<Serializable> projectAssignmentIds, DateRange dateRange);
-
-	/**
-	 * Get report data for customer 
-	 * @param customer
-	 * @param dateRange
-	 * @return
-	 */
-	public List<FlatReportElement> getReportData(Customer customer, DateRange dateRange);
-	
-	/**
-	 * Get report data for project
-	 * @param projects
-	 * @param dateRange
-	 * @return
-	 */
-	public List<FlatReportElement> getReportData(Project[] projects, DateRange dateRange);
+	public ReportData getAggregateReportData(ReportCriteria criteria);
 	
 	/**
 	 * Get project manager report

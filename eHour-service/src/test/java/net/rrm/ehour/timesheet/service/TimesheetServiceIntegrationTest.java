@@ -26,7 +26,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
 /**
@@ -36,7 +36,7 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 public class TimesheetServiceIntegrationTest extends BaseDAOTest
 {
 	private TimesheetService	timesheetService;
-	private	ReportService		reportService;
+	private	AggregateReportService		aggregateReportService;
 	
 
 	/**
@@ -88,10 +88,10 @@ public class TimesheetServiceIntegrationTest extends BaseDAOTest
 //	}
 	
 	/**
-	 * @param reportService the reportService to set
+	 * @param aggregateReportService the reportService to set
 	 */
-	public void setReportService(ReportService reportService)
+	public void setReportService(AggregateReportService aggregateReportService)
 	{
-		this.reportService = reportService;
+		this.aggregateReportService = aggregateReportService;
 	}
 }

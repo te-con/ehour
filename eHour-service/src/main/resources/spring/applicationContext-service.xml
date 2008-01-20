@@ -32,17 +32,21 @@
 		<property name="userRoleDAO" ref="userRoleDAO" />
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
 		<property name="customerFoldPreferenceDAO" ref="customerFoldPreferenceDAO" />
-		<property name="reportService" ref="reportService" />		
+		<property name="aggregateReportService" ref="aggregateReportService" />		
 	</bean>
 
-	<!-- Report service -->
-	<bean id="reportService" class="net.rrm.ehour.report.service.ReportServiceImpl">
+	<!-- Aggregate Report service -->
+	<bean id="aggregateReportService" class="net.rrm.ehour.report.service.AggregateReportServiceImpl">
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 		<property name="userDAO" ref="userDAO" />	
 		<property name="projectDAO" ref="projectDAO" />	
 		<property name="mailService" ref="mailService" />
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
-		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />
+	</bean>
+
+	<!-- Detailed Report service -->
+	<bean id="detailedReportService" class="net.rrm.ehour.report.service.DetailedReportServiceImpl">
+		<property name="reportPerMonthDAO" ref="reportPerMonthDAO" />
 	</bean>
 
 	<!-- Report criteria service -->
@@ -66,8 +70,7 @@
 	<bean id="projectService" class="net.rrm.ehour.project.service.ProjectServiceImpl">
 		<property name="projectDAO" ref="projectDAO" />	
 		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />		
-		<property name="userService" ref="userService" />
-		<property name="reportService" ref="reportService" />
+		<property name="aggregateReportService" ref="aggregateReportService" />
 	</bean>
 	
 	<!-- Customer service -->

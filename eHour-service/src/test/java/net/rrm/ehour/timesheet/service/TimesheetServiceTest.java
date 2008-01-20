@@ -33,7 +33,7 @@ import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.service.ReportService;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.domain.TimesheetComment;
@@ -53,7 +53,7 @@ public class TimesheetServiceTest  extends TestCase
 	private TimesheetCommentDAO	timesheetCommentDAO;
 	private	EhourConfig			config;
 	private CustomerFoldPreferenceDAO	foldPref;
-	private	ReportService		reportService;
+	private	AggregateReportService		aggregateReportService;
 	private	ProjectAssignmentService		projectAssignmentService;
 	
 	/**
@@ -65,13 +65,13 @@ public class TimesheetServiceTest  extends TestCase
 
 		config = createMock(EhourConfig.class);
 		timesheetDAO = createMock(TimesheetDAO.class);
-		reportService = createMock(ReportService.class);
+		aggregateReportService = createMock(AggregateReportService.class);
 		timesheetCommentDAO = createMock(TimesheetCommentDAO.class);
 		projectAssignmentService = createMock(ProjectAssignmentService.class);
 		foldPref = createMock(CustomerFoldPreferenceDAO.class);
 		
 		((TimesheetServiceImpl)timesheetService).setTimesheetDAO(timesheetDAO);
-		((TimesheetServiceImpl)timesheetService).setReportService(reportService);
+		((TimesheetServiceImpl)timesheetService).setReportService(aggregateReportService);
 		((TimesheetServiceImpl)timesheetService).setEhourConfig(config);
 		((TimesheetServiceImpl)timesheetService).setTimesheetCommentDAO(timesheetCommentDAO);
 		((TimesheetServiceImpl)timesheetService).setProjectAssignmentService(projectAssignmentService);
@@ -156,16 +156,16 @@ public class TimesheetServiceTest  extends TestCase
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal)))
 				.andReturn(daoResults);
 		
-		expect(reportService.getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal)))
+		expect(aggregateReportService.getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal)))
 				.andReturn(reportResults);
 
 		replay(timesheetDAO);
-		replay(reportService);
+		replay(aggregateReportService);
 		
 		retObj = timesheetService.getTimesheetOverview(new User(1), cal);
 		
 		verify(timesheetDAO);
-		verify(reportService);
+		verify(aggregateReportService);
 	}
 	
 	public void testGetTimesheetEntries()
