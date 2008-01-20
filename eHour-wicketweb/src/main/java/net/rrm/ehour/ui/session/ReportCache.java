@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.Report;
 
 import org.apache.commons.codec.binary.Hex;
@@ -63,7 +64,7 @@ public class ReportCache implements Serializable
 	 * @param report
 	 * @return
 	 */
-	public String addReportToCache(Report report, ReportData reportData)
+	public String addReportToCache(Report report, ReportData<?> reportData)
 	{
 		initCache();
 		
@@ -156,7 +157,7 @@ public class ReportCache implements Serializable
 	 * @param id
 	 * @return
 	 */
-	public ReportData getReportDataFromCache(String id)
+	public ReportData<? extends ReportElement> getReportDataFromCache(String id)
 	{
 		initCache();
 		
@@ -202,7 +203,7 @@ public class ReportCache implements Serializable
 		private static final long serialVersionUID = 1L;
 		private long		addedTimstamp;
 		private Report		report;
-		private ReportData	reportData;
+		private ReportData<? extends ReportElement>	reportData;
 		
 		public int compareTo(CacheEntry o)
 		{

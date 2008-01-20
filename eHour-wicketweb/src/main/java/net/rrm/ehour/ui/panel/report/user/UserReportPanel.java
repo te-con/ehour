@@ -17,12 +17,13 @@
 package net.rrm.ehour.ui.panel.report.user;
 
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.user.report.UserReportPrint;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
-import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
+import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
 import net.rrm.ehour.ui.reportchart.aggregate.CustomerTurnoverAggregateImage;
@@ -53,7 +54,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param id
 	 * @param reportData
 	 */
-	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, ReportData reportData, boolean inclLinks)
+	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, ReportData<AssignmentAggregateReportElement> reportData, boolean inclLinks)
 	{
 		super(id);
 		
@@ -65,7 +66,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param customerAggregateReport
 	 * @return
 	 */
-	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, ReportData reportData, boolean inclLinks)
+	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, ReportData<AssignmentAggregateReportElement> reportData, boolean inclLinks)
 	{
 		ResourceLink 	excelLink = null;
 		Link			printLink = null;
@@ -114,7 +115,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addCharts(ReportData data, WebMarkupContainer parent)
+	private void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 		

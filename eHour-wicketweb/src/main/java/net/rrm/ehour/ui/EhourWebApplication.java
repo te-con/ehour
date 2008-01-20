@@ -50,10 +50,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.request.urlcompressing.UrlCompressingWebRequestProcessor;
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.file.IResourceFinder;
-import org.apache.wicket.util.file.WebApplicationPath;
 import org.apache.wicket.util.lang.PackageName;
-import org.apache.wicket.util.resource.IResourceStream;
 
 /**
  * Base config for wicket eHour webapp
