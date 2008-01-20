@@ -346,8 +346,6 @@
 		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
 		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
 		      PAG.USER_ID = USR.USER_ID AND
-		      PAG.PROJECT_ID IN (:projectIds) AND
-		      PAG.USER_ID IN (:userIds) AND
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
