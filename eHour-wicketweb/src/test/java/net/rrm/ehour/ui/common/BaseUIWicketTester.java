@@ -16,10 +16,15 @@
 
 package net.rrm.ehour.ui.common;
 
+import java.util.Locale;
+
 import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.resource.loader.IStringResourceLoader;
+import org.apache.wicket.settings.Settings;
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 import org.apache.wicket.util.tester.WicketTester;
 
@@ -46,5 +51,22 @@ public class BaseUIWicketTester extends TestCase
 		tester = new EhourWicketTester(webapp);
 		
 		mockContext = ((TestEhourWebApplication)tester.getApplication()).getMockContext();
+		
+		((Settings)webapp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader()
+		{
+
+			public String loadStringResource(Component component, String key)
+			{
+				return "hello";
+			}
+
+			public String loadStringResource(Class clazz, String key, Locale locale, String style)
+			{
+				return "hello";
+			}
+			
+		});
+		
+		
 	}
 }

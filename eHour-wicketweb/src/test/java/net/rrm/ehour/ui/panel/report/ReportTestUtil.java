@@ -151,9 +151,9 @@ public class ReportTestUtil
 		return els;
 	}
 	
-	public static ReportData getFlatReportData()
+	public static ReportData<FlatReportElement> getFlatReportData()
 	{
-		ReportData reportData = new ReportData();
+		ReportData<FlatReportElement> reportData = new ReportData<FlatReportElement>();
 		reportData.setReportElements(ReportTestUtil.getFlatReportElements());
 		
 		reportData.setReportCriteria(getReportCriteria());

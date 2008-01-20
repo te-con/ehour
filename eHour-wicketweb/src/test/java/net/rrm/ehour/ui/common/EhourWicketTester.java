@@ -22,6 +22,8 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.util.tester.WicketTester;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+
 /**
  * TODO 
  **/
