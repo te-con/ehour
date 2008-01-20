@@ -49,6 +49,7 @@ import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.request.urlcompressing.UrlCompressingWebRequestProcessor;
 import org.apache.wicket.request.IRequestCycleProcessor;
+import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.PackageName;
 
@@ -114,7 +115,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount("/consultant/report", PackageName.forPackage(UserReport.class.getPackage()));
 		mount("/consultant/print", PackageName.forPackage(PrintMonthSelection.class.getPackage()));
 		mount("/report", PackageName.forPackage(GlobalReportPage.class.getPackage()));
-		mount("/projectManagement", PackageName.forPackage(ProjectManagement.class.getPackage()));		
+		mount("/projectManagement", PackageName.forPackage(ProjectManagement.class.getPackage()));
 	}
 	
 	/**
@@ -227,7 +228,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	 */
 	public void setPageConfig(PageConfig pageConfig)
 	{
-		System.out.println("config");
 		this.pageConfig = pageConfig;
 	}	
 }

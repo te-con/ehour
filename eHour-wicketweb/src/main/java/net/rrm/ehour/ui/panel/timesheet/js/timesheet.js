@@ -32,4 +32,5 @@ function toggleProjectRow(customerId)
 	var imgRow = document.getElementById("foldcss" + customerId);
 	imgRow.className = (toUp) ? "timesheetFoldedImg" : "timesheetFoldImg";
 	imgRow.blur();
+	window.focus();
 }
