@@ -65,6 +65,15 @@
 						</configuration>
 					</plugin>
 				</plugins>
+				
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/prod
+						</directory>
+					</resource>
+				</resources>
+
 			</build>
 		</profile>
 		<profile>
@@ -92,8 +101,54 @@
 						</configuration>
 					</plugin>
 				</plugins>
+				
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/dev
+						</directory>
+					</resource>
+				</resources>				
 			</build>
 		</profile>
+		
+		<profile>
+			<id>env-prod-mysql</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>prod-mysql</value>
+				</property>
+			</activation>
+			<build>		
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/prod
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>env-dev-mysql</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev-mysql</value>
+				</property>
+			</activation>
+			<build>		
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/dev
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>		
 	</profiles>
 
 	<dependencies>
