@@ -28,7 +28,7 @@ import net.rrm.ehour.domain.DomainObject;
 public class ReportUtil
 {
 	/**
-	 * Convert list of projects to id
+	 * Get a list of primary keys of out a list of domain objects
 	 * @param projects
 	 * @return
 	 */

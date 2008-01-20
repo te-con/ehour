@@ -21,13 +21,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.DetailedReportDAO;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.report.util.ReportUtil;
 
 import org.apache.log4j.Logger;
 
@@ -46,48 +44,48 @@ public class DetailedReportServiceImpl implements DetailedReportService
 	 */
 	public List<FlatReportElement> getDetailedReportData(ReportCriteria reportCriteria)
 	{
-//		UserCriteria	userCriteria;
-//		List<Project>	projects = null;
-//		List<User>		users = null;
-//		boolean			ignoreUsers;
-//		boolean			ignoreProjects;
-//		DateRange		reportRange;
-//		
-//		userCriteria = reportCriteria.getUserCriteria();
-//		logger.debug("Getting detailed report data for " + userCriteria);
-//		
-//		reportRange = reportCriteria.getReportRange();
-//		
-//		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
-//		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
-//		
-//		if (ignoreProjects && ignoreUsers)
-//		{
-//			logger.debug("creating full report");
-//		}
-//		else if (ignoreProjects && !ignoreUsers)
-//		{
-//			logger.debug("creating report for only selected users");
-//			users = getUsers(userCriteria);
-//		}
-//		else if (!ignoreProjects && ignoreUsers)
-//		{
-//			logger.debug("creating report for only selected project");
-//			projects = getProjects(userCriteria);
-//		}
-//		else
-//		{
-//			logger.debug("creating report for selected users & projects");
-//			users = getUsers(userCriteria);
-//			projects = getProjects(userCriteria);
-//		}		
-//		
-//		reportData.setReportElements(getProjectAssignmentAggregates(users, projects, reportRange));
-//		reportData.setReportCriteria(reportCriteria);
-//		
-//		return reportData;
+		UserCriteria	userCriteria;
+		boolean			ignoreUsers;
+		boolean			ignoreProjects;
+		DateRange		reportRange;
+		List<FlatReportElement>	reportData;
 		
-		return null;
+		userCriteria = reportCriteria.getUserCriteria();
+		logger.debug("Getting detailed report data for " + userCriteria);
+		
+		reportRange = reportCriteria.getReportRange();
+		
+		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
+		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
+		
+		if (ignoreProjects && ignoreUsers)
+		{
+			logger.debug("creating full detailed report");
+			reportData = detailedReportDAO.getHoursPerDay(reportRange);
+		}
+		else if (ignoreProjects && !ignoreUsers)
+		{
+			logger.debug("creating report for only selected users");
+			
+			reportData = detailedReportDAO.getHoursPerDayForUsers(ReportUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
+																	reportRange);
+		}
+		else if (!ignoreProjects && ignoreUsers)
+		{
+			logger.debug("creating report for only selected project");
+			reportData = detailedReportDAO.getHoursPerDayForProjects(ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
+															reportRange);
+		}
+		else
+		{
+			logger.debug("creating report for selected users & projects");
+
+			reportData = detailedReportDAO.getHoursPerDayForProjectsAndUsers(ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
+																	ReportUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
+																	reportRange);
+		}		
+		
+		return reportData;
 	}
 
 	/*

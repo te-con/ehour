@@ -75,4 +75,11 @@ public interface DetailedReportDAO
 	 */
 	public List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<Serializable> projectIds, List<Serializable> userIds, DateRange dateRange);
 
+	/**
+	 * Get hours per day
+	 * @param dateRange
+	 * @return
+	 */
+	public List<FlatReportElement> getHoursPerDay(DateRange dateRange);
+
 }

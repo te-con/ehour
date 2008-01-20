@@ -155,6 +155,17 @@ public class DetailedReportDAOTest extends BaseDAOTest
 		assertEquals(2, results.size());
 		
 		assertEquals(2, results.get(0).getProjectId().intValue());
+	}
+	
+	@Test
+	public void testGetHoursPerDay()
+	{
+		DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;) 
+			    new Date(2008 - 1900, 1, 3));
+		
+		List<FlatReportElement> results = dao.getHoursPerDay(dateRange);
+		
+		assertEquals(12, results.size());
 	}	
 	
 	/**

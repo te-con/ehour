@@ -177,4 +177,21 @@ public class DetailedReportDAOHibernateImpl extends HibernateDaoSupport implemen
 
 		return query.list();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.dao.DetailedReportDAO#getHoursPerDay(net.rrm.ehour.data.DateRange)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<FlatReportElement> getHoursPerDay(DateRange dateRange)
+	{
+		Session session = this.getSession();
+		
+		Query query = session.getNamedQuery("Report.getHoursPerDay")
+						.setDate("dateStart", dateRange.getDateStart())
+						.setDate("dateEnd", dateRange.getDateEnd())
+						.setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
+
+		return query.list();	
+	}
 }
