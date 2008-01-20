@@ -23,11 +23,12 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
-public abstract class TreeReport extends Report
+public abstract class TreeReport<EL extends ReportElement> extends Report
 {
 	private	DateRange				reportRange;
 	private List<Serializable[]> 	reportMatrix;
@@ -45,7 +46,7 @@ public abstract class TreeReport extends Report
      *
      * @param reportData
      */
-    public TreeReport(ReportData reportData, ReportConfig reportConfig)
+    public TreeReport(ReportData<EL> reportData, ReportConfig reportConfig)
     {
     	initializeReport(reportData, reportConfig);
     }
@@ -54,9 +55,9 @@ public abstract class TreeReport extends Report
      * Initialize report
      * @param reportData
      */
-    protected void initializeReport(ReportData reportData, ReportConfig reportConfig)
+    protected void initializeReport(ReportData<EL> reportData, ReportConfig reportConfig)
     {
-        ReportBuilder reportBuilder = new ReportBuilder();
+        ReportBuilder<EL> reportBuilder = new ReportBuilder<EL>();
         List<ReportNode> rootNodes = reportBuilder.createReport(reportData, getReportNodeFactory());
         
         createMatrix(rootNodes, reportConfig.getReportColumns().length);

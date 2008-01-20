@@ -239,7 +239,7 @@ public class PrintMonth extends WebPage
 		
 		if (assignmentIds != null && assignmentIds.size() > 0)
 		{
-			results = detailedReportService.getDetailedReportData(assignmentIds, printRange);
+			results = detailedReportService.getDetailedReportData(assignmentIds, printRange).getReportElements();
 		}
 		else
 		{

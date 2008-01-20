@@ -29,8 +29,9 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserDepartment;
@@ -42,7 +43,8 @@ import net.rrm.ehour.user.domain.UserDepartment;
 public class BaseTestReport extends BaseUIWicketTester
 {
 	protected ReportCriteriaService reportCriteriaService;
-	protected AggregateReportService  aggregateReportService;
+	protected AggregateReportService aggregateReportService;
+	protected DetailedReportService  detailedReportService;
 	protected ReportData data;
 	protected ReportCriteria reportCriteria;
 	
@@ -54,8 +56,11 @@ public class BaseTestReport extends BaseUIWicketTester
 		mockContext.putBean("reportCriteriaService", reportCriteriaService);
 
 		aggregateReportService = createMock(AggregateReportService.class);
-		mockContext.putBean("reportService", aggregateReportService);
-		
+		mockContext.putBean("aggregatedReportService", aggregateReportService);
+
+		detailedReportService = createMock(DetailedReportService.class);
+		mockContext.putBean("detailedReportService", detailedReportService);
+
 		reportCriteria = new ReportCriteria();
 		AvailableCriteria availCriteria = new AvailableCriteria();
 

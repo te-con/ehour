@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * @author Thies
  *
  */
-public class ReportBuilder
+public class ReportBuilder<EL extends ReportElement>
 {
 	protected transient Logger logger = Logger.getLogger(this.getClass());
 
@@ -43,7 +43,7 @@ public class ReportBuilder
 	 * @param nodeFactory
 	 * @return
 	 */
-	public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory)
+	public List<ReportNode> createReport(ReportData<EL> reportData, ReportNodeFactory nodeFactory)
 	{
 		Date profileStart = new Date();
 

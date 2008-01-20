@@ -37,7 +37,7 @@ import net.rrm.ehour.ui.report.trend.node.FlatUserNode;
  * Detailed report
  **/
 
-public class DetailedReport extends TreeReport
+public class DetailedReport extends TreeReport<FlatReportElement>
 {
 	private static final long serialVersionUID = -21703820501429504L;
 	private Locale locale;
@@ -46,7 +46,7 @@ public class DetailedReport extends TreeReport
 	 * 
 	 * @param reportData
 	 */
-	public DetailedReport(ReportData reportData, Locale locale)
+	public DetailedReport(ReportData<FlatReportElement> reportData, Locale locale)
 	{
 		super();
 		

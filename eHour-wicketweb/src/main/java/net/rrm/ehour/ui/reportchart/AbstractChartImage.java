@@ -78,7 +78,7 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 	 * @see org.apache.wicket.markup.html.image.Image#getImageResource()
 	 */
 	@Override
-	@SuppressWarnings("serial")
+	@SuppressWarnings({"serial", "unchecked"})
 	protected Resource getImageResource()
 	{
 		return new DynamicImageResource()
@@ -86,7 +86,7 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 			@Override
 			protected byte[] getImageData()
 			{
-				ReportData reportData = (ReportData)getModelObject();
+				ReportData<EL> reportData = (ReportData<EL>)getModelObject();
 				JFreeChart chart = getChart(reportData);
 				return toImageData(chart.createBufferedImage(width, height));
 			}
@@ -114,7 +114,7 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 	 * @param reportName
 	 * @return
 	 */
-	public JFreeChart getChart(ReportData reportData)
+	public JFreeChart getChart(ReportData<EL> reportData)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
@@ -166,7 +166,7 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private DefaultCategoryDataset createDataset(ReportData reportData)
+	private DefaultCategoryDataset createDataset(ReportData<EL> reportData)
 	{
 		DefaultCategoryDataset dataset;
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();

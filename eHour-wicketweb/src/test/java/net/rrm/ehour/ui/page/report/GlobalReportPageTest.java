@@ -32,7 +32,7 @@ import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
  * TODO 
  **/
 
-public class ReportPageTest extends BaseTestReport
+public class GlobalReportPageTest extends BaseTestReport
 {
 	public void testReportPageRender()
 	{

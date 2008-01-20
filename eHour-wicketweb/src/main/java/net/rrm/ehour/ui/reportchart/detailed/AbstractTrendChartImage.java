@@ -77,7 +77,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 * @param reportName
 	 * @return
 	 */
-	public JFreeChart getChart(ReportData reportData)
+	public JFreeChart getChart(ReportData<EL> reportData)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
@@ -127,7 +127,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private TimeSeriesCollection createDataset(ReportData reportData, EhourConfig config)
+	private TimeSeriesCollection createDataset(ReportData<EL> reportData, EhourConfig config)
 	{
 		Map<Object, TimeSeries> timeSeries = new HashMap<Object, TimeSeries>();
 		

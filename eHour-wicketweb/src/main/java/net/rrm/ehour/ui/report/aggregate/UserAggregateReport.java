@@ -32,7 +32,7 @@ import net.rrm.ehour.ui.report.node.ReportNodeFactory;
  * TODO 
  **/
 
-public class UserAggregateReport extends TreeReport
+public class UserAggregateReport extends TreeReport<AssignmentAggregateReportElement>
 {
 	private static final long serialVersionUID = 2883703894793044411L;
 
@@ -40,7 +40,7 @@ public class UserAggregateReport extends TreeReport
 	 * 
 	 * @param reportData
 	 */
-	public UserAggregateReport(ReportData reportData)
+	public UserAggregateReport(ReportData<AssignmentAggregateReportElement> reportData)
 	{
 		super(reportData, ReportConfig.AGGREGATE_EMPLOYEE);
 	}

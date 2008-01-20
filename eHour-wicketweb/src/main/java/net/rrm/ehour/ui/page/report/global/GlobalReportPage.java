@@ -20,11 +20,12 @@ package net.rrm.ehour.ui.page.report.global;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.report.aggregate.AggregateReportPanel;
@@ -63,6 +64,8 @@ public class GlobalReportPage extends BaseReportPage
 	
 	@SpringBean
 	private AggregateReportService		aggregateReportService;
+	@SpringBean
+	private DetailedReportService		detailedReportService;
 	private ReportTabbedPanel	tabPanel;
 
 	/**
@@ -122,7 +125,7 @@ public class GlobalReportPage extends BaseReportPage
 	{
 		ReportCriteria criteria = backingBean.getReportCriteria();
 		
-		final ReportData reportData = getAggregateReportData(criteria);
+		final ReportData<AssignmentAggregateReportElement> reportData = getAggregateReportData(criteria);
 		
 		ITab	customerTab = new AbstractTab(new KeyResourceModel("report.title.customer"))
 		{
@@ -170,7 +173,7 @@ public class GlobalReportPage extends BaseReportPage
 	{
 		ReportCriteria criteria = backingBean.getReportCriteria();
 		
-		final ReportData reportData = getDetailedReportData(criteria);	
+		final ReportData<FlatReportElement> reportData = getDetailedReportData(criteria);	
 
 		ITab	detailedTab = new AbstractTab(new KeyResourceModel("report.title.detailed"))
 		{
@@ -184,33 +187,7 @@ public class GlobalReportPage extends BaseReportPage
 		};			
 		tabPanel.addTab(detailedTab);	
 	}
-	
-	/**
-	 * Get report data
-	 * @param reportCriteria
-	 * @return
-	 */
-	private ReportData getDetailedReportData(ReportCriteria reportCriteria)
-	{
-		List<FlatReportElement> data = null;
-		
-//		if (reportCriteria.getUserCriteria().getProjects().isEmpty())
-//		{
-//			data = reportService.getReportData(reportCriteria.getUserCriteria().getCustomer(), 
-//												reportCriteria.getUserCriteria().getReportRange());
-//		}
-//		else
-//		{
-//			
-//			data = reportService.getReportData((Project[])reportCriteria.getUserCriteria().getProjects().toArray(new Project[reportCriteria.getUserCriteria().getProjects().size()]), 
-//													reportCriteria.getUserCriteria().getReportRange());
-//		}
-		
-		ReportData reportData = new ReportData();
-		reportData.setReportElements(data);
-		reportData.setReportCriteria(reportCriteria);
-		return reportData;
-	}	
+
 	
 	
 	/**
@@ -219,7 +196,7 @@ public class GlobalReportPage extends BaseReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getCustomerReportPanel(String id, ReportData reportData)
+	private Panel getCustomerReportPanel(String id, ReportData<AssignmentAggregateReportElement> reportData)
 	{
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
@@ -236,7 +213,7 @@ public class GlobalReportPage extends BaseReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getProjectReportPanel(String id, ReportData reportData)
+	private Panel getProjectReportPanel(String id, ReportData<AssignmentAggregateReportElement> reportData)
 	{
 		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
@@ -254,7 +231,7 @@ public class GlobalReportPage extends BaseReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getUserReportPanel(String id, ReportData reportData)
+	private Panel getUserReportPanel(String id, ReportData<AssignmentAggregateReportElement> reportData)
 	{
 		UserAggregateReport	aggregateReport = new UserAggregateReport(reportData);
 		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
@@ -271,7 +248,7 @@ public class GlobalReportPage extends BaseReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getDetailedReportPanel(String id, ReportData reportData)
+	private Panel getDetailedReportPanel(String id, ReportData<FlatReportElement> reportData)
 	{
 		DetailedReport detailedReport = new DetailedReport(reportData, this.getConfig().getLocale());
 		
@@ -289,11 +266,19 @@ public class GlobalReportPage extends BaseReportPage
 	 * @param reportCriteria
 	 * @return
 	 */
-	private ReportData getAggregateReportData(ReportCriteria reportCriteria)
+	private ReportData<AssignmentAggregateReportElement> getAggregateReportData(ReportCriteria reportCriteria)
 	{
-		logger.debug("Getting aggregated report data");
-		ReportData data = aggregateReportService.getAggregateReportData(reportCriteria);
-		
-		return data;
+		return aggregateReportService.getAggregateReportData(reportCriteria);
+	}	
+
+	
+	/**
+	 * Get detailed report data
+	 * @param reportCriteria
+	 * @return
+	 */
+	private ReportData<FlatReportElement> getDetailedReportData(ReportCriteria reportCriteria)
+	{
+		return detailedReportService.getDetailedReportData(reportCriteria);
 	}	
 }
