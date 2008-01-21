@@ -1,11 +1,22 @@
 eHour 0.7.2 release notes - 23 January 2008
 
-Bugs fixed (http://www.ehour.nl/defects/)
------------------------------------------
+Features added and bugs fixed (http://www.ehour.nl/defects/)
+------------------------------------------------------------
+(056) A timesheet entry can be commented 
+(075) Detailed, day-to-day, reports added
+(008) Fold icon is timesheet is now clickable
+(073) Month overview layout properly aligned when turnover is hidden
+(070) Report filter criteria can now be resetted to its initial state
+(067) The print icon in the timesheet overview now uses the selected month
+(004) Infinite date selection fixed in the assignment admin
+(062) Firstname of a user is not required anymore
+(026) The date format now uses the selected locale 
+(074) Logging is configurable
+
+- 0000056: [Feature request] Comment per timesheet entry
 - 0000075: [Feature request] Only aggregated reports available, add per-day reporting
 - 0000074: [Bug / defect] Logging can't be (easily) configured
 - 0000008: [Bug / defect] Timesheet: fold icon not clickable and doesn't change
-- 0000056: [Feature request] Comment per timesheet entry
 - 0000073: [Bug / defect] Month overview layout not aligned properly when turnover is not shown
 - 0000070: [Bug / defect] Can't reset report criteria
 - 0000067: [Bug / defect] Print timesheet icon ends up in next month
@@ -16,24 +27,36 @@ Bugs fixed (http://www.ehour.nl/defects/)
 
 New features
 ------------
-
 - 0000056: [Feature request] Comment per timesheet entry
 A new feature was added allowing a person to write a small comment for
-each entry in the timesheet. In previous releases only a comment per week
-could be added and these comments didn't appear on any report. In this
-release per project, per day a unique comment can be written where a person
-could explain what (s)he did in those hours.
+each entry in the timesheet describing for example what (s)he did in that period.
 Comments can be added by clicking on the pencil icon next to the input box for hours.
-When the icon is grey no comment was filled out, when the icon is yellow a comment
+When the icon is grey no comment was filled out and when the icon is yellow a comment
 already exists.
 
 - 0000075: [Feature request] Only aggregated reports available, add per-day reporting
+Day-to-day reporting 
+
 A new type of report was added which displays all day-to-day data.
 Also the layout of the report screen has been changed giving the actual reports more screen size.
 To access the new report log in as a user with the reporting role. In the screen where
 you normally would select the report criteria a new dropdown has been added on the right where
 you can select the type of report you want to create. All existing filtering criteria can be applied
 to the detailed report.
+
+Bugs fixed
+----------
+- 0000074: [Bug / defect] Logging can't be (easily) configured
+
+
+- 0000008: [Bug / defect] Timesheet: fold icon not clickable and doesn't change
+- 0000073: [Bug / defect] Month overview layout not aligned properly when turnover is not shown
+- 0000070: [Bug / defect] Can't reset report criteria
+- 0000067: [Bug / defect] Print timesheet icon ends up in next month
+- 0000026: [Bug / defect] Cannot show dates as mm/dd/yyyy
+- 0000062: [Bug / defect] First name of user is required although it shouldn't
+- 0000004: [Bug / defect] Assignment -> infinite date validation not working
+
 
 - 0000074: [Bug / defect] Logging can't be configured
 
