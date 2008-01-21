@@ -1,0 +1,13 @@
+eHour 0.7.2 release notes - 23 January 2008
+
+Bugs fixed (http://www.ehour.nl/defects/)
+-----------------------------------------
+- 0000074: [Bug / defect] Logging can't be configured
+- 0000008: [Bug / defect] Timesheet: fold icon not clickable and doesn't change
+- 0000056: [Feature request] Comment per timesheet entry
+- 0000073: [Bug / defect] Month overview layout not aligned properly when turnover is not shown
+- 0000070: [Bug / defect] Can't reset report criteria
+- 0000067: [Bug / defect] Print timesheet icon ends up in next month
+- 0000026: [Bug / defect] Cannot show dates as mm/dd/yyyy
+- 0000062: [Bug / defect] First name of user is required although it shouldn't
+- 0000004: [Bug / defect] Assignment -> infinite date validation not working

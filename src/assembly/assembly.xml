@@ -1,24 +1,19 @@
 <assembly>
-	<id>${parent.version}-bin</id>
+	<id>bin</id>
 	<formats>
 		<format>tar.gz</format>
 		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
+
 	<moduleSets>
-		<moduleSet>
-			<includes>
-				<include>net.rrm.ehour:eHour-wicketweb</include>
-			</includes>
-			<binaries>
-				<outputDirectory>/</outputDirectory>
-				<unpack>false</unpack>
-				<outputFileNameMapping>
-					ehour-${version}.war
-				</outputFileNameMapping>
-			</binaries>
+	  <moduleSet>
+		<includes>
+			<include>net.rrm.ehour:eHour-web</include>
+		</includes>
 		</moduleSet>
-	</moduleSets>
+  </moduleSets>
+	
 	<fileSets>
 		<fileSet>
 			<directory>src/assembly/txt</directory>
@@ -43,7 +38,7 @@
 		</fileSet>
 -->
 		<fileSet>
-			<directory>src/main/assembly/sql/sql</directory>
+			<directory>src/assembly/sql</directory>
 			<outputDirectory>sql</outputDirectory>
 			<lineEnding>dos</lineEnding>
 		</fileSet>
