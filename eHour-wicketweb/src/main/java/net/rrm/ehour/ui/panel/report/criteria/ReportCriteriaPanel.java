@@ -454,6 +454,7 @@ public class ReportCriteriaPanel extends Panel
 		
 		currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		currentDate.add(Calendar.WEEK_OF_YEAR, currentWeek);
+		currentDate.setFirstDayOfWeek(Calendar.SUNDAY);
 		
 		for (; currentWeek < 8; currentWeek++)
 		{
@@ -491,6 +492,7 @@ public class ReportCriteriaPanel extends Panel
 		int 				currentMonth = -6;
 		
 		currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		currentDate.setFirstDayOfWeek(Calendar.SUNDAY);
 		currentDate.add(Calendar.MONTH, currentMonth);
 		
 		for (; currentMonth < 6; currentMonth++)

@@ -30,23 +30,27 @@ public class QuickWeekRenderer implements IChoiceRenderer
 	{
 		Calendar currentWeekStartCal = new GregorianCalendar();
 		currentWeekStartCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		currentWeekStartCal.setFirstDayOfWeek(Calendar.SUNDAY);
 		DateUtil.nullifyTime(currentWeekStartCal);
 		currentWeekStart = currentWeekStartCal.getTime();
 		
 		Calendar previousWeekStartCal = new GregorianCalendar();
 		previousWeekStartCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		previousWeekStartCal.setFirstDayOfWeek(Calendar.SUNDAY);
 		previousWeekStartCal.add(Calendar.WEEK_OF_YEAR, -1);
 		DateUtil.nullifyTime(previousWeekStartCal);
 		previousWeekStart = previousWeekStartCal.getTime();
 		
 		Calendar nextWeekEndCal = new GregorianCalendar();
 		nextWeekEndCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		nextWeekEndCal.setFirstDayOfWeek(Calendar.SUNDAY);
 		nextWeekEndCal.add(Calendar.WEEK_OF_YEAR, 2);
 		DateUtil.nullifyTime(nextWeekEndCal);
 		nextWeekEnd = nextWeekEndCal.getTime();
 
 		Calendar nextWeekStartCal = new GregorianCalendar();
 		nextWeekStartCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		nextWeekStartCal.setFirstDayOfWeek(Calendar.SUNDAY);
 		nextWeekStartCal.add(Calendar.WEEK_OF_YEAR, 1);
 		DateUtil.nullifyTime(nextWeekEndCal);
 		nextWeekStart = nextWeekStartCal.getTime();

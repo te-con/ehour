@@ -427,6 +427,7 @@ public class CalendarPanel extends SidePanel
 			cal.set(Calendar.YEAR, year);
 			cal.set(Calendar.WEEK_OF_YEAR, week);
 			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+			cal.setFirstDayOfWeek(Calendar.SUNDAY);
 			
 			session.setNavCalendar(cal);
 			

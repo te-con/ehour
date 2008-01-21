@@ -275,6 +275,7 @@ public class MonthOverviewPanel extends Panel
 	{
 		Calendar cal = new GregorianCalendar();
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		cal.setFirstDayOfWeek(Calendar.SUNDAY);
 		
 		for (String day : DateUtil.daysInWeek)
 		{
