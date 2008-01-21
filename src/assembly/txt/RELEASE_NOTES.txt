@@ -2,7 +2,8 @@ eHour 0.7.2 release notes - 23 January 2008
 
 Bugs fixed (http://www.ehour.nl/defects/)
 -----------------------------------------
-- 0000074: [Bug / defect] Logging can't be configured
+- 0000075: [Feature request] Only aggregated reports available, add per-day reporting
+- 0000074: [Bug / defect] Logging can't be (easily) configured
 - 0000008: [Bug / defect] Timesheet: fold icon not clickable and doesn't change
 - 0000056: [Feature request] Comment per timesheet entry
 - 0000073: [Bug / defect] Month overview layout not aligned properly when turnover is not shown
@@ -11,3 +12,45 @@ Bugs fixed (http://www.ehour.nl/defects/)
 - 0000026: [Bug / defect] Cannot show dates as mm/dd/yyyy
 - 0000062: [Bug / defect] First name of user is required although it shouldn't
 - 0000004: [Bug / defect] Assignment -> infinite date validation not working
+
+
+New features
+------------
+
+- 0000056: [Feature request] Comment per timesheet entry
+A new feature was added allowing a person to write a small comment for
+each entry in the timesheet. In previous releases only a comment per week
+could be added and these comments didn't appear on any report. In this
+release per project, per day a unique comment can be written where a person
+could explain what (s)he did in those hours.
+Comments can be added by clicking on the pencil icon next to the input box for hours.
+When the icon is grey no comment was filled out, when the icon is yellow a comment
+already exists.
+
+- 0000075: [Feature request] Only aggregated reports available, add per-day reporting
+A new type of report was added which displays all day-to-day data.
+Also the layout of the report screen has been changed giving the actual reports more screen size.
+To access the new report log in as a user with the reporting role. In the screen where
+you normally would select the report criteria a new dropdown has been added on the right where
+you can select the type of report you want to create. All existing filtering criteria can be applied
+to the detailed report.
+
+- 0000074: [Bug / defect] Logging can't be configured
+
+
+- 0000070: [Bug / defect] Can't reset report criteria
+The report filtering criteria screen can't be resetted. A "clear criteria" button is added so
+you can reset the criteria to their initial state.
+
+- 0000067: [Bug / defect] Print timesheet icon ends up in next month
+Clicking the print timesheet icon on the overview page of users didn't end up in the selected
+month but in the next month. Fixed.
+
+- 0000026: [Bug / defect] Cannot show dates as mm/dd/yyyy
+The date locale wasn't respected when inputting dates in the admin section and defaulted to
+European style. Fixed.
+
+- 0000062: [Bug / defect] First name of user is required although it shouldn't
+
+
+
