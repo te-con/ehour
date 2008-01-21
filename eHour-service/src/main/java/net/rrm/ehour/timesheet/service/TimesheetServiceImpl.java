@@ -206,6 +206,11 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		for (TimesheetEntry entry: timesheetEntries)
 		{
+			if (entry == null)
+			{
+				continue;
+			}
+				
            cal = new GregorianCalendar();
            cal.setTime(entry.getEntryId().getEntryDate());
            
