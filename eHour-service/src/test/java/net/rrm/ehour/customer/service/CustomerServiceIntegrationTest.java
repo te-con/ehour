@@ -26,14 +26,14 @@ public class CustomerServiceIntegrationTest extends BaseDAOTest
 {
 	private CustomerService	customerService;
 
-	/**
-	 * 
-	 */
-	public void testGetCustomerDeletableTrue()
-	{
-		Customer customer = customerService.getCustomerAndCheckDeletability(4);
-		assertTrue(customer.isDeletable());
-	}
+//	/**
+//	 * 
+//	 */
+//	public void testGetCustomerDeletableTrue()
+//	{
+//		Customer customer = customerService.getCustomerAndCheckDeletability(4);
+//		assertTrue(customer.isDeletable());
+//	}
 
 	/**
 	 * 
