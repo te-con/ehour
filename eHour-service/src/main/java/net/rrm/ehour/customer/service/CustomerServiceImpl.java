@@ -21,7 +21,6 @@ import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
 
 import org.apache.log4j.Logger;
@@ -87,20 +86,20 @@ public class CustomerServiceImpl implements CustomerService
 		if (customer.getProjects() != null && customer.getProjects().size() > 0)
 		{
 			// okay, this is going to be pricey...
-			boolean	deletable = true;
+			boolean	deletable = false;
 			
-			for (Project project : customer.getProjects())
-			{
-				projectService.setProjectDeletability(project);
-				
-				deletable = project.isDeletable();
-				
-				if (!deletable)
-				{
-					break;
-				}
-			}
-			
+//			for (Project project : customer.getProjects())
+//			{
+//				projectService.setProjectDeletability(project);
+//				
+//				deletable = project.isDeletable();
+//				
+//				if (!deletable)
+//				{
+//					break;
+//				}
+//			}
+//			
 			customer.setDeletable(deletable);
 		}
 		else
