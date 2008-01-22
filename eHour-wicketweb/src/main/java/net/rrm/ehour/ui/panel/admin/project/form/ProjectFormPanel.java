@@ -23,13 +23,13 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.domain.User;
 
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -39,7 +39,6 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.validator.StringValidator;
 
 /**
@@ -72,6 +71,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(nameField);
 		nameField.add(new StringValidator.MaximumLengthValidator(64));
 		nameField.setLabel(new ResourceModel("admin.project.name"));
+		nameField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 
 		// project code
@@ -79,6 +79,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(codeField);
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
 		codeField.setLabel(new ResourceModel("admin.project.code"));
+		codeField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 
 		// project manager
@@ -95,6 +96,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		DropDownChoice customerDropdown = new DropDownChoice("project.customer", customers, new ChoiceRenderer("fullName"));
 		customerDropdown.setRequired(true);
 		customerDropdown.setLabel(new ResourceModel("admin.project.customer"));
+		customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(customerDropdown);
 		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
 		
@@ -132,7 +134,6 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 									,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
 									,this
 									,((EhourWebSession)getSession()).getEhourConfig());
-		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.ONE_SECOND);
 		
 		greyBorder.add(form);
 	}

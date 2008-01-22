@@ -19,17 +19,16 @@ package net.rrm.ehour.ui.panel.admin.department.form;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.validator.StringValidator;
 
 /**
@@ -61,6 +60,7 @@ public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(nameField);
 		nameField.add(new StringValidator.MaximumLengthValidator(64));
 		nameField.setLabel(new ResourceModel("admin.dept.name"));
+		nameField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 			
 		// code
@@ -68,6 +68,7 @@ public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(codeField);
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
 		codeField.setLabel(new ResourceModel("admin.dept.code"));
+		codeField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 		
 		// data save label
@@ -78,7 +79,6 @@ public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
 									,((DepartmentAdminBackingBean)model.getObject()).getDepartment().isDeletable()
 									,this
 									,((EhourWebSession)getSession()).getEhourConfig());
-		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);
 	}

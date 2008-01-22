@@ -118,7 +118,6 @@ public class TimesheetRowList extends ListView
 				row.bookRemainingHoursOnRow();
 				target.addComponent(form);
 			}
-			
 		};
 		
 		projectLink.add(new Label("project", row.getProjectAssignment().getProject().getName()));

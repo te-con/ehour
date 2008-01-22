@@ -21,6 +21,7 @@ import java.util.List;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
@@ -29,7 +30,6 @@ import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
 
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -44,7 +44,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Objects;
-import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
@@ -88,17 +87,20 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		usernameField.add(new StringValidator.MaximumLengthValidator(32));
 		usernameField.add(new DuplicateUsernameValidator());
 		usernameField.setLabel(new ResourceModel("admin.user.username"));
+		usernameField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
 		
 		// password & confirm
 		PasswordTextField	passwordTextField = new PasswordTextField("user.password");
 		passwordTextField.setLabel(new ResourceModel("admin.user.password"));
 		passwordTextField.setRequired(false);	// passwordField defaults to required
+		passwordTextField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("passwordValidationError", passwordTextField));
 		form.add(passwordTextField);
 
 		PasswordTextField	confirmPasswordTextField = new PasswordTextField("confirmPassword");
 		confirmPasswordTextField.setRequired(false);	// passwordField defaults to required
+		confirmPasswordTextField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(confirmPasswordTextField);
 		form.add(new AjaxFormComponentFeedbackIndicator("confirmPasswordValidationError", confirmPasswordTextField));
 		
@@ -111,11 +113,13 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		TextField	lastNameField = new RequiredTextField("user.lastName");
 		form.add(lastNameField);
 		lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
+		lastNameField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("lastNameValidationError", lastNameField));
 		
 		// email
 		TextField	emailField = new TextField("user.email");
 		emailField.add(EmailAddressValidator.getInstance());
+		emailField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(emailField);
 		form.add(new AjaxFormComponentFeedbackIndicator("emailValidationError", emailField));
 		
@@ -123,6 +127,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		DropDownChoice userDepartment = new DropDownChoice("user.userDepartment", departments, new ChoiceRenderer("name"));
 		userDepartment.setRequired(true);
 		userDepartment.setLabel(new ResourceModel("admin.user.department"));
+		userDepartment.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(userDepartment);
 		form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
 		
@@ -131,6 +136,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		userRoles.setMaxRows(4);
 		userRoles.setLabel(new ResourceModel("admin.user.roles"));
 		userRoles.setRequired(true);
+		userRoles.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(userRoles);
 		form.add(new AjaxFormComponentFeedbackIndicator("rolesValidationError", userRoles));
 
@@ -145,7 +151,6 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 									,((UserBackingBean)userModel.getObject()).getUser().isDeletable()
 									,this
 									,((EhourWebSession)getSession()).getEhourConfig());
-		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);
 	}

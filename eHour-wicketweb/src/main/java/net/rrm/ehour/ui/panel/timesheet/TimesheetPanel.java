@@ -82,7 +82,6 @@ import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
 /**
  * The main panel - timesheet form
- * TODO fold image itself be clickable and start in the right direction and be hoverable ;)
  **/
 
 public class TimesheetPanel extends Panel implements Serializable

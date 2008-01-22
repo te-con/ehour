@@ -45,6 +45,7 @@ public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedba
 	private static final long serialVersionUID = 7840885174109746055L;
 	private	List<FeedbackMessage>	messages = new ArrayList<FeedbackMessage>();
 	private IFeedbackMessageFilter filter;
+	private Component				indicatorFor;
 	
 	/**
 	 * 
@@ -66,6 +67,8 @@ public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedba
 		
 		setOutputMarkupId(true);
 		
+		this.indicatorFor = indicatorFor;
+		
 		indicatorFor.setOutputMarkupId(true);
 		
 		if (indicatorFor != null)
@@ -76,6 +79,15 @@ public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedba
 		add(new ErrorIndicator("errorIndicator"));
 	}
 	
+	
+	/**
+	 * @return the indicatorFor
+	 */
+	public Component getIndicatorFor()
+	{
+		return indicatorFor;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator#onBeforeRender()

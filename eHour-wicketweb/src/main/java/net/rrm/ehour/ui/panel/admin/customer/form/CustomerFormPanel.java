@@ -25,6 +25,7 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
@@ -33,7 +34,6 @@ import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -42,7 +42,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.validator.StringValidator;
 
 /**
@@ -78,13 +77,15 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(nameField);
 		nameField.add(new StringValidator.MaximumLengthValidator(64));
 		nameField.setLabel(new ResourceModel("admin.customer.name"));
+		nameField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 			
 		// code
-		RequiredTextField	codeField = new RequiredTextField("customer.code");
+		final RequiredTextField	codeField = new RequiredTextField("customer.code");
 		form.add(codeField);
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
 		codeField.setLabel(new ResourceModel("admin.customer.code"));
+		codeField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 		
 		// description
@@ -103,7 +104,6 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 									,((CustomerAdminBackingBean)model.getObject()).getCustomer().isDeletable()
 									,this
 									,((EhourWebSession)getSession()).getEhourConfig());
-		AjaxFormValidatingBehavior.addToAllFormComponents(form, "onchange", Duration.seconds(1));
 		
 		greyBorder.add(form);
 	}
