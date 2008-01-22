@@ -116,10 +116,13 @@ public class TreeReportDataPanel extends Panel
 	 */
 	protected Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config)
 	{
-		return new Label(id, new StringResourceModel("report.header", 
+		Label reportHeaderLabel = new Label(id, new StringResourceModel("report.header", 
 													this, null, 
 													new Object[]{new DateModel(reportRange.getDateStart(), config),
-												 	new DateModel(reportRange.getDateEnd(), config)}));	
+												 	new DateModel(reportRange.getDateEnd(), config)}));
+		reportHeaderLabel.setEscapeModelStrings(false);
+		
+		return reportHeaderLabel;
 	}
 	
 	/**

@@ -57,7 +57,6 @@ public class UserReport extends BaseReportPage
 		
 		add(new ContextualHelpPanel("contextHelp"));
 		
-		
 		ReportCriteria reportCriteria = getReportCriteria(true);
 		IModel	model = new CompoundPropertyModel(reportCriteria);
 		setModel(model);

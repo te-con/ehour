@@ -102,8 +102,6 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 			
 			currentVersion = getCurrentVersion(connection);
 			
-			((EmbeddedDataSource)dataSource).setCreateDatabase("");
-
 			databaseInState = (currentVersion != null) ? currentVersion.equalsIgnoreCase(version) : false;
 			
 			if (databaseInState)
@@ -123,6 +121,10 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 		{
 			ddlType = DdlType.CREATE_TABLE;
 			logger.info("Could not determine datamodel's version, recreating..");
+		}
+		finally
+		{
+			((EmbeddedDataSource)dataSource).setCreateDatabase("");
 		}
 		
 		if (ddlType != DdlType.NONE)

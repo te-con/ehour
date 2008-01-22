@@ -80,8 +80,6 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 		add(greyBorder);
 		
 		greyBorder.add(new EntrySelectorPanel(DEPT_SELECTOR_ID, deptListHolder));
-		
-		System.out.println(hierarchyAsString());
 	}
 	
 	/*
