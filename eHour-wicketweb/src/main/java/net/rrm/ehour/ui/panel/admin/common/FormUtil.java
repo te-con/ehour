@@ -25,13 +25,10 @@ import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.util.time.Duration;
 
 /**
  * Common form stuff
@@ -39,18 +36,6 @@ import org.apache.wicket.util.time.Duration;
 @SuppressWarnings("serial")
 public class FormUtil
 {
-	/**
-	 * Get onchange validate behaviour for 1 sec
-	 * @param form
-	 * @return
-	 */
-	public static AjaxFormSubmitBehavior getValidateBehavior(Form form)
-	{
-		AjaxFormValidatingBehavior behavior = new AjaxFormValidatingBehavior(form, "onchange");
-		behavior.setThrottleDelay(Duration.ONE_SECOND);
-		return behavior;
-	}
-	
 	/**
 	 * Set submit actions for form
 	 * @param form

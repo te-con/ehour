@@ -22,6 +22,7 @@ import org.apache.wicket.Component.IVisitor;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.feedback.IFeedback;
+import org.apache.wicket.util.time.Duration;
 
 /**
  * Validate formcomponent without submitting the form
@@ -34,6 +35,8 @@ public class ValidatingFormComponentAjaxBehavior extends AjaxFormComponentUpdati
 	public ValidatingFormComponentAjaxBehavior()
 	{
 		super("onblur");
+		
+		setThrottleDelay(Duration.ONE_SECOND);
 	}
 	
 	@Override

@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
@@ -117,7 +118,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate",
 											new FloatModel(new PropertyModel(model, "projectAssignment.hourlyRate"), config, null));
 		hourlyRate.setType(Float.class);
-		hourlyRate.add(FormUtil.getValidateBehavior(form));
+		hourlyRate.add(new ValidatingFormComponentAjaxBehavior());
 		hourlyRate.add(NumberValidator.POSITIVE);
 		form.add(hourlyRate);
 		form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
@@ -157,7 +158,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		assignmentTypeChoice.setRequired(true);
 		assignmentTypeChoice.setNullValid(false);
 		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
-		assignmentTypeChoice.add(FormUtil.getValidateBehavior(form));
+		assignmentTypeChoice.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(assignmentTypeChoice);
 		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
 		
@@ -165,7 +166,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		final TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours",
 												new FloatModel(new PropertyModel(model, "projectAssignment.allottedHours"), config, null));
 		allottedHours.setType(float.class);
-		allottedHours.add(FormUtil.getValidateBehavior(form));
+		allottedHours.add(new ValidatingFormComponentAjaxBehavior());
 		allottedHours.add(NumberValidator.POSITIVE);
 		allottedHours.setOutputMarkupId(true);
 		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
@@ -183,7 +184,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		final TextField overrunHours = new RequiredTextField("projectAssignment.allowedOverrun",
 											new FloatModel(new PropertyModel(model, "projectAssignment.allowedOverrun"), config, null));
 		overrunHours.setType(float.class);
-		overrunHours.add(FormUtil.getValidateBehavior(form));
+		overrunHours.add(new ValidatingFormComponentAjaxBehavior());
 		overrunHours.add(NumberValidator.POSITIVE);
 		overrunHours.setOutputMarkupId(true);
 		overrunHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
@@ -251,7 +252,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 																DateUtil.getPatternForDateLocale(config.getLocale()));
 		
 		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
-		dateStart.add(FormUtil.getValidateBehavior(form));
+		dateStart.add(new ValidatingFormComponentAjaxBehavior());
 		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
 
 		// container for hiding
@@ -286,7 +287,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		// end date
 		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", 
 														DateUtil.getPatternForDateLocale(config.getLocale()));
-		dateEnd.add(FormUtil.getValidateBehavior(form));
+		dateEnd.add(new ValidatingFormComponentAjaxBehavior());
 		dateEnd.add(new ConditionalRequiredValidator(infiniteEndDateModel));
 		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
 		
@@ -371,11 +372,11 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		projectChoice.setOutputMarkupId(true);
 		projectChoice.setNullValid(false);
 		projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
-		projectChoice.add(FormUtil.getValidateBehavior(form));
+		projectChoice.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(projectChoice);
 		form.add(new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice));
 
-		customerChoice.add(FormUtil.getValidateBehavior(form));
+		customerChoice.add(new ValidatingFormComponentAjaxBehavior());
 
 		// make project update automatically when customers changed
 		customerChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
@@ -387,7 +388,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
         });	
 
 
-		projectChoice.add(FormUtil.getValidateBehavior(form));
+		projectChoice.add(new ValidatingFormComponentAjaxBehavior());
 
 		// update any components that showed interest
 		projectChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
