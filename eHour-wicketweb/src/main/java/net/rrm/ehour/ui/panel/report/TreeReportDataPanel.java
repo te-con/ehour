@@ -299,7 +299,7 @@ public class TreeReportDataPanel extends Panel
 				style.append("width: 300px;");
 			}			
 			
-			if (!style.toString().isEmpty())
+			if (style.toString() != null && !(style.toString().trim().equals("")))
 			{
 				label.add(new SimpleAttributeModifier("style", style.toString()));
 			}
