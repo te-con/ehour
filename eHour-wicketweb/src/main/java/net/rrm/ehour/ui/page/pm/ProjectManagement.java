@@ -141,5 +141,13 @@ public class ProjectManagement extends BasePage
 		}
 		
 		return reportData;
+	}
+
+	/**
+	 * @param reportPanel the reportPanel to set
+	 */
+	public void setReportPanel(WebMarkupContainer reportPanel)
+	{
+		this.reportPanel = reportPanel;
 	}	
 }
