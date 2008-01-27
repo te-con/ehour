@@ -33,7 +33,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class CustomerServiceImpl implements CustomerService
 {
 	private	CustomerDAO		customerDAO;
-	private	ProjectService	projectService;
 	private	Logger			logger = Logger.getLogger(this.getClass());
 	
 	/* (non-Javadoc)
@@ -154,16 +153,4 @@ public class CustomerServiceImpl implements CustomerService
 	{
 		this.customerDAO = customerDAO;
 	}
-
-
-	/**
-	 * @param projectService the projectService to set
-	 */
-	public void setProjectService(ProjectService projectService)
-	{
-		this.projectService = projectService;
-	}
-
-
-
 }

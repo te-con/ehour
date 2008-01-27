@@ -76,7 +76,6 @@
 	
 	<!-- Customer service -->
 	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl">
-		<property name="projectService" ref="projectService" />
 		<property name="customerDAO" ref="customerDAO" />	
 	</bean>
 
