@@ -15,8 +15,8 @@
 
 package net.rrm.ehour.customer.service;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.domain.Customer;
 
 /**
  * Customer service test that goes to the database

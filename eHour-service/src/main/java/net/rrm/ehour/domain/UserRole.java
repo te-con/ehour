@@ -13,9 +13,8 @@
  *
  */
 
-package net.rrm.ehour.user.domain;
+package net.rrm.ehour.domain;
 
-import net.rrm.ehour.domain.DomainObject;
 
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.lang.builder.CompareToBuilder;

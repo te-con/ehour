@@ -21,12 +21,12 @@ import org.omg.CORBA.COMM_FAILURE;
 
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
-import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
 /**

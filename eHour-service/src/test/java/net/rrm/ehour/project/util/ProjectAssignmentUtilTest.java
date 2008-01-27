@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;

@@ -13,7 +13,7 @@
         />
 
 	<cache
-	    name="net.rrm.ehour.user.domain.UserRole"
+	    name="net.rrm.ehour.domain.UserRole"
 	    maxElementsInMemory="50"
 	    eternal="true"
 	    overflowToDisk="false"
@@ -28,7 +28,7 @@
 	/>	
 	
 	<cache
-	    name="net.rrm.ehour.user.domain.User"
+	    name="net.rrm.ehour.domain.User"
 	    maxElementsInMemory="100"
         timeToIdleSeconds="600"
         timeToLiveSeconds="3600"
@@ -36,7 +36,7 @@
 	/>
 	
 	<cache
-	    name="net.rrm.ehour.project.domain.Project"
+	    name="net.rrm.ehour.domain.Project"
 	    maxElementsInMemory="50"
         timeToIdleSeconds="600"
         timeToLiveSeconds="3600"
@@ -44,7 +44,7 @@
 	/>	
 
 	<cache
-	    name="net.rrm.ehour.customer.domain.Customer"
+	    name="net.rrm.ehour.domain.Customer"
 	    maxElementsInMemory="50"
         timeToIdleSeconds="600"
         timeToLiveSeconds="3600"
@@ -52,7 +52,7 @@
 	/>	
 
 	<cache
-	    name="net.rrm.ehour.project.domain.ProjectAssignmentType"
+	    name="net.rrm.ehour.domain.ProjectAssignmentType"
 	    maxElementsInMemory="50"
 	    eternal="true"
 	    overflowToDisk="false"

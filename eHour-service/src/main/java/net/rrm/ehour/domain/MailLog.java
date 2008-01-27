@@ -1,11 +1,9 @@
-package net.rrm.ehour.mail.domain;
+package net.rrm.ehour.domain;
 
 // Generated Apr 7, 2007 1:08:18 AM by Hibernate Tools 3.2.0.beta8
 
 import java.util.Date;
 
-import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

@@ -16,7 +16,7 @@
 package net.rrm.ehour.user.dao;
 
 import net.rrm.ehour.dao.GenericDAO;
-import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.domain.UserRole;
 
 /**
  * CRUD on UserRole domain object

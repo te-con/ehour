@@ -18,8 +18,8 @@ package net.rrm.ehour.mail.dao;
 import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAO;
-import net.rrm.ehour.mail.domain.MailLog;
-import net.rrm.ehour.mail.domain.MailLogAssignment;
+import net.rrm.ehour.domain.MailLog;
+import net.rrm.ehour.domain.MailLogAssignment;
 
 /**
  * DAO for MailLog db operations 

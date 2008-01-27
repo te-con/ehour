@@ -15,7 +15,7 @@
 
 package net.rrm.ehour.util;
 
-import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.ProjectAssignmentType;
 
 
 /**

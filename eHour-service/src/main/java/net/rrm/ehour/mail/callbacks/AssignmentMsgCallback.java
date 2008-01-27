@@ -15,7 +15,7 @@
 
 package net.rrm.ehour.mail.callbacks;
 
-import net.rrm.ehour.mail.domain.MailLogAssignment;
+import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 

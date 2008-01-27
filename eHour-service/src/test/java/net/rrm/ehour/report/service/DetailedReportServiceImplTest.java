@@ -29,12 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.DetailedReportDAO;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.user.domain.User;
 
 import org.junit.Before;
 import org.junit.Test;

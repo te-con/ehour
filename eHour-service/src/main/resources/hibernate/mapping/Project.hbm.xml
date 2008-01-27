@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="net.rrm.ehour.project.domain.Project" table="PROJECT">
+	<class name="net.rrm.ehour.domain.Project" table="PROJECT">
 		<!-- <cache usage="read-write" />-->
 		
 		<id name="projectId" column="PROJECT_ID" type="integer">
@@ -18,15 +18,15 @@
 		<property name="active" column="ACTIVE" type="yes_no" index="IDX_PROJECT_ACTIVE" />
 		
         <many-to-one name="customer" outer-join="auto" fetch="join"
-                class="net.rrm.ehour.customer.domain.Customer" column="CUSTOMER_ID"/>
+                class="net.rrm.ehour.domain.Customer" column="CUSTOMER_ID"/>
 
         <many-to-one name="projectManager" outer-join="auto" fetch="join"
-                class="net.rrm.ehour.user.domain.User" column="PROJECT_MANAGER"/>
+                class="net.rrm.ehour.domain.User" column="PROJECT_MANAGER"/>
                 
 		<set name="projectAssignments" inverse="true" lazy="true">
 	       	<cache usage="read-write"/>
 			<key column="PROJECT_ID" />
-	       	<one-to-many class="net.rrm.ehour.project.domain.ProjectAssignment"/>
+	       	<one-to-many class="net.rrm.ehour.domain.ProjectAssignment"/>
 	   </set>                
 	</class>	
 </hibernate-mapping>

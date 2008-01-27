@@ -18,7 +18,7 @@ package net.rrm.ehour.user.dao;
 import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
-import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.domain.UserDepartment;
 
 /**
  *  

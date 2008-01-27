@@ -18,8 +18,8 @@ package net.rrm.ehour.timesheet.dao;
 import java.util.Date;
 
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.timesheet.domain.TimesheetComment;
-import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetCommentId;
 
 /**
  * TODO 

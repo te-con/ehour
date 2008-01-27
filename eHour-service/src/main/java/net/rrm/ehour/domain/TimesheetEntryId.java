@@ -13,12 +13,11 @@
  *
  */
 
-package net.rrm.ehour.timesheet.domain;
+package net.rrm.ehour.domain;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import net.rrm.ehour.project.domain.ProjectAssignment;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

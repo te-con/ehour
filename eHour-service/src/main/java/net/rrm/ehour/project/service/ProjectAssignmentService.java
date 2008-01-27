@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.user.domain.User;
 
 /**
  * Service for handling project assignments

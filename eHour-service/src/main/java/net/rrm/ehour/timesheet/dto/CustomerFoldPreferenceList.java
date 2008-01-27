@@ -18,8 +18,8 @@ package net.rrm.ehour.timesheet.dto;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.user.domain.CustomerFoldPreference;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.CustomerFoldPreference;
 
 /**
  * TODO 

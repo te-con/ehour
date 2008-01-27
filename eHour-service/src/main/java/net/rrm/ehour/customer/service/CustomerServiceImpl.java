@@ -18,7 +18,7 @@ package net.rrm.ehour.customer.service;
 import java.util.List;
 
 import net.rrm.ehour.customer.dao.CustomerDAO;
-import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 

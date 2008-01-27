@@ -21,11 +21,12 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.customer.dao.CustomerDAO;
-import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
@@ -33,7 +34,6 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.log4j.Logger;
 

@@ -15,8 +15,8 @@
 
 package net.rrm.ehour.config.dao;
 
-import net.rrm.ehour.config.domain.Configuration;
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import net.rrm.ehour.domain.Configuration;
 
 /**
  * TODO 

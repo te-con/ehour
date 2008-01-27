@@ -21,11 +21,11 @@ import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.domain.ProjectAssignmentType;
-import net.rrm.ehour.user.domain.User;
 
 /**
  * TODO 

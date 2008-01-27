@@ -21,14 +21,14 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.domain.MailLogAssignment;
+import net.rrm.ehour.domain.MailType;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.mail.callbacks.AssignmentMsgCallback;
 import net.rrm.ehour.mail.dao.MailLogDAO;
-import net.rrm.ehour.mail.domain.MailLogAssignment;
-import net.rrm.ehour.mail.domain.MailType;
 import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;

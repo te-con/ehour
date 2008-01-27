@@ -29,21 +29,21 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetCommentId;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.TimesheetEntryId;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
-import net.rrm.ehour.timesheet.domain.TimesheetComment;
-import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
-import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 public class TimesheetServiceTest  extends TestCase

@@ -18,10 +18,10 @@ package net.rrm.ehour.project.service;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.user.domain.User;
 
 /**
  * TODO 

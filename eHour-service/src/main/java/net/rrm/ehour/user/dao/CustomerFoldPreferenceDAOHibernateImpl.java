@@ -18,11 +18,11 @@ package net.rrm.ehour.user.dao;
 import java.util.Collection;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
-import net.rrm.ehour.user.domain.CustomerFoldPreference;
-import net.rrm.ehour.user.domain.CustomerFoldPreferenceId;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.CustomerFoldPreference;
+import net.rrm.ehour.domain.CustomerFoldPreferenceId;
+import net.rrm.ehour.domain.User;
 
 /**
  * CustomerFoldPreference DAO hibernate impl 

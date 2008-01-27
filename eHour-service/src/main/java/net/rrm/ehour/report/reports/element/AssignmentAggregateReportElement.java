@@ -17,7 +17,7 @@ package net.rrm.ehour.report.reports.element;
 
 import java.util.Date;
 
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignment;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

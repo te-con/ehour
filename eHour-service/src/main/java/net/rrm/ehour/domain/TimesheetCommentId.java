@@ -13,7 +13,7 @@
  *
  */
 
-package net.rrm.ehour.timesheet.domain;
+package net.rrm.ehour.domain;
 
 import java.io.Serializable;
 import java.util.Date;

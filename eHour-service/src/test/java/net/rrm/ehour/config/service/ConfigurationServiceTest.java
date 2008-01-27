@@ -27,7 +27,7 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
-import net.rrm.ehour.config.domain.Configuration;
+import net.rrm.ehour.domain.Configuration;
 
 import org.junit.Before;
 import org.junit.Test;

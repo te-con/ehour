@@ -18,9 +18,9 @@ package net.rrm.ehour.user.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.User;
 
 import org.junit.Test;
 

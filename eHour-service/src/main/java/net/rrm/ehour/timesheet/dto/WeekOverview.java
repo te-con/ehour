@@ -20,12 +20,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.timesheet.domain.TimesheetComment;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
 
 /**
  * Value object for timesheet entries of a week and corresponding comments

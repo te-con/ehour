@@ -19,8 +19,8 @@ import java.io.Serializable;
 import java.util.SortedSet;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.mail.domain.MailLogAssignment;
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.domain.MailLogAssignment;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 /**

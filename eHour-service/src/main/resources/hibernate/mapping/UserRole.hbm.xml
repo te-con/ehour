@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Sep 26, 2006 11:58:19 PM by Hibernate Tools 3.2.0.beta7 -->
 <hibernate-mapping>
-    <class name="net.rrm.ehour.user.domain.UserRole" table="USER_ROLE"  mutable="false">
+    <class name="net.rrm.ehour.domain.UserRole" table="USER_ROLE"  mutable="false">
 	    <cache usage="read-only" />
         <id name="role" type="string">
             <column name="ROLE" />

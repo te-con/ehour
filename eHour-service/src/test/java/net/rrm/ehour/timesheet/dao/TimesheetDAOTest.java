@@ -22,7 +22,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
 @SuppressWarnings("unchecked")

@@ -18,7 +18,7 @@ package net.rrm.ehour.mail.dao;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.mail.domain.MailLogAssignment;
+import net.rrm.ehour.domain.MailLogAssignment;
 
 import org.junit.Test;
 

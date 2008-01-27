@@ -1,10 +1,8 @@
-package net.rrm.ehour.customer.domain;
+package net.rrm.ehour.domain;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.project.domain.Project;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;

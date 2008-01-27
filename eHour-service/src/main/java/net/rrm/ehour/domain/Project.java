@@ -1,10 +1,7 @@
-package net.rrm.ehour.project.domain;
+package net.rrm.ehour.domain;
 
 import java.util.Set;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;

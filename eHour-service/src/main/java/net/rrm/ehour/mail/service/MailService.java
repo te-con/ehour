@@ -18,9 +18,9 @@ package net.rrm.ehour.mail.service;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.mail.domain.MailLogAssignment;
+import net.rrm.ehour.domain.MailLogAssignment;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.user.domain.User;
 
 /**
  * Mail service

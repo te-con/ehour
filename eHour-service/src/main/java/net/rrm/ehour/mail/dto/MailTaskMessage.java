@@ -15,9 +15,9 @@
 
 package net.rrm.ehour.mail.dto;
 
+import net.rrm.ehour.domain.MailType;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.mail.callbacks.MailTaskCallback;
-import net.rrm.ehour.mail.domain.MailType;
-import net.rrm.ehour.user.domain.User;
 
 import org.springframework.mail.SimpleMailMessage;
 

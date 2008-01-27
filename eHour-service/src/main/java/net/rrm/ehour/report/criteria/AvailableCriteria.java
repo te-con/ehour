@@ -18,11 +18,11 @@ package net.rrm.ehour.report.criteria;
 import java.io.Serializable;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
 
 /**
  * ReportData Criteria

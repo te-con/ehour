@@ -1,10 +1,8 @@
-package net.rrm.ehour.project.domain;
+package net.rrm.ehour.domain;
 
 import java.util.Date;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;

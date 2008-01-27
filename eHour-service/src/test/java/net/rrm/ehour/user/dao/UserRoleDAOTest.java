@@ -18,7 +18,7 @@ package net.rrm.ehour.user.dao;
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.user.domain.UserRole;
+import net.rrm.ehour.domain.UserRole;
 
 /**
  * TODO 

@@ -18,10 +18,10 @@ package net.rrm.ehour.project.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.BaseDAOTest;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 
 /**
  * TODO 
@@ -38,7 +38,7 @@ public class ProjectDAOTest extends BaseDAOTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#delete(net.rrm.ehour.project.domain.Project)}.
+	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#delete(net.rrm.ehour.domain.Project)}.
 	 */
 	public void testDelete()
 	{
@@ -80,7 +80,7 @@ public class ProjectDAOTest extends BaseDAOTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#persist(net.rrm.ehour.project.domain.Project)}.
+	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#persist(net.rrm.ehour.domain.Project)}.
 	 */
 	public void testPersist()
 	{

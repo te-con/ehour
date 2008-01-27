@@ -21,11 +21,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.rrm.ehour.domain.CustomerFoldPreference;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.project.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -35,10 +39,6 @@ import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
-import net.rrm.ehour.user.domain.CustomerFoldPreference;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
-import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.codec.binary.Hex;

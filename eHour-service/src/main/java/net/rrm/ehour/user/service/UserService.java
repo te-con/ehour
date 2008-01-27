@@ -17,14 +17,14 @@ package net.rrm.ehour.user.service;
 
 import java.util.List;
 
+import net.rrm.ehour.domain.CustomerFoldPreference;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.user.domain.CustomerFoldPreference;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
-import net.rrm.ehour.user.domain.UserRole;
 
 
 public interface UserService 

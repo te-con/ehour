@@ -2,10 +2,10 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.GenericDAO;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 
 /**
  * CRUD on project domain object

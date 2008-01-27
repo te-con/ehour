@@ -16,8 +16,8 @@
 package net.rrm.ehour.timesheet.dao;
 
 import net.rrm.ehour.dao.GenericDAO;
-import net.rrm.ehour.timesheet.domain.TimesheetComment;
-import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetCommentId;
 
 /**
  * CRUD on timesheetComment domain obj

@@ -17,8 +17,8 @@ package net.rrm.ehour.customer.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.domain.Customer;
 
 /**
  * CRUD on the Customer domain object 

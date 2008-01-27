@@ -1,6 +1,5 @@
-package net.rrm.ehour.timesheet.domain;
+package net.rrm.ehour.domain;
 
-import net.rrm.ehour.domain.DomainObject;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

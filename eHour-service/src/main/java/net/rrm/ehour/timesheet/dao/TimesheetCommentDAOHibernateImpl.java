@@ -16,8 +16,8 @@
 package net.rrm.ehour.timesheet.dao;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
-import net.rrm.ehour.timesheet.domain.TimesheetComment;
-import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetCommentId;
 
 import org.hibernate.Query;
 import org.hibernate.Session;

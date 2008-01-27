@@ -3,18 +3,18 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="net.rrm.ehour.project.domain.ProjectAssignment" table="PROJECT_ASSIGNMENT">
+	<class name="net.rrm.ehour.domain.ProjectAssignment" table="PROJECT_ASSIGNMENT">
 		<!--  <cache usage="read-write" /> -->
 		
 		<id name="assignmentId" column="ASSIGNMENT_ID" type="integer">
 			<generator class="native" />
        	</id>
 
-        <many-to-one name="user" class="net.rrm.ehour.user.domain.User" fetch="join" insert="true">
+        <many-to-one name="user" class="net.rrm.ehour.domain.User" fetch="join" insert="true">
             <column name="USER_ID" not-null="true" />
         </many-to-one>
 
-        <many-to-one name="project" class="net.rrm.ehour.project.domain.Project" fetch="join">
+        <many-to-one name="project" class="net.rrm.ehour.domain.Project" fetch="join">
             <column name="PROJECT_ID" not-null="true" />
         </many-to-one>
 
@@ -35,7 +35,7 @@
 		<property name="active" column="ACTIVE" type="yes_no" index="IDX_PA_ACTIVE" />
 
         <many-to-one name="assignmentType" outer-join="auto" fetch="join"
-                class="net.rrm.ehour.project.domain.ProjectAssignmentType" column="ASSIGNMENT_TYPE_ID"/>
+                class="net.rrm.ehour.domain.ProjectAssignmentType" column="ASSIGNMENT_TYPE_ID"/>
 
 		<property name="allottedHours" column="ALLOTTED_HOURS" type="float"/>
 		<property name="allowedOverrun" column="ALLOTTED_HOURS_OVERRUN" type="float"/>

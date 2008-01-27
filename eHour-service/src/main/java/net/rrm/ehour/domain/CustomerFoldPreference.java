@@ -13,10 +13,8 @@
  *
  */
 
-package net.rrm.ehour.user.domain;
+package net.rrm.ehour.domain;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.domain.DomainObject;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;

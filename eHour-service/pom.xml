@@ -200,13 +200,13 @@
 					<groupId>org.apache.derby</groupId>
 					<artifactId>derby</artifactId>
 					<version>10.3.1.4</version>
-					<scope>provided</scope>
+					<scope>compile</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.apache.ddlutils</groupId>
 					<artifactId>ddlutils</artifactId>
 					<version>1.0</version>
-					<scope>provided</scope>
+					<scope>compile</scope>
 				</dependency>
 			</dependencies>
 			<build>

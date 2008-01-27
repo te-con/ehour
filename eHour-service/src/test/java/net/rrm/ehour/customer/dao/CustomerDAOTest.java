@@ -18,8 +18,8 @@ package net.rrm.ehour.customer.dao;
 import java.util.List;
 
 import net.rrm.ehour.customer.dao.CustomerDAO;
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.domain.Customer;
 
 /**
  * TODO 

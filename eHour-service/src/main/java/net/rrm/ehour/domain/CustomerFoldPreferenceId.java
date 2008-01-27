@@ -13,11 +13,10 @@
  *
  */
 
-package net.rrm.ehour.user.domain;
+package net.rrm.ehour.domain;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.customer.domain.Customer;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

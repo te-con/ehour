@@ -19,13 +19,13 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.timesheet.domain.TimesheetComment;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
-import net.rrm.ehour.user.domain.User;
 
 /**
  * Provides services for displaying and manipulating timesheets.

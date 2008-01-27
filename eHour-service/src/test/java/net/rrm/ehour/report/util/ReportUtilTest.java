@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.domain.Project;
 
 /**
  * TODO 
