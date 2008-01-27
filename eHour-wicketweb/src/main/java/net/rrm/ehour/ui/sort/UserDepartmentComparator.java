@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.sort;
 
 import java.util.Comparator;
 
-import net.rrm.ehour.user.domain.UserDepartment;
+import net.rrm.ehour.domain.UserDepartment;
 
 /**
  * User dept comparator ignoring case 

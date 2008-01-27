@@ -19,9 +19,9 @@ package net.rrm.ehour.ui.panel.admin.assignment.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 
 /**

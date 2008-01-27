@@ -16,8 +16,8 @@
 
 package net.rrm.ehour.ui.util;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;

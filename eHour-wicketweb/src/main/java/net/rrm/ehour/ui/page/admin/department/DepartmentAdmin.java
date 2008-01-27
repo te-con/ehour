@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.page.admin.department;
 import java.util.Collections;
 import java.util.List;
 
+import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
@@ -29,7 +30,6 @@ import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBe
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.util.CommonWebUtil;
-import net.rrm.ehour.user.domain.UserDepartment;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;

@@ -23,7 +23,7 @@
 
 package net.rrm.ehour.ui.reportchart.rowkey;
 
-import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.domain.Customer;
 
 /**
  * TODO 

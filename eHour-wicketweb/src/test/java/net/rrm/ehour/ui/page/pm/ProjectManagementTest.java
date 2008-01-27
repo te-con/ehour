@@ -12,12 +12,12 @@ import static org.easymock.classextension.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.panel.report.pm.PmReportPanel;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;

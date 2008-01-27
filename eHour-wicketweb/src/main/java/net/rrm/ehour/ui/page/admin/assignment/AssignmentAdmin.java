@@ -18,9 +18,11 @@ package net.rrm.ehour.ui.page.admin.assignment;
 
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
-import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
@@ -29,8 +31,6 @@ import net.rrm.ehour.ui.panel.admin.assignment.NoUserSelectedPanel;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.util.CommonWebUtil;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 

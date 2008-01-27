@@ -21,7 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;

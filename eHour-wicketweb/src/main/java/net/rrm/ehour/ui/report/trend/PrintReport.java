@@ -27,8 +27,8 @@ import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
 
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 

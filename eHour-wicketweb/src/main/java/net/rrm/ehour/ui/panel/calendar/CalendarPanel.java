@@ -22,6 +22,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
@@ -32,7 +33,6 @@ import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.ui.util.HtmlUtil;
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;

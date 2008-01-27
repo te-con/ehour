@@ -27,12 +27,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.user.domain.User;
 
 
 /**

@@ -27,10 +27,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.timesheet.domain.TimesheetComment;
-import net.rrm.ehour.timesheet.domain.TimesheetCommentId;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.CustomerFoldPreference;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetCommentId;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
@@ -50,8 +52,6 @@ import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
-import net.rrm.ehour.user.domain.CustomerFoldPreference;
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 

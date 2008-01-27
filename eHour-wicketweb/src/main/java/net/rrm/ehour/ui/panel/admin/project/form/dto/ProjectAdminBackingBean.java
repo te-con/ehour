@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.panel.admin.project.form.dto;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 
 /**

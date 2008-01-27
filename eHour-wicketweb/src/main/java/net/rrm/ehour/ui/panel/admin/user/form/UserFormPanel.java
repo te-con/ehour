@@ -18,6 +18,8 @@ package net.rrm.ehour.ui.panel.admin.user.form;
 
 import java.util.List;
 
+import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
@@ -26,8 +28,6 @@ import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.user.domain.UserDepartment;
-import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.markup.html.form.CheckBox;

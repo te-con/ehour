@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.sort;
 
 import java.util.Comparator;
 
-import net.rrm.ehour.customer.domain.Customer;
+import net.rrm.ehour.domain.Customer;
 
 /**
  * Customer name comparator

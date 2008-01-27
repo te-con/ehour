@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.panel.timesheet.dto;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.domain.TimesheetEntry;
 
 /**
  * Representation of a cell (day in a project) in the timesheet

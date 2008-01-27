@@ -22,7 +22,8 @@ import java.util.Currency;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
@@ -31,7 +32,6 @@ import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.util.CommonWebUtil;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;

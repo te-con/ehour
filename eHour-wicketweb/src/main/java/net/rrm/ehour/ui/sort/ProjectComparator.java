@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.sort;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.domain.Project;
 
 /**
  * Comparator on project's name 

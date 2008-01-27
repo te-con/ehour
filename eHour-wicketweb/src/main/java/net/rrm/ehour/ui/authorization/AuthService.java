@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.authorization;
 
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
 import org.acegisecurity.userdetails.UserDetails;

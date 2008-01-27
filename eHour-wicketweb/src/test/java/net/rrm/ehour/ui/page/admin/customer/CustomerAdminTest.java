@@ -25,8 +25,8 @@ import java.util.ArrayList;
 
 import org.apache.wicket.util.tester.FormTester;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 

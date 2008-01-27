@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.util;
 
-import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.util.EhourConstants;
 
 /**

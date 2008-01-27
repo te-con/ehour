@@ -23,7 +23,7 @@
 
 package net.rrm.ehour.ui.reportchart.rowkey;
 
-import net.rrm.ehour.user.domain.User;
+import net.rrm.ehour.domain.User;
 
 import org.apache.commons.lang.StringUtils;
 

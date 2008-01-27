@@ -22,9 +22,11 @@ import static org.easymock.EasyMock.createMock;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
@@ -33,8 +35,6 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
 
 /**
  * TODO 

@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
-import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.TimesheetEntryId;
 
 /**
  * Representation of a row in the timesheet form

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;

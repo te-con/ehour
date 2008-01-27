@@ -25,12 +25,12 @@ package net.rrm.ehour.ui.panel.overview;
 
 import java.util.Calendar;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.panel.overview.monthoverview.MonthOverviewPanel;
 import net.rrm.ehour.ui.panel.overview.projectoverview.ProjectOverviewPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.user.domain.User;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;

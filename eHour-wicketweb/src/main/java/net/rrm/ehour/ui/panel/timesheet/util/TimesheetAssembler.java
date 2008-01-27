@@ -28,9 +28,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetCell;

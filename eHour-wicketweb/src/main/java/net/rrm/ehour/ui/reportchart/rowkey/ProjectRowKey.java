@@ -23,7 +23,7 @@
 
 package net.rrm.ehour.ui.reportchart.rowkey;
 
-import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.domain.Project;
 
 /**
  * RowKey decorator for project 

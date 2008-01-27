@@ -21,10 +21,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.timesheet.domain.TimesheetComment;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
-import net.rrm.ehour.user.domain.User;
 
 /**
  * Representation of a timesheet

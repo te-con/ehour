@@ -20,16 +20,16 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.rrm.ehour.customer.domain.Customer;
-import net.rrm.ehour.project.domain.Project;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.TimesheetEntryId;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
-import net.rrm.ehour.timesheet.domain.TimesheetEntryId;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserDepartment;
-import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
 /**

@@ -16,8 +16,8 @@
 
 package net.rrm.ehour.ui.renderers;
 
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.project.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.Application;

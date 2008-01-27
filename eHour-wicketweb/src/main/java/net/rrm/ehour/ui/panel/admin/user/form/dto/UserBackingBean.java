@@ -19,9 +19,9 @@ package net.rrm.ehour.ui.panel.admin.user.form.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.user.domain.User;
-import net.rrm.ehour.user.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
 /**

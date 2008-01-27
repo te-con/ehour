@@ -29,14 +29,14 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.project.domain.ProjectAssignment;
-import net.rrm.ehour.timesheet.domain.TimesheetEntry;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
-import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.markup.html.panel.Panel;
@@ -49,7 +49,7 @@ import org.junit.Test;
 public class TimesheetPanelTest extends BaseUIWicketTester
 {
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.panel.timesheet.TimesheetPanel#TimesheetPanel(java.lang.String, net.rrm.ehour.user.domain.User, java.util.Calendar)}.
+	 * Test method for {@link net.rrm.ehour.ui.panel.timesheet.TimesheetPanel#TimesheetPanel(java.lang.String, net.rrm.ehour.domain.User, java.util.Calendar)}.
 	 */
 	@Test
 	public void testTimesheetPanel()

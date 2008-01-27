@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.page.admin.customer;
 import java.util.Collections;
 import java.util.List;
 
-import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
