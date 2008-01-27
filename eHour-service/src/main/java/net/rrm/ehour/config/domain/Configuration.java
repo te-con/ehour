@@ -34,6 +34,17 @@ public class Configuration extends DomainObject<String, Configuration>
 	private	String	configKey;
 	private	String	configValue;
 	
+	public Configuration()
+	{
+		
+	}
+
+	public Configuration(String key, String value)
+	{
+		this.configKey = key;
+		this.configValue = value;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.domain.DomainObject#getPK()
