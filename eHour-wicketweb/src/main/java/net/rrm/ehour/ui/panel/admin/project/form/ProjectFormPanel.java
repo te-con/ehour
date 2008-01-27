@@ -126,7 +126,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new CheckBox("project.active"));
 
 		// data save label
-		form.add(new ServerMessageLabel("serverMessage"));
+		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 			
 		
 		//

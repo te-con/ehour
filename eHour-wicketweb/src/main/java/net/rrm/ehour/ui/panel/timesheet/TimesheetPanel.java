@@ -39,9 +39,9 @@ import net.rrm.ehour.ui.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.component.CommonModifiers;
-import net.rrm.ehour.ui.component.FadeLabel;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
+import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
@@ -94,7 +94,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	private UserService			userService;
 	
 	private	EhourConfig			config;
-	private FadeLabel			serverMsgLabel;
+	private ServerMessageLabel	serverMsgLabel;
 	
 	/**
 	 * Construct timesheetPanel for entering hours
@@ -149,7 +149,8 @@ public class TimesheetPanel extends Panel implements Serializable
 		setSubmitActions(timesheetForm, commentsFrame, timesheet);
 		
 		// server message
-		serverMsgLabel = new FadeLabel("serverMessage", "&nbsp;");
+		serverMsgLabel = new ServerMessageLabel("serverMessage", "whiteText", new Model());
+		serverMsgLabel.setModel(new Model());
 		serverMsgLabel.setEscapeModelStrings(false);
 		serverMsgLabel.setOutputMarkupId(true);
 		commentsFrame.add(serverMsgLabel);

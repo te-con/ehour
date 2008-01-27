@@ -97,7 +97,7 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new CheckBox("customer.active"));
 		
 		// data save label
-		form.add(new ServerMessageLabel("serverMessage"));
+		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 	
 		//
 		FormUtil.setSubmitActions(form 

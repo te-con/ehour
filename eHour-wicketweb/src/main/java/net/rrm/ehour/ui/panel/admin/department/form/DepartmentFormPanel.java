@@ -72,7 +72,7 @@ public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 		
 		// data save label
-		form.add(new ServerMessageLabel("serverMessage"));
+		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 	
 		//
 		FormUtil.setSubmitActions(form

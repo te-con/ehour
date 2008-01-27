@@ -130,7 +130,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new CheckBox("projectAssignment.active"));
 		
 		// data save label
-		form.add(new ServerMessageLabel("serverMessage"));
+		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 		
 		// add submit form
 		FormUtil.setSubmitActions(form 

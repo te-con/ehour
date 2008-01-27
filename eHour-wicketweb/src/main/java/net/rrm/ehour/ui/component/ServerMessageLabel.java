@@ -20,6 +20,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
 
 /**
@@ -32,11 +33,16 @@ public class ServerMessageLabel extends Label
 	private static final long serialVersionUID = -6276174722682301972L;
 	private boolean overrideVisibility = false;
 	
-	public ServerMessageLabel(String id)
+	public ServerMessageLabel(String id, String cssClass)
 	{
-		super(id);
+		this(id, cssClass, null);
+	}
+	
+	public ServerMessageLabel(String id, String cssClass, IModel model)
+	{
+		super(id, model);
 
-		add(new SimpleAttributeModifier("class", "formValidationError"));
+		add(new SimpleAttributeModifier("class", cssClass));
 		setOutputMarkupId(true);
 
 		add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5))

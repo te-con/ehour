@@ -27,7 +27,7 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
-import net.rrm.ehour.ui.component.FadeLabel;
+import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
@@ -121,7 +121,7 @@ public class MainConfig extends BaseAdminPage
 		
 		parent.add(configForm);
 		
-		serverMessage = new FadeLabel("serverMessage", "&nbsp;");
+		serverMessage = new ServerMessageLabel("serverMessage", "whiteText", new Model());
 		serverMessage.setEscapeModelStrings(false);
 		serverMessage.setOutputMarkupId(true);
 		configForm.add(serverMessage);
