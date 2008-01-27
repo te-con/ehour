@@ -21,7 +21,6 @@ import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.service.ProjectService;
 
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
