@@ -460,6 +460,12 @@ input[type="checkbox"], input[type="radio"]
 	color: red;
 }
 
+.whiteText
+{
+	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+	color:white;
+}
+
 div.UserReportCriteria
 {
 	margin: 0 10px 0 10px;
