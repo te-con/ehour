@@ -18,11 +18,11 @@ package net.rrm.ehour.ui.common;
 
 import net.rrm.ehour.ui.session.EhourWebSession;
 
+import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.util.tester.WicketTester;
-
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 /**
  * TODO 
@@ -32,12 +32,16 @@ public class EhourWicketTester extends WicketTester
 {
 	public EhourWicketTester(WebApplication webapp)
 	{
-		super(webapp, null);
+		super(webapp);
 	}
 	
-	@Override
-	public WebSession getWicketSession()
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.protocol.http.MockWebApplication#setupRequestAndResponse()
+	 */
+	public WebRequestCycle setupRequestAndResponse()
 	{
-		return new EhourWebSession(null, new MockRequest());
-	}
+		// is ajax
+		return setupRequestAndResponse(true);
+	}	
 }

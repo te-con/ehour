@@ -207,11 +207,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 			// one with user roles.
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			
-//			if (auth == null)
-//			{
-//				getSession().getS
-//			}
+
 			
 			if (auth != null)
 			{

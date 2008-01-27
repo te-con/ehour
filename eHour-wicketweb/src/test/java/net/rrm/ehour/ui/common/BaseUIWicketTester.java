@@ -48,7 +48,7 @@ public class BaseUIWicketTester extends TestCase
 		mockContext = new AnnotApplicationContextMock();
 		mockContext.putBean("EhourConfig", config);
 
-		tester = new EhourWicketTester(webapp);
+		tester = new WicketTester(webapp);
 		
 		mockContext = ((TestEhourWebApplication)tester.getApplication()).getMockContext();
 		
@@ -57,16 +57,14 @@ public class BaseUIWicketTester extends TestCase
 
 			public String loadStringResource(Component component, String key)
 			{
-				return "hello";
+				return key;
 			}
 
 			public String loadStringResource(Class clazz, String key, Locale locale, String style)
 			{
-				return "hello";
+				return key;
 			}
 			
 		});
-		
-		
 	}
 }

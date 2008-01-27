@@ -16,7 +16,14 @@
 
 package net.rrm.ehour.ui.page.login;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 
 import org.apache.wicket.util.tester.FormTester;
 
@@ -32,11 +39,23 @@ public class LoginTest extends BaseUIWicketTester
 		tester.assertRenderedPage(Login.class);
 		tester.assertNoErrorMessage();
 
+		ConfigurationService configService = createMock(ConfigurationService.class);
+		mockContext.putBean("configService", configService);
+		
+		expect(configService.getConfiguration())
+				.andReturn(new EhourConfigStub())
+				.anyTimes();
+		
+		replay(configService);
 		FormTester form = tester.newFormTester("loginform");
 		form.setValue("username", "thies");
 		form.setValue("password", "Ttst");
-		// FIXME: https://issues.apache.org/jira/browse/WICKET-861?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
-//		form.submit();
+
+		form.submit();
+		verify(configService);
+		
+		tester.assertNoErrorMessage();
+		tester.assertRenderedPage(MainConfig.class);
 
 		
 	}

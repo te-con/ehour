@@ -82,6 +82,9 @@ public class Login extends WebPage
 		}
 	}
 	
+	/**
+	 * Set up login form
+	 */
 	private void setupForm()
 	{
 		add(new Label("pageTitle", new ResourceModel("login.login.header")));
@@ -120,9 +123,8 @@ public class Login extends WebPage
 			Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
 			add(demoMode);
 			demoMode.setVisible(((EhourWebSession)getSession()).getEhourConfig().isInDemoMode());
-			
+	
 			add(new Label("version", ((EhourWebApplication)this.getApplication()).getVersion()));
-
 		}
 
 		/**

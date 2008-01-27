@@ -20,6 +20,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.authorization.AuthUser;
@@ -32,13 +34,20 @@ import net.rrm.ehour.user.domain.User;
 import net.rrm.ehour.user.domain.UserRole;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
+import org.apache.wicket.authorization.strategies.role.Roles;
+import org.apache.wicket.protocol.http.HttpSessionStore;
+import org.apache.wicket.protocol.http.SecondLevelCacheSessionStore;
 import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
+import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.protocol.http.SecondLevelCacheSessionStore.IPageStore;
 import org.apache.wicket.request.IRequestCycleProcessor;
+import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 
@@ -116,11 +125,28 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 				userRoles.add(new UserRole(CommonWebUtil.ROLE_CONSULTANT));
 				userRoles.add(new UserRole(CommonWebUtil.ROLE_ADMIN));
 				userRoles.add(new UserRole(CommonWebUtil.ROLE_REPORT));
+				userRoles.add(new UserRole(CommonWebUtil.ROLE_PM));
 				user.setUserRoles(userRoles);
 				
 				AuthUser authUser = new AuthUser(user);
 				return authUser;
+			}
+			
+			public Roles getRoles()
+			{
+				Roles roles = new Roles();
+				roles.add(CommonWebUtil.ROLE_PM);
+				roles.add(CommonWebUtil.ROLE_CONSULTANT);
+				roles.add(CommonWebUtil.ROLE_ADMIN);
+				roles.add(CommonWebUtil.ROLE_REPORT);
 				
+				return roles;
+			}
+			
+			@Override
+			public boolean authenticate(String username, String password)
+			{
+				return true;
 			}
 		};
 		
@@ -136,5 +162,15 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	public PageConfig getPageConfig()
 	{
 		return new PageConfigImpl();
-	}	
+	}
+	
+	protected ISessionStore newSessionStore()
+	{
+		return new HttpSessionStore(this);
+	}
+	
+	protected WebResponse newWebResponse(final HttpServletResponse servletResponse)
+	{
+		return new WebResponse(servletResponse);
+	}
 }
