@@ -2,8 +2,6 @@ package net.rrm.ehour.domain;
 
 import java.util.Date;
 
-import net.rrm.ehour.data.DateRange;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -74,16 +72,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
 	}
-
-	/** minimal constructor */
-	public ProjectAssignment(User user, Project project, DateRange dateRange)
-	{
-		this.user = user;
-		this.project = project;
-		
-		this.dateStart = dateRange.getDateStart();
-		this.dateEnd = dateRange.getDateEnd();
-	}	
 	
 	/** full constructor */
 	public ProjectAssignment(User user, Project project, Float hourlyRate, Date dateStart, Date dateEnd, String description)
@@ -145,21 +133,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	public void setHourlyRate(Float hourlyRate)
 	{
 		this.hourlyRate = hourlyRate;
-	}
-
-	/**
-	 * get start & end date as range
-	 * @return
-	 */
-	public DateRange getDateRange()
-	{
-		return new DateRange(dateStart, dateEnd);
-	}
-	
-	public void setDateRange(DateRange dateRange)
-	{
-		setDateStart(dateRange.getDateStart());
-		setDateEnd(dateRange.getDateEnd());
 	}
 	
 	public Date getDateStart()

@@ -28,6 +28,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
@@ -219,7 +220,9 @@ public class TimesheetAssembler
 		// but not be valid anymore)
 		isValid = validProjectAssignments.contains(assignment);
 		
-		isValid = isValid && DateUtil.isDateWithinRange(date, assignment.getDateRange());
+		DateRange dateRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
+		
+		isValid = isValid && DateUtil.isDateWithinRange(date, dateRange);
 		
 		return isValid;
 	}

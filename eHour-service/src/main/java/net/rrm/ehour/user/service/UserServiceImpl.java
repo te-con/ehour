@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
@@ -75,7 +76,9 @@ public class UserServiceImpl implements UserService
 		{
 			for (ProjectAssignment assignment : user.getProjectAssignments())
 			{
-				if ((!DateUtil.isDateWithinRange(currentDate , assignment.getDateRange())) ||
+				DateRange assignmentRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
+				
+				if ((!DateUtil.isDateWithinRange(currentDate , assignmentRange)) ||
 					 (assignment.getProject() == null || !assignment.getProject().isActive()))
 				{
 					inactiveAssignments.add(assignment);
