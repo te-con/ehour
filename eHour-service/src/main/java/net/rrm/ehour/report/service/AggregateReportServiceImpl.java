@@ -291,7 +291,7 @@ public class AggregateReportServiceImpl implements AggregateReportService
 		for (AssignmentAggregateReportElement aggregate : aggregates)
 		{
 			assignmentIds.add(aggregate.getProjectAssignment().getAssignmentId());
-		}		
+		}
 		
 		// get all assignments for this period regardless whether they booked hours on it
 		allAssignments = projectAssignmentService.getProjectAssignments(project, reportRange);

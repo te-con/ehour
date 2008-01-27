@@ -22,17 +22,23 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.customer.domain.Customer;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.mail.domain.MailLogAssignment;
+import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.domain.Project;
+import net.rrm.ehour.project.domain.ProjectAssignment;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.domain.User;
@@ -50,7 +56,9 @@ public class AggregateReportServiceTest extends TestCase
 	private ProjectDAO			projectDAO;
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	ReportCriteria 	rc;
-	private ReportCriteriaService rsMock; 
+	private	ProjectAssignmentService	assignmentService;
+	private ReportCriteriaService rsMock;
+	private MailService mailService;
 	
 	/**
 	 * 
@@ -67,6 +75,12 @@ public class AggregateReportServiceTest extends TestCase
 
 		projectDAO = createMock(ProjectDAO.class);
 		((AggregateReportServiceImpl)aggregateReportService).setProjectDAO(projectDAO);
+
+		assignmentService = createMock(ProjectAssignmentService.class);
+		((AggregateReportServiceImpl)aggregateReportService).setProjectAssignmentService(assignmentService);
+		
+		mailService = createMock(MailService.class);
+		((AggregateReportServiceImpl)aggregateReportService).setMailService(mailService);
 		
 		rc = new ReportCriteria();
 		rsMock = createMock(ReportCriteriaService.class);
@@ -200,6 +214,54 @@ public class AggregateReportServiceTest extends TestCase
 		aggregateReportService.getAggregateReportData(rc);
 		verify(reportAggregatedDAO);
 		verify(projectDAO);
+	}
+	
+	public void testGetProjectManagerReport()
+	{
+		Project prj = new Project(1);
+		prj.setProjectCode("PRJ");
+		DateRange dr = new DateRange(new Date(), new Date());
+	
+		expect(projectDAO.findById(1))
+			.andReturn(prj);
+		
+		List<AssignmentAggregateReportElement> elms = new ArrayList<AssignmentAggregateReportElement>();
+		
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				elms.add(DummyDataGenerator.getProjectAssignmentAggregate(j, i, i));	
+			}
+		}
+		
+		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(isA(List.class), isA(DateRange.class)))
+			.andReturn(elms);
+		
+		List<ProjectAssignment> assignments = new ArrayList<ProjectAssignment>();
+		
+		assignments.add(DummyDataGenerator.getProjectAssignment(2));
+		
+		expect(assignmentService.getProjectAssignments(prj, dr))
+			.andReturn(assignments);
+		
+		expect(mailService.getSentMailForAssignment(isA(Integer[].class)))
+			.andReturn(new ArrayList<MailLogAssignment>());
+		
+		replay(projectDAO);
+		replay(reportAggregatedDAO);
+		replay(assignmentService);
+		replay(mailService);
+		
+		ProjectManagerReport report = aggregateReportService.getProjectManagerReport(dr, 1);
+		verify(projectDAO);
+		verify(reportAggregatedDAO);
+		verify(assignmentService);
+		verify(mailService);
+		
+		assertEquals(new Integer(1),  report.getProject().getPK());
+		assertEquals(16, report.getAggregates().size());
+				
 	}
 }
 
