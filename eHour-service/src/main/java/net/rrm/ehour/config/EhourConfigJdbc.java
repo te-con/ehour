@@ -93,4 +93,9 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getBoolean("dontForceLanguage", false);
 	}
 
+	public boolean isInitialized()
+	{
+		return this.getBoolean("initialized", true);
+	}
+
 }

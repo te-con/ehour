@@ -83,4 +83,10 @@ public interface EhourConfig
 	 * @return
 	 */
 	public boolean isDontForceLanguage();
+	
+	/**
+	 * Is eHour initialized ?
+	 * @return
+	 */
+	public boolean isInitialized();
 }

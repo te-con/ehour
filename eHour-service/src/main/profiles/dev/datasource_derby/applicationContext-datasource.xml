@@ -10,7 +10,7 @@
 	</bean>
 
 	<!-- Derby database validator-->
-	<bean id="dbValidator" class="net.rrm.ehour.dao.derby.DbValidator"
+	<bean id="dbValidator" class="net.rrm.ehour.init.DerbyDbValidator"
 		init-method="checkDatabaseState">
 		<property name="dataSource" ref="eHourDataSource" />
 		<property name="version" value="0.7.3" />

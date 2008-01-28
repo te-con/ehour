@@ -10,8 +10,9 @@
   <configuration config_key="availableTranslations" config_value="en,nl"></configuration>
   <configuration config_key="mailFrom" config_value="admin@localhost.net"></configuration>
   <configuration config_key="mailSmtp" config_value="127.0.0.1"></configuration>
-  <configuration config_key="version" config_value="0.7.2"></configuration>
+  <configuration config_key="version" config_value="0.7.3"></configuration>
   <configuration config_key="demoMode" config_value="false"></configuration>
+  <configuration config_key="initialized" config_value="false"></configuration>
   <mail_type MAIL_TYPE_ID="1" MAIL_TYPE="FIXED_ALLOTTED_REACHED"></mail_type>
   <mail_type MAIL_TYPE_ID="2" MAIL_TYPE="FLEX_ALLOTTED_REACHED"></mail_type>
   <mail_type MAIL_TYPE_ID="3" MAIL_TYPE="FLEX_OVERRUN_REACHED"></mail_type>
@@ -23,6 +24,6 @@
   <user_role ROLE="ROLE_CONSULTANT" NAME="Consultant"></user_role>
   <user_role ROLE="ROLE_PROJECTMANAGER" NAME="PM"></user_role>
   <user_role ROLE="ROLE_REPORT" NAME="Report role"></user_role>
-  <users USER_ID="1" USERNAME="admin" PASSWORD="d033e22ae348aeb5660fc2140aec35850c4da997" FIRST_NAME="eHour" LAST_NAME="Admin" DEPARTMENT_ID="1" ACTIVE="Y"></users>
+  <users USER_ID="1" USERNAME="admin" PASSWORD="admin" FIRST_NAME="eHour" LAST_NAME="Admin" DEPARTMENT_ID="1" ACTIVE="Y"></users>
   <user_to_userrole ROLE="ROLE_ADMIN" USER_ID="1"></user_to_userrole>
 </data>

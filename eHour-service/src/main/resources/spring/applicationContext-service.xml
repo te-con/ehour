@@ -108,4 +108,12 @@
 			class="net.rrm.ehour.project.util.ProjectAssignmentUtil">
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 	</bean>
+	
+	<!-- Admin account validator -->
+	<bean id="adminAccountValidator" class="net.rrm.ehour.init.AdminAccountValidator"
+		init-method="checkAdminAccount">
+		<property name="ehourConfig" ref="ehourConfig" />
+		<property name="userService" ref="userService" />
+		<property name="configService" ref="configurationService" />
+	</bean>	
 </beans>

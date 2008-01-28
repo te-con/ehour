@@ -88,5 +88,12 @@ public class EhourConfigProps implements EhourConfig
 	{
 		return Boolean.valueOf(props.getProperty("dontForceLanguage"));
 	}
+
+	public boolean isInitialized()
+	{
+		Boolean init = Boolean.valueOf(props.getProperty("initialized"));
+		
+		return init == null ? true : init;
+	}
 	
 }

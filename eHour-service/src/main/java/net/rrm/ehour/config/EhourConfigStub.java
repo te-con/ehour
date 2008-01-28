@@ -41,6 +41,7 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private	String		mailSmtp;
 	private boolean		demoMode = false;
 	private boolean		dontForceLanguage;
+	private boolean		initialized;
 	
 	/**
 	 * @return the availableTranslations
@@ -187,5 +188,18 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	{
 		this.dontForceLanguage = dontForceLanguage;
 	}
-	
+	/**
+	 * @return the initialized
+	 */
+	public boolean isInitialized()
+	{
+		return initialized;
+	}
+	/**
+	 * @param initialized the initialized to set
+	 */
+	public void setInitialized(boolean initialized)
+	{
+		this.initialized = initialized;
+	}
 }

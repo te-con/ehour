@@ -99,7 +99,11 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			else if (key.equalsIgnoreCase("demoMode"))
 			{
 				config.setDemoMode(Boolean.parseBoolean(value));
-			}			
+			}
+			else if (key.equalsIgnoreCase("initialized"))
+			{
+				config.setInitialized(Boolean.parseBoolean(value));
+			}				
 		}
 		
 		return config;
@@ -124,6 +128,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig("showTurnOver", config.isShowTurnover());
 		persistConfig("mailFrom", config.getMailFrom());
 		persistConfig("mailSmtp", config.getMailSmtp());
+		persistConfig("initialized", config.isInitialized());
 	}
 	
 	private void persistConfig(String key, String value)

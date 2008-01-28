@@ -21,7 +21,7 @@
  *
  */
 
-package net.rrm.ehour.dao.derby;
+package net.rrm.ehour.init;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,7 +54,7 @@ import org.springframework.core.io.ResourceLoader;
  * Derby database accessor methods
  **/
 
-public class DbValidator implements ApplicationListener, ResourceLoaderAware  
+public class DerbyDbValidator implements ApplicationListener, ResourceLoaderAware  
 {
 	private String		ddlFile;
 	private String		dmlFile;
@@ -64,8 +64,7 @@ public class DbValidator implements ApplicationListener, ResourceLoaderAware
 	
 	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
 	
-	private final static Logger logger = Logger.getLogger(DbValidator.class);
-	
+	private final static Logger logger = Logger.getLogger(DerbyDbValidator.class);
 
 	/*
 	 * (non-Javadoc)
