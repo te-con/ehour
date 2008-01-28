@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.page.login.SessionExpiredPage;
 import net.rrm.ehour.ui.page.pm.ProjectManagement;
 import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
+import net.rrm.ehour.ui.page.user.print.PrintMonth;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportExcel;
@@ -40,6 +41,7 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import org.acegisecurity.AuthenticationManager;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
@@ -84,7 +86,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
 		setupSecurity();
 		registerSharedResources();
-		
 	}
 
 
@@ -94,10 +95,19 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	protected void registerSharedResources()
 	{
 		getSharedResources().add("userReportExcel", new UserReportExcel());
+		mountSharedResource("/userReportExcel", new ResourceReference("userReportExcel").getSharedResourceKey());
+		
 		getSharedResources().add("customerReportExcel", new CustomerReportExcel());
+		mountSharedResource("/customerReportExcel", new ResourceReference("customerReportExcel").getSharedResourceKey());
+		
 		getSharedResources().add("employeeReportExcel", new EmployeeReportExcel());
+		mountSharedResource("/employeeReportExcel", new ResourceReference("employeeReportExcel").getSharedResourceKey());
+		
 		getSharedResources().add("projectReportExcel", new ProjectReportExcel());
-		getSharedResources().add("detailedReportExcel", new DetailedReportExcel());		
+		mountSharedResource("/projectReportExcel", new ResourceReference("projectReportExcel").getSharedResourceKey());
+		
+		getSharedResources().add("detailedReportExcel", new DetailedReportExcel());
+		mountSharedResource("/detailedReportExcel", new ResourceReference("detailedReportExcel").getSharedResourceKey());
 	}
 	/**
 	 * Mount pages
@@ -111,11 +121,16 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount("/admin/customer", PackageName.forClass(CustomerAdmin.class));
 		mount("/admin/project", PackageName.forClass(ProjectAdmin.class));
 		mount("/admin/assignment", PackageName.forClass(AssignmentAdmin.class));
-		mount("/consultant", PackageName.forPackage(Overview.class.getPackage()));
-		mount("/consultant/report", PackageName.forPackage(UserReport.class.getPackage()));
-		mount("/consultant/print", PackageName.forPackage(PrintMonthSelection.class.getPackage()));
-		mount("/report", PackageName.forPackage(GlobalReportPage.class.getPackage()));
-		mount("/projectManagement", PackageName.forPackage(ProjectManagement.class.getPackage()));
+		
+		mount(new HybridUrlCodingStrategy("/consultant/overview", Overview.class));
+		mount(new HybridUrlCodingStrategy("/consultant/report", UserReport.class));
+		
+		mount(new HybridUrlCodingStrategy("/consultant/printform", PrintMonthSelection.class));
+		mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));
+		
+		mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));
+		
+		mount(new HybridUrlCodingStrategy("/pm", ProjectManagement.class));
 	}
 	
 	/**
@@ -193,6 +208,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		this.authenticationManager = authenticationManager;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.protocol.http.WebApplication#newRequestCycleProcessor()
+	 */
 	@Override
 	protected IRequestCycleProcessor newRequestCycleProcessor() 
 	{ 

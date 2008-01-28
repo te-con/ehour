@@ -39,7 +39,7 @@ public abstract class BaseReportPage extends BasePage
 	@SpringBean
 	private ReportCriteriaService	reportCriteriaService;
 
-	protected final transient Logger logger = Logger.getLogger(this.getClass()); 
+	protected final static Logger logger = Logger.getLogger(BaseReportPage.class);
 
 	/**
 	 * 

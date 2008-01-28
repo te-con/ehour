@@ -64,7 +64,7 @@ public class AssignmentAdmin extends BaseAdminPage
 	@SpringBean
 	private ProjectAssignmentService	projectAssignmentService;
 	private EntrySelectorFilter			currentFilter;
-	private	transient 	Logger			logger = Logger.getLogger(AssignmentAdmin.class);
+	private	final static Logger			logger = Logger.getLogger(AssignmentAdmin.class);
 	private ListView					userListView;
 	private	List<Customer>				customers;
 	private List<ProjectAssignmentType>	assignmentTypes;

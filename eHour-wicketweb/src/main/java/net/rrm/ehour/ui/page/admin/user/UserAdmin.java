@@ -58,7 +58,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	@SpringBean
 	private	UserService				userService;
 	private	ListView				userListView;
-	private	transient 	Logger		logger = Logger.getLogger(UserAdmin.class);
+	private	final static Logger		logger = Logger.getLogger(UserAdmin.class);
 	private EntrySelectorFilter		currentFilter;
 	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;

@@ -32,7 +32,7 @@ import org.springframework.dao.DataAccessException;
 public class AuthService implements UserDetailsService
 {
 	private	UserService	userService;
-	private	transient static Logger logger = Logger.getLogger(AuthService.class);	
+	private	final static Logger logger = Logger.getLogger(AuthService.class);	
 
 	/**
 	 * Get user by username (acegi)

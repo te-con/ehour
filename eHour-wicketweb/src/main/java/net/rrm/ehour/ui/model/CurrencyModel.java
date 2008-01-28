@@ -32,7 +32,7 @@ import org.apache.wicket.model.Model;
 public class CurrencyModel extends AbstractNumberModel
 {
 	private static final long serialVersionUID = -3297133594178935106L;
-	private	transient Logger	logger = Logger.getLogger(CurrencyModel.class);
+	private	final static Logger	logger = Logger.getLogger(CurrencyModel.class);
 	private EhourConfig	config;
 	
 	/**

@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  */
 public class ReportBuilder<EL extends ReportElement>
 {
-	protected transient Logger logger = Logger.getLogger(this.getClass());
+	protected final static Logger logger = Logger.getLogger(ReportBuilder.class);
 
 	/**
 	 * Create report

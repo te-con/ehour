@@ -45,30 +45,33 @@ public class FormHighlighter implements FormComponent.IVisitor, Serializable
     {
     	FormComponent formComponent = (FormComponent)visitor;
 
-    	// paint it red if invalid
-        if (!formComponent.isValid())
-        {
-        	formComponent.add(getColorModifier("#ff0000"));
-
-        	if (formComponent instanceof TimesheetTextField)
-        	{
-        		((TimesheetTextField)formComponent).setWasInvalid(true);
-        	}
-        	
-            target.addComponent(formComponent);
-        } 
-        // reset color if it was invalid
-        else if (formComponent instanceof TimesheetTextField)
-        {
-        	TimesheetTextField ttField = (TimesheetTextField)formComponent;
-        	
-        	if (ttField.isWasInvalid() || ttField.isChanged())
-        	{
-	        	formComponent.add(getColorModifier("#536e87;"));
-	        	((TimesheetTextField)formComponent).setWasInvalid(false);
-	        	target.addComponent(formComponent);
-        	}
-        }
+    	if (target != null)
+    	{
+	    	// paint it red if invalid
+	        if (!formComponent.isValid())
+	        {
+	        	formComponent.add(getColorModifier("#ff0000"));
+	
+	        	if (formComponent instanceof TimesheetTextField)
+	        	{
+	        		((TimesheetTextField)formComponent).setWasInvalid(true);
+	        	}
+	        	
+	            target.addComponent(formComponent);
+	        } 
+	        // reset color if it was invalid
+	        else if (formComponent instanceof TimesheetTextField)
+	        {
+	        	TimesheetTextField ttField = (TimesheetTextField)formComponent;
+	        	
+	        	if (ttField.isWasInvalid() || ttField.isChanged())
+	        	{
+		        	formComponent.add(getColorModifier("#536e87;"));
+		        	((TimesheetTextField)formComponent).setWasInvalid(false);
+		        	target.addComponent(formComponent);
+	        	}
+	        }
+    	}
         
         return formComponent;
     }

@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class ReportNode implements Serializable
 {
-	private transient Logger logger = Logger.getLogger(ReportNode.class);
+	private final static Logger logger = Logger.getLogger(ReportNode.class);
 	
     protected Serializable[]    columnValues;
     private List<ReportNode>    reportNodes = new ArrayList<ReportNode>();

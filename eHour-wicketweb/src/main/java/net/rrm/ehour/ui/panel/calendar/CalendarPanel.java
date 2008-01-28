@@ -60,7 +60,7 @@ public class CalendarPanel extends SidePanel
 {
 	private static final long serialVersionUID = -7777893083323915299L;
 
-	private transient Logger logger = Logger.getLogger(CalendarPanel.class);
+	private final static Logger logger = Logger.getLogger(CalendarPanel.class);
 
 	@SpringBean
 	private TimesheetService 	timesheetService;
