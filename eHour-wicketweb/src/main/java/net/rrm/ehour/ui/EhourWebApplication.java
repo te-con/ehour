@@ -115,12 +115,13 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	protected void mountPages()
 	{
 		mount("/login", PackageName.forClass(login));
-		mount("/admin", PackageName.forClass(MainConfig.class));
-		mount("/admin/employee", PackageName.forClass(UserAdmin.class));
-		mount("/admin/department", PackageName.forClass(DepartmentAdmin.class));
-		mount("/admin/customer", PackageName.forClass(CustomerAdmin.class));
-		mount("/admin/project", PackageName.forClass(ProjectAdmin.class));
-		mount("/admin/assignment", PackageName.forClass(AssignmentAdmin.class));
+
+		mount(new HybridUrlCodingStrategy("/admin", MainConfig.class));
+		mount(new HybridUrlCodingStrategy("/admin/employee", UserAdmin.class));
+		mount(new HybridUrlCodingStrategy("/admin/department", DepartmentAdmin.class));
+		mount(new HybridUrlCodingStrategy("/admin/customer", CustomerAdmin.class));
+		mount(new HybridUrlCodingStrategy("/admin/project", ProjectAdmin.class));
+		mount(new HybridUrlCodingStrategy("/admin/assignment", AssignmentAdmin.class));
 		
 		mount(new HybridUrlCodingStrategy("/consultant/overview", Overview.class));
 		mount(new HybridUrlCodingStrategy("/consultant/report", UserReport.class));
