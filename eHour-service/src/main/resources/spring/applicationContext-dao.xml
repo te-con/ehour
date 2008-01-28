@@ -130,4 +130,5 @@
 	<!-- CustomerFoldPreference DAO -->
 	<bean id="customerFoldPreferenceDAO"
 		class="net.rrm.ehour.user.dao.CustomerFoldPreferenceDAOHibernateImpl"
-		parent="abstractDAOTarget" /></beans>
+		parent="abstractDAOTarget" />
+</beans>

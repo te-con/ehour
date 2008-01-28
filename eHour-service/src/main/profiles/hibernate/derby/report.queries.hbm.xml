@@ -42,8 +42,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment,
-		       ENTRY.DISPLAY_ORDER AS displayOrder
+		       ENTRY.COMMENT AS comment
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -77,8 +76,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment,
-		       ENTRY.DISPLAY_ORDER AS displayOrder
+		       ENTRY.COMMENT AS comment
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -112,8 +110,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment,
-		       ENTRY.DISPLAY_ORDER AS displayOrder
+		       ENTRY.COMMENT AS comment
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -146,8 +143,7 @@
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -172,8 +168,7 @@
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				ENTRY.DISPLAY_ORDER
+				ENTRY.COMMENT
          ]]>
     </sql-query>
     	
@@ -193,8 +188,7 @@
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -219,8 +213,7 @@
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				ENTRY.DISPLAY_ORDER
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>	
          
@@ -240,8 +233,7 @@
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -266,8 +258,7 @@
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				ENTRY.DISPLAY_ORDER
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>	
 	
@@ -287,8 +278,7 @@
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -314,8 +304,7 @@
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				ENTRY.DISPLAY_ORDER
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>	
 	
@@ -335,8 +324,7 @@
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -360,8 +348,7 @@
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				ENTRY.DISPLAY_ORDER
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>	
 	

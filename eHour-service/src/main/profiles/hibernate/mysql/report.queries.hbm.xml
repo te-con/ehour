@@ -18,8 +18,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -54,8 +53,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -89,8 +87,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -124,8 +121,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS "comment",
-		       ENTRY.DISPLAY_ORDER AS "displayOrder"
+		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -158,8 +154,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment,
-		       ENTRY.DISPLAY_ORDER AS displayOrder
+		       ENTRY.COMMENT AS comment
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -173,8 +168,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		       ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-		         ENTRY.ENTRY_DATE,
-		         ENTRY.DISPLAY_ORDER
+		         ENTRY.ENTRY_DATE
 		         ]]>		         
 	</sql-query>	
 	
@@ -194,8 +188,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment,
-		       ENTRY.DISPLAY_ORDER AS displayOrder
+		       ENTRY.COMMENT AS comment
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -209,8 +202,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		       ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-		         ENTRY.ENTRY_DATE,
-		         ENTRY.DISPLAY_ORDER
+		         ENTRY.ENTRY_DATE
 	]]>		         
 	</sql-query>
 			
@@ -230,8 +222,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment,
-		       ENTRY.DISPLAY_ORDER AS displayOrder
+		       ENTRY.COMMENT AS comment
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -245,8 +236,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		       ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-		         ENTRY.ENTRY_DATE,
-		         ENTRY.DISPLAY_ORDER
+		         ENTRY.ENTRY_DATE
 	]]>		         
 	</sql-query>
 	
@@ -266,8 +256,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment,
-		       ENTRY.DISPLAY_ORDER AS displayOrder
+		       ENTRY.COMMENT AS comment
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -282,8 +271,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		       ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-		         ENTRY.ENTRY_DATE,
-		         ENTRY.DISPLAY_ORDER
+		         ENTRY.ENTRY_DATE
 	]]>		         
 	</sql-query>	
 	
@@ -303,8 +291,7 @@
 		       PRJ.PROJECT_ID AS projectId,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment,
-		       ENTRY.DISPLAY_ORDER AS displayOrder
+		       ENTRY.COMMENT AS comment
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -317,8 +304,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		       ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-		         ENTRY.ENTRY_DATE,
-		         ENTRY.DISPLAY_ORDER
+		         ENTRY.ENTRY_DATE
 	]]>		         
 	</sql-query>	
 </hibernate-mapping>
