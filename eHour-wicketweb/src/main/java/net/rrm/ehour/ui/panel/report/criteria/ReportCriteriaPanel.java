@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -42,17 +41,18 @@ import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.type.ReportType;
 import net.rrm.ehour.ui.panel.report.criteria.type.ReportTypeRenderer;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
 import net.rrm.ehour.ui.util.CommonWebUtil;
-import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.datetime.StyleDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -64,8 +64,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
-import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
 /**
  * Base report criteria panel which adds the quick date selections
@@ -77,8 +75,8 @@ public class ReportCriteriaPanel extends Panel
 	
 	@SpringBean
 	private	ReportCriteriaService	reportCriteriaService;
-	private DojoDatePicker 			startDatePicker;
-	private DojoDatePicker 			endDatePicker;
+	private DateTextField 			startDatePicker;
+	private DateTextField 			endDatePicker;
 	private	ListMultipleChoice 		projects;
 	private FormComponent 			customers;
 	private	ListMultipleChoice 		users;
@@ -112,7 +110,7 @@ public class ReportCriteriaPanel extends Panel
 		Form form = new Form("criteriaForm");
 		greyBorder.add(form);
 		
-		addDates(form);
+		addDates(form, model);
 
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("customerProjectsBorder");
 		form.add(blueBorder);
@@ -398,14 +396,12 @@ public class ReportCriteriaPanel extends Panel
 	 * Add dates
 	 * @param parent
 	 */
-	protected void addDates(Form form)
+	protected void addDates(Form form, IModel model)
 	{
-		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+        startDatePicker = new DateTextField("reportCriteria.userCriteria.reportRange.dateStart", new PropertyModel(model,
+        														"reportCriteria.userCriteria.reportRange.dateStart"), new StyleDateConverter("S-", false));
+        startDatePicker.add(new DatePicker());		
 		
-		startDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateStart", 
-				DateUtil.getPatternForDateLocale(config.getLocale()));
-		
-		startDatePicker.setToggle(new DojoFadeToggle(200));
 		startDatePicker.setOutputMarkupId(true);
 		startDatePicker.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
@@ -420,9 +416,10 @@ public class ReportCriteriaPanel extends Panel
 		
 		form.add(startDatePicker);
 
-		endDatePicker = new DojoDatePicker("reportCriteria.userCriteria.reportRange.dateEnd",
-											DateUtil.getPatternForDateLocale(config.getLocale()));
-		endDatePicker.setToggle(new DojoFadeToggle(200));
+		endDatePicker = new DateTextField("reportCriteria.userCriteria.reportRange.dateEnd", new PropertyModel(model,
+											"reportCriteria.userCriteria.reportRange.dateEnd"), new StyleDateConverter("S-", false));
+        endDatePicker.add(new DatePicker());		
+		
 		endDatePicker.setOutputMarkupId(true);
 		endDatePicker.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
