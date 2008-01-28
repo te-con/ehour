@@ -103,7 +103,7 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 	 */
 	protected void setHeaders(WebResponse response)
 	{
-		response.setHeader("Cache-Control", "no-cache, must-revalidate");
+//		response.setHeader("Cache-Control", "no-cache, must-revalidate");
 		response.setAttachmentHeader(getFilename());
 	}
 	
