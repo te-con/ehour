@@ -42,7 +42,7 @@ public class FlatReportElement extends ReportElement
 	private	String	assignmentDesc;
 	private Date	dayDate;
 	private String	comment;
-	private int		displayOrder;
+	private Integer	displayOrder;
 	
 	/**
 	 * Minimal constructor
@@ -322,7 +322,7 @@ public class FlatReportElement extends ReportElement
 	/**
 	 * @return the displayOrder
 	 */
-	public int getDisplayOrder()
+	public Integer getDisplayOrder()
 	{
 		return displayOrder;
 	}
@@ -330,7 +330,7 @@ public class FlatReportElement extends ReportElement
 	/**
 	 * @param displayOrder the displayOrder to set
 	 */
-	public void setDisplayOrder(int displayOrder)
+	public void setDisplayOrder(Integer displayOrder)
 	{
 		this.displayOrder = displayOrder;
 	}
