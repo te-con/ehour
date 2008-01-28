@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 public class ReportCriteria implements Serializable
 {
 	private static final long serialVersionUID = 7406265452950554098L;
-	private	transient Logger	logger = Logger.getLogger(this.getClass());
+	private	final static Logger	logger = Logger.getLogger(ReportCriteria.class);
 	private	AvailableCriteria	availableCriteria;
 	private	UserCriteria		userCriteria;
 	
