@@ -5,11 +5,9 @@
 <hibernate-mapping>
 	<class name="net.rrm.ehour.domain.TimesheetEntry" table="TIMESHEET_ENTRY">
 		<!--  <cache usage="read-write" /> -->
-		
         <composite-id name="entryId" class="net.rrm.ehour.domain.TimesheetEntryId">
 		    <key-property name="entryDate" column="ENTRY_DATE" type="date" />
 		    <key-many-to-one name="projectAssignment" class="net.rrm.ehour.domain.ProjectAssignment" column="ASSIGNMENT_ID" lazy="false" />
-		    <key-property name="displayOrder" column="DISPLAY_ORDER" type="integer"  />
         </composite-id>
 
 		<property name="hours" column="HOURS" type="float"/>

@@ -26,7 +26,7 @@ CREATE TABLE `CONFIGURATION` (
 
 LOCK TABLES `CONFIGURATION` WRITE;
 /*!40000 ALTER TABLE `CONFIGURATION` DISABLE KEYS */;
-INSERT INTO `CONFIGURATION` VALUES ('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','Euro'),('localeCountry',NULL),('availableTranslations','en,nl'),('mailFrom','noreply@localhost.net'),('mailSmtp','127.0.0.1'),('demoMode','false'),('version', '0.7.2');
+INSERT INTO `CONFIGURATION` VALUES ('initialized','false'),('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','Euro'),('localeCountry',NULL),('availableTranslations','en,nl'),('mailFrom','noreply@localhost.net'),('mailSmtp','127.0.0.1'),('demoMode','false'),('version', '0.7.2');
 /*!40000 ALTER TABLE `CONFIGURATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,9 +194,9 @@ DROP TABLE IF EXISTS `TIMESHEET_ENTRY`;
 CREATE TABLE `TIMESHEET_ENTRY` (
   `ASSIGNMENT_ID` int(11) NOT NULL,
   `ENTRY_DATE` date NOT NULL,
-  `HOURS` float(9,3) NOT NULL,
+  `HOURS` float(9,3),
   `COMMENT` varchar(2048),
-  `DISPLAY_ORDER` INT NOT NULL DEFAULT 1,  
+  `DISPLAY_ORDER` INT DEFAULT 1,  
   PRIMARY KEY  (`ENTRY_DATE`,`ASSIGNMENT_ID`),
   KEY `ASSIGNMENT_ID` (`ASSIGNMENT_ID`),
   CONSTRAINT `TIMESHEET_ENTRY_fk` FOREIGN KEY (`ASSIGNMENT_ID`) REFERENCES `PROJECT_ASSIGNMENT` (`ASSIGNMENT_ID`)
@@ -232,7 +232,7 @@ CREATE TABLE `USERS` (
 
 LOCK TABLES `USERS` WRITE;
 /*!40000 ALTER TABLE `USERS` DISABLE KEYS */;
-INSERT INTO `USERS` (`USER_ID`, `USERNAME`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `DEPARTMENT_ID`, `EMAIL`, `ACTIVE`) VALUES (1,'admin','d033e22ae348aeb5660fc2140aec35850c4da997','eHour','Admin',1,'','Y');
+INSERT INTO `USERS` (`USER_ID`, `USERNAME`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `DEPARTMENT_ID`, `EMAIL`, `ACTIVE`) VALUES (1,'admin','','eHour','Admin',1,'','Y');
 /*!40000 ALTER TABLE `USERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
