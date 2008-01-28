@@ -135,7 +135,7 @@
       <column name="ENTRY_DATE" primaryKey="true" required="true" type="DATE" autoIncrement="false"/>
       <column name="HOURS" primaryKey="false" required="false" type="FLOAT" size="9,3" autoIncrement="false"/>
       <column name="COMMENT" primaryKey="false" required="false" type="VARCHAR" size="1024" autoIncrement="false"/>
-      <column name="DISPLAY_ORDER" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="false" default="1"/>
+      <column name="DISPLAY_ORDER" primaryKey="true" required="false" type="INTEGER" size="10" autoIncrement="false" default="1"/>
       <foreign-key foreignTable="project_assignment" name="TIMESHEET_ENTRY_fk">
         <reference local="ASSIGNMENT_ID" foreign="ASSIGNMENT_ID"/>
       </foreign-key>
