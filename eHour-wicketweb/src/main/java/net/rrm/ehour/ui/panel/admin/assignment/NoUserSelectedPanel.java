@@ -19,12 +19,14 @@ package net.rrm.ehour.ui.panel.admin.assignment;
 
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 
+import org.apache.wicket.datetime.StyleDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 
 /**
  * Same as NoEntrySelected just with a hidden dojo date picker. Bug in DOjo prevents
@@ -49,7 +51,8 @@ public class NoUserSelectedPanel extends Panel
 		greyBorder.add(new Label("noEntry", new ResourceModel("admin.assignment.noUserSelected")));
 
 		// this is what we call a hack sir
-		final DojoDatePicker dateStart = new DojoDatePicker("dummyDate", new Model(), "dd/MM/yyyy");
+        final DateTextField dateStart = new DateTextField("dummyDate", new Model(), new StyleDateConverter("S-", true));
+        dateStart.add(new DatePicker());		
 		greyBorder.add(dateStart);
 		
 	}

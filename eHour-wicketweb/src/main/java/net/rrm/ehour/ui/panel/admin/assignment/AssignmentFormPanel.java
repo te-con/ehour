@@ -40,13 +40,15 @@ import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.validator.DateOverlapValidator;
-import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.datetime.StyleDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -63,7 +65,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.NumberValidator;
-import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
 
 /**
  * Assignment form (and yes, it's a little (too) big & complex)
@@ -248,19 +249,23 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		PropertyModel	infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
 		
 		// start date
-		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", 
-																DateUtil.getPatternForDateLocale(config.getLocale()));
+//		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", 
+//																DateUtil.getPatternForDateLocale(config.getLocale()));
+        final DateTextField dateStart = new DateTextField("projectAssignment.dateStart", new PropertyModel(model,
+        "projectAssignment.dateStart"), new StyleDateConverter("S-", true));
 		
 		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
 		dateStart.add(new ValidatingFormComponentAjaxBehavior());
 		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
+        dateStart.add(new DatePicker());
 
-		// container for hiding
+        // container for hiding
 		final WebMarkupContainer	startDateHider = new WebMarkupContainer("startDateHider");
 		startDateHider.setOutputMarkupId(true);
 		
 		// indicator for validation issues
 		startDateHider.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart));
+
 		
 		// the inner hider is just there to hide the <br /> as well
 		final WebMarkupContainer	innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
@@ -285,8 +290,11 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		startDateHider.add(infiniteStart);
 
 		// end date
-		DojoDatePicker dateEnd = new DojoDatePicker("projectAssignment.dateEnd", 
-														DateUtil.getPatternForDateLocale(config.getLocale()));
+        final DateTextField dateEnd = new DateTextField("projectAssignment.dateEnd", new PropertyModel(model,
+        										"projectAssignment.dateEnd"), new StyleDateConverter("S-", false));
+        dateEnd.add(new DatePicker());
+		// container for hiding
+		
 		dateEnd.add(new ValidatingFormComponentAjaxBehavior());
 		dateEnd.add(new ConditionalRequiredValidator(infiniteEndDateModel));
 		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));

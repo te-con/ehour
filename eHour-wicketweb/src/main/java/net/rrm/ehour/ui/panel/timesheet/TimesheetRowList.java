@@ -324,7 +324,7 @@ public class TimesheetRowList extends ListView
 				}
 			};
 			
-			add(submitButton);
+			form.add(submitButton);
 
 			AbstractLink cancelButton = new AjaxLink("cancel")
 			{
@@ -336,7 +336,7 @@ public class TimesheetRowList extends ListView
 					window.close(target);
 				}
 			};
-			add(cancelButton);
+			form.add(cancelButton);
 			
 			add(form);
 		}

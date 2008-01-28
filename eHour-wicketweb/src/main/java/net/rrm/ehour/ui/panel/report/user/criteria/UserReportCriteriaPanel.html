@@ -9,53 +9,53 @@
 <wicket:extend>
 	<form wicket:id="criteriaForm">
 		<div class="UserReportCriteria" style="padding: 0 5px 0 5px">
-			<div style="float: left;vertical-align: bottom;height: 1.5em">
-				<wicket:message key="criteria.dateStart" /> :
-			</div>
+			<table cellpadding="0" cellspacing="0">
+		
+				<tr>
+					<td><wicket:message key="criteria.dateStart" /> :</td>
+
+					<td wicket:id="startDateHider">
+						<span wicket:id="innerStartDateHider">
+							<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="userCriteria.reportRange.dateStart" />
+							<br />
+						</span>
+						<input type="checkbox" wicket:id="userCriteria.infiniteStartDate" /> <wicket:message key="report.useEarliestAvailDate" />
+					</td>
+				</tr>
+
+				<tr>
+					<td><wicket:message key="criteria.dateEnd" /> :</td>
+
+					<td wicket:id="endDateHider">
+						<span wicket:id="innerEndDateHider">
+							<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="userCriteria.reportRange.dateEnd" />
+							<br />
+						</span>
+						<input type="checkbox" wicket:id="userCriteria.infiniteEndDate" /> <wicket:message key="report.useLastAvailDate" />
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<wicket:message key="criteria.project" />:
+					</td>
+					
+					<td>
+						<select class="textInputSmall" wicket:id="userCriteria.projects" style="width: 12em">
+							<option value="-1">(All)</option>
+						</select>
+					</td>				
+				</tr>
+
+				<tr>
+					<td colspan="2">
+							<a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+								<span><wicket:message key="report.createReport" /></span>
+							</a>
+						</td>
+				</tr>
+			</table>			
 			
-			<div style="float: right;width :9em;padding-right: 10px" wicket:id="startDateHider">
-				<span wicket:id="innerStartDateHider">
-					<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="userCriteria.reportRange.dateStart" />
-					<br />
-				</span>
-				<input type="checkbox" wicket:id="userCriteria.infiniteStartDate" /> <wicket:message key="report.useEarliestAvailDate" />
-			</div>	
-	
-			<br clear="all" />
-	
-			<div style="float: left;vertical-align: bottom;height: 1.5em">
-				<wicket:message key="criteria.dateEnd" />:
-			</div>
-	
-			<div style="float: right;width :9em;padding-right: 10px" wicket:id="endDateHider">
-				<span wicket:id="innerEndDateHider">
-					<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="userCriteria.reportRange.dateEnd" />
-					<br />
-				</span>
-				<input type="checkbox" wicket:id="userCriteria.infiniteEndDate" /> <wicket:message key="report.useLastAvailDate" />
-			</div>	
-	
-			<br clear="all" />
-			<br />
-			
-			<div style="float: left;vertical-align: top;margin-top: 5px">
-				<wicket:message key="criteria.project" />:
-			</div>
-			
-			<div style="float: right;vertical-align: bottom">
-				<select class="textInputSmall" wicket:id="userCriteria.projects" style="width: 12em">
-					<option value="-1">(All)</option>
-				</select>
-			</div>
-			
-			<br clear="all" />
-			<br />
-			
-			<div style="float: right;vertical-align: bottom;height: 1.5em">
-				<a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
-					<span><wicket:message key="report.createReport" /></span>
-				</a>			
-			</div>
 			<br />
 		</div>
 	</form>

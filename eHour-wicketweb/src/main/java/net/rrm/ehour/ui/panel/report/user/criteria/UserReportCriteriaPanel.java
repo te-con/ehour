@@ -16,20 +16,20 @@
 
 package net.rrm.ehour.ui.panel.report.user.criteria;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
-import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.datetime.StyleDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListChoice;
@@ -37,8 +37,6 @@ import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.wicketstuff.dojo.markup.html.form.DojoDatePicker;
-import org.wicketstuff.dojo.toggle.DojoFadeToggle;
 
 /**
  * Date range and project selection
@@ -150,12 +148,11 @@ public class UserReportCriteriaPanel extends SidePanel
 	 */
 	private WebMarkupContainer addDate(String idPrefix, IModel model)
 	{
-		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-		
 		PropertyModel	infiniteDateModel = new PropertyModel(model, "userCriteria.infinite" + idPrefix + "Date");
-		DojoDatePicker datePicker = new DojoDatePicker("userCriteria.reportRange.date" + idPrefix, 
-								DateUtil.getPatternForDateLocale(config.getLocale()));
-		datePicker.setToggle(new DojoFadeToggle(200));
+		
+        DateTextField datePicker = new DateTextField("userCriteria.reportRange.date" + idPrefix, new PropertyModel(model,
+        													"userCriteria.reportRange.date" + idPrefix), new StyleDateConverter("S-", false));
+        datePicker.add(new DatePicker());
 		
 		// container for hiding
 		final WebMarkupContainer dateHider = new WebMarkupContainer(idPrefix.toLowerCase() + "DateHider");
