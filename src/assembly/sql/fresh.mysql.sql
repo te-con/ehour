@@ -214,6 +214,7 @@ CREATE TABLE `USERS` (
   `LAST_NAME` varchar(64) NOT NULL,
   `DEPARTMENT_ID` int(11) NOT NULL,
   `EMAIL` varchar(128) default NULL,
+  `SALT` int(11) default NULL,
   `ACTIVE` char(1) NOT NULL default 'Y',
   PRIMARY KEY  (`USER_ID`),
   UNIQUE KEY `USER_ID` (`USER_ID`),
