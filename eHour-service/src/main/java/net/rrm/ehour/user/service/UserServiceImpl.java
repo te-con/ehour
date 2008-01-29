@@ -299,7 +299,7 @@ public class UserServiceImpl implements UserService
 		}
 		else
 		{
-			user.setSalt((int)Math.random() * 1000);
+			user.setSalt((int)(Math.random() * 10000));
 			user.setPassword(encryptPassword(user.getPassword(), user.getSalt()));
 		}
 		
