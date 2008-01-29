@@ -74,7 +74,7 @@ public class AdminAccountValidator
 			try
 			{
 				userService.persistUser(user);
-				logger.info("Password set to default value.");
+				logger.info("Password set to default value: " + user.getPassword());
 				
 				setEhourInitialized();
 			} catch (PasswordEmptyException e)

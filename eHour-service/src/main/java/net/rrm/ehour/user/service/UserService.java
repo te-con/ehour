@@ -55,14 +55,7 @@ public interface UserService
 	 * @throws NoResultsException
 	 */
     public User getUser(String username);    
-    
-    /**
-     * Get user on username and plain password
-     * @param username
-     * @return
-     */
-    public User getUser(String username, String plainPassword);
-    
+
     /**
      * Persist a user
      * @param user

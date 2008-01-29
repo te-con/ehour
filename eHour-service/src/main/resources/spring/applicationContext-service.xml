@@ -35,6 +35,11 @@
 		<property name="aggregateReportService" ref="aggregateReportService" />		
 	</bean>
 
+	 <bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder">
+	     <constructor-arg value="1"/>
+	 </bean>
+
+
 	<!-- Aggregate Report service -->
 	<bean id="aggregateReportService" class="net.rrm.ehour.report.service.AggregateReportServiceImpl">
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	

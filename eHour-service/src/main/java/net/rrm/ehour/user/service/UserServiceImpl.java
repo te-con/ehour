@@ -42,8 +42,7 @@ import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.acegisecurity.providers.encoding.MessageDigestPasswordEncoder;
 import org.apache.log4j.Logger;
 
 /**
@@ -59,6 +58,7 @@ public class UserServiceImpl implements UserService
 	private	ProjectAssignmentService		projectAssignmentService;
 	private	AggregateReportService		aggregateReportService;
 	private TimesheetService	timesheetService;
+	private MessageDigestPasswordEncoder	passwordEncoder;
 
 	/**
 	 * Get user by userId 
@@ -92,7 +92,6 @@ public class UserServiceImpl implements UserService
 		{
 			throw new ObjectNotFoundException("User not found");
 		}
-			
 		
 		return user;
 	}
@@ -296,10 +295,12 @@ public class UserServiceImpl implements UserService
 			}
 			
 			user.setPassword(dbUser.getPassword());
+			user.setSalt(dbUser.getSalt());
 		}
 		else
 		{
-			user.setPassword(encryptPassword(user.getPassword()));
+			user.setSalt((int)Math.random() * 1000);
+			user.setPassword(encryptPassword(user.getPassword(), user.getSalt()));
 		}
 		
 		// assign new users to default projects
@@ -375,34 +376,20 @@ public class UserServiceImpl implements UserService
 		}
 	}
 
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#getUser(java.lang.String)
-	 */
-	public User getUser(String username, String plainPassword)
-	{
-		User		user = null;
-		
-		logger.debug("Finding user " + username + " on user & password");
-		
-		user = userDAO.findByUsernameAndPassword(username, encryptPassword(plainPassword));
-		
-		return user;
-	}
-
 	/**
 	 * Encrypt password (sha1)
 	 * @param plainPassword
 	 * @return
 	 */
-	private String encryptPassword(String plainPassword)
+	private String encryptPassword(String plainPassword, Object salt)
 	{
-		byte[]	shaPass;
+//		byte[]	shaPass;
+//		
+//		shaPass = DigestUtils.sha(plainPassword);
+//		
+//		return new String(Hex.encodeHex(shaPass));
 		
-		shaPass = DigestUtils.sha(plainPassword);
-		
-		return new String(Hex.encodeHex(shaPass));
+		return passwordEncoder.encodePassword(plainPassword, salt);
 	}
 
 	/*
@@ -500,5 +487,13 @@ public class UserServiceImpl implements UserService
 	public void setAggregateReportService(AggregateReportService aggregateReportService)
 	{
 		this.aggregateReportService = aggregateReportService;
+	}
+
+	/**
+	 * @param passwordEncoder the passwordEncoder to set
+	 */
+	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder)
+	{
+		this.passwordEncoder = passwordEncoder;
 	}
 }

@@ -179,6 +179,7 @@
       <column name="LAST_NAME" primaryKey="false" required="true" type="VARCHAR" size="64" autoIncrement="false"/>
       <column name="DEPARTMENT_ID" primaryKey="false" required="true" type="INTEGER" size="10" autoIncrement="false"/>
       <column name="EMAIL" primaryKey="false" required="false" type="VARCHAR" size="128" autoIncrement="false"/>
+      <column name="SALT" primaryKey="false" required="false" type="INTEGER" size="64" autoIncrement="false"/>
       <column name="ACTIVE" primaryKey="false" required="true" type="CHAR" size="1" default="Y" autoIncrement="false"/>
       <foreign-key foreignTable="user_department" name="USER_fk">
         <reference local="DEPARTMENT_ID" foreign="DEPARTMENT_ID"/>
