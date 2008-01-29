@@ -73,7 +73,7 @@ public class MainNavPanel extends BasePanel
 	 * @param parent
 	 * @param id
 	 */
-	private void addReportLink(WebMarkupContainer parent, String id)
+	protected void addReportLink(WebMarkupContainer parent, String id)
 	{
 		Class<? extends WebPage> 	linkPage;
 		
@@ -95,7 +95,7 @@ public class MainNavPanel extends BasePanel
 	 * @param id
 	 * @param linkPage
 	 */
-	private void addLink(WebMarkupContainer parent, String id, Class<? extends WebPage> linkPage)
+	protected void addLink(WebMarkupContainer parent, String id, Class<? extends WebPage> linkPage)
 	{
 		BookmarkablePageLink	link;
 		
