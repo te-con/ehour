@@ -36,6 +36,8 @@ public class User extends DomainObject<Integer, User>
 	private String email;
 	
 	private	boolean	active;
+	
+	private Integer salt;
 
 	private Set<UserRole> userRoles = new HashSet<UserRole>();
 
@@ -338,5 +340,21 @@ public class User extends DomainObject<Integer, User>
 	public void setDeletable(boolean deletable)
 	{
 		this.deletable = deletable;
+	}
+
+	/**
+	 * @return the salt
+	 */
+	public Integer getSalt()
+	{
+		return salt;
+	}
+
+	/**
+	 * @param salt the salt to set
+	 */
+	public void setSalt(Integer salt)
+	{
+		this.salt = salt;
 	}
 }

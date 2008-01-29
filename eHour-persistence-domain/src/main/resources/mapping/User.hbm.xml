@@ -17,6 +17,8 @@
 		<property name="lastName" column="last_name" type="string" length="128" />
 		<property name="email" column="EMAIL" type="string" length="128" />
 		
+		<property name="salt" column="SALT" type="integer" length="64" />
+		
 		<property name="active" column="ACTIVE" type="yes_no" index="IDX_USER_ACTIVE" />
 		
         <set name="userRoles" table="USER_TO_USERROLE" cascade="merge,persist,save-update">
