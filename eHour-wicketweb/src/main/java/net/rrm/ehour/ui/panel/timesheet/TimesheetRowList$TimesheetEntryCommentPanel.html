@@ -13,13 +13,16 @@
 
 	<div class="commentBody">
 	
-		<form wicket:id="commentForm">
 		<p>
+			<form>
+			<form wicket:id="commentForm">
 			<span wicket:id="dayComments"></span>:<br /><br />
 			
 			<textarea name="comment" wicket:id="comment"
 						rows="3" style="width: 360px;background-color: #e5f3fe" class="timesheetTextarea"
 						wrap="virtual"></textarea>
+			</form>
+			</form>
 		</p>		
 	
 		<p>
@@ -30,7 +33,6 @@
 			<br />
 			<wicket:message key="timesheet.commentNotice" />
 		</p>
-		</form>					
 		
 		</div>
 </wicket:panel>

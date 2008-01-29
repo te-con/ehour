@@ -34,11 +34,13 @@ import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
@@ -301,9 +303,12 @@ public class TimesheetRowList extends ListView
 			Calendar thisDate = (Calendar)row.getSundayDate().clone();
 			thisDate.add(Calendar.DAY_OF_YEAR, index);
 			
-			Form form = new Form("commentForm");
-
-			form.add(new Label("dayComments",
+			Form commentForm = new Form("commentForm")
+			{
+				
+			};
+			
+			commentForm.add(new Label("dayComments",
 					new StringResourceModel("timesheet.dayComments",
 												this,
 												null,
@@ -311,20 +316,20 @@ public class TimesheetRowList extends ListView
 															 new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
 			
 			final TextArea textArea = new KeepAliveTextArea("comment", model);
-			form.add(textArea);
+			commentForm.add(textArea);
 			
-			AbstractLink submitButton = new AjaxSubmitLink("submit", form)
+			AjaxSubmitLink submitButton = new AjaxSubmitLink("submit", commentForm)
 			{
 				private static final long serialVersionUID = 4796005602570042916L;
 	
 				@Override
-				public void onSubmit(AjaxRequestTarget target, Form form)
+				public void onSubmit(AjaxRequestTarget target, Form commentForm)
 				{
 					window.close(target);
 				}
 			};
 			
-			form.add(submitButton);
+			add(submitButton);
 
 			AbstractLink cancelButton = new AjaxLink("cancel")
 			{
@@ -336,9 +341,9 @@ public class TimesheetRowList extends ListView
 					window.close(target);
 				}
 			};
-			form.add(cancelButton);
+			add(cancelButton);
 			
-			add(form);
+			add(commentForm);
 		}
 	}
 }
