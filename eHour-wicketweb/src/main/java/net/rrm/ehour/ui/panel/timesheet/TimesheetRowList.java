@@ -34,13 +34,11 @@ import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
@@ -302,13 +300,10 @@ public class TimesheetRowList extends ListView
 
 			Calendar thisDate = (Calendar)row.getSundayDate().clone();
 			thisDate.add(Calendar.DAY_OF_YEAR, index);
+
+			final Object previousModel = model.getObject();
 			
-			Form commentForm = new Form("commentForm")
-			{
-				
-			};
-			
-			commentForm.add(new Label("dayComments",
+			add(new Label("dayComments",
 					new StringResourceModel("timesheet.dayComments",
 												this,
 												null,
@@ -316,34 +311,43 @@ public class TimesheetRowList extends ListView
 															 new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
 			
 			final TextArea textArea = new KeepAliveTextArea("comment", model);
-			commentForm.add(textArea);
-			
-			AjaxSubmitLink submitButton = new AjaxSubmitLink("submit", commentForm)
+			textArea.add(new AjaxFormComponentUpdatingBehavior("onchange")
 			{
-				private static final long serialVersionUID = 4796005602570042916L;
-	
-				@Override
-				public void onSubmit(AjaxRequestTarget target, Form commentForm)
-				{
-					window.close(target);
-				}
-			};
-			
-			add(submitButton);
+				private static final long serialVersionUID = 1L;
 
-			AbstractLink cancelButton = new AjaxLink("cancel")
+				@Override
+				protected void onUpdate(AjaxRequestTarget target)
+				{
+					// simple hack to get around IE's prob with nested forms in a modalwindow
+				}
+			});
+			
+			add(textArea);
+			
+			AjaxLink submitButton = new AjaxLink("submit")
 			{
-				private static final long serialVersionUID = 4796005602570042916L;
-	
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void onClick(AjaxRequestTarget target)
 				{
 					window.close(target);
 				}
 			};
+			add(submitButton);
+
+			AbstractLink cancelButton = new AjaxLink("cancel")
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClick(AjaxRequestTarget target)
+				{
+					model.setObject(previousModel);
+					window.close(target);
+				}
+			};
 			add(cancelButton);
-			
-			add(commentForm);
 		}
 	}
 }
