@@ -65,12 +65,10 @@
 						</configuration>
 					</plugin>
 				</plugins>
-				
+
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/prod
-						</directory>
+						<directory>src/main/profiles/prod</directory>
 					</resource>
 				</resources>
 
@@ -101,17 +99,15 @@
 						</configuration>
 					</plugin>
 				</plugins>
-				
+
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/dev
-						</directory>
+						<directory>src/main/profiles/dev</directory>
 					</resource>
-				</resources>				
+				</resources>
 			</build>
 		</profile>
-		
+
 		<profile>
 			<id>env-prod-mysql</id>
 			<activation>
@@ -120,17 +116,15 @@
 					<value>prod-mysql</value>
 				</property>
 			</activation>
-			<build>		
+			<build>
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/prod
-						</directory>
+						<directory>src/main/profiles/prod</directory>
 					</resource>
 				</resources>
 			</build>
 		</profile>
-		
+
 		<profile>
 			<id>env-dev-mysql</id>
 			<activation>
@@ -139,16 +133,14 @@
 					<value>dev-mysql</value>
 				</property>
 			</activation>
-			<build>		
+			<build>
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/dev
-						</directory>
+						<directory>src/main/profiles/dev</directory>
 					</resource>
 				</resources>
 			</build>
-		</profile>		
+		</profile>
 	</profiles>
 
 	<dependencies>
