@@ -15,12 +15,16 @@
  *
  */
 
-package net.rrm.ehour.ui.ajax;
+package net.rrm.ehour.ui.panel.admin.customer;
+
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 
 /**
  * Ajax event types
  **/
 
-public interface AjaxEventType
+public enum CustomerAjaxEventType implements AjaxEventType
 {
+	ADMIN_CUSTOMER_NEW_PANEL_REQUEST,
+	ADMIN_CUSTOMER_UPDATED;
 }

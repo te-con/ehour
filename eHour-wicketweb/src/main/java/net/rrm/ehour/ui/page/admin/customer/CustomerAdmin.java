@@ -22,10 +22,10 @@ import java.util.List;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
-import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
@@ -175,7 +175,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent event)
 	{
-		if (event.getEventType() == AjaxEventType.ADMIN_CUSTOMER_UPDATED)
+		if (event.getEventType() == CustomerAjaxEventType.ADMIN_CUSTOMER_UPDATED)
 		{
 			// update customer list
 			List<Customer> customers = getCustomers();

@@ -48,4 +48,10 @@ public interface AjaxAwareContainer
 	 * @since 0.7.2 (replacement of the ajaxRequestReceived methods)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent);
+	
+	/**
+	 * Publish ajax event
+	 * @param ajaxEvent
+	 */
+	public void publishAjaxEvent(AjaxEvent ajaxEvent);
 }

@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.ProjectFormPanel;
@@ -169,13 +170,13 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent event)
 	{
-		if (event.getEventType() == AjaxEventType.ADMIN_CUSTOMER_NEW_PANEL_REQUEST)
+		if (event.getEventType() == CustomerAjaxEventType.ADMIN_CUSTOMER_NEW_PANEL_REQUEST)
 		{
 			addNewCustomerTab(event.getTarget());
 			
 			return false;
 		}
-		else if (event.getEventType() == AjaxEventType.ADMIN_CUSTOMER_UPDATED)
+		else if (event.getEventType() == CustomerAjaxEventType.ADMIN_CUSTOMER_UPDATED)
 		{
 			PayloadAjaxEvent<Customer> payloadEvent = (PayloadAjaxEvent<Customer>)event;
 			newCustomerAdded(payloadEvent.getTarget(), payloadEvent.getPayload());
