@@ -44,11 +44,6 @@
 		<property name="providers">
 			<list>
 				<ref local="authenticationProvider" />
-
-				<bean
-					class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
-					<property name="key" value="eHour" />
-				</bean>
 			</list>
 		</property>
 	</bean>
@@ -56,28 +51,15 @@
 	<bean id="authenticationProvider"
 		class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService" ref="authService" />
-		<property name="passwordEncoder">
-			<ref local="passwordEncoder" />
-		</property>
+		<property name="passwordEncoder"><ref local="passwordEncoder" /></property>
+		<property name="saltSource"><ref bean="saltSource"/></property>
 	</bean>
 
 	<bean id="passwordEncoder"
 		class="org.acegisecurity.providers.encoding.ShaPasswordEncoder" />
 
-	<bean id="rememberMeProcessingFilter"
-		class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
-		<property name="authenticationManager"
-			ref="authenticationManager" />
-		<property name="rememberMeServices" ref="rememberMeServices" />
-	</bean>
-
-	<bean id="rememberMeServices"
-		class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
-		<property name="userDetailsService" ref="authService" />
-		<property name="key" value="eHour" />
-		<property name="parameter">
-			<value>j_acegi_security_remember_me</value>
-		</property>
+	<bean id="saltSource" class="org.acegisecurity.providers.dao.salt.ReflectionSaltSource">
+		<property name="userPropertyToUse" value="getSalt" />
 	</bean>
 
 	<!-- 

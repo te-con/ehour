@@ -107,4 +107,9 @@ public class AuthUser extends org.acegisecurity.userdetails.User
 	{
 		this.user = user;
 	}
+	
+	public Object getSalt()
+	{
+		return (user != null) ? user.getSalt() : null;
+	}
 }

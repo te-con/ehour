@@ -157,6 +157,8 @@ public class EhourWebSession extends AuthenticatedWebSession
 		// Create an Acegi authentication request.
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
 
+		logger.info("Going to authenticate '" + username + "' with '" + password + "'");
+		
 		// Attempt authentication.
 		try
 		{
