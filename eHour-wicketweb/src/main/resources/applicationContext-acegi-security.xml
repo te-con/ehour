@@ -14,30 +14,14 @@
 		</property>
 	</bean>
 
-	<bean id="authService"
-		class="net.rrm.ehour.ui.authorization.AuthService">
+	<bean id="authService" class="net.rrm.ehour.ui.authorization.AuthService">
 		<property name="userService" ref="userService" />
 	</bean>
 
 
-	<bean id="httpSessionContextIntegrationFilter"
-		class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+	<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
 		<property name="forceEagerSessionCreation" value="true" />
 	</bean>
-
-	<bean id="userCache"
-		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
-		<property name="cache">
-			<bean
-				class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-				<property name="cacheManager" ref="cacheManager" />
-				<property name="cacheName" value="ehour.USER_CACHE" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="cacheManager"
-		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
 
 	<bean id="authenticationManager"
 		class="org.acegisecurity.providers.ProviderManager">
