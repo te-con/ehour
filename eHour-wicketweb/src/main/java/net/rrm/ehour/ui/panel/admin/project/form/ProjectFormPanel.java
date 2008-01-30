@@ -87,6 +87,22 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		final Form form = new Form("projectForm");
 		
+		addFormComponents(form);
+		
+		FormUtil.setSubmitActions(form
+									,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
+									,this
+									,((EhourWebSession)getSession()).getEhourConfig());
+		
+		greyBorder.add(form);
+	}
+	
+	/**
+	 * Add form components to form
+	 * @param form
+	 */
+	protected void addFormComponents(Form form)
+	{
 		// name
 		RequiredTextField	nameField = new RequiredTextField("project.name");
 		form.add(nameField);
@@ -132,18 +148,8 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new CheckBox("project.active"));
 
 		// data save label
-		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
-			
-		
-		//
-		FormUtil.setSubmitActions(form
-									,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
-									,this
-									,((EhourWebSession)getSession()).getEhourConfig());
-		
-		greyBorder.add(form);
+		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));		
 	}
-	
 	
 	/*
 	 * (non-Javadoc)
