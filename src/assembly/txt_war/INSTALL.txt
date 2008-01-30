@@ -1,3 +1,5 @@
+Install instructions
+--------------------
 See http://www.ehour.nl/install_instructions.phtml for install instructions
 or http://www.ehour.nl/upgrade.phtml for upgrade instructions.
 

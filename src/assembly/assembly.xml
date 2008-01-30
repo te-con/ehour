@@ -19,9 +19,14 @@
 			<directory>src/assembly/txt</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
-				<include>README*</include>
-				<include>LICENSE*</include>
-				<include>INSTALL*</include>
+				<include>*.txt</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>src/assembly/txt_war</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>*.txt</include>
 			</includes>
 		</fileSet>
 
