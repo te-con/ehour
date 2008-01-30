@@ -10,8 +10,6 @@ c:\program files\ehour will not work, try using c:\ehour instead.
 
 Linux users execute "ehour.sh start" to start eHour.
 
-Log files can be found in the /logs directory.
-
 When eHour is started browse to http://localhost:8000/ to access the web interface.
 
 First time usage documentation can be found at http://www.ehour.nl/first_time_usage.phtml and http://www.ehour.nl/doc.phtml
