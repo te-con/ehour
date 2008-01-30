@@ -36,7 +36,6 @@ public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, 
 		super(Customer.class);
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	public List<Customer> findAll(boolean active)
 	{
