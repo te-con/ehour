@@ -84,6 +84,10 @@
 							<groupId>commons-dbcp</groupId>
 							<artifactId>commons-dbcp</artifactId>
 						</exclusion>
+						<exclusion>
+							<groupId>xerces</groupId>
+							<artifactId>xercesImpl</artifactId>
+						</exclusion>
 					</exclusions>
 				</dependency>
 			</dependencies>
