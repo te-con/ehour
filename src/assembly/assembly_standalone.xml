@@ -8,11 +8,11 @@
 	<moduleSets>
 		<moduleSet>
 			<includes>
-				<include>net.rrm.ehour:eHour-wicketweb</include>
+				<include>net.rrm.ehour:eHour-web</include>
 			</includes>
 			<binaries>
-				<outputDirectory>/ehour</outputDirectory>
-				<unpack>false</unpack>
+				<outputDirectory>/app</outputDirectory>
+				<unpack>true</unpack>
 				<includeDependencies>false</includeDependencies>
 			</binaries>
 		</moduleSet>
@@ -32,6 +32,7 @@
 					<exclude>javax.servlet:servlet-api</exclude>
 					<exclude>javax.servlet:jstl</exclude>
 					<exclude>junit:junit</exclude>
+					<exclude>xerces:xercesImpl</exclude>
 				</excludes>	
 			</binaries>
 		</moduleSet>
@@ -46,6 +47,12 @@
 					<exclude>tomcat:jasper-compiler</exclude>
 					<exclude>javax.servlet:servlet-api</exclude>
 					<exclude>javax.servlet:jsp-api</exclude>
+					<exclude>javax.servlet:jsp-api</exclude>
+					<exclude>junit:junit</exclude>
+					<exclude>xerces:xercesImpl</exclude>
+					<exclude>tomcat:jasper-runtime</exclude>
+					<exclude>tomcat:jasper-compiler-jdt</exclude>
+					<exclude>geronimo-spec:geronimo-spec-jta</exclude>
 				</excludes>
                         </binaries>
                 </moduleSet>
