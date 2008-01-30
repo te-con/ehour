@@ -28,7 +28,7 @@ import net.rrm.ehour.domain.User;
 
 public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, Integer> implements ProjectDAO
 {
-	private final static String	CACHEREGION = "query.Project";
+	protected final static String	CACHEREGION = "query.Project";
 	
 	/**
 	 * @todo fix this a bit better
