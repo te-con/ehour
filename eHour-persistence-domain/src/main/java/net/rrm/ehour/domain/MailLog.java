@@ -132,7 +132,7 @@ public class MailLog extends DomainObject<Integer, MailLog>
 			return false;
 		}
 		MailLog rhs = (MailLog) object;
-		return new EqualsBuilder().appendSuper(super.equals(object)).append(this.resultMsg, rhs.resultMsg).append(this.timestamp, rhs.timestamp).append(this.toUser, rhs.toUser).append(this.mailLogId, rhs.mailLogId).append(this.success, rhs.success)
+		return new EqualsBuilder().append(this.resultMsg, rhs.resultMsg).append(this.timestamp, rhs.timestamp).append(this.toUser, rhs.toUser).append(this.mailLogId, rhs.mailLogId).append(this.success, rhs.success)
 				.append(this.mailType, rhs.mailType).isEquals();
 	}
 

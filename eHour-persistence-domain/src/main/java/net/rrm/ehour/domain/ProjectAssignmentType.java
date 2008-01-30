@@ -16,6 +16,7 @@
 package net.rrm.ehour.domain;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
  * Project Assignment type
@@ -109,5 +110,18 @@ public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignme
 		return new CompareToBuilder()
 				.append(this.assignmentType, type.assignmentType)
 				.append(this.assignmentTypeId, type.assignmentTypeId).toComparison();
+	}
+
+	@Override
+	public boolean equals(Object other)
+	{
+		if ((this == other))
+			return true;
+		if (!(other instanceof ProjectAssignmentType))
+			return false;
+		
+		ProjectAssignmentType castOther = (ProjectAssignmentType) other;
+		
+		return new EqualsBuilder().append(this.assignmentTypeId, castOther.assignmentTypeId).isEquals();
 	}
 }

@@ -114,7 +114,7 @@ public class CustomerFoldPreference extends DomainObject<CustomerFoldPreferenceI
 			return false;
 		}
 		CustomerFoldPreference rhs = (CustomerFoldPreference) object;
-		return new EqualsBuilder().appendSuper(super.equals(object)).append(this.folded, rhs.folded).append(this.foldPreferenceId, rhs.foldPreferenceId).isEquals();
+		return new EqualsBuilder().append(this.folded, rhs.folded).append(this.foldPreferenceId, rhs.foldPreferenceId).isEquals();
 	}
 	/**
 	 * @see java.lang.Object#hashCode()

@@ -81,7 +81,7 @@ public class MailType extends DomainObject<Integer, MailType>
 			return false;
 		}
 		MailType rhs = (MailType) object;
-		return new EqualsBuilder().appendSuper(super.equals(object)).append(this.mailTypeId, rhs.mailTypeId).append(this.mailType, rhs.mailType).isEquals();
+		return new EqualsBuilder().append(this.mailTypeId, rhs.mailTypeId).append(this.mailType, rhs.mailType).isEquals();
 	}
 	
 	/*

@@ -4,6 +4,7 @@ import java.util.Set;
 
 
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 // Generated Sep 26, 2006 11:58:17 PM by Hibernate Tools 3.2.0.beta7
 
@@ -181,4 +182,17 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 	{
 		this.deletable = deletable;
 	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if ((this == other))
+			return true;
+		if (!(other instanceof UserDepartment))
+			return false;
+		
+		UserDepartment castOther = (UserDepartment) other;
+		
+		return new EqualsBuilder().append(this.departmentId, castOther.departmentId).isEquals();
+	}	
 }

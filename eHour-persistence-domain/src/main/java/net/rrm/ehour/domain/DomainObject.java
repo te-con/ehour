@@ -16,7 +16,7 @@
 package net.rrm.ehour.domain;
 
 import java.io.Serializable;
-import org.apache.commons.lang.builder.EqualsBuilder;
+
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
@@ -44,18 +44,7 @@ public abstract class DomainObject <PK extends Serializable, DO extends Serializ
 	 * @see java.lang.Object#equals(Object)
 	 */
 	@Override
-	public boolean equals(Object object)
-	{
-		if (!(object instanceof DomainObject))
-		{
-			return false;
-		}
-		
-		@SuppressWarnings("unchecked")
-		DomainObject rhs = (DomainObject) object;
-		return new EqualsBuilder()
-					.append(getPK(), rhs.getPK()).isEquals();
-	}
+	public abstract boolean equals(Object object);
 
 	/**
 	 * @see java.lang.Object#hashCode()
