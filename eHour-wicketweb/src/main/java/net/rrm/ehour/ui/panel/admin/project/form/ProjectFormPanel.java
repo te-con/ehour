@@ -16,10 +16,16 @@
 
 package net.rrm.ehour.ui.panel.admin.project.form;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
@@ -29,7 +35,13 @@ import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.sort.CustomerComparator;
+import net.rrm.ehour.ui.sort.UserComparator;
+import net.rrm.ehour.ui.util.CommonWebUtil;
+import net.rrm.ehour.user.service.UserService;
 
+import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -38,7 +50,9 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 /**
@@ -47,15 +61,22 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 {
-//	private static final String CUSTOMER_PANEL_TAB_ID = "newCustTab";
-	private static final long serialVersionUID = -8677950352090140144L;
+	@SpringBean
+	private ProjectService	projectService;
+	@SpringBean
+	private CustomerService	customerService;
+	@SpringBean
+	private	UserService			userService;
 
+	private static final long serialVersionUID = -8677950352090140144L;
+	private	static final Logger	logger = Logger.getLogger(ProjectFormPanel.class);
+	
 	/**
 	 * 
 	 * @param id
 	 * @param model
 	 */
-	public ProjectFormPanel(String id, CompoundPropertyModel model, List<User> eligablePms, List<Customer> customers)
+	public ProjectFormPanel(String id, CompoundPropertyModel model)
 	{
 		super(id, model);
 		
@@ -83,7 +104,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 
 		// project manager
-		DropDownChoice projectManager = new DropDownChoice("project.projectManager", eligablePms, new ChoiceRenderer("fullName"));
+		DropDownChoice projectManager = new DropDownChoice("project.projectManager", getEligablePms(), new ChoiceRenderer("fullName"));
 		projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
 		form.add(projectManager);
 		
@@ -93,28 +114,13 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(textArea);
 		
 		// customers
-		DropDownChoice customerDropdown = new DropDownChoice("project.customer", customers, new ChoiceRenderer("fullName"));
+		DropDownChoice customerDropdown = new DropDownChoice("project.customer", getCustomers(), new ChoiceRenderer("fullName"));
 		customerDropdown.setRequired(true);
 		customerDropdown.setLabel(new ResourceModel("admin.project.customer"));
 		customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(customerDropdown);
 		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
-		
-		/*
-		// add new customer link
-		AjaxLink newCustomerLink = new DisablingAjaxLink("newCustomer")
-		{
-			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target)
-			{
-				addNewCustomerTab(target);
-			}
-		};
-		
-		form.add(newCustomerLink);
-		*/
 		// contact
 		TextField	contactField = new TextField("project.contact");
 		form.add(contactField);
@@ -138,40 +144,94 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		greyBorder.add(form);
 	}
 	
-	/**
-	 * Add new customer tab
-	 * @param target
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
-//	private void addNewCustomerTab(AjaxRequestTarget target)
-//	{
-//		AddEditTabbedPanel tabPanel = ((BaseTabbedAdminPage)getPage()).getTabbedPanel();
-//		
-//		if (!tabPanel.isTabIdAdded(CUSTOMER_PANEL_TAB_ID))
-//		{
-//			final Customer	cust = new Customer();
-//			cust.setActive(true);
-//			
-//			new CustomerAdminBackingBean(cust);		
-//			
-//			AbstractTab tab = new AbstractIdTab(new ResourceModel("admin.customer.addCustomer"), CUSTOMER_PANEL_TAB_ID)
-//			{
-//				private static final long serialVersionUID = 1L;
-//	
-//				@Override
-//				public Panel getPanel(String panelId)
-//				{
-//					return new CustomerFormPanel(panelId, new CompoundPropertyModel(new CustomerAdminBackingBean(cust)));
-//				}
-//			};
-//			
-//			int tabPos = tabPanel.addTab(tab);
-//			tabPanel.setSelectedTab(tabPos);
-//			target.addComponent(tabPanel);
-//		}
-//		else
-//		{
-//			tabPanel.setSelectedTabOnId(CUSTOMER_PANEL_TAB_ID);
-//			target.addComponent(tabPanel);
-//		}
-//	}	
+	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	{
+		ProjectAdminBackingBean backingBean = (ProjectAdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
+		
+		try
+		{
+			if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
+			{
+				persistProject(backingBean);
+			}
+			else if (type == CommonWebUtil.AJAX_DELETE)
+			{
+				deleteProject(backingBean);
+			}
+			
+			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT);
+		}
+		catch (Exception e)
+		{
+			logger.error("While persisting/deleting project", e);
+			backingBean.setServerMessage(getLocalizer().getString("saveError", this));
+			target.addComponent(this);
+		}
+	}
+	
+	
+	/**
+	 * Persist project
+	 */
+	private void persistProject(ProjectAdminBackingBean backingBean)
+	{
+		projectService.persistProject(backingBean.getProject());
+	}
+	
+	/**
+	 * Delete project
+	 * @throws ParentChildConstraintException 
+	 */
+	private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException
+	{
+		projectService.deleteProject(backingBean.getProject().getProjectId());
+	} 
+	
+	/**
+	 * Get customers for customer dropdown
+	 */
+	private List<Customer> getCustomers()
+	{
+		List<Customer> customers;
+		
+		customers = customerService.getCustomers(true);
+		
+		if (customers != null)
+		{
+			Collections.sort(customers, new CustomerComparator());
+		}
+		else
+		{
+			customers = new ArrayList<Customer>();
+		}
+		
+		return customers;
+	}
+	
+	/**
+	 * Get users for PM selection
+	 * @return
+	 */
+	private List<User> getEligablePms()
+	{
+		List<User> users;
+
+		users = userService.getUsersWithEmailSet();
+		
+		if (users != null)
+		{
+			Collections.sort(users, new UserComparator(false));
+		}
+		else
+		{
+			users = new ArrayList<User>();
+		}
+		
+		return users;
+	}	
 }

@@ -16,19 +16,13 @@
 
 package net.rrm.ehour.ui.page.admin.project;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
-import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
@@ -41,10 +35,7 @@ import net.rrm.ehour.ui.panel.admin.project.form.ProjectFormPanel;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.sort.CustomerComparator;
-import net.rrm.ehour.ui.sort.UserComparator;
 import net.rrm.ehour.ui.util.CommonWebUtil;
-import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
@@ -57,7 +48,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -74,15 +64,9 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	
 	@SpringBean
 	private ProjectService		projectService;
-	@SpringBean
-	private	UserService			userService;
-	@SpringBean
-	private	CustomerService		customerService;
 	private	final static Logger	logger = Logger.getLogger(ProjectAdmin.class);
 	private EntrySelectorFilter	currentFilter;
 	private	ListView			projectListView;
-	private	List<User>			users;
-	private	List<Customer>		customers;
 	
 	/**
 	 * 
@@ -127,36 +111,17 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 				projectListView.setList(projects);
 				break;
 			}
-			case CommonWebUtil.AJAX_DELETE:
 			case CommonWebUtil.AJAX_FORM_SUBMIT:
 			{
-				ProjectAdminBackingBean backingBean = (ProjectAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
-				try
-				{
-					if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
-					{
-						persistProject(backingBean);
-					}
-					else if (type == CommonWebUtil.AJAX_DELETE)
-					{
-						deleteProject(backingBean);
-					}					
-
-					// update project list
-					List<Project> projects = getProjects();
-					projectListView.setList(projects);
-					
-					((EntrySelectorPanel)
-							((MarkupContainer)get("entrySelectorFrame"))
-								.get(PROJECT_SELECTOR_ID)).refreshList(target);
-					
-					getTabbedPanel().succesfulSave(target);
-				} catch (Exception e)
-				{
-					logger.error("While persisting/deleting project", e);
-					getTabbedPanel().failedSave(backingBean, target);
-				}
+				// update project list
+				List<Project> projects = getProjects();
+				projectListView.setList(projects);
 				
+				((EntrySelectorPanel)
+						((MarkupContainer)get("entrySelectorFrame"))
+							.get(PROJECT_SELECTOR_ID)).refreshList(target);
+				
+				getTabbedPanel().succesfulSave(target);
 				break;
 			}
 		}
@@ -226,23 +191,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		
 		target.addComponent(getTabbedPanel());
 	}
-	
-	/**
-	 * Persist project
-	 */
-	private void persistProject(ProjectAdminBackingBean backingBean)
-	{
-		projectService.persistProject(backingBean.getProject());
-	}
-	
-	/**
-	 * Delete project
-	 * @throws ParentChildConstraintException 
-	 */
-	private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException
-	{
-		projectService.deleteProject(backingBean.getProject().getProjectId());
-	} 
+
 
 	/*
 	 * (non-Javadoc)
@@ -252,9 +201,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	protected Panel getBaseAddPanel(String panelId)
 	{
 		return new ProjectFormPanel(panelId,
-									new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()),
-									getUsers(),
-									getCustomers());
+									new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
 	}
 
 	/*
@@ -264,9 +211,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()),
-				getUsers(),
-				getCustomers());
+		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
 				
 	}
 
@@ -361,50 +306,5 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		}
 		
 		return projects;
-	}
-	
-	/**
-	 * Get users for PM selection
-	 * @return
-	 */
-	private List<User> getUsers()
-	{
-		if (users == null)
-		{
-			users = userService.getUsersWithEmailSet();
-			
-			if (users != null)
-			{
-				Collections.sort(users, new UserComparator(false));
-			}
-			else
-			{
-				users = new ArrayList<User>();
-			}
-		}
-		
-		return users;
-	}
-	
-	/**
-	 * Get customers for customer dropdown
-	 */
-	private List<Customer> getCustomers()
-	{
-		if (customers == null)
-		{
-			customers = customerService.getCustomers(true);
-			
-			if (customers != null)
-			{
-				Collections.sort(customers, new CustomerComparator());
-			}
-			else
-			{
-				customers = new ArrayList<Customer>();
-			}
-		}
-		
-		return customers;
 	}
 }

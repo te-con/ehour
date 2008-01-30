@@ -128,14 +128,10 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 			}
 			
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT);
-			
-//			AjaxUtil.publishEvents(this,	new PayloadAjaxEvent<Customer>(target, 
-//																					AjaxEventType.ADMIN_CUSTOMER_UPDATED,
-//																					backingBean.getCustomer()));
 		}
 		catch (Exception e)
 		{
-			logger.error("While persisting/deleting user", e);
+			logger.error("While persisting/deleting customer", e);
 			backingBean.setServerMessage(getLocalizer().getString("saveError", this));
 			target.addComponent(this);
 		}
@@ -167,5 +163,4 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 	{
 		customerService.deleteCustomer(backingBean.getCustomer().getCustomerId());
 	}	
-	
 }
