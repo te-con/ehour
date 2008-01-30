@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
 	<version>0.7.3-SNAPSHOT</version>
@@ -28,9 +30,7 @@
 	</scm>
 	<issueManagement>
 		<system>eHour bugtracker</system>
-		<url>
-			http://www.ehour.nl/defects/
-		</url>
+		<url>http://www.ehour.nl/defects/</url>
 	</issueManagement>
 	<ciManagement>
 		<system>continuum</system>
@@ -108,10 +108,14 @@
 				<exclusion>
 					<groupId>commons-lang</groupId>
 					<artifactId>commons-lang</artifactId>
-				</exclusion>				
+				</exclusion>
 			</exclusions>
 		</dependency>
-
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.8.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -121,7 +125,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>2.5.1</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
@@ -130,19 +134,19 @@
 	</dependencies>
 	<build>
 		<plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -157,8 +161,12 @@
 					<source>1.5</source>
 					<generateXml>true</generateXml>
 					<generateHistorical>true</generateHistorical>
-					<historyDir>${clover.historyLocation}/ehour/</historyDir>
-					<licenseLocation>${clover.licenseLocation}</licenseLocation>
+					<historyDir>
+						${clover.historyLocation}/ehour/
+					</historyDir>
+					<licenseLocation>
+						${clover.licenseLocation}
+					</licenseLocation>
 				</configuration>
 				<executions>
 					<execution>
@@ -183,7 +191,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
-					<stagingDirectory>/home/www/dev/ehour.nl/html/ehoursite</stagingDirectory>
+					<stagingDirectory>
+						/home/www/dev/ehour.nl/html/ehoursite
+					</stagingDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -211,13 +221,6 @@
 					</plugin>
 				</plugins>
 			</build>
-			<dependencies>
-				<dependency>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-					<version>2.8.1</version>
-				</dependency>
-			</dependencies>			
 		</profile>
 		<profile>
 			<id>env-dev-derby</id>
@@ -241,13 +244,6 @@
 					</plugin>
 				</plugins>
 			</build>
-			<dependencies>
-				<dependency>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-					<version>2.8.1</version>
-				</dependency>
-			</dependencies>		
 		</profile>
 		<profile>
 			<id>env-dev-mysql</id>
@@ -329,8 +325,12 @@
 				<configuration>
 					<generateXml>true</generateXml>
 					<generateHistorical>true</generateHistorical>
-					<historyDir>${clover.historyLocation}/ehour/</historyDir>
-					<licenseLocation>${clover.licenseLocation}</licenseLocation>
+					<historyDir>
+						${clover.historyLocation}/ehour/
+					</historyDir>
+					<licenseLocation>
+						${clover.licenseLocation}
+					</licenseLocation>
 				</configuration>
 			</plugin>
 		</plugins>

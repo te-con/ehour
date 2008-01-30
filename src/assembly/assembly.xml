@@ -15,7 +15,7 @@
 				<outputDirectory>/</outputDirectory>
 				<unpack>false</unpack>
 				<includeDependencies>false</includeDependencies>
-				<outputFileNameMapping>eHour-${pom.version}</outputFileNameMapping>
+				<outputFileNameMapping>ehour-${version}.${extension}</outputFileNameMapping>
 			</binaries>
 		</moduleSet>
 	</moduleSets>
