@@ -71,7 +71,11 @@ public class TreeReportDataPanel extends Panel
 	 * @param id
 	 * @param report report data
 	 */
-	public TreeReportDataPanel(String id, TreeReport<? extends ReportElement> report, ReportConfig reportConfig, String excelResourceName)
+	public TreeReportDataPanel(String id, 
+								TreeReport<? extends ReportElement> report, 
+								ReportConfig reportConfig, 
+								String excelResourceName,
+								int reportWidth)
 	{
 		super(id);
 		
@@ -81,6 +85,10 @@ public class TreeReportDataPanel extends Panel
 		add(blueBorder);
 		blueBorder.setOutputMarkupId(true);
 		
+		WebMarkupContainer header = new WebMarkupContainer("header");
+		header.add(new SimpleAttributeModifier("style", "width: " + Integer.toString(reportWidth) + "px"));
+		add(header);
+		
 		if (excelResourceName != null)
 		{
 			final String reportId = report.getReportId();
@@ -89,16 +97,16 @@ public class TreeReportDataPanel extends Panel
 			ValueMap params = new ValueMap();
 			params.add("reportId", reportId);
 			ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
-			add(excelLink);
+			header.add(excelLink);
 
 			EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
 			
-			add(getReportHeaderLabel("reportHeader", report.getReportRange(), config));
+			header.add(getReportHeaderLabel("reportHeader", report.getReportRange(), config));
 		}
 		else
 		{
-			add(HtmlUtil.getInvisibleLink("excelLink"));
-			add(HtmlUtil.getInvisibleLabel("reportHeader"));
+			header.add(HtmlUtil.getInvisibleLink("excelLink"));
+			header.add(HtmlUtil.getInvisibleLabel("reportHeader"));
 		}
 		
 		addHeaderColumns(blueBorder);

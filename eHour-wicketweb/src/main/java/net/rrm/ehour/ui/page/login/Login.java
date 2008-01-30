@@ -168,33 +168,33 @@ public class Login extends WebPage
 			// submitting page should be gone from the browsers history.
 			setRedirect(true);
 		}
-		
-		/**
-		 * 
-		 * @param roles
-		 * @return
-		 */
-		@SuppressWarnings("unchecked")
-		private Class<? extends WebPage> getHomepageForRole(Roles roles)
-		{
-			Class<? extends WebPage>	homepage;
-			
-			if (roles.contains(CommonWebUtil.ROLE_ADMIN))
-			{
-				homepage = MainConfig.class;
-			}
-			else if (roles.contains(CommonWebUtil.ROLE_REPORT))
-			{
-				homepage = GlobalReportPage.class;
-			}
-			else
-			{
-				homepage = getApplication().getHomePage();
-			}
-		
-			return homepage;
-		}
 	}
+
+	/**
+	 * Get homepage for authenticated user
+	 * @param roles
+	 * @return
+	 */
+	protected Class<? extends WebPage> getHomepageForRole(Roles roles)
+	{
+		Class<? extends WebPage>	homepage;
+		
+		if (roles.contains(CommonWebUtil.ROLE_ADMIN))
+		{
+			homepage = MainConfig.class;
+		}
+		else if (roles.contains(CommonWebUtil.ROLE_REPORT))
+		{
+			homepage = GlobalReportPage.class;
+		}
+		else
+		{
+			homepage = getApplication().getHomePage();
+		}
+	
+		return homepage;
+	}		
+	
 	
 	/**
 	 * 

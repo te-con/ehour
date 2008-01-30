@@ -42,10 +42,10 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	{
 		super(id, 460);
 
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", REPORT_WIDTH);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", getReportWidth());
 		add(greyBorder);
 
-		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportConfig, excelResourceName));
+		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportConfig, excelResourceName, getReportWidth() - 50));
 		
 		addCharts(data, greyBorder);
 	}

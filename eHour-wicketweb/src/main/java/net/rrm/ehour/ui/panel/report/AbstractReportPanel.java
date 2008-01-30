@@ -29,7 +29,7 @@ import org.apache.wicket.model.IModel;
 
 public abstract class AbstractReportPanel extends Panel
 {
-	protected final static int REPORT_WIDTH = 950;
+	protected int 		reportWidth = 950;
 	
 	protected EhourConfig	config;
 	protected int		chartWidth;
@@ -50,7 +50,16 @@ public abstract class AbstractReportPanel extends Panel
 	 */
 	public AbstractReportPanel(String id, int chartWidth)
 	{
-		this(id, null, chartWidth);
+		this(id, null, chartWidth, 950);
+	}	
+	
+	/**
+	 * 
+	 * @param id
+	 */
+	public AbstractReportPanel(String id, int chartWidth, int reportWidth)
+	{
+		this(id, null, chartWidth, reportWidth);
 	}	
 
 	/**
@@ -58,12 +67,14 @@ public abstract class AbstractReportPanel extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public AbstractReportPanel(String id, IModel model, int chartWidth)
+	public AbstractReportPanel(String id, IModel model, int chartWidth, int reportWidth)
 	{
 		super(id, model);
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 
+		this.reportWidth = reportWidth; 
+		
 		if (chartWidth == -1)
 		{
 			this.chartWidth = !config.isShowTurnover() ? 700 : 350;
@@ -74,5 +85,10 @@ public abstract class AbstractReportPanel extends Panel
 		}
 		
 		chartHeight = 200;		
+	}
+	
+	protected int getReportWidth()
+	{
+		return reportWidth;
 	}
 }

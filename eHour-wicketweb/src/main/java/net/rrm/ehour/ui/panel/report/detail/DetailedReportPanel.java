@@ -46,10 +46,10 @@ public class DetailedReportPanel extends AbstractReportPanel
 	{
 		super(id);
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", REPORT_WIDTH);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", getReportWidth());
 		add(greyBorder);
 		
-		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel"));
+		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel", getReportWidth() - 50));
 		
 		DateHoursTrendImageFactory chartFactory = new DateHoursTrendImageFactory();
 

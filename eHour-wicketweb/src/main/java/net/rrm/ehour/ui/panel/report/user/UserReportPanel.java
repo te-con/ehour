@@ -56,7 +56,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 */
 	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, ReportData<AssignmentAggregateReportElement> reportData, boolean inclLinks)
 	{
-		super(id);
+		super(id, -1, 730);
 		
 		add(getReportPanel(aggregateReport, reportData, inclLinks));
 	}
@@ -103,7 +103,7 @@ public class UserReportPanel extends AbstractReportPanel
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, printLink, excelLink, CommonWebUtil.GREYFRAME_WIDTH);
 
-		greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportConfig.AGGREGATE_CUSTOMER_SINGLE_USER, null));
+		greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportConfig.AGGREGATE_CUSTOMER_SINGLE_USER, null, getReportWidth() - 30));
 		
 		addCharts(reportData, greyBorder);
 		
