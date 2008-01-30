@@ -1,22 +1,28 @@
 <assembly>
-	<id>bin</id>
+	<id>war</id>
 	<formats>
 		<format>tar.gz</format>
 		<format>zip</format>
 	</formats>
-	<includeBaseDirectory>false</includeBaseDirectory>
-
+	<baseDirectory>ehour-${pom.version}-war</baseDirectory>
+	<includeBaseDirectory>true</includeBaseDirectory>
 	<moduleSets>
-	  <moduleSet>
-		<includes>
-			<include>net.rrm.ehour:eHour-web</include>
-		</includes>
+		<moduleSet>
+			<includes>
+				<include>net.rrm.ehour:eHour-web</include>
+			</includes>
+			<binaries>
+				<outputDirectory>/</outputDirectory>
+				<unpack>false</unpack>
+				<includeDependencies>false</includeDependencies>
+				<outputFileNameMapping>eHour-${pom.version}</outputFileNameMapping>
+			</binaries>
 		</moduleSet>
-  </moduleSets>
-	
+	</moduleSets>
 	<fileSets>
 		<fileSet>
 			<directory>src/assembly/txt</directory>
+			<lineEnding>dos</lineEnding>
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>*.txt</include>
@@ -24,6 +30,7 @@
 		</fileSet>
 		<fileSet>
 			<directory>src/assembly/txt_war</directory>
+			<lineEnding>dos</lineEnding>
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>*.txt</include>
@@ -35,13 +42,7 @@
 			<outputDirectory>/conf</outputDirectory>
 			<lineEnding>dos</lineEnding>
 		</fileSet>
-<!--
-		<fileSet>
-			<directory>eHour-service/src/test/performance</directory>
-			<outputDirectory>util/performance</outputDirectory>
-			<lineEnding>dos</lineEnding>
-		</fileSet>
--->
+
 		<fileSet>
 			<directory>src/assembly/sql</directory>
 			<outputDirectory>sql</outputDirectory>

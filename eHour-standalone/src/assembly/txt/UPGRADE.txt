@@ -2,3 +2,6 @@ Upgrade instructions from v0.7.x to v0.7.2
 ----------------------------------------
 Unpack the v0.7.2 archive to a new directory. Copy the ehourDb directory from the root of your previous eHour installation to the
 root of the directory where you unpacked 0.7.2. That's it! Start eHour as explained in the installation instructions above.
+
+When you're running eHour as a service, make sure you run the uninstallservice.bat first on the old version. Otherwise the old
+version keeps starting up.
