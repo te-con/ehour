@@ -140,7 +140,7 @@ public class Overview extends BasePage
 	 * Get timesheet panel for current user & current month
 	 * @return
 	 */
-	private TimesheetPanel getTimesheetPanel()
+	protected TimesheetPanel getTimesheetPanel()
 	{
 		return new TimesheetPanel("contentContainer", 
 					getEhourWebSession().getUser().getUser(), 

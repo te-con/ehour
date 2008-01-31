@@ -101,7 +101,7 @@ public class TimesheetAssembler
 	 * Sort the timesheet rows in a customer map
 	 * @param customerMap
 	 */
-	private void sortCustomerMap(SortedMap<Customer, List<TimesheetRow>> customerMap)
+	protected void sortCustomerMap(SortedMap<Customer, List<TimesheetRow>> customerMap)
 	{
 		for (Customer customer : customerMap.keySet())
 		{
@@ -114,7 +114,7 @@ public class TimesheetAssembler
 	 * @param rows
 	 * @return
 	 */
-	private SortedMap<Customer, List<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows)
+	protected SortedMap<Customer, List<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows)
 	{
 		SortedMap<Customer, List<TimesheetRow>>	customerMap = new TreeMap<Customer, List<TimesheetRow>>();
 		Customer			customer;
@@ -147,7 +147,7 @@ public class TimesheetAssembler
 	 * @param dateSequence
 	 * @return
 	 */
-	private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap, 
+	protected List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap, 
 													List<Date> dateSequence,
 													List<ProjectAssignment> validProjectAssignments,
 													Timesheet timesheet)
@@ -190,7 +190,7 @@ public class TimesheetAssembler
 	 * @param date
 	 * @return
 	 */
-	private TimesheetCell createTimesheetCell(ProjectAssignment assignment,
+	protected TimesheetCell createTimesheetCell(ProjectAssignment assignment,
 												TimesheetEntry entry, Date date,
 												List<ProjectAssignment> validProjectAssignments)
 	{
@@ -210,7 +210,7 @@ public class TimesheetAssembler
 	 * @param date
 	 * @return
 	 */
-	private boolean isCellValid(ProjectAssignment assignment, 
+	protected boolean isCellValid(ProjectAssignment assignment, 
 								List<ProjectAssignment> validProjectAssignments,
 								Date date)
 	{
@@ -232,7 +232,7 @@ public class TimesheetAssembler
 	 * @param weekOverview
 	 * @return
 	 */
-	private void mergeUnbookedAssignments(WeekOverview weekOverview,
+	protected void mergeUnbookedAssignments(WeekOverview weekOverview,
 											Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap)
 	{
 		if (weekOverview.getProjectAssignments() != null)
@@ -252,7 +252,7 @@ public class TimesheetAssembler
 	 * Create a map of the project assignments and the timesheet entries
 	 * @return
 	 */
-	private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
+	protected Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
 	{
 		Map<String, TimesheetEntry>	entryDateMap;	
 		Map<ProjectAssignment, Map<String, TimesheetEntry>>	assignmentMap;
@@ -279,5 +279,4 @@ public class TimesheetAssembler
 		
 		return assignmentMap;
 	}
-	
 }

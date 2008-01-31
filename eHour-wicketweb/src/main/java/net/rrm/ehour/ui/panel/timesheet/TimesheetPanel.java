@@ -499,10 +499,19 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		weekOverview = timesheetService.getWeekOverview(user, forWeek);
 		
-		TimesheetAssembler assembler = new TimesheetAssembler(config);
-		timesheet = assembler.createTimesheetForm(weekOverview);
+		timesheet = getTimesheetAssembler(config).createTimesheetForm(weekOverview);
 		
 		return timesheet;
+	}
+
+	/**
+	 * Get timesheet assembler
+	 * @param config
+	 * @return
+	 */
+	protected TimesheetAssembler getTimesheetAssembler(EhourConfig config)
+	{
+		return new TimesheetAssembler(config);
 	}
 	
 	/**
