@@ -114,8 +114,8 @@ public class TimesheetComment extends DomainObject<TimesheetCommentId, Timesheet
 	public int compareTo(TimesheetComment object)
 	{
 		return new CompareToBuilder()
-			.append(this.comment, object.comment)
-			.append(this.commentId, object.commentId).toComparison();
+			.append(this.getComment(), object.getComment())
+			.append(this.getCommentId(), object.getCommentId()).toComparison();
 	}
 
 }

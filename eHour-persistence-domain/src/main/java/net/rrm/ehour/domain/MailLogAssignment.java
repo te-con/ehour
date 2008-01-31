@@ -59,8 +59,12 @@ public class MailLogAssignment extends MailLog
 		{
 			return false;
 		}
+		
 		MailLogAssignment rhs = (MailLogAssignment) object;
-		return new EqualsBuilder().appendSuper(super.equals(object)).append(this.projectAssignment, rhs.projectAssignment).isEquals();
+		return new EqualsBuilder()
+			.appendSuper(super.equals(object))
+			.append(this.getProjectAssignment(), rhs.getProjectAssignment())
+			.isEquals();
 	}
 
 	/**
@@ -68,7 +72,9 @@ public class MailLogAssignment extends MailLog
 	 */
 	public int compareTo(MailLogAssignment object)
 	{
-		return new CompareToBuilder().append(this.projectAssignment, object.projectAssignment).toComparison();
+		return new CompareToBuilder()
+			.append(this.getProjectAssignment(), object.getProjectAssignment())
+			.toComparison();
 	}
 
 	/**
@@ -76,7 +82,10 @@ public class MailLogAssignment extends MailLog
 	 */
 	public int hashCode()
 	{
-		return new HashCodeBuilder(-1194418173, 1339254353).appendSuper(super.hashCode()).append(this.projectAssignment).toHashCode();
+		return new HashCodeBuilder(-1194418173, 1339254353)
+				.appendSuper(super.hashCode())
+				.append(this.getProjectAssignment())
+				.toHashCode();
 	}
 
 	/**

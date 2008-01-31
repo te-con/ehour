@@ -101,8 +101,8 @@ public class CustomerFoldPreference extends DomainObject<CustomerFoldPreferenceI
 	public int compareTo(CustomerFoldPreference myClass)
 	{
 		return new CompareToBuilder()
-					.append(this.folded, myClass.folded)
-					.append(this.foldPreferenceId, myClass.foldPreferenceId).toComparison();
+					.append(this.isFolded(), myClass.isFolded())
+					.append(this.getFoldPreferenceId(), myClass.getFoldPreferenceId()).toComparison();
 	}
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -114,14 +114,21 @@ public class CustomerFoldPreference extends DomainObject<CustomerFoldPreferenceI
 			return false;
 		}
 		CustomerFoldPreference rhs = (CustomerFoldPreference) object;
-		return new EqualsBuilder().append(this.folded, rhs.folded).append(this.foldPreferenceId, rhs.foldPreferenceId).isEquals();
+		return new EqualsBuilder()
+			.append(this.isFolded(), rhs.isFolded())
+			.append(this.getFoldPreferenceId(), rhs.getFoldPreferenceId())
+			.isEquals();
 	}
+	
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode()
 	{
-		return new HashCodeBuilder(578491229, 13938277).appendSuper(super.hashCode()).append(this.folded).append(this.foldPreferenceId).toHashCode();
+		return new HashCodeBuilder(578491229, 13938277)
+			.appendSuper(super.hashCode())
+			.append(this.isFolded())
+			.append(this.getFoldPreferenceId()).toHashCode();
 	}
 	/**
 	 * @see java.lang.Object#toString()

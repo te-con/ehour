@@ -207,10 +207,10 @@ public class Project extends DomainObject<Integer, Project>
 	public int compareTo(Project object)
 	{
 		return new CompareToBuilder()
-			.append(this.name, object.name)
-			.append(this.projectCode, object.projectCode)
-			.append(this.projectId, object.projectId)
-			.append(this.customer, object.customer).toComparison();
+			.append(this.getName(), object.getName())
+			.append(this.getProjectCode(), object.getProjectCode())
+			.append(this.getProjectId(), object.getProjectId())
+			.append(this.getCustomer(), object.getCustomer()).toComparison();
 	}
 
 	/**
@@ -235,8 +235,13 @@ public class Project extends DomainObject<Integer, Project>
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("active", this.active)
-				.append("PK", this.getPK()).append("defaultProject", this.defaultProject).append("fullname", this.getFullName()).append("projectCode", this.projectCode).append("name", this.name).append("projectId",
-						this.projectId).toString();
+				.append("PK", this.getPK())
+				.append("defaultProject", this.defaultProject)
+				.append("fullname", this.getFullName())
+				.append("projectCode", this.getProjectCode())
+				.append("name", this.getName())
+				.append("projectId", this.getProjectId())
+				.toString();
 	}
 
 	/**

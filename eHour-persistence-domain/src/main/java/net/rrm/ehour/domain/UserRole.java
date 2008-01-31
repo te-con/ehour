@@ -82,35 +82,6 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 		return role;
 	}
 	
-	/**
-	 * 
-	 */
-	@Override
-    public boolean equals(Object obj)
-    {
-    	boolean isEqual = false;
-    	
-        if (obj instanceof String)
-        {
-            isEqual = obj.equals(this.role);
-        }
-        else if (obj instanceof UserRole)
-        {
-        	isEqual = ((UserRole)obj).getRole().equals(this.role);
-        }
-
-        return isEqual;
-    }	
-    
-    /**
-     * 
-     */
-	@Override
-    public int hashCode()
-    {
-    	return new HashCodeBuilder().append(role).toHashCode();
-    }
-	
     public String toString()
     {
     	return role;
@@ -128,8 +99,36 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 	public int compareTo(UserRole object)
 	{
 		return new CompareToBuilder()
-			.append(this.role, object.role)
-			.append(this.roleName, object.roleName).toComparison();
+			.append(this.getRole(), object.getRole())
+			.append(this.getRoleName(), object.getRoleName()).toComparison();
 	}
+	
+    /**
+     * 
+     */
+	@Override
+    public int hashCode()
+    {
+    	return new HashCodeBuilder().append(getRole()).toHashCode();
+    }	
 
+	/**
+	 * 
+	 */
+	@Override
+    public boolean equals(Object obj)
+    {
+    	boolean isEqual = false;
+    	
+        if (obj instanceof String)
+        {
+            isEqual = obj.equals(this.getRole());
+        }
+        else if (obj instanceof UserRole)
+        {
+        	isEqual = ((UserRole)obj).getRole().equals(this.getRole());
+        }
+
+        return isEqual;
+    }	
 }

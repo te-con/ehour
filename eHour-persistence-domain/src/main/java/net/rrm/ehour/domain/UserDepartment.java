@@ -2,9 +2,9 @@ package net.rrm.ehour.domain;
 
 import java.util.Set;
 
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 // Generated Sep 26, 2006 11:58:17 PM by Hibernate Tools 3.2.0.beta7
 
@@ -157,17 +157,6 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 	}
 
 	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(UserDepartment object)
-	{
-		return new CompareToBuilder()
-			.append(this.name, object.name)
-			.append(this.code, object.code)
-			.append(this.departmentId, object.departmentId).toComparison();
-	}
-
-	/**
 	 * @return the deletable
 	 */
 	public boolean isDeletable()
@@ -193,6 +182,31 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 		
 		UserDepartment castOther = (UserDepartment) other;
 		
-		return new EqualsBuilder().append(this.departmentId, castOther.departmentId).isEquals();
+		return new EqualsBuilder()
+			.append(this.getDepartmentId(), castOther.getDepartmentId()).isEquals();
+	}
+	
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(UserDepartment object)
+	{
+		return new CompareToBuilder()
+			.append(this.getName(), object.getName())
+			.append(this.getCode(), object.getCode())
+			.append(this.getDepartmentId(), object.getDepartmentId()).toComparison();
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder(-2038170721, -475387721)
+				.append(this.getDepartmentId())
+				.append(this.getCode())
+				.append(this.getName())
+				.toHashCode();
 	}	
 }

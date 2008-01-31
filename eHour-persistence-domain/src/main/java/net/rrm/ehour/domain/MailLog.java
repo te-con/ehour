@@ -119,7 +119,7 @@ public class MailLog extends DomainObject<Integer, MailLog>
 
 	public int compareTo(MailLog o)
 	{
-		return timestamp.compareTo(timestamp);
+		return getTimestamp().compareTo(o.getTimestamp());
 	}
 
 	/**
@@ -132,8 +132,14 @@ public class MailLog extends DomainObject<Integer, MailLog>
 			return false;
 		}
 		MailLog rhs = (MailLog) object;
-		return new EqualsBuilder().append(this.resultMsg, rhs.resultMsg).append(this.timestamp, rhs.timestamp).append(this.toUser, rhs.toUser).append(this.mailLogId, rhs.mailLogId).append(this.success, rhs.success)
-				.append(this.mailType, rhs.mailType).isEquals();
+		return new EqualsBuilder()
+			.append(this.getResultMsg(), rhs.getResultMsg())
+			.append(this.getTimestamp(), rhs.getTimestamp())
+			.append(this.getToUser(), rhs.getToUser())
+			.append(this.getMailLogId(), rhs.getMailLogId())
+			.append(this.getSuccess(), rhs.getSuccess())
+			.append(this.getMailType(), rhs.getMailType())
+			.isEquals();
 	}
 
 	/**
@@ -141,7 +147,15 @@ public class MailLog extends DomainObject<Integer, MailLog>
 	 */
 	public int hashCode()
 	{
-		return new HashCodeBuilder(1202909165, -339864927).appendSuper(super.hashCode()).append(this.resultMsg).append(this.timestamp).append(this.toUser).append(this.mailLogId).append(this.success).append(this.mailType).toHashCode();
+		return new HashCodeBuilder(1202909165, -339864927)
+			.appendSuper(super.hashCode())
+			.append(this.getResultMsg())
+			.append(this.getTimestamp())
+			.append(this.getToUser())
+			.append(this.getMailLogId())
+			.append(this.getSuccess())
+			.append(this.getMailType())
+			.toHashCode();
 	}
 
 }

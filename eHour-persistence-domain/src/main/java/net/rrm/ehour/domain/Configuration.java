@@ -54,13 +54,14 @@ public class Configuration extends DomainObject<String, Configuration>
 		return configKey;
 	}
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Configuration object)
 	{
 		return new CompareToBuilder()
-		.append(this.configKey, object.configKey).toComparison();
+		.append(this.getConfigKey(), object.getConfigKey()).toComparison();
 	}
 	
 	/*
@@ -75,7 +76,7 @@ public class Configuration extends DomainObject<String, Configuration>
 		if (other instanceof Configuration)
 		{
 			castOther = (Configuration)other;
-			return new EqualsBuilder().append(this.configKey, castOther.getConfigKey()).isEquals();
+			return new EqualsBuilder().append(this.getConfigKey(), castOther.getConfigKey()).isEquals();
 		}
 		else
 		{
@@ -90,7 +91,7 @@ public class Configuration extends DomainObject<String, Configuration>
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(configKey).toHashCode();
+		return new HashCodeBuilder().append(getConfigKey()).toHashCode();
 	}	
 
 	/**

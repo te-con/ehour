@@ -178,6 +178,18 @@ public class Customer extends DomainObject<Integer, Customer>
 		this.active = active;
 	}
 
+
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Customer object)
+	{
+		return new CompareToBuilder()
+			.append(this.getName(), object.getName())
+			.append(this.getCustomerId(), object.getCustomerId())
+			.append(this.getCode(), object.getCode()).toComparison();
+	}
+	
 	
 	@Override
 	public boolean equals(Object other)
@@ -205,17 +217,6 @@ public class Customer extends DomainObject<Integer, Customer>
 	public Integer getPK()
 	{
 		return customerId;
-	}
-
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(Customer object)
-	{
-		return new CompareToBuilder()
-		.append(this.name, object.name)
-			.append(this.customerId, object.customerId)
-			.append(this.code, object.code).toComparison();
 	}
 
 	/**

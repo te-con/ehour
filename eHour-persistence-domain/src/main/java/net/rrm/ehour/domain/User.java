@@ -284,7 +284,7 @@ public class User extends DomainObject<Integer, User>
 		}
 		User rhs = (User) object;
 		return new EqualsBuilder()
-					.append(this.userId, rhs.userId)
+					.append(this.getUserId(), rhs.getUserId())
 					.isEquals();
 	}
 
@@ -294,7 +294,7 @@ public class User extends DomainObject<Integer, User>
 	public int hashCode()
 	{
 		return new HashCodeBuilder(-2038170721, -475387721)
-				.append(this.userId)
+				.append(this.getUserId())
 				.toHashCode();
 	}
 
@@ -307,10 +307,10 @@ public class User extends DomainObject<Integer, User>
 	@Override
 	public String toString()
 	{
-		return new ToStringBuilder(this).append("userId", userId)
-						.append("username", username)
-						.append("lastName", lastName)
-						.append("firstName", firstName)
+		return new ToStringBuilder(this).append("userId", getUserId())
+						.append("username", getUsername())
+						.append("lastName", getLastName())
+						.append("firstName", getFirstName())
 						.toString();
 	}
 
@@ -320,10 +320,11 @@ public class User extends DomainObject<Integer, User>
 	public int compareTo(User object)
 	{
 		return new CompareToBuilder()
-			.append(this.lastName, object.lastName)
-			.append(this.firstName, object.firstName)
-			.append(this.userDepartment, object.userDepartment)
-			.append(this.userId, object.userId).toComparison();
+			.append(this.getLastName(), object.getLastName())
+			.append(this.getFirstName(), object.getFirstName())
+			.append(this.getUserDepartment(), object.getUserDepartment())
+			.append(this.getUserId(), object.getUserId())
+			.toComparison();
 	}
 
 	/**

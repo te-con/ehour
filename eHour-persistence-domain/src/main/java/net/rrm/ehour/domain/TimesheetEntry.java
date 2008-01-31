@@ -89,7 +89,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	public int compareTo(TimesheetEntry object)
 	{
 		return new CompareToBuilder()
-			.append(this.entryId, object.entryId).toComparison();
+			.append(this.getEntryId(), object.getEntryId()).toComparison();
 	}
 
 	/**
@@ -98,9 +98,9 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	public String toString()
 	{
 		return new ToStringBuilder(this)
-				.append("hours", this.hours)
-				.append("entryId", this.entryId)
-				.append("comment", this.comment)
+				.append("hours", this.getHours())
+				.append("entryId", this.getEntryId())
+				.append("comment", this.getComment())
 				.toString();
 	}
 

@@ -17,6 +17,7 @@ package net.rrm.ehour.domain;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Project Assignment type
@@ -108,20 +109,32 @@ public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignme
 	public int compareTo(ProjectAssignmentType type)
 	{
 		return new CompareToBuilder()
-				.append(this.assignmentType, type.assignmentType)
-				.append(this.assignmentTypeId, type.assignmentTypeId).toComparison();
+				.append(this.getAssignmentType(), type.getAssignmentType())
+				.append(this.getAssignmentTypeId(), type.getAssignmentTypeId()).toComparison();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.domain.DomainObject#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object other)
 	{
 		if ((this == other))
 			return true;
+		
 		if (!(other instanceof ProjectAssignmentType))
 			return false;
 		
 		ProjectAssignmentType castOther = (ProjectAssignmentType) other;
 		
-		return new EqualsBuilder().append(this.assignmentTypeId, castOther.assignmentTypeId).isEquals();
+		return new EqualsBuilder()
+			.append(this.getAssignmentTypeId(), castOther.getAssignmentTypeId())
+			.isEquals();
 	}
+	
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(getAssignmentTypeId()).toHashCode();
+	}	
 }

@@ -175,6 +175,24 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 										.append("user", getUser()).toString();
 	}	
 
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(ProjectAssignment object)
+	{
+		return new CompareToBuilder()
+			.append(this.getProject(), object.getProject())
+			.append(this.getDateEnd(), object.getDateEnd())
+			.append(this.getDateStart(), object.getDateStart())
+			.append(this.getUser(), object.getUser())
+			.append(this.getAssignmentId(), object.getAssignmentId())
+			.toComparison();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.domain.DomainObject#equals(java.lang.Object)
+	 */
 	public boolean equals(Object other)
 	{
 		if ((this == other))
@@ -193,7 +211,9 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 			return false;
 		}
 		
-		return new EqualsBuilder().append(this.getAssignmentId(), castOther.getAssignmentId()).isEquals();
+		return new EqualsBuilder()
+			.append(this.getAssignmentId(), castOther.getAssignmentId())
+			.isEquals();
 	}
 
 	public int hashCode()
@@ -231,19 +251,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	public Integer getPK()
 	{
 		return assignmentId;
-	}
-
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(ProjectAssignment object)
-	{
-		return new CompareToBuilder()
-			.append(this.project, object.project)
-			.append(this.dateEnd, object.dateEnd)
-			.append(this.dateStart, object.dateStart)
-			.append(this.user, object.user)
-			.append(this.assignmentId, object.assignmentId).toComparison();
 	}
 
 	/**

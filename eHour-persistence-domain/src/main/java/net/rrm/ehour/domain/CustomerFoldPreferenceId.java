@@ -95,7 +95,10 @@ public class CustomerFoldPreferenceId implements Serializable, Comparable<Custom
 			return false;
 		}
 		CustomerFoldPreferenceId rhs = (CustomerFoldPreferenceId) object;
-		return new EqualsBuilder().appendSuper(super.equals(object)).append(this.customer, rhs.customer).append(this.user, rhs.user).isEquals();
+		return new EqualsBuilder()
+			.appendSuper(super.equals(object))
+			.append(this.getCustomer(), rhs.getCustomer())
+			.append(this.getUser(), rhs.getUser()).isEquals();
 	}
 
 	/**
@@ -103,7 +106,11 @@ public class CustomerFoldPreferenceId implements Serializable, Comparable<Custom
 	 */
 	public int hashCode()
 	{
-		return new HashCodeBuilder(774815319, -1166942733).appendSuper(super.hashCode()).append(this.customer).append(this.user).toHashCode();
+		return new HashCodeBuilder(774815319, -1166942733)
+			.appendSuper(super.hashCode())
+			.append(this.getCustomer())
+			.append(this.getUser())
+			.toHashCode();
 	}
 
 	/**

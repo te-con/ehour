@@ -65,7 +65,6 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
 	{
 		return new ToStringBuilder(this).append("entryDate", getEntryDate())
 															.append("assignment", getProjectAssignment())
-
 															.toString();
 	}
 
@@ -104,8 +103,8 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
 	public int compareTo(TimesheetEntryId object)
 	{
 		return new CompareToBuilder()
-			.append(this.projectAssignment, object.projectAssignment)
-			.append(this.entryDate, object.entryDate)
+			.append(this.getProjectAssignment(), object.getProjectAssignment())
+			.append(this.getEntryDate(), object.getEntryDate())
 			.toComparison();
 	}
 }

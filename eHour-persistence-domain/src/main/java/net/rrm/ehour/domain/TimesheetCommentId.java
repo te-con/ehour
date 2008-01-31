@@ -111,8 +111,8 @@ public class TimesheetCommentId implements Serializable, Comparable<TimesheetCom
 	public int compareTo(TimesheetCommentId object)
 	{
 		return new CompareToBuilder()
-			.append(this.commentDate, object.commentDate)
-			.append(this.userId, object.userId).toComparison();
+			.append(this.getCommentDate(), object.getCommentDate())
+			.append(this.getUserId(), object.getUserId()).toComparison();
 	}
 
 	

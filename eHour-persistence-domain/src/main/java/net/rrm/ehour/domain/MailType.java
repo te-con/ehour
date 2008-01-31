@@ -70,28 +70,7 @@ public class MailType extends DomainObject<Integer, MailType>
 	{
 		this.mailTypeId = mailTypeId;
 	}
-	
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object)
-	{
-		if (!(object instanceof MailType))
-		{
-			return false;
-		}
-		MailType rhs = (MailType) object;
-		return new EqualsBuilder().append(this.mailTypeId, rhs.mailTypeId).append(this.mailType, rhs.mailType).isEquals();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.domain.DomainObject#hashCode()
-	 */
-	public int hashCode()
-	{
-		return new HashCodeBuilder(732615599, 2083936031).appendSuper(super.hashCode()).append(this.mailTypeId).append(this.mailType).toHashCode();
-	}
+
 
 	
 	/*
@@ -110,7 +89,35 @@ public class MailType extends DomainObject<Integer, MailType>
 	 */
 	public int compareTo(MailType o)
 	{
-		// TODO Auto-generated method stub
-		return mailType.compareTo(o.getMailType());
+		return getMailType().compareTo(o.getMailType());
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.domain.DomainObject#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder(732615599, 2083936031)
+			.appendSuper(super.hashCode())
+			.append(this.getMailTypeId())
+			.append(this.getMailType()).toHashCode();
+	}	
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object)
+	{
+		if (!(object instanceof MailType))
+		{
+			return false;
+		}
+		
+		MailType rhs = (MailType) object;
+		return new EqualsBuilder()
+			.append(this.getMailTypeId(), rhs.getMailTypeId())
+			.append(this.getMailType(), rhs.getMailType())
+			.isEquals();
 	}
 }
