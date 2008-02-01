@@ -1,4 +1,4 @@
-<Context path="/ehour" reloadable="false" cookies="true" docBase="${catalina.home}/deploy/ehour-0.7.2.war">
+<Context path="/ehour" reloadable="false" cookies="true" docBase="${catalina.home}/deploy/ehour-0.7.3.war">
   <Resource name="jdbc/eHourDS"
   			auth="Container"
   			type="javax.sql.DataSource"

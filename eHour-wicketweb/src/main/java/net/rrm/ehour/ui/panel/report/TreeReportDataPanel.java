@@ -344,25 +344,35 @@ public class TreeReportDataPanel extends Panel
 			
 			List<Serializable> thisCellValues = new ArrayList<Serializable>();
 			
+			boolean newValueInPreviousColumn = false;
+			
 			// add cells for a row
 			for (Serializable cellValue : rowValues)
 			{
 				thisCellValues.add(cellValue);
+				
+				
 
 				if (reportConfig.getReportColumns()[i].isVisible())
 				{
 					Label cellLabel;
-				
-					if (isDuplicate(i, cellValue))
+					
+					System.out.println(newValueInPreviousColumn);
+					
+					if (isDuplicate(i, cellValue) && !newValueInPreviousColumn)
 					{
 						cellLabel = new Label(Integer.toString(i), new Model(""));
+						newValueInPreviousColumn = false;
 					}
 					else if (reportConfig.getReportColumns()[i].getConversionModel() == null)
 					{
 						cellLabel = new Label(Integer.toString(i), new Model(cellValue));
+						newValueInPreviousColumn = true;
 					}
 					else
 					{
+						newValueInPreviousColumn = true;
+						
 						IModel model;
 
 						try

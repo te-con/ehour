@@ -1,7 +1,27 @@
-eHour 0.7.2 release notes - 23 January 2008
+eHour 0.7.3 release notes - 31 January 2008
+-------------------------------------------
+eHour 0.7.3 fixes some incompatibility issues with Internet Explorer. The popup
+comments window now close properly with IE and so is exporting the Excel reports when eHour is
+running over HTTPS.
+The date picker on the report and admin pages is replaced by a new one. It doesn't
+look as fancy but the pages now load a whole lot faster.
+Other things fixed is using your browser's back button - it resulted in an Internal Error on some pages - 
+and for the Mac people; full Java 5 compatibility. Last but not least, the download package has been put 
+on a strict diet resulting in a 25% decrease in download size. 
 
-Features added and bugs fixed (http://www.ehour.nl/defects/)
-------------------------------------------------------------
+Bugs fixed (http://www.ehour.nl/defects/):
+(082) [Bug / defect] Comments window not working in IE6/IE7
+(078) [Bug / defect] XLS Export does not work with IE6/IE7
+(036) [Bug / defect] Dojo date picker slows down page build
+(081) [Bug / defect] Page not working after using back button
+(079) [Bug / defect] Detailed reports not working when eHour was upgraded
+(077) [Bug / defect] eh/projectManagement/ProjectManagement - 500 error.
+(038) [Bug / defect] Hashed passwords are not salted properly
+
+
+eHour 0.7.2 release notes - 23 January 2008
+-------------------------------------------
+Features added and bugs fixed (http://www.ehour.nl/defects/):
 (056) A timesheet entry can be commented 
 (075) Detailed, day-to-day, reports added
 (008) Fold icon is timesheet is now clickable
@@ -14,8 +34,7 @@ Features added and bugs fixed (http://www.ehour.nl/defects/)
 (074) Logging is configurable
 (037) Input validation fixed in the admin pages
 
-New features
-------------
+New features:
 A new feature was added allowing a person to write a small comment for
 each entry in the timesheet describing for example what (s)he did in that period.
 Comments can be added by clicking on the pencil icon next to the input box for hours.
@@ -28,5 +47,3 @@ Also the layout of the report screen has been changed giving the actual reports 
 To access the new report log in as a user with the reporting role. A new dropdown is placed 
 in the top right of the report criteria sreen. All existing filtering criteria can be applied
 to the detailed report.
-
-
