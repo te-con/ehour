@@ -43,7 +43,6 @@ import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.component.CommonModifiers;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
-import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
@@ -62,6 +61,7 @@ import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -72,6 +72,7 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -93,8 +94,8 @@ public class TimesheetPanel extends Panel implements Serializable
 	@SpringBean
 	private UserService			userService;
 	
-	private	EhourConfig			config;
-	private ServerMessageLabel	serverMsgLabel;
+	private	EhourConfig		config;
+	private WebComponent	serverMsgLabel;
 	
 	/**
 	 * Construct timesheetPanel for entering hours
@@ -149,9 +150,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		setSubmitActions(timesheetForm, commentsFrame, timesheet);
 		
 		// server message
-		serverMsgLabel = new ServerMessageLabel("serverMessage", "whiteText", new Model());
-		serverMsgLabel.setModel(new Model());
-		serverMsgLabel.setEscapeModelStrings(false);
+		serverMsgLabel = new WebComponent("serverMessage");
 		serverMsgLabel.setOutputMarkupId(true);
 		commentsFrame.add(serverMsgLabel);
 		
@@ -269,17 +268,7 @@ public class TimesheetPanel extends Panel implements Serializable
                 persistTimesheetEntries(timesheet);
                 ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
                 
-                serverMsgLabel.setModel(new StringResourceModel("timesheet.weekSaved", 
-											TimesheetPanel.this, 
-											null,
-											new Object[]{new DateModel(timesheet.getWeekStart(), config, DateModel.DATESTYLE_WEEK)}));
-
-                // FIXME scriptaculous lib should be preloaded
-//                serverMsgLabel.startFade();
-//                target.appendJavascript(new Effect.Fade(serverMsgLabel).toJavascript());
-                
-                target.addComponent(serverMsgLabel);
-                
+                updatePostPersistMessage(timesheet, target);
             }
 
 			@Override
@@ -312,6 +301,29 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 		resetButton.setDefaultFormProcessing(false);
 		parent.add(resetButton);
+	}
+
+	/**
+	 * Set message that the hours are saved
+	 * @param timesheet
+	 * @param target
+	 */
+	private void updatePostPersistMessage(Timesheet timesheet, AjaxRequestTarget target)
+	{
+		// server message
+		IModel model = new StringResourceModel("timesheet.weekSaved", 
+													TimesheetPanel.this, 
+													null,
+													new Object[]{timesheet.getTotalBookedHours(),
+																	new DateModel(timesheet.getWeekStart(), config, DateModel.DATESTYLE_FULL_SHORT),
+																	new DateModel(timesheet.getWeekEnd(), config, DateModel.DATESTYLE_FULL_SHORT)});
+		
+		Label label = new Label("serverMessage", model);
+		label.add(new SimpleAttributeModifier("style", "timesheetPersisted"));
+		label.setOutputMarkupId(true);
+		serverMsgLabel.replaceWith(label);
+		serverMsgLabel = label;
+		target.addComponent(label);
 	}
 	
 	/**

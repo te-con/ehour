@@ -45,7 +45,7 @@ public class ServerMessageLabel extends Label
 		add(new SimpleAttributeModifier("class", cssClass));
 		setOutputMarkupId(true);
 
-		add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5))
+		add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(3))
 		{
 			private static final long serialVersionUID = 3340397062856229947L;
 

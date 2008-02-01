@@ -281,7 +281,15 @@ div.timesheet
 .timesheetCommentsTable
 {
 	padding: 0;
+	margin: 0;
 	width: 100%;
+}
+
+
+.timesheetPersisted
+{
+	font: 0.9em Geneva, Arial, Helvetica, sans-serif;
+	color:#233e55;
 }
 
 .timesheetCommentsTable td

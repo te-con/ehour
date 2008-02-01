@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
-import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
@@ -39,6 +38,8 @@ import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -65,7 +66,7 @@ public class MainConfig extends BaseAdminPage
 	@SpringBean
 	private ConfigurationService	configService;
 
-	private Label	serverMessage;
+	private WebComponent serverMessage;
 	private	final 	MainConfigBackingBean configBackingBean;
 	
 	/**
@@ -121,8 +122,7 @@ public class MainConfig extends BaseAdminPage
 		
 		parent.add(configForm);
 		
-		serverMessage = new ServerMessageLabel("serverMessage", "whiteText", new Model());
-		serverMessage.setEscapeModelStrings(false);
+		serverMessage = new WebComponent("serverMessage");
 		serverMessage.setOutputMarkupId(true);
 		configForm.add(serverMessage);
 	}
@@ -157,7 +157,11 @@ public class MainConfig extends BaseAdminPage
 					
 					getEhourWebSession().reloadConfig();
 					
-					serverMessage.setModel(msgModel);
+					Label replacementLabel = new Label("serverMessage", msgModel);
+					replacementLabel.setOutputMarkupId(true);
+					replacementLabel.add(new SimpleAttributeModifier("class", "whiteText"));
+					serverMessage.replaceWith(replacementLabel);
+					serverMessage = replacementLabel;
 					target.addComponent(serverMessage);
 				}
             }		

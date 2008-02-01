@@ -71,6 +71,33 @@ public class Timesheet implements Serializable
 	}
 	
 	/**
+	 * Get total booked hours
+	 * @return
+	 */
+	public Float getTotalBookedHours()
+	{
+		float totalHours = 0;
+		
+		for (Customer customer : customers.keySet())
+		{
+			for (TimesheetRow row: customers.get(customer))
+			{
+				for (TimesheetCell cell : row.getTimesheetCells())
+				{
+					if (cell != null 
+							&& cell.getTimesheetEntry() != null 
+							&& cell.getTimesheetEntry().getHours() != null)
+					{
+						totalHours += cell.getTimesheetEntry().getHours().floatValue();
+					}
+				}
+			}
+		}	
+		
+		return totalHours;
+	}
+	
+	/**
 	 * @return the weekStart
 	 */
 	public Date getWeekStart()
