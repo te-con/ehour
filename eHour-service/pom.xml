@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.7.3</version>
+		<version>0.8-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
@@ -332,6 +332,12 @@
 			<groupId>aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.5.3</version>
+		</dependency>
+		<dependency>
+			<artifactId>servlet-api</artifactId>
+			<groupId>javax.servlet</groupId>
+			<version>2.3</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-configuration</groupId>

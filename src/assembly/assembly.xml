@@ -4,7 +4,7 @@
 		<format>tar.gz</format>
 		<format>zip</format>
 	</formats>
-	<baseDirectory>ehour-${pom.version}-war</baseDirectory>
+	<baseDirectory>ehour-${pom.version}</baseDirectory>
 	<includeBaseDirectory>true</includeBaseDirectory>
 	<moduleSets>
 		<moduleSet>
@@ -16,6 +16,9 @@
 				<unpack>false</unpack>
 				<includeDependencies>false</includeDependencies>
 				<outputFileNameMapping>ehour-${version}.${extension}</outputFileNameMapping>
+				<excludes>
+					<exclude>javax.servlet:servlet-api</exclude>
+				</excludes>
 			</binaries>
 		</moduleSet>
 	</moduleSets>
