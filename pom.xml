@@ -15,6 +15,7 @@
 		<module>eHour-wicketweb</module>
 		<module>eHour-web</module>
 		<module>eHour-standalone</module>
+		<module>eHour-webstart</module>
 	</modules>
 	<description>
 		eHour - web-based time registration for consultancy companies
