@@ -26,9 +26,9 @@ import org.apache.wicket.model.IModel;
 
 public abstract class AbstractIdTab extends AbstractTab
 {
-	private String id;
+	private TabId id;
 	
-	public AbstractIdTab(IModel title, String id)
+	public AbstractIdTab(IModel title, TabId id)
 	{
 		super(title);
 		
@@ -38,8 +38,17 @@ public abstract class AbstractIdTab extends AbstractTab
 	/**
 	 * @return the id
 	 */
-	public String getId()
+	public TabId getId()
 	{
 		return id;
 	}
+	
+	/**
+	 * Type interface
+	 * @author Thies
+	 *
+	 */
+	public interface TabId
+	{
+	}	
 }

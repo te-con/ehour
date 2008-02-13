@@ -31,7 +31,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 
 public abstract class MultiTabbedPanel extends AjaxTabbedPanel
 {
-
 	public MultiTabbedPanel(String id)
 	{
 		super(id, new ArrayList<AbstractTab>());
@@ -67,7 +66,7 @@ public abstract class MultiTabbedPanel extends AjaxTabbedPanel
 	 * @param id
 	 * @return
 	 */
-	public boolean isTabIdAdded(String id)
+	public boolean isTabIdAdded(AbstractIdTab.TabId id)
 	{
 		for (Object tabObj : getTabs())
 		{
@@ -133,5 +132,4 @@ public abstract class MultiTabbedPanel extends AjaxTabbedPanel
 	{
 		
 	}
-	
 }
