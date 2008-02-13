@@ -16,17 +16,12 @@
 
 package net.rrm.ehour.ui.component;
 
-import java.util.ArrayList;
-
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.NoEntrySelectedPanel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -34,11 +29,11 @@ import org.apache.wicket.model.ResourceModel;
  * AjaxTabbedPanel that passes the index to a pre process method
  **/
 @SuppressWarnings({"unchecked", "serial"})
-public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
+public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 {
 	private static final long serialVersionUID = -2437819961082840272L;
 
-	 static final int TABPOS_ADD = 0;
+	public static final int TABPOS_ADD = 0;
 	public static final int TABPOS_EDIT = 1;
 	
 	private AdminBackingBean	addBackingBean;
@@ -53,7 +48,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	 */
 	public AddEditTabbedPanel(String id, ResourceModel addTabTitle, ResourceModel editTabTitle)
 	{
-		super(id, new ArrayList<AbstractTab>());
+		super(id);
 		
 		this.addTabTitle = addTabTitle;
 		this.editTabTitle = editTabTitle;
@@ -139,55 +134,6 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 		
 		return getTabs().size() - 1;
 	}
-
-	/**
-	 * Set selected tab based on id
-	 * @param title
-	 */
-	public void setSelectedTabOnId(String id)
-	{
-		int i = 0;
-		
-		for (Object tabObj : getTabs())
-		{
-			if (tabObj instanceof AbstractIdTab)
-			{
-				AbstractIdTab idTab = (AbstractIdTab)tabObj;
-				
-				if (idTab.getId().equals(id))
-				{
-					setSelectedTab(i);
-					break;
-				}
-			}
-			
-			i++;
-		}
-	}
-	
-	/**
-	 * Is the with the id already added
-	 * @param id
-	 * @return
-	 */
-	public boolean isTabIdAdded(String id)
-	{
-		for (Object tabObj : getTabs())
-		{
-			if (tabObj instanceof AbstractIdTab)
-			{
-				AbstractIdTab idTab = (AbstractIdTab)tabObj;
-				
-				if (idTab.getId().equals(id))
-				{
-					return true;
-				}
-			}
-		}
-		
-		return false;
-		
-	}
 	
 	
 	/**
@@ -225,39 +171,14 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 	{
 		return new NoEntrySelectedPanel(panelId);
 	}	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel#newLink(java.lang.String, int)
-	 */
-	@Override
-	protected WebMarkupContainer newLink(String linkId, final int index)
-	{
-		return new AjaxFallbackLink(linkId)
-		{
 
-			private static final long serialVersionUID = 1L;
-
-			public void onClick(AjaxRequestTarget target)
-			{
-				preProcessTabSwitch(index);
-				
-				setSelectedTab(index);
-				
-				if (target != null)
-				{
-					target.addComponent(AddEditTabbedPanel.this);
-				}
-				onAjaxUpdate(target);
-			}
-		};
-	}
 	
 	/**
 	 * 
 	 * @param target
 	 * @param index
 	 */
+	@Override
 	protected void preProcessTabSwitch(int index)
 	{
 		// if "Add" tab is clicked again, reset the backing bean as it's the
@@ -272,18 +193,7 @@ public abstract class AddEditTabbedPanel extends AjaxTabbedPanel
 		addBackingBean.setServerMessage(null);
 		editBackingBean.setServerMessage(null);
 	}	
-	
-	/**
-	 * Removes tab from specified position
-	 * @param index
-	 */
-	public void removeTab(int index)
-	{
-		if (getTabs().size() >= index + 1)
-		{
-			getTabs().remove(index);;
-		}
-	}
+
 	
 	/**
 	 * Switch tab
