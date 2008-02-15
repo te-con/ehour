@@ -40,7 +40,7 @@ public abstract class MultiTabbedPanel extends AjaxTabbedPanel
 	 * Set selected tab based on id
 	 * @param title
 	 */
-	public void setSelectedTabOnId(String id)
+	public void setSelectedTabOnId(AbstractIdTab.TabId id)
 	{
 		int i = 0;
 		
@@ -62,12 +62,33 @@ public abstract class MultiTabbedPanel extends AjaxTabbedPanel
 	}	
 	
 	/**
+	 * 
+	 * @param tab
+	 */
+	@SuppressWarnings("unchecked")
+	public void addOrUpdateTab(AbstractIdTab tab)
+	{
+		int idx = getIndexForTabId(tab.getId());
+		
+		if (idx == -1)
+		{
+			getTabs().add(tab);
+		}
+		else
+		{
+			getTabs().set(idx, tab);
+		}
+	}
+	
+	/**
 	 * Is the with the id already added
 	 * @param id
 	 * @return
 	 */
-	public boolean isTabIdAdded(AbstractIdTab.TabId id)
+	public int getIndexForTabId(AbstractIdTab.TabId id)
 	{
+		int index = 0;
+		
 		for (Object tabObj : getTabs())
 		{
 			if (tabObj instanceof AbstractIdTab)
@@ -76,12 +97,14 @@ public abstract class MultiTabbedPanel extends AjaxTabbedPanel
 				
 				if (idTab.getId().equals(id))
 				{
-					return true;
+					return index;
 				}
 			}
+			
+			index++;
 		}
 		
-		return false;
+		return -1;
 	}	
 	
 	
