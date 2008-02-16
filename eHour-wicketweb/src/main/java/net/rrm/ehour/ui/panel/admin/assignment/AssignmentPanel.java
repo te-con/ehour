@@ -16,11 +16,7 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment;
 
-import java.util.List;
-
-import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
@@ -58,9 +54,7 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 	 * @param model
 	 */
 	public AssignmentPanel(String id,
-							final User user,
-							final List<Customer> customers,
-							final List<ProjectAssignmentType> types)
+							final User user)
 	{
 		super(id);
 		
@@ -78,18 +72,14 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 			protected Panel getAddPanel(String panelId)
 			{
 				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel(getAddBackingBean()),
-												customers,
-												types);
+												new CompoundPropertyModel(getAddBackingBean()));
 			}
 
 			@Override
 			protected Panel getEditPanel(String panelId)
 			{
 				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel(getEditBackingBean()),
-												customers,
-												types);			
+												new CompoundPropertyModel(getEditBackingBean()));
 			}
 
 			@Override

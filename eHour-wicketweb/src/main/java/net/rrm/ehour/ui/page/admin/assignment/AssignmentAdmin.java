@@ -18,12 +18,8 @@ package net.rrm.ehour.ui.page.admin.assignment;
 
 import java.util.List;
 
-import net.rrm.ehour.customer.service.CustomerService;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
@@ -59,15 +55,9 @@ public class AssignmentAdmin extends BaseAdminPage
 	
 	@SpringBean
 	private	UserService					userService;
-	@SpringBean
-	private	CustomerService				customerService;
-	@SpringBean
-	private ProjectAssignmentService	projectAssignmentService;
 	private EntrySelectorFilter			currentFilter;
 	private	final static Logger			logger = Logger.getLogger(AssignmentAdmin.class);
 	private ListView					userListView;
-	private	List<Customer>				customers;
-	private List<ProjectAssignmentType>	assignmentTypes;
 	private	Panel						assignmentPanel;		
 	
 	/**
@@ -160,9 +150,7 @@ public class AssignmentAdmin extends BaseAdminPage
 	private void replaceAssignmentPanel(AjaxRequestTarget target, User user)
 	{
 		AssignmentPanel	newAssignmentPanel = new AssignmentPanel("assignmentPanel",
-																user,
-																getCustomers(), 
-																getProjectAssignmentTypes());
+																user);
 		
 		assignmentPanel.replaceWith(newAssignmentPanel);
 		target.addComponent(newAssignmentPanel);
@@ -194,33 +182,4 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		return users;
 	}	
-	
-	/**
-	 * Get all customers
-	 * @return
-	 */
-	private List<Customer> getCustomers()
-	{
-		if (customers == null)
-		{
-			customers = customerService.getCustomers(true);
-		}
-		
-		return customers;
-	}
-	
-	/**
-	 * Get all project assignment types
-	 * @return
-	 */
-	private List<ProjectAssignmentType> getProjectAssignmentTypes()
-	{
-		if (assignmentTypes == null)
-		{
-			assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();
-		}
-		
-		return assignmentTypes;
-	}
-
 }

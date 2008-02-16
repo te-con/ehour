@@ -26,6 +26,7 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
@@ -78,6 +79,8 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	
 	@SpringBean
 	private CustomerService	customerService;
+	@SpringBean
+	private ProjectAssignmentService	projectAssignmentService;
 	protected	EhourConfig		config;
 	/**
 	 * 
@@ -87,9 +90,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @param assignmenTypes
 	 */
 	public AssignmentFormPanel(String id,
-								final CompoundPropertyModel model,
-								List<Customer> customers,
-								List<ProjectAssignmentType> assignmenTypes)
+								final CompoundPropertyModel model)
 	{
 		super(id, model);
 		
@@ -102,7 +103,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		final Form form = new Form("assignmentForm");		
 		
-		setupForm(form, model, customers, assignmenTypes);
+		setupForm(form, model);
 
 		greyBorder.add(form);		
 
@@ -112,15 +113,13 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * Setup form
 	 */
 	protected void setupForm(Form form,
-								final CompoundPropertyModel model,
-								List<Customer> customers,
-								List<ProjectAssignmentType> assignmenTypes)
+								final CompoundPropertyModel model)
 	{
 		// assignment type
-		Component[] projectDependentComponents = addAssignmentType(form, assignmenTypes, model);
+		Component[] projectDependentComponents = addAssignmentType(form, model);
 
 		// setup the customer & project dropdowns
-		addCustomerAndProjectChoices(form, model, customers, projectDependentComponents);
+		addCustomerAndProjectChoices(form, model, projectDependentComponents);
 		
 		// add role
 		TextField role = new TextField("projectAssignment.role");
@@ -161,13 +160,15 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @param assignmenTypes
 	 * @return the notify pm checkbox as it needs to be refreshed by the project dropdown
 	 */
-	protected Component[] addAssignmentType(final Form form, List<ProjectAssignmentType> assignmenTypes, IModel model)
+	protected Component[] addAssignmentType(final Form form, IModel model)
 	{
+		List<ProjectAssignmentType> assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();		
+		
 		final PropertyModel	showAllottedHoursModel = new PropertyModel(model, "showAllottedHours");
 		final PropertyModel	showOverrunHoursModel = new PropertyModel(model, "showOverrunHours");
 		
 		// assignment type
-		final DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmenTypes, new ProjectAssignmentTypeRenderer(this));
+		final DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer(this));
 		assignmentTypeChoice.setRequired(true);
 		assignmentTypeChoice.setNullValid(false);
 		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
@@ -348,9 +349,10 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 */
 	protected void addCustomerAndProjectChoices(Form form, 
 											final IModel model,
-											List<Customer> customers,
 											final Component[] projectDependentComponents)
 	{
+		List<Customer> customers = customerService.getCustomers(true);
+		
 		// customer
 		DropDownChoice customerChoice = new DropDownChoice("customer", customers, new ChoiceRenderer("fullName"));
 		customerChoice.setRequired(true);
