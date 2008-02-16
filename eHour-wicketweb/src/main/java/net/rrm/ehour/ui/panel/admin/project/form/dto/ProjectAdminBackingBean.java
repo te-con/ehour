@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.panel.admin.project.form.dto;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 
@@ -25,33 +23,16 @@ import net.rrm.ehour.ui.model.AdminBackingBean;
  * Project admin backing bean
  **/
 
-public class ProjectAdminBackingBean implements AdminBackingBean, Serializable
+public class ProjectAdminBackingBean extends AdminBackingBean
 {
 	private static final long serialVersionUID = 5862844398838328155L;
 	
-	private String serverMessage;
 	private	Project	project;
 	
 
 	public ProjectAdminBackingBean(Project project)
 	{
 		this.project = project;
-	}
-	
-	/**
-	 * 
-	 */
-	public String getServerMessage()
-	{
-		return serverMessage;
-	}
-
-	/**
-	 * 
-	 */
-	public void setServerMessage(String serverMessage)
-	{
-		this.serverMessage = serverMessage;
 	}
 
 	/**

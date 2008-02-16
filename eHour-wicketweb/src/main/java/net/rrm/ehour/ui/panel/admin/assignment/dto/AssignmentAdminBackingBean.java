@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.panel.admin.assignment.dto;
 
-import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.domain.Customer;
@@ -28,10 +27,9 @@ import net.rrm.ehour.ui.model.AdminBackingBean;
  * Backing bean for project assignments
  **/
 
-public class AssignmentAdminBackingBean implements AdminBackingBean, Serializable
+public class AssignmentAdminBackingBean extends AdminBackingBean
 {
 	private static final long serialVersionUID = 487430742116953930L;
-	private	String				serverMessage;
 	private	ProjectAssignment	projectAssignment;
 	private	List<Project>		projects;
 	private	Customer			customer;
@@ -84,20 +82,6 @@ public class AssignmentAdminBackingBean implements AdminBackingBean, Serializabl
 					: false;
 	}	
 	
-	/**
-	 * @return the serverMessage
-	 */
-	public String getServerMessage()
-	{
-		return serverMessage;
-	}
-	/**
-	 * @param serverMessage the serverMessage to set
-	 */
-	public void setServerMessage(String serverMessage)
-	{
-		this.serverMessage = serverMessage;
-	}
 	/**
 	 * @return the projectAssignment
 	 */

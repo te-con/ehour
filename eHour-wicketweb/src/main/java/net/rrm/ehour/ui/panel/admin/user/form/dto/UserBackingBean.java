@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.panel.admin.user.form.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import net.rrm.ehour.domain.User;
@@ -28,7 +27,7 @@ import net.rrm.ehour.util.EhourConstants;
  * Backing bean for users
  **/
 
-public class UserBackingBean implements AdminBackingBean, Serializable
+public class UserBackingBean extends AdminBackingBean
 {
 	private static final long serialVersionUID = 2781902854421696575L;
 	private User	user;
@@ -36,8 +35,6 @@ public class UserBackingBean implements AdminBackingBean, Serializable
 	private	String	originalUsername;
 	private	String	originalPassword;
 	private	boolean	isPm;
-	private String	serverMessage;
-	
 	
 	public UserBackingBean(User user)
 	{
@@ -96,15 +93,5 @@ public class UserBackingBean implements AdminBackingBean, Serializable
 	public boolean isPm()
 	{
 		return isPm;
-	}
-
-	public String getServerMessage()
-	{
-		return serverMessage;
-	}
-
-	public void setServerMessage(String serverMessage)
-	{
-		this.serverMessage = serverMessage;
 	}
 }

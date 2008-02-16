@@ -78,7 +78,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	
 	@SpringBean
 	private CustomerService	customerService;
-	private	EhourConfig		config;
+	protected	EhourConfig		config;
 	/**
 	 * 
 	 * @param id
@@ -100,8 +100,22 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		setOutputMarkupId(true);
 		
-		final Form form = new Form("assignmentForm");
+		final Form form = new Form("assignmentForm");		
+		
+		setupForm(form, model, customers, assignmenTypes);
 
+		greyBorder.add(form);		
+
+	}
+
+	/**
+	 * Setup form
+	 */
+	protected void setupForm(Form form,
+								final CompoundPropertyModel model,
+								List<Customer> customers,
+								List<ProjectAssignmentType> assignmenTypes)
+	{
 		// assignment type
 		Component[] projectDependentComponents = addAssignmentType(form, assignmenTypes, model);
 
@@ -113,7 +127,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(role);
 		
 		// add start & end dates
-		addDates(form, model);
+		addDates(form, form, model);
 		
 		// add hourly rate
 		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate",
@@ -138,8 +152,6 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 									,((AssignmentAdminBackingBean)model.getObject()).getProjectAssignment().isDeletable() 
 									,this 
 									,config);
-
-		greyBorder.add(form);
 	}
 
 	
@@ -149,7 +161,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @param assignmenTypes
 	 * @return the notify pm checkbox as it needs to be refreshed by the project dropdown
 	 */
-	private Component[] addAssignmentType(final Form form, List<ProjectAssignmentType> assignmenTypes, IModel model)
+	protected Component[] addAssignmentType(final Form form, List<ProjectAssignmentType> assignmenTypes, IModel model)
 	{
 		final PropertyModel	showAllottedHoursModel = new PropertyModel(model, "showAllottedHours");
 		final PropertyModel	showOverrunHoursModel = new PropertyModel(model, "showOverrunHours");
@@ -243,7 +255,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @param form
 	 * @param model
 	 */
-	private void addDates(Form form, final IModel model)
+	protected void addDates(WebMarkupContainer parent, Form form, final IModel model)
 	{
 		PropertyModel	infiniteStartDateModel = new PropertyModel(model, "infiniteStartDate");
 		PropertyModel	infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
@@ -275,7 +287,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 
 		startDateHider.add(innerStartDateHider);
 
-		form.add(startDateHider);
+		parent.add(startDateHider);
 		
 		// infinite start date toggle
 		AjaxCheckBox infiniteStart = new AjaxCheckBox("infiniteStartDate")
@@ -311,7 +323,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		innerEndDateHider.add(dateEnd);
 		innerEndDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteEndDateModel, true));
 		endDateHider.add(innerEndDateHider);		
-		form.add(endDateHider);	
+		parent.add(endDateHider);	
 		
 		// infinite end date toggle
 		AjaxCheckBox infiniteEnd = new AjaxCheckBox("infiniteEndDate")
@@ -334,7 +346,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @param model
 	 * @param customers
 	 */
-	private void addCustomerAndProjectChoices(Form form, 
+	protected void addCustomerAndProjectChoices(Form form, 
 											final IModel model,
 											List<Customer> customers,
 											final Component[] projectDependentComponents)

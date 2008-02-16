@@ -16,21 +16,30 @@
 
 package net.rrm.ehour.ui.model;
 
+import java.io.Serializable;
+
 /**
  * Backing bean interface for the admin screens. 
  **/
 
-public interface AdminBackingBean
+public abstract class AdminBackingBean implements Serializable
 {
+	private String	serverMessage;
+
 	/**
-	 * 
-	 * @return
+	 * @return the serverMessage
 	 */
-	public String getServerMessage();
+	public String getServerMessage()
+	{
+		return serverMessage;
+	}
+
+	/**
+	 * @param serverMessage the serverMessage to set
+	 */
+	public void setServerMessage(String serverMessage)
+	{
+		this.serverMessage = serverMessage;
+	}	
 	
-	/**
-	 * 
-	 * @param str
-	 */
-	public void setServerMessage(String str);
 }
