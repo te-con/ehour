@@ -97,33 +97,23 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 		
-		Border greyBorder = getBorder();
-		add(greyBorder);
-		
 		setOutputMarkupId(true);
 		
-		final Form form = new Form("assignmentForm");		
-		
-		setupForm(form, model);
+		add(setUpPage(model));
+	}
 
-		greyBorder.add(form);		
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	protected Border getBorder()
-	{
-		return new GreySquaredRoundedBorder("border", 450);
-	}
 
 	/**
 	 * Setup form
 	 */
-	protected void setupForm(Form form,
-								final IModel model)
+	protected WebMarkupContainer setUpPage(final IModel model)
 	{
+		Border greyBorder = new GreySquaredRoundedBorder("border", 450);
+		add(greyBorder);
+		
+		final Form form = new Form("assignmentForm");
+		greyBorder.add(form);
+		
 		Component[] projectDependentComponents = addProjectDuration(form, model);
 		
 		// setup the customer & project dropdowns
@@ -139,6 +129,8 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 									,((AssignmentAdminBackingBean)model.getObject()).getProjectAssignment().isDeletable() 
 									,this 
 									,config);
+		
+		return greyBorder;
 	}
 
 	/**
