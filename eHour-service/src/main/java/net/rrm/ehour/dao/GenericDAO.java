@@ -62,4 +62,10 @@ public interface GenericDAO <T extends DomainObject, PK extends Serializable>
 	 * Merge the domain object
 	 */
 	public T merge(T domoj);
+	
+	/**
+	 * Initialize lazy loading domain object
+	 * @param domObj
+	 */
+	public void initializeObject(Object domObj);
 }

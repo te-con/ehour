@@ -416,7 +416,10 @@ public class UserServiceImpl implements UserService
 	public List<User> getUsers(UserRole userRole)
 	{
 		logger.debug("Finding users on role");
-		return getUsersByNameMatch(null, true, userRole);
+		List<User> users = getUsersByNameMatch(null, true, userRole);
+		
+//		userDAO.initializeObject(users);
+		return users;
 	}
 
 	/*
