@@ -52,6 +52,7 @@ import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -96,7 +97,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", 450);
+		Border greyBorder = getBorder();
 		add(greyBorder);
 		
 		setOutputMarkupId(true);
@@ -106,7 +107,15 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		setupForm(form, model);
 
 		greyBorder.add(form);		
-
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected Border getBorder()
+	{
+		return new GreySquaredRoundedBorder("border", 450);
 	}
 
 	/**
