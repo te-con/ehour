@@ -122,20 +122,35 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * Setup form
 	 */
 	protected void setupForm(Form form,
-								final CompoundPropertyModel model)
+								final IModel model)
 	{
-		// assignment type
-		Component[] projectDependentComponents = addAssignmentType(form, model);
-
+		Component[] projectDependentComponents = addProjectDuration(form, model);
+		
 		// setup the customer & project dropdowns
 		addCustomerAndProjectChoices(form, model, projectDependentComponents);
 		
+		addRateRoleActive(form, model);
+		
+		// data save label
+		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
+		
+		// add submit form
+		FormUtil.setSubmitActions(form 
+									,((AssignmentAdminBackingBean)model.getObject()).getProjectAssignment().isDeletable() 
+									,this 
+									,config);
+	}
+
+	/**
+	 * Add rate, role & active
+	 * @param form
+	 * @param model
+	 */
+	protected void addRateRoleActive(Form form, final IModel model)
+	{
 		// add role
 		TextField role = new TextField("projectAssignment.role");
 		form.add(role);
-		
-		// add start & end dates
-		addDates(form, form, model);
 		
 		// add hourly rate
 		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate",
@@ -151,15 +166,23 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		// active
 		form.add(new CheckBox("projectAssignment.active"));
+	}
+	
+	/**
+	 * Add project duration
+	 * @param form
+	 * @param model
+	 * @return
+	 */
+	protected Component[] addProjectDuration(Form form, final IModel model)
+	{
+		// assignment type
+		Component[] projectDependentComponents = addAssignmentType(form, model);
+
+		// add start & end dates
+		addDates(form, form, model);
 		
-		// data save label
-		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
-		
-		// add submit form
-		FormUtil.setSubmitActions(form 
-									,((AssignmentAdminBackingBean)model.getObject()).getProjectAssignment().isDeletable() 
-									,this 
-									,config);
+		return projectDependentComponents;
 	}
 
 	
@@ -271,8 +294,6 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		PropertyModel	infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
 		
 		// start date
-//		final DojoDatePicker dateStart = new DojoDatePicker("projectAssignment.dateStart", 
-//																DateUtil.getPatternForDateLocale(config.getLocale()));
         final DateTextField dateStart = new DateTextField("projectAssignment.dateStart", new PropertyModel(model,
         "projectAssignment.dateStart"), new StyleDateConverter("S-", true));
 		
