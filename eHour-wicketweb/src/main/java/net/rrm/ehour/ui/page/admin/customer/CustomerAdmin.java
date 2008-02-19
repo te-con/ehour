@@ -70,7 +70,10 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	{
 		super(new ResourceModel("admin.customer.title"),
 				new ResourceModel("admin.customer.addCustomer"),
-				new ResourceModel("admin.customer.editCustomer"));
+				new ResourceModel("admin.customer.editCustomer"),
+				new ResourceModel("admin.customer.noEditEntrySelected"),
+				"admin.customer.help.header",
+				"admin.customer.help.body");
 		
 		// setup the entry selector
 		List<Customer> customers;

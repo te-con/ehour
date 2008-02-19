@@ -40,18 +40,22 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	private AdminBackingBean	editBackingBean;
 	private	ResourceModel		addTabTitle;
 	private	ResourceModel		editTabTitle;
+	private ResourceModel 		noEntrySelectedText;
 	
 	/**
 	 * 
 	 * @param id
 	 * @param tabs
 	 */
-	public AddEditTabbedPanel(String id, ResourceModel addTabTitle, ResourceModel editTabTitle)
+	public AddEditTabbedPanel(String id, 
+								ResourceModel addTabTitle, ResourceModel editTabTitle, 
+								ResourceModel noEntrySelectedText)
 	{
 		super(id);
 		
 		this.addTabTitle = addTabTitle;
 		this.editTabTitle = editTabTitle;
+		this.noEntrySelectedText = noEntrySelectedText;
 		
 		addBackingBean = getNewAddBackingBean();
 		editBackingBean = getNewEditBackingBean();
@@ -169,7 +173,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	 */
 	protected Panel getNoSelectionPanel(String panelId)
 	{
-		return new NoEntrySelectedPanel(panelId);
+		return new NoEntrySelectedPanel(panelId, false, noEntrySelectedText);
 	}	
 
 	

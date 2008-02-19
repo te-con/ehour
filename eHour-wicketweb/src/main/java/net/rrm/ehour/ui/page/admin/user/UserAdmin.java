@@ -73,7 +73,10 @@ public class UserAdmin extends BaseTabbedAdminPage
 	{
 		super(new ResourceModel("admin.user.title"),
 					new ResourceModel("admin.user.addUser"),
-					new ResourceModel("admin.user.editUser"));
+					new ResourceModel("admin.user.editUser"),
+					new ResourceModel("admin.user.noEditEntrySelected"),
+					"admin.user.help.header",
+					"admin.user.help.body");
 		
 		List<User>	users;
 		users = getUsers();

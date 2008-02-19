@@ -70,7 +70,7 @@ public class ProjectManagement extends BasePage
 		setModel(model);
 		
 		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
+		add(new ContextualHelpPanel("contextHelp", "pmReport.help.header", "pmReport.help.body"));
 
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model, false));

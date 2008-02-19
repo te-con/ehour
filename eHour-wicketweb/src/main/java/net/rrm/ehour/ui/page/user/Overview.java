@@ -56,7 +56,7 @@ public class Overview extends BasePage
 		add(calendarPanel);
 		
 		// contextual help
-		helpPanel = new ContextualHelpPanel("contextHelp");
+		helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
 		helpPanel.setOutputMarkupId(true);
 		add(helpPanel);
 		

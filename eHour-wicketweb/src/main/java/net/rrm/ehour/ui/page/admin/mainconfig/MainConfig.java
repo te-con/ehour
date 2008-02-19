@@ -74,7 +74,9 @@ public class MainConfig extends BaseAdminPage
 	 */
 	public MainConfig()
 	{
-		super(new ResourceModel("admin.config.title"), null);
+		super(new ResourceModel("admin.config.title"), null,
+						"admin.config.help.header",
+						"admin.config.help.body");
 		
 		configBackingBean = new MainConfigBackingBean(getDbConfig());
 		

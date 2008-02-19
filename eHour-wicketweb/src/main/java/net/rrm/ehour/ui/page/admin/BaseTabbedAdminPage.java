@@ -41,12 +41,15 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	 */
 	public BaseTabbedAdminPage(ResourceModel pageTitle,
 								ResourceModel addTabTitle,
-								ResourceModel editTabTitle)
+								ResourceModel editTabTitle,
+								ResourceModel noEntrySelectedText,
+								String headerResourceId, String bodyResourceId
+								)
 	{
-		super(pageTitle, null);
+		super(pageTitle, null, headerResourceId, bodyResourceId);
 		
 		
-		tabbedPanel = new AddEditTabbedPanel("tabs", addTabTitle, editTabTitle)
+		tabbedPanel = new AddEditTabbedPanel("tabs", addTabTitle, editTabTitle, noEntrySelectedText)
 		{
 			@Override
 			protected Panel getAddPanel(String panelId)
@@ -71,31 +74,10 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 			{
 				return getNewEditBaseBackingBean();
 			}
-			
 		};
 		
 		add(tabbedPanel);
 	}
-//
-//	private void printHierarchy(MarkupContainer container)
-//	{
-//		final StringBuffer buffer = new StringBuffer();
-//		buffer.append("Page " + getId() + " (version " + getCurrentVersionNumber() + ")");
-//		container.visitChildren(new IVisitor()
-//		{
-//			public Object component(Component component)
-//			{
-//				int levels = 0;
-//				for (Component current = component; current != null; current = current.getParent())
-//				{
-//					levels++;
-//				}
-//				System.out.println(StringValue.repeat(levels, "	") + component.getPageRelativePath() + ":" + Classes.simpleName(component.getClass()));
-//				return null;
-//			}
-//		});
-//	}
-	
 	
 	/**
 	 * Get the backing bean for the add panel
@@ -141,6 +123,4 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	{
 		return 0;
 	}
-	
-	
 }

@@ -36,14 +36,14 @@ public class BaseAdminPage extends BasePage
 	 */
 	private static final long serialVersionUID = -1388562551962543722L;
 
-	public BaseAdminPage(ResourceModel pageTitle, IModel model)
+	public BaseAdminPage(ResourceModel pageTitle, IModel model, String headerResourceId, String bodyResourceId)
 	{
 		super(pageTitle, model);
 		
 		add(new AdminNavPanel("adminNav"));
 		
 		// contextual help
-		add(new ContextualHelpPanel("contextHelp"));
+		add(new ContextualHelpPanel("contextHelp", headerResourceId, bodyResourceId));
 
 	}
 

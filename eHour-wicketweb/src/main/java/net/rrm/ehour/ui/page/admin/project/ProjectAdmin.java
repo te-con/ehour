@@ -75,7 +75,10 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	{
 		super(new ResourceModel("admin.project.title"),
 				new ResourceModel("admin.project.addProject"),
-				new ResourceModel("admin.project.editProject"));
+				new ResourceModel("admin.project.editProject"),
+				new ResourceModel("admin.project.noEditEntrySelected"),
+				"admin.project.help.header",
+				"admin.project.help.body");
 		
 		List<Project>	projects;
 		projects = getProjects();

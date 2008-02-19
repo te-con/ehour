@@ -65,7 +65,8 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 		
 		tabbedPanel = new AddEditTabbedPanel("assignmentTabs",
 												new ResourceModel("admin.assignment.newAssignment"),
-												new ResourceModel("admin.assignment.editAssignment"))
+												new ResourceModel("admin.assignment.editAssignment"),
+												new ResourceModel("admin.assignment.noEditEntrySelected"))
 		{
 
 			@Override

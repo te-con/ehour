@@ -67,7 +67,10 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 	{
 		super(new ResourceModel("admin.dept.title"),
 				new ResourceModel("admin.dept.addDepartment"),
-				new ResourceModel("admin.dept.editDepartment"));
+				new ResourceModel("admin.dept.editDepartment"),
+				new ResourceModel("admin.dept.noEditEntrySelected"),
+				"admin.dept.help.header",
+				"admin.dept.help.body");
 		
 		List<UserDepartment>	departments;
 		departments = getUserDepartments();

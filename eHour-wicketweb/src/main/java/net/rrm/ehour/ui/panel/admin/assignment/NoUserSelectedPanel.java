@@ -40,7 +40,7 @@ public class NoUserSelectedPanel extends Panel
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NoUserSelectedPanel(String id)
+	public NoUserSelectedPanel(String id, String resourceId)
 	{
 		super(id);
 		
@@ -48,7 +48,7 @@ public class NoUserSelectedPanel extends Panel
 		Border greyBorder = new GreyRoundedBorder("border", 450);
 		add(greyBorder);
 
-		greyBorder.add(new Label("noEntry", new ResourceModel("admin.assignment.noUserSelected")));
+		greyBorder.add(new Label("noEntry", new ResourceModel(resourceId)));
 
 		// this is what we call a hack sir
         final DateTextField dateStart = new DateTextField("dummyDate", new Model(), new StyleDateConverter("S-", true));

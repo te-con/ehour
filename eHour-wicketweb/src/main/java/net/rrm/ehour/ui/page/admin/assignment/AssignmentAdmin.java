@@ -65,7 +65,9 @@ public class AssignmentAdmin extends BaseAdminPage
 	 */
 	public AssignmentAdmin()
 	{
-		super(new ResourceModel("admin.assignment.title"), null);
+		super(new ResourceModel("admin.assignment.title"), null, 
+				"admin.assignment.help.header",
+				"admin.assignment.help.body");
 		
 		List<User>	users;
 		users = getUsers();
@@ -81,7 +83,7 @@ public class AssignmentAdmin extends BaseAdminPage
 										userListHolder,
 										new StringResourceModel("admin.assignment.filter", this, null)));
 		
-		assignmentPanel = new NoUserSelectedPanel("assignmentPanel");
+		assignmentPanel = new NoUserSelectedPanel("assignmentPanel", "admin.assignment.noEditEntrySelected");
 		
 		add(assignmentPanel);
 	}

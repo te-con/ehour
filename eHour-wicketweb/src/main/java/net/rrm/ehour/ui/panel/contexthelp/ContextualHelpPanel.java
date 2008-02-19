@@ -27,16 +27,6 @@ import org.apache.wicket.model.ResourceModel;
 public class ContextualHelpPanel extends Panel
 {
 	private static final long serialVersionUID = 8054029544833333835L;
-
-	/**
-	 * 
-	 * @param id
-	 */
-	
-	public ContextualHelpPanel(String id)
-	{
-		this(id, "help.header", "help.body");
-	}	
 	
 	/**
 	 * 

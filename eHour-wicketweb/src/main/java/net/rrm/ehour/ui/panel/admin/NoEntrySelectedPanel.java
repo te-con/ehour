@@ -31,19 +31,14 @@ import org.apache.wicket.model.ResourceModel;
 public class NoEntrySelectedPanel extends Panel
 {
 	private static final long serialVersionUID = -4318947090257979895L;
-
-	public NoEntrySelectedPanel(String id)
-	{
-		this(id, false);
-	}
 	
-	public NoEntrySelectedPanel(String id, boolean useRoundBorder)
+	public NoEntrySelectedPanel(String id, boolean useRoundBorder, ResourceModel noEntrySelectedModelText)
 	{
 		super(id);
 		
 		Border greyBorder = (useRoundBorder) ? new GreyRoundedBorder("border", 500) : new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 
-		greyBorder.add(new Label("noEntry", new ResourceModel("admin.noEditEntrySelected")));
+		greyBorder.add(new Label("noEntry", noEntrySelectedModelText));
 	}	
 }
