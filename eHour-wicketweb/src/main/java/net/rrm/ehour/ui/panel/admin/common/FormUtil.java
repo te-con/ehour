@@ -106,7 +106,7 @@ public class FormUtil
 			}		
         };
         
-        deleteButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("deleteConfirmation")));
+        deleteButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("general.deleteConfirmation")));
         deleteButton.setVisible(includeDelete);
         form.add(deleteButton);
 	}	

@@ -175,7 +175,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		catch (Exception e)
 		{
 			logger.error("While persisting/deleting project", e);
-			backingBean.setServerMessage(getLocalizer().getString("saveError", this));
+			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
 			target.addComponent(this);
 		}
 	}

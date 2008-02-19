@@ -132,7 +132,7 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 		catch (Exception e)
 		{
 			logger.error("While persisting/deleting customer", e);
-			backingBean.setServerMessage(getLocalizer().getString("saveError", this));
+			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
 			target.addComponent(this);
 		}
 	}	

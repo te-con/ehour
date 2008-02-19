@@ -70,7 +70,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	public void succesfulSave(AjaxRequestTarget target)
 	{
 		addBackingBean = getNewAddBackingBean();
-		addBackingBean.setServerMessage(getLocalizer().getString("dataSaved", this));
+		addBackingBean.setServerMessage(getLocalizer().getString("general.dataSaved", this));
 		addAddTab();
 		setSelectedTab(TABPOS_ADD);
 		
@@ -83,7 +83,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	 */
 	public void failedSave(AdminBackingBean backingBean, AjaxRequestTarget target)
 	{
-		backingBean.setServerMessage(getLocalizer().getString("saveError", this));
+		backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
 		target.addComponent(this);
 	}	
 	

@@ -149,7 +149,7 @@ public class MainConfig extends BaseAdminPage
 					try
 					{
 						configService.persistConfiguration(configBackingBean.getConfig());
-						msgModel = new ResourceModel("dataSaved");
+						msgModel = new ResourceModel("general.dataSaved");
 					}
 					catch (Throwable t)
 					{
@@ -174,7 +174,7 @@ public class MainConfig extends BaseAdminPage
 			{
 				if (configBackingBean.getConfig().isInDemoMode())
 				{
-					return new DemoDecorator(new ResourceModel("demoMode"));
+					return new DemoDecorator(new ResourceModel("general.demoMode"));
 				}
 				else
 				{
