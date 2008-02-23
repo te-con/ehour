@@ -17,13 +17,16 @@
 
 package net.rrm.ehour.ui.panel.report.criteria.quick;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.*;
+import org.apache.wicket.Localizer;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.easymock.classextension.EasyMock.*;
 /**
  * TODO 
  **/
@@ -31,11 +34,14 @@ import org.junit.Test;
 public class QuickWeekRendererTest
 {
 	QuickWeekRenderer renderer;
+	Localizer			localizer;
 	
 	@Before
 	public void setUp()
 	{
-		renderer = new QuickWeekRenderer();
+		localizer = createMock(Localizer.class); 
+		
+		renderer = new QuickWeekRenderer(localizer);
 	}
 
 	/**
@@ -46,9 +52,13 @@ public class QuickWeekRendererTest
 	{
 		QuickWeek week = new QuickWeek(Calendar.getInstance());
 		
-		String str = (String)renderer.getDisplayValue(week);
+		expect(localizer.getString("report.criteria.currentWeek", null))
+			.andReturn(new String());
+		replay(localizer);
 		
-		assertTrue(str.startsWith("Current"));
+		renderer.getDisplayValue(week);
+		
+		verify(localizer);
 	}
 
 	@Test
@@ -59,9 +69,13 @@ public class QuickWeekRendererTest
 		
 		QuickWeek week = new QuickWeek(c);
 		
-		String str = (String)renderer.getDisplayValue(week);
+		expect(localizer.getString("report.criteria.previousWeek", null))
+					.andReturn(new String());
+		replay(localizer);		
 		
-		assertTrue(str.startsWith("Previous"));
+		renderer.getDisplayValue(week);
+		
+		verify(localizer);
 	}
 
 
@@ -73,8 +87,12 @@ public class QuickWeekRendererTest
 		
 		QuickWeek week = new QuickWeek(c);
 		
-		String str = (String)renderer.getDisplayValue(week);
+		expect(localizer.getString("report.criteria.nextWeek", null))
+			.andReturn(new String());
+		replay(localizer);		
 		
-		assertTrue(str.startsWith("Next"));
+		renderer.getDisplayValue(week);
+		
+		verify(localizer);
 	}
 }

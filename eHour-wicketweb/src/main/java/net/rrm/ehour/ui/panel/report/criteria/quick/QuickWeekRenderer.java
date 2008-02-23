@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.Localizer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 /**
@@ -22,11 +23,12 @@ public class QuickWeekRenderer implements IChoiceRenderer
 	private Date	previousWeekStart;
 	private Date	nextWeekEnd;
 	private Date	nextWeekStart;
+	private Localizer localizer;
 	
 	/**
 	 * Default constructor
 	 */
-	public QuickWeekRenderer()
+	public QuickWeekRenderer(Localizer localizer)
 	{
 		Calendar currentWeekStartCal = new GregorianCalendar();
 		currentWeekStartCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
@@ -55,13 +57,17 @@ public class QuickWeekRenderer implements IChoiceRenderer
 		DateUtil.nullifyTime(nextWeekEndCal);
 		nextWeekStart = nextWeekStartCal.getTime();
 
+		this.localizer = localizer;
 	}
 	
-	/**
-	 * TODO i18n 
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
 	 */
 	public Object getDisplayValue(Object object)
 	{
+		String value = "unknown";
+		
 		if (object instanceof QuickWeek)
 		{
 			QuickWeek	quickWeek = (QuickWeek)object;
@@ -69,22 +75,24 @@ public class QuickWeekRenderer implements IChoiceRenderer
 			if (quickWeek.getPeriodStart().before(previousWeekStart)
 					|| quickWeek.getPeriodStart().after(nextWeekEnd))
 			{
-				return "Week " + quickWeek.getPeriodIndex();
+				value = localizer.getString("report.criteria.week", null);
+				value += " " + quickWeek.getPeriodIndex();
 			}
 			else if (quickWeek.getPeriodStart().before(currentWeekStart))
 			{
-				return "Previous week";
+				value = localizer.getString("report.criteria.previousWeek", null);
 			}
 			else if (quickWeek.getPeriodStart().before(nextWeekStart))
 			{
-				return "Current week";
+				value = localizer.getString("report.criteria.currentWeek", null);
 			}
 			else
 			{
-				return "Next week";
+				value = localizer.getString("report.criteria.nextWeek", null);
 			}
 		}
-		return "unknown";
+		
+		return value;
 	}
 
 	public String getIdValue(Object object, int index)

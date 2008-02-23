@@ -460,7 +460,7 @@ public class ReportCriteriaPanel extends Panel
 			currentDate.add(Calendar.WEEK_OF_YEAR, 1);
 		}
 		
-		final DropDownChoice quickWeekSelection = new DropDownChoice("quickWeek", weeks, new QuickWeekRenderer());
+		final DropDownChoice quickWeekSelection = new DropDownChoice("quickWeek", weeks, new QuickWeekRenderer(getLocalizer()));
 
 		quickWeekSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
 		{

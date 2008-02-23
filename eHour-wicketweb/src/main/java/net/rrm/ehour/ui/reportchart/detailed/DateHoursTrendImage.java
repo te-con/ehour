@@ -75,8 +75,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	@Override
 	protected String getValueAxisLabelKey()
 	{
-		// TODO i18n
-		return "hours";
+		return "general.hours";
 	}
 
 	/*

@@ -25,6 +25,7 @@ public class QuickMonthRenderer implements IChoiceRenderer
 
 	/**
 	 * Get display value
+	 * TODO i18n
 	 */
 	public Object getDisplayValue(Object object)
 	{
