@@ -11,7 +11,7 @@
 		</property>
 
 		<property name="url">
-			<value>jdbc:mysql://127.0.0.1/ehour</value>
+			<value>jdbc:mysql://192.168.1.35/ehour</value>
 		</property>
 
 		<property name="username">
@@ -19,7 +19,7 @@
 		</property>
 
 		<property name="password">
-			<value>admin</value>
+			<value>test</value>
 		</property>
 
 		<property name="validationQuery">

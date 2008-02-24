@@ -99,14 +99,14 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		setOutputMarkupId(true);
 		
-		add(setUpPage(model));
+		setUpPage(this, model);
 	}
 
 
 	/**
 	 * Setup form
 	 */
-	protected WebMarkupContainer setUpPage(final IModel model)
+	protected void setUpPage(WebMarkupContainer parent, final IModel model)
 	{
 		Border greyBorder = new GreySquaredRoundedBorder("border", 450);
 		add(greyBorder);
@@ -130,7 +130,7 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 									,this 
 									,config);
 		
-		return greyBorder;
+		parent.add(greyBorder);
 	}
 
 	/**
