@@ -184,7 +184,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	/**
 	 * Persist project
 	 */
-	private void persistProject(ProjectAdminBackingBean backingBean)
+	protected void persistProject(ProjectAdminBackingBean backingBean) throws Exception
 	{
 		projectService.persistProject(backingBean.getProject());
 	}
@@ -193,7 +193,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	 * Delete project
 	 * @throws ParentChildConstraintException 
 	 */
-	private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException
+	protected void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException
 	{
 		projectService.deleteProject(backingBean.getProject().getProjectId());
 	} 
