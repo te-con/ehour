@@ -25,31 +25,21 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
-import net.rrm.ehour.ui.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
-import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.validator.ConditionalRequiredValidator;
-import net.rrm.ehour.ui.validator.DateOverlapValidator;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
-import org.apache.wicket.datetime.StyleDateConverter;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -57,12 +47,10 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -80,8 +68,6 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	
 	@SpringBean
 	private CustomerService	customerService;
-	@SpringBean
-	private ProjectAssignmentService	projectAssignmentService;
 	protected	EhourConfig		config;
 	/**
 	 * 
@@ -119,7 +105,11 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		// setup the customer & project dropdowns
 		addCustomerAndProjectChoices(form, model, projectDependentComponents);
 		
-		addRateRoleActive(form, model);
+		// Add rate & role
+		addRateRole(form, model);
+		
+		// active
+		form.add(new CheckBox("projectAssignment.active"));
 		
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
@@ -138,26 +128,9 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @param form
 	 * @param model
 	 */
-	protected void addRateRoleActive(Form form, final IModel model)
+	private void addRateRole(Form form, final IModel model)
 	{
-		// add role
-		TextField role = new TextField("projectAssignment.role");
-		form.add(role);
-		
-		// add hourly rate
-		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate",
-											new FloatModel(new PropertyModel(model, "projectAssignment.hourlyRate"), config, null));
-		hourlyRate.setType(Float.class);
-		hourlyRate.add(new ValidatingFormComponentAjaxBehavior());
-		hourlyRate.add(NumberValidator.POSITIVE);
-		form.add(hourlyRate);
-		form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
-
-		// and currency
-		form.add(new Label("currency",  Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
-		
-		// active
-		form.add(new CheckBox("projectAssignment.active"));
+		form.add(new AssignmentRateRoleFormPartPanel("rateRole", model));
 	}
 	
 	/**
@@ -168,199 +141,13 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 */
 	protected Component[] addProjectDuration(Form form, final IModel model)
 	{
+		AssignmentTypeFormPartPanel typePanel = new AssignmentTypeFormPartPanel("assignmentType", model, form);
+		form.add(typePanel);
+		
 		// assignment type
-		Component[] projectDependentComponents = addAssignmentType(form, model);
-
-		// add start & end dates
-		addDates(form, form, model);
+		Component[] projectDependentComponents = typePanel.getNotifiableComponents();
 		
 		return projectDependentComponents;
-	}
-
-	
-	/**
-	 * Add assignment types and options
-	 * @param form
-	 * @param assignmenTypes
-	 * @return the notify pm checkbox as it needs to be refreshed by the project dropdown
-	 */
-	protected Component[] addAssignmentType(final Form form, IModel model)
-	{
-		List<ProjectAssignmentType> assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();		
-		
-		final PropertyModel	showAllottedHoursModel = new PropertyModel(model, "showAllottedHours");
-		final PropertyModel	showOverrunHoursModel = new PropertyModel(model, "showOverrunHours");
-		
-		// assignment type
-		final DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer(this));
-		assignmentTypeChoice.setRequired(true);
-		assignmentTypeChoice.setNullValid(false);
-		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
-		assignmentTypeChoice.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(assignmentTypeChoice);
-		form.add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
-		
-		// allotted hours 
-		final TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours",
-												new FloatModel(new PropertyModel(model, "projectAssignment.allottedHours"), config, null));
-		allottedHours.setType(float.class);
-		allottedHours.add(new ValidatingFormComponentAjaxBehavior());
-		allottedHours.add(NumberValidator.POSITIVE);
-		allottedHours.setOutputMarkupId(true);
-		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
-		allottedHours.setEnabled(((Boolean)showAllottedHoursModel.getObject()).booleanValue());
-		
-		// allotted hours row
-		final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
-		allottedRow.setOutputMarkupId(true);
-		allottedRow.add(allottedHours);
-		allottedRow.add(new AjaxFormComponentFeedbackIndicator("allottedHoursValidationError", allottedHours));
-		allottedRow.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), showAllottedHoursModel));
-		form.add(allottedRow);
-		
-		// overrun hours 
-		final TextField overrunHours = new RequiredTextField("projectAssignment.allowedOverrun",
-											new FloatModel(new PropertyModel(model, "projectAssignment.allowedOverrun"), config, null));
-		overrunHours.setType(float.class);
-		overrunHours.add(new ValidatingFormComponentAjaxBehavior());
-		overrunHours.add(NumberValidator.POSITIVE);
-		overrunHours.setOutputMarkupId(true);
-		overrunHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
-		overrunHours.setLabel(new ResourceModel("admin.assignment.allowedOverrun"));
-		
-		// overrun hours row
-		final WebMarkupContainer overrunRow = new WebMarkupContainer("overrunRow");
-		overrunRow.setOutputMarkupId(true);
-		overrunRow.add(overrunHours);
-		overrunRow.add(new AjaxFormComponentFeedbackIndicator("overrunHoursValidationError", overrunHours));
-		overrunRow.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), showOverrunHoursModel));
-		form.add(overrunRow);
-		
-		// notify PM when possible
-		CheckBox notifyPm = new CheckBox("projectAssignment.notifyPm");
-		notifyPm.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), new PropertyModel(model, "notifyPmEnabled")));
-		notifyPm.setOutputMarkupId(true);
-		
-		Label notifyDisabled = new Label("notifyDisabled", new ResourceModel("admin.assignment.cantNotify"));
-		notifyDisabled.add(new DynamicAttributeModifier("style", true, 
-														new Model("display: none;"), new PropertyModel(model, "notifyPmEnabled"), true));
-		notifyDisabled.setOutputMarkupId(true);
-		
-		// notify PM row
-		final WebMarkupContainer notifyPmRow = new WebMarkupContainer("notifyPmRow");
-		notifyPmRow.setOutputMarkupId(true);
-		notifyPmRow.add(notifyPm);
-		notifyPmRow.add(notifyDisabled);
-		notifyPmRow.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), showAllottedHoursModel));
-		form.add(notifyPmRow);
-		
-		assignmentTypeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
-        {
-			protected void onUpdate(AjaxRequestTarget target)
-            {
-				// to disable the required validation
-				allottedHours.setEnabled(((Boolean)showAllottedHoursModel.getObject()).booleanValue());
-				overrunHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
-				target.addComponent(allottedHours);
-				target.addComponent(overrunHours);
-				
-				// show/hide rows dependent on the assignment type selected
-				target.addComponent(allottedRow);
-				target.addComponent(overrunRow);
-				target.addComponent(notifyPmRow);
-            }
-        });	
-		
-		return new Component[]{notifyPm, notifyDisabled};
-	}
-
-	/**
-	 * Add start & end dates
-	 * TODO create separate component for date range selection 
-	 * @param form
-	 * @param model
-	 */
-	protected void addDates(WebMarkupContainer parent, Form form, final IModel model)
-	{
-		PropertyModel	infiniteStartDateModel = new PropertyModel(model, "infiniteStartDate");
-		PropertyModel	infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
-		
-		// start date
-        final DateTextField dateStart = new DateTextField("projectAssignment.dateStart", new PropertyModel(model,
-        "projectAssignment.dateStart"), new StyleDateConverter("S-", true));
-		
-		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
-		dateStart.add(new ValidatingFormComponentAjaxBehavior());
-		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
-        dateStart.add(new DatePicker());
-
-        // container for hiding
-		final WebMarkupContainer	startDateHider = new WebMarkupContainer("startDateHider");
-		startDateHider.setOutputMarkupId(true);
-		
-		// indicator for validation issues
-		startDateHider.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart));
-
-		
-		// the inner hider is just there to hide the <br /> as well
-		final WebMarkupContainer	innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
-		innerStartDateHider.setOutputMarkupId(true);
-		innerStartDateHider.add(dateStart);
-		innerStartDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteStartDateModel, true));
-
-		startDateHider.add(innerStartDateHider);
-
-		parent.add(startDateHider);
-		
-		// infinite start date toggle
-		AjaxCheckBox infiniteStart = new AjaxCheckBox("infiniteStartDate")
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.addComponent(startDateHider);
-			}
-		};
-		
-		startDateHider.add(infiniteStart);
-
-		// end date
-        final DateTextField dateEnd = new DateTextField("projectAssignment.dateEnd", new PropertyModel(model,
-        										"projectAssignment.dateEnd"), new StyleDateConverter("S-", false));
-        dateEnd.add(new DatePicker());
-		// container for hiding
-		
-		dateEnd.add(new ValidatingFormComponentAjaxBehavior());
-		dateEnd.add(new ConditionalRequiredValidator(infiniteEndDateModel));
-		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
-		
-		final WebMarkupContainer	endDateHider = new WebMarkupContainer("endDateHider");
-		endDateHider.setOutputMarkupId(true);
-		
-		// indicator for validation issues
-		endDateHider.add(new AjaxFormComponentFeedbackIndicator("dateEndValidationError", dateEnd));
-		
-		// the inner hider is just there to hide the <br /> as well
-		final WebMarkupContainer	innerEndDateHider = new WebMarkupContainer("innerEndDateHider");
-		innerEndDateHider.setOutputMarkupId(true);
-		innerEndDateHider.add(dateEnd);
-		innerEndDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteEndDateModel, true));
-		endDateHider.add(innerEndDateHider);		
-		parent.add(endDateHider);	
-		
-		// infinite end date toggle
-		AjaxCheckBox infiniteEnd = new AjaxCheckBox("infiniteEndDate")
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.addComponent(endDateHider);
-			}
-		};	
-
-		endDateHider.add(infiniteEnd);
-		
-		form.add(new DateOverlapValidator(dateStart, dateEnd));
 	}
 	
 	/**
