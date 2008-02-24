@@ -23,7 +23,7 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
-import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;
@@ -87,13 +87,13 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 			protected AdminBackingBean getNewAddBackingBean()
 			{
 				ProjectAssignment			projectAssignment;
-				AssignmentAdminBackingBean	assignmentBean;
+				AssignmentAdminBackingBeanImpl	assignmentBean;
 				
 				projectAssignment = new ProjectAssignment();
 				projectAssignment.setUser(user);
 				projectAssignment.setActive(true);
 				
-				assignmentBean = new AssignmentAdminBackingBean(projectAssignment);
+				assignmentBean = new AssignmentAdminBackingBeanImpl(projectAssignment);
 
 				return assignmentBean;			
 			}
@@ -101,7 +101,7 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 			@Override
 			protected AdminBackingBean getNewEditBackingBean()
 			{
-				return new AssignmentAdminBackingBean(new ProjectAssignment());
+				return new AssignmentAdminBackingBeanImpl(new ProjectAssignment());
 			}
 		};
 		
@@ -127,7 +127,7 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 				try
 				{
 					tabbedPanel.setEditBackingBean(
-									new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
+									new AssignmentAdminBackingBeanImpl(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
 					tabbedPanel.switchTabOnAjaxTarget(target, 1);
 				} catch (ObjectNotFoundException e)
 				{
@@ -138,7 +138,7 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 			case CommonWebUtil.AJAX_FORM_SUBMIT:
 			case CommonWebUtil.AJAX_DELETE:
 			{
-				AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((((IWrapModel) params)).getWrappedModel()).getObject();
+				AssignmentAdminBackingBeanImpl	backingBean = (AssignmentAdminBackingBeanImpl)((((IWrapModel) params)).getWrappedModel()).getObject();
 				assignment = backingBean.getProjectAssignmentForSave();
 
 				try

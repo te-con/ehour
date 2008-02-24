@@ -20,14 +20,14 @@ import java.util.ArrayList;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.model.AdminBackingBean;
+import net.rrm.ehour.ui.model.AdminBackingBeanImpl;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
  * Backing bean for users
  **/
 
-public class UserBackingBean extends AdminBackingBean
+public class UserBackingBean extends AdminBackingBeanImpl
 {
 	private static final long serialVersionUID = 2781902854421696575L;
 	private User	user;

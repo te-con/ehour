@@ -14,38 +14,40 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.department.form.dto;
+package net.rrm.ehour.ui.panel.admin.project.form.dto;
 
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.ui.model.AdminBackingBeanImpl;
 
 /**
- * Department backing bean 
+ * Project admin backing bean
  **/
 
-public class DepartmentAdminBackingBean extends AdminBackingBeanImpl
+public class ProjectAdminBackingBeanImpl extends AdminBackingBeanImpl implements ProjectAdminBackingBean
 {
-	private static final long serialVersionUID = -4095608816724112187L;
-	private UserDepartment	department;
+	private static final long serialVersionUID = 5862844398838328155L;
 	
-	public DepartmentAdminBackingBean(UserDepartment department)
+	private	Project	project;
+	
+
+	public ProjectAdminBackingBeanImpl(Project project)
 	{
-		this.department = department;
+		this.project = project;
 	}
 
-	/**
-	 * @return the department
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean#getProject()
 	 */
-	public UserDepartment getDepartment()
+	public Project getProject()
 	{
-		return department;
+		return project;
 	}
 
-	/**
-	 * @param department the department to set
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.domain.Project)
 	 */
-	public void setDepartment(UserDepartment department)
+	public void setProject(Project project)
 	{
-		this.department = department;
+		this.project = project;
 	}
 }

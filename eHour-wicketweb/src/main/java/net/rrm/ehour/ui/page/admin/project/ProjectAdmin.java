@@ -32,7 +32,7 @@ import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.ProjectFormPanel;
-import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.util.CommonWebUtil;
@@ -228,7 +228,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		Project	project = new Project();
 		project.setActive(true);
 		
-		return new ProjectAdminBackingBean(project);
+		return new ProjectAdminBackingBeanImpl(project);
 	}
 
 	/*
@@ -238,7 +238,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	@Override
 	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
-		return new ProjectAdminBackingBean(new Project());	
+		return new ProjectAdminBackingBeanImpl(new Project());	
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 					{
 						try
 						{
-							getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)));
+							getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBeanImpl(projectService.getProjectAndCheckDeletability(projectId)));
 							getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
 						} catch (ObjectNotFoundException e)
 						{

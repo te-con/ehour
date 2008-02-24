@@ -17,13 +17,13 @@
 package net.rrm.ehour.ui.panel.admin.customer.form.dto;
 
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.ui.model.AdminBackingBean;
+import net.rrm.ehour.ui.model.AdminBackingBeanImpl;
 
 /**
  * Backing bean for customer administration
  **/
 
-public class CustomerAdminBackingBean extends AdminBackingBean
+public class CustomerAdminBackingBean extends AdminBackingBeanImpl
 {
 	private static final long serialVersionUID = 343538274642620123L;
 	private	Customer	customer;

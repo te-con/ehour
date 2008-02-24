@@ -1,7 +1,8 @@
 /**
- * Created on Aug 23, 2007
- * Created by Thies Edeling
- * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
+ * Created on Feb 24, 2008
+ * Author: Thies
+ *
+ * Copyright (C) 2007 TE-CON, All Rights Reserved.
  *
  * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
  * TE-CON holds all the ownership rights on the Software.
@@ -24,159 +25,84 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 
 /**
- * Backing bean for project assignments
+ * Assignment admin backing bean
  **/
 
-public class AssignmentAdminBackingBean extends AdminBackingBean
+public interface AssignmentAdminBackingBean extends AdminBackingBean
 {
-	private static final long serialVersionUID = 487430742116953930L;
-	private	ProjectAssignment	projectAssignment;
-	private	List<Project>		projects;
-	private	Customer			customer;
-	private	boolean				infiniteStartDate;
-	private	boolean				infiniteEndDate;
-	
-	/**
-	 * 
-	 * @param assignment
-	 */
-	public AssignmentAdminBackingBean(ProjectAssignment assignment)
-	{
-		projectAssignment = assignment;
-		this.customer = (assignment.getProject() != null) ? assignment.getProject().getCustomer() : null;
-		
-		infiniteStartDate = assignment.getDateStart() == null;
-		infiniteEndDate = assignment.getDateEnd() == null;
-	}
-	
+
 	/**
 	 * Show allotted hours?
 	 * @return
 	 */
-	public boolean isShowAllottedHours()
-	{
-		return (projectAssignment.getAssignmentType() != null)
-					? projectAssignment.getAssignmentType().isAllottedType()
-					: false;
-	}
-	
+	public abstract boolean isShowAllottedHours();
+
 	/**
 	 * Can notify pm be enabled? is a pm assigned?
 	 * @return
 	 */
-	public boolean isNotifyPmEnabled()
-	{
-		return (projectAssignment.getProject() != null)
-				? projectAssignment.getProject().getProjectManager() != null
-				: false;
-	}
-	
+	public abstract boolean isNotifyPmEnabled();
+
 	/**
 	 * Show overrun hours?
 	 * @return
 	 */
-	public boolean isShowOverrunHours()
-	{
-		return (projectAssignment.getAssignmentType() != null)
-					? projectAssignment.getAssignmentType().isFlexAllottedType()
-					: false;
-	}	
-	
+	public abstract boolean isShowOverrunHours();
+
 	/**
 	 * @return the projectAssignment
 	 */
-	public ProjectAssignment getProjectAssignment()
-	{
-		return projectAssignment;
-	}
-	
+	public abstract ProjectAssignment getProjectAssignment();
+
 	/**
 	 * Get project assignment for saving
 	 * @return
 	 */
-	public ProjectAssignment getProjectAssignmentForSave()
-	{
-		if (isInfiniteStartDate())
-		{
-			projectAssignment.setDateStart(null);
-		}
-		
+	public abstract ProjectAssignment getProjectAssignmentForSave();
 
-		if (isInfiniteEndDate())
-		{
-			projectAssignment.setDateEnd(null);
-		}
-		
-		return projectAssignment;
-	}
-	
 	/**
 	 * @param projectAssignment the projectAssignment to set
 	 */
-	public void setProjectAssignment(ProjectAssignment projectAssignment)
-	{
-		this.projectAssignment = projectAssignment;
-	}
+	public abstract void setProjectAssignment(ProjectAssignment projectAssignment);
+
 	/**
 	 * @return the projects
 	 */
-	public List<Project> getProjects()
-	{
-		return projects;
-	}
+	public abstract List<Project> getProjects();
+
 	/**
 	 * @param projects the projects to set
 	 */
-	public void setProjects(List<Project> projects)
-	{
-		this.projects = projects;
-	}
+	public abstract void setProjects(List<Project> projects);
 
 	/**
 	 * @return the customer
 	 */
-	public Customer getCustomer()
-	{
-		return customer;
-	}
+	public abstract Customer getCustomer();
 
 	/**
 	 * @param customer the customer to set
 	 */
-	public void setCustomer(Customer customer)
-	{
-		this.customer = customer;
-	}
+	public abstract void setCustomer(Customer customer);
 
 	/**
 	 * @return the infiniteStartDate
 	 */
-	public boolean isInfiniteStartDate()
-	{
-		return infiniteStartDate;
-	}
+	public abstract boolean isInfiniteStartDate();
 
 	/**
 	 * @param infiniteStartDate the infiniteStartDate to set
 	 */
-	public void setInfiniteStartDate(boolean infiniteStartDate)
-	{
-		this.infiniteStartDate = infiniteStartDate;
-	}
+	public abstract void setInfiniteStartDate(boolean infiniteStartDate);
 
 	/**
 	 * @return the infiniteEndDate
 	 */
-	public boolean isInfiniteEndDate()
-	{
-		return infiniteEndDate;
-	}
+	public abstract boolean isInfiniteEndDate();
 
 	/**
 	 * @param infiniteEndDate the infiniteEndDate to set
 	 */
-	public void setInfiniteEndDate(boolean infiniteEndDate)
-	{
-		this.infiniteEndDate = infiniteEndDate;
-	}
+	public abstract void setInfiniteEndDate(boolean infiniteEndDate);
+
 }

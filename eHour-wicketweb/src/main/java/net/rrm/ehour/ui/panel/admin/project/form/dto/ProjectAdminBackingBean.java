@@ -23,31 +23,15 @@ import net.rrm.ehour.ui.model.AdminBackingBean;
  * Project admin backing bean
  **/
 
-public class ProjectAdminBackingBean extends AdminBackingBean
+public interface ProjectAdminBackingBean extends AdminBackingBean
 {
-	private static final long serialVersionUID = 5862844398838328155L;
-	
-	private	Project	project;
-	
-
-	public ProjectAdminBackingBean(Project project)
-	{
-		this.project = project;
-	}
-
-	/**
-	 * @return the project
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean#getProject()
 	 */
-	public Project getProject()
-	{
-		return project;
-	}
+	public Project getProject();
 
-	/**
-	 * @param project the project to set
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.domain.Project)
 	 */
-	public void setProject(Project project)
-	{
-		this.project = project;
-	}
+	public void setProject(Project project);
 }

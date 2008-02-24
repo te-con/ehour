@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
@@ -66,7 +67,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	@SpringBean
 	private CustomerService	customerService;
 	@SpringBean
-	private	UserService			userService;
+	private	UserService		userService;
 
 	private static final long serialVersionUID = -8677950352090140144L;
 	private	static final Logger	logger = Logger.getLogger(ProjectFormPanel.class);
@@ -86,7 +87,6 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		setOutputMarkupId(true);
 		
 		final Form form = new Form("projectForm");
-		
 		addFormComponents(form);
 		
 		FormUtil.setSubmitActions(form
@@ -96,12 +96,25 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		greyBorder.add(form);
 	}
+
+	/**
+	 * Add form components
+	 * @param form
+	 */
+	protected void addFormComponents(Form form)
+	{
+		addCustomer(form);
+		addDescriptionAndContact(form);
+		addGeneralInfo(form);
+		addMisc(form);
+		addProjectManager(form);
+	}
 	
 	/**
 	 * Add form components to form
 	 * @param form
 	 */
-	protected void addFormComponents(Form form)
+	protected void addGeneralInfo(Form form)
 	{
 		// name
 		RequiredTextField	nameField = new RequiredTextField("project.name");
@@ -118,17 +131,10 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		codeField.setLabel(new ResourceModel("admin.project.code"));
 		codeField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
-
-		// project manager
-		DropDownChoice projectManager = new DropDownChoice("project.projectManager", getEligablePms(), new ChoiceRenderer("fullName"));
-		projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
-		form.add(projectManager);
-		
-		// description
-		TextArea	textArea = new KeepAliveTextArea("project.description");
-		textArea.setLabel(new ResourceModel("admin.project.description"));;
-		form.add(textArea);
-		
+	}
+	
+	protected void addCustomer(Form form)
+	{
 		// customers
 		DropDownChoice customerDropdown = new DropDownChoice("project.customer", getCustomers(), new ChoiceRenderer("fullName"));
 		customerDropdown.setRequired(true);
@@ -136,10 +142,30 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(customerDropdown);
 		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
+	}
+	
+	protected void addProjectManager(Form form)
+	{
+		// project manager
+		DropDownChoice projectManager = new DropDownChoice("project.projectManager", getEligablePms(), new ChoiceRenderer("fullName"));
+		projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
+		form.add(projectManager);
+	}
+	
+	protected void addDescriptionAndContact(Form form)
+	{
+		// description
+		TextArea	textArea = new KeepAliveTextArea("project.description");
+		textArea.setLabel(new ResourceModel("admin.project.description"));;
+		form.add(textArea);
 
 		// contact
 		TextField	contactField = new TextField("project.contact");
 		form.add(contactField);
+	}
+
+	protected void addMisc(Form form)
+	{
 		
 		// default project
 		form.add(new CheckBox("project.defaultProject"));
@@ -157,7 +183,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-		ProjectAdminBackingBean backingBean = (ProjectAdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
+		ProjectAdminBackingBeanImpl backingBean = (ProjectAdminBackingBeanImpl) ((((IWrapModel) params)).getWrappedModel()).getObject();
 		
 		try
 		{
