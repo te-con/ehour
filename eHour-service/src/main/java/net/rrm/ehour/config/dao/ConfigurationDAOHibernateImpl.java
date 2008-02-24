@@ -19,7 +19,7 @@ import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.domain.Configuration;
 
 /**
- * TODO 
+ * DAO impl
  **/
 
 public class ConfigurationDAOHibernateImpl extends GenericDAOHibernateImpl<Configuration, String>  implements ConfigurationDAO

@@ -18,7 +18,7 @@ package net.rrm.ehour.timesheet.dto;
 import java.util.Date;
 
 /**
- * TODO 
+ * Booked day dto
  **/
 
 public class BookedDay
