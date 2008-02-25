@@ -43,6 +43,8 @@ import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -51,6 +53,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -81,20 +84,30 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	{
 		super(id, model);
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
-		add(greyBorder);
-		
 		setOutputMarkupId(true);
 		
+		setUpPage(this, model);
+	}
+
+	/**
+	 * 
+	 * @param parent
+	 */
+	protected void setUpPage(WebMarkupContainer parent, IModel model)
+	{
+		Border border = new GreySquaredRoundedBorder("border");
+		add(border);
+
 		final Form form = new Form("projectForm");
 		addFormComponents(form);
-		
+
 		FormUtil.setSubmitActions(form
-									,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
-									,this
-									,((EhourWebSession)getSession()).getEhourConfig());
-		
-		greyBorder.add(form);
+				,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
+				,this
+				,((EhourWebSession)getSession()).getEhourConfig());
+
+		border.add(form);
+
 	}
 
 	/**
