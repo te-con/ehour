@@ -28,7 +28,7 @@ import java.util.Map;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.reportchart.AbstractChartImage;
+import net.rrm.ehour.ui.reportchart.AbstractReportChartImage;
 import net.rrm.ehour.ui.reportchart.UpdatingTimeSeries;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -48,7 +48,7 @@ import org.jfree.data.time.TimeSeriesCollection;
  * Trend image which uses a timeline
  **/
 
-public abstract class AbstractTrendChartImage<EL extends ReportElement> extends AbstractChartImage<EL>
+public abstract class AbstractTrendChartImage<EL extends ReportElement> extends AbstractReportChartImage<EL>
 {
 	private static final Paint[] seriePaints = new Paint[]{new Color(0xa3bcd8), new Color(0xff6b51), new Color(0xbebd4a), new Color(0x65d460), new Color(0x519fff)};
 	

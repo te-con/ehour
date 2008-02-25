@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.reportchart.aggregate;
 import org.apache.wicket.model.Model;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.reportchart.AbstractChartImage;
+import net.rrm.ehour.ui.reportchart.AbstractReportChartImage;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.ProjectRowKey;
 
@@ -27,7 +27,7 @@ import net.rrm.ehour.ui.reportchart.rowkey.ProjectRowKey;
  * Turnover per project
  **/
 
-public class ProjectTurnoverAggregateChartImage extends AbstractChartImage<AssignmentAggregateReportElement>
+public class ProjectTurnoverAggregateChartImage extends AbstractReportChartImage<AssignmentAggregateReportElement>
 {
 	private static final long serialVersionUID = 6171422114780586475L;
 

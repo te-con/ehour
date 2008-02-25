@@ -47,9 +47,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * Base class for charts 
  **/
 
-public abstract class AbstractChartImage<EL extends ReportElement> extends NonCachingImage
+public abstract class AbstractReportChartImage<EL extends ReportElement> extends NonCachingImage
 {
-	private	final static Logger	logger = Logger.getLogger(AbstractChartImage.class);
+	private	final static Logger	logger = Logger.getLogger(AbstractReportChartImage.class);
 
 	private int		width;
 	private int		height;
@@ -61,7 +61,7 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 	 * @param width
 	 * @param height
 	 */
-	public AbstractChartImage(String id, 
+	public AbstractReportChartImage(String id, 
 								IModel dataModel,
 								int width,
 								int height)
@@ -78,16 +78,16 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 	 * @see org.apache.wicket.markup.html.image.Image#getImageResource()
 	 */
 	@Override
-	@SuppressWarnings({"serial", "unchecked"})
 	protected Resource getImageResource()
 	{
 		return new DynamicImageResource()
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected byte[] getImageData()
 			{
-				ReportData<EL> reportData = (ReportData<EL>)getModelObject();
-				JFreeChart chart = getChart(reportData);
+				JFreeChart chart = generateChart();
 				return toImageData(chart.createBufferedImage(width, height));
 			}
 
@@ -105,7 +105,18 @@ public abstract class AbstractChartImage<EL extends ReportElement> extends NonCa
 				}
 			}
 		};
-	}	
+	}
+	
+	/**
+	 * Generate chart
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected JFreeChart generateChart()
+	{
+		ReportData<EL> reportData = (ReportData<EL>)getModelObject();
+		return getChart(reportData);
+	}
 	
 	/**
 	 * 

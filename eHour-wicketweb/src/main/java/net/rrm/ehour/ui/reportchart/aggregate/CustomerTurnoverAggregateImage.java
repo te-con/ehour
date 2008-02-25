@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.reportchart.aggregate;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.reportchart.AbstractChartImage;
+import net.rrm.ehour.ui.reportchart.AbstractReportChartImage;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.CustomerRowKey;
 
@@ -27,7 +27,7 @@ import org.apache.wicket.model.Model;
  * Customer turnover chart 
  **/
 
-public class CustomerTurnoverAggregateImage extends AbstractChartImage<AssignmentAggregateReportElement>
+public class CustomerTurnoverAggregateImage extends AbstractReportChartImage<AssignmentAggregateReportElement>
 {
 	private static final long serialVersionUID = -8028595697498908290L;
 

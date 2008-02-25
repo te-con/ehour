@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.reportchart.aggregate;
 import org.apache.wicket.model.Model;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.reportchart.AbstractChartImage;
+import net.rrm.ehour.ui.reportchart.AbstractReportChartImage;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.ProjectRowKey;
 
@@ -26,7 +26,7 @@ import net.rrm.ehour.ui.reportchart.rowkey.ProjectRowKey;
  * Hours per project 
  **/
 
-public class ProjectHoursAggregateChartImage extends AbstractChartImage<AssignmentAggregateReportElement>
+public class ProjectHoursAggregateChartImage extends AbstractReportChartImage<AssignmentAggregateReportElement>
 {
 	private static final long serialVersionUID = 6708618449786705008L;
 
