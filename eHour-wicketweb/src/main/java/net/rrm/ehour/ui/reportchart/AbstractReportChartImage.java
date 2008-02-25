@@ -30,11 +30,7 @@ import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.Resource;
-import org.apache.wicket.markup.html.image.NonCachingImage;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.protocol.http.WebResponse;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
@@ -47,12 +43,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * Base class for charts 
  **/
 
-public abstract class AbstractReportChartImage<EL extends ReportElement> extends NonCachingImage
+public abstract class AbstractReportChartImage<EL extends ReportElement> extends AbstractChartImage
 {
 	private	final static Logger	logger = Logger.getLogger(AbstractReportChartImage.class);
-
-	private int		width;
-	private int		height;
 	
 	/**
 	 * 
@@ -66,45 +59,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 								int width,
 								int height)
 	{
-		super(id, dataModel);
-
-		this.width = width;
-		this.height = height;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.wicket.markup.html.image.Image#getImageResource()
-	 */
-	@Override
-	protected Resource getImageResource()
-	{
-		return new DynamicImageResource()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected byte[] getImageData()
-			{
-				JFreeChart chart = generateChart();
-				return toImageData(chart.createBufferedImage(width, height));
-			}
-
-			@Override
-			protected void setHeaders(WebResponse response)
-			{
-				if (isCacheable())
-				{
-					super.setHeaders(response);
-				} else
-				{
-					response.setHeader("Pragma", "no-cache");
-					response.setHeader("Cache-Control", "no-cache");
-					response.setDateHeader("Expires", 0);
-				}
-			}
-		};
+		super(id, dataModel, width, height);
 	}
 	
 	/**
@@ -247,20 +202,4 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @return
 	 */
 	protected abstract Number getColumnValue(EL element);
-
-	/**
-	 * @return the width
-	 */
-	public int getWidth()
-	{
-		return width;
-	}
-
-	/**
-	 * @return the height
-	 */
-	public int getHeight()
-	{
-		return height;
-	}
 }
