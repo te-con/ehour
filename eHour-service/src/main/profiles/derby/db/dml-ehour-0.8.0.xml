@@ -10,7 +10,7 @@
   <configuration config_key="availableTranslations" config_value="en,nl"></configuration>
   <configuration config_key="mailFrom" config_value="admin@localhost.net"></configuration>
   <configuration config_key="mailSmtp" config_value="127.0.0.1"></configuration>
-  <configuration config_key="version" config_value="0.7.3"></configuration>
+  <configuration config_key="version" config_value="0.8.0"></configuration>
   <configuration config_key="demoMode" config_value="false"></configuration>
   <configuration config_key="initialized" config_value="false"></configuration>
   <mail_type MAIL_TYPE_ID="1" MAIL_TYPE="FIXED_ALLOTTED_REACHED"></mail_type>
