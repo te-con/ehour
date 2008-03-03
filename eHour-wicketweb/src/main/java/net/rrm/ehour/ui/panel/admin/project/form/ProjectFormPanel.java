@@ -120,7 +120,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		addDescriptionAndContact(form);
 		addGeneralInfo(form);
 		addMisc(form);
-		addProjectManager(form);
+		form.add(getProjectManager());
 	}
 	
 	/**
@@ -157,12 +157,13 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
 	}
 	
-	protected void addProjectManager(Form form)
+	protected DropDownChoice getProjectManager()
 	{
 		// project manager
 		DropDownChoice projectManager = new DropDownChoice("project.projectManager", getEligablePms(), new ChoiceRenderer("fullName"));
 		projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
-		form.add(projectManager);
+		
+		return projectManager;
 	}
 	
 	protected void addDescriptionAndContact(Form form)
