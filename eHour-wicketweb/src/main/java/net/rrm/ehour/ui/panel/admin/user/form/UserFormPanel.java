@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
+import net.rrm.ehour.ui.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
 
@@ -132,7 +133,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
 		
 		// user roles
-		ListMultipleChoice userRoles = new ListMultipleChoice("user.userRoles", roles, new ChoiceRenderer("roleName"));
+		ListMultipleChoice userRoles = new ListMultipleChoice("user.userRoles", roles, new UserRoleRenderer());
 		userRoles.setMaxRows(4);
 		userRoles.setLabel(new ResourceModel("admin.user.roles"));
 		userRoles.setRequired(true);
@@ -154,7 +155,6 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		greyBorder.add(form);
 	}
-
 	
 	/**
 	 * Duplicate username validator

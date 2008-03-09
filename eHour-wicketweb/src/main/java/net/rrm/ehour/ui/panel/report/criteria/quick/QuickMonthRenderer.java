@@ -8,9 +8,8 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
-public class QuickMonthRenderer implements IChoiceRenderer
+public class QuickMonthRenderer extends QuickRenderer
 {
 	private static final long serialVersionUID = 1983255096043016545L;
 	private int	currentMonth;
@@ -23,13 +22,13 @@ public class QuickMonthRenderer implements IChoiceRenderer
 		currentMonth = new GregorianCalendar().get(Calendar.MONTH);
 	}
 
-	/**
-	 * Get display value
-	 * TODO i18n
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
 	 */
 	public Object getDisplayValue(Object object)
 	{
-		String	label = null;
+		String	value = null;
 		
 		if (object instanceof QuickMonth)
 		{
@@ -40,26 +39,26 @@ public class QuickMonthRenderer implements IChoiceRenderer
 			if ( (currentMonth == 0 && month == 11)
 					|| (currentMonth - 1 == month))
 			{
-				label = "Previous month";
+				value = getLocalizer().getString("report.criteria.previousMonth", null);
 			}
 			else if (currentMonth == month)
 			{
-				label = "Current month";
+				value = getLocalizer().getString("report.criteria.currentMonth", null);
 			}
 			else if ( (currentMonth + 1 == month || (currentMonth == 11 && month == 0)))
 			{
-				label = "Next month";
+				value = getLocalizer().getString("report.criteria.nextMonth", null);
 			}
 			else
 			{
 				EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
 				
 				SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getLocale());
-				label = format.format(quickMonth.getPeriodStart());
+				value = format.format(quickMonth.getPeriodStart());
 			}
 		}
 		
-		return label;
+		return value;
 	}
 
 	/**

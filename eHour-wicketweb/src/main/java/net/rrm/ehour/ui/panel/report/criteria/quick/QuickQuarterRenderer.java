@@ -3,9 +3,7 @@ package net.rrm.ehour.ui.panel.report.criteria.quick;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-
-public class QuickQuarterRenderer implements IChoiceRenderer
+public class QuickQuarterRenderer extends QuickRenderer
 {
 	private static final long serialVersionUID = 9074669170575475399L;
 	private int	currentQuarter;
@@ -33,11 +31,11 @@ public class QuickQuarterRenderer implements IChoiceRenderer
 			
 			if (currentQuarter == quarter)
 			{
-				label = "Current quarter";
+				label = getLocalizer().getString("report.criteria.currentQuarter", null);
 			}
 			else 
 			{
-				label = "Quarter " + (quarter + 1);
+				label = getLocalizer().getString("report.criteria.quarter", null) + (quarter + 1);
 			}
 		}
 		

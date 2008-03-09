@@ -1,7 +1,8 @@
 /**
- * Created on Aug 27, 2007
- * Created by Thies Edeling
- * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
+ * Created on Mar 9, 2008
+ * Author: Thies
+ *
+ * Copyright (C) 2007 TE-CON, All Rights Reserved.
  *
  * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
  * TE-CON holds all the ownership rights on the Software.
@@ -16,14 +17,14 @@
 
 package net.rrm.ehour.ui.renderers;
 
-import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
 /**
- * ProjectAssignment renderer
+ * TODO 
  **/
 
-public class ProjectAssignmentTypeRenderer extends LocalizedResourceRenderer
+public class UserRoleRenderer  extends LocalizedResourceRenderer
 {
 	private static final long serialVersionUID = -4020935210828625185L;
 	/*
@@ -33,9 +34,9 @@ public class ProjectAssignmentTypeRenderer extends LocalizedResourceRenderer
 	@Override
 	protected String getResourceKey(Object o)
 	{
-		ProjectAssignmentType	pat = (ProjectAssignmentType)o;
+		UserRole role = (UserRole)o;
 		
-		return CommonWebUtil.getResourceKeyForProjectAssignmentType(pat);
+		return CommonWebUtil.getResourceKeyForUserRole(role);
 	}
 
 }

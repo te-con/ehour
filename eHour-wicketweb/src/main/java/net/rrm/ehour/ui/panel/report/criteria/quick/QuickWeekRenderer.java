@@ -9,15 +9,13 @@ import java.util.GregorianCalendar;
 
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 /**
  * @author Thies
  *
  */
-public class QuickWeekRenderer implements IChoiceRenderer
+public class QuickWeekRenderer extends QuickRenderer
 {
 	private static final long serialVersionUID = -7860131083740371031L;
 	private Date	currentWeekStart;
@@ -93,15 +91,6 @@ public class QuickWeekRenderer implements IChoiceRenderer
 		}
 		
 		return value;
-	}
-
-	/**
-	 * Get localizer
-	 * @return
-	 */
-	protected Localizer getLocalizer()
-	{
-		return Application.get().getResourceSettings().getLocalizer();
 	}
 	
 	/*

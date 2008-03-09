@@ -176,13 +176,13 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 		container.add(projectLabel);
 		container.add(customerLabel);
 		
-		label = new Label("rateLabel", "Rate");
+		label = new Label("rateLabel",  new ResourceModel("overview.rate"));
 		label.setVisible(config.isShowTurnover());
 		container.add(label);
 		
-		container.add(new Label("bookedHoursLabel", "Hours"));
+		container.add(new Label("bookedHoursLabel",  new ResourceModel("overview.hours")));
 
-		label = new Label("turnoverLabel", "Turnover");
+		label = new Label("turnoverLabel",  new ResourceModel("overview.turnover"));
 		label.setVisible(config.isShowTurnover());
 		container.add(label);
 	}
@@ -275,24 +275,26 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				
 				summaryRow.add(new SimpleAttributeModifier("style", "display: none")); 
 
-				label = new Label("validStart", new DateModel(projectStatus.getProjectAssignment().getDateStart(),
-						session.getEhourConfig()));
-				label.setEscapeModelStrings(false);
-				summaryRow.add(label);
-
-				label = new Label("validEnd", new DateModel(projectStatus.getProjectAssignment().getDateEnd(),
-						session.getEhourConfig()));
-				label.setEscapeModelStrings(false);
-				summaryRow.add(label);
+				// valid from until label
+				Label validityLabel = new Label("validity", new StringResourceModel("overview.validity", 
+																		this,  null,
+																		new Object[]{new DateModel(projectStatus.getProjectAssignment().getDateStart(), session.getEhourConfig()),
+																						new DateModel(projectStatus.getProjectAssignment().getDateEnd(), session.getEhourConfig())}));
+				validityLabel.setEscapeModelStrings(false);
+				summaryRow.add(validityLabel);
 				
 				WebMarkupContainer cont = new WebMarkupContainer("remainingHoursLabel");
 				// only shown for allotted types
 				cont.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 
-				label = new Label("totalHours", new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig()));
+				label = new Label("totalHours", new StringResourceModel("overview.totalbooked", 
+																			this,  null,
+																			new Object[]{new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig())}));
 				cont.add(label);
 
-				label = new Label("remainingHours", new FloatModel(projectStatus.getHoursRemaining(), session.getEhourConfig()));
+				label = new Label("remainingHours", new StringResourceModel("overview.remaining", 
+																			this,  null,
+																			new Object[]{new FloatModel(projectStatus.getHoursRemaining(), session.getEhourConfig())})); 
 				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 				cont.add(label);
 				summaryRow.add(cont);

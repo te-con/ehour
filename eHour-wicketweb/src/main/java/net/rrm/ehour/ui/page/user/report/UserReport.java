@@ -21,7 +21,6 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
-import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
 import net.rrm.ehour.ui.panel.report.user.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
@@ -54,8 +53,6 @@ public class UserReport extends BaseReportPage
 	public UserReport()
 	{
 		super(new ResourceModel("userreport.title"));
-		
-		add(new ContextualHelpPanel("contextHelp", "userReport.help.header", "userReport.help.body"));
 		
 		ReportCriteria reportCriteria = getReportCriteria(true);
 		IModel	model = new CompoundPropertyModel(reportCriteria);
@@ -112,6 +109,4 @@ public class UserReport extends BaseReportPage
 		
 		return data;
 	}	
-	
-	
 }

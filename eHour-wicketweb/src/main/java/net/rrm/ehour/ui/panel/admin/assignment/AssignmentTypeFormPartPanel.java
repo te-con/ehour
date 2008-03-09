@@ -98,7 +98,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		final PropertyModel	showOverrunHoursModel = new PropertyModel(model, "showOverrunHours");
 		
 		// assignment type
-		final DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer(this));
+		final DropDownChoice assignmentTypeChoice = new DropDownChoice("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer());
 		assignmentTypeChoice.setRequired(true);
 		assignmentTypeChoice.setNullValid(false);
 		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));

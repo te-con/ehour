@@ -172,15 +172,13 @@ public class TimesheetPanel extends Panel implements Serializable
 		weekDateFormatter = new SimpleDateFormat("w", config.getLocale());
 		dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
 		
-		// TODO i18n
-		StringBuilder weekLabel = new StringBuilder("Week ");
-		weekLabel.append(weekDateFormatter.format(forWeek.getTime()));
-		weekLabel.append(": ");
-		weekLabel.append(dateFormatter.format(weekStart));
-		weekLabel.append(" - ");
-		weekLabel.append(dateFormatter.format(weekEnd));
+		IModel weekLabelModel = new StringResourceModel("timesheet.weekTitle",
+								this, null,
+								new Object[]{weekDateFormatter.format(forWeek.getTime()),
+												dateFormatter.format(weekStart),
+												dateFormatter.format(weekEnd)});
 
-		titleFragment.add(new Label("titleLabel", weekLabel.toString()));
+		titleFragment.add(new Label("titleLabel", weekLabelModel));
 		
 		AjaxLink previousWeekLink = new AjaxLink("previousWeek")
 		{

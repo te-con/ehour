@@ -51,5 +51,4 @@ public abstract class QuickPeriod  implements Serializable
 	{
 		this.periodIndex = periodIndex;
 	}
-	
 }

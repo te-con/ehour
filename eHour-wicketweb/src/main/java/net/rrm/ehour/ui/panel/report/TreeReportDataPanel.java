@@ -357,8 +357,6 @@ public class TreeReportDataPanel extends Panel
 				{
 					Label cellLabel;
 					
-					System.out.println(newValueInPreviousColumn);
-					
 					if (isDuplicate(i, cellValue) && !newValueInPreviousColumn)
 					{
 						cellLabel = new Label(Integer.toString(i), new Model(""));

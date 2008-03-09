@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.util;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
@@ -71,4 +72,31 @@ public class CommonWebUtil
 		return key;
 	}
 	
+	/**
+	 * Get resource key for user role
+	 * @param role
+	 * @return
+	 */
+	public static String getResourceKeyForUserRole(UserRole role)
+	{
+		String key = null;
+		
+		if (role.getRole().equals(EhourConstants.ROLE_CONSULTANT))
+		{
+			key = "role.ROLE_CONSULTANT";
+		} 
+		else if (role.getRole().equals(EhourConstants.ROLE_REPORT))
+		{
+			key = "role.ROLE_REPORT";
+		}
+		else if (role.getRole().equals(EhourConstants.ROLE_PROJECTMANAGER))
+		{
+			key = "role.ROLE_PROJECTMANAGER";
+		}
+		else if (role.getRole().equals(EhourConstants.ROLE_ADMIN))
+		{
+			key = "role.ROLE_ADMIN";
+		}
+		return key;		
+	}
 }
