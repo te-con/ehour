@@ -73,7 +73,7 @@ public class GlobalReportPage extends BaseReportPage
 	 */
 	public GlobalReportPage()
 	{
-		super(new ResourceModel("report.title"));
+		super(new ResourceModel("report.global.title"));
 		
 		final ReportCriteria reportCriteria = getReportCriteria(false);
 		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));
@@ -81,7 +81,7 @@ public class GlobalReportPage extends BaseReportPage
 		
 		List<AbstractTab> tabList = new ArrayList<AbstractTab>();
 		
-		tabList.add(new AbstractTab(new KeyResourceModel("criteria.title"))
+		tabList.add(new AbstractTab(new KeyResourceModel("report.criteria.title"))
 		{
 			private static final long serialVersionUID = 1L;
 

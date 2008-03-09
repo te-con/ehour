@@ -80,6 +80,6 @@ public class ProjectHoursAggregateChartImage extends AbstractReportChartImage<As
 	@Override
 	protected String getValueAxisLabelKey()
 	{
-		return "hours";
+		return "general.hours";
 	}
 }

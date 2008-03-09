@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
@@ -23,12 +24,11 @@ public class QuickWeekRenderer implements IChoiceRenderer
 	private Date	previousWeekStart;
 	private Date	nextWeekEnd;
 	private Date	nextWeekStart;
-	private Localizer localizer;
 	
 	/**
 	 * Default constructor
 	 */
-	public QuickWeekRenderer(Localizer localizer)
+	public QuickWeekRenderer()
 	{
 		Calendar currentWeekStartCal = new GregorianCalendar();
 		currentWeekStartCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
@@ -56,8 +56,6 @@ public class QuickWeekRenderer implements IChoiceRenderer
 		nextWeekStartCal.add(Calendar.WEEK_OF_YEAR, 1);
 		DateUtil.nullifyTime(nextWeekEndCal);
 		nextWeekStart = nextWeekStartCal.getTime();
-
-		this.localizer = localizer;
 	}
 	
 	/*
@@ -66,6 +64,8 @@ public class QuickWeekRenderer implements IChoiceRenderer
 	 */
 	public Object getDisplayValue(Object object)
 	{
+		Localizer localizer = getLocalizer();
+		
 		String value = "unknown";
 		
 		if (object instanceof QuickWeek)
@@ -95,9 +95,21 @@ public class QuickWeekRenderer implements IChoiceRenderer
 		return value;
 	}
 
+	/**
+	 * Get localizer
+	 * @return
+	 */
+	protected Localizer getLocalizer()
+	{
+		return Application.get().getResourceSettings().getLocalizer();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object, int)
+	 */
 	public String getIdValue(Object object, int index)
 	{
 		return Integer.toString(index);
 	}
-
 }

@@ -82,6 +82,6 @@ public class CustomerHoursAggregateChartImage extends AbstractReportChartImage<A
 	@Override
 	protected String getValueAxisLabelKey()
 	{
-		return "hours";
+		return "general.hours";
 	}
 }

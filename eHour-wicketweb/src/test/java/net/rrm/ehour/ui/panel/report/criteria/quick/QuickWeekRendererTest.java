@@ -17,21 +17,25 @@
 
 package net.rrm.ehour.ui.panel.report.criteria.quick;
 
-import static org.junit.Assert.assertTrue;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.verify;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
+
+import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.easymock.classextension.EasyMock.*;
 /**
  * TODO 
  **/
 
-public class QuickWeekRendererTest
+public class QuickWeekRendererTest extends BaseUIWicketTester
 {
 	QuickWeekRenderer renderer;
 	Localizer			localizer;
@@ -41,7 +45,13 @@ public class QuickWeekRendererTest
 	{
 		localizer = createMock(Localizer.class); 
 		
-		renderer = new QuickWeekRenderer(localizer);
+		renderer = new QuickWeekRenderer()
+		{
+			protected Localizer getLocalizer()
+			{
+				return localizer;
+			}
+		};
 	}
 
 	/**
