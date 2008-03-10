@@ -33,6 +33,8 @@ import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.error.ErrorInfo;
+import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
@@ -263,10 +265,16 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-                persistTimesheetEntries(timesheet);
+                try
+				{
+					persistTimesheetEntries(timesheet);
+					target.addComponent(updatePostPersistMessage(timesheet));
+				} catch (OverBudgetException e)
+				{
+					target.addComponent(updateErrorMessage(e.getErrorInfo()));
+				}
+				
                 ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
-                
-                updatePostPersistMessage(timesheet, target);
             }
 
 			@Override
@@ -306,7 +314,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param timesheet
 	 * @param target
 	 */
-	private void updatePostPersistMessage(Timesheet timesheet, AjaxRequestTarget target)
+	private Label updatePostPersistMessage(Timesheet timesheet)
 	{
 		// server message
 		IModel model = new StringResourceModel("timesheet.weekSaved", 
@@ -315,13 +323,33 @@ public class TimesheetPanel extends Panel implements Serializable
 													new Object[]{timesheet.getTotalBookedHours(),
 																	new DateModel(timesheet.getWeekStart(), config, DateModel.DATESTYLE_FULL_SHORT),
 																	new DateModel(timesheet.getWeekEnd(), config, DateModel.DATESTYLE_FULL_SHORT)});
+
+		return updateServerMessage(model);
 		
+	}
+	
+	private Label updateErrorMessage(ErrorInfo errorInfo)
+	{
+		IModel model = new StringResourceModel("timesheet.errorPersist",
+													TimesheetPanel.this, 
+													null,
+													new Object[]{});
+
+		return updateServerMessage(model);
+	}
+	
+	/**
+	 * Update server message
+	 * @param model
+	 */
+	private Label updateServerMessage(IModel model)
+	{
 		Label label = new Label("serverMessage", model);
 		label.add(new SimpleAttributeModifier("style", "timesheetPersisted"));
 		label.setOutputMarkupId(true);
 		serverMsgLabel.replaceWith(label);
 		serverMsgLabel = label;
-		target.addComponent(label);
+		return label;
 	}
 	
 	/**
@@ -362,8 +390,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	/**
 	 * Persist timesheet entries
 	 * @param timesheet
+	 * @throws OverBudgetException 
 	 */
-	private void persistTimesheetEntries(Timesheet timesheet)
+	private void persistTimesheetEntries(Timesheet timesheet) throws OverBudgetException
 	{
 		List<TimesheetEntry>	timesheetEntries = new ArrayList<TimesheetEntry>();
 		

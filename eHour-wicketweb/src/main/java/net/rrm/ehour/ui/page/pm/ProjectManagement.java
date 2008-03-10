@@ -137,7 +137,7 @@ public class ProjectManagement extends BasePage
 			// only one can be there
 			Project project = criteria.getUserCriteria().getProject();
 			
-			reportData = aggregateReportService.getProjectManagerReport(reportRange, project.getPK());
+			reportData = aggregateReportService.getProjectManagerDetailedReport(reportRange, project.getPK());
 		}
 		
 		return reportData;
