@@ -21,22 +21,27 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
-import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * TODO 
  **/
 
-public class ProjectAssignmentServiceTest extends TestCase
+public class ProjectAssignmentServiceTest
 {
 	private	ProjectAssignmentService	projectAssignmentService;
 	private	ProjectDAO				projectDAO;
@@ -47,7 +52,8 @@ public class ProjectAssignmentServiceTest extends TestCase
 	/**
 	 * 
 	 */
-	protected void setUp()
+	@Before
+	public void setUp()
 	{
 		projectAssignmentService = new ProjectAssignmentServiceImpl();
 
@@ -70,6 +76,7 @@ public class ProjectAssignmentServiceTest extends TestCase
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetProjectAssignment() throws ObjectNotFoundException
 	{
 		ProjectAssignment pa = new ProjectAssignment();
@@ -93,4 +100,13 @@ public class ProjectAssignmentServiceTest extends TestCase
 		verify(timesheetDAO);
 		verify(reportAggregatedDAO);
 	}	
+	
+	@Test
+	public void testCheckForOverruns() throws OverBudgetException
+	{
+		Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
+		
+		projectAssignmentService.checkForOverruns(assignments);
+		
+	}
 }

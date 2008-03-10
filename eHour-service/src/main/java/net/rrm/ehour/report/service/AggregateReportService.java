@@ -18,7 +18,9 @@ package net.rrm.ehour.report.service;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ProjectManagerDashboard;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -60,5 +62,14 @@ public interface AggregateReportService
 	 * @param reportCriteria
 	 * @return
 	 */
-	public ProjectManagerReport getProjectManagerReport(DateRange reportRange, Integer projectId);
+	public ProjectManagerReport getProjectManagerDetailedReport(DateRange reportRange, Integer projectId);
+	
+	
+	/**
+	 * Get dashboard for projects where user is PM
+	 * @param reportRange
+	 * @param projectId
+	 * @return
+	 */
+	public ProjectManagerDashboard getProjectManagerDashboard(User user);
 }

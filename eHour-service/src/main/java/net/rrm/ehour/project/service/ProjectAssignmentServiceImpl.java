@@ -26,7 +26,9 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.error.ErrorInfo;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
@@ -206,12 +208,11 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#checkForOverruns(java.util.Set)
 	 */
-	public void checkForOverruns(Set<ProjectAssignment> assignments)
+	public void checkForOverruns(Set<ProjectAssignment> assignments)  throws OverBudgetException
 	{
 		ProjectAssignment	dbAssignment;
 		AssignmentStatus	status;
 		TimesheetEntry		entry;
-		
 		
 		for (ProjectAssignment assignment : assignments)
 		{
@@ -227,7 +228,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			}
 		
 			status = timeAllottedUtil.getAssignmentStatus(dbAssignment);
-
 			
 			if (status.getAssignmentPhase() == AssignmentStatus.OVER_ALLOTTED_PHASE 
 				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
@@ -236,6 +236,9 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 				mailService.mailPMFixedAllottedReached(status.getAggregate(),
 														entry.getEntryId().getEntryDate(),
 														dbAssignment.getProject().getProjectManager());
+				
+				ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.IN_OVERRUN);
+				throw new OverBudgetException(errorInfo);
 			}
 			else if (status.getAssignmentPhase() == AssignmentStatus.OVER_OVERRUN_PHASE 
 					&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
@@ -244,6 +247,9 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 				mailService.mailPMFlexOverrunReached(status.getAggregate(), 
 														entry.getEntryId().getEntryDate(),
 														dbAssignment.getProject().getProjectManager());
+				
+				ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
+				throw new OverBudgetException(errorInfo);
 			}
 			else if (status.getAssignmentPhase() == AssignmentStatus.IN_OVERRUN_PHASE 
 					&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
@@ -252,6 +258,10 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 				mailService.mailPMFlexAllottedReached(status.getAggregate(), 
 														entry.getEntryId().getEntryDate(),
 														dbAssignment.getProject().getProjectManager());
+
+				ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_DEADLINE_TIME);
+				throw new OverBudgetException(errorInfo);
+			
 			}
 		}
 	}

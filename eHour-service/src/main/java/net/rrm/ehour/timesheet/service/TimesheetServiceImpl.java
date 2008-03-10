@@ -37,6 +37,7 @@ import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -53,6 +54,8 @@ import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Provides services for displaying and manipulating timesheets.
@@ -288,8 +291,10 @@ public class TimesheetServiceImpl implements TimesheetService
 
 	/**
 	 * Persist timesheets & comment
+	 * @throws OverBudgetException 
 	 */
-	public void persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment)
+	
+	public void persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment) throws OverBudgetException
 	{
 		for (TimesheetEntry entry : timesheetEntries)
 		{
@@ -331,8 +336,9 @@ public class TimesheetServiceImpl implements TimesheetService
 	/**
 	 * Check for time allotted overruns
 	 * @param timesheetEntries
+	 * @throws OverBudgetException 
 	 */
-	private void checkTimeAllottedOverruns(Collection<TimesheetEntry> timesheetEntries)
+	private void checkTimeAllottedOverruns(Collection<TimesheetEntry> timesheetEntries) throws OverBudgetException
 	{
 		Set<ProjectAssignment>	projectAssignments = new HashSet<ProjectAssignment>();
 		

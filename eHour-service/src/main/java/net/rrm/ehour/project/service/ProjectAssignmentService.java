@@ -24,6 +24,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
 /**
@@ -70,7 +71,7 @@ public interface ProjectAssignmentService
 	 * Check for time allotted overruns and mail the PM when required
 	 * @param assignments
 	 */
-	public void checkForOverruns(Set<ProjectAssignment> assignments);
+	public void checkForOverruns(Set<ProjectAssignment> assignments) throws OverBudgetException;
 	
 	/**
 	 * Get project assignments for project

@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.project.util;
 
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -24,10 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.project.dto.AssignmentStatus;
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -36,7 +39,14 @@ import org.junit.Test;
 
 public class ProjectAssignmentUtilTest
 {
-	
+	@Test
+	public void testGetAssignmentStatusFixed()
+	{
+		ProjectAssignment assignment = new ProjectAssignment();
+		ProjectAssignmentType type = new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED);
+		assignment.setAssignmentType(type);
+		
+	}
 	
 	@Test
 	public void testIsEmptyAggregateList()

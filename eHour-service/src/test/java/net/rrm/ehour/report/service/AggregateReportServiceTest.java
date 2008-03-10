@@ -253,7 +253,7 @@ public class AggregateReportServiceTest extends TestCase
 		replay(assignmentService);
 		replay(mailService);
 		
-		ProjectManagerReport report = aggregateReportService.getProjectManagerReport(dr, 1);
+		ProjectManagerReport report = aggregateReportService.getProjectManagerDetailedReport(dr, 1);
 		verify(projectDAO);
 		verify(reportAggregatedDAO);
 		verify(assignmentService);

@@ -28,9 +28,11 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.reports.ProjectManagerDashboard;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -51,8 +53,13 @@ public class AggregateReportServiceImpl implements AggregateReportService
 	private	UserDAO				userDAO;
 	private	MailService			mailService;
 	private	ProjectAssignmentService	projectAssignmentService;
+	private ProjectService		projectService; 
 	
 	private	Logger				logger = Logger.getLogger(this.getClass());
+	
+
+
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -263,7 +270,7 @@ public class AggregateReportServiceImpl implements AggregateReportService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getProjectManagerReport(net.rrm.ehour.data.DateRange, java.lang.Integer)
 	 */
-	public ProjectManagerReport getProjectManagerReport(DateRange reportRange, Integer projectId)
+	public ProjectManagerReport getProjectManagerDetailedReport(DateRange reportRange, Integer projectId)
 	{
 		ProjectManagerReport	report = new ProjectManagerReport();
 		SortedSet<AssignmentAggregateReportElement>	aggregates;
@@ -392,5 +399,16 @@ public class AggregateReportServiceImpl implements AggregateReportService
 	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
 	{
 		this.projectAssignmentService = projectAssignmentService;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.service.AggregateReportService#getProjectManagerDashboard(net.rrm.ehour.domain.User)
+	 */
+	public ProjectManagerDashboard getProjectManagerDashboard(User user)
+	{
+//		projectSer
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
