@@ -157,13 +157,7 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	@SuppressWarnings("unchecked")
 	public List<User> findUsersWithPMRoleButNoProject()
 	{
-		Session s = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		
-		return s.getNamedQuery("User.findUsersWhoHavePMRoleButNoProject").list();
-//		
-//		return s.
-//		
-//		return getHibernateTemplate().findByNamedQuery("User.findUsersWhoHavePMRoleButNoProject");
+		return getHibernateTemplate().findByNamedQuery("User.findUsersWhoHavePMRoleButNoProject");
 	}
 
 	/*

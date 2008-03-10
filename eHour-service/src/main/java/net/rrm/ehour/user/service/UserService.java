@@ -132,10 +132,10 @@ public interface UserService
     public List<UserRole> getUserRoles();
     
     /**
-     * Check if PM roles are still valid and remove 'm if necc.
-     *
+     * Add pm role to user and validate all other pm roles
+     * @param userId to add pm role to
      */
-    public void checkProjectManagementRolesValid();
+    public User addAndcheckProjectManagementRoles(Integer userId);
     
     /**
      * Customer fold preference

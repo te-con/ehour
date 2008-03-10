@@ -64,6 +64,8 @@ public class UserServiceTest extends TestCase
 		((UserServiceImpl)userService).setUserRoleDAO(userRoleDAO);
 	}
 
+
+	
 	
 	/**
 	 * 

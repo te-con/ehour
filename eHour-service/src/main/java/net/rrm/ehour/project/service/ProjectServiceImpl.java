@@ -152,7 +152,7 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		projectDAO.persist(project);
 
-		userService.checkProjectManagementRolesValid();
+		userService.addAndcheckProjectManagementRoles( project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
 		
 		return project;
 	}

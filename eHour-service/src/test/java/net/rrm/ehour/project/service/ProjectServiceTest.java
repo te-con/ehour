@@ -31,6 +31,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.user.service.UserService;
 
 /**
  *  
@@ -42,7 +43,7 @@ public class ProjectServiceTest extends TestCase
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private ProjectAssignmentService	projectAssignmentService;
-	
+	private UserService		userService;
 	/**
 	 * 
 	 */
@@ -58,6 +59,10 @@ public class ProjectServiceTest extends TestCase
 		
 		projectAssignmentService = createMock(ProjectAssignmentService.class);
 		((ProjectServiceImpl)projectService).setProjectAssignmentService(projectAssignmentService);
+
+		userService = createMock(UserService.class);
+		((ProjectServiceImpl)projectService).setUserService(userService);
+
 	}
 
 	
@@ -117,14 +122,15 @@ public class ProjectServiceTest extends TestCase
 		expect(projectDAO.persist(prj))
 			.andReturn(prj);
 		
-//		userService.checkProjectManagementRolesValid();
-//	
-//		replay(userService);
+		expect(userService.addAndcheckProjectManagementRoles(null))
+			.andReturn(null);
+	
+		replay(userService);
 		replay(projectDAO);
 	
 		projectService.persistProject(prj);
 	
-//		verify(userService);
+		verify(userService);
 		verify(projectDAO);
 	}
 	

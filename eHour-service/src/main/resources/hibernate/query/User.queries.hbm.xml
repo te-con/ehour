@@ -75,15 +75,6 @@
 	    	  				FROM Project as prj)
 	</query>
 
-	<query name="User.findUsersWhoDontHavePMRoleButProject"> 
-		SELECT DISTINCT user
-		FROM User as user,
-			 Project project
-	    WHERE 'ROLE_PROJECTMANAGER' not in elements (user.userRoles) AND
-				project.projectManager = user AND
-				user.active IS TRUE
-	</query>
-	
 	<query name="CustomerFoldPreference.findForUserAndCustomers"> 
 		SELECT pref
 		FROM CustomerFoldPreference pref

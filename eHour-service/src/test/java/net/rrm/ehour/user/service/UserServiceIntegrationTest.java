@@ -17,8 +17,6 @@ package net.rrm.ehour.user.service;
 
 import java.util.List;
 
-import org.omg.CORBA.COMM_FAILURE;
-
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.domain.User;
@@ -149,13 +147,24 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 	}
 	
 
-	
+	/*
+	 * 
+	 */
 	public void testFindUsersByPatternAndUserRole()
 	{
 		List<User>	results;
 		
 		results = userService.getUsersByNameMatch(null, true, new UserRole(EhourConstants.ROLE_CONSULTANT));
 		assertEquals(4, results.size());		
+	}	
+
+	/**
+	 * 
+	 */
+	public void testCheckProjectManagementRolesValid()
+	{
+		userService.addAndcheckProjectManagementRoles(3);
+
 	}	
 	
 	/**

@@ -334,14 +334,41 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#checkProjectManagementRolesValid()
+	 * @see net.rrm.ehour.user.service.UserService#addAndcheckProjectManagementRoles(java.lang.Integer)
 	 */
-	public void checkProjectManagementRolesValid()
+	public User addAndcheckProjectManagementRoles(Integer userId)
+	{
+		User user = null;
+		try
+		{
+			if (userId != null)
+			{
+				user = getAndAddPmRole(userId);
+			}
+			
+			validatePmRoles();
+		} catch (PasswordEmptyException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ObjectNotUniqueException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return user;
+	}
+	
+	
+	/**
+	 * Remove pm role from users who're not pm anymore
+	 */
+	private void validatePmRoles()
 	{
 		List<User>	invalidUsers;
-		List<User>	validUsers;
 		
-		// remove invalid roles
+		// find users with pm role but no project
 		invalidUsers = userDAO.findUsersWithPMRoleButNoProject();
 		
 		UserRole pmRole = new UserRole(EhourConstants.ROLE_PROJECTMANAGER);
@@ -351,18 +378,27 @@ public class UserServiceImpl implements UserService
 			logger.info("Removing projectmgmt role from " + user.getLastName());
 			
 			user.getUserRoles().remove(pmRole);
+			System.out.println(user.getUserRoles());
 			userDAO.merge(user);
-		}
-
-		// valids
-		validUsers = userDAO.findUsersWhoDontHavePMRoleButArePM();
+		}		
+	}
+	
+	
+	/**
+	 * Find user on id and add PM role
+	 * @param userId
+	 * @throws ObjectNotUniqueException 
+	 * @throws PasswordEmptyException 
+	 */
+	private User getAndAddPmRole(Integer userId) throws PasswordEmptyException, ObjectNotUniqueException
+	{
+		User user = userDAO.findById(userId);
 		
-		for (User user : validUsers)
-		{
-			logger.info("Adding projectmgmt role to " + user.getLastName());
-			user.getUserRoles().add(pmRole);
-			userDAO.merge(user);
-		}
+		user.getUserRoles().add(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
+		
+		persistUser(user);
+		
+		return user;
 	}
 
 	/**

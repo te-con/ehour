@@ -11,7 +11,6 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
 @SuppressWarnings("unchecked")
@@ -25,12 +24,6 @@ public class UserDAOTest extends BaseDAOTest
 		this.dao = dao;
 	}
 
-	public void testFindUsersWhoDontHavePMRoleButArePM()
-	{
-		List<User> users = dao.findUsersWhoDontHavePMRoleButArePM();
-
-		assertEquals(3, users.get(0).getUserId().intValue());
-	}
 
 	public void testFindUsersWithPMRoleButNoProject()
 	{
