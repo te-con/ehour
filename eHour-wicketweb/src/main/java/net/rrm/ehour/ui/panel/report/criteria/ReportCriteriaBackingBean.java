@@ -61,6 +61,9 @@ public class ReportCriteriaBackingBean implements Serializable
 	 */
 	public void setQuickWeek(QuickWeek quickWeek)
 	{
+		quickQuarter = null;
+		quickMonth = null;
+		
 		this.quickWeek = quickWeek;
 		
 		setReportRangeForQuickie(quickWeek);
@@ -98,6 +101,8 @@ public class ReportCriteriaBackingBean implements Serializable
 
 	public void setQuickMonth(QuickMonth quickMonth)
 	{
+		quickWeek = null;
+		quickQuarter = null;
 		this.quickMonth = quickMonth;
 		setReportRangeForQuickie(quickMonth);
 	}
@@ -109,6 +114,8 @@ public class ReportCriteriaBackingBean implements Serializable
 
 	public void setQuickQuarter(QuickQuarter quickQuarter)
 	{
+		quickWeek = null;
+		quickMonth = null;
 		this.quickQuarter = quickQuarter;
 		setReportRangeForQuickie(quickQuarter);
 	}

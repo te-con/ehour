@@ -276,7 +276,7 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				summaryRow.add(new SimpleAttributeModifier("style", "display: none")); 
 
 				// valid from until label
-				Label validityLabel = new Label("validity", new StringResourceModel("overview.validity", 
+				Label validityLabel = new Label("overview.validity", new StringResourceModel("overview.validity", 
 																		this,  null,
 																		new Object[]{new DateModel(projectStatus.getProjectAssignment().getDateStart(), session.getEhourConfig()),
 																						new DateModel(projectStatus.getProjectAssignment().getDateEnd(), session.getEhourConfig())}));
@@ -287,12 +287,12 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				// only shown for allotted types
 				cont.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 
-				label = new Label("totalHours", new StringResourceModel("overview.totalbooked", 
+				label = new Label("overview.totalbooked", new StringResourceModel("overview.totalbooked", 
 																			this,  null,
 																			new Object[]{new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig())}));
 				cont.add(label);
 
-				label = new Label("remainingHours", new StringResourceModel("overview.remaining", 
+				label = new Label("overview.remaining", new StringResourceModel("overview.remaining", 
 																			this,  null,
 																			new Object[]{new FloatModel(projectStatus.getHoursRemaining(), session.getEhourConfig())})); 
 				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
