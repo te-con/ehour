@@ -25,7 +25,20 @@ public class UserDAOTest extends BaseDAOTest
 		this.dao = dao;
 	}
 
-	
+	public void testFindUsersWhoDontHavePMRoleButArePM()
+	{
+		List<User> users = dao.findUsersWhoDontHavePMRoleButArePM();
+
+		assertEquals(3, users.get(0).getUserId().intValue());
+	}
+
+	public void testFindUsersWithPMRoleButNoProject()
+	{
+		List<User> users = dao.findUsersWithPMRoleButNoProject();
+
+		assertEquals(5, users.get(0).getUserId().intValue());
+	}
+
 	public void testFindUsersByPattern()
 	{
 		List<User>	results;
