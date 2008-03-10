@@ -47,8 +47,6 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		user = userService.persistUser(user);
 		
 		assertEquals("ROLE_ADMIN", user.getUserRoles().iterator().next().getRole());
-		
-		
 	}	
 	
 	/**

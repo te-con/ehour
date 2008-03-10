@@ -41,6 +41,7 @@ import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.acegisecurity.providers.encoding.MessageDigestPasswordEncoder;
 import org.apache.log4j.Logger;
@@ -340,28 +341,16 @@ public class UserServiceImpl implements UserService
 		List<User>	invalidUsers;
 		List<User>	validUsers;
 		
-		Set<UserRole>	userRoles;
-		
-		// invalids
-		// FIXME
+		// remove invalid roles
 		invalidUsers = userDAO.findUsersWithPMRoleButNoProject();
+		
+		UserRole pmRole = new UserRole(EhourConstants.ROLE_PROJECTMANAGER);
 		
 		for (User user : invalidUsers)
 		{
 			logger.info("Removing projectmgmt role from " + user.getLastName());
 			
-			userRoles = new HashSet<UserRole>();
-			
-			// no clue why set.remove won't work nor do I care
-			for (UserRole role : user.getUserRoles())
-			{
-				if (!role.getRole().equals("ROLE_PROJECTMANAGER"))
-				{
-					userRoles.add(role);
-				}
-			}
-			
-			user.setUserRoles(userRoles);
+			user.getUserRoles().remove(pmRole);
 			userDAO.merge(user);
 		}
 
@@ -371,7 +360,7 @@ public class UserServiceImpl implements UserService
 		for (User user : validUsers)
 		{
 			logger.info("Adding projectmgmt role to " + user.getLastName());
-			user.getUserRoles().add(new UserRole("ROLE_PROJECTMANAGER"));
+			user.getUserRoles().add(pmRole);
 			userDAO.merge(user);
 		}
 	}
@@ -383,12 +372,6 @@ public class UserServiceImpl implements UserService
 	 */
 	private String encryptPassword(String plainPassword, Object salt)
 	{
-//		byte[]	shaPass;
-//		
-//		shaPass = DigestUtils.sha(plainPassword);
-//		
-//		return new String(Hex.encodeHex(shaPass));
-		
 		return passwordEncoder.encodePassword(plainPassword, salt);
 	}
 

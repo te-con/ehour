@@ -30,6 +30,7 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 
@@ -44,7 +45,16 @@ public class ProjectServiceImpl implements ProjectService
 	private	Logger						logger = Logger.getLogger(ProjectServiceImpl.class);
 	private ProjectAssignmentService	projectAssignmentService;
 	private	AggregateReportService		aggregateReportService;
+	private UserService					userService;
 	
+	/**
+	 * @param userService the userService to set
+	 */
+	public void setUserService(UserService userService)
+	{
+		this.userService = userService;
+	}
+
 	/**
 	 * 
 	 */
@@ -142,7 +152,7 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		projectDAO.persist(project);
 
-//		userService.checkProjectManagementRolesValid();
+		userService.checkProjectManagementRolesValid();
 		
 		return project;
 	}
