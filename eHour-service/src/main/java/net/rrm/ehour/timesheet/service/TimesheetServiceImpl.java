@@ -298,27 +298,30 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		for (TimesheetEntry entry : timesheetEntries)
 		{
-			if (StringUtils.isBlank(entry.getComment())
-					&& (entry.getHours() == null || entry.getHours().equals(0f)))
+			@Transactional
 			{
-				if (logger.isDebugEnabled())
+				if (StringUtils.isBlank(entry.getComment())
+						&& (entry.getHours() == null || entry.getHours().equals(0f)))
 				{
-					logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+					if (logger.isDebugEnabled())
+					{
+						logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+								" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+					}
+					timesheetDAO.delete(entry);
+					
 				}
-				timesheetDAO.delete(entry);
-				
-			}
-			else
-			{
-				if (logger.isDebugEnabled())
+				else
 				{
-					logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours()
-							+ ", comment: " + entry.getComment()
-					);
+					if (logger.isDebugEnabled())
+					{
+						logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+								" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours()
+								+ ", comment: " + entry.getComment()
+						);
+					}
+					timesheetDAO.persist(entry);
 				}
-				timesheetDAO.persist(entry);
 			}
 		}
 		

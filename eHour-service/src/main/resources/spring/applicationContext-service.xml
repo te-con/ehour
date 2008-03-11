@@ -14,11 +14,13 @@
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
-			<tx:method name="persist*" propagation="REQUIRED" rollback-for="net.rrm.ehour.exception.ObjectNotUniqueException,net.rrm.ehour.exception.ParentChildConstraintException" />
+			<tx:method name="persist*" propagation="REQUIRED" rollback-for="net.rrm.ehour.exception.BusinessException,net.rrm.ehour.exception.ObjectNotUniqueException,net.rrm.ehour.exception.ParentChildConstraintException" />
 			<tx:method name="delete*" propagation="REQUIRED" />			
 			<tx:method name="assign*" propagation="REQUIRED" />						
 		</tx:attributes>
 	</tx:advice>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<aop:config>
 		<aop:pointcut id="serviceOperation" expression="execution(* net.rrm.ehour.*.service.*Service.*(..))" />
