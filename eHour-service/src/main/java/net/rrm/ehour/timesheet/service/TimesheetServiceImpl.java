@@ -298,7 +298,6 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		for (TimesheetEntry entry : timesheetEntries)
 		{
-			@Transactional
 			{
 				if (StringUtils.isBlank(entry.getComment())
 						&& (entry.getHours() == null || entry.getHours().equals(0f)))
