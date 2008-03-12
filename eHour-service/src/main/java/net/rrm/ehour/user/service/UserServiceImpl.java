@@ -346,7 +346,7 @@ public class UserServiceImpl implements UserService
 				user = getAndAddPmRole(userId);
 			}
 			
-			validatePmRoles();
+			userDAO.deletePmWithoutProject();
 		} catch (PasswordEmptyException e)
 		{
 			// TODO Auto-generated catch block
@@ -358,29 +358,6 @@ public class UserServiceImpl implements UserService
 		}
 		
 		return user;
-	}
-	
-	
-	/**
-	 * Remove pm role from users who're not pm anymore
-	 */
-	private void validatePmRoles()
-	{
-		List<User>	invalidUsers;
-		
-		// find users with pm role but no project
-		invalidUsers = userDAO.findUsersWithPMRoleButNoProject();
-		
-		UserRole pmRole = new UserRole(EhourConstants.ROLE_PROJECTMANAGER);
-		
-		for (User user : invalidUsers)
-		{
-			logger.info("Removing projectmgmt role from " + user.getLastName());
-			
-			user.getUserRoles().remove(pmRole);
-			System.out.println(user.getUserRoles());
-			userDAO.merge(user);
-		}		
 	}
 	
 	

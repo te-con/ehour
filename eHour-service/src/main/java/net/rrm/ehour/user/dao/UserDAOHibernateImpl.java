@@ -21,7 +21,7 @@ import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 
-import org.hibernate.Session;
+import org.hibernate.Query;
 
 
 public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer> implements UserDAO
@@ -150,23 +150,12 @@ public class UserDAOHibernateImpl extends GenericDAOHibernateImpl<User, Integer>
 	}
 
 	/*
-	 * 
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.dao.UserDAO#findUsersWithPMRoleButNoProject(net.rrm.ehour.user.domain.User)
+	 * @see net.rrm.ehour.user.dao.UserDAO#deletePmWithoutProject()
 	 */
-	@SuppressWarnings("unchecked")
-	public List<User> findUsersWithPMRoleButNoProject()
+	public void deletePmWithoutProject()
 	{
-		return getHibernateTemplate().findByNamedQuery("User.findUsersWhoHavePMRoleButNoProject");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.dao.UserDAO#findUsersWhoDontHavePMRoleButArePM()
-	 */
-	@SuppressWarnings("unchecked")
-	public List<User> findUsersWhoDontHavePMRoleButArePM()
-	{
-		return getHibernateTemplate().findByNamedQuery("User.findUsersWhoDontHavePMRoleButProject");
+		Query q = getSession().getNamedQuery("User.deletePMsWithoutProject");
+		q.executeUpdate();
 	}
 }

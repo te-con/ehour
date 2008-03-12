@@ -67,14 +67,8 @@ public interface UserDAO extends GenericDAO<User, Integer>
 	public List<User> findUsersForDepartments(String pattern, List<UserDepartment> departments, boolean onlyActive);
 	
 	/**
-	 * Find users with a PM role but no project
+	 * Delete users with PM role but are not PM anymore
 	 * @return
 	 */
-	public List<User> findUsersWithPMRoleButNoProject();
-	
-	/**
-	 * Find users who don't have PM role but are PM
-	 * @return
-	 */
-	public List<User> findUsersWhoDontHavePMRoleButArePM();
+	public void deletePmWithoutProject();
 }

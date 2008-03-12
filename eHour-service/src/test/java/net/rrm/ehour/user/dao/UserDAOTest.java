@@ -11,13 +11,15 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.util.EhourConstants;
 
 @SuppressWarnings("unchecked")
 public class UserDAOTest extends BaseDAOTest 
 {
 	private	UserDAO	dao;
-
+	private ProjectDAO projectDAO;
+	
 	
 	public void setUserDAO(UserDAO dao)
 	{
@@ -25,12 +27,14 @@ public class UserDAOTest extends BaseDAOTest
 	}
 
 
-	public void testFindUsersWithPMRoleButNoProject()
-	{
-		List<User> users = dao.findUsersWithPMRoleButNoProject();
 
-		assertEquals(5, users.get(0).getUserId().intValue());
+
+	public void setProjectDAO(ProjectDAO projectDAO) {
+		this.projectDAO = projectDAO;
 	}
+
+
+
 
 	public void testFindUsersByPattern()
 	{
@@ -134,21 +138,12 @@ public class UserDAOTest extends BaseDAOTest
 		assertEquals(2, results.size());
 	}
 	
-	// FIXME
-//	public void testFindUsersWithPMRoleButNoProject()
-//	{
-//		List<User> results = dao.findUsersWithPMRoleButNoProject();
-//		setComplete();
-//		assertEquals(1, results.size());
-//	}
-//	
-//	public void testFindUsersWhoDontHavePMRoleButArePM()
-//	{
-//		List<User> results = dao.findUsersWhoDontHavePMRoleButArePM();
-//		
-//		assertEquals(1, results.size());
-//		assertEquals(3, results.get(0).getUserId().intValue());
-//	}
+
+	
+	public void testDeletePmWithoutProject()
+	{
+		dao.deletePmWithoutProject();
+	}	
 	
 	
 }
