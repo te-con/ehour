@@ -41,9 +41,16 @@ public class DoubleRangeWithNullValidator extends AbstractValidator implements I
 	@Override
 	public void onValidate(IValidatable validatable)
 	{
-		Number value = (Number) validatable.getValue();
-		
-		if (value.doubleValue() < minimum || value.doubleValue() > maximum)
+		try
+		{
+			Number value = (Number) validatable.getValue();
+			
+			if (value.doubleValue() < minimum || value.doubleValue() > maximum)
+			{
+				error(validatable);
+			}
+		}
+		catch (Throwable t)
 		{
 			error(validatable);
 		}

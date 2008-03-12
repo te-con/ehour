@@ -74,7 +74,14 @@ public class TimesheetTextField extends TextField
 			{
 				if (!StringUtils.isBlank(value))
 				{
-					return Float.parseFloat(value.replace(",", "."));
+					try
+					{
+						return Float.parseFloat(value.replace(",", "."));
+					}
+					catch (NumberFormatException nfe)
+					{
+						return value;
+					}
 				}
 				else
 				{
