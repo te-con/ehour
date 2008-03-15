@@ -13,19 +13,21 @@
  *
  */
 
-package net.rrm.ehour.report.util;
+package net.rrm.ehour.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 /**
- * Report util 
+ * Ehour util 
  **/
 
-public class ReportUtil
+public class EhourUtil
 {
 	/**
 	 * Get a list of primary keys of out a list of domain objects
@@ -33,7 +35,7 @@ public class ReportUtil
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static<PK extends Serializable> List<PK> getPKsFromDomainObjects(List<? extends DomainObject> domainObjects)
+	public static<PK extends Serializable> List<PK> getPKsFromDomainObjects(Collection<? extends DomainObject> domainObjects)
 	{
 		List<PK> pks = new ArrayList<PK>();
 		
@@ -44,5 +46,28 @@ public class ReportUtil
 		
 		return pks;
 	}
+	
+	/**
+	 * Check if aggregate list is empty
+	 * @param aggregates
+	 * @return
+	 */
+	public static boolean isEmptyAggregateList(Collection<AssignmentAggregateReportElement> aggregates)
+	{
+		float	hours = 0f;
+		
+		if (aggregates != null)
+		{
+			for (AssignmentAggregateReportElement assignmentAggregateReportElement : aggregates)
+			{
+				if (assignmentAggregateReportElement.getHours() != null)
+				{
+					hours += assignmentAggregateReportElement.getHours().floatValue();
+				}
+			}
+		}
+		
+		return hours == 0f;
+	}	
 
 }

@@ -165,6 +165,11 @@ public class DetailedReportDAOTest extends BaseDAOTest
 		
 		List<FlatReportElement> results = dao.getHoursPerDay(dateRange);
 		
+		for (FlatReportElement flatReportElement : results)
+		{
+			System.out.println(flatReportElement.getTotalHours());
+		}
+		
 		assertEquals(12, results.size());
 	}	
 	

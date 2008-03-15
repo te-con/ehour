@@ -15,10 +15,10 @@
 
 package net.rrm.ehour.project.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
@@ -33,12 +33,13 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
-import net.rrm.ehour.project.dto.AssignmentStatus;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.util.EhourConstants;
+import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
 
@@ -51,7 +52,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO			timesheetDAO;
 	private	ProjectDAO				projectDAO;
-	private	ProjectAssignmentUtil	timeAllottedUtil;
+	private	ProjectAssignmentStatusService	projectAssignmentStatusService;
 	private	MailService				mailService;
 	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 	private	ReportAggregatedDAO		reportAggregatedDAO;
@@ -148,7 +149,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		for (ProjectAssignment assignment : assignments)
 		{
-			if (timeAllottedUtil.getAssignmentStatus(assignment).isAssignmentBookable())
+			if (projectAssignmentStatusService.getAssignmentStatus(assignment).isAssignmentBookable())
 			{
 				validAssignments.add(assignment);
 				continue;
@@ -174,13 +175,13 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			throw new ObjectNotFoundException("Assignment not found for id: " + assignmentId);
 		}
 		
-		List<Integer>	ids = new ArrayList<Integer>();
+		List<Serializable>	ids = new ArrayList<Serializable>();
 		ids.add(assignmentId);
 		List<AssignmentAggregateReportElement>	aggregates;
 		
 		// call to report service needed but due to circular reference go straight to DAO
 		aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids);
-		assignment.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
+		assignment.setDeletable(EhourUtil.isEmptyAggregateList(aggregates));
 		
 		return assignment;
 	}
@@ -206,64 +207,78 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#checkForOverruns(java.util.Set)
+	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#checkAndNotify(net.rrm.ehour.domain.ProjectAssignment)
 	 */
-	public void checkForOverruns(Set<ProjectAssignment> assignments)  throws OverBudgetException
+	public void checkAndNotify(ProjectAssignment assignment) throws OverBudgetException
 	{
 		ProjectAssignment	dbAssignment;
-		AssignmentStatus	status;
+		ProjectAssignmentStatus	status;
 		TimesheetEntry		entry;
 		
-		for (ProjectAssignment assignment : assignments)
-		{
-			// assignment in set might not be fetched from db but created with only the id
-			dbAssignment = projectAssignmentDAO.findById(assignment.getAssignmentId());
-			
-			// don't bother to check for notifications if we won't/can't send email anyway
-			if (!dbAssignment.isNotifyPm()
-				|| dbAssignment.getProject().getProjectManager() == null
-				|| dbAssignment.getProject().getProjectManager().getEmail() == null)
-			{
-				continue;
-			}
+		// assignment in set might not be fetched from db but created with only the id
+		dbAssignment = projectAssignmentDAO.findById(assignment.getAssignmentId());
 		
-			status = timeAllottedUtil.getAssignmentStatus(dbAssignment);
+		status = projectAssignmentStatusService.getAssignmentStatus(dbAssignment);
+		
+		if (status.getAssignmentPhase() == ProjectAssignmentStatus.OVER_ALLOTTED_PHASE 
+			&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
+		{
+			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 			
-			if (status.getAssignmentPhase() == AssignmentStatus.OVER_ALLOTTED_PHASE 
-				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
+			if (canNotifyPm(dbAssignment))
 			{
-				entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 				mailService.mailPMFixedAllottedReached(status.getAggregate(),
 														entry.getEntryId().getEntryDate(),
 														dbAssignment.getProject().getProjectManager());
-				
-				ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.IN_OVERRUN);
-				throw new OverBudgetException(errorInfo);
 			}
-			else if (status.getAssignmentPhase() == AssignmentStatus.OVER_OVERRUN_PHASE 
-					&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+			
+			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.IN_OVERRUN);
+			throw new OverBudgetException(errorInfo);
+		}
+		else if (status.getAssignmentPhase() == ProjectAssignmentStatus.OVER_OVERRUN_PHASE 
+				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+		{
+			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+
+			if (canNotifyPm(dbAssignment))
 			{
-				entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 				mailService.mailPMFlexOverrunReached(status.getAggregate(), 
 														entry.getEntryId().getEntryDate(),
 														dbAssignment.getProject().getProjectManager());
-				
-				ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
-				throw new OverBudgetException(errorInfo);
 			}
-			else if (status.getAssignmentPhase() == AssignmentStatus.IN_OVERRUN_PHASE 
-					&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+			
+			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
+			throw new OverBudgetException(errorInfo);
+		}
+		else if (status.getAssignmentPhase() == ProjectAssignmentStatus.IN_OVERRUN_PHASE 
+				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+		{
+			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+			
+			if (canNotifyPm(dbAssignment))
 			{
-				entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 				mailService.mailPMFlexAllottedReached(status.getAggregate(), 
 														entry.getEntryId().getEntryDate(),
 														dbAssignment.getProject().getProjectManager());
-
-				ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_DEADLINE_TIME);
-				throw new OverBudgetException(errorInfo);
-			
 			}
+
+			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_DEADLINE_TIME);
+			throw new OverBudgetException(errorInfo);
+		
 		}
+	}
+	
+	/**
+	 * 
+	 * @param assignment
+	 * @return
+	 */
+	private boolean canNotifyPm(ProjectAssignment assignment)
+	{
+		return assignment.isNotifyPm()
+				&& assignment.getProject().getProjectManager() != null
+				&& assignment.getProject().getProjectManager().getEmail() != null;
+		
 	}
 
 	/*
@@ -311,11 +326,11 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	}
 
 	/**
-	 * @param timeAllottedUtil the timeAllottedUtil to set
+	 * @param projectAssignmentStatusService the projectAssignmentStatusService to set
 	 */
-	public void setTimeAllottedUtil(ProjectAssignmentUtil timeAllottedUtil)
+	public void setProjectAssignmentStatusService(ProjectAssignmentStatusService projectAssignmentStatusService)
 	{
-		this.timeAllottedUtil = timeAllottedUtil;
+		this.projectAssignmentStatusService = projectAssignmentStatusService;
 	}
 
 	/**

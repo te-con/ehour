@@ -72,6 +72,13 @@
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
 		<property name="customerFoldPreferenceDAO" ref="customerFoldPreferenceDAO" />
 		<property name="aggregateReportService" ref="aggregateReportService" />
+		<property name="timesheetPersister" ref="timesheetPersister" />
+	</bean>
+	
+	<!-- Timesheet persister -->
+	<bean id="timesheetPersister" class="net.rrm.ehour.timesheet.service.TimesheetPersisterImpl">
+		<property name="projectAssignmentService" ref="projectAssignmentService" />
+		<property name="timesheetDAO" ref="timesheetDAO" />
 	</bean>
 
 	<!-- Project service -->
@@ -92,7 +99,7 @@
 		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />				
 		<property name="timesheetDAO" ref="timesheetDAO" />
 		<property name="projectDAO" ref="projectDAO" />		
-		<property name="timeAllottedUtil" ref="timeAllottedUtil" />
+		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
 		<property name="mailService" ref="mailService" />
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />		
 	</bean>
@@ -111,9 +118,8 @@
 		<constructor-arg value="config_value" />		
 	</bean>
 	
-	<!-- Time allotted util class -->
-	<bean id="timeAllottedUtil"
-			class="net.rrm.ehour.project.util.ProjectAssignmentUtil">
+	<!-- Project assignment util class -->
+	<bean id="projectAssignmentStatusService" class="net.rrm.ehour.project.status.ProjectAssignmentStatusServiceImpl">
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 	</bean>
 	

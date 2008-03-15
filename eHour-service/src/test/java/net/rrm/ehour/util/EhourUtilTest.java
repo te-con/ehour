@@ -13,19 +13,25 @@
  *
  */
 
-package net.rrm.ehour.report.util;
+package net.rrm.ehour.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.util.EhourUtil;
 
 /**
  * TODO 
  **/
 
-public class ReportUtilTest extends TestCase
+public class EhourUtilTest extends TestCase
 {
 
 	protected void setUp() throws Exception
@@ -42,11 +48,27 @@ public class ReportUtilTest extends TestCase
 		projectIds.add(new Project(3));
 		projectIds.add(new Project(4));
 		
-		List<Integer> ints = ReportUtil.getPKsFromDomainObjects(projectIds);
+		List<Integer> ints = EhourUtil.getPKsFromDomainObjects(projectIds);
 		
 		assertEquals(4, ints.size());
 		
 		Integer[] ints2 = ints.toArray(new Integer[]{});
 	}
+	
+	@Test
+	public void testIsEmptyAggregateList()
+	{
+		List<AssignmentAggregateReportElement> aggs = new ArrayList<AssignmentAggregateReportElement>();
+		
+		AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
+		agg.setHours(0);
+		aggs.add(agg);
+		
+		agg = new AssignmentAggregateReportElement();
+		aggs.add(agg);
+		
+		assertTrue(EhourUtil.isEmptyAggregateList(aggs));
+		
+	}	
 
 }

@@ -26,22 +26,10 @@ import net.rrm.ehour.error.ErrorInfo;
 public class OverBudgetException extends BusinessException
 {
 	private static final long serialVersionUID = 1L;
-	
-	private ErrorInfo errorInfo;
-	
-	/**
-	 * @return the errorInfo
-	 */
-	public ErrorInfo getErrorInfo()
-	{
-		return errorInfo;
-	}
 
 	public OverBudgetException(ErrorInfo errorInfo)
 	{
-		super();
-		
-		this.errorInfo = errorInfo;
+		super(errorInfo);
 	}
 
 }

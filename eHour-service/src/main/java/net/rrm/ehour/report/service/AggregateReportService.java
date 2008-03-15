@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.report.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -48,7 +49,7 @@ public interface AggregateReportService
 	 * @param projectAssignmentIds
 	 * @return
 	 */
-	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds);
+	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Serializable> projectAssignmentIds);
 	
 	/**
 	 * Get aggregate report data

@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.timesheet.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
@@ -125,6 +126,7 @@ public class TimesheetDAOHibernateImpl
 						queryObject.setInteger("assignmentId", assignmentId);
 						queryObject.setMaxResults(1);
 						results = (List<TimesheetEntry>)queryObject.list();
+						
 						return ((results != null && results.size() > 0) ? results.get(0) : null);
 					}
 			}, true);		
@@ -134,7 +136,7 @@ public class TimesheetDAOHibernateImpl
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#deleteTimesheetEntries(java.util.List)
 	 */
-	public int deleteTimesheetEntries(List<Integer> assignmentIds)
+	public int deleteTimesheetEntries(List<Serializable> assignmentIds)
 	{
 		Session session = getSession();
 		Query	query = session.getNamedQuery("Timesheet.deleteOnAssignmentIds");

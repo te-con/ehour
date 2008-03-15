@@ -16,7 +16,6 @@
 package net.rrm.ehour.project.service;
 
 import java.util.List;
-import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
@@ -68,10 +67,11 @@ public interface ProjectAssignmentService
 	public void deleteProjectAssignment(Integer assignmentId) throws ObjectNotFoundException, ParentChildConstraintException;
 	
 	/**
-	 * Check for time allotted overruns and mail the PM when required
-	 * @param assignments
+	 * Check for time allotted overruns, notify the PM when required
+	 * @param assignment to check
+	 * @throws OverBudgetException when there's an overrun
 	 */
-	public void checkForOverruns(Set<ProjectAssignment> assignments) throws OverBudgetException;
+	public void checkAndNotify(ProjectAssignment assignment) throws OverBudgetException;
 	
 	/**
 	 * Get project assignments for project

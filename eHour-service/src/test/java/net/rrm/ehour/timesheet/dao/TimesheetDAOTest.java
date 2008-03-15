@@ -72,12 +72,13 @@ public class TimesheetDAOTest extends BaseDAOTest
 		assertEquals(6.5, bookedDay.getHours().doubleValue(), 0.01);
 
 		bookedDay = (BookedDay)results.get(2);
-		assertEquals(5, bookedDay.getHours().doubleValue(), 0.01);
+		assertEquals(-1, bookedDay.getHours().doubleValue(), 0.01);
 	}
 
 	public void testGetLatestTimesheetEntryForAssignment()
 	{
 		TimesheetEntry entry = dao.getLatestTimesheetEntryForAssignment(1);
+		System.out.println(entry);
 		assertEquals(9.2f, entry.getHours(), 0.01f);
 	}
 	

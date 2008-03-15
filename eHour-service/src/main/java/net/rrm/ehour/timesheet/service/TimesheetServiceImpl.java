@@ -15,16 +15,15 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -36,10 +35,11 @@ import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.error.ErrorInfo;
+import net.rrm.ehour.exception.BusinessException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
@@ -51,11 +51,9 @@ import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.util.EhourUtil;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Provides services for displaying and manipulating timesheets.
@@ -73,6 +71,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	private ProjectAssignmentService	projectAssignmentService;
 	private	EhourConfig			configuration;
 	private	Logger				logger = Logger.getLogger(TimesheetServiceImpl.class);
+	private TimesheetPersister	timesheetPersister;
 	
 	/**
 	 * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
@@ -113,7 +112,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	private SortedSet<UserProjectStatus> getProjectStatus(Integer userId, DateRange monthRange)
 	{
 		List<AssignmentAggregateReportElement>	aggregates;
-		List<Integer>						assignmentIds = new ArrayList<Integer>();
+		List<Serializable>						assignmentIds = new ArrayList<Serializable>();
 		SortedSet<UserProjectStatus>		userProjectStatus = new TreeSet<UserProjectStatus>();
 		List<AssignmentAggregateReportElement> 	timeAllottedAggregates;
 		Map<Integer, AssignmentAggregateReportElement>	originalAggregates = new HashMap<Integer, AssignmentAggregateReportElement>();
@@ -293,65 +292,60 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * Persist timesheets & comment
 	 * @throws OverBudgetException 
 	 */
-	
-	public void persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment) throws OverBudgetException
+	public void persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment) 
 	{
-		for (TimesheetEntry entry : timesheetEntries)
-		{
-			{
-				if (StringUtils.isBlank(entry.getComment())
-						&& (entry.getHours() == null || entry.getHours().equals(0f)))
-				{
-					if (logger.isDebugEnabled())
-					{
-						logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-								" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
-					}
-					timesheetDAO.delete(entry);
-					
-				}
-				else
-				{
-					if (logger.isDebugEnabled())
-					{
-						logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-								" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours()
-								+ ", comment: " + entry.getComment()
-						);
-					}
-					timesheetDAO.persist(entry);
-				}
-			}
-		}
+		Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
+
+		List<ErrorInfo> errors = new ArrayList<ErrorInfo>();
 		
-		if (comment != null 
-			&& comment.getComment() != null
-			&& comment.getComment().trim().length() > 0)
+		for (ProjectAssignment assignment : timesheetRows.keySet())
+		{
+			try
+			{
+				timesheetPersister.persistValidatedTimesheet(assignment, timesheetRows.get(assignment));
+			} catch (BusinessException e)
+			{
+				errors.add(e.getErrorInfo());
+			}
+			
+		}
+
+		if (errors.size() < timesheetRows.keySet().size())
 		{
 			logger.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
 			timesheetCommentDAO.persist(comment);
 		}
-		
-		checkTimeAllottedOverruns(timesheetEntries);
+		else
+		{
+			logger.info("Comments not persisted, only errors.");
+		}
 	}
 	
 	/**
-	 * Check for time allotted overruns
-	 * @param timesheetEntries
-	 * @throws OverBudgetException 
+	 * Get timesheet as rows
+	 * @param entries
+	 * @return
 	 */
-	private void checkTimeAllottedOverruns(Collection<TimesheetEntry> timesheetEntries) throws OverBudgetException
+	private Map<ProjectAssignment, List<TimesheetEntry>> getTimesheetAsRows(Collection<TimesheetEntry> entries)
 	{
-		Set<ProjectAssignment>	projectAssignments = new HashSet<ProjectAssignment>();
+		Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = new HashMap<ProjectAssignment, List<TimesheetEntry>>();
 		
-		for (TimesheetEntry entry : timesheetEntries)
+		for (TimesheetEntry timesheetEntry : entries)
 		{
-			projectAssignments.add(entry.getEntryId().getProjectAssignment());
+			ProjectAssignment assignment = timesheetEntry.getEntryId().getProjectAssignment();
+			
+			List<TimesheetEntry> assignmentEntries = (timesheetRows.containsKey(assignment)) 
+															? timesheetRows.get(assignment) 
+															: new ArrayList<TimesheetEntry>();
+															
+			assignmentEntries.add(timesheetEntry);
+			
+			timesheetRows.put(assignment, assignmentEntries);
 		}
 		
-		projectAssignmentService.checkForOverruns(projectAssignments);
+		return timesheetRows; 
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.timesheet.service.TimesheetService#deleteTimesheetEntries(net.rrm.ehour.user.domain.User)
@@ -362,7 +356,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		if (user.getProjectAssignments() != null && user.getProjectAssignments().size() > 0)
 		{
-			timesheetDAO.deleteTimesheetEntries(ProjectAssignmentUtil.getAssignmentIds(user.getProjectAssignments()));
+			timesheetDAO.deleteTimesheetEntries(EhourUtil.getPKsFromDomainObjects(user.getProjectAssignments()));
 		}
 	}
 		
@@ -425,5 +419,13 @@ public class TimesheetServiceImpl implements TimesheetService
 	public void setAggregateReportService(AggregateReportService aggregateReportService)
 	{
 		this.aggregateReportService = aggregateReportService;
+	}
+
+	/**
+	 * @param timesheetPersister the timesheetPersister to set
+	 */
+	public void setTimesheetPersister(TimesheetPersister timesheetPersister)
+	{
+		this.timesheetPersister = timesheetPersister;
 	}
 }

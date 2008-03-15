@@ -1,28 +1,29 @@
 /**
- * Created on Apr 7, 2007
+ * Created on Nov 2, 2007
  * Created by Thies Edeling
- * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
+ * Created by Thies Edeling
+ * Copyright (C) 2007 TE-CON, All Rights Reserved.
  *
  * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
  * TE-CON holds all the ownership rights on the Software.
  * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for commercial use or open source,
  * is subject to obtaining the prior express authorization of TE-CON.
+ * 
  * thies@te-con.nl
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
  *
  */
 
-package net.rrm.ehour.project.util;
+package net.rrm.ehour.project.status;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
@@ -31,18 +32,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * TODO 
+ * 
  **/
 
-public class TimeAllottedUtilTest extends TestCase
+public class ProjectAssignmentUtilTest
 {
-	private	ProjectAssignmentUtil util;
+	private	ProjectAssignmentStatusServiceImpl util;
 	private	ReportAggregatedDAO	raDAO;
 	
 	@Before
 	public void setUp() throws Exception
 	{
-		util = new ProjectAssignmentUtil();
+		util = new ProjectAssignmentStatusServiceImpl();
 
 		raDAO = createMock(ReportAggregatedDAO.class);
 		util.setReportAggregatedDAO(raDAO);
@@ -65,11 +66,11 @@ public class TimeAllottedUtilTest extends TestCase
 		
 		replay(raDAO);
 		
-		AssignmentStatus status = util.getAssignmentStatus(assignment);
+		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
 		verify(raDAO);
 		
-		assertEquals(AssignmentStatus.IN_ALLOTTED_PHASE, status.getAssignmentPhase());
+		assertEquals(ProjectAssignmentStatus.IN_ALLOTTED_PHASE, status.getAssignmentPhase());
 	}
 	
 	@Test
@@ -89,11 +90,11 @@ public class TimeAllottedUtilTest extends TestCase
 		
 		replay(raDAO);
 		
-		AssignmentStatus status = util.getAssignmentStatus(assignment);
+		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
 		verify(raDAO);
 		
-		assertEquals(AssignmentStatus.OVER_ALLOTTED_PHASE, status.getAssignmentPhase());
+		assertEquals(ProjectAssignmentStatus.OVER_ALLOTTED_PHASE, status.getAssignmentPhase());
 	}	
 	
 	@Test
@@ -114,11 +115,11 @@ public class TimeAllottedUtilTest extends TestCase
 		
 		replay(raDAO);
 		
-		AssignmentStatus status = util.getAssignmentStatus(assignment);
+		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
 		verify(raDAO);
 		
-		assertEquals(AssignmentStatus.IN_ALLOTTED_PHASE, status.getAssignmentPhase());
+		assertEquals(ProjectAssignmentStatus.IN_ALLOTTED_PHASE, status.getAssignmentPhase());
 	}
 	
 	@Test
@@ -139,11 +140,11 @@ public class TimeAllottedUtilTest extends TestCase
 		
 		replay(raDAO);
 		
-		AssignmentStatus status = util.getAssignmentStatus(assignment);
+		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
 		verify(raDAO);
 		
-		assertEquals(AssignmentStatus.IN_OVERRUN_PHASE, status.getAssignmentPhase());
+		assertEquals(ProjectAssignmentStatus.IN_OVERRUN_PHASE, status.getAssignmentPhase());
 	}	
 	
 	@Test
@@ -164,11 +165,20 @@ public class TimeAllottedUtilTest extends TestCase
 		
 		replay(raDAO);
 		
-		AssignmentStatus status = util.getAssignmentStatus(assignment);
+		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
 		verify(raDAO);
 		
-		assertEquals(AssignmentStatus.OVER_OVERRUN_PHASE, status.getAssignmentPhase());
+		assertEquals(ProjectAssignmentStatus.OVER_OVERRUN_PHASE, status.getAssignmentPhase());
 	}	
-	
+
+//	@Test
+//	public void testGetAssignmentStatusFixed()
+//	{
+//		ProjectAssignment assignment = new ProjectAssignment();
+//		ProjectAssignmentType type = new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED);
+//		assignment.setAssignmentType(type);
+//		
+//	}
+
 }

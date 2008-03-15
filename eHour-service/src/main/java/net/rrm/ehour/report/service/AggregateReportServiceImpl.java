@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.report.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -28,7 +29,6 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
@@ -53,19 +53,15 @@ public class AggregateReportServiceImpl implements AggregateReportService
 	private	UserDAO				userDAO;
 	private	MailService			mailService;
 	private	ProjectAssignmentService	projectAssignmentService;
-	private ProjectService		projectService; 
 	
 	private	Logger				logger = Logger.getLogger(this.getClass());
-	
-
-
 	
 	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
 	 */
-	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds)
+	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Serializable> projectAssignmentIds)
 	{
 		return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
 	}
@@ -185,16 +181,16 @@ public class AggregateReportServiceImpl implements AggregateReportService
 //		}
 //		else if (projects == null && users != null)
 //		{		
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(ReportUtil.getPKsFromDomainObjects(users), reportRange);
+//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(EhourUtil.getPKsFromDomainObjects(users), reportRange);
 //		}
 //		else if (projects != null && users == null)
 //		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(ReportUtil.getPKsFromDomainObjects(projects), reportRange);
+//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(EhourUtil.getPKsFromDomainObjects(projects), reportRange);
 //		}
 //		else
 //		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(ReportUtil.getPKsFromDomainObjects(users),
-//																					ReportUtil.getPKsFromDomainObjects(projects), reportRange);
+//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(EhourUtil.getPKsFromDomainObjects(users),
+//																					EhourUtil.getPKsFromDomainObjects(projects), reportRange);
 //		}	
 //		
 //		return aggregates;

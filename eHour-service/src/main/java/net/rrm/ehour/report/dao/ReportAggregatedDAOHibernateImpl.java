@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.report.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -216,7 +217,7 @@ public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implem
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForAssignments(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForAssignments(List<Integer> projectAssignmentIds)
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForAssignments(List<Serializable> projectAssignmentIds)
 	{
 		List		results;
 		

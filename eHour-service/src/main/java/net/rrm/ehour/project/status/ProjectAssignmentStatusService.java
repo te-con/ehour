@@ -1,5 +1,5 @@
 /**
- * Created on Mar 10, 2008
+ * Created on Mar 15, 2008
  * Author: Thies
  *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
@@ -15,16 +15,20 @@
  *
  */
 
-package net.rrm.ehour.report.reports;
+package net.rrm.ehour.project.status;
 
-import java.io.Serializable;
+import net.rrm.ehour.domain.ProjectAssignment;
 
 /**
- * TODO 
+ * Status service
  **/
 
-public class ProjectManagerDashboard implements Serializable
+public interface ProjectAssignmentStatusService
 {
-	private static final long serialVersionUID = -2817167613140225712L;
-
+	/**
+	 * Get assignment status
+	 * @param assignment
+	 * @return
+	 */
+	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment);
 }

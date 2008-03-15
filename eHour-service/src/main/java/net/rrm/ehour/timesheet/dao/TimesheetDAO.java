@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.timesheet.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAO;
@@ -63,5 +64,5 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	 * @param assignmentIds
 	 * @return entries deleted
 	 */
-	public int deleteTimesheetEntries(List<Integer> assignmentIds);
+	public int deleteTimesheetEntries(List<Serializable> assignmentIds);
 }

@@ -20,19 +20,22 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
+import net.rrm.ehour.project.status.ProjectAssignmentStatusServiceImpl;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +51,7 @@ public class ProjectAssignmentServiceTest
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	TimesheetDAO 			timesheetDAO;
 	private ReportAggregatedDAO		reportAggregatedDAO;
+	private ProjectAssignmentStatusService	statusService;
 	
 	/**
 	 * 
@@ -69,6 +73,8 @@ public class ProjectAssignmentServiceTest
 		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
 		((ProjectAssignmentServiceImpl)projectAssignmentService).setReportAggregatedDAO(reportAggregatedDAO);
 		
+		statusService = createMock(ProjectAssignmentStatusService.class);
+		((ProjectAssignmentServiceImpl)projectAssignmentService).setProjectAssignmentStatusService(statusService);
 	}
 	
 	/**
@@ -84,7 +90,7 @@ public class ProjectAssignmentServiceTest
 		expect(projectAssignmentDAO.findById(new Integer(1)))
 			.andReturn(pa);
 
-		List<Integer>	ids = new ArrayList<Integer>();
+		List<Serializable>	ids = new ArrayList<Serializable>();
 		ids.add(1);
 
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids))
@@ -102,11 +108,27 @@ public class ProjectAssignmentServiceTest
 	}	
 	
 	@Test
-	public void testCheckForOverruns() throws OverBudgetException
+	public void testCheckAndNotifyOK() throws OverBudgetException
 	{
-		Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
+		ProjectAssignment assignment = new ProjectAssignment(1);
+		assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
+
+		expect(projectAssignmentDAO.findById(new Integer(1)))
+			.andReturn(assignment);
+		replay(projectAssignmentDAO);
+
+		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
+		status.setAssignmentPhase(ProjectAssignmentStatus.IN_DATERANGE_PHASE);
 		
-		projectAssignmentService.checkForOverruns(assignments);
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(status);
+		replay(statusService);
 		
+		
+		projectAssignmentService.checkAndNotify(assignment);
+
+		verify(projectAssignmentDAO);
+		verify(statusService);
+
 	}
 }

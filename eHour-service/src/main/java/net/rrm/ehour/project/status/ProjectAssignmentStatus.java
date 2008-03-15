@@ -13,7 +13,7 @@
  *
  */
 
-package net.rrm.ehour.project.dto;
+package net.rrm.ehour.project.status;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
@@ -21,7 +21,7 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
  * ProjectAssignment status 
  **/
 
-public class AssignmentStatus
+public class ProjectAssignmentStatus
 {
 	/**
 	 * A flex assignment has 3 phases: 

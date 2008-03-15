@@ -45,7 +45,7 @@
     <query name="Timesheet.getLatestEntryForAssignmentId">
     	FROM TimesheetEntry entry
     	WHERE entry.entryId.projectAssignment.assignmentId = :assignmentId
-    	ORDER BY entry.entryId.entryDate DESC
+    	ORDER BY entry.updateDate DESC
 	</query>   
 	
     <query name="Timesheet.deleteOnAssignmentIds">

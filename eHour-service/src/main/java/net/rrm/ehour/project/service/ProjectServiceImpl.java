@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.project.service;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,10 +28,10 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
 
@@ -133,7 +134,7 @@ public class ProjectServiceImpl implements ProjectService
 	 */
 	public void setProjectDeletability(Project project)
 	{
-		List<Integer> ids = ProjectAssignmentUtil.getAssignmentIds(project.getProjectAssignments());
+		List<Serializable> ids = EhourUtil.getPKsFromDomainObjects(project.getProjectAssignments());
 		List<AssignmentAggregateReportElement> aggregates = null;
 		
 		if (ids != null && ids.size() > 0)
@@ -141,7 +142,7 @@ public class ProjectServiceImpl implements ProjectService
 			aggregates = aggregateReportService.getHoursPerAssignment(ids);
 		}
 		
-		project.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
+		project.setDeletable(EhourUtil.isEmptyAggregateList(aggregates));
 	}
 
 	/*

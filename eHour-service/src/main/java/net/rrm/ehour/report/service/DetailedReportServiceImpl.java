@@ -26,7 +26,7 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.DetailedReportDAO;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.util.ReportUtil;
+import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
 
@@ -69,21 +69,21 @@ public class DetailedReportServiceImpl implements DetailedReportService
 		{
 			logger.debug("creating report for only selected users");
 			
-			reportElements = detailedReportDAO.getHoursPerDayForUsers(ReportUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
+			reportElements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
 																	reportRange);
 		}
 		else if (!ignoreProjects && ignoreUsers)
 		{
 			logger.debug("creating report for only selected project");
-			reportElements = detailedReportDAO.getHoursPerDayForProjects(ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
+			reportElements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
 															reportRange);
 		}
 		else
 		{
 			logger.debug("creating report for selected users & projects");
 
-			reportElements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(ReportUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
-																	ReportUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
+			reportElements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(EhourUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
+																	EhourUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
 																	reportRange);
 		}		
 		

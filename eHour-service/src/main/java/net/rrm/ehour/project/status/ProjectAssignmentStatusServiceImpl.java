@@ -13,14 +13,9 @@
  *
  */
 
-package net.rrm.ehour.project.util;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+package net.rrm.ehour.project.status;
 
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.project.dto.AssignmentStatus;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
@@ -29,62 +24,18 @@ import net.rrm.ehour.util.EhourConstants;
  * Time allotted util class
  **/
 
-public class ProjectAssignmentUtil
+public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStatusService
 {
 	private	ReportAggregatedDAO		reportAggregatedDAO;
-
-	/**
-	 * Check if aggregate list is empty
-	 * @param aggregates
-	 * @return
-	 */
-	public static boolean isEmptyAggregateList(Collection<AssignmentAggregateReportElement> aggregates)
-	{
-		float	hours = 0f;
-		
-		if (aggregates != null)
-		{
-			for (AssignmentAggregateReportElement assignmentAggregateReportElement : aggregates)
-			{
-				if (assignmentAggregateReportElement.getHours() != null)
-				{
-					hours += assignmentAggregateReportElement.getHours().floatValue();
-				}
-			}
-		}
-		
-		return hours == 0f;
-	}
 	
-	/**
-	 * Get assignment id's (TODO make it generic for DO's?)
-	 * @param assignments
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.domain.ProjectAssignment)
 	 */
-	public static List<Integer> getAssignmentIds(Collection<ProjectAssignment> assignments)
-	{
-		List<Integer>	ids = new ArrayList<Integer>();
-		
-		if (assignments != null)
-		{
-			for (ProjectAssignment projectAssignment : assignments)
-			{
-				ids.add(projectAssignment.getAssignmentId());
-			}
-		}
-		
-		return ids;
-	}
-	
-	/**
-	 * Is time allotted assignment overrun
-	 * @param assignment
-	 * @return
-	 */
-	public AssignmentStatus getAssignmentStatus(ProjectAssignment assignment)
+	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment)
 	{
 		int assignmentTypeId = assignment.getAssignmentType().getAssignmentTypeId().intValue();
-		AssignmentStatus	status = null;			
+		ProjectAssignmentStatus	status = null;			
 		
 		if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
 		{
@@ -97,8 +48,8 @@ public class ProjectAssignmentUtil
 		else if (assignmentTypeId == EhourConstants.ASSIGNMENT_DATE)
 		{
 			// TODO check boundaries
-			status = new AssignmentStatus();
-			status.setAssignmentPhase(AssignmentStatus.IN_DATERANGE_PHASE);
+			status = new ProjectAssignmentStatus();
+			status.setAssignmentPhase(ProjectAssignmentStatus.IN_DATERANGE_PHASE);
 		}
 		
 		return status;
@@ -109,19 +60,19 @@ public class ProjectAssignmentUtil
 	 * @param assignment
 	 * @return
 	 */
-	private AssignmentStatus getFixedAssignmentStatus(ProjectAssignment assignment)
+	private ProjectAssignmentStatus getFixedAssignmentStatus(ProjectAssignment assignment)
 	{
-		AssignmentStatus	status = new AssignmentStatus();
+		ProjectAssignmentStatus	status = new ProjectAssignmentStatus();
 		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		status.setAggregate(aggregate);
 		
-		status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
+		status.setAssignmentPhase(ProjectAssignmentStatus.IN_ALLOTTED_PHASE);
 		
 		if (aggregate != null)
 		{
 			if (assignment.getAllottedHours().compareTo(aggregate.getHours().floatValue()) <= 0)
 			{
-				status.setAssignmentPhase(AssignmentStatus.OVER_ALLOTTED_PHASE);
+				status.setAssignmentPhase(ProjectAssignmentStatus.OVER_ALLOTTED_PHASE);
 			}
 		}
 		
@@ -133,9 +84,9 @@ public class ProjectAssignmentUtil
 	 * @param assignment
 	 * @return
 	 */
-	private AssignmentStatus getFlexAssignmentStatus(ProjectAssignment assignment)
+	private ProjectAssignmentStatus getFlexAssignmentStatus(ProjectAssignment assignment)
 	{
-		AssignmentStatus	status = new AssignmentStatus();
+		ProjectAssignmentStatus	status = new ProjectAssignmentStatus();
 		
 		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		status.setAggregate(aggregate);
@@ -144,20 +95,20 @@ public class ProjectAssignmentUtil
 		{
 			if (assignment.getAllottedHours().compareTo(aggregate.getHours().floatValue()) > 0)
 			{
-				status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
+				status.setAssignmentPhase(ProjectAssignmentStatus.IN_ALLOTTED_PHASE);
 			}
 			else if (aggregate.getHours().floatValue()  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
 			{
-				status.setAssignmentPhase(AssignmentStatus.OVER_OVERRUN_PHASE);
+				status.setAssignmentPhase(ProjectAssignmentStatus.OVER_OVERRUN_PHASE);
 			}
 			else
 			{
-				status.setAssignmentPhase(AssignmentStatus.IN_OVERRUN_PHASE);
+				status.setAssignmentPhase(ProjectAssignmentStatus.IN_OVERRUN_PHASE);
 			}
 		}
 		else
 		{
-			status.setAssignmentPhase(AssignmentStatus.IN_ALLOTTED_PHASE);
+			status.setAssignmentPhase(ProjectAssignmentStatus.IN_ALLOTTED_PHASE);
 		}
 		
 		return status;

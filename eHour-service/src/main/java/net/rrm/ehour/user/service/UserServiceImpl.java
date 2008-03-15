@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.user.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,7 +33,6 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.project.util.ProjectAssignmentUtil;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
@@ -42,6 +42,7 @@ import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConstants;
+import net.rrm.ehour.util.EhourUtil;
 
 import org.acegisecurity.providers.encoding.MessageDigestPasswordEncoder;
 import org.apache.log4j.Logger;
@@ -113,14 +114,14 @@ public class UserServiceImpl implements UserService
 		else
 		{
 			// bummer, we need to check if the user booked any hours on the assignments
-			List<Integer>	assignmentIds = new ArrayList<Integer>();
+			List<Serializable> assignmentIds = new ArrayList<Serializable>();
 
-			assignmentIds.addAll(ProjectAssignmentUtil.getAssignmentIds(user.getProjectAssignments()));
-			assignmentIds.addAll(ProjectAssignmentUtil.getAssignmentIds(user.getInactiveProjectAssignments()));
+			assignmentIds.addAll(EhourUtil.getPKsFromDomainObjects(user.getProjectAssignments()));
+			assignmentIds.addAll(EhourUtil.getPKsFromDomainObjects(user.getInactiveProjectAssignments()));
 			
 			List<AssignmentAggregateReportElement> aggregates =aggregateReportService.getHoursPerAssignment(assignmentIds);
 			
-			user.setDeletable(ProjectAssignmentUtil.isEmptyAggregateList(aggregates));
+			user.setDeletable(EhourUtil.isEmptyAggregateList(aggregates));
 		}
 		
 		logger.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());

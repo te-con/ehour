@@ -1,5 +1,5 @@
 /**
- * Created on Mar 10, 2008
+ * Created on Mar 14, 2008
  * Author: Thies
  *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
@@ -15,16 +15,26 @@
  *
  */
 
-package net.rrm.ehour.report.reports;
+package net.rrm.ehour.timesheet.service;
 
-import java.io.Serializable;
+import java.util.List;
+
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.exception.BusinessException;
 
 /**
- * TODO 
+ * Timesheet persister & validator
  **/
 
-public class ProjectManagerDashboard implements Serializable
+public interface TimesheetPersister
 {
-	private static final long serialVersionUID = -2817167613140225712L;
+	/**
+	 * Validate and persist list of timesheet entries
+	 * @param assignment
+	 * @param entries
+	 * @throws BusinessException
+	 */
+	public void persistValidatedTimesheet(ProjectAssignment assignment, List<TimesheetEntry> entries) throws BusinessException;
 
 }

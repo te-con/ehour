@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.report.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -52,7 +53,7 @@ public interface ReportAggregatedDAO
 	 * @param projectAssignmentIds
 	 * @return
 	 */
-	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForAssignments(List<Integer> projectAssignmentIds);
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForAssignments(List<Serializable> projectAssignmentIds);
 
 	/**
 	 * Get cumulated hours per project assignment for users, projects
