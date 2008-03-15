@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.fail;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
-import net.rrm.ehour.project.status.ProjectAssignmentStatusServiceImpl;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -39,6 +39,7 @@ import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
 import org.junit.Test;
+
 
 /**
  * TODO 
@@ -129,6 +130,34 @@ public class ProjectAssignmentServiceTest
 
 		verify(projectAssignmentDAO);
 		verify(statusService);
+	}
+	
+	@Test
+	public void testCheckAndNotifyDateNotOk() throws OverBudgetException
+	{
+		ProjectAssignment assignment = new ProjectAssignment(1);
+		assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
 
+		expect(projectAssignmentDAO.findById(new Integer(1)))
+			.andReturn(assignment);
+		replay(projectAssignmentDAO);
+
+		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
+		status.setAssignmentPhase(ProjectAssignmentStatus.OUT_DATERANGE_PHASE);
+		
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(status);
+		replay(statusService);
+		
+		try
+		{
+			projectAssignmentService.checkAndNotify(assignment);
+			fail();
+		}
+		catch (OverBudgetException obe)
+		{
+			verify(projectAssignmentDAO);
+			verify(statusService);
+		}
 	}
 }

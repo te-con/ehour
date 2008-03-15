@@ -35,7 +35,7 @@ import org.junit.Test;
  * 
  **/
 
-public class ProjectAssignmentUtilTest
+public class ProjectAssignmentStatusServiceTest
 {
 	private	ProjectAssignmentStatusServiceImpl util;
 	private	ReportAggregatedDAO	raDAO;

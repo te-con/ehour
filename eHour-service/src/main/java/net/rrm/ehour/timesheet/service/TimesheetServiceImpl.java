@@ -307,7 +307,6 @@ public class TimesheetServiceImpl implements TimesheetService
 			{
 				errors.add(e.getErrorInfo());
 			}
-			
 		}
 
 		if (errors.size() < timesheetRows.keySet().size())
