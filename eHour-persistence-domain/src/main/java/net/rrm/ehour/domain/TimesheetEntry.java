@@ -1,10 +1,12 @@
 package net.rrm.ehour.domain;
 
 
+import java.util.Date;
+
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.CompareToBuilder;
 
 public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntry>
 {
@@ -22,6 +24,8 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	
 	private String comment;
 
+	private Date updateDate;
+	
 	/** full constructor */
 	public TimesheetEntry(TimesheetEntryId entryId, Float hours)
 	{
@@ -101,6 +105,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 				.append("hours", this.getHours())
 				.append("entryId", this.getEntryId())
 				.append("comment", this.getComment())
+				.append("updateDate", this.getUpdateDate())
 				.toString();
 	}
 
@@ -112,5 +117,21 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	public void setComment(String comment)
 	{
 		this.comment = comment;
+	}
+
+	/**
+	 * @return the updateDate
+	 */
+	public Date getUpdateDate()
+	{
+		return updateDate;
+	}
+
+	/**
+	 * @param updateDate the updateDate to set
+	 */
+	public void setUpdateDate(Date updateDate)
+	{
+		this.updateDate = updateDate;
 	}
 }

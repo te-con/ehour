@@ -13,5 +13,6 @@
 		<property name="hours" column="HOURS" type="float"/>
 		
 		<property name="comment" column="COMMENT" type="string"/>
+		<property name="updateDate" column="UPDATE_DATE" type="timestamp"/>
 	</class>	
 </hibernate-mapping>
