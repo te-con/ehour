@@ -35,7 +35,9 @@ public class ErrorInfo implements Serializable
 		OVER_ALLOTTED_FIXED,
 		OVER_OVERRUN_FLEX,
 		OVER_DEADLINE_TIME,
-		IN_OVERRUN;
+		IN_OVERRUN,
+		BEFORE_START,
+		AFTER_DEADLINE;
 	}
 	
 	private ErrorCode	errorCode;
