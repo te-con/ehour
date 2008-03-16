@@ -120,7 +120,8 @@
 	
 	<!-- Project assignment util class -->
 	<bean id="projectAssignmentStatusService" class="net.rrm.ehour.project.status.ProjectAssignmentStatusServiceImpl">
-		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />
+		<property name="timesheetDAO" ref="timesheetDAO" />	
 	</bean>
 	
 	<!-- Admin account validator -->

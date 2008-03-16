@@ -21,21 +21,26 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import sun.util.calendar.Gregorian;
 
 /**
  * 
@@ -45,6 +50,7 @@ public class ProjectAssignmentStatusServiceTest
 {
 	private	ProjectAssignmentStatusServiceImpl util;
 	private	ReportAggregatedDAO	raDAO;
+	private TimesheetDAO timesheetDAO;
 	
 	@Before
 	public void setUp() throws Exception
@@ -52,6 +58,8 @@ public class ProjectAssignmentStatusServiceTest
 		util = new ProjectAssignmentStatusServiceImpl();
 
 		raDAO = createMock(ReportAggregatedDAO.class);
+		timesheetDAO = createMock(TimesheetDAO.class);
+		util.setTimesheetDAO(timesheetDAO);
 		util.setReportAggregatedDAO(raDAO);
 	}
 
@@ -59,19 +67,31 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusDateIn()
 	{
 		ProjectAssignment assignment = new ProjectAssignment();
+		assignment.setUser(new User(1));
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
 		assignment.setAssignmentType(type);
 		
 		Calendar startCal = new GregorianCalendar();
 		startCal.add(Calendar.DAY_OF_YEAR, -5);
+		Date start = startCal.getTime();
+		
 		assignment.setDateStart(startCal.getTime());
 
 		Calendar endCal = new GregorianCalendar();
 		endCal.add(Calendar.DAY_OF_YEAR, 2);
+		Date end = endCal.getTime();
 		assignment.setDateEnd(endCal.getTime());
+
+		expect(timesheetDAO.getTimesheetEntriesBefore(1, start))
+			.andReturn(new ArrayList<TimesheetEntry>());
+
+		expect(timesheetDAO.getTimesheetEntriesAfter(1, end))
+		.andReturn(new ArrayList<TimesheetEntry>());
 		
+		replay(timesheetDAO);
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
+		verify(timesheetDAO);
 
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
 		assertEquals(1, status.getStatusses().size());
@@ -81,6 +101,7 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusDateOut()
 	{
 		ProjectAssignment assignment = new ProjectAssignment();
+		assignment.setUser(new User(1));
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
 		assignment.setAssignmentType(type);
@@ -88,12 +109,25 @@ public class ProjectAssignmentStatusServiceTest
 		Calendar startCal = new GregorianCalendar();
 		startCal.add(Calendar.DAY_OF_YEAR, -5);
 		assignment.setDateStart(startCal.getTime());
+		Date start = startCal.getTime();
 
 		Calendar endCal = new GregorianCalendar();
 		endCal.add(Calendar.DAY_OF_YEAR, -2);
 		assignment.setDateEnd(endCal.getTime());
+		Date end = endCal.getTime();
 		
+		expect(timesheetDAO.getTimesheetEntriesBefore(1, start))
+		.andReturn(new ArrayList<TimesheetEntry>());
+
+		List<TimesheetEntry> entry = new ArrayList<TimesheetEntry>();
+		entry.add(new TimesheetEntry());
+		expect(timesheetDAO.getTimesheetEntriesAfter(1, end))
+			.andReturn(entry);
+
+		replay(timesheetDAO);
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
+		verify(timesheetDAO);
+
 
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE));
 		assertEquals(1, status.getStatusses().size());

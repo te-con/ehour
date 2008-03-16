@@ -15,11 +15,13 @@
 
 package net.rrm.ehour.project.status;
 
-import java.util.Date;
+import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
@@ -28,7 +30,8 @@ import net.rrm.ehour.util.EhourConstants;
 
 public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStatusService
 {
-	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private	ReportAggregatedDAO	reportAggregatedDAO;
+	private TimesheetDAO		timesheetDAO;
 	
 	/*
 	 * (non-Javadoc)
@@ -63,22 +66,29 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	 */
 	private void addDeadlineStatus(ProjectAssignment assignment, ProjectAssignmentStatus status)
 	{
-		Date currentDate = new Date();
+		if (assignment.getDateStart() != null)
+		{
+			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesBefore(assignment.getUser().getUserId(), assignment.getDateStart());
+			
+			if (entries != null && entries.size() > 0)
+			{
+				status.addStatus(ProjectAssignmentStatus.Status.BEFORE_START);
+				return;
+			}
+		}
+
+		if (assignment.getDateEnd() != null)
+		{
+			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesAfter(assignment.getUser().getUserId(), assignment.getDateEnd());
+			
+			if (entries != null && entries.size() > 0)
+			{
+				status.addStatus(ProjectAssignmentStatus.Status.AFTER_DEADLINE);
+				return;
+			}
+		}
 		
-		if (assignment.getDateStart() != null 
-				&& assignment.getDateStart().after(currentDate))
-		{
-			status.addStatus(ProjectAssignmentStatus.Status.BEFORE_START);
-		}
-		else if (assignment.getDateEnd() != null 
-				&& currentDate.after(assignment.getDateEnd()))
-		{
-			status.addStatus(ProjectAssignmentStatus.Status.AFTER_DEADLINE);
-		}
-		else
-		{
-			status.addStatus(ProjectAssignmentStatus.Status.RUNNING);
-		}
+		status.addStatus(ProjectAssignmentStatus.Status.RUNNING);
 	}
 	
 	/**
@@ -139,5 +149,13 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
+	}
+
+	/**
+	 * @param timesheetDAO the timesheetDAO to set
+	 */
+	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
+	{
+		this.timesheetDAO = timesheetDAO;
 	}	
 }

@@ -16,6 +16,7 @@
 package net.rrm.ehour.timesheet.dao;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
@@ -145,5 +146,43 @@ public class TimesheetDAOHibernateImpl
 		int rowCount = query.executeUpdate();
 		
 		return rowCount;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#getTimesheetEntriesAfter(java.lang.Integer, java.util.Date)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<TimesheetEntry> getTimesheetEntriesAfter(Integer userId, Date date)
+	{
+		String[]	keys = new String[2];
+		Object[]	params = new Object[2];
+		
+		keys[0] = "date";
+		keys[1] = "userId";
+		
+		params[0] = date;
+		params[1] = userId;
+		
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesAfterDateForUserId", keys, params);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#getTimesheetEntriesBefore(java.lang.Integer, java.util.Date)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<TimesheetEntry> getTimesheetEntriesBefore(Integer userId, Date date)
+	{
+		String[]	keys = new String[2];
+		Object[]	params = new Object[2];
+		
+		keys[0] = "date";
+		keys[1] = "userId";
+		
+		params[0] = date;
+		params[1] = userId;
+		
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesBeforeDateForUserId", keys, params);
 	}
 }

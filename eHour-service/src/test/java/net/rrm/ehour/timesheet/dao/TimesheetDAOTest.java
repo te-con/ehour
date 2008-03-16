@@ -17,6 +17,7 @@ package net.rrm.ehour.timesheet.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -74,11 +75,24 @@ public class TimesheetDAOTest extends BaseDAOTest
 		bookedDay = (BookedDay)results.get(2);
 		assertEquals(-1, bookedDay.getHours().doubleValue(), 0.01);
 	}
+	
+	public void testGetTimesheetEntriesBefore()
+	{
+		List<TimesheetEntry> res = dao.getTimesheetEntriesBefore(1, new Date(2006 - 1900, 10 - 1, 3));
+		assertEquals(1, res.size());
+	}	
 
+	public void testGetTimesheetEntriesAfter()
+	{
+		List<TimesheetEntry> res = dao.getTimesheetEntriesAfter(1, new Date(2006 - 1900, 10 - 1, 4));
+		
+		assertEquals(4, res.size());
+	}	
+	
+	
 	public void testGetLatestTimesheetEntryForAssignment()
 	{
 		TimesheetEntry entry = dao.getLatestTimesheetEntryForAssignment(1);
-		System.out.println(entry);
 		assertEquals(9.2f, entry.getHours(), 0.01f);
 	}
 	

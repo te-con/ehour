@@ -19,15 +19,15 @@ package net.rrm.ehour.error;
 
 import java.io.Serializable;
 
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetEntry;
+
 /**
  * Error info 
  **/
 
 public class ErrorInfo implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public enum ErrorCode
@@ -40,8 +40,10 @@ public class ErrorInfo implements Serializable
 		AFTER_DEADLINE;
 	}
 	
-	private ErrorCode	errorCode;
-	private Object[]	parameters;
+	private ErrorCode			errorCode;
+	private ProjectAssignment	assignment;
+	private TimesheetEntry		timesheetEntry;
+	private Object[]			parameters;
 
 	/**
 	 * 
@@ -93,6 +95,38 @@ public class ErrorInfo implements Serializable
 	public void setParameters(Object[] parameters)
 	{
 		this.parameters = parameters;
+	}
+
+	/**
+	 * @return the assignment
+	 */
+	public ProjectAssignment getAssignment()
+	{
+		return assignment;
+	}
+
+	/**
+	 * @param assignment the assignment to set
+	 */
+	public void setAssignment(ProjectAssignment assignment)
+	{
+		this.assignment = assignment;
+	}
+
+	/**
+	 * @return the timesheetEntry
+	 */
+	public TimesheetEntry getTimesheetEntry()
+	{
+		return timesheetEntry;
+	}
+
+	/**
+	 * @param timesheetEntry the timesheetEntry to set
+	 */
+	public void setTimesheetEntry(TimesheetEntry timesheetEntry)
+	{
+		this.timesheetEntry = timesheetEntry;
 	}
 	
 	 

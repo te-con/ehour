@@ -16,6 +16,7 @@
 package net.rrm.ehour.timesheet.dao;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.dao.GenericDAO;
@@ -35,6 +36,22 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	 * @return List with TimesheetEntry domain objects
 	 */
 	public List<TimesheetEntry> getTimesheetEntriesInRange(Integer userId, DateRange dateRange);
+	
+	/**
+	 * Get timesheet entries before date
+	 * @param userId
+	 * @param date
+	 * @return
+	 */
+	public List<TimesheetEntry> getTimesheetEntriesBefore(Integer userId, Date date);
+	
+	/**
+	 * Get timesheet entries after date
+	 * @param userId
+	 * @param date
+	 * @return
+	 */
+	public List<TimesheetEntry> getTimesheetEntriesAfter(Integer userId, Date date);
 	
 	/**
 	 * Get cumulated hours per day for a date range
