@@ -292,7 +292,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * Persist timesheets & comment
 	 * @throws OverBudgetException 
 	 */
-	public void persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment) 
+	public List<ErrorInfo> persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment) 
 	{
 		Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
 
@@ -318,6 +318,8 @@ public class TimesheetServiceImpl implements TimesheetService
 		{
 			logger.info("Comments not persisted, only errors.");
 		}
+		
+		return errors;
 	}
 	
 	/**

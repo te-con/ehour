@@ -15,45 +15,74 @@
 
 package net.rrm.ehour.project.status;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 /**
- * ProjectAssignment status 
+ * ProjectAssignment status
+ *  
+ * A flex assignment has 3 statusses: 
+ *  - booked hours before allotted hours mark (IN_ALLOTTED_PHASE)
+ * 	- over  the allotted hours mark but before the overrun mark (IN_OVERRUN_PHASE)
+ *  - over the overrun mark, no more hours can be booked and mail should be sent (OVER_OVERRUN_PHASE)
+ *  
+ * A fixed assignment has 2 statusses:
+ *  - booked hours before allotted hours mark (IN_ALLOTTED_PHASE)
+ *  - over the alloted hours mark, no more hours can be booked and mail should be sent (OVER_ALLOTTED_PHASE)
+ *
+ * Additionaly an assignment has either a before start, running, after deadline status
  **/
 
 public class ProjectAssignmentStatus
 {
-	/**
-	 * A flex assignment has 3 phases: 
-	 *  - booked hours before allotted hours mark (IN_ALLOTTED_PHASE)
-	 * 	- over  the allotted hours mark but before the overrun mark (IN_OVERRUN_PHASE)
-	 *  - over the overrun mark, no more hours can be booked and mail should be sent (OVER_OVERRUN_PHASE)
-	 *  
-	 * A fixed assignment has 2 phases:
-	 *  - booked hours before allotted hours mark (IN_ALLOTTED_PHASE)
-	 *  - over the alloted hours mark, no more hours can be booked and mail should be sent (OVER_ALLOTTED_PHASE)
-	 */
-
-	public final static int IN_OVERRUN_PHASE = 1;
-	public final static int IN_ALLOTTED_PHASE = 2;
-	public final static int OVER_ALLOTTED_PHASE = 3;
-	public final static int OVER_OVERRUN_PHASE = 3;
-	public final static int IN_DATERANGE_PHASE = 4;
-	public final static int OUT_DATERANGE_PHASE = 4;
+	public enum Status
+	{
+		IN_OVERRUN,
+		IN_ALLOTTED,
+		OVER_ALLOTTED,
+		OVER_OVERRUN,
+		BEFORE_START,
+		RUNNING,
+		AFTER_DEADLINE;
+	}
 	
 	private AssignmentAggregateReportElement	aggregate;
-	private int assignmentPhase;
+	private List<Status> statusses;
 	
 	/**
-	 * 
+	 * Can assignment alive?
 	 * @return
 	 */
 	public boolean isAssignmentBookable()
 	{
-		return (assignmentPhase == IN_DATERANGE_PHASE || 
-				assignmentPhase == IN_OVERRUN_PHASE || 
-				assignmentPhase == IN_ALLOTTED_PHASE);
+		boolean isBookable = true;
+		
+		for (Status status : statusses)
+		{
+			isBookable &= (status == Status.RUNNING || 
+							status == Status.IN_OVERRUN || 
+							status == Status.IN_ALLOTTED);
+		}
+		
+		return isBookable;
 	}
+	
+	/**
+	 * Add status
+	 * @param status
+	 */
+	public void addStatus(Status status)
+	{
+		if (statusses == null)
+		{
+			statusses  = new ArrayList<Status>();
+		}
+		
+		statusses.add(status);
+	}
+	
 	
 	/**
 	 * @return the aggregate
@@ -69,18 +98,20 @@ public class ProjectAssignmentStatus
 	{
 		this.aggregate = aggregate;
 	}
+
 	/**
-	 * @return the assignmentPhase
+	 * @return the statusses
 	 */
-	public int getAssignmentPhase()
+	public List<Status> getStatusses()
 	{
-		return assignmentPhase;
+		return statusses;
 	}
+
 	/**
-	 * @param assignmentPhase the assignmentPhase to set
+	 * @param statusses the statusses to set
 	 */
-	public void setAssignmentPhase(int assignmentPhase)
+	public void setStatusses(List<Status> statusses)
 	{
-		this.assignmentPhase = assignmentPhase;
+		this.statusses = statusses;
 	}
 }

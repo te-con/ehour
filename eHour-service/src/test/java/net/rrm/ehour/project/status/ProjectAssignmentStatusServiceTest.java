@@ -21,7 +21,11 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
@@ -30,6 +34,8 @@ import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import sun.util.calendar.Gregorian;
 
 /**
  * 
@@ -50,6 +56,50 @@ public class ProjectAssignmentStatusServiceTest
 	}
 
 	@Test
+	public final void testGetAssignmentStatusDateIn()
+	{
+		ProjectAssignment assignment = new ProjectAssignment();
+		ProjectAssignmentType type = new ProjectAssignmentType();
+		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
+		assignment.setAssignmentType(type);
+		
+		Calendar startCal = new GregorianCalendar();
+		startCal.add(Calendar.DAY_OF_YEAR, -5);
+		assignment.setDateStart(startCal.getTime());
+
+		Calendar endCal = new GregorianCalendar();
+		endCal.add(Calendar.DAY_OF_YEAR, 2);
+		assignment.setDateEnd(endCal.getTime());
+		
+		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
+
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(1, status.getStatusses().size());
+	}	
+	
+	@Test
+	public final void testGetAssignmentStatusDateOut()
+	{
+		ProjectAssignment assignment = new ProjectAssignment();
+		ProjectAssignmentType type = new ProjectAssignmentType();
+		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
+		assignment.setAssignmentType(type);
+		
+		Calendar startCal = new GregorianCalendar();
+		startCal.add(Calendar.DAY_OF_YEAR, -5);
+		assignment.setDateStart(startCal.getTime());
+
+		Calendar endCal = new GregorianCalendar();
+		endCal.add(Calendar.DAY_OF_YEAR, -2);
+		assignment.setDateEnd(endCal.getTime());
+		
+		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
+
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE));
+		assertEquals(1, status.getStatusses().size());
+	}	
+	
+	@Test
 	public final void testGetAssignmentStatusFixed()
 	{
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
@@ -69,8 +119,10 @@ public class ProjectAssignmentStatusServiceTest
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
 		verify(raDAO);
-		
-		assertEquals(ProjectAssignmentStatus.IN_ALLOTTED_PHASE, status.getAssignmentPhase());
+
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_ALLOTTED));
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatusses().size());
 	}
 	
 	@Test
@@ -94,7 +146,9 @@ public class ProjectAssignmentStatusServiceTest
 		
 		verify(raDAO);
 		
-		assertEquals(ProjectAssignmentStatus.OVER_ALLOTTED_PHASE, status.getAssignmentPhase());
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED));
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatusses().size());
 	}	
 	
 	@Test
@@ -119,7 +173,9 @@ public class ProjectAssignmentStatusServiceTest
 		
 		verify(raDAO);
 		
-		assertEquals(ProjectAssignmentStatus.IN_ALLOTTED_PHASE, status.getAssignmentPhase());
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_ALLOTTED));
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatusses().size());
 	}
 	
 	@Test
@@ -144,7 +200,9 @@ public class ProjectAssignmentStatusServiceTest
 		
 		verify(raDAO);
 		
-		assertEquals(ProjectAssignmentStatus.IN_OVERRUN_PHASE, status.getAssignmentPhase());
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN));
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatusses().size());
 	}	
 	
 	@Test
@@ -169,7 +227,9 @@ public class ProjectAssignmentStatusServiceTest
 		
 		verify(raDAO);
 		
-		assertEquals(ProjectAssignmentStatus.OVER_OVERRUN_PHASE, status.getAssignmentPhase());
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN));
+		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatusses().size());
 	}	
 
 //	@Test

@@ -119,7 +119,7 @@ public class ProjectAssignmentServiceTest
 		replay(projectAssignmentDAO);
 
 		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
-		status.setAssignmentPhase(ProjectAssignmentStatus.IN_DATERANGE_PHASE);
+		status.addStatus(ProjectAssignmentStatus.Status.RUNNING);
 		
 		expect(statusService.getAssignmentStatus(assignment))
 			.andReturn(status);
@@ -143,7 +143,7 @@ public class ProjectAssignmentServiceTest
 		replay(projectAssignmentDAO);
 
 		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
-		status.setAssignmentPhase(ProjectAssignmentStatus.OUT_DATERANGE_PHASE);
+		status.addStatus(ProjectAssignmentStatus.Status.AFTER_DEADLINE);
 		
 		expect(statusService.getAssignmentStatus(assignment))
 			.andReturn(status);

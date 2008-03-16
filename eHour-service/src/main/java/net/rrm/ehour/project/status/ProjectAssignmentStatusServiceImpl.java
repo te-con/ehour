@@ -15,6 +15,8 @@
 
 package net.rrm.ehour.project.status;
 
+import java.util.Date;
+
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -34,25 +36,49 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	 */
 	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment)
 	{
+		ProjectAssignmentStatus	status = new ProjectAssignmentStatus();
+		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
+		status.setAggregate(aggregate);
+
 		int assignmentTypeId = assignment.getAssignmentType().getAssignmentTypeId().intValue();
-		ProjectAssignmentStatus	status = null;			
 		
 		if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
 		{
-			status = getFixedAssignmentStatus(assignment);
+			addFixedAssignmentStatus(assignment, status);
 		}
 		else if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
 		{
-			status = getFlexAssignmentStatus(assignment);
-		}
-		else if (assignmentTypeId == EhourConstants.ASSIGNMENT_DATE)
-		{
-			// TODO check boundaries
-			status = new ProjectAssignmentStatus();
-			status.setAssignmentPhase(ProjectAssignmentStatus.IN_DATERANGE_PHASE);
+			addFlexAssignmentStatus(assignment, status);
 		}
 		
+		addDeadlineStatus(assignment, status);
+		
 		return status;
+	}
+
+	/**
+	 * Add status based on date
+	 * @param assignment
+	 * @param status
+	 */
+	private void addDeadlineStatus(ProjectAssignment assignment, ProjectAssignmentStatus status)
+	{
+		Date currentDate = new Date();
+		
+		if (assignment.getDateStart() != null 
+				&& assignment.getDateStart().after(currentDate))
+		{
+			status.addStatus(ProjectAssignmentStatus.Status.BEFORE_START);
+		}
+		else if (assignment.getDateEnd() != null 
+				&& currentDate.after(assignment.getDateEnd()))
+		{
+			status.addStatus(ProjectAssignmentStatus.Status.AFTER_DEADLINE);
+		}
+		else
+		{
+			status.addStatus(ProjectAssignmentStatus.Status.RUNNING);
+		}
 	}
 	
 	/**
@@ -60,23 +86,23 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	 * @param assignment
 	 * @return
 	 */
-	private ProjectAssignmentStatus getFixedAssignmentStatus(ProjectAssignment assignment)
+	private void addFixedAssignmentStatus(ProjectAssignment assignment, ProjectAssignmentStatus status)
 	{
-		ProjectAssignmentStatus	status = new ProjectAssignmentStatus();
-		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
-		status.setAggregate(aggregate);
-		
-		status.setAssignmentPhase(ProjectAssignmentStatus.IN_ALLOTTED_PHASE);
-		
-		if (aggregate != null)
+		if (status.getAggregate() != null)
 		{
-			if (assignment.getAllottedHours().compareTo(aggregate.getHours().floatValue()) <= 0)
+			if (assignment.getAllottedHours().compareTo(status.getAggregate().getHours().floatValue()) <= 0)
 			{
-				status.setAssignmentPhase(ProjectAssignmentStatus.OVER_ALLOTTED_PHASE);
+				status.addStatus(ProjectAssignmentStatus.Status.OVER_ALLOTTED);
+			}
+			else
+			{
+				status.addStatus(ProjectAssignmentStatus.Status.IN_ALLOTTED);
 			}
 		}
-		
-		return status;
+		else
+		{
+			status.addStatus(ProjectAssignmentStatus.Status.IN_ALLOTTED);
+		}
 	}
 	
 	/**
@@ -84,34 +110,27 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	 * @param assignment
 	 * @return
 	 */
-	private ProjectAssignmentStatus getFlexAssignmentStatus(ProjectAssignment assignment)
+	private void addFlexAssignmentStatus(ProjectAssignment assignment, ProjectAssignmentStatus status)
 	{
-		ProjectAssignmentStatus	status = new ProjectAssignmentStatus();
-		
-		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
-		status.setAggregate(aggregate);
-		
-		if (aggregate != null)
+		if (status.getAggregate() != null)
 		{
-			if (assignment.getAllottedHours().compareTo(aggregate.getHours().floatValue()) > 0)
+			if (assignment.getAllottedHours().compareTo(status.getAggregate().getHours().floatValue()) > 0)
 			{
-				status.setAssignmentPhase(ProjectAssignmentStatus.IN_ALLOTTED_PHASE);
+				status.addStatus(ProjectAssignmentStatus.Status.IN_ALLOTTED);
 			}
-			else if (aggregate.getHours().floatValue()  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
+			else if (status.getAggregate().getHours().floatValue()  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
 			{
-				status.setAssignmentPhase(ProjectAssignmentStatus.OVER_OVERRUN_PHASE);
+				status.addStatus(ProjectAssignmentStatus.Status.OVER_OVERRUN);
 			}
 			else
 			{
-				status.setAssignmentPhase(ProjectAssignmentStatus.IN_OVERRUN_PHASE);
+				status.addStatus(ProjectAssignmentStatus.Status.IN_OVERRUN);
 			}
 		}
 		else
 		{
-			status.setAssignmentPhase(ProjectAssignmentStatus.IN_ALLOTTED_PHASE);
+			status.addStatus(ProjectAssignmentStatus.Status.IN_ALLOTTED);
 		}
-		
-		return status;
 	}
 	
 	/**

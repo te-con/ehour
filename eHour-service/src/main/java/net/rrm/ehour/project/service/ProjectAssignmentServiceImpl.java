@@ -220,8 +220,9 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		status = projectAssignmentStatusService.getAssignmentStatus(dbAssignment);
 		
-		if (status.getAssignmentPhase() == ProjectAssignmentStatus.OVER_ALLOTTED_PHASE 
-			&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
+		// over alloted - fixed
+		if (dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
+				&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) 
 		{
 			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 			
@@ -235,8 +236,9 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.IN_OVERRUN);
 			throw new OverBudgetException(errorInfo);
 		}
-		else if (status.getAssignmentPhase() == ProjectAssignmentStatus.OVER_OVERRUN_PHASE 
-				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+		// over overrun - flex
+		else if (dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX
+					&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) 
 		{
 			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 
@@ -250,22 +252,33 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
 			throw new OverBudgetException(errorInfo);
 		}
-		else if (status.getAssignmentPhase() == ProjectAssignmentStatus.IN_OVERRUN_PHASE 
-				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+		// in overrun - flex TODO fixme
+//		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN) 
+//				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+//		{
+//			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+//			
+//			if (canNotifyPm(dbAssignment))
+//			{
+//				mailService.mailPMFlexAllottedReached(status.getAggregate(), 
+//														entry.getEntryId().getEntryDate(),
+//														dbAssignment.getProject().getProjectManager());
+//			}
+//
+//			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
+//			throw new OverBudgetException(errorInfo);
+//		}
+		// over/before deadline
+		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.BEFORE_START))
 		{
-			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
-			
-			if (canNotifyPm(dbAssignment))
-			{
-				mailService.mailPMFlexAllottedReached(status.getAggregate(), 
-														entry.getEntryId().getEntryDate(),
-														dbAssignment.getProject().getProjectManager());
-			}
-
-			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_DEADLINE_TIME);
+			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.BEFORE_START);
 			throw new OverBudgetException(errorInfo);
-		
 		}
+		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE))
+	{
+		ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.AFTER_DEADLINE);
+		throw new OverBudgetException(errorInfo);
+	}
 	}
 	
 	/**
