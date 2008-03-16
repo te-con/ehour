@@ -265,15 +265,22 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-                try
-				{
-					persistTimesheetEntries(timesheet);
-					target.addComponent(updatePostPersistMessage(timesheet));
-				} catch (OverBudgetException e)
-				{
-					target.addComponent(updateErrorMessage(e.getErrorInfo()));
-				}
+				List<ErrorInfo> errors = persistTimesheetEntries(timesheet);
 				
+				if (errors.isEmpty())
+				{
+					target.addComponent(updatePostPersistMessage(timesheet));
+				}
+				else
+				{
+					for (ErrorInfo errorInfo : errors)
+					{
+						System.out.println(errorInfo.getErrorCode());
+					} 
+					
+					target.addComponent(updateErrorMessage());
+				}
+					
                 ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
             }
 
@@ -328,7 +335,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 	}
 	
-	private Label updateErrorMessage(ErrorInfo errorInfo)
+	private Label updateErrorMessage()
 	{
 		IModel model = new StringResourceModel("timesheet.errorPersist",
 													TimesheetPanel.this, 
@@ -392,7 +399,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param timesheet
 	 * @throws OverBudgetException 
 	 */
-	private void persistTimesheetEntries(Timesheet timesheet) throws OverBudgetException
+	private List<ErrorInfo> persistTimesheetEntries(Timesheet timesheet)
 	{
 		List<TimesheetEntry>	timesheetEntries = new ArrayList<TimesheetEntry>();
 		
@@ -416,7 +423,9 @@ public class TimesheetPanel extends Panel implements Serializable
 			timesheet.getComment().setCommentId(id);
 		}
 		
-		timesheetService.persistTimesheet(timesheetEntries, timesheet.getComment());
+		List<ErrorInfo> errors = timesheetService.persistTimesheet(timesheetEntries, timesheet.getComment());
+		
+		return errors;
 	}
 	
 	/**
