@@ -59,6 +59,16 @@ public class TimesheetPersisterImplTest {
 		entry.setHours(2f);
 		entries.add(entry);
 		
+		TimesheetEntry entryDel = new TimesheetEntry();
+		TimesheetEntryId idDel = new TimesheetEntryId();
+		idDel.setProjectAssignment(assignment);
+		entryDel.setEntryId(id);
+		entryDel.setHours(0f);
+		entries.add(entryDel);
+		
+		timesheetDAO.delete(entry);
+		
+		
 		expect(timesheetDAO.persist(entry))
 			.andReturn(entry);
 		
