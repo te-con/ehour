@@ -302,7 +302,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		{
 			try
 			{
-				timesheetPersister.persistValidatedTimesheet(assignment, timesheetRows.get(assignment));
+				timesheetPersister.persistAndNotify(assignment, timesheetRows.get(assignment));
 			} catch (BusinessException e)
 			{
 				errors.add(e.getErrorInfo());

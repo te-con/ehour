@@ -24,6 +24,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.status.StatusChanger;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +49,8 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	 */
 	@Transactional(rollbackFor=OverBudgetException.class,
 					propagation=Propagation.REQUIRES_NEW)
-	public void persistValidatedTimesheet(ProjectAssignment assignment, List<TimesheetEntry> entries) throws OverBudgetException
+	@StatusChanger
+	public void persistAndNotify(ProjectAssignment assignment, List<TimesheetEntry> entries) throws OverBudgetException
 	{
 		for (TimesheetEntry entry : entries)
 		{
@@ -85,8 +87,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 				timesheetDAO.persist(entry);
 			}
 		}
-		
-		projectAssignmentService.checkAndNotify(assignment);	
 	}
 
 	/**

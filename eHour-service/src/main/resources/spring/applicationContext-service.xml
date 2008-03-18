@@ -27,6 +27,14 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config>
 
+
+	<aop:aspectj-autoproxy />
+
+	<!-- Status Change observer aspect -->
+	<bean id="statusChangeAspect" class="net.rrm.ehour.project.status.StatusChangeAspect">
+		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
+	</bean>
+
 	<!-- User service -->
 	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl">
 		<property name="userDAO" ref="userDAO" />	
@@ -40,7 +48,6 @@
 	 <bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder">
 	     <constructor-arg value="1"/>
 	 </bean>
-
 
 	<!-- Aggregate Report service -->
 	<bean id="aggregateReportService" class="net.rrm.ehour.report.service.AggregateReportServiceImpl">

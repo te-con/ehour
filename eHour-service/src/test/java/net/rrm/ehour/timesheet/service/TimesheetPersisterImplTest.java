@@ -43,7 +43,7 @@ public class TimesheetPersisterImplTest {
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.timesheet.service.TimesheetPersisterImpl#persistValidatedTimesheet(net.rrm.ehour.domain.ProjectAssignment, java.util.List)}.
+	 * Test method for {@link net.rrm.ehour.timesheet.service.TimesheetPersisterImpl#persistAndNotify(net.rrm.ehour.domain.ProjectAssignment, java.util.List)}.
 	 * @throws OverBudgetException 
 	 */
 	@Test
@@ -77,7 +77,7 @@ public class TimesheetPersisterImplTest {
 		replay(assignmentService);
 		replay(timesheetDAO);
 		
-		persister.persistValidatedTimesheet(assignment, entries);
+		persister.persistAndNotify(assignment, entries);
 		
 		verify(timesheetDAO);
 		verify(assignmentService);

@@ -30,11 +30,11 @@ import net.rrm.ehour.exception.BusinessException;
 public interface TimesheetPersister
 {
 	/**
-	 * Validate and persist list of timesheet entries
+	 * Validate, persist and notify list of timesheet entries
 	 * @param assignment
 	 * @param entries
 	 * @throws BusinessException
 	 */
-	public void persistValidatedTimesheet(ProjectAssignment assignment, List<TimesheetEntry> entries) throws BusinessException;
+	public void persistAndNotify(ProjectAssignment assignment, List<TimesheetEntry> entries) throws BusinessException;
 
 }
