@@ -20,6 +20,10 @@ import java.util.List;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * ProjectAssignment status
  *  
@@ -51,6 +55,8 @@ public class ProjectAssignmentStatus
 	private AssignmentAggregateReportElement	aggregate;
 	private List<Status> statusses;
 	
+	
+	
 	/**
 	 * Can assignment alive?
 	 * @return
@@ -81,6 +87,45 @@ public class ProjectAssignmentStatus
 		}
 		
 		statusses.add(status);
+	}
+	
+
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object)
+	{
+		if (!(object instanceof ProjectAssignmentStatus))
+		{
+			return false;
+		}
+		ProjectAssignmentStatus pas = (ProjectAssignmentStatus) object;
+		
+		return new EqualsBuilder()
+			.append(this.getStatusses(), pas.getStatusses())
+			.isEquals();
+	}	
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		return new HashCodeBuilder(1202909165, -339864927)
+			.appendSuper(super.hashCode())
+			.append(this.getStatusses())
+			.toHashCode();
+	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString()
+	{
+		return new ToStringBuilder(this)
+				.append("statusses", this.getStatusses())
+				.append("aggregate", this.getAggregate())
+				.toString();
 	}
 	
 	

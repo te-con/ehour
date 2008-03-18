@@ -2,6 +2,7 @@ package net.rrm.ehour.project.status;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,6 +16,8 @@ import org.aspectj.lang.annotation.Aspect;
 public class StatusChangeAspect
 {
 	private ProjectAssignmentStatusService projectAssignmentStatusService;
+	private	Logger				logger = Logger.getLogger(StatusChangeAspect.class);
+
 	
 	/**
 	 * Determine status change
@@ -25,10 +28,14 @@ public class StatusChangeAspect
 	@Around("@annotation(net.rrm.ehour.project.status.StatusChanger) && args(assignment,..)")
 	public void determineStatusChange(ProceedingJoinPoint point, ProjectAssignment assignment) throws Throwable
 	{
-		System.out.println("start on " + assignment.getAssignmentId());
+		ProjectAssignmentStatus beforeStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
+
+		logger.debug("got old status: " + beforeStatus);
 		point.proceed();
 		
-		System.out.println("end");
+		ProjectAssignmentStatus afterStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
+		logger.debug("got new status: " + afterStatus);
+		logger.debug("equal: " + afterStatus.equals(beforeStatus));
 	}
 
 	/**
