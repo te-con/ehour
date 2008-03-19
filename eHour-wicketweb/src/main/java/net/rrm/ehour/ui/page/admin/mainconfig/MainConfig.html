@@ -84,7 +84,7 @@
 					
 					<tr>
 						<td><wicket:message key="admin.config.smtpPort" />:</td>
-						<td><input type="text" style="width: 5em" class="textInputSmall"  wicket:id="config.smtpPort" /></td>
+						<td><input type="text" style="width: 3em" class="textInputSmall"  wicket:id="config.smtpPort" /></td>
 					</tr>
 
 					<tr>
@@ -96,6 +96,13 @@
 						<td><wicket:message key="admin.config.smtpPassword" />:</td>
 						<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="config.smtpPassword" /></td>
 					</tr>
+					
+					<tr>
+						<td colspan="2" align="right">
+							<a class="bluebutton" onclick="this.blur();" wicket:id="testMail" >
+							<span><wicket:message key="admin.config.testSmtp" /></span></a>
+						</td>
+					</tr>					
 					
 					
 

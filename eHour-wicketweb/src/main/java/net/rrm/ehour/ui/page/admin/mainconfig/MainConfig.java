@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.ajax.DemoDecorator;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
@@ -66,9 +67,12 @@ public class MainConfig extends BaseAdminPage
 	
 	@SpringBean
 	private ConfigurationService	configService;
-
+	@SpringBean
+	private MailService				mailService;
+	
 	private WebComponent serverMessage;
 	private	final 	MainConfigBackingBean configBackingBean;
+	
 	
 	/**
 	 * 
@@ -124,6 +128,7 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(new RequiredTextField("config.smtpPort", Integer.class));
 		configForm.add(new TextField("config.smtpUsername"));
 		configForm.add(new TextField("config.smtpPassword"));
+		addTestMailSettingsButton(configForm);
 		
 		setSubmitButton(configForm);
 		
@@ -132,6 +137,31 @@ public class MainConfig extends BaseAdminPage
 		serverMessage = new WebComponent("serverMessage");
 		serverMessage.setOutputMarkupId(true);
 		configForm.add(serverMessage);
+	}
+	
+	/**
+	 * Add test mail button
+	 * @param form
+	 */
+	private void addTestMailSettingsButton(Form form)
+	{
+		form.add(new AjaxButton("testMail", form)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				mailService.mailTestMessage(configBackingBean.getConfig());
+				
+				Label replacementLabel = new Label("serverMessage", new ResourceModel("admin.config.testSmtpSent"));
+				replacementLabel.setOutputMarkupId(true);
+				replacementLabel.add(new SimpleAttributeModifier("class", "whiteText"));
+				serverMessage.replaceWith(replacementLabel);
+				serverMessage = replacementLabel;
+				target.addComponent(serverMessage);
+			}
+		});
 	}
 	
 	/**
