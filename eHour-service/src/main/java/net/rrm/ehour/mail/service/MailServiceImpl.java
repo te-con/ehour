@@ -19,6 +19,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.MailLogAssignment;
@@ -61,7 +62,18 @@ public class MailServiceImpl implements MailService
 		this.config = config;
 		this.taskExecutor = taskExecutor;
 		
-		mailSender = new JavaMailSenderImpl();
+		mailSender = getMailSender(config);
+	}
+	
+	
+	/**
+	 * Get mail sender
+	 * @param config
+	 * @return
+	 */
+	private MailSender getMailSender(EhourConfig config)
+	{
+		MailSender mailSender = new JavaMailSenderImpl();
 		((JavaMailSenderImpl)mailSender).setHost(config.getMailSmtp());
 		
 		if (!StringUtils.isBlank(config.getSmtpPort()))
@@ -81,18 +93,26 @@ public class MailServiceImpl implements MailService
 		if (! StringUtils.isBlank(config.getSmtpUsername())
 				&& ! StringUtils.isBlank(config.getSmtpPassword())) 
 		{
+			logger.debug("Using SMTP authentication");
+			
+			Properties prop = new Properties();
+			prop.put("mail.smtp.auth", "true");
+			
+			((JavaMailSenderImpl)mailSender).setJavaMailProperties(prop);
 			((JavaMailSenderImpl)mailSender).setUsername(config.getSmtpUsername());
-			((JavaMailSenderImpl)mailSender).setUsername(config.getSmtpPassword());
+			((JavaMailSenderImpl)mailSender).setPassword(config.getSmtpPassword());
 		}
 		
+		return mailSender;
 	}
 	
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.mail.service.MailService#mailTestMessage()
+	 * @see net.rrm.ehour.mail.service.MailService#mailTestMessage(net.rrm.ehour.config.EhourConfig)
 	 */
-	public void mailTestMessage() {
+	public void mailTestMessage(EhourConfig config)
+	{
 		String subject = "eHour test message";
 		String body = "This is a test message. Reading this means that most likely your SMTP server settings are fine.";
 		
@@ -104,10 +124,13 @@ public class MailServiceImpl implements MailService
 		msg.setSubject(subject);
 		
 		MailTaskMessage taskMessage = new MailTaskMessage();
+		User user = new User();
+		user.setEmail(config.getMailFrom());
+		taskMessage.setToUser(user);
 		
 		taskMessage.setMailMessage(msg);
 		
-		mailTask = new MailTask(taskMessage);
+		mailTask = new MailTask(taskMessage, getMailSender(config));
 		taskExecutor.execute(mailTask);
 	}	
 	
@@ -338,6 +361,7 @@ public class MailServiceImpl implements MailService
 	private class MailTask implements Runnable
 	{
 		private	MailTaskMessage mailTaskMessage;
+		private MailSender		javaMailSender;
 		
 		/**
 		 * 
@@ -345,9 +369,16 @@ public class MailServiceImpl implements MailService
 		 */
 		public MailTask(MailTaskMessage mailTaskMessage)
 		{
-			this.mailTaskMessage = mailTaskMessage;
+			this(mailTaskMessage, MailServiceImpl.this.mailSender);
 		}
 
+		public MailTask(MailTaskMessage mailTaskMessage, MailSender mailSender)
+		{
+			this.mailTaskMessage = mailTaskMessage;
+			javaMailSender = mailSender;
+		}
+		
+		
 		/**
 		 * 
 		 */
@@ -359,8 +390,8 @@ public class MailServiceImpl implements MailService
 			msg.setTo(mailTaskMessage.getToUser().getEmail());
 			try
 			{
-				logger.debug("Sending email to " + msg.getTo()[0] + " using " + config.getMailSmtp());	
-				mailSender.send(msg);
+				logger.debug("Sending email to " + msg.getTo()[0] + " using " + ((JavaMailSenderImpl)javaMailSender).getHost());	
+				javaMailSender.send(msg);
 				
 				if (mailTaskMessage.getCallback() != null)
 				{
