@@ -72,15 +72,15 @@ public class TimesheetPersisterImplTest {
 		expect(timesheetDAO.persist(entry))
 			.andReturn(entry);
 		
-		assignmentService.checkAndNotify(assignment);
+//		assignmentService.checkAndNotify(assignment);
 		
-		replay(assignmentService);
+//		replay(assignmentService);
 		replay(timesheetDAO);
 		
 		persister.persistAndNotify(assignment, entries);
 		
 		verify(timesheetDAO);
-		verify(assignmentService);
+//		verify(assignmentService);
 	}
 
 }
