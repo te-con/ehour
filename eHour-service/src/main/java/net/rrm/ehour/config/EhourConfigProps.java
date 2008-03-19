@@ -112,4 +112,9 @@ public class EhourConfigProps implements EhourConfig
 		return props.getProperty("smtpUsername");
 	}
 	
+	public String getSmtpPort()
+	{
+		return props.getProperty("smtpPort");
+	}
+	
 }

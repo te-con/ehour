@@ -44,7 +44,7 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private boolean		initialized;
 	private String		smtpUsername;
 	private String		smtpPassword;
-	
+	private String		smtpPort;
 	/**
 	 * @return the availableTranslations
 	 */
@@ -215,5 +215,11 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	}
 	public void setSmtpPassword(String smtpPassword) {
 		this.smtpPassword = smtpPassword;
+	}
+	public String getSmtpPort() {
+		return smtpPort;
+	}
+	public void setSmtpPort(String smtpPort) {
+		this.smtpPort = smtpPort;
 	}
 }

@@ -104,6 +104,10 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			{
 				config.setSmtpPassword(value);
 			}			
+			else if (key.equalsIgnoreCase("smtpPort"))
+			{
+				config.setSmtpPort(value);
+			}			
 			else if (key.equalsIgnoreCase("demoMode"))
 			{
 				config.setDemoMode(Boolean.parseBoolean(value));
@@ -138,6 +142,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig("mailSmtp", config.getMailSmtp());
 		persistConfig("smtpUsername", config.getSmtpUsername());
 		persistConfig("smtpPassword", config.getSmtpPassword());
+		persistConfig("smtpPort", config.getSmtpPort());
 		persistConfig("initialized", config.isInitialized());
 	}
 	

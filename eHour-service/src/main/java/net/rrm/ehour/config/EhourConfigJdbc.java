@@ -114,4 +114,11 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("smtpPassword");
 	}
 
+	/**
+	 * 
+	 */
+	public String getSmtpPort() {
+		return this.getString("smtpPort");
+	}
+
 }

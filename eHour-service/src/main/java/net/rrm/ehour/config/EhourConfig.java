@@ -84,7 +84,12 @@ public interface EhourConfig
 	 * @return
 	 */
 	public String getSmtpPassword();
-	
+
+	/**
+	 * Get the smtp port
+	 * @return
+	 */
+	public String getSmtpPort();
 	
 	/**
 	 * In demo mode ?

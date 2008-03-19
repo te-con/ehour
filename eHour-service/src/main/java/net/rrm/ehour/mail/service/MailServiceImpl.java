@@ -64,6 +64,20 @@ public class MailServiceImpl implements MailService
 		mailSender = new JavaMailSenderImpl();
 		((JavaMailSenderImpl)mailSender).setHost(config.getMailSmtp());
 		
+		if (!StringUtils.isBlank(config.getSmtpPort()))
+		{
+			try
+			{
+				int port = Integer.valueOf(config.getSmtpPort());
+				((JavaMailSenderImpl)mailSender).setPort(port);
+			}
+			catch (NumberFormatException nfe)
+			{
+				logger.error("Using default port 25, couldn't parse configured port " + config.getSmtpPort());
+			}
+		}
+		
+		
 		if (! StringUtils.isBlank(config.getSmtpUsername())
 				&& ! StringUtils.isBlank(config.getSmtpPassword())) 
 		{
