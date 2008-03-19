@@ -46,6 +46,7 @@ public class MainConfigBackingBean implements Serializable
 	 */
 	private static final long serialVersionUID = -682573285773646807L;
 	private	boolean			translationsOnly = false;
+	private boolean			smtpAuthentication = false;
 	private EhourConfigStub	config;
 
 	/**
@@ -55,6 +56,9 @@ public class MainConfigBackingBean implements Serializable
 	public MainConfigBackingBean(EhourConfigStub config)
 	{
 		this.config = config;
+		
+		smtpAuthentication = !StringUtils.isBlank(config.getSmtpUsername()) 
+								|| !StringUtils.isBlank(config.getSmtpPassword()); 
 	}
 	
 	/**
@@ -198,5 +202,13 @@ public class MainConfigBackingBean implements Serializable
 	public EhourConfig getConfig()
 	{
 		return config;
+	}
+
+	public boolean isSmtpAuthentication() {
+		return smtpAuthentication;
+	}
+
+	public void setSmtpAuthentication(boolean smtpAuthentication) {
+		this.smtpAuthentication = smtpAuthentication;
 	}
 }

@@ -87,6 +87,30 @@ public class MailServiceImpl implements MailService
 		
 	}
 	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.mail.service.MailService#mailTestMessage()
+	 */
+	public void mailTestMessage() {
+		String subject = "eHour test message";
+		String body = "This is a test message. Reading this means that most likely your SMTP server settings are fine.";
+		
+		SimpleMailMessage	msg; 
+		MailTask			mailTask;
+		
+		msg = new SimpleMailMessage();
+		msg.setText(body);
+		msg.setSubject(subject);
+		
+		MailTaskMessage taskMessage = new MailTaskMessage();
+		
+		taskMessage.setMailMessage(msg);
+		
+		mailTask = new MailTask(taskMessage);
+		taskExecutor.execute(mailTask);
+	}	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.mail.service.MailService#mailPMFixedAllottedReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
@@ -338,7 +362,10 @@ public class MailServiceImpl implements MailService
 				logger.debug("Sending email to " + msg.getTo()[0] + " using " + config.getMailSmtp());	
 				mailSender.send(msg);
 				
-				mailTaskMessage.getCallback().mailTaskSuccess(mailTaskMessage);
+				if (mailTaskMessage.getCallback() != null)
+				{
+					mailTaskMessage.getCallback().mailTaskSuccess(mailTaskMessage);
+				}
 			}
 			catch (MailException me)
 			{
@@ -373,5 +400,4 @@ public class MailServiceImpl implements MailService
 	{
 		this.mailLogDAO = mailLogDAO;
 	}
-
 }

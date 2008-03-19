@@ -25,7 +25,7 @@ import org.springframework.mail.SimpleMailMessage;
  * DTO for the MailTask
  **/
 
-public abstract class MailTaskMessage
+public class MailTaskMessage
 {
 	private SimpleMailMessage	mailMessage;
 	private MailTaskCallback	callback; 

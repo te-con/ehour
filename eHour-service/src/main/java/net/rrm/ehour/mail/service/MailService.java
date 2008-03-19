@@ -59,4 +59,9 @@ public interface MailService
 	 * @return
 	 */
 	public List<MailLogAssignment> getSentMailForAssignment(Integer[] assignmentId);
+	
+	/**
+	 * Send a test message
+	 */
+	public void mailTestMessage();
 }
