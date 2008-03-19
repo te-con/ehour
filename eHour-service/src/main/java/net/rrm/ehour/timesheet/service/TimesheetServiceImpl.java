@@ -309,6 +309,8 @@ public class TimesheetServiceImpl implements TimesheetService
 			}
 		}
 
+		// TODO not sure
+		// only persist the week comment when at least one save was succesful
 		if (errors.size() < timesheetRows.keySet().size())
 		{
 			logger.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());

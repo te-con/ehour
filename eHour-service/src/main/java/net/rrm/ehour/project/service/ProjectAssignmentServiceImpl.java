@@ -224,7 +224,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		if (dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
 				&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) 
 		{
-			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+//			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 			
 			// TODO review
 //			if (canNotifyPm(dbAssignment))
@@ -236,6 +236,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			
 			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.IN_OVERRUN);
 			errorInfo.setAssignment(dbAssignment);
+			errorInfo.setAggregate(status.getAggregate());
 			throw new OverBudgetException(errorInfo);
 		}
 		// over overrun - flex
@@ -254,6 +255,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			
 			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
 			errorInfo.setAssignment(dbAssignment);
+			errorInfo.setAggregate(status.getAggregate());
 			throw new OverBudgetException(errorInfo);
 		}
 		// in overrun - flex TODO fixme
@@ -277,12 +279,14 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		{
 			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.BEFORE_START);
 			errorInfo.setAssignment(dbAssignment);
+			errorInfo.setAggregate(status.getAggregate());
 			throw new OverBudgetException(errorInfo);
 		}
 		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE))
 		{
 			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.AFTER_DEADLINE);
 			errorInfo.setAssignment(dbAssignment);
+			errorInfo.setAggregate(status.getAggregate());
 			throw new OverBudgetException(errorInfo);
 		}
 	}

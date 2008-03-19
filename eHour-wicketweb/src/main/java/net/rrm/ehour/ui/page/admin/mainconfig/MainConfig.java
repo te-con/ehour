@@ -47,6 +47,7 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -118,7 +119,11 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(mailFrom);
 		configForm.add(new AjaxFormComponentFeedbackIndicator("mailFromError", mailFrom));
 		
+		// smtp server, port, username, pass
 		configForm.add(new RequiredTextField("config.mailSmtp"));
+		configForm.add(new RequiredTextField("config.smtpPort", Integer.class));
+		configForm.add(new TextField("config.smtpUsername"));
+		configForm.add(new TextField("config.smtpPassword"));
 		
 		setSubmitButton(configForm);
 		

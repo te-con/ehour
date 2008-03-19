@@ -26,7 +26,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 public interface ProjectAssignmentStatusService
 {
 	/**
-	 * Get assignment status
+	 * Get assignment status in a period
 	 * @param assignment
 	 * @return
 	 */

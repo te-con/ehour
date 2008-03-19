@@ -22,6 +22,7 @@ import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.error.ErrorInfo;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.status.StatusChanger;
@@ -52,6 +53,26 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	@StatusChanger
 	public void persistAndNotify(ProjectAssignment assignment, List<TimesheetEntry> entries) throws OverBudgetException
 	{
+		persistEntries(assignment, entries);
+		
+		
+		try
+		{
+			projectAssignmentService.checkAndNotify(assignment);	
+		}
+		catch (OverBudgetException obe)
+		{
+			ErrorInfo errorInfo = obe.getErrorInfo();
+		}
+	}
+
+	/**
+	 * Persist entries
+	 * @param assignment
+	 * @param entries
+	 */
+	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries)
+	{
 		for (TimesheetEntry entry : entries)
 		{
 			if (!entry.getEntryId().getProjectAssignment().equals(assignment))
@@ -59,7 +80,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 				logger.error("Invalid entry in assignment list, skipping: " + entry);
 				continue;
 			}
-			
 			
 			if (StringUtils.isBlank(entry.getComment())
 					&& (entry.getHours() == null || entry.getHours().equals(0f)))
@@ -83,7 +103,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 				}
 				
 				entry.setUpdateDate(new Date());
-				
 				timesheetDAO.persist(entry);
 			}
 		}

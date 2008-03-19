@@ -20,7 +20,7 @@ package net.rrm.ehour.error;
 import java.io.Serializable;
 
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 /**
  * Error info 
@@ -42,8 +42,7 @@ public class ErrorInfo implements Serializable
 	
 	private ErrorCode			errorCode;
 	private ProjectAssignment	assignment;
-	private TimesheetEntry		timesheetEntry;
-	private Object[]			parameters;
+	private AssignmentAggregateReportElement aggregate;
 
 	/**
 	 * 
@@ -51,19 +50,9 @@ public class ErrorInfo implements Serializable
 	 */
 	public ErrorInfo(ErrorCode errorCode)
 	{
-		this(errorCode, null);
-	}	
-	
-	/**
-	 * 
-	 * @param errorCode
-	 * @param parameters
-	 */
-	public ErrorInfo(ErrorCode errorCode, Object[] parameters)
-	{
 		this.errorCode = errorCode;
-		this.parameters = parameters;
-	}
+	}	
+
 
 	/**
 	 * @return the errorCode
@@ -82,22 +71,6 @@ public class ErrorInfo implements Serializable
 	}
 
 	/**
-	 * @return the parameters
-	 */
-	public Object[] getParameters()
-	{
-		return parameters;
-	}
-
-	/**
-	 * @param parameters the parameters to set
-	 */
-	public void setParameters(Object[] parameters)
-	{
-		this.parameters = parameters;
-	}
-
-	/**
 	 * @return the assignment
 	 */
 	public ProjectAssignment getAssignment()
@@ -113,21 +86,21 @@ public class ErrorInfo implements Serializable
 		this.assignment = assignment;
 	}
 
-	/**
-	 * @return the timesheetEntry
-	 */
-	public TimesheetEntry getTimesheetEntry()
-	{
-		return timesheetEntry;
-	}
 
 	/**
-	 * @param timesheetEntry the timesheetEntry to set
+	 * @return the aggregate
 	 */
-	public void setTimesheetEntry(TimesheetEntry timesheetEntry)
+	public AssignmentAggregateReportElement getAggregate()
 	{
-		this.timesheetEntry = timesheetEntry;
+		return aggregate;
 	}
-	
-	 
+
+
+	/**
+	 * @param aggregate the aggregate to set
+	 */
+	public void setAggregate(AssignmentAggregateReportElement aggregate)
+	{
+		this.aggregate = aggregate;
+	}
 }
