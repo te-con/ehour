@@ -95,5 +95,21 @@ public class EhourConfigProps implements EhourConfig
 		
 		return init == null ? true : init;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.config.EhourConfig#getSmtpPassword()
+	 */
+	public String getSmtpPassword() {
+		return props.getProperty("smtpPassword");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.config.EhourConfig#getSmtpUsername()
+	 */
+	public String getSmtpUsername() {
+		return props.getProperty("smtpUsername");
+	}
 	
 }

@@ -96,6 +96,14 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			{
 				config.setMailSmtp(value);
 			}
+			else if (key.equalsIgnoreCase("smtpUsername"))
+			{
+				config.setSmtpUsername(value);
+			}			
+			else if (key.equalsIgnoreCase("smtpPassword"))
+			{
+				config.setSmtpPassword(value);
+			}			
 			else if (key.equalsIgnoreCase("demoMode"))
 			{
 				config.setDemoMode(Boolean.parseBoolean(value));
@@ -128,6 +136,8 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig("showTurnOver", config.isShowTurnover());
 		persistConfig("mailFrom", config.getMailFrom());
 		persistConfig("mailSmtp", config.getMailSmtp());
+		persistConfig("smtpUsername", config.getSmtpUsername());
+		persistConfig("smtpPassword", config.getSmtpPassword());
 		persistConfig("initialized", config.isInitialized());
 	}
 	

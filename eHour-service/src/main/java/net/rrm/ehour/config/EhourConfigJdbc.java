@@ -98,4 +98,20 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getBoolean("initialized", true);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.config.EhourConfig#getSmtpPassword()
+	 */
+	public String getSmtpPassword() {
+		return this.getString("smtpUsername");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.config.EhourConfig#getSmtpUsername()
+	 */
+	public String getSmtpUsername() {
+		return this.getString("smtpPassword");
+	}
+
 }

@@ -72,6 +72,20 @@ public interface EhourConfig
 	 */
 	public String getMailSmtp();
 	
+	
+	/**
+	 * Get the smtp username in case of authenticated smtp
+	 * @return
+	 */
+	public String getSmtpUsername();
+	
+	/**
+	 * Get the smtp password in case of authenticated smtp
+	 * @return
+	 */
+	public String getSmtpPassword();
+	
+	
 	/**
 	 * In demo mode ?
 	 * @return

@@ -31,6 +31,7 @@ import net.rrm.ehour.mail.dto.MailTaskMessage;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.MailException;
@@ -62,6 +63,14 @@ public class MailServiceImpl implements MailService
 		
 		mailSender = new JavaMailSenderImpl();
 		((JavaMailSenderImpl)mailSender).setHost(config.getMailSmtp());
+		
+		if (! StringUtils.isBlank(config.getSmtpUsername())
+				&& ! StringUtils.isBlank(config.getSmtpPassword())) 
+		{
+			((JavaMailSenderImpl)mailSender).setUsername(config.getSmtpUsername());
+			((JavaMailSenderImpl)mailSender).setUsername(config.getSmtpPassword());
+		}
+		
 	}
 	
 	/*

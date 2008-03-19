@@ -42,6 +42,8 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private boolean		demoMode = false;
 	private boolean		dontForceLanguage;
 	private boolean		initialized;
+	private String		smtpUsername;
+	private String		smtpPassword;
 	
 	/**
 	 * @return the availableTranslations
@@ -201,5 +203,17 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	public void setInitialized(boolean initialized)
 	{
 		this.initialized = initialized;
+	}
+	public String getSmtpUsername() {
+		return smtpUsername;
+	}
+	public void setSmtpUsername(String smtpUsername) {
+		this.smtpUsername = smtpUsername;
+	}
+	public String getSmtpPassword() {
+		return smtpPassword;
+	}
+	public void setSmtpPassword(String smtpPassword) {
+		this.smtpPassword = smtpPassword;
 	}
 }
