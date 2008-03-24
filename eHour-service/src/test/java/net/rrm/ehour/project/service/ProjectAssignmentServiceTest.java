@@ -50,7 +50,6 @@ public class ProjectAssignmentServiceTest
 	private	ProjectAssignmentService	projectAssignmentService;
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
-	private	TimesheetDAO 			timesheetDAO;
 	private ReportAggregatedDAO		reportAggregatedDAO;
 	private ProjectAssignmentStatusService	statusService;
 	
@@ -67,9 +66,6 @@ public class ProjectAssignmentServiceTest
 		
 		projectAssignmentDAO = createMock(ProjectAssignmentDAO.class);
 		((ProjectAssignmentServiceImpl)projectAssignmentService).setProjectAssignmentDAO(projectAssignmentDAO);
-		
-		timesheetDAO = createMock(TimesheetDAO.class);
-		((ProjectAssignmentServiceImpl)projectAssignmentService).setTimesheetDAO(timesheetDAO);
 		
 		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
 		((ProjectAssignmentServiceImpl)projectAssignmentService).setReportAggregatedDAO(reportAggregatedDAO);
@@ -98,66 +94,40 @@ public class ProjectAssignmentServiceTest
 				.andReturn(new ArrayList<AssignmentAggregateReportElement>());
 
 		replay(projectAssignmentDAO);
-		replay(timesheetDAO);
 		replay(reportAggregatedDAO);
 		
 		projectAssignmentService.getProjectAssignment(1);
 		
 		verify(projectAssignmentDAO);
-		verify(timesheetDAO);
 		verify(reportAggregatedDAO);
 	}	
 	
-	@Test
-	public void testCheckAndNotifyOK() throws OverBudgetException
-	{
-		ProjectAssignment assignment = new ProjectAssignment(1);
-		assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
-
-		expect(projectAssignmentDAO.findById(new Integer(1)))
-			.andReturn(assignment);
-		replay(projectAssignmentDAO);
-
-		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
-		status.addStatus(ProjectAssignmentStatus.Status.RUNNING);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(status);
-		replay(statusService);
-		
-		
-		projectAssignmentService.checkAndNotify(assignment);
-
-		verify(projectAssignmentDAO);
-		verify(statusService);
-	}
-	
-	@Test
-	public void testCheckAndNotifyDateNotOk() throws OverBudgetException
-	{
-		ProjectAssignment assignment = new ProjectAssignment(1);
-		assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
-
-		expect(projectAssignmentDAO.findById(new Integer(1)))
-			.andReturn(assignment);
-		replay(projectAssignmentDAO);
-
-		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
-		status.addStatus(ProjectAssignmentStatus.Status.AFTER_DEADLINE);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(status);
-		replay(statusService);
-		
-		try
-		{
-			projectAssignmentService.checkAndNotify(assignment);
-			fail();
-		}
-		catch (OverBudgetException obe)
-		{
-			verify(projectAssignmentDAO);
-			verify(statusService);
-		}
-	}
+//	@Test
+//	public void testCheckAndNotifyDateNotOk() throws OverBudgetException
+//	{
+//		ProjectAssignment assignment = new ProjectAssignment(1);
+//		assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
+//
+//		expect(projectAssignmentDAO.findById(new Integer(1)))
+//			.andReturn(assignment);
+//		replay(projectAssignmentDAO);
+//
+//		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
+//		status.addStatus(ProjectAssignmentStatus.Status.AFTER_DEADLINE);
+//		
+//		expect(statusService.getAssignmentStatus(assignment))
+//			.andReturn(status);
+//		replay(statusService);
+//		
+//		try
+//		{
+//			projectAssignmentService.checkAndNotify(assignment);
+//			fail();
+//		}
+//		catch (OverBudgetException obe)
+//		{
+//			verify(projectAssignmentDAO);
+//			verify(statusService);
+//		}
+//	}
 }
