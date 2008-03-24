@@ -33,8 +33,8 @@ import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.error.ErrorInfo;
 import net.rrm.ehour.exception.OverBudgetException;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
@@ -265,17 +265,17 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				List<ErrorInfo> errors = persistTimesheetEntries(timesheet);
+				List<ProjectAssignmentStatus> statusses =  persistTimesheetEntries(timesheet);
 				
-				if (errors.isEmpty())
+				if (statusses.isEmpty())
 				{
 					target.addComponent(updatePostPersistMessage(timesheet));
 				}
 				else
 				{
-					for (ErrorInfo errorInfo : errors)
+					for (ProjectAssignmentStatus status : statusses)
 					{
-						System.out.println(errorInfo.getErrorCode());
+//						System.out.println(status.get
 					} 
 					
 					target.addComponent(updateErrorMessage());
@@ -399,7 +399,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param timesheet
 	 * @throws OverBudgetException 
 	 */
-	private List<ErrorInfo> persistTimesheetEntries(Timesheet timesheet)
+	private List<ProjectAssignmentStatus> persistTimesheetEntries(Timesheet timesheet)
 	{
 		List<TimesheetEntry>	timesheetEntries = new ArrayList<TimesheetEntry>();
 		
@@ -423,9 +423,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			timesheet.getComment().setCommentId(id);
 		}
 		
-		List<ErrorInfo> errors = timesheetService.persistTimesheet(timesheetEntries, timesheet.getComment());
-		
-		return errors;
+		return timesheetService.persistTimesheet(timesheetEntries, timesheet.getComment());
 	}
 	
 	/**
