@@ -22,6 +22,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 import org.apache.wicket.util.tester.FormTester;
@@ -39,6 +40,10 @@ public class MainConfigTest extends BaseUIWicketTester
 	{
 		ConfigurationService configService = createMock(ConfigurationService.class);
 		mockContext.putBean("configService", configService);
+		
+
+		MailService mailService = createMock(MailService.class);
+		mockContext.putBean("mailService", mailService);	
 		
 		expect(configService.getConfiguration())
 				.andReturn(new EhourConfigStub());
