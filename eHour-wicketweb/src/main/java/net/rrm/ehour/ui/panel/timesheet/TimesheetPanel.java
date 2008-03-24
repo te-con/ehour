@@ -35,6 +35,7 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
@@ -265,16 +266,21 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				List<ProjectAssignmentStatus> statusses =  persistTimesheetEntries(timesheet);
+				List<ProjectAssignmentStatus> failedProjects =  persistTimesheetEntries(timesheet);
 				
-				if (statusses.isEmpty())
+				if (failedProjects.isEmpty())
 				{
 					target.addComponent(updatePostPersistMessage(timesheet));
 				}
 				else
 				{
-					for (ProjectAssignmentStatus status : statusses)
+					for (ProjectAssignmentStatus projectStatus : failedProjects)
 					{
+						for (ProjectAssignmentStatus.Status status : projectStatus.getStatusses())
+						{
+//							System.out.println(innerStatus);
+						}
+								
 //						System.out.println(status.get
 					} 
 					
@@ -315,6 +321,20 @@ public class TimesheetPanel extends Panel implements Serializable
 		resetButton.setDefaultFormProcessing(false);
 		parent.add(resetButton);
 	}
+	
+	private void addProjectStatus(ProjectAssignmentStatus projectStatus)
+	{
+		for (ProjectAssignmentStatus.Status status : projectStatus.getStatusses())
+		{
+			if (status.equals(ProjectAssignmentStatus.Status.OVER_ALLOTTED)
+					|| status.equals(ProjectAssignmentStatus.Status.OVER_OVERRUN))
+			{
+				
+			}
+		}
+		
+	}
+	
 
 	/**
 	 * Set message that the hours are saved
