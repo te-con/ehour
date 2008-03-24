@@ -17,7 +17,6 @@
 
 package net.rrm.ehour.exception;
 
-import net.rrm.ehour.error.ErrorInfo;
 
 /**
  * Checked business exception
@@ -26,7 +25,6 @@ import net.rrm.ehour.error.ErrorInfo;
 public class BusinessException extends Exception
 {
 	private static final long serialVersionUID = 1L;
-	private ErrorInfo errorInfo;
 
 	public BusinessException()
 	{
@@ -41,21 +39,5 @@ public class BusinessException extends Exception
 	public BusinessException(String msg, Throwable cause)
 	{
 		super(msg, cause);
-	}
-	
-	
-	public BusinessException(ErrorInfo errorInfo)
-	{
-		super();
-		
-		this.errorInfo = errorInfo;
-	}	
-	
-	/**
-	 * @return the errorInfo
-	 */
-	public ErrorInfo getErrorInfo()
-	{
-		return errorInfo;
 	}
 }

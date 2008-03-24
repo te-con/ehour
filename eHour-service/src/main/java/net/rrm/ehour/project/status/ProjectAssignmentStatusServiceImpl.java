@@ -100,8 +100,15 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	{
 		if (status.getAggregate() != null)
 		{
-			if (assignment.getAllottedHours().compareTo(status.getAggregate().getHours().floatValue()) <= 0)
+			int compared = assignment.getAllottedHours().compareTo(status.getAggregate().getHours().floatValue());
+			
+			if (compared <= 0)
 			{
+				if (compared < 0)
+				{
+					status.setValid(false);
+				}
+				
 				status.addStatus(ProjectAssignmentStatus.Status.OVER_ALLOTTED);
 			}
 			else
@@ -127,10 +134,15 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 			if (assignment.getAllottedHours().compareTo(status.getAggregate().getHours().floatValue()) > 0)
 			{
 				status.addStatus(ProjectAssignmentStatus.Status.IN_ALLOTTED);
+				
 			}
 			else if (status.getAggregate().getHours().floatValue()  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
 			{
 				status.addStatus(ProjectAssignmentStatus.Status.OVER_OVERRUN);
+	
+				// it's still valid when it's right on the mark
+				status.setValid(!status.isValid() ||  
+							(status.getAggregate().getHours().floatValue()  == (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue())));
 			}
 			else
 			{

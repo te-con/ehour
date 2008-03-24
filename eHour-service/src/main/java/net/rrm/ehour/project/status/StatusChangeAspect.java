@@ -36,6 +36,7 @@ public class StatusChangeAspect
 		ProjectAssignmentStatus afterStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
 		logger.debug("got new status: " + afterStatus);
 		logger.debug("equal: " + afterStatus.equals(beforeStatus));
+		//TODO add mail
 	}
 
 	/**

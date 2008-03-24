@@ -24,16 +24,12 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.error.ErrorInfo;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -53,7 +49,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	private	TimesheetDAO			timesheetDAO;
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentStatusService	projectAssignmentStatusService;
-	private	MailService				mailService;
 	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 	
@@ -211,97 +206,84 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 */
 	public void checkAndNotify(ProjectAssignment assignment) throws OverBudgetException
 	{
-		ProjectAssignment	dbAssignment;
-		ProjectAssignmentStatus	status;
-		TimesheetEntry		entry;
-		
-		// assignment in set might not be fetched from db but created with only the id
-		dbAssignment = projectAssignmentDAO.findById(assignment.getAssignmentId());
-		
-		status = projectAssignmentStatusService.getAssignmentStatus(dbAssignment);
-		
-		// over alloted - fixed
-		if (dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
-				&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) 
-		{
-//			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
-			
-			// TODO review
-//			if (canNotifyPm(dbAssignment))
-//			{
-//				mailService.mailPMFixedAllottedReached(status.getAggregate(),
-//														entry.getEntryId().getEntryDate(),
-//														dbAssignment.getProject().getProjectManager());
-//			}
-			
-			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.IN_OVERRUN);
-			errorInfo.setAssignment(dbAssignment);
-			errorInfo.setAggregate(status.getAggregate());
-			throw new OverBudgetException(errorInfo);
-		}
-		// over overrun - flex
-		else if (dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX
-					&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) 
-		{
-			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
-
-			// TODO review
-//			if (canNotifyPm(dbAssignment))
-//			{
-//				mailService.mailPMFlexOverrunReached(status.getAggregate(), 
-//														entry.getEntryId().getEntryDate(),
-//														dbAssignment.getProject().getProjectManager());
-//			}
-			
-			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
-			errorInfo.setAssignment(dbAssignment);
-			errorInfo.setAggregate(status.getAggregate());
-			throw new OverBudgetException(errorInfo);
-		}
-		// in overrun - flex TODO fixme
-//		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN) 
-//				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+//		ProjectAssignment	dbAssignment;
+//		ProjectAssignmentStatus	status;
+//		TimesheetEntry		entry;
+//		
+//		// assignment in set might not be fetched from db but created with only the id
+//		dbAssignment = projectAssignmentDAO.findById(assignment.getAssignmentId());
+//		
+//		status = projectAssignmentStatusService.getAssignmentStatus(dbAssignment);
+//		
+//		// over alloted - fixed
+//		if (dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
+//				&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) 
 //		{
-//			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+////			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 //			
-//			if (canNotifyPm(dbAssignment))
-//			{
-//				mailService.mailPMFlexAllottedReached(status.getAggregate(), 
-//														entry.getEntryId().getEntryDate(),
-//														dbAssignment.getProject().getProjectManager());
-//			}
-//
-//			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
+//			// TODO review
+////			if (canNotifyPm(dbAssignment))
+////			{
+////				mailService.mailPMFixedAllottedReached(status.getAggregate(),
+////														entry.getEntryId().getEntryDate(),
+////														dbAssignment.getProject().getProjectManager());
+////			}
+//			
+//			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.IN_OVERRUN);
+//			errorInfo.setAssignment(dbAssignment);
+//			errorInfo.setAggregate(status.getAggregate());
 //			throw new OverBudgetException(errorInfo);
 //		}
-		// over/before deadline
-		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.BEFORE_START))
-		{
-			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.BEFORE_START);
-			errorInfo.setAssignment(dbAssignment);
-			errorInfo.setAggregate(status.getAggregate());
-			throw new OverBudgetException(errorInfo);
-		}
-		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE))
-		{
-			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.AFTER_DEADLINE);
-			errorInfo.setAssignment(dbAssignment);
-			errorInfo.setAggregate(status.getAggregate());
-			throw new OverBudgetException(errorInfo);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param assignment
-	 * @return
-	 */
-	private boolean canNotifyPm(ProjectAssignment assignment)
-	{
-		return assignment.isNotifyPm()
-				&& assignment.getProject().getProjectManager() != null
-				&& assignment.getProject().getProjectManager().getEmail() != null;
-		
+//		// over overrun - flex
+//		else if (dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX
+//					&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) 
+//		{
+//			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+//
+//			// TODO review
+////			if (canNotifyPm(dbAssignment))
+////			{
+////				mailService.mailPMFlexOverrunReached(status.getAggregate(), 
+////														entry.getEntryId().getEntryDate(),
+////														dbAssignment.getProject().getProjectManager());
+////			}
+//			
+//			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
+//			errorInfo.setAssignment(dbAssignment);
+//			errorInfo.setAggregate(status.getAggregate());
+//			throw new OverBudgetException(errorInfo);
+//		}
+//		// in overrun - flex TODO fixme
+////		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN) 
+////				&& dbAssignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+////		{
+////			entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+////			
+////			if (canNotifyPm(dbAssignment))
+////			{
+////				mailService.mailPMFlexAllottedReached(status.getAggregate(), 
+////														entry.getEntryId().getEntryDate(),
+////														dbAssignment.getProject().getProjectManager());
+////			}
+////
+////			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.OVER_OVERRUN_FLEX);
+////			throw new OverBudgetException(errorInfo);
+////		}
+//		// over/before deadline
+//		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.BEFORE_START))
+//		{
+//			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.BEFORE_START);
+//			errorInfo.setAssignment(dbAssignment);
+//			errorInfo.setAggregate(status.getAggregate());
+//			throw new OverBudgetException(errorInfo);
+//		}
+//		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE))
+//		{
+//			ErrorInfo errorInfo = new ErrorInfo(ErrorInfo.ErrorCode.AFTER_DEADLINE);
+//			errorInfo.setAssignment(dbAssignment);
+//			errorInfo.setAggregate(status.getAggregate());
+//			throw new OverBudgetException(errorInfo);
+//		}
 	}
 
 	/*
@@ -354,14 +336,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	public void setProjectAssignmentStatusService(ProjectAssignmentStatusService projectAssignmentStatusService)
 	{
 		this.projectAssignmentStatusService = projectAssignmentStatusService;
-	}
-
-	/**
-	 * @param mailService the mailService to set
-	 */
-	public void setMailService(MailService mailService)
-	{
-		this.mailService = mailService;
 	}
 
 	/**

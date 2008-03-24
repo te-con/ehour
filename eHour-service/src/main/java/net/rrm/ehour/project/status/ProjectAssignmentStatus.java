@@ -54,9 +54,29 @@ public class ProjectAssignmentStatus
 	
 	private AssignmentAggregateReportElement	aggregate;
 	private List<Status> statusses;
+	private boolean valid;
 	
+	public ProjectAssignmentStatus()
+	{
+		valid = true;
+	}
 	
-	
+	/**
+	 * @return the valid
+	 */
+	public boolean isValid()
+	{
+		return valid;
+	}
+
+	/**
+	 * @param valid the valid to set
+	 */
+	public void setValid(boolean valid)
+	{
+		this.valid = valid;
+	}
+
 	/**
 	 * Can assignment alive?
 	 * @return

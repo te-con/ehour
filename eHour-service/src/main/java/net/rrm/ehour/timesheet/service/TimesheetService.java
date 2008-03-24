@@ -22,8 +22,8 @@ import java.util.List;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.error.ErrorInfo;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
@@ -67,7 +67,7 @@ public interface TimesheetService
 	 * @param timesheetEntries
 	 * @param timesheetComment
 	 */
-	public List<ErrorInfo> persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment timesheetComment);
+	public List<ProjectAssignmentStatus> persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment timesheetComment);
 	
 	/**
 	 * Delete timesheet entries booked on assignments

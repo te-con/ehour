@@ -22,6 +22,7 @@ import java.util.List;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.exception.BusinessException;
+import net.rrm.ehour.exception.OverBudgetException;
 
 /**
  * Timesheet persister & validator
@@ -35,6 +36,6 @@ public interface TimesheetPersister
 	 * @param entries
 	 * @throws BusinessException
 	 */
-	public void persistAndNotify(ProjectAssignment assignment, List<TimesheetEntry> entries) throws BusinessException;
+	public void validateAndPersist(ProjectAssignment assignment, List<TimesheetEntry> entries) throws OverBudgetException;
 
 }

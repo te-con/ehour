@@ -22,11 +22,12 @@ import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.error.ErrorInfo;
 import net.rrm.ehour.exception.OverBudgetException;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.project.status.StatusChanger;
+import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -42,7 +43,8 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	private	Logger				logger = Logger.getLogger(TimesheetPersisterImpl.class);
 
 	private	TimesheetDAO		timesheetDAO;
-	private ProjectAssignmentService	projectAssignmentService;
+	private ProjectAssignmentStatusService	projectAssignmentStatusService;
+	private MailService			mailService;
 	
 	/*
 	 * (non-Javadoc)
@@ -50,22 +52,24 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	 */
 	@Transactional(rollbackFor=OverBudgetException.class,
 					propagation=Propagation.REQUIRES_NEW)
-	@StatusChanger
-	public void persistAndNotify(ProjectAssignment assignment, List<TimesheetEntry> entries) throws OverBudgetException
+	public void validateAndPersist(ProjectAssignment assignment, List<TimesheetEntry> entries) throws OverBudgetException
 	{
+		ProjectAssignmentStatus beforeStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
+		
 		persistEntries(assignment, entries);
-		
-		
-		try
+
+		ProjectAssignmentStatus afterStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
+		if (!afterStatus.isValid())
 		{
-			projectAssignmentService.checkAndNotify(assignment);	
+			throw new OverBudgetException(afterStatus);
 		}
-		catch (OverBudgetException obe)
+		else if (!beforeStatus.equals(afterStatus)
+					&& canNotifyPm(assignment))
 		{
-			ErrorInfo errorInfo = obe.getErrorInfo();
+			notifyPm(assignment, afterStatus);
 		}
 	}
-
+	
 	/**
 	 * Persist entries
 	 * @param assignment
@@ -107,6 +111,57 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 			}
 		}
 	}
+	
+	/**
+	 * Notify pm on phase change
+	 * @param assignment
+	 * @param status
+	 */
+	private void notifyPm(ProjectAssignment assignment, ProjectAssignmentStatus status)
+	{
+		TimesheetEntry entry;
+
+		entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
+
+
+		// over alloted - fixed
+		if (assignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
+				&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) 
+		{
+			mailService.mailPMFixedAllottedReached(status.getAggregate(),
+													entry.getEntryId().getEntryDate(),
+													assignment.getProject().getProjectManager());
+		}
+		// over overrun - flex
+		else if (assignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX
+					&& status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) 
+		{
+			mailService.mailPMFlexOverrunReached(status.getAggregate(), 
+										entry.getEntryId().getEntryDate(),
+										assignment.getProject().getProjectManager());
+		}
+		// in overrun - flex TODO fixme
+		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN) 
+				&& assignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
+		{
+			mailService.mailPMFlexAllottedReached(status.getAggregate(), 
+													entry.getEntryId().getEntryDate(),
+													assignment.getProject().getProjectManager());
+		}	
+	}
+	
+	/**
+	 * 
+	 * @param assignment
+	 * @return
+	 */
+	private boolean canNotifyPm(ProjectAssignment assignment)
+	{
+		return assignment.isNotifyPm()
+				&& assignment.getProject().getProjectManager() != null
+				&& assignment.getProject().getProjectManager().getEmail() != null;
+		
+	}	
 
 	/**
 	 * @param timesheetDAO the timesheetDAO to set
@@ -117,10 +172,18 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	}
 
 	/**
-	 * @param projectAssignmentService the projectAssignmentService to set
+	 * @param mailService the mailService to set
 	 */
-	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
+	public void setMailService(MailService mailService)
 	{
-		this.projectAssignmentService = projectAssignmentService;
+		this.mailService = mailService;
+	}
+
+	/**
+	 * @param projectAssignmentStatusService the projectAssignmentStatusService to set
+	 */
+	public void setProjectAssignmentStatusService(ProjectAssignmentStatusService projectAssignmentStatusService)
+	{
+		this.projectAssignmentStatusService = projectAssignmentStatusService;
 	}
 }

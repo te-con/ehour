@@ -35,11 +35,10 @@ import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.error.ErrorInfo;
-import net.rrm.ehour.exception.BusinessException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
@@ -292,26 +291,26 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * Persist timesheets & comment
 	 * @throws OverBudgetException 
 	 */
-	public List<ErrorInfo> persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment) 
+	public List<ProjectAssignmentStatus> persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment) 
 	{
 		Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
 
-		List<ErrorInfo> errors = new ArrayList<ErrorInfo>();
+		List<ProjectAssignmentStatus> errorStatusses = new ArrayList<ProjectAssignmentStatus>();
 		
 		for (ProjectAssignment assignment : timesheetRows.keySet())
 		{
 			try
 			{
-				timesheetPersister.persistAndNotify(assignment, timesheetRows.get(assignment));
-			} catch (BusinessException e)
+				timesheetPersister.validateAndPersist(assignment, timesheetRows.get(assignment));
+			} catch (OverBudgetException e)
 			{
-				errors.add(e.getErrorInfo());
+				errorStatusses.add( e.getStatus());
 			}
 		}
 
 		// TODO not sure
 		// only persist the week comment when at least one save was succesful
-		if (errors.size() < timesheetRows.keySet().size())
+		if (errorStatusses.size() < timesheetRows.keySet().size())
 		{
 			logger.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
 			timesheetCommentDAO.persist(comment);
@@ -321,7 +320,7 @@ public class TimesheetServiceImpl implements TimesheetService
 			logger.info("Comments not persisted, only errors.");
 		}
 		
-		return errors;
+		return errorStatusses;
 	}
 	
 	/**

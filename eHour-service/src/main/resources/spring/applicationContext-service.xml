@@ -84,8 +84,9 @@
 	
 	<!-- Timesheet persister -->
 	<bean id="timesheetPersister" class="net.rrm.ehour.timesheet.service.TimesheetPersisterImpl">
-		<property name="projectAssignmentService" ref="projectAssignmentService" />
+		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
 		<property name="timesheetDAO" ref="timesheetDAO" />
+		<property name="mailService" ref="mailService" />
 	</bean>
 
 	<!-- Project service -->
@@ -107,7 +108,6 @@
 		<property name="timesheetDAO" ref="timesheetDAO" />
 		<property name="projectDAO" ref="projectDAO" />		
 		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
-		<property name="mailService" ref="mailService" />
 		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />		
 	</bean>
 	

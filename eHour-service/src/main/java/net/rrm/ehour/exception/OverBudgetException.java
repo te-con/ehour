@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.exception;
 
-import net.rrm.ehour.error.ErrorInfo;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 /**
  * Over budget exception
@@ -26,10 +26,23 @@ import net.rrm.ehour.error.ErrorInfo;
 public class OverBudgetException extends BusinessException
 {
 	private static final long serialVersionUID = 1L;
+	private ProjectAssignmentStatus status;
+	
 
-	public OverBudgetException(ErrorInfo errorInfo)
+	public OverBudgetException(ProjectAssignmentStatus status)
 	{
-		super(errorInfo);
+		super();
+		
+		this.status = status;
+	}
+
+
+	/**
+	 * @return the status
+	 */
+	public ProjectAssignmentStatus getStatus()
+	{
+		return status;
 	}
 
 }
