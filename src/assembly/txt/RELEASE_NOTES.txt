@@ -1,3 +1,6 @@
+eHour 0.8.0 release notes
+
+
 eHour 0.7.3 release notes - 31 January 2008
 -------------------------------------------
 eHour 0.7.3 fixes some incompatibility issues with Internet Explorer. The popup
