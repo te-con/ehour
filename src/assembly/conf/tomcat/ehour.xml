@@ -1,4 +1,4 @@
-<Context path="/ehour" reloadable="false" cookies="true" docBase="${catalina.home}/deploy/ehour-0.7.3.war">
+<Context path="/ehour" reloadable="false" cookies="true" docBase="${catalina.home}/deploy/ehour-0.8.war">
   <Resource name="jdbc/eHourDS"
   			auth="Container"
   			type="javax.sql.DataSource"
@@ -8,5 +8,41 @@
             username="@ehour.db.username"
 	       	password="@ehour.db.password"
 	       	driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://@ehour.db.hostname:3306/@ehour.db.name?zeroDateTimeBehavior=convertToNull&autoReconnect=true"/>
-</Context>
+            url="jdbc:mysql://@ehour.db.hostname:3306/@ehour.db.name"/>
+  <ResourceParams name="jdbc/eHourDS" >
+    <parameter>
+      <name>validationQuery</name>
+      <value>SELECT 1</value>
+    </parameter>
+
+    <parameter>
+      <name>testOnBorrow</name>
+      <value>true</value>
+    </parameter>
+
+    <parameter>
+      <name>zeroDateTimeBehavior</name>
+      <value>convertToNull</value>
+    </parameter>	
+	
+	<parameter>
+      <name>autoReconnect</name>
+      <value>true</value>
+    </parameter>
+
+    <parameter>
+      <name>timeBetweenEvictionRunsMillis</name>
+      <value>10000</value>
+    </parameter>
+
+    <parameter>
+      <name>testWhileIdle</name>
+      <value>true</value>
+    </parameter>
+
+    <parameter>
+      <name>minEvictableIdleTimeMillis</name>
+      <value>60000</value>
+    </parameter>
+   </ResourceParams>
+</Context>			
