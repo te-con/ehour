@@ -37,9 +37,9 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		logger.info("Configuration loaded from database");
 	}
 	
-	public int getCompleteDayHours()
+	public float getCompleteDayHours()
 	{
-		return this.getInt("completeDayHours", 8);
+		return this.getFloat("completeDayHours", 8);
 	}
 
 	public boolean isShowTurnover()

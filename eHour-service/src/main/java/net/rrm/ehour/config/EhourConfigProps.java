@@ -31,9 +31,9 @@ public class EhourConfigProps implements EhourConfig
 		this.props = props;
 	}
 	
-	public int getCompleteDayHours()
+	public float getCompleteDayHours()
 	{
-		return Integer.parseInt(props.getProperty("completeDayHours"));
+		return Float.parseFloat(props.getProperty("completeDayHours"));
 	}
 
 	public boolean isShowTurnover()

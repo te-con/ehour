@@ -23,9 +23,6 @@
 			<resource>
 				<directory>src/main/resources/hibernate</directory>
 			</resource>
-			<resource>
-				<directory>src/main/resources/ehour</directory>
-			</resource>
 		</resources>
 	</build>
 	<profiles>

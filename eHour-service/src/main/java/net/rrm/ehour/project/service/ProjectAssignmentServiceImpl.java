@@ -36,7 +36,7 @@ import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
-class ProjectAssignmentServiceImpl implements ProjectAssignmentService
+public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 {
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	ProjectDAO				projectDAO;

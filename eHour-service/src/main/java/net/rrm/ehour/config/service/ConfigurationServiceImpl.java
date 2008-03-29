@@ -54,7 +54,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			}
 			else if (key.equalsIgnoreCase("completeDayHours"))
 			{
-				config.setCompleteDayHours(Integer.parseInt(value));
+				config.setCompleteDayHours(Float.parseFloat(value));
 			}
 			else if (key.equalsIgnoreCase("localeCurrency"))
 			{
@@ -134,6 +134,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		{
 			persistConfig("completeDayHours", config.getCompleteDayHours());
 		}
+		
 		persistConfig("localeCountry", config.getLocale().getCountry());
 		persistConfig("localeLanguage", config.getLocale().getLanguage());
 		persistConfig("dontForceLanguage", config.isDontForceLanguage());
@@ -160,9 +161,9 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig(key, Boolean.toString(value));
 	}	
 
-	private void persistConfig(String key, int value)
+	private void persistConfig(String key, float value)
 	{
-		persistConfig(key, Integer.toString(value));
+		persistConfig(key, Float.toString(value));
 	}	
 
 	/**

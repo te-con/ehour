@@ -28,7 +28,7 @@ public interface EhourConfig
 	 * Get the amount of hours needed before a day is booked as complete
 	 * @return
 	 */
-	public int getCompleteDayHours();
+	public float getCompleteDayHours();
 	
 	/**
 	 * Show turnover to consultants

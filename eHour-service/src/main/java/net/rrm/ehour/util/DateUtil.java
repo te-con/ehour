@@ -371,7 +371,8 @@ public class DateUtil
 		}
 		
 		calendar = new GregorianCalendar(timeZone);
-		calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+		// SUNMON
+		calendar.setFirstDayOfWeek(Calendar.MONDAY);
 		return calendar;
 	}
 	

@@ -31,7 +31,7 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	 */
 	private static final long serialVersionUID = 3017492603595731493L;
 	private	String[] 	availableTranslations;
-	private	int			completeDayHours;
+	private	float		completeDayHours;
 	private	Locale		currency = new Locale("nl", "NL");
 	private String		localeLanguage ="en";
 	private String		localeCountry = "NL";
@@ -62,14 +62,14 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	/**
 	 * @return the completeDayHours
 	 */
-	public int getCompleteDayHours()
+	public float getCompleteDayHours()
 	{
 		return completeDayHours;
 	}
 	/**
 	 * @param completeDayHours the completeDayHours to set
 	 */
-	public void setCompleteDayHours(int completeDayHours)
+	public void setCompleteDayHours(float completeDayHours)
 	{
 		this.completeDayHours = completeDayHours;
 	}

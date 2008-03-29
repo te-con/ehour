@@ -176,7 +176,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		for (BookedDay bookedDay : bookedDays)
 		{
 			if (bookedDay.getHours() != null &&
-					bookedDay.getHours().doubleValue() >= configuration.getCompleteDayHours())
+					bookedDay.getHours().floatValue() >= configuration.getCompleteDayHours())
 			{
 				bookedDaysReturn.add(bookedDay);
 			}

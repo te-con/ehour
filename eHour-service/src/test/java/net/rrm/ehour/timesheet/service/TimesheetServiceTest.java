@@ -105,7 +105,7 @@ public class TimesheetServiceTest  extends TestCase
 		expect(timesheetDAO.getBookedHoursperDayInRange(1, DateUtil.calendarToMonthRange(cal)))
 				.andReturn(daoResults);
 		expect(config.getCompleteDayHours())
-				.andReturn(8)
+				.andReturn(8f)
 				.times(2);
 		
 		replay(config);
