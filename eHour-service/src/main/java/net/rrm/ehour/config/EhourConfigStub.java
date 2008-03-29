@@ -45,6 +45,8 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private String		smtpUsername;
 	private String		smtpPassword;
 	private String		smtpPort;
+	private int			firstDayOfWeek;
+	
 	/**
 	 * @return the availableTranslations
 	 */
@@ -221,5 +223,19 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	}
 	public void setSmtpPort(String smtpPort) {
 		this.smtpPort = smtpPort;
+	}
+	/**
+	 * @return the firstDayOfWeek
+	 */
+	public int getFirstDayOfWeek()
+	{
+		return firstDayOfWeek;
+	}
+	/**
+	 * @param firstDayOfWeek the firstDayOfWeek to set
+	 */
+	public void setFirstDayOfWeek(int firstDayOfWeek)
+	{
+		this.firstDayOfWeek = firstDayOfWeek;
 	}
 }

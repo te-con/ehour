@@ -121,4 +121,14 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("smtpPort");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.config.EhourConfig#getFirstDayOfWeek()
+	 */
+	public int getFirstDayOfWeek()
+	{
+		return this.getInt("firstDayOfWeek");
+
+	}
+
 }

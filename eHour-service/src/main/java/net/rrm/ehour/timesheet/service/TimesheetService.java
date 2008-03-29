@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
@@ -60,7 +61,7 @@ public interface TimesheetService
 	 * @param requestedWeek
 	 * @return
 	 */
-	public WeekOverview getWeekOverview(User userId, Calendar requestedWeek);
+	public WeekOverview getWeekOverview(User userId, Calendar requestedWeek, EhourConfig config);
 	
 	/**
 	 * Persist timesheet entries and comment

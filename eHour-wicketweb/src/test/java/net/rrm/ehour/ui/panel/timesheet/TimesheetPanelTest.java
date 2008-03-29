@@ -76,7 +76,7 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		
 		overview.setFoldPreferences(new CustomerFoldPreferenceList());
 		
-		expect(timesheetService.getWeekOverview(user, cal))
+		expect(timesheetService.getWeekOverview(user, cal, this.config))
 				.andReturn(overview);		
 		
 		replay(timesheetService);

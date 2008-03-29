@@ -563,7 +563,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		WeekOverview	weekOverview;
 		Timesheet		timesheet;
 		
-		weekOverview = timesheetService.getWeekOverview(user, forWeek);
+		weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
 		
 		timesheet = getTimesheetAssembler(config).createTimesheetForm(weekOverview);
 		

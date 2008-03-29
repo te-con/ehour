@@ -28,6 +28,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
@@ -190,7 +191,7 @@ public class TimesheetServiceTest  extends TestCase
 		replay(timesheetCommentDAO);
 		replay(projectAssignmentService);
 		
-		timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, 1 - 1, 1));
+		timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, 1 - 1, 1), new EhourConfigStub());
 		
 		verify(timesheetDAO);
 		verify(timesheetCommentDAO);

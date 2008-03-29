@@ -49,12 +49,12 @@ div.Calendar div.CalendarBody div.CalendarWeek
 	cursor: pointer;
 }
 
-div.Calendar div.CalendarBody div.SundayDay
+div.Calendar div.CalendarBody div.FirstDay
 {
 	float:	left;
 	width: 30px;
-	background-color: #edf5fe;
 	text-align: center;
+	background-color: #edf5fe;
 	height: 1.6em;
 }
 
@@ -62,18 +62,18 @@ div.Calendar div.CalendarBody div.SaturdayDay
 {
 	float:	left;
 	width: 30px;
-	background-color: #edf5fe;
 	text-align: center;
+	background-color: #edf5fe;
 	margin-left: 1px;
 	height: 1.6em;
 }
 
 div.Calendar div.CalendarBody div.WeekDay
 {
-	width:	30px;
 	float: left;
+	width:	30px;
 	text-align: center;
+	background-color: #fefeff;
 	margin-left: 1px;
 	height: 1.6em;
-	background-color: #fefeff;
 }

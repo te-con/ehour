@@ -115,7 +115,11 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			else if (key.equalsIgnoreCase("initialized"))
 			{
 				config.setInitialized(Boolean.parseBoolean(value));
-			}				
+			}
+			else if (key.equalsIgnoreCase("firstDayOfWeek"))
+			{
+				config.setFirstDayOfWeek(Integer.parseInt(value));
+			}			
 		}
 		
 		return config;
@@ -129,7 +133,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		logger.debug("Persisting config");
 		persistConfig("localeCurrency", config.getCurrency().getLanguage() + "_" + config.getCurrency().getCountry());
 		
-		// TODO change to Integer and use null
 		if (config.getCompleteDayHours() != 0)
 		{
 			persistConfig("completeDayHours", config.getCompleteDayHours());
@@ -145,6 +148,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig("smtpPassword", config.getSmtpPassword());
 		persistConfig("smtpPort", config.getSmtpPort());
 		persistConfig("initialized", config.isInitialized());
+		persistConfig("firstDayOfWeek", config.getFirstDayOfWeek());
 	}
 	
 	private void persistConfig(String key, String value)

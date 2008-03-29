@@ -108,4 +108,10 @@ public interface EhourConfig
 	 * @return
 	 */
 	public boolean isInitialized();
+	
+	/**
+	 * Get first day of week
+	 * @return 0 = sunday, 1 = monday, etc.
+	 */
+	public int getFirstDayOfWeek();
 }

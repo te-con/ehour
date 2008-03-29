@@ -116,5 +116,14 @@ public class EhourConfigProps implements EhourConfig
 	{
 		return props.getProperty("smtpPort");
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.config.EhourConfig#getFirstDayOfWeek()
+	 */
+	public int getFirstDayOfWeek()
+	{
+		return Integer.valueOf(props.getProperty("firstDayOfWeek"));
+	}
 	
 }

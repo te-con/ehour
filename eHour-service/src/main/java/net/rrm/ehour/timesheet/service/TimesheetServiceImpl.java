@@ -240,7 +240,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param requestedWeek
 	 * @return
 	 */
-	public WeekOverview getWeekOverview(User user, Calendar requestedWeek)
+	public WeekOverview getWeekOverview(User user, Calendar requestedWeek, EhourConfig config)
 	{
 		WeekOverview	weekOverview;
 		DateRange		range;
@@ -248,7 +248,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		weekOverview = new WeekOverview();
 		
-		requestedWeek.setFirstDayOfWeek(Calendar.SUNDAY);
+		requestedWeek.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		range = DateUtil.getDateRangeForWeek(requestedWeek);
 
 		weekOverview.setWeekRange(range);
