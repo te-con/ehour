@@ -278,12 +278,20 @@ public class CalendarPanel extends SidePanel
 			dayInMonth = month.get(Calendar.DAY_OF_MONTH);
 			dayInWeek = month.get(Calendar.DAY_OF_WEEK);
 
-			week.setDayInWeek(dayInWeek - 1, dayInMonth, bookedDays[dayInMonth - 1]);
+			dayInWeek -= 2;
+			if (dayInWeek < 0)
+			{
+				dayInWeek = 6;
+			}
+			
+			//SUNMON
+			week.setDayInWeek( dayInWeek, dayInMonth, bookedDays[dayInMonth - 1]);
 
 			month.add(Calendar.DAY_OF_MONTH, 1);
 
 			// next week? restart a
-			if (month.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+			//SUNMON
+			if (month.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)
 			{
 				calendarWeeks.add(week);
 
@@ -307,7 +315,8 @@ public class CalendarPanel extends SidePanel
 		} while (month.get(Calendar.MONTH) == currentMonth);
 
 		// sundays are already stored
-		if (month.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+		//SUNMON
+		if (month.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY)
 		{
 			calendarWeeks.add(week);
 		}

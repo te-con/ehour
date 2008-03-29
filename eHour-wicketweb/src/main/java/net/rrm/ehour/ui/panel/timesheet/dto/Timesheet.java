@@ -43,7 +43,7 @@ public class Timesheet implements Serializable
 	private	User				user;
 	private	TimesheetComment	comment;
 	private	CustomerFoldPreferenceList foldPreferences;	
-	private	int					maxHoursPerDay; // TODO int? should change to float
+	private	float				maxHoursPerDay;
 
 	/**
 	 * Get remaining hours for a day based on maxHoursPerDay
@@ -181,11 +181,11 @@ public class Timesheet implements Serializable
 	{
 		this.user = user;
 	}
-	public int getMaxHoursPerDay()
+	public float getMaxHoursPerDay()
 	{
 		return maxHoursPerDay;
 	}
-	public void setMaxHoursPerDay(int maxHoursPerDay)
+	public void setMaxHoursPerDay(float maxHoursPerDay)
 	{
 		this.maxHoursPerDay = maxHoursPerDay;
 	}

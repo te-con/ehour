@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
@@ -49,6 +50,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -56,6 +58,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
+import org.apache.wicket.validation.validator.NumberValidator;
 
 /**
  * Main config page
@@ -124,11 +127,29 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(new AjaxFormComponentFeedbackIndicator("mailFromError", mailFrom));
 		
 		// smtp server, port, username, pass
-		configForm.add(new RequiredTextField("config.mailSmtp"));
-		configForm.add(new RequiredTextField("config.smtpPort", Integer.class));
+		TextField mailSmtp = new RequiredTextField("config.mailSmtp");
+		configForm.add(new AjaxFormComponentFeedbackIndicator("mailSmtpValidationError", mailSmtp));
+		configForm.add(mailSmtp);
+
+		TextField smtpPort = new RequiredTextField("config.smtpPort");
+		configForm.add(new AjaxFormComponentFeedbackIndicator("smtpPortValidationError", mailSmtp));
+		smtpPort.setType(Float.class);
+		smtpPort.add(NumberValidator.POSITIVE);
+		configForm.add(smtpPort);
+		
+		
 		configForm.add(new TextField("config.smtpUsername"));
 		configForm.add(new TextField("config.smtpPassword"));
 		addTestMailSettingsButton(configForm);
+		
+		// working hours
+		TextField workHours = new RequiredTextField("config.completeDayHours");
+		workHours.setType(Float.class);
+		workHours.add(new ValidatingFormComponentAjaxBehavior());
+		workHours.add(NumberValidator.POSITIVE);
+		workHours.add(new NumberValidator.MaximumValidator(24));
+		configForm.add(new AjaxFormComponentFeedbackIndicator("workHoursValidationError", workHours));
+		configForm.add(workHours);
 		
 		setSubmitButton(configForm);
 		
@@ -220,6 +241,7 @@ public class MainConfig extends BaseAdminPage
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form form)
 			{
+				System.out.println("ee");
 				target.addComponent(form);
             }
         });		
