@@ -7,7 +7,7 @@
  * TE-CON holds all the ownership rights on the Software.
  * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for commercial use or open source,
  * is subject to obtaining the prior express authorization of TE-CON.
- * 
+ *
  * thies@te-con.nl
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.BookedDay;
@@ -53,7 +54,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * Navigation Calendar 
+ * Navigation Calendar
  **/
 
 public class CalendarPanel extends SidePanel
@@ -68,7 +69,9 @@ public class CalendarPanel extends SidePanel
 	private	User				user;
 	private boolean				fireWeekClicks;
 	private	DateRange			highlightWeekStartingAt;
-	
+	private EhourConfig			config;
+
+
 	/**
 	 * Calendar firing off week clicks as well
 	 * @param id
@@ -77,7 +80,7 @@ public class CalendarPanel extends SidePanel
 	{
 		this(id, user, true);
 	}
-	
+
 	/**
 	 * Calendar with optional week click events
 	 * @param id
@@ -87,22 +90,25 @@ public class CalendarPanel extends SidePanel
 	public CalendarPanel(String id, User user, boolean allowWeekClicks)
 	{
 		super(id);
-		
+
 		setOutputMarkupId(true);
-		
+
+		EhourWebSession 	session = (EhourWebSession)getSession();
+		config = session.getEhourConfig();
+
 		this.user = user;
 		fireWeekClicks = allowWeekClicks;
 
 		// CSS
 		add(new StyleSheetReference("calendarStyle", calendarStyle()));
 
-		// 
+		//
 		calendarFrame = getFrame();
 		add(calendarFrame);
-		
+
 		buildCalendar(calendarFrame);
 	}
-	
+
 	/**
 	 * Refresh calendar
 	 * @param target
@@ -116,7 +122,7 @@ public class CalendarPanel extends SidePanel
 		calendarFrame = replacementFrame;
 		target.addComponent(replacementFrame);
 	}
-	
+
 	/**
 	 * Get frame
 	 * @return
@@ -125,10 +131,10 @@ public class CalendarPanel extends SidePanel
 	{
 		WebMarkupContainer calendarFrame = new WebMarkupContainer("calendarFrame");
 		calendarFrame.setOutputMarkupId(true);
-		
+
 		return calendarFrame;
 	}
-	
+
 	/**
 	 * Build calendar
 	 * @param parent
@@ -136,16 +142,16 @@ public class CalendarPanel extends SidePanel
 	 */
 	private void buildCalendar(WebMarkupContainer parent)
 	{
-		// first get the data 
+		// first get the data
 		Calendar month = ((EhourWebSession)this.getSession()).getNavCalendar();
 		List<CalendarWeek>	weeks;
-		
+
 		logger.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
 		weeks = createWeeks(user.getUserId(), ((GregorianCalendar)month.clone()));
 
 		// set month label
 		parent.add(new Label("currentMonth", new DateModel(month, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
-		
+
 		// previous & next month links
 		AjaxLink previousMonthLink = new ChangeMonthLink("previousMonthLink", -1);
 		previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
@@ -172,21 +178,31 @@ public class CalendarPanel extends SidePanel
 			public void populateItem(final ListItem item)
 			{
 				CalendarWeek week = (CalendarWeek) item.getModelObject();
-
-				item.add(getLabel("sunday", week, 0));
-				item.add(getLabel("monday", week, 1));
-				item.add(getLabel("tuesday", week, 2));
-				item.add(getLabel("wednesday", week, 3));
-				item.add(getLabel("thursday", week, 4));
-				item.add(getLabel("friday", week, 5));
-				item.add(getLabel("saturday", week, 6));
 				
+				int i = 0;
+				
+				Calendar currentWeek = (Calendar)week.getWeekStart().clone();
+				
+				do
+				{
+					int currentDay = currentWeek.get(Calendar.DAY_OF_WEEK);
+					CalendarDay day = week.getDay(currentDay);
+					
+					Label label = getLabel("day" + i, week, day);
+					label.add(new SimpleAttributeModifier("class", (i == 0) ? "FirstDay" : "WeekDay"));
+					
+					item.add(label);
+					
+					currentWeek.add(Calendar.DATE, 1);
+				}
+				while (currentWeek.get(Calendar.WEEK_OF_YEAR) == week.getWeekStart().get(Calendar.WEEK_OF_YEAR));
+
 		        item.setOutputMarkupId(true);
-		        
+
 		        if (fireWeekClicks)
 		        {
 		        	if (highlightWeekStartingAt == null ||
-		        			!DateUtil.isDateWithinRange(week.getWeekStart(), highlightWeekStartingAt))
+		        			!DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
         			{
 						item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
 						item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
@@ -200,39 +216,43 @@ public class CalendarPanel extends SidePanel
 			}
 
 			/**
-			 * 
+			 *
 			 * @param id
 			 * @param week
 			 * @param dayInWeek
 			 * @return
 			 */
-			private Label getLabel(String id, CalendarWeek week, int dayInWeek)
+			private Label getLabel(String id, CalendarWeek week, CalendarDay day)
 			{
 				Label 	label;
 
-				if (week.getDays()[dayInWeek] == 0)
+				// when day is null the date is in the next/previous month
+				if (day == null)
 				{
 					label = HtmlUtil.getNbspLabel(id);
 				}
 				else
 				{
-					label = new Label(id, new PropertyModel(week, "days[" + dayInWeek + "]"));
+					label = new Label(id, new PropertyModel(day, "monthDay"));
 				}
-				
-				
+
+				// determine custom css properties
 				StringBuilder style = new StringBuilder();
-				
-				if (week.getDaysBooked()[dayInWeek])
+
+				// booked days are bold
+				if (day.isBooked())
 				{
 					style.append("font-weight: bold;");
 				}
-				
-	        	if (highlightWeekStartingAt != null &&
-	        			DateUtil.isDateWithinRange(week.getWeekStart(), highlightWeekStartingAt))
+
+				// weekend days && selected weeks have a more dark background
+	        	if (day.isWeekendDay() ||
+	        			(highlightWeekStartingAt != null &&
+	        			DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt)))
     			{
 	        		style.append("background-color: #edf5fe;");
-    			}				
-	        	
+    			}
+
 	        	if (style.length() > 0)
 	        	{
 	        		label.add(new SimpleAttributeModifier("style", style.toString()));
@@ -242,13 +262,13 @@ public class CalendarPanel extends SidePanel
 			}
 		};
 
-	
+
 		container.add(view);
 	}
 
 	/**
 	 * Create CalendarWeek objects
-	 * 
+	 *
 	 * @param userId
 	 * @param month
 	 */
@@ -256,48 +276,42 @@ public class CalendarPanel extends SidePanel
 	{
 		List<CalendarWeek> calendarWeeks = new ArrayList<CalendarWeek>();
 		boolean[] bookedDays;
-		CalendarWeek week = new CalendarWeek();
-		int currentMonth;
-		int dayInMonth;
-		int dayInWeek;
-		
+		CalendarWeek week;
+
 		// grab date
 		bookedDays = getMonthNavCalendar(userId, month);
 
-		currentMonth = month.get(Calendar.MONTH);
-
 		month.set(Calendar.DAY_OF_MONTH, 1);
+		month.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+		int currentMonth = month.get(Calendar.MONTH);
+		
+		week = new CalendarWeek();
 		week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
 		week.setYear(month.get(Calendar.YEAR));
-		week.setWeekStart(month.getTime());
+		week.setWeekStart(month);
 
 		int previousWeek = -1;
-		
+
 		do
 		{
-			dayInMonth = month.get(Calendar.DAY_OF_MONTH);
-			dayInWeek = month.get(Calendar.DAY_OF_WEEK);
-
-			dayInWeek -= 2;
-			if (dayInWeek < 0)
-			{
-				dayInWeek = 6;
-			}
+			int dayInMonth = month.get(Calendar.DAY_OF_MONTH);
+			int dayInWeek = month.get(Calendar.DAY_OF_WEEK);
+			boolean inWeekend = (dayInWeek == Calendar.SUNDAY || dayInWeek == Calendar.SATURDAY); 
 			
-			//SUNMON
-			week.setDayInWeek( dayInWeek, dayInMonth, bookedDays[dayInMonth - 1]);
+			CalendarDay day = new CalendarDay(dayInMonth, bookedDays[dayInMonth - 1], inWeekend);
+			
+			week.addDayInWeek(dayInWeek, day);
 
 			month.add(Calendar.DAY_OF_MONTH, 1);
 
-			// next week? restart a
-			//SUNMON
-			if (month.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)
+			// next week? add current week and create a new one
+			if (month.get(Calendar.DAY_OF_WEEK) == config.getFirstDayOfWeek())
 			{
 				calendarWeeks.add(week);
 
 				week = new CalendarWeek();
-				week.setWeekStart(month.getTime());
 				week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
+				week.setWeekStart(month);
 
 				// fix that the year is still the old year but the week is already in the next year
 				if (previousWeek != -1 && previousWeek > month.get(Calendar.WEEK_OF_YEAR))
@@ -308,15 +322,14 @@ public class CalendarPanel extends SidePanel
 				{
 					week.setYear(month.get(Calendar.YEAR));
 				}
-				
+
 				previousWeek = month.get(Calendar.WEEK_OF_YEAR);
 			}
 
 		} while (month.get(Calendar.MONTH) == currentMonth);
 
-		// sundays are already stored
-		//SUNMON
-		if (month.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY)
+		// first day of week is already stored
+		if (month.get(Calendar.DAY_OF_WEEK) != config.getFirstDayOfWeek())
 		{
 			calendarWeeks.add(week);
 		}
@@ -326,7 +339,7 @@ public class CalendarPanel extends SidePanel
 
 	/**
 	 * Create a style
-	 * 
+	 *
 	 * @return a style
 	 */
 	private ResourceReference calendarStyle()
@@ -338,7 +351,7 @@ public class CalendarPanel extends SidePanel
 	 * Get the month overview for the nav calendar
 	 * @param userId
 	 * @param requestedMonth
-	 * @return array of booleans each representing a day in the month. 
+	 * @return array of booleans each representing a day in the month.
 	 * true = booked, false = not everything booked
 	 */
 
@@ -377,18 +390,18 @@ public class CalendarPanel extends SidePanel
 	{
 		private static final long serialVersionUID = 1L;
 		private	int monthChange;
-		
+
 		public ChangeMonthLink(String id, int monthChange)
 		{
 			super(id);
-			
+
 			this.monthChange = monthChange;
 		}
-		
+
 		@Override
 		public void onClick(AjaxRequestTarget target)
         {
-			EhourWebSession session = (EhourWebSession)this.getSession(); 
+			EhourWebSession session = (EhourWebSession)this.getSession();
 			Calendar month = session.getNavCalendar();
 			month.add(Calendar.MONTH, monthChange);
 			month.set(Calendar.DAY_OF_MONTH, 1);
@@ -396,61 +409,61 @@ public class CalendarPanel extends SidePanel
 
 			// do it before it gets replaced, otherwise getPage is  null due to new instantiation of links
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_CALENDARPANEL_MONTH_CHANGE);
-			
+
 			refreshCalendar(target);
-			
+
 			this.setEnabled(false);
         }
-		
+
 		@Override
 		protected IAjaxCallDecorator getAjaxCallDecorator()
 		{
 			return new LoadingSpinnerDecorator();
-		}		
+		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @author Thies
 	 *
 	 */
 	private class WeekClick extends AjaxEventBehavior
 	{
 		private static final long serialVersionUID = 9164386260367481606L;
-		
+
 		private int week, year;
-		
+
 		public WeekClick(String id, int week, int year)
 		{
 			super(id);
 			this.week = week;
 			this.year = year;
 		}
-		
+
 		@Override
 		protected void onEvent(AjaxRequestTarget target)
 		{
 			EhourWebSession 	session = (EhourWebSession)getSession();
 			Calendar cal = DateUtil.getCalendar(session.getEhourConfig());
-			
+
 			cal.set(Calendar.YEAR, year);
 			cal.set(Calendar.WEEK_OF_YEAR, week);
 			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 			cal.setFirstDayOfWeek(Calendar.SUNDAY);
-			
+
 			session.setNavCalendar(cal);
-			
+
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,
 														CommonWebUtil.AJAX_CALENDARPANEL_WEEK_CLICK,
 														cal
 			);
 		}
-		
+
 		@Override
 		protected IAjaxCallDecorator getAjaxCallDecorator()
 		{
 			return new LoadingSpinnerDecorator();
-		}		
+		}
 	}
 
 	public DateRange getHighlightWeekStartingAt()

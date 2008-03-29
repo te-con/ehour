@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.common;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 
 import org.apache.wicket.Component;
@@ -36,7 +36,7 @@ public class BaseUIWicketTester extends TestCase
 {
 	protected WicketTester	tester;
 	protected AnnotApplicationContextMock	mockContext;
-	protected EhourConfig	config;
+	protected EhourConfigStub	config;
 	protected TestEhourWebApplication webapp;
 	
 	protected void setUp() throws Exception
@@ -44,6 +44,7 @@ public class BaseUIWicketTester extends TestCase
 		webapp =  new TestEhourWebApplication();
 		
 		config = new EhourConfigStub();
+		config.setFirstDayOfWeek(Calendar.SUNDAY);
 		
 		mockContext = new AnnotApplicationContextMock();
 		mockContext.putBean("EhourConfig", config);

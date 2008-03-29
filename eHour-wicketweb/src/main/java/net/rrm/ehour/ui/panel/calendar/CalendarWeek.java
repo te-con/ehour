@@ -7,7 +7,7 @@
  * TE-CON holds all the ownership rights on the Software.
  * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for commercial use or open source,
  * is subject to obtaining the prior express authorization of TE-CON.
- * 
+ *
  * thies@te-con.nl
  * TE-CON
  * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
@@ -17,7 +17,9 @@
 package net.rrm.ehour.ui.panel.calendar;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Representation of a week
@@ -25,51 +27,44 @@ import java.util.Date;
 
 public class CalendarWeek implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6927161077692797646L;
 	private	int		week;
 	private	int		year;
-	private Date	weekStart;
-	
-	private	int[]		days = new int[7];
-	private	boolean[]	daysBooked = new boolean[7];
-	
-	public void setDayInWeek(int weekDay, int monthDay, boolean booked)
-	{
-		days[weekDay] = monthDay;
-		daysBooked[weekDay] = booked;
-	}
-	
+
+	private Map<Integer, CalendarDay>	weekDays;
+
+	private Calendar	weekStart;
+
 	/**
-	 * @return the days
+	 * 
 	 */
-	public int[] getDays()
+	public CalendarWeek()
 	{
-		return days;
+		weekDays = new HashMap<Integer, CalendarDay>();
 	}
+
 	/**
-	 * @param days the days to set
+	 * 
+	 * @param weekDay
+	 * @param monthDay
+	 * @param booked
 	 */
-	public void setDays(int[] days)
+	public void addDayInWeek(int weekDay, CalendarDay calendarDay)
 	{
-		this.days = days;
+		weekDays.put(weekDay, calendarDay);
 	}
+
 	/**
-	 * @return the daysBooked
+	 * Get day 
+	 * @param weekDay
+	 * @return
 	 */
-	public boolean[] getDaysBooked()
+	public CalendarDay getDay(int weekDay)
 	{
-		return daysBooked;
+		return weekDays.get(weekDay);
 	}
-	/**
-	 * @param daysBooked the daysBooked to set
-	 */
-	public void setDaysBooked(boolean[] daysBooked)
-	{
-		this.daysBooked = daysBooked;
-	}
+
+
 	/**
 	 * @return the week
 	 */
@@ -99,14 +94,19 @@ public class CalendarWeek implements Serializable
 		this.year = year;
 	}
 
-	public Date getWeekStart()
+	/**
+	 * @return the weekStart
+	 */
+	public Calendar getWeekStart()
 	{
 		return weekStart;
 	}
 
-	public void setWeekStart(Date weekStart)
+	/**
+	 * @param weekStart the weekStart to set
+	 */
+	public void setWeekStart(Calendar weekStart)
 	{
 		this.weekStart = weekStart;
 	}
-
 }
