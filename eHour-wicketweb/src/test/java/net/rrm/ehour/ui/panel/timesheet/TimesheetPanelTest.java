@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.panel.timesheet;
 
-import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
@@ -76,7 +77,7 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		
 		overview.setFoldPreferences(new CustomerFoldPreferenceList());
 		
-		expect(timesheetService.getWeekOverview(user, cal, this.config))
+		expect(timesheetService.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))
 				.andReturn(overview);		
 		
 		replay(timesheetService);
