@@ -14,38 +14,38 @@
 						<table class="MonthOverviewMonthTable" cellpadding="0" cellspacing="0">
 							<tr class="weekColumnRow">
 								<td class="weekNumber">&nbsp;</td>
-								<td wicket:id="sunday"></td>
-								<td wicket:id="monday"></td>							
-								<td wicket:id="tuesday"></td>
-								<td wicket:id="wednesday"></td>
-								<td wicket:id="thursday"></td>
-								<td wicket:id="friday"></td>
-								<td class="lastChild" wicket:id="saturday"></td>							
+								<td wicket:id="day1"></td>
+								<td wicket:id="day2"></td>							
+								<td wicket:id="day3"></td>
+								<td wicket:id="day4"></td>
+								<td wicket:id="day5"></td>
+								<td wicket:id="day6"></td>
+								<td class="lastChild" wicket:id="day7"></td>							
 							</tr>
 							
 							<span wicket:id="calendarView">
-								<tr class='dateRow'>
-									<td class='weekNumber'>&nbsp;</td>
-									<td wicket:id="sunday"></td>
-									<td wicket:id="monday"></td>							
-									<td wicket:id="tuesday"></td>
-									<td wicket:id="wednesday"></td>
-									<td wicket:id="thursday"></td>
-									<td wicket:id="friday"></td>
-									<td class="lastChild" wicket:id="saturday"></td>							
+								<tr class="dateRow">
+									<td class="weekNumber">&nbsp;</td>
+									<td wicket:id="day1"></td>
+									<td wicket:id="day2"></td>							
+									<td wicket:id="day3"></td>
+									<td wicket:id="day4"></td>
+									<td wicket:id="day5"></td>
+									<td wicket:id="day6"></td>
+									<td class="lastChild" wicket:id="day7"></td>							
 								</tr>
 								
 								<tr class='hourRow'>
-									<td class='weekNumber'>
-										<wicket:message key="week" />
+									<td class="weekNumber">
+										<wicket:message key="general.week" />&nbsp;<span wicket:id="weekNumber"></span>
 									</td>
-									<td class="sunday" wicket:id="sundayValue"></td>
-									<td wicket:id="mondayValue"></td>						
-									<td wicket:id="tuesdayValue"></td>
-									<td wicket:id="wednesdayValue"></td>
-									<td wicket:id="thursdayValue"></td>
-									<td wicket:id="fridayValue"></td>
-									<td class="saturday" wicket:id="saturdayValue"></td>							
+									<td wicket:id="day1Value"></td>
+									<td wicket:id="day2Value"></td>
+									<td wicket:id="day3Value"></td>
+									<td wicket:id="day4Value"></td>
+									<td wicket:id="day5Value"></td>
+									<td wicket:id="day6Value"></td>
+									<td class="lastChild" wicket:id="day7Value"></td>							
 								</tr>
 							</span>								
 						</table>

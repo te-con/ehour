@@ -68,16 +68,19 @@ public class MonthOverviewPanel extends Panel
 	public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, final Calendar overviewForMonth)
 	{
 		super(id);
-		
-		this.timesheetOverview = timesheetOverview;
-	    thisMonth = overviewForMonth.get(Calendar.MONTH);
-	    thisYear = overviewForMonth.get(Calendar.YEAR);
-	    this.overviewFor = (Calendar)overviewForMonth.clone();
-	   
+
 		setOutputMarkupId(true);
 		
 		EhourWebSession session = (EhourWebSession)getSession();
 		config = session.getEhourConfig();
+		
+		this.timesheetOverview = timesheetOverview;
+	    thisMonth = overviewForMonth.get(Calendar.MONTH);
+	    thisYear = overviewForMonth.get(Calendar.YEAR);
+
+	    this.overviewFor = (Calendar)overviewForMonth.clone();
+	    overviewFor.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+
 		
 		Link printLink = new Link("printLink")
 		{
@@ -114,9 +117,6 @@ public class MonthOverviewPanel extends Panel
 	{
 	    logger.debug("Creating month overview calendar for " + overviewFor.getTime().toString());
 	    
-	    int currentColumn = overviewFor.get(Calendar.DAY_OF_WEEK) - 1;
-	    overviewFor.add(Calendar.DATE, -1 * currentColumn);
-	    
 	    RepeatingView	calendarView = new RepeatingView("calendarView");
 	    
 	    while ((overviewFor.get(Calendar.YEAR) == thisYear) &&
@@ -140,33 +140,33 @@ public class MonthOverviewPanel extends Panel
 	 */
 	private void createWeek(WebMarkupContainer row)
 	{
-		addDayNumbersToRow(row);
-		addDayValuesToRow(row);
+		row.add(new Label("weekNumber", Integer.toString(overviewFor.get(Calendar.WEEK_OF_YEAR))));
+		
+		addDayNumbersToWeek(row);
+		addDayValuesToWeek(row);
 	}
 	
 	/**
-	 * 
+	 * Add all the day values to the week
 	 * @param row
 	 */
-	private void addDayValuesToRow(WebMarkupContainer row)
+	private void addDayValuesToWeek(WebMarkupContainer row)
 	{
-		List<TimesheetEntry>	timesheetEntries;
-		
-		for (String dayId : DateUtil.daysInWeek)
+		for (int i = 1; i <= 7; i++, overviewFor.add(Calendar.DATE, 1))
 		{
-			dayId += "Value";
+			String dayId = "day" + i + "Value";
 
 			Fragment fragment;
 			
 	        if (overviewFor.get(Calendar.MONTH) == thisMonth)
 	        {
+				boolean isWeekend = DateUtil.isWeekend(overviewFor);
+
+				List<TimesheetEntry> timesheetEntries = null;
+	        	
 	        	if (timesheetOverview.getTimesheetEntries() != null)
 	        	{
 	        		timesheetEntries = timesheetOverview.getTimesheetEntries().get(overviewFor.get(Calendar.DAY_OF_MONTH));
-	        	}
-	        	else
-	        	{
-	        		timesheetEntries = null;
 	        	}
 	        	
 	            if (timesheetEntries != null
@@ -174,9 +174,14 @@ public class MonthOverviewPanel extends Panel
 	            {
 	            	fragment = new Fragment(dayId, "showProjects", this);
 	            	
-	            	@SuppressWarnings("serial")
 	            	ListView projects = new ListView("projects", timesheetEntries)
 	            	{
+						private static final long serialVersionUID = 1L;
+
+						/*
+						 * (non-Javadoc)
+						 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
+						 */
 						@Override
 						protected void populateItem(ListItem item)
 						{
@@ -194,6 +199,10 @@ public class MonthOverviewPanel extends Panel
 	            	fragment = new Fragment(dayId, "noProjects", this);
 	            }
 	            
+            	if (isWeekend)
+            	{
+            		fragment.add(new SimpleAttributeModifier("style", "background-color: #eef6fe"));
+            	}	            
 	            row.add(fragment);
 	        }
 	        else
@@ -211,8 +220,6 @@ public class MonthOverviewPanel extends Panel
 
             	row.add(label);
 	        }
-	        
-	        overviewFor.add(Calendar.DATE, 1); 
 		}		
 	}
 	
@@ -222,19 +229,22 @@ public class MonthOverviewPanel extends Panel
 	 * @param calendar
 	 * @param thisMonth
 	 */
-	private void addDayNumbersToRow(WebMarkupContainer row)
+	private void addDayNumbersToWeek(WebMarkupContainer row)
 	{
-		for (String dayId : DateUtil.daysInWeek)
+		for (int i = 1; i <= 7; i++, overviewFor.add(Calendar.DATE, 1))
 	    {
 			Label	dayLabel;
+			String id = "day" + i;
 			
+			// 
 			if (overviewFor.get(Calendar.MONTH) == thisMonth)
 			{
-				dayLabel = new Label(dayId, Integer.toString(overviewFor.get(Calendar.DAY_OF_MONTH)));
+				dayLabel = new Label(id, Integer.toString(overviewFor.get(Calendar.DAY_OF_MONTH)));
 			}
+			// print space holders if not current month
 			else
 			{
-				dayLabel = HtmlUtil.getNbspLabel(dayId);
+				dayLabel = HtmlUtil.getNbspLabel(id);
 				
 				if (!monthIsBeforeCurrent(overviewFor, thisMonth, thisYear))
 				{
@@ -243,8 +253,6 @@ public class MonthOverviewPanel extends Panel
 			}
 			
 			row.add(dayLabel);
-
-			overviewFor.add(Calendar.DATE, 1);
 	    }
 		
 		// reset the abused calendar
@@ -274,13 +282,12 @@ public class MonthOverviewPanel extends Panel
 	private void addDayLabels(WebMarkupContainer parent, EhourConfig config)
 	{
 		Calendar cal = new GregorianCalendar();
-		cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		cal.setFirstDayOfWeek(Calendar.SUNDAY);
+		cal.setFirstDayOfWeek(config.getFirstDayOfWeek());
+		cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 		
-		for (String day : DateUtil.daysInWeek)
+		for (int i = 1; i <= 7; i++, cal.add(Calendar.DAY_OF_WEEK, 1))
 		{
-			parent.add(new Label(day, new DateModel(cal, config, DateModel.DATESTYLE_TIMESHEET_DAYONLY)));
-			cal.add(Calendar.DAY_OF_WEEK, 1);
+			parent.add(new Label("day" + i, new DateModel(cal, config, DateModel.DATESTYLE_TIMESHEET_DAYONLY)));
 		}
 	}
 }

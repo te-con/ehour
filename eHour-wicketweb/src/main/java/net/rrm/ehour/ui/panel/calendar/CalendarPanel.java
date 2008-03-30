@@ -48,8 +48,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -182,8 +180,9 @@ public class CalendarPanel extends SidePanel
 
 				for (int i = 1; i <= 7; i++)
 				{
+					boolean weekend = DateUtil.isWeekend(renderDate);
+
 					int currentDay = renderDate.get(Calendar.DAY_OF_WEEK);
-					boolean weekend = (currentDay == Calendar.SUNDAY || currentDay == Calendar.SATURDAY);
 					CalendarDay day = week.getDay(currentDay);
 					
 					Label label = getLabel(i, week, day, weekend);
@@ -251,7 +250,7 @@ public class CalendarPanel extends SidePanel
 					style.append("margin-left: 1px;");
 				}
 
-				// weekend days && selected weeks have a more dark background
+				// selected weeks have a more dark background
 	        	if (highlightWeekStartingAt != null &&
 	        			DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
     			{

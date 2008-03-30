@@ -179,19 +179,10 @@ div.MonthAggregateTable div.TotalRow
 	border-right-width: 0;
 }
 
-.MonthOverviewMonthTable tr.hourRow td.sunday
+.MonthOverviewMonthTable tr.hourRow td.lastChild
 {
-	background-color: transparent;
-	background: url(../monthoverview/img/sunday_back.gif) left top no-repeat;
-}
-
-.MonthOverviewMonthTable tr.hourRow td.saturday
-{
-	background-color: transparent;
-	background: url(../monthoverview/img/saturday_back.gif) right top no-repeat;
 	border-right-width: 0;
 }
-
 
 .MonthOverviewTable hourContentTable td
 {
