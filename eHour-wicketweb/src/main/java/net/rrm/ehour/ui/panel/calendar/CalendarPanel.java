@@ -100,7 +100,7 @@ public class CalendarPanel extends SidePanel
 		fireWeekClicks = allowWeekClicks;
 
 		// CSS
-		add(new StyleSheetReference("calendarStyle", calendarStyle()));
+//		add(new StyleSheetReference("calendarStyle", calendarStyle()));
 
 		//
 		calendarFrame = getFrame();
@@ -178,26 +178,19 @@ public class CalendarPanel extends SidePanel
 			public void populateItem(final ListItem item)
 			{
 				CalendarWeek week = (CalendarWeek) item.getModelObject();
-				
-//				int i = 0;
-				
-				Calendar currentWeek = (Calendar)week.getWeekStart().clone();
-				
+				Calendar renderDate = (Calendar)week.getWeekStart().clone();
+
 				for (int i = 1; i <= 7; i++)
 				{
-					int currentDay = currentWeek.get(Calendar.DAY_OF_WEEK);
+					int currentDay = renderDate.get(Calendar.DAY_OF_WEEK);
+					boolean weekend = (currentDay == Calendar.SUNDAY || currentDay == Calendar.SATURDAY);
 					CalendarDay day = week.getDay(currentDay);
 					
-					Label label = getLabel("day" + i, week, day);
-					label.add(new SimpleAttributeModifier("class", (i == 0) ? "FirstDay" : "WeekDay"));
-					
+					Label label = getLabel(i, week, day, weekend);
 					item.add(label);
 					
-					System.out.println(currentWeek.getTime());
-					System.out.println(day.getMonthDay());
-					currentWeek.add(Calendar.DATE, 1);
+					renderDate.add(Calendar.DATE, 1);
 				};
-//				while (currentWeek.get(Calendar.WEEK_OF_YEAR) == week.getWeekStart().get(Calendar.WEEK_OF_YEAR));
 
 		        item.setOutputMarkupId(true);
 
@@ -224,9 +217,10 @@ public class CalendarPanel extends SidePanel
 			 * @param dayInWeek
 			 * @return
 			 */
-			private Label getLabel(String id, CalendarWeek week, CalendarDay day)
+			private Label getLabel(int i, CalendarWeek week, CalendarDay day, boolean weekend)
 			{
 				Label 	label;
+				String	id = "day" + i;
 
 				// when day is null the date is in the next/previous month
 				if (day == null)
@@ -238,6 +232,10 @@ public class CalendarPanel extends SidePanel
 					label = new Label(id, new PropertyModel(day, "monthDay"));
 				}
 
+				// determine css class
+				String cssClass = weekend ? "WeekendDay" : "WeekDay";
+				label.add(new SimpleAttributeModifier("class", cssClass));
+				
 				// determine custom css properties
 				StringBuilder style = new StringBuilder();
 
@@ -246,11 +244,16 @@ public class CalendarPanel extends SidePanel
 				{
 					style.append("font-weight: bold;");
 				}
+				
+				// first day doesn't have margin-left 
+				if (i > 1)
+				{
+					style.append("margin-left: 1px;");
+				}
 
 				// weekend days && selected weeks have a more dark background
-	        	if ((day != null && day.isWeekendDay()) ||
-	        			(highlightWeekStartingAt != null &&
-	        			DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt)))
+	        	if (highlightWeekStartingAt != null &&
+	        			DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
     			{
 	        		style.append("background-color: #edf5fe;");
     			}
@@ -272,81 +275,71 @@ public class CalendarPanel extends SidePanel
 	 * Create CalendarWeek objects
 	 *
 	 * @param userId
-	 * @param month
+	 * @param dateIterator
 	 */
-	private List<CalendarWeek> createWeeks(Integer userId, Calendar month)
+	private List<CalendarWeek> createWeeks(Integer userId, Calendar dateIterator)
 	{
 		List<CalendarWeek> calendarWeeks = new ArrayList<CalendarWeek>();
 		boolean[] bookedDays;
 		CalendarWeek week;
 
 		// grab date
-		bookedDays = getMonthNavCalendar(userId, month);
+		bookedDays = getMonthNavCalendar(userId, dateIterator);
 
-		month.set(Calendar.DAY_OF_MONTH, 1);
-		month.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
-		int currentMonth = month.get(Calendar.MONTH);
+		dateIterator.set(Calendar.DAY_OF_MONTH, 1);
+		int currentMonth = dateIterator.get(Calendar.MONTH);
 		
 		week = new CalendarWeek();
-		week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
-		week.setYear(month.get(Calendar.YEAR));
-		week.setWeekStart(month);
-
+		week.setWeek(dateIterator.get(Calendar.WEEK_OF_YEAR));
+		week.setYear(dateIterator.get(Calendar.YEAR));
+		week.setWeekStart((Calendar)dateIterator.clone());
+		week.getWeekStart().set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+		
 		int previousWeek = -1;
 
 		do
 		{
-			int dayInMonth = month.get(Calendar.DAY_OF_MONTH);
-			int dayInWeek = month.get(Calendar.DAY_OF_WEEK);
+			int dayInMonth = dateIterator.get(Calendar.DAY_OF_MONTH);
+			int dayInWeek = dateIterator.get(Calendar.DAY_OF_WEEK);
 			boolean inWeekend = (dayInWeek == Calendar.SUNDAY || dayInWeek == Calendar.SATURDAY); 
 			
 			CalendarDay day = new CalendarDay(dayInMonth, bookedDays[dayInMonth - 1], inWeekend);
 			
 			week.addDayInWeek(dayInWeek, day);
 
-			month.add(Calendar.DAY_OF_MONTH, 1);
+			dateIterator.add(Calendar.DAY_OF_MONTH, 1);
 
 			// next week? add current week and create a new one
-			if (month.get(Calendar.DAY_OF_WEEK) == config.getFirstDayOfWeek())
+			if (dateIterator.get(Calendar.DAY_OF_WEEK) == config.getFirstDayOfWeek())
 			{
 				calendarWeeks.add(week);
 
 				week = new CalendarWeek();
-				week.setWeek(month.get(Calendar.WEEK_OF_YEAR));
-				week.setWeekStart(month);
+				week.setWeek(dateIterator.get(Calendar.WEEK_OF_YEAR));
+				week.setWeekStart((Calendar)dateIterator.clone());
 
 				// fix that the year is still the old year but the week is already in the next year
-				if (previousWeek != -1 && previousWeek > month.get(Calendar.WEEK_OF_YEAR))
+				if (previousWeek != -1 && previousWeek > dateIterator.get(Calendar.WEEK_OF_YEAR))
 				{
-					week.setYear(month.get(Calendar.YEAR) + 1);
+					week.setYear(dateIterator.get(Calendar.YEAR) + 1);
 				}
 				else
 				{
-					week.setYear(month.get(Calendar.YEAR));
+					week.setYear(dateIterator.get(Calendar.YEAR));
 				}
 
-				previousWeek = month.get(Calendar.WEEK_OF_YEAR);
+				previousWeek = dateIterator.get(Calendar.WEEK_OF_YEAR);
 			}
 
-		} while (month.get(Calendar.MONTH) == currentMonth);
+		} while (dateIterator.get(Calendar.MONTH) == currentMonth);
 
 		// first day of week is already stored
-		if (month.get(Calendar.DAY_OF_WEEK) != config.getFirstDayOfWeek())
+		if (dateIterator.get(Calendar.DAY_OF_WEEK) != config.getFirstDayOfWeek())
 		{
 			calendarWeeks.add(week);
 		}
 
 		return calendarWeeks;
-	}
-
-	/**
-	 * Create a style
-	 *
-	 * @return a style
-	 */
-	private ResourceReference calendarStyle()
-	{
-		return new CompressedResourceReference(CalendarPanel.class, "style/calendar.css");
 	}
 
 	/**

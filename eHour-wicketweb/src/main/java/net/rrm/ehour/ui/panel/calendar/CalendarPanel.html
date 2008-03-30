@@ -5,10 +5,6 @@
 	xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
-<wicket:head>
-	<link wicket:id="calendarStyle" rel="stylesheet" type="text/css" href="style/calendar.css" />
-</wicket:head>
-
 <body>
 <wicket:extend>
 	<div class="Calendar" wicket:id="calendarFrame">
@@ -85,8 +81,7 @@ function backgroundOff(elm)
 	{	
 		if (elm.childNodes[i].nodeName == 'DIV')
 		{
-			if (elm.childNodes[i].className == 'SundayDay' ||
-				elm.childNodes[i].className == 'SaturdayDay')
+			if (elm.childNodes[i].className == 'WeekendDay')
 			{
 				elm.childNodes[i].style.backgroundColor = '#edf5fe';
 			}

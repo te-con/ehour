@@ -56,7 +56,7 @@ public abstract class SidePanel extends Panel
 	 * 
 	 * @return a style
 	 */
-	public final ResourceReference navSidePanelStyle()
+	protected ResourceReference navSidePanelStyle()
 	{
 		return new CompressedResourceReference(SidePanel.class, "style/sidePanel.css");
 	}		

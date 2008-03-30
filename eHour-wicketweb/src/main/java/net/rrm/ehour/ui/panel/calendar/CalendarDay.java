@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class CalendarDay implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private int monthDay;
 	private boolean booked;
-	private boolean weekendDay;
 
 	public CalendarDay()
 	{
@@ -17,7 +17,6 @@ public class CalendarDay implements Serializable
 	{
 		this.monthDay = monthDay;
 		this.booked = booked;
-		this.weekendDay = weekendDay;
 	}
 
 	/**
@@ -47,21 +46,5 @@ public class CalendarDay implements Serializable
 	public void setBooked(boolean booked)
 	{
 		this.booked = booked;
-	}
-
-	/**
-	 * @return the weekendDay
-	 */
-	public boolean isWeekendDay()
-	{
-		return weekendDay;
-	}
-
-	/**
-	 * @param weekendDay the weekendDay to set
-	 */
-	public void setWeekendDay(boolean weekendDay)
-	{
-		this.weekendDay = weekendDay;
 	}
 }

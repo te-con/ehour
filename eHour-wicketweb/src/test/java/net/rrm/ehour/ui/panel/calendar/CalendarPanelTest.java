@@ -3,7 +3,7 @@
  */
 package net.rrm.ehour.ui.panel.calendar;
 
-import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 
@@ -65,7 +65,10 @@ public class CalendarPanelTest extends BaseUIWicketTester
 		session.setNavCalendar(requestedMonth);
 		
 		CalendarPanel panel = new CalendarPanel("id", new User(1));
+		
+		verify(timesheetService);
 	}
+
 //
 //	/**
 //	 * Test method for {@link net.rrm.ehour.ui.panel.calendar.CalendarPanel#CalendarPanel(java.lang.String, net.rrm.ehour.user.domain.User, boolean)}.
