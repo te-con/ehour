@@ -44,7 +44,7 @@ public class DateUtil
 	private DateUtil()
 	{
 	}
-	
+
 	/**
 	 * Get days in month
 	 * @param calendar
@@ -53,16 +53,16 @@ public class DateUtil
 	public static int getDaysInMonth(Calendar calendar)
 	{
 		Calendar	cal;
-		
+
 		cal = (Calendar)calendar.clone();
-		
+
 		cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.add(Calendar.MONTH, 1);
         cal.add(Calendar.DAY_OF_MONTH, -1);
-        
+
         return cal.get(Calendar.DATE);
 	}
-	
+
 	/**
 	 * Get days in month
 	 * @param calendar
@@ -74,62 +74,62 @@ public class DateUtil
 		DateTime end = start.plusMonths(1);
 
 		Days days = Days.daysBetween(start, end);
-		
+
 		return days.getDays();
 	}
-	
-	
+
+
 	/**
 	 * Converts a calendar to a range covering that month
 	 * @param date
-	 * @return first Calendar object is start of the month, last Calendar object is end of the month 
+	 * @return first Calendar object is start of the month, last Calendar object is end of the month
 	 */
 	public static DateRange calendarToMonthRange(Calendar calendar)
 	{
 		DateRange	dateRange = new DateRange();
 		Calendar	cal;
-		
+
 		cal = (Calendar)calendar.clone();
-		
+
         cal.set(Calendar.DATE, 1);
         dateRange.setDateStart(cal.getTime());
-        
+
         cal.add(Calendar.MONTH, 1);
         cal.add(Calendar.DATE, -1);
-        dateRange.setDateEnd(cal.getTime());		
-		
+        dateRange.setDateEnd(cal.getTime());
+
         return dateRange;
 	}
-	
+
 	/**
 	 * Check whether a date is within range
 	 * @param the date
 	 * @param the range the date must be in
 	 * @return
 	 */
-	
+
 	public static boolean isDateWithinRange(Date date, DateRange dateRange)
 	{
 		boolean	withinRange = true;
-	
+
 		if (date == null)
 		{
 			return false;
 		}
-		
+
 		if (dateRange.getDateStart() != null)
 		{
 			withinRange = !dateRange.getDateStart().after(date);
 		}
-		
+
 		if (dateRange.getDateEnd() != null)
 		{
 			withinRange = withinRange && !dateRange.getDateEnd().before(date);
 		}
-		
+
 		return withinRange;
 	}
-	
+
 	/**
 	 * Check whether two dateranges overlap eachother
 	 * @param rangeA
@@ -139,13 +139,13 @@ public class DateUtil
 	public static boolean isDateRangeOverlaps(DateRange rangeA, DateRange rangeB)
 	{
 		boolean	overlaps = false;
-		
+
 		overlaps = rangeA.getDateEnd().after(rangeB.getDateStart()) &&
 				   rangeA.getDateStart().before(rangeB.getDateEnd());
-		
+
 		return overlaps;
 	}
-	
+
 	/**
 	 * Get a date range covering the week the supplied calendar is in
 	 * @param calendar
@@ -155,16 +155,16 @@ public class DateUtil
 	{
 		DateRange	weekRange = new DateRange();
 		Calendar	calClone = (Calendar)calendar.clone();
-		
+
 		calClone.add(Calendar.DAY_OF_MONTH, Calendar.SUNDAY - calClone.get(Calendar.DAY_OF_WEEK));
 		weekRange.setDateStart(calClone.getTime());
-		
+
 		calClone.add(Calendar.DAY_OF_MONTH, +6);
 		weekRange.setDateEnd(calClone.getTime());
-		
+
 		return weekRange;
 	}
-	
+
 	/**
 	 * Get inversed date range for week where dateStart = friday 23:59 and dateEnd = tuesday 00:00
 	 * @param calendar
@@ -174,38 +174,38 @@ public class DateUtil
 	{
 		DateRange	weekRange = new DateRange();
 		Calendar	calClone = (Calendar)calendar.clone();
-		
+
 		calClone.add(Calendar.DAY_OF_MONTH, Calendar.SUNDAY - calClone.get(Calendar.DAY_OF_WEEK));
 		calClone.add(Calendar.DAY_OF_MONTH, 1);
 		weekRange.setDateEnd(calClone.getTime());
-		
+
 		calClone.add(Calendar.DAY_OF_MONTH, +4);
 		weekRange.setDateStart(calClone.getTime());
-		
+
 		return weekRange;
 	}
-	
+
 	/**
 	 * Get a date range covering the month the supplied calendar is in
 	 * @param calendar
 	 * @return
-	 */	
+	 */
 	public static DateRange getDateRangeForMonth(Calendar calendar)
 	{
 		DateRange	monthRange = new DateRange();
-		
+
 		Calendar	calClone = (Calendar)calendar.clone();
-		
+
 		calClone.set(Calendar.DAY_OF_MONTH, 1);
 		monthRange.setDateStart(calClone.getTime());
-		
+
 		calClone.add(Calendar.MONTH, 1);
 		calClone.add(Calendar.DATE, -1);
 		monthRange.setDateEnd(calClone.getTime());
-		
+
 		return monthRange;
-	}	
-	
+	}
+
 	/**
 	 * Get date range for quarter
 	 * @param calendar
@@ -215,19 +215,19 @@ public class DateUtil
 	{
 		DateRange	quarterRange = new DateRange();
 		Calendar	startMonth, endMonth;
-		
+
 		int month = calendar.get(Calendar.MONTH);
 		int quarter = month / 3;
-		
+
 		startMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
 		endMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter  * 3, 1);
 		endMonth.add(Calendar.MONTH, 3);
 		endMonth.add(Calendar.DATE, -1);
-		
+
 		quarterRange = new DateRange(startMonth.getTime(), endMonth.getTime());
-		
+
 		return quarterRange;
-	}	
+	}
 
 	/**
 	 * Add quarter to current
@@ -242,27 +242,27 @@ public class DateUtil
 
 		Calendar startMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
 		startMonth.add(Calendar.MONTH, quarterDelta * 3);
-		
+
 		return startMonth;
 	}
 
-	
-	
+
+
 	/**
 	 * Set the time of a date to 00:00.00 (up to the ms)
 	 * @param date
 	 * @return
 	 */
-	
+
 	public static Date nullifyTime(Date date)
 	{
 		Calendar	cal = new GregorianCalendar();
 		cal.setTime(date);
 		nullifyTime(cal);
-		
+
 		return cal.getTime();
 	}
-	
+
 	/**
 	 * Set the time of a calendar to 00:00.00 (up to the ms)
 	 * @param cal
@@ -276,9 +276,9 @@ public class DateUtil
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 	}
-	
+
 	/**
-	 * Set the time of a calendar to 23:59:59.999 
+	 * Set the time of a calendar to 23:59:59.999
 	 * @param cal
 	 */
 	public static void maximizeTime(Calendar cal)
@@ -299,7 +299,7 @@ public class DateUtil
 		Calendar	cal = new GregorianCalendar();
 		cal.setTime(date);
 		maximizeTime(cal);
-		
+
 		return cal.getTime();
 	}
 
@@ -313,20 +313,20 @@ public class DateUtil
 	{
 		List<Date>	dateSequence = new ArrayList<Date>();
 		Calendar		calendar;
-		
+
 		calendar = getCalendar(config);
 		calendar.setTime(range.getDateStart());
-		
+
 		while (calendar.getTime().before(range.getDateEnd()))
 		{
 			nullifyTime(calendar);
 			dateSequence.add(calendar.getTime());
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 		}
-		
+
 		return dateSequence;
-	}	
-	
+	}
+
 	/**
 	 * Get date end for display (as in, time is set to 12:00pm)
 	 * TODO pretty bad hack as this is a timezone issue
@@ -335,14 +335,14 @@ public class DateUtil
 	public static Date getDateEndForDisplay(Date date)
 	{
 		Calendar cal;
-		
+
 		if (date != null)
 		{
 			cal = new GregorianCalendar();
-			
+
 			cal.setTime(date);
 			cal.add(Calendar.HOUR, -12);
-		
+
 			return cal.getTime();
 		}
 		else
@@ -350,7 +350,7 @@ public class DateUtil
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Get calendar with timezone set
 	 * @param config
@@ -360,7 +360,7 @@ public class DateUtil
 	{
 		Calendar	calendar;
 		TimeZone	timeZone;
-		
+
 		if (config.getTimeZone() != null && !config.getTimeZone().equals(""))
 		{
 			timeZone = TimeZone.getTimeZone(config.getTimeZone());
@@ -369,13 +369,12 @@ public class DateUtil
 		{
 			timeZone = TimeZone.getDefault();
 		}
-		
+
 		calendar = new GregorianCalendar(timeZone);
-		// SUNMON
-		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		calendar.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		return calendar;
 	}
-	
+
 	/**
 	 * Get the dd/mm/yyyy date formatting pattern for a given locale
 	 * This is a bit of a hack..
@@ -388,21 +387,21 @@ public class DateUtil
 		cal.set(Calendar.MONTH, 4);
 		cal.set(Calendar.DAY_OF_MONTH, 30);
 		cal.set(Calendar.YEAR, 2007);
-		
+
 		String formatted = DateFormat.getDateInstance(DateFormat.SHORT, dateLocale).format(cal.getTime());
 
 		// first get the separator
 		String f = formatted.replaceAll("\\d", "");
 		char separator = f.charAt(0);
-		
+
 		String[] parts = formatted.split("\\" + separator);
-		
+
 		StringBuilder pattern = new StringBuilder();
-		
+
 		for (int j = 0; j < parts.length; j++)
 		{
-			int i = Integer.parseInt(parts[j]); 
-		
+			int i = Integer.parseInt(parts[j]);
+
 			if (i == cal.get(Calendar.DAY_OF_MONTH))
 			{
 				pattern.append("dd");
@@ -415,10 +414,10 @@ public class DateUtil
 			{
 				pattern.append("yyyy");
 			}
-			
+
 			pattern.append(separator);
 		}
-		
+
 		pattern.deleteCharAt(pattern.length() - 1);
 
 		return pattern.toString();

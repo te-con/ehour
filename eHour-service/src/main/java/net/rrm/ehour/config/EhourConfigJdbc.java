@@ -127,7 +127,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	 */
 	public int getFirstDayOfWeek()
 	{
-		return this.getInt("firstDayOfWeek");
+		return this.getInt("firstDayOfWeek", 0);
 
 	}
 

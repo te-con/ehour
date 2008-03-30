@@ -179,11 +179,11 @@ public class CalendarPanel extends SidePanel
 			{
 				CalendarWeek week = (CalendarWeek) item.getModelObject();
 				
-				int i = 0;
+//				int i = 0;
 				
 				Calendar currentWeek = (Calendar)week.getWeekStart().clone();
 				
-				do
+				for (int i = 1; i <= 7; i++)
 				{
 					int currentDay = currentWeek.get(Calendar.DAY_OF_WEEK);
 					CalendarDay day = week.getDay(currentDay);
@@ -193,9 +193,11 @@ public class CalendarPanel extends SidePanel
 					
 					item.add(label);
 					
+					System.out.println(currentWeek.getTime());
+					System.out.println(day.getMonthDay());
 					currentWeek.add(Calendar.DATE, 1);
-				}
-				while (currentWeek.get(Calendar.WEEK_OF_YEAR) == week.getWeekStart().get(Calendar.WEEK_OF_YEAR));
+				};
+//				while (currentWeek.get(Calendar.WEEK_OF_YEAR) == week.getWeekStart().get(Calendar.WEEK_OF_YEAR));
 
 		        item.setOutputMarkupId(true);
 
@@ -240,13 +242,13 @@ public class CalendarPanel extends SidePanel
 				StringBuilder style = new StringBuilder();
 
 				// booked days are bold
-				if (day.isBooked())
+				if (day != null && day.isBooked())
 				{
 					style.append("font-weight: bold;");
 				}
 
 				// weekend days && selected weeks have a more dark background
-	        	if (day.isWeekendDay() ||
+	        	if ((day != null && day.isWeekendDay()) ||
 	        			(highlightWeekStartingAt != null &&
 	        			DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt)))
     			{

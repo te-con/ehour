@@ -1,6 +1,8 @@
 package net.rrm.ehour.ui.panel.calendar;
 
-public class CalendarDay
+import java.io.Serializable;
+
+public class CalendarDay implements Serializable
 {
 	private int monthDay;
 	private boolean booked;

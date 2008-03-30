@@ -17,6 +17,12 @@
 		<property name="username">
 			<value>root</value>
 		</property>
+		
+
+		<property name="password">
+			<value>admin</value>
+		</property>
+		
 
 		<property name="validationQuery">
 			<value>SELECT now()</value>
