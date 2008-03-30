@@ -292,6 +292,8 @@ public class CalendarPanel extends SidePanel
 		week.setWeek(dateIterator.get(Calendar.WEEK_OF_YEAR));
 		week.setYear(dateIterator.get(Calendar.YEAR));
 		week.setWeekStart((Calendar)dateIterator.clone());
+		
+		DateUtil.dayOfWeekFix(week.getWeekStart());
 		week.getWeekStart().set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 		
 		int previousWeek = -1;
@@ -442,8 +444,7 @@ public class CalendarPanel extends SidePanel
 
 			cal.set(Calendar.YEAR, year);
 			cal.set(Calendar.WEEK_OF_YEAR, week);
-			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-			cal.setFirstDayOfWeek(Calendar.SUNDAY);
+			cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 
 			session.setNavCalendar(cal);
 

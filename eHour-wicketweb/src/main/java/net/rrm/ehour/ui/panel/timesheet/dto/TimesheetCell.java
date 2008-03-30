@@ -26,9 +26,6 @@ import net.rrm.ehour.domain.TimesheetEntry;
 
 public class TimesheetCell implements Comparable<TimesheetCell>, Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2708559856313387714L;
 	private TimesheetEntry	timesheetEntry;
 	private	boolean			isValid;

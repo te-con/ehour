@@ -79,6 +79,7 @@ public class MonthOverviewPanel extends Panel
 	    thisYear = overviewForMonth.get(Calendar.YEAR);
 
 	    this.overviewFor = (Calendar)overviewForMonth.clone();
+	    DateUtil.dayOfWeekFix(overviewFor);
 	    overviewFor.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 
 		

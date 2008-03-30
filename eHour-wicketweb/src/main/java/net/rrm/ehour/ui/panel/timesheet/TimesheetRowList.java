@@ -29,7 +29,6 @@ import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
 import org.apache.commons.lang.StringUtils;
@@ -124,11 +123,13 @@ public class TimesheetRowList extends ListView
 		item.add(projectLink);
 		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 		
-		for (int i = 0; 
-			 i < CommonWebUtil.weekDays.length; // I take it that this is 7 ;)
-			 i++)
+		Calendar dateIterator = (Calendar)row.getFirstDayOfWeekDate().clone();
+
+		for (int i = 1;
+			 i <= 7;
+			 i++, dateIterator.add(Calendar.DAY_OF_YEAR, 1))
 		{
-			createTimesheetEntryItems(CommonWebUtil.weekDays[i], row, i, item);
+			createTimesheetEntryItems("day" + i, row, dateIterator.get(Calendar.DAY_OF_WEEK) - 1, item);
 		}
 
 		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
@@ -202,7 +203,7 @@ public class TimesheetRowList extends ListView
 												.get("grandTotal"));
 				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
 												.get("blueFrame"))
-												.get(CommonWebUtil.weekDays[index] + "Total"));
+												.get("day" + (index + 1) + "Total"));
 				
 				form.visitFormComponents(new FormHighlighter(target));
 			}		
@@ -298,7 +299,7 @@ public class TimesheetRowList extends ListView
 		{
 			super(id);
 
-			Calendar thisDate = (Calendar)row.getSundayDate().clone();
+			Calendar thisDate = (Calendar)row.getFirstDayOfWeekDate().clone();
 			thisDate.add(Calendar.DAY_OF_YEAR, index);
 
 			final Object previousModel = model.getObject();

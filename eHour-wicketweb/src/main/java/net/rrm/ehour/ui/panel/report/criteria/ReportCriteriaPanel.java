@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -45,6 +46,7 @@ import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.type.ReportType;
 import net.rrm.ehour.ui.panel.report.criteria.type.ReportTypeRenderer;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
+import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
 import net.rrm.ehour.ui.util.CommonWebUtil;
@@ -469,19 +471,21 @@ public class ReportCriteriaPanel extends BaseAjaxPanel
 		List<QuickWeek>	weeks = new ArrayList<QuickWeek>();	
 		Calendar		currentDate = new GregorianCalendar();
 		int 			currentWeek = -8;
+
+		EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
 		
-		currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		currentDate.setFirstDayOfWeek(config.getFirstDayOfWeek());
+		currentDate.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 		currentDate.add(Calendar.WEEK_OF_YEAR, currentWeek);
-		currentDate.setFirstDayOfWeek(Calendar.SUNDAY);
 		
 		for (; currentWeek < 8; currentWeek++)
 		{
-			weeks.add(new QuickWeek(currentDate));
+			weeks.add(new QuickWeek(currentDate, config));
 			
 			currentDate.add(Calendar.WEEK_OF_YEAR, 1);
 		}
 		
-		return new QuickDropDownChoice("quickWeek", weeks, new QuickWeekRenderer());
+		return new QuickDropDownChoice("quickWeek", weeks, new QuickWeekRenderer(config));
 	}
 	
 	/**

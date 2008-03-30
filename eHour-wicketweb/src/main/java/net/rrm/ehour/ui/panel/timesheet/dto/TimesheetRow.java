@@ -37,7 +37,7 @@ public class TimesheetRow implements Serializable
 	private static final long serialVersionUID = -5800367771424869244L;
 	private ProjectAssignment	projectAssignment;
 	private	TimesheetCell[]		timesheetCells;
-	private	Calendar			sundayDate;
+	private	Calendar			firstDayOfWeekDate;
 	private Timesheet			timesheet; // parent timesheet
 
 	/**
@@ -143,7 +143,7 @@ public class TimesheetRow implements Serializable
 					if (timesheetCells[i].getTimesheetEntry().getEntryId() == null)
 					{
 						TimesheetEntryId id = new TimesheetEntryId();
-						Calendar		thisDate = (Calendar)sundayDate.clone();
+						Calendar		thisDate = (Calendar)firstDayOfWeekDate.clone();
 						thisDate.add(Calendar.DATE, i);
 						
 						id.setProjectAssignment(getProjectAssignment());
@@ -162,20 +162,23 @@ public class TimesheetRow implements Serializable
 		
 		return entries;
 	}
+
 	/**
-	 * @return the sundayDate
+	 * @return the firstDayOfWeekDate
 	 */
-	public Calendar getSundayDate()
+	public Calendar getFirstDayOfWeekDate()
 	{
-		return sundayDate;
+		return firstDayOfWeekDate;
 	}
+
 	/**
-	 * @param sundayDate the sundayDate to set
+	 * @param firstDayOfWeekDate the firstDayOfWeekDate to set
 	 */
-	public void setSundayDate(Calendar sundayDate)
+	public void setFirstDayOfWeekDate(Calendar firstDayOfWeekDate)
 	{
-		this.sundayDate = sundayDate;
+		this.firstDayOfWeekDate = firstDayOfWeekDate;
 	}
+
 	public Timesheet getTimesheet()
 	{
 		return timesheet;

@@ -25,9 +25,9 @@ import static org.easymock.classextension.EasyMock.verify;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class QuickWeekRendererTest extends BaseUIWicketTester
 	{
 		localizer = createMock(Localizer.class); 
 		
-		renderer = new QuickWeekRenderer()
+		renderer = new QuickWeekRenderer(new EhourConfigStub())
 		{
 			protected Localizer getLocalizer()
 			{
@@ -60,7 +60,7 @@ public class QuickWeekRendererTest extends BaseUIWicketTester
 	@Test
 	public void testGetDisplayValueCurrent()
 	{
-		QuickWeek week = new QuickWeek(Calendar.getInstance());
+		QuickWeek week = new QuickWeek(Calendar.getInstance(), new EhourConfigStub());
 		
 		expect(localizer.getString("report.criteria.currentWeek", null))
 			.andReturn(new String());
@@ -77,7 +77,7 @@ public class QuickWeekRendererTest extends BaseUIWicketTester
 		Calendar c = new GregorianCalendar();
 		c.add(Calendar.WEEK_OF_YEAR, -1);
 		
-		QuickWeek week = new QuickWeek(c);
+		QuickWeek week = new QuickWeek(c, new EhourConfigStub());
 		
 		expect(localizer.getString("report.criteria.previousWeek", null))
 					.andReturn(new String());
@@ -95,7 +95,7 @@ public class QuickWeekRendererTest extends BaseUIWicketTester
 		Calendar c = new GregorianCalendar();
 		c.add(Calendar.WEEK_OF_YEAR, +1);
 		
-		QuickWeek week = new QuickWeek(c);
+		QuickWeek week = new QuickWeek(c, new EhourConfigStub());
 		
 		expect(localizer.getString("report.criteria.nextWeek", null))
 			.andReturn(new String());

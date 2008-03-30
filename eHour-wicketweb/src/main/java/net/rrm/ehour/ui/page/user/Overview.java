@@ -146,6 +146,4 @@ public class Overview extends BasePage
 					getEhourWebSession().getUser().getUser(), 
 					getEhourWebSession().getNavCalendar());
 	}
-	
-
 }

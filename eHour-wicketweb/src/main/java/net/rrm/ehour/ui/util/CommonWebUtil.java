@@ -42,8 +42,8 @@ public class CommonWebUtil
 	
 	public final static int GREYFRAME_WIDTH = 730;
 	
-	public final static String[] weekDays = new String[]{"sunday", "monday", "tuesday", 
-															"wednesday", "thursday", "friday", "saturday"};
+//	public final static String[] weekDays = new String[]{"sunday", "monday", "tuesday", 
+//															"wednesday", "thursday", "friday", "saturday"};
 	
 	/**
 	 * Get resource key for project assignment type

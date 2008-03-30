@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.Localizer;
@@ -26,31 +27,35 @@ public class QuickWeekRenderer extends QuickRenderer
 	/**
 	 * Default constructor
 	 */
-	public QuickWeekRenderer()
+	public QuickWeekRenderer(EhourConfig config)
 	{
 		Calendar currentWeekStartCal = new GregorianCalendar();
-		currentWeekStartCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		currentWeekStartCal.setFirstDayOfWeek(Calendar.SUNDAY);
+		DateUtil.dayOfWeekFix(currentWeekStartCal);
+		currentWeekStartCal.setFirstDayOfWeek(config.getFirstDayOfWeek());
+		currentWeekStartCal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 		DateUtil.nullifyTime(currentWeekStartCal);
 		currentWeekStart = currentWeekStartCal.getTime();
 		
 		Calendar previousWeekStartCal = new GregorianCalendar();
-		previousWeekStartCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		previousWeekStartCal.setFirstDayOfWeek(Calendar.SUNDAY);
+		DateUtil.dayOfWeekFix(previousWeekStartCal);
+		previousWeekStartCal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+		previousWeekStartCal.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		previousWeekStartCal.add(Calendar.WEEK_OF_YEAR, -1);
 		DateUtil.nullifyTime(previousWeekStartCal);
 		previousWeekStart = previousWeekStartCal.getTime();
 		
 		Calendar nextWeekEndCal = new GregorianCalendar();
-		nextWeekEndCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		nextWeekEndCal.setFirstDayOfWeek(Calendar.SUNDAY);
+		DateUtil.dayOfWeekFix(nextWeekEndCal);
+		nextWeekEndCal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+		nextWeekEndCal.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		nextWeekEndCal.add(Calendar.WEEK_OF_YEAR, 2);
 		DateUtil.nullifyTime(nextWeekEndCal);
 		nextWeekEnd = nextWeekEndCal.getTime();
 
 		Calendar nextWeekStartCal = new GregorianCalendar();
-		nextWeekStartCal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		nextWeekStartCal.setFirstDayOfWeek(Calendar.SUNDAY);
+		DateUtil.dayOfWeekFix(nextWeekStartCal);
+		nextWeekStartCal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+		nextWeekStartCal.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		nextWeekStartCal.add(Calendar.WEEK_OF_YEAR, 1);
 		DateUtil.nullifyTime(nextWeekEndCal);
 		nextWeekStart = nextWeekStartCal.getTime();

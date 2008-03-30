@@ -156,15 +156,15 @@ public class TimesheetAssembler
 		TimesheetRow		timesheetRow;
 		TimesheetEntry		entry;
 		Calendar			calendar;
-		Calendar			sundayDate = DateUtil.getCalendar(config);
-		sundayDate.setTime(dateSequence.get(0));
+		Calendar			firstDate = DateUtil.getCalendar(config);
+		firstDate.setTime(dateSequence.get(0));
 		
 		for (ProjectAssignment assignment : assignmentMap.keySet())
 		{
 			timesheetRow = new TimesheetRow();
 			timesheetRow.setTimesheet(timesheet);
 			timesheetRow.setProjectAssignment(assignment);
-			timesheetRow.setSundayDate(sundayDate);
+			timesheetRow.setFirstDayOfWeekDate(firstDate);
 			
 			// create a cell for every requested date
 			for (Date date : dateSequence)

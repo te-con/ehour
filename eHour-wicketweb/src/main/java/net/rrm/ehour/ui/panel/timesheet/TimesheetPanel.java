@@ -35,7 +35,6 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
-import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
@@ -239,9 +238,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		Label		total;
 		
-		for (int i = 0; i < CommonWebUtil.weekDays.length; i++)
+		for (int i = 1, j = 0; i <= 7; i++, j++)
 		{
-			total = new Label(CommonWebUtil.weekDays[i] + "Total", new FloatModel(new PropertyModel(grandTotals, "getValues[" + i + "]"), config));
+			total = new Label("day" + i + "Total", new FloatModel(new PropertyModel(grandTotals, "getValues[" + j + "]"), config));
 			total.setOutputMarkupId(true);
 			parent.add(total);
 		}
@@ -386,9 +385,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		Label	label;
 		
-		for (int i = 0; i < CommonWebUtil.weekDays.length; i++)
+		for (int i = 1, j = 0; i <= 7; i++, j++)
 		{
-			label = new Label(CommonWebUtil.weekDays[i] + "Label", new DateModel(timesheet.getDateSequence()[i], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+			label = new Label("day" + i + "Label", new DateModel(timesheet.getDateSequence()[j], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
 			label.setEscapeModelStrings(false);
 			parent.add(label);
 		}
