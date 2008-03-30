@@ -37,6 +37,7 @@ import org.joda.time.Days;
 public class DateUtil
 {
 	public final static String[] daysInWeek = new String[]{"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+	
 	/**
 	 * Do not instantiate
 	 *
@@ -45,6 +46,18 @@ public class DateUtil
 	{
 	}
 
+	/**
+	 * Is date a weekend day?
+	 * @param calendar
+	 * @return
+	 */
+	public static boolean isWeekend(Calendar calendar)
+	{
+		int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
+		
+		return dayInWeek == Calendar.SATURDAY || dayInWeek == Calendar.SUNDAY;
+	}
+	
 	/**
 	 * Get days in month
 	 * @param calendar

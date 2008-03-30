@@ -80,7 +80,7 @@ public class MailServiceImpl implements MailService
 		{
 			try
 			{
-				int port = Integer.valueOf(config.getSmtpPort());
+				int port = Float.valueOf(config.getSmtpPort()).intValue();
 				((JavaMailSenderImpl)mailSender).setPort(port);
 			}
 			catch (NumberFormatException nfe)
