@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
@@ -67,8 +68,11 @@ public interface TimesheetService
 	 * Persist timesheet entries and comment
 	 * @param timesheetEntries
 	 * @param timesheetComment
+	 * @param weekRange
 	 */
-	public List<ProjectAssignmentStatus> persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment timesheetComment);
+	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, 
+																TimesheetComment timesheetComment,
+																DateRange weekRange);
 	
 	/**
 	 * Delete timesheet entries booked on assignments

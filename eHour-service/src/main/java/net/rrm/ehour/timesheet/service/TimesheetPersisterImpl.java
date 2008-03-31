@@ -20,6 +20,7 @@ package net.rrm.ehour.timesheet.service;
 import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.exception.OverBudgetException;
@@ -48,15 +49,17 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.timesheet.service.TimesheetPersister#persistValidatedTimesheet(net.rrm.ehour.domain.ProjectAssignment, java.util.List)
+	 * @see net.rrm.ehour.timesheet.service.TimesheetPersister#validateAndPersist(net.rrm.ehour.domain.ProjectAssignment, java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@Transactional(rollbackFor=OverBudgetException.class,
 					propagation=Propagation.REQUIRES_NEW)
-	public void validateAndPersist(ProjectAssignment assignment, List<TimesheetEntry> entries) throws OverBudgetException
+	public void validateAndPersist(ProjectAssignment assignment, 
+									List<TimesheetEntry> entries,
+									DateRange weekRange) throws OverBudgetException
 	{
 		ProjectAssignmentStatus beforeStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
 		
-		persistEntries(assignment, entries);
+		persistEntries(assignment, entries, weekRange);
 
 		ProjectAssignmentStatus afterStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
 		if (!afterStatus.isValid())
@@ -71,11 +74,12 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	}
 	
 	/**
-	 * Persist entries
+	 * Check and persist entries
 	 * @param assignment
 	 * @param entries
+	 * @param weekRange
 	 */
-	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries)
+	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange)
 	{
 		for (TimesheetEntry entry : entries)
 		{
@@ -94,7 +98,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
 				}
 				timesheetDAO.delete(entry);
-				
 			}
 			else
 			{

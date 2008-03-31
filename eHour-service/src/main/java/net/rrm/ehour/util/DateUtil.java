@@ -328,7 +328,7 @@ public class DateUtil
 
 	/**
 	 * Create a sequence of dates from the date range
-	 * TODO should be in a web package somewhere
+	 * 
 	 * @param weekOverview
 	 * @return
 	 */
@@ -337,12 +337,12 @@ public class DateUtil
 		List<Date>	dateSequence = new ArrayList<Date>();
 		Calendar		calendar;
 
-		calendar = getCalendar(config);
+		calendar = DateUtil.getCalendar(config);
 		calendar.setTime(range.getDateStart());
 
 		while (calendar.getTime().before(range.getDateEnd()))
 		{
-			nullifyTime(calendar);
+			DateUtil.nullifyTime(calendar);
 			dateSequence.add(calendar.getTime());
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 		}

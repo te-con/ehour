@@ -443,7 +443,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			timesheet.getComment().setCommentId(id);
 		}
 		
-		return timesheetService.persistTimesheet(timesheetEntries, timesheet.getComment());
+		return timesheetService.persistTimesheetWeek(timesheetEntries, timesheet.getComment());
 	}
 	
 	/**

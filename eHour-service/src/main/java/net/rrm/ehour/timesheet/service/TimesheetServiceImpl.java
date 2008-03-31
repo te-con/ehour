@@ -284,14 +284,14 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		return weekOverview;
 	}
-	
-	
 
-	/**
-	 * Persist timesheets & comment
-	 * @throws OverBudgetException 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.timesheet.service.TimesheetService#persistTimesheetWeek(java.util.Collection, net.rrm.ehour.domain.TimesheetComment, net.rrm.ehour.data.DateRange)
 	 */
-	public List<ProjectAssignmentStatus> persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment) 
+	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, 
+																TimesheetComment comment,
+																DateRange weekRange)
 	{
 		Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
 
@@ -301,7 +301,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		{
 			try
 			{
-				timesheetPersister.validateAndPersist(assignment, timesheetRows.get(assignment));
+				timesheetPersister.validateAndPersist(assignment, timesheetRows.get(assignment), weekRange);
 			} catch (OverBudgetException e)
 			{
 				errorStatusses.add( e.getStatus());

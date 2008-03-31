@@ -19,6 +19,7 @@ package net.rrm.ehour.timesheet.service;
 
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.exception.BusinessException;
@@ -36,6 +37,8 @@ public interface TimesheetPersister
 	 * @param entries
 	 * @throws BusinessException
 	 */
-	public void validateAndPersist(ProjectAssignment assignment, List<TimesheetEntry> entries) throws OverBudgetException;
+	public void validateAndPersist(ProjectAssignment assignment, 
+									List<TimesheetEntry> entries,
+									DateRange weekRange) throws OverBudgetException;
 
 }
