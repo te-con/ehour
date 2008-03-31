@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.TimesheetComment;
@@ -355,6 +356,10 @@ public class TimesheetPanel extends Panel implements Serializable
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private Label updateErrorMessage()
 	{
 		IModel model = new StringResourceModel("timesheet.errorPersist",
@@ -443,7 +448,9 @@ public class TimesheetPanel extends Panel implements Serializable
 			timesheet.getComment().setCommentId(id);
 		}
 		
-		return timesheetService.persistTimesheetWeek(timesheetEntries, timesheet.getComment());
+		return timesheetService.persistTimesheetWeek(timesheetEntries, 
+														timesheet.getComment(),
+														new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
 	}
 	
 	/**

@@ -29,14 +29,12 @@ import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -183,16 +181,19 @@ public class TimesheetRowList extends ListView
 		
 		// list it on the page
 		dayInput = new TimesheetTextField(id, new FloatModel(cellModel, config, null), Float.class, 1);
-		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
+//		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
+		dayInput.setRequired(false);
 		dayInput.setOutputMarkupId(true);
+	
+//		dayInput.add(new ValidatingFormComponentAjaxBehavior());
 		
 		// make sure values are checked
-		AjaxFormValidatingBehavior behavior = new AjaxFormValidatingBehavior(form, "onchange")
+		AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onblur")
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(AjaxRequestTarget target)
+			protected void onUpdate(AjaxRequestTarget target)
 			{
 				// update the project total
 				target.addComponent(dayInput.getParent().get("total"));
@@ -209,7 +210,7 @@ public class TimesheetRowList extends ListView
 			}		
 			
 			@Override
-			protected void onError(AjaxRequestTarget target)
+			protected void onError(final AjaxRequestTarget target, RuntimeException e)
 			{
 				form.visitFormComponents(new FormHighlighter(target));
 			}			

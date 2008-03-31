@@ -254,7 +254,6 @@ public class MainConfig extends BaseAdminPage
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form form)
 			{
-				System.out.println("ee");
 				target.addComponent(form);
             }
         });		

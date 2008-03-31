@@ -45,7 +45,9 @@ public class TimesheetTextField extends TextField
 	@SuppressWarnings("unchecked")
 	public TimesheetTextField(final String id, IModel model, Class type, int tabIndex)
 	{
-		super(id, model, type);
+		super(id, model);//, type);
+		
+		setConvertEmptyInputStringToNull(true);
 		
 		wasInvalid = false;
 		
@@ -135,4 +137,15 @@ public class TimesheetTextField extends TextField
 			previousValue = null;
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.form.AbstractTextComponent#isInputNullable()
+	 */
+	@Override
+	public boolean isInputNullable()
+	{
+		return true;
+	}
+	
 }

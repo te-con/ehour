@@ -75,16 +75,13 @@ public abstract class AbstractNumberModel extends Model
 	@Override
 	public void setObject(Object value)
 	{
-		if (value != null)
+		if (nestedModel == null)
 		{
-			if (nestedModel == null)
-			{
-				this.value = (Number)value;
-			}
-			else
-			{
-				nestedModel.setObject(getDefaultValue() != null && value.equals(getDefaultValue()) ? null : value);
-			}
+			this.value = (Number)value;
+		}
+		else
+		{
+			nestedModel.setObject(getDefaultValue() != null && (value != null && value.equals(getDefaultValue())) ? null : value);
 		}
 	}
 	
