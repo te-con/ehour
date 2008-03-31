@@ -11,6 +11,7 @@ import static org.easymock.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
@@ -75,7 +76,6 @@ public class TimesheetPersisterImplTest {
 		
 		timesheetDAO.delete(entry);
 		
-		
 		expect(timesheetDAO.persist(entry))
 			.andReturn(entry);
 		
@@ -86,7 +86,7 @@ public class TimesheetPersisterImplTest {
 		replay(statusService);
 		replay(timesheetDAO);
 		
-		persister.validateAndPersist(assignment, entries);
+		persister.validateAndPersist(assignment, entries, new DateRange());
 		
 		verify(timesheetDAO);
 		verify(statusService);
