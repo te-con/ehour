@@ -3,7 +3,7 @@
  */
 package net.rrm.ehour.timesheet.service;
 
-import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -15,9 +15,9 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -57,6 +57,7 @@ public class TimesheetPersisterImplTest {
 	@Test
 	public void testPersistValidatedTimesheet() throws OverBudgetException {
 		ProjectAssignment assignment = new ProjectAssignment(1);
+		assignment.setUser(new User(1));
 		
 		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
 		
@@ -75,9 +76,13 @@ public class TimesheetPersisterImplTest {
 		entries.add(entryDel);
 		
 		timesheetDAO.delete(entry);
+
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+			.andReturn(new ArrayList<TimesheetEntry>());
 		
 		expect(timesheetDAO.persist(entry))
 			.andReturn(entry);
+		
 		
 		expect(statusService.getAssignmentStatus(assignment))
 			.andReturn(new ProjectAssignmentStatus())

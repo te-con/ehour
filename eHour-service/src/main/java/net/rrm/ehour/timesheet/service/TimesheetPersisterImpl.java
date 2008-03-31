@@ -20,7 +20,6 @@ package net.rrm.ehour.timesheet.service;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -48,7 +47,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	private	TimesheetDAO		timesheetDAO;
 	private ProjectAssignmentStatusService	projectAssignmentStatusService;
 	private MailService			mailService;
-	private ConfigurationService configurationService;
 	
 	/*
 	 * (non-Javadoc)
@@ -60,11 +58,9 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 									List<TimesheetEntry> entries,
 									DateRange weekRange) throws OverBudgetException
 	{
-		EhourConfig config = configurationService.getConfiguration();
-		
 		ProjectAssignmentStatus beforeStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
 		
-		persistEntries(assignment, entries, weekRange, config);
+		persistEntries(assignment, entries, weekRange);
 
 		ProjectAssignmentStatus afterStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
 		if (!afterStatus.isValid())
@@ -84,7 +80,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	 * @param entries
 	 * @param weekRange
 	 */
-	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, EhourConfig config)
+	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange)
 	{
 		List<TimesheetEntry> dbEntries = timesheetDAO.getTimesheetEntriesInRange(assignment.getUser().getUserId(), weekRange);
 		
@@ -111,7 +107,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 				}
 				else
 				{
-					timesheetDAO.merge(entry);
+					timesheetDAO.delete(entry);
 				}
 			}
 			else
@@ -123,7 +119,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 							+ ", comment: " + entry.getComment()
 					);
 				}
-				
 				
 				entry.setUpdateDate(new Date());
 
@@ -141,11 +136,16 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 		}
 		
 		
-		for (TimesheetEntry timesheetEntry : dbEntries)
+		for (TimesheetEntry entry : dbEntries)
 		{
-			System.out.println("leftover: " + timesheetEntry);
+			if (logger.isDebugEnabled())
+			{
+				logger.debug("Deleting stale timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
+			}
+			
+			timesheetDAO.delete(entry);
 		}
-		
 	}
 	
 	/**
@@ -221,13 +221,5 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	public void setProjectAssignmentStatusService(ProjectAssignmentStatusService projectAssignmentStatusService)
 	{
 		this.projectAssignmentStatusService = projectAssignmentStatusService;
-	}
-
-	/**
-	 * @param configurationService the configurationService to set
-	 */
-	public void setConfigurationService(ConfigurationService configurationService)
-	{
-		this.configurationService = configurationService;
 	}
 }
