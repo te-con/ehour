@@ -29,6 +29,7 @@ import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
@@ -181,11 +182,9 @@ public class TimesheetRowList extends ListView
 		
 		// list it on the page
 		dayInput = new TimesheetTextField(id, new FloatModel(cellModel, config, null), Float.class, 1);
-//		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
-		dayInput.setRequired(false);
+		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
 		dayInput.setOutputMarkupId(true);
 	
-//		dayInput.add(new ValidatingFormComponentAjaxBehavior());
 		
 		// make sure values are checked
 		AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onblur")

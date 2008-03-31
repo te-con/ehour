@@ -45,7 +45,7 @@ public class TimesheetTextField extends TextField
 	@SuppressWarnings("unchecked")
 	public TimesheetTextField(final String id, IModel model, Class type, int tabIndex)
 	{
-		super(id, model);//, type);
+		super(id, model, type);
 		
 		setConvertEmptyInputStringToNull(true);
 		
