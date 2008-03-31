@@ -57,7 +57,7 @@ public class QuickWeekRenderer extends QuickRenderer
 		nextWeekStartCal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 		nextWeekStartCal.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		nextWeekStartCal.add(Calendar.WEEK_OF_YEAR, 1);
-		DateUtil.nullifyTime(nextWeekEndCal);
+		DateUtil.nullifyTime(nextWeekStartCal);
 		nextWeekStart = nextWeekStartCal.getTime();
 	}
 	
