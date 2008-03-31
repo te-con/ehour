@@ -40,7 +40,7 @@ import net.rrm.ehour.ui.common.BaseUIWicketTester;
  * TODO 
  **/
 
-public class BaseTestReport extends BaseUIWicketTester
+public abstract class BaseTestReport extends BaseUIWicketTester
 {
 	protected ReportCriteriaService reportCriteriaService;
 	protected AggregateReportService aggregateReportService;
