@@ -18,9 +18,12 @@ package net.rrm.ehour.ui.page.admin.mainconfig.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Currency;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +34,7 @@ import java.util.TreeSet;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.sort.LocaleComparator;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -48,6 +52,7 @@ public class MainConfigBackingBean implements Serializable
 	private	boolean			translationsOnly = false;
 	private boolean			smtpAuthentication = false;
 	private EhourConfigStub	config;
+	private Date			firstWeekStart;
 
 	/**
 	 * 
@@ -59,7 +64,13 @@ public class MainConfigBackingBean implements Serializable
 		
 		smtpAuthentication = !StringUtils.isBlank(config.getSmtpUsername()) 
 								|| !StringUtils.isBlank(config.getSmtpPassword()); 
+		
+		Calendar cal = new GregorianCalendar();
+		DateUtil.dayOfWeekFix(cal);
+		cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+		firstWeekStart = cal.getTime();
 	}
+	
 	
 	/**
 	 * Get available languages
@@ -210,5 +221,29 @@ public class MainConfigBackingBean implements Serializable
 
 	public void setSmtpAuthentication(boolean smtpAuthentication) {
 		this.smtpAuthentication = smtpAuthentication;
+	}
+
+
+
+	/**
+	 * @return the firstWeekStart
+	 */
+	public Date getFirstWeekStart()
+	{
+		return firstWeekStart;
+	}
+
+
+
+	/**
+	 * @param firstWeekStart the firstWeekStart to set
+	 */
+	public void setFirstWeekStart(Date firstWeekStart)
+	{
+		this.firstWeekStart = firstWeekStart;
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(firstWeekStart);
+		config.setFirstDayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
 	}
 }

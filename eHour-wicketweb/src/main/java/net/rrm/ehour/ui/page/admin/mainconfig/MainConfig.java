@@ -16,8 +16,11 @@
 
 package net.rrm.ehour.ui.page.admin.mainconfig;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfigStub;
@@ -32,6 +35,7 @@ import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.page.admin.mainconfig.dto.MainConfigBackingBean;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -50,7 +54,6 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -75,7 +78,6 @@ public class MainConfig extends BaseAdminPage
 	
 	private WebComponent serverMessage;
 	private	final 	MainConfigBackingBean configBackingBean;
-	
 	
 	/**
 	 * 
@@ -151,6 +153,17 @@ public class MainConfig extends BaseAdminPage
 		configForm.add(new AjaxFormComponentFeedbackIndicator("workHoursValidationError", workHours));
 		configForm.add(workHours);
 		
+		
+		
+		// weeks start at
+		DropDownChoice weekStartsAt = new DropDownChoice("firstWeekStart",
+															DateUtil.createDateSequence(DateUtil.getDateRangeForWeek(new GregorianCalendar()), new EhourConfigStub()),
+															new WeekDayRenderer(configBackingBean.getLocaleLanguage()));
+//		,
+//													new PropertyModel(configBackingBean, "localeLanguage"),
+//													new PropertyModel(configBackingBean, "availableLanguages"),
+//													new LocaleChoiceRenderer(1));
+		configForm.add(weekStartsAt);
 		setSubmitButton(configForm);
 		
 		parent.add(configForm);
@@ -345,6 +358,43 @@ public class MainConfig extends BaseAdminPage
 				target.addComponent(onlyTranslationsBox);
 			}
 		});				
+	}
+
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private final class WeekDayRenderer extends ChoiceRenderer
+	{
+		private static final long serialVersionUID = -2044803875511515992L;
+		SimpleDateFormat formatter;
+		
+		public WeekDayRenderer(Locale locale)
+		{
+			formatter = new SimpleDateFormat("EEEE", locale);
+		}
+    	@Override
+        public Object getDisplayValue(Object object)
+    	{
+    		Date date = (Date)object;
+    		
+    		return formatter.format(date);
+    	}
+    	
+    	@Override
+    	public String getIdValue(Object object, int index)
+    	{
+    		if (object instanceof Date)
+    		{
+        		Date date = (Date)object;
+        		Calendar cal = new GregorianCalendar();
+        		cal.setTime(date);
+        		return Integer.toString(cal.get(Calendar.DAY_OF_WEEK));
+    		}
+    		
+    		return object.toString();
+    	}    	
 	}
     
     /**

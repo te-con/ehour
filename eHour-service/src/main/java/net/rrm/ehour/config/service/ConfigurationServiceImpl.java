@@ -118,7 +118,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			}
 			else if (key.equalsIgnoreCase("firstDayOfWeek"))
 			{
-				config.setFirstDayOfWeek(Integer.parseInt(value));
+				config.setFirstDayOfWeek( (int)(Float.parseFloat(value)));
 			}			
 		}
 		

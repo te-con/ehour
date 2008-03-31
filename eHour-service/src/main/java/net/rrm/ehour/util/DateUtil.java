@@ -36,14 +36,22 @@ import org.joda.time.Days;
 
 public class DateUtil
 {
-	public final static String[] daysInWeek = new String[]{"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
-	
 	/**
 	 * Do not instantiate
 	 *
 	 */
 	private DateUtil()
 	{
+	}
+	
+	/**
+	 * ...
+	 * @param calendar
+	 */
+	public static void dayOfWeekFix(Calendar calendar)
+	{
+		calendar.add(Calendar.DATE, 1);
+		calendar.add(Calendar.DATE, -1);
 	}
 
 	/**
@@ -168,8 +176,9 @@ public class DateUtil
 	{
 		DateRange	weekRange = new DateRange();
 		Calendar	calClone = (Calendar)calendar.clone();
-
-		calClone.add(Calendar.DAY_OF_MONTH, Calendar.SUNDAY - calClone.get(Calendar.DAY_OF_WEEK));
+		
+		DateUtil.dayOfWeekFix(calClone);
+		calClone.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
 		weekRange.setDateStart(calClone.getTime());
 
 		calClone.add(Calendar.DAY_OF_MONTH, +6);
@@ -188,7 +197,8 @@ public class DateUtil
 		DateRange	weekRange = new DateRange();
 		Calendar	calClone = (Calendar)calendar.clone();
 
-		calClone.add(Calendar.DAY_OF_MONTH, Calendar.SUNDAY - calClone.get(Calendar.DAY_OF_WEEK));
+		DateUtil.dayOfWeekFix(calClone);
+		calClone.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
 		calClone.add(Calendar.DAY_OF_MONTH, 1);
 		weekRange.setDateEnd(calClone.getTime());
 
