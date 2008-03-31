@@ -20,7 +20,6 @@ package net.rrm.ehour.timesheet.service;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
@@ -103,7 +102,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 				
 				if (dbEntries.contains(entry))
 				{
-					timesheetDAO.delete(dbEntries.get(dbEntries.indexOf(entry)));
+					timesheetDAO.delete(getEntry(dbEntries, entry));
 				}
 				else
 				{
@@ -147,6 +146,18 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 			timesheetDAO.delete(entry);
 		}
 	}
+	
+	/**
+	 * Get entry from list
+	 * @param entries
+	 * @param entry
+	 * @return
+	 */
+	private TimesheetEntry getEntry(List<TimesheetEntry> entries, TimesheetEntry entry)
+	{
+		return entries.get(entries.indexOf(entry));
+	}
+	
 	
 	/**
 	 * Notify pm on phase change
