@@ -97,9 +97,6 @@ public class CalendarPanel extends SidePanel
 		this.user = user;
 		fireWeekClicks = allowWeekClicks;
 
-		// CSS
-//		add(new StyleSheetReference("calendarStyle", calendarStyle()));
-
 		//
 		calendarFrame = getFrame();
 		add(calendarFrame);
@@ -444,6 +441,7 @@ public class CalendarPanel extends SidePanel
 
 			cal.set(Calendar.YEAR, year);
 			cal.set(Calendar.WEEK_OF_YEAR, week);
+			DateUtil.dayOfWeekFix(cal);
 			cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 
 			session.setNavCalendar(cal);

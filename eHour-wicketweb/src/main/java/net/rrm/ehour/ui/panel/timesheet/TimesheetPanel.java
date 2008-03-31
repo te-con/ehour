@@ -170,13 +170,14 @@ public class TimesheetPanel extends Panel implements Serializable
 	private WebMarkupContainer getWeekNavigation(Calendar forWeek, final Date weekStart, final Date weekEnd)
 	{
 		Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
-		SimpleDateFormat	weekDateFormatter, dateFormatter;
-		weekDateFormatter = new SimpleDateFormat("w", config.getLocale());
-		dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
+		
+		Calendar cal = DateUtil.getCalendar(config);
+		cal.setTime(weekStart);
 		
 		IModel weekLabelModel = new StringResourceModel("timesheet.weekTitle",
 								this, null,
-								new Object[]{weekDateFormatter.format(forWeek.getTime()),
+								new Object[]{cal.get(Calendar.WEEK_OF_YEAR),
 												dateFormatter.format(weekStart),
 												dateFormatter.format(weekEnd)});
 
