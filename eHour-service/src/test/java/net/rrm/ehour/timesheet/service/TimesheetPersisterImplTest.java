@@ -3,12 +3,15 @@
  */
 package net.rrm.ehour.timesheet.service;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -20,6 +23,7 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 
 import org.junit.Before;
@@ -34,6 +38,10 @@ public class TimesheetPersisterImplTest {
 	private TimesheetDAO			timesheetDAO;
 	private MailService				mailService;
 	private ProjectAssignmentStatusService statusService;
+	private ProjectAssignment assignment;
+	private List<TimesheetEntry> newEntries;
+	private List<TimesheetEntry> existingEntries;
+	
 	
 	@Before
 	public void setUp()
@@ -48,7 +56,63 @@ public class TimesheetPersisterImplTest {
 		
 		mailService = createMock(MailService.class);
 		persister.setMailService(mailService);
+		
+		initData();
 	}
+	
+	/**
+	 * 
+	 */
+	private void initData()
+	{
+		assignment = new ProjectAssignment(1);
+		assignment.setUser(new User(1));
+		
+		newEntries = new ArrayList<TimesheetEntry>();
+		
+		Date dateA = new Date(2008 - 1900, 4 - 1, 1);
+		Date dateB = new Date(2008 - 1900, 4 - 1, 2);
+		Date dateC = new Date(2008 - 1900, 4 - 1, 3);
+		Date dateD = new Date(2008 - 1900, 4 - 1, 4);
+		
+		{
+			TimesheetEntry entry = new TimesheetEntry();
+			TimesheetEntryId id = new TimesheetEntryId();
+			id.setProjectAssignment(assignment);
+			id.setEntryDate(dateA);
+			entry.setEntryId(id);
+			entry.setHours(8f);
+			newEntries.add(entry);
+			
+			TimesheetEntry entryDel = new TimesheetEntry();
+			TimesheetEntryId idDel = new TimesheetEntryId();
+			idDel.setProjectAssignment(assignment);
+			idDel.setEntryDate(dateB);
+			entryDel.setEntryId(id);
+			entryDel.setHours(0f);
+			newEntries.add(entryDel);
+		}
+		
+		existingEntries = new ArrayList<TimesheetEntry>();
+		{
+			TimesheetEntry entry = new TimesheetEntry();
+			TimesheetEntryId id = new TimesheetEntryId();
+			id.setProjectAssignment(assignment);
+			id.setEntryDate(dateA);
+			entry.setEntryId(id);
+			entry.setHours(5f);
+			existingEntries.add(entry);
+			
+			TimesheetEntry entryDel = new TimesheetEntry();
+			TimesheetEntryId idDel = new TimesheetEntryId();
+			idDel.setProjectAssignment(assignment);
+			idDel.setEntryDate(dateB);
+			entryDel.setEntryId(id);
+			entryDel.setHours(5f);
+			existingEntries.add(entryDel);
+		}
+	}
+	
 
 	/**
 	 * Test method for {@link net.rrm.ehour.timesheet.service.TimesheetPersisterImpl#validateAndPersist(net.rrm.ehour.domain.ProjectAssignment, java.util.List)}.
@@ -56,33 +120,13 @@ public class TimesheetPersisterImplTest {
 	 */
 	@Test
 	public void testPersistValidatedTimesheet() throws OverBudgetException {
-		ProjectAssignment assignment = new ProjectAssignment(1);
-		assignment.setUser(new User(1));
+		timesheetDAO.delete(isA(TimesheetEntry.class));
 		
-		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
-		
-		TimesheetEntry entry = new TimesheetEntry();
-		TimesheetEntryId id = new TimesheetEntryId();
-		id.setProjectAssignment(assignment);
-		entry.setEntryId(id);
-		entry.setHours(2f);
-		entries.add(entry);
-		
-		TimesheetEntry entryDel = new TimesheetEntry();
-		TimesheetEntryId idDel = new TimesheetEntryId();
-		idDel.setProjectAssignment(assignment);
-		entryDel.setEntryId(id);
-		entryDel.setHours(0f);
-		entries.add(entryDel);
-		
-		timesheetDAO.delete(entry);
+		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
+			.andReturn(null);
 
 		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
-			.andReturn(new ArrayList<TimesheetEntry>());
-		
-		expect(timesheetDAO.persist(entry))
-			.andReturn(entry);
-		
+			.andReturn(existingEntries);
 		
 		expect(statusService.getAssignmentStatus(assignment))
 			.andReturn(new ProjectAssignmentStatus())
@@ -91,10 +135,48 @@ public class TimesheetPersisterImplTest {
 		replay(statusService);
 		replay(timesheetDAO);
 		
-		persister.validateAndPersist(assignment, entries, new DateRange());
+		persister.validateAndPersist(assignment, newEntries, new DateRange());
 		
 		verify(timesheetDAO);
 		verify(statusService);
 	}
+	
+	/**
+	 * 
+	 * @throws OverBudgetException
+	 */
+	@Test
+	public void testPersistInvalidTimesheet() {
+		timesheetDAO.delete(isA(TimesheetEntry.class));
+		
+		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
+			.andReturn(null);
+		
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+			.andReturn(existingEntries);
+		
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(new ProjectAssignmentStatus());
+
+		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
+		status.addStatus(Status.OVER_OVERRUN);
+		status.setValid(false);
+		
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(status);
+		
+		replay(statusService);
+		replay(timesheetDAO);
+		
+		try
+		{
+			persister.validateAndPersist(assignment, newEntries, new DateRange());
+			fail();
+		} catch (OverBudgetException e)
+		{
+			verify(timesheetDAO);
+			verify(statusService);
+		}
+	}	
 
 }

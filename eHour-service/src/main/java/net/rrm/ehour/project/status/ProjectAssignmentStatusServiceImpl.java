@@ -134,7 +134,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 			if (assignment.getAllottedHours().compareTo(status.getAggregate().getHours().floatValue()) > 0)
 			{
 				status.addStatus(ProjectAssignmentStatus.Status.IN_ALLOTTED);
-				
+
 			}
 			else if (status.getAggregate().getHours().floatValue()  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
 			{

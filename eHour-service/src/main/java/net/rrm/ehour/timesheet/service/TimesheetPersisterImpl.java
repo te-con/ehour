@@ -104,10 +104,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 				{
 					timesheetDAO.delete(getEntry(dbEntries, entry));
 				}
-				else
-				{
-					timesheetDAO.delete(entry);
-				}
 			}
 			else
 			{
