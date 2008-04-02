@@ -221,7 +221,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 										entry.getEntryId().getEntryDate(),
 										assignment.getProject().getProjectManager());
 		}
-		// in overrun - flex TODO fixme
+		// in overrun - flex
 		else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN) 
 				&& assignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
 		{

@@ -15,7 +15,9 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.domain.User;
@@ -24,7 +26,9 @@ import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +70,14 @@ public class TimesheetPersisterImplTest {
 	private void initData()
 	{
 		assignment = new ProjectAssignment(1);
-		assignment.setUser(new User(1));
+		User u = new User(1);
+		u.setEmail("ik@daar.net");
+		assignment.setUser(u);
+		assignment.setProject(new Project(1));
+		assignment.getProject().setProjectManager(u);
+		assignment.setNotifyPm(true);
+		
+		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX));
 		
 		newEntries = new ArrayList<TimesheetEntry>();
 		
@@ -220,6 +231,7 @@ public class TimesheetPersisterImplTest {
 			.andReturn(existingEntries);
 
 		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
+		beforeStatus.addStatus(Status.OVER_OVERRUN);
 		beforeStatus.setValid(false);
 		
 		expect(statusService.getAssignmentStatus(assignment))
@@ -238,6 +250,86 @@ public class TimesheetPersisterImplTest {
 		persister.validateAndPersist(assignment, newEntries, new DateRange());
 		verify(timesheetDAO);
 		verify(statusService);
+	}	
+	
+	/**
+	 * 
+	 * @throws OverBudgetException 
+	 * @throws OverBudgetException
+	 */
+	@Test
+	public void testPersistOverrunInvalidTimesheet() {
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+			.andReturn(existingEntries);
+
+		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
+		beforeStatus.setValid(false);
+		
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(beforeStatus);
+
+		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
+		status.addStatus(Status.OVER_OVERRUN);
+		status.setValid(false);
+		
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(status);
+		
+		replay(statusService);
+		replay(timesheetDAO);
+		
+		try
+		{
+			persister.validateAndPersist(assignment, newEntries, new DateRange());
+			fail();
+		}
+		catch (OverBudgetException obe)
+		{
+			
+		}
+		verify(timesheetDAO);
+		verify(statusService);
+	}	
+	
+	@Test
+	public void testMailStatusChange() throws OverBudgetException {
+		timesheetDAO.delete(isA(TimesheetEntry.class));
+		
+		expect(timesheetDAO.getLatestTimesheetEntryForAssignment(1))
+			.andReturn(newEntries.get(0));
+		
+		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
+			.andReturn(null);
+
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+			.andReturn(existingEntries);
+
+		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
+		beforeStatus.addStatus(Status.IN_ALLOTTED);
+		beforeStatus.setValid(true);
+
+		ProjectAssignmentStatus afterStatus = new ProjectAssignmentStatus();
+		afterStatus.addStatus(Status.IN_OVERRUN);
+		afterStatus.setValid(true);
+		afterStatus.setAggregate(new AssignmentAggregateReportElement());
+
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(beforeStatus);
+
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(afterStatus);
+
+		mailService.mailPMFlexAllottedReached(isA(AssignmentAggregateReportElement.class), isA(Date.class), isA(User.class));
+		
+		replay(statusService);
+		replay(timesheetDAO);
+		replay(mailService);
+		
+		persister.validateAndPersist(assignment, newEntries, new DateRange());
+		
+		verify(timesheetDAO);
+		verify(statusService);
+		verify(mailService);
 	}	
 
 }
