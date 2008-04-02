@@ -191,7 +191,16 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	 */
 	private TimesheetEntry getEntry(List<TimesheetEntry> entries, TimesheetEntry entry)
 	{
-		return entries.get(entries.indexOf(entry));
+		int index = entries.indexOf(entry);
+		
+		if (index >= 0)
+		{
+			return entries.get(index);
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	/**
