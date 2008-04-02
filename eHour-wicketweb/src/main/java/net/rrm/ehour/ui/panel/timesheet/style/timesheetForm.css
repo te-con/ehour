@@ -76,6 +76,8 @@ div.timesheet
 	text-align: left;
 	border-right: 0px;
 	font:  1em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	padding: 8px 0 0 0;
+	vertical-align: top;
 }
 
 .timesheetTable tr.projectRow td.projectCode
@@ -83,6 +85,8 @@ div.timesheet
 	text-align: left;
 	font-weight: normal;
 	border-right: 0px;
+	padding: 8px 0 0 0;
+	vertical-align: top;
 }
 
 
