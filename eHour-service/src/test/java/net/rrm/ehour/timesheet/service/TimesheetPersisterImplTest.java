@@ -72,8 +72,6 @@ public class TimesheetPersisterImplTest {
 		
 		Date dateA = new Date(2008 - 1900, 4 - 1, 1);
 		Date dateB = new Date(2008 - 1900, 4 - 1, 2);
-		Date dateC = new Date(2008 - 1900, 4 - 1, 3);
-		Date dateD = new Date(2008 - 1900, 4 - 1, 4);
 		
 		{
 			TimesheetEntry entry = new TimesheetEntry();
@@ -83,12 +81,14 @@ public class TimesheetPersisterImplTest {
 			entry.setEntryId(id);
 			entry.setHours(8f);
 			newEntries.add(entry);
-			
+		}
+		
+		{
 			TimesheetEntry entryDel = new TimesheetEntry();
 			TimesheetEntryId idDel = new TimesheetEntryId();
 			idDel.setProjectAssignment(assignment);
 			idDel.setEntryDate(dateB);
-			entryDel.setEntryId(id);
+			entryDel.setEntryId(idDel);
 			entryDel.setHours(0f);
 			newEntries.add(entryDel);
 		}
@@ -102,12 +102,14 @@ public class TimesheetPersisterImplTest {
 			entry.setEntryId(id);
 			entry.setHours(5f);
 			existingEntries.add(entry);
-			
+		}
+		
+		{
 			TimesheetEntry entryDel = new TimesheetEntry();
 			TimesheetEntryId idDel = new TimesheetEntryId();
 			idDel.setProjectAssignment(assignment);
 			idDel.setEntryDate(dateB);
-			entryDel.setEntryId(id);
+			entryDel.setEntryId(idDel);
 			entryDel.setHours(5f);
 			existingEntries.add(entryDel);
 		}
@@ -177,6 +179,65 @@ public class TimesheetPersisterImplTest {
 			verify(timesheetDAO);
 			verify(statusService);
 		}
+	}
+	
+	/**
+	 * 
+	 * @throws OverBudgetException 
+	 * @throws OverBudgetException
+	 */
+	@Test
+	public void testPersistOverrunDecreasingTimesheet() throws OverBudgetException {
+		Date dateC = new Date(2008 - 1900, 4 - 1, 3);
+		
+		newEntries.clear();
+		existingEntries.clear();
+	
+		{
+			TimesheetEntry entryDel = new TimesheetEntry();
+			TimesheetEntryId idDel = new TimesheetEntryId();
+			idDel.setProjectAssignment(assignment);
+			idDel.setEntryDate(dateC);
+			entryDel.setEntryId(idDel);
+			entryDel.setHours(7f);
+			newEntries.add(entryDel);
+		}
+
+		{
+			TimesheetEntry entryDel = new TimesheetEntry();
+			TimesheetEntryId idDel = new TimesheetEntryId();
+			idDel.setProjectAssignment(assignment);
+			idDel.setEntryDate(dateC);
+			entryDel.setEntryId(idDel);
+			entryDel.setHours(8f);
+			existingEntries.add(entryDel);
+		}
+
+		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
+			.andReturn(null);
+		
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+			.andReturn(existingEntries);
+
+		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
+		beforeStatus.setValid(false);
+		
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(beforeStatus);
+
+		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
+		status.addStatus(Status.OVER_OVERRUN);
+		status.setValid(false);
+		
+		expect(statusService.getAssignmentStatus(assignment))
+			.andReturn(status);
+		
+		replay(statusService);
+		replay(timesheetDAO);
+		
+		persister.validateAndPersist(assignment, newEntries, new DateRange());
+		verify(timesheetDAO);
+		verify(statusService);
 	}	
 
 }

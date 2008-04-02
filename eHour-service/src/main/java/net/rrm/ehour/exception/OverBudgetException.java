@@ -29,6 +29,11 @@ public class OverBudgetException extends BusinessException
 	private ProjectAssignmentStatus status;
 	
 
+	public OverBudgetException()
+	{
+		super();
+	}
+	
 	public OverBudgetException(ProjectAssignmentStatus status)
 	{
 		super();

@@ -27,7 +27,6 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config>
 
-
 	<aop:aspectj-autoproxy />
 
 	<!-- Status Change observer aspect -->

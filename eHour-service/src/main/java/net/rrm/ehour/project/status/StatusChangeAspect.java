@@ -17,7 +17,6 @@ public class StatusChangeAspect
 {
 	private ProjectAssignmentStatusService projectAssignmentStatusService;
 	private	Logger				logger = Logger.getLogger(StatusChangeAspect.class);
-
 	
 	/**
 	 * Determine status change

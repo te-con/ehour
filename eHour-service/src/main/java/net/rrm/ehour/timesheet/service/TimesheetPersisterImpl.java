@@ -59,10 +59,21 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	{
 		ProjectAssignmentStatus beforeStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
 		
-		persistEntries(assignment, entries, weekRange);
+		boolean checkAfterStatus = beforeStatus.isValid();
+		
+		try
+		{
+			persistEntries(assignment, entries, weekRange, !beforeStatus.isValid());
+		}
+		catch (OverBudgetException obe)
+		{
+			// make sure it's retrown by checking the after status
+			checkAfterStatus = true;
+		}
 
 		ProjectAssignmentStatus afterStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
-		if (!afterStatus.isValid())
+		
+		if (checkAfterStatus && !afterStatus.isValid())
 		{
 			throw new OverBudgetException(afterStatus);
 		}
@@ -72,14 +83,15 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 			notifyPm(assignment, afterStatus);
 		}
 	}
-	
+
 	/**
-	 * Check and persist entries
+	 * Persist entry by entry
 	 * @param assignment
 	 * @param entries
 	 * @param weekRange
+	 * @param onlyLessThanExisting
 	 */
-	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange)
+	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException
 	{
 		List<TimesheetEntry> dbEntries = timesheetDAO.getTimesheetEntriesInRange(assignment.getUser().getUserId(), weekRange);
 		
@@ -94,37 +106,11 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 			if (StringUtils.isBlank(entry.getComment())
 					&& (entry.getHours() == null || entry.getHours().equals(0f)))
 			{
-				if (logger.isDebugEnabled())
-				{
-					logger.debug("Deleting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
-				}
-				
-				if (dbEntries.contains(entry))
-				{
-					timesheetDAO.delete(getEntry(dbEntries, entry));
-				}
+				deleteEntry(getEntry(dbEntries, entry));
 			}
 			else
 			{
-				if (logger.isDebugEnabled())
-				{
-					logger.debug("Persisting timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
-							" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours()
-							+ ", comment: " + entry.getComment()
-					);
-				}
-				
-				entry.setUpdateDate(new Date());
-
-				if (dbEntries.contains(entry))
-				{
-					timesheetDAO.merge(entry);
-				}
-				else
-				{
-					timesheetDAO.persist(entry);
-				}
+				persistEntry(onlyLessThanExisting, entry, getEntry(dbEntries, entry));
 			}
 			
 			dbEntries.remove(entry);
@@ -144,6 +130,60 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	}
 	
 	/**
+	 * Delete existing entry
+	 * @param existingEntry
+	 */
+	private void deleteEntry(TimesheetEntry existingEntry)
+	{
+		if (existingEntry != null)
+		{
+			if (logger.isDebugEnabled())
+			{
+				logger.debug("Deleting timesheet entry for assignment id " + existingEntry.getEntryId().getProjectAssignment().getAssignmentId() +
+						" for date " + existingEntry.getEntryId().getEntryDate() + ", hours booked: " + existingEntry.getHours());
+			}
+			
+			timesheetDAO.delete(existingEntry);
+		}		
+	}
+	
+	/**
+	 * Persist entry
+	 * @param onlyLessThanExisting
+	 * @param newEntry
+	 * @param existingEntry
+	 * @throws OverBudgetException 
+	 */
+	private void persistEntry(boolean onlyLessThanExisting, TimesheetEntry newEntry, TimesheetEntry existingEntry) throws OverBudgetException
+	{
+		if (onlyLessThanExisting && 
+				(existingEntry == null ||
+				  (newEntry.getHours().compareTo(existingEntry.getHours()) > 0)))
+		{
+			throw new OverBudgetException();
+		}
+		
+		if (logger.isDebugEnabled())
+		{
+			logger.debug("Persisting timesheet entry for assignment id " + newEntry.getEntryId().getProjectAssignment().getAssignmentId() +
+					" for date " + newEntry.getEntryId().getEntryDate() + ", hours booked: " + newEntry.getHours()
+					+ ", comment: " + newEntry.getComment()
+			);
+		}
+		
+		newEntry.setUpdateDate(new Date());
+
+		if (existingEntry != null)
+		{
+			timesheetDAO.merge(newEntry);
+		}
+		else
+		{
+			timesheetDAO.persist(newEntry);
+		}		
+	}
+	
+	/**
 	 * Get entry from list
 	 * @param entries
 	 * @param entry
@@ -153,7 +193,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	{
 		return entries.get(entries.indexOf(entry));
 	}
-	
 	
 	/**
 	 * Notify pm on phase change
@@ -165,7 +204,6 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 		TimesheetEntry entry;
 
 		entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
-
 
 		// over alloted - fixed
 		if (assignment.getAssignmentType().getAssignmentTypeId().intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
