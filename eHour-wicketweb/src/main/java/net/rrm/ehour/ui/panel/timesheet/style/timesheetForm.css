@@ -133,9 +133,7 @@ div.timesheet
 	margin: 0;
 	padding: 0 0 1px 0;
 	text-align: center;
-	border-bottom-style:  solid;
-	border-bottom-color: #b9d3ef;
-	border-bottom-width: 1px;
+	border-bottom-style:  solid;	border-bottom-color: #b9d3ef;	border-bottom-width: 1px;
 }
 
 
@@ -168,9 +166,10 @@ div.timesheet
 	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
-	padding: 0;
 	text-align: center;
 	background-color: #eef6fe;
+	padding: 1px 0 0 0;
+	vertical-align: top;
 }
 
 .timesheetTable tr.projectRow td.saturday
@@ -178,9 +177,10 @@ div.timesheet
 	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
-	padding: 0;
 	border-right: 0px;
 	text-align: center;
+	padding: 1px 0 0 0;
+	vertical-align: top;
 }
 
 .timesheetTable tr.projectRow td.total
@@ -244,8 +244,9 @@ div.timesheet
 	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
-	padding: 0;
 	text-align: center;
+	padding: 1px 0 0 0;
+	vertical-align: top;
 }
 
 .timesheetTable input

@@ -39,6 +39,7 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -226,7 +227,7 @@ public class TimesheetRowList extends ListView
 	 * @param row
 	 * @param index
 	 */
-	private void createTimesheetEntryComment(String id, final TimesheetRow row, final int index, ListItem item)
+	private void createTimesheetEntryComment(String id, final TimesheetRow row, final int index, WebMarkupContainer parent)
 	{
 		final ModalWindow modalWindow;
 		final AjaxLink commentLink;
@@ -264,14 +265,14 @@ public class TimesheetRowList extends ListView
 			}
 		});
 		
-		item.add(modalWindow);
+		parent.add(modalWindow);
 		
 		commentLink.setOutputMarkupId(true);
 		commentLink.add(CommonModifiers.tabIndexModifier(255));
 		
 		setCommentLinkClass(commentModel, commentLink);
 		
-		item.add(commentLink);
+		parent.add(commentLink);
 	}
 	
 	/**

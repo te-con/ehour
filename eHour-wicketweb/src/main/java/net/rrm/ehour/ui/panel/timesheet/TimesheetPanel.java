@@ -275,17 +275,9 @@ public class TimesheetPanel extends Panel implements Serializable
 				}
 				else
 				{
-					for (ProjectAssignmentStatus projectStatus : failedProjects)
-					{
-						for (ProjectAssignmentStatus.Status status : projectStatus.getStatusses())
-						{
-//							System.out.println(innerStatus);
-						}
-								
-//						System.out.println(status.get
-					} 
+					addFailedProjectMessages(failedProjects, timesheet, target);
 					
-					target.addComponent(updateErrorMessage());
+					target.addComponent(TimesheetPanel.this);
 				}
 					
                 ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
@@ -322,6 +314,29 @@ public class TimesheetPanel extends Panel implements Serializable
 		resetButton.setDefaultFormProcessing(false);
 		parent.add(resetButton);
 	}
+	
+	/**
+	 * Add failed projects to overview
+	 * @param failedProjects
+	 * @param target
+	 */
+	private void addFailedProjectMessages(List<ProjectAssignmentStatus> failedProjects, Timesheet timesheet, AjaxRequestTarget target)
+	{
+		timesheet.updateFailedProjects(failedProjects);
+		
+		
+//		for (ProjectAssignmentStatus projectStatus : failedProjects)
+//		{
+//			System.out.println(projectStatus.getAggregate().getHours());
+//			System.out.println(projectStatus.getAggregate().getAvailableHours());
+//			
+//			for (ProjectAssignmentStatus.Status status : projectStatus.getStatusses())
+//			{
+//				System.out.println(status);
+//			}
+//		}		
+	}
+	
 	
 	private void addProjectStatus(ProjectAssignmentStatus projectStatus)
 	{
@@ -426,30 +441,8 @@ public class TimesheetPanel extends Panel implements Serializable
 	 */
 	private List<ProjectAssignmentStatus> persistTimesheetEntries(Timesheet timesheet)
 	{
-		List<TimesheetEntry>	timesheetEntries = new ArrayList<TimesheetEntry>();
-		
-		Collection<List<TimesheetRow>> rows = timesheet.getCustomers().values();
-		
-		for (List<TimesheetRow> list : rows)
-		{
-			for (TimesheetRow timesheetRow : list)
-			{
-				timesheetEntries.addAll(timesheetRow.getTimesheetEntries());
-			}
-		}
-		
-		// check comment id
-		if (timesheet.getComment().getCommentId() == null)
-		{
-			TimesheetCommentId id = new TimesheetCommentId();
-			id.setUserId(timesheet.getUser().getUserId());
-			id.setCommentDate(timesheet.getWeekStart());
-			
-			timesheet.getComment().setCommentId(id);
-		}
-		
-		return timesheetService.persistTimesheetWeek(timesheetEntries, 
-														timesheet.getComment(),
+		return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(), 
+														timesheet.getCommentForPersist(),
 														new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
 	}
 	

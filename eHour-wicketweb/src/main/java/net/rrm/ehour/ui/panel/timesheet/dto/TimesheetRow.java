@@ -24,6 +24,7 @@ import java.util.List;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 /**
  * Representation of a row in the timesheet form
@@ -31,14 +32,29 @@ import net.rrm.ehour.domain.TimesheetEntryId;
 
 public class TimesheetRow implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5800367771424869244L;
+
 	private ProjectAssignment	projectAssignment;
 	private	TimesheetCell[]		timesheetCells;
 	private	Calendar			firstDayOfWeekDate;
 	private Timesheet			timesheet; // parent timesheet
+	private ProjectAssignmentStatus assignmentStatus;
+
+	/**
+	 * @return the assignmentStatus
+	 */
+	public ProjectAssignmentStatus getAssignmentStatus()
+	{
+		return assignmentStatus;
+	}
+
+	/**
+	 * @param assignmentStatus the assignmentStatus to set
+	 */
+	public void setAssignmentStatus(ProjectAssignmentStatus assignmentStatus)
+	{
+		this.assignmentStatus = assignmentStatus;
+	}
 
 	/**
 	 * 
@@ -135,7 +151,7 @@ public class TimesheetRow implements Serializable
 		{
 			for (int i =0; i < timesheetCells.length; i++)
 			{
-				// as timesheet entry is lazy fetched in a subsequent http request assignment is not set
+				// as timesheet entry is lazy fetched in a subsequent http requests, assignment is not set
 				if (timesheetCells[i] != null
 						&& timesheetCells[i].getTimesheetEntry() != null) 
 				{
@@ -187,6 +203,4 @@ public class TimesheetRow implements Serializable
 	{
 		this.timesheet = timesheet;
 	}
-
-
 }
