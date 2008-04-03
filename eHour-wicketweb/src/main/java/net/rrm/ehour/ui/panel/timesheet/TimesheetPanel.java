@@ -266,16 +266,18 @@ public class TimesheetPanel extends Panel implements Serializable
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				List<ProjectAssignmentStatus> failedProjects =  persistTimesheetEntries(timesheet);
-				
+
+				// success
 				if (failedProjects.isEmpty())
 				{
 					target.addComponent(updatePostPersistMessage(timesheet));
 				}
 				else
+				// or failure
 				{
 					addFailedProjectMessages(failedProjects, timesheet, target);
 					
-					target.addComponent(timesheetForm);
+					target.addComponent(updateErrorMessage());
 				}
 					
                 ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
