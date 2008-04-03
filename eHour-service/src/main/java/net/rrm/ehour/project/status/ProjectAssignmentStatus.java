@@ -15,6 +15,7 @@
 
 package net.rrm.ehour.project.status;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +40,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * Additionaly an assignment has either a before start, running, after deadline status
  **/
 
-public class ProjectAssignmentStatus
+public class ProjectAssignmentStatus implements Serializable
 {
+	private static final long serialVersionUID = 6826582447867247739L;
+
 	public enum Status
 	{
 		IN_OVERRUN,
