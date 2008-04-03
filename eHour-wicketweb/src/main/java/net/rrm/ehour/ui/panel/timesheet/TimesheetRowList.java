@@ -123,6 +123,12 @@ public class TimesheetRowList extends ListView
 		item.add(projectLink);
 		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 		
+		// status message
+		Label label = new Label("status", new PropertyModel(item.getModel(), "status"));
+		label.setEscapeModelStrings(false);
+		label.setOutputMarkupId(true);
+		item.add(label);
+				
 		Calendar dateIterator = (Calendar)row.getFirstDayOfWeekDate().clone();
 
 		for (int i = 1;

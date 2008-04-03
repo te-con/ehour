@@ -192,9 +192,11 @@ div.timesheet
 	font:  0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
-	padding: 0;
 	border-right: 0px;
 	text-align: center;
+	padding: 8px 0 0 0;
+	vertical-align: top;
+	
 }
 
 .timesheetTable tr.customerRow td

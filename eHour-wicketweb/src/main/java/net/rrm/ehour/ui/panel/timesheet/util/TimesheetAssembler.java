@@ -161,7 +161,7 @@ public class TimesheetAssembler
 		
 		for (ProjectAssignment assignment : assignmentMap.keySet())
 		{
-			timesheetRow = new TimesheetRow();
+			timesheetRow = new TimesheetRow(config);
 			timesheetRow.setTimesheet(timesheet);
 			timesheetRow.setProjectAssignment(assignment);
 			timesheetRow.setFirstDayOfWeekDate(firstDate);

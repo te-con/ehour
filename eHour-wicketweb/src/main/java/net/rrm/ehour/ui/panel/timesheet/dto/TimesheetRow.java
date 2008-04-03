@@ -21,10 +21,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+
+import org.apache.wicket.Application;
+import org.apache.wicket.Localizer;
+import org.apache.wicket.model.Model;
 
 /**
  * Representation of a row in the timesheet form
@@ -39,6 +44,29 @@ public class TimesheetRow implements Serializable
 	private	Calendar			firstDayOfWeekDate;
 	private Timesheet			timesheet; // parent timesheet
 	private ProjectAssignmentStatus assignmentStatus;
+	private EhourConfig			config;
+
+	
+	public TimesheetRow(EhourConfig config)
+	{
+		this.config= config;
+	}
+	
+	/**
+	 * @return the config
+	 */
+	public EhourConfig getConfig()
+	{
+		return config;
+	}
+
+	/**
+	 * @param config the config to set
+	 */
+	public void setConfig(EhourConfig config)
+	{
+		this.config = config;
+	}
 
 	/**
 	 * @return the assignmentStatus
@@ -54,6 +82,32 @@ public class TimesheetRow implements Serializable
 	public void setAssignmentStatus(ProjectAssignmentStatus assignmentStatus)
 	{
 		this.assignmentStatus = assignmentStatus;
+	}
+	
+	/**
+	 * Get status
+	 * @return
+	 */
+	public String getStatus()
+	{
+		if (assignmentStatus == null)
+		{
+			return null;
+		}
+		else
+		{
+			if (getAssignmentStatus().getAggregate().getAvailableHours() < 0)
+			{
+				AvailableHours hours = new AvailableHours((int)(getAssignmentStatus().getAggregate().getAvailableHours() * -1));
+			
+				Localizer localizer = Application.get().getResourceSettings().getLocalizer();
+				
+				return localizer.getString("timesheet.errorNoHours", null, new Model(hours));
+			}
+			
+			
+			return "<br />";
+		}
 	}
 
 	/**
@@ -203,4 +257,32 @@ public class TimesheetRow implements Serializable
 	{
 		this.timesheet = timesheet;
 	}
+	
+	/**
+	 * 
+	 * @author Thies
+	 *
+	 */
+	private class AvailableHours implements Serializable
+	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		int hours;
+		
+		public AvailableHours(int hours)
+		{
+			this.hours = hours;
+		}
+
+		/**
+		 * @return the hours
+		 */
+		public int getHours()
+		{
+			return hours;
+		}
+	}
+	
 }

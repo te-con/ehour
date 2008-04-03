@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +30,6 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.TimesheetComment;
-import net.rrm.ehour.domain.TimesheetCommentId;
-import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
@@ -50,13 +47,13 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
-import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -99,6 +96,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	
 	private	EhourConfig		config;
 	private WebComponent	serverMsgLabel;
+	private Form timesheetForm;
 	
 	/**
 	 * Construct timesheetPanel for entering hours
@@ -130,7 +128,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		add(greyBorder);
 
 		// add form
-		Form timesheetForm = new Form("timesheetForm");
+		timesheetForm = new Form("timesheetForm");
 		timesheetForm.setOutputMarkupId(true);
 		greyBorder.add(timesheetForm);
 		
@@ -277,7 +275,7 @@ public class TimesheetPanel extends Panel implements Serializable
 				{
 					addFailedProjectMessages(failedProjects, timesheet, target);
 					
-					target.addComponent(TimesheetPanel.this);
+					target.addComponent(timesheetForm);
 				}
 					
                 ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
@@ -320,38 +318,25 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param failedProjects
 	 * @param target
 	 */
-	private void addFailedProjectMessages(List<ProjectAssignmentStatus> failedProjects, Timesheet timesheet, AjaxRequestTarget target)
+	private void addFailedProjectMessages(List<ProjectAssignmentStatus> failedProjects, Timesheet timesheet, final AjaxRequestTarget target)
 	{
 		timesheet.updateFailedProjects(failedProjects);
-		
-		
-//		for (ProjectAssignmentStatus projectStatus : failedProjects)
-//		{
-//			System.out.println(projectStatus.getAggregate().getHours());
-//			System.out.println(projectStatus.getAggregate().getAvailableHours());
-//			
-//			for (ProjectAssignmentStatus.Status status : projectStatus.getStatusses())
-//			{
-//				System.out.println(status);
-//			}
-//		}		
-	}
-	
-	
-	private void addProjectStatus(ProjectAssignmentStatus projectStatus)
-	{
-		for (ProjectAssignmentStatus.Status status : projectStatus.getStatusses())
-		{
-			if (status.equals(ProjectAssignmentStatus.Status.OVER_ALLOTTED)
-					|| status.equals(ProjectAssignmentStatus.Status.OVER_OVERRUN))
-			{
-				
-			}
-		}
-		
-	}
-	
 
+		timesheetForm.visitChildren(Label.class, new IVisitor()
+		{
+			public Object component(Component component)
+			{
+				Label label = (Label)component;
+				if (label.getId().equals("status"))
+				{
+					target.addComponent(label);
+				}
+				
+				return IVisitor.CONTINUE_TRAVERSAL;
+			}
+		});
+	}
+	
 	/**
 	 * Set message that the hours are saved
 	 * @param timesheet
