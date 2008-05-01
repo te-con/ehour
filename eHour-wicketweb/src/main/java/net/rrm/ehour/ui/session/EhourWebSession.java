@@ -36,7 +36,6 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
-import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.injection.web.InjectorHolder;
@@ -63,9 +62,9 @@ public class EhourWebSession extends AuthenticatedWebSession
 	 * @param app
 	 * @param req
 	 */
-	public EhourWebSession(final AuthenticatedWebApplication application, Request req)
+	public EhourWebSession(Request req)
 	{
-		super(application, req);
+		super(req);
 		
 		reloadConfig();
 	}

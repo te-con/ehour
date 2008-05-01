@@ -110,7 +110,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	@Override
 	public Session newSession(final Request request, final Response response)
 	{
-		session = new EhourWebSession(this, request)
+		session = new EhourWebSession(request)
 		{
 			public AuthUser getUser()
 			{
