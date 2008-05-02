@@ -135,7 +135,7 @@ public class MainConfig extends BaseAdminPage
 
 		TextField smtpPort = new RequiredTextField("config.smtpPort");
 		configForm.add(new AjaxFormComponentFeedbackIndicator("smtpPortValidationError", mailSmtp));
-		smtpPort.setType(Float.class);
+		smtpPort.setType(Integer.class);
 		smtpPort.add(NumberValidator.POSITIVE);
 		configForm.add(smtpPort);
 		
