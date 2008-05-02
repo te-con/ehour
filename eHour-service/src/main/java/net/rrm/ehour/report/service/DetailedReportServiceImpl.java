@@ -21,23 +21,22 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.DetailedReportDAO;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.util.EhourUtil;
 
-import org.apache.log4j.Logger;
-
 /**
  * Report service for detailed reports implementation
  **/
 
-public class DetailedReportServiceImpl implements DetailedReportService
+public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatReportElement>
+										implements DetailedReportService
 {
 	private	DetailedReportDAO	detailedReportDAO;
-	private	Logger				logger = Logger.getLogger(DetailedReportServiceImpl.class);
 
 	/*
 	 * (non-Javadoc)
@@ -45,53 +44,35 @@ public class DetailedReportServiceImpl implements DetailedReportService
 	 */
 	public ReportData<FlatReportElement> getDetailedReportData(ReportCriteria reportCriteria)
 	{
-		UserCriteria	userCriteria;
-		boolean			ignoreUsers;
-		boolean			ignoreProjects;
-		DateRange		reportRange;
-		List<FlatReportElement>	reportElements;
-		ReportData<FlatReportElement>		reportData;
+		return getReportData(reportCriteria);
+	}
+	
+	protected List<FlatReportElement> getReportElements(List<User> users,
+														List<Project >projects,
+														DateRange reportRange)
+	{
+		List<FlatReportElement>	elements;
 		
-		userCriteria = reportCriteria.getUserCriteria();
-		logger.debug("Getting detailed report data for " + userCriteria);
-		
-		reportRange = reportCriteria.getReportRange();
-		
-		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
-		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
-		
-		if (ignoreProjects && ignoreUsers)
+		if (users == null && projects == null)
 		{
-			logger.debug("creating full detailed report");
-			reportElements = detailedReportDAO.getHoursPerDay(reportRange);
+			elements = detailedReportDAO.getHoursPerDay(reportRange);
 		}
-		else if (ignoreProjects && !ignoreUsers)
+		else if (projects == null && users != null)
 		{
-			logger.debug("creating report for only selected users");
-			
-			reportElements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
-																	reportRange);
+			elements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getPKsFromDomainObjects(users), reportRange);
 		}
-		else if (!ignoreProjects && ignoreUsers)
+		else if (projects != null && users == null)
 		{
-			logger.debug("creating report for only selected project");
-			reportElements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
-															reportRange);
+			elements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getPKsFromDomainObjects(projects), reportRange);
 		}
 		else
 		{
-			logger.debug("creating report for selected users & projects");
-
-			reportElements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(EhourUtil.getPKsFromDomainObjects(userCriteria.getProjects()),
-																	EhourUtil.getPKsFromDomainObjects(userCriteria.getUsers()),
-																	reportRange);
-		}		
+			elements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(EhourUtil.getPKsFromDomainObjects(projects),
+																			EhourUtil.getPKsFromDomainObjects(users),
+																			reportRange);
+		}
 		
-		reportData = new ReportData<FlatReportElement>();
-		reportData.setReportElements(reportElements);
-		reportData.setReportCriteria(reportCriteria); 
-		
-		return reportData;
+		return elements;
 	}
 
 	/*

@@ -27,16 +27,13 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.ProjectManagerDashboard;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.user.dao.UserDAO;
 
 import org.apache.log4j.Logger;
 
@@ -46,11 +43,10 @@ import org.apache.log4j.Logger;
  *
  */
 
-public class AggregateReportServiceImpl implements AggregateReportService
+public class AggregateReportServiceImpl extends AbstractReportServiceImpl<AssignmentAggregateReportElement> 
+										implements AggregateReportService 
 {
 	private	ReportAggregatedDAO	reportAggregatedDAO;
-	private	ProjectDAO			projectDAO;
-	private	UserDAO				userDAO;
 	private	MailService			mailService;
 	private	ProjectAssignmentService	projectAssignmentService;
 	
@@ -83,61 +79,22 @@ public class AggregateReportServiceImpl implements AggregateReportService
 		return assignmentAggregateReportElements;
 	}	
 	
+
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.ReportService#getAggregateReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.report.service.AggregateReportService#getAggregateReportData(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
-	public ReportData<AssignmentAggregateReportElement>  getAggregateReportData(ReportCriteria reportCriteria)
+	public ReportData<AssignmentAggregateReportElement> getAggregateReportData(ReportCriteria criteria)
 	{
-		ReportData<AssignmentAggregateReportElement> reportData = new ReportData<AssignmentAggregateReportElement>();
-		UserCriteria	userCriteria;
-		List<Project>	projects = null;
-		List<User>		users = null;
-		boolean			ignoreUsers;
-		boolean			ignoreProjects;
-		DateRange		reportRange;
-		
-		userCriteria = reportCriteria.getUserCriteria();
-		logger.debug("Getting aggregate report data for " + userCriteria);
-		
-		reportRange = reportCriteria.getReportRange();
-		
-		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
-		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
-		
-		if (ignoreProjects && ignoreUsers)
-		{
-			logger.debug("creating full report");
-		}
-		else if (ignoreProjects && !ignoreUsers)
-		{
-			logger.debug("creating report for only selected users");
-			users = getUsers(userCriteria);
-		}
-		else if (!ignoreProjects && ignoreUsers)
-		{
-			logger.debug("creating report for only selected project");
-			projects = getProjects(userCriteria);
-		}
-		else
-		{
-			logger.debug("creating report for selected users & projects");
-			users = getUsers(userCriteria);
-			projects = getProjects(userCriteria);
-		}		
-		
-		reportData.setReportElements(getProjectAssignmentAggregates(users, projects, reportRange));
-		reportData.setReportCriteria(reportCriteria);
-		
-		return reportData;
-	}
-	
-	/**
-	 * Get project assignments aggregates
-	 * @param
-	 * @return
+		return getReportData(criteria);
+	}	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.data.DateRange)
 	 */
-	private List<AssignmentAggregateReportElement> getProjectAssignmentAggregates(List<User> users,
+	@Override
+	protected List<AssignmentAggregateReportElement> getReportElements(List<User> users,
 																			List<Project >projects,
 																			DateRange reportRange)
 	{
@@ -196,72 +153,6 @@ public class AggregateReportServiceImpl implements AggregateReportService
 //		return aggregates;
 //	}	
 
-	/**
-	 * Get project id's based on selected customers
-	 * @param userCriteria
-	 * @return
-	 */
-	private List<Project> getProjects(UserCriteria userCriteria)
-	{
-		List<Project>	projects;
-		
-		// No projects selected by the user, use any given customer limitation 
-		if (userCriteria.isEmptyProjects())
-		{
-			if (!userCriteria.isEmptyCustomers())
-			{
-				logger.debug("Using customers to determine projects");
-				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomers(),
-																userCriteria.isOnlyActiveProjects());
-			}
-			else
-			{
-				logger.debug("No customers or projects selected");
-				projects = null;
-			}
-		}
-		else
-		{
-			logger.debug("Using user provided projects");
-			projects = userCriteria.getProjects();
-		}
-		
-		return projects;
-	}
-	
-	/**
-	 * Get users based on selected departments
-	 * @param userCriteria
-	 * @return
-	 */
-	private List<User> getUsers(UserCriteria userCriteria)
-	{
-		List<User>		users;
-		
-		if (userCriteria.isEmptyUsers())
-		{
-			if (!userCriteria.isEmptyDepartments())
-			{
-				logger.debug("Using departments to determine users");
-				users = userDAO.findUsersForDepartments(null,
-														userCriteria.getDepartments(),
-														userCriteria.isOnlyActiveUsers());
-			}
-			else
-			{
-				logger.debug("No departments or users selected");
-				users = null;
-			}
-		}
-		else
-		{
-			logger.debug("Using user provided users");
-			users = userCriteria.getUsers();
-		}
-		
-		return users;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getProjectManagerReport(net.rrm.ehour.data.DateRange, java.lang.Integer)
@@ -277,7 +168,7 @@ public class AggregateReportServiceImpl implements AggregateReportService
 		AssignmentAggregateReportElement	emptyAggregate;
 		
 		// get the project
-		project = projectDAO.findById(projectId);
+		project = getProjectDAO().findById(projectId);
 		report.setProject(project);
 		logger.debug("PM report for project " + project.getName());
 		
@@ -363,22 +254,6 @@ public class AggregateReportServiceImpl implements AggregateReportService
 	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
-	}
-
-	/**
-	 * @param projectDAO the projectDAO to set
-	 */
-	public void setProjectDAO(ProjectDAO projectDAO)
-	{
-		this.projectDAO = projectDAO;
-	}
-
-	/**
-	 * @param userDAO the userDAO to set
-	 */
-	public void setUserDAO(UserDAO userDAO)
-	{
-		this.userDAO = userDAO;
 	}
 
 	/**

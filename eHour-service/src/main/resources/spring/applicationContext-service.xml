@@ -48,17 +48,27 @@
 	     <constructor-arg value="1"/>
 	 </bean>
 
-	<!-- Aggregate Report service -->
-	<bean id="aggregateReportService" class="net.rrm.ehour.report.service.AggregateReportServiceImpl">
-		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
+	<!-- Abstract report service -->
+	<bean id="abstractReportService" 
+			class="net.rrm.ehour.report.service.AbstractReportServiceImpl"
+			abstract="true">
 		<property name="userDAO" ref="userDAO" />	
 		<property name="projectDAO" ref="projectDAO" />	
+	</bean>
+
+	<!-- Aggregate Report service -->
+	<bean id="aggregateReportService" 
+			class="net.rrm.ehour.report.service.AggregateReportServiceImpl"
+			parent="abstractReportService">
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
 		<property name="mailService" ref="mailService" />
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
 	</bean>
 
 	<!-- Detailed Report service -->
-	<bean id="detailedReportService" class="net.rrm.ehour.report.service.DetailedReportServiceImpl">
+	<bean id="detailedReportService" 
+			class="net.rrm.ehour.report.service.DetailedReportServiceImpl"
+			parent="abstractReportService">
 		<property name="detailedReportDAO" ref="detailedReportDAO" />
 	</bean>
 
