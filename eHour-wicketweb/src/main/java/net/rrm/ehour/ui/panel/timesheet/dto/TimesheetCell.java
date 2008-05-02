@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.panel.timesheet.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import net.rrm.ehour.domain.TimesheetEntry;
 
@@ -29,6 +30,7 @@ public class TimesheetCell implements Comparable<TimesheetCell>, Serializable
 	private static final long serialVersionUID = -2708559856313387714L;
 	private TimesheetEntry	timesheetEntry;
 	private	boolean			isValid;
+	private Date			date;
 
 	/**
 	 * @return the isValid
@@ -63,5 +65,19 @@ public class TimesheetCell implements Comparable<TimesheetCell>, Serializable
 	public int compareTo(TimesheetCell o)
 	{
 		return getTimesheetEntry().getEntryId().getEntryDate().compareTo(o.getTimesheetEntry().getEntryId().getEntryDate());
+	}
+	/**
+	 * @return the date
+	 */
+	public Date getDate()
+	{
+		return date;
+	}
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(Date date)
+	{
+		this.date = date;
 	}
 }

@@ -213,11 +213,9 @@ public class TimesheetRow implements Serializable
 					if (timesheetCells[i].getTimesheetEntry().getEntryId() == null)
 					{
 						TimesheetEntryId id = new TimesheetEntryId();
-						Calendar		thisDate = (Calendar)firstDayOfWeekDate.clone();
-						thisDate.add(Calendar.DATE, i);
 						
 						id.setProjectAssignment(getProjectAssignment());
-						id.setEntryDate(thisDate.getTime());
+						id.setEntryDate(timesheetCells[i].getDate());
 						
 						timesheetCells[i].getTimesheetEntry().setEntryId(id);
 					}
@@ -225,6 +223,7 @@ public class TimesheetRow implements Serializable
 					{
 						timesheetCells[i].getTimesheetEntry().getEntryId().setProjectAssignment(getProjectAssignment());
 					}
+					
 					entries.add(timesheetCells[i].getTimesheetEntry());
 				}
 			}

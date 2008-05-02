@@ -173,6 +173,8 @@ public class TimesheetAssembler
 				calendar = DateUtil.getCalendar(config);
 				calendar.setTime(date);
 				
+//				Calendar.
+				
 				timesheetRow.addTimesheetCell(calendar.get(Calendar.DAY_OF_WEEK) - 1,
 												createTimesheetCell(assignment, entry, date, validProjectAssignments));
 			}
@@ -198,6 +200,7 @@ public class TimesheetAssembler
 		
 		cell.setTimesheetEntry(entry);
 		cell.setValid(isCellValid(assignment, validProjectAssignments, date));
+		cell.setDate(date);
 		
 		return cell;
 	}
