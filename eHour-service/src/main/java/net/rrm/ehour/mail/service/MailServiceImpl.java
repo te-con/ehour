@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Properties;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.domain.MailType;
 import net.rrm.ehour.domain.User;
@@ -46,66 +47,20 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 public class MailServiceImpl implements MailService
 {
-	private	EhourConfig		config;
 	private	Logger			logger = Logger.getLogger(this.getClass());
-	private	MailSender		mailSender;
 	private MailLogDAO		mailLogDAO;
 	private	TaskExecutor	taskExecutor;
+	private ConfigurationService 	configurationService;
 	private AssignmentMsgCallback	assignmentMsgCallback;
 	
 	/**
 	 * 
 	 * @param config
 	 */
-	public MailServiceImpl(EhourConfig config, TaskExecutor taskExecutor)
+	public MailServiceImpl(TaskExecutor taskExecutor)
 	{
-		this.config = config;
 		this.taskExecutor = taskExecutor;
-		
-		mailSender = getMailSender(config);
 	}
-	
-	
-	/**
-	 * Get mail sender
-	 * @param config
-	 * @return
-	 */
-	private MailSender getMailSender(EhourConfig config)
-	{
-		MailSender mailSender = new JavaMailSenderImpl();
-		((JavaMailSenderImpl)mailSender).setHost(config.getMailSmtp());
-		
-		if (!StringUtils.isBlank(config.getSmtpPort()))
-		{
-			try
-			{
-				int port = Float.valueOf(config.getSmtpPort()).intValue();
-				((JavaMailSenderImpl)mailSender).setPort(port);
-			}
-			catch (NumberFormatException nfe)
-			{
-				logger.error("Using default port 25, couldn't parse configured port " + config.getSmtpPort());
-			}
-		}
-		
-		
-		if (! StringUtils.isBlank(config.getSmtpUsername())
-				&& ! StringUtils.isBlank(config.getSmtpPassword())) 
-		{
-			logger.debug("Using SMTP authentication");
-			
-			Properties prop = new Properties();
-			prop.put("mail.smtp.auth", "true");
-			
-			((JavaMailSenderImpl)mailSender).setJavaMailProperties(prop);
-			((JavaMailSenderImpl)mailSender).setUsername(config.getSmtpUsername());
-			((JavaMailSenderImpl)mailSender).setPassword(config.getSmtpPassword());
-		}
-		
-		return mailSender;
-	}
-	
 
 	/*
 	 * (non-Javadoc)
@@ -114,7 +69,7 @@ public class MailServiceImpl implements MailService
 	public void mailTestMessage(EhourConfig config)
 	{
 		String subject = "eHour test message";
-		String body = "This is a test message. Reading this means that most likely your SMTP server settings are fine.";
+		String body = "You successfully configured eHour's mail settings.";
 		
 		SimpleMailMessage	msg; 
 		MailTask			mailTask;
@@ -122,6 +77,7 @@ public class MailServiceImpl implements MailService
 		msg = new SimpleMailMessage();
 		msg.setText(body);
 		msg.setSubject(subject);
+		msg.setFrom(config.getMailFrom());
 		
 		MailTaskMessage taskMessage = new MailTaskMessage();
 		User user = new User();
@@ -130,7 +86,7 @@ public class MailServiceImpl implements MailService
 		
 		taskMessage.setMailMessage(msg);
 		
-		mailTask = new MailTask(taskMessage, getMailSender(config));
+		mailTask = new MailTask(taskMessage, createMailSender(config));
 		taskExecutor.execute(mailTask);
 	}	
 	
@@ -313,10 +269,13 @@ public class MailServiceImpl implements MailService
 		
 		if (!isAssignmentMailAlreadySent(assignmentAggregate, mailTypeId))
 		{
+			EhourConfig config = configurationService.getConfiguration();
+			
 			asgMsg = new AssignmentPMMessage();
 			msg = new SimpleMailMessage();
 			msg.setText(mailBody);
 			msg.setSubject(subject);
+			msg.setFrom(config.getMailFrom());
 			
 			asgMsg.setMailMessage(msg);
 			asgMsg.setToUser(user);
@@ -325,7 +284,7 @@ public class MailServiceImpl implements MailService
 			asgMsg.setMailType(new MailType(mailTypeId));
 			asgMsg.setCallBack(assignmentMsgCallback);
 			
-			mailTask = new MailTask(asgMsg);
+			mailTask = new MailTask(asgMsg, createMailSender(config));
 			taskExecutor.execute(mailTask);
 		}
 	}
@@ -363,15 +322,6 @@ public class MailServiceImpl implements MailService
 		private	MailTaskMessage mailTaskMessage;
 		private MailSender		javaMailSender;
 		
-		/**
-		 * 
-		 * @param msg
-		 */
-		public MailTask(MailTaskMessage mailTaskMessage)
-		{
-			this(mailTaskMessage, MailServiceImpl.this.mailSender);
-		}
-
 		public MailTask(MailTaskMessage mailTaskMessage, MailSender mailSender)
 		{
 			this.mailTaskMessage = mailTaskMessage;
@@ -386,7 +336,6 @@ public class MailServiceImpl implements MailService
 		{
 			SimpleMailMessage msg = mailTaskMessage.getMailMessage();
 			
-			msg.setFrom(config.getMailFrom());
 			msg.setTo(mailTaskMessage.getToUser().getEmail());
 			try
 			{
@@ -415,6 +364,45 @@ public class MailServiceImpl implements MailService
 		return mailLogDAO.findMailLogOnAssignmentIds(assignmentIds);
 	}
 	
+	/**
+	 * Create mail sender
+	 * @param config
+	 * @return
+	 */
+	private MailSender createMailSender(EhourConfig config)
+	{
+		MailSender mailSender = new JavaMailSenderImpl();
+		((JavaMailSenderImpl)mailSender).setHost(config.getMailSmtp());
+		
+		if (!StringUtils.isBlank(config.getSmtpPort()))
+		{
+			try
+			{
+				int port = Float.valueOf(config.getSmtpPort()).intValue();
+				((JavaMailSenderImpl)mailSender).setPort(port);
+			}
+			catch (NumberFormatException nfe)
+			{
+				logger.error("Using default port 25, couldn't parse configured port " + config.getSmtpPort());
+			}
+		}
+		
+		
+		if (! StringUtils.isBlank(config.getSmtpUsername())
+				&& ! StringUtils.isBlank(config.getSmtpPassword())) 
+		{
+			logger.debug("Using SMTP authentication");
+			
+			Properties prop = new Properties();
+			prop.put("mail.smtp.auth", "true");
+			
+			((JavaMailSenderImpl)mailSender).setJavaMailProperties(prop);
+			((JavaMailSenderImpl)mailSender).setUsername(config.getSmtpUsername());
+			((JavaMailSenderImpl)mailSender).setPassword(config.getSmtpPassword());
+		}
+		
+		return mailSender;
+	}	
 	
 	/**
 	 * @param assignmentMsgCallback the assignmentMsgCallback to set
@@ -430,5 +418,13 @@ public class MailServiceImpl implements MailService
 	public void setMailLogDAO(MailLogDAO mailLogDAO)
 	{
 		this.mailLogDAO = mailLogDAO;
+	}
+
+	/**
+	 * @param configurationService the configurationService to set
+	 */
+	public void setConfigurationService(ConfigurationService configurationService)
+	{
+		this.configurationService = configurationService;
 	}
 }
