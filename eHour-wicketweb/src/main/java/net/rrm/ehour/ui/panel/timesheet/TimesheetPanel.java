@@ -273,12 +273,11 @@ public class TimesheetPanel extends Panel implements Serializable
 					target.addComponent(updatePostPersistMessage(timesheet));
 				}
 				else
-				// or failure
 				{
-					addFailedProjectMessages(failedProjects, timesheet, target);
-					
 					target.addComponent(updateErrorMessage());
 				}
+				
+				addFailedProjectMessages(failedProjects, timesheet, target);
 					
                 ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
             }
