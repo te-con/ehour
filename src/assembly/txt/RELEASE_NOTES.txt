@@ -1,4 +1,23 @@
-eHour 0.8.0 release notes
+eHour 0.8.0 release notes - 7 May 2008
+--------------------------------------
+0.8 adds full French, Italian and Dutch translation and a partial German, Polish, Spanish and Portuguese translation.
+Also the first day of the week and the number of work hours in a day are now configurable.
+
+The full list of bugs fixed and features added:
+(064) [Feature request] Change first day of the week to monday
+(100) [Feature request] Capability to change number of work hours in a day
+(095) [Feature request] authenticated smtp
+(072) [Bug / defect] Inconsistent naming of user & employee
+(105) [Bug / defect] Previous month query generates error
+(102) [Bug / defect] Fixed hour constraint not enforced
+(063) [Bug / defect] Can't delete hours
+(065) [Bug / defect] Wrong week numbers
+(098) [Bug / defect] Internal Error - after a long period of inactivity
+(086) [Bug / defect] Entering ` as hours in timesheet results in Internal Error
+(093) [Bug / defect] Clear button on report Page not working
+(045) [Bug / defect] PM role not properly removed
+(087) [Bug / defect] Reporting prints debug msg to standard out
+(091) [Bug / defect] eHour requires internet connectivity
 
 
 eHour 0.7.3 release notes - 31 January 2008

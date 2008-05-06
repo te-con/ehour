@@ -23,9 +23,9 @@ When eHour is started browse to http://localhost:8000/ to access the web interfa
 First time usage documentation can be found at http://www.ehour.nl/first_time_usage.phtml and http://www.ehour.nl/doc.phtml
 
 
-Upgrade instructions from v0.7.x to v0.7.2
+Upgrade instructions from v0.7.x to v0.8
 ----------------------------------------
-Unpack the v0.7.2 archive to a new directory. Copy the ehourDb directory from the root of your previous eHour installation to the
-root of the directory where you unpacked 0.7.2. That's it! Start eHour as explained in the installation instructions above.
+Unpack the v0.8 archive to a new directory. Copy the ehourDb directory from the root of your previous eHour installation to the
+root of the directory where you unpacked 0.8. That's it! Start eHour as explained in the installation instructions above.
 
 www.ehour.nl
