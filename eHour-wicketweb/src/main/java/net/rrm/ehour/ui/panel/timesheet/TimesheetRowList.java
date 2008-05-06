@@ -310,7 +310,6 @@ public class TimesheetRowList extends ListView
 			thisDate.add(Calendar.DAY_OF_YEAR, index);
 
 			final Object previousModel = model.getObject();
-			System.out.println("ff" + row.getProjectAssignment().getFullName());
 			add(new Label("dayComments",
 					new StringResourceModel("timesheet.dayComments",
 												this,
