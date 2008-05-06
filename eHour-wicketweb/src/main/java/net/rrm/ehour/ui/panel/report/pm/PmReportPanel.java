@@ -50,7 +50,7 @@ public class PmReportPanel extends AbstractReportPanel
 	 */
 	public PmReportPanel(String id, ProjectManagerReport report)
 	{
-		super(id);
+		super(id, -1, 730);
 
 		setOutputMarkupId(true);
 		
@@ -61,7 +61,7 @@ public class PmReportPanel extends AbstractReportPanel
 																			 new DateModel(report.getReportRange().getDateStart(), config),
 																			 new DateModel(report.getReportRange().getDateEnd(), config)});
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, null, null);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, null, null, 730);
 		add(greyBorder);
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		greyBorder.add(blueBorder);
