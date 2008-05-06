@@ -138,7 +138,7 @@ public class TimesheetPersisterImplTest {
 		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
 			.andReturn(null);
 
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
 			.andReturn(existingEntries);
 		
 		expect(statusService.getAssignmentStatus(assignment))
@@ -165,7 +165,7 @@ public class TimesheetPersisterImplTest {
 		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
 			.andReturn(null);
 		
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
 			.andReturn(existingEntries);
 		
 		expect(statusService.getAssignmentStatus(assignment))
@@ -227,7 +227,7 @@ public class TimesheetPersisterImplTest {
 		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
 			.andReturn(null);
 		
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
 			.andReturn(existingEntries);
 
 		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
@@ -259,7 +259,7 @@ public class TimesheetPersisterImplTest {
 	 */
 	@Test
 	public void testPersistOverrunInvalidTimesheet() {
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
 			.andReturn(existingEntries);
 
 		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
@@ -301,7 +301,7 @@ public class TimesheetPersisterImplTest {
 		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
 			.andReturn(null);
 
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(Integer.class), isA(DateRange.class)))
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
 			.andReturn(existingEntries);
 
 		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();

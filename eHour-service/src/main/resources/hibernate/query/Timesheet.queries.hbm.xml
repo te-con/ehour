@@ -8,6 +8,13 @@
                        entry.entryId.entryDate <= :dateEnd AND
                        entry.entryId.projectAssignment.user.userId = :userId
         ]]></query>
+
+    <query name="Timesheet.getEntriesBetweenDateForAssignment">
+        <![CDATA[FROM TimesheetEntry entry
+                 WHERE entry.entryId.entryDate >= :dateStart AND
+                       entry.entryId.entryDate <= :dateEnd AND
+                       entry.entryId.projectAssignment = :assignment
+        ]]></query>
         
     <query name="Timesheet.getEntriesBeforeDateForUserId">
         <![CDATA[FROM TimesheetEntry entry

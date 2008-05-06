@@ -55,7 +55,31 @@ public class TimesheetDAOHibernateImpl
 	{
 		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getEntriesBetweenDateForUserId");
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#getTimesheetEntriesInRange(net.rrm.ehour.domain.ProjectAssignment, net.rrm.ehour.data.DateRange)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<TimesheetEntry> getTimesheetEntriesInRange(ProjectAssignment assignment, DateRange dateRange)
+	{
+		List		results;
+		String[]	keys = new String[3];
+		Object[]	params = new Object[3];
+		String		hql= "Timesheet.getEntriesBetweenDateForAssignment";
+		
+		keys[0] = "dateStart";
+		keys[1] = "dateEnd";
+		keys[2] = "assignment";
+		
+		params[0] = dateRange.getDateStart();
+		params[1] = dateRange.getDateEnd();
+		params[2] = assignment;
+		
+		results = getHibernateTemplate().findByNamedQueryAndNamedParam(hql, keys, params);
+		
+		return results;			
+	}	
 	
 	/**
 	 * Get  hours per day for a date range

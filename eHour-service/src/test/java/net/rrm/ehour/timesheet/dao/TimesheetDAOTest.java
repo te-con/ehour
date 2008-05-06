@@ -23,6 +23,7 @@ import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
@@ -52,6 +53,18 @@ public class TimesheetDAOTest extends BaseDAOTest
 		
 		assertEquals(9, results.size());
 	}
+	
+	public void testGetTimesheetEntriesInRangeForAssignment()
+	{
+		Calendar 	dateStart = new GregorianCalendar(2006, 10 - 1, 1);
+		Calendar 	dateEnd = new GregorianCalendar(2006, 11 - 1, 1);
+		DateRange	dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
+		List		results;
+		
+		results = dao.getTimesheetEntriesInRange(new ProjectAssignment(2), dateRange);
+		
+		assertEquals(2, results.size());
+	}	
 	
 	/**
 	 * 

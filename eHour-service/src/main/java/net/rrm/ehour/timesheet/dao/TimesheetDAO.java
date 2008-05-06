@@ -38,6 +38,14 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	public List<TimesheetEntry> getTimesheetEntriesInRange(Integer userId, DateRange dateRange);
 	
 	/**
+	 * Get timesheet entries within date range for an assignment
+	 * @param assignment
+	 * @param dateRange
+	 * @return
+	 */
+	public List<TimesheetEntry> getTimesheetEntriesInRange(ProjectAssignment assignment, DateRange dateRange);
+	
+	/**
 	 * Get timesheet entries before date
 	 * @param userId
 	 * @param date

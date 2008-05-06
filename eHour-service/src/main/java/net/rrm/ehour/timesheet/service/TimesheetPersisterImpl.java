@@ -75,13 +75,18 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 		
 		if (checkAfterStatus && !afterStatus.isValid())
 		{
+			logger.info("Project assignment went over budget: " + assignment);
 			throw new OverBudgetException(afterStatus);
 		}
 		else if (!beforeStatus.equals(afterStatus)
 					&& canNotifyPm(assignment))
 		{
+			logger.info("Project notification sent for : " + assignment);
+
 			notifyPm(assignment, afterStatus);
 		}
+		
+		logger.debug("Succesful save for " + assignment);
 	}
 
 	/**
@@ -93,7 +98,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	 */
 	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException
 	{
-		List<TimesheetEntry> dbEntries = timesheetDAO.getTimesheetEntriesInRange(assignment.getUser().getUserId(), weekRange);
+		List<TimesheetEntry> dbEntries = timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange);
 		
 		for (TimesheetEntry entry : entries)
 		{
