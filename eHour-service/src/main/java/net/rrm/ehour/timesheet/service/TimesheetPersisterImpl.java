@@ -75,18 +75,13 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 		
 		if (checkAfterStatus && !afterStatus.isValid())
 		{
-			logger.info("Project assignment went over budget: " + assignment);
 			throw new OverBudgetException(afterStatus);
 		}
 		else if (!beforeStatus.equals(afterStatus)
 					&& canNotifyPm(assignment))
 		{
-			logger.info("Project notification sent for : " + assignment);
-
 			notifyPm(assignment, afterStatus);
 		}
-		
-		logger.debug("Succesful save for " + assignment);
 	}
 
 	/**
