@@ -44,7 +44,7 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private boolean		initialized;
 	private String		smtpUsername;
 	private String		smtpPassword;
-	private String		smtpPort;
+	private String		smtpPort = "25";
 	private int			firstDayOfWeek = 1;
 	
 	/**
