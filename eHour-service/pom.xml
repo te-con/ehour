@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.8-SNAPSHOT</version>
+		<version>0.8</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
@@ -35,19 +35,6 @@
 				</property>
 			</activation>
 			<build>
-				<!--  
-				<plugins>
-					<plugin>
-						<inherited>true</inherited>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<configuration>
-							<debug>false</debug>
-							<optimize>true</optimize>
-						</configuration>
-					</plugin>
-				</plugins>-->
-
 				<finalName>
 					ehour-service_prod-derby-${version}
 				</finalName>
