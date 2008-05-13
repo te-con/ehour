@@ -1,7 +1,11 @@
-eHour 0.8.0 release notes - 7 May 2008
---------------------------------------
-0.8 adds full French, Italian and Dutch translation and a partial German, Polish, Spanish and Portuguese translation.
-Also the first day of the week and the number of work hours in a day are now configurable.
+eHour 0.8 release notes - 7 May 2008
+------------------------------------
+0.8 is now translated in French, Italian and Dutch. A partial German, Polish, Spanish and Portuguese translation
+is included. Thanks to all the contributors for helping out with the translations. If you want to add or improve
+a translation see http://ehour.nl/translate.phtml for more details.
+
+Furthermore the first day of the week and the number of work hours in a day are configurable. Authenticated
+SMTP is now supported as well.
 
 The full list of bugs fixed and features added:
 (064) [Feature request] Change first day of the week to monday
