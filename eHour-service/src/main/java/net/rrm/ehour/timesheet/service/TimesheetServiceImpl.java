@@ -259,7 +259,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		weekOverview.setComment(timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart())));
 		logger.debug("Week overview: comments found for userId " + user.getUserId() + ": " + (weekOverview.getComment() != null));
 
-		weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), DateUtil.getInversedDateRangeForWeek(requestedWeek)));
+		weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range));
 		logger.debug("Week overview: project assignments found for userId " + user.getUserId() + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
 		
 		weekOverview.initCustomers();
