@@ -155,7 +155,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	{
 		Configuration config = new Configuration();
 		config.setConfigKey(key);
-		config.setConfigValue(value);
+		config.setConfigValue(value == null ? "" : value);
 		
 		configDAO.persist(config);
 	}
