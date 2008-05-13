@@ -136,7 +136,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		for (ProjectAssignment assignment : assignments)
 		{
-			if (projectAssignmentStatusService.getAssignmentStatus(assignment).isAssignmentBookable())
+			if (projectAssignmentStatusService.getAssignmentStatus(assignment, dateRange).isAssignmentBookable())
 			{
 				validAssignments.add(assignment);
 				continue;

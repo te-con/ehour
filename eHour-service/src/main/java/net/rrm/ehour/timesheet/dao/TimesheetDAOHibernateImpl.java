@@ -177,18 +177,18 @@ public class TimesheetDAOHibernateImpl
 	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#getTimesheetEntriesAfter(java.lang.Integer, java.util.Date)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<TimesheetEntry> getTimesheetEntriesAfter(Integer userId, Date date)
+	public List<TimesheetEntry> getTimesheetEntriesAfter(ProjectAssignment assignment, Date date)
 	{
 		String[]	keys = new String[2];
 		Object[]	params = new Object[2];
 		
 		keys[0] = "date";
-		keys[1] = "userId";
+		keys[1] = "assignment";
 		
 		params[0] = date;
-		params[1] = userId;
+		params[1] = assignment;
 		
-		return getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesAfterDateForUserId", keys, params);
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesAfterDateForAssignment", keys, params);
 	}
 
 	/*
@@ -196,17 +196,17 @@ public class TimesheetDAOHibernateImpl
 	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#getTimesheetEntriesBefore(java.lang.Integer, java.util.Date)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<TimesheetEntry> getTimesheetEntriesBefore(Integer userId, Date date)
+	public List<TimesheetEntry> getTimesheetEntriesBefore(ProjectAssignment assignment, Date date)
 	{
 		String[]	keys = new String[2];
 		Object[]	params = new Object[2];
 		
 		keys[0] = "date";
-		keys[1] = "userId";
+		keys[1] = "assignment";
 		
 		params[0] = date;
-		params[1] = userId;
+		params[1] = assignment;
 		
-		return getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesBeforeDateForUserId", keys, params);
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesAfterDateForAssignment", keys, params);
 	}
 }

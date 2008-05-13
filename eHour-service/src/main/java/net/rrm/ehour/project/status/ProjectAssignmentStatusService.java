@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.project.status;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 
 /**
@@ -26,9 +27,17 @@ import net.rrm.ehour.domain.ProjectAssignment;
 public interface ProjectAssignmentStatusService
 {
 	/**
-	 * Get assignment status in a period
+	 * Get overall assignment status
 	 * @param assignment
 	 * @return
 	 */
 	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment);
+	
+	/**
+	 * Get assignment status for a period
+	 * @param assignment
+	 * @param period
+	 * @return
+	 */
+	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment, DateRange period);
 }

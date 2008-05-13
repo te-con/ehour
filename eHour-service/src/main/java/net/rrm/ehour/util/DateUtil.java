@@ -161,8 +161,29 @@ public class DateUtil
 	{
 		boolean	overlaps = false;
 
-		overlaps = rangeA.getDateEnd().after(rangeB.getDateStart()) &&
-				   rangeA.getDateStart().before(rangeB.getDateEnd());
+		boolean includeStart;
+		boolean includeEnd;
+		
+		includeStart = rangeA.getDateStart() != null;
+		includeEnd = rangeA.getDateEnd() != null;
+		
+		if (includeStart && includeEnd)
+		{
+			overlaps = rangeA.getDateEnd().after(rangeB.getDateStart()) &&
+					   rangeA.getDateStart().before(rangeB.getDateEnd());
+		}
+		else if (!includeStart && includeEnd)
+		{
+			overlaps = rangeB.getDateStart().before(rangeA.getDateEnd());
+		}
+		else if (includeStart && !includeEnd)
+		{
+			overlaps = rangeB.getDateEnd().after(rangeA.getDateStart());
+		}
+		else
+		{
+			overlaps = true;
+		}
 
 		return overlaps;
 	}

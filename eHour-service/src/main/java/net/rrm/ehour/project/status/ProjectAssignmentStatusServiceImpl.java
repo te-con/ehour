@@ -17,11 +17,13 @@ package net.rrm.ehour.project.status;
 
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
@@ -33,11 +35,39 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	private	ReportAggregatedDAO	reportAggregatedDAO;
 	private TimesheetDAO		timesheetDAO;
 	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.domain.ProjectAssignment, net.rrm.ehour.data.DateRange)
+	 */
+	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment, DateRange period)
+	{
+		ProjectAssignmentStatus status = getAllottedStatus(assignment);
+		
+		addDeadlineStatusBasedOnDate(assignment, status, period);
+		
+		return status;
+	}	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.domain.ProjectAssignment)
 	 */
 	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment)
+	{
+		ProjectAssignmentStatus status = getAllottedStatus(assignment);
+		
+		addDeadlineStatusBasedOnEntries(assignment, status);
+		
+		return status;
+	}
+	
+	/**
+	 * Get status for allotted assignments
+	 * @param assignment
+	 * @return
+	 */
+	private ProjectAssignmentStatus getAllottedStatus(ProjectAssignment assignment)
 	{
 		ProjectAssignmentStatus	status = new ProjectAssignmentStatus();
 		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
@@ -54,8 +84,6 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 			addFlexAssignmentStatus(assignment, status);
 		}
 		
-		addDeadlineStatus(assignment, status);
-		
 		return status;
 	}
 
@@ -64,11 +92,11 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	 * @param assignment
 	 * @param status
 	 */
-	private void addDeadlineStatus(ProjectAssignment assignment, ProjectAssignmentStatus status)
+	private void addDeadlineStatusBasedOnEntries(ProjectAssignment assignment, ProjectAssignmentStatus status)
 	{
 		if (assignment.getDateStart() != null)
 		{
-			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesBefore(assignment.getUser().getUserId(), assignment.getDateStart());
+			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesBefore(assignment, assignment.getDateStart());
 			
 			if (entries != null && entries.size() > 0)
 			{
@@ -79,7 +107,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 
 		if (assignment.getDateEnd() != null)
 		{
-			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesAfter(assignment.getUser().getUserId(), assignment.getDateEnd());
+			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesAfter(assignment, assignment.getDateEnd());
 			
 			if (entries != null && entries.size() > 0)
 			{
@@ -90,6 +118,37 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 		
 		status.addStatus(ProjectAssignmentStatus.Status.RUNNING);
 	}
+	
+	/**
+	 * Add status based on period
+	 * @param assignment
+	 * @param status
+	 */
+	private void addDeadlineStatusBasedOnDate(ProjectAssignment assignment, ProjectAssignmentStatus status, DateRange period)
+	{
+		DateRange assignmentRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
+		
+		if (DateUtil.isDateRangeOverlaps(assignmentRange, period))
+		{
+			status.addStatus(ProjectAssignmentStatus.Status.RUNNING);
+		}
+		else
+		{
+			if (assignment.getDateStart() != null)
+			{
+				if (assignmentRange.getDateStart() != null
+						&& period.getDateEnd().before(assignmentRange.getDateStart()))
+				{
+					status.addStatus(ProjectAssignmentStatus.Status.BEFORE_START);
+				}
+				else if (assignmentRange.getDateEnd() != null
+						&& period.getDateStart().after(assignmentRange.getDateEnd()))
+				{
+					status.addStatus(ProjectAssignmentStatus.Status.AFTER_DEADLINE);
+				}
+			}
+		}
+	}	
 	
 	/**
 	 * Get the status for a fixed assignment
@@ -169,5 +228,5 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
 	{
 		this.timesheetDAO = timesheetDAO;
-	}	
+	}
 }

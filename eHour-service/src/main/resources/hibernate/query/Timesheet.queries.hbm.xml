@@ -16,16 +16,16 @@
                        entry.entryId.projectAssignment = :assignment
         ]]></query>
         
-    <query name="Timesheet.getEntriesBeforeDateForUserId">
+    <query name="Timesheet.getEntriesBeforeDateForAssignment">
         <![CDATA[FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate < :date AND
-                       entry.entryId.projectAssignment.user.userId = :userId
+                       entry.entryId.projectAssignment = :assignment
         ]]></query>        
 
-    <query name="Timesheet.getEntriesAfterDateForUserId">
+    <query name="Timesheet.getEntriesAfterDateForAssignment">
         <![CDATA[FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate > :date AND
-                       entry.entryId.projectAssignment.user.userId = :userId
+                       entry.entryId.projectAssignment = :assignment
         ]]></query>        
 
 

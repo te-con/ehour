@@ -67,6 +67,7 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusDateIn()
 	{
 		ProjectAssignment assignment = new ProjectAssignment();
+		assignment.setAssignmentId(1);
 		assignment.setUser(new User(1));
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
@@ -83,10 +84,10 @@ public class ProjectAssignmentStatusServiceTest
 		Date end = endCal.getTime();
 		assignment.setDateEnd(endCal.getTime());
 
-		expect(timesheetDAO.getTimesheetEntriesBefore(1, start))
+		expect(timesheetDAO.getTimesheetEntriesBefore(new ProjectAssignment(1), start))
 			.andReturn(new ArrayList<TimesheetEntry>());
 
-		expect(timesheetDAO.getTimesheetEntriesAfter(1, end))
+		expect(timesheetDAO.getTimesheetEntriesAfter(new ProjectAssignment(1), end))
 		.andReturn(new ArrayList<TimesheetEntry>());
 		
 		replay(timesheetDAO);
@@ -100,7 +101,7 @@ public class ProjectAssignmentStatusServiceTest
 	@Test
 	public final void testGetAssignmentStatusDateOut()
 	{
-		ProjectAssignment assignment = new ProjectAssignment();
+		ProjectAssignment assignment = new ProjectAssignment(1);
 		assignment.setUser(new User(1));
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
@@ -116,12 +117,12 @@ public class ProjectAssignmentStatusServiceTest
 		assignment.setDateEnd(endCal.getTime());
 		Date end = endCal.getTime();
 		
-		expect(timesheetDAO.getTimesheetEntriesBefore(1, start))
+		expect(timesheetDAO.getTimesheetEntriesBefore(new ProjectAssignment(1), start))
 		.andReturn(new ArrayList<TimesheetEntry>());
 
 		List<TimesheetEntry> entry = new ArrayList<TimesheetEntry>();
 		entry.add(new TimesheetEntry());
-		expect(timesheetDAO.getTimesheetEntriesAfter(1, end))
+		expect(timesheetDAO.getTimesheetEntriesAfter(new ProjectAssignment(1), end))
 			.andReturn(entry);
 
 		replay(timesheetDAO);

@@ -91,15 +91,15 @@ public class TimesheetDAOTest extends BaseDAOTest
 	
 	public void testGetTimesheetEntriesBefore()
 	{
-		List<TimesheetEntry> res = dao.getTimesheetEntriesBefore(1, new Date(2006 - 1900, 10 - 1, 3));
-		assertEquals(1, res.size());
+		List<TimesheetEntry> res = dao.getTimesheetEntriesBefore(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 3));
+		assertEquals(4, res.size());
 	}	
 
 	public void testGetTimesheetEntriesAfter()
 	{
-		List<TimesheetEntry> res = dao.getTimesheetEntriesAfter(1, new Date(2006 - 1900, 10 - 1, 4));
+		List<TimesheetEntry> res = dao.getTimesheetEntriesAfter(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 4));
 		
-		assertEquals(4, res.size());
+		assertEquals(3, res.size());
 	}	
 	
 	

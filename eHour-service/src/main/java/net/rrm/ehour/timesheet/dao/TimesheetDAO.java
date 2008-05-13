@@ -49,17 +49,19 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	 * Get timesheet entries before date
 	 * @param userId
 	 * @param date
+	 * @param assignment 
 	 * @return
 	 */
-	public List<TimesheetEntry> getTimesheetEntriesBefore(Integer userId, Date date);
+	public List<TimesheetEntry> getTimesheetEntriesBefore(ProjectAssignment assignment, Date date);
 	
 	/**
 	 * Get timesheet entries after date
 	 * @param userId
 	 * @param date
+	 * @param assignment
 	 * @return
 	 */
-	public List<TimesheetEntry> getTimesheetEntriesAfter(Integer userId, Date date);
+	public List<TimesheetEntry> getTimesheetEntriesAfter(ProjectAssignment assignment, Date date);
 	
 	/**
 	 * Get cumulated hours per day for a date range
