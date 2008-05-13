@@ -223,7 +223,7 @@ public class MainConfig extends BaseAdminPage
 					catch (Throwable t)
 					{
 						logger.error("While saving config", t);
-						msgModel = new ResourceModel("saveError");
+						msgModel = new ResourceModel("general.saveError");
 					}
 					
 					getEhourWebSession().reloadConfig();
