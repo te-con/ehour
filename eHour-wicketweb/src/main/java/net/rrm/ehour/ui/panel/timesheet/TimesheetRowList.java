@@ -153,7 +153,7 @@ public class TimesheetRowList extends ListView
 				createEmptyTimesheetEntry(id, item);
 			}
 		}
-
+		
 		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
 		totalHours.setOutputMarkupId(true);
 		item.add(totalHours);
@@ -239,9 +239,11 @@ public class TimesheetRowList extends ListView
 				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
 												.get("blueFrame"))
 												.get("grandTotal"));
+				
+				
 				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
 												.get("blueFrame"))
-												.get("day" + (index + 1) + "Total"));
+												.get("day" + grandTotals.getOrderForIndex(index) + "Total"));
 				
 				form.visitFormComponents(new FormHighlighter(target));
 			}		

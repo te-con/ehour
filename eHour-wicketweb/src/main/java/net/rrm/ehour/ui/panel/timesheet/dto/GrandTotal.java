@@ -33,6 +33,7 @@ public class GrandTotal implements Serializable
 {
 	private static final long serialVersionUID = -8908496992290848165L;
 	private Map<Integer, List<PropertyModel>>	weekMatrix;
+	private Map<Integer, Integer> renderDayOrder;
 	
 	/**
 	 * Default constructor initializing the weekmatrix
@@ -40,9 +41,32 @@ public class GrandTotal implements Serializable
 	public GrandTotal()
 	{
 		weekMatrix = new HashMap<Integer, List<PropertyModel>>();
+		renderDayOrder= new HashMap<Integer, Integer>();
 	}
 
 	/**
+	 * Add render vs index order. Render order can be different when Sunday is not the first day
+	 * while Sunday is still has a key of 1 in the weekMatrix
+	 * @param renderOrder
+	 * @param indexOrder
+	 */
+	public void addOrder(Integer renderOrder, Integer indexOrder)
+	{
+		renderDayOrder.put(indexOrder, renderOrder);
+	}
+	
+	/**
+	 * 
+	 * @param indexOrder
+	 * @return
+	 */
+	public Integer getOrderForIndex(Integer indexOrder)
+	{
+		return  renderDayOrder.get(indexOrder);
+	}
+	
+	/**
+	 * 
 	 * Add model for specific week 
 	 * @param index
 	 * @param model

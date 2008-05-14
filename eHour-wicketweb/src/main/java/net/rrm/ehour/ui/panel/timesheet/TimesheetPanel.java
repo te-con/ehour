@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +140,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		grandTotals = buildForm(timesheetForm, blueBorder, timesheet);
 		
 		// add last row with grand totals
-		addGrandTotals(blueBorder, grandTotals);
+		addGrandTotals(blueBorder, grandTotals, timesheet.getWeekStart());
 		
 		// add label dates
 		addDateLabels(blueBorder, timesheet);
@@ -234,15 +235,23 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param parent
 	 * @param grandTotals
 	 */
-	private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals)
+	private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals, Date weekStart)
 	{
 		Label		total;
 		
-		for (int i = 1, j = 0; i <= 7; i++, j++)
+		Calendar dateIterator = new GregorianCalendar();
+		dateIterator.setTime(weekStart);
+		
+		for (int i = 1;
+				i <= 7; 
+				i++, dateIterator.add(Calendar.DAY_OF_YEAR, 1))
 		{
-			total = new Label("day" + i + "Total", new FloatModel(new PropertyModel(grandTotals, "getValues[" + j + "]"), config));
+			total = new Label("day" + i + "Total", 
+							new FloatModel(new PropertyModel(grandTotals, "getValues[" + (dateIterator.get(Calendar.DAY_OF_WEEK) - 1) + "]"), config));
 			total.setOutputMarkupId(true);
 			parent.add(total);
+			
+			grandTotals.addOrder(i, dateIterator.get(Calendar.DAY_OF_WEEK) - 1);
 		}
 
 		total = new Label("grandTotal", new FloatModel(new PropertyModel(grandTotals, "grandTotal"), config));
