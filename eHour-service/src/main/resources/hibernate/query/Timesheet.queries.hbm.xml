@@ -28,15 +28,6 @@
                        entry.entryId.projectAssignment = :assignment
         ]]></query>        
 
-
-    <query name="Timesheet.getBookedProjectsInRangeForUserId">
-        <![CDATA[SELECT entry.entryId.projectAssignment.assignmentId
-        		 FROM TimesheetEntry entry
-                 WHERE entry.entryId.entryDate >= :dateStart AND
-                       entry.entryId.entryDate <= :dateEnd AND
-                       entry.entryId.projectAssignment.user.userId = :userId
-                 GROUP BY entry.entryId.projectAssignment.assignmentId
-        ]]></query>
         
     <query name="Timesheet.getBookedDaysInRangeForUserId">
         <![CDATA[SELECT new net.rrm.ehour.timesheet.dto.BookedDay(entry.entryId.entryDate, SUM(entry.hours))

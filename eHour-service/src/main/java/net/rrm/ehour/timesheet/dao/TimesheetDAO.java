@@ -70,15 +70,7 @@ public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryI
 	 * @return List with key values -> key = date, value = hours booked
 	 */	
 	public List<BookedDay> getBookedHoursperDayInRange(Integer userId, DateRange dateRange);
-	
-	/**
-	 * Get list of project assignments booked on in a daterange
-	 * @param userId
-	 * @param dateRange
-	 * @return
-	 */
-	public List<ProjectAssignment> getBookedProjectAssignmentsInRange(Integer userId, DateRange dateRange);
-	
+
 	/**
 	 * Get latest timesheet entry for assignment
 	 * @param assignmentId

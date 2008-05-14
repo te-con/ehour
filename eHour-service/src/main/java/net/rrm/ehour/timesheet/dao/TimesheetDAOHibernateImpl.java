@@ -92,18 +92,6 @@ public class TimesheetDAOHibernateImpl
 	{
 		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedDaysInRangeForUserId");
 	}
-
-	/**
-	 * Get list of project assignments booked on in a daterange
-	 * @param userId
-	 * @param dateRange
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public List<ProjectAssignment> getBookedProjectAssignmentsInRange(Integer userId, DateRange dateRange)
-	{
-		return getListOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedProjectsInRangeForUserId");
-	}
 	 	
 	/**
 	 * 
