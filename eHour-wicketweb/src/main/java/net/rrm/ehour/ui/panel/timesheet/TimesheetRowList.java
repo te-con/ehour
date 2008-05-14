@@ -233,7 +233,7 @@ public class TimesheetRowList extends ListView
 			protected void onUpdate(AjaxRequestTarget target)
 			{
 				// update the project total
-				target.addComponent(dayInput.getParent().get("total"));
+				target.addComponent(dayInput.getParent().getParent().get("total"));
 				
 				// update the grand total & day total
 				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
