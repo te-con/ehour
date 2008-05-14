@@ -1,11 +1,12 @@
 eHour 0.8.1 release notes - 14 May 2008
 ---------------------------------------
-0.8.1 fixes two major and one cosmetic bug. 
+0.8.1 fixes a problem with the list of projects on a timesheet, not all relevant projects were shown on
+a user's timesheet. This issue was introduced with version 0.8 and is now resolved.
 
 Bugs fixed (http://www.ehour.nl/defects/):
-(110) [Bug / defect] Sums per day are displayed in the wrong column when first day of the week is not sunday (administrator) - resolved.
-(109) [Bug / defect] Cannot edit timesheet for dates that don't already have hours (administrator) - resolved.
-(108) [Bug / defect] Changing first day of week to Monday causes Internal Error (administrator) - resolved.
+(110) [Bug / defect] Sums per day are displayed in the wrong column when first day of the week is not sunday
+(109) [Bug / defect] Cannot edit timesheet for dates that don't already have hours
+(108) [Bug / defect] Changing first day of week to Monday causes Internal Error
 
 eHour 0.8 release notes - 7 May 2008
 ------------------------------------
