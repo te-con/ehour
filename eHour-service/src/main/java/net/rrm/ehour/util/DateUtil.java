@@ -150,6 +150,17 @@ public class DateUtil
 
 		return withinRange;
 	}
+	
+	/**
+	 * Is calendar within date range ?
+	 * @param calendar
+	 * @param dateRange
+	 * @return
+	 */
+	public static boolean isDateWithinRange(Calendar calendar, DateRange dateRange)
+	{
+		return DateUtil.isDateWithinRange(calendar.getTime(), dateRange);
+	}	
 
 	/**
 	 * Check whether two dateranges overlap eachother
