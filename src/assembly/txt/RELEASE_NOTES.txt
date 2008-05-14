@@ -1,3 +1,12 @@
+eHour 0.8.1 release notes - 14 May 2008
+---------------------------------------
+0.8.1 fixes two major and one cosmetic bug. 
+
+Bugs fixed (http://www.ehour.nl/defects/):
+(110) [Bug / defect] Sums per day are displayed in the wrong column when first day of the week is not sunday (administrator) - resolved.
+(109) [Bug / defect] Cannot edit timesheet for dates that don't already have hours (administrator) - resolved.
+(108) [Bug / defect] Changing first day of week to Monday causes Internal Error (administrator) - resolved.
+
 eHour 0.8 release notes - 7 May 2008
 ------------------------------------
 0.8 is now translated in French, Italian and Dutch. A partial German, Polish, Spanish and Portuguese translation
