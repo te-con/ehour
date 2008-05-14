@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.component.CommonModifiers;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ModalWindowFix;
@@ -30,6 +31,7 @@ import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
@@ -47,6 +49,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -131,11 +134,22 @@ public class TimesheetRowList extends ListView
 				
 		Calendar dateIterator = (Calendar)row.getFirstDayOfWeekDate().clone();
 
+		DateRange range = new DateRange(row.getProjectAssignment().getDateStart(),
+										row.getProjectAssignment().getDateEnd());
+		
+		// now add every cell
 		for (int i = 1;
 			 i <= 7;
 			 i++, dateIterator.add(Calendar.DAY_OF_YEAR, 1))
 		{
-			createTimesheetEntryItems("day" + i, row, dateIterator.get(Calendar.DAY_OF_WEEK) - 1, item);
+			if (DateUtil.isDateWithinRange(dateIterator, range))
+			{
+				createTimesheetEntryItems("day" + i, row, dateIterator.get(Calendar.DAY_OF_WEEK) - 1, item);
+			}
+			else
+			{
+				
+			}
 		}
 
 		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
@@ -165,9 +179,13 @@ public class TimesheetRowList extends ListView
 	 */
 	private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem item)
 	{
-		item.add(createValidatedTextField(id, row, index));
+		Fragment fragment = new Fragment(id, "dayInput", this);
 		
-		createTimesheetEntryComment(id, row, index, item);
+		item.add(fragment);
+		
+		fragment.add(createValidatedTextField(id, row, index));
+		
+		createTimesheetEntryComment(id, row, index, fragment);
 	}
 	
 	/**
@@ -191,7 +209,6 @@ public class TimesheetRowList extends ListView
 		dayInput = new TimesheetTextField(id, new FloatModel(cellModel, config, null), Float.class, 1);
 		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
 		dayInput.setOutputMarkupId(true);
-	
 		
 		// make sure values are checked
 		AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onblur")

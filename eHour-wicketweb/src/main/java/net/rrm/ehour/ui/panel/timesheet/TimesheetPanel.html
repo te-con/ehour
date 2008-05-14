@@ -58,7 +58,8 @@
 								</td>
 								<td class="spacer">&nbsp;</td>
 								
-								<td class="sunday"><input wicket:id="day1" size="2" /><a class="timesheetEntryComment" wicket:id="day1Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a><div wicket:id="day1Win"></div></td>
+								<td class="sunday"><input wicket:id="day1" size="2" /><a class="timesheetEntryComment" wicket:id="day1Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+								<div wicket:id="day1Win"></div>
 								<td class="weekday"><input wicket:id="day2" size="2" /><a class="timesheetEntryComment" wicket:id="day2Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
 								<div wicket:id="day2Win"></div>
 								<td class="weekday"><input wicket:id="day3" size="2" /><a class="timesheetEntryComment" wicket:id="day3Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
@@ -69,7 +70,7 @@
 								<div wicket:id="day5Win"></div>
 								<td class="weekday"><input wicket:id="day6" size="2" /><a class="timesheetEntryComment" wicket:id="day6Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
 								<div wicket:id="day6Win"></div>
-								<td class="saturday"><input wicket:id="day7" size="2" /><a class="timesheetEntryComment" wicket:id="day7Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
+								<td class="saturday" wicket><input wicket:id="day7" size="2" /><a class="timesheetEntryComment" wicket:id="day7Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
 								<div wicket:id="day7Win"></div>
 								<td class="total" style="text-align: right;padding-right: 10px" wicket:id="total"></td>
 							</tr>
@@ -141,6 +142,10 @@
 	   		<span wicket:id="titleLabel"></span>
 	   		<a wicket:id="nextWeek"><img src="img/icon_right.gif" border="0" /></a>
    		</h1>
+	</wicket:fragment>
+
+   	<wicket:fragment wicket:id="dayInput">
+   		<input wicket:id="day" size="2" /><a class="timesheetEntryComment" wicket:id="dayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a>
 	</wicket:fragment>
 	
 </wicket:panel>
