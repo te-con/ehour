@@ -64,9 +64,9 @@ public class ProjectAssignmentServiceIntegrationTest extends BaseDAOTest
 		dateRange.setDateStart(new Date(2007 - 1900, 0, 1));
 		dateRange.setDateEnd(new Date(2008 - 1900, 0, 1));
 		
-		List l = projectAssignmentService.getProjectAssignmentsForUser(1, dateRange);
-	
-		assertEquals(3, l.size());
+		List<ProjectAssignment> l = projectAssignmentService.getProjectAssignmentsForUser(1, dateRange);
+		
+		assertEquals(5, l.size());
 	}
 
 //	public void testAssignUserToProjectFailure()

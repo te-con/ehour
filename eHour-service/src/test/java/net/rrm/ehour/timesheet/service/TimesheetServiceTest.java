@@ -175,7 +175,7 @@ public class TimesheetServiceTest  extends TestCase
 		Date db = new Date(2007 - 1900, 1 - 1, 6);
 		DateRange range = new DateRange(da, db);
 		
-		DateRange rangeB = new DateRange(new Date(2007 - 1900, 1 - 1, 5), new Date(2007 - 1900, 1 - 1, 1));
+		DateRange rangeB = new DateRange(new Date(2006 - 1900, 12 - 1, 31), new Date(2007 - 1900, 1 - 1, 6));
 
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, range))
 				.andReturn(new ArrayList<TimesheetEntry>());
