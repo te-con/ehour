@@ -1,0 +1,7 @@
+eHour release
+-------------
+1. update RELEASE_NOTES.txt
+2. update war version in ehour.xml
+3. update downloadfile.php,  index.phtml, install_instructions.phtml, install_instructions_linux.phtml, 
+   install_instructions_windows.phtml, releasenotes.phtml, upgrade.phtml
+4. make sure configuration is set to deployment in web.xml
