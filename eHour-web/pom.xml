@@ -68,7 +68,7 @@
 
 				<resources>
 					<resource>
-						<directory>src/main/profiles/prod</directory>
+						<directory>src/main/profiles/prod/standalone</directory>
 					</resource>
 				</resources>
 
@@ -119,7 +119,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/profiles/prod</directory>
+						<directory>src/main/profiles/prod/war</directory>
 					</resource>
 				</resources>
 			</build>
