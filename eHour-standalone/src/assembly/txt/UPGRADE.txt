@@ -1,7 +1,7 @@
-Upgrade instructions from v0.7.x to v0.8
-----------------------------------------
-Unpack the v0.8 archive to a new directory. Copy the ehourDb directory from the root of your previous eHour installation to the
-root of the directory where you unpacked 0.8. That's it! Start eHour as explained in the installation instructions above.
+Upgrade instructions from v0.7.x or 0.8 to v0.8.1
+-------------------------------------------------
+Unpack the v0.8.1 archive in a new directory. Copy the ehourDb directory from the root of your previous eHour installation to the
+root of the directory where you unpacked 0.8.1. That's it! Start eHour as explained in the installation instructions above.
 
 When you're running eHour as a service, make sure you run the uninstallservice.bat first on the old version. Otherwise the old
 version keeps starting up.
