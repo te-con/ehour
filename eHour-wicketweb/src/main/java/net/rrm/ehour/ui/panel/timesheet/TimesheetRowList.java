@@ -142,13 +142,15 @@ public class TimesheetRowList extends ListView
 			 i <= 7;
 			 i++, dateIterator.add(Calendar.DAY_OF_YEAR, 1))
 		{
+			String id = "day" + i;
+			
 			if (DateUtil.isDateWithinRange(dateIterator, range))
 			{
-				createTimesheetEntryItems("day" + i, row, dateIterator.get(Calendar.DAY_OF_WEEK) - 1, item);
+				createTimesheetEntryItems(id, row, dateIterator.get(Calendar.DAY_OF_WEEK) - 1, item);
 			}
 			else
 			{
-				
+				createEmptyTimesheetEntry(id, item);
 			}
 		}
 
@@ -171,6 +173,18 @@ public class TimesheetRowList extends ListView
 	}
 	
 	/**
+	 * Add &nbsp; timesheet entry
+	 * @param id
+	 * @param item
+	 */
+	private void createEmptyTimesheetEntry(String id, ListItem item)
+	{
+		Fragment fragment = new Fragment(id, "dayInputHidden", this);
+		
+		item.add(fragment);
+	}	
+	
+	/**
 	 * Get validated text field
 	 * @param id
 	 * @param row
@@ -183,9 +197,9 @@ public class TimesheetRowList extends ListView
 		
 		item.add(fragment);
 		
-		fragment.add(createValidatedTextField(id, row, index));
+		fragment.add(createValidatedTextField(row, index));
 		
-		createTimesheetEntryComment(id, row, index, fragment);
+		createTimesheetEntryComment(row, index, fragment);
 	}
 	
 	/**
@@ -195,7 +209,7 @@ public class TimesheetRowList extends ListView
 	 * @param index
 	 * @return
 	 */
-	private TextField createValidatedTextField(String id, TimesheetRow row, final int index)
+	private TextField createValidatedTextField(TimesheetRow row, final int index)
 	{
 		final TimesheetTextField	dayInput;
 		PropertyModel				cellModel;
@@ -206,7 +220,7 @@ public class TimesheetRowList extends ListView
 		grandTotals.addValue(index, cellModel);
 		
 		// list it on the page
-		dayInput = new TimesheetTextField(id, new FloatModel(cellModel, config, null), Float.class, 1);
+		dayInput = new TimesheetTextField("day", new FloatModel(cellModel, config, null), Float.class, 1);
 		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
 		dayInput.setOutputMarkupId(true);
 		
@@ -250,13 +264,13 @@ public class TimesheetRowList extends ListView
 	 * @param row
 	 * @param index
 	 */
-	private void createTimesheetEntryComment(String id, final TimesheetRow row, final int index, WebMarkupContainer parent)
+	private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent)
 	{
 		final ModalWindow modalWindow;
 		final AjaxLink commentLink;
 		final PropertyModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 		
-		modalWindow = new ModalWindowFix(id + "Win");
+		modalWindow = new ModalWindowFix("dayWin");
 		modalWindow.setResizable(false);
 		modalWindow.setInitialWidth(400);
 		modalWindow.setInitialHeight(225);
@@ -265,7 +279,7 @@ public class TimesheetRowList extends ListView
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 																		commentModel, row, index, modalWindow));
 		
-		commentLink = new AjaxLink(id + "Link")
+		commentLink = new AjaxLink("dayLink")
 		{
 			private static final long serialVersionUID = 1L;
 

@@ -58,20 +58,13 @@
 								</td>
 								<td class="spacer">&nbsp;</td>
 								
-								<td class="sunday"><input wicket:id="day1" size="2" /><a class="timesheetEntryComment" wicket:id="day1Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
-								<div wicket:id="day1Win"></div>
-								<td class="weekday"><input wicket:id="day2" size="2" /><a class="timesheetEntryComment" wicket:id="day2Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
-								<div wicket:id="day2Win"></div>
-								<td class="weekday"><input wicket:id="day3" size="2" /><a class="timesheetEntryComment" wicket:id="day3Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
-								<div wicket:id="day3Win"></div>
-								<td class="weekday"><input wicket:id="day4" size="2" /><a class="timesheetEntryComment" wicket:id="day4Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
-								<div wicket:id="day4Win"></div>
-								<td class="weekday"><input wicket:id="day5" size="2" /><a class="timesheetEntryComment" wicket:id="day5Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
-								<div wicket:id="day5Win"></div>
-								<td class="weekday"><input wicket:id="day6" size="2" /><a class="timesheetEntryComment" wicket:id="day6Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
-								<div wicket:id="day6Win"></div>
-								<td class="saturday" wicket><input wicket:id="day7" size="2" /><a class="timesheetEntryComment" wicket:id="day7Link"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a></td>
-								<div wicket:id="day7Win"></div>
+								<td class="sunday" wicket:id="day1"></td>
+								<td class="weekday" wicket:id="day2"></td>
+								<td class="weekday" wicket:id="day3"></td>
+								<td class="weekday" wicket:id="day4"></td>
+								<td class="weekday" wicket:id="day5"></td>
+								<td class="weekday" wicket:id="day6"></td>
+								<td class="saturday" wicket:id="day7"></td>
 								<td class="total" style="text-align: right;padding-right: 10px" wicket:id="total"></td>
 							</tr>
 						</span>
@@ -146,7 +139,13 @@
 
    	<wicket:fragment wicket:id="dayInput">
    		<input wicket:id="day" size="2" /><a class="timesheetEntryComment" wicket:id="dayLink"><img src="img/transpixel.gif" height="7" width="8" border="0" /></a>
+   		<div wicket:id="dayWin"></div>
 	</wicket:fragment>
+
+   	<wicket:fragment wicket:id="dayInputHidden">
+   		&nbsp;
+	</wicket:fragment>
+
 	
 </wicket:panel>
 
