@@ -2,6 +2,20 @@ eHour release
 -------------
 1. update RELEASE_NOTES.txt
 2. update war version in ehour.xml
-3. update downloadfile.php,  index.phtml, install_instructions.phtml, install_instructions_linux.phtml, 
-   install_instructions_windows.phtml, releasenotes.phtml, upgrade.phtml
+3. update downloadfile.php
+		  index.phtml
+		  install_instructions.phtml
+		  install_instructions_linux.phtml,
+		  install_instructions_windows.phtml
+		  releasenotes.phtml
+		  upgrade.phtml
+		  download.phtml
 4. make sure configuration is set to deployment in web.xml
+5. update UPGRADE.txt
+6. update pad.xml
+7. tag source
+8. repack archives file on Windows
+9. send mail using ~thies/sendmail/mail.pl
+10. update stats.phtml
+11. mark the release as released in the bugtracker
+
