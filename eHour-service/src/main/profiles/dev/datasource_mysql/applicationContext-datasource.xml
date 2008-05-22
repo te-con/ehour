@@ -15,7 +15,10 @@
 		</property>
 
 		<property name="username">
-			<value>root</value>
+			<value>ehourdev</value>
+		</property>
+		<property name="password">
+			<value>ehourdev</value>
 		</property>
 
 		<property name="validationQuery">
