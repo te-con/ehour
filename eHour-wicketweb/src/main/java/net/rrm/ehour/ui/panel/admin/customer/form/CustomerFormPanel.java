@@ -19,27 +19,23 @@ package net.rrm.ehour.ui.panel.admin.customer.form;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
-import org.apache.log4j.Logger;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -54,7 +50,6 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 
 	@SpringBean
 	private CustomerService		customerService;
-	private	static final Logger	logger = Logger.getLogger(CustomerFormPanel.class);
 	
 	/**
 	 * 
@@ -110,52 +105,22 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
 	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	@Override
+	protected void processFormSubmit(AdminBackingBean backingBean, int type) throws Exception
 	{
-		CustomerAdminBackingBean backingBean = (CustomerAdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
+		CustomerAdminBackingBean customerBackingBean = (CustomerAdminBackingBean) backingBean;
 		
-		try
+		if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
 		{
-			if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
-			{
-				persistCustomer(backingBean);
-			}
-			else if (type == CommonWebUtil.AJAX_DELETE)
-			{
-				deleteCustomer(backingBean);
-			}
-			
-			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT);
-			
-			postSubmit(true, target, type, params);
+			persistCustomer(customerBackingBean);
 		}
-		catch (Exception e)
+		else if (type == CommonWebUtil.AJAX_DELETE)
 		{
-			logger.error("While persisting/deleting customer", e);
-			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
-			target.addComponent(this);
-			
-			postSubmit(false, target, type, params);
+			deleteCustomer(customerBackingBean);
 		}
 	}	
-	
-	/**
-	 * 
-	 * @param success
-	 */
-	public void postSubmit(boolean success, AjaxRequestTarget target, int type, Object params)
-	{
-		
-	}
-	
-	@Override
-	public boolean ajaxEventReceived(AjaxEvent event)
-	{
-		return true;
-	}
-	
 	
 	/**
 	 * Persist customer to db
