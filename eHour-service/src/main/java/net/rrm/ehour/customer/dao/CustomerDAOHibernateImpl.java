@@ -54,7 +54,7 @@ public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, 
 	public Customer findOnNameAndCode(String name, String code)
 	{
 		String[]	keys = new String[]{"name", "code"};
-		String[]	params = new String[]{name, code};
+		String[]	params = new String[]{name.toLowerCase(), code.toLowerCase()};
 		List<Customer>		results;
 		
 		results = findByNamedQueryAndNamedParam("Customer.findByNameAndCode"
