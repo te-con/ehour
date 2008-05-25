@@ -32,4 +32,12 @@ public interface CustomerDAO extends GenericDAO<Customer, Integer>
 	 * @return
 	 */
 	public List<Customer> findAll(boolean active);
+	
+	/**
+	 * Find customer on name and code
+	 * @param name
+	 * @param code
+	 * @return
+	 */
+	public Customer findOnNameAndCode(String name, String code);
 }

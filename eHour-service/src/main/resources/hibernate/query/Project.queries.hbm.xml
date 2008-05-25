@@ -7,6 +7,11 @@
 	    WHERE active = :active
 	</query>
 	
+	<query name="Customer.findByNameAndCode">
+		FROM Customer customer
+	    WHERE lcase(name) = :name AND lcase(code) = :code
+	</query>	
+	
 	<query name="Project.findAllActive">
 		FROM Project project
 		WHERE project.active is true AND

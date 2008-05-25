@@ -78,5 +78,10 @@ public class CustomerDAOTest  extends BaseDAOTest
 		
 		assertNotNull(customer.getCustomerId());
 	}
+	
+	public void testFindNameCode()
+	{
+		assertEquals("TEC", dao.findOnNameAndCode("te-con", "TEC").getCode());
+	}	
 
 }

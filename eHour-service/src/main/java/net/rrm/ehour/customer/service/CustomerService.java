@@ -55,6 +55,14 @@ public interface CustomerService
 	public Customer getCustomer(Integer customerId);
 	
 	/**
+	 * Get customer on name and code
+	 * @param customerName
+	 * @param customerCode
+	 * @return
+	 */
+	public Customer getCustomer(String customerName, String customerCode);
+	
+	/**
 	 * Delete customer
 	 * @param customerId
 	 */

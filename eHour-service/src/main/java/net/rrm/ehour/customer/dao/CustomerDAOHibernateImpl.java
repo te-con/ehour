@@ -36,10 +36,39 @@ public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, 
 		super(Customer.class);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.customer.dao.CustomerDAO#findAll(boolean)
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Customer> findAll(boolean active)
 	{
 		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", active, true, CACHEREGION);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.customer.dao.CustomerDAO#findOnNameAndCode(java.lang.String, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public Customer findOnNameAndCode(String name, String code)
+	{
+		String[]	keys = new String[]{"name", "code"};
+		String[]	params = new String[]{name, code};
+		List<Customer>		results;
+		
+		results = findByNamedQueryAndNamedParam("Customer.findByNameAndCode"
+				, keys
+				, params
+				, true
+				, CACHEREGION);			
+		
+		if (results != null && results.size() > 0)
+		{
+			return results.get(0);
+		}
+		
+		return null;
 	}
 
 }

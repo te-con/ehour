@@ -34,6 +34,16 @@ public class CustomerServiceImpl implements CustomerService
 	private	CustomerDAO		customerDAO;
 	private	Logger			logger = Logger.getLogger(this.getClass());
 	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomer(java.lang.String, java.lang.String)
+	 */
+	public Customer getCustomer(String customerName, String customerCode)
+	{
+		return customerDAO.findOnNameAndCode(customerName, customerCode);
+	}	
+	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#deleteCustomer(java.lang.Integer)
 	 */
