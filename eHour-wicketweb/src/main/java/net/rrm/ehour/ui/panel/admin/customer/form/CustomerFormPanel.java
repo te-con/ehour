@@ -128,14 +128,27 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 			}
 			
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT);
+			
+			postSubmit(true, target, type, params);
 		}
 		catch (Exception e)
 		{
 			logger.error("While persisting/deleting customer", e);
 			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
 			target.addComponent(this);
+			
+			postSubmit(false, target, type, params);
 		}
 	}	
+	
+	/**
+	 * 
+	 * @param success
+	 */
+	public void postSubmit(boolean success, AjaxRequestTarget target, int type, Object params)
+	{
+		
+	}
 	
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent event)
