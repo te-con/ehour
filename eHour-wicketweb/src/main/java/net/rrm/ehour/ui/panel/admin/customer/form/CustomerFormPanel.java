@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.panel.admin.customer.form;
 
 import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
@@ -31,10 +32,13 @@ import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -81,6 +85,7 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
 		codeField.setLabel(new ResourceModel("admin.customer.code"));
 		codeField.add(new ValidatingFormComponentAjaxBehavior());
+		form.add(new UniqueCustomerValidator(nameField, codeField));
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 		
 		// description
@@ -140,5 +145,56 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 	private void deleteCustomer(CustomerAdminBackingBean backingBean) throws ParentChildConstraintException
 	{
 		customerService.deleteCustomer(backingBean.getCustomer().getCustomerId());
+	}
+	
+	/**
+	 * Unique customer code / name validator
+	 * @author Thies
+	 *
+	 */
+	private class UniqueCustomerValidator extends AbstractFormValidator
+	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1181184585571474550L;
+		private FormComponent[] components;
+		
+		/**
+		 * 
+		 * @param passwordField
+		 * @param confirmField
+		 */
+		public UniqueCustomerValidator(FormComponent customerName, FormComponent customerCode)
+		{
+			components = new FormComponent[]{customerName, customerCode};
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
+		 */
+		public FormComponent[] getDependentFormComponents()
+		{
+			return components;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
+		 */
+		public void validate(Form form)
+		{
+			if (!StringUtils.isBlank(components[0].getInput())
+					&& !StringUtils.isBlank(components[1].getInput()))
+			{
+				Customer customer = customerService.getCustomer(components[0].getInput(), components[1].getInput());
+				
+				if (customer != null)
+				{
+					error(components[0], "admin.customer.errorNotUnique");	
+				}
+			}
+		}
 	}	
 }

@@ -71,7 +71,7 @@ public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxA
 		{
 			processFormSubmit(backingBean, type);
 			
-			postSubmit(true, target, type, params, backingBean);
+			postSubmit(target, type, params, backingBean);
 			
 			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT);
 			
@@ -80,8 +80,6 @@ public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxA
 			logger.error("While trying to persist/delete", e);
 			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
 			target.addComponent(this);
-			
-			postSubmit(false, target, type, params, backingBean);		
 		}
 	}
 	
@@ -93,7 +91,7 @@ public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxA
 	 * @param params
 	 * @param backingBean
 	 */
-	protected void postSubmit(boolean success, AjaxRequestTarget target, int type, Object params, AdminBackingBean backingBean)
+	protected void postSubmit(AjaxRequestTarget target, int type, Object params, AdminBackingBean backingBean)
 	{
 		
 	}	
