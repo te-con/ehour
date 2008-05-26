@@ -188,6 +188,15 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 			if (!StringUtils.isBlank(components[0].getInput())
 					&& !StringUtils.isBlank(components[1].getInput()))
 			{
+				String orgName = ((CustomerAdminBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalCustomerName();
+				String orgCode = ((CustomerAdminBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalCustomerCode();
+				
+				if ((StringUtils.equals(orgName, components[0].getInput()))
+						&& StringUtils.equals(orgCode, components[1].getInput()))
+				{
+					return;
+				}
+				
 				Customer customer = customerService.getCustomer(components[0].getInput(), components[1].getInput());
 				
 				if (customer != null)
