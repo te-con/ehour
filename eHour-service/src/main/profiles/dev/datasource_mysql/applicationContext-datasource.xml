@@ -11,7 +11,7 @@
 		</property>
 
 		<property name="url">
-			<value>jdbc:mysql://127.0.0.1/ehour?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true</value>
+			<value>jdbc:mysql://192.168.1.35/ehour_08?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true</value>
 		</property>
 
 		<property name="username">

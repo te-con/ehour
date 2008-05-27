@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
@@ -97,7 +98,7 @@ public class CustomerServiceTest extends TestCase
 	}
 	
 
-	public void testGetCustomer()
+	public void testGetCustomer() throws ObjectNotFoundException
 	{
 		customerDAO.findById(1);
 		expectLastCall().andReturn(null);

@@ -43,7 +43,7 @@ public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, 
 	@SuppressWarnings("unchecked")
 	public List<Customer> findAll(boolean active)
 	{
-		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", active, true, CACHEREGION);
+		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", active, false, CACHEREGION);
 	}
 
 	/*

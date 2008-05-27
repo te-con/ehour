@@ -19,6 +19,7 @@ import java.util.List;
 
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
@@ -78,9 +79,16 @@ public class CustomerServiceImpl implements CustomerService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getCustomer(java.lang.Integer)
 	 */
-	public Customer getCustomer(Integer customerId)
+	public Customer getCustomer(Integer customerId) throws ObjectNotFoundException
 	{
-		return customerDAO.findById(customerId);
+		Customer customer = customerDAO.findById(customerId);
+		
+		if (customer == null)
+		{
+			throw new ObjectNotFoundException("customer id not found" + customerId);
+		}
+		
+		return customer;
 	}
 
 	/*

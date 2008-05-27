@@ -18,6 +18,7 @@ package net.rrm.ehour.customer.service;
 import java.util.List;
 
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
@@ -45,14 +46,14 @@ public interface CustomerService
 	 * @param customerId
 	 * @return
 	 */
-	public Customer getCustomerAndCheckDeletability(Integer customerId);
+	public Customer getCustomerAndCheckDeletability(Integer customerId) throws ObjectNotFoundException;
 
 	/**
 	 * Get customer on id
 	 * @param customerId
 	 * @return
 	 */
-	public Customer getCustomer(Integer customerId);
+	public Customer getCustomer(Integer customerId) throws ObjectNotFoundException;
 	
 	/**
 	 * Get customer on name and code

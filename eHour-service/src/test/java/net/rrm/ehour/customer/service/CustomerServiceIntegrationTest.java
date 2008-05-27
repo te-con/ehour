@@ -17,6 +17,7 @@ package net.rrm.ehour.customer.service;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 
 /**
  * Customer service test that goes to the database
@@ -36,9 +37,10 @@ public class CustomerServiceIntegrationTest extends BaseDAOTest
 //	}
 
 	/**
+	 * @throws ObjectNotFoundException 
 	 * 
 	 */
-	public void testGetCustomerDeletableFalse()
+	public void testGetCustomerDeletableFalse() throws ObjectNotFoundException
 	{
 		Customer customer = customerService.getCustomerAndCheckDeletability(2);
 		assertFalse(customer.isDeletable());
