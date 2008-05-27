@@ -50,4 +50,13 @@ public class ProjectAdminBackingBeanImpl extends AdminBackingBeanImpl implements
 	{
 		this.project = project;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.model.AdminBackingBean#getDomainObject()
+	 */
+	public Project getDomainObject()
+	{
+		return getProject();
+	}
 }

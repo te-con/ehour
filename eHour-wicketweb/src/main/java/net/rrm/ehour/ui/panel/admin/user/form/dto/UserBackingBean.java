@@ -94,4 +94,14 @@ public class UserBackingBean extends AdminBackingBeanImpl
 	{
 		return isPm;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.model.AdminBackingBean#getDomainObject()
+	 */
+	
+	public User getDomainObject()
+	{
+		return getUser();
+	}
 }

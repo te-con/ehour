@@ -182,4 +182,13 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	{
 		this.infiniteEndDate = infiniteEndDate;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.model.AdminBackingBean#getDomainObject()
+	 */
+	public ProjectAssignment getDomainObject()
+	{
+		return getProjectAssignment();
+	}
 }

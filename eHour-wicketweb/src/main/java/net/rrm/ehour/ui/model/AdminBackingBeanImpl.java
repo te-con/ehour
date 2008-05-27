@@ -21,7 +21,7 @@ package net.rrm.ehour.ui.model;
  * Admin backing bean impl
  **/
 
-public class AdminBackingBeanImpl implements AdminBackingBean
+public abstract class AdminBackingBeanImpl implements AdminBackingBean
 {
 	private static final long serialVersionUID = 1L;
 	

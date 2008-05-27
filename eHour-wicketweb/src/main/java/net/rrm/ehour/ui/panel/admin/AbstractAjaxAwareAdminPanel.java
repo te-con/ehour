@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.panel.admin;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;
@@ -65,15 +64,15 @@ public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxA
 	 */
 	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
 	{
-		AdminBackingBean backingBean = (CustomerAdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
+		AdminBackingBean backingBean = (AdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
 		
 		try
 		{
 			processFormSubmit(backingBean, type);
-			
+		
 			postSubmit(target, type, params, backingBean);
 			
-			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT);
+			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT, backingBean.getDomainObject());
 			
 		} catch (Exception e)
 		{

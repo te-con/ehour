@@ -85,7 +85,13 @@ public class CustomerAdminBackingBean extends AdminBackingBeanImpl
 	{
 		this.originalCustomerCode = originalCustomerCode;
 	}
-	
-	
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.model.AdminBackingBean#getDomainObject()
+	 */
+	public Customer getDomainObject()
+	{
+		return getCustomer();
+	}
 }

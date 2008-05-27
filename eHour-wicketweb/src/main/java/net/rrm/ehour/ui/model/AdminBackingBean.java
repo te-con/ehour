@@ -18,6 +18,8 @@ package net.rrm.ehour.ui.model;
 
 import java.io.Serializable;
 
+import net.rrm.ehour.domain.DomainObject;
+
 /**
  * Backing bean interface for the admin screens. 
  **/
@@ -33,4 +35,10 @@ public interface AdminBackingBean extends Serializable
 	 * @param serverMessage the serverMessage to set
 	 */
 	public void setServerMessage(String serverMessage);
+	
+	/**
+	 * Get the domain object behind the backing bean
+	 * @return
+	 */
+	public DomainObject<?, ?> getDomainObject(); 
 }
