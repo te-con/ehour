@@ -101,7 +101,7 @@ public class CustomerServiceTest extends TestCase
 	public void testGetCustomer() throws ObjectNotFoundException
 	{
 		customerDAO.findById(1);
-		expectLastCall().andReturn(null);
+		expectLastCall().andReturn(new Customer(1));
 		
 		replay(customerDAO);
 		
