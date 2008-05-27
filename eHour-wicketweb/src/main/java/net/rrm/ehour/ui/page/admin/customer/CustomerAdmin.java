@@ -21,6 +21,7 @@ import java.util.List;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
@@ -218,8 +219,14 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
-						getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+						try
+						{
+							getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
+							getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+						} catch (ObjectNotFoundException e)
+						{
+							// TODO
+						}
 					}
 				};
 				

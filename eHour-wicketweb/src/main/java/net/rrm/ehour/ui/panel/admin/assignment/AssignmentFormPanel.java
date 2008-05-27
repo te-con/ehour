@@ -24,6 +24,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
@@ -176,7 +177,13 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 				
 				if (selectedCustomer != null)
 				{
-					customer = customerService.getCustomer(selectedCustomer.getCustomerId());
+					try
+					{
+						customer = customerService.getCustomer(selectedCustomer.getCustomerId());
+					} catch (ObjectNotFoundException e)
+					{
+						// TODO
+					}
 				}
 				
 				if (customer == null || customer.getProjects() == null || customer.getProjects().size() == 0)
