@@ -47,40 +47,6 @@ public abstract class AbstractAjaxAwareAdminPanel extends BaseAjaxPanel
 	{
 		super(id, model);
 	}
-
-//	/*
-//	 * (non-Javadoc)
-//	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
-//	 */
-//	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
-//	{
-//		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, type);
-//		
-//	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
-//	 */
-//	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
-//	{
-//		AdminBackingBean backingBean = (AdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
-//		
-//		try
-//		{
-//			processFormSubmit(backingBean, type);
-//		
-//			postSubmit(target, type, params, backingBean);
-//			
-//			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT, backingBean.getDomainObject());
-//			
-//		} catch (Exception e)
-//		{
-//			logger.error("While trying to persist/delete", e);
-//			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
-//			target.addComponent(this);
-//		}
-//	}
 	
 	/*
 	 * (non-Javadoc)
