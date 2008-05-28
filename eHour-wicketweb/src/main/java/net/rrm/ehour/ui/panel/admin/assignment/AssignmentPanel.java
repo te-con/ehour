@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBeanImp
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -132,9 +131,7 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 		if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED
 				|| type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
 		{
-			IWrapModel model = ((PayloadAjaxEvent<IWrapModel>)ajaxEvent).getPayload();
-			
-			AssignmentAdminBackingBeanImpl	backingBean = (AssignmentAdminBackingBeanImpl)((model).getWrappedModel().getObject());
+			AssignmentAdminBackingBeanImpl	backingBean = (AssignmentAdminBackingBeanImpl)((PayloadAjaxEvent<AdminBackingBean>)ajaxEvent).getPayload();
 			ProjectAssignment assignment = backingBean.getProjectAssignmentForSave();
 
 			try

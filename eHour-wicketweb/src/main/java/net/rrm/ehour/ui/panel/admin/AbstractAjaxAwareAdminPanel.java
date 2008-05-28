@@ -25,7 +25,6 @@ import net.rrm.ehour.ui.panel.BaseAjaxPanel;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.IWrapModel;
 
 /**
  * Default impl of awarecontainer + panel which calls the Page to handle the 
@@ -56,43 +55,29 @@ public abstract class AbstractAjaxAwareAdminPanel extends BaseAjaxPanel
 	@SuppressWarnings("unchecked")
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		PayloadAjaxEvent<IWrapModel> payloadEvent = (PayloadAjaxEvent<IWrapModel>)ajaxEvent;
-		
-		IWrapModel model  = payloadEvent.getPayload();
-		
-		AdminBackingBean backingBean = (AdminBackingBean) ((model).getWrappedModel()).getObject();
-		AjaxEventType type = ajaxEvent.getEventType();
-		AjaxRequestTarget target = ajaxEvent.getTarget();
-		
-		try
+		if (ajaxEvent instanceof PayloadAjaxEvent)
 		{
-			processFormSubmit(target, backingBean, type);
-		
-			postSubmit(target, type, model, backingBean);
+			PayloadAjaxEvent<AdminBackingBean> payloadEvent = (PayloadAjaxEvent<AdminBackingBean>)ajaxEvent;
 			
-		} catch (Exception e)
-		{
-			logger.error("While trying to persist/delete", e);
-			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
-			target.addComponent(this);
+			AdminBackingBean backingBean = payloadEvent.getPayload();
+			AjaxEventType type = ajaxEvent.getEventType();
+			AjaxRequestTarget target = ajaxEvent.getTarget();
 			
-			return false;
-		}		
+			try
+			{
+				processFormSubmit(target, backingBean, type);
+				
+			} catch (Exception e)
+			{
+				logger.error("While trying to persist/delete", e);
+				backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
+				target.addComponent(this);
+				
+				return false;
+			}
+		}
 		
 		return true;
-	}	
-	
-	/**
-	 * Post submit hook
-	 * @param success
-	 * @param target
-	 * @param type
-	 * @param params
-	 * @param backingBean
-	 */
-	protected void postSubmit(AjaxRequestTarget target, AjaxEventType type, IModel model, AdminBackingBean backingBean)
-	{
-		
 	}	
 	
 	/**

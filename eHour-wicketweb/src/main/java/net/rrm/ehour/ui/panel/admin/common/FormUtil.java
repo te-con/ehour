@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.ajax.DemoDecorator;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
+import net.rrm.ehour.ui.model.AdminBackingBean;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -58,7 +59,8 @@ public class FormUtil
 			{
 				if (!config.isInDemoMode())
 				{
-					PayloadAjaxEvent<IWrapModel> ajaxEvent = new PayloadAjaxEvent<IWrapModel>(target, submitEventType, (IWrapModel)form.getModel());
+					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel)form.getModel()).getWrappedModel()).getObject();
+					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(target, submitEventType, backingBean);
 					
 					AjaxUtil.publishAjaxEvent(submitTarget, ajaxEvent);
 				}
