@@ -34,7 +34,6 @@ import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
-import net.rrm.ehour.ui.panel.admin.customer.form.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -199,11 +198,11 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	{
 		ProjectAdminBackingBeanImpl projectBackingBean = (ProjectAdminBackingBeanImpl) backingBean;
 		
-		if (type == CustomerAjaxEventType.CUSTOMER_UPDATED)
+		if (type == ProjectAjaxEventType.PROJECT_UPDATED)
 		{
 			persistProject(projectBackingBean);
 		}
-		else if (type == CustomerAjaxEventType.CUSTOMER_DELETED)
+		else if (type == ProjectAjaxEventType.PROJECT_DELETED)
 		{
 			deleteProject(projectBackingBean);
 		}		
