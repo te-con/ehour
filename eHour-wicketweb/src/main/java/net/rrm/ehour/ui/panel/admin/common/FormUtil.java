@@ -31,7 +31,6 @@ import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -98,7 +97,8 @@ public class FormUtil
 			{
 				if (!config.isInDemoMode())
 				{
-					PayloadAjaxEvent<IModel> ajaxEvent = new PayloadAjaxEvent<IModel>(target, deleteEventType, form.getModel());
+					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel)form.getModel()).getWrappedModel()).getObject();
+					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(target, deleteEventType, backingBean);
 					
 					AjaxUtil.publishAjaxEvent(submitTarget, ajaxEvent);
 				}

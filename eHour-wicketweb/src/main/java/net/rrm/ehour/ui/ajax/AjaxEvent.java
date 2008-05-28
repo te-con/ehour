@@ -17,14 +17,21 @@
 
 package net.rrm.ehour.ui.ajax;
 
+import java.io.Serializable;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
 /**
  * Transfer object for ajax events
  **/
 
-public class AjaxEvent
+public class AjaxEvent implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private AjaxRequestTarget target;
 	
 	private AjaxEventType	eventType;
