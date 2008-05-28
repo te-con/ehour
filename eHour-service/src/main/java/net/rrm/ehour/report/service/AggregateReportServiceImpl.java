@@ -35,6 +35,7 @@ import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -98,7 +99,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 																			List<Project >projects,
 																			DateRange reportRange)
 	{
-		List<AssignmentAggregateReportElement>	aggregates;
+		List<AssignmentAggregateReportElement>	aggregates = new ArrayList<AssignmentAggregateReportElement>();
 		
 		if (users == null && projects == null)
 		{
@@ -106,15 +107,24 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		}
 		else if (projects == null && users != null)
 		{
-			aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, reportRange);
+			if (!CollectionUtils.isEmpty(users))
+			{
+				aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, reportRange);
+			}
 		}
 		else if (projects != null && users == null)
 		{
-			aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, reportRange);
+			if (!CollectionUtils.isEmpty(projects))
+			{
+				aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, reportRange);
+			}
 		}
 		else
 		{
-			aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, projects, reportRange);
+			if (!CollectionUtils.isEmpty(users) && !CollectionUtils.isEmpty(projects))
+			{
+				aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, projects, reportRange);
+			}
 		}
 		
 		return aggregates;
