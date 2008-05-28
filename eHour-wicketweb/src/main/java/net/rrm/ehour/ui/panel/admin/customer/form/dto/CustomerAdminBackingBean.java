@@ -38,6 +38,18 @@ public class CustomerAdminBackingBean extends AdminBackingBeanImpl
 		this.originalCustomerCode = customer.getCode();
 		this.originalCustomerName = customer.getName();
 	}
+	
+	/**
+	 * Create fresh new customer admin backing bean
+	 * @return
+	 */
+	public static CustomerAdminBackingBean createCustomerAdminBackingBean()
+	{
+		final Customer customer = new Customer();
+		customer.setActive(true);
+		
+		return new CustomerAdminBackingBean(customer);
+	}	
 
 
 	public Customer getCustomer()
