@@ -37,6 +37,7 @@ import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -170,7 +171,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
 	 */
 	@Override
-	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		UserBackingBean userBackingBean = (UserBackingBean) backingBean;
 		

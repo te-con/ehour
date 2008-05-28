@@ -33,6 +33,7 @@ import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -115,7 +116,7 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
 	 */
 	@Override
-	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		CustomerAdminBackingBean customerBackingBean = (CustomerAdminBackingBean) backingBean;
 		

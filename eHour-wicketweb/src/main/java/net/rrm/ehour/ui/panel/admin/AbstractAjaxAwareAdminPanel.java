@@ -100,7 +100,7 @@ public abstract class AbstractAjaxAwareAdminPanel extends BaseAjaxPanel
 		
 		try
 		{
-			processFormSubmit(backingBean, type);
+			processFormSubmit(target, backingBean, type);
 		
 			postSubmit(target, type, model, backingBean);
 			
@@ -135,7 +135,7 @@ public abstract class AbstractAjaxAwareAdminPanel extends BaseAjaxPanel
 	 * @param type
 	 * @throws Exception
 	 */
-	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		
 	}

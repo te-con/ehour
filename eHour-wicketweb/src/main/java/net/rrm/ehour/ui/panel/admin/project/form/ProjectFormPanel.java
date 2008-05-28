@@ -41,6 +41,7 @@ import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
 import net.rrm.ehour.user.service.UserService;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -194,7 +195,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
 	 */
 	@Override
-	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		ProjectAdminBackingBeanImpl projectBackingBean = (ProjectAdminBackingBeanImpl) backingBean;
 		
@@ -211,7 +212,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	/**
 	 * Persist project
 	 */
-	private void persistProject(ProjectAdminBackingBean backingBean) throws Exception
+	private void persistProject(ProjectAdminBackingBean backingBean) 
 	{
 		projectService.persistProject(backingBean.getProject());
 	}

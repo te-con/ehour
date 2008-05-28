@@ -29,6 +29,7 @@ import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBe
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -119,7 +120,7 @@ public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
 	 */
 	@Override
-	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		DepartmentAdminBackingBean departmentBackingBean = (DepartmentAdminBackingBean) backingBean;
 		
