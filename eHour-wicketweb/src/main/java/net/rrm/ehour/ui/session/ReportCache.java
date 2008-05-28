@@ -56,7 +56,7 @@ public class ReportCache implements Serializable
 	 */
 	public ReportCache()
 	{
-		logger.info("ReportCache instantiated");
+		logger.debug("ReportCache instantiated");
 	}
 	
 	/**

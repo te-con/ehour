@@ -86,11 +86,6 @@ public class EhourWebSession extends AuthenticatedWebSession
 		{
 			logger.debug("Not forcing locale, using browser's locale");
 		}
-		
-		if (ehourConfig.isInDemoMode())
-		{
-			logger.info("eHour is in demo mode ! All 'save' functionality in the admin pages is disabled.");
-		}		
 	}
 
 	/**
