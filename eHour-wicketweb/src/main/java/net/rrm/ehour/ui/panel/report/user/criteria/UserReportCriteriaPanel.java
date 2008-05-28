@@ -16,12 +16,13 @@
 
 package net.rrm.ehour.ui.panel.report.user.criteria;
 
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.component.DynamicAttributeModifier;
+import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -109,8 +110,7 @@ public class UserReportCriteriaPanel extends SidePanel
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, 
-																	CommonWebUtil.AJAX_FORM_SUBMIT);
+				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
             }
 
 			@Override

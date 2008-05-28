@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.panel.report.criteria.quick;
 
 import java.util.List;
 
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -52,8 +52,7 @@ public class QuickDropDownChoice extends DropDownChoice
 			{
 				AjaxEvent event = new AjaxEvent(target, QuickDateAjaxEventType.ADMIN_QUICK_DATE_CHANGED);
 				
-				// ahum..
-				((AjaxAwareContainer)getParent().getParent().getParent()).publishAjaxEvent(event);
+				AjaxUtil.publishAjaxEvent(QuickDropDownChoice.this, event);
 			}
 		});
 	}

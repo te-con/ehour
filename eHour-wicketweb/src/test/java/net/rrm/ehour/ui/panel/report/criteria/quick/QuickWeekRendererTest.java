@@ -47,6 +47,11 @@ public class QuickWeekRendererTest extends BaseUIWicketTester
 		
 		renderer = new QuickWeekRenderer(new EhourConfigStub())
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 8564023232543242798L;
+
 			protected Localizer getLocalizer()
 			{
 				return localizer;

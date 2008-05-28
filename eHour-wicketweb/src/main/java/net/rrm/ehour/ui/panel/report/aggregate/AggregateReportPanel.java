@@ -35,6 +35,11 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 {
 	/**
 	 * 
+	 */
+	private static final long serialVersionUID = 2173644826934093029L;
+
+	/**
+	 * 
 	 * @param id
 	 */
 	public AggregateReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData,

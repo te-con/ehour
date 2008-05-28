@@ -16,13 +16,16 @@
 
 package net.rrm.ehour.ui.page.user;
 
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.panel.overview.OverviewPanel;
+import net.rrm.ehour.ui.panel.timesheet.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -71,24 +74,28 @@ public class Overview extends BasePage
 	 * @param target
 	 */
 	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		switch (type)
+		AjaxEventType type = ajaxEvent.getEventType();
+		AjaxRequestTarget target = ajaxEvent.getTarget();
+		
+		if (type == CalendarAjaxEventType.MONTH_CHANGE)
 		{
-			case CommonWebUtil.AJAX_CALENDARPANEL_MONTH_CHANGE:
-				calendarChanged(target);
-				break;
-			case CommonWebUtil.AJAX_CALENDARPANEL_WEEK_NAV:
-			case CommonWebUtil.AJAX_CALENDARPANEL_WEEK_CLICK:
-				calendarWeekClicked(target);
-				calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
-				calendarPanel.refreshCalendar(target);
-				break;
-			case CommonWebUtil.AJAX_FORM_SUBMIT:
-				calendarPanel.refreshCalendar(target);
-				break;
-				
+			calendarChanged(target);
 		}
+		else if (type == CalendarAjaxEventType.WEEK_CLICK 
+					|| type == TimesheetAjaxEventType.WEEK_NAV)
+		{
+			calendarWeekClicked(target);
+			calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
+			calendarPanel.refreshCalendar(target);
+		}
+		else if (type == TimesheetAjaxEventType.TIMESHEET_SUBMIT)
+		{
+			calendarPanel.refreshCalendar(target);
+		}
+		
+		return false;
 	}
 	
 	/**

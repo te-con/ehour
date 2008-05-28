@@ -26,6 +26,10 @@ import org.apache.wicket.model.IModel;
 
 public abstract class AbstractIdTab extends AbstractTab
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7566476444711512172L;
 	private TabId id;
 	
 	public AbstractIdTab(IModel title, TabId id)

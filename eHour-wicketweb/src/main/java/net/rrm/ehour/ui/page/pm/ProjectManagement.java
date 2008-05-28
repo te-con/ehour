@@ -27,13 +27,14 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.panel.report.pm.PmReportPanel;
 import net.rrm.ehour.ui.panel.report.user.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -82,15 +83,20 @@ public class ProjectManagement extends BasePage
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.page.BasePage#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.ui.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
 	 */
 	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		WebMarkupContainer replacement = new PmReportPanel("reportPanel", getReportData());
-		reportPanel.replaceWith(replacement);
-		reportPanel = replacement;
-		target.addComponent(replacement);
+		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED)
+		{
+			WebMarkupContainer replacement = new PmReportPanel("reportPanel", getReportData());
+			reportPanel.replaceWith(replacement);
+			reportPanel = replacement;
+			ajaxEvent.getTarget().addComponent(replacement);
+		}
+		
+		return true;
 	}
 
 	/**

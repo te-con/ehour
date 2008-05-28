@@ -34,6 +34,11 @@ import org.apache.wicket.util.value.ValueMap;
 public abstract class UsernamePasswordSignInPanel extends Panel
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6284737683373325605L;
+
+	/**
 	 * Constructor.
 	 */
 	public UsernamePasswordSignInPanel(final String id)

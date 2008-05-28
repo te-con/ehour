@@ -28,8 +28,8 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
@@ -49,7 +49,6 @@ import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -351,7 +350,7 @@ public class ReportCriteriaPanel extends BaseAjaxPanel
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
+				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
             }
 
 			@Override
@@ -558,7 +557,7 @@ public class ReportCriteriaPanel extends BaseAjaxPanel
 			updateDates(ajaxEvent.getTarget());
 		}
 		
-		return false;
+		return true;
 	} 
 
 	/**

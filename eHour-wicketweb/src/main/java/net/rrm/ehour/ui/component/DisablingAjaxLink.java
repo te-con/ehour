@@ -28,6 +28,11 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 
 public abstract class DisablingAjaxLink extends AjaxLink
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6432581905417785191L;
+
 	public DisablingAjaxLink(String id)
 	{
 		super(id);

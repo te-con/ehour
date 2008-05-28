@@ -86,6 +86,11 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		tester.startPanel(new TestPanelSource()
 		{
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8296677055637030118L;
+
 			public Panel getTestPanel(String panelId)
 			{
 				return new TimesheetPanel(panelId, user, cal);

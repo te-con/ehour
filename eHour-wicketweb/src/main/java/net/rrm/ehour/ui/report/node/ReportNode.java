@@ -32,6 +32,11 @@ import org.apache.log4j.Logger;
  */
 public abstract class ReportNode implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8722465589611086312L;
+
 	private final static Logger logger = Logger.getLogger(ReportNode.class);
 	
     protected Serializable[]    columnValues;

@@ -36,7 +36,8 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.border.CustomTitledGreyRoundedBorder;
@@ -288,7 +289,7 @@ public class TimesheetPanel extends Panel implements Serializable
 				
 				addFailedProjectMessages(failedProjects, timesheet, target);
 					
-                ((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT);
+				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.TIMESHEET_SUBMIT));
             }
 
 			@Override
@@ -313,7 +314,7 @@ public class TimesheetPanel extends Panel implements Serializable
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				// basically fake a week click
-				((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_CALENDARPANEL_WEEK_CLICK);
+				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.WEEK_NAV));
             }			
 		};
 
@@ -417,16 +418,14 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		EhourWebSession session = (EhourWebSession)getSession();
 		Calendar	cal = DateUtil.getCalendar(config);
-		int			event;
 
 		cal.setTime(onScreenDate);
 		cal.add(Calendar.WEEK_OF_YEAR, weekDiff);
 
 		// should update calendar as well
-		event = CommonWebUtil.AJAX_CALENDARPANEL_WEEK_NAV;
 		session.setNavCalendar(cal);
 		
-		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, event);
+		AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.WEEK_NAV));
 	}
 	
 	/**

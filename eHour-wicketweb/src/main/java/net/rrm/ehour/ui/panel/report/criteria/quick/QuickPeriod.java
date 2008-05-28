@@ -6,6 +6,10 @@ import java.util.Date;
 
 public abstract class QuickPeriod  implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -245086949586026553L;
 	private Date	periodStart;
 	private Date	periodEnd;
 	private	int		periodIndex;

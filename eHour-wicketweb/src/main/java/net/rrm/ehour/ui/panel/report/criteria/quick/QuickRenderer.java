@@ -28,6 +28,11 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 public abstract class QuickRenderer implements IChoiceRenderer
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5678351108045640999L;
+
+	/**
 	 * Get localizer
 	 * @return
 	 */

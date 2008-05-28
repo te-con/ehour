@@ -37,6 +37,10 @@ import net.rrm.ehour.util.DateUtil;
 @SuppressWarnings("unchecked")
 public abstract class TrendReport<RK extends Comparable> extends Report
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8062083697181324496L;
 	protected SortedMap<RK, Map<Date, FlatReportElement>>	rowMap;
 
 	/**

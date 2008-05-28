@@ -54,6 +54,10 @@ import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock
 
 public class TestEhourWebApplication extends EhourWebApplication implements Serializable 
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7336200909844170964L;
 	private transient AnnotApplicationContextMock	mockContext;
 	private EhourWebSession				session;
 
@@ -112,6 +116,11 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	{
 		session = new EhourWebSession(request)
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -430393231818258496L;
+
 			public AuthUser getUser()
 			{
 				User user = new User(1);

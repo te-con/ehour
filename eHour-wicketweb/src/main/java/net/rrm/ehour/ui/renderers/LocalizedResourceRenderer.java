@@ -31,6 +31,11 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 public abstract class LocalizedResourceRenderer implements IChoiceRenderer
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3533972441275552509L;
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)

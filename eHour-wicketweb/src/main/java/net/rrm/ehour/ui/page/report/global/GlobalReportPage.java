@@ -26,12 +26,14 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.model.KeyResourceModel;
 import net.rrm.ehour.ui.page.report.BaseReportPage;
 import net.rrm.ehour.ui.panel.report.aggregate.AggregateReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.EmployeeReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.ProjectReportPanel;
+import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.panel.report.criteria.ReportTabbedPanel;
@@ -43,7 +45,6 @@ import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
@@ -98,26 +99,31 @@ public class GlobalReportPage extends BaseReportPage
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.page.BasePage#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.ui.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getModel().getObject();
-
-		clearTabs();
-		
-		if (backingBean.getReportType().equals(ReportType.AGGREGATE))
+		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED)
 		{
-			addAggregateReportPanelTabs	(backingBean);
-		}
-		else
-		{
-			addDetailedReportPanelTabs(backingBean);
+			
+			ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getModel().getObject();
+	
+			clearTabs();
+			
+			if (backingBean.getReportType().equals(ReportType.AGGREGATE))
+			{
+				addAggregateReportPanelTabs	(backingBean);
+			}
+			else
+			{
+				addDetailedReportPanelTabs(backingBean);
+			}
+			
+			ajaxEvent.getTarget().addComponent(tabPanel);
 		}
 		
-		target.addComponent(tabPanel);
+		return false;
 	}
 
 	/**

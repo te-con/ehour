@@ -30,6 +30,10 @@ import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
 public abstract class TreeReport<EL extends ReportElement> extends Report
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3717854276306653784L;
 	private	DateRange				reportRange;
 	private List<Serializable[]> 	reportMatrix;
 	private float					totalHours;

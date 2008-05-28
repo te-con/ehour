@@ -25,6 +25,10 @@ import java.io.Serializable;
 
 public abstract class Report implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8583320436270110287L;
 	private String	reportId;
 
 	/**

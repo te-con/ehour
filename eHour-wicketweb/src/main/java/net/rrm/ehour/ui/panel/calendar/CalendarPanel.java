@@ -26,13 +26,14 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 
@@ -401,7 +402,7 @@ public class CalendarPanel extends SidePanel
 			session.setNavCalendar(month);
 
 			// do it before it gets replaced, otherwise getPage is  null due to new instantiation of links
-			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_CALENDARPANEL_MONTH_CHANGE);
+			AjaxUtil.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(target, CalendarAjaxEventType.MONTH_CHANGE));
 
 			refreshCalendar(target);
 
@@ -446,10 +447,7 @@ public class CalendarPanel extends SidePanel
 
 			session.setNavCalendar(cal);
 
-			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,
-														CommonWebUtil.AJAX_CALENDARPANEL_WEEK_CLICK,
-														cal
-			);
+			AjaxUtil.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(target, CalendarAjaxEventType.WEEK_CLICK, cal));
 		}
 
 		@Override
