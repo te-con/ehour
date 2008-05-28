@@ -34,7 +34,7 @@ public class ValidatingFormComponentAjaxBehavior extends AjaxFormComponentUpdati
 
 	public ValidatingFormComponentAjaxBehavior()
 	{
-		super("onblur");
+		super("onchange");
 		
 		setThrottleDelay(Duration.ONE_SECOND);
 	}
