@@ -122,10 +122,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	@Override
 	protected AdminBackingBean getNewAddBaseBackingBean()
 	{
-		Customer	cust = new Customer();
-		cust.setActive(true);
-		
-		return new CustomerAdminBackingBean(cust);
+		return CustomerAdminBackingBean.createCustomerAdminBackingBean();
 	}
 
 	/*
@@ -135,7 +132,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	@Override
 	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
-		return new CustomerAdminBackingBean(new Customer());
+		return CustomerAdminBackingBean.createCustomerAdminBackingBean();
 	}
 
 	/**

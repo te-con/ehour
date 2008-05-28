@@ -173,11 +173,6 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	 */
 	private void addNewCustomerTab(AjaxRequestTarget target)
 	{
-		final Customer	cust = new Customer();
-		cust.setActive(true);
-		
-		new CustomerAdminBackingBean(cust);		
-		
 		AbstractTab tab = new AbstractTab(new ResourceModel("admin.customer.addCustomer"))
 		{
 			private static final long serialVersionUID = 1L;
@@ -185,7 +180,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new CustomerFormPanel(panelId, new CompoundPropertyModel(new CustomerAdminBackingBean(cust)));
+				return new CustomerFormPanel(panelId, new CompoundPropertyModel(CustomerAdminBackingBean.createCustomerAdminBackingBean()));
 			}
 		};
 		
