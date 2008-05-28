@@ -66,7 +66,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 
 	@SpringBean
 	private UserService	userService;
-	private Logger logger = Logger.getLogger(UserFormPanel.class);
+	private final static Logger logger = Logger.getLogger(UserFormPanel.class);
 	
 	/**
 	 * 

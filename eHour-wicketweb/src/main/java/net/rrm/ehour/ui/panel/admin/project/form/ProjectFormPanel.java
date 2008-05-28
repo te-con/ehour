@@ -34,7 +34,7 @@ import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
-import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
+import net.rrm.ehour.ui.panel.admin.customer.form.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.session.EhourWebSession;

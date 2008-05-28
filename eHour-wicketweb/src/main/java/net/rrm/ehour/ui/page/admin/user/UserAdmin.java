@@ -28,7 +28,7 @@ import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
-import net.rrm.ehour.ui.panel.admin.project.form.ProjectAjaxEventType;
+import net.rrm.ehour.ui.panel.admin.user.form.UserAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
@@ -55,10 +55,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class UserAdmin extends BaseTabbedAdminPage
 {
+	private	final static Logger		logger = Logger.getLogger(UserAdmin.class);
+
 	@SpringBean
 	private	UserService				userService;
 	private	ListView				userListView;
-	private	final static Logger		logger = Logger.getLogger(UserAdmin.class);
 	private EntrySelectorFilter		currentFilter;
 	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;
@@ -164,8 +165,8 @@ public class UserAdmin extends BaseTabbedAdminPage
 			
 			return false;
 		}
-		else if (type == ProjectAjaxEventType.PROJECT_UPDATED
-				|| type == ProjectAjaxEventType.PROJECT_DELETED)
+		else if (type == UserAjaxEventType.USER_UPDATED
+				|| type == UserAjaxEventType.USER_DELETED)
 		{
 			// update user list
 			List<User> users = getUsers();

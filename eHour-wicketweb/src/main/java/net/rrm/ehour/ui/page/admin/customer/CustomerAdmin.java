@@ -28,7 +28,7 @@ import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
-import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
+import net.rrm.ehour.ui.panel.admin.customer.form.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;

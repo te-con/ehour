@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.customer;
+package net.rrm.ehour.ui.panel.admin.customer.form;
 
 import net.rrm.ehour.ui.ajax.AjaxEventType;
 
