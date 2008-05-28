@@ -18,30 +18,27 @@ package net.rrm.ehour.ui.page.admin.project;
 
 import java.util.List;
 
-import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
-import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
-import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
-import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
+import net.rrm.ehour.ui.panel.admin.project.form.ProjectAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.project.form.ProjectFormPanel;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBeanImpl;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -58,7 +55,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ProjectAdmin  extends BaseTabbedAdminPage
 {
-	private static final int	TABPOS_NEW_CUSTOMER  = 2;
 	private static final String	PROJECT_SELECTOR_ID = "projectSelector";
 	private static final long 	serialVersionUID = 9196677804018589806L;
 	
@@ -96,98 +92,38 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 											new ResourceModel("admin.project.hideInactive")));		
 	}
 	
-	/**
-	 * Handle Ajax request
-	 * @param target
-	 * @param type of ajax req
-	 */
-	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
-	{
-		switch (type)
-		{
-			case CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
-			{
-				currentFilter = (EntrySelectorFilter)param;
-	
-				List<Project> projects = getProjects();
-				projectListView.setList(projects);
-				break;
-			}
-			case CommonWebUtil.AJAX_FORM_SUBMIT:
-			{
-				// update project list
-				List<Project> projects = getProjects();
-				projectListView.setList(projects);
-				
-				((EntrySelectorPanel)
-						((MarkupContainer)get("entrySelectorFrame"))
-							.get(PROJECT_SELECTOR_ID)).refreshList(target);
-				
-				getTabbedPanel().succesfulSave(target);
-				break;
-			}
-		}
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean ajaxEventReceived(AjaxEvent event)
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		if (event.getEventType() == CustomerAjaxEventType.ADMIN_CUSTOMER_NEW_PANEL_REQUEST)
+		AjaxEventType type = ajaxEvent.getEventType();
+		
+		if (type == EntrySelectorAjaxEventType.FILTER_CHANGE)
 		{
-			addNewCustomerTab(event.getTarget());
+			currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent).getPayload();
 			
-			return false;
+			List<Project> projects = getProjects();
+			projectListView.setList(projects);
 		}
-		else if (event.getEventType() == CustomerAjaxEventType.ADMIN_CUSTOMER_UPDATED)
+		else if (type == ProjectAjaxEventType.PROJECT_UPDATED
+					|| type == ProjectAjaxEventType.PROJECT_DELETED)
 		{
-			PayloadAjaxEvent<Customer> payloadEvent = (PayloadAjaxEvent<Customer>)event;
-			newCustomerAdded(payloadEvent.getTarget(), payloadEvent.getPayload());
+			// update project list
+			List<Project> projects = getProjects();
+			projectListView.setList(projects);
 			
-			return false;
+			((EntrySelectorPanel)
+					((MarkupContainer)get("entrySelectorFrame"))
+						.get(PROJECT_SELECTOR_ID)).refreshList(ajaxEvent.getTarget());
+			
+			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
 		}
 		
-		return true;
-	}
-	
-	/**
-	 * 
-	 * @param target
-	 * @param customer
-	 */
-	private void newCustomerAdded(AjaxRequestTarget target, Customer customer)
-	{
-		// first remove the tab
-		getTabbedPanel().removeTab(TABPOS_NEW_CUSTOMER);
-		target.addComponent(getTabbedPanel());
-	}
-	
-	/**
-	 * Add new customer tab
-	 * @param target
-	 */
-	private void addNewCustomerTab(AjaxRequestTarget target)
-	{
-		AbstractTab tab = new AbstractTab(new ResourceModel("admin.customer.addCustomer"))
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new CustomerFormPanel(panelId, new CompoundPropertyModel(CustomerAdminBackingBean.createCustomerAdminBackingBean()));
-			}
-		};
-		
-		getTabbedPanel().addTab(tab, TABPOS_NEW_CUSTOMER);
-		getTabbedPanel().setSelectedTab(TABPOS_NEW_CUSTOMER);
-		
-		target.addComponent(getTabbedPanel());
+		return false;
 	}
 
 

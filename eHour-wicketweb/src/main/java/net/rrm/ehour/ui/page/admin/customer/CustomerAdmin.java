@@ -23,16 +23,18 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.customer.form.CustomerFormPanel;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -141,57 +143,36 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 	 * @param type of ajax req
 	 */
 	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	@SuppressWarnings("unchecked")
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		switch (type)
+		AjaxEventType type = ajaxEvent.getEventType();
+
+		if (type == EntrySelectorAjaxEventType.FILTER_CHANGE)
 		{
-			case CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
-			{
-				currentFilter = (EntrySelectorFilter)param;
-	
-				List<Customer> customers = getCustomers();
-				customerListView.setList(customers);
-				break;
-			}
-			case CommonWebUtil.AJAX_FORM_SUBMIT:
-			{
-				List<Customer> customers = getCustomers();
-				customerListView.setList(customers);
-				
-				((EntrySelectorPanel)
-						((MarkupContainer)get("entrySelectorFrame"))
-							.get(CUSTOMER_SELECTOR_ID)).refreshList(target);					
-				
-				getTabbedPanel().succesfulSave(target);
-				break;
-				
-			}
+			currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent).getPayload();
+			
+			List<Customer> customers = getCustomers();
+			customerListView.setList(customers);
+			
+			return false;
 		}
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
-	 */
-	@Override
-	public boolean ajaxEventReceived(AjaxEvent event)
-	{
-		if (event.getEventType() == CustomerAjaxEventType.ADMIN_CUSTOMER_UPDATED)
+		else if (type == CustomerAjaxEventType.CUSTOMER_UPDATED
+					|| type == CustomerAjaxEventType.CUSTOMER_DELETED)
 		{
-			// update customer list
 			List<Customer> customers = getCustomers();
 			customerListView.setList(customers);
 			
 			((EntrySelectorPanel)
 					((MarkupContainer)get("entrySelectorFrame"))
-						.get(CUSTOMER_SELECTOR_ID)).refreshList(event.getTarget());					
+						.get(CUSTOMER_SELECTOR_ID)).refreshList(ajaxEvent.getTarget());					
 			
-			getTabbedPanel().succesfulSave(event.getTarget());
+			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
+			return false;
 		}
-
+		
 		return true;
 	}
-
 	
 	/**
 	 * Get a the customerListHolder fragment containing the listView

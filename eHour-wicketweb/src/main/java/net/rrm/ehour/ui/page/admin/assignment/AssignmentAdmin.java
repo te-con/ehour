@@ -20,13 +20,15 @@ import java.util.List;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 import net.rrm.ehour.ui.panel.admin.assignment.AssignmentPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.NoUserSelectedPanel;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -87,26 +89,25 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		add(assignmentPanel);
 	}
-	
-	/**
-	 * Handle Ajax request
-	 * @param target
-	 * @param type of ajax req
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
-	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	@SuppressWarnings("unchecked")
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		switch (type)
+		if (ajaxEvent.getEventType() == EntrySelectorAjaxEventType.FILTER_CHANGE)
 		{
-			case CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
-			{
-				currentFilter = (EntrySelectorFilter)param;
-	
-				List<User> users = getUsers();
-				userListView.setList(users);
-				break;
-			}
+			PayloadAjaxEvent<EntrySelectorFilter> payload = (PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent;
+			currentFilter = payload.getPayload();
+			
+			List<User> users = getUsers();
+			userListView.setList(users);
+			
 		}
+		
+		return false;
 	}	
 	
 	/**

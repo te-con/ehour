@@ -25,7 +25,6 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
@@ -112,7 +111,9 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		// add submit form
 		FormUtil.setSubmitActions(form 
 									,((AssignmentAdminBackingBean)model.getObject()).getProjectAssignment().isDeletable() 
-									,this 
+									,this
+									,AssignmentAjaxEventType.ASSIGNMENT_UPDATED
+									,AssignmentAjaxEventType.ASSIGNMENT_DELETED
 									,config);
 		
 		parent.add(greyBorder);
@@ -233,26 +234,5 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 				}
             }
         });	
-	}
-
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
-	{
-		ajaxRequestReceived(target, type, null);
-		
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
-	{
-		// tabs -> panel
-		((AjaxAwareContainer)AssignmentFormPanel.this.getParent().getParent()).ajaxRequestReceived(target, type, params);
 	}
 }

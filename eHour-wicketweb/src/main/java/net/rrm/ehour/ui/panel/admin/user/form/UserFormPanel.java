@@ -20,17 +20,23 @@ import java.util.List;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.util.EhourConstants;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -60,6 +66,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 
 	@SpringBean
 	private UserService	userService;
+	private Logger logger = Logger.getLogger(UserFormPanel.class);
 	
 	/**
 	 * 
@@ -151,10 +158,57 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		FormUtil.setSubmitActions(form
 									,((UserBackingBean)userModel.getObject()).getUser().isDeletable()
 									,this
+									,UserAjaxEventType.USER_UPDATED
+									,UserAjaxEventType.USER_DELETED
 									,((EhourWebSession)getSession()).getEhourConfig());
 		
 		greyBorder.add(form);
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
+	 */
+	@Override
+	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	{
+		UserBackingBean userBackingBean = (UserBackingBean) backingBean;
+		
+		if (type == UserAjaxEventType.USER_UPDATED)
+		{
+			persistUser(userBackingBean);
+		}
+		else if (type == UserAjaxEventType.USER_DELETED)
+		{
+			deleteUser(userBackingBean);
+		}		
+	}		
+	
+	/**
+	 * Persist user
+	 * @param userBackingBean
+	 * @throws ObjectNotUniqueException 
+	 * @throws PasswordEmptyException 
+	 */
+	private void persistUser(UserBackingBean userBackingBean) throws PasswordEmptyException, ObjectNotUniqueException
+	{
+		if (userBackingBean.isPm())
+		{
+			logger.debug("Re-adding PM role after edit");
+			userBackingBean.getUser().addUserRole(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
+		}
+		
+		userService.persistUser(userBackingBean.getUser());
+	}
+	
+	/**
+	 * 
+	 * @param userBackingBean
+	 */
+	private void deleteUser(UserBackingBean userBackingBean)
+	{
+		userService.deleteUser(userBackingBean.getUser().getUserId());
+	}	
 	
 	/**
 	 * Duplicate username validator

@@ -17,17 +17,21 @@
 package net.rrm.ehour.ui.panel.admin.common;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.DemoDecorator;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.component.JavaScriptConfirmation;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -42,7 +46,9 @@ public class FormUtil
 	 */
 	public static void setSubmitActions(final Form form, 
 										boolean includeDelete, 
-										final AjaxAwareContainer submitTarget,
+										final MarkupContainer submitTarget,
+										final AjaxEventType submitEventType,
+										final AjaxEventType deleteEventType,
 										final EhourConfig config)
 	{
 		AjaxButton submitButton = new AjaxButton("submitButton", form)
@@ -52,7 +58,9 @@ public class FormUtil
 			{
 				if (!config.isInDemoMode())
 				{
-					submitTarget.ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT, form.getModel());
+					PayloadAjaxEvent<IWrapModel> ajaxEvent = new PayloadAjaxEvent<IWrapModel>(target, submitEventType, (IWrapModel)form.getModel());
+					
+					AjaxUtil.publishAjaxEvent(submitTarget, ajaxEvent);
 				}
             }
 
@@ -88,7 +96,9 @@ public class FormUtil
 			{
 				if (!config.isInDemoMode())
 				{
-					submitTarget.ajaxRequestReceived(target, CommonWebUtil.AJAX_DELETE, form.getModel());
+					PayloadAjaxEvent<IModel> ajaxEvent = new PayloadAjaxEvent<IModel>(target, deleteEventType, form.getModel());
+					
+					AjaxUtil.publishAjaxEvent(submitTarget, ajaxEvent);
 				}
             }
 

@@ -16,9 +16,10 @@
 
 package net.rrm.ehour.ui.panel.entryselector;
 
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxUtil;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.util.CommonWebUtil;
+import net.rrm.ehour.ui.panel.BaseAjaxPanel;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -28,7 +29,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -39,7 +39,7 @@ import org.apache.wicket.util.time.Duration;
  * Selector with autocompletion filter 
  **/
 
-public class EntrySelectorPanel extends Panel
+public class EntrySelectorPanel extends BaseAjaxPanel
 {
 	public final static int ENTRYSELECTOR_WIDTH = 250;
 	
@@ -206,8 +206,11 @@ public class EntrySelectorPanel extends Panel
 	 */
 	protected void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter)
 	{
-		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE, filter);
+		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(target, 
+																										EntrySelectorAjaxEventType.FILTER_CHANGE,
+																										filter);
+		AjaxUtil.publishAjaxEvent(this, payloadEvent);
+		
     	target.addComponent(blueBorder);
-
 	}
 }

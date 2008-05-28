@@ -21,6 +21,7 @@ import java.util.List;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.model.AdminBackingBeanImpl;
 
 /**
@@ -55,6 +56,23 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 		infiniteStartDate = assignment.getDateStart() == null;
 		infiniteEndDate = assignment.getDateEnd() == null;
 	}
+	
+	/**
+	 * Factory method
+	 * @param user
+	 * @return
+	 */
+	public static AssignmentAdminBackingBean createAssignmentAdminBackingBean(User user)
+	{
+		ProjectAssignment			projectAssignment;
+		
+		projectAssignment = new ProjectAssignment();
+		projectAssignment.setUser(user);
+		projectAssignment.setActive(true);
+		
+		return new AssignmentAdminBackingBeanImpl(projectAssignment);
+		
+	}	
 	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean#isShowAllottedHours()

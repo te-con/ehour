@@ -31,6 +31,8 @@ import org.apache.wicket.model.IModel;
 
 public abstract class BasePanel extends Panel
 {
+	private static final long serialVersionUID = 8437967307064528806L;
+
 	public BasePanel(String id)
 	{
 		super(id);

@@ -20,6 +20,7 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
@@ -28,9 +29,9 @@ import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.customer.form.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -103,6 +104,8 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 		FormUtil.setSubmitActions(form 
 									,((CustomerAdminBackingBean)model.getObject()).getCustomer().isDeletable()
 									,this
+									,CustomerAjaxEventType.CUSTOMER_UPDATED
+									,CustomerAjaxEventType.CUSTOMER_DELETED
 									,((EhourWebSession)getSession()).getEhourConfig());
 		
 		greyBorder.add(form);
@@ -113,15 +116,15 @@ public class CustomerFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
 	 */
 	@Override
-	protected void processFormSubmit(AdminBackingBean backingBean, int type) throws Exception
+	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		CustomerAdminBackingBean customerBackingBean = (CustomerAdminBackingBean) backingBean;
 		
-		if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
+		if (type == CustomerAjaxEventType.CUSTOMER_UPDATED)
 		{
 			persistCustomer(customerBackingBean);
 		}
-		else if (type == CommonWebUtil.AJAX_DELETE)
+		else if (type == CustomerAjaxEventType.CUSTOMER_DELETED)
 		{
 			deleteCustomer(customerBackingBean);
 		}

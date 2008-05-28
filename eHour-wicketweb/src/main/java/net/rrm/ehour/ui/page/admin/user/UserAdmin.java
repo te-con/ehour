@@ -22,18 +22,19 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.project.form.ProjectAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
 import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
+import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -44,7 +45,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -150,81 +150,35 @@ public class UserAdmin extends BaseTabbedAdminPage
 	 * @param type of ajax req
 	 */
 	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	@SuppressWarnings("unchecked")
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		switch (type)
-		{
-			case CommonWebUtil.AJAX_ENTRYSELECTOR_FILTER_CHANGE:
-			{
-				currentFilter = (EntrySelectorFilter)param;
-	
-				List<User> users = getUsers();
-				userListView.setList(users);
-				break;
-			}
-			case CommonWebUtil.AJAX_FORM_SUBMIT:
-			case CommonWebUtil.AJAX_DELETE:
-			{
-				UserBackingBean	backingBean = (UserBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
-				
-				try
-				{
-					if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
-					{
-						persistUser(backingBean);
-					}
-					else if (type == CommonWebUtil.AJAX_DELETE)
-					{
-						deleteUser(backingBean);
-					}
+		AjaxEventType type = ajaxEvent.getEventType();
 
-					// update user list
-					List<User> users = getUsers();
-					userListView.setList(users);
-					
-					selectorPanel.refreshList(target);
-					
-					getTabbedPanel().succesfulSave(target);
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-					logger.error("While persisting user", e);
-					getTabbedPanel().failedSave(backingBean, target);
-				}
-				
-				break;
-			}
-		}
-	}
-	
-	/**
-	 * Persist user
-	 * @param userBackingBean
-	 * @throws ObjectNotUniqueException 
-	 * @throws PasswordEmptyException 
-	 */
-	private void persistUser(UserBackingBean userBackingBean) throws PasswordEmptyException, ObjectNotUniqueException
-	{
-		logger.info(((userBackingBean == getTabbedPanel().getEditBackingBean()) 
-											? "Updating" 
-											: "Adding") + " user :" + userBackingBean.getUser());
-		
-		if (userBackingBean.isPm())
+		if (type == EntrySelectorAjaxEventType.FILTER_CHANGE)
 		{
-			logger.debug("Re-adding PM role after edit");
-			userBackingBean.getUser().addUserRole(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
+			currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent).getPayload();
+
+			List<User> users = getUsers();
+			userListView.setList(users);
+			
+			return false;
+		}
+		else if (type == ProjectAjaxEventType.PROJECT_UPDATED
+				|| type == ProjectAjaxEventType.PROJECT_DELETED)
+		{
+			// update user list
+			List<User> users = getUsers();
+			userListView.setList(users);
+			
+			selectorPanel.refreshList(ajaxEvent.getTarget());
+			
+			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
+			
+			return false;
 		}
 		
-		userService.persistUser(userBackingBean.getUser());
-	}
-	
-	/**
-	 * 
-	 * @param userBackingBean
-	 */
-	private void deleteUser(UserBackingBean userBackingBean)
-	{
-		userService.deleteUser(userBackingBean.getUser().getUserId());
+		return true;
 	}
 	
 	/**

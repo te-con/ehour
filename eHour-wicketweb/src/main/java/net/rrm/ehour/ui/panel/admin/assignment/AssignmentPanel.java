@@ -20,14 +20,15 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IWrapModel;
@@ -86,22 +87,13 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 			@Override
 			protected AdminBackingBean getNewAddBackingBean()
 			{
-				ProjectAssignment			projectAssignment;
-				AssignmentAdminBackingBeanImpl	assignmentBean;
-				
-				projectAssignment = new ProjectAssignment();
-				projectAssignment.setUser(user);
-				projectAssignment.setActive(true);
-				
-				assignmentBean = new AssignmentAdminBackingBeanImpl(projectAssignment);
-
-				return assignmentBean;			
+				return AssignmentAdminBackingBeanImpl.createAssignmentAdminBackingBean(user);
 			}
 
 			@Override
 			protected AdminBackingBean getNewEditBackingBean()
 			{
-				return new AssignmentAdminBackingBeanImpl(new ProjectAssignment());
+				return AssignmentAdminBackingBeanImpl.createAssignmentAdminBackingBean(user);
 			}
 		};
 		
@@ -109,69 +101,64 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 		
 		add(tabbedPanel);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
 	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		ProjectAssignment	assignment;
+		AjaxEventType type = ajaxEvent.getEventType();
 		
-		switch (type)
+		if (type == AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE)
 		{
-			case CommonWebUtil.AJAX_LIST_CHANGE:
+			try
 			{
-				assignment = (ProjectAssignment)params;
+				ProjectAssignment assignment = ((PayloadAjaxEvent<ProjectAssignment>)ajaxEvent).getPayload();
+				assignment = assignmentService.getProjectAssignment(assignment.getAssignmentId());
 				
-				try
-				{
-					tabbedPanel.setEditBackingBean(
-									new AssignmentAdminBackingBeanImpl(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
-					tabbedPanel.switchTabOnAjaxTarget(target, 1);
-				} catch (ObjectNotFoundException e)
-				{
-					logger.error("While getting assignment", e);
-				}
-				break;
-			}
-			case CommonWebUtil.AJAX_FORM_SUBMIT:
-			case CommonWebUtil.AJAX_DELETE:
+				tabbedPanel.setEditBackingBean(
+								new AssignmentAdminBackingBeanImpl(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
+				tabbedPanel.switchTabOnAjaxTarget(ajaxEvent.getTarget(), 1);
+			} catch (ObjectNotFoundException e)
 			{
-				AssignmentAdminBackingBeanImpl	backingBean = (AssignmentAdminBackingBeanImpl)((((IWrapModel) params)).getWrappedModel()).getObject();
-				assignment = backingBean.getProjectAssignmentForSave();
-
-				try
-				{
-					if (type == CommonWebUtil.AJAX_DELETE)
-					{
-							assignmentService.deleteProjectAssignment(assignment.getAssignmentId());
-					}
-					else if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
-					{
-						assignmentService.assignUserToProject(assignment);
-					}
-					
-					listPanel.updateList(target, assignment.getUser());
-					
-					tabbedPanel.succesfulSave(target);
-				} catch (Exception e)
-				{
-					logger.error("While saving/deleting assignment", e);
-					tabbedPanel.failedSave(backingBean, target);
-				}
-				
-				break;
+				logger.error("While getting assignment", e);
+				return false;
 			}
 		}
-	}
+		
+		if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED
+				|| type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
+		{
+			IWrapModel model = ((PayloadAjaxEvent<IWrapModel>)ajaxEvent).getPayload();
+			
+			AssignmentAdminBackingBeanImpl	backingBean = (AssignmentAdminBackingBeanImpl)((model).getWrappedModel().getObject());
+			ProjectAssignment assignment = backingBean.getProjectAssignmentForSave();
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
-	{
-		ajaxRequestReceived(target, type, null);
-	}	
+			try
+			{
+				if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED)
+				{
+						assignmentService.deleteProjectAssignment(assignment.getAssignmentId());
+				}
+				else if (type ==  AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
+				{
+					assignmentService.assignUserToProject(assignment);
+				}
+				
+				listPanel.updateList(ajaxEvent.getTarget(), assignment.getUser());
+				
+				tabbedPanel.succesfulSave(ajaxEvent.getTarget());
+			} catch (Exception e)
+			{
+				logger.error("While saving/deleting assignment", e);
+				tabbedPanel.failedSave(backingBean, ajaxEvent.getTarget());
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

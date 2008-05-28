@@ -25,7 +25,8 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxUtil;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
@@ -106,15 +107,19 @@ public class AssignmentListPanel extends Panel
 			@Override
 			protected void populateItem(ListItem item)
 			{
-				final ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
+				ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
+				
+				final PayloadAjaxEvent<ProjectAssignment> ajaxEvent = new PayloadAjaxEvent<ProjectAssignment>(null, 
+																									AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+																									assignment);
 				
 				AjaxLink	link = new AjaxLink("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						((AjaxAwareContainer)(AssignmentListPanel.this.getParent()))
-								.ajaxRequestReceived(target, CommonWebUtil.AJAX_LIST_CHANGE, assignment);
+						ajaxEvent.setTarget(target);
+						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, ajaxEvent);
 					}
 				};
 
@@ -123,8 +128,8 @@ public class AssignmentListPanel extends Panel
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						((AjaxAwareContainer)(AssignmentListPanel.this.getParent()))
-								.ajaxRequestReceived(target, CommonWebUtil.AJAX_LIST_CHANGE, assignment);
+						ajaxEvent.setTarget(target);
+						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, ajaxEvent);
 					}
 				};
 

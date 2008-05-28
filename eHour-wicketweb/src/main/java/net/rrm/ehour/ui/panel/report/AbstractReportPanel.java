@@ -29,6 +29,8 @@ import org.apache.wicket.model.IModel;
 
 public abstract class AbstractReportPanel extends Panel
 {
+	private static final long serialVersionUID = 1L;
+
 	protected int 		reportWidth = 950;
 	
 	protected EhourConfig	config;

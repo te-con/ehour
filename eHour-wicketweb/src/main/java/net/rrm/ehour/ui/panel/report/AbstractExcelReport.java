@@ -47,6 +47,8 @@ import org.apache.wicket.model.ResourceModel;
 
 public abstract class AbstractExcelReport<RE extends ReportElement> extends AbstractExcelResource
 {
+	private static final long serialVersionUID = 1L;
+
 	private final static Logger logger = Logger.getLogger(AbstractExcelReport.class);
 	
 	private final String	FONT_TYPE = "Arial";

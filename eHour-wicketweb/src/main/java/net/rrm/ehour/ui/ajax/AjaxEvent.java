@@ -25,9 +25,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public class AjaxEvent
 {
-	public AjaxRequestTarget target;
+	private AjaxRequestTarget target;
 	
-	public AjaxEventType	eventType;
+	private AjaxEventType	eventType;
 	
 	/**
 	 * 

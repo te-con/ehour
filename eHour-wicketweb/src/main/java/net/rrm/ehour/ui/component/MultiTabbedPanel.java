@@ -29,8 +29,10 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * Multi tabbed
  **/
 
-public abstract class MultiTabbedPanel extends AjaxTabbedPanel
+public class MultiTabbedPanel extends AjaxTabbedPanel
 {
+	private static final long serialVersionUID = -6237966897046476493L;
+
 	public MultiTabbedPanel(String id)
 	{
 		super(id, new ArrayList<AbstractTab>());

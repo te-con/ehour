@@ -20,8 +20,6 @@ package net.rrm.ehour.ui.panel;
 import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 
-import org.apache.log4j.Logger;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 
 /**
@@ -30,6 +28,8 @@ import org.apache.wicket.model.IModel;
 
 public abstract class BaseAjaxPanel extends BasePanel implements AjaxAwareContainer
 {
+	private static final long serialVersionUID = 5723792133447447887L;
+
 	/**
 	 * 
 	 * @param id
@@ -51,38 +51,10 @@ public abstract class BaseAjaxPanel extends BasePanel implements AjaxAwareContai
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
-	{
-		ajaxRequestReceived(target, type, null);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
-	{
-		Logger.getLogger(this.getClass()).warn("Uncaught ajax request received. This might be a bug");
-	}	
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		Logger.getLogger(this.getClass()).warn("Uncaught ajax event received. This might be a bug");
 		return true;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#publishAjaxEvent(net.rrm.ehour.ui.ajax.AjaxEvent)
-	 */
-	public void publishAjaxEvent(AjaxEvent ajaxEvent)
-	{
-		ajaxEventReceived(ajaxEvent);
 	}
 }

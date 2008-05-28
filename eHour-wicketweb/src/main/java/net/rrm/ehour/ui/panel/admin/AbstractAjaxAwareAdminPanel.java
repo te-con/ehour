@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.ui.panel.admin;
 
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.util.CommonWebUtil;
+import net.rrm.ehour.ui.panel.BaseAjaxPanel;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 
@@ -32,7 +32,7 @@ import org.apache.wicket.model.IWrapModel;
  * ajax request
  **/
 
-public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxAwareContainer
+public abstract class AbstractAjaxAwareAdminPanel extends BaseAjaxPanel
 {
 	private static final long serialVersionUID = 1L;
 	private	static final Logger	logger = Logger.getLogger(AbstractAjaxAwareAdminPanel.class);
@@ -48,39 +48,73 @@ public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxA
 		super(id, model);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
-	{
-		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, type);
-		
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int)
+//	 */
+//	public void ajaxRequestReceived(AjaxRequestTarget target, int type)
+//	{
+//		((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, type);
+//		
+//	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+//	 */
+//	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+//	{
+//		AdminBackingBean backingBean = (AdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
+//		
+//		try
+//		{
+//			processFormSubmit(backingBean, type);
+//		
+//			postSubmit(target, type, params, backingBean);
+//			
+//			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target, CommonWebUtil.AJAX_FORM_SUBMIT, backingBean.getDomainObject());
+//			
+//		} catch (Exception e)
+//		{
+//			logger.error("While trying to persist/delete", e);
+//			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
+//			target.addComponent(this);
+//		}
+//	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
 	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		AdminBackingBean backingBean = (AdminBackingBean) ((((IWrapModel) params)).getWrappedModel()).getObject();
+		PayloadAjaxEvent<IWrapModel> payloadEvent = (PayloadAjaxEvent<IWrapModel>)ajaxEvent;
+		
+		IWrapModel model  = payloadEvent.getPayload();
+		
+		AdminBackingBean backingBean = (AdminBackingBean) ((model).getWrappedModel()).getObject();
+		AjaxEventType type = ajaxEvent.getEventType();
+		AjaxRequestTarget target = ajaxEvent.getTarget();
 		
 		try
 		{
 			processFormSubmit(backingBean, type);
 		
-			postSubmit(target, type, params, backingBean);
-			
-			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT, backingBean.getDomainObject());
+			postSubmit(target, type, model, backingBean);
 			
 		} catch (Exception e)
 		{
 			logger.error("While trying to persist/delete", e);
 			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
 			target.addComponent(this);
-		}
-	}
+			
+			return false;
+		}		
+		
+		return true;
+	}	
 	
 	/**
 	 * Post submit hook
@@ -90,7 +124,7 @@ public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxA
 	 * @param params
 	 * @param backingBean
 	 */
-	protected void postSubmit(AjaxRequestTarget target, int type, Object params, AdminBackingBean backingBean)
+	protected void postSubmit(AjaxRequestTarget target, AjaxEventType type, IModel model, AdminBackingBean backingBean)
 	{
 		
 	}	
@@ -101,29 +135,8 @@ public abstract class AbstractAjaxAwareAdminPanel extends Panel implements AjaxA
 	 * @param type
 	 * @throws Exception
 	 */
-	protected void processFormSubmit(AdminBackingBean backingBean, int type) throws Exception
+	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
-	 */
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		Logger.getLogger(this.getClass()).warn("Uncaught ajax event received. This might be a bug");
-		
-		return true;
-	}
-	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#publishAjaxEvent(net.rrm.ehour.ui.ajax.AjaxEvent)
-	 */
-	public void publishAjaxEvent(AjaxEvent ajaxEvent)
-	{
-		ajaxEventReceived(ajaxEvent);
-	}	
 }

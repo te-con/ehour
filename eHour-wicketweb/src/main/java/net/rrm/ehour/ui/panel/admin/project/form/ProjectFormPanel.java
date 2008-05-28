@@ -25,24 +25,23 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+import net.rrm.ehour.ui.panel.admin.customer.CustomerAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.UserComparator;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.service.UserService;
 
-import org.apache.log4j.Logger;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -54,7 +53,6 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -73,7 +71,6 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	private	UserService		userService;
 
 	private static final long serialVersionUID = -8677950352090140144L;
-	private	static final Logger	logger = Logger.getLogger(ProjectFormPanel.class);
 	
 	/**
 	 * 
@@ -102,9 +99,11 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		addFormComponents(form);
 
 		FormUtil.setSubmitActions(form
-				,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
-				,this
-				,((EhourWebSession)getSession()).getEhourConfig());
+									,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
+									,this
+									,ProjectAjaxEventType.PROJECT_UPDATED
+									,ProjectAjaxEventType.PROJECT_DELETED
+									,((EhourWebSession)getSession()).getEhourConfig());
 
 		border.add(form);
 
@@ -193,50 +192,27 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
 	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params)
+	@Override
+	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
-		ProjectAdminBackingBeanImpl backingBean = (ProjectAdminBackingBeanImpl) ((((IWrapModel) params)).getWrappedModel()).getObject();
+		ProjectAdminBackingBeanImpl projectBackingBean = (ProjectAdminBackingBeanImpl) backingBean;
 		
-		try
+		if (type == CustomerAjaxEventType.CUSTOMER_UPDATED)
 		{
-			if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
-			{
-				persistProject(backingBean);
-			}
-			else if (type == CommonWebUtil.AJAX_DELETE)
-			{
-				deleteProject(backingBean);
-			}
-			
-			((AjaxAwareContainer)getPage()).ajaxRequestReceived(target,  CommonWebUtil.AJAX_FORM_SUBMIT);
-			
-			postSubmit(true, target, type, params);
+			persistProject(projectBackingBean);
 		}
-		catch (Exception e)
+		else if (type == CustomerAjaxEventType.CUSTOMER_DELETED)
 		{
-			logger.error("While persisting/deleting project", e);
-			backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
-			target.addComponent(this);
-			
-			postSubmit(false, target, type, params);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param success
-	 */
-	public void postSubmit(boolean success, AjaxRequestTarget target, int type, Object params)
-	{
-		
-	}
+			deleteProject(projectBackingBean);
+		}		
+	}	
 
 	/**
 	 * Persist project
 	 */
-	protected void persistProject(ProjectAdminBackingBean backingBean) throws Exception
+	private void persistProject(ProjectAdminBackingBean backingBean) throws Exception
 	{
 		projectService.persistProject(backingBean.getProject());
 	}
@@ -245,7 +221,7 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	 * Delete project
 	 * @throws ParentChildConstraintException 
 	 */
-	protected void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException
+	private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException
 	{
 		projectService.deleteProject(backingBean.getProject().getProjectId());
 	} 

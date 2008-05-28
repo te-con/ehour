@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.ajax;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
 
 /**
  * Ajax aware container providing a callback method for ajax requests
@@ -24,23 +23,22 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public interface AjaxAwareContainer
 {
-	/**
-	 * Ajax request received
-	 * @param target
-	 * @param type
-	 * @d eprecated use ajaxEventReceived
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type);
-	
-	/**
-	 * Ajax request received
-	 * @param target
-	 * @param type
-	 * @param params
-	 * @d eprecated use ajaxEventReceived
-	 */
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object params);
-	
+//	/**
+//	 * Ajax request received
+//	 * @param target
+//	 * @param type
+//	 * @deprecated use ajaxEventReceived
+//	 */
+//	public boolean ajaxRequestReceived(AjaxRequestTarget target, int type);
+//	
+//	/**
+//	 * Ajax request received
+//	 * @param target
+//	 * @param type
+//	 * @param params
+//	 * @deprecated use ajaxEventReceived
+//	 */
+//	public boolean ajaxRequestReceived(AjaxRequestTarget target, int type, Object params);
 	/**
 	 * Ajax event received
 	 * @param ajaxEvent
@@ -48,10 +46,4 @@ public interface AjaxAwareContainer
 	 * @since 0.7.2 (replacement of the ajaxRequestReceived methods)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent);
-	
-	/**
-	 * Publish ajax event
-	 * @param ajaxEvent
-	 */
-	public void publishAjaxEvent(AjaxEvent ajaxEvent);
 }

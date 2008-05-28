@@ -1,8 +1,7 @@
 package net.rrm.ehour.ui.ajax;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.Component.IVisitor;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Page;
 
 /**
  * 
@@ -11,37 +10,30 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  */
 public class AjaxUtil
 {
-	public static void publishEvents(WebMarkupContainer parent, AjaxEvent event)
-	{
-		IVisitor visitor = new AjaxEventVisitor(event);
-		
-		visitor.component(parent.getPage());
-		parent.getPage().visitChildren(new AjaxEventVisitor(event));
-	}
-	
 	/**
-	 * 
-	 * @author Thies
-	 *
+	 * Publish ajaxEvent at node and move up the tree
+	 * @param ajaxEvent
 	 */
-	private static class AjaxEventVisitor implements IVisitor
+	public static void publishAjaxEvent(MarkupContainer node, AjaxEvent ajaxEvent)
 	{
-		private AjaxEvent event;
+		boolean proceed = true;
 		
-		private AjaxEventVisitor(AjaxEvent ajaxEvent)
+		if (node instanceof AjaxAwareContainer)
 		{
-			this.event = ajaxEvent;
+			proceed = ((AjaxAwareContainer)node).ajaxEventReceived(ajaxEvent);
 		}
-
-		public Object component(Component component)
+		
+		if (proceed && !(node instanceof Page))
 		{
-			if (component instanceof AjaxAwareContainer)
+			MarkupContainer parent = node.getParent();
+			
+			if (parent == null)
 			{
-				((AjaxAwareContainer)component).ajaxEventReceived(event);
+				parent = node.getPage();
 			}
 			
-			return IVisitor.CONTINUE_TRAVERSAL;
+			
+			publishAjaxEvent(parent, ajaxEvent);
 		}
-		
 	}
 }

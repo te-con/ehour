@@ -21,15 +21,16 @@ import java.util.List;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.panel.admin.department.form.DepartmentAjaxEventType;
 import net.rrm.ehour.ui.panel.admin.department.form.DepartmentFormPanel;
 import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -42,7 +43,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -125,71 +125,32 @@ public class DepartmentAdmin  extends BaseTabbedAdminPage
 		return new DepartmentAdminBackingBean(new UserDepartment());
 	}
 	
-	/**
-	 * Handle Ajax request
-	 * @param target
-	 * @param type of ajax req
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
 	 */
 	@Override
-	public void ajaxRequestReceived(AjaxRequestTarget target, int type, Object param)
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		switch (type)
+		AjaxEventType type = ajaxEvent.getEventType();
+		
+		if (type == DepartmentAjaxEventType.DEPARTMENT_DELETED 
+				|| type == DepartmentAjaxEventType.DEPARTMENT_UPDATED)
 		{
-			case CommonWebUtil.AJAX_DELETE:
-			case CommonWebUtil.AJAX_FORM_SUBMIT:
-			{
-				DepartmentAdminBackingBean backingBean = (DepartmentAdminBackingBean) ((((IWrapModel) param)).getWrappedModel()).getObject();
-
-				try
-				{
-					if (type == CommonWebUtil.AJAX_FORM_SUBMIT)
-					{
-						persistDepartment(backingBean);
-					}
-					else if (type == CommonWebUtil.AJAX_DELETE)
-					{
-						deleteDepartment(backingBean);
-					}					
-
-					// update customer list
-					List<UserDepartment> depts = getUserDepartments();
-					deptListView.setList(depts);
-					
-					((EntrySelectorPanel)
-							((MarkupContainer)get("entrySelectorFrame"))
-								.get(DEPT_SELECTOR_ID)).refreshList(target);
-					
-					getTabbedPanel().succesfulSave(target);
-				} catch (Exception e)
-				{
-					logger.error("While persisting user", e);
-					getTabbedPanel().failedSave(backingBean, target);
-				}
-				
-				break;
-			}
+			// update customer list
+			List<UserDepartment> depts = getUserDepartments();
+			deptListView.setList(depts);
+			
+			((EntrySelectorPanel)
+					((MarkupContainer)get("entrySelectorFrame"))
+						.get(DEPT_SELECTOR_ID)).refreshList(ajaxEvent.getTarget());
+			
+			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
 		}
+		
+		return true;
 	}	
 	
-	/**
-	 * Persist dept
-	 * @param backingBean
-	 * @throws ObjectNotUniqueException 
-	 */
-	private void persistDepartment(DepartmentAdminBackingBean backingBean) throws ObjectNotUniqueException
-	{
-		userService.persistUserDepartment(backingBean.getDepartment());
-	}
-	
-	
-	/**
-	 * Delete department
-	 * @param backingBean
-	 */
-	private void deleteDepartment(DepartmentAdminBackingBean backingBean)
-	{
-		userService.deleteDepartment(backingBean.getDepartment().getDepartmentId());
-	}
 	
 	
 	

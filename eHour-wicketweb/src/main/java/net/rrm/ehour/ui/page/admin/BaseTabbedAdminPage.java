@@ -28,7 +28,7 @@ import org.apache.wicket.model.ResourceModel;
  * TODO need refactor, remove those Base methods
  **/
 
-@SuppressWarnings({"unchecked", "serial"})
+@SuppressWarnings("serial")
 public abstract class BaseTabbedAdminPage extends BaseAdminPage
 {
 	private	AddEditTabbedPanel	tabbedPanel;

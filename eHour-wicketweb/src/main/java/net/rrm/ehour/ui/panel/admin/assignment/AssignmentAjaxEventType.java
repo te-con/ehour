@@ -1,7 +1,7 @@
 /**
- * Created on Dec 9, 2007
- * Created by Thies Edeling
- * Created by Thies Edeling
+ * Created on May 28, 2008
+ * Author: Thies
+ *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
  *
  * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
@@ -15,17 +15,17 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.customer;
+package net.rrm.ehour.ui.panel.admin.assignment;
 
 import net.rrm.ehour.ui.ajax.AjaxEventType;
 
 /**
- * Ajax event types
+ * Assignment ajax event type
  **/
 
-public enum CustomerAjaxEventType implements AjaxEventType
+public enum AssignmentAjaxEventType implements AjaxEventType
 {
-	CUSTOMER_NEW_PANEL_REQUEST,
-	CUSTOMER_UPDATED,
-	CUSTOMER_DELETED;
+	ASSIGNMENT_UPDATED,
+	ASSIGNMENT_DELETED,
+	ASSIGNMENT_LIST_CHANGE;
 }

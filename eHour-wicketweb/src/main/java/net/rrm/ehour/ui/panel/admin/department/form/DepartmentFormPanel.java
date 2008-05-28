@@ -16,19 +16,24 @@
 
 package net.rrm.ehour.ui.panel.admin.department.form;
 
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 /**
@@ -39,6 +44,9 @@ public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = -6469066920645156569L;
 
+	@SpringBean
+	private UserService userService;
+	
 	/**
 	 * 
 	 * @param id
@@ -78,8 +86,50 @@ public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
 		FormUtil.setSubmitActions(form
 									,((DepartmentAdminBackingBean)model.getObject()).getDepartment().isDeletable()
 									,this
+									,DepartmentAjaxEventType.DEPARTMENT_UPDATED
+									,DepartmentAjaxEventType.DEPARTMENT_DELETED
 									,((EhourWebSession)getSession()).getEhourConfig());
 		
 		greyBorder.add(form);
 	}
+	
+	
+	/**
+	 * Persist dept
+	 * @param backingBean
+	 * @throws ObjectNotUniqueException 
+	 */
+	private void persistDepartment(DepartmentAdminBackingBean backingBean) throws ObjectNotUniqueException
+	{
+		userService.persistUserDepartment(backingBean.getDepartment());
+	}
+	
+	
+	/**
+	 * Delete department
+	 * @param backingBean
+	 */
+	private void deleteDepartment(DepartmentAdminBackingBean backingBean)
+	{
+		userService.deleteDepartment(backingBean.getDepartment().getDepartmentId());
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
+	 */
+	@Override
+	protected void processFormSubmit(AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	{
+		DepartmentAdminBackingBean departmentBackingBean = (DepartmentAdminBackingBean) backingBean;
+		
+		if (type == DepartmentAjaxEventType.DEPARTMENT_UPDATED)
+		{
+			persistDepartment(departmentBackingBean);
+		}
+		else if (type == DepartmentAjaxEventType.DEPARTMENT_DELETED)
+		{
+			deleteDepartment(departmentBackingBean);
+		}		
+	}	
 }
