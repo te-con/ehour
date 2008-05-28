@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.panel.admin.assignment.dto;
 import java.util.List;
 
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
@@ -205,7 +206,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.model.AdminBackingBean#getDomainObject()
 	 */
-	public ProjectAssignment getDomainObject()
+	public DomainObject<?, ?> getDomainObject()
 	{
 		return getProjectAssignment();
 	}
