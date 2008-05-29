@@ -26,6 +26,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public abstract class DomainObject <PK extends Serializable, DO extends Serializable> implements Serializable, Comparable<DO>
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6706927368888981236L;
+
+	/**
 	 * Get primary key
 	 * @return
 	 */

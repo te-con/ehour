@@ -25,6 +25,10 @@ import java.io.Serializable;
 
 public abstract class ReportElement implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5338728111655714167L;
 	protected Number 				hours;
 
 	/**
