@@ -25,10 +25,16 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
@@ -62,7 +68,9 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 	
 	@SpringBean
 	private CustomerService	customerService;
-	protected	EhourConfig		config;
+	@SpringBean
+	private ProjectAssignmentService projectAssignmentService;
+	protected EhourConfig		config;
 	/**
 	 * 
 	 * @param id
@@ -82,7 +90,48 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 		setUpPage(this, model);
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.model.AdminBackingBean, int)
+	 */
+	@Override
+	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	{
+		AssignmentAdminBackingBean assignmentBackingBean = (AssignmentAdminBackingBean) backingBean;
+		
+		if (type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
+		{
+			persistAssignment(assignmentBackingBean);
+		}
+		else if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED)
+		{
+			deleteAssignment(assignmentBackingBean);
+		}		
+	}		
+	
+	/**
+	 * Persist user
+	 * @param userBackingBean
+	 * @throws ObjectNotUniqueException 
+	 * @throws PasswordEmptyException 
+	 */
+	private void persistAssignment(AssignmentAdminBackingBean backingBean)
+	{
+		projectAssignmentService.assignUserToProject(backingBean.getProjectAssignmentForSave());
+	}
+	
+	/**
+	 * 
+	 * @param backingBean
+	 * @throws ParentChildConstraintException 
+	 * @throws ObjectNotFoundException 
+	 */
+	private void deleteAssignment(AssignmentAdminBackingBean backingBean) throws ObjectNotFoundException, ParentChildConstraintException
+	{
+		projectAssignmentService.deleteProjectAssignment(backingBean.getProjectAssignment().getAssignmentId());
+	}
+	
+	
 	/**
 	 * Setup form
 	 */

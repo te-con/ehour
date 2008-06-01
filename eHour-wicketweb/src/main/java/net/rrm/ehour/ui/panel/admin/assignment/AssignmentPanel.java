@@ -134,26 +134,9 @@ public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
 			AssignmentAdminBackingBeanImpl	backingBean = (AssignmentAdminBackingBeanImpl)((PayloadAjaxEvent<AdminBackingBean>)ajaxEvent).getPayload();
 			ProjectAssignment assignment = backingBean.getProjectAssignmentForSave();
 
-			try
-			{
-				if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED)
-				{
-						assignmentService.deleteProjectAssignment(assignment.getAssignmentId());
-				}
-				else if (type ==  AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
-				{
-					assignmentService.assignUserToProject(assignment);
-				}
+			listPanel.updateList(ajaxEvent.getTarget(), assignment.getUser());
 				
-				listPanel.updateList(ajaxEvent.getTarget(), assignment.getUser());
-				
-				tabbedPanel.succesfulSave(ajaxEvent.getTarget());
-			} catch (Exception e)
-			{
-				logger.error("While saving/deleting assignment", e);
-				tabbedPanel.failedSave(backingBean, ajaxEvent.getTarget());
-				return false;
-			}
+			tabbedPanel.succesfulSave(ajaxEvent.getTarget());
 		}
 		
 		return true;
