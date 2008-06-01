@@ -10,6 +10,8 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 	default-autowire="byName">
 
+	<aop:aspectj-autoproxy/>
+
 	<!-- the transactional advice  -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>

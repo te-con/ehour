@@ -18,6 +18,7 @@
 package net.rrm.ehour.report.service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -51,7 +52,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 														List<Project >projects,
 														DateRange reportRange)
 	{
-		List<FlatReportElement>	elements;
+		List<FlatReportElement>	elements = new ArrayList<FlatReportElement>();
 		
 		if (users == null && projects == null)
 		{
