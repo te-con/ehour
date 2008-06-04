@@ -54,6 +54,7 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 	public void testAddUser() throws Exception
 	{
 		User	user = DummyDataGenerator.getUser();
+		user.setUpdatedPassword("aa");
 		userService.persistUser(user);
 	}
 	
