@@ -31,7 +31,7 @@ public class ProjectComparator implements Comparator<Project>, Serializable
 
 	public int compare(Project o1, Project o2)
 	{
-		return o1.getName().compareToIgnoreCase(o2.getName());
+		return o1.getFullName().compareToIgnoreCase(o2.getFullName());
 	}
 
 }

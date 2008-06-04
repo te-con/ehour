@@ -39,6 +39,7 @@ import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.sort.ProjectComparator;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -243,7 +244,11 @@ public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
 				}
 				else
 				{
-					return new ArrayList<Project>(customer.getActiveProjects());
+					List<Project> projects = new ArrayList<Project>(customer.getActiveProjects());
+					
+					Collections.sort(projects, new ProjectComparator());
+					
+					return projects;
 				}
 			}
 		};

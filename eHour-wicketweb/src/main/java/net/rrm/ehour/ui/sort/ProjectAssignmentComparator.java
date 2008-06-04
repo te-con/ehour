@@ -141,7 +141,7 @@ public class ProjectAssignmentComparator implements Comparator<ProjectAssignment
 				&& o1.getProject() != null && o2.getProject() != null
 				&& o1.getProject().getName() != null)
 		{
-			return o1.getProject().getName().compareToIgnoreCase(o2.getProject().getName());
+			return o1.getProject().getFullName().compareToIgnoreCase(o2.getProject().getFullName());
 		}
 		else
 		{

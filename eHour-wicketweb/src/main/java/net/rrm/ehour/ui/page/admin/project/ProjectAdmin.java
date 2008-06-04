@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.page.admin.project;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.rrm.ehour.domain.Project;
@@ -34,6 +35,7 @@ import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBeanImpl
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.sort.ProjectComparator;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
@@ -236,8 +238,10 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 				logger.debug("Filtering on " + currentFilter.getCleanFilterInput() + ", hide active: " + currentFilter.isActivateToggle());
 			}
 			
-			projects = projectService.getProjects(currentFilter.getCleanFilterInput(), currentFilter.isActivateToggle()); 
+			projects = projectService.getProjects(currentFilter.getCleanFilterInput(), currentFilter.isActivateToggle());
 		}
+
+		Collections.sort(projects, new ProjectComparator());
 		
 		return projects;
 	}

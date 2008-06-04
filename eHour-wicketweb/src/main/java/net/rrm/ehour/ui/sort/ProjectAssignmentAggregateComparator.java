@@ -81,8 +81,8 @@ public class ProjectAssignmentAggregateComparator implements Comparator<Assignme
 	 */
 	private int compareOnProject(AssignmentAggregateReportElement o1, AssignmentAggregateReportElement o2)
 	{
-		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
-				o2.getProjectAssignment().getProject().getName());
+		return o1.getProjectAssignment().getProject().getFullName().compareToIgnoreCase(
+				o2.getProjectAssignment().getProject().getFullName());
 
 	}
 
