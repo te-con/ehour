@@ -215,6 +215,33 @@ public class UserServiceTest extends TestCase
 		verify(userRoleDAO);
 	}
 	
+	public void testAddAndcheckProjectManagementRoles()
+	{
+		User user = new User(1);
+		user.setPassword("aa");
+		user.setSalt(new Integer(2));
+		user.setUsername("user");
+		
+		expect(userDAO.findById(new Integer(1)))
+			.andReturn(user);
+		
+		expect(userDAO.persist(user))
+			.andReturn(user);
+
+		expect(userDAO.findByUsername("user"))
+			.andReturn(user);
+
+		userDAO.deletePmWithoutProject();
+		
+		replay(userDAO);
+		
+		userService.addAndcheckProjectManagementRoles(new Integer(1));
+		
+		verify(userDAO);
+		
+		assertEquals("aa", user.getPassword());
+	}
+	
 //	public void testPersistUserDepartment() throws ObjectNotUniqueException
 //	{
 //		UserDepartment ud = new UserDepartment();
