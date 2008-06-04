@@ -70,7 +70,7 @@ public class AdminAccountValidator
 		}
 		else
 		{
-			user.setPassword("admin");
+			user.setUpdatedPassword("admin");
 			try
 			{
 				userService.persistUser(user);

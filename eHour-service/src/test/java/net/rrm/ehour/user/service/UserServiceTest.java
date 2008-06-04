@@ -33,9 +33,13 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
+
+import org.acegisecurity.providers.encoding.ShaPasswordEncoder;
 
 
 /**
@@ -62,9 +66,9 @@ public class UserServiceTest extends TestCase
 		((UserServiceImpl)userService).setUserDAO(userDAO);
 		((UserServiceImpl)userService).setUserDepartmentDAO(userDepartmentDAO);
 		((UserServiceImpl)userService).setUserRoleDAO(userRoleDAO);
+		
+		((UserServiceImpl)userService).setPasswordEncoder(new ShaPasswordEncoder(1));
 	}
-
-
 	
 	
 	/**
@@ -225,13 +229,12 @@ public class UserServiceTest extends TestCase
 		expect(userDAO.findById(new Integer(1)))
 			.andReturn(user);
 		
-		expect(userDAO.persist(user))
-			.andReturn(user);
-
 		expect(userDAO.findByUsername("user"))
 			.andReturn(user);
 
 		userDAO.deletePmWithoutProject();
+		expect(userDAO.merge(user))
+			.andReturn(user);
 		
 		replay(userDAO);
 		
@@ -241,6 +244,29 @@ public class UserServiceTest extends TestCase
 		
 		assertEquals("aa", user.getPassword());
 	}
+	
+	public void testUpdatePassword() throws PasswordEmptyException, ObjectNotUniqueException
+	{
+		User user = new User(1);
+		user.setPassword("aa");
+		user.setSalt(new Integer(2));
+		user.setUsername("user");
+		user.setUpdatedPassword("fefe");
+		
+		expect(userDAO.findByUsername("user"))
+			.andReturn(user);
+
+		expect(userDAO.merge(user))
+			.andReturn(user);
+		
+		replay(userDAO);
+		
+		userService.persistUser(user);
+		
+		verify(userDAO);
+		
+		assertFalse(user.getPassword().equals("aa") );
+	}	
 	
 //	public void testPersistUserDepartment() throws ObjectNotUniqueException
 //	{

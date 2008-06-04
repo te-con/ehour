@@ -45,6 +45,7 @@ import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 
 import org.acegisecurity.providers.encoding.MessageDigestPasswordEncoder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -288,7 +289,7 @@ public class UserServiceImpl implements UserService
 		}
 		
 		// copy over password or encrypt new one
-		if (user.getPassword() == null || user.getPassword().trim().equals(""))
+		if (StringUtils.isEmpty(user.getUpdatedPassword()))
 		{
 			// if password is empty and user is new we have a problem
 			if (user.getUserId() == null)
@@ -302,7 +303,7 @@ public class UserServiceImpl implements UserService
 		else
 		{
 			user.setSalt((int)(Math.random() * 10000));
-			user.setPassword(encryptPassword(user.getPassword(), user.getSalt()));
+			user.setPassword(encryptPassword(user.getUpdatedPassword(), user.getSalt()));
 		}
 		
 		// assign new users to default projects
