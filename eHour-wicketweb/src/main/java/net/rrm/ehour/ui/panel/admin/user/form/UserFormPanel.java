@@ -100,7 +100,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
 		
 		// password & confirm
-		PasswordTextField	passwordTextField = new PasswordTextField("user.password");
+		PasswordTextField	passwordTextField = new PasswordTextField("user.updatedPassword");
 		passwordTextField.setLabel(new ResourceModel("admin.user.password"));
 		passwordTextField.setRequired(false);	// passwordField defaults to required
 		passwordTextField.add(new ValidatingFormComponentAjaxBehavior());
