@@ -38,6 +38,8 @@ public class User extends DomainObject<Integer, User>
 	private	boolean	active;
 	
 	private Integer salt;
+	
+	private String updatedPassword;
 
 	private Set<UserRole> userRoles = new HashSet<UserRole>();
 
@@ -357,5 +359,21 @@ public class User extends DomainObject<Integer, User>
 	public void setSalt(Integer salt)
 	{
 		this.salt = salt;
+	}
+
+	/**
+	 * @return the updatedPassword
+	 */
+	public String getUpdatedPassword()
+	{
+		return updatedPassword;
+	}
+
+	/**
+	 * @param updatedPassword the updatedPassword to set
+	 */
+	public void setUpdatedPassword(String updatedPassword)
+	{
+		this.updatedPassword = updatedPassword;
 	}
 }
