@@ -1,3 +1,14 @@
+eHour 0.8.2 release notes - 10 June 2008
+----------------------------------------
+0.8.2 - the Oranje release - has the following changes. If you make use of the
+project management role and reports it's strongly advised to upgrade. 
+
+Change log (http://www.ehour.nl/defects/):
+(111) [Feature request] Projects sorted in admin screens
+(115) [Bug / defect] When assigning project management role to a user, the user's password gets overwritten
+(114) [Bug / defect] comments field blank in detailed report
+ ---  [Technical] Ajax event framework rewritten
+
 eHour 0.8.1 release notes - 14 May 2008
 ---------------------------------------
 0.8.1 fixes a problem with the list of projects on a timesheet, not all relevant projects were shown on
