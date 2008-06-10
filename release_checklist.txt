@@ -11,11 +11,12 @@ eHour release
 		  upgrade.phtml
 		  download.phtml
 4. make sure configuration is set to deployment in web.xml
-5. update UPGRADE.txt
+5. update UPGRADE.txt (?)
 6. update pad.xml
-7. tag source
+7. tag source in SVN
 8. repack archives file on Windows
 9. send mail using ~thies/sendmail/mail.pl
 10. update stats.phtml
 11. mark the release as released in the bugtracker
-
+12. update demo deployment on ehour.nl
+13. remove servlet.jar from .war
