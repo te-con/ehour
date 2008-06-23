@@ -65,8 +65,30 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
-		</dependency>
+			<version>1.2.15</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+				  <exclusion>
+				    <groupId>javax.mail</groupId>
+				    <artifactId>mail</artifactId>
+				  </exclusion>
+				  <exclusion>
+				    <groupId>javax.jms</groupId>
+				    <artifactId>jms</artifactId>
+				  </exclusion>
+				 <exclusion>
+				    <groupId>com.sun.jdmk</groupId>
+				    <artifactId>jmxtools</artifactId>
+				  </exclusion>
+				 <exclusion>
+				    <groupId>com.sun.jmx</groupId>
+				    <artifactId>jmxri</artifactId>
+				  </exclusion>
+			</exclusions>
+		</dependency>		
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
@@ -76,7 +98,7 @@
 		<dependency>
 			<groupId>org.acegisecurity</groupId>
 			<artifactId>acegi-security</artifactId>
-			<version>1.0.6</version>
+			<version>1.0.7</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework</groupId>
@@ -126,17 +148,17 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>2.5.2</version>
+			<version>2.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>2.5.2</version>
+			<version>2.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>2.5.2</version>
+			<version>2.5.4</version>
 		</dependency>
 	</dependencies>
 	<build>

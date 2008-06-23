@@ -155,7 +155,7 @@
 				<dependency>
 					<groupId>org.apache.derby</groupId>
 					<artifactId>derby</artifactId>
-					<version>10.3.1.4</version>
+					<version>10.4.1.3</version>
 				</dependency>
 				<dependency>
 					<groupId>org.apache.ddlutils</groupId>
@@ -182,7 +182,7 @@
 				<dependency>
 					<groupId>org.apache.derby</groupId>
 					<artifactId>derby</artifactId>
-					<version>10.3.1.4</version>
+					<version>10.4.1.3</version>
 					<scope>provided</scope>
 				</dependency>
 				<dependency>
@@ -220,17 +220,7 @@
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
-			<version>3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2</version>
+			<version>3.2.1</version>
 		</dependency>
 
 		<dependency>
@@ -255,7 +245,7 @@
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
-			<version>2.2</version>
+			<version>2.2.3</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -272,29 +262,29 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>2.5.2</version>
+			<version>2.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>2.5.2</version>
+			<version>2.5.4</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>2.5.2</version>
+			<version>2.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>2.5.2</version>
+			<version>2.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.3</version>
+			<version>2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -302,9 +292,9 @@
 			<version>1.2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>aspectj</groupId>
+			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.5.3</version>
+			<version>1.6.0</version>
 		</dependency>
 		<dependency>
 			<artifactId>servlet-api</artifactId>
