@@ -124,36 +124,36 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 	
 	/**
 	 * Add form components to form
-	 * @param form
+	 * @param parent
 	 */
-	protected void addGeneralInfo(Form form)
+	protected void addGeneralInfo(WebMarkupContainer parent)
 	{
 		// name
 		RequiredTextField	nameField = new RequiredTextField("project.name");
-		form.add(nameField);
+		parent.add(nameField);
 		nameField.add(new StringValidator.MaximumLengthValidator(64));
 		nameField.setLabel(new ResourceModel("admin.project.name"));
 		nameField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
+		parent.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 
 		// project code
 		RequiredTextField	codeField = new RequiredTextField("project.projectCode");
-		form.add(codeField);
+		parent.add(codeField);
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
 		codeField.setLabel(new ResourceModel("admin.project.code"));
 		codeField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
+		parent.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 	}
 	
-	protected void addCustomer(Form form)
+	protected void addCustomer(WebMarkupContainer parent)
 	{
 		// customers
 		DropDownChoice customerDropdown = new DropDownChoice("project.customer", getCustomers(), new ChoiceRenderer("fullName"));
 		customerDropdown.setRequired(true);
 		customerDropdown.setLabel(new ResourceModel("admin.project.customer"));
 		customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(customerDropdown);
-		form.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
+		parent.add(customerDropdown);
+		parent.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
 	}
 	
 	protected DropDownChoice getProjectManager()
@@ -165,29 +165,29 @@ public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
 		return projectManager;
 	}
 	
-	protected void addDescriptionAndContact(Form form)
+	protected void addDescriptionAndContact(WebMarkupContainer parent)
 	{
 		// description
 		TextArea	textArea = new KeepAliveTextArea("project.description");
 		textArea.setLabel(new ResourceModel("admin.project.description"));;
-		form.add(textArea);
+		parent.add(textArea);
 
 		// contact
 		TextField	contactField = new TextField("project.contact");
-		form.add(contactField);
+		parent.add(contactField);
 	}
 
-	protected void addMisc(Form form)
+	protected void addMisc(WebMarkupContainer parent)
 	{
 		
 		// default project
-		form.add(new CheckBox("project.defaultProject"));
+		parent.add(new CheckBox("project.defaultProject"));
 		
 		// active
-		form.add(new CheckBox("project.active"));
+		parent.add(new CheckBox("project.active"));
 
 		// data save label
-		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));		
+		parent.add(new ServerMessageLabel("serverMessage", "formValidationError"));		
 	}
 	
 	/*
