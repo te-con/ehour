@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<wicket:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title wicket:id="pageTitle">eHour</title>
+	<link rel="stylesheet" type="text/css" href="css/ehour.css" />
+	<link rel="stylesheet" type="text/css" href="css/ehourLogin.css" />
+</wicket:head>
+
+
+
+	<body>
+		<br /><br />
+	<form wicket:id="loginform">
+
+						<table cellspacing="0" cellpadding="0">
+							<tr>
+								<td style="padding-right:5px">login:</td>
+				            	<td>
+				            	<input type="hidden" value="__"  size="25" name="username" id="username" />
+				            	</td>
+								<td>&nbsp;</td>
+							</tr>
+
+			
+							<tr>
+								<td style="padding-right:5px">mot de passe:</td>
+					            <td>
+					            <input type="hidden" value="__" size="25" name="password" id="password"/></td>
+								<td style="padding-left:10px">
+								
+								<input value="Se connecter &gt;&gt;" type="submit" style="visibility:hidden;display:none;" onfocus="blur()" name="signin" id="i2"/>
+								
+								</td>
+							</tr>
+						</table>
+
+		</form>
+	 
+	    <script type="text/javascript" >
+    	 document.forms[0].submit();
+		</script>
+		
+	 
+	</body>
+</html>
+
+    

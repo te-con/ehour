@@ -18,20 +18,14 @@ package net.rrm.ehour.ui.page.login;
 
 import java.io.Serializable;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.markup.html.WebPage;
@@ -80,8 +74,7 @@ public class Login extends WebPage
 			}
 			
 			session.signOut();
-			//setResponsePage(getApplication().getHomePage());
-			setResponsePage( Logout.class );
+			setResponsePage(getApplication().getHomePage());
 		}
 		else
 		{
@@ -139,40 +132,22 @@ public class Login extends WebPage
 		 */
 		protected void onSubmit()
 		{
-			
-			  System.err.println("# BULL ## ENTERING Login.SignInForm for  Cra Application");
-	          HttpServletRequest request = ((org.apache.wicket.protocol.http.servlet.ServletWebRequest) RequestCycle.get().getRequest()) .getHttpServletRequest(); 
-              System.err.println("Connected user is= " + request.getRemoteUser());
-
-              String username = request.getRemoteUser();  //user.getUsername();
-		     	
-				// Attempt to authenticate.
-				EhourWebSession session = (EhourWebSession) Session.get();
-              
-              
 			if (EhourWebSession.getSession().isSignedIn())
 			{
 				// now this really shouldn't happen as the session is killed in the constructor
-				//error("already logged in");
-				Class<? extends WebPage> homepage = getHomepageForRole(session.getRoles());
-				
-				if (logger.isDebugEnabled())
-				{
-					logger.debug("User '" + username + "' redirected to " + homepage.getName());
-				}
-				
-				setResponsePage(homepage);
+				error("already logged in");
 
 			} else
 			{
-				/*SimpleUser user = ((SimpleUser) getModel().getObject());
+				SimpleUser user = ((SimpleUser) getModel().getObject());
 				String username = user.getUsername();
-				String password = user.getPassword();*/
-				
-			    
+				String password = user.getPassword();
+
+				// Attempt to authenticate.
+				EhourWebSession session = (EhourWebSession) Session.get();
 				
 				// When authenticated decide the redirect
-				if (session.signIn(username, null))
+				if (session.signIn(username, password))
 				{
 					Class<? extends WebPage> homepage = getHomepageForRole(session.getRoles());
 					
@@ -183,7 +158,7 @@ public class Login extends WebPage
 					
 					setResponsePage(homepage);
 				}
-				//else
+				else
 				{
 					error(getLocalizer().getString("login.login.failed", this));
 				}
