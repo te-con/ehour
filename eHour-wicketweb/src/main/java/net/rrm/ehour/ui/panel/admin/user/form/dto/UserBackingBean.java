@@ -34,6 +34,7 @@ public class UserBackingBean extends AdminBackingBeanImpl
 	private	String	confirmPassword;
 	private	String	originalUsername;
 	private	String	originalPassword;
+	private String ldapLogin;
 	private	boolean	isPm;
 	
 	public UserBackingBean(User user)
@@ -94,4 +95,14 @@ public class UserBackingBean extends AdminBackingBeanImpl
 	{
 		return isPm;
 	}
+
+	public String getLdapLogin() {
+		return ldapLogin;
+	}
+
+	public void setLdapLogin(String ldapLogin) {
+		this.ldapLogin = ldapLogin;
+	}
+	
+	
 }

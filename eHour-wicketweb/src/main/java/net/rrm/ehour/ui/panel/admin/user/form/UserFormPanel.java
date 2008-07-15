@@ -16,8 +16,11 @@
 
 package net.rrm.ehour.ui.panel.admin.user.form;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.TreeMap;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
@@ -31,13 +34,15 @@ import net.rrm.ehour.ui.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
@@ -61,6 +66,19 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 	@SpringBean
 	private UserService	userService;
 	
+	
+	private DropDownChoice userDropDownList;
+	private RequiredTextField	usernameField;
+	private TextField	firstNameField;
+	private TextField	lastNameField;
+	private TextField	emailField;
+	private CompoundPropertyModel userModel;
+	private static String DEFAULT_PASSWORD = "Test123*";
+	TreeMap<String,User> ldapUsers ;
+	
+	
+	Boolean MODIFY_MODE = false;
+	
 	/**
 	 * 
 	 * @param id
@@ -75,6 +93,10 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 	{
 		super(id, userModel);
 		
+		MODIFY_MODE= ((UserBackingBean)userModel.getObject()).getUser().isDeletable();
+		
+		setUserModel(userModel);
+		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 		
@@ -83,16 +105,68 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		final Form form = new Form("userForm");
 
 		// username
-		RequiredTextField	usernameField = new RequiredTextField("user.username");
+		
+		/*RequiredTextField	usernameField = new RequiredTextField("user.username");
 		form.add(usernameField);
 		usernameField.add(new StringValidator.MaximumLengthValidator(32));
 		usernameField.add(new DuplicateUsernameValidator());
 		usernameField.setLabel(new ResourceModel("admin.user.username"));
 		usernameField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
+		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));*/
+		//List<String> ldapUsers = userService.getAllLdapUsersNameNotInDB();
 		
+		
+		
+		if(!MODIFY_MODE)
+			ldapUsers = userService.getLdapUsersTreeNotInDB();
+			
+		else
+		  ldapUsers= new TreeMap<String, User>();
+		
+		DropDownChoice userDropDownList = new DropDownChoice("ldapLogin", Arrays.asList(ldapUsers.keySet().toArray()) );
+		userDropDownList.setRequired(true);
+		userDropDownList.setEnabled(!MODIFY_MODE );
+		userDropDownList.setLabel(new ResourceModel("admin.user.ldap.username"));
+		userDropDownList.add(new ValidatingFormComponentAjaxBehavior());
+		
+		//System.err.println( "=============> Id =" +  getId() );
+		
+	
+		userDropDownList.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+		        protected void onUpdate(AjaxRequestTarget target) {
+	                // updates the email first name and last name fields
+	            	
+	            	// here I need to retrieve the user that had been selected from the screen 
+	            	
+		        	String  selectedUser = ((UserBackingBean) getUserModel().getObject()).getLdapLogin();
+		        	
+		        	User targetUser = ldapUsers.get(selectedUser);		        	
+		        	((UserBackingBean) getUserModel().getObject()).getUser().setUsername(targetUser.getUsername());
+		        	((UserBackingBean) getUserModel().getObject()).getUser().setLastName(targetUser.getLastName());
+		        	((UserBackingBean) getUserModel().getObject()).getUser().setFirstName(targetUser.getFirstName());
+		        	((UserBackingBean) getUserModel().getObject()).getUser().setEmail(targetUser.getEmail());
+		        	
+		        	// because a password is needed we set the password to a default one Test123*
+		        	((UserBackingBean) getUserModel().getObject()).getUser().setPassword( DEFAULT_PASSWORD );
+		        	
+		        	//System.err.println("selected user is : " + selectedUser);
+		           
+	                target.addComponent(usernameField);
+	                target.addComponent(emailField);
+	                target.addComponent(firstNameField);
+	                target.addComponent(lastNameField);
+	            }
+	        }); 
+		
+		
+		form.add(userDropDownList);
+		//form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", userDropDownList));
+		
+			
 		// password & confirm
-		PasswordTextField	passwordTextField = new PasswordTextField("user.password");
+		/** removed for cas ldap integration ****
+		 * ********************************************/
+		/*PasswordTextField	passwordTextField = new PasswordTextField("user.password");
 		passwordTextField.setLabel(new ResourceModel("admin.user.password"));
 		passwordTextField.setRequired(false);	// passwordField defaults to required
 		passwordTextField.add(new ValidatingFormComponentAjaxBehavior());
@@ -104,23 +178,41 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		confirmPasswordTextField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(confirmPasswordTextField);
 		form.add(new AjaxFormComponentFeedbackIndicator("confirmPasswordValidationError", confirmPasswordTextField));
-		
 		form.add(new ConfirmPasswordValidator(passwordTextField, confirmPasswordTextField));
+		 ***/
+		
+		
+		
+		usernameField = new RequiredTextField("user.username");
+		form.add(usernameField);
+		usernameField.add(new StringValidator.MaximumLengthValidator(32));
+		usernameField.add(new DuplicateUsernameValidator());
+		usernameField.setLabel(new ResourceModel("admin.user.ldap.username"));
+		usernameField.add(new ValidatingFormComponentAjaxBehavior());
+		usernameField.setEnabled(false);
+		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
 		
 		// first & last name
-		TextField	firstNameField = new TextField("user.firstName");
+		
+		firstNameField = new TextField("user.firstName");
+		firstNameField.setOutputMarkupId(true);
+		firstNameField.setEnabled(false);
 		form.add(firstNameField);
 
-		TextField	lastNameField = new RequiredTextField("user.lastName");
+		lastNameField = new RequiredTextField("user.lastName");
+		lastNameField.setOutputMarkupId(true);
 		form.add(lastNameField);
 		lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
 		lastNameField.add(new ValidatingFormComponentAjaxBehavior());
+		lastNameField.setEnabled(false);
 		form.add(new AjaxFormComponentFeedbackIndicator("lastNameValidationError", lastNameField));
 		
 		// email
-		TextField	emailField = new TextField("user.email");
+		emailField = new TextField("user.email");
 		emailField.add(EmailAddressValidator.getInstance());
 		emailField.add(new ValidatingFormComponentAjaxBehavior());
+		emailField.setEnabled(false);
+		emailField.setOutputMarkupId(true);
 		form.add(emailField);
 		form.add(new AjaxFormComponentFeedbackIndicator("emailValidationError", emailField));
 		
@@ -147,6 +239,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		// data save label
 		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 	
+		
 		//
 		FormUtil.setSubmitActions(form
 									,((UserBackingBean)userModel.getObject()).getUser().isDeletable()
@@ -155,6 +248,8 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		greyBorder.add(form);
 	}
+
+	 	 
 	
 	/**
 	 * Duplicate username validator
@@ -231,4 +326,15 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 			}
 		}
 	}
+
+	public CompoundPropertyModel getUserModel() {
+		return userModel;
+	}
+
+	public void setUserModel(CompoundPropertyModel userModel) {
+		this.userModel = userModel;
+	}
+	
+	
+	
 }
