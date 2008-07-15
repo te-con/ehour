@@ -9,7 +9,7 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-    /**=channelProcessingFilter,httpSessionContextIntegrationFilter,casProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+    /**=channelProcessingFilter,httpSessionContextIntegrationFilter,logoutFilter,casProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -30,7 +30,7 @@
 	</bean>
 	-->
 	
-	<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+		<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
 		<property name="forceEagerSessionCreation" value="true" />
 	</bean>
 
@@ -48,7 +48,7 @@
 	<bean id="serviceProperties"
 		class="org.acegisecurity.ui.cas.ServiceProperties">
 		<property name="service">
-			<value>https://local.bull.co.ma:443/cra/j_acegi_cas_security_check</value>
+			<value>https://local.bull.co.ma:443/ehour/j_acegi_cas_security_check</value>
 		</property>
 		<property name="sendRenew">
 			<value>false</value>
@@ -89,7 +89,7 @@
 			<value>https://local.bull.co.ma:443/cas/proxyValidate</value>
 		</property>
 		<property name="proxyCallbackUrl">
-			<value>https://local.bull.co.ma:443/cra/casProxy/receptor</value>
+			<value>https://local.bull.co.ma:443/ehour/casProxy/receptor</value>
 		</property>
 		<property name="serviceProperties">
 			<ref bean="serviceProperties" />
@@ -130,6 +130,19 @@
 		class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets" />
 
 
+	<bean id="logoutFilter"
+		class="org.acegisecurity.ui.logout.LogoutFilter">
+		<constructor-arg value="/index.jsp" />
+		<!-- URL redirected to after logout -->
+		<constructor-arg>
+			<list>
+				<bean
+					class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler" />
+			</list>
+		</constructor-arg>
+		<property name="filterProcessesUrl" value="/j_acegi_logout.jsf" />
+	</bean>
+
 	<bean
 		class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"
 		id="securityContextHolderAwareRequestFilter" />
@@ -143,10 +156,10 @@
 			<ref bean="authenticationManager" />
 		</property>
 		<property name="authenticationFailureUrl">
-			<value>/casfailed.html</value>
+			<value>/casfailed.jsp</value>
 		</property>
 		<property name="defaultTargetUrl">
-			<value>/eh/</value>
+			<value>/eh/login/Login</value>
 		</property>
 		<property name="filterProcessesUrl">
 			<value>/j_acegi_cas_security_check</value>

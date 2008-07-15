@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+                      "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+     <!-- =================================================
+       ====================== LDAP Template Integration            ========
+       ===================================================== -->
+
+   <bean class="org.springframework.ldap.support.LdapContextSource"
+       id="contextSource">
+       <property name="url" value="ldap://${__ldap.host}:${__ldap.port}" />
+       <property name="userName" value="${__ldap.manager.cn_1}" />
+       <property name="password" value="${__ldap.manager.pass}" />
+       <property name="base" value="${__ldap.basedn}" />
+   </bean>
+   <bean class="org.springframework.ldap.LdapTemplate"
+       id="ldapTemplate">
+       <constructor-arg ref="contextSource" />
+   </bean>
+   <bean class="net.rrm.ehour.ldap.dao.LDAPUserDaoImpl" id="ldapUserDao">
+       <property name="ldapTemplate" ref="ldapTemplate" />
+       <property name="ldapUserDnPattern" value="${__ldap.userDnPattern_1}" />
+   </bean>
+   
+   
+     <!-- Read LDAP properties from a file. -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="placeholderPrefix" value="${__"/>
+        <property name="location" value="classpath:ldap.properties"/>
+    </bean>
+   
+</beans>   
