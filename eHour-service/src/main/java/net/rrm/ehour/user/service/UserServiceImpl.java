@@ -18,9 +18,11 @@ package net.rrm.ehour.user.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.CustomerFoldPreference;
@@ -32,6 +34,8 @@ import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.ldap.LdapUserVO;
+import net.rrm.ehour.ldap.dao.LDAPUserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
@@ -56,6 +60,12 @@ public class UserServiceImpl implements UserService
 	private	UserDAO				userDAO;
 	private	UserDepartmentDAO	userDepartmentDAO;
 	private	UserRoleDAO			userRoleDAO;
+	
+	/**
+	 * Added By Bouayad Mehdi for Ldap integration
+	 */
+	
+	private LDAPUserDao  ldapUserDao;
 	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
 	private	ProjectAssignmentService		projectAssignmentService;
 	private	AggregateReportService		aggregateReportService;
@@ -246,6 +256,139 @@ public class UserServiceImpl implements UserService
 	public List<User> getUsers()
 	{
 		return userDAO.findAllActiveUsers();
+	}
+	
+	public List<LdapUserVO> getAllLdapUsers()
+	{
+		
+		List<LdapUserVO> ldapUsersList = ldapUserDao.findAll();
+		/*for(LdapUserVO ldapUser: ldapUsersList)
+			System.err.println(ldapUser);*/
+				
+		return ldapUsersList;
+	}
+	
+
+    
+	/**
+     * Returning all the users that are listed in the Ldap but not on ehour Database
+     * @return List<User>
+     */
+	public List<User> getAllLdapUsersNotInDB()
+	{
+		List<User> syncUsers = new ArrayList<User>();
+		List<LdapUserVO> ldapUsersList = ldapUserDao.findAll();
+		HashMap<String, User> ldapUsersHash = new HashMap<String, User>();
+		 for(LdapUserVO ldapUser: ldapUsersList)
+		 {
+			 User user = ldapUser.wrapToUser();
+			 ldapUsersHash.put(user.getUsername().toUpperCase(), user);
+		 }
+		
+		
+		List<User> dbUsersList = userDAO.findAllActiveUsers();
+		HashMap<String, User> dbUsersHash = new HashMap<String, User>();
+		for(User dbUser : dbUsersList)
+			dbUsersHash.put(dbUser.getUsername(), dbUser);
+		
+		
+		for(java.util.Iterator it = ldapUsersHash.keySet().iterator();it.hasNext();  )
+		{
+			String tempLogin = it.next().toString();
+			if(!dbUsersHash.containsKey(tempLogin))
+			{
+				User tempUser =  ldapUsersHash.get(tempLogin);
+				
+				if(  tempUser.getUsername()!=null && !"".equals(tempUser.getUsername()) &&
+					 tempUser.getUsername().indexOf("@")<0 &&
+					 tempUser.getEmail()!=null && !"".equals(tempUser.getEmail()) && 
+					 tempUser.getFirstName()!=null && !"".equals(tempUser.getFirstName()) &&
+					 tempUser.getLastName()!=null && !"".equals(tempUser.getLastName()) 
+					  )
+				syncUsers.add(tempUser);
+				
+			}	
+		}
+				
+		return syncUsers;
+	}
+	
+	 /**
+     * Returning all the users  that are listed in the Ldap but not on ehour Database but formated on a TreeMap 
+     * @return List<User>
+     */
+	public TreeMap<String,User> getLdapUsersTreeNotInDB()
+	{
+		TreeMap<String,User> syncUsers = new TreeMap<String,User>();
+		List<LdapUserVO> ldapUsersList = ldapUserDao.findAll();
+		HashMap<String, User> ldapUsersHash = new HashMap<String, User>();
+		 for(LdapUserVO ldapUser: ldapUsersList)
+		 {
+			 User user = ldapUser.wrapToUser();
+			 ldapUsersHash.put(user.getUsername().toUpperCase(), user);
+		 }
+		
+		
+		List<User> dbUsersList = userDAO.findAllActiveUsers();
+		HashMap<String, User> dbUsersHash = new HashMap<String, User>();
+		for(User dbUser : dbUsersList)
+			dbUsersHash.put(dbUser.getUsername(), dbUser);
+		
+		
+		for(java.util.Iterator it = ldapUsersHash.keySet().iterator();it.hasNext();  )
+		{
+			String tempLogin = it.next().toString();
+			if(!dbUsersHash.containsKey(tempLogin))
+			{
+				User tempUser =  ldapUsersHash.get(tempLogin);
+				
+				if(  tempUser.getUsername()!=null && !"".equals(tempUser.getUsername()) &&
+					 tempUser.getUsername().indexOf("@")<0 &&
+					 tempUser.getEmail()!=null && !"".equals(tempUser.getEmail()) && 
+					 tempUser.getFirstName()!=null && !"".equals(tempUser.getFirstName()) &&
+					 tempUser.getLastName()!=null && !"".equals(tempUser.getLastName()) 
+					  )
+			
+					syncUsers.put(tempUser.getUsername(),tempUser);
+				
+			}
+			/*else 
+			{	User tempUser =  ldapUsersHash.get(tempLogin);
+				System.err.println(tempLogin+","+tempUser.getEmail());
+			}*/
+		}
+				
+		return syncUsers;
+	}
+	
+    /**
+     * Returning all the users Names that are listed in the Ldap but not on ehour Database
+     * @return List<User>
+     */
+	public List<String> getAllLdapUsersNameNotInDB()
+	{
+		List<String> userNameList = new ArrayList<String>();
+		for(User tempUser : getAllLdapUsersNotInDB())
+			{
+			userNameList.add(tempUser.getUsername());
+			System.err.println( tempUser );
+			
+			}
+			
+		return userNameList;
+	}
+	
+	public List<String> getAllLdapUsersNameNotInDB(List<User> ldapUsersList)
+	{
+		List<String> userNameList = new ArrayList<String>();
+		for(User tempUser : ldapUsersList)
+			{
+			userNameList.add(tempUser.getUsername());
+			System.err.println( tempUser );
+			
+			}
+			
+		return userNameList;
 	}
 
 	/**
@@ -496,4 +639,16 @@ public class UserServiceImpl implements UserService
 	{
 		this.passwordEncoder = passwordEncoder;
 	}
+
+	public LDAPUserDao getLdapUserDao() {
+		return ldapUserDao;
+	}
+
+	public void setLdapUserDao(LDAPUserDao ldapUserDao) {
+		this.ldapUserDao = ldapUserDao;
+	}
+
+	
+	
+	
 }

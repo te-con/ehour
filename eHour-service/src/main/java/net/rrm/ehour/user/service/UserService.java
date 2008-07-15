@@ -15,7 +15,9 @@
 
 package net.rrm.ehour.user.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.User;
@@ -155,4 +157,35 @@ public interface UserService
      * @param departmentId
      */
     public void deleteDepartment(Integer departmentId);
+    
+    
+    /**
+     * Comparing the users in ldap wiath the users in Db and returning o,ly the ones in ldap that are not in db
+     * @return
+     */
+    
+    /**
+     * Returning all the users that are listed in the Ldap but not on ehour Database
+     * @return List<User>
+     */
+    public List<User> getAllLdapUsersNotInDB();
+   
+    /**
+     * Returning all the users Names that are listed in the Ldap but not on ehour Database
+     * @return List<User>
+     */
+    public List<String> getAllLdapUsersNameNotInDB();
+    
+    /**
+     * Returning all the users that are listed in the Ldap but not on ehour Database
+     * @param List<User> ldapUsersList
+     * @return List<User>
+     */
+    public List<String> getAllLdapUsersNameNotInDB(List<User> ldapUsersList);
+    
+    /**
+     * Returning all the users  that are listed in the Ldap but not on ehour Database but formated on a TreeMap 
+     * @return List<User>
+     */
+    public TreeMap<String,User> getLdapUsersTreeNotInDB();
 }
