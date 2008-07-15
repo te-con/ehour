@@ -150,12 +150,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 
-		// this line had been commented for CAs integration
 		//getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
 		
-		
-		// Security settings.
-		// This line had been added for CAS integration
+		 // Security settings.
         getSecuritySettings().setAuthorizationStrategy(new MetaDataRoleAuthorizationStrategy(this));
 
 		getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
