@@ -31,9 +31,9 @@ import org.acegisecurity.AuthenticationManager;
 import org.acegisecurity.AuthenticationServiceException;
 import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.cas.CasAuthenticationToken;
+import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.acegisecurity.providers.ldap.LdapAuthenticationProvider;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
@@ -154,29 +154,31 @@ public class EhourWebSession extends AuthenticatedWebSession
 		String u = username == null ? "" : username;
 		String p = password == null ? "" : password;
 		
+		/*
+		 * System.err.println("--------------> username = " +username);
+		   System.err.println("--------------> password = " +password);
+		*/
+		
 		// Create an Acegi authentication request.
-		//UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		//UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials());
+		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
 		
-		//CasAuthenticationToken authRequest = new CasAuthenticationToken(p, auth, auth, null, null, usedPageMaps, p);
-		
-		//SecurityContext context = (SecurityContext) this.getAttribute("ACEGI_SECURITY_CONTEXT");
-		CasAuthenticationToken authRequest = (CasAuthenticationToken)SecurityContextHolder.getContext().getAuthentication();
-		
+				
 		// Attempt authentication.
 		try
 		{
 			AuthenticationManager authenticationManager = ((EhourWebApplication) getApplication()).getAuthenticationManager();
-			
+		
 			if (authenticationManager == null)
 			{
 				throw new AuthenticationServiceException("no authentication manager defined");
 			}
 			
 			Authentication authResult = authenticationManager.authenticate(authRequest);
+			
+			
 			setAuthentication(authResult);
 
 			logger.info("Login by user '" + username + "'.");
@@ -216,7 +218,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 			// one with user roles.
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
+			
 			
 			if (auth != null)
 			{
