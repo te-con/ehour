@@ -11,7 +11,6 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:applicationContext-Ldap.xml
 			classpath:applicationContext-acegi-security.xml
 			classpath:applicationContext-dao.xml
 			classpath:applicationContext-datasource.xml
@@ -107,6 +106,9 @@
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
-	
-	
+	<resource-ref>
+		<res-ref-name>jdbc/eHourDS</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>container</res-auth>
+	</resource-ref>
 </web-app>
