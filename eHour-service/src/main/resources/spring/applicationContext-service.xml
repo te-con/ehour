@@ -37,6 +37,9 @@
 	<!-- User service -->
 	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl">
 		<property name="userDAO" ref="userDAO" />	
+		<property name="ldapUserDao">
+		    <ref bean="ldapUserDao" />
+		</property>
 		<property name="userDepartmentDAO" ref="userDepartmentDAO" />	
 		<property name="userRoleDAO" ref="userRoleDAO" />
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
