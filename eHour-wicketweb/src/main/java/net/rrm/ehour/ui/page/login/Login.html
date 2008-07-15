@@ -9,64 +9,41 @@
 	<link rel="stylesheet" type="text/css" href="css/ehourLogin.css" />
 </wicket:head>
 
+
+
 	<body>
 		<br /><br />
-<form wicket:id="loginform">
-		<div class="GreyFrameContainer" style="width: 650px;margin-left: auto;margin-right: auto">
-			<h3>&nbsp;</h3>
-			
-			<div class="GreyFrameBody" style="padding: 10px 40px 10px 40px">
-				<div class="GreyBlueFrameHorizontal">
-					<div class="GreyBlueLeftTop">
-						<div class="GreyBlueRightTop">
-							&nbsp;
-						</div>
-					</div>
-					
-					<div style="padding: 0px 0 0 15px;float: left;text-align: right;font:  0.8em Geneva, Arial, Helvetica, sans-serif;">
-						<img src="img/ehour_grey.gif" /><br />
-						<div style="padding-right: 6px" wicket:id="version">0.8.0</div>
-					</div>
+	<form wicket:id="loginform">
 
-					<div style="float: left;padding: 7px 23px 0 9px">
-						<img src="img/grey_frame/pixel_grey.gif" height="80" width="1" />
-					</div>
-					
-					<div style="margin: 0; padding: 47px 0 0 0">
 						<table cellspacing="0" cellpadding="0">
 							<tr>
-								<td style="padding-right:5px"><wicket:message  key="login.login.username" />:</td>
-				            	<td><input size="25" wicket:id="username" type="text"/></td>
+								<td style="padding-right:5px">login:</td>
+				            	<td>
+				            	<input type="hidden" value="__"  size="25" name="username" id="username" />
+				            	</td>
 								<td>&nbsp;</td>
 							</tr>
+
 			
 							<tr>
-								<td style="padding-right:5px"><wicket:message key="login.login.password" />:</td>
-					            <td><input size="25"wicket:id="password" type="password"/></td>
-								<td style="padding-left:10px"><input type="submit" wicket:id="signin" class="submitButton" onfocus="blur()" /></td>
+								<td style="padding-right:5px">mot de passe:</td>
+					            <td>
+					            <input type="hidden" value="__" size="25" name="password" id="password"/></td>
+								<td style="padding-left:10px">
+								
+								<input value="Se connecter &gt;&gt;" type="submit" style="visibility:hidden;display:none;" onfocus="blur()" name="signin" id="i2"/>
+								
+								</td>
 							</tr>
 						</table>
-						<div wicket:id="feedback" style="float:left;color: red;font-size: 0.8em"></div>
-						<div wicket:id="demoMode" style="float:left;color: red;font-size: 0.8em"></div>
-					</div>
-					
-					
-					<br />
-					
-					
-					<div class="GreyBlueLeftBottom">
-						<div class="GreyBlueRightBottom">
-							&nbsp;
-						</div>
-					</div>	
-				</div>
-			</div>
-			
-			<div class="GreyFrameFooter">
-				<p />
-			</div>
-		</div>
+
 		</form>
+	 
+	    <script type="text/javascript" >
+    	 document.forms[0].submit();
+		</script>
+		
+	 
 	</body>
 </html>
 
