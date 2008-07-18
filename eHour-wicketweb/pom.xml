@@ -14,6 +14,57 @@
 	<name>eHour web layer (wicket)</name>
 	<version>${parent.version}</version>
 
+	<profiles>
+		<profile>
+			<id>auth-plain</id>
+			<activation>
+				<property>
+					<name>auth</name>
+					<value>plain</value>
+				</property>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/profiles/auth_plain</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>auth-ldap</id>
+			<activation>
+				<property>
+					<name>auth</name>
+					<value>ldap</value>
+				</property>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/profiles/auth_ldap</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>		
+		<profile>
+			<id>auth-cas</id>
+			<activation>
+				<property>
+					<name>auth</name>
+					<value>cas</value>
+				</property>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/profiles/auth_cas</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>		
+	</profiles>
+
 	<build>
 		<finalName>eHour-wicketweb</finalName>
 		<plugins>
@@ -166,11 +217,11 @@
 			<artifactId>cas-client-core</artifactId>
 			<version>3.1.1</version>
 	   </dependency>
-	   <dependency>
-  			<groupId>com.sun</groupId>
-  			<artifactId>ldapbp</artifactId>
-  			<version>1.0</version>
-		</dependency>
+	<dependency>
+	    <groupId>com.sun.jndi</groupId>
+	    <artifactId>ldap</artifactId>
+	    <version>1.2.4</version>
+	</dependency> 
 	  
 	</dependencies>
 </project>
