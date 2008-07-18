@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:artifact="antlib:org.apache.maven.artifact.ant"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
@@ -40,6 +41,106 @@
 	</build>
 
 	<profiles>
+		<!-- CAS web.xml profile -->
+		<profile>
+			<id>auth-cas</id>
+			<activation>
+				<property>
+					<name>auth</name>
+					<value>cas</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+				        <artifactId>maven-antrun-plugin</artifactId>
+				        <executions>
+				          <execution>
+				          	<phase>clean</phase>
+				            <configuration>
+				              <tasks>
+				              	<echo message="Using CAS web.xml" />
+				              	<copy file="src/main/profiles/auth_cas/web.xml" 
+				              		todir="src/main/webapp/WEB-INF" />
+				              </tasks>
+				            </configuration>
+				            <goals>
+				              <goal>run</goal>
+				            </goals>
+				          </execution>
+				        </executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>	
+		
+		<!-- LDAP web.xml profile -->
+		<profile>
+			<id>auth-ldap</id>
+			<activation>
+				<property>
+					<name>auth</name>
+					<value>ldap</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+				        <artifactId>maven-antrun-plugin</artifactId>
+				        <executions>
+				          <execution>
+				          	<phase>clean</phase>
+				            <configuration>
+				              <tasks>
+				              	<echo message="Default web.xml in use" />
+				              	<copy file="src/main/profiles/auth_noncas/web.xml" 
+				              		todir="src/main/webapp/WEB-INF" />
+				              </tasks>
+				            </configuration>
+				            <goals>
+				              <goal>run</goal>
+				            </goals>				            
+				          </execution>
+				        </executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>		
+		
+		<!-- Plain auth web.xml profile -->
+		<profile>
+			<id>auth-plain</id>
+			<activation>
+				<property>
+					<name>auth</name>
+					<value>plain</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+				        <artifactId>maven-antrun-plugin</artifactId>
+				        <executions>
+				          <execution>
+				          	<phase>clean</phase>
+				            <configuration>
+				              <tasks>
+				              	<echo message="Default web.xml in use" />
+				              	<copy file="src/main/profiles/auth_noncas/web.xml" 
+				              		todir="src/main/webapp/WEB-INF" />
+				              </tasks>
+				            </configuration>
+				            <goals>
+				              <goal>run</goal>
+				            </goals>				            
+				          </execution>
+				        </executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>				
+	
+		<!-- Production derby profile -->
 		<profile>
 			<id>env-prod-derby</id>
 			<activation>
@@ -74,6 +175,8 @@
 
 			</build>
 		</profile>
+		
+		
 		<profile>
 			<id>env-dev-derby</id>
 			<activation>
