@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui;
 
+import net.rrm.ehour.ui.authorization.AuthorizationStrategyFactory;
 import net.rrm.ehour.ui.config.PageConfig;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
 import net.rrm.ehour.ui.page.admin.customer.CustomerAdmin;
@@ -47,8 +48,6 @@ import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
-import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
-import org.apache.wicket.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.request.urlcompressing.UrlCompressingWebRequestProcessor;
 import org.apache.wicket.request.IRequestCycleProcessor;
@@ -66,6 +65,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	protected Class<? extends WebPage>	login = Login.class;
 	private String version;
 	private PageConfig pageConfig;
+	private AuthorizationStrategyFactory authorizationStrategyFactory;
 	
 	public EhourWebApplication()
 	{
@@ -149,15 +149,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	protected void setupSecurity()
 	{
 		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
-
-		// this line had been commented for CAs integration
-		//getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
-		
-		
-		// Security settings.
-		// This line had been added for CAS integration
-        getSecuritySettings().setAuthorizationStrategy(new MetaDataRoleAuthorizationStrategy(this));
-
+        getSecuritySettings().setAuthorizationStrategy(authorizationStrategyFactory.getAuthorizationStrategy(this));
 		getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
 		{
 			public void onUnauthorizedInstantiation(final Component component)
@@ -171,6 +163,15 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 				}
 			}
 		});
+	}
+
+	/**
+	 * 
+	 * @param authorizationStrategyFactory
+	 */
+	public void setAuthorizationStrategyFactory(AuthorizationStrategyFactory authorizationStrategyFactory)
+	{
+		this.authorizationStrategyFactory = authorizationStrategyFactory;
 	}
 
 	/**

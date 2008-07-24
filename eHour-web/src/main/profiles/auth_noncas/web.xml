@@ -11,8 +11,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:applicationContext-Ldap.xml
-			classpath:applicationContext-acegi-security.xml
+			classpath:applicationContext-security.xml
 			classpath:applicationContext-dao.xml
 			classpath:applicationContext-datasource.xml
 			classpath:applicationContext-service.xml
@@ -21,11 +20,6 @@
 		</param-value>
 	</context-param>
 	
-	<context-param>
-		<param-name>edu.yale.its.tp.cas.proxyUrl</param-name>
-		<param-value>https://local.bull.co.ma:443/cas/proxy</param-value>
-	</context-param>
-
 	<filter>
 		<filter-name>hibernateFilter</filter-name>
 		<filter-class>
@@ -44,28 +38,20 @@
 		</filter-class>
 		<init-param>
 			<param-name>targetClass</param-name>
-			<param-value>
-				org.acegisecurity.util.FilterChainProxy
-			</param-value>
+			<param-value>org.acegisecurity.util.FilterChainProxy</param-value>
 		</init-param>
 	</filter>
 
 	<filter>
 		<filter-name>EhourWebApplication</filter-name>
-		<filter-class>
-			org.apache.wicket.protocol.http.WicketFilter
-		</filter-class>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
 		<init-param>
 			<param-name>applicationClassName</param-name>
-			<param-value>
-				net.rrm.ehour.ui.EhourWebApplication
-			</param-value>
+			<param-value>net.rrm.ehour.ui.EhourWebApplication</param-value>
 		</init-param>
 		<init-param>
 			<param-name>applicationFactoryClassName</param-name>
-			<param-value>
-				org.apache.wicket.spring.SpringWebApplicationFactory
-			</param-value>
+			<param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
 		</init-param>
 	</filter>
 
@@ -84,29 +70,7 @@
 		<url-pattern>/eh/*</url-pattern>
 	</filter-mapping>
 
-
-
-
-
-
-	<servlet>
-		<servlet-name>casproxy</servlet-name>
-		<servlet-class>
-			edu.yale.its.tp.cas.proxy.ProxyTicketReceptor
-		</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>casproxy</servlet-name>
-		<url-pattern>/casProxy/*</url-pattern>
-	</servlet-mapping>
-
-
 	<listener>
-		<listener-class>
-			org.springframework.web.context.ContextLoaderListener
-		</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
-	
 </web-app>

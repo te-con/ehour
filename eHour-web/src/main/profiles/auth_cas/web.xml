@@ -11,7 +11,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:applicationContext-acegi-security.xml
+			classpath:applicationContext-security.xml
 			classpath:applicationContext-dao.xml
 			classpath:applicationContext-datasource.xml
 			classpath:applicationContext-service.xml
@@ -100,12 +100,6 @@
 		<url-pattern>/casProxy/*</url-pattern>
 	</servlet-mapping>
 
-
-	<listener>
-		<listener-class>
-			org.springframework.web.context.ContextLoaderListener
-		</listener-class>
-	</listener>
 	<resource-ref>
 		<res-ref-name>jdbc/eHourDS</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
