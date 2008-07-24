@@ -103,6 +103,6 @@
      <!-- Read LDAP properties from a file. -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="placeholderPrefix" value="${__"/>
-        <property name="location" value="classpath:ldap.properties"/>
+        <property name="location" value="classpath:ehour_ldap.properties"/>
     </bean>	
 </beans>
