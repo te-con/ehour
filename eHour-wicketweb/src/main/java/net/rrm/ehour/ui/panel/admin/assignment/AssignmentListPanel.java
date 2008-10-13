@@ -30,6 +30,7 @@ import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.panel.BasePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.util.CommonWebUtil;
@@ -37,11 +38,11 @@ import net.rrm.ehour.ui.util.CommonWebUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -52,7 +53,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentListPanel extends Panel
+public class AssignmentListPanel extends BasePanel
 {
 	private static final long serialVersionUID = -8798859357268916546L;
 
@@ -61,6 +62,7 @@ public class AssignmentListPanel extends Panel
 	private	EhourConfig		config;
 	private	Border			greyBorder;
 	private ListView 		assignmentListView;
+	private User			user;
 	
 	/**
 	 * 
@@ -81,8 +83,10 @@ public class AssignmentListPanel extends Panel
 											450);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
+		
+		greyBorder.add(getActivateCheckbox());
 	}
-	
+
 	/**
 	 * Update the list
 	 * @param user
@@ -94,6 +98,26 @@ public class AssignmentListPanel extends Panel
 		target.addComponent(this);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	private AjaxCheckBox getActivateCheckbox()
+	{
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new Model(getEhourWebSession().getHideInactiveSelections().toString()))
+		{
+			private static final long serialVersionUID = 2585047163449150793L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+            	getEhourWebSession().setHideInactiveSelections(Boolean.valueOf(getValue()));
+            	updateList(target, user);
+			}
+		};
+		
+		return deactivateBox;
+	}
 	
 	/**
 	 * Get listview for project assignments
@@ -102,6 +126,8 @@ public class AssignmentListPanel extends Panel
 	 */
 	private ListView getProjectAssignmentLists(User user)
 	{
+		this.user = user;
+		
 		assignmentListView = new ListView("assignments", getProjectAssignments(user))
 		{
 			@Override
@@ -159,7 +185,7 @@ public class AssignmentListPanel extends Panel
 
 			}
 		};
-		
+
 		return assignmentListView;
 	}	
 	
@@ -174,7 +200,7 @@ public class AssignmentListPanel extends Panel
 		
 		if (user.getUserId() != null)
 		{
-			assignments = projectAssignmentService.getProjectAssignmentsForUser(user, true);		
+			assignments = projectAssignmentService.getProjectAssignmentsForUser(user, getEhourWebSession().getHideInactiveSelections().booleanValue());		
 		}
 		
 		if (assignments != null)

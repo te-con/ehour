@@ -136,6 +136,7 @@ public class EntrySelectorPanel extends BaseAjaxPanel
 	{
 		final EntrySelectorFilter filter = new EntrySelectorFilter(defaultFilterText);
 		filter.setOnId(this.getId());
+		filter.setActivateToggle(getEhourWebSession().getHideInactiveSelections());
 		
 		Form	filterForm = new Form("filterForm");
 		
@@ -149,6 +150,8 @@ public class EntrySelectorPanel extends BaseAjaxPanel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
+            	getEhourWebSession().setHideInactiveSelections(filter.isActivateToggle());
+
             	callbackAfterFilter(target, filter);
 			}
 		};

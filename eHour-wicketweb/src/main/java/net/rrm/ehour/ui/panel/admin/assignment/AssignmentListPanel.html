@@ -8,7 +8,15 @@
 
 <wicket:panel>
 	<div wicket:id="border">
+	
 		<table class="contentTable">
+		  <tr>
+		      <td colspan="5">
+		          <wicket:message key="admin.assignment.hideInactive" />: <input style="border:0" wicket:id="filterToggle" type="checkbox" />
+		          <br /><br />
+		      </td>
+		  </tr>
+		
 			<tr>
 				<th></th>
 				<th><wicket:message key="admin.assignment.projectHeader" /></th>
@@ -39,8 +47,6 @@
 					</td>
 				</tr>
 			</span>
-			
-			
 		</table>
 	</div>
 </wicket:panel>

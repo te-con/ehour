@@ -52,6 +52,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 	private Calendar 		navCalendar;
 	private	UserCriteria	userCriteria;
 	private ReportCache		reportCache = new ReportCache();
+	private Boolean			hideInactiveSelections = Boolean.TRUE;
 	
 	private	static Logger logger = Logger.getLogger(EhourWebSession.class);
 	
@@ -86,6 +87,22 @@ public class EhourWebSession extends AuthenticatedWebSession
 		{
 			logger.debug("Not forcing locale, using browser's locale");
 		}
+	}
+
+	/**
+	 * @return the hideInactiveSelections
+	 */
+	public Boolean getHideInactiveSelections()
+	{
+		return hideInactiveSelections;
+	}
+
+	/**
+	 * @param hideInactiveSelections the hideInactiveSelections to set
+	 */
+	public void setHideInactiveSelections(Boolean hideInactiveSelections)
+	{
+		this.hideInactiveSelections = hideInactiveSelections;
 	}
 
 	/**
