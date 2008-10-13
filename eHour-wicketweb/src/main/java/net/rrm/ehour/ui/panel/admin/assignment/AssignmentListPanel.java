@@ -25,7 +25,6 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
@@ -175,7 +174,7 @@ public class AssignmentListPanel extends Panel
 		
 		if (user.getUserId() != null)
 		{
-			assignments = projectAssignmentService.getProjectAssignmentsForUser(user, false);		
+			assignments = projectAssignmentService.getProjectAssignmentsForUser(user, true);		
 		}
 		
 		if (assignments != null)
