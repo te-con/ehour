@@ -42,7 +42,6 @@ import org.apache.log4j.Logger;
 public class ProjectServiceImpl implements ProjectService
 {
 	private	ProjectDAO					projectDAO;
-	private ProjectAssignmentDAO		projectAssignmentDAO;
 	private	Logger						logger = Logger.getLogger(ProjectServiceImpl.class);
 	private ProjectAssignmentService	projectAssignmentService;
 	private	AggregateReportService		aggregateReportService;
@@ -84,19 +83,6 @@ public class ProjectServiceImpl implements ProjectService
 	public List<Project> getProjects(String filter, boolean hideInactive)
 	{
 		return projectDAO.findProjects(filter, hideInactive);
-	}
-
-	/**
-	 * Get all project assignments for user
-	 * @param userId
-	 */
-	public List<ProjectAssignment> getAllProjectsForUser(User user)
-	{
-		List<ProjectAssignment>	results;
-		
-		results = projectAssignmentDAO.findProjectAssignmentsForUser(user);
-		
-		return results;
 	}
 	
 	/*
@@ -216,16 +202,6 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		this.projectDAO = dao;
 	}
-
-
-	/**
-	 * @param projectAssignmentDAO the projectAssignmentDAO to set
-	 */
-	public void setProjectAssignmentDAO(ProjectAssignmentDAO projectAssignmentDAO)
-	{
-		this.projectAssignmentDAO = projectAssignmentDAO;
-	}
-
 
 	/**
 	 * @param projectAssignmentService the projectAssignmentService to set

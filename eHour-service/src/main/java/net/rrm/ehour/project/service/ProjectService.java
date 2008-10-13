@@ -77,15 +77,6 @@ public interface ProjectService
 	 */
 	public void deleteProject(Integer projectId) throws ParentChildConstraintException;
 	
-	
-	/**
-	 * Get all projects for user where project itself is still active
-	 * @param userId
-	 * @return
-	 */
-	public List<ProjectAssignment> getAllProjectsForUser(User user);
-
-	
 	/**
 	 * Get active projects in daterange and any inactive if hours were booked on 'm in this period
 	 * @param userId

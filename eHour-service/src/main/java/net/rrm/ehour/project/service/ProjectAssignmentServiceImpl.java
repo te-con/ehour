@@ -18,6 +18,7 @@ package net.rrm.ehour.project.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
@@ -145,6 +146,40 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		return validAssignments;
 	}
+	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#getAllProjectsForUser(net.rrm.ehour.domain.User, boolean)
+	 */
+	public List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive)
+	{
+		List<ProjectAssignment>	results;
+		List<ProjectAssignment>	filteredResults;
+
+		results = projectAssignmentDAO.findProjectAssignmentsForUser(user);
+
+		if (hideInactive)
+		{
+			Date today = new Date();
+			
+			filteredResults = new ArrayList<ProjectAssignment>();
+			
+			for (ProjectAssignment projectAssignment : results)
+			{
+				if (projectAssignment.isActive() && 
+						(projectAssignment.getDateStart() == null || projectAssignment.getDateStart().before(today)) &&
+						(projectAssignment.getDateEnd() == null || projectAssignment.getDateEnd().after(today)))
+				{
+					filteredResults.add(projectAssignment);
+				}
+			}
+			
+			results = filteredResults;
+		}
+		
+		return results;
+	}	
 	
 
 	/**

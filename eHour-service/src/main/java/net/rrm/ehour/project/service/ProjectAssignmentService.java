@@ -51,6 +51,14 @@ public interface ProjectAssignmentService
 	 * @return
 	 */
 	public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange);
+	
+	/**
+	 * Get projects for user
+	 * @param user
+	 * @param hideInactive
+	 * @return
+	 */
+	public List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive);
 
 	/**
 	 * Get project assignment and mark it as deletable or not

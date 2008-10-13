@@ -41,7 +41,6 @@ public class ProjectServiceTest extends TestCase
 {
 	private	ProjectService	projectService;
 	private	ProjectDAO				projectDAO;
-	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private ProjectAssignmentService	projectAssignmentService;
 	private UserService		userService;
 	/**
@@ -53,9 +52,6 @@ public class ProjectServiceTest extends TestCase
 
 		projectDAO = createMock(ProjectDAO.class);
 		((ProjectServiceImpl)projectService).setProjectDAO(projectDAO);
-		
-		projectAssignmentDAO = createMock(ProjectAssignmentDAO.class);
-		((ProjectServiceImpl)projectService).setProjectAssignmentDAO(projectAssignmentDAO);
 		
 		projectAssignmentService = createMock(ProjectAssignmentService.class);
 		((ProjectServiceImpl)projectService).setProjectAssignmentService(projectAssignmentService);

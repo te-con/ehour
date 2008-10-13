@@ -24,6 +24,7 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
@@ -57,7 +58,7 @@ public class AssignmentListPanel extends Panel
 	private static final long serialVersionUID = -8798859357268916546L;
 
 	@SpringBean
-	private ProjectService	projectService;
+	private ProjectAssignmentService projectAssignmentService;
 	private	EhourConfig		config;
 	private	Border			greyBorder;
 	private ListView 		assignmentListView;
@@ -174,9 +175,8 @@ public class AssignmentListPanel extends Panel
 		
 		if (user.getUserId() != null)
 		{
-			assignments = projectService.getAllProjectsForUser(user);		
+			assignments = projectAssignmentService.getProjectAssignmentsForUser(user, false);		
 		}
-		
 		
 		if (assignments != null)
 		{

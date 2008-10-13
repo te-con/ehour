@@ -70,15 +70,6 @@ public class ProjectServiceIntegrationTest  extends BaseDAOTest
 		assertEquals(2, projects.size());
 	}
 	
-	
-	
-	
-	public void testGetAllProjectsForUser()
-	{
-		List<ProjectAssignment> pas = projectService.getAllProjectsForUser(new User(1));
-		assertEquals(7, pas.size());
-	}
-	
 	protected String[] getConfigLocations()
 	{
 		return new String[] { "classpath:/applicationContext-datasource.xml",
