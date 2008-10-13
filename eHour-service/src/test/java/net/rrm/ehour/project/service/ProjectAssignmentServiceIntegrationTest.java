@@ -45,6 +45,14 @@ public class ProjectAssignmentServiceIntegrationTest extends BaseDAOTest
 		List<ProjectAssignment> pas = projectAssignmentService.getProjectAssignmentsForUser(new User(1), false);
 		assertEquals(7, pas.size());
 	}
+
+	public void testGetAllProjectsForUserInactiveFiltered()
+	{
+		List<ProjectAssignment> pas = projectAssignmentService.getProjectAssignmentsForUser(new User(1), true);
+		assertEquals(3, pas.size());
+	}
+
+	
 		
 	
 	public void testAssignUserToProjectSuccess() throws ProjectAlreadyAssignedException
