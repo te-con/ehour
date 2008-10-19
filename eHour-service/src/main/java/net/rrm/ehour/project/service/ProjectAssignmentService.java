@@ -38,6 +38,12 @@ public interface ProjectAssignmentService
 	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment);
 	
 	/**
+	 * 
+	 * @param project
+	 */
+	public void assignUsersToProjects(Project project);
+	
+	/**
 	 * Assign user to default projects
 	 * @param user
 	 * @return

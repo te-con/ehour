@@ -33,6 +33,7 @@ import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 
@@ -44,6 +45,21 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	private	ProjectAssignmentStatusService	projectAssignmentStatusService;
 	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private UserService				userService;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#assignUsersToProjects(net.rrm.ehour.domain.Project)
+	 */
+	public void assignUsersToProjects(Project project)
+	{
+		List<User> users = userService.getUsers();
+		
+		for (User user : users)
+		{
+			ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(project, user);
+		}
+	}
 	
 	/**
 	 * Assign user to project
@@ -69,11 +85,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		for (Project project : defaultProjects)
 		{
-			assignment = new ProjectAssignment();
-			assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
-			assignment.setProject(project);
-			assignment.setUser(user);
-			assignment.setActive(true);
+			assignment = ProjectAssignment.createProjectAssignment(project, user);
 			
 			if (!isAlreadyAssigned(assignment, user.getProjectAssignments()))
 			{
@@ -86,7 +98,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	}
 	
 	/**
-	 * Check if this default assignment is already assigned as default
+	 * Check if this default assignment is already assigned
 	 * 
 	 * @param projectAssignment
 	 * @param user

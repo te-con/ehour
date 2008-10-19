@@ -26,7 +26,6 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
@@ -41,7 +40,7 @@ import org.apache.log4j.Logger;
 
 public class ProjectServiceImpl implements ProjectService
 {
-	private	ProjectDAO					projectDAO;
+	private	ProjectDAO					projectDAO;   
 	private	Logger						logger = Logger.getLogger(ProjectServiceImpl.class);
 	private ProjectAssignmentService	projectAssignmentService;
 	private	AggregateReportService		aggregateReportService;
@@ -141,9 +140,15 @@ public class ProjectServiceImpl implements ProjectService
 
 		userService.addAndcheckProjectManagementRoles( project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
 		
+		if (project.isDefaultProject() &&
+				project.isActive())
+		{
+			projectAssignmentService.assignUsersToProjects(project);
+		}
+		
 		return project;
 	}
-
+	
 	/**
 	 * 
 	 */
