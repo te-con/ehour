@@ -54,8 +54,9 @@ public class ProjectServiceImpl implements ProjectService
 		this.userService = userService;
 	}
 
-	/**
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#getAllProjects(boolean)
 	 */
 	public List<Project> getAllProjects(boolean hideInactive)
 	{
@@ -149,8 +150,9 @@ public class ProjectServiceImpl implements ProjectService
 		return project;
 	}
 	
-	/**
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#deleteProject(java.lang.Integer)
 	 */
 	public void deleteProject(Integer projectId) throws ParentChildConstraintException
 	{
@@ -172,10 +174,10 @@ public class ProjectServiceImpl implements ProjectService
 	}
 
 	
-	/**
-	 * Get active projects for user 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectService#getProjectsForUser(java.lang.Integer, net.rrm.ehour.data.DateRange)
 	 */
-
 	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange)
 	{
 		List<ProjectAssignment>	activeProjectAssignments = projectAssignmentService.getProjectAssignmentsForUser(userId, dateRange);

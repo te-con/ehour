@@ -40,10 +40,11 @@ import net.rrm.ehour.util.EhourUtil;
 import org.apache.log4j.Logger;
 public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 {
+	private	final static Logger		LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
+
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 	private	ProjectDAO				projectDAO;
 	private	ProjectAssignmentStatusService	projectAssignmentStatusService;
-	private	Logger					logger = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private UserService				userService;
 	
@@ -58,6 +59,12 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		for (User user : users)
 		{
 			ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(project, user);
+
+			if (!isAlreadyAssigned(assignment, user.getProjectAssignments()))
+			{
+				LOGGER.debug("Assigning user " + user + " to " + project);
+				assignUserToProject(assignment);	
+			}
 		}
 	}
 	
@@ -89,7 +96,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			
 			if (!isAlreadyAssigned(assignment, user.getProjectAssignments()))
 			{
-				logger.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
+				LOGGER.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
 				user.addProjectAssignment(assignment);
 			}
 		}
@@ -120,9 +127,9 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		{
 			if (assignment.getProject().getProjectId().intValue() == projectId)
 			{
-				if (logger.isDebugEnabled())
+				if (LOGGER.isDebugEnabled())
 				{
-					logger.debug("Default assignment is already assigned as assignmentId " + assignment.getAssignmentId());
+					LOGGER.debug("Default assignment is already assigned as assignmentId " + assignment.getAssignmentId());
 				}
 				
 				alreadyAssigned = true;
