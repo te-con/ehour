@@ -35,7 +35,7 @@
 	</issueManagement>
 	<ciManagement>
 		<system>continuum</system>
-		<url>http://dev.ehour.nl/continuum/</url>
+		<url>http://dev.ehour.nl/tc/</url>
 		<notifiers>
 			<notifier>
 				<configuration>
@@ -184,31 +184,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-clover-plugin</artifactId>
-				<groupId>com.atlassian.maven.plugins</groupId>
-				<configuration>
-					<source>1.5</source>
-					<generateXml>true</generateXml>
-					<generateHistorical>true</generateHistorical>
-					<historyDir>
-						${clover.historyLocation}/ehour/
-					</historyDir>
-					<licenseLocation>
-						${clover.licenseLocation}
-					</licenseLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<id>site</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>instrument</goal>
-							<goal>aggregate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<includes>
@@ -221,7 +196,7 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
 					<stagingDirectory>
-						/home/www/dev/ehour.nl/html/ehoursite
+						/home/www/dev/ehour.nl/html/
 					</stagingDirectory>
 				</configuration>
 			</plugin>
@@ -348,6 +323,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
 			</plugin>
+<!--
 			<plugin>
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
@@ -362,6 +338,7 @@
 					</licenseLocation>
 				</configuration>
 			</plugin>
+-->
 		</plugins>
 	</reporting>
 	<repositories>
