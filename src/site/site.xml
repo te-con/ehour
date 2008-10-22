@@ -4,12 +4,6 @@
     <src>http://www.ehour.nl/ehour.gif</src>
     <href>/</href>
   </bannerLeft>
-  <poweredBy>
-    <logo img="http://www.cenqua.com/images/clovered.gif" name="Code Coverage by Clover" href="http://www.cenqua.com/clover/" />
-    <logo img="http://www.cenqua.com/images/fisheyed.gif" name="Perspective by Fisheye" href="http://www.cenqua.com/fisheye/" />
-    <logo img="http://sflogo.sourceforge.net/sflogo.php?group_id=167867&amp;type=1" name="Hosted on SourceForge.net" href="http://sourceforge.net" />
-    <logo img="images/logos/maven-feather.png" name="Build with Maven 2" href="http://maven.apache.org" />
-  </poweredBy>
   <skin>
     <groupId>net.rrm.ehour</groupId>
     <artifactId>maven-ehour-skin</artifactId>
@@ -17,11 +11,10 @@
   </skin>
   <body>
     <links>
-      <item name="eHour" href="/m2/" />
-      <item name="Demo" href="demo.html" />
+      <item name="eHour" href="http://www.ehour.nl/" />
     </links>
-    <menu name="eHour">
-      <item name="Introduction" href="index.html" />
+    <menu name="Developing">
+      <item name="Environment" href="index.html" />
       <item name="Features" href="features.html" />
       <item name="Online demo" href="demo.html" />
     </menu>
