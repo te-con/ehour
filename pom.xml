@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
-	<version>0.8.2</version>
+	<version>0.8.3-SNAPSHOT</version>
 	<artifactId>eHour</artifactId>
 	<packaging>pom</packaging>
 	<name>eHour</name>
@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
-			<version>2.3</version>
+			<version>2.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -148,17 +148,17 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>2.5.4</version>
+			<version>2.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>2.5.4</version>
+			<version>2.5.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>2.5.4</version>
+			<version>2.5.5</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -341,6 +341,7 @@
 -->
 		</plugins>
 	</reporting>
+	<!--
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
@@ -349,4 +350,5 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
+	-->
 </project>
