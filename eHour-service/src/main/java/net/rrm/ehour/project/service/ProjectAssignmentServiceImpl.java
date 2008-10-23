@@ -296,4 +296,12 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
+
+	/**
+	 * @param userService the userService to set
+	 */
+	public void setUserService(UserService userService)
+	{
+		this.userService = userService;
+	}
 }

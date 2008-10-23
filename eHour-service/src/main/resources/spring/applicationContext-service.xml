@@ -117,7 +117,8 @@
 		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />				
 		<property name="projectDAO" ref="projectDAO" />		
 		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
-		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />		
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
+		<property name="userService" ref="userService" />
 	</bean>
 	
 	<!-- Configuration service -->
