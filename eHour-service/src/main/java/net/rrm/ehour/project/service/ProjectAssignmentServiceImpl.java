@@ -26,6 +26,7 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
@@ -54,7 +55,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 */
 	public void assignUsersToProjects(Project project)
 	{
-		List<User> users = userService.getUsers();
+		List<User> users = userService.getUsers(new UserRole(EhourConstants.ROLE_CONSULTANT));
 		
 		for (User user : users)
 		{
