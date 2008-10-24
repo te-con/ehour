@@ -183,6 +183,8 @@ public interface UserService
      */
     public List<String> getAllLdapUsersNameNotInDB(List<User> ldapUsersList);
     
+    public TreeMap<String,User> getResynchronizedLdapUsersTreeNotInDB(TreeMap<String,User> inputTree);
+    
     /**
      * Returning all the users  that are listed in the Ldap but not on ehour Database but formated on a TreeMap 
      * @return List<User>

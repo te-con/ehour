@@ -270,6 +270,20 @@ public class UserServiceImpl implements UserService
 	
 
     
+	public TreeMap<String,User> getResynchronizedLdapUsersTreeNotInDB(TreeMap<String,User> inputTree)
+	{
+		
+		List<User> dbUsersList = userDAO.findAllActiveUsers();
+		 for(User user: dbUsersList)
+		 {
+			 if(inputTree.containsKey( user.getUsername().toUpperCase() ))
+					 inputTree.remove(user.getUsername().toUpperCase());
+			 
+		 }
+		
+		 return inputTree;
+		
+	}
 	/**
      * Returning all the users that are listed in the Ldap but not on ehour Database
      * @return List<User>
