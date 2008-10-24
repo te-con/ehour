@@ -116,22 +116,24 @@ public class Login extends WebPage
 		{
 			super(id, new CompoundPropertyModel(model));
 
-			FeedbackPanel	feedback = new LoginFeedbackPanel("feedback");
-			feedback.setMaxMessages(1);
+			/*FeedbackPanel	feedback = new LoginFeedbackPanel("feedback");
+			feedback.setMaxMessages(1);*/
 			
-			add(feedback);
-			TextField usernameInput = new RequiredTextField("username");
+			//add(feedback);
+			
+			/*TextField usernameInput = new RequiredTextField("username");
 			usernameInput.setPersistent(true);
 			add(usernameInput);
 			add(new PasswordTextField("password").setResetPassword(true));
-			add(new Button("signin", new ResourceModel("login.login.submit")));
+			
+			add(new Button("signin", new ResourceModel("login.login.submit"))); 
 			
 			// TODO layout is off when feedback panel uses its space
-			Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
+			/*Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
 			add(demoMode);
 			demoMode.setVisible(((EhourWebSession)getSession()).getEhourConfig().isInDemoMode());
 	
-			add(new Label("version", ((EhourWebApplication)this.getApplication()).getVersion()));
+			add(new Label("version", ((EhourWebApplication)this.getApplication()).getVersion()));*/
 		}
 
 		/**
@@ -148,6 +150,7 @@ public class Login extends WebPage
 		     	
 				// Attempt to authenticate.
 				EhourWebSession session = (EhourWebSession) Session.get();
+				
               
               
 			if (EhourWebSession.getSession().isSignedIn())
