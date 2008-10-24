@@ -115,16 +115,30 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));*/
 		//List<String> ldapUsers = userService.getAllLdapUsersNameNotInDB();
 		
-		
+		EhourWebSession session = (EhourWebSession)getSession();
 		
 		if(!MODIFY_MODE)
-			ldapUsers = userService.getLdapUsersTreeNotInDB();
+			{ 
+			ldapUsers = (TreeMap<String, User>) session.getSessionAttribute("ldapUsers");
+			
+			if( ldapUsers==null || ldapUsers.isEmpty())
+				{ldapUsers = userService.getLdapUsersTreeNotInDB();
+				 session.setSessionAttribute("ldapUsers", ldapUsers);
+				}
+			
+			else
+				{
+				ldapUsers = userService.getResynchronizedLdapUsersTreeNotInDB(ldapUsers);
+				session.setSessionAttribute("ldapUsers", ldapUsers);
+				}
+			
+			}
 			
 		else
 		  ldapUsers= new TreeMap<String, User>();
 		
 		DropDownChoice userDropDownList = new DropDownChoice("ldapLogin", Arrays.asList(ldapUsers.keySet().toArray()) );
-		userDropDownList.setRequired(true);
+		userDropDownList.setRequired( false);
 		userDropDownList.setEnabled(!MODIFY_MODE );
 		userDropDownList.setLabel(new ResourceModel("admin.user.ldap.username"));
 		userDropDownList.add(new ValidatingFormComponentAjaxBehavior());
