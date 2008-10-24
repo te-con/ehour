@@ -68,6 +68,15 @@ public class EhourWebSession extends AuthenticatedWebSession
 		super(req);
 		
 		reloadConfig();
+		
+	}
+	
+	public Object getSessionAttribute(String param){
+		return getAttribute(param);
+	}
+	
+	public void setSessionAttribute(String token, Object object){
+		 setAttribute(token , object);
 	}
 	
 	/**
