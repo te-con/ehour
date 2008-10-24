@@ -21,6 +21,7 @@ import net.rrm.ehour.ui.page.login.Login;
 import net.rrm.ehour.ui.page.pm.ProjectManagement;
 import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
+import net.rrm.ehour.ui.page.user.prefs.UserPreferencePage;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;
 import net.rrm.ehour.ui.panel.BasePanel;
@@ -31,7 +32,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.StringResourceModel;
 
 /**
  * Main navigation panel 
@@ -53,19 +53,29 @@ public class MainNavPanel extends BasePanel
 		addLoggedInUser();
 	}
 
-	protected void addLinks()
+	private void addLinks()
 	{
-		addLink(this, "overview", Overview.class);
-		addLink(this, "print", PrintMonthSelection.class);
-		addReportLink(this, "userReport");
-		addLink(this, "pm", ProjectManagement.class);
-		addLink(this, "admin", MainConfig.class);
+		boolean wasAdded = false;
+		
+		wasAdded = addLink(this, "admin", MainConfig.class, false);
+		wasAdded |= addReportLink(this, "userReport", wasAdded);
+		wasAdded |= addLink(this, "pm", ProjectManagement.class, wasAdded);
+		wasAdded |= addLink(this, "print", PrintMonthSelection.class, wasAdded);
+		wasAdded |= addLink(this, "overview", Overview.class, wasAdded);
+		
 		add(new BookmarkablePageLink("logoffLink", Login.class));
 	}
 	
-	protected void addLoggedInUser()
+	/**
+	 * 
+	 */
+	private void addLoggedInUser()
 	{
-		add(new Label("loggedInUser", new StringResourceModel("nav.loggedinas", this, new Model(AuthUtil.getUser()) )));
+		BookmarkablePageLink link = new BookmarkablePageLink("prefsLink", UserPreferencePage.class);
+		add(link);
+		
+		Label loggedInUserLabel = new Label("loggedInUser", new Model(AuthUtil.getUser().getFullName()) );
+		link.add(loggedInUserLabel);
 	}
 	
 	/**
@@ -73,7 +83,7 @@ public class MainNavPanel extends BasePanel
 	 * @param parent
 	 * @param id
 	 */
-	protected void addReportLink(WebMarkupContainer parent, String id)
+	private boolean addReportLink(WebMarkupContainer parent, String id, boolean inclSeperator)
 	{
 		Class<? extends WebPage> 	linkPage;
 		
@@ -86,7 +96,9 @@ public class MainNavPanel extends BasePanel
 			linkPage = UserReport.class;
 		}
 		
-		addLink(parent, id, linkPage);
+		addLink(parent, id, linkPage, inclSeperator);
+		
+		return true;
 	}
 	
 	/**
@@ -95,7 +107,7 @@ public class MainNavPanel extends BasePanel
 	 * @param id
 	 * @param linkPage
 	 */
-	protected void addLink(WebMarkupContainer parent, String id, Class<? extends WebPage> linkPage)
+	private boolean addLink(WebMarkupContainer parent, String id, Class<? extends WebPage> linkPage, boolean inclSeperator)
 	{
 		BookmarkablePageLink	link;
 		
@@ -105,9 +117,11 @@ public class MainNavPanel extends BasePanel
 		link.setVisible(isVisible);
 		parent.add(link);
 		
-		Label label = new Label(id + "Separator", "&nbsp;&nbsp;|&nbsp;&nbsp;");
+		Label label = new Label(id + "Seperator", "&nbsp;&nbsp;|&nbsp;&nbsp;");
 		label.setEscapeModelStrings(false);
-		label.setVisible(isVisible);
+		label.setVisible(inclSeperator && isVisible);
 		parent.add(label);
+		
+		return isVisible;
 	}	
 }

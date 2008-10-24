@@ -37,17 +37,16 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = 7090746921483608658L;
 
+
 	/**
 	 * 
-	 * @param title
-	 * @param model
+	 * @param pageTitle
 	 */
-	public BasePage(String pageTitle, IModel model)
+	public BasePage(ResourceModel pageTitle)
 	{
-		super(model);
-
-		add(getMainNavPanel("mainNav"));
-		add(new Label("pageTitle", pageTitle));
+		super();
+		
+		setupPage(pageTitle);
 	}
 	
 	/**
@@ -58,10 +57,20 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	public BasePage(ResourceModel pageTitle, IModel model)
 	{
 		super(model);
+		
+		setupPage(pageTitle);
+	}	
 
+	/**
+	 * 
+	 * @param pageTitle
+	 */
+	private void setupPage(ResourceModel pageTitle)
+	{
 		add(getMainNavPanel("mainNav"));
 		add(new Label("pageTitle", pageTitle));
-	}	
+		
+	}
 	
 	/**
 	 * Get main navigation panel

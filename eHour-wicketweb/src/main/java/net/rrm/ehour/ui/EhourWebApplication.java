@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.page.login.SessionExpiredPage;
 import net.rrm.ehour.ui.page.pm.ProjectManagement;
 import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 import net.rrm.ehour.ui.page.user.Overview;
+import net.rrm.ehour.ui.page.user.prefs.UserPreferencePage;
 import net.rrm.ehour.ui.page.user.print.PrintMonth;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;
@@ -132,6 +133,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));
 		
 		mount(new HybridUrlCodingStrategy("/pm", ProjectManagement.class));
+		
+		mount(new HybridUrlCodingStrategy("/prefs", UserPreferencePage.class));
 	}
 	
 	/**
