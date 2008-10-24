@@ -123,6 +123,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 					{
 						try
 						{
+							System.err.println("HEREEEEEEEEEE inside UserAdmin ------ populateItem ---- onClick");
 							getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId)));
 							getTabbedPanel().switchTabOnAjaxTarget(target, 1);
 						} catch (ObjectNotFoundException e)
@@ -205,6 +206,9 @@ public class UserAdmin extends BaseTabbedAdminPage
 	 */
 	private void persistUser(UserBackingBean userBackingBean) throws PasswordEmptyException, ObjectNotUniqueException
 	{
+		
+		System.err.println(  "  -----> entering persistUser " );
+		
 		logger.info(((userBackingBean == getTabbedPanel().getEditBackingBean()) 
 											? "Updating" 
 											: "Adding") + " user :" + userBackingBean.getUser());
@@ -235,6 +239,8 @@ public class UserAdmin extends BaseTabbedAdminPage
 	{
 		List<User>	users;
 		
+		System.err.println(" inside UserAdmin.getUsers ----");
+		
 		if (currentFilter == null)
 		{
 			users = userService.getUsers();
@@ -248,6 +254,8 @@ public class UserAdmin extends BaseTabbedAdminPage
 			
 			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), currentFilter.isActivateToggle());
 		}
+		
+		logger.debug(" leaving inside UserAdmin.getUsers ----");
 		
 		return users;
 	}
