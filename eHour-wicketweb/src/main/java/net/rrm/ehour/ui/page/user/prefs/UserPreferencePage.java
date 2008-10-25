@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.page.user.prefs;
 
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.page.BasePage;
 import net.rrm.ehour.ui.panel.user.form.prefs.UserPreferenceFormPanel;
 
@@ -30,7 +31,7 @@ import org.apache.wicket.model.ResourceModel;
 public class UserPreferencePage extends BasePage
 {
 
-	public UserPreferencePage()
+	public UserPreferencePage() throws ObjectNotFoundException
 	{
 		super(new ResourceModel("userprefs.title"));
 		

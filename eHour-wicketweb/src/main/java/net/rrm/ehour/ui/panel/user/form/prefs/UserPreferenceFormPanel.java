@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.panel.user.form.prefs;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
@@ -59,8 +60,9 @@ public class UserPreferenceFormPanel extends AbstractAjaxAwareAdminPanel
 	 * 
 	 * @param id
 	 * @param userModel
+	 * @throws ObjectNotFoundException 
 	 */
-	public UserPreferenceFormPanel(String id, User user)	
+	public UserPreferenceFormPanel(String id, User user) throws ObjectNotFoundException	
 	{
 		super(id);
 		
@@ -128,9 +130,11 @@ public class UserPreferenceFormPanel extends AbstractAjaxAwareAdminPanel
 	 * 
 	 * @param user
 	 * @return
+	 * @throws ObjectNotFoundException 
 	 */
-	private IModel createModel(User user)
+	private IModel createModel(User user) throws ObjectNotFoundException
 	{
-		return new CompoundPropertyModel(new UserBackingBean(user));
+		User dbUser = userService.getUser(user.getUserId());
+		return new CompoundPropertyModel(new UserBackingBean(dbUser));
 	}
 }

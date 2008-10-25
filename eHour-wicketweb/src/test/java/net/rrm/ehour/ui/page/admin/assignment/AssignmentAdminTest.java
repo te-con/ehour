@@ -35,6 +35,8 @@ import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 
+import org.junit.Test;
+
 
 /**
  * TODO 
@@ -45,6 +47,7 @@ public class AssignmentAdminTest extends BaseUIWicketTester
 	/**
 	 * Test render
 	 */
+	@Test
 	public void testAssignmentAdminRender()
 	{
 		UserService userService = createMock(UserService.class);

@@ -17,33 +17,38 @@
 
 package net.rrm.ehour.ui.page.user.prefs;
 
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.user.service.UserService;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * TODO 
  **/
 
-public class UserPreferencePageTest
+public class UserPreferencePageTest extends BaseUIWicketTester
 {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception
-	{
-	}
-
-	/**
-	 * Test method for {@link net.rrm.ehour.ui.page.user.prefs.UserPreferencePage#UserPreferencePage()}.
-	 */
 	@Test
-	public void testUserPreferencePage()
+	public void testReportPageRender() throws ObjectNotFoundException
 	{
-		fail("Not yet implemented");
-	}
+		UserService userService = createMock(UserService.class);
+		mockContext.putBean("userService", userService);
 
+		expect(userService.getUser(1))
+			.andReturn(new User(1));
+		
+		replay(userService);
+		
+		tester.startPage(UserPreferencePage.class);
+		tester.assertRenderedPage(UserPreferencePage.class);
+		tester.assertNoErrorMessage();
+		
+		verify(userService);
+	}
 }
