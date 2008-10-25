@@ -25,7 +25,7 @@ import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
-import org.apache.wicket.util.tester.FormTester;
+import org.junit.Test;
 
 /**
  * TODO 
@@ -36,6 +36,7 @@ public class MainConfigTest extends BaseUIWicketTester
 	/**
 	 * Test render
 	 */
+	@Test
 	public void testMainConfigRender()
 	{
 		ConfigurationService configService = createMock(ConfigurationService.class);
