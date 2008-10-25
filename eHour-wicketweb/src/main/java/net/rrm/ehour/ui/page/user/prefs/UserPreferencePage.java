@@ -18,9 +18,9 @@
 package net.rrm.ehour.ui.page.user.prefs;
 
 import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.panel.user.form.prefs.UserPreferenceFormPanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -34,6 +34,6 @@ public class UserPreferencePage extends BasePage
 	{
 		super(new ResourceModel("userprefs.title"));
 		
-		add(new WebMarkupContainer("contentContainer"));
+		add(new UserPreferenceFormPanel("preferenceForm", getEhourWebSession().getUser().getUser()));
 	}
 }
