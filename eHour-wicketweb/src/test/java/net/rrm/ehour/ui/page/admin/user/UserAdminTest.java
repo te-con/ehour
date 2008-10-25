@@ -30,6 +30,8 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.service.UserService;
 
+import org.junit.Test;
+
 
 /**
  * TODO 
@@ -40,6 +42,7 @@ public class UserAdminTest extends BaseUIWicketTester
 	/**
 	 * Test render
 	 */
+	@Test
 	public void testUserAdminRender()
 	{
 		UserService userService = createMock(UserService.class);

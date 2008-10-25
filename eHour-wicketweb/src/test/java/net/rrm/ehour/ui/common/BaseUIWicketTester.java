@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.common;
 import java.util.Calendar;
 import java.util.Locale;
 
-import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfigStub;
 
 import org.apache.wicket.Component;
@@ -27,19 +26,21 @@ import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.settings.Settings;
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 import org.apache.wicket.util.tester.WicketTester;
+import org.junit.Before;
 
 /**
  * Base class for wicket unit tests 
  **/
 
-public abstract class BaseUIWicketTester extends TestCase 
+public abstract class BaseUIWicketTester
 {
 	protected WicketTester	tester;
 	protected AnnotApplicationContextMock	mockContext;
 	protected EhourConfigStub	config;
 	protected TestEhourWebApplication webapp;
 	
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
 		webapp =  new TestEhourWebApplication();
 		

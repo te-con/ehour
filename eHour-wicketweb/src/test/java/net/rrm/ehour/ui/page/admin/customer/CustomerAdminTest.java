@@ -23,11 +23,11 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 
-import org.apache.wicket.util.tester.FormTester;
-
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
+
+import org.junit.Test;
 
 
 /**
@@ -39,6 +39,7 @@ public class CustomerAdminTest extends BaseUIWicketTester
 	/**
 	 * Test render
 	 */
+	@Test
 	public void testCustomerAdminRender()
 	{
 		CustomerService customerService = createMock(CustomerService.class);

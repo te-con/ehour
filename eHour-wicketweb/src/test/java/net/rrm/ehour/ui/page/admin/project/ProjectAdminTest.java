@@ -31,6 +31,8 @@ import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.service.UserService;
 
+import org.junit.Test;
+
 
 /**
  * Render testcase for project admin page
@@ -41,6 +43,7 @@ public class ProjectAdminTest extends BaseUIWicketTester
 	/**
 	 * Test render
 	 */
+	@Test
 	public void testProjectAdminRender()
 	{
 		ProjectService	projectService = createMock(ProjectService.class);

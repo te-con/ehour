@@ -36,6 +36,8 @@ import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
+import org.junit.Before;
+
 /**
  * TODO 
  **/
@@ -48,7 +50,8 @@ public abstract class BaseTestReport extends BaseUIWicketTester
 	protected ReportData data;
 	protected ReportCriteria reportCriteria;
 	
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
 		super.setUp();
 		

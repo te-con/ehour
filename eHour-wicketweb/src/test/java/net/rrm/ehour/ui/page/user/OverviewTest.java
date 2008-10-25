@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.notNull;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,6 +35,8 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
+import org.junit.Test;
+
 
 /**
  * Overview page test
@@ -41,6 +44,7 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 
 public class OverviewTest extends BaseUIWicketTester
 {
+	@Test
 	public void testOverviewPageRender()
 	{
 		TimesheetService timesheetService = createMock(TimesheetService.class);
@@ -72,6 +76,6 @@ public class OverviewTest extends BaseUIWicketTester
 		tester.assertRenderedPage(Overview.class);
 		tester.assertNoErrorMessage();
 		
-//		verify(timesheetService);
+		verify(timesheetService);
 	}
 }

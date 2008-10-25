@@ -26,6 +26,8 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 
+import org.junit.Test;
+
 
 
 /**
@@ -34,6 +36,7 @@ import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
 
 public class GlobalReportPageTest extends BaseTestReport
 {
+	@Test
 	public void testReportPageRender()
 	{
 		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdate.UPDATE_ALL)))
