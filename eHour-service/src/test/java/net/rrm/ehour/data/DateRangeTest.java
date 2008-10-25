@@ -20,9 +20,9 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 /**
- * TODO 
+ * 
  **/
-
+@SuppressWarnings("deprecation")
 public class DateRangeTest extends TestCase
 {
 	public void testEquals()

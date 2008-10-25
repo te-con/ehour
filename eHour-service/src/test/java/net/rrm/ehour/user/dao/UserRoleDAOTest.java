@@ -14,39 +14,33 @@
  */
 
 package net.rrm.ehour.user.dao;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.domain.UserRole;
 
-/**
- * TODO 
- **/
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SuppressWarnings("unchecked")
 public class UserRoleDAOTest extends BaseDAOTest 
 {
+	@Autowired
 	private	UserRoleDAO	userRoleDAO;
 	
-	public void setUserRoleDAO(UserRoleDAO dao)
-	{
-		userRoleDAO = dao;
-	}
-	
-
-
-	/**
-	 * Test method for {@link net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl#findById(java.lang.Integer)}.
-	 */
+	@Test
 	public void testFindById()
 	{
 		UserRole role = userRoleDAO.findById("ROLE_ADMIN");
 		assertEquals("Administrator", role.getRoleName());
 	}
 
-	/**
-	 * Test method for {@link net.rrm.ehour.user.dao.UserRoleDAOHibernateImpl#findUserRoles()}.
-	 */
+	@Test
 	public void testFindUserRoles()
 	{
 		List list = userRoleDAO.findAll();

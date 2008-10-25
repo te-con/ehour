@@ -29,7 +29,6 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.user.service.UserService;
 
-import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
 import org.junit.Test;
 

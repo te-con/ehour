@@ -15,11 +15,13 @@
 
 package net.rrm.ehour.project.service;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.AbstractServiceTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -27,34 +29,35 @@ import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 /**
  * TODO 
  **/
-
-public class ProjectAssignmentServiceIntegrationTest extends BaseDAOTest
+@RunWith(SpringJUnit4ClassRunner.class)
+public class ProjectAssignmentServiceIntegrationTest extends AbstractServiceTest
 {
+	@Autowired
 	private	ProjectAssignmentService projectAssignmentService;
 
-	public void setProjectAssignmentService(ProjectAssignmentService service)
-	{
-		this.projectAssignmentService=service;
-	}
-	
+	@Test
 	public void testGetAllProjectsForUser()
 	{
 		List<ProjectAssignment> pas = projectAssignmentService.getProjectAssignmentsForUser(new User(1), false);
 		assertEquals(7, pas.size());
 	}
 
+	@Test
 	public void testGetAllProjectsForUserInactiveFiltered()
 	{
 		List<ProjectAssignment> pas = projectAssignmentService.getProjectAssignmentsForUser(new User(1), true);
 		assertEquals(3, pas.size());
 	}
 
-	
-		
-	
+	@Test	
 	public void testAssignUserToProjectSuccess() throws ProjectAlreadyAssignedException
 	{
 		ProjectAssignment pa = new ProjectAssignment();
@@ -72,6 +75,7 @@ public class ProjectAssignmentServiceIntegrationTest extends BaseDAOTest
 		projectAssignmentService.assignUserToProject(pa);
 	}
 	
+	@Test	
 	public void testGetProjectAssignmentsForUser()
 	{
 		DateRange dateRange = new DateRange();
@@ -105,13 +109,4 @@ public class ProjectAssignmentServiceIntegrationTest extends BaseDAOTest
 //		{
 //		}
 //	}
-
-	
-	protected String[] getConfigLocations()
-	{
-		return new String[] { "classpath:/applicationContext-datasource.xml",
-							  "classpath:/applicationContext-dao.xml",
-							  "classpath:/applicationContext-mail.xml", 
-							  "classpath:/applicationContext-service.xml"};	
-	}
 }

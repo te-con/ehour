@@ -14,6 +14,9 @@
  */
 
 package net.rrm.ehour.project.dao;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,49 +26,54 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 /**
  * TODO 
  **/
 
 @SuppressWarnings("unchecked")
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ProjectDAOTest extends BaseDAOTest
 {
-	private	ProjectDAO	dao;
+	@Autowired
+	private	ProjectDAO	projectDAO;
 	
-	public void setProjectDAO(ProjectDAO dao)
-	{
-		this.dao = dao;
-	}
-
 	/**
 	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#delete(net.rrm.ehour.domain.Project)}.
 	 */
+	@Test
 	public void testDelete()
 	{
 		Project	project;
 		
-		project = dao.findById(new Integer(2));
+		project = projectDAO.findById(new Integer(2));
 		assertNotNull(project);
 		
-		dao.delete(project);
+		projectDAO.delete(project);
 		
-		project = dao.findById(new Integer(2));
+		project = projectDAO.findById(new Integer(2));
 		assertNull(project);	
 	}
 
 	/**
 	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#findAll()}.
 	 */
+	@Test
 	public void testFindAll()
 	{
-		List projects = dao.findAll();
+		List projects = projectDAO.findAll();
 		
 		assertEquals(5, projects.size());
 	}
 
+	@Test
 	public void testFindAllFiltered()
 	{
-		List projects = dao.findProjects("days", true);
+		List projects = projectDAO.findProjects("days", true);
 		
 		assertEquals(2, projects.size());
 	}	
@@ -73,15 +81,17 @@ public class ProjectDAOTest extends BaseDAOTest
 	/**
 	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#findById(java.lang.Integer)}.
 	 */
+	@Test
 	public void testFindById()
 	{
-		Project prj = dao.findById(1);
+		Project prj = projectDAO.findById(1);
 		assertEquals("eHour", prj.getName());
 	}
 
 	/**
 	 * Test method for {@link net.rrm.ehour.project.dao.ProjectDAOHibernateImpl#persist(net.rrm.ehour.domain.Project)}.
 	 */
+	@Test
 	public void testPersist()
 	{
 		Customer	customer = new Customer();
@@ -95,46 +105,51 @@ public class ProjectDAOTest extends BaseDAOTest
 		prj.setActive(true);
 		prj.setProjectCode("bla");
 		
-		prj = dao.persist(prj);
+		prj = projectDAO.persist(prj);
 		
 		assertNotNull(prj.getProjectId());
 	}
 
+	@Test
 	public void testFindAllActive()
 	{
-		List r = dao.findAllActive();
+		List r = projectDAO.findAllActive();
 		
 		assertEquals(3, r.size());
 	}
 	
+	@Test
 	public void testFindDefaultProjects()
 	{
-		assertEquals(2, dao.findDefaultProjects().size());
+		assertEquals(2, projectDAO.findDefaultProjects().size());
 	}
 	
+	@Test
 	public void testFindProjectForCustomersAll()
 	{
 		List	ids = new ArrayList();
 		ids.add(new Customer(3));
 		ids.add(new Customer(1));
-		List r = dao.findProjectForCustomers(ids, false);
+		List r = projectDAO.findProjectForCustomers(ids, false);
 		
 		assertEquals(3, r.size());
 	}
 
+	@Test
 	public void testFindProjectForCustomersOnlyActive()
 	{
 		List	ids = new ArrayList();
 		ids.add(new Customer(3));
 		ids.add(new Customer(1));
-		List r = dao.findProjectForCustomers(ids, true);
+		List r = projectDAO.findProjectForCustomers(ids, true);
 		
 		assertEquals(2, r.size());
 	}
 	
+	@Test
 	public void testFindActiveProjectsWhereUserIsPM()
 	{
-		List<Project> res = dao.findActiveProjectsWhereUserIsPM(new User(1));
+		List<Project> res = projectDAO.findActiveProjectsWhereUserIsPM(new User(1));
 		assertEquals(new Integer(1), res.iterator().next().getPK());
 	}
 }

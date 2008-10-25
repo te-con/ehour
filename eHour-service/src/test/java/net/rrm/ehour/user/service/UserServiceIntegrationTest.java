@@ -14,11 +14,15 @@
  */
 
 package net.rrm.ehour.user.service;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import net.rrm.ehour.AbstractServiceTest;
 import net.rrm.ehour.DummyDataGenerator;
-import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
@@ -27,14 +31,18 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.util.EhourConstants;
 
-/**
- * Small unit test to test service <-> dao interaction with tx 
- **/
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-public class UserServiceIntegrationTest extends BaseDAOTest
+@RunWith(SpringJUnit4ClassRunner.class)
+public class UserServiceIntegrationTest extends AbstractServiceTest
 {
+	@Autowired
 	private UserService userService;
 	
+	@Test
 	public void testUpdateUser() throws ObjectNotFoundException, PasswordEmptyException, ObjectNotUniqueException
 	{
 		User user = new User(1);
@@ -47,10 +55,7 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		assertEquals("ROLE_ADMIN", user.getUserRoles().iterator().next().getRole());
 	}	
 	
-	/**
-	 * 
-	 * @throws Exception
-	 */
+	@Test
 	public void testAddUser() throws Exception
 	{
 		User	user = DummyDataGenerator.getUser();
@@ -58,30 +63,21 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		userService.persistUser(user);
 	}
 	
-	/**
-	 * 
-	 * @throws Exception
-	 */
+	@Test
 	public void testGetUserIsDeletable() throws Exception
 	{
 		User	user = userService.getUserAndCheckDeletability(3);
 		assertTrue(user.isDeletable());
 	}	
 	
-	/**
-	 * 
-	 * @throws Exception
-	 */
+	@Test
 	public void testGetUserIsNotDeletable() throws Exception
 	{
 		User	user = userService.getUserAndCheckDeletability(1);
 		assertFalse(user.isDeletable());
 	}	
 	
-	/**
-	 * 
-	 * @throws Exception
-	 */
+	@Test
 	public void testDeleteUserDepartment() throws Exception
 	{
 		userService.deleteDepartment(new Integer(2));
@@ -97,10 +93,7 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		}
 	}
 	
-	/**
-	 * 
-	 * @throws Exception
-	 */
+	@Test
 	public void testGetUserDepartmentNoDelete() throws Exception
 	{
 		UserDepartment dept = userService.getUserDepartment(1);
@@ -108,10 +101,7 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		assertFalse(dept.isDeletable());
 	}
 		
-	/**
-	 * 
-	 * @throws Exception
-	 */
+	@Test
 	public void testGetUserDepartmentDelete() throws Exception
 	{
 		UserDepartment dept = userService.getUserDepartment(2);
@@ -119,7 +109,7 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		assertTrue(dept.isDeletable());
 	}
 
-	
+	@Test
 	public void testPersistUser() throws Exception
 	{
 		User user = new User();
@@ -134,6 +124,7 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		userService.persistUser(user);
 	}
 	
+	@Test
 	public void testDeleteUser()
 	{
 		userService.deleteUser(1);
@@ -147,10 +138,7 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		}
 	}
 	
-
-	/*
-	 * 
-	 */
+	@Test
 	public void testFindUsersByPatternAndUserRole()
 	{
 		List<User>	results;
@@ -159,29 +147,10 @@ public class UserServiceIntegrationTest extends BaseDAOTest
 		assertEquals(4, results.size());		
 	}	
 
-	/**
-	 * 
-	 */
+	@Test
 	public void testCheckProjectManagementRolesValid()
 	{
 		userService.addAndcheckProjectManagementRoles(3);
 
 	}	
-	
-	/**
-	 * 
-	 * @param userService
-	 */
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}
-	
-	protected String[] getConfigLocations()
-	{
-		return new String[] { "classpath:/applicationContext-datasource.xml",
-							  "classpath:/applicationContext-dao.xml",
-							  "classpath:/applicationContext-mail.xml", 							  
-							  "classpath:/applicationContext-service.xml"};	
-	}		
 }

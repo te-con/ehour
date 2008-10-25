@@ -14,6 +14,7 @@
  */
 
 package net.rrm.ehour.timesheet.dao;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,21 +28,23 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
-@SuppressWarnings("unchecked")
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SuppressWarnings({"deprecation", "unchecked"})
 public class TimesheetDAOTest extends BaseDAOTest 
 {
-	private	TimesheetDAO	dao;
-
-	
-	public void setTimesheetDAO(TimesheetDAO dao)
-	{
-		this.dao = dao;
-	}
+	@Autowired
+	private	TimesheetDAO	timesheetDAO;
 	
 	/**
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetTimesheetEntriesInRange()
 	{
 		Calendar 	dateStart = new GregorianCalendar(2006, 10 - 1, 1);
@@ -49,11 +52,12 @@ public class TimesheetDAOTest extends BaseDAOTest
 		DateRange	dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
 		List		results;
 		
-		results = dao.getTimesheetEntriesInRange(new Integer(1), dateRange);
+		results = timesheetDAO.getTimesheetEntriesInRange(new Integer(1), dateRange);
 		
 		assertEquals(9, results.size());
 	}
 	
+	@Test
 	public void testGetTimesheetEntriesInRangeForAssignment()
 	{
 		Calendar 	dateStart = new GregorianCalendar(2006, 10 - 1, 1);
@@ -61,7 +65,7 @@ public class TimesheetDAOTest extends BaseDAOTest
 		DateRange	dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
 		List		results;
 		
-		results = dao.getTimesheetEntriesInRange(new ProjectAssignment(2), dateRange);
+		results = timesheetDAO.getTimesheetEntriesInRange(new ProjectAssignment(2), dateRange);
 		
 		assertEquals(2, results.size());
 	}	
@@ -70,6 +74,7 @@ public class TimesheetDAOTest extends BaseDAOTest
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetBookedHoursperDayInRange()
 	{
 		Calendar 	dateStart = new GregorianCalendar(2006, 10 - 1, 1);
@@ -78,7 +83,7 @@ public class TimesheetDAOTest extends BaseDAOTest
 		List		results;
 		BookedDay	bookedDay;
 		
-		results = dao.getBookedHoursperDayInRange(new Integer(1), dateRange);
+		results = timesheetDAO.getBookedHoursperDayInRange(new Integer(1), dateRange);
 		
 		assertEquals(6, results.size());
 		
@@ -89,32 +94,36 @@ public class TimesheetDAOTest extends BaseDAOTest
 		assertEquals(-1, bookedDay.getHours().doubleValue(), 0.01);
 	}
 	
+	@Test
 	public void testGetTimesheetEntriesBefore()
 	{
-		List<TimesheetEntry> res = dao.getTimesheetEntriesBefore(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 3));
+		List<TimesheetEntry> res = timesheetDAO.getTimesheetEntriesBefore(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 3));
 		assertEquals(4, res.size());
 	}	
 
+	@Test
 	public void testGetTimesheetEntriesAfter()
 	{
-		List<TimesheetEntry> res = dao.getTimesheetEntriesAfter(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 4));
+		List<TimesheetEntry> res = timesheetDAO.getTimesheetEntriesAfter(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 4));
 		
 		assertEquals(3, res.size());
 	}	
 	
 	
+	@Test
 	public void testGetLatestTimesheetEntryForAssignment()
 	{
-		TimesheetEntry entry = dao.getLatestTimesheetEntryForAssignment(1);
+		TimesheetEntry entry = timesheetDAO.getLatestTimesheetEntryForAssignment(1);
 		assertEquals(9.2f, entry.getHours(), 0.01f);
 	}
 	
+	@Test
 	public void testDeleteTimesheetEntries()
 	{
 		List ids = new ArrayList();
 		ids.add(5);
 		
-		int deleted = dao.deleteTimesheetEntries(ids);
+		int deleted = timesheetDAO.deleteTimesheetEntries(ids);
 		
 		assertEquals(2, deleted);
 	}

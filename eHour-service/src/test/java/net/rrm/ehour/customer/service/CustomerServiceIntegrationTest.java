@@ -15,51 +15,44 @@
 
 package net.rrm.ehour.customer.service;
 
-import net.rrm.ehour.dao.BaseDAOTest;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import net.rrm.ehour.AbstractServiceTest;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
  * Customer service test that goes to the database
  **/
-
-public class CustomerServiceIntegrationTest extends BaseDAOTest
+@RunWith(SpringJUnit4ClassRunner.class)
+public class CustomerServiceIntegrationTest extends AbstractServiceTest
 {
+	@Autowired
 	private CustomerService	customerService;
-
-//	/**
-//	 * 
-//	 */
-//	public void testGetCustomerDeletableTrue()
-//	{
-//		Customer customer = customerService.getCustomerAndCheckDeletability(4);
-//		assertTrue(customer.isDeletable());
-//	}
 
 	/**
 	 * @throws ObjectNotFoundException 
 	 * 
 	 */
+	@Test
+	public void testGetCustomerDeletableTrue() throws ObjectNotFoundException
+	{
+		Customer customer = customerService.getCustomerAndCheckDeletability(4);
+		assertTrue(customer.isDeletable());
+	}
+
+	/**
+	 * @throws ObjectNotFoundException 
+	 * 
+	 */
+	@Test
 	public void testGetCustomerDeletableFalse() throws ObjectNotFoundException
 	{
 		Customer customer = customerService.getCustomerAndCheckDeletability(2);
 		assertFalse(customer.isDeletable());
 	}
-
-	/**
-	 * @param customerService the customerService to set
-	 */
-	public void setCustomerService(CustomerService customerService)
-	{
-		this.customerService = customerService;
-	}
-	
-	
-	protected String[] getConfigLocations()
-	{
-		return new String[] { "classpath:/applicationContext-datasource.xml",
-							  "classpath:/applicationContext-dao.xml",
-							  "classpath:/applicationContext-mail.xml", 
-							  "classpath:/applicationContext-service.xml"};	
-	}		
 }

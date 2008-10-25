@@ -15,6 +15,8 @@
 
 package net.rrm.ehour.report.dao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,36 +27,38 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 /**
  * 
  **/
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "deprecation"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ReportAggregatedDAOTest extends BaseDAOTest
 {
-	private	ReportAggregatedDAO	dao;
+	@Autowired
+	private	ReportAggregatedDAO	reportAggregatedDAO;
 
-	
-	public void setReportAggregatedDAO(ReportAggregatedDAO dao)
-	{
-		this.dao = dao;
-	}
-	
-	
+	@Test
 	public void testGetMinMaxDateTimesheetEntry()
 	{
 		// ms accuracy rocks..
 		Date endDate = new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59);
 		endDate = new Date(endDate.getTime() + 999);
-		DateRange	range = dao.getMinMaxDateTimesheetEntry();
+		DateRange	range = reportAggregatedDAO.getMinMaxDateTimesheetEntry();
 		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
 		assertEquals(endDate, range.getDateEnd());
 
 	}	
-	
+
+	@Test
 	public void testGetMinMaxDateTimesheetEntryForUser()
 	{
-		DateRange range = dao.getMinMaxDateTimesheetEntry(new User(1));
+		DateRange range = reportAggregatedDAO.getMinMaxDateTimesheetEntry(new User(1));
 		Date endDate = new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59);
 		endDate = new Date(endDate.getTime() + 999);
 
@@ -66,6 +70,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetCumulatedHoursPerAssignmentForUserAndDate()
 	{
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
@@ -74,7 +79,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		List ids = new ArrayList();
 		ids.add(new User(1));
 
-		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, dateRange);
+		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(ids, dateRange);
 
 		// test if collection is properly initialized
 		AssignmentAggregateReportElement rep = results.get(0);
@@ -90,13 +95,14 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetCumulatedHoursPerAssignmentForUser()
 	{
 		List ids = new ArrayList();
 		ids.add(new User(1));
 		ids.add(new User(2));
 		
-		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForUsers(ids);
+		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(ids);
 
 		// test if collection is properly initialized
 		AssignmentAggregateReportElement rep = results.get(0);
@@ -112,6 +118,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetCumulatedHoursPerAssignmentForUserProject()
 	{
 		List<User> ids = new ArrayList<User>();
@@ -119,7 +126,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		List<Project> pids = new ArrayList<Project>();
 		pids.add(new Project(1));		
 		
-		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, pids);
+		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(ids, pids);
 
 		// test if collection is properly initialized
 		AssignmentAggregateReportElement rep = results.get(0);
@@ -132,6 +139,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetCumulatedHoursPerAssignmentForUserProjectDate()
 	{
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
@@ -140,7 +148,7 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		ids.add(new User(1));
 		List<Project> pids = new ArrayList<Project>();
 		pids.add(new Project(1));
-		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForUsers(ids, pids, dateRange);
+		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(ids, pids, dateRange);
 
 		// test if collection is properly initialized
 		AssignmentAggregateReportElement rep = results.get(0);
@@ -149,16 +157,18 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		assertEquals(2, results.size());
 	}
 	
+	@Test
 	public void testGetCumulatedHoursPerAssignment()
 	{
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
 			    new Date(2006 - 1900, 10 - 1, 4));
 		
-		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignment(dateRange);
+		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignment(dateRange);
 		
 		assertEquals(3, results.size());
 	}
 	
+	@Test
 	public void testGetCumulatedHoursPerAssignmentForProjects()
 	{
 		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated? hmm ;) 
@@ -166,18 +176,9 @@ public class ReportAggregatedDAOTest extends BaseDAOTest
 		List<Project> pids = new ArrayList<Project>();
 		pids.add(new Project(1));
 
-		List<AssignmentAggregateReportElement> results = dao.getCumulatedHoursPerAssignmentForProjects(pids, dateRange);
+		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(pids, dateRange);
 		
 		assertEquals(2, results.size());
 	}
 	
-	private List<Integer> getAsList(Integer id)
-	{
-		List ids = new ArrayList();
-		ids.add(id);
-		
-		return ids;
-		
-	}
-
 }

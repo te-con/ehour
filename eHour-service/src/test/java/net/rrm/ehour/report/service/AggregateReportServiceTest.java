@@ -57,7 +57,6 @@ public class AggregateReportServiceTest extends TestCase
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	ReportCriteria 	rc;
 	private	ProjectAssignmentService	assignmentService;
-	private ReportCriteriaService rsMock;
 	private MailService mailService;
 	
 	/**
@@ -83,7 +82,6 @@ public class AggregateReportServiceTest extends TestCase
 		((AggregateReportServiceImpl)aggregateReportService).setMailService(mailService);
 		
 		rc = new ReportCriteria();
-		rsMock = createMock(ReportCriteriaService.class);
 	}
 	
 //	/**

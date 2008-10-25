@@ -22,45 +22,26 @@ import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * TODO 
  **/
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath:applicationContext-mail.xml", "classpath:applicationContext-service.xml"})
 public class MailServiceTest extends BaseDAOTest
 {
+	@Autowired
 	private MailService	mailService;
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.test.AbstractSingleSpringContextTests#getConfigLocations()
-	 */
-	protected String[] getConfigLocations()
-	{
-		String[] configs = super.getConfigLocations();
-		
-		configs = (String[])ArrayUtils.add(configs, "classpath:applicationContext-mail.xml");
-		configs = (String[])ArrayUtils.add(configs, "classpath:applicationContext-service.xml");
-		
-		return configs;
-	}
-	
-	/**
-	 * 
-	 * @param mailService
-	 */
-	public void setMailService(MailService mailService)
-	{
-		this.mailService = mailService;
-	}
-	
 	/*
 	 * 
 	 */
 	@Test
-	public void testMailPMFixedAllottedReached()
+	public void testMailPMFixedAllottedReached() throws InterruptedException
 	{
 		User	user = new User(1);
 		user.setEmail("spam@rrm.net");
@@ -72,22 +53,15 @@ public class MailServiceTest extends BaseDAOTest
 		asg.getProjectAssignment().setAllowedOverrun(100f);
 		
 		mailService.mailPMFixedAllottedReached(asg, new Date(), user);
-		try
-		{
-			// mailService is async
-			Thread.sleep(2000);
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// mailService is async
+		Thread.sleep(2000);
 	}
 
 	/*
 	 * 
 	 */
 	@Test
-	public void testMailPMFixedAllottedReachedFailure()
+	public void testMailPMFixedAllottedReachedFailure() throws InterruptedException
 	{
 		User	user = new User(1);
 		user.setEmail("unknownemailaddress@rrm.net");
@@ -99,15 +73,8 @@ public class MailServiceTest extends BaseDAOTest
 		asg.getProjectAssignment().setAllowedOverrun(100f);
 		
 		mailService.mailPMFixedAllottedReached(asg, new Date(), user);
-		try
-		{
-			// mailService is async
-			Thread.sleep(2000);
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		Thread.sleep(2000);
 	}	
 	
 }

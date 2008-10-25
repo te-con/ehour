@@ -31,7 +31,7 @@ import org.junit.Before;
 /**
  * Base class for wicket unit tests 
  **/
-
+@SuppressWarnings("unchecked")
 public abstract class BaseUIWicketTester
 {
 	protected WicketTester	tester;

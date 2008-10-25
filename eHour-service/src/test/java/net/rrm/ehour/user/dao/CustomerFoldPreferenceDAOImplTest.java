@@ -15,6 +15,8 @@
 
 package net.rrm.ehour.user.dao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +25,20 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * TODO 
  **/
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SuppressWarnings("unchecked")
 public class CustomerFoldPreferenceDAOImplTest extends BaseDAOTest 
 {
-	private CustomerFoldPreferenceDAO	dao;
+	@Autowired
+	private CustomerFoldPreferenceDAO	customerFoldPreferenceDAO;
 
 	@Test
 	public void testGetPreferenceForUser()
@@ -40,17 +48,8 @@ public class CustomerFoldPreferenceDAOImplTest extends BaseDAOTest
 		custs.add(new Customer(2));
 		custs.add(new Customer(3));
 		
-		List res = dao.getPreferenceForUser(new User(1), custs);
+		List res = customerFoldPreferenceDAO.getPreferenceForUser(new User(1), custs);
 		
 		assertEquals(3, res.size());
 	}
-
-	/**
-	 * @param dao the dao to set
-	 */
-	public void setDao(CustomerFoldPreferenceDAO dao)
-	{
-		this.dao = dao;
-	}
-
 }

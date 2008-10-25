@@ -15,44 +15,41 @@
 
 package net.rrm.ehour.timesheet.dao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Date;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 
-/**
- * TODO 
- **/
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SuppressWarnings({"deprecation"})
 public class TimesheetCommentDAOTest extends BaseDAOTest
 { 
-	private TimesheetCommentDAO	dao;
+	@Autowired
+	private TimesheetCommentDAO	timesheetCommentDAO;
 
-	/**
-	 * @param dao the dao to set
-	 */
-	public void setDao(TimesheetCommentDAO dao)
-	{
-		this.dao = dao;
-	}
-	
-	/**
-	 * 
-	 *
-	 */
+	@Test
 	public void testGetTimesheetEntriesInRange()
 	{
 		TimesheetComment	comment;
 		
-		comment = dao.findById(new TimesheetCommentId(1, new Date(2007 - 1900, 1 - 1, 7)));
+		comment = timesheetCommentDAO.findById(new TimesheetCommentId(1, new Date(2007 - 1900, 1 - 1, 7)));
 		
 		assertNotNull(comment);
 	}
 	
+	@Test
 	public void testDeleteOnUser()
 	{
-		int rowCount = dao.deleteCommentsForUser(1);
+		int rowCount = timesheetCommentDAO.deleteCommentsForUser(1);
 		assertEquals(2, rowCount);
 	}
 }

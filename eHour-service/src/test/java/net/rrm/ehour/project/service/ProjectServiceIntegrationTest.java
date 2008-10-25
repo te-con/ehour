@@ -15,30 +15,32 @@
 
 package net.rrm.ehour.project.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
-import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.AbstractServiceTest;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * TODO 
  **/
-
-public class ProjectServiceIntegrationTest  extends BaseDAOTest
+@RunWith(SpringJUnit4ClassRunner.class)
+public class ProjectServiceIntegrationTest  extends AbstractServiceTest
 {
+	@Autowired
 	private	ProjectService	projectService;
 
-	/**
-	 * @param projectService the projectService to set
-	 */
-	public void setProjectService(ProjectService projectService)
-	{
-		this.projectService = projectService;
-	}
-	
+	@Test
 	public void testGetProjectNotDeletable() throws ObjectNotFoundException
 	{
 		Project prj = projectService.getProjectAndCheckDeletability(2);
@@ -46,6 +48,7 @@ public class ProjectServiceIntegrationTest  extends BaseDAOTest
 		assertFalse(prj.isDeletable());
 	}
 	
+	@Test
 	public void testGetProjectDeletable() throws ObjectNotFoundException
 	{
 		Project prj = projectService.getProjectAndCheckDeletability(4);
@@ -53,6 +56,7 @@ public class ProjectServiceIntegrationTest  extends BaseDAOTest
 		assertTrue(prj.isDeletable());
 	}
 	
+	@Test
 	public void testGetProjectManagerProjects()
 	{
 		User user;
@@ -64,18 +68,10 @@ public class ProjectServiceIntegrationTest  extends BaseDAOTest
 		assertEquals(1, prj.size());
 	}
 	
+	@Test
 	public void testGetProjectsWithFilter()
 	{
 		List<Project> projects = projectService.getProjects("days", true);
 		assertEquals(2, projects.size());
 	}
-	
-	protected String[] getConfigLocations()
-	{
-		return new String[] { "classpath:/applicationContext-datasource.xml",
-							  "classpath:/applicationContext-dao.xml",
-							  "classpath:/applicationContext-mail.xml", 
-							  "classpath:/applicationContext-service.xml"};	
-	}	
-	
 }

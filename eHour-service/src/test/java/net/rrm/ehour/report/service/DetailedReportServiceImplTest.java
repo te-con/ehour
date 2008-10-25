@@ -22,7 +22,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.fail;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ import org.junit.Test;
 /**
  * DetailedReportServiceImplTest 
  **/
-
+@SuppressWarnings({"unchecked"})
 public class DetailedReportServiceImplTest
 {
 	private	DetailedReportDAO		detailedReportDAO;

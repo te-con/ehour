@@ -3,9 +3,10 @@
  */
 package net.rrm.ehour.ui.panel.calendar;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +27,7 @@ import org.junit.Test;
  * @author thies
  *
  */
+@SuppressWarnings("deprecation")
 public class CalendarPanelTest extends BaseUIWicketTester
 {
 	private TimesheetService	timesheetService;
@@ -64,7 +66,7 @@ public class CalendarPanelTest extends BaseUIWicketTester
 		EhourWebSession session = webapp.getSession();
 		session.setNavCalendar(requestedMonth);
 		
-		CalendarPanel panel = new CalendarPanel("id", new User(1));
+		new CalendarPanel("id", new User(1));
 		
 		verify(timesheetService);
 	}

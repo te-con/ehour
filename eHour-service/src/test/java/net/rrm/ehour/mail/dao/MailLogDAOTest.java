@@ -15,19 +15,27 @@
 
 package net.rrm.ehour.mail.dao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.domain.MailLogAssignment;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * TODO 
  **/
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class MailLogDAOTest extends BaseDAOTest
 {
+	
+	@Autowired
 	private MailLogDAO	mailLogDAO;
 	
 	@Test
@@ -38,13 +46,4 @@ public class MailLogDAOTest extends BaseDAOTest
 		assertEquals(1, mla.size());
 		assertEquals(9, mla.get(0).getMailLogId().intValue());
 	}
-
-	/**
-	 * @param mailLogDAO the mailLogDAO to set
-	 */
-	public void setMailLogDAO(MailLogDAO mailLogDAO)
-	{
-		this.mailLogDAO = mailLogDAO;
-	}
-
 }

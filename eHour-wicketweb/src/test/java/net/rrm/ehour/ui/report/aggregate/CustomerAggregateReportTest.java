@@ -15,6 +15,7 @@ import org.junit.Test;
  * @since <pre>09/11/2007</pre>
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class CustomerAggregateReportTest 
 {
     /**

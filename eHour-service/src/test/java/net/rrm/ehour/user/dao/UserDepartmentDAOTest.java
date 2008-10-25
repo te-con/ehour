@@ -14,37 +14,41 @@
  */
 
 package net.rrm.ehour.user.dao;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
 import net.rrm.ehour.dao.BaseDAOTest;
 import net.rrm.ehour.domain.UserDepartment;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 /**
  *  
  **/
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@SuppressWarnings("unchecked")
 public class UserDepartmentDAOTest extends BaseDAOTest 
-{
-	private	UserDepartmentDAO	dao;
+{	
+	@Autowired
+	private	UserDepartmentDAO	userDepartmentDAO;
 
-	
-	public void setUserDepartmentDAO(UserDepartmentDAO dao)
-	{
-		this.dao = dao;
-	}
-	
-
+	@Test
 	public void testDelete()
 	{
 		UserDepartment dept;
 
-		dept = dao.findById(new Integer(2));
+		dept = userDepartmentDAO.findById(new Integer(2));
 		assertNotNull(dept);
 		
-		dao.delete(dept);
+		userDepartmentDAO.delete(dept);
 		
-		dept = dao.findById(new Integer(2));
+		dept = userDepartmentDAO.findById(new Integer(2));
 		assertNull(dept);
 	}
 
@@ -52,9 +56,10 @@ public class UserDepartmentDAOTest extends BaseDAOTest
 	 * 
 	 *
 	 */
+	@Test
 	public void testFindById()
 	{
-		UserDepartment dept = dao.findById(new Integer(2));
+		UserDepartment dept = userDepartmentDAO.findById(new Integer(2));
 		assertEquals("DUMMY DEPT", dept.getName());
 	}
 
@@ -62,27 +67,30 @@ public class UserDepartmentDAOTest extends BaseDAOTest
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetAllDepartments()
 	{
-		List depts = dao.findAll();
+		List depts = userDepartmentDAO.findAll();
 		assertEquals(2, depts.size());
 	}
 
+	@Test
 	public void testPersist()
 	{
 		UserDepartment dept = new UserDepartment();
 //		dept.setDepartmentId(new Integer(3));
 		dept.setName("test dept");
 		dept.setCode("code");
-		dao.persist(dept);
+		userDepartmentDAO.persist(dept);
 		
-		UserDepartment dept2 =dao.findById(dept.getDepartmentId());
+		UserDepartment dept2 =userDepartmentDAO.findById(dept.getDepartmentId());
 		
 		assertEquals("test dept", dept2.getName());
 	}
 	
+	@Test
 	public void testFindByNameAndCode()
 	{
-		assertNotNull(dao.findOnNameAndCode("TE-CON", "TEC"));
+		assertNotNull(userDepartmentDAO.findOnNameAndCode("TE-CON", "TEC"));
 	}
 }

@@ -18,7 +18,7 @@
 package net.rrm.ehour.ui.report.trend;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -26,15 +26,13 @@ import java.util.Locale;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.panel.report.ReportTestUtil;
-import net.rrm.ehour.ui.report.node.ReportNode;
-import net.rrm.ehour.ui.report.trend.node.FlatEntryEndNode;
 
 import org.junit.Test;
 
 /**
  * Test of detailed report 
  **/
-
+@SuppressWarnings({"unchecked"})
 public class DetailedReportTest
 {
 

@@ -127,7 +127,7 @@ public class TimesheetDAOHibernateImpl
 	@SuppressWarnings("unchecked")
 	public TimesheetEntry getLatestTimesheetEntryForAssignment(final Integer assignmentId)
 	{
-		return (TimesheetEntry) getHibernateTemplate().execute(
+		return (TimesheetEntry) getHibernateTemplate().executeWithNativeSession(
 				new HibernateCallback()
 				{
 					public Object doInHibernate(Session session) throws HibernateException
@@ -142,7 +142,7 @@ public class TimesheetDAOHibernateImpl
 						
 						return ((results != null && results.size() > 0) ? results.get(0) : null);
 					}
-			}, true);		
+			});		
 	}
 
 	/*

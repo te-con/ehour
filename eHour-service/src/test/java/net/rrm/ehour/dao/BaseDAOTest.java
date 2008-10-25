@@ -25,29 +25,25 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
-public abstract class BaseDAOTest extends AbstractTransactionalDataSourceSpringContextTests
+@ContextConfiguration(locations={"classpath:applicationContext-dao.xml", "classpath:applicationContext-datasource.xml"})
+@Transactional
+@TransactionConfiguration(defaultRollback=true)
+public abstract class BaseDAOTest
 {
+	@Autowired
+	private DataSource	eHourDataSource;
 	
-	protected String[] getConfigLocations()
+	@Before
+	public void setUpDatabase() throws Exception
 	{
-		return new String[] { "classpath:applicationContext-dao.xml",
-								"classpath:applicationContext-datasource.xml"
-		};	
-	}	
-	
-	protected void onSetUpInTransaction() throws Exception
-	{
-		setUpDatabase();
-	}
-	
-
-	private void setUpDatabase() throws Exception
-	{
-		DataSource ds = jdbcTemplate.getDataSource();
-		Connection con = DataSourceUtils.getConnection(ds);
+		Connection con = DataSourceUtils.getConnection(eHourDataSource);
 		IDatabaseConnection connection = new DatabaseConnection(con);
 
 		IDataSet dataSet = new FlatXmlDataSet(new File("src/test/resources/test-dataset.xml"));

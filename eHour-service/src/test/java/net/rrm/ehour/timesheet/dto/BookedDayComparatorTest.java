@@ -22,9 +22,9 @@ import net.rrm.ehour.timesheet.service.BookedDayComparator;
 import junit.framework.TestCase;
 
 /**
- * TODO 
+ * 
  **/
-
+@SuppressWarnings("deprecation")
 public class BookedDayComparatorTest extends TestCase
 {
 

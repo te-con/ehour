@@ -23,7 +23,6 @@ import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.config.PageConfig;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;

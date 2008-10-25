@@ -44,7 +44,7 @@ import org.apache.wicket.model.ResourceModel;
 /**
  * Abstract aggregate excel report
  **/
-
+@SuppressWarnings("deprecation")
 public abstract class AbstractExcelReport<RE extends ReportElement> extends AbstractExcelResource
 {
 	private static final long serialVersionUID = 1L;

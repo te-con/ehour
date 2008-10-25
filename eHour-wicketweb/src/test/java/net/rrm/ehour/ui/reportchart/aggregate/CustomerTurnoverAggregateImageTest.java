@@ -26,8 +26,9 @@ import org.apache.wicket.model.Model;
 import org.junit.Test;
 
 /**
- * TODO 
+ * 
  **/
+@SuppressWarnings("unchecked")
 
 public class CustomerTurnoverAggregateImageTest extends BaseUIWicketTester
 {

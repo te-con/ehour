@@ -1,5 +1,8 @@
 package net.rrm.ehour.user.dao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,76 +14,69 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.util.EhourConstants;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
 @SuppressWarnings("unchecked")
 public class UserDAOTest extends BaseDAOTest 
 {
-	private	UserDAO	dao;
-	private ProjectDAO projectDAO;
-	
-	
-	public void setUserDAO(UserDAO dao)
-	{
-		this.dao = dao;
-	}
+	@Autowired
+	private	UserDAO	userDAO;
 
-
-
-
-	public void setProjectDAO(ProjectDAO projectDAO) {
-		this.projectDAO = projectDAO;
-	}
-
-
-
-
+	@Test
 	public void testFindUsersByPattern()
 	{
 		List<User>	results;
 		
-		results = dao.findUsersByNameMatch("thies", true);
+		results = userDAO.findUsersByNameMatch("thies", true);
 		assertEquals(1, results.size());
 		
-		results = dao.findUsersByNameMatch("ede", true);
+		results = userDAO.findUsersByNameMatch("ede", true);
 		assertEquals(2, results.size());
 
-		results = dao.findUsersByNameMatch("zed", false);
+		results = userDAO.findUsersByNameMatch("zed", false);
 		assertEquals(3, results.size());
 
-		results = dao.findUsersByNameMatch("in", false);
+		results = userDAO.findUsersByNameMatch("in", false);
 		assertEquals(2, results.size());
 
-		results = dao.findUsersByNameMatch("zed", true);
+		results = userDAO.findUsersByNameMatch("zed", true);
 		assertEquals(2, results.size());
 
-		results = dao.findUsersByNameMatch(null, true);
+		results = userDAO.findUsersByNameMatch(null, true);
 		assertEquals(4, results.size());
 
 	}
 	
+	@Test
 	public void testFindUsers()
 	{
 		List<User>	results;
 		
-		results = dao.findAllActiveUsers();
+		results = userDAO.findAllActiveUsers();
 		assertEquals(4, results.size());
 	}
 	
 	/**
 	 * Test method for {@link net.rrm.ehour.user.service.UserServiceImpl#getUser(java.lang.String, java.lang.String)}.
 	 */
+	@Test
 	public void testFindById()
 	{
-		User user = dao.findById(new Integer(1));
+		User user = userDAO.findById(new Integer(1));
 		
 		assertEquals("thies", user.getUsername());
 	}
 	
+	@Test
 	public void testFindByUsername()
 	{
-		User user = dao.findByUsername("thies");
+		User user = userDAO.findByUsername("thies");
 		
 		assertEquals("thies", user.getUsername());
 	}
@@ -89,12 +85,13 @@ public class UserDAOTest extends BaseDAOTest
 	// pwd needs encryption
 //	public void testFindByUsernameAndPassword()
 //	{
-//		User user = dao.findByUsernameAndPassword("thies", "test");
+//		User user = userDAO.findByUsernameAndPassword("thies", "test");
 //		
 //		assertEquals("thies", user.getUsername());
 //	}	
 
 
+	@Test
 	public void testPersist()
 	{
 		UserDepartment org = new UserDepartment();
@@ -116,33 +113,35 @@ public class UserDAOTest extends BaseDAOTest
 		user.setLastName("doerak chief");
 		user.setUserDepartment(org);
 		user.setProjectAssignments(pas);
-		dao.persist(user);
+		userDAO.persist(user);
 		
 		assertNotNull(user.getUserId());
 	}
 	
+	@Test
 	public void testFindUsersForDepartments()
 	{
 		List ids = new ArrayList();
 		ids.add(new UserDepartment(1));
 		
-		List results = dao.findUsersForDepartments("in", ids, false);
+		List results = userDAO.findUsersForDepartments("in", ids, false);
 		
 		assertEquals(2, results.size());
 	}
 	
+	@Test
 	public void testFindAllActiveUsersWithEmailSet()
 	{
-		List results = dao.findAllActiveUsersWithEmailSet();
+		List results = userDAO.findAllActiveUsersWithEmailSet();
 		
 		assertEquals(2, results.size());
 	}
 	
-
 	
+	@Test
 	public void testDeletePmWithoutProject()
 	{
-		dao.deletePmWithoutProject();
+		userDAO.deletePmWithoutProject();
 	}	
 	
 	
