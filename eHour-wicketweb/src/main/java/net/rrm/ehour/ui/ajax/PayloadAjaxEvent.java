@@ -25,6 +25,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public class PayloadAjaxEvent<PL> extends AjaxEvent
 {
+	private static final long serialVersionUID = 4671730483379447278L;
 	private PL payload;
 
 	public PayloadAjaxEvent()
