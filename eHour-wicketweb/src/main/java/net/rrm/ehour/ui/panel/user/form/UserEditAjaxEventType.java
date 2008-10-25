@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.user.form;
+package net.rrm.ehour.ui.panel.user.form;
 
 import net.rrm.ehour.ui.ajax.AjaxEventType;
 
@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.ajax.AjaxEventType;
  * TODO 
  **/
 
-public enum UserAjaxEventType  implements AjaxEventType
+public enum UserEditAjaxEventType  implements AjaxEventType
 {
 	USER_UPDATED,
 	USER_DELETED;

@@ -28,12 +28,12 @@ import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.page.admin.BaseTabbedAdminPage;
-import net.rrm.ehour.ui.panel.admin.user.form.UserAjaxEventType;
-import net.rrm.ehour.ui.panel.admin.user.form.UserFormPanel;
-import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.panel.user.form.UserEditAjaxEventType;
+import net.rrm.ehour.ui.panel.user.form.admin.UserAdminFormPanel;
+import net.rrm.ehour.ui.panel.user.form.admin.dto.UserBackingBean;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -165,8 +165,8 @@ public class UserAdmin extends BaseTabbedAdminPage
 			
 			return false;
 		}
-		else if (type == UserAjaxEventType.USER_UPDATED
-				|| type == UserAjaxEventType.USER_DELETED)
+		else if (type == UserEditAjaxEventType.USER_UPDATED
+				|| type == UserEditAjaxEventType.USER_DELETED)
 		{
 			// update user list
 			List<User> users = getUsers();
@@ -215,7 +215,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
-		return new UserFormPanel(panelId,
+		return new UserAdminFormPanel(panelId,
 				new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()),
 				getUserRoles(),
 				getUserDepartments());
@@ -253,7 +253,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		return new UserFormPanel(panelId,
+		return new UserAdminFormPanel(panelId,
 				new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()),
 				getUserRoles(),
 				getUserDepartments());

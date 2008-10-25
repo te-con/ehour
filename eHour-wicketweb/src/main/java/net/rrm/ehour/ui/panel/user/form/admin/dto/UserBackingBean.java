@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.user.form.dto;
+package net.rrm.ehour.ui.panel.user.form.admin.dto;
 
 import java.util.ArrayList;
 

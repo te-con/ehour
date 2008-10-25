@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.user.form;
+package net.rrm.ehour.ui.panel.user.form.admin;
 
 import java.util.List;
 
@@ -30,7 +30,9 @@ import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
-import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
+import net.rrm.ehour.ui.panel.user.form.PasswordInputSnippet;
+import net.rrm.ehour.ui.panel.user.form.UserEditAjaxEventType;
+import net.rrm.ehour.ui.panel.user.form.admin.dto.UserBackingBean;
 import net.rrm.ehour.ui.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
@@ -57,13 +59,13 @@ import org.apache.wicket.validation.validator.StringValidator;
  * User Form Panel for admin
  **/
 
-public class UserFormPanel extends AbstractAjaxAwareAdminPanel
+public class UserAdminFormPanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = -7427807216389657732L;
 
 	@SpringBean
 	private UserService	userService;
-	private final static Logger logger = Logger.getLogger(UserFormPanel.class);
+	private final static Logger logger = Logger.getLogger(UserAdminFormPanel.class);
 	
 	/**
 	 * 
@@ -72,7 +74,7 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @param roles
 	 * @param departments
 	 */
-	public UserFormPanel(String id,
+	public UserAdminFormPanel(String id,
 							CompoundPropertyModel userModel,
 							List<UserRole> roles,
 							List<UserDepartment> departments)
@@ -142,8 +144,8 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		FormUtil.setSubmitActions(form
 									,((UserBackingBean)userModel.getObject()).getUser().isDeletable()
 									,this
-									,UserAjaxEventType.USER_UPDATED
-									,UserAjaxEventType.USER_DELETED
+									,UserEditAjaxEventType.USER_UPDATED
+									,UserEditAjaxEventType.USER_DELETED
 									,((EhourWebSession)getSession()).getEhourConfig());
 		
 		greyBorder.add(form);
@@ -158,11 +160,11 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 	{
 		UserBackingBean userBackingBean = (UserBackingBean) backingBean;
 		
-		if (type == UserAjaxEventType.USER_UPDATED)
+		if (type == UserEditAjaxEventType.USER_UPDATED)
 		{
 			persistUser(userBackingBean);
 		}
-		else if (type == UserAjaxEventType.USER_DELETED)
+		else if (type == UserEditAjaxEventType.USER_DELETED)
 		{
 			deleteUser(userBackingBean);
 		}		

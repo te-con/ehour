@@ -15,11 +15,11 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin.user.form;
+package net.rrm.ehour.ui.panel.user.form;
 
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
-import net.rrm.ehour.ui.panel.admin.user.form.dto.UserBackingBean;
+import net.rrm.ehour.ui.panel.user.form.admin.dto.UserBackingBean;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
