@@ -30,6 +30,7 @@ import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
+import net.rrm.ehour.ui.panel.user.form.EmailInputSnippet;
 import net.rrm.ehour.ui.panel.user.form.PasswordInputSnippet;
 import net.rrm.ehour.ui.panel.user.form.UserEditAjaxEventType;
 import net.rrm.ehour.ui.panel.user.form.admin.dto.UserBackingBean;
@@ -111,11 +112,7 @@ public class UserAdminFormPanel extends AbstractAjaxAwareAdminPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("lastNameValidationError", lastNameField));
 		
 		// email
-		TextField	emailField = new TextField("user.email");
-		emailField.add(EmailAddressValidator.getInstance());
-		emailField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(emailField);
-		form.add(new AjaxFormComponentFeedbackIndicator("emailValidationError", emailField));
+		form.add(new EmailInputSnippet("email"));
 		
 		// department
 		DropDownChoice userDepartment = new DropDownChoice("user.userDepartment", departments, new ChoiceRenderer("name"));
