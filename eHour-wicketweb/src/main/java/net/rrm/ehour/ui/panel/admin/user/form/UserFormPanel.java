@@ -42,16 +42,12 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.lang.Objects;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
@@ -90,6 +86,9 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		
 		final Form form = new Form("userForm");
 
+		// password inputs
+		form.add(new PasswordInputSnippet("password", form));
+		
 		// username
 		RequiredTextField	usernameField = new RequiredTextField("user.username");
 		form.add(usernameField);
@@ -98,22 +97,6 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 		usernameField.setLabel(new ResourceModel("admin.user.username"));
 		usernameField.add(new ValidatingFormComponentAjaxBehavior());
 		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
-		
-		// password & confirm
-		PasswordTextField	passwordTextField = new PasswordTextField("user.updatedPassword");
-		passwordTextField.setLabel(new ResourceModel("admin.user.password"));
-		passwordTextField.setRequired(false);	// passwordField defaults to required
-		passwordTextField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("passwordValidationError", passwordTextField));
-		form.add(passwordTextField);
-
-		PasswordTextField	confirmPasswordTextField = new PasswordTextField("confirmPassword");
-		confirmPasswordTextField.setRequired(false);	// passwordField defaults to required
-		confirmPasswordTextField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(confirmPasswordTextField);
-		form.add(new AjaxFormComponentFeedbackIndicator("confirmPasswordValidationError", confirmPasswordTextField));
-		
-		form.add(new ConfirmPasswordValidator(passwordTextField, confirmPasswordTextField));
 		
 		// first & last name
 		TextField	firstNameField = new TextField("user.firstName");
@@ -233,56 +216,6 @@ public class UserFormPanel extends AbstractAjaxAwareAdminPanel
 			else if (userService.getUser(username) != null)
 			{
 				error(validatable, "admin.user.errorUsernameExists");
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class ConfirmPasswordValidator extends AbstractFormValidator
-	{
-		private static final long serialVersionUID = -7176398632862551019L;
-		private FormComponent[] components;
-		
-		/**
-		 * 
-		 * @param passwordField
-		 * @param confirmField
-		 */
-		public ConfirmPasswordValidator(FormComponent passwordField, FormComponent confirmField)
-		{
-			components = new FormComponent[]{passwordField, confirmField};
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
-		 */
-		public FormComponent[] getDependentFormComponents()
-		{
-			return components;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
-		 */
-		public void validate(Form form)
-		{
-			String orgPassword = ((UserBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalPassword();
-			
-			if ("".equals(Objects.stringValue(components[0].getInput(), false))
-					&& (orgPassword == null || orgPassword.equals("")))
-			{
-				error(components[0], "Required");
-			}
-			else if (!Objects.stringValue(components[0].getInput(), false)
-					.equals(Objects.stringValue(components[1].getInput(), false)))
-			{
-				error(components[1], "admin.user.errorConfirmPassNeeded");
 			}
 		}
 	}

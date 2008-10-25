@@ -583,6 +583,12 @@ div.LoggedInAs
 	color: #536e87;
 }
 
+div.LoggedInAs a:link,
+div.LoggedInAs a:visited
+{
+	text-decoration: underline;
+}
+
 .navColumn
 {
 	float: left;
