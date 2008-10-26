@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.panel.admin.common;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.DemoDecorator;
@@ -51,6 +52,27 @@ public class FormUtil
 										final AjaxEventType deleteEventType,
 										final EhourConfig config)
 	{
+		setSubmitActions(form, includeDelete, submitTarget, submitEventType, deleteEventType, null, config);
+	}
+
+	/**
+	 * 
+	 * @param form
+	 * @param includeDelete
+	 * @param submitTarget
+	 * @param submitEventType
+	 * @param deleteEventType
+	 * @param errorEventType
+	 * @param config
+	 */
+	public static void setSubmitActions(final Form form, 
+										boolean includeDelete, 
+										final MarkupContainer submitTarget,
+										final AjaxEventType submitEventType,
+										final AjaxEventType deleteEventType,
+										final AjaxEventType errorEventType,
+										final EhourConfig config)
+	{
 		AjaxButton submitButton = new AjaxButton("submitButton", form)
 		{
 			@Override
@@ -82,6 +104,12 @@ public class FormUtil
             protected void onError(AjaxRequestTarget target, Form form)
 			{
 				target.addComponent(form);
+				
+				if (errorEventType != null)
+				{
+					AjaxEvent errorEvent = new AjaxEvent(target, errorEventType);
+					AjaxUtil.publishAjaxEvent(submitTarget, errorEvent);
+				}
             }
         };
         

@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.panel.admin;
 
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.ajax.GenericAjaxEventType;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.BaseAjaxPanel;
@@ -55,7 +56,11 @@ public abstract class AbstractAjaxAwareAdminPanel extends BaseAjaxPanel
 	@SuppressWarnings("unchecked")
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		if (ajaxEvent instanceof PayloadAjaxEvent)
+		if (ajaxEvent.getEventType() == GenericAjaxEventType.SUBMIT_ERROR)
+		{
+			return processFormSubmitError(ajaxEvent.getTarget());
+		}
+		else if (ajaxEvent instanceof PayloadAjaxEvent)
 		{
 			PayloadAjaxEvent<AdminBackingBean> payloadEvent = (PayloadAjaxEvent<AdminBackingBean>)ajaxEvent;
 			
@@ -89,5 +94,14 @@ public abstract class AbstractAjaxAwareAdminPanel extends BaseAjaxPanel
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		
+	}
+
+	/**
+	 * Process form submit error (validation)
+	 * @param target
+	 */
+	protected boolean processFormSubmitError(AjaxRequestTarget target)
+	{
+		return false;
 	}
 }

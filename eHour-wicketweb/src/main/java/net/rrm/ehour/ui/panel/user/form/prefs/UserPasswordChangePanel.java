@@ -23,12 +23,11 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
-import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.component.ServerMessageLabel;
+import net.rrm.ehour.ui.ajax.GenericAjaxEventType;
+import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
-import net.rrm.ehour.ui.panel.user.form.EmailInputSnippet;
 import net.rrm.ehour.ui.panel.user.form.PasswordInputSnippet;
 import net.rrm.ehour.ui.panel.user.form.UserEditAjaxEventType;
 import net.rrm.ehour.ui.panel.user.form.admin.UserAdminFormPanel;
@@ -39,9 +38,14 @@ import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -56,7 +60,8 @@ public class UserPasswordChangePanel extends AbstractAjaxAwareAdminPanel
 	private UserService	userService;
 	
 	private final static Logger LOGGER = Logger.getLogger(UserAdminFormPanel.class);
-	
+	private WebComponent serverMessage;
+	private Form		form;
 	/**
 	 * 
 	 * @param id
@@ -68,28 +73,28 @@ public class UserPasswordChangePanel extends AbstractAjaxAwareAdminPanel
 		super(id);
 		
 		setModel(createModel(user));
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		Border greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.title"), 350);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);
 		
-		final Form form = new Form("userForm");
+		form = new Form("userForm");
+		form.setOutputMarkupId(true);
 		
 		// password inputs
 		form.add(new PasswordInputSnippet("password", form));
 		
-		// email
-		form.add(new EmailInputSnippet("email"));
-		
 		// data save label
-		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
-	
+		serverMessage = new WebComponent("serverMessage");
+		serverMessage.setOutputMarkupId(true);
+		form.add(serverMessage);	
 		//
 		FormUtil.setSubmitActions(form
 									,false
 									,this
 									,UserEditAjaxEventType.USER_UPDATED
 									,UserEditAjaxEventType.USER_DELETED
+									,GenericAjaxEventType.SUBMIT_ERROR
 									,((EhourWebSession)getSession()).getEhourConfig());
 		
 		greyBorder.add(form);		
@@ -107,9 +112,35 @@ public class UserPasswordChangePanel extends AbstractAjaxAwareAdminPanel
 		if (type == UserEditAjaxEventType.USER_UPDATED)
 		{
 			persistUser(userBackingBean);
+			
+			Label replacementLabel = new Label("serverMessage", new ResourceModel("userprefs.saved"));
+			replacementLabel.setOutputMarkupId(true);
+			replacementLabel.add(new SimpleAttributeModifier("class", "smallText"));
+
+			serverMessage.replaceWith(replacementLabel);
+			serverMessage = replacementLabel;
+			
+			target.addComponent(replacementLabel);
+			target.addComponent(form);
 		}
 	}	
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel#processFormSubmitError(org.apache.wicket.ajax.AjaxRequestTarget)
+	 */
+	@Override
+	protected boolean processFormSubmitError(AjaxRequestTarget target)
+	{
+		WebComponent replacement = new WebComponent("serverMessage");
+		replacement.setOutputMarkupId(true);
+		serverMessage.replaceWith(replacement);
+		serverMessage = replacement;
+		target.addComponent(replacement);
+		
+		return false;
+	}
+
 	/**
 	 * Persist user
 	 * @param userBackingBean

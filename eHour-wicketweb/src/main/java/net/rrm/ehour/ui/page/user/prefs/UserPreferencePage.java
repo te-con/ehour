@@ -18,8 +18,13 @@
 package net.rrm.ehour.ui.page.user.prefs;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.page.BasePage;
+import net.rrm.ehour.ui.page.user.Overview;
+import net.rrm.ehour.ui.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
+import net.rrm.ehour.ui.panel.timesheet.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.panel.user.form.prefs.UserPasswordChangePanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -44,4 +49,22 @@ public class UserPreferencePage extends BasePage
 		// add 
 		add(new UserPasswordChangePanel("preferenceForm", getEhourWebSession().getUser().getUser()));
 	}
+	
+	/**
+	 * Handle Ajax request
+	 * @param target
+	 */
+	@Override
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	{
+		AjaxEventType type = ajaxEvent.getEventType();
+		
+		if (type == CalendarAjaxEventType.WEEK_CLICK 
+				|| type == TimesheetAjaxEventType.WEEK_NAV)
+		{
+			setResponsePage(new Overview(Overview.OpenPanel.TIMESHEET));
+		}
+		
+		return false;
+	}	
 }

@@ -42,6 +42,8 @@ public class Overview extends BasePage
 {
 	private static final long serialVersionUID = -6873845464139697303L;
 
+	public enum OpenPanel { OVERVIEW, TIMESHEET };
+	
 	private	WebMarkupContainer	contentContainer; // yeah yeah, bad name
 	private CalendarPanel		calendarPanel;
 	private ContextualHelpPanel	helpPanel;
@@ -52,22 +54,39 @@ public class Overview extends BasePage
 	 */
 	public Overview()
 	{
+		this(OpenPanel.OVERVIEW);
+	}
+	
+	/**
+	 * 
+	 * @param panelToOpen
+	 */
+	public Overview(OpenPanel panelToOpen)
+	{
 		super(new ResourceModel("overview.title"), null);
 		
 		// add calendar panel
 		calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
 		add(calendarPanel);
 		
-		// contextual help
-		helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
-		helpPanel.setOutputMarkupId(true);
+		if (panelToOpen == OpenPanel.OVERVIEW)
+		{
+			// contextual help
+			helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
+			
+			// content
+			contentContainer = new OverviewPanel("contentContainer");
+			
+		}
+		else
+		{
+			helpPanel = getTimesheetHelpPanel();
+			contentContainer = getTimesheetPanel();
+		}
+
 		add(helpPanel);
-		
-		// content
-		contentContainer = new OverviewPanel("contentContainer");
-		
 		add(contentContainer);
-	}
+	}	
 	
 	/**
 	 * Handle Ajax request
@@ -111,10 +130,7 @@ public class Overview extends BasePage
 
 		target.addComponent(panel);
 		
-		ContextualHelpPanel replacementHelp = new ContextualHelpPanel("contextHelp", 
-																		"timesheet.help.header",
-																		"timesheet.help.body");
-		replacementHelp.setOutputMarkupId(true);
+		ContextualHelpPanel replacementHelp = getTimesheetHelpPanel();
 		helpPanel.replaceWith(replacementHelp);
 		helpPanel = replacementHelp;
 		target.addComponent(replacementHelp);
@@ -147,10 +163,26 @@ public class Overview extends BasePage
 	 * Get timesheet panel for current user & current month
 	 * @return
 	 */
-	protected TimesheetPanel getTimesheetPanel()
+	private TimesheetPanel getTimesheetPanel()
 	{
 		return new TimesheetPanel("contentContainer", 
 					getEhourWebSession().getUser().getUser(), 
 					getEhourWebSession().getNavCalendar());
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private ContextualHelpPanel getTimesheetHelpPanel()
+	{
+		ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp", 
+				"timesheet.help.header",
+				"timesheet.help.body");
+		
+		helpPanel.setOutputMarkupId(true);
+		
+		return helpPanel;
+		
 	}
 }

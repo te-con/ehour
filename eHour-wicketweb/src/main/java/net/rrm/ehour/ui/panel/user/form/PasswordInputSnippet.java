@@ -18,17 +18,12 @@
 package net.rrm.ehour.ui.panel.user.form;
 
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
-import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
-import net.rrm.ehour.ui.panel.user.form.admin.dto.UserBackingBean;
 
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
+import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IChainingModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.util.lang.Objects;
 
 /**
  * Password input 
@@ -50,66 +45,20 @@ public class PasswordInputSnippet extends Panel
 		PasswordTextField	passwordTextField = new PasswordTextField("user.updatedPassword");
 		passwordTextField.setLabel(new ResourceModel("user.password"));
 		passwordTextField.setRequired(false);	// passwordField defaults to required
-		passwordTextField.add(new ValidatingFormComponentAjaxBehavior());
-		add(new AjaxFormComponentFeedbackIndicator("passwordValidationError", passwordTextField));
 		add(passwordTextField);
 
 		PasswordTextField	confirmPasswordTextField = new PasswordTextField("confirmPassword");
 		confirmPasswordTextField.setRequired(false);	// passwordField defaults to required
-		confirmPasswordTextField.add(new ValidatingFormComponentAjaxBehavior());
 		add(confirmPasswordTextField);
 		add(new AjaxFormComponentFeedbackIndicator("confirmPasswordValidationError", confirmPasswordTextField));
-		form.add(new ConfirmPasswordValidator(passwordTextField, confirmPasswordTextField));		
+		form.add(new EqualPasswordInputValidator(passwordTextField, confirmPasswordTextField)
+		{
+			private static final long serialVersionUID = -8287236970656810795L;
+
+			protected String resourceKey()
+			{
+				return "user.errorConfirmPassNeeded";
+			}
+		});
 	}
-	
-	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class ConfirmPasswordValidator extends AbstractFormValidator
-	{
-		private static final long serialVersionUID = -7176398632862551019L;
-		private FormComponent[] components;
-		
-		/**
-		 * 
-		 * @param passwordField
-		 * @param confirmField
-		 */
-		public ConfirmPasswordValidator(FormComponent passwordField, FormComponent confirmField)
-		{
-			components = new FormComponent[]{passwordField, confirmField};
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
-		 */
-		public FormComponent[] getDependentFormComponents()
-		{
-			return components;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
-		 */
-		public void validate(Form form)
-		{
-			String orgPassword = ((UserBackingBean)((IChainingModel)getModel()).getChainedModel().getObject()).getOriginalPassword();
-			
-			if ("".equals(Objects.stringValue(components[0].getInput(), false))
-					&& (orgPassword == null || orgPassword.equals("")))
-			{
-				error(components[0], "Required");
-			}
-			else if (!Objects.stringValue(components[0].getInput(), false)
-					.equals(Objects.stringValue(components[1].getInput(), false)))
-			{
-				error(components[1], "user.errorConfirmPassNeeded");
-			}
-		}
-	}	
 }

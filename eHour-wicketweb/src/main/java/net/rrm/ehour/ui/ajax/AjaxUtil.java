@@ -13,44 +13,54 @@ import org.apache.wicket.Component.IVisitor;
 public class AjaxUtil
 {
 	/**
-	 * Publish ajaxEvent at node and move up the tree
+	 * Publish ajax event to container and upwards upto and including the page
 	 * @param ajaxEvent
+	 * @param container
 	 */
-	public static void publishAjaxEvent(MarkupContainer node, AjaxEvent ajaxEvent)
+	public static void publishAjaxEvent(MarkupContainer container, AjaxEvent ajaxEvent)
 	{
 		boolean proceed = true;
 		
-		if (node instanceof AjaxAwareContainer)
+		if (container instanceof AjaxAwareContainer)
 		{
-			proceed = ((AjaxAwareContainer)node).ajaxEventReceived(ajaxEvent);
+			proceed = ((AjaxAwareContainer)container).ajaxEventReceived(ajaxEvent);
 		}
 		
-		if (proceed && !(node instanceof Page))
+		if (proceed && !(container instanceof Page))
 		{
-			MarkupContainer parent = node.getParent();
+			MarkupContainer parent = container.getParent();
 			
 			if (parent == null)
 			{
-				parent = node.getPage();
+				parent = container.getPage();
 			}
-			
 			
 			publishAjaxEvent(parent, ajaxEvent);
 		}
 	}
 	
 	/**
-	 * 
+	 * Publish ajax event to page itself and then all it's children
 	 * @param parent
 	 * @param event
 	 */
-	public static void publishAjaxEventToChildren(MarkupContainer parent, AjaxEvent event)
+	public static void publishAjaxEventToPageChildren(MarkupContainer parent, AjaxEvent event)
 	{
 		IVisitor visitor = new AjaxEventVisitor(event);
 		
 		visitor.component(parent.getPage());
-		parent.getPage().visitChildren(new AjaxEventVisitor(event));
+		parent.getPage().visitChildren(AjaxAwareContainer.class, visitor);
 	}
+	
+	/**
+	 * Publish ajax event to children of parent container
+	 * @param parent
+	 * @param event
+	 */
+	public static void publishAjaxEventToParentChildren(MarkupContainer parent, AjaxEvent event)
+	{
+		parent.visitChildren(AjaxAwareContainer.class, new AjaxEventVisitor(event));
+	}	
 	
 	/**
 	 * 
