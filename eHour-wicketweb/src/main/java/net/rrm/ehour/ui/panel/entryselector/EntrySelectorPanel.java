@@ -140,8 +140,14 @@ public class EntrySelectorPanel extends BaseAjaxPanel
 		
 		Form	filterForm = new Form("filterForm");
 		
-		final TextField		filterInputField = new TextField("filterInput", new PropertyModel(filter, "filterInput"));
+		WebMarkupContainer filterInputContainer = new WebMarkupContainer("filterInputContainer");
+		add(filterInputContainer);
+		filterInputContainer.setVisible(this.includeFilter);
+		filterForm.add(filterInputContainer);
+		
+		final TextField	filterInputField = new TextField("filterInput", new PropertyModel(filter, "filterInput"));
 		filterInputField.setVisible(this.includeFilter);
+		filterInputContainer.add(filterInputField);
 		
 		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel(filter, "activateToggle"))
 		{
@@ -194,8 +200,6 @@ public class EntrySelectorPanel extends BaseAjaxPanel
 			// hide everything 
 			filterInputField.setVisible(false);
 		}
-		
-		filterForm.add(filterInputField);
 		
 		filterForm.setVisible(includeFilter || includeCheckboxToggle);
 		
