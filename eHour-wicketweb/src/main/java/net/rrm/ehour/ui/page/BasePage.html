@@ -9,9 +9,9 @@
 	<link rel="stylesheet" type="text/css" href="css/ehour.css" />
 
 	<script>
-		function showHideSpinner(show)
-		{
+		function showHideSpinner(show) {
 			document.getElementById('LoadingSpinner').style.visibility = (show) ? "visible" : "hidden";
+		    if (show) { document.body.style.cursor = 'progress'; } else { document.body.style.cursor = 'default';} 
 		}
 	</script>
 </wicket:head>
