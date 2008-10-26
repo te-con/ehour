@@ -22,18 +22,13 @@ import static org.easymock.EasyMock.notNull;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.MockExpectations;
 
 import org.junit.Test;
 
@@ -41,7 +36,6 @@ import org.junit.Test;
 /**
  * Overview page test
  **/
-
 public class OverviewTest extends BaseUIWicketTester
 {
 	@Test
@@ -50,25 +44,13 @@ public class OverviewTest extends BaseUIWicketTester
 		TimesheetService timesheetService = createMock(TimesheetService.class);
 		mockContext.putBean("timesheetService", timesheetService);
 		
-		Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
-		
-		List<BookedDay> days = new ArrayList<BookedDay>();
-		BookedDay day = new BookedDay();
-		day.setDate(new Date(2007 - 1900, 12 - 1, 15));
-		day.setHours(8);
-		days.add(day);
-		
-		expect(timesheetService.getBookedDaysMonthOverview((Integer)notNull(), (Calendar)notNull()))
-				.andReturn(days);					
+		MockExpectations.navCalendar(timesheetService, webapp);
 
 		TimesheetOverview overview = new TimesheetOverview();
 		
 		expect(timesheetService.getTimesheetOverview((User)notNull(), (Calendar)notNull()))
 				.andReturn(overview);					
-		
-		
-		EhourWebSession session = webapp.getSession();
-		session.setNavCalendar(requestedMonth);
+
 		
 		replay(timesheetService);
 		
