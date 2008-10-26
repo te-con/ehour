@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * Excel tester
  **/
-
+@SuppressWarnings({"unchecked"})
 public class ReportExcelTest extends BaseUIWicketTester
 {
 	private ReportCache cache;

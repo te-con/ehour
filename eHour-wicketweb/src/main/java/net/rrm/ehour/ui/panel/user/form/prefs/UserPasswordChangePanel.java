@@ -48,13 +48,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * User preferences form
  **/
 
-public class UserPreferenceFormPanel extends AbstractAjaxAwareAdminPanel
+public class UserPasswordChangePanel extends AbstractAjaxAwareAdminPanel
 {
 	private static final long serialVersionUID = 7670153126514499168L;
 
 	@SpringBean
 	private UserService	userService;
-	private final static Logger logger = Logger.getLogger(UserAdminFormPanel.class);
+	
+	private final static Logger LOGGER = Logger.getLogger(UserAdminFormPanel.class);
 	
 	/**
 	 * 
@@ -62,7 +63,7 @@ public class UserPreferenceFormPanel extends AbstractAjaxAwareAdminPanel
 	 * @param userModel
 	 * @throws ObjectNotFoundException 
 	 */
-	public UserPreferenceFormPanel(String id, User user) throws ObjectNotFoundException	
+	public UserPasswordChangePanel(String id, User user) throws ObjectNotFoundException	
 	{
 		super(id);
 		
@@ -119,7 +120,7 @@ public class UserPreferenceFormPanel extends AbstractAjaxAwareAdminPanel
 	{
 		if (userBackingBean.isPm())
 		{
-			logger.debug("Re-adding PM role after edit");
+			LOGGER.debug("Re-adding PM role after edit");
 			userBackingBean.getUser().addUserRole(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		}
 		

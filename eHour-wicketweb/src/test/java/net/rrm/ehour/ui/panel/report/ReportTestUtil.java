@@ -33,6 +33,7 @@ import net.rrm.ehour.ui.common.DummyDataGenerator;
  * Test data
  **/
 
+@SuppressWarnings({"unchecked", "deprecation"})
 public class ReportTestUtil
 {
 	public static List<FlatReportElement> getFlatReportElements()

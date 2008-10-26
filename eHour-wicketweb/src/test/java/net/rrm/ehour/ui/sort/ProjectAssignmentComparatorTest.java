@@ -17,8 +17,7 @@
 
 package net.rrm.ehour.ui.sort;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertTrue;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
 
 import org.junit.Test;

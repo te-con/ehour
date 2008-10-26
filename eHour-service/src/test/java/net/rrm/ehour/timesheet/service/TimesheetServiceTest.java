@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +27,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
@@ -43,11 +43,12 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.dto.BookedDay;
-import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.util.DateUtil;
 
-public class TimesheetServiceTest  extends TestCase
+import org.junit.Before;
+@SuppressWarnings({"deprecation"})
+public class TimesheetServiceTest
 {
 	private	TimesheetService	timesheetService;
 	private	TimesheetDAO		timesheetDAO;
@@ -60,7 +61,8 @@ public class TimesheetServiceTest  extends TestCase
 	/**
 	 * 
 	 */
-	protected void setUp()
+	@Before
+	public void setUp()
 	{
 		timesheetService = new TimesheetServiceImpl();
 
@@ -87,8 +89,7 @@ public class TimesheetServiceTest  extends TestCase
 	{
 		List<BookedDay>		daoResults = new ArrayList<BookedDay>();
 		List<BookedDay>		results;
-		BookedDay	bda, bdb,
-					bdResult;
+		BookedDay	bda, bdb;
 		Calendar	cal;
 		cal = new GregorianCalendar(2006, 10, 5);
 		
@@ -131,7 +132,6 @@ public class TimesheetServiceTest  extends TestCase
 		List<AssignmentAggregateReportElement>		reportResults = new ArrayList<AssignmentAggregateReportElement>();
 		Calendar	cal = new GregorianCalendar();
 		
-		TimesheetOverview	retObj;
 		TimesheetEntry		entryA, entryB;
 		TimesheetEntryId	idA, idB;
 		
@@ -163,7 +163,7 @@ public class TimesheetServiceTest  extends TestCase
 		replay(timesheetDAO);
 		replay(aggregateReportService);
 		
-		retObj = timesheetService.getTimesheetOverview(new User(1), cal);
+		timesheetService.getTimesheetOverview(new User(1), cal);
 		
 		verify(timesheetDAO);
 		verify(aggregateReportService);

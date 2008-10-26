@@ -19,7 +19,8 @@ package net.rrm.ehour.ui.page.user.prefs;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.page.BasePage;
-import net.rrm.ehour.ui.panel.user.form.prefs.UserPreferenceFormPanel;
+import net.rrm.ehour.ui.panel.calendar.CalendarPanel;
+import net.rrm.ehour.ui.panel.user.form.prefs.UserPasswordChangePanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.ResourceModel;
@@ -30,11 +31,17 @@ import org.apache.wicket.model.ResourceModel;
 @AuthorizeInstantiation("ROLE_CONSULTANT")
 public class UserPreferencePage extends BasePage
 {
-
+	private CalendarPanel		calendarPanel;
+	
 	public UserPreferencePage() throws ObjectNotFoundException
 	{
 		super(new ResourceModel("userprefs.title"));
 		
-		add(new UserPreferenceFormPanel("preferenceForm", getEhourWebSession().getUser().getUser()));
+		// add calendar panel
+		calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
+		add(calendarPanel);
+		
+		// add 
+		add(new UserPasswordChangePanel("preferenceForm", getEhourWebSession().getUser().getUser()));
 	}
 }

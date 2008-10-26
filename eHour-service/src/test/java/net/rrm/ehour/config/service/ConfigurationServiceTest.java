@@ -19,8 +19,9 @@ package net.rrm.ehour.config.service;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.List;

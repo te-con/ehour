@@ -14,7 +14,6 @@
  */
 
 package net.rrm.ehour.report.criteria;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;

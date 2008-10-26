@@ -18,14 +18,11 @@ package net.rrm.ehour.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
 import junit.framework.TestCase;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.util.EhourUtil;
+
+import org.junit.Test;
 
 /**
  * TODO 

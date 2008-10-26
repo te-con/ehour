@@ -17,9 +17,9 @@
 
 package net.rrm.ehour;
 
-import org.springframework.test.context.ContextConfiguration;
-
 import net.rrm.ehour.dao.BaseDAOTest;
+
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * Adds min. service contexts 

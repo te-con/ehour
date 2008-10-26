@@ -16,12 +16,8 @@
 
 package net.rrm.ehour.ui.common;
 
-import net.rrm.ehour.ui.session.EhourWebSession;
-
-import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequestCycle;
-import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.util.tester.WicketTester;
 
 /**
