@@ -340,7 +340,8 @@ public class TimesheetRowList extends ListView
 			super(id);
 
 			Calendar thisDate = (Calendar)row.getFirstDayOfWeekDate().clone();
-			thisDate.add(Calendar.DAY_OF_YEAR, index);
+			// Use the render order, not the index order, when calculating the date
+			thisDate.add(Calendar.DAY_OF_YEAR, grandTotals.getOrderForIndex(index)-1);
 
 			final Object previousModel = model.getObject();
 			add(new Label("dayComments",
