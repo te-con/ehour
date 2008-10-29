@@ -27,47 +27,47 @@ import java.util.EnumSet;
 
 public enum ExportEntity
 {
-	USER(EnumSet.of(ExportEntity.USER_ROLE, ExportEntity.USER_DEPARTMENT), "USERS"),
-	USER_ROLE("USER_ROLE", "USER_TO_USERROLE"),
-	USER_DEPARTMENT("USER_DEPARTMENT"),
-
-	CONFIGURATION("CONFIGURATION"),
-	
-	CUSTOMER("CUSTOMER"),
-	PROJECT(EnumSet.of(ExportEntity.CUSTOMER), "PROJECT"),
-	PROJECT_ASSIGNMENT(EnumSet.of(ExportEntity.PROJECT, ExportEntity.USER), 
-				"PROJECT_ASSIGNMENT", "PROJECT_ASSIGNMENT_TYPE", "CUSTOMER_FOLD_PREFERENCE"),
-	
-	TIMESHEET_ENTRY(EnumSet.of(ExportEntity.PROJECT_ASSIGNMENT), "TIMESHEET_COMMENT", "TIMESHEET_ENTRY"),
-
-	MAIL("MAIL_LOG", "MAIL_LOG_ASSIGNMNENT", "MAIL_TYPE");
-
-	private Collection<ExportEntity> dependencies;
-	private Collection<String> databaseTables;
-	
-	ExportEntity(String... databaseTables)
-	{
-		this.databaseTables = Arrays.asList(databaseTables);
-	}
-	
-	ExportEntity(Collection<ExportEntity> dependencies, String... databaseTables)
-	{
-		this(databaseTables);
-		this.dependencies = dependencies;
-	}
-	
-	/**
-	 * @return the databaseTables
-	 */
-	public Collection<String> getDatabaseTables()
-	{
-		return databaseTables;
-	}
-	/**
-	 * @return the dependencies
-	 */
-	public Collection<ExportEntity> getDependencies()
-	{
-		return dependencies;
-	}
+//	USER(EnumSet.of(ExportEntity.USER_ROLE, ExportEntity.USER_DEPARTMENT), "USERS"),
+//	USER_ROLE("USER_ROLE", "USER_TO_USERROLE"),
+//	USER_DEPARTMENT("USER_DEPARTMENT"),
+//
+//	CONFIGURATION("CONFIGURATION"),
+//	
+//	CUSTOMER("CUSTOMER"),
+//	PROJECT(EnumSet.of(ExportEntity.CUSTOMER), "PROJECT"),
+//	PROJECT_ASSIGNMENT(EnumSet.of(ExportEntity.PROJECT, ExportEntity.USER), 
+//				"PROJECT_ASSIGNMENT", "PROJECT_ASSIGNMENT_TYPE", "CUSTOMER_FOLD_PREFERENCE"),
+//	
+//	TIMESHEET_ENTRY(EnumSet.of(ExportEntity.PROJECT_ASSIGNMENT), "TIMESHEET_COMMENT", "TIMESHEET_ENTRY"),
+//
+//	MAIL("MAIL_LOG", "MAIL_LOG_ASSIGNMNENT", "MAIL_TYPE");
+//
+//	private Collection<ExportEntity> dependencies;
+//	private Collection<String> databaseTables;
+//	
+//	ExportEntity(String... databaseTables)
+//	{
+//		this.databaseTables = Arrays.asList(databaseTables);
+//	}
+//	
+//	ExportEntity(Collection<ExportEntity> dependencies, String... databaseTables)
+//	{
+//		this(databaseTables);
+//		this.dependencies = dependencies;
+//	}
+//	
+//	/**
+//	 * @return the databaseTables
+//	 */
+//	public Collection<String> getDatabaseTables()
+//	{
+//		return databaseTables;
+//	}
+//	/**
+//	 * @return the dependencies
+//	 */
+//	public Collection<ExportEntity> getDependencies()
+//	{
+//		return dependencies;
+//	}
 }
