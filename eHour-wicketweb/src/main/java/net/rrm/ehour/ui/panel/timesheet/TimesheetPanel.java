@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.panel.timesheet;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -27,15 +26,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
-import net.rrm.ehour.timesheet.dto.WeekOverview;
-import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
@@ -49,7 +45,7 @@ import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
-import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
+import net.rrm.ehour.ui.panel.timesheet.model.TimesheetModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.user.service.UserService;
@@ -92,8 +88,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	private static final long serialVersionUID = 7704288648724599187L;
 	
 	@SpringBean
-	private TimesheetService	timesheetService;
-	@SpringBean
 	private UserService			userService;
 	
 	private	EhourConfig		config;
@@ -118,9 +112,10 @@ public class TimesheetPanel extends Panel implements Serializable
 		// dom id's
 		this.setOutputMarkupId(true);
 
-		// the timesheet we're working on
-		final Timesheet timesheet = getTimesheet(user, forWeek);
-
+		// set the model
+		TimesheetModel timesheet = new TimesheetModel(user, forWeek);
+		setModel(timesheet);
+		
 		// grey & blue frame border
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", 
 																				getWeekNavigation(forWeek, 
@@ -138,19 +133,19 @@ public class TimesheetPanel extends Panel implements Serializable
 		timesheetForm.add(blueBorder);
 
 		// setup form
-		grandTotals = buildForm(timesheetForm, blueBorder, timesheet);
+		grandTotals = buildForm(timesheetForm, blueBorder);
 		
 		// add last row with grand totals
 		addGrandTotals(blueBorder, grandTotals, timesheet.getWeekStart());
 		
 		// add label dates
-		addDateLabels(blueBorder, timesheet);
+		addDateLabels(blueBorder);
 
 		// add comments section
-		MarkupContainer commentsFrame = createCommentsInput(timesheetForm, timesheet);
+		MarkupContainer commentsFrame = createCommentsInput(timesheetForm);
 
 		// attach onsubmit ajax events
-		setSubmitActions(timesheetForm, commentsFrame, timesheet);
+		setSubmitActions(timesheetForm, commentsFrame);
 		
 		// server message
 		serverMsgLabel = new WebComponent("serverMessage");
@@ -214,9 +209,11 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param parent
 	 * @param timesheet
 	 */
-	private MarkupContainer createCommentsInput(WebMarkupContainer parent, Timesheet timesheet)
+	private MarkupContainer createCommentsInput(WebMarkupContainer parent)
 	{
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("commentsFrame");
+		
+		Timesheet timesheet = (Timesheet)getModelObject();
 		
 		if (timesheet.getComment() == null)
 		{
@@ -265,7 +262,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param form
 	 * @param timesheet
 	 */
-	private void setSubmitActions(Form form, MarkupContainer parent, final Timesheet timesheet)
+	private void setSubmitActions(Form form, MarkupContainer parent)
 	{
 		// default submit
 		parent.add(new AjaxButton("submitButton", form)
@@ -275,19 +272,19 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				List<ProjectAssignmentStatus> failedProjects =  persistTimesheetEntries(timesheet);
+				List<ProjectAssignmentStatus> failedProjects =  persistTimesheetEntries();
 
 				// success
 				if (failedProjects.isEmpty())
 				{
-					target.addComponent(updatePostPersistMessage(timesheet));
+					target.addComponent(updatePostPersistMessage());
 				}
 				else
 				{
 					target.addComponent(updateErrorMessage());
 				}
 				
-				addFailedProjectMessages(failedProjects, timesheet, target);
+				addFailedProjectMessages(failedProjects, target);
 					
 				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.TIMESHEET_SUBMIT));
             }
@@ -329,9 +326,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param failedProjects
 	 * @param target
 	 */
-	private void addFailedProjectMessages(List<ProjectAssignmentStatus> failedProjects, Timesheet timesheet, final AjaxRequestTarget target)
+	private void addFailedProjectMessages(List<ProjectAssignmentStatus> failedProjects, final AjaxRequestTarget target)
 	{
-		timesheet.updateFailedProjects(failedProjects);
+		((Timesheet)getModelObject()).updateFailedProjects(failedProjects);
 
 		timesheetForm.visitChildren(Label.class, new IVisitor()
 		{
@@ -353,15 +350,15 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param timesheet
 	 * @param target
 	 */
-	private Label updatePostPersistMessage(Timesheet timesheet)
+	private Label updatePostPersistMessage()
 	{
 		// server message
 		IModel model = new StringResourceModel("timesheet.weekSaved", 
 													TimesheetPanel.this, 
 													null,
-													new Object[]{timesheet.getTotalBookedHours(),
-																	new DateModel(timesheet.getWeekStart(), config, DateModel.DATESTYLE_FULL_SHORT),
-																	new DateModel(timesheet.getWeekEnd(), config, DateModel.DATESTYLE_FULL_SHORT)});
+													new Object[]{new PropertyModel(getModel(), "timesheet.totalBookedHours"),
+																	new DateModel(new PropertyModel(getModel(), "weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
+																	new DateModel(new PropertyModel(getModel(), "weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT)});
 
 		return updateServerMessage(model);
 		
@@ -398,13 +395,13 @@ public class TimesheetPanel extends Panel implements Serializable
 	/**
 	 * Add date labels (sun/mon etc)
 	 */
-	private void addDateLabels(WebMarkupContainer parent, Timesheet timesheet)
+	private void addDateLabels(WebMarkupContainer parent)
 	{
 		Label	label;
 		
 		for (int i = 1, j = 0; i <= 7; i++, j++)
 		{
-			label = new Label("day" + i + "Label", new DateModel(timesheet.getDateSequence()[j], config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+			label = new Label("day" + i + "Label", new DateModel(new PropertyModel(getModelObject(), "dateSequence[" +j + "]"), config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
 			label.setEscapeModelStrings(false);
 			parent.add(label);
 		}
@@ -433,11 +430,9 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param timesheet
 	 * @throws OverBudgetException 
 	 */
-	private List<ProjectAssignmentStatus> persistTimesheetEntries(Timesheet timesheet)
+	private List<ProjectAssignmentStatus> persistTimesheetEntries()
 	{
-		return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(), 
-														timesheet.getCommentForPersist(),
-														new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
+		return ((TimesheetModel)getModel()).persistTimesheet();
 	}
 	
 	/**
@@ -445,11 +440,11 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param parent
 	 * @param timesheet
 	 */
-	private GrandTotal buildForm(final Form form, WebMarkupContainer parent, final Timesheet timesheet)
+	private GrandTotal buildForm(final Form form, WebMarkupContainer parent)
 	{
 		final GrandTotal	grandTotals = new GrandTotal();
 		
-		ListView customers = new ListView("customers", new ArrayList<Customer>(timesheet.getCustomers().keySet()))
+		ListView customers = new ListView("customers", new PropertyModel(getModelObject(), "customerList"))
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -457,6 +452,8 @@ public class TimesheetPanel extends Panel implements Serializable
 			protected void populateItem(ListItem item)
 			{
 				final Customer	customer = (Customer)item.getModelObject();
+				
+				Timesheet timesheet = (Timesheet)TimesheetPanel.this.getModelObject();
 
 				// check for any preference
 				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
@@ -475,7 +472,7 @@ public class TimesheetPanel extends Panel implements Serializable
 				item.add(getCustomerLabel(customer, foldPreference));
 //				item.add(new Label("customerDesc", customer.getDescription()));
 				
-				item.add(new TimesheetRowList("rows", timesheet.getCustomers().get(customer), hidden, grandTotals, form));
+				item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), hidden, grandTotals, form));
 			}
 		};
 		customers.setReuseItems(true);
@@ -545,33 +542,6 @@ public class TimesheetPanel extends Panel implements Serializable
 		});		
 		
 		return label;
-	}
-	
-	/**
-	 * Get timesheet for week
-	 * @param user
-	 * @param forWeek
-	 */
-	private Timesheet getTimesheet(User user, Calendar forWeek)
-	{
-		WeekOverview	weekOverview;
-		Timesheet		timesheet;
-		
-		weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
-		
-		timesheet = getTimesheetAssembler(config).createTimesheetForm(weekOverview);
-		
-		return timesheet;
-	}
-
-	/**
-	 * Get timesheet assembler
-	 * @param config
-	 * @return
-	 */
-	protected TimesheetAssembler getTimesheetAssembler(EhourConfig config)
-	{
-		return new TimesheetAssembler(config);
 	}
 	
 	/**

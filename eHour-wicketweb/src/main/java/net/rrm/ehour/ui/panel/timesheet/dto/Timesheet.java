@@ -49,7 +49,7 @@ public class Timesheet implements Serializable
 	private	TimesheetComment	comment;
 	private	CustomerFoldPreferenceList foldPreferences;	
 	private	float				maxHoursPerDay;
-
+	
 	/**
 	 * Update failed projects
 	 * @param failedProjectStatusses
@@ -225,6 +225,26 @@ public class Timesheet implements Serializable
 	{
 		return customers;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Collection<Customer> getCustomerList()
+	{
+		return new ArrayList<Customer>(getCustomers().keySet());
+	}	
+	
+	/**
+	 * 
+	 * @param customer
+	 * @return
+	 */
+	public List<TimesheetRow> getTimesheetRows(Customer customer)
+	{
+		return customers.get(customer);
+	}
+	
 	/**
 	 * @param customers the customers to set
 	 */
