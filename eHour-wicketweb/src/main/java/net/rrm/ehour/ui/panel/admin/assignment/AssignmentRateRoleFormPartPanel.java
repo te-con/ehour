@@ -60,7 +60,7 @@ public class AssignmentRateRoleFormPartPanel extends Panel
 											new FloatModel(new PropertyModel(model, "projectAssignment.hourlyRate"), config, null));
 		hourlyRate.setType(Float.class);
 		hourlyRate.add(new ValidatingFormComponentAjaxBehavior());
-		hourlyRate.add(NumberValidator.POSITIVE);
+		hourlyRate.add(NumberValidator.minimum(0));
 		add(hourlyRate);
 		add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
 
