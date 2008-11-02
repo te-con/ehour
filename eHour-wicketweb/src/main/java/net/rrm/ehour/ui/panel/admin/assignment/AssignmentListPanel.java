@@ -133,19 +133,16 @@ public class AssignmentListPanel extends BasePanel
 			@Override
 			protected void populateItem(ListItem item)
 			{
-				ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
-				
-				final PayloadAjaxEvent<ProjectAssignment> ajaxEvent = new PayloadAjaxEvent<ProjectAssignment>(null, 
-																									AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
-																									assignment);
+				final ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
 				
 				AjaxLink	link = new AjaxLink("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						ajaxEvent.setTarget(target);
-						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, ajaxEvent);
+						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(target, 
+																													AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+																													assignment));
 					}
 				};
 
@@ -154,8 +151,9 @@ public class AssignmentListPanel extends BasePanel
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						ajaxEvent.setTarget(target);
-						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, ajaxEvent);
+						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(target, 
+																													AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+																													assignment));
 					}
 				};
 
