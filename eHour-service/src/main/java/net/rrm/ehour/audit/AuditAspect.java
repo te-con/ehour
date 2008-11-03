@@ -17,17 +17,13 @@
 
 package net.rrm.ehour.audit;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.aspectj.lang.annotation.Aspect;
 
 /**
- * Audit annotation
+ * Audit Aspect
  **/
-@Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.METHOD)
-public @interface Audit
+@Aspect
+public class AuditAspect
 {
-	AuditActionType actionType();
+
 }

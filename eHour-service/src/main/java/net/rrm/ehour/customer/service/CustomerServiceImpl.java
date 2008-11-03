@@ -18,6 +18,7 @@ package net.rrm.ehour.customer.service;
 import java.util.List;
 
 import net.rrm.ehour.audit.Audit;
+import net.rrm.ehour.audit.AuditActionType;
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
@@ -41,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomer(java.lang.String, java.lang.String)
 	 */
-	@Audit
+	@Audit(actionType=AuditActionType.READ)
 	public Customer getCustomer(String customerName, String customerCode)
 	{
 		return customerDAO.findOnNameAndCode(customerName, customerCode);

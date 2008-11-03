@@ -17,17 +17,14 @@
 
 package net.rrm.ehour.audit;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * Audit annotation
+ * Audit action (which CRUD)
  **/
-@Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.METHOD)
-public @interface Audit
+
+public enum AuditActionType
 {
-	AuditActionType actionType();
+	CREATE,
+	READ,
+	UPDATE,
+	DELETE;
 }
