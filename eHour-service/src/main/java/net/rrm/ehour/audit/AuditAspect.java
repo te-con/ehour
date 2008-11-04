@@ -17,6 +17,8 @@
 
 package net.rrm.ehour.audit;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
 /**
@@ -25,5 +27,11 @@ import org.aspectj.lang.annotation.Aspect;
 @Aspect
 public class AuditAspect
 {
-
+	@Around("@annotation(net.rrm.ehour.audit.Audit)")
+	public Object doAudit(ProceedingJoinPoint pjp) throws Throwable
+	{
+		Object retval = pjp.proceed();
+		
+		return retval;
+	}
 }
