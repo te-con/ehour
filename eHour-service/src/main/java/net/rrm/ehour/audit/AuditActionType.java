@@ -18,7 +18,7 @@
 package net.rrm.ehour.audit;
 
 /**
- * Audit action (which CRUD)
+ * Auditable action (which CRUD)
  **/
 
 public enum AuditActionType

@@ -17,7 +17,7 @@ package net.rrm.ehour.customer.service;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.Audit;
+import net.rrm.ehour.audit.Auditable;
 import net.rrm.ehour.audit.AuditActionType;
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.domain.Customer;
@@ -42,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomer(java.lang.String, java.lang.String)
 	 */
-	@Audit(actionType=AuditActionType.READ)
+	@Auditable(actionType=AuditActionType.READ, auditAction="get Customer")
 	public Customer getCustomer(String customerName, String customerCode)
 	{
 		return customerDAO.findOnNameAndCode(customerName, customerCode);
@@ -132,6 +132,7 @@ public class CustomerServiceImpl implements CustomerService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getCustomers()
 	 */
+	@Auditable(actionType=AuditActionType.READ, auditAction="getCustomers")
 	public List<Customer> getCustomers()
 	{
 		return customerDAO.findAll();
@@ -160,6 +161,7 @@ public class CustomerServiceImpl implements CustomerService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomers(boolean)
 	 */
+	@Auditable(actionType=AuditActionType.READ, auditAction="getCustomers")
 	public List<Customer> getCustomers(boolean hideInactive)
 	{
 		return customerDAO.findAll(hideInactive);

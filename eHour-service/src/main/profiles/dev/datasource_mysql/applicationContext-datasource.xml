@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<bean id="eHourDataSource"
-		class="org.apache.commons.dbcp.BasicDataSource">
-
-		<property name="driverClassName">
-			<value>com.mysql.jdbc.Driver</value>
-		</property>
-
-		<property name="url">
-			<value>jdbc:mysql://192.168.1.35/ehour_08?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true</value>
-		</property>
-
-		<property name="username">
-			<value>ehourdev</value>
-		</property>
-		<property name="password">
-			<value>ehourdev</value>
-		</property>
-
-		<property name="validationQuery">
-			<value>SELECT now()</value>
-		</property>
-	</bean>
+    <bean id="eHourDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+            p:driverClassName="com.mysql.jdbc.Driver" p:url="jdbc:mysql://192.168.1.35/ehour_08?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true" 
+            p:username="ehourdev" p:password="ehourdev"/>
 </beans>

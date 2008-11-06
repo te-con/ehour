@@ -23,11 +23,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Audit annotation
+ * Auditable annotation
  **/
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Audit
+public @interface Auditable
 {
 	AuditActionType actionType();
+	String auditAction();
 }

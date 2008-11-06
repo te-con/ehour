@@ -17,21 +17,41 @@
 
 package net.rrm.ehour.audit;
 
+import net.rrm.ehour.ui.session.EhourWebSession;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
 /**
- * Audit Aspect
+ * Auditable Aspect
  **/
+@Component
 @Aspect
 public class AuditAspect
 {
-	@Around("@annotation(net.rrm.ehour.audit.Audit)")
-	public Object doAudit(ProceedingJoinPoint pjp) throws Throwable
+	/**
+	 * Audit 
+	 * @param pjp
+	 * @param auditable
+	 * @return
+	 * @throws Throwable
+	 */
+	@Around("@annotation(auditable)")
+	public Object auditable(ProceedingJoinPoint pjp, Auditable auditable) throws Throwable
 	{
-		Object retval = pjp.proceed();
+		System.out.println(pjp.getSignature().toLongString());
+		System.out.println(pjp.getSignature().toShortString());
+		System.out.println(pjp.getTarget().getClass());
 		
-		return retval;
+		System.out.println("user: " + EhourWebSession.getSession().getUser());
+		
+		for (Object object : pjp.getArgs())
+		{
+			System.out.println("o:" + object);
+		}
+		
+		return pjp.proceed();
 	}
 }

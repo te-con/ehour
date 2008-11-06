@@ -17,6 +17,7 @@
 			classpath:applicationContext-service.xml
 			classpath:applicationContext-mail.xml
 			classpath:applicationContext-wicket.xml
+			classpath:applicationContext-audit.xml
 		</param-value>
 	</context-param>
 
