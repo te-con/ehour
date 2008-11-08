@@ -5,6 +5,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="eHourDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-            p:driverClassName="com.mysql.jdbc.Driver" p:url="jdbc:mysql://192.168.1.35/ehour_08?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true" 
+            p:driverClassName="com.mysql.jdbc.Driver" p:url="jdbc:mysql://127.0.0.1/ehour_08?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true" 
             p:username="ehourdev" p:password="ehourdev"/>
 </beans>

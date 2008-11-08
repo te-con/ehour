@@ -131,4 +131,9 @@
 	<bean id="customerFoldPreferenceDAO"
 		class="net.rrm.ehour.user.dao.CustomerFoldPreferenceDAOHibernateImpl"
 		parent="abstractDAOTarget" />
+		
+	<!-- Audit DAO -->
+	<bean id="auditDAO"
+		class="net.rrm.ehour.audit.dao.AuditDAOHibernateImpl"
+		parent="abstractDAOTarget" />
 </beans>

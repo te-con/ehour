@@ -46,6 +46,7 @@ import org.acegisecurity.providers.encoding.ShaPasswordEncoder;
  * @author Thies
  *
  */
+@SuppressWarnings("unchecked")
 public class UserServiceTest extends TestCase 
 {
 	private	UserService			userService;

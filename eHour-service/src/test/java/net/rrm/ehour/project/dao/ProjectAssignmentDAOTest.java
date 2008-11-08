@@ -42,6 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * ProjectAssignmentDAO junit tests
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
+@SuppressWarnings("deprecation")
 public class ProjectAssignmentDAOTest extends BaseDAOTest
 {
 	@Autowired

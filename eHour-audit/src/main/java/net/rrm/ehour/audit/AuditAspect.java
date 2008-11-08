@@ -17,6 +17,10 @@
 
 package net.rrm.ehour.audit;
 
+import java.util.Date;
+
+import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -41,6 +45,12 @@ public class AuditAspect
 	@Around("@annotation(auditable)")
 	public Object auditable(ProceedingJoinPoint pjp, Auditable auditable) throws Throwable
 	{
+		User user = EhourWebSession.getSession().getUser().getUser();
+		
+		Audit audit = new Audit()
+					.setUser(user)
+					.setDate(new Date());
+		
 		System.out.println(pjp.getSignature().toLongString());
 		System.out.println(pjp.getSignature().toShortString());
 		System.out.println(pjp.getTarget().getClass());

@@ -8,9 +8,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
-						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName">
+
+	<aop:aspectj-autoproxy/>
 
 	<!-- the transactional advice  -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -34,6 +36,11 @@
 		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
 	</bean>
 
+	<!-- Audit service -->
+	<bean id="auditService" class="net.rrm.ehour.audit.service.AuditServiceImpl">
+		<property name="auditDAO" ref="auditDAO" />
+	</bean>
+	
 	<!-- User service -->
 	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl">
 		<property name="userDAO" ref="userDAO" />	
