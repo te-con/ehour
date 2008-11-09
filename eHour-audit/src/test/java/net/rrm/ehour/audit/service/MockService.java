@@ -15,23 +15,48 @@
  *
  */
 
-package net.rrm.ehour.audit;
+package net.rrm.ehour.audit.service;
+
+import net.rrm.ehour.audit.Auditable;
+import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.domain.AuditActionType;
 
 import org.springframework.stereotype.Component;
-import net.rrm.ehour.audit.service.AuditService;
-import net.rrm.ehour.domain.Audit;
 
-@Component(value="auditService")
-public class MockAuditImpl implements AuditService
+
+@Component
+public class MockService
 {
-	public int called = 0;
-	public Audit audit;
-	
-	@NonAuditable
-	public void persistAudit(Audit audit)
+	@Auditable(actionType=AuditActionType.CREATE)
+	public void annotatedMethod()
 	{
-		this.audit = audit;
-		called++;
+		
 	}
+	public void getNonAnnotatedMethod()
+	{
+		
+	}
+	
+	public void persistNonAnnotatedMethod()
+	{
+		
+	}	
+
+	public void deleteNonAnnotatedMethod()
+	{
+		
+	}	
+
+	@Auditable(actionType=AuditActionType.READ)
+	public void deleteButReadAnnotatedMethod()
+	{
+		
+	}	
+
+	@NonAuditable
+	public void deleteButNonAuditable()
+	{
+		
+	}	
 
 }

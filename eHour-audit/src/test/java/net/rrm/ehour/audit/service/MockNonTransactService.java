@@ -1,4 +1,6 @@
-package net.rrm.ehour.audit;
+package net.rrm.ehour.audit.service;
+
+import net.rrm.ehour.audit.NonAuditable;
 
 import org.springframework.stereotype.Component;
 

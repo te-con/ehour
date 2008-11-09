@@ -21,6 +21,10 @@ import static org.junit.Assert.assertEquals;
 
 import javax.annotation.Resource;
 
+import net.rrm.ehour.audit.service.MockAuditImpl;
+import net.rrm.ehour.audit.service.MockAuditService;
+import net.rrm.ehour.audit.service.MockNonTransactService;
+import net.rrm.ehour.audit.service.MockService;
 import net.rrm.ehour.domain.AuditActionType;
 
 import org.junit.Before;
@@ -39,6 +43,8 @@ public class AuditAspectTest
 	private MockAuditImpl	auditService;
 	@Resource
 	private MockNonTransactService mockNonTransactionalService;
+	@Resource
+	private MockAuditService mockAuditService;
 	
 	@Before
 	public void setUp()
@@ -109,6 +115,16 @@ public class AuditAspectTest
 
 		assertEquals(0, auditService.called);
 		assertEquals(null, auditService.audit);
+	}
+	
+	// test for 
+	@Test
+	public void testPackage()
+	{
+		mockAuditService.getAuditMethod();
+
+		assertEquals(1, auditService.called);
+		assertEquals(AuditActionType.READ, auditService.audit.getAuditActionType());
 	}
 
 }

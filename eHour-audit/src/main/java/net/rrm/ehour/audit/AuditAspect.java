@@ -33,6 +33,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,24 +43,24 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class AuditAspect
 {
-	@Resource(name="auditService")
+	@Resource
 	private AuditService	auditService;
 
-	@Pointcut("execution(public * net.rrm.ehour.*.*Service.get*(..)) && " +
-				"!@annotation(Auditable) && " +
-				"!@annotation(NonAuditable)")
+	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service*.get*(..)) && " +
+			"!@annotation(Auditable) && " +
+			"!@annotation(NonAuditable)")
 	public void publicGetMethod()
 	{
 	}
 	
-	@Pointcut("execution(public * net.rrm.ehour.*.*Service.persist*(..)) && " +
+	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service.persist*(..)) && " +
 			"!@annotation(Auditable) && " +
 			"!@annotation(NonAuditable)")
 	public void publicPersistMethod()
 	{
 	}
 	
-	@Pointcut("execution(public * net.rrm.ehour.*.*Service.delete*(..)) && " +
+	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service.delete*(..)) && " +
 			"!@annotation(Auditable) && " +
 			"!@annotation(NonAuditable)")
 	public void publicDeleteMethod()
@@ -127,6 +128,8 @@ public class AuditAspect
 		Object returnObject;
 
 		boolean isAuditable = isAuditable(pjp);
+		
+		System.out.println(isAuditable);
 		
 		User user = getUser();
 		
@@ -235,5 +238,15 @@ public class AuditAspect
 				;
 
 		return audit;
+	}
+
+	
+	/**
+	 * @param auditService the auditService to set
+	 */
+	@Autowired
+	public void setAuditService(AuditService auditService)
+	{
+		this.auditService = auditService;
 	}
 }
