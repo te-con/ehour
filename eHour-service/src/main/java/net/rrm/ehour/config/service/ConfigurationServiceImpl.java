@@ -18,6 +18,7 @@ package net.rrm.ehour.config.service;
 import java.util.List;
 import java.util.Locale;
 
+import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
@@ -37,6 +38,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
 	 */
+	@NonAuditable
 	public EhourConfigStub getConfiguration()
 	{
 		List<Configuration> configs = configDAO.findAll();

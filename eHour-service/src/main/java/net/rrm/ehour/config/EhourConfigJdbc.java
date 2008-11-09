@@ -19,6 +19,8 @@ import java.util.Locale;
 
 import javax.sql.DataSource;
 
+import net.rrm.ehour.audit.AuditType;
+
 import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.log4j.Logger;
 
@@ -128,7 +130,14 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	public int getFirstDayOfWeek()
 	{
 		return (int)this.getFloat("firstDayOfWeek", 1);
-
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.config.EhourConfig#getAuditType()
+	 */
+	public AuditType getAuditType()
+	{
+		return AuditType.fromString(this.getString("auditType", "NONE"));
+	}
 }

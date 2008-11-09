@@ -17,6 +17,8 @@ package net.rrm.ehour.config;
 
 import java.util.Locale;
 
+import net.rrm.ehour.audit.AuditType;
+
 
 /**
  * Available configuration parameters
@@ -114,4 +116,10 @@ public interface EhourConfig
 	 * @return 0 = sunday, 1 = monday, etc.
 	 */
 	public int getFirstDayOfWeek();
+	
+	/**
+	 * Get audit type (NONE, WRITE, ALL)
+	 * @return
+	 */
+	public AuditType getAuditType();
 }

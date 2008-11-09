@@ -24,6 +24,8 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import net.rrm.ehour.audit.service.AuditService;
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
@@ -45,6 +47,9 @@ public class AuditAspect
 {
 	@Resource //@Resource not injecting??
 	private AuditService	auditService;
+	
+	@Resource
+	private ConfigurationService configurationService;
 
 	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service*.get*(..)) && " +
 			"!@annotation(Auditable) && " +
@@ -129,6 +134,13 @@ public class AuditAspect
 
 		boolean isAuditable = isAuditable(pjp);
 		
+		System.out.println(pjp.getSignature().toLongString());
+		
+		if (isAuditable)
+		{
+			isAuditable &= isAuditEnabled(auditActionType);
+		}
+		
 		User user = getUser();
 		
 		try
@@ -154,6 +166,31 @@ public class AuditAspect
 	}
 	
 	/**
+	 * Is audit type enabled
+	 * @param actionType
+	 * @return
+	 */
+	private boolean isAuditEnabled(AuditActionType actionType)
+	{
+		EhourConfig config = configurationService.getConfiguration();
+		
+		if (config.getAuditType() == AuditType.NONE)
+		{
+			return false;
+		}
+		
+		if (config.getAuditType() == AuditType.WRITE &&
+				(actionType != AuditActionType.CREATE &&
+						actionType != AuditActionType.DELETE &&
+						actionType != AuditActionType.UPDATE))
+		{
+			return true;
+		}
+				
+		return true;
+	}
+	
+	/**
 	 * Check if type is annotated with NonAuditable annotation
 	 * @param pjp
 	 * @return
@@ -161,6 +198,8 @@ public class AuditAspect
 	private boolean isAuditable(ProceedingJoinPoint pjp)
 	{
 		Annotation[] annotations = pjp.getSignature().getDeclaringType().getAnnotations();
+
+		System.out.println(pjp.toLongString());
 		
 		boolean nonAuditable = false;
 		
@@ -246,5 +285,14 @@ public class AuditAspect
 	public void setAuditService(AuditService auditService)
 	{
 		this.auditService = auditService;
+	}
+
+	/**
+	 * @param configurationService the configurationService to set
+	 */
+	@Autowired
+	public void setConfigurationService(ConfigurationService configurationService)
+	{
+		this.configurationService = configurationService;
 	}
 }

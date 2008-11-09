@@ -18,6 +18,8 @@ package net.rrm.ehour.config;
 import java.util.Locale;
 import java.util.Properties;
 
+import net.rrm.ehour.audit.AuditType;
+
 /**
  * Configuration based on .properties file
  **/
@@ -124,6 +126,15 @@ public class EhourConfigProps implements EhourConfig
 	public int getFirstDayOfWeek()
 	{
 		return Integer.valueOf(props.getProperty("firstDayOfWeek"));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.config.EhourConfig#getAuditType()
+	 */
+	public AuditType getAuditType()
+	{
+		return AuditType.fromString(props.getProperty("auditType"));
 	}
 	
 }

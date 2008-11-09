@@ -18,6 +18,8 @@ package net.rrm.ehour.config;
 import java.io.Serializable;
 import java.util.Locale;
 
+import net.rrm.ehour.audit.AuditType;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -46,6 +48,7 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private String		smtpPassword;
 	private String		smtpPort = "25";
 	private int			firstDayOfWeek = 1;
+	private AuditType	auditType;
 	
 	/**
 	 * @return the availableTranslations
@@ -237,5 +240,19 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	public void setFirstDayOfWeek(int firstDayOfWeek)
 	{
 		this.firstDayOfWeek = firstDayOfWeek;
+	}
+	/**
+	 * @return the auditType
+	 */
+	public AuditType getAuditType()
+	{
+		return auditType;
+	}
+	/**
+	 * @param auditType the auditType to set
+	 */
+	public void setAuditType(AuditType auditType)
+	{
+		this.auditType = auditType;
 	}
 }
