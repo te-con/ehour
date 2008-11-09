@@ -16,6 +16,24 @@ public class Audit extends DomainObject<Number, Audit>
 	private String 	action;
 	private String	parameters;
 	private Boolean	success;
+	private String	userName;
+	/**
+	 * @return the userName
+	 */
+	public String getUserName()
+	{
+		return userName;
+	}
+
+	/**
+	 * @param userName the userName to set
+	 */
+	public Audit setUserName(String userName)
+	{
+		this.userName = userName;
+		return this;
+	}
+
 	private AuditActionType auditActionType;
 	
 

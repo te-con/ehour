@@ -14,11 +14,12 @@
             <column name="USER_ID" not-null="true" />
         </many-to-one>
         
+        <property name="userName" column="USER" type="string" />
         <property name="date" column="AUDIT_DATE" type="timestamp" />
 		<property name="action" column="ACTION" type="string" />
 		<property name="parameters" column="PARAMETERS" type="string" />
 		<property name="success" column="SUCCESS" type="yes_no"  />
-		<property name="auditActionType" column="AUDIT_ACTION_TYPE" type="string">
+		<property name="auditActionType" column="AUDIT_ACTION_TYPE" access="property" update="true" insert="true">
 			<type name="net.rrm.ehour.commons.hibernate.GenericEnumUserType">
 				<param name="enumClass">net.rrm.ehour.domain.AuditActionType</param>
 				<param name="identifierMethod">getValue</param>

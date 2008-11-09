@@ -17,9 +17,14 @@
 package net.rrm.ehour.ui.session;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
+import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.domain.AuditActionType;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.authorization.AuthUser;
@@ -49,6 +54,8 @@ public class EhourWebSession extends AuthenticatedWebSession
 {
 	@SpringBean
 	private EhourConfig 	ehourConfig;
+	@SpringBean
+	private AuditService	auditService;
 	private Calendar 		navCalendar;
 	private	UserCriteria	userCriteria;
 	private ReportCache		reportCache = new ReportCache();
@@ -180,7 +187,16 @@ public class EhourWebSession extends AuthenticatedWebSession
 			
 			Authentication authResult = authenticationManager.authenticate(authRequest);
 			setAuthentication(authResult);
-
+			
+			User user = ((AuthUser)authResult.getPrincipal()).getUser();
+			
+			auditService.persistAudit(new Audit()
+										.setAuditActionType(AuditActionType.LOGIN)
+										.setUser(user)
+										.setUserName(user.getFullName())
+										.setDate(new Date())
+										.setSuccess(Boolean.TRUE));												
+		
 			logger.info("Login by user '" + username + "'.");
 			return true;
 

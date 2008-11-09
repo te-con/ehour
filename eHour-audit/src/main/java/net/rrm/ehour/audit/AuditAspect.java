@@ -17,10 +17,12 @@
 
 package net.rrm.ehour.audit;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -59,12 +61,12 @@ public class AuditAspect
 		}
 		catch (Throwable t)
 		{
-			auditService.persistAudit(createAudit(user, Boolean.FALSE, pjp));
+			auditService.persistAudit(createAudit(user, Boolean.FALSE, auditable.actionType(), pjp));
 			
 			throw t;
 		}
 		
-		auditService.persistAudit(createAudit(user, Boolean.TRUE, pjp));	
+		auditService.persistAudit(createAudit(user, Boolean.TRUE, auditable.actionType(), pjp));	
 		
 		return returnObject;
 	}
@@ -77,13 +79,34 @@ public class AuditAspect
 	 * @param pjp
 	 * @return
 	 */
-	private Audit createAudit(User user, Boolean success, ProceedingJoinPoint pjp)
+	private Audit createAudit(User user, Boolean success, AuditActionType auditActionType, ProceedingJoinPoint pjp)
 	{
+		StringBuilder parameters = new StringBuilder();
+		
+		int i = 0;
+		
+		for (Object object : pjp.getArgs())
+		{
+			parameters.append(i++ + ":");
+			
+			if (object instanceof Calendar)
+			{
+				parameters.append(((Calendar)object).getTime().toString());
+			}
+			else
+			{
+				parameters.append(object.toString());
+			}
+		}
+		
 		Audit audit = new Audit()
 				.setUser(user)
+				.setUserName(user != null ? user.getFullName() : null)
 				.setDate(new Date())
 				.setSuccess(success)
 				.setAction(pjp.getSignature().toShortString())
+				.setAuditActionType(auditActionType)
+				.setParameters(parameters.toString())
 				;
 
 		return audit;
@@ -94,10 +117,6 @@ public class AuditAspect
 //		
 //		System.out.println("user: " + EhourWebSession.getSession().getUser());
 //		
-//		for (Object object : pjp.getArgs())
-//		{
-//			System.out.println("o:" + object);
-//		}
 //		
 
 	}
