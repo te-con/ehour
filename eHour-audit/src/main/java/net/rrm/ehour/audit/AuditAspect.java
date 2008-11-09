@@ -129,8 +129,6 @@ public class AuditAspect
 
 		boolean isAuditable = isAuditable(pjp);
 		
-		System.out.println(isAuditable);
-		
 		User user = getUser();
 		
 		try

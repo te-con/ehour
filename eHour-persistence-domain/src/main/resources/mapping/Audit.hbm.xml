@@ -11,7 +11,7 @@
 		</id>		
 		
         <many-to-one name="user" class="net.rrm.ehour.domain.User" fetch="join" insert="true">
-            <column name="USER_ID" not-null="true" />
+            <column name="USER_ID" />
         </many-to-one>
         
         <property name="userName" column="USER" type="string" />
