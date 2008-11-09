@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class AuditAspect
 {
-	@Resource
+	@Resource //@Resource not injecting??
 	private AuditService	auditService;
 
 	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service*.get*(..)) && " +

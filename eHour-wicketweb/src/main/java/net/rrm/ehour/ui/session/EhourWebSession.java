@@ -277,6 +277,13 @@ public class EhourWebSession extends AuthenticatedWebSession
 		setAuthentication(null);
 		invalidate();
 		super.signOut();
+		
+		auditService.persistAudit(new Audit()
+			.setAuditActionType(AuditActionType.LOGOUT)
+			.setUser(user.getUser())
+			.setUserName(user.getUser().getFullName())
+			.setDate(new Date())
+			.setSuccess(Boolean.TRUE));			
 	}
 
 	/**

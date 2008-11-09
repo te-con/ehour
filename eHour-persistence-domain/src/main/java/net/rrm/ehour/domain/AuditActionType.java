@@ -27,7 +27,8 @@ public enum AuditActionType
 	READ("READ"), 
 	UPDATE("UPDATE"), 
 	DELETE("DELETE"),
-	LOGIN("LOGIN");
+	LOGIN("LOGIN"),
+	LOGOUT("LOGOUT");
 
 	private String value;
 
