@@ -16,10 +16,14 @@
 
 package net.rrm.ehour.ui.common;
 
+import static org.easymock.EasyMock.createMock;
+
 import java.util.Calendar;
 import java.util.Locale;
 
+import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.service.ConfigurationService;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
@@ -38,6 +42,7 @@ public abstract class BaseUIWicketTester
 	protected AnnotApplicationContextMock	mockContext;
 	protected EhourConfigStub	config;
 	protected TestEhourWebApplication webapp;
+	protected AuditService auditService;
 	
 	@Before
 	public void setUp() throws Exception
@@ -46,9 +51,13 @@ public abstract class BaseUIWicketTester
 		
 		config = new EhourConfigStub();
 		config.setFirstDayOfWeek(Calendar.SUNDAY);
-		
+
 		mockContext = new AnnotApplicationContextMock();
 		mockContext.putBean("EhourConfig", config);
+
+		auditService = createMock(AuditService.class);
+		mockContext.putBean("AuditService", auditService);
+	
 
 		tester = new WicketTester(webapp);
 		
