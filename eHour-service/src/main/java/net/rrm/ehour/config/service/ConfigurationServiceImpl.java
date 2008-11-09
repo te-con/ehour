@@ -18,9 +18,11 @@ package net.rrm.ehour.config.service;
 import java.util.List;
 import java.util.Locale;
 
+import net.rrm.ehour.audit.Auditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
+import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Configuration;
 
 import org.apache.log4j.Logger;
@@ -37,6 +39,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
 	 */
+	@Auditable(actionType=AuditActionType.READ)
 	public EhourConfigStub getConfiguration()
 	{
 		List<Configuration> configs = configDAO.findAll();
@@ -128,6 +131,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#persistConfiguration(java.util.List)
 	 */
+	@Auditable(actionType=AuditActionType.UPDATE)
 	public void persistConfiguration(EhourConfig config)
 	{
 		logger.debug("Persisting config");

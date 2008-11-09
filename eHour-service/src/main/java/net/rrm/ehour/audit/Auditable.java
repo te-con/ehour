@@ -32,5 +32,4 @@ import net.rrm.ehour.domain.AuditActionType;
 public @interface Auditable
 {
 	AuditActionType actionType();
-	String auditAction();
 }

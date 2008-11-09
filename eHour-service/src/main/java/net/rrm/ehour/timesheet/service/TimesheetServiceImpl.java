@@ -27,8 +27,10 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import net.rrm.ehour.audit.Auditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetComment;
@@ -80,7 +82,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @return TimesheetOverviewAction
 	 * @throws ObjectNotFoundException
 	 */	
-
+	@Auditable(actionType=AuditActionType.READ)
 	public TimesheetOverview getTimesheetOverview(User user, Calendar requestedMonth) 
 	{
 		TimesheetOverview	overview = new TimesheetOverview();
@@ -108,6 +110,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param monthRange
 	 * @return
 	 */
+	@Auditable(actionType=AuditActionType.READ)
 	private SortedSet<UserProjectStatus> getProjectStatus(Integer userId, DateRange monthRange)
 	{
 		List<AssignmentAggregateReportElement>	aggregates;
@@ -162,6 +165,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @return List with Integers of complete booked days
 	 * @throws ObjectNotFoundException
 	 */
+	@Auditable(actionType=AuditActionType.READ)
 	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth)
 	{
 		DateRange		monthRange;
@@ -240,6 +244,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param requestedWeek
 	 * @return
 	 */
+	@Auditable(actionType=AuditActionType.READ)
 	public WeekOverview getWeekOverview(User user, Calendar requestedWeek, EhourConfig config)
 	{
 		WeekOverview	weekOverview;
@@ -289,6 +294,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.timesheet.service.TimesheetService#persistTimesheetWeek(java.util.Collection, net.rrm.ehour.domain.TimesheetComment, net.rrm.ehour.data.DateRange)
 	 */
+	@Auditable(actionType=AuditActionType.UPDATE)
 	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, 
 																TimesheetComment comment,
 																DateRange weekRange)
@@ -343,6 +349,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.timesheet.service.TimesheetService#deleteTimesheetEntries(net.rrm.ehour.user.domain.User)
 	 */
+	@Auditable(actionType=AuditActionType.DELETE)
 	public void deleteTimesheetEntries(User user)
 	{
 		timesheetCommentDAO.deleteCommentsForUser(user.getUserId());

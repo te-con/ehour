@@ -59,12 +59,12 @@ public class AuditAspect
 		}
 		catch (Throwable t)
 		{
-			auditService.persistAudit(createAudit(user, Boolean.FALSE, auditable.auditAction(), pjp));
+			auditService.persistAudit(createAudit(user, Boolean.FALSE, pjp));
 			
 			throw t;
 		}
 		
-		auditService.persistAudit(createAudit(user, Boolean.TRUE, auditable.auditAction(), pjp));	
+		auditService.persistAudit(createAudit(user, Boolean.TRUE, pjp));	
 		
 		return returnObject;
 	}
@@ -77,13 +77,13 @@ public class AuditAspect
 	 * @param pjp
 	 * @return
 	 */
-	private Audit createAudit(User user, Boolean success, String action, ProceedingJoinPoint pjp)
+	private Audit createAudit(User user, Boolean success, ProceedingJoinPoint pjp)
 	{
 		Audit audit = new Audit()
 				.setUser(user)
 				.setDate(new Date())
 				.setSuccess(success)
-				.setAction(action)
+				.setAction(pjp.getSignature().toShortString())
 				;
 
 		return audit;
