@@ -46,25 +46,28 @@ public class Audit extends DomainObject<Number, Audit>
 	/**
 	 * @param parameters the parameters to set
 	 */
-	public void setParameters(String parameters)
+	public Audit setParameters(String parameters)
 	{
 		this.parameters = parameters;
+		return this;
 	}
 
 	/**
 	 * @param success the success to set
 	 */
-	public void setSuccess(Boolean success)
+	public Audit setSuccess(Boolean success)
 	{
 		this.success = success;
+		return this;
 	}
 
 	/**
 	 * @param auditActionType the auditActionType to set
 	 */
-	public void setAuditActionType(AuditActionType auditActionType)
+	public Audit setAuditActionType(AuditActionType auditActionType)
 	{
 		this.auditActionType = auditActionType;
+		return this;
 	}
 
 	public Audit setAction(String action)

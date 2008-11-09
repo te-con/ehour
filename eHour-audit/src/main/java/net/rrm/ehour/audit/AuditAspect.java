@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -36,7 +37,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class AuditAspect
 {
-//	@Resource(name="auditService")
 	private AuditService	auditService;
 	
 	/**
@@ -49,25 +49,65 @@ public class AuditAspect
 	@Around("@annotation(auditable)")
 	public Object auditable(ProceedingJoinPoint pjp, Auditable auditable) throws Throwable
 	{
+		Object returnObject;
+
 		User user = EhourWebSession.getSession().getUser().getUser();
-		
-		Audit audit = new Audit()
-					.setUser(user)
-					.setDate(new Date());
-		
-		auditService.persistAudit(audit);	
-		
-		System.out.println(pjp.getSignature().toLongString());
-		System.out.println(pjp.getSignature().toShortString());
-		System.out.println(pjp.getTarget().getClass());
-		
-		System.out.println("user: " + EhourWebSession.getSession().getUser());
-		
-		for (Object object : pjp.getArgs())
+
+		try
 		{
-			System.out.println("o:" + object);
+			returnObject = pjp.proceed();
+		}
+		catch (Throwable t)
+		{
+			auditService.persistAudit(createAudit(user, Boolean.FALSE, auditable.auditAction(), pjp));
+			
+			throw t;
 		}
 		
-		return pjp.proceed();
+		auditService.persistAudit(createAudit(user, Boolean.TRUE, auditable.auditAction(), pjp));	
+		
+		return returnObject;
+	}
+
+	/**
+	 * 
+	 * @param user
+	 * @param success
+	 * @param action
+	 * @param pjp
+	 * @return
+	 */
+	private Audit createAudit(User user, Boolean success, String action, ProceedingJoinPoint pjp)
+	{
+		Audit audit = new Audit()
+				.setUser(user)
+				.setDate(new Date())
+				.setSuccess(success)
+				.setAction(action)
+				;
+
+		return audit;
+
+//		System.out.println(pjp.getSignature().toLongString());
+//		System.out.println(pjp.getSignature().toShortString());
+//		System.out.println(pjp.getTarget().getClass());
+//		
+//		System.out.println("user: " + EhourWebSession.getSession().getUser());
+//		
+//		for (Object object : pjp.getArgs())
+//		{
+//			System.out.println("o:" + object);
+//		}
+//		
+
+	}
+	
+	/**
+	 * @param auditService the auditService to set
+	 */
+	@Autowired
+	public void setAuditService(AuditService auditService)
+	{
+		this.auditService = auditService;
 	}
 }
