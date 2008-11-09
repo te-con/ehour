@@ -21,7 +21,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.audit.Auditable;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
@@ -53,6 +55,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#assignUsersToProjects(net.rrm.ehour.domain.Project)
 	 */
+	@Auditable(actionType=AuditActionType.UPDATE)
 	public void assignUsersToProjects(Project project)
 	{
 		List<User> users = userService.getUsers(new UserRole(EhourConstants.ROLE_CONSULTANT));
@@ -73,7 +76,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * Assign user to project
 	 *
 	 */
-	
+	@Auditable(actionType=AuditActionType.UPDATE)
 	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) 
 	{
 		projectAssignmentDAO.persist(projectAssignment);
@@ -84,6 +87,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	/**
 	 * Assign user to default projects
 	 */
+	@Auditable(actionType=AuditActionType.UPDATE)
 	public User assignUserToDefaultProjects(User user)
 	{
 		List<Project>		defaultProjects;
@@ -244,7 +248,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		{
 			throw new ParentChildConstraintException("Timesheet entries booked on assignment.");
 		}
-		
 	}
 
 	/*
@@ -266,6 +269,10 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		return projectAssignmentDAO.findProjectAssignmentTypes();
 	}
 
+	/**
+	 * 
+	 * @param dao
+	 */
 	public void setProjectAssignmentDAO(ProjectAssignmentDAO dao)
 	{
 		this.projectAssignmentDAO = dao;

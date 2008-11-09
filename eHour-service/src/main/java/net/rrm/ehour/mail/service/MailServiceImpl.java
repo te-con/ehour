@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.MailLogAssignment;
@@ -44,7 +45,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 /**
  * Mail servce which takes of sending mail async
  **/
-
+@NonAuditable
 public class MailServiceImpl implements MailService
 {
 	private	Logger			logger = Logger.getLogger(this.getClass());

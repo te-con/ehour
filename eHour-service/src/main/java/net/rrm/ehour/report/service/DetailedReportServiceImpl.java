@@ -48,6 +48,10 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 		return getReportData(reportCriteria);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.data.DateRange)
+	 */
 	protected List<FlatReportElement> getReportElements(List<User> users,
 														List<Project >projects,
 														DateRange reportRange)

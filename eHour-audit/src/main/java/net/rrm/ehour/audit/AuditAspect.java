@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.audit;
 
+import java.lang.annotation.Annotation;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -125,22 +126,54 @@ public class AuditAspect
 	{
 		Object returnObject;
 
+		boolean isAuditable = isAuditable(pjp);
+		
 		User user = getUser();
-
+		
 		try
 		{
 			returnObject = pjp.proceed();
 		}
 		catch (Throwable t)
 		{
-			auditService.persistAudit(createAudit(user, Boolean.FALSE, auditActionType, pjp));
+			if (isAuditable)
+			{
+				auditService.persistAudit(createAudit(user, Boolean.FALSE, auditActionType, pjp));
+			}
 			
 			throw t;
 		}
 		
-		auditService.persistAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));	
+		if (isAuditable)
+		{
+			auditService.persistAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));
+		}
 		
 		return returnObject;		
+	}
+	
+	/**
+	 * Check if type is annotated with NonAuditable annotation
+	 * @param pjp
+	 * @return
+	 */
+	private boolean isAuditable(ProceedingJoinPoint pjp)
+	{
+		Annotation[] annotations = pjp.getSignature().getDeclaringType().getAnnotations();
+		
+		boolean nonAuditable = false;
+		
+		for (Annotation annotation : annotations)
+		{
+			nonAuditable = annotation.annotationType() == NonAuditable.class;
+			
+			if (nonAuditable)
+			{
+				break;
+			}
+		}
+		
+		return !nonAuditable;
 	}
 	
 	/**

@@ -60,7 +60,6 @@ import org.apache.log4j.Logger;
  * @author Thies
  *
  */
-
 public class TimesheetServiceImpl implements TimesheetService
 {
 	private CustomerFoldPreferenceDAO	customerFoldPreferenceDAO;

@@ -37,6 +37,8 @@ public class AuditAspectTest
 	private MockService 	mockService;
 	@Resource
 	private MockAuditImpl	auditService;
+	@Resource
+	private MockNonTransactService mockNonTransactionalService;
 	
 	@Before
 	public void setUp()
@@ -98,6 +100,15 @@ public class AuditAspectTest
 		
 		assertEquals(0, auditService.called);
 		assertEquals(null, auditService.audit);
-	}		
+	}	
+	
+	@Test
+	public void testNonAuditableType()
+	{
+		mockNonTransactionalService.getMethod();
+
+		assertEquals(0, auditService.called);
+		assertEquals(null, auditService.audit);
+	}
 
 }

@@ -20,6 +20,7 @@ package net.rrm.ehour.timesheet.service;
 import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
@@ -38,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Timesheet persister
  **/
-
+@NonAuditable
 public class TimesheetPersisterImpl implements TimesheetPersister
 {
 	private	Logger				logger = Logger.getLogger(TimesheetPersisterImpl.class);

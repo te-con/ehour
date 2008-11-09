@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -40,7 +41,7 @@ import org.apache.log4j.Logger;
 /**
  * Report Criteria services
  **/
-
+@NonAuditable
 public class ReportCriteriaServiceImpl implements ReportCriteriaService
 {
 	private	UserDAO					userDAO;
