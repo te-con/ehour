@@ -99,7 +99,6 @@ public class MailType extends DomainObject<Integer, MailType>
 	public int hashCode()
 	{
 		return new HashCodeBuilder(732615599, 2083936031)
-			.appendSuper(super.hashCode())
 			.append(this.getMailTypeId())
 			.append(this.getMailType()).toHashCode();
 	}	

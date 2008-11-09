@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.audit;
+package net.rrm.ehour.domain;
 
 /**
  * Auditable action (which CRUD)
@@ -23,8 +23,37 @@ package net.rrm.ehour.audit;
 
 public enum AuditActionType
 {
-	CREATE,
-	READ,
-	UPDATE,
-	DELETE;
+	CREATE("CREATE"), 
+	READ("READ"), 
+	UPDATE("UPDATE"), 
+	DELETE("DELETE");
+
+	private String value;
+
+	AuditActionType(String value)
+	{
+		this.value = value;
+	}
+
+	public String getValue()
+	{
+		return value;
+	}
+
+	public static AuditActionType fromString(String value)
+	{
+		if (CREATE.getValue().equalsIgnoreCase(value))
+		{
+			return CREATE;
+		} else if (READ.getValue().equalsIgnoreCase(value))
+		{
+			return READ;
+		} else if (UPDATE.getValue().equalsIgnoreCase(value))
+		{
+			return UPDATE;
+		} else
+		{
+			return DELETE;
+		}
+	}
 }

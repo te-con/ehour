@@ -17,8 +17,6 @@ package net.rrm.ehour.domain;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 /**
  * Domain Object
  **/
@@ -54,9 +52,6 @@ public abstract class DomainObject <PK extends Serializable, DO extends Serializ
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
-	public int hashCode()
-	{
-		return new HashCodeBuilder(-1766206347, 615682397)
-					.append(getPK()).toHashCode();
-	}
+	@Override
+	public abstract int hashCode();
 }

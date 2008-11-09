@@ -126,7 +126,6 @@ public class CustomerFoldPreference extends DomainObject<CustomerFoldPreferenceI
 	public int hashCode()
 	{
 		return new HashCodeBuilder(578491229, 13938277)
-			.appendSuper(super.hashCode())
 			.append(this.isFolded())
 			.append(this.getFoldPreferenceId()).toHashCode();
 	}

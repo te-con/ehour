@@ -17,9 +17,6 @@
 
 package net.rrm.ehour.value;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
 
 /**
  * Export entities

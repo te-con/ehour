@@ -19,6 +19,7 @@ package net.rrm.ehour.audit;
 
 import java.util.Date;
 
+import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -35,6 +36,9 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class AuditAspect
 {
+//	@Resource(name="auditService")
+	private AuditService	auditService;
+	
 	/**
 	 * Audit 
 	 * @param pjp
@@ -50,6 +54,8 @@ public class AuditAspect
 		Audit audit = new Audit()
 					.setUser(user)
 					.setDate(new Date());
+		
+		auditService.persistAudit(audit);	
 		
 		System.out.println(pjp.getSignature().toLongString());
 		System.out.println(pjp.getSignature().toShortString());

@@ -148,7 +148,6 @@ public class MailLog extends DomainObject<Integer, MailLog>
 	public int hashCode()
 	{
 		return new HashCodeBuilder(1202909165, -339864927)
-			.appendSuper(super.hashCode())
 			.append(this.getResultMsg())
 			.append(this.getTimestamp())
 			.append(this.getToUser())

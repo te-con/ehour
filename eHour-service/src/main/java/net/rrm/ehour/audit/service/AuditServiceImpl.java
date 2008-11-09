@@ -14,14 +14,12 @@ public class AuditServiceImpl implements AuditService
 {
 	private AuditDAO	auditDAO;
 
-
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.audit.service.AuditService#persistAudit(net.rrm.ehour.domain.Audit)
 	 */
 	public void persistAudit(Audit audit)
 	{
-		// TODO Auto-generated method stub
-
+		auditDAO.persist(audit);
 	}	
 	
 	/**
@@ -31,4 +29,5 @@ public class AuditServiceImpl implements AuditService
 	{
 		this.auditDAO = auditDAO;
 	}
+
 }
