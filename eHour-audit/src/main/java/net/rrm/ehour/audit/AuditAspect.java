@@ -20,6 +20,8 @@ package net.rrm.ehour.audit;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Resource;
+
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
@@ -29,7 +31,7 @@ import net.rrm.ehour.ui.session.EhourWebSession;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,8 +41,66 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class AuditAspect
 {
+	@Resource(name="auditService")
 	private AuditService	auditService;
+
+	@Pointcut("execution(public * net.rrm.ehour.*.*Service.get*(..)) && " +
+				"!@annotation(Auditable) && " +
+				"!@annotation(NonAuditable)")
+	public void publicGetMethod()
+	{
+	}
 	
+	@Pointcut("execution(public * net.rrm.ehour.*.*Service.persist*(..)) && " +
+			"!@annotation(Auditable) && " +
+			"!@annotation(NonAuditable)")
+	public void publicPersistMethod()
+	{
+	}
+	
+	@Pointcut("execution(public * net.rrm.ehour.*.*Service.delete*(..)) && " +
+			"!@annotation(Auditable) && " +
+			"!@annotation(NonAuditable)")
+	public void publicDeleteMethod()
+	{
+	}	
+
+	/**
+	 * Around advise for read-only get methods
+	 * @param pjp
+	 * @return
+	 * @throws Throwable
+	 */
+	@Around("net.rrm.ehour.audit.AuditAspect.publicGetMethod()")
+	public Object auditOnGet(ProceedingJoinPoint pjp) throws Throwable
+	{
+		return doAudit(pjp, AuditActionType.READ);
+	}
+	
+	/**
+	 * Around advise for persist methods
+	 * @param pjp
+	 * @return
+	 * @throws Throwable
+	 */
+	@Around("net.rrm.ehour.audit.AuditAspect.publicPersistMethod()")
+	public Object auditOnPersist(ProceedingJoinPoint pjp) throws Throwable
+	{
+		return doAudit(pjp, AuditActionType.UPDATE);
+	}	
+
+	/**
+	 * Around advise for delete methods
+	 * @param pjp
+	 * @return
+	 * @throws Throwable
+	 */
+	@Around("net.rrm.ehour.audit.AuditAspect.publicDeleteMethod()")
+	public Object auditOnDelete(ProceedingJoinPoint pjp) throws Throwable
+	{
+		return doAudit(pjp, AuditActionType.DELETE);
+	}	
+
 	/**
 	 * Audit 
 	 * @param pjp
@@ -51,9 +111,21 @@ public class AuditAspect
 	@Around("@annotation(auditable)")
 	public Object auditable(ProceedingJoinPoint pjp, Auditable auditable) throws Throwable
 	{
+		return doAudit(pjp, auditable.actionType());
+	}
+	
+	/**
+	 * 
+	 * @param pjp
+	 * @param auditActionType
+	 * @return
+	 * @throws Throwable
+	 */
+	private Object doAudit(ProceedingJoinPoint pjp, AuditActionType auditActionType) throws Throwable
+	{
 		Object returnObject;
 
-		User user = EhourWebSession.getSession().getUser().getUser();
+		User user = getUser();
 
 		try
 		{
@@ -61,14 +133,34 @@ public class AuditAspect
 		}
 		catch (Throwable t)
 		{
-			auditService.persistAudit(createAudit(user, Boolean.FALSE, auditable.actionType(), pjp));
+			auditService.persistAudit(createAudit(user, Boolean.FALSE, auditActionType, pjp));
 			
 			throw t;
 		}
 		
-		auditService.persistAudit(createAudit(user, Boolean.TRUE, auditable.actionType(), pjp));	
+		auditService.persistAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));	
 		
-		return returnObject;
+		return returnObject;		
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private User getUser()
+	{
+		User user;
+		
+		try
+		{
+			user = EhourWebSession.getSession().getUser().getUser();
+		}
+		catch (Throwable t)
+		{
+			user = null;
+		}
+		
+		return user;
 	}
 
 	/**
@@ -110,23 +202,5 @@ public class AuditAspect
 				;
 
 		return audit;
-
-//		System.out.println(pjp.getSignature().toLongString());
-//		System.out.println(pjp.getSignature().toShortString());
-//		System.out.println(pjp.getTarget().getClass());
-//		
-//		System.out.println("user: " + EhourWebSession.getSession().getUser());
-//		
-//		
-
-	}
-	
-	/**
-	 * @param auditService the auditService to set
-	 */
-	@Autowired
-	public void setAuditService(AuditService auditService)
-	{
-		this.auditService = auditService;
 	}
 }

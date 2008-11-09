@@ -6,6 +6,7 @@ package net.rrm.ehour.audit.service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.audit.dao.AuditDAO;
 import net.rrm.ehour.domain.Audit;
 
@@ -21,6 +22,7 @@ public class AuditServiceImpl implements AuditService
 	 * @see net.rrm.ehour.audit.service.AuditService#persistAudit(net.rrm.ehour.domain.Audit)
 	 */
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@NonAuditable
 	public void persistAudit(Audit audit)
 	{
 		auditDAO.persist(audit);
