@@ -39,7 +39,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
 	 */
-	@Auditable(actionType=AuditActionType.READ)
 	public EhourConfigStub getConfiguration()
 	{
 		List<Configuration> configs = configDAO.findAll();
@@ -131,7 +130,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#persistConfiguration(java.util.List)
 	 */
-	@Auditable(actionType=AuditActionType.UPDATE)
 	public void persistConfiguration(EhourConfig config)
 	{
 		logger.debug("Persisting config");

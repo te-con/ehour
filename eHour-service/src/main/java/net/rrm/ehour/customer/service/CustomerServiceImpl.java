@@ -17,9 +17,7 @@ package net.rrm.ehour.customer.service;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.Auditable;
 import net.rrm.ehour.customer.dao.CustomerDAO;
-import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
@@ -42,7 +40,6 @@ public class CustomerServiceImpl implements CustomerService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomer(java.lang.String, java.lang.String)
 	 */
-	@Auditable(actionType=AuditActionType.READ)
 	public Customer getCustomer(String customerName, String customerCode)
 	{
 		return customerDAO.findOnNameAndCode(customerName, customerCode);
@@ -51,7 +48,6 @@ public class CustomerServiceImpl implements CustomerService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#deleteCustomer(java.lang.Integer)
 	 */
-	@Auditable(actionType=AuditActionType.DELETE)
 	public void deleteCustomer(Integer customerId) throws ParentChildConstraintException
 	{
 		Customer customer = customerDAO.findById(customerId);
@@ -83,7 +79,6 @@ public class CustomerServiceImpl implements CustomerService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getCustomer(java.lang.Integer)
 	 */
-	@Auditable(actionType=AuditActionType.READ)
 	public Customer getCustomer(Integer customerId) throws ObjectNotFoundException
 	{
 		Customer customer = customerDAO.findById(customerId);
@@ -100,7 +95,6 @@ public class CustomerServiceImpl implements CustomerService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomerAndCheckDeletability(java.lang.Integer)
 	 */
-	@Auditable(actionType=AuditActionType.READ)
 	public Customer getCustomerAndCheckDeletability(Integer customerId)
 	{
 		Customer customer = customerDAO.findById(customerId);
@@ -135,7 +129,6 @@ public class CustomerServiceImpl implements CustomerService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#getCustomers()
 	 */
-	@Auditable(actionType=AuditActionType.READ)
 	public List<Customer> getCustomers()
 	{
 		return customerDAO.findAll();
@@ -144,7 +137,6 @@ public class CustomerServiceImpl implements CustomerService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#persistCustomer(net.rrm.ehour.project.domain.Customer)
 	 */
-	@Auditable(actionType=AuditActionType.UPDATE)
 	public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException
 	{
 		logger.info("Persisting customer: " + customer);
@@ -165,7 +157,6 @@ public class CustomerServiceImpl implements CustomerService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomers(boolean)
 	 */
-	@Auditable(actionType=AuditActionType.READ)
 	public List<Customer> getCustomers(boolean hideInactive)
 	{
 		return customerDAO.findAll(hideInactive);
