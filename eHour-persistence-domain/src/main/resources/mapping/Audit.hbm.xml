@@ -14,7 +14,7 @@
             <column name="USER_ID" not-null="true" />
         </many-to-one>
         
-        <property name="date" column="DATE" type="date" />
+        <property name="date" column="AUDIT_DATE" type="timestamp" />
 		<property name="action" column="ACTION" type="string" />
 		<property name="parameters" column="PARAMETERS" type="string" />
 		<property name="success" column="SUCCESS" type="yes_no"  />
