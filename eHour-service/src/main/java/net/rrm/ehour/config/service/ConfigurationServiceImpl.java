@@ -18,6 +18,7 @@ package net.rrm.ehour.config.service;
 import java.util.List;
 import java.util.Locale;
 
+import net.rrm.ehour.audit.AuditType;
 import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
@@ -121,7 +122,11 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			else if (key.equalsIgnoreCase("firstDayOfWeek"))
 			{
 				config.setFirstDayOfWeek( (int)(Float.parseFloat(value)));
-			}			
+			}
+			else if (key.equalsIgnoreCase("auditType"))
+			{
+				config.setAuditType(AuditType.fromString(value));
+			}
 		}
 		
 		return config;
@@ -151,6 +156,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig("smtpPort", config.getSmtpPort());
 		persistConfig("initialized", config.isInitialized());
 		persistConfig("firstDayOfWeek", config.getFirstDayOfWeek());
+		persistConfig("auditType", config.getAuditType().getValue());
 	}
 	
 	private void persistConfig(String key, String value)

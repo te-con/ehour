@@ -134,8 +134,6 @@ public class AuditAspect
 
 		boolean isAuditable = isAuditable(pjp);
 		
-		System.out.println(pjp.getSignature().toLongString());
-		
 		if (isAuditable)
 		{
 			isAuditable &= isAuditEnabled(auditActionType);
@@ -180,14 +178,20 @@ public class AuditAspect
 		}
 		
 		if (config.getAuditType() == AuditType.WRITE &&
-				(actionType != AuditActionType.CREATE &&
-						actionType != AuditActionType.DELETE &&
-						actionType != AuditActionType.UPDATE))
+				(actionType == AuditActionType.CREATE ||
+						actionType == AuditActionType.DELETE ||
+						actionType == AuditActionType.UPDATE))
 		{
 			return true;
 		}
+		
+		if (config.getAuditType() == AuditType.ALL)
+		{
+			System.out.println("fefe");
+			return true;
+		}
 				
-		return true;
+		return false;
 	}
 	
 	/**

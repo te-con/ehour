@@ -23,7 +23,6 @@ import java.util.Locale;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.service.ConfigurationService;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
