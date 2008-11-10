@@ -26,6 +26,7 @@ import static org.easymock.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.audit.AuditType;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
 import net.rrm.ehour.domain.Configuration;
@@ -96,7 +97,7 @@ public class ConfigurationServiceTest
 		stub.setShowTurnover(true);
 		stub.setMailFrom("re");
 		stub.setMailSmtp("ee");
-
+		stub.setAuditType(AuditType.WRITE);
 		expect(configDAO.persist(isA(Configuration.class))).andReturn(null).anyTimes();
 
 		replay(configDAO);
