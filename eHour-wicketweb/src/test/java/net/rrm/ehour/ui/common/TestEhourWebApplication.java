@@ -47,6 +47,7 @@ import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
+import org.apache.wicket.spring.test.ApplicationContextMock;
 
 /**
  * 
@@ -58,9 +59,18 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	 * 
 	 */
 	private static final long serialVersionUID = -7336200909844170964L;
-	private transient AnnotApplicationContextMock	mockContext;
+	private transient ApplicationContextMock	mockContext;
 	private EhourWebSession				session;
 
+	/**
+	 * 
+	 * @param context
+	 */
+	public TestEhourWebApplication(ApplicationContextMock context)
+	{
+		this.mockContext = context;
+	}
+	
 	/**
 	 * When not authorized, just let it pass
 	 */
@@ -85,13 +95,14 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	@Override
 	protected void springInjection()
 	{
-		mockContext = new AnnotApplicationContextMock();
-		mockContext.putBean("EhourConfig", new EhourConfigStub());		
-		
 		addComponentInstantiationListener(new SpringComponentInjector(this, mockContext));
 	}
 
-	public AnnotApplicationContextMock getMockContext()
+	/**
+	 * 
+	 * @return
+	 */
+	public ApplicationContextMock getMockContext()
 	{
 		return mockContext;
 	}

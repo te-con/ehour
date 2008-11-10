@@ -47,21 +47,19 @@ public abstract class BaseUIWicketTester
 	@Before
 	public void setUp() throws Exception
 	{
-		webapp =  new TestEhourWebApplication();
+		mockContext = new AnnotApplicationContextMock();
+		
 		
 		config = new EhourConfigStub();
 		config.setFirstDayOfWeek(Calendar.SUNDAY);
 
-		mockContext = new AnnotApplicationContextMock();
 		mockContext.putBean("EhourConfig", config);
 
 		auditService = createMock(AuditService.class);
-		mockContext.putBean("AuditService", auditService);
-	
+		mockContext.putBean("auditService", auditService);
 
+		webapp =  new TestEhourWebApplication(mockContext);
 		tester = new WicketTester(webapp);
-		
-		mockContext = ((TestEhourWebApplication)tester.getApplication()).getMockContext();
 		
 		((Settings)webapp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader()
 		{
