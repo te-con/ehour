@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui;
 
+import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.config.PageConfig;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
 import net.rrm.ehour.ui.page.admin.customer.CustomerAdmin;
@@ -131,6 +132,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));
 		
 		mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));
+		
+		mount(new HybridUrlCodingStrategy("/audit", AuditReportPage.class));
 		
 		mount(new HybridUrlCodingStrategy("/pm", ProjectManagement.class));
 		

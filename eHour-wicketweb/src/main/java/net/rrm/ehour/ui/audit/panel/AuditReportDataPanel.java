@@ -4,15 +4,14 @@ import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.model.IModel;
 
 public class AuditReportDataPanel extends AbstractAjaxPanel
 {
 	private static final long serialVersionUID = -2380789244030608920L;
 
-	public AuditReportDataPanel(String id, IModel model)
+	public AuditReportDataPanel(String id)
 	{
-		super(id, model);
+		super(id);
 
 		setOutputMarkupId(true);
 		
