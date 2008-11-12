@@ -4,6 +4,7 @@ CREATE TABLE AUDIT (
         USER_ID INT(11) default NULL,
 	USER VARCHAR(256),
         AUDIT_DATE datetime,
+	PAGE VARCHAR(256),
         ACTION VARCHAR(256),
         PARAMETERS VARCHAR(1024),
         SUCCESS char(1) character set latin1 NOT NULL,
