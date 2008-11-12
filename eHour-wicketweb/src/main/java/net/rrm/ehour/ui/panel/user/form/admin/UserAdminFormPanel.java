@@ -28,7 +28,7 @@ import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
+import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.user.form.EmailInputSnippet;
 import net.rrm.ehour.ui.panel.user.form.PasswordInputSnippet;
@@ -59,7 +59,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * User Form Panel for admin
  **/
 
-public class UserAdminFormPanel extends AbstractAjaxAwareAdminPanel
+public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = -7427807216389657732L;
 

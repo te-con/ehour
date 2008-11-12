@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.panel.entryselector;
 import net.rrm.ehour.ui.ajax.AjaxUtil;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.panel.BaseAjaxPanel;
+import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -39,7 +39,7 @@ import org.apache.wicket.util.time.Duration;
  * Selector with autocompletion filter 
  **/
 
-public class EntrySelectorPanel extends BaseAjaxPanel
+public class EntrySelectorPanel extends AbstractAjaxPanel
 {
 	public final static int ENTRYSELECTOR_WIDTH = 250;
 	

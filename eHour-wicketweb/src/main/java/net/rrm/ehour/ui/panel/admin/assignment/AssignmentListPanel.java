@@ -30,7 +30,7 @@ import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.DateModel;
 import net.rrm.ehour.ui.model.FloatModel;
-import net.rrm.ehour.ui.panel.BasePanel;
+import net.rrm.ehour.ui.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.util.CommonWebUtil;
@@ -53,7 +53,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentListPanel extends BasePanel
+public class AssignmentListPanel extends AbstractBasePanel
 {
 	private static final long serialVersionUID = -8798859357268916546L;
 

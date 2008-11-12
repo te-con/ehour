@@ -24,7 +24,7 @@ import net.rrm.ehour.ui.page.user.Overview;
 import net.rrm.ehour.ui.page.user.prefs.UserPreferencePage;
 import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.page.user.report.UserReport;
-import net.rrm.ehour.ui.panel.BasePanel;
+import net.rrm.ehour.ui.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.util.AuthUtil;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -37,7 +37,7 @@ import org.apache.wicket.model.Model;
  * Main navigation panel 
  **/
 
-public class MainNavPanel extends BasePanel
+public class MainNavPanel extends AbstractBasePanel
 {
 	private static final long serialVersionUID = 854412484275829659L;
 

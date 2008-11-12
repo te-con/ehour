@@ -14,14 +14,13 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.admin;
+package net.rrm.ehour.ui.panel;
 
 import net.rrm.ehour.ui.ajax.AjaxEvent;
 import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.ajax.GenericAjaxEventType;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.BaseAjaxPanel;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,18 +31,18 @@ import org.apache.wicket.model.IModel;
  * ajax request
  **/
 
-public abstract class AbstractAjaxAwareAdminPanel extends BaseAjaxPanel
+public abstract class AbstractFormSubmittingPanel extends AbstractAjaxPanel
 {
 	private static final long serialVersionUID = 1L;
-	private	static final Logger	logger = Logger.getLogger(AbstractAjaxAwareAdminPanel.class);
+	private	static final Logger	logger = Logger.getLogger(AbstractFormSubmittingPanel.class);
 
 
-	public AbstractAjaxAwareAdminPanel(String id)
+	public AbstractFormSubmittingPanel(String id)
 	{
 		super(id);
 	}	
 	
-	public AbstractAjaxAwareAdminPanel(String id, IModel model)
+	public AbstractFormSubmittingPanel(String id, IModel model)
 	{
 		super(id, model);
 	}

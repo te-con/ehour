@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
+import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.department.form.dto.DepartmentAdminBackingBean;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -41,7 +41,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * user department form panel
  **/
 
-public class DepartmentFormPanel extends AbstractAjaxAwareAdminPanel
+public class DepartmentFormPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = -6469066920645156569L;
 

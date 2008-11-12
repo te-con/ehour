@@ -32,7 +32,7 @@ import net.rrm.ehour.ui.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
+import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.project.form.dto.ProjectAdminBackingBeanImpl;
@@ -61,7 +61,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * Project admin form
  **/
 
-public class ProjectFormPanel extends AbstractAjaxAwareAdminPanel
+public class ProjectFormPanel extends AbstractFormSubmittingPanel
 {
 	@SpringBean
 	private ProjectService	projectService;

@@ -35,7 +35,7 @@ import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.component.ServerMessageLabel;
 import net.rrm.ehour.ui.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
+import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.session.EhourWebSession;
@@ -62,7 +62,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentFormPanel extends AbstractAjaxAwareAdminPanel
+public class AssignmentFormPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = -85486044225123470L;
 	private	final static Logger	logger = Logger.getLogger(AssignmentFormPanel.class);

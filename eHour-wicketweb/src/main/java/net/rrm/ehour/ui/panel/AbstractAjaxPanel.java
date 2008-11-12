@@ -26,7 +26,7 @@ import org.apache.wicket.model.IModel;
  * Base panel
  **/
 
-public abstract class BaseAjaxPanel extends BasePanel implements AjaxAwareContainer
+public abstract class AbstractAjaxPanel extends AbstractBasePanel implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = 5723792133447447887L;
 
@@ -34,7 +34,7 @@ public abstract class BaseAjaxPanel extends BasePanel implements AjaxAwareContai
 	 * 
 	 * @param id
 	 */
-	public BaseAjaxPanel(String id)
+	public AbstractAjaxPanel(String id)
 	{
 		super(id);
 	}
@@ -44,7 +44,7 @@ public abstract class BaseAjaxPanel extends BasePanel implements AjaxAwareContai
 	 * @param id
 	 * @param model
 	 */
-	public BaseAjaxPanel(String id, IModel model)
+	public AbstractAjaxPanel(String id, IModel model)
 	{
 		super(id, model);
 	}

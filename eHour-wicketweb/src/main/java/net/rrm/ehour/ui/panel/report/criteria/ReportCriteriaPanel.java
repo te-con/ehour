@@ -34,7 +34,7 @@ import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
-import net.rrm.ehour.ui.panel.BaseAjaxPanel;
+import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickDateAjaxEventType;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickDropDownChoice;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickMonth;
@@ -73,7 +73,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Base report criteria panel which adds the quick date selections
  **/
 
-public class ReportCriteriaPanel extends BaseAjaxPanel 
+public class ReportCriteriaPanel extends AbstractAjaxPanel 
 {
 	private static final long serialVersionUID = 161160822264046559L;
 	

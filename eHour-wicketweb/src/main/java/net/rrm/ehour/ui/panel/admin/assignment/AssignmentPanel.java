@@ -25,7 +25,7 @@ import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
+import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.panel.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
 
 import org.apache.log4j.Logger;
@@ -39,7 +39,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentPanel extends AbstractAjaxAwareAdminPanel
+public class AssignmentPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = -3721224427697057895L;
 	private	final static Logger	logger = Logger.getLogger(AssignmentPanel.class);

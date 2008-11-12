@@ -26,7 +26,7 @@ import net.rrm.ehour.ui.ajax.AjaxEventType;
 import net.rrm.ehour.ui.ajax.GenericAjaxEventType;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.admin.AbstractAjaxAwareAdminPanel;
+import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.panel.admin.common.FormUtil;
 import net.rrm.ehour.ui.panel.user.form.PasswordInputSnippet;
 import net.rrm.ehour.ui.panel.user.form.UserEditAjaxEventType;
@@ -52,7 +52,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * User preferences form
  **/
 
-public class UserPasswordChangePanel extends AbstractAjaxAwareAdminPanel
+public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = 7670153126514499168L;
 
