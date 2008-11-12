@@ -26,9 +26,9 @@ import static org.easymock.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.audit.AuditType;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
+import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
 
 import org.junit.Before;

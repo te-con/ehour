@@ -3,10 +3,8 @@
  */
 package net.rrm.ehour.ui.audit.page;
 
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 import org.junit.Test;

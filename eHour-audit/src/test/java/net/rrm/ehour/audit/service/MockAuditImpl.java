@@ -17,11 +17,13 @@
 
 package net.rrm.ehour.audit.service;
 
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 import net.rrm.ehour.audit.NonAuditable;
-import net.rrm.ehour.audit.service.AuditService;
+import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
+
+import org.springframework.stereotype.Component;
 
 @Component(value="auditService")
 public class MockAuditImpl implements AuditService
@@ -34,6 +36,11 @@ public class MockAuditImpl implements AuditService
 	{
 		this.audit = audit;
 		called++;
+	}
+
+	public List<Audit> getAudit(AuditReportRequest request)
+	{
+		return null;
 	}
 
 }

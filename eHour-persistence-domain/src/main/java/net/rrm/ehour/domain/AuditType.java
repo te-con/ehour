@@ -1,10 +1,11 @@
-package net.rrm.ehour.audit;
+package net.rrm.ehour.domain;
 
 
 public enum AuditType
 {
 	NONE("NONE"),
 	WRITE("WRITE"),
+	READ("READ"),
 	ALL("ALL");
 	
 

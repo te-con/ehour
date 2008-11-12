@@ -23,18 +23,20 @@ package net.rrm.ehour.domain;
 
 public enum AuditActionType
 {
-	CREATE("CREATE"), 
-	READ("READ"), 
-	UPDATE("UPDATE"), 
-	DELETE("DELETE"),
-	LOGIN("LOGIN"),
-	LOGOUT("LOGOUT");
+	CREATE("CREATE", AuditType.WRITE), 
+	READ("READ", AuditType.READ), 
+	UPDATE("UPDATE", AuditType.WRITE), 
+	DELETE("DELETE", AuditType.WRITE),
+	LOGIN("LOGIN", AuditType.READ),
+	LOGOUT("LOGOUT", AuditType.READ);
 
 	private String value;
+	private AuditType auditType;
 
-	AuditActionType(String value)
+	AuditActionType(String value, AuditType auditType)
 	{
 		this.value = value;
+		this.auditType = auditType;
 	}
 
 	public String getValue()
@@ -42,6 +44,11 @@ public enum AuditActionType
 		return value;
 	}
 
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
 	public static AuditActionType fromString(String value)
 	{
 		if (CREATE.getValue().equalsIgnoreCase(value))
@@ -57,5 +64,13 @@ public enum AuditActionType
 		{
 			return DELETE;
 		}
+	}
+
+	/**
+	 * @return the auditType
+	 */
+	public AuditType getAuditType()
+	{
+		return auditType;
 	}
 }

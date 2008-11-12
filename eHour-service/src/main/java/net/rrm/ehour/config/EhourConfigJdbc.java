@@ -19,7 +19,7 @@ import java.util.Locale;
 
 import javax.sql.DataSource;
 
-import net.rrm.ehour.audit.AuditType;
+import net.rrm.ehour.domain.AuditType;
 
 import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.log4j.Logger;

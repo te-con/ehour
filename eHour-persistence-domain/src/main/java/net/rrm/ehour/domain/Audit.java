@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Audit extends DomainObject<Number, Audit>
 {
@@ -17,6 +18,35 @@ public class Audit extends DomainObject<Number, Audit>
 	private String	parameters;
 	private Boolean	success;
 	private String	userName;
+	private String	page;
+	
+	public String toString()
+	{
+		return new ToStringBuilder(this)
+						.append("auditId", auditId)
+						.append("user", user)
+						.append("date", date)
+						.append("action", action)
+						.toString();
+	}
+	
+	/**
+	 * @return the page
+	 */
+	public String getPage()
+	{
+		return page;
+	}
+
+	/**
+	 * @param page the page to set
+	 */
+	public Audit setPage(String page)
+	{
+		this.page = page;
+		return this;
+	}
+
 	/**
 	 * @return the userName
 	 */

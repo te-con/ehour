@@ -16,6 +16,7 @@
         
         <property name="userName" column="USER" type="string" />
         <property name="date" column="AUDIT_DATE" type="timestamp" />
+        <property name="page" column="PAGE" type="string" />
 		<property name="action" column="ACTION" type="string" />
 		<property name="parameters" column="PARAMETERS" type="string" />
 		<property name="success" column="SUCCESS" type="yes_no"  />

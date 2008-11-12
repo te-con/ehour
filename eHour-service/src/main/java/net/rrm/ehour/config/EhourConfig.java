@@ -17,7 +17,7 @@ package net.rrm.ehour.config;
 
 import java.util.Locale;
 
-import net.rrm.ehour.audit.AuditType;
+import net.rrm.ehour.domain.AuditType;
 
 
 /**

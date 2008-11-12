@@ -28,9 +28,11 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
+import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
+import org.apache.wicket.RequestCycle;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -133,7 +135,7 @@ public class AuditAspect
 		Object returnObject;
 
 		boolean isAuditable = isAuditable(pjp);
-		
+
 		if (isAuditable)
 		{
 			isAuditable &= isAuditEnabled(auditActionType);
@@ -171,23 +173,20 @@ public class AuditAspect
 	private boolean isAuditEnabled(AuditActionType actionType)
 	{
 		EhourConfig config = configurationService.getConfiguration();
-		
+
 		if (config.getAuditType() == AuditType.NONE)
 		{
 			return false;
 		}
 		
 		if (config.getAuditType() == AuditType.WRITE &&
-				(actionType == AuditActionType.CREATE ||
-						actionType == AuditActionType.DELETE ||
-						actionType == AuditActionType.UPDATE))
+				actionType.getAuditType() == config.getAuditType())
 		{
 			return true;
 		}
 		
 		if (config.getAuditType() == AuditType.ALL)
 		{
-			System.out.println("fefe");
 			return true;
 		}
 				
@@ -203,8 +202,6 @@ public class AuditAspect
 	{
 		Annotation[] annotations = pjp.getSignature().getDeclaringType().getAnnotations();
 
-		System.out.println(pjp.toLongString());
-		
 		boolean nonAuditable = false;
 		
 		for (Annotation annotation : annotations)
@@ -267,6 +264,13 @@ public class AuditAspect
 				parameters.append(object.toString());
 			}
 		}
+
+		String page = null;
+		
+		if (RequestCycle.get().getResponsePage() != null)
+		{
+			page = RequestCycle.get().getResponsePage().getClass().getCanonicalName();
+		}
 		
 		Audit audit = new Audit()
 				.setUser(user)
@@ -276,7 +280,10 @@ public class AuditAspect
 				.setAction(pjp.getSignature().toShortString())
 				.setAuditActionType(auditActionType)
 				.setParameters(parameters.toString())
+				.setPage(page)
 				;
+		
+
 
 		return audit;
 	}
