@@ -26,4 +26,11 @@ public interface AuditService
 	 * @return
 	 */
 	public List<Audit> getAudit(AuditReportRequest request);
+	
+	/**
+	 * get audit count
+	 * @param request
+	 * @return
+	 */
+	public Number getAuditCount(AuditReportRequest request);
 }

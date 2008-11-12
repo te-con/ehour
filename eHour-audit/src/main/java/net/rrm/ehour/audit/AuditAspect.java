@@ -254,8 +254,11 @@ public class AuditAspect
 		for (Object object : pjp.getArgs())
 		{
 			parameters.append(i++ + ":");
-			
-			if (object instanceof Calendar)
+	
+			if (object == null)
+			{
+				parameters.append("null");
+			} else if (object instanceof Calendar)
 			{
 				parameters.append(((Calendar)object).getTime().toString());
 			}

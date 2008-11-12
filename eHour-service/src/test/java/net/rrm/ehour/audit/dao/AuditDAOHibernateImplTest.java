@@ -22,7 +22,7 @@ public class AuditDAOHibernateImplTest extends BaseDAOTest
 {
 	@Autowired
 	private AuditDAO auditDAO;
-	
+
 	@Test
 	public void testFindAudit()
 	{
@@ -35,5 +35,14 @@ public class AuditDAOHibernateImplTest extends BaseDAOTest
 		assertEquals(20, res.size());
 		assertEquals(70, res.get(0).getAuditId());
 	}
+	
+	@Test
+	public void testFindAuditCount()
+	{
+		AuditReportRequest request = new AuditReportRequest();
 
+		Number count = auditDAO.findAuditCount(request);
+		
+		assertEquals(40, count.intValue());
+	}
 }

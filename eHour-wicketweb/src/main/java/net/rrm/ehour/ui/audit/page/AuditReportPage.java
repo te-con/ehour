@@ -3,6 +3,7 @@
  */
 package net.rrm.ehour.ui.audit.page;
 
+import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.ui.audit.model.AuditReportCriteriaModel;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
 import net.rrm.ehour.ui.audit.panel.AuditReportDataPanel;
@@ -21,12 +22,13 @@ public class AuditReportPage extends BaseAdminPage
 	
 	public AuditReportPage()
 	{
-		super(new ResourceModel("audit.report.title"), new AuditReportCriteriaModel(), "audit.help.header", "audit.help.body");
+		super(new ResourceModel("audit.report.title"), 
+					new AuditReportCriteriaModel(new AuditReportRequest()), "audit.help.header", "audit.help.body");
 	
 		criteriaPanel = new AuditReportCriteriaPanel("reportCriteria");
 		add(criteriaPanel);
 		
-		dataPanel = new AuditReportDataPanel("reportData");
+		dataPanel = new AuditReportDataPanel("reportData", (AuditReportCriteriaModel)getModel());
 		add(dataPanel);
 	}
 }

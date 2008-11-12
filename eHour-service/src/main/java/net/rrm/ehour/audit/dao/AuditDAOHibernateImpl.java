@@ -8,6 +8,7 @@ import net.rrm.ehour.domain.Audit;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 
 public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number>  implements AuditDAO
 {
@@ -45,4 +46,16 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 		return criteria.list();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.audit.dao.AuditDAO#findAuditCount(net.rrm.ehour.audit.service.dto.AuditReportRequest)
+	 */
+	public Number findAuditCount(AuditReportRequest request)
+	{
+		Criteria criteria = getSession().createCriteria(Audit.class);
+		criteria.setProjection(Projections.rowCount());
+
+		// TODO implement rest of request
+		return ((Integer)criteria.list().get(0)).intValue();
+	}
 }

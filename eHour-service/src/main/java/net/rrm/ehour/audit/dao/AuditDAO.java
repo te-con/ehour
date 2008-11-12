@@ -14,4 +14,11 @@ public interface AuditDAO extends GenericDAO<Audit, Number>
 	 * @return
 	 */
 	public List<Audit> findAudit(AuditReportRequest request);
+	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public Number findAuditCount(AuditReportRequest request);
 }

@@ -1,5 +1,7 @@
 package net.rrm.ehour.ui.audit.model;
 
+import net.rrm.ehour.audit.service.dto.AuditReportRequest;
+
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.LoadableDetachableModel;
 
@@ -12,13 +14,13 @@ public class AuditReportCriteriaModel extends LoadableDetachableModel
 {
 	private static final long serialVersionUID = 7613019543226503699L;
 
-	/**
-	 * 
-	 */
-	public AuditReportCriteriaModel()
+	private AuditReportRequest request;
+	
+	public AuditReportCriteriaModel(AuditReportRequest request)
 	{
-		InjectorHolder.getInjector().inject(this);
+		this.request = request;
 	}
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -27,8 +29,25 @@ public class AuditReportCriteriaModel extends LoadableDetachableModel
 	@Override
 	protected Object load()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		InjectorHolder.getInjector().inject(this);
+		return request;
+	}
+
+	/**
+	 * @return the request
+	 */
+	public AuditReportRequest getRequest()
+	{
+		return request;
+	}
+
+
+	/**
+	 * @param request the request to set
+	 */
+	public void setRequest(AuditReportRequest request)
+	{
+		this.request = request;
 	}
 
 }

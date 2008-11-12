@@ -5,13 +5,13 @@ package net.rrm.ehour.audit.service;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.audit.dao.AuditDAO;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author thies
@@ -35,6 +35,7 @@ public class AuditServiceImpl implements AuditService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.audit.service.AuditService#getAudit(net.rrm.ehour.audit.service.dto.AuditReportRequest)
 	 */
+	@NonAuditable
 	public List<Audit> getAudit(AuditReportRequest request)
 	{
 		return auditDAO.findAudit(request);
@@ -48,6 +49,13 @@ public class AuditServiceImpl implements AuditService
 		this.auditDAO = auditDAO;
 	}
 
-
-
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.audit.service.AuditService#getAuditCount(net.rrm.ehour.audit.service.dto.AuditReportRequest)
+	 */
+	@NonAuditable
+	public Number getAuditCount(AuditReportRequest request)
+	{
+		return auditDAO.findAuditCount(request);
+	}
 }
