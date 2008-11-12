@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.panel.nav.admin;
 
+import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.border.GreyNavBorder;
 import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
 import net.rrm.ehour.ui.page.admin.customer.CustomerAdmin;
@@ -50,5 +51,6 @@ public class AdminNavPanel extends Panel
 		greyNavBorder.add(new BookmarkablePageLink("customerAdmin", CustomerAdmin.class));
 		greyNavBorder.add(new BookmarkablePageLink("projectAdmin", ProjectAdmin.class));
 		greyNavBorder.add(new BookmarkablePageLink("assignmentAdmin", AssignmentAdmin.class));
+		greyNavBorder.add(new BookmarkablePageLink("auditReport", AuditReportPage.class));
 	}
 }
