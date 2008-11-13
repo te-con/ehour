@@ -21,10 +21,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 
-/**
- * TODO 
- **/
-
 public class TimesheetComment extends DomainObject<TimesheetCommentId, TimesheetComment>
 {
 	/**
@@ -33,7 +29,24 @@ public class TimesheetComment extends DomainObject<TimesheetCommentId, Timesheet
 	private static final long serialVersionUID = 7067367393719500506L;
 	private TimesheetCommentId	commentId;
 	private	String				comment;
+	private Boolean				newComment = Boolean.FALSE; // not persisted
 	
+	/**
+	 * @return the newComment
+	 */
+	public Boolean getNewComment()
+	{
+		return newComment;
+	}
+
+	/**
+	 * @param newComment the newComment to set
+	 */
+	public void setNewComment(Boolean newComment)
+	{
+		this.newComment = newComment;
+	}
+
 	public TimesheetComment()
 	{
 		

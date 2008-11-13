@@ -52,7 +52,9 @@ import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Provides services for displaying and manipulating timesheets.
@@ -287,6 +289,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.timesheet.service.TimesheetService#persistTimesheetWeek(java.util.Collection, net.rrm.ehour.domain.TimesheetComment, net.rrm.ehour.data.DateRange)
 	 */
+	@Transactional
 	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, 
 																TimesheetComment comment,
 																DateRange weekRange)
@@ -305,9 +308,13 @@ public class TimesheetServiceImpl implements TimesheetService
 				errorStatusses.add( e.getStatus());
 			}
 		}
-
-		logger.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
-		timesheetCommentDAO.persist(comment);
+		
+		if (comment.getNewComment() == Boolean.FALSE ||
+				!StringUtils.isBlank(comment.getComment()))
+		{
+			logger.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
+			timesheetCommentDAO.persist(comment);
+		}
 		
 		return errorStatusses;
 	}
@@ -341,6 +348,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.timesheet.service.TimesheetService#deleteTimesheetEntries(net.rrm.ehour.user.domain.User)
 	 */
+	@Transactional
 	public void deleteTimesheetEntries(User user)
 	{
 		timesheetCommentDAO.deleteCommentsForUser(user.getUserId());

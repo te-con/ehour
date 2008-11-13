@@ -194,7 +194,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 		return new ToStringBuilder(this).append("assignmentId", getAssignmentId())
 										.append("project", getProject())
 										.append("user", getUser())
-										.append("type", getAssignmentType())		
+//										.append("type", getAssignmentType())		
 										.append("dateStart", getDateStart())
 										.append("dateEnd", getDateEnd())
 										.toString();

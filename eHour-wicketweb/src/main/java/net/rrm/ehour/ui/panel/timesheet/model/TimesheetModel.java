@@ -23,6 +23,7 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
@@ -32,21 +33,22 @@ import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Model that holds the timesheet
  **/
 
-public class TimesheetModel extends LoadableDetachableModel
+public class TimesheetModel implements IModel
 {
 	private static final long serialVersionUID = 4134613450587087107L;
 
 	@SpringBean
-	private TimesheetService timesheetService;
+	private transient TimesheetService timesheetService;
 	private	User				user;
 	private Calendar			forWeek;
+	private Timesheet			timesheet;
 	
 	/**
 	 * 
@@ -57,6 +59,8 @@ public class TimesheetModel extends LoadableDetachableModel
 		
 		this.user = user;
 		this.forWeek = forWeek;
+		
+		timesheet = load();
 	}
 
 	/**
@@ -65,6 +69,8 @@ public class TimesheetModel extends LoadableDetachableModel
 	 */
 	public List<ProjectAssignmentStatus> persistTimesheet()
 	{
+		InjectorHolder.getInjector().inject(this);
+		
 		Timesheet timesheet = (Timesheet)getObject();
 		
 		return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(), 
@@ -91,12 +97,11 @@ public class TimesheetModel extends LoadableDetachableModel
 		return ((Timesheet)getObject()).getWeekEnd();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.model.LoadableDetachableModel#load()
+	/**
+	 * 
+	 * @return
 	 */
-	@Override
-	protected Object load()
+	private Timesheet load()
 	{
 		WeekOverview	weekOverview;
 		Timesheet		timesheet;
@@ -108,8 +113,33 @@ public class TimesheetModel extends LoadableDetachableModel
 		
 		timesheet = getTimesheetAssembler(config).createTimesheetForm(weekOverview);		
 		
+		if (timesheet.getComment() == null)
+		{
+			TimesheetComment comment = new TimesheetComment();
+			comment.setNewComment(Boolean.TRUE);
+			timesheet.setComment(comment);
+		}
+		
 		return timesheet;
 	}
+
+
+	public Object getObject()
+	{
+		return timesheet;
+	}
+
+	public void setObject(Object object)
+	{
+		this.timesheet = (Timesheet)object;
+		
+	}
+
+	public void detach()
+	{
+		timesheetService = null;
+	}	
+	
 	
 	/**
 	 * Get timesheet assembler
@@ -119,6 +149,6 @@ public class TimesheetModel extends LoadableDetachableModel
 	private TimesheetAssembler getTimesheetAssembler(EhourConfig config)
 	{
 		return new TimesheetAssembler(config);
-	}	
-
+	}
+	
 }

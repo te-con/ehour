@@ -28,7 +28,6 @@ import java.util.Map;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.CustomerFoldPreference;
-import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
@@ -86,16 +85,17 @@ import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 public class TimesheetPanel extends Panel implements Serializable
 {
 	private static final long serialVersionUID = 7704288648724599187L;
-	
+
 	@SpringBean
-	private UserService			userService;
-	
-	private	EhourConfig		config;
-	private WebComponent	serverMsgLabel;
+	private UserService userService;
+
+	private EhourConfig config;
+	private WebComponent serverMsgLabel;
 	private Form timesheetForm;
-	
+
 	/**
 	 * Construct timesheetPanel for entering hours
+	 * 
 	 * @param id
 	 * @param user
 	 * @param forWeek
@@ -103,10 +103,10 @@ public class TimesheetPanel extends Panel implements Serializable
 	public TimesheetPanel(String id, User user, Calendar forWeek)
 	{
 		super(id);
-		
-		EhourWebSession 	session = (EhourWebSession)getSession();
-		GrandTotal			grandTotals = new GrandTotal();
-		
+
+		EhourWebSession session = (EhourWebSession) getSession();
+		GrandTotal grandTotals = new GrandTotal();
+
 		config = session.getEhourConfig();
 
 		// dom id's
@@ -115,29 +115,25 @@ public class TimesheetPanel extends Panel implements Serializable
 		// set the model
 		TimesheetModel timesheet = new TimesheetModel(user, forWeek);
 		setModel(timesheet);
-		
+
 		// grey & blue frame border
-		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", 
-																				getWeekNavigation(forWeek, 
-																									timesheet.getWeekStart(), 
-																									timesheet.getWeekEnd()),
-																				CommonWebUtil.GREYFRAME_WIDTH);
+		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", getWeekNavigation(forWeek, timesheet.getWeekStart(), timesheet.getWeekEnd()), CommonWebUtil.GREYFRAME_WIDTH);
 		add(greyBorder);
 
 		// add form
 		timesheetForm = new Form("timesheetForm");
 		timesheetForm.setOutputMarkupId(true);
 		greyBorder.add(timesheetForm);
-		
+
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		timesheetForm.add(blueBorder);
 
 		// setup form
 		grandTotals = buildForm(timesheetForm, blueBorder);
-		
+
 		// add last row with grand totals
 		addGrandTotals(blueBorder, grandTotals, timesheet.getWeekStart());
-		
+
 		// add label dates
 		addDateLabels(blueBorder);
 
@@ -146,12 +142,12 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		// attach onsubmit ajax events
 		setSubmitActions(timesheetForm, commentsFrame);
-		
+
 		// server message
 		serverMsgLabel = new WebComponent("serverMessage");
 		serverMsgLabel.setOutputMarkupId(true);
 		commentsFrame.add(serverMsgLabel);
-		
+
 		// add CSS & JS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
 		addJavascript(this);
@@ -159,6 +155,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
 	/**
 	 * Add week navigation to title
+	 * 
 	 * @param parent
 	 * @param forWeek
 	 */
@@ -167,18 +164,14 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
-		
+
 		Calendar cal = DateUtil.getCalendar(config);
 		cal.setTime(weekStart);
-		
-		IModel weekLabelModel = new StringResourceModel("timesheet.weekTitle",
-								this, null,
-								new Object[]{cal.get(Calendar.WEEK_OF_YEAR),
-												dateFormatter.format(weekStart),
-												dateFormatter.format(weekEnd)});
+
+		IModel weekLabelModel = new StringResourceModel("timesheet.weekTitle", this, null, new Object[] { cal.get(Calendar.WEEK_OF_YEAR), dateFormatter.format(weekStart), dateFormatter.format(weekEnd) });
 
 		titleFragment.add(new Label("titleLabel", weekLabelModel));
-		
+
 		AjaxLink previousWeekLink = new AjaxLink("previousWeek")
 		{
 			@Override
@@ -187,9 +180,9 @@ public class TimesheetPanel extends Panel implements Serializable
 				moveWeek(weekStart, target, -1);
 			}
 		};
-		
+
 		titleFragment.add(previousWeekLink);
-		
+
 		AjaxLink nextWeekLink = new AjaxLink("nextWeek")
 		{
 			@Override
@@ -198,57 +191,51 @@ public class TimesheetPanel extends Panel implements Serializable
 				moveWeek(weekStart, target, 1);
 			}
 		};
-		
-		titleFragment.add(nextWeekLink);		
-		
+
+		titleFragment.add(nextWeekLink);
+
 		return titleFragment;
 	}
-	
+
 	/**
 	 * Create comments input
+	 * 
 	 * @param parent
 	 * @param timesheet
 	 */
 	private MarkupContainer createCommentsInput(WebMarkupContainer parent)
 	{
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("commentsFrame");
-		
-		Timesheet timesheet = (Timesheet)getModelObject();
-		
-		if (timesheet.getComment() == null)
-		{
-			timesheet.setComment(new TimesheetComment());
-		}
-		
-		TextArea	textArea = new KeepAliveTextArea("commentsArea", new PropertyModel(timesheet, "comment.comment"));
+
+		Timesheet timesheet = (Timesheet) getModelObject();
+
+		TextArea textArea = new KeepAliveTextArea("commentsArea", new PropertyModel(timesheet, "comment.comment"));
 		textArea.add(CommonModifiers.tabIndexModifier(2));
 		blueBorder.add(textArea);
 		parent.add(blueBorder);
-		
+
 		return blueBorder;
 	}
-	
+
 	/**
 	 * Add grand totals to form
+	 * 
 	 * @param parent
 	 * @param grandTotals
 	 */
 	private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals, Date weekStart)
 	{
-		Label		total;
-		
+		Label total;
+
 		Calendar dateIterator = new GregorianCalendar();
 		dateIterator.setTime(weekStart);
-		
-		for (int i = 1;
-				i <= 7; 
-				i++, dateIterator.add(Calendar.DAY_OF_YEAR, 1))
+
+		for (int i = 1; i <= 7; i++, dateIterator.add(Calendar.DAY_OF_YEAR, 1))
 		{
-			total = new Label("day" + i + "Total", 
-							new FloatModel(new PropertyModel(grandTotals, "getValues[" + (dateIterator.get(Calendar.DAY_OF_WEEK) - 1) + "]"), config));
+			total = new Label("day" + i + "Total", new FloatModel(new PropertyModel(grandTotals, "getValues[" + (dateIterator.get(Calendar.DAY_OF_WEEK) - 1) + "]"), config));
 			total.setOutputMarkupId(true);
 			parent.add(total);
-			
+
 			grandTotals.addOrder(i, dateIterator.get(Calendar.DAY_OF_WEEK) - 1);
 		}
 
@@ -256,9 +243,10 @@ public class TimesheetPanel extends Panel implements Serializable
 		total.setOutputMarkupId(true);
 		parent.add(total);
 	}
-	
+
 	/**
 	 * Set submit actions for form
+	 * 
 	 * @param form
 	 * @param timesheet
 	 */
@@ -270,116 +258,111 @@ public class TimesheetPanel extends Panel implements Serializable
 			private static final long serialVersionUID = 1L;
 
 			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form form)
+			protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				List<ProjectAssignmentStatus> failedProjects =  persistTimesheetEntries();
+				List<ProjectAssignmentStatus> failedProjects = persistTimesheetEntries();
 
 				// success
 				if (failedProjects.isEmpty())
 				{
 					target.addComponent(updatePostPersistMessage());
-				}
-				else
+				} else
 				{
 					target.addComponent(updateErrorMessage());
 				}
-				
+
 				addFailedProjectMessages(failedProjects, target);
-					
+
 				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.TIMESHEET_SUBMIT));
-            }
+			}
 
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
 				return new LoadingSpinnerDecorator();
-			}			
-			
+			}
+
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form form)
 			{
-                form.visitFormComponents(new FormHighlighter(target));
-            }
-        });
-		
+				form.visitFormComponents(new FormHighlighter(target));
+			}
+		});
+
 		// reset, should fetch the original contents
 		AjaxButton resetButton = new AjaxButton("resetButton", form)
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form form)
+			protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				// basically fake a week click
 				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.WEEK_NAV));
-            }			
+			}
 		};
 
 		resetButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("timesheet.confirmReset")));
-		
+
 		resetButton.setDefaultFormProcessing(false);
 		parent.add(resetButton);
 	}
-	
+
 	/**
 	 * Add failed projects to overview
+	 * 
 	 * @param failedProjects
 	 * @param target
 	 */
 	private void addFailedProjectMessages(List<ProjectAssignmentStatus> failedProjects, final AjaxRequestTarget target)
 	{
-		((Timesheet)getModelObject()).updateFailedProjects(failedProjects);
+		((Timesheet) getModelObject()).updateFailedProjects(failedProjects);
 
 		timesheetForm.visitChildren(Label.class, new IVisitor()
 		{
 			public Object component(Component component)
 			{
-				Label label = (Label)component;
+				Label label = (Label) component;
 				if (label.getId().equals("status"))
 				{
 					target.addComponent(label);
 				}
-				
+
 				return IVisitor.CONTINUE_TRAVERSAL;
 			}
 		});
 	}
-	
+
 	/**
 	 * Set message that the hours are saved
+	 * 
 	 * @param timesheet
 	 * @param target
 	 */
 	private Label updatePostPersistMessage()
 	{
 		// server message
-		IModel model = new StringResourceModel("timesheet.weekSaved", 
-													TimesheetPanel.this, 
-													null,
-													new Object[]{new PropertyModel(getModel(), "timesheet.totalBookedHours"),
-																	new DateModel(new PropertyModel(getModel(), "weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
-																	new DateModel(new PropertyModel(getModel(), "weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT)});
+		IModel model = new StringResourceModel("timesheet.weekSaved", TimesheetPanel.this, null, new Object[] { new PropertyModel(getModel(), "totalBookedHours"), new DateModel(new PropertyModel(getModel(), "weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
+				new DateModel(new PropertyModel(getModel(), "weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT) });
 
 		return updateServerMessage(model);
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	private Label updateErrorMessage()
 	{
-		IModel model = new StringResourceModel("timesheet.errorPersist",
-													TimesheetPanel.this, 
-													null,
-													new Object[]{});
+		IModel model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null, new Object[] {});
 
 		return updateServerMessage(model);
 	}
-	
+
 	/**
 	 * Update server message
+	 * 
 	 * @param model
 	 */
 	private Label updateServerMessage(IModel model)
@@ -391,59 +374,62 @@ public class TimesheetPanel extends Panel implements Serializable
 		serverMsgLabel = label;
 		return label;
 	}
-	
+
 	/**
 	 * Add date labels (sun/mon etc)
 	 */
 	private void addDateLabels(WebMarkupContainer parent)
 	{
-		Label	label;
-		
+		Label label;
+
 		for (int i = 1, j = 0; i <= 7; i++, j++)
 		{
-			label = new Label("day" + i + "Label", new DateModel(new PropertyModel(getModelObject(), "dateSequence[" +j + "]"), config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+			label = new Label("day" + i + "Label", new DateModel(new PropertyModel(getModelObject(), "dateSequence[" + j + "]"), config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
 			label.setEscapeModelStrings(false);
 			parent.add(label);
 		}
 	}
-	
+
 	/**
 	 * Move to next week after succesfull form submit or week navigation
+	 * 
 	 * @param target
 	 */
 	private void moveWeek(Date onScreenDate, AjaxRequestTarget target, int weekDiff)
 	{
-		EhourWebSession session = (EhourWebSession)getSession();
-		Calendar	cal = DateUtil.getCalendar(config);
+		EhourWebSession session = (EhourWebSession) getSession();
+		Calendar cal = DateUtil.getCalendar(config);
 
 		cal.setTime(onScreenDate);
 		cal.add(Calendar.WEEK_OF_YEAR, weekDiff);
 
 		// should update calendar as well
 		session.setNavCalendar(cal);
-		
+
 		AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.WEEK_NAV));
 	}
-	
+
 	/**
 	 * Persist timesheet entries
+	 * 
 	 * @param timesheet
-	 * @throws OverBudgetException 
+	 * @throws OverBudgetException
 	 */
 	private List<ProjectAssignmentStatus> persistTimesheetEntries()
 	{
-		return ((TimesheetModel)getModel()).persistTimesheet();
+		return ((TimesheetModel) getModel()).persistTimesheet();
 	}
-	
+
 	/**
 	 * Build form
+	 * 
 	 * @param parent
 	 * @param timesheet
 	 */
 	private GrandTotal buildForm(final Form form, WebMarkupContainer parent)
 	{
-		final GrandTotal	grandTotals = new GrandTotal();
-		
+		final GrandTotal grandTotals = new GrandTotal();
+
 		ListView customers = new ListView("customers", new PropertyModel(getModelObject(), "customerList"))
 		{
 			private static final long serialVersionUID = 1L;
@@ -451,39 +437,41 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
 			protected void populateItem(ListItem item)
 			{
-				final Customer	customer = (Customer)item.getModelObject();
-				
-				Timesheet timesheet = (Timesheet)TimesheetPanel.this.getModelObject();
+				final Customer customer = (Customer) item.getModelObject();
+
+				Timesheet timesheet = (Timesheet) TimesheetPanel.this.getModelObject();
 
 				// check for any preference
 				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
-				
+
 				if (foldPreference == null)
 				{
 					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
-				}				
-				
+				}
+
 				boolean hidden = (foldPreference != null && foldPreference.isFolded());
-				
+
 				AjaxLink foldLink = getFoldLink(customer.getCustomerId().toString(), foldPreference);
 				foldLink.add(new SimpleAttributeModifier("class", hidden ? "timesheetFoldedImg" : "timesheetFoldImg"));
 				item.add(foldLink);
-				
+
 				item.add(getCustomerLabel(customer, foldPreference));
-//				item.add(new Label("customerDesc", customer.getDescription()));
-				
+				// item.add(new Label("customerDesc",
+				// customer.getDescription()));
+
 				item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), hidden, grandTotals, form));
 			}
 		};
 		customers.setReuseItems(true);
-		
+
 		parent.add(customers);
-		
+
 		return grandTotals;
 	}
 
 	/**
 	 * Add fold link
+	 * 
 	 * @param id
 	 * @param foldPreference
 	 * @return
@@ -500,27 +488,28 @@ public class TimesheetPanel extends Panel implements Serializable
 				foldPreference.toggleFolded();
 				userService.persistCustomerFoldPreference(foldPreference);
 			}
-			
+
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
 				return new OnClickDecorator("toggleProjectRow", id);
-			}					
+			}
 		};
-		
+
 		foldLink.add(new SimpleAttributeModifier("id", "foldcss" + id));
-		
+
 		return foldLink;
 	}
-	
+
 	/**
 	 * Get customer label
+	 * 
 	 * @param customer
 	 * @return
 	 */
 	private Label getCustomerLabel(final Customer customer, final CustomerFoldPreference foldPreference)
 	{
-		Label	label;
+		Label label;
 		label = new Label("customer", customer.getName());
 
 		label.add(new AjaxEventBehavior("onclick")
@@ -538,15 +527,15 @@ public class TimesheetPanel extends Panel implements Serializable
 			protected IAjaxCallDecorator getAjaxCallDecorator()
 			{
 				return new OnClickDecorator("toggleProjectRow", customer.getCustomerId().toString());
-			}					
-		});		
-		
+			}
+		});
+
 		return label;
 	}
-	
+
 	/**
-	 * Add javascript with replaced images
-	 * TODO add js directly to header
+	 * Add javascript with replaced images TODO add js directly to header
+	 * 
 	 * @param container
 	 */
 	private void addJavascript(WebMarkupContainer container)
@@ -554,7 +543,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		PackagedTextTemplate js = new PackagedTextTemplate(TimesheetPanel.class, "js/timesheet.js");
 
 		Map<String, CharSequence> map = new HashMap<String, CharSequence>();
-		
-		add(TextTemplateHeaderContributor.forJavaScript(js, new Model((Serializable)map)));
-	}	
+
+		add(TextTemplateHeaderContributor.forJavaScript(js, new Model((Serializable) map)));
+	}
 }
