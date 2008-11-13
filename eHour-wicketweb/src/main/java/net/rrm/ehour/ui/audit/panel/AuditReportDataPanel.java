@@ -88,7 +88,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 			{
 				Audit audit = (Audit)item.getModelObject();
 				
-				item.add(new Label("userName", audit.getUserName()));
+				item.add(new Label("userName", audit.getUserFullName()));
 				item.add(new Label("date", new DateModel(audit.getDate(), config)));
 				item.add(new Label("actionType", audit.getAuditActionType().getValue()));
 				item.add(new Label("action", audit.getAction()));

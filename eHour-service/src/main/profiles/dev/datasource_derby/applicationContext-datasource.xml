@@ -13,8 +13,8 @@
 	<bean id="dbValidator" class="net.rrm.ehour.init.DerbyDbValidator"
 		init-method="checkDatabaseState">
 		<property name="dataSource" ref="eHourDataSource" />
-		<property name="version" value="0.8.0.1" />
-		<property name="ddlFile" value="classpath:db/ddl-ehour-0.8.0.xml" />
-		<property name="dmlFile" value="classpath:db/dml-ehour-0.8.0.xml" />
+		<property name="version" value="0.8.3" />
+		<property name="ddlFile" value="classpath:db/ddl-ehour-0.8.3.xml" />
+		<property name="dmlFile" value="classpath:db/dml-ehour-0.8.3.xml" />
 	</bean>
 </beans>

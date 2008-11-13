@@ -193,7 +193,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 			auditService.persistAudit(new Audit()
 										.setAuditActionType(AuditActionType.LOGIN)
 										.setUser(user)
-										.setUserName(user.getFullName())
+										.setUserFullName(user.getFullName())
 										.setDate(new Date())
 										.setSuccess(Boolean.TRUE));												
 		
@@ -281,7 +281,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 		auditService.persistAudit(new Audit()
 			.setAuditActionType(AuditActionType.LOGOUT)
 			.setUser(user.getUser())
-			.setUserName(user.getUser().getFullName())
+			.setUserFullName(user.getUser().getFullName())
 			.setDate(new Date())
 			.setSuccess(Boolean.TRUE));			
 	}

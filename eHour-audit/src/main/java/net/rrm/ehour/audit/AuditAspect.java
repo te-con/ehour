@@ -277,7 +277,7 @@ public class AuditAspect
 		
 		Audit audit = new Audit()
 				.setUser(user)
-				.setUserName(user != null ? user.getFullName() : null)
+				.setUserFullName(user != null ? user.getFullName() : null)
 				.setDate(new Date())
 				.setSuccess(success)
 				.setAction(pjp.getSignature().toShortString())

@@ -138,6 +138,6 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	 */
 	public AuditType getAuditType()
 	{
-		return AuditType.fromString(this.getString("auditType", "NONE"));
+		return AuditType.fromString(this.getString("auditType", "WRITE"));
 	}
 }

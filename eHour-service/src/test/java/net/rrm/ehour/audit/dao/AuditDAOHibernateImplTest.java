@@ -31,9 +31,10 @@ public class AuditDAOHibernateImplTest extends BaseDAOTest
 										.setOffset(10);
 		
 		List<Audit> res = auditDAO.findAudit(request);
-		
+
 		assertEquals(20, res.size());
 		assertEquals(70, res.get(0).getAuditId());
+		
 	}
 	
 	@Test

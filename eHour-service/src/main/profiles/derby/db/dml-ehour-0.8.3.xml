@@ -10,9 +10,10 @@
   <configuration config_key="mailFrom" config_value="admin@localhost.net"></configuration>
   <configuration config_key="mailSmtp" config_value="127.0.0.1"></configuration>
   <configuration config_key="smtpPort" config_value="25"></configuration>
-  <configuration config_key="version" config_value="0.8.0.1"></configuration>
+  <configuration config_key="version" config_value="0.8.3"></configuration>
   <configuration config_key="demoMode" config_value="false"></configuration>
   <configuration config_key="initialized" config_value="false"></configuration>
+  <configuration config_key="auditType" config_value="WRITE"></configuration>
   <mail_type MAIL_TYPE_ID="1" MAIL_TYPE="FIXED_ALLOTTED_REACHED"></mail_type>
   <mail_type MAIL_TYPE_ID="2" MAIL_TYPE="FLEX_ALLOTTED_REACHED"></mail_type>
   <mail_type MAIL_TYPE_ID="3" MAIL_TYPE="FLEX_OVERRUN_REACHED"></mail_type>

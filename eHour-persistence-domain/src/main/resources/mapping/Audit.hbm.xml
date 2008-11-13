@@ -14,7 +14,7 @@
             <column name="USER_ID" />
         </many-to-one>
         
-        <property name="userName" column="USER" type="string" />
+        <property name="userFullName" column="USER_FULLNAME" type="string" />
         <property name="date" column="AUDIT_DATE" type="timestamp" />
         <property name="page" column="PAGE" type="string" />
 		<property name="action" column="ACTION" type="string" />

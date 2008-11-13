@@ -202,4 +202,28 @@
         <index-column name="DEPARTMENT_ID"/>
       </index>
     </table>
+    <table name="audit">
+      <column name="AUDIT_ID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+      <column name="USER_ID" primaryKey="false" required="false" type="INTEGER" size="10" autoIncrement="false"/>
+      <column name="USER_FULLNAME" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false"/>
+      <column name="AUDIT_DATE" primaryKey="false" required="true" type="TIMESTAMP"  autoIncrement="false"/>
+      <column name="PAGE" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false"/>
+      <column name="ACTION" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false"/>
+      <column name="PARAMETERS" primaryKey="false" required="false" type="VARCHAR" size="1024" autoIncrement="false"/>
+      <column name="SUCCESS" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false"/>
+      <column name="AUDIT_ACTION_TYPE" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false"/>
+
+      <index name="IDX_AUDIT_DATE">
+        <index-column name="AUDIT_DATE"/>
+      </index>
+
+      <index name="IDX_AUDIT_USER_FULLNAME">
+        <index-column name="USER_FULLNAME"/>
+      </index>
+
+      <index name="IDX_AUDIT_ACTION_TYPE">
+        <index-column name="AUDIT_ACTION_TYPE"/>
+      </index>
+	</table>    
+    
   </database>

@@ -17,14 +17,15 @@ public class Audit extends DomainObject<Number, Audit>
 	private String 	action;
 	private String	parameters;
 	private Boolean	success;
-	private String	userName;
+	private String	userFullName;
 	private String	page;
+	private AuditActionType auditActionType;
 	
 	public String toString()
 	{
 		return new ToStringBuilder(this)
 						.append("auditId", auditId)
-						.append("user", user)
+						.append("userFullName", userFullName)
 						.append("date", date)
 						.append("action", action)
 						.toString();
@@ -50,22 +51,20 @@ public class Audit extends DomainObject<Number, Audit>
 	/**
 	 * @return the userName
 	 */
-	public String getUserName()
+	public String getUserFullName()
 	{
-		return userName;
+		return userFullName;
 	}
 
 	/**
 	 * @param userName the userName to set
 	 */
-	public Audit setUserName(String userName)
+	public Audit setUserFullName(String userFullName)
 	{
-		this.userName = userName;
+		this.userFullName = userFullName;
 		return this;
 	}
 
-	private AuditActionType auditActionType;
-	
 
 	/**
 	 * @return the parameters
