@@ -1,14 +1,12 @@
 package net.rrm.ehour.audit.service;
 
-import org.springframework.stereotype.Component;
-
 import net.rrm.ehour.audit.NonAuditable;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
-import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
+
+import org.springframework.stereotype.Component;
 
 @Component("configurationService")
 @NonAuditable

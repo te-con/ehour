@@ -37,12 +37,12 @@ public class MockAuditImpl implements AuditService
 		this.audit = audit;
 		called++;
 	}
-
+	@NonAuditable
 	public List<Audit> getAudit(AuditReportRequest request)
 	{
 		return null;
 	}
-
+	@NonAuditable
 	public Number getAuditCount(AuditReportRequest request)
 	{
 		// TODO Auto-generated method stub

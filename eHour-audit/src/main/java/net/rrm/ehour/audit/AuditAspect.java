@@ -270,7 +270,7 @@ public class AuditAspect
 
 		String page = null;
 		
-		if (RequestCycle.get().getResponsePage() != null)
+		if (RequestCycle.get() != null && RequestCycle.get().getResponsePage() != null)
 		{
 			page = RequestCycle.get().getResponsePage().getClass().getCanonicalName();
 		}
