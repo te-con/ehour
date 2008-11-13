@@ -95,7 +95,7 @@ public class Audit extends DomainObject<Number, Audit>
 	 */
 	public Audit setParameters(String parameters)
 	{
-		this.parameters = parameters;
+		this.parameters = (parameters.length() > 4096) ? parameters.substring(0, 4095) : parameters;
 		return this;
 	}
 

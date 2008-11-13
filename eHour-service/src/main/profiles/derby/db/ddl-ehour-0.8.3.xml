@@ -209,7 +209,7 @@
       <column name="AUDIT_DATE" primaryKey="false" required="true" type="TIMESTAMP"  autoIncrement="false"/>
       <column name="PAGE" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false"/>
       <column name="ACTION" primaryKey="false" required="false" type="VARCHAR" size="256" autoIncrement="false"/>
-      <column name="PARAMETERS" primaryKey="false" required="false" type="VARCHAR" size="1024" autoIncrement="false"/>
+      <column name="PARAMETERS" primaryKey="false" required="false" type="VARCHAR" size="4096" autoIncrement="false"/>
       <column name="SUCCESS" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false"/>
       <column name="AUDIT_ACTION_TYPE" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false"/>
 
