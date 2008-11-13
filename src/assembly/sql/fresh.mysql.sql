@@ -14,14 +14,17 @@ DROP TABLE IF EXISTS AUDIT;
 CREATE TABLE AUDIT (
 	AUDIT_ID INT(11)  NOT NULL AUTO_INCREMENT,
 	USER_ID INT(11) default NULL,
-	USER VARCHAR(256),
+	USER_FULLNAME VARCHAR(256),
 	AUDIT_DATE datetime,
 	PAGE VARCHAR(256),
 	ACTION VARCHAR(256),
 	PARAMETERS VARCHAR(1024),
 	SUCCESS char(1) character set latin1 NOT NULL,
 	AUDIT_ACTION_TYPE VARCHAR(32),
-  PRIMARY KEY  (AUDIT_ID)
+  PRIMARY KEY  (AUDIT_ID),
+  KEY `IDX_AUDIT_DATE` (`AUDIT_DATE`),
+  KEY `IDX_AUDIT_USER` (`USER_FULLNAME`),
+  KEY `IDX_AUDIT_ACTION_TYPE` (`AUDIT_ACTION_TYPE`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 --
 -- Table structure for table `CONFIGURATION`
@@ -40,7 +43,7 @@ CREATE TABLE `CONFIGURATION` (
 
 LOCK TABLES `CONFIGURATION` WRITE;
 /*!40000 ALTER TABLE `CONFIGURATION` DISABLE KEYS */;
-INSERT INTO `CONFIGURATION` VALUES ('initialized','false'),('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','Euro'),('localeCountry',NULL),('availableTranslations','en,nl,fr,it'),('mailFrom','noreply@localhost.net'),('smtpPort','25'),('mailSmtp','127.0.0.1'),('demoMode','false'),('version', '0.8');
+INSERT INTO `CONFIGURATION` VALUES ('initialized','false'),('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','Euro'),('localeCountry',NULL),('availableTranslations','en,nl,fr,it'),('mailFrom','noreply@localhost.net'),('smtpPort','25'),('mailSmtp','127.0.0.1'),('demoMode','false'),('version', '0.8.3');
 /*!40000 ALTER TABLE `CONFIGURATION` ENABLE KEYS */;
 UNLOCK TABLES;
 

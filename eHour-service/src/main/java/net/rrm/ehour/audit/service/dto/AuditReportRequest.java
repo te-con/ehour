@@ -3,7 +3,6 @@ package net.rrm.ehour.audit.service.dto;
 import java.io.Serializable;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
 
