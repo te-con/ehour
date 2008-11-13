@@ -3,7 +3,7 @@
  */
 package net.rrm.ehour.ui.audit.panel;
 
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 
 import org.apache.wicket.markup.html.border.Border;
@@ -25,7 +25,7 @@ public class AuditReportCriteriaPanel extends AbstractFormSubmittingPanel
 	
 	private void addComponents()
 	{
-		Border greyBorder = new GreyRoundedBorder("border", 500);
+		Border greyBorder = new GreyBlueRoundedBorder("border");
 		add(greyBorder);
 	}
 }

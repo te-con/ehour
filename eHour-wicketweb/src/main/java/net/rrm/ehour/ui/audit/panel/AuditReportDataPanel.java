@@ -1,22 +1,18 @@
 package net.rrm.ehour.ui.audit.panel;
 
-import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.model.AuditReportCriteriaModel;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
 import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.model.DateModel;
+import net.rrm.ehour.ui.component.datatable.AjaxDataTable;
 import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.Model;
 
 public class AuditReportDataPanel extends AbstractAjaxPanel
 {
@@ -40,64 +36,28 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 		add(greyBorder);
 		
 		greyBorder.add(getPagingDataView(model));
-		
 	}
 
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
 	private WebMarkupContainer getPagingDataView(AuditReportCriteriaModel model)
 	{
 		final WebMarkupContainer dataContainer = new WebMarkupContainer("dataContainer");
 		dataContainer.setOutputMarkupId(true);
+		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+        
+		IColumn[] columns = new IColumn[4];
+        columns[0] = new PropertyColumn(new Model("Date"), "date", "date");
+        columns[1] = new PropertyColumn(new Model("Last Name"), "userFullName", "userFullName");
+        columns[2] = new PropertyColumn(new Model("Action"), "action", "action");
+        columns[3] = new PropertyColumn(new Model("Type"), "auditActionType.value", "auditActionType.value");
 
-
-		DataView dataView =  getDataview(model);
-		dataContainer.add(dataView);
-		
-		AjaxPagingNavigator pager = new AjaxPagingNavigator("pager", dataView) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onAjaxEvent(AjaxRequestTarget target) {
-				target.addComponent(dataContainer);
-			}
-		};
-		dataContainer.add(pager);	
+        AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider(model.getRequest()), 10);
+		dataContainer.add(table);
 		
 		return dataContainer;
 	}
-	
-	/**
-	 * Add the dataview table
-	 * @return
-	 */
-	private DataView getDataview(AuditReportCriteriaModel model)
-	{
-		// TODO pass propertymodel to dataprovider
-		AuditReportRequest request = model.getRequest();
-		
-		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-		
-		DataView dataView = new DataView("data", new AuditReportDataProvider(request))
-		{
-			private static final long serialVersionUID = -2331713940323233655L;
-
-			@Override
-			protected void populateItem(Item item)
-			{
-				Audit audit = (Audit)item.getModelObject();
-				
-				item.add(new Label("userName", audit.getUserFullName()));
-				item.add(new Label("date", new DateModel(audit.getDate(), config)));
-				item.add(new Label("actionType", audit.getAuditActionType().getValue()));
-				item.add(new Label("action", audit.getAction()));
-			}
-		};
-		
-		dataView.setItemsPerPage(15);
-		
-		return dataView;
-	}
-	
 }
