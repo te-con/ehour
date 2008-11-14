@@ -69,6 +69,7 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		user = new User(1);
 		cal = new GregorianCalendar();
 		WeekOverview overview = new WeekOverview();
+		overview.setUser(new User(1));
 		overview.setWeekRange(new DateRange(new Date(), new Date()));
 		
 		TimesheetEntry entry = DummyDataGenerator.getTimesheetEntry(1, new Date(), 5);
@@ -105,9 +106,10 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 			}
 		});
 
-		FormTester timesheetFormTester = tester.newFormTester("panel:timesheetFrame:timesheetForm");
+//		FormTester timesheetFormTester = tester.newFormTester("panel:timesheetFrame:timesheetForm");
 		
-		timesheetFormTester.submit();
+		tester.executeAjaxEvent("panel:timesheetFrame:timesheetForm:commentsFrame:submitButton", "onclick");
+		
 		tester.assertNoErrorMessage();
 
 		verify(timesheetService);
