@@ -25,6 +25,7 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -32,8 +33,10 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
@@ -42,28 +45,29 @@ import net.rrm.ehour.ui.common.DummyDataGenerator;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TestPanelSource;
+import org.junit.Before;
 import org.junit.Test;
-/**
- * TODO 
- **/
 
 public class TimesheetPanelTest extends BaseUIWicketTester
 {
-	/**
-	 * Test method for {@link net.rrm.ehour.ui.panel.timesheet.TimesheetPanel#TimesheetPanel(java.lang.String, net.rrm.ehour.domain.User, java.util.Calendar)}.
-	 */
-	@Test
-	public void testTimesheetPanel()
+	private TimesheetService	timesheetService;
+	private UserService			userService;
+	private User				user;
+	private Calendar			cal;
+	
+	@Before
+	public void setup()
 	{
-		TimesheetService timesheetService = createMock(TimesheetService.class);
+		timesheetService = createMock(TimesheetService.class);
 		mockContext.putBean("timesheetService", timesheetService);
 
-		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);		
+		userService = createMock(UserService.class);
+		mockContext.putBean("userService", userService);
 		
-		final User user = new User(1);
-		final Calendar cal = new GregorianCalendar();
+		user = new User(1);
+		cal = new GregorianCalendar();
 		WeekOverview overview = new WeekOverview();
 		overview.setWeekRange(new DateRange(new Date(), new Date()));
 		
@@ -79,17 +83,20 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		overview.setFoldPreferences(new CustomerFoldPreferenceList());
 		
 		expect(timesheetService.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))
-				.andReturn(overview);		
+				.andReturn(overview);			
+	}
+	
+	@Test
+	public void shouldSubmitSuccessful()
+	{
+		expect(timesheetService.persistTimesheetWeek(isA(Collection.class), isA(TimesheetComment.class), isA(DateRange.class)))
+			.andReturn(new ArrayList<ProjectAssignmentStatus>());
 		
 		replay(timesheetService);
 		replay(userService);
 		
 		tester.startPanel(new TestPanelSource()
 		{
-
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = -8296677055637030118L;
 
 			public Panel getTestPanel(String panelId)
@@ -98,10 +105,12 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 			}
 		});
 
-		tester.assertNoErrorMessage();
+		FormTester timesheetFormTester = tester.newFormTester("panel:timesheetFrame:timesheetForm");
 		
+		timesheetFormTester.submit();
+		tester.assertNoErrorMessage();
+
 		verify(timesheetService);
 		verify(userService);
 	}
-
 }

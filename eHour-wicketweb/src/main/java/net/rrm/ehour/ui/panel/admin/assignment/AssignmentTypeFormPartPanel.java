@@ -202,7 +202,7 @@ public class AssignmentTypeFormPartPanel extends Panel
         dateStart.add(new DatePicker());
 
         // container for hiding
-		final WebMarkupContainer	startDateHider = new WebMarkupContainer("startDateHider");
+		final WebMarkupContainer startDateHider = new WebMarkupContainer("startDateHider");
 		startDateHider.setOutputMarkupId(true);
 		
 		// indicator for validation issues
@@ -210,7 +210,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 
 		
 		// the inner hider is just there to hide the <br /> as well
-		final WebMarkupContainer	innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
+		final WebMarkupContainer innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
 		innerStartDateHider.setOutputMarkupId(true);
 		innerStartDateHider.add(dateStart);
 		innerStartDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteStartDateModel, true));
