@@ -27,5 +27,8 @@ public class AuditReportCriteriaPanel extends AbstractFormSubmittingPanel
 	{
 		Border greyBorder = new GreyBlueRoundedBorder("border");
 		add(greyBorder);
+		
+		AuditReportCriteriaForm form = new AuditReportCriteriaForm("criteriaForm");
+		greyBorder.add(form);
 	}
 }
