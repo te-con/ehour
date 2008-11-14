@@ -25,7 +25,7 @@ public class AuditReportPage extends BaseAdminPage
 		super(new ResourceModel("audit.report.title"), 
 					new AuditReportCriteriaModel(new AuditReportRequest()), "audit.help.header", "audit.help.body");
 	
-		criteriaPanel = new AuditReportCriteriaPanel("reportCriteria");
+		criteriaPanel = new AuditReportCriteriaPanel("reportCriteria", (AuditReportCriteriaModel)getModel());
 		add(criteriaPanel);
 		
 		dataPanel = new AuditReportDataPanel("reportData", (AuditReportCriteriaModel)getModel());

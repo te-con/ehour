@@ -27,9 +27,11 @@ public class AuditReportCriteriaForm extends Form
 {
 	private static final long serialVersionUID = -4033279032707727816L;
 
-	public AuditReportCriteriaForm(String id)
+	public AuditReportCriteriaForm(String id, IModel model)
 	{
-		super(id);
+		super(id, model);
+		
+		addDates(model);
 	}
 
 	/**
@@ -38,7 +40,7 @@ public class AuditReportCriteriaForm extends Form
 	 * @param form
 	 * @param model
 	 */
-	private void addDates(Form form, final IModel model)
+	private void addDates(final IModel model)
 	{
 		PropertyModel infiniteStartDateModel = new PropertyModel(model, "infiniteStartDate");
 		PropertyModel infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
@@ -121,6 +123,6 @@ public class AuditReportCriteriaForm extends Form
 
 		endDateHider.add(infiniteEnd);
 
-		form.add(new DateOverlapValidator(dateStart, dateEnd));
+		add(new DateOverlapValidator(dateStart, dateEnd));
 	}
 }

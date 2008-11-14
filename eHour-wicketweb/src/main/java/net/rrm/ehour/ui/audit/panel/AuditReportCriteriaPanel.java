@@ -3,6 +3,7 @@
  */
 package net.rrm.ehour.ui.audit.panel;
 
+import net.rrm.ehour.ui.audit.model.AuditReportCriteriaModel;
 import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 
@@ -16,19 +17,19 @@ public class AuditReportCriteriaPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = -5442954150653475254L;
 
-	public AuditReportCriteriaPanel(String id)
+	public AuditReportCriteriaPanel(String id, AuditReportCriteriaModel model)
 	{
-		super(id);
+		super(id, model);
 		
-		addComponents();
+		addComponents(model);
 	}
 	
-	private void addComponents()
+	private void addComponents(AuditReportCriteriaModel model)
 	{
 		Border greyBorder = new GreyBlueRoundedBorder("border");
 		add(greyBorder);
 		
-		AuditReportCriteriaForm form = new AuditReportCriteriaForm("criteriaForm");
+		AuditReportCriteriaForm form = new AuditReportCriteriaForm("criteriaForm", model);
 		greyBorder.add(form);
 	}
 }
