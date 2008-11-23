@@ -1,7 +1,8 @@
 /**
- * Created on Mar 19, 2007
- * Created by Thies Edeling
- * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
+ * Created on May 28, 2008
+ * Author: Thies
+ *
+ * Copyright (C) 2007 TE-CON, All Rights Reserved.
  *
  * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
  * TE-CON holds all the ownership rights on the Software.
@@ -14,24 +15,16 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.timesheet.util;
+package net.rrm.ehour.ui.timesheet.common;
 
-import java.util.Comparator;
-
-import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
-
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 
 /**
  * TODO 
  **/
 
-public class TimesheetRowComparator implements Comparator<TimesheetRow>
+public enum TimesheetAjaxEventType implements AjaxEventType
 {
-
-	public int compare(TimesheetRow o1, TimesheetRow o2)
-	{
-		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
-				o2.getProjectAssignment().getProject().getName());
-	}
-
+	WEEK_NAV,
+	TIMESHEET_SUBMIT;
 }

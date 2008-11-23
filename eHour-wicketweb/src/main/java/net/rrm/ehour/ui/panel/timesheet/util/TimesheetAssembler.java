@@ -33,9 +33,9 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
-import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
-import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetCell;
-import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
+import net.rrm.ehour.ui.timesheet.dto.Timesheet;
+import net.rrm.ehour.ui.timesheet.dto.TimesheetCell;
+import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.util.DateUtil;
 
 /**

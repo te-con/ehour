@@ -1,5 +1,5 @@
 /**
- * Created on Mar 19, 2007
+ * Created on Aug 27, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -14,24 +14,28 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.timesheet.util;
+package net.rrm.ehour.ui.common.renderers;
 
-import java.util.Comparator;
-
-import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
-
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.ui.util.CommonWebUtil;
 
 /**
- * TODO 
+ * ProjectAssignment renderer
  **/
 
-public class TimesheetRowComparator implements Comparator<TimesheetRow>
+public class ProjectAssignmentTypeRenderer extends LocalizedResourceRenderer
 {
-
-	public int compare(TimesheetRow o1, TimesheetRow o2)
+	private static final long serialVersionUID = -4020935210828625185L;
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer#getResourceKey(java.lang.Object)
+	 */
+	@Override
+	protected String getResourceKey(Object o)
 	{
-		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
-				o2.getProjectAssignment().getProject().getName());
+		ProjectAssignmentType	pat = (ProjectAssignmentType)o;
+		
+		return CommonWebUtil.getResourceKeyForProjectAssignmentType(pat);
 	}
 
 }

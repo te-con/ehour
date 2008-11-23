@@ -23,8 +23,8 @@ import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
-import net.rrm.ehour.ui.panel.timesheet.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.panel.user.form.prefs.UserPasswordChangePanel;
+import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.page.Overview;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;

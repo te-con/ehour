@@ -22,13 +22,13 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.page.user.report.UserReportPrint;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
+import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartImage;
+import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartImage;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.ReportConfig;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
-import net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage;
-import net.rrm.ehour.ui.reportchart.aggregate.CustomerTurnoverAggregateImage;
-import net.rrm.ehour.ui.reportchart.aggregate.ProjectHoursAggregateChartImage;
-import net.rrm.ehour.ui.reportchart.aggregate.ProjectTurnoverAggregateChartImage;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.ResourceReference;

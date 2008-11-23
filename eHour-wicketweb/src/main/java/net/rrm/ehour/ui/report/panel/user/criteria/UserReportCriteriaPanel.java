@@ -21,7 +21,7 @@ import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
-import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
+import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
