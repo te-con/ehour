@@ -27,7 +27,7 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.BaseAdminPage;
-import net.rrm.ehour.ui.admin.config.page.dto.MainConfigBackingBean;
+import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.ajax.DemoDecorator;
 import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;

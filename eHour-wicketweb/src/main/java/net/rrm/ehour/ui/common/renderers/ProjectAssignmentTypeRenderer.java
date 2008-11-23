@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.renderers;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.ui.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
 /**
  * ProjectAssignment renderer

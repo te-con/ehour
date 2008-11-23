@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.component;
 
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
-import net.rrm.ehour.ui.common.panel.NoEntrySelectedPanel;
+import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;

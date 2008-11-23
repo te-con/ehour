@@ -18,7 +18,7 @@
 package net.rrm.ehour.ui.common.renderers;
 
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
 /**
  * TODO 

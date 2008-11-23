@@ -30,7 +30,7 @@ import java.util.Date;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.ui.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 
 /**
  * Print report for printing a timesheet

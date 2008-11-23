@@ -31,14 +31,14 @@ import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
-import net.rrm.ehour.ui.common.panel.common.FormUtil;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.sort.CustomerComparator;
+import net.rrm.ehour.ui.common.sort.UserComparator;
 import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBeanImpl;
-import net.rrm.ehour.ui.sort.CustomerComparator;
-import net.rrm.ehour.ui.sort.UserComparator;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -192,7 +192,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
+	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
 	 */
 	@Override
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception

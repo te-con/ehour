@@ -34,7 +34,7 @@ import net.rrm.ehour.ui.common.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.util.HtmlUtil;
+import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;

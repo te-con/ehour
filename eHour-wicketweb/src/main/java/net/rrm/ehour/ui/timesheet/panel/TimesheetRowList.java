@@ -27,11 +27,11 @@ import net.rrm.ehour.ui.common.component.ModalWindowFix;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.validator.DoubleRangeWithNullValidator;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
-import net.rrm.ehour.ui.validator.DoubleRangeWithNullValidator;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.StringUtils;

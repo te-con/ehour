@@ -36,6 +36,8 @@ import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.sort.CustomerComparator;
+import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickDateAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickDropDownChoice;
@@ -47,8 +49,6 @@ import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeek;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeekRenderer;
 import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
 import net.rrm.ehour.ui.report.panel.criteria.type.ReportTypeRenderer;
-import net.rrm.ehour.ui.sort.CustomerComparator;
-import net.rrm.ehour.ui.sort.ProjectComparator;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;

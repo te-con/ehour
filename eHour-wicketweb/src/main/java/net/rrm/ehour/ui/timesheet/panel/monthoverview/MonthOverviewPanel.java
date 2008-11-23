@@ -27,10 +27,10 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
-import net.rrm.ehour.ui.common.page.user.print.PrintMonthSelection;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonWebUtil;
-import net.rrm.ehour.ui.util.HtmlUtil;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.HtmlUtil;
+import net.rrm.ehour.ui.print.page.PrintMonthSelection;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;

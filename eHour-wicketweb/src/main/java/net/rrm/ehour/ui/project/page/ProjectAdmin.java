@@ -32,10 +32,10 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import net.rrm.ehour.ui.project.components.ProjectAjaxEventType;
 import net.rrm.ehour.ui.project.components.ProjectFormPanel;
 import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBeanImpl;
-import net.rrm.ehour.ui.sort.ProjectComparator;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;

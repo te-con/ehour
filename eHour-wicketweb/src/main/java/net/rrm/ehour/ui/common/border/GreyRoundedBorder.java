@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.common.border;
 
-import net.rrm.ehour.ui.util.HtmlUtil;
+import net.rrm.ehour.ui.common.util.HtmlUtil;
 
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;

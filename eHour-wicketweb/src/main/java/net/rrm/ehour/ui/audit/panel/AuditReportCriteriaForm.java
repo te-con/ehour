@@ -3,8 +3,8 @@ package net.rrm.ehour.ui.audit.panel;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
-import net.rrm.ehour.ui.validator.ConditionalRequiredValidator;
-import net.rrm.ehour.ui.validator.DateOverlapValidator;
+import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
+import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;

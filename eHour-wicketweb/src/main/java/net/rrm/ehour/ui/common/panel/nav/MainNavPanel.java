@@ -17,15 +17,15 @@
 package net.rrm.ehour.ui.common.panel.nav;
 
 import net.rrm.ehour.ui.admin.config.page.MainConfig;
-import net.rrm.ehour.ui.common.page.login.Login;
-import net.rrm.ehour.ui.common.page.user.prefs.UserPreferencePage;
-import net.rrm.ehour.ui.common.page.user.print.PrintMonthSelection;
-import net.rrm.ehour.ui.common.page.user.report.UserReport;
+import net.rrm.ehour.ui.common.util.AuthUtil;
+import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
+import net.rrm.ehour.ui.print.page.PrintMonthSelection;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
+import net.rrm.ehour.ui.report.user.page.UserReport;
 import net.rrm.ehour.ui.timesheet.page.Overview;
-import net.rrm.ehour.ui.util.AuthUtil;
+import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
