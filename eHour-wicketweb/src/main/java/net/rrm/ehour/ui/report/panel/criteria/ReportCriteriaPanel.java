@@ -34,11 +34,11 @@ import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
-import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickDateAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickDropDownChoice;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonth;
@@ -548,7 +548,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.common.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

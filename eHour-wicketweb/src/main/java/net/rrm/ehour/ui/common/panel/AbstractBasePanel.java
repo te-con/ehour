@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel;
+package net.rrm.ehour.ui.common.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.EhourWebApplication;

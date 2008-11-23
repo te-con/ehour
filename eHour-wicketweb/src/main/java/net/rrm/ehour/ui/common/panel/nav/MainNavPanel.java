@@ -17,9 +17,9 @@
 package net.rrm.ehour.ui.common.panel.nav;
 
 import net.rrm.ehour.ui.admin.config.page.MainConfig;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.login.page.Login;
-import net.rrm.ehour.ui.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
 import net.rrm.ehour.ui.print.page.PrintMonthSelection;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;

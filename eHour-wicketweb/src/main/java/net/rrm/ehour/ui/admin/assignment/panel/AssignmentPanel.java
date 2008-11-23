@@ -26,7 +26,7 @@ import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
-import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
+import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.panel.Panel;

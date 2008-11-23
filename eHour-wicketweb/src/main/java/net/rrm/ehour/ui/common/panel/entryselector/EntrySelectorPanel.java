@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.panel.entryselector;
 import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
+import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;

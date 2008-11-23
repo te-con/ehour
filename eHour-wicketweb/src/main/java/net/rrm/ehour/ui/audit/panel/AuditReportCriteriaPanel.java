@@ -5,7 +5,7 @@ package net.rrm.ehour.ui.audit.panel;
 
 import net.rrm.ehour.ui.audit.model.AuditReportCriteriaModel;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
+import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 
 import org.apache.wicket.markup.html.border.Border;
 
