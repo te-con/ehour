@@ -32,8 +32,8 @@ import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 

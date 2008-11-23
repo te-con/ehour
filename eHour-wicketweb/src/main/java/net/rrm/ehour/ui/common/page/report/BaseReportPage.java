@@ -23,7 +23,7 @@ import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.page.BasePage;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;

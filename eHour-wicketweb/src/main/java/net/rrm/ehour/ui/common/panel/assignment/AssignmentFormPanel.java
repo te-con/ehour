@@ -37,8 +37,8 @@ import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.panel.common.FormUtil;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.ProjectComparator;
 
 import org.apache.log4j.Logger;

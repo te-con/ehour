@@ -18,7 +18,7 @@
 package net.rrm.ehour.ui.panel.report;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;

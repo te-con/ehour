@@ -32,8 +32,8 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.trend.PrintReport;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 

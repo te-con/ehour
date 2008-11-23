@@ -31,9 +31,9 @@ import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.CurrencyModel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.HtmlUtil;
 
 import org.apache.log4j.Logger;

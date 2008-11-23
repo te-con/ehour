@@ -26,8 +26,8 @@ import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.model.FloatModel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.renderers.ProjectAssignmentTypeRenderer;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.validator.DateOverlapValidator;
 

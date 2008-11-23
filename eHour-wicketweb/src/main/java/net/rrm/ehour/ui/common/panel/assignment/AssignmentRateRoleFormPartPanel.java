@@ -23,7 +23,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.model.FloatModel;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;

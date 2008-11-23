@@ -20,7 +20,7 @@ import java.text.NumberFormat;
 import java.util.Currency;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.model.Model;

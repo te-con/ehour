@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.entryselector;
+package net.rrm.ehour.ui.common.panel.entryselector;
 
 import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;

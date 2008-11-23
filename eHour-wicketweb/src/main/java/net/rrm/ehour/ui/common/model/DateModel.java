@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.model.IModel;

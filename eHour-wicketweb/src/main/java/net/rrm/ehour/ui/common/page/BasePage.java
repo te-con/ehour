@@ -21,7 +21,7 @@ import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.config.PageConfig;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;

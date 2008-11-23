@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.session;
+package net.rrm.ehour.ui.common.session;
 
 import java.util.Calendar;
 import java.util.Date;

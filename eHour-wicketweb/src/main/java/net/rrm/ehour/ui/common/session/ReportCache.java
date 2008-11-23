@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.session;
+package net.rrm.ehour.ui.common.session;
 
 import java.io.Serializable;
 import java.util.ArrayList;

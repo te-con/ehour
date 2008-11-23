@@ -28,10 +28,10 @@ import java.util.Map;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.reportchart.AbstractReportChartImage;
 import net.rrm.ehour.ui.reportchart.UpdatingTimeSeries;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.model.IModel;

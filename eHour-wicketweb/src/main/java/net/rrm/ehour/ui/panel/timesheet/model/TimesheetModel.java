@@ -28,9 +28,9 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.panel.timesheet.util.TimesheetAssembler;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.IModel;

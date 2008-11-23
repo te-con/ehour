@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.entryselector;
+package net.rrm.ehour.ui.common.panel.entryselector;
 
 import java.io.Serializable;
 

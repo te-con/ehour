@@ -22,10 +22,10 @@ import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.overview.OverviewPanel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.panel.timesheet.TimesheetPanel;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.timesheet.panel.OverviewPanel;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;

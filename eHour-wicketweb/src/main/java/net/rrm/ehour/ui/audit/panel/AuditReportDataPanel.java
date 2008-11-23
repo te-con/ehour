@@ -5,8 +5,8 @@ import net.rrm.ehour.ui.audit.model.AuditReportCriteriaModel;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.datatable.AjaxDataTable;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;

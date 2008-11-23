@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.model;
 import java.text.NumberFormat;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;

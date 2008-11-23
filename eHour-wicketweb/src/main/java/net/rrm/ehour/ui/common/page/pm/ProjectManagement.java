@@ -30,10 +30,10 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.panel.report.pm.PmReportPanel;
 import net.rrm.ehour.ui.panel.report.user.criteria.UserReportCriteriaPanel;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;

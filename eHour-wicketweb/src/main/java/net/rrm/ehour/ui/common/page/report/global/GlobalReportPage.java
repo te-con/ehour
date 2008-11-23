@@ -29,6 +29,7 @@ import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.page.report.BaseReportPage;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.report.aggregate.AggregateReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportPanel;
 import net.rrm.ehour.ui.panel.report.aggregate.EmployeeReportPanel;
@@ -43,7 +44,6 @@ import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;

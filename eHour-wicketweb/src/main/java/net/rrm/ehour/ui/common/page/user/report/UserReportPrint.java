@@ -19,9 +19,9 @@ package net.rrm.ehour.ui.common.page.user.report;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Session;

@@ -29,7 +29,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.department.form.DepartmentAjaxEventType;
 import net.rrm.ehour.ui.common.panel.department.form.DepartmentFormPanel;
 import net.rrm.ehour.ui.common.panel.department.form.dto.DepartmentAdminBackingBean;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.UserDepartmentComparator;
 import net.rrm.ehour.user.service.UserService;
 

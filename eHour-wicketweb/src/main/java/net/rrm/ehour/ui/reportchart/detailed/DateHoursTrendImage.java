@@ -20,9 +20,9 @@ package net.rrm.ehour.ui.reportchart.detailed;
 import java.util.Locale;
 
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.reportchart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.reportchart.rowkey.DateRowKey;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.model.IModel;
 

@@ -23,8 +23,8 @@ import java.util.List;
 
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;

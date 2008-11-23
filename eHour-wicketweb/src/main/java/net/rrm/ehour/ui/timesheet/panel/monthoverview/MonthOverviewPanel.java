@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.overview.monthoverview;
+package net.rrm.ehour.ui.timesheet.panel.monthoverview;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -28,7 +28,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.page.user.print.PrintMonthSelection;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.ui.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;

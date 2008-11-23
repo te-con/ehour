@@ -31,9 +31,9 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.customer.form.CustomerAjaxEventType;
 import net.rrm.ehour.ui.common.panel.customer.form.CustomerFormPanel;
 import net.rrm.ehour.ui.common.panel.customer.form.dto.CustomerAdminBackingBean;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 
 import org.apache.wicket.MarkupContainer;

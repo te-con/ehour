@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickDateAjaxEventType;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickDropDownChoice;
@@ -46,7 +47,6 @@ import net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer;
 import net.rrm.ehour.ui.panel.report.criteria.type.ReportType;
 import net.rrm.ehour.ui.panel.report.criteria.type.ReportTypeRenderer;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;
-import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.sort.CustomerComparator;
 import net.rrm.ehour.ui.sort.ProjectComparator;
 

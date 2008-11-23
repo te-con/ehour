@@ -17,8 +17,8 @@
 
 package net.rrm.ehour.ui.panel.report.user;
 
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.report.TreeReportColumn;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.wicket.model.IModel;
 

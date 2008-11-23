@@ -29,8 +29,8 @@ import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.common.FormUtil;
 import net.rrm.ehour.ui.common.panel.customer.form.dto.CustomerAdminBackingBean;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;

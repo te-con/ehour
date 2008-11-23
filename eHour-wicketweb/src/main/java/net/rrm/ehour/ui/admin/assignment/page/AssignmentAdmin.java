@@ -26,9 +26,9 @@ import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.panel.assignment.AssignmentPanel;
 import net.rrm.ehour.ui.common.panel.assignment.NoUserSelectedPanel;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorAjaxEventType;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorFilter;
-import net.rrm.ehour.ui.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 
