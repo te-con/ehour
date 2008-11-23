@@ -151,7 +151,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		commentsFrame.add(serverMsgLabel);
 
 		// add CSS & JS
-		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "style/timesheetForm.css")));
+		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "../css/timesheetForm.css")));
 		addJavascript(this);
 	}
 

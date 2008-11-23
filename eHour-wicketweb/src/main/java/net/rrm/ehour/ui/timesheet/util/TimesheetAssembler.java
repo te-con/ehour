@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.timesheet.util;
+package net.rrm.ehour.ui.timesheet.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
