@@ -37,6 +37,7 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.UserComparator;
+import net.rrm.ehour.ui.project.common.ProjectAjaxEventType;
 import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.user.service.UserService;

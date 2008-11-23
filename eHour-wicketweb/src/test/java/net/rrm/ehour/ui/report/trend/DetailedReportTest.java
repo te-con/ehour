@@ -25,7 +25,7 @@ import java.util.Locale;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.ui.panel.report.ReportTestUtil;
+import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 
 import org.junit.Test;
 

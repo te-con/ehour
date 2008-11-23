@@ -33,7 +33,7 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
-import net.rrm.ehour.ui.project.components.ProjectAjaxEventType;
+import net.rrm.ehour.ui.project.common.ProjectAjaxEventType;
 import net.rrm.ehour.ui.project.components.ProjectFormPanel;
 import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBeanImpl;
 

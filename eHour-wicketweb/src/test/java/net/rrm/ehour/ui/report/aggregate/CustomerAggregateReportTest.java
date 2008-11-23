@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.panel.report.ReportTestUtil;
+import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 
 import org.junit.Test;
 
