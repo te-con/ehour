@@ -23,9 +23,9 @@ import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.ui.admin.config.page.MainConfig;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.common.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.common.page.login.Login;
+import net.rrm.ehour.ui.login.page.Login;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;

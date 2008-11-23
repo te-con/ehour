@@ -21,6 +21,7 @@ package net.rrm.ehour.ui.reportchart.aggregate;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.panel.report.ReportTestUtil;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
 
 import org.apache.wicket.model.Model;
 import org.junit.Test;

@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.user.form;
+package net.rrm.ehour.ui.admin.user.panel;
 
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 

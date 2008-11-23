@@ -21,7 +21,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
 
-import net.rrm.ehour.ui.sort.LocaleComparator.CompareType;
+import net.rrm.ehour.ui.common.sort.LocaleComparator;
+import net.rrm.ehour.ui.common.sort.LocaleComparator.CompareType;
 
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class LocaleComparatorTest
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.sort.LocaleComparator#compare(java.util.Locale, java.util.Locale)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.sort.LocaleComparator#compare(java.util.Locale, java.util.Locale)}.
 	 */
 	@Test
 	public void testCompareCountry()

@@ -15,14 +15,16 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.user.form.prefs;
+package net.rrm.ehour.ui.userprefs.panel;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.admin.user.panel.PasswordInputSnippet;
+import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
 import net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.ajax.GenericAjaxEventType;
@@ -31,8 +33,6 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.panel.user.form.admin.UserAdminFormPanel;
-import net.rrm.ehour.ui.panel.user.form.admin.dto.UserBackingBean;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 

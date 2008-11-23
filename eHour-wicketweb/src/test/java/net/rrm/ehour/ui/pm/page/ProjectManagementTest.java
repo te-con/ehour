@@ -17,7 +17,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.common.page.pm.ProjectManagement;
+import net.rrm.ehour.ui.pm.page.ProjectManagement;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;

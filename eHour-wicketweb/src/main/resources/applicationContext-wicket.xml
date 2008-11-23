@@ -9,5 +9,5 @@
 		<property name="pageConfig" ref="pageConfig" />
 	</bean>
 	
-	<bean id="pageConfig" class="net.rrm.ehour.ui.config.PageConfigImpl" />
+	<bean id="pageConfig" class="net.rrm.ehour.ui.common.config.PageConfigImpl" />
 </beans>

@@ -20,5 +20,5 @@
 	<bean id="ehourConfig"
 		class="net.rrm.ehour.config.EhourConfigStub " />
 	<bean id="pageConfig"
-		class="net.rrm.ehour.ui.config.PageConfigImpl" />
+		class="net.rrm.ehour.ui.common.config.PageConfigImpl" />
 </beans>

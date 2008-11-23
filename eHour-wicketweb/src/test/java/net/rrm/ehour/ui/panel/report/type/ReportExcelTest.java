@@ -23,13 +23,13 @@ import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.session.ReportCache;
 import net.rrm.ehour.ui.panel.report.ReportTestUtil;
-import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportExcel;
-import net.rrm.ehour.ui.panel.report.aggregate.EmployeeReportExcel;
-import net.rrm.ehour.ui.panel.report.aggregate.ProjectReportExcel;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
+import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportExcel;
+import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportExcel;
+import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportExcel;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.sort;
 
 import static org.junit.Assert.assertTrue;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
+import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ public class ProjectAssignmentComparatorTest
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.sort.ProjectAssignmentComparator#compare(net.rrm.ehour.project.domain.ProjectAssignment, net.rrm.ehour.project.domain.ProjectAssignment)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator#compare(net.rrm.ehour.project.domain.ProjectAssignment, net.rrm.ehour.project.domain.ProjectAssignment)}.
 	 */
 	@Test
 	public void testCompareCustDatePrj()

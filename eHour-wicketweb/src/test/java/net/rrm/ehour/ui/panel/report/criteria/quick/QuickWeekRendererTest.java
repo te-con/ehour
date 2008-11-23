@@ -27,6 +27,8 @@ import java.util.GregorianCalendar;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeek;
+import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeekRenderer;
 
 import org.apache.wicket.Localizer;
 import org.junit.Before;
@@ -60,7 +62,7 @@ public class QuickWeekRendererTest extends BaseUIWicketTester
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.panel.report.criteria.quick.QuickWeekRenderer#getDisplayValue(java.lang.Object)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeekRenderer#getDisplayValue(java.lang.Object)}.
 	 */
 	@Test
 	public void testGetDisplayValueCurrent()

@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.sort;
 import static org.junit.Assert.assertTrue;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
+import net.rrm.ehour.ui.common.sort.ProjectAssignmentAggregateComparator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public class ProjectAssignmentAggregateComparatorTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.sort.ProjectAssignmentAggregateComparator#compare(net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement, net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.sort.ProjectAssignmentAggregateComparator#compare(net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement, net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement)}.
 	 */
 	@Test
 	public void testCompareProject()

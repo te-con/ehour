@@ -14,7 +14,7 @@
 		</property>
 	</bean>
 
-	<bean id="authService" class="net.rrm.ehour.ui.authorization.AuthService">
+	<bean id="authService" class="net.rrm.ehour.ui.common.authorization.AuthService">
 		<property name="userService" ref="userService" />
 	</bean>
 

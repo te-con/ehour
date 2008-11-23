@@ -47,7 +47,7 @@ public class CalendarPanelTest extends BaseUIWicketTester
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.common.panel.calendar.CalendarPanel#CalendarPanel(java.lang.String, net.rrm.ehour.domain.User)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.panel.noentry.calendar.CalendarPanel#CalendarPanel(java.lang.String, net.rrm.ehour.domain.User)}.
 	 */
 	@Test
 	public void testCalendarPanelStringUser()
@@ -74,7 +74,7 @@ public class CalendarPanelTest extends BaseUIWicketTester
 
 //
 //	/**
-//	 * Test method for {@link net.rrm.ehour.ui.common.panel.calendar.CalendarPanel#CalendarPanel(java.lang.String, net.rrm.ehour.user.domain.User, boolean)}.
+//	 * Test method for {@link net.rrm.ehour.ui.common.panel.noentry.calendar.CalendarPanel#CalendarPanel(java.lang.String, net.rrm.ehour.user.domain.User, boolean)}.
 //	 */
 //	@Test
 //	public void testCalendarPanelStringUserBoolean()
@@ -83,7 +83,7 @@ public class CalendarPanelTest extends BaseUIWicketTester
 //	}
 //
 //	/**
-//	 * Test method for {@link net.rrm.ehour.ui.common.panel.calendar.CalendarPanel#refreshCalendar(org.apache.wicket.ajax.AjaxRequestTarget)}.
+//	 * Test method for {@link net.rrm.ehour.ui.common.panel.noentry.calendar.CalendarPanel#refreshCalendar(org.apache.wicket.ajax.AjaxRequestTarget)}.
 //	 */
 //	@Test
 //	public void testRefreshCalendar()

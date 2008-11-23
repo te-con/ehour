@@ -23,6 +23,8 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
+import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
 import net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
@@ -32,8 +34,6 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.panel.user.form.admin.UserAdminFormPanel;
-import net.rrm.ehour.ui.panel.user.form.admin.dto.UserBackingBean;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;

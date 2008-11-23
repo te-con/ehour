@@ -23,6 +23,7 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.panel.report.ReportTestUtil;
+import net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
 
 import org.apache.wicket.markup.html.panel.Panel;
@@ -36,7 +37,7 @@ import org.junit.Test;
 public class DetailedReportPanelTest extends BaseUIWicketTester
 {
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.panel.report.detail.DetailedReportPanel#DetailedReportPanel(java.lang.String, net.rrm.ehour.ui.report.TreeReport, net.rrm.ehour.report.reports.ReportData)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel#DetailedReportPanel(java.lang.String, net.rrm.ehour.ui.report.TreeReport, net.rrm.ehour.report.reports.ReportData)}.
 	 */
 	@Test
 	@SuppressWarnings("serial")

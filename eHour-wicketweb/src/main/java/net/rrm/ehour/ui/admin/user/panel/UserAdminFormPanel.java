@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.panel.user.form.admin;
+package net.rrm.ehour.ui.admin.user.panel;
 
 import java.util.List;
 
@@ -22,9 +22,7 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.ui.admin.user.panel.EmailInputSnippet;
-import net.rrm.ehour.ui.admin.user.panel.PasswordInputSnippet;
-import net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType;
+import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
@@ -35,7 +33,6 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.panel.user.form.admin.dto.UserBackingBean;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 

@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.sort;
 
 import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.ui.common.sort.CustomerComparator;
 
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ import org.junit.Test;
 public class CustomerComparatorTest
 {
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.sort.CustomerComparator#compare(net.rrm.ehour.domain.Customer, net.rrm.ehour.domain.Customer)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.sort.CustomerComparator#compare(net.rrm.ehour.domain.Customer, net.rrm.ehour.domain.Customer)}.
 	 */
 	@Test
 	public void testCompare()

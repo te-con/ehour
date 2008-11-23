@@ -24,8 +24,8 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
-import net.rrm.ehour.ui.common.page.user.report.UserReport;
 import net.rrm.ehour.ui.report.page.BaseTestReport;
+import net.rrm.ehour.ui.report.user.page.UserReport;
 
 import org.junit.Test;
 

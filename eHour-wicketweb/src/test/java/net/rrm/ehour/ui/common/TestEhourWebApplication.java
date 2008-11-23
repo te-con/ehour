@@ -29,9 +29,9 @@ import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.config.PageConfig;
 import net.rrm.ehour.ui.common.config.PageConfigImpl;
-import net.rrm.ehour.ui.common.page.login.SessionExpiredPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;

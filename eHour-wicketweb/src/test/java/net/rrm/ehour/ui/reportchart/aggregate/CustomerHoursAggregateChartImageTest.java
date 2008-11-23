@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.reportchart.aggregate;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.panel.report.ReportTestUtil;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
 
 import org.apache.wicket.model.Model;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class CustomerHoursAggregateChartImageTest extends BaseUIWicketTester
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.reportchart.aggregate.CustomerHoursAggregateChartImage#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
 	 * @throws Exception 
 	 */
 	@Test

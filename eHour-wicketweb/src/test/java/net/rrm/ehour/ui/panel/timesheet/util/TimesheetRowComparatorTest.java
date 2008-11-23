@@ -7,7 +7,8 @@ import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;
+import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
+import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
 
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class TimesheetRowComparatorTest
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.panel.timesheet.util.TimesheetRowComparator#compare(net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow, net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow)}.
+	 * Test method for {@link net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator#compare(net.rrm.ehour.ui.timesheet.dto.TimesheetRow, net.rrm.ehour.ui.timesheet.dto.TimesheetRow)}.
 	 */
 	@Test
 	public void testCompare()
