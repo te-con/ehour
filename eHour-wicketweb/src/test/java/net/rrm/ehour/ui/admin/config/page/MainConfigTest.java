@@ -1,5 +1,5 @@
 /**
- * Created on Jul 9, 2007
+ * Created on Jul 17, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.page.login;
+package net.rrm.ehour.ui.admin.config.page;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -26,44 +26,49 @@ import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
 
-import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
 
 /**
- * Tests the login tests
+ * TODO 
  **/
 
-public class LoginTest extends BaseUIWicketTester
+public class MainConfigTest extends BaseUIWicketTester
 {
+	/**
+	 * Test render
+	 */
 	@Test
-	public void testLoginPageRender()
+	public void testMainConfigRender()
 	{
-		tester.startPage(Login.class);
-		tester.assertRenderedPage(Login.class);
-		tester.assertNoErrorMessage();
-
 		ConfigurationService configService = createMock(ConfigurationService.class);
 		mockContext.putBean("configService", configService);
+		
 
 		MailService mailService = createMock(MailService.class);
-		mockContext.putBean("mailService", mailService);
-
+		mockContext.putBean("mailService", mailService);	
 		
 		expect(configService.getConfiguration())
-				.andReturn(new EhourConfigStub())
-				.anyTimes();
-		
+				.andReturn(new EhourConfigStub());
+
 		replay(configService);
-		FormTester form = tester.newFormTester("loginform");
-		form.setValue("username", "thies");
-		form.setValue("password", "Ttst");
-
-		form.submit();
-		verify(configService);
 		
-		tester.assertNoErrorMessage();
+		tester.startPage(MainConfig.class);
 		tester.assertRenderedPage(MainConfig.class);
-
+		tester.assertNoErrorMessage();
 		
+		verify(configService);
 	}
+//	
+//	/**
+//	 * 
+////	 */
+//	public void testSubmitOKNoLocale()
+//	{
+//		FormTester	form = tester.newFormTester("configForm");
+//	
+//		form.setValue("dontForceLocale", "true");
+//		
+//		tester.executeAjaxEvent("configForm.submitButton", "onclick");
+//	}
+	
 }

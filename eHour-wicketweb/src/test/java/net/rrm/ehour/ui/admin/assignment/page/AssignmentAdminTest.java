@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.page.admin.assignment;
+package net.rrm.ehour.ui.admin.assignment.page;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -32,6 +32,7 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 

@@ -23,6 +23,7 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -46,6 +46,8 @@ import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
+import net.rrm.ehour.ui.panel.timesheet.dto.Timesheet;
+import net.rrm.ehour.ui.panel.timesheet.model.TimesheetModel;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -105,17 +107,44 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 	public void addDayComment()
 	{
 		startAndReplay();
+		
+		final String comment = "commentaar";
 	
 		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayLink", "onclick");
 
 		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
-		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "commentaar");
+		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:dayWin:content:comment", comment);
 		
 		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
 		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:submit", "onclick");
 		
+		Timesheet timesheet = (Timesheet)tester.getComponentFromLastRenderedPage("panel").getModelObject();
+		assertEquals(comment, timesheet.getTimesheetEntries().get(0).getComment());
+		
 		tester.assertNoErrorMessage();
 	}
+	
+	@Test
+	public void addDayCommentCancelled()
+	{
+		startAndReplay();
+		
+		final String comment = "commentaar";
+	
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayLink", "onclick");
+
+		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
+		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:dayWin:content:comment", comment);
+		
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:cancel", "onclick");
+		
+		Timesheet timesheet = (Timesheet)tester.getComponentFromLastRenderedPage("panel").getModelObject();
+		assertNull(timesheet.getTimesheetEntries().get(0).getComment());
+
+		tester.assertNoErrorMessage();
+	}	
+		
 	
 	@Test
 	public void shouldBookAllHours()

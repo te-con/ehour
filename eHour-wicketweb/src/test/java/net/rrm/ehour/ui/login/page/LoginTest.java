@@ -1,5 +1,5 @@
 /**
- * Created on Jul 17, 2007
+ * Created on Jul 9, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -14,7 +14,7 @@
  *
  */
 
-package net.rrm.ehour.ui.page.admin.mainconfig;
+package net.rrm.ehour.ui.login.page;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -24,50 +24,47 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
+import net.rrm.ehour.ui.page.login.Login;
 
+import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
 
 /**
- * TODO 
+ * Tests the login tests
  **/
 
-public class MainConfigTest extends BaseUIWicketTester
+public class LoginTest extends BaseUIWicketTester
 {
-	/**
-	 * Test render
-	 */
 	@Test
-	public void testMainConfigRender()
+	public void testLoginPageRender()
 	{
+		tester.startPage(Login.class);
+		tester.assertRenderedPage(Login.class);
+		tester.assertNoErrorMessage();
+
 		ConfigurationService configService = createMock(ConfigurationService.class);
 		mockContext.putBean("configService", configService);
-		
 
 		MailService mailService = createMock(MailService.class);
-		mockContext.putBean("mailService", mailService);	
+		mockContext.putBean("mailService", mailService);
+
 		
 		expect(configService.getConfiguration())
-				.andReturn(new EhourConfigStub());
-
+				.andReturn(new EhourConfigStub())
+				.anyTimes();
+		
 		replay(configService);
-		
-		tester.startPage(MainConfig.class);
-		tester.assertRenderedPage(MainConfig.class);
-		tester.assertNoErrorMessage();
-		
+		FormTester form = tester.newFormTester("loginform");
+		form.setValue("username", "thies");
+		form.setValue("password", "Ttst");
+
+		form.submit();
 		verify(configService);
+		
+		tester.assertNoErrorMessage();
+		tester.assertRenderedPage(MainConfig.class);
+
+		
 	}
-//	
-//	/**
-//	 * 
-////	 */
-//	public void testSubmitOKNoLocale()
-//	{
-//		FormTester	form = tester.newFormTester("configForm");
-//	
-//		form.setValue("dontForceLocale", "true");
-//		
-//		tester.executeAjaxEvent("configForm.submitButton", "onclick");
-//	}
-	
 }
