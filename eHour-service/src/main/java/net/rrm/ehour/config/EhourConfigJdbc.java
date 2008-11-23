@@ -32,6 +32,11 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 {
 	private	Logger	logger = Logger.getLogger(this.getClass());
 	
+	private Boolean 	demoMode;
+	private String[]	availableTranslations;
+	private Boolean		initialized;
+	private	AuditType	auditType;
+	
 	public EhourConfigJdbc(DataSource datasource, String table, String keyColumn, String valueColumn)
 	{
 		super(datasource, table, keyColumn, valueColumn);
@@ -64,7 +69,12 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	public String[] getAvailableTranslations()
 	{
-		return this.getString("availableTranslations", "en,nl").split(",");
+		if (availableTranslations == null)
+		{
+			availableTranslations = this.getString("availableTranslations", "en,nl").split(",");
+		}
+		
+		return availableTranslations;
 	}
 
 	public String getMailFrom()
@@ -87,7 +97,12 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	public boolean isInDemoMode()
 	{
-		return this.getBoolean("demoMode", false);
+		if (demoMode == null)
+		{
+			demoMode = this.getBoolean("demoMode", false);
+		}
+		
+		return demoMode.booleanValue();
 	}
 
 	public boolean isDontForceLanguage()
@@ -97,7 +112,12 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	public boolean isInitialized()
 	{
-		return this.getBoolean("initialized", true);
+		if (initialized == null)
+		{
+			initialized = this.getBoolean("initialized", true);
+		}
+		
+		return initialized;
 	}
 
 	/*
@@ -138,6 +158,11 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	 */
 	public AuditType getAuditType()
 	{
-		return AuditType.fromString(this.getString("auditType", "WRITE"));
+		if (auditType == null)
+		{
+			auditType = AuditType.fromString(this.getString("auditType", "WRITE"));
+		}
+		
+		return auditType;
 	}
 }
