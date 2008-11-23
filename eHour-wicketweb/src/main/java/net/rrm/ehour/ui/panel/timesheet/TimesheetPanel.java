@@ -485,8 +485,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
-				foldPreference.toggleFolded();
-				userService.persistCustomerFoldPreference(foldPreference);
+				foldRow(foldPreference);
 			}
 
 			@Override
@@ -497,6 +496,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		};
 
 		foldLink.add(new SimpleAttributeModifier("id", "foldcss" + id));
+
 
 		return foldLink;
 	}
@@ -519,8 +519,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			@Override
 			protected void onEvent(AjaxRequestTarget target)
 			{
-				foldPreference.toggleFolded();
-				userService.persistCustomerFoldPreference(foldPreference);
+				foldRow(foldPreference);
 			}
 
 			@Override
@@ -531,6 +530,16 @@ public class TimesheetPanel extends Panel implements Serializable
 		});
 
 		return label;
+	}
+
+	/**
+	 * Fold row
+	 * @param foldPreference
+	 */
+	private void foldRow(CustomerFoldPreference foldPreference)
+	{
+		foldPreference.toggleFolded();
+		userService.persistCustomerFoldPreference(foldPreference);
 	}
 
 	/**

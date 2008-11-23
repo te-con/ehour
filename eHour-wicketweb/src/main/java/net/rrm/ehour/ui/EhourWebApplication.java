@@ -67,6 +67,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	protected Class<? extends WebPage>	login = Login.class;
 	private String version;
 	private PageConfig pageConfig;
+	private boolean initialized;
 	
 	public EhourWebApplication()
 	{
@@ -80,14 +81,19 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
 	public void init()
 	{
-		super.init();
-		springInjection();
-
-		getMarkupSettings().setStripWicketTags(true);
-		mountPages();
-		getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-		setupSecurity();
-		registerSharedResources();
+		if (!initialized)
+		{
+			super.init();
+			springInjection();
+	
+			getMarkupSettings().setStripWicketTags(true);
+			mountPages();
+			getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
+			setupSecurity();
+			registerSharedResources();
+			
+			initialized = true;
+		}
 	}
 
 

@@ -22,6 +22,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,7 +33,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
@@ -44,14 +48,18 @@ import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.DummyDataGenerator;
 import net.rrm.ehour.user.service.UserService;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TestPanelSource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TimesheetPanelTest extends BaseUIWicketTester
 {
+	private final static String TIMESHEET_PATH = "panel:timesheetFrame:timesheetForm";
+	
 	private TimesheetService	timesheetService;
 	private UserService			userService;
 	private User				user;
@@ -60,6 +68,8 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 	@Before
 	public void setup()
 	{
+		config.setCompleteDayHours(8l);
+
 		timesheetService = createMock(TimesheetService.class);
 		mockContext.putBean("timesheetService", timesheetService);
 
@@ -70,7 +80,11 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		cal = new GregorianCalendar();
 		WeekOverview overview = new WeekOverview();
 		overview.setUser(new User(1));
-		overview.setWeekRange(new DateRange(new Date(), new Date()));
+		
+		Calendar now = GregorianCalendar.getInstance();
+		now.add(Calendar.DAY_OF_WEEK, 7);
+		
+		overview.setWeekRange(new DateRange(new Date(), now.getTime()));
 		
 		TimesheetEntry entry = DummyDataGenerator.getTimesheetEntry(1, new Date(), 5);
 		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
@@ -82,9 +96,97 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		overview.setProjectAssignments(ass);
 		
 		overview.setFoldPreferences(new CustomerFoldPreferenceList());
-		
+	
 		expect(timesheetService.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))
 				.andReturn(overview);			
+	}
+	
+	@Test
+	public void addDayComment()
+	{
+		startAndReplay();
+	
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayLink", "onclick");
+
+		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
+		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "commentaar");
+		
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:submit", "onclick");
+		
+		tester.assertNoErrorMessage();
+	}
+	
+	@Test
+	public void shouldBookAllHours()
+	{
+		startAndReplay();
+		
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:bookWholeWeek", "onclick");
+		tester.assertNoErrorMessage();
+
+		Label grandTotalLabel = (Label)tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:grandTotal");
+		assertEquals("40.00", grandTotalLabel.getModelObject().toString());
+		
+		tester.assertNoErrorMessage();
+	}
+	
+	@Test
+	public void updateCounts()
+	{
+		startAndReplay();
+		
+		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
+		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
+		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
+
+		webapp.getSession().cleanupFeedbackMessages();
+		
+		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "12");
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
+		tester.assertNoErrorMessage();
+		tester.assertContains("536e87"); // FormHighlighter -> colormodifier
+
+		Label grandTotalLabel = (Label)tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:grandTotal");
+		assertEquals("12.00", grandTotalLabel.getModelObject().toString());
+	}
+	
+	@Test
+	public void moveToNextWeek()
+	{
+		startAndReplay();
+	
+		tester.executeAjaxEvent("panel:timesheetFrame:greyFrame:title:nextWeek", "onclick");
+
+		Calendar cal = webapp.getSession().getNavCalendar();
+		
+		Calendar now = GregorianCalendar.getInstance();
+		now.add(Calendar.DAY_OF_YEAR, 1);
+		
+		assertTrue(now.getTime().before(cal.getTime()));
+	}
+	
+	@Test
+	public void foldCustomerRow()
+	{
+		userService.persistCustomerFoldPreference(isA(CustomerFoldPreference.class));
+		
+		startAndReplay();
+
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:foldLink", "onclick");
+	}
+	
+	@Test
+	public void tooManyHoursFailure()
+	{
+		startAndReplay();
+		
+		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH + "");
+		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
+
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
+		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
 	}
 	
 	@Test
@@ -93,9 +195,29 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		expect(timesheetService.persistTimesheetWeek(isA(Collection.class), isA(TimesheetComment.class), isA(DateRange.class)))
 			.andReturn(new ArrayList<ProjectAssignmentStatus>());
 		
+		startAndReplay();
+		
+		tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
+		
+		tester.assertNoErrorMessage();
+	}
+	
+	@After
+	public void verifyMocks()
+	{
+		verify(timesheetService);
+		verify(userService);
+		
+	}
+	
+	/**
+	 * 
+	 */
+	private void startAndReplay()
+	{
 		replay(timesheetService);
 		replay(userService);
-		
+
 		tester.startPanel(new TestPanelSource()
 		{
 			private static final long serialVersionUID = -8296677055637030118L;
@@ -105,14 +227,5 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 				return new TimesheetPanel(panelId, user, cal);
 			}
 		});
-
-//		FormTester timesheetFormTester = tester.newFormTester("panel:timesheetFrame:timesheetForm");
-		
-		tester.executeAjaxEvent("panel:timesheetFrame:timesheetForm:commentsFrame:submitButton", "onclick");
-		
-		tester.assertNoErrorMessage();
-
-		verify(timesheetService);
-		verify(userService);
 	}
 }

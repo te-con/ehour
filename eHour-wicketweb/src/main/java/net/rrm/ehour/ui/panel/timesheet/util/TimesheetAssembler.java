@@ -165,7 +165,7 @@ public class TimesheetAssembler
 			timesheetRow.setTimesheet(timesheet);
 			timesheetRow.setProjectAssignment(assignment);
 			timesheetRow.setFirstDayOfWeekDate(firstDate);
-			
+
 			// create a cell for every requested date
 			for (Date date : dateSequence)
 			{
