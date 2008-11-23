@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.panel.report.criteria.quick;
 
 import java.util.List;
 
-import net.rrm.ehour.ui.ajax.AjaxEvent;
-import net.rrm.ehour.ui.ajax.AjaxUtil;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;

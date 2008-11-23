@@ -4,10 +4,10 @@
 package net.rrm.ehour.ui.audit.page;
 
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
+import net.rrm.ehour.ui.admin.BaseAdminPage;
 import net.rrm.ehour.ui.audit.model.AuditReportCriteriaModel;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
 import net.rrm.ehour.ui.audit.panel.AuditReportDataPanel;
-import net.rrm.ehour.ui.page.admin.BaseAdminPage;
 
 import org.apache.wicket.model.ResourceModel;
 

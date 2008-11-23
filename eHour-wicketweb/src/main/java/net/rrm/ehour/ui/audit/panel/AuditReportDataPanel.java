@@ -3,8 +3,8 @@ package net.rrm.ehour.ui.audit.panel;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.audit.model.AuditReportCriteriaModel;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.component.datatable.AjaxDataTable;
+import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.component.datatable.AjaxDataTable;
 import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 

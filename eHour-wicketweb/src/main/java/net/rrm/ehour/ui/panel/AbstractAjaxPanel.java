@@ -17,8 +17,8 @@
 
 package net.rrm.ehour.ui.panel;
 
-import net.rrm.ehour.ui.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 
 import org.apache.wicket.model.IModel;
 
@@ -51,7 +51,7 @@ public abstract class AbstractAjaxPanel extends AbstractBasePanel implements Aja
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

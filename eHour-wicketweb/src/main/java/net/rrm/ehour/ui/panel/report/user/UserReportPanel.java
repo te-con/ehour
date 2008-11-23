@@ -18,9 +18,9 @@ package net.rrm.ehour.ui.panel.report.user;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.model.DateModel;
-import net.rrm.ehour.ui.page.user.report.UserReportPrint;
+import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.page.user.report.UserReportPrint;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.panel.report.TreeReportDataPanel;

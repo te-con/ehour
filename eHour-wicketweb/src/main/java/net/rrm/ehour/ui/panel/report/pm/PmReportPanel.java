@@ -21,10 +21,10 @@ import java.util.ArrayList;
 
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.model.DateModel;
-import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.panel.report.AbstractReportPanel;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 

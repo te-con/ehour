@@ -28,12 +28,12 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.ui.ajax.AjaxEvent;
-import net.rrm.ehour.ui.ajax.AjaxUtil;
-import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
-import net.rrm.ehour.ui.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxUtil;
+import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickDateAjaxEventType;
 import net.rrm.ehour.ui.panel.report.criteria.quick.QuickDropDownChoice;
@@ -548,7 +548,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

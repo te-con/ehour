@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.model.AdminBackingBeanImpl;
+import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
@@ -97,7 +97,7 @@ public class UserBackingBean extends AdminBackingBeanImpl
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.model.AdminBackingBean#getDomainObject()
+	 * @see net.rrm.ehour.ui.common.model.AdminBackingBean#getDomainObject()
 	 */
 	
 	public User getDomainObject()

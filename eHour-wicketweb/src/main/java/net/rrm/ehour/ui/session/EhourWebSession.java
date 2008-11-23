@@ -27,7 +27,7 @@ import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.authorization.AuthUser;
+import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.util.DateUtil;
 
 import org.acegisecurity.Authentication;

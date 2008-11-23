@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.panel.report.criteria;
 
 import java.util.List;
 
-import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
-import net.rrm.ehour.ui.model.KeyResourceModel;
+import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.model.KeyResourceModel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;

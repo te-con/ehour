@@ -16,11 +16,11 @@
 
 package net.rrm.ehour.ui.panel;
 
-import net.rrm.ehour.ui.ajax.AjaxEvent;
-import net.rrm.ehour.ui.ajax.AjaxEventType;
-import net.rrm.ehour.ui.ajax.GenericAjaxEventType;
-import net.rrm.ehour.ui.ajax.PayloadAjaxEvent;
-import net.rrm.ehour.ui.model.AdminBackingBean;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.GenericAjaxEventType;
+import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.model.AdminBackingBean;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -49,7 +49,7 @@ public abstract class AbstractFormSubmittingPanel extends AbstractAjaxPanel
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.ajax.AjaxAwareContainer#ajaxEventReceived(net.rrm.ehour.ui.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")

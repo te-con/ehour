@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.component.AbstractExcelResource;
+import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
@@ -250,7 +250,7 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.component.AbstractExcelReport#getFilename()
+	 * @see net.rrm.ehour.ui.common.component.AbstractExcelReport#getFilename()
 	 */
 	@Override
 	protected String getFilename()

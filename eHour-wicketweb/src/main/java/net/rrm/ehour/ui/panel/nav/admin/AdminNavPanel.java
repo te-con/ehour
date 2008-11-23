@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.ui.panel.nav.admin;
 
+import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
+import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
+import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
-import net.rrm.ehour.ui.border.GreyNavBorder;
-import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
-import net.rrm.ehour.ui.page.admin.customer.CustomerAdmin;
-import net.rrm.ehour.ui.page.admin.department.DepartmentAdmin;
-import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.page.admin.project.ProjectAdmin;
-import net.rrm.ehour.ui.page.admin.user.UserAdmin;
+import net.rrm.ehour.ui.common.border.GreyNavBorder;
+import net.rrm.ehour.ui.common.page.admin.mainconfig.MainConfig;
+import net.rrm.ehour.ui.common.page.admin.user.UserAdmin;
+import net.rrm.ehour.ui.project.page.ProjectAdmin;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;

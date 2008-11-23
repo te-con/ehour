@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.panel.report.criteria.quick;
 
-import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 
 /**
  * Ajax event type for quick date selection 

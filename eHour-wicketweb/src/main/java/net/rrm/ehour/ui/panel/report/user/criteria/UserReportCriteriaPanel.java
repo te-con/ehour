@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.panel.report.user.criteria;
 
-import net.rrm.ehour.ui.ajax.AjaxEvent;
-import net.rrm.ehour.ui.ajax.AjaxUtil;
-import net.rrm.ehour.ui.ajax.LoadingSpinnerDecorator;
-import net.rrm.ehour.ui.component.DynamicAttributeModifier;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxUtil;
+import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.renderers.DomainObjectChoiceRenderer;

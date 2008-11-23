@@ -17,9 +17,9 @@
 
 package net.rrm.ehour.ui.panel.report;
 
-import net.rrm.ehour.ui.model.CurrencyModel;
-import net.rrm.ehour.ui.model.DateModel;
-import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.common.model.CurrencyModel;
+import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.panel.report.user.TurnoverTreeReportColumn;
 
 import org.apache.wicket.model.Model;

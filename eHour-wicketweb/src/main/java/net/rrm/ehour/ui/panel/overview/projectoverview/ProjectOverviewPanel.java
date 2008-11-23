@@ -26,10 +26,10 @@ import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
-import net.rrm.ehour.ui.border.CustomTitledGreyRoundedBorder;
-import net.rrm.ehour.ui.model.CurrencyModel;
-import net.rrm.ehour.ui.model.DateModel;
-import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
+import net.rrm.ehour.ui.common.model.CurrencyModel;
+import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 import net.rrm.ehour.ui.util.HtmlUtil;

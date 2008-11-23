@@ -16,28 +16,28 @@
 
 package net.rrm.ehour.ui;
 
+import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
+import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
+import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
-import net.rrm.ehour.ui.config.PageConfig;
-import net.rrm.ehour.ui.page.admin.assignment.AssignmentAdmin;
-import net.rrm.ehour.ui.page.admin.customer.CustomerAdmin;
-import net.rrm.ehour.ui.page.admin.department.DepartmentAdmin;
-import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.page.admin.project.ProjectAdmin;
-import net.rrm.ehour.ui.page.admin.user.UserAdmin;
-import net.rrm.ehour.ui.page.login.Login;
-import net.rrm.ehour.ui.page.login.SessionExpiredPage;
-import net.rrm.ehour.ui.page.pm.ProjectManagement;
-import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
-import net.rrm.ehour.ui.page.user.Overview;
-import net.rrm.ehour.ui.page.user.prefs.UserPreferencePage;
-import net.rrm.ehour.ui.page.user.print.PrintMonth;
-import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
-import net.rrm.ehour.ui.page.user.report.UserReport;
+import net.rrm.ehour.ui.common.config.PageConfig;
+import net.rrm.ehour.ui.common.page.admin.mainconfig.MainConfig;
+import net.rrm.ehour.ui.common.page.admin.user.UserAdmin;
+import net.rrm.ehour.ui.common.page.login.Login;
+import net.rrm.ehour.ui.common.page.login.SessionExpiredPage;
+import net.rrm.ehour.ui.common.page.pm.ProjectManagement;
+import net.rrm.ehour.ui.common.page.report.global.GlobalReportPage;
+import net.rrm.ehour.ui.common.page.user.Overview;
+import net.rrm.ehour.ui.common.page.user.prefs.UserPreferencePage;
+import net.rrm.ehour.ui.common.page.user.print.PrintMonth;
+import net.rrm.ehour.ui.common.page.user.print.PrintMonthSelection;
+import net.rrm.ehour.ui.common.page.user.report.UserReport;
 import net.rrm.ehour.ui.panel.report.aggregate.CustomerReportExcel;
 import net.rrm.ehour.ui.panel.report.aggregate.EmployeeReportExcel;
 import net.rrm.ehour.ui.panel.report.aggregate.ProjectReportExcel;
 import net.rrm.ehour.ui.panel.report.detail.DetailedReportExcel;
 import net.rrm.ehour.ui.panel.report.user.UserReportExcel;
+import net.rrm.ehour.ui.project.page.ProjectAdmin;
 import net.rrm.ehour.ui.session.EhourWebSession;
 
 import org.acegisecurity.AuthenticationManager;

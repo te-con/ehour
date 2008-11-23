@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.panel.user.form;
 
-import net.rrm.ehour.ui.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;

@@ -21,11 +21,11 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.ui.component.CommonModifiers;
-import net.rrm.ehour.ui.component.KeepAliveTextArea;
-import net.rrm.ehour.ui.component.ModalWindowFix;
-import net.rrm.ehour.ui.model.DateModel;
-import net.rrm.ehour.ui.model.FloatModel;
+import net.rrm.ehour.ui.common.component.CommonModifiers;
+import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
+import net.rrm.ehour.ui.common.component.ModalWindowFix;
+import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.panel.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.panel.timesheet.dto.TimesheetRow;

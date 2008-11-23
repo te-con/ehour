@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.panel.user.form;
 
-import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 
 /**
  * TODO 

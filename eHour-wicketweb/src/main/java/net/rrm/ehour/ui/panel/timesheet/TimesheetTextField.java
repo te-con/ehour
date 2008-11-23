@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.panel.timesheet;
 
 import java.util.Locale;
 
-import net.rrm.ehour.ui.component.CommonModifiers;
+import net.rrm.ehour.ui.common.component.CommonModifiers;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.form.TextField;

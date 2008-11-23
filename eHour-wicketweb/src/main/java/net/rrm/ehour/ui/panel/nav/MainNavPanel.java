@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.ui.panel.nav;
 
-import net.rrm.ehour.ui.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.page.login.Login;
-import net.rrm.ehour.ui.page.pm.ProjectManagement;
-import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
-import net.rrm.ehour.ui.page.user.Overview;
-import net.rrm.ehour.ui.page.user.prefs.UserPreferencePage;
-import net.rrm.ehour.ui.page.user.print.PrintMonthSelection;
-import net.rrm.ehour.ui.page.user.report.UserReport;
+import net.rrm.ehour.ui.common.page.admin.mainconfig.MainConfig;
+import net.rrm.ehour.ui.common.page.login.Login;
+import net.rrm.ehour.ui.common.page.pm.ProjectManagement;
+import net.rrm.ehour.ui.common.page.report.global.GlobalReportPage;
+import net.rrm.ehour.ui.common.page.user.Overview;
+import net.rrm.ehour.ui.common.page.user.prefs.UserPreferencePage;
+import net.rrm.ehour.ui.common.page.user.print.PrintMonthSelection;
+import net.rrm.ehour.ui.common.page.user.report.UserReport;
 import net.rrm.ehour.ui.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.util.AuthUtil;
 

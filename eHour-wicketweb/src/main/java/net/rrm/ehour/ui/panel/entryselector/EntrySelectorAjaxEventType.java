@@ -17,7 +17,7 @@
 
 package net.rrm.ehour.ui.panel.entryselector;
 
-import net.rrm.ehour.ui.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 
 /**
  * Entry selector event types 
