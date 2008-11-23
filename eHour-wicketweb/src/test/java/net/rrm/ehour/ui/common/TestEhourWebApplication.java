@@ -26,11 +26,11 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.authorization.AuthUser;
-import net.rrm.ehour.ui.config.PageConfig;
-import net.rrm.ehour.ui.config.PageConfigImpl;
-import net.rrm.ehour.ui.page.login.SessionExpiredPage;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.authorization.AuthUser;
+import net.rrm.ehour.ui.common.config.PageConfig;
+import net.rrm.ehour.ui.common.config.PageConfigImpl;
+import net.rrm.ehour.ui.common.page.login.SessionExpiredPage;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.wicket.Component;

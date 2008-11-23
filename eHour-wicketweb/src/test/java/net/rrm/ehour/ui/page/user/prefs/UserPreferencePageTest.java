@@ -26,6 +26,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.MockExpectations;
+import net.rrm.ehour.ui.common.page.user.prefs.UserPreferencePage;
 import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Test;

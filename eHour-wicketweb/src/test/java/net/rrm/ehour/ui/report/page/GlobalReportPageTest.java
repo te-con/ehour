@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.page.report;
+package net.rrm.ehour.ui.report.page;
 
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
@@ -24,7 +24,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
-import net.rrm.ehour.ui.page.report.global.GlobalReportPage;
+import net.rrm.ehour.ui.common.page.report.global.GlobalReportPage;
 
 import org.junit.Test;
 

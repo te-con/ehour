@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.page.report;
+package net.rrm.ehour.ui.report.page;
 
 import static org.easymock.EasyMock.createMock;
 

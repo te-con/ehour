@@ -28,7 +28,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.page.admin.user.UserAdmin;
+import net.rrm.ehour.ui.common.page.admin.user.UserAdmin;
 import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Test;

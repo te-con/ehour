@@ -29,6 +29,7 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.MockExpectations;
+import net.rrm.ehour.ui.common.page.user.Overview;
 
 import org.junit.Test;
 

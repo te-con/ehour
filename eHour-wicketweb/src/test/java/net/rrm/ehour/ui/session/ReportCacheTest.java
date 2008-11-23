@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
+import net.rrm.ehour.ui.common.session.ReportCache;
 import net.rrm.ehour.ui.report.Report;
 
 import org.junit.Test;
