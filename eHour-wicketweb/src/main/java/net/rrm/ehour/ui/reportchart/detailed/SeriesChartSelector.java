@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.panel.report.ReportConfig;
-import net.rrm.ehour.ui.panel.report.TreeReportColumn;
+import net.rrm.ehour.ui.report.panel.ReportConfig;
+import net.rrm.ehour.ui.report.panel.TreeReportColumn;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;

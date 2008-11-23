@@ -1,5 +1,5 @@
 /**
- * Created on Jan 13, 2008
+ * Created on Mar 10, 2008
  * Author: Thies
  *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
@@ -15,23 +15,13 @@
  *
  */
 
-package net.rrm.ehour.ui.common.config;
-
-import net.rrm.ehour.ui.common.panel.nav.MainNavPanel;
-
-import org.apache.wicket.markup.html.panel.Panel;
+package net.rrm.ehour.ui.report.panel.pm;
 
 /**
- * PageConfig impl
+ * TODO 
  **/
 
-public class PageConfigImpl implements PageConfig
+public class PmDashboardPanel
 {
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.config.PageConfig#getMainNavPanel(java.lang.String)
-	 */
-	public Panel getMainNavPanel(String id)
-	{
-		return new MainNavPanel(id);
-	}
+
 }

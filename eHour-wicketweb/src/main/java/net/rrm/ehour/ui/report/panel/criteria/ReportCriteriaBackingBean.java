@@ -1,0 +1,146 @@
+/**
+ * Created on Sep 22, 2007
+ * Created by Thies Edeling
+ * Created by Thies Edeling
+ * Copyright (C) 2007 TE-CON, All Rights Reserved.
+ *
+ * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
+ * TE-CON holds all the ownership rights on the Software.
+ * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for commercial use or open source,
+ * is subject to obtaining the prior express authorization of TE-CON.
+ * 
+ * thies@te-con.nl
+ * TE-CON
+ * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ *
+ */
+
+package net.rrm.ehour.ui.report.panel.criteria;
+
+import java.io.Serializable;
+
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonth;
+import net.rrm.ehour.ui.report.panel.criteria.quick.QuickPeriod;
+import net.rrm.ehour.ui.report.panel.criteria.quick.QuickQuarter;
+import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeek;
+import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
+
+/**
+ * Backing bean for report criteria
+ **/
+
+public class ReportCriteriaBackingBean implements Serializable
+{
+	private static final long serialVersionUID = 4417220135092280759L;
+
+	private ReportCriteria	reportCriteria;
+	private QuickWeek		quickWeek;
+	private QuickMonth		quickMonth;
+	private QuickQuarter	quickQuarter;
+	
+	private ReportType		reportType;
+	
+	public ReportCriteriaBackingBean(ReportCriteria reportCriteria)
+	{
+		this.reportCriteria = reportCriteria;
+	}
+
+	/**
+	 * @return the quickWeek
+	 */
+	public QuickWeek getQuickWeek()
+	{
+		return quickWeek;
+	}
+
+	/**
+	 * @param quickWeek the quickWeek to set
+	 */
+	public void setQuickWeek(QuickWeek quickWeek)
+	{
+		quickQuarter = null;
+		quickMonth = null;
+		
+		this.quickWeek = quickWeek;
+		
+		setReportRangeForQuickie(quickWeek);
+	}
+	
+	/**
+	 * Set report range based on quickie
+	 * @param period
+	 */
+	private void setReportRangeForQuickie(QuickPeriod period)
+	{
+		UserCriteria userCriteria = reportCriteria.getUserCriteria(); 
+		
+		if (userCriteria.getReportRange() == null)
+		{
+			userCriteria.setReportRange(new DateRange());
+		}
+		
+		if (period != null)
+		{
+			userCriteria.getReportRange().setDateStart(period.getPeriodStart());
+			userCriteria.getReportRange().setDateEnd(period.getPeriodEnd());
+		}
+	}
+
+	public ReportCriteria getReportCriteria()
+	{
+		return reportCriteria;
+	}
+
+	public QuickMonth getQuickMonth()
+	{
+		return quickMonth;
+	}
+
+	public void setQuickMonth(QuickMonth quickMonth)
+	{
+		quickWeek = null;
+		quickQuarter = null;
+		this.quickMonth = quickMonth;
+		setReportRangeForQuickie(quickMonth);
+	}
+
+	public QuickQuarter getQuickQuarter()
+	{
+		return quickQuarter;
+	}
+
+	public void setQuickQuarter(QuickQuarter quickQuarter)
+	{
+		quickWeek = null;
+		quickMonth = null;
+		this.quickQuarter = quickQuarter;
+		setReportRangeForQuickie(quickQuarter);
+	}
+
+	/**
+	 * @param reportCriteria the reportCriteria to set
+	 */
+	public void setReportCriteria(ReportCriteria reportCriteria)
+	{
+		this.reportCriteria = reportCriteria;
+	}
+
+	/**
+	 * @return the reportType
+	 */
+	public ReportType getReportType()
+	{
+		return reportType;
+	}
+
+	/**
+	 * @param reportType the reportType to set
+	 */
+	public void setReportType(ReportType reportType)
+	{
+		this.reportType = reportType;
+	}
+}

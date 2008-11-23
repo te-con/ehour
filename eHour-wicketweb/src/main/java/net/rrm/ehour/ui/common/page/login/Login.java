@@ -19,9 +19,9 @@ package net.rrm.ehour.ui.common.page.login;
 import java.io.Serializable;
 
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.common.page.admin.mainconfig.MainConfig;
-import net.rrm.ehour.ui.common.page.report.global.GlobalReportPage;
+import net.rrm.ehour.ui.admin.config.page.MainConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.report.page.GlobalReportPage;
 import net.rrm.ehour.ui.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;

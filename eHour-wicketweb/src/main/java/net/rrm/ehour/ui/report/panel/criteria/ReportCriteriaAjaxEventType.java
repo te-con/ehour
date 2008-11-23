@@ -1,5 +1,5 @@
 /**
- * Created on Jan 13, 2008
+ * Created on May 28, 2008
  * Author: Thies
  *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
@@ -15,23 +15,15 @@
  *
  */
 
-package net.rrm.ehour.ui.common.config;
+package net.rrm.ehour.ui.report.panel.criteria;
 
-import net.rrm.ehour.ui.common.panel.nav.MainNavPanel;
-
-import org.apache.wicket.markup.html.panel.Panel;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 
 /**
- * PageConfig impl
+ * TODO 
  **/
 
-public class PageConfigImpl implements PageConfig
+public enum ReportCriteriaAjaxEventType implements AjaxEventType
 {
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.config.PageConfig#getMainNavPanel(java.lang.String)
-	 */
-	public Panel getMainNavPanel(String id)
-	{
-		return new MainNavPanel(id);
-	}
+	CRITERIA_UPDATED;
 }

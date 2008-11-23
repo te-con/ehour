@@ -1,5 +1,5 @@
 /**
- * Created on Jan 13, 2008
+ * Created on Jan 20, 2008
  * Author: Thies
  *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
@@ -15,23 +15,27 @@
  *
  */
 
-package net.rrm.ehour.ui.common.config;
+package net.rrm.ehour.ui.report.panel.criteria.type;
 
-import net.rrm.ehour.ui.common.panel.nav.MainNavPanel;
-
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.model.ResourceModel;
 
 /**
- * PageConfig impl
+ * Renderer which looks up a resource key
  **/
 
-public class PageConfigImpl implements PageConfig
+public class ReportTypeRenderer implements IChoiceRenderer
 {
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.config.PageConfig#getMainNavPanel(java.lang.String)
-	 */
-	public Panel getMainNavPanel(String id)
+	private static final long serialVersionUID = 1L;
+
+	public Object getDisplayValue(Object object)
 	{
-		return new MainNavPanel(id);
+		return new  ResourceModel(object.toString()).getObject();
 	}
+
+	public String getIdValue(Object object, int index)
+	{
+		return Integer.toString(index);
+	}
+
 }

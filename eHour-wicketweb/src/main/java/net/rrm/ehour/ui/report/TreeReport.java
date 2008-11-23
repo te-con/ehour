@@ -24,9 +24,9 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.panel.report.ReportConfig;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
+import net.rrm.ehour.ui.report.panel.ReportConfig;
 
 public abstract class TreeReport<EL extends ReportElement> extends Report
 {

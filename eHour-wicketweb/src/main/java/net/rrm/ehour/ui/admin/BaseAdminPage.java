@@ -22,7 +22,7 @@ import org.apache.wicket.model.ResourceModel;
 
 import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.panel.nav.admin.AdminNavPanel;
+import net.rrm.ehour.ui.common.panel.nav.admin.AdminNavPanel;
 
 /**
  * Base page for admin adding admin nav and contextual help

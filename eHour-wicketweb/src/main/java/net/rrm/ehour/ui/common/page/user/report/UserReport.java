@@ -21,12 +21,12 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.page.report.BaseReportPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.panel.report.criteria.ReportCriteriaAjaxEventType;
-import net.rrm.ehour.ui.panel.report.user.UserReportPanel;
-import net.rrm.ehour.ui.panel.report.user.criteria.UserReportCriteriaPanel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
+import net.rrm.ehour.ui.report.page.BaseReportPage;
+import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
+import net.rrm.ehour.ui.report.panel.user.UserReportPanel;
+import net.rrm.ehour.ui.report.panel.user.criteria.UserReportCriteriaPanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;

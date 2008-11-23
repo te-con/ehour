@@ -1,5 +1,5 @@
 /**
- * Created on Jan 13, 2008
+ * Created on Mar 9, 2008
  * Author: Thies
  *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
@@ -15,23 +15,29 @@
  *
  */
 
-package net.rrm.ehour.ui.common.config;
+package net.rrm.ehour.ui.report.panel.criteria.quick;
 
-import net.rrm.ehour.ui.common.panel.nav.MainNavPanel;
-
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.Application;
+import org.apache.wicket.Localizer;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 /**
- * PageConfig impl
+ * Quick renderer
  **/
 
-public class PageConfigImpl implements PageConfig
+public abstract class QuickRenderer implements IChoiceRenderer
 {
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.config.PageConfig#getMainNavPanel(java.lang.String)
+	/**
+	 * 
 	 */
-	public Panel getMainNavPanel(String id)
+	private static final long serialVersionUID = 5678351108045640999L;
+
+	/**
+	 * Get localizer
+	 * @return
+	 */
+	protected Localizer getLocalizer()
 	{
-		return new MainNavPanel(id);
+		return Application.get().getResourceSettings().getLocalizer();
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Created on Jan 13, 2008
+ * Created on Jan 19, 2008
  * Author: Thies
  *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
@@ -15,23 +15,26 @@
  *
  */
 
-package net.rrm.ehour.ui.common.config;
-
-import net.rrm.ehour.ui.common.panel.nav.MainNavPanel;
-
-import org.apache.wicket.markup.html.panel.Panel;
+package net.rrm.ehour.ui.report.panel.criteria.type;
 
 /**
- * PageConfig impl
+ * Report type
  **/
 
-public class PageConfigImpl implements PageConfig
+public enum ReportType
 {
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.config.PageConfig#getMainNavPanel(java.lang.String)
-	 */
-	public Panel getMainNavPanel(String id)
+	AGGREGATE("report.type.aggregate"),
+	DETAILED("report.type.detailed");
+	
+	private String resourceKey;
+	
+	private ReportType(String resourceKey)
 	{
-		return new MainNavPanel(id);
+		this.resourceKey = resourceKey;
+	}
+	
+	public String toString()
+	{
+		return resourceKey;
 	}
 }
