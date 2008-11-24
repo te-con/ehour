@@ -33,6 +33,8 @@ public class User extends DomainObject<Integer, User>
 
 	private String lastName;
 
+	private String ldapLogin;
+	
 	private String email;
 	
 	private	boolean	active;
@@ -358,4 +360,14 @@ public class User extends DomainObject<Integer, User>
 	{
 		this.salt = salt;
 	}
+
+	public String getLdapLogin() {
+		return ldapLogin;
+	}
+
+	public void setLdapLogin(String ldapLogin) {
+		this.ldapLogin = ldapLogin;
+	}
+	
+	
 }
