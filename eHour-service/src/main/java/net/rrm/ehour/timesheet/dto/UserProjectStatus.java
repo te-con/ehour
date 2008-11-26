@@ -20,7 +20,7 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 /**
  * Value object for timesheet overview. While the hours in an aggregate
  * reflect only a certain period, totalBookedHours is all hours booked on this assignment
- **/
+ */
 
 public class UserProjectStatus extends AssignmentAggregateReportElement
 {
@@ -47,27 +47,56 @@ public class UserProjectStatus extends AssignmentAggregateReportElement
 	}
 	
 	/**
-	 * Get hours remaining to book on this project
+	 * Get fixed hours remaining to book on this project
+	 * This is applicable to fixed and flex assignments
 	 * @return
 	 */
-	public Float getHoursRemaining()
+	public Float getFixedHoursRemaining()
 	{
 		Float	remainder = null;
 		
 		if (totalBookedHours != null)
 		{
-			if (getProjectAssignment().getAssignmentType().isFixedAllottedType())
+			if (getProjectAssignment().getAssignmentType().isAllottedType())
 			{
 				remainder = new Float(getProjectAssignment().getAllottedHours().floatValue() -
 										totalBookedHours.floatValue());
-				
+				// Flex assignment that are over their fixed number of hours should report
+				// zero fixed remaining.
+				if (getProjectAssignment().getAssignmentType().isFlexAllottedType())
+				{
+					if (remainder.floatValue() < 0) {
+						remainder = new Float(0f);
+					}
+				}
 				
 			}
-			else if (getProjectAssignment().getAssignmentType().isFlexAllottedType())
+		}
+		
+		return remainder;
+	}
+	
+	/**
+	 * Get flex hours remaining to book on this project
+	 * @return
+	 */
+	public Float getFlexHoursRemaining()
+	{
+		Float	remainder = null;
+		
+		if (totalBookedHours != null)
+		{
+			if (getProjectAssignment().getAssignmentType().isFlexAllottedType())
 			{
-				remainder = new Float(getProjectAssignment().getAllottedHours().floatValue() +
-										getProjectAssignment().getAllowedOverrun().floatValue() -
-										totalBookedHours.floatValue());
+				if (totalBookedHours.floatValue()<= getProjectAssignment().getAllottedHours().floatValue()) {
+					remainder = new Float(getProjectAssignment().getAllowedOverrun().floatValue());
+				}
+				else
+				{
+					remainder = new Float(getProjectAssignment().getAllottedHours().floatValue() 
+										+ getProjectAssignment().getAllowedOverrun().floatValue()
+										- totalBookedHours.floatValue());
+				}
 			}
 		}
 		

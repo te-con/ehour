@@ -50,6 +50,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
+import org.wicketstuff.minis.mootipbehavior.MootipBehaviour;
 
 /**
  * Panel showing overview
@@ -238,6 +239,8 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				item.add(img);
 				
 				Label projectLabel = new Label("projectName", projectStatus.getProjectAssignment().getProject().getName());
+				ResourceModel toolTipTitleRM = new ResourceModel("overview.projectDescription");
+				projectLabel.add(new MootipBehaviour( (String)toolTipTitleRM.getObject(), projectStatus.getProjectAssignment().getProject().getDescription() ));
 				Label customerLabel = new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()); 
 				
 				if (!session.getEhourConfig().isShowTurnover())
@@ -292,11 +295,21 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 																			new Object[]{new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig())}));
 				cont.add(label);
 
-				label = new Label("overview.remaining", new StringResourceModel("overview.remaining", 
+				label = new Label("overview.remainingfixed", new StringResourceModel("overview.remainingfixed", 
 																			this,  null,
-																			new Object[]{new FloatModel(projectStatus.getHoursRemaining(), session.getEhourConfig())})); 
+																			new Object[]{new FloatModel(projectStatus.getFixedHoursRemaining(), session.getEhourConfig())})); 
 				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 				cont.add(label);
+
+				label = new Label("overview.remainingflex", new StringResourceModel("overview.remainingflex",
+																			this,  null,
+																			new Object[]{new FloatModel(projectStatus.getFlexHoursRemaining(), session.getEhourConfig())}));
+
+				// only shown for flex allotted types
+				label.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
+				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
+				cont.add(label);
+
 				summaryRow.add(cont);
 
 				item.add(summaryRow);

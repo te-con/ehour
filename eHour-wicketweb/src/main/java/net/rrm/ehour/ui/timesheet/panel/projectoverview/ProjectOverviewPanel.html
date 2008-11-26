@@ -25,7 +25,9 @@
 					<div class="foldCell"><img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" /></div>
 					<div class="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
 					<div class="textCell" wicket:id="projectCode">[projectCode]</div>
-					<div class="textCell" style="width: 19%;overflow:hidden;cursor:pointer" wicket:id="projectName">[projectName]</div>
+					<div class="textCell" style="width: 19%;overflow:hidden;cursor:pointer">
+							<span wicket:id="projectName" class="toolTipImg" >[projectName]</span>
+					</div>
 					<div class="numbCell" wicket:id="rate"></div>
 					<div class="numbCell" wicket:id="monthHours">24.50</div>
 					<div class="numbCell" style="width: 19%" wicket:id="turnover">&euro; 16.000</div>
@@ -36,7 +38,8 @@
 					<span wicket:id="overview.validity"></span>. 
 					<span wicket:id="remainingHoursLabel">
 						<span wicket:id="overview.totalbooked"></span>
-						<span wicket:id="overview.remaining"></span>
+						<span wicket:id="overview.remainingfixed"></span>
+						<span wicket:id="overview.remainingflex"></span>
 					</span>
 				</div>
 			</span>

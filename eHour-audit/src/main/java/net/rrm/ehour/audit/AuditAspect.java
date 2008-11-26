@@ -30,7 +30,7 @@ import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.ui.session.EhourWebSession;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.RequestCycle;
 import org.aspectj.lang.ProceedingJoinPoint;
