@@ -33,6 +33,7 @@ import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Project service
@@ -135,6 +136,7 @@ public class ProjectServiceImpl implements ProjectService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#persistProject(net.rrm.ehour.project.domain.Project)
 	 */
+	@Transactional
 	public Project persistProject(Project project)
 	{
 		projectDAO.persist(project);

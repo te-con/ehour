@@ -5,30 +5,49 @@ package net.rrm.ehour.ui.audit.page;
 
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.ui.admin.BaseAdminPage;
-import net.rrm.ehour.ui.audit.model.AuditReportCriteriaModel;
+import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaForm;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
 import net.rrm.ehour.ui.audit.panel.AuditReportDataPanel;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
  * @author thies
  *
  */
-public class AuditReportPage extends BaseAdminPage
+public class AuditReportPage extends BaseAdminPage 
 {
-	private AuditReportCriteriaPanel criteriaPanel;
-	private AuditReportDataPanel dataPanel;
+	private final static String PATH_CRITERIA = "reportCriteria";
+	private final static String PATH_DATA = "reportData";
 	
 	public AuditReportPage()
 	{
 		super(new ResourceModel("audit.report.title"), 
-					new AuditReportCriteriaModel(new AuditReportRequest()), "audit.help.header", "audit.help.body");
+					new CompoundPropertyModel(new AuditReportRequest()), "audit.help.header", "audit.help.body");
 	
-		criteriaPanel = new AuditReportCriteriaPanel("reportCriteria", (AuditReportCriteriaModel)getModel());
+		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(PATH_CRITERIA, getModel());
 		add(criteriaPanel);
 		
-		dataPanel = new AuditReportDataPanel("reportData", (AuditReportCriteriaModel)getModel());
+		AuditReportDataPanel dataPanel = new AuditReportDataPanel(PATH_DATA, getModel());
 		add(dataPanel);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 */
+	@Override
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	{
+		if (ajaxEvent.getEventType() == AuditReportCriteriaForm.Events.FORM_SUBMIT)
+		{
+			ajaxEvent.getTarget().addComponent(get(PATH_DATA));
+			
+			return false;
+		}
+		return true;
+	}
+
 }

@@ -9,6 +9,7 @@ import net.rrm.ehour.domain.Audit;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number>  implements AuditDAO
 {
@@ -37,6 +38,16 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 		if (request.getMax() != null)
 		{
 			criteria.setMaxResults(request.getMax());
+		}
+
+		if (request.getDateRange().getDateStart() != null)
+		{
+			criteria.add(Restrictions.ge("date", request.getDateRange().getDateStart()));
+		}
+
+		if (request.getDateRange().getDateEnd() != null)
+		{
+			criteria.add(Restrictions.le("date", request.getDateRange().getDateEnd()));
 		}
 
 		criteria.addOrder(Order.asc("date"));

@@ -1,5 +1,8 @@
 package net.rrm.ehour.ui.audit.panel;
 
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
@@ -7,6 +10,7 @@ import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
@@ -27,11 +31,30 @@ public class AuditReportCriteriaForm extends Form
 {
 	private static final long serialVersionUID = -4033279032707727816L;
 
+	public enum Events implements AjaxEventType
+	{
+		FORM_SUBMIT;
+	}
+	
 	public AuditReportCriteriaForm(String id, IModel model)
 	{
 		super(id, model);
 		
 		addDates(model);
+		
+		AjaxButton submitButton = new AjaxButton("submitButton", this)
+		{
+			private static final long serialVersionUID = -627058322154455051L;
+
+			@Override
+            protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				AjaxEvent event = new AjaxEvent(target, Events.FORM_SUBMIT);
+				AjaxUtil.publishAjaxEvent(AuditReportCriteriaForm.this, event);
+			}
+		};
+		
+		add(submitButton);
 	}
 
 	/**
@@ -47,7 +70,7 @@ public class AuditReportCriteriaForm extends Form
 
 		// start date
 		final DateTextField dateStart = new DateTextField("dateStart", 
-															new PropertyModel(model, "dateStart"), 
+															new PropertyModel(model, "dateRange.dateStart"), 
 															new StyleDateConverter("S-", true));
 
 		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
@@ -87,7 +110,7 @@ public class AuditReportCriteriaForm extends Form
 		startDateHider.add(infiniteStart);
 
 		// end date
-		final DateTextField dateEnd = new DateTextField("projectAssignment.dateEnd", new PropertyModel(model, "projectAssignment.dateEnd"), new StyleDateConverter("S-", false));
+		final DateTextField dateEnd = new DateTextField("dateEnd", new PropertyModel(model, "dateRange.dateEnd"), new StyleDateConverter("S-", false));
 		dateEnd.add(new DatePicker());
 		// container for hiding
 

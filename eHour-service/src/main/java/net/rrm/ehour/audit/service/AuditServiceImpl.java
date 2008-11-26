@@ -10,7 +10,6 @@ import net.rrm.ehour.audit.dao.AuditDAO;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -19,12 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class AuditServiceImpl implements AuditService
 {
+//	private final static Logger LOGGER = Logger.getLogger(AuditServiceImpl.class);
+	
 	private AuditDAO	auditDAO;
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.audit.service.AuditService#persistAudit(net.rrm.ehour.domain.Audit)
 	 */
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Transactional//(propagation=Propagation.REQUIRES_NEW)
 	@NonAuditable
 	public void persistAudit(Audit audit)
 	{

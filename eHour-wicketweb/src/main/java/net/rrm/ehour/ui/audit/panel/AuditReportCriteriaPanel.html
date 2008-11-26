@@ -9,11 +9,44 @@
 <wicket:panel>
 	<div wicket:id="border">
 	<form wicket:id="criteriaForm">
-	<table class="contentTable" style="padding-right: 30px; height: 100px">
+		<table class="contentTable" style="padding-right: 30px; height: 100px">
+			<tr>
+				<td valign="top" align="left"></td>
+				<td></td>
+			</tr>
+
 		<tr>
-			<td valign="top" align="left"></td>
+			<td valign="top"><wicket:message key="admin.assignment.dateStart" />:</td>
+			<td><span wicket:id="startDateHider">
+					<span wicket:id="innerStartDateHider">
+						<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="dateStart" />
+						<br />
+					</span>
+					<input type="checkbox" wicket:id="infiniteStartDate" /> <wicket:message key="admin.assignment.infiniteStart" />
+					<span wicket:id="dateStartValidationError"></span>
+				</span>
+			</td>
+		</tr>					
+		
+		<tr>
+			<td valign="top"><wicket:message key="admin.assignment.dateEnd" />:</td>
+			<td><span wicket:id="endDateHider">
+					<span wicket:id="innerEndDateHider">
+						<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="dateEnd" />
+						<br />
+					</span>
+					<input type="checkbox" wicket:id="infiniteEndDate" /> <wicket:message key="admin.assignment.infiniteEnd" />
+					<span wicket:id="dateEndValidationError"></span>
+				</span>
+			</td>
 		</tr>
-	</table>
+		
+		<tr>
+			<td colspan="2">
+				<input type="submit" wicket:id="submitButton" />
+			</td>
+		</tr>
+					</table>
 	</form>
 	</div>
 </wicket:panel>

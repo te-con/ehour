@@ -1,6 +1,7 @@
 package net.rrm.ehour.audit.service.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.AuditType;
@@ -17,12 +18,12 @@ public class AuditReportRequest implements Serializable
 {
 	private static final long serialVersionUID = -8309219696303534810L;
 
-	private DateRange	dateRange;
+	private DateRange	dateRange = new DateRange();
 	private User		user;
 	private AuditType	auditType;
 	private Integer		offset;
 	private Integer		max;
-
+//	private ProjectAssignment projectAssignment;
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -35,6 +36,41 @@ public class AuditReportRequest implements Serializable
 									.append("auditType", auditType)
 									.toString();
 	}
+	
+	public boolean isInfiniteStartDate()
+	{
+		return getDateRange().getDateStart() == null;
+	}
+
+	public void setInfiniteStartDate(boolean infinite)
+	{
+		if (infinite)
+		{
+			getDateRange().setDateStart(null);
+		}
+		else if (getDateRange().getDateStart() == null)
+		{
+			getDateRange().setDateStart(new Date());
+		}
+	}
+
+	public boolean isInfiniteEndDate()
+	{
+		return getDateRange().getDateEnd() == null;
+	}
+
+	public void setInfiniteEndDate(boolean infinite)
+	{
+		if (infinite)
+		{
+			getDateRange().setDateEnd(null);
+		}
+		else if (getDateRange().getDateEnd() == null)
+		{
+			getDateRange().setDateEnd(new Date());
+		}
+	}
+	
 	
 	/**
 	 * @return the offset

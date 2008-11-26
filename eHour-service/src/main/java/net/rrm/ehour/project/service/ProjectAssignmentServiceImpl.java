@@ -41,6 +41,7 @@ import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 {
 	private	final static Logger		LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
@@ -55,6 +56,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#assignUsersToProjects(net.rrm.ehour.domain.Project)
 	 */
+	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)
 	public void assignUsersToProjects(Project project)
 	{
@@ -76,6 +78,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * Assign user to project
 	 *
 	 */
+	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)
 	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) 
 	{
@@ -87,6 +90,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	/**
 	 * Assign user to default projects
 	 */
+	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)
 	public User assignUserToDefaultProjects(User user)
 	{
@@ -236,6 +240,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * @throws ObjectNotFoundException 
 	 * 
 	 */
+	@Transactional
 	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException, ObjectNotFoundException
 	{
 		ProjectAssignment pa = getProjectAssignment(assignmentId);

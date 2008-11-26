@@ -32,6 +32,7 @@ import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.RequestCycle;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -47,6 +48,8 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class AuditAspect
 {
+	private final static Logger LOGGER = Logger.getLogger(AuditAspect.class);
+	
 	@Resource //@Resource not injecting??
 	private AuditService	auditService;
 	
@@ -133,6 +136,8 @@ public class AuditAspect
 	private Object doAudit(ProceedingJoinPoint pjp, AuditActionType auditActionType) throws Throwable
 	{
 		Object returnObject;
+		
+		LOGGER.debug("doAudit entry");
 
 		boolean isAuditable = isAuditable(pjp);
 
@@ -142,6 +147,8 @@ public class AuditAspect
 		}
 		
 		User user = getUser();
+		
+		LOGGER.debug("auditable: " + isAuditable);
 		
 		try
 		{
@@ -161,6 +168,8 @@ public class AuditAspect
 		{
 			auditService.persistAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));
 		}
+		
+		LOGGER.debug("exiting audit");
 		
 		return returnObject;		
 	}
