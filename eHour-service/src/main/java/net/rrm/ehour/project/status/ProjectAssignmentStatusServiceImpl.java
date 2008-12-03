@@ -190,18 +190,20 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	{
 		if (status.getAggregate() != null)
 		{
-			if (assignment.getAllottedHours().compareTo(status.getAggregate().getHours().floatValue()) > 0)
+			float statusAggregateHours = (status.getAggregate().getHours() == null) ? 0 : status.getAggregate().getHours().floatValue();
+			
+			if (assignment.getAllottedHours().compareTo(statusAggregateHours) > 0)
 			{
 				status.addStatus(ProjectAssignmentStatus.Status.IN_ALLOTTED);
 
 			}
-			else if (status.getAggregate().getHours().floatValue()  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
+			else if (statusAggregateHours  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
 			{
 				status.addStatus(ProjectAssignmentStatus.Status.OVER_OVERRUN);
 	
 				// it's still valid when it's right on the mark
 				status.setValid(!status.isValid() ||  
-							(status.getAggregate().getHours().floatValue()  == (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue())));
+							(statusAggregateHours  == (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue())));
 			}
 			else
 			{
