@@ -32,7 +32,7 @@ public class MockAuditImpl implements AuditService
 	public Audit audit;
 	
 	@NonAuditable
-	public void persistAudit(Audit audit)
+	public void doAudit(Audit audit)
 	{
 		this.audit = audit;
 		called++;

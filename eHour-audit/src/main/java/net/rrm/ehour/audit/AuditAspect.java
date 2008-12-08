@@ -158,7 +158,7 @@ public class AuditAspect
 		{
 			if (isAuditable)
 			{
-				auditService.persistAudit(createAudit(user, Boolean.FALSE, auditActionType, pjp));
+				auditService.doAudit(createAudit(user, Boolean.FALSE, auditActionType, pjp));
 			}
 			
 			throw t;
@@ -166,7 +166,7 @@ public class AuditAspect
 		
 		if (isAuditable)
 		{
-			auditService.persistAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));
+			auditService.doAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));
 		}
 		
 		LOGGER.debug("exiting audit");

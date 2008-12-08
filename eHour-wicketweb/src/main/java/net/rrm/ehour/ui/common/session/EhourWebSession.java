@@ -190,7 +190,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 			
 			User user = ((AuthUser)authResult.getPrincipal()).getUser();
 			
-			auditService.persistAudit(new Audit()
+			auditService.doAudit(new Audit()
 										.setAuditActionType(AuditActionType.LOGIN)
 										.setUser(user)
 										.setUserFullName(user.getFullName())
@@ -278,7 +278,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 		invalidate();
 		super.signOut();
 		
-		auditService.persistAudit(new Audit()
+		auditService.doAudit(new Audit()
 			.setAuditActionType(AuditActionType.LOGOUT)
 			.setUser(user.getUser())
 			.setUserFullName(user.getUser().getFullName())

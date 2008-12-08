@@ -18,7 +18,7 @@ public interface AuditService
 	 * Persist audit
 	 * @param audit
 	 */
-	public void persistAudit(Audit audit);
+	public void doAudit(Audit audit);
 
 	/**
 	 * Get audit report

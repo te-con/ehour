@@ -10,6 +10,7 @@ import net.rrm.ehour.audit.dao.AuditDAO;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,14 +23,32 @@ public class AuditServiceImpl implements AuditService
 	
 	private AuditDAO	auditDAO;
 
+//	private TransactionTemplate transactionTemplate;
+	
+//	public AuditServiceImpl(PlatformTransactionManager transactionManager)
+//	{
+//		Assert.notNull(transactionManager, "The 'transactionManager' argument must not be null.");
+//		this.transactionTemplate = new TransactionTemplate(transactionManager);
+//	}
+	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.audit.service.AuditService#persistAudit(net.rrm.ehour.domain.Audit)
 	 */
-	@Transactional//(propagation=Propagation.REQUIRES_NEW)
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	@NonAuditable
-	public void persistAudit(Audit audit)
+	public void doAudit(final Audit audit)
 	{
-		auditDAO.persist(audit);
+//	     transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+//
+//	        // the code in this method executes in a transactional context
+//	        protected void doInTransactionWithoutResult(TransactionStatus status) {
+	        	auditDAO.persist(audit);
+//	          return resultOfUpdateOperation2();
+//	        }
+//	      });
+
+		
+//		auditDAO.persist(audit);
 	}	
 	
 	/*

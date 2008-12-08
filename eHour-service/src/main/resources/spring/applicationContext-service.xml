@@ -15,7 +15,6 @@
 	<aop:aspectj-autoproxy/>
 
 	<!-- the transactional advice  -->
-	<!-- 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="persist*" propagation="REQUIRED" rollback-for="net.rrm.ehour.exception.BusinessException,net.rrm.ehour.exception.ObjectNotUniqueException,net.rrm.ehour.exception.ParentChildConstraintException" />
@@ -23,7 +22,7 @@
 			<tx:method name="assign*" propagation="REQUIRED" />						
 		</tx:attributes>
 	</tx:advice>
- -->
+ 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 <!-- 
 	<aop:config>
@@ -38,6 +37,7 @@
 
 	<!-- Audit service -->
 	<bean id="auditService" class="net.rrm.ehour.audit.service.AuditServiceImpl">
+<!-- 	<constructor-arg index="0" ref="transactionManager" /> -->	
 		<property name="auditDAO" ref="auditDAO" />
 	</bean>
 	

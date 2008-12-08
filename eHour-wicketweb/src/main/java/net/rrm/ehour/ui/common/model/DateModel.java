@@ -130,7 +130,6 @@ public class DateModel implements IModel
 	{
 		this(locale, dateStyle);
 		this.model = model;
-		
 	}
 	
 	/**
