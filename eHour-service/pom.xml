@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
@@ -170,7 +169,7 @@
 							<groupId>xerces</groupId>
 							<artifactId>xercesImpl</artifactId>
 						</exclusion>
-					</exclusions>					
+					</exclusions>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -329,10 +328,10 @@
 					<artifactId>javax.servlet</artifactId>
 					<groupId>servlet-api</groupId>
 				</exclusion>
-                <exclusion>
-                    <artifactId>xml-apis</artifactId>
-                    <groupId>xml-apis</groupId>
-                </exclusion>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -345,6 +344,23 @@
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>org.springmodules</groupId>
+			<artifactId>spring-modules-cache</artifactId>
+			<version>0.8</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-mock</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		 -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>

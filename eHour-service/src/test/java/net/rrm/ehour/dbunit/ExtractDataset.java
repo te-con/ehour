@@ -14,7 +14,7 @@ public class ExtractDataset
 	public static void main(String[] args) throws Exception
 	{
 		// database connection
-		Class driverClass = Class.forName("com.mysql.jdbc.Driver");
+		Class.forName("com.mysql.jdbc.Driver");
 		
 		Connection jdbcConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1/ehour_08", "root", "root");
 		IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);

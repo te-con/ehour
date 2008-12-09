@@ -6,7 +6,7 @@ import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.datatable.AjaxDataTable;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
@@ -18,6 +18,8 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColu
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -40,10 +42,13 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 	 */
 	private void addComponents(IModel model)
 	{
-		Border greyBorder = new GreyRoundedBorder("border", 450);
+		Border greyBorder = new GreyBlueRoundedBorder("border");
 		add(greyBorder);
 		
 		greyBorder.add(getPagingDataView(model));
+		
+		add(new StyleSheetReference("auditStyle", new CompressedResourceReference(AuditReportDataPanel.class, "style/auditStyle.css")));
+
 	}
 
 	/**
@@ -63,7 +68,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
         columns[2] = new PropertyColumn(new Model("Action"), "action", "action");
         columns[3] = new PropertyColumn(new Model("Type"), "auditActionType.value", "auditActionType.value");
 
-        AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider((AuditReportRequest)model.getObject()), 10);
+        AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider((AuditReportRequest)model.getObject()), 20);
 		dataContainer.add(table);
 		
 		return dataContainer;
@@ -71,6 +76,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 	
 	private class DateColumn extends AbstractColumn
 	{
+		private static final long serialVersionUID = -5517077439980001335L;
 		private EhourConfig config;
 		
 		public DateColumn(IModel displayModel, EhourConfig config)

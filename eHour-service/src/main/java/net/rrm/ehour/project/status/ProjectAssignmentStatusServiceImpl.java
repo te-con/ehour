@@ -159,7 +159,18 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	{
 		if (status.getAggregate() != null)
 		{
-			int compared = assignment.getAllottedHours().compareTo(status.getAggregate().getHours().floatValue());
+			float statusAggregateHours = (status.getAggregate().getHours() == null) ? 0 : status.getAggregate().getHours().floatValue();
+			int compared;
+			
+			if (assignment.getAllottedHours() != null)
+			{
+				compared = assignment.getAllottedHours().compareTo(statusAggregateHours);
+			}
+			else
+			{
+				compared = new Float(0).compareTo(statusAggregateHours);
+			};
+			
 			
 			if (compared <= 0)
 			{

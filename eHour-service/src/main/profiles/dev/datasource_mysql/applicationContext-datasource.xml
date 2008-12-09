@@ -18,8 +18,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="eHourDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+<<<<<<< .mine
+            p:driverClassName="com.mysql.jdbc.Driver" p:url="jdbc:mysql://localhost/ehour_08?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true" 
+            p:username="root" p:password="a"  p:maxActive="15" />
+=======
             p:driverClassName="com.mysql.jdbc.Driver" p:url="jdbc:mysql://127.0.0.1/ehour_08?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true" 
             p:username="ehourdev" p:password="ehourdev" p:maxActive="15" />
+>>>>>>> .r1574
 </beans>
  
  

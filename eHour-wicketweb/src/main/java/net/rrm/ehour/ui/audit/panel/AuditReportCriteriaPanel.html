@@ -26,6 +26,9 @@
 					<span wicket:id="dateStartValidationError"></span>
 				</span>
 			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td><wicket:message key="audit.report.filter.name" /></td>
+			<td><input type="text" wicket:id="name" class="textInputSmall"  /></td>
 		</tr>					
 		
 		<tr>
@@ -39,11 +42,14 @@
 					<span wicket:id="dateEndValidationError"></span>
 				</span>
 			</td>
+			<td>&nbsp;&nbsp;</td>
+            <td><wicket:message key="audit.report.filter.action" /></td>
+            <td><input type="text" wicket:id="action" class="textInputSmall"  /></td>
 		</tr>
 		
 		<tr>
-			<td colspan="2">
-				<input type="submit" wicket:id="submitButton" />
+			<td colspan="5">
+			     <a class="bluebutton"  wicket:id="submitButton"><span>submit</span></a> 
 			</td>
 		</tr>
 					</table>

@@ -5,7 +5,6 @@ import java.util.Date;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.AuditType;
-import net.rrm.ehour.domain.User;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -19,7 +18,8 @@ public class AuditReportRequest implements Serializable
 	private static final long serialVersionUID = -8309219696303534810L;
 
 	private DateRange	dateRange = new DateRange();
-	private User		user;
+	private String		name;
+	private String		action;
 	private AuditType	auditType;
 	private Integer		offset;
 	private Integer		max;
@@ -32,7 +32,8 @@ public class AuditReportRequest implements Serializable
 	{
 		return new ToStringBuilder(this)
 									.append("dateRange", dateRange)
-									.append("user", user)
+									.append("name", name)
+									.append("action", action)
 									.append("auditType", auditType)
 									.toString();
 	}
@@ -111,13 +112,6 @@ public class AuditReportRequest implements Serializable
 		return dateRange;
 	}
 	/**
-	 * @return the user
-	 */
-	public User getUser()
-	{
-		return user;
-	}
-	/**
 	 * @return the auditType
 	 */
 	public AuditType getAuditType()
@@ -131,18 +125,45 @@ public class AuditReportRequest implements Serializable
 	{
 		this.dateRange = dateRange;
 	}
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(User user)
-	{
-		this.user = user;
-	}
+
 	/**
 	 * @param auditType the auditType to set
 	 */
 	public void setAuditType(AuditType auditType)
 	{
 		this.auditType = auditType;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName()
+	{
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public AuditReportRequest setName(String name)
+	{
+		this.name = name;
+		return this;
+	}
+
+	/**
+	 * @return the action
+	 */
+	public String getAction()
+	{
+		return action;
+	}
+
+	/**
+	 * @param action the action to set
+	 */
+	public void setAction(String action)
+	{
+		this.action = action;
 	}
 }

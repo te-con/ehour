@@ -5,10 +5,12 @@ package net.rrm.ehour.ui.audit.page;
 
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.ui.admin.BaseAdminPage;
+import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaForm;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
 import net.rrm.ehour.ui.audit.panel.AuditReportDataPanel;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -19,19 +21,20 @@ import org.apache.wicket.model.ResourceModel;
  */
 public class AuditReportPage extends BaseAdminPage 
 {
-	private final static String PATH_CRITERIA = "reportCriteria";
-	private final static String PATH_DATA = "reportData";
 	
 	public AuditReportPage()
 	{
 		super(new ResourceModel("audit.report.title"), 
 					new CompoundPropertyModel(new AuditReportRequest()), "audit.help.header", "audit.help.body");
 	
-		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(PATH_CRITERIA, getModel());
-		add(criteriaPanel);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder(AuditConstants.PATH_FRAME, new ResourceModel("audit.report.title"));
+		add(greyBorder);
 		
-		AuditReportDataPanel dataPanel = new AuditReportDataPanel(PATH_DATA, getModel());
-		add(dataPanel);
+		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(AuditConstants.PATH_CRITERIA, getModel());
+		greyBorder.add(criteriaPanel);
+		
+		AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, getModel());
+		greyBorder.add(dataPanel);
 	}
 
 	/*
@@ -43,7 +46,7 @@ public class AuditReportPage extends BaseAdminPage
 	{
 		if (ajaxEvent.getEventType() == AuditReportCriteriaForm.Events.FORM_SUBMIT)
 		{
-			ajaxEvent.getTarget().addComponent(get(PATH_DATA));
+			ajaxEvent.getTarget().addComponent(get(AuditConstants.PATH_FRAME + ":" + AuditConstants.PATH_DATA));
 			
 			return false;
 		}

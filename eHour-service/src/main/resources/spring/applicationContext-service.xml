@@ -4,7 +4,7 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:util="http://www.springframework.org/schema/util"	
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
@@ -13,6 +13,8 @@
 	default-autowire="byName">
 
 	<aop:aspectj-autoproxy/>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- the transactional advice  -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -23,7 +25,6 @@
 		</tx:attributes>
 	</tx:advice>
  
-	<tx:annotation-driven transaction-manager="transactionManager" />
 <!-- 
 	<aop:config>
 		<aop:pointcut id="serviceOperation" expression="execution(* net.rrm.ehour.*.service.*Service.*(..))" />

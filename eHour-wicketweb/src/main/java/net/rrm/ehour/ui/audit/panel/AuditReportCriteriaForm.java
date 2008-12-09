@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.audit.panel;
 
+import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.ajax.AjaxUtil;
@@ -17,6 +18,7 @@ import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -30,7 +32,7 @@ import org.apache.wicket.model.ResourceModel;
 public class AuditReportCriteriaForm extends Form
 {
 	private static final long serialVersionUID = -4033279032707727816L;
-
+	
 	public enum Events implements AjaxEventType
 	{
 		FORM_SUBMIT;
@@ -42,7 +44,7 @@ public class AuditReportCriteriaForm extends Form
 		
 		addDates(model);
 		
-		AjaxButton submitButton = new AjaxButton("submitButton", this)
+		AjaxButton submitButton = new AjaxButton(AuditConstants.PATH_FORM_SUBMIT, this)
 		{
 			private static final long serialVersionUID = -627058322154455051L;
 
@@ -55,8 +57,14 @@ public class AuditReportCriteriaForm extends Form
 		};
 		
 		add(submitButton);
-	}
+		
+		TextField nameField = new TextField(AuditConstants.PATH_FORM_NAME, new PropertyModel(getModel(), "name"));
+		add(nameField);
 
+		TextField actionField = new TextField(AuditConstants.PATH_FORM_ACTION, new PropertyModel(getModel(), "action"));
+		add(actionField);
+	}
+	
 	/**
 	 * Add start & end dates
 	 * 
@@ -69,7 +77,7 @@ public class AuditReportCriteriaForm extends Form
 		PropertyModel infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
 
 		// start date
-		final DateTextField dateStart = new DateTextField("dateStart", 
+		DateTextField dateStart = new DateTextField("dateStart", 
 															new PropertyModel(model, "dateRange.dateStart"), 
 															new StyleDateConverter("S-", true));
 
@@ -79,14 +87,14 @@ public class AuditReportCriteriaForm extends Form
 		dateStart.add(new DatePicker());
 
 		// container for hiding
-		final WebMarkupContainer startDateHider = new WebMarkupContainer("startDateHider");
+		WebMarkupContainer startDateHider = new WebMarkupContainer(AuditConstants.PATH_FORM_START_DATE_HIDER);
 		startDateHider.setOutputMarkupId(true);
 
 		// indicator for validation issues
 		startDateHider.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart));
 
 		// the inner hider is just there to hide the <br /> as well
-		final WebMarkupContainer innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
+		WebMarkupContainer innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
 		innerStartDateHider.setOutputMarkupId(true);
 		innerStartDateHider.add(dateStart);
 		innerStartDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteStartDateModel, true));
@@ -103,14 +111,14 @@ public class AuditReportCriteriaForm extends Form
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				target.addComponent(startDateHider);
+				target.addComponent(AuditReportCriteriaForm.this.get(AuditConstants.PATH_FORM_START_DATE_HIDER));
 			}
 		};
 
 		startDateHider.add(infiniteStart);
 
 		// end date
-		final DateTextField dateEnd = new DateTextField("dateEnd", new PropertyModel(model, "dateRange.dateEnd"), new StyleDateConverter("S-", false));
+		DateTextField dateEnd = new DateTextField("dateEnd", new PropertyModel(model, "dateRange.dateEnd"), new StyleDateConverter("S-", false));
 		dateEnd.add(new DatePicker());
 		// container for hiding
 
@@ -118,14 +126,14 @@ public class AuditReportCriteriaForm extends Form
 		dateEnd.add(new ConditionalRequiredValidator(infiniteEndDateModel));
 		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
 
-		final WebMarkupContainer endDateHider = new WebMarkupContainer("endDateHider");
+		WebMarkupContainer endDateHider = new WebMarkupContainer(AuditConstants.PATH_FORM_END_DATE_HIDER);
 		endDateHider.setOutputMarkupId(true);
 
 		// indicator for validation issues
 		endDateHider.add(new AjaxFormComponentFeedbackIndicator("dateEndValidationError", dateEnd));
 
 		// the inner hider is just there to hide the <br /> as well
-		final WebMarkupContainer innerEndDateHider = new WebMarkupContainer("innerEndDateHider");
+		WebMarkupContainer innerEndDateHider = new WebMarkupContainer("innerEndDateHider");
 		innerEndDateHider.setOutputMarkupId(true);
 		innerEndDateHider.add(dateEnd);
 		innerEndDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteEndDateModel, true));
@@ -140,7 +148,7 @@ public class AuditReportCriteriaForm extends Form
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				target.addComponent(endDateHider);
+				target.addComponent(AuditReportCriteriaForm.this.get(AuditConstants.PATH_FORM_END_DATE_HIDER));
 			}
 		};
 

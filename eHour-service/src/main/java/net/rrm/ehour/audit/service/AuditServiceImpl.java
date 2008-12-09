@@ -22,14 +22,6 @@ public class AuditServiceImpl implements AuditService
 //	private final static Logger LOGGER = Logger.getLogger(AuditServiceImpl.class);
 	
 	private AuditDAO	auditDAO;
-
-//	private TransactionTemplate transactionTemplate;
-	
-//	public AuditServiceImpl(PlatformTransactionManager transactionManager)
-//	{
-//		Assert.notNull(transactionManager, "The 'transactionManager' argument must not be null.");
-//		this.transactionTemplate = new TransactionTemplate(transactionManager);
-//	}
 	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.audit.service.AuditService#persistAudit(net.rrm.ehour.domain.Audit)
@@ -38,17 +30,7 @@ public class AuditServiceImpl implements AuditService
 	@NonAuditable
 	public void doAudit(final Audit audit)
 	{
-//	     transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-//
-//	        // the code in this method executes in a transactional context
-//	        protected void doInTransactionWithoutResult(TransactionStatus status) {
-	        	auditDAO.persist(audit);
-//	          return resultOfUpdateOperation2();
-//	        }
-//	      });
-
-		
-//		auditDAO.persist(audit);
+		auditDAO.persist(audit);
 	}	
 	
 	/*

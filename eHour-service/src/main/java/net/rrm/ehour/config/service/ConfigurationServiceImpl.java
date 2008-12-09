@@ -26,6 +26,7 @@ import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Configuration service
@@ -39,6 +40,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
 	 */
+	@Transactional
 	@NonAuditable
 	public EhourConfigStub getConfiguration()
 	{
