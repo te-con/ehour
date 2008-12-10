@@ -138,3 +138,15 @@
 	padding: 0;
 	text-align: center;
 }
+
+.navigatorLabel,  .navigator
+{
+    font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
+    color:  #fefeff;
+}
+
+.navigator a:link
+{
+    font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
+    color:  #536e87;
+}
