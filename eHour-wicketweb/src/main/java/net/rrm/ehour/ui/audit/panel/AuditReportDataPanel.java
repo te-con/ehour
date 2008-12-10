@@ -12,17 +12,21 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.value.ValueMap;
 
 public class AuditReportDataPanel extends AbstractAjaxPanel
 {
@@ -48,9 +52,19 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 		greyBorder.add(getPagingDataView(model));
 		
 		add(new StyleSheetReference("auditStyle", new CompressedResourceReference(AuditReportDataPanel.class, "style/auditStyle.css")));
-
+		
+		addExcelLink();
 	}
 
+	private void addExcelLink()
+	{
+		ResourceReference excelResource = new ResourceReference("auditReportExcel");
+		ValueMap params = new ValueMap();
+//		params.add("reportId", reprtId);
+		Link excelLink = new ResourceLink("excelLink", excelResource, params);
+		add(excelLink);
+	}
+	
 	/**
 	 * 
 	 * @param model
@@ -64,9 +78,9 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
         
 		IColumn[] columns = new IColumn[4];
         columns[0] = new DateColumn(new Model("Date"), config);
-        columns[1] = new PropertyColumn(new Model("Last Name"), "userFullName", "userFullName");
-        columns[2] = new PropertyColumn(new Model("Action"), "action", "action");
-        columns[3] = new PropertyColumn(new Model("Type"), "auditActionType.value", "auditActionType.value");
+        columns[1] = new PropertyColumn(new Model("Last Name"), "userFullName");
+        columns[2] = new PropertyColumn(new Model("Action"), "action");
+        columns[3] = new PropertyColumn(new Model("Type"), "auditActionType.value");
 
         AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider((AuditReportRequest)model.getObject()), 20);
 		dataContainer.add(table);
@@ -92,11 +106,8 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 		 */
 		public void populateItem(Item item, String componentId, IModel model)
 		{
-			System.out.println(model.getObject());
-			
 			Date date = ((Audit)model.getObject()).getDate();
-			
-			item.add(new Label(componentId, new DateModel(date, config)));
+			item.add(new Label(componentId, new DateModel(date, config, DateModel.DATESTYLE_DATE_TIME)));
 		}
 	}
 }

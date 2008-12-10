@@ -45,6 +45,7 @@ public class DateModel implements IModel
 	public final static int	DATESTYLE_FULL_SHORT = 6;
 	public final static int	DATESTYLE_WEEK= 7;
 	public final static int	DATESTYLE_DAYONLY_LONG = 8;
+	public final static int	DATESTYLE_DATE_TIME = 9;
 	
 	private String nullString = "&infin;";
 	
@@ -181,6 +182,9 @@ public class DateModel implements IModel
 			case DATESTYLE_WEEK:
 				dateFormatter = new TimesheetLongFormatter("w", locale);
 				break;
+			case DATESTYLE_DATE_TIME:
+				dateFormatter = new TimesheetLongFormatter("dd MMM yy HH:mm:ss", locale, false);
+				break;
 			case DATESTYLE_LONG:
 			default:
 				dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT, locale);
@@ -237,20 +241,32 @@ public class DateModel implements IModel
 	private class TimesheetLongFormatter extends SimpleDateFormat
 	{
 		private static final long serialVersionUID = 2697598002926018462L;
-
+		private boolean breakSpaces = true;
+		
 		public TimesheetLongFormatter(String format, Locale locale)
 		{
-			super(format, locale);
+			this(format, locale, true);
 		}
-		
+
+		public TimesheetLongFormatter(String format, Locale locale, boolean breakSpaces)
+		{
+			super(format, locale);
+			this.breakSpaces =breakSpaces;
+		}
+
 		@Override
 	    public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition)
 		{
 			StringBuffer sb = super.format(date, toAppendTo, fieldPosition);
 			
-			String formatted = sb.toString();
-			
-			return new StringBuffer(formatted.replace(" ", "<br />"));
+			if (breakSpaces)
+			{
+				return new StringBuffer(sb.toString().replace(" ", "<br />"));
+			}
+			else
+			{
+				return sb;
+			}
 		}
 	}
 

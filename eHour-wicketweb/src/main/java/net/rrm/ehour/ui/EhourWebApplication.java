@@ -22,6 +22,7 @@ import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
 import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
+import net.rrm.ehour.ui.audit.panel.AuditReportExcel;
 import net.rrm.ehour.ui.common.config.PageConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
@@ -116,6 +117,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		
 		getSharedResources().add("detailedReportExcel", new DetailedReportExcel());
 		mountSharedResource("/detailedReportExcel", new ResourceReference("detailedReportExcel").getSharedResourceKey());
+
+		getSharedResources().add("auditReportExcel", new AuditReportExcel());
+		mountSharedResource("/auditReportExcel", new ResourceReference("auditReportExcel").getSharedResourceKey());
+
 	}
 	/**
 	 * Mount pages
