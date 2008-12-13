@@ -17,52 +17,33 @@
 
 package net.rrm.ehour.ui.audit.report;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Audit;
-import net.rrm.ehour.ui.report.Report;
+import net.rrm.ehour.ui.common.report.RangedReport;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
-import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Audit report
  **/
 
-public class AuditReport extends Report
+public class AuditReport extends RangedReport
 {
 	private static final long serialVersionUID = -5162817322066082796L;
 
-	@SpringBean
-	private transient AuditService 	auditService;
-	private transient List<Audit>	reportData;
+	@SpringBean(name = "auditService")
+	private transient AuditService auditService;
+
+	private transient List<Serializable[]> reportData;
+
 	private AuditReportRequest auditReportRequest;
-
-	/**
-	 * 
-	 * @param auditReportRequest
-	 */
-	public AuditReport(AuditReportRequest auditReportRequest)
-	{
-		this.auditReportRequest = auditReportRequest;
-	}
-
-	/**
-	 * @return the reportData
-	 */
-	public List<Audit> getReportData()
-	{
-		if (reportData == null)
-		{
-			InjectorHolder.getInjector().inject(this);
-			
-			reportData = auditService.getAudit(auditReportRequest);
-		}
-
-		return reportData;
-	}
 
 	/**
 	 * @return the auditReportRequest
@@ -71,7 +52,51 @@ public class AuditReport extends Report
 	{
 		return auditReportRequest;
 	}
+
+	/**
+	 * @param auditReportRequest
+	 *            the auditReportRequest to set
+	 */
+	public void setAuditReportRequest(AuditReportRequest auditReportRequest)
+	{
+		this.auditReportRequest = auditReportRequest;
+	}
+
+	@Override
+	public DateRange getReportRange()
+	{
+		return auditReportRequest.getDateRange();
+	}
 	
+	@Override
+	public List<Serializable[]> getReportMatrix()
+	{
+		if (reportData == null)
+		{
+			CommonWebUtil.springInjection(this);
+
+			reportData = convert(auditService.getAuditAll(auditReportRequest));
+		}
+
+		return reportData;
+	}
 	
-	
+	private List<Serializable[]> convert(List<Audit> data)
+	{
+		List<Serializable[]> matrix = new ArrayList<Serializable[]>();
+		
+		for (Audit audit : data)
+		{
+			Serializable[] row = new Serializable[4];
+			
+			row[0] = audit.getDate();
+			row[1] = audit.getFullName();
+			row[2] = audit.getAction();
+			row[3] = audit.getAuditActionType().getValue();
+			
+			matrix.add(row);
+		}
+		
+		return  matrix;
+	}
 }

@@ -20,6 +20,8 @@ import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
+import org.apache.wicket.injection.web.InjectorHolder;
+
 /**
  * Commons 
  **/
@@ -44,6 +46,14 @@ public class CommonWebUtil
 	
 //	public final static String[] weekDays = new String[]{"sunday", "monday", "tuesday", 
 //															"wednesday", "thursday", "friday", "saturday"};
+	
+	/**
+	 * Inject beans into @SpringBean annotated properties
+	 */
+	public static void springInjection(Object injectionTarget)
+	{
+		InjectorHolder.getInjector().inject(injectionTarget);
+	}
 	
 	/**
 	 * Get resource key for project assignment type

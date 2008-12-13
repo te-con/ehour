@@ -28,6 +28,13 @@ public interface AuditService
 	public List<Audit> getAudit(AuditReportRequest request);
 	
 	/**
+	 * Get audit report ignoring any offset or max
+	 * @param request
+	 * @return
+	 */
+	public List<Audit> getAuditAll(AuditReportRequest request);
+	
+	/**
 	 * get audit count
 	 * @param request
 	 * @return

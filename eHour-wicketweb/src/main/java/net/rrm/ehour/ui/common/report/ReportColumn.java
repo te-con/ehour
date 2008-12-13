@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.report.panel;
+package net.rrm.ehour.ui.common.report;
 
 import java.io.Serializable;
 
@@ -30,7 +30,7 @@ import org.apache.wicket.model.IModel;
  * constructor args is more memory costly. May matter with large reports.
  **/
 
-public class TreeReportColumn implements Serializable
+public class ReportColumn implements Serializable
 {
 	public static enum ColumnType { OTHER, DATE, RATE, HOUR, TURNOVER, COMMENT };
 	public static boolean COLUMN_VISIBLE = true;
@@ -50,27 +50,27 @@ public class TreeReportColumn implements Serializable
 	private ColumnType	columnType = ColumnType.OTHER;
 	
 
-	public TreeReportColumn(String columnHeaderResourceKey)
+	public ReportColumn(String columnHeaderResourceKey)
 	{
 		this(columnHeaderResourceKey, true);
 	}
 
-	public TreeReportColumn(String columnHeaderResourceKey, ColumnType columnType)
+	public ReportColumn(String columnHeaderResourceKey, ColumnType columnType)
 	{
 		this(columnHeaderResourceKey, null, null, true, columnType);
 	}
 
-	public TreeReportColumn(String columnHeaderResourceKey, boolean visible)
+	public ReportColumn(String columnHeaderResourceKey, boolean visible)
 	{
 		this(columnHeaderResourceKey, null, null, visible);
 	}
 	
-	public TreeReportColumn(String columnHeaderResourceKey, boolean visible, boolean allowDuplicates)
+	public ReportColumn(String columnHeaderResourceKey, boolean visible, boolean allowDuplicates)
 	{
 		this(columnHeaderResourceKey, null, visible, allowDuplicates, ColumnType.OTHER);
 	}	
 
-	public TreeReportColumn(String columnHeaderResourceKey, boolean visible, boolean allowDuplicates, boolean chartSeriesColumn)
+	public ReportColumn(String columnHeaderResourceKey, boolean visible, boolean allowDuplicates, boolean chartSeriesColumn)
 	{
 		this(columnHeaderResourceKey, null, visible, allowDuplicates, ColumnType.OTHER);
 		
@@ -78,27 +78,27 @@ public class TreeReportColumn implements Serializable
 	}	
 	
 	
-	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel)
+	public ReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel)
 	{
 		this(columnHeaderResourceKey, conversionModel, null, true);
 	}
 
-	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, boolean visible, ColumnType columnType)
+	public ReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, boolean visible, ColumnType columnType)
 	{
 		this(columnHeaderResourceKey, conversionModel, new Object[]{}, visible, columnType);
 	}
 	
-	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, boolean visible, boolean allowDuplicates, ColumnType columnType)
+	public ReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, boolean visible, boolean allowDuplicates, ColumnType columnType)
 	{
 		this(columnHeaderResourceKey, conversionModel, new Object[]{}, null, visible, allowDuplicates, columnType);
 	}	
 	
-	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible)
+	public ReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible)
 	{
 		this(columnHeaderResourceKey, conversionModel, conversionModelArgs, visible, ColumnType.OTHER);
 	}
 	
-	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible, ColumnType columnType)
+	public ReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, Object[] conversionModelArgs, boolean visible, ColumnType columnType)
 	{
 		this(columnHeaderResourceKey, conversionModel, conversionModelArgs, null, visible, columnType);
 	}
@@ -113,7 +113,7 @@ public class TreeReportColumn implements Serializable
 	 * @param columnType
 	 */
 	@SuppressWarnings("unchecked")
-	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, 
+	public ReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, 
 							Object[] conversionModelArgs, 
 							Class[] conversionModelArgsTypes,
 							boolean visible, ColumnType columnType)
@@ -132,7 +132,7 @@ public class TreeReportColumn implements Serializable
 	 * @param columnType
 	 */
 	@SuppressWarnings("unchecked")
-	public TreeReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, 
+	public ReportColumn(String columnHeaderResourceKey, Class<? extends IModel> conversionModel, 
 							Object[] conversionModelArgs, 
 							Class[] conversionModelArgsTypes,
 							boolean visible, boolean allowDuplicates, ColumnType columnType)

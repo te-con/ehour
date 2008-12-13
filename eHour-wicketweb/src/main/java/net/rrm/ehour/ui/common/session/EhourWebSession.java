@@ -28,6 +28,8 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
+import net.rrm.ehour.ui.common.report.ReportCache;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.acegisecurity.Authentication;
@@ -43,7 +45,6 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.Roles;
-import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -82,7 +83,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 	 */
 	public void reloadConfig()
 	{
-		InjectorHolder.getInjector().inject(this);
+		CommonWebUtil.springInjection(this);
 		
 		if (!ehourConfig.isDontForceLanguage())
 		{

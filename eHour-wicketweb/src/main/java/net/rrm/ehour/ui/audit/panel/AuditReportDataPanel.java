@@ -6,6 +6,7 @@ import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
+import net.rrm.ehour.ui.audit.report.AuditReport;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.datatable.AjaxDataTable;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -25,7 +26,7 @@ import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.value.ValueMap;
 
 public class AuditReportDataPanel extends AbstractAjaxPanel
@@ -60,8 +61,14 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 	{
 		ResourceReference excelResource = new ResourceReference("auditReportExcel");
 		ValueMap params = new ValueMap();
-//		params.add("reportId", reprtId);
+		AuditReport auditReport = new AuditReport();
+		AuditReportRequest auditReportRequest = (AuditReportRequest)AuditReportDataPanel.this.getModelObject();
+		auditReport.setAuditReportRequest(auditReportRequest);
+		final String reportId = getEhourWebSession().getReportCache().addReportToCache(auditReport);
+		params.add("reportId", reportId);
+		
 		Link excelLink = new ResourceLink("excelLink", excelResource, params);
+		
 		add(excelLink);
 	}
 	
@@ -77,10 +84,10 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
         
 		IColumn[] columns = new IColumn[4];
-        columns[0] = new DateColumn(new Model("Date"), config);
-        columns[1] = new PropertyColumn(new Model("Last Name"), "userFullName");
-        columns[2] = new PropertyColumn(new Model("Action"), "action");
-        columns[3] = new PropertyColumn(new Model("Type"), "auditActionType.value");
+        columns[0] = new DateColumn(new ResourceModel("audit.report.column.date"), config);
+        columns[1] = new PropertyColumn(new ResourceModel("audit.report.column.lastName"), "userFullName");
+        columns[2] = new PropertyColumn(new ResourceModel("audit.report.column.action"), "action");
+        columns[3] = new PropertyColumn(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
         AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider((AuditReportRequest)model.getObject()), 20);
 		dataContainer.add(table);

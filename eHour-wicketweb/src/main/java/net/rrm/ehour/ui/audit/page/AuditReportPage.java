@@ -50,7 +50,7 @@ public class AuditReportPage extends BaseAdminPage
 			
 			return false;
 		}
+		
 		return true;
 	}
-
 }

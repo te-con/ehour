@@ -1,7 +1,7 @@
 /**
- * Created on Sep 28, 2007
- * Created by Thies Edeling
- * Created by Thies Edeling
+ * Created on Dec 13, 2008
+ * Author: Thies
+ *
  * Copyright (C) 2007 TE-CON, All Rights Reserved.
  *
  * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
@@ -15,36 +15,46 @@
  *
  */
 
-package net.rrm.ehour.ui.report.panel.aggregate;
+package net.rrm.ehour.ui.common.report;
 
-import net.rrm.ehour.ui.common.report.AbstractExcelReport;
-import net.rrm.ehour.ui.common.report.ReportConfig;
+import java.io.Serializable;
+import java.util.List;
 
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.ui.report.Report;
 
 /**
- * TODO 
+ * Report with data stored in a matrix
  **/
 
-public class ProjectReportExcel extends AbstractExcelReport
+public abstract class RangedReport extends Report
 {
 	private static final long serialVersionUID = 1L;
 
-	public ProjectReportExcel()
-	{
-		super(ReportConfig.AGGREGATE_PROJECT);
-	}
+	private	DateRange				reportRange;
+
 	
-	@Override
-	protected IModel getExcelReportName()
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract List<Serializable[]> getReportMatrix();
+
+
+	/**
+	 * @return the reportRange
+	 */
+	public DateRange getReportRange()
 	{
-		return new ResourceModel("report.title.project");
+		return reportRange;
 	}
 
-	@Override
-	protected IModel getHeaderReportName()
+
+	/**
+	 * @param reportRange the reportRange to set
+	 */
+	protected void setReportRange(DateRange reportRange)
 	{
-		return new ResourceModel("report.title.project");
+		this.reportRange = reportRange;
 	}
 }

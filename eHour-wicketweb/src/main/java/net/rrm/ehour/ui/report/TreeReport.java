@@ -21,20 +21,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.common.report.RangedReport;
+import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
-import net.rrm.ehour.ui.report.panel.ReportConfig;
 
-public abstract class TreeReport<EL extends ReportElement> extends Report
+public abstract class TreeReport<EL extends ReportElement> extends RangedReport
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3717854276306653784L;
-	private	DateRange				reportRange;
 	private List<Serializable[]> 	reportMatrix;
 	private float					totalHours;
 	private float					totalTurnover;
@@ -67,7 +66,7 @@ public abstract class TreeReport<EL extends ReportElement> extends Report
         createMatrix(rootNodes, reportConfig.getReportColumns().length);
         calcTotals(rootNodes);
         
-        reportRange = reportData.getReportCriteria().getUserCriteria().getReportRange();
+        setReportRange(reportData.getReportCriteria().getUserCriteria().getReportRange());
     }
     
     /**
@@ -102,14 +101,6 @@ public abstract class TreeReport<EL extends ReportElement> extends Report
      * @return
      */
     public abstract ReportNodeFactory getReportNodeFactory();
-
-	/**
-	 * @return the reportForRange
-	 */
-	public DateRange getReportRange()
-	{
-		return reportRange;
-	}
 
 	/**
 	 * @return the reportMatrix

@@ -27,20 +27,47 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 	 * @see net.rrm.ehour.audit.dao.AuditDAO#findAudit(net.rrm.ehour.audit.service.dto.AuditReportRequest)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Audit> findAudit(AuditReportRequest request)
+	private List<Audit> findAudit(AuditReportRequest request, boolean ignoreOffset)
+	{
+		Criteria criteria = buildCriteria(request, ignoreOffset);
+		
+		return criteria.list();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.audit.dao.AuditDAO#findAuditCount(net.rrm.ehour.audit.service.dto.AuditReportRequest)
+	 */
+	public Number findAuditCount(AuditReportRequest request)
+	{
+		Criteria criteria = buildCriteria(request, false);
+		criteria.setProjection(Projections.rowCount());
+
+		return ((Integer)criteria.list().get(0)).intValue();
+	}
+	
+	/**
+	 * Build criteria
+	 * @param request
+	 * @param ignoreOffset
+	 * @return
+	 */
+	private Criteria buildCriteria(AuditReportRequest request, boolean ignoreOffset)
 	{
 		Criteria criteria = getSession().createCriteria(Audit.class);
 		
-		if (request.getOffset() != null)
+		if (!ignoreOffset)
 		{
-			criteria.setFirstResult(request.getOffset());
+			if (request.getOffset() != null)
+			{
+				criteria.setFirstResult(request.getOffset());
+			}
+			
+			if (request.getMax() != null)
+			{
+				criteria.setMaxResults(request.getMax());
+			}
 		}
-		
-		if (request.getMax() != null)
-		{
-			criteria.setMaxResults(request.getMax());
-		}
-
 		
 		if (!StringUtils.isBlank(request.getAction()))
 		{
@@ -65,21 +92,24 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 
 		criteria.addOrder(Order.asc("date"));
 		
-		// TODO implement rest of request
-		
-		return criteria.list();
+		return criteria;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.audit.dao.AuditDAO#findAuditCount(net.rrm.ehour.audit.service.dto.AuditReportRequest)
+	 * @see net.rrm.ehour.audit.dao.AuditDAO#findAuditAll(net.rrm.ehour.audit.service.dto.AuditReportRequest)
 	 */
-	public Number findAuditCount(AuditReportRequest request)
+	public List<Audit> findAuditAll(AuditReportRequest request)
 	{
-		Criteria criteria = getSession().createCriteria(Audit.class);
-		criteria.setProjection(Projections.rowCount());
+		return findAudit(request, true);
+	}
 
-		// TODO implement rest of request
-		return ((Integer)criteria.list().get(0)).intValue();
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.audit.dao.AuditDAO#findAudit(net.rrm.ehour.audit.service.dto.AuditReportRequest)
+	 */
+	public List<Audit> findAudit(AuditReportRequest request)
+	{
+		return findAudit(request, false);
 	}
 }

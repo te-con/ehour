@@ -29,10 +29,10 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.util.TimesheetAssembler;
 
-import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -55,7 +55,7 @@ public class TimesheetModel implements IModel
 	 */
 	public TimesheetModel(User user, Calendar forWeek)
 	{
-		InjectorHolder.getInjector().inject(this);
+		CommonWebUtil.springInjection(this);
 		
 		this.user = user;
 		this.forWeek = forWeek;
@@ -69,14 +69,13 @@ public class TimesheetModel implements IModel
 	 */
 	public List<ProjectAssignmentStatus> persistTimesheet()
 	{
-		InjectorHolder.getInjector().inject(this);
+		CommonWebUtil.springInjection(this);
 		
 		Timesheet timesheet = (Timesheet)getObject();
 		
 		return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(), 
 												timesheet.getCommentForPersist(),
 												new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
-		
 	}
 	
 	/**

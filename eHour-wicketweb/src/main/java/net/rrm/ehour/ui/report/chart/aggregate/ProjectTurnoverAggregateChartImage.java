@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.ui.report.chart.aggregate;
 
-import org.apache.wicket.model.Model;
-
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.chart.AbstractReportChartImage;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.report.chart.rowkey.ProjectRowKey;
+
+import org.apache.wicket.model.Model;
 
 /**
  * Turnover per project

@@ -44,6 +44,15 @@ public class AuditServiceImpl implements AuditService
 	}
 	
 	/**
+	 * 
+	 */
+	@NonAuditable
+	public List<Audit> getAuditAll(AuditReportRequest request)
+	{
+		return auditDAO.findAuditAll(request);
+	}	
+	
+	/**
 	 * @param auditDAO the auditDAO to set
 	 */
 	public void setAuditDAO(AuditDAO auditDAO)

@@ -21,7 +21,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.wicket.markup.html.DynamicWebResource;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.util.time.Time;
@@ -38,6 +42,19 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 	 */
 	private static final long serialVersionUID = -9078717513448771202L;
 	private final static Logger logger = Logger.getLogger(AbstractExcelResource.class);
+	
+	private final String	FONT_TYPE = "Arial";
+	private HSSFFont		boldFont;
+	private HSSFFont		normalFont;
+	protected HSSFCellStyle	boldCellStyle;
+	protected HSSFCellStyle	headerCellStyle;
+	protected HSSFCellStyle	valueDigitCellStyle;
+	protected HSSFCellStyle	defaultCellStyle;
+	protected HSSFCellStyle	currencyCellStyle;
+	protected HSSFCellStyle	dateBoldCellStyle;
+	protected HSSFCellStyle	dateCellStyle;	
+	
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -110,6 +127,53 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 //		response.setHeader("Cache-Control", "no-cache, must-revalidate");
 		response.setAttachmentHeader(getFilename());
 	}
+	
+	/**
+	 * Initialize cellstyles
+	 * @param workbook
+	 * @return
+	 */
+	protected void initCellStyles(HSSFWorkbook workbook)
+	{
+		HSSFPalette palette = workbook.getCustomPalette();
+		palette.setColorAtIndex(HSSFColor.BLUE.index, (byte) 231, (byte) 243, (byte) 255);
+		
+		headerCellStyle = workbook.createCellStyle();
+		
+		boldFont = workbook.createFont();
+		boldFont.setFontName(FONT_TYPE);
+		boldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		headerCellStyle.setFont(boldFont);
+		headerCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+		headerCellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+		headerCellStyle.setFillForegroundColor(HSSFColor.BLUE.index);
+		headerCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+		boldCellStyle = workbook.createCellStyle();
+		boldCellStyle.setFont(boldFont);
+
+		dateBoldCellStyle = workbook.createCellStyle();
+		dateBoldCellStyle.setFont(boldFont);
+		dateBoldCellStyle.setDataFormat((short)0xf);
+		
+		defaultCellStyle = workbook.createCellStyle();
+		normalFont = workbook.createFont();
+		normalFont.setFontName(FONT_TYPE);
+		defaultCellStyle.setFont(normalFont);
+		
+		valueDigitCellStyle = workbook.createCellStyle();
+		valueDigitCellStyle.setFont(normalFont);
+		// 0.00 digit style
+		valueDigitCellStyle.setDataFormat((short)2);
+
+		currencyCellStyle= workbook.createCellStyle();
+		currencyCellStyle.setFont(normalFont);
+		currencyCellStyle.setDataFormat((short)0x7);
+		
+		dateCellStyle = workbook.createCellStyle();
+		dateCellStyle.setFont(normalFont);
+		dateCellStyle.setDataFormat((short)0xf);		
+	}	
 	
 	/**
 	 * Resource state

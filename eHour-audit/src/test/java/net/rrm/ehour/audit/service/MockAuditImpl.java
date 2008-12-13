@@ -48,5 +48,10 @@ public class MockAuditImpl implements AuditService
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public List<Audit> getAuditAll(AuditReportRequest request)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

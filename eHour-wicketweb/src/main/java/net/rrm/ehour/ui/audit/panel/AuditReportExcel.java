@@ -17,27 +17,25 @@
 
 package net.rrm.ehour.ui.audit.panel;
 
-import net.rrm.ehour.ui.common.component.AbstractExcelResource;
+import net.rrm.ehour.ui.common.report.AbstractExcelReport;
+import net.rrm.ehour.ui.common.report.ReportConfig;
+
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Excel export of audit report
  **/
 
-public class AuditReportExcel extends AbstractExcelResource
+public class AuditReportExcel extends AbstractExcelReport
 {
 	private static final long serialVersionUID = 1597838144702980437L;
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getExcelData(java.lang.String)
-	 */
-	@Override
-	public byte[] getExcelData(String reportId) throws Exception
+	
+	public AuditReportExcel()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		super(ReportConfig.AUDIT_REPORT);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getFilename()
@@ -46,6 +44,20 @@ public class AuditReportExcel extends AbstractExcelResource
 	protected String getFilename()
 	{
 		return "audit_report.xls";
+	}
+
+
+	@Override
+	protected IModel getExcelReportName()
+	{
+		return new ResourceModel("audit.report.title");
+	}
+
+
+	@Override
+	protected IModel getHeaderReportName()
+	{
+		return new ResourceModel("audit.report.title");
 	}
 
 }

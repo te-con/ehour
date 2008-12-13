@@ -6,9 +6,9 @@ import java.util.List;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
-import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -46,7 +46,7 @@ public class AuditReportDataProvider extends SortableDataProvider
 				auditCacheFirst != first &&
 				auditCacheCount != count)
 		{
-			InjectorHolder.getInjector().inject(this);
+			CommonWebUtil.springInjection(this);
 			
 			request.setOffset(first);
 			request.setMax(count);
@@ -66,10 +66,9 @@ public class AuditReportDataProvider extends SortableDataProvider
 	{
 		if (auditsCount == null)
 		{
-			InjectorHolder.getInjector().inject(this);
+			CommonWebUtil.springInjection(this);
 			
 			auditsCount = auditService.getAuditCount(request).intValue();
-			
 		}
 		
 		return auditsCount;

@@ -15,27 +15,21 @@
  *
  */
 
-package net.rrm.ehour.ui.report.panel;
+package net.rrm.ehour.ui.common.report;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.report.TreeReport;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
@@ -45,22 +39,12 @@ import org.apache.wicket.model.ResourceModel;
  * Abstract aggregate excel report
  **/
 @SuppressWarnings("deprecation")
-public abstract class AbstractExcelReport<RE extends ReportElement> extends AbstractExcelResource
+public abstract class AbstractExcelReport extends AbstractExcelResource
 {
 	private static final long serialVersionUID = 1L;
 
 	private final static Logger logger = Logger.getLogger(AbstractExcelReport.class);
 	
-	private final String	FONT_TYPE = "Arial";
-	private HSSFFont		boldFont;
-	private HSSFFont		normalFont;
-	protected HSSFCellStyle	boldCellStyle;
-	protected HSSFCellStyle	headerCellStyle;
-	protected HSSFCellStyle	valueDigitCellStyle;
-	protected HSSFCellStyle	defaultCellStyle;
-	protected HSSFCellStyle	currencyCellStyle;
-	protected HSSFCellStyle	dateBoldCellStyle;
-	protected HSSFCellStyle	dateCellStyle;	
 	private	byte[]			excelData;
 	private ReportConfig	reportConfig;
 	
@@ -78,18 +62,17 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 	 * @throws Exception 
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public byte[] getExcelData(String reportId) throws Exception
 	{
 		EhourWebSession session = (EhourWebSession)Session.get();
-		TreeReport<RE> report = (TreeReport<RE>)session.getReportCache().getReportFromCache(reportId);
+		RangedReport report = (RangedReport)session.getReportCache().getReportFromCache(reportId);
 		
 		if (report == null)
 		{
 			throw new Exception("No report found in cache");
 		}
 		
-		logger.info("Creating excel report");
+		logger.trace("Creating excel report");
 		HSSFWorkbook workbook = createWorkbook(report);
 		excelData = workbookToByteArray(workbook);
 		
@@ -101,7 +84,7 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 	 * @param treeReport
 	 * @return
 	 */
-	private HSSFWorkbook createWorkbook(TreeReport<RE> treeReport)
+	private HSSFWorkbook createWorkbook(RangedReport treeReport)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet 	sheet = wb.createSheet((String)getExcelReportName().getObject());
@@ -157,11 +140,11 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 		
 		row = sheet.createRow(rowNumber++);
 		
-		for (TreeReportColumn treeReportColumn : reportConfig.getReportColumns())
+		for (ReportColumn reportColumn : reportConfig.getReportColumns())
 		{
-			if (treeReportColumn.isVisible())
+			if (reportColumn.isVisible())
 			{
-				headerModel = new ResourceModel(treeReportColumn.getColumnHeaderResourceKey());
+				headerModel = new ResourceModel(reportColumn.getColumnHeaderResourceKey());
 				
 				cell = row.createCell(cellNumber++);
 				cell.setCellStyle(headerCellStyle);
@@ -180,10 +163,10 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 	 * @param sheet
 	 * @param rowNumber
 	 */
-	protected void fillReportSheet(TreeReport<RE> reportData, HSSFSheet sheet, int rowNumber)
+	protected void fillReportSheet(RangedReport reportData, HSSFSheet sheet, int rowNumber)
 	{
 		List<Serializable[]> matrix = reportData.getReportMatrix();
-		TreeReportColumn[]	columnHeaders = reportConfig.getReportColumns();
+		ReportColumn[]	columnHeaders = reportConfig.getReportColumns();
 		HSSFRow				row;
 		HSSFCell			cell;
 		
@@ -203,7 +186,7 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 
 					if (cellValue != null)
 					{
-						if (columnHeaders[i].getColumnType() == TreeReportColumn.ColumnType.HOUR)
+						if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.HOUR)
 						{
 							cell.setCellStyle(valueDigitCellStyle);
 							
@@ -216,8 +199,8 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 								cell.setCellValue(((Number)cellValue).doubleValue());
 							}
 						}
-						else if (columnHeaders[i].getColumnType() == TreeReportColumn.ColumnType.TURNOVER
-								 || columnHeaders[i].getColumnType() == TreeReportColumn.ColumnType.RATE)
+						else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.TURNOVER
+								 || columnHeaders[i].getColumnType() == ReportColumn.ColumnType.RATE)
 						{
 							cell.setCellStyle(currencyCellStyle);
 							
@@ -230,7 +213,7 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 								cell.setCellValue( ((Number)cellValue).doubleValue());
 							}
 						}
-						else if (columnHeaders[i].getColumnType() == TreeReportColumn.ColumnType.DATE)
+						else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.DATE)
 						{
 							cell.setCellStyle(dateCellStyle);
 							cell.setCellValue((Date)cellValue);
@@ -263,7 +246,7 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 	 * Create header containing report date
 	 * @param sheet
 	 */
-	private int createHeaders(int rowNumber, HSSFSheet sheet, TreeReport<RE> report)
+	private int createHeaders(int rowNumber, HSSFSheet sheet, RangedReport report)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
@@ -279,68 +262,38 @@ public abstract class AbstractExcelReport<RE extends ReportElement> extends Abst
 		cell.setCellStyle(boldCellStyle);
 		cell.setCellValue(new HSSFRichTextString("Start date:"));
 
+		
 		cell = row.createCell((short)1);
-		cell.setCellStyle(dateBoldCellStyle);
-		cell.setCellValue(report.getReportRange().getDateStart());
+		
+		if (report.getReportRange() == null || report.getReportRange().getDateStart() == null)
+		{
+			cell.setCellStyle(boldCellStyle);
+			cell.setCellValue("--");
+		}
+		else
+		{
+			cell.setCellStyle(dateBoldCellStyle);
+			cell.setCellValue(report.getReportRange().getDateStart());
+		}
 
 		cell = row.createCell((short)3);
 		cell.setCellStyle(boldCellStyle);
 		cell.setCellValue(new HSSFRichTextString("End date:"));
-
 		
 		cell = row.createCell((short)4);
-		cell.setCellStyle(dateBoldCellStyle);
-		cell.setCellValue(report.getReportRange().getDateEndForDisplay());
+		if (report.getReportRange() == null || report.getReportRange().getDateEnd() == null)
+		{
+			cell.setCellStyle(boldCellStyle);
+			cell.setCellValue("--");
+		}
+		else
+		{
+			cell.setCellStyle(dateBoldCellStyle);
+			cell.setCellValue(report.getReportRange().getDateEndForDisplay());
+		}
 		
 		rowNumber++;
 		
 		return rowNumber;
 	}	
-	
-	/**
-	 * Initialize cellstyles
-	 * @param workbook
-	 * @return
-	 */
-	private void initCellStyles(HSSFWorkbook workbook)
-	{
-		HSSFPalette palette = workbook.getCustomPalette();
-		palette.setColorAtIndex(HSSFColor.BLUE.index, (byte) 231, (byte) 243, (byte) 255);
-		
-		headerCellStyle = workbook.createCellStyle();
-		
-		boldFont = workbook.createFont();
-		boldFont.setFontName(FONT_TYPE);
-		boldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-		headerCellStyle.setFont(boldFont);
-		headerCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
-		headerCellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
-		headerCellStyle.setFillForegroundColor(HSSFColor.BLUE.index);
-		headerCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-
-		boldCellStyle = workbook.createCellStyle();
-		boldCellStyle.setFont(boldFont);
-
-		dateBoldCellStyle = workbook.createCellStyle();
-		dateBoldCellStyle.setFont(boldFont);
-		dateBoldCellStyle.setDataFormat((short)0xf);
-		
-		defaultCellStyle = workbook.createCellStyle();
-		normalFont = workbook.createFont();
-		normalFont.setFontName(FONT_TYPE);
-		defaultCellStyle.setFont(normalFont);
-		
-		valueDigitCellStyle = workbook.createCellStyle();
-		valueDigitCellStyle.setFont(normalFont);
-		// 0.00 digit style
-		valueDigitCellStyle.setDataFormat((short)2);
-
-		currencyCellStyle= workbook.createCellStyle();
-		currencyCellStyle.setFont(normalFont);
-		currencyCellStyle.setDataFormat((short)0x7);
-		
-		dateCellStyle = workbook.createCellStyle();
-		dateCellStyle.setFont(normalFont);
-		dateCellStyle.setDataFormat((short)0xf);		
-	}
 }

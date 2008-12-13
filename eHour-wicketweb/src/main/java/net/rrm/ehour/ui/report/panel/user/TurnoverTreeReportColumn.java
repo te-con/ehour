@@ -17,16 +17,16 @@
 
 package net.rrm.ehour.ui.report.panel.user;
 
+import net.rrm.ehour.ui.common.report.ReportColumn;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.report.panel.TreeReportColumn;
 
 import org.apache.wicket.model.IModel;
 
 /**
- * TreeReportColumn with visibility depending on whether to show turnover or not 
+ * ReportColumn with visibility depending on whether to show turnover or not 
  **/
 
-public class TurnoverTreeReportColumn extends TreeReportColumn
+public class TurnoverTreeReportColumn extends ReportColumn
 {
 	private static final long serialVersionUID = 1L;
 

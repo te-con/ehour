@@ -22,13 +22,13 @@ import java.io.Serializable;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
 import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
-import net.rrm.ehour.ui.report.panel.ReportConfig;
 
 public class CustomerAggregateReport extends TreeReport<AssignmentAggregateReportElement>
 {

@@ -20,13 +20,13 @@ package net.rrm.ehour.ui.report.panel.detail;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.chart.detailed.AbstractTrendChartImage;
 import net.rrm.ehour.ui.report.chart.detailed.DateHoursTrendImage;
 import net.rrm.ehour.ui.report.chart.detailed.SeriesChartSelector;
 import net.rrm.ehour.ui.report.chart.detailed.TrendChartImageFactory;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
-import net.rrm.ehour.ui.report.panel.ReportConfig;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 
 import org.apache.wicket.model.IModel;

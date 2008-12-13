@@ -19,10 +19,10 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartImage;
 import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartImage;
-import net.rrm.ehour.ui.report.panel.ReportConfig;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.Model;

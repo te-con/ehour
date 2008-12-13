@@ -20,9 +20,9 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
-import net.rrm.ehour.ui.report.panel.ReportConfig;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;

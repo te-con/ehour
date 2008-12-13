@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.common.session;
+package net.rrm.ehour.ui.common.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,6 +57,16 @@ public class ReportCache implements Serializable
 	public ReportCache()
 	{
 		logger.debug("ReportCache instantiated");
+	}
+	
+	/**
+	 * Add report to cache
+	 * @param report
+	 * @return
+	 */
+	public String addReportToCache(Report report)
+	{
+		return addReportToCache(report, null);
 	}
 	
 	/**

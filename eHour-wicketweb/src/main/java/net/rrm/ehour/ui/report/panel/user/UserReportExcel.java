@@ -17,9 +17,8 @@
 
 package net.rrm.ehour.ui.report.panel.user;
 
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.report.panel.AbstractExcelReport;
-import net.rrm.ehour.ui.report.panel.ReportConfig;
+import net.rrm.ehour.ui.common.report.AbstractExcelReport;
+import net.rrm.ehour.ui.common.report.ReportConfig;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
@@ -30,7 +29,7 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class UserReportExcel extends AbstractExcelReport<AssignmentAggregateReportElement>
+public class UserReportExcel extends AbstractExcelReport
 {
 	private static final long serialVersionUID = 1427524857733863613L;
 

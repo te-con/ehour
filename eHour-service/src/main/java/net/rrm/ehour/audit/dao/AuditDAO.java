@@ -15,6 +15,8 @@ public interface AuditDAO extends GenericDAO<Audit, Number>
 	 */
 	public List<Audit> findAudit(AuditReportRequest request);
 	
+	public List<Audit> findAuditAll(AuditReportRequest request);
+	
 	/**
 	 * 
 	 * @param request

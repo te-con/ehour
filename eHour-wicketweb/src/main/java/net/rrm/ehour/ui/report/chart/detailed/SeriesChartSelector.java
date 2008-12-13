@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.panel.ReportConfig;
-import net.rrm.ehour.ui.report.panel.TreeReportColumn;
+import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.report.ReportColumn;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -42,7 +42,7 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 		
 		List<Serializable> columns = new ArrayList<Serializable>();
 		
-		for (TreeReportColumn column : config.getReportColumns())
+		for (ReportColumn column : config.getReportColumns())
 		{
 			if (column.isChartSeriesColumn())
 			{
@@ -65,7 +65,7 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 				
 				if (model.getObject() != null)
 				{
-					selectedColumn = ((TreeReportColumn) model.getObject()).getColumnHeaderResourceKey();
+					selectedColumn = ((ReportColumn) model.getObject()).getColumnHeaderResourceKey();
 				}
 				
 				if (selectedColumn != null)
@@ -94,7 +94,7 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 
 		public Object getDisplayValue(Object object)
 		{
-			TreeReportColumn col = (TreeReportColumn)object;
+			ReportColumn col = (ReportColumn)object;
 			
 			return (new ResourceModel(col.getColumnHeaderResourceKey())).getObject();
 		}

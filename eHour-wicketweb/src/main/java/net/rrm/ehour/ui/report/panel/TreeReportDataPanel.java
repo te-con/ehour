@@ -31,6 +31,8 @@ import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.CurrencyModel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
+import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.report.ReportColumn;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.TreeReport;
@@ -153,11 +155,11 @@ public class TreeReportDataPanel extends Panel
 			{
 				Label label;
 				
-				if (reportConfig.getReportColumns()[column].getColumnType() == TreeReportColumn.ColumnType.HOUR)
+				if (reportConfig.getReportColumns()[column].getColumnType() == ReportColumn.ColumnType.HOUR)
 				{
 					label = new Label(Integer.toString(id), new FloatModel(report.getTotalHours() , config));
 				}
-				else if (reportConfig.getReportColumns()[column].getColumnType() == TreeReportColumn.ColumnType.TURNOVER)
+				else if (reportConfig.getReportColumns()[column].getColumnType() == ReportColumn.ColumnType.TURNOVER)
 				{
 					label = new Label(Integer.toString(id), new CurrencyModel(report.getTotalTurnover(), config));
 					label.setEscapeModelStrings(false);
@@ -196,7 +198,7 @@ public class TreeReportDataPanel extends Panel
 	}
 
 	/**
-	 * Get a model instance based on the TreeReportColumn arguments
+	 * Get a model instance based on the ReportColumn arguments
 	 * @param columnHeader
 	 * @return
 	 * @throws InstantiationException
@@ -205,7 +207,7 @@ public class TreeReportDataPanel extends Panel
 	 * @throws IllegalArgumentException 
 	 */
 	@SuppressWarnings("unchecked")
-	private IModel getModelInstance(TreeReportColumn columnHeader) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	private IModel getModelInstance(ReportColumn columnHeader) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		IModel model = null;
 		
@@ -263,14 +265,14 @@ public class TreeReportDataPanel extends Panel
 		RepeatingView	columnHeaders = new RepeatingView("columnHeaders");
 		int				i = 0;
 		
-		for (TreeReportColumn treeReportColumn : reportConfig.getReportColumns())
+		for (ReportColumn reportColumn : reportConfig.getReportColumns())
 		{
-			Label columnHeader = new Label(Integer.toString(i++), new ResourceModel(treeReportColumn.getColumnHeaderResourceKey()));
-			columnHeader.setVisible(treeReportColumn.isVisible());
+			Label columnHeader = new Label(Integer.toString(i++), new ResourceModel(reportColumn.getColumnHeaderResourceKey()));
+			columnHeader.setVisible(reportColumn.isVisible());
 			columnHeaders.add(columnHeader);
-			addColumnTypeStyling(treeReportColumn.getColumnType(), columnHeader);
+			addColumnTypeStyling(reportColumn.getColumnType(), columnHeader);
 			
-			logger.debug("Adding report columnheader " + treeReportColumn.getColumnHeaderResourceKey() + ", visible: " +  columnHeader.isVisible());
+			logger.debug("Adding report columnheader " + reportColumn.getColumnHeaderResourceKey() + ", visible: " +  columnHeader.isVisible());
 		}
 		
 		parent.add(columnHeaders);
@@ -281,28 +283,28 @@ public class TreeReportDataPanel extends Panel
 	 * @param columnType
 	 * @param label
 	 */
-	private void addColumnTypeStyling(TreeReportColumn.ColumnType columnType, Label label)
+	private void addColumnTypeStyling(ReportColumn.ColumnType columnType, Label label)
 	{
 		StringBuilder style = new StringBuilder();
 		
 		if (label != null)
 		{
-			if (columnType != TreeReportColumn.ColumnType.OTHER)
+			if (columnType != ReportColumn.ColumnType.OTHER)
 			{
 				style.append("text-align: right;");
 			}
 			
-			if (columnType == TreeReportColumn.ColumnType.HOUR)
+			if (columnType == ReportColumn.ColumnType.HOUR)
 			{
 				style.append("width: 40px;");
 			}
 			
-			if (columnType == TreeReportColumn.ColumnType.TURNOVER)
+			if (columnType == ReportColumn.ColumnType.TURNOVER)
 			{
 				style.append("width: 70px;");
 			}
 			
-			if (columnType == TreeReportColumn.ColumnType.COMMENT)
+			if (columnType == ReportColumn.ColumnType.COMMENT)
 			{
 				style.append("width: 300px;");
 			}			

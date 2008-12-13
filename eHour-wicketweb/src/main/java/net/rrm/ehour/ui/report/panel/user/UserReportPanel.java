@@ -20,6 +20,7 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
@@ -27,7 +28,6 @@ import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
 import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartImage;
 import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartImage;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
-import net.rrm.ehour.ui.report.panel.ReportConfig;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.user.page.UserReportPrint;
 
