@@ -21,6 +21,8 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Commons 
@@ -53,6 +55,16 @@ public class CommonWebUtil
 	public static void springInjection(Object injectionTarget)
 	{
 		InjectorHolder.getInjector().inject(injectionTarget);
+	}
+	
+	/**
+	 * Get the content of a resource model as a string
+	 * @param model
+	 * @return
+	 */
+	public static String getResourceModelString(IModel model)
+	{
+		return (String)model.getObject();
 	}
 	
 	/**

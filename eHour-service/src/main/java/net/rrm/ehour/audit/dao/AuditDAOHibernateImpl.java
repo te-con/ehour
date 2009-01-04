@@ -43,7 +43,16 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 		Criteria criteria = buildCriteria(request, false);
 		criteria.setProjection(Projections.rowCount());
 
-		return ((Integer)criteria.list().get(0)).intValue();
+		List<?> results = criteria.list();
+		
+		if (results.size() > 0)
+		{
+			return ((Integer)results.get(0)).intValue();
+		}
+		else
+		{
+			return 0;
+		}
 	}
 	
 	/**
@@ -71,12 +80,12 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 		
 		if (!StringUtils.isBlank(request.getAction()))
 		{
-			criteria.add(Restrictions.like("action", "%" + request.getAction() + "%").ignoreCase());
+			criteria.add(Restrictions.like("action", "%" + request.getAction().toLowerCase() + "%").ignoreCase());
 		}
 
 		if (!StringUtils.isBlank(request.getName()))
 		{
-			criteria.add(Restrictions.like("userFullName", "%" + request.getAction() + "%").ignoreCase());
+			criteria.add(Restrictions.like("userFullName", "%" + request.getName().toLowerCase() + "%").ignoreCase());
 		}
 
 		

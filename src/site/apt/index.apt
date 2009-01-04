@@ -1,48 +1,7 @@
 eHour
 
-   eHour developer
-
-   With {{{release_notes.html}eHour v0.6}} you can export all reports to excel or print them. Also quick date selection
-   for reports, remember me functionality, easier timesheet navigation, better handling of infinite start/end date assignments, etc. etc. were
-   added/fixed. See the {{{changelog.html}change log}} for a complete list of changes.
-   
+   Developing on eHour
 =======================================================================
 
-  eHour is an {{{license.html}open source}} webbased time tracking tool for consultancy companies and other project based businesses.
-  The primary objective is to keep time tracking as simple and user friendly as possible while still 
-  being very effective at measuring and reporting the amount of time your team spends on a project.
-
-  What you can do with eHour:
-  
-	  * create multiple projects per customer
-	
-	  * assign employees to projects
-	  
-	  * have different start and end dates and hourly rates per employee to project assignment 
-	  
-	  * assign employees based on start and end date, time allotted or a combination of those
-	
-	  * warning e-mail sent to project manager when an employee used all the the time allotted
-	  
-	  * reporting on projects managed by project manager  
-	  
-	  * global reporting for administrators	  
-	  
-	  * create default projects to which all employees should be assigned (days off, sick leave, etc.) so you can keep track
-	  of those hours as well
-	  
-	  * turnover & booked hours reports on all customers, projects, employees, departments or a selection of them
-	  
-	  * configure whether you want your employees to see their turnover
-	  
-	  * separation of consultant, reporting and administration role. 
-	  
-	  * configure localization. (currently) only English and Dutch translations available
-	  
-	  * export your reports to excel
-
-  See the {{{demo.html}online demo}} to see it in full effect. For screenshots see {{{http://www.ehour.nl/} http://www.ehour.nl/}}.
-
-  The application is developed following enterprise standards such as Java 1.5, Struts, Spring, Hibernate, Acegi and Maven 2.  Automated testing is implemented using {{{clover/index.html}Junit, Easymock and DBUnit}}.  Continuous integration is taken care of by {{{integration.html}Continuum}}.  
-
-  eHour is developed by {{{http://www.te-con.nl}Thies Edeling}}.
+	If you want to have committer access send an email to info[at]ehour[dot]nl
+  eHour is developed by {{{http://www.te-con.nl/}Thies Edeling}}.

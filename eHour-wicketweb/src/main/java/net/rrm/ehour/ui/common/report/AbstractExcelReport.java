@@ -23,6 +23,7 @@ import java.util.List;
 
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -93,12 +94,12 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 		
 		for (column = 0; column < 4; column++)
 		{
-			sheet.setColumnWidth(column, (short)5000);
+			sheet.setColumnWidth(column, 5000);
 		}
 
 		for (; column < 7; column++)
 		{
-			sheet.setColumnWidth(column, (short)3000);
+			sheet.setColumnWidth(column, 3000);
 		}
 
 		initCellStyles(wb);
@@ -246,24 +247,23 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * Create header containing report date
 	 * @param sheet
 	 */
-	private int createHeaders(int rowNumber, HSSFSheet sheet, RangedReport report)
+	protected int createHeaders(int rowNumber, HSSFSheet sheet, RangedReport report)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
 
 		row = sheet.createRow(rowNumber++);
-		cell = row.createCell((short)0);
+		cell = row.createCell(0);
 		cell.setCellStyle(boldCellStyle);
-		cell.setCellValue(new HSSFRichTextString((String)getHeaderReportName().getObject()));
+		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(getHeaderReportName())));
 		sheet.addMergedRegion(new Region(0, (short)0, 0, (short)1));
 
 		row = sheet.createRow(rowNumber++);
-		cell = row.createCell((short)0);
+		cell = row.createCell(0);
 		cell.setCellStyle(boldCellStyle);
-		cell.setCellValue(new HSSFRichTextString("Start date:"));
-
+		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(new ResourceModel("report.dateStart"))));
 		
-		cell = row.createCell((short)1);
+		cell = row.createCell(1);
 		
 		if (report.getReportRange() == null || report.getReportRange().getDateStart() == null)
 		{
@@ -276,11 +276,11 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 			cell.setCellValue(report.getReportRange().getDateStart());
 		}
 
-		cell = row.createCell((short)3);
+		cell = row.createCell(3);
 		cell.setCellStyle(boldCellStyle);
-		cell.setCellValue(new HSSFRichTextString("End date:"));
+		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(new ResourceModel("report.dateEnd"))));
 		
-		cell = row.createCell((short)4);
+		cell = row.createCell(4);
 		if (report.getReportRange() == null || report.getReportRange().getDateEnd() == null)
 		{
 			cell.setCellStyle(boldCellStyle);
