@@ -27,6 +27,8 @@ Compile and generate the Eclipse metadata with
 mvn dependency:sources
 mvn clean install eclipse:clean eclipse:eclipse -Denv=mysql-dev -DdownloadSources
 
+Or use the build.bat/sh or build_src.bat/sh scripts. The build_src scripts also download the source jars of dependencies, useful but it takes a bit to download everything.
+
 Configuring Eclipse
 ---------------------------------------
 First install Sysdeo's devloader by unzipping the Devloader in Tomcat's server/classes directory. Unzip the plugin itself in Eclipse's dropin folder.
@@ -44,12 +46,10 @@ Go to the DevLoader classpath tab and check Activate. Add all jars and paths exc
 
 Start the Tomcat server with the new start Tomcat icon in the toolbar.
 
-Other stuff
+Fisheye and Continuos integration
 ---------------------------------------
 There's an instance of Fisheye installed at http://dev.ehour.nl/fisheye/
-Continuous Integration is done with TeamCity at http://dev.ehour.nl/tc/ Please create an account there and check whether the build
-is still succesfull after you checked in.
-Please junit test all your code, especially additions to the service and the dao layer
+Continuous Integration is done with Continuum at http://dev.ehour.nl/continuum/ Please create an account there and check whether the build is still succesfull after you checked in.
 
 Mylyn
 ---------------------------------------
