@@ -24,7 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * Adds min. service contexts 
  **/
-@ContextConfiguration(locations={"classpath:applicationContext-mail.xml", "classpath:applicationContext-service.xml"})
+@ContextConfiguration(locations={"classpath:applicationContext-mail.xml", 
+									"classpath:applicationContext-service.xml"})
 public abstract class AbstractServiceTest extends BaseDAOTest
 {
 

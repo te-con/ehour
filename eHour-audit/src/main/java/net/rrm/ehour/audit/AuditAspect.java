@@ -122,7 +122,7 @@ public class AuditAspect
 	 */
 	@Around("@annotation(auditable)")
 	public Object auditable(ProceedingJoinPoint pjp, Auditable auditable) throws Throwable
-	{
+	{	
 		return doAudit(pjp, auditable.actionType());
 	}
 	
