@@ -43,12 +43,16 @@
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-annotations</artifactId>
 		    <version>3.3.1.GA</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-collections</artifactId>
-                    <groupId>commons-collections</groupId>
-                </exclusion>
-            </exclusions>           
+		    <exclusions>
+			<exclusion>
+			    <artifactId>commons-collections</artifactId>
+			    <groupId>commons-collections</groupId>
+			</exclusion>
+			<exclusion>
+			    <groupId>org.hibernate</groupId>
+			    <artifactId>hibernate</artifactId>
+			</exclusion>
+		    </exclusions>           
 		</dependency> 		
 	</dependencies>
 	
