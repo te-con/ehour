@@ -363,14 +363,12 @@
 -->
 		</plugins>
 	</reporting>
-	<!--
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
-			<name>Wicket dev repository</name>
-			<url>http://wicketstuff.org/maven/repository/</url>
+			<name>eHour dev repository</name>
+			<url>http://dev.ehour.nl/nexus/content/groups/public</url>
 			<layout>default</layout>
 		</repository>
 	</repositories>
-	-->
 </project>
