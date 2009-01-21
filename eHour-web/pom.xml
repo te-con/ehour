@@ -22,14 +22,12 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>jetty-maven-plugin</artifactId>
-				</plugin>
-			</plugins>
+			<!--<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+			</plugin>
 
-		</plugins>
+		--></plugins>
 
 		<resources>
 			<resource>
