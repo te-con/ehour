@@ -32,7 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(locations={"classpath:applicationContext-dao.xml", "classpath:applicationContext-datasource.xml"})
+@ContextConfiguration(locations={"classpath:applicationContext-dao.xml", "classpath:applicationContext-datasource_test.xml"})
 @Transactional
 @TransactionConfiguration(defaultRollback=true)
 public abstract class BaseDAOTest

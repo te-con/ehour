@@ -18,6 +18,7 @@
 			classpath:applicationContext-mail.xml
 			classpath:applicationContext-wicket.xml
 			classpath:applicationContext-audit.xml
+			classpath:applicationContext-props.xml
 		</param-value>
 	</context-param>
 
@@ -31,7 +32,7 @@
 			<param-value>false</param-value>
 		</init-param>
 	</filter>
-
+<!-- 
 	<filter>
 		<filter-name>Acegi HTTP Request Security Filter</filter-name>
 		<filter-class>
@@ -44,7 +45,7 @@
 			</param-value>
 		</init-param>
 	</filter>
-
+ -->
 	<filter>
 		<filter-name>EhourWebApplication</filter-name>
 		<filter-class>
