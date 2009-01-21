@@ -24,7 +24,7 @@
 	</description>
 	<scm>
 		<connection>
-			scm:svn:http://svn.te-con.nl/repos/ehour/
+			scm:svn:http://svn.te-con.nl/repos/ehour/trunk/
 		</connection>
 		<developerConnection>
 			scm:svn:http://svn.te-con.nl/repos/ehour/trunk/

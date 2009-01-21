@@ -30,6 +30,7 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 	private List<Audit> findAudit(AuditReportRequest request, boolean ignoreOffset)
 	{
 		Criteria criteria = buildCriteria(request, ignoreOffset);
+		criteria.addOrder(Order.asc("date"));
 		
 		return criteria.list();
 	}
@@ -99,8 +100,6 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 			criteria.add(Restrictions.le("date", request.getDateRange().getDateEnd()));
 		}
 
-		criteria.addOrder(Order.asc("date"));
-		
 		return criteria;
 	}
 
