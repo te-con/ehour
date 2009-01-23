@@ -272,7 +272,12 @@
 					<artifactId>junit-addons</artifactId>
 					<groupId>junit-addons</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>org.slf4j</artifactId>
+					<groupId>slf4j-nop</groupId>
+				</exclusion>
 			</exclusions>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>

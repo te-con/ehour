@@ -7,15 +7,13 @@
 	<!-- Session factory definition -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource">
-			<ref bean="eHourDataSource" />
-		</property>
+		<property name="dataSource" ref="eHourDataSource" />
 
 		<property name="mappingLocations">
 			<list>
 				<value>classpath:mapping/*.hbm.xml</value>
-				<value>classpath:query/*.hbm.xml</value>
-				<value>classpath:report.queries.hbm.xml</value>
+				<value>classpath:query/common/*.hbm.xml</value>
+				<value>classpath:query/dbspecific/${reportquery.filename}</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
