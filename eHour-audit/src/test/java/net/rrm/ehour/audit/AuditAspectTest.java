@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 
 import javax.annotation.Resource;
 
-import net.rrm.ehour.audit.service.MockAuditImpl;
+import net.rrm.ehour.audit.service.AuditService;
+import net.rrm.ehour.audit.service.MockAudit;
 import net.rrm.ehour.audit.service.MockAuditService;
 import net.rrm.ehour.audit.service.MockNonTransactService;
 import net.rrm.ehour.audit.service.MockService;
@@ -39,8 +40,8 @@ public class AuditAspectTest
 {
 	@Resource
 	private MockService 	mockService;
-	@Resource
-	private MockAuditImpl	auditService;
+	@Resource(name="auditServiceMock")
+	private AuditService	auditService;
 	@Resource
 	private MockNonTransactService mockNonTransactionalService;
 	@Resource
@@ -49,8 +50,7 @@ public class AuditAspectTest
 	@Before
 	public void setUp()
 	{
-		auditService.called = 0;
-		auditService.audit = null;
+		((MockAudit)auditService).resetCalled();
 	}
 	
 	@Test
@@ -58,8 +58,8 @@ public class AuditAspectTest
 	{
 		mockService.annotatedMethod();
 		
-		assertEquals(1, auditService.called);
-		assertEquals(AuditActionType.CREATE, auditService.audit.getAuditActionType());
+		assertEquals(1, ((MockAudit)auditService).getCalled());
+		assertEquals(AuditActionType.CREATE, ((MockAudit)auditService).getAudit().getAuditActionType());
 	}
 	
 	@Test
@@ -67,8 +67,8 @@ public class AuditAspectTest
 	{
 		mockService.getNonAnnotatedMethod();
 		
-		assertEquals(1, auditService.called);
-		assertEquals(AuditActionType.READ, auditService.audit.getAuditActionType());
+		assertEquals(1, ((MockAudit)auditService).getCalled());
+		assertEquals(AuditActionType.READ, ((MockAudit)auditService).getAudit().getAuditActionType());
 	}	
 	
 	@Test
@@ -76,8 +76,8 @@ public class AuditAspectTest
 	{
 		mockService.persistNonAnnotatedMethod();
 		
-		assertEquals(1, auditService.called);
-		assertEquals(AuditActionType.UPDATE, auditService.audit.getAuditActionType());
+		assertEquals(1, ((MockAudit)auditService).getCalled());
+		assertEquals(AuditActionType.UPDATE, ((MockAudit)auditService).getAudit().getAuditActionType());
 	}
 	
 	@Test
@@ -85,8 +85,8 @@ public class AuditAspectTest
 	{
 		mockService.deleteNonAnnotatedMethod();
 		
-		assertEquals(1, auditService.called);
-		assertEquals(AuditActionType.DELETE, auditService.audit.getAuditActionType());
+		assertEquals(1, ((MockAudit)auditService).getCalled());
+		assertEquals(AuditActionType.DELETE, ((MockAudit)auditService).getAudit().getAuditActionType());
 	}
 	
 	
@@ -95,8 +95,8 @@ public class AuditAspectTest
 	{
 		mockService.deleteButReadAnnotatedMethod();
 		
-		assertEquals(1, auditService.called);
-		assertEquals(AuditActionType.READ, auditService.audit.getAuditActionType());
+		assertEquals(1, ((MockAudit)auditService).getCalled());
+		assertEquals(AuditActionType.READ, ((MockAudit)auditService).getAudit().getAuditActionType());
 	}
 	
 	@Test
@@ -104,8 +104,8 @@ public class AuditAspectTest
 	{
 		mockService.deleteButNonAuditable();
 		
-		assertEquals(0, auditService.called);
-		assertEquals(null, auditService.audit);
+		assertEquals(0, ((MockAudit)auditService).getCalled());
+		assertEquals(null, ((MockAudit)auditService).getAudit());
 	}	
 	
 	@Test
@@ -113,8 +113,8 @@ public class AuditAspectTest
 	{
 		mockNonTransactionalService.getMethod();
 
-		assertEquals(0, auditService.called);
-		assertEquals(null, auditService.audit);
+		assertEquals(0, ((MockAudit)auditService).getCalled());
+		assertEquals(null, ((MockAudit)auditService).getAudit());
 	}
 	
 	// test for 
@@ -123,8 +123,8 @@ public class AuditAspectTest
 	{
 		mockAuditService.getAuditMethod();
 
-		assertEquals(1, auditService.called);
-		assertEquals(AuditActionType.READ, auditService.audit.getAuditActionType());
+		assertEquals(1, ((MockAudit)auditService).getCalled());
+		assertEquals(AuditActionType.READ, ((MockAudit)auditService).getAudit().getAuditActionType());
 	}
 
 }

@@ -4,9 +4,9 @@
 package net.rrm.ehour.ui.timesheet.panel.util;
 
 import static org.junit.Assert.assertEquals;
-import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.ui.common.DummyDataGenerator;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
 

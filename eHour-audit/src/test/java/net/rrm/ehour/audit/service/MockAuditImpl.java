@@ -25,11 +25,16 @@ import net.rrm.ehour.domain.Audit;
 
 import org.springframework.stereotype.Component;
 
-@Component(value="auditService")
-public class MockAuditImpl implements AuditService
+@Component(value="auditServiceMock")
+public class MockAuditImpl implements AuditService, MockAudit
 {
 	public int called = 0;
 	public Audit audit;
+	
+	public Audit getAudit()
+	{
+		return audit;
+	}
 	
 	@NonAuditable
 	public void doAudit(Audit audit)
@@ -53,5 +58,15 @@ public class MockAuditImpl implements AuditService
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public int getCalled()
+	{
+		return called;
+	}
+	
+	public void resetCalled()
+	{
+		called = 0;
+		audit = null;
+	}
 }
