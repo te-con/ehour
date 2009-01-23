@@ -26,13 +26,16 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ContextConfiguration(locations={"classpath:applicationContext-props_test.xml", "classpath:applicationContext-datasource_test.xml", "classpath:applicationContext-dao.xml", })
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath:applicationContext-props_test.xml", "classpath:applicationContext-datasource_test.xml", "classpath:applicationContext-dao.xml"})
 @Transactional
 @TransactionConfiguration(defaultRollback=true)
 public abstract class BaseDAOTest
