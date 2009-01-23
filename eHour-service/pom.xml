@@ -14,6 +14,9 @@
 	<build>
 		<resources>
 			<resource>
+				<directory>src/main/resources/db</directory>
+			</resource>
+			<resource>
 				<directory>src/main/resources/i18n</directory>
 			</resource>
 			<resource>
@@ -139,9 +142,6 @@
 						<directory>
 							src/main/profiles/dev/datasource_derby
 						</directory>
-					</resource>
-					<resource>
-						<directory>src/main/profiles/derby</directory>
 					</resource>
 					<resource>
 						<directory>
@@ -349,23 +349,15 @@
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>org.springmodules</groupId>
-			<artifactId>spring-modules-cache</artifactId>
-			<version>0.8</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-mock</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		 -->
+		<!--
+			<dependency> <groupId>org.springmodules</groupId>
+			<artifactId>spring-modules-cache</artifactId> <version>0.8</version>
+			<exclusions> <exclusion> <artifactId>spring</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> <exclusion>
+			<artifactId>spring-mock</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> </exclusions>
+			</dependency>
+		-->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
