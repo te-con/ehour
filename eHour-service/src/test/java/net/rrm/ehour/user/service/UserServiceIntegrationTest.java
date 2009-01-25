@@ -144,6 +144,11 @@ public class UserServiceIntegrationTest extends AbstractServiceTest
 		List<User>	results;
 		
 		results = userService.getUsersByNameMatch(null, true, new UserRole(EhourConstants.ROLE_CONSULTANT));
+		
+		for (User user : results)
+		{
+			System.out.println(user.getUserId());
+		}
 		assertEquals(4, results.size());		
 	}	
 
