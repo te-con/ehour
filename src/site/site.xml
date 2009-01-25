@@ -18,21 +18,6 @@
       <item name="Features" href="features.html" />
       <item name="Online demo" href="demo.html" />
     </menu>
-    <menu name="Install">
-      <item name="Download" href="download.html" />
-      <item name="Change log" href="changelog.html" />
-      <item name="Release Notes" href="release_notes.html" />
-      <item name="Install on Linux" href="install.html" />
-      <item name="Install on Windows" href="install_windows.html" />
-      <item name="Upgrading" href="upgrading.html" />
-      <item name="License" href="license.html" />
-    </menu>
-    <menu name="Documentation">
-      <item name="First time usage" href="first_time_usage.html" />
-      <item name="Documentation" href="/documentation.html" />
-      <item name="Support forum" href="support.html" />
-      <item name="FAQ" href="faq.html" />
-    </menu>
     <menu name="Links">
       <item name="Continuum" href="/continuum/" />
       <item name="Fisheye" href="/fisheye/" />

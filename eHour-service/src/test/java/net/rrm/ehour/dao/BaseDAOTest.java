@@ -35,7 +35,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:applicationContext-props_test.xml", "classpath:applicationContext-datasource_test.xml", "classpath:applicationContext-dao.xml"})
+@ContextConfiguration(locations={"classpath:applicationContext-props_test.xml", 
+									"classpath:applicationContext-datasource_test.xml", 
+									"classpath:applicationContext-dao.xml"})
 @Transactional
 @TransactionConfiguration(defaultRollback=true)
 public abstract class BaseDAOTest

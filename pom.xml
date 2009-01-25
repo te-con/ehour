@@ -372,4 +372,10 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
+  <distributionManagement>
+    <site>
+      <id>website</id>
+      <url>scp://www.ehour.net:443/var/www/dev.ehour.nl/html/</url>
+    </site>
+  </distributionManagement>
 </project>
