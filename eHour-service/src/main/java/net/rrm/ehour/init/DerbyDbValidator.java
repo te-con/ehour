@@ -148,8 +148,12 @@ public class DerbyDbValidator implements ApplicationListener, ResourceLoaderAwar
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
 		
 		Resource resource = this.resourceLoader.getResource(ddlFile);
+
+		DatabaseIO reader = new DatabaseIO();
+		reader.setValidateXml(false);
+		reader.setUseInternalDtd(true); 
 		
-		Database ddlModel = new DatabaseIO().read(new InputStreamReader(resource.getInputStream()));
+		Database ddlModel = reader.read(new InputStreamReader(resource.getInputStream()));
 		
 		if (ddlType == DdlType.CREATE_TABLE)
 		{
@@ -176,6 +180,7 @@ public class DerbyDbValidator implements ApplicationListener, ResourceLoaderAwar
 		DatabaseDataIO	dataIO = new DatabaseDataIO();
 		
 		DataReader dataReader = dataIO.getConfiguredDataReader(platform, model);
+		
         dataReader.getSink().start();
         
         Resource resource = this.resourceLoader.getResource(dmlFile);
