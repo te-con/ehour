@@ -1,15 +1,10 @@
 eHour Developer resources
 
-<<<<<<< .mine
 	eHour is a free webbased time tracking tool for companies and organizations who need accurate information on how much time is 		spend on projects by their people. 
 
 	This site is aimed at developers who want to modify the 
-=======
    Developing on eHour
 =======================================================================
->>>>>>> .r1580
-
-<<<<<<< .mine
 
   What you can do with eHour:
   
@@ -45,7 +40,3 @@ eHour Developer resources
   The application is developed following enterprise standards such as Java 1.5, Struts, Spring, Hibernate, Acegi and Maven 2.  Automated testing is implemented using {{{clover/index.html}Junit, Easymock and DBUnit}}.  Continuous integration is taken care of by {{{integration.html}Continuum}}.  
 
   eHour is developed by {{{http://www.te-con.nl}Thies Edeling}}.
-=======
-	If you want to have committer access send an email to info[at]ehour[dot]nl
-  eHour is developed by {{{http://www.te-con.nl/}Thies Edeling}}.
->>>>>>> .r1580
