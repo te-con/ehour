@@ -249,7 +249,7 @@ div.GreyNavFrameFooter p
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
-	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
 	color: white;
 	border: 0;
 }
@@ -259,7 +259,7 @@ div.GreyNavFrameFooter p
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
-	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #576d83;
 }
 
@@ -268,7 +268,7 @@ div.GreyNavFrameFooter p
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
-	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #283e52;
 	border: 0;
 }
@@ -285,7 +285,7 @@ div.GreyNavFrameFooter p
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
-	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #8aa0b8;
 }
 
@@ -294,7 +294,7 @@ div.GreyNavFrameFooter p
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
-	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #576d83;
 	bordeR: 0;
 }
@@ -304,7 +304,7 @@ div.GreyNavFrameFooter p
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
-	font: bold 1em Geneva, Arial, Helvetica, sans-serif;
+	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #a5bcd4;
 }
 
@@ -618,7 +618,7 @@ a.button
     color: #536e87;
     display: block;
     float: left;
-    font: bold 11px geneva, sans-serif;
+    font: normal 11px geneva, sans-serif;
     height: 20px;
     margin-right: 6px;
     padding-right: 10px; /* sliding doors padding */
@@ -654,7 +654,7 @@ a.bluebutton
     color: #536e87;
     display: block;
     float: left;
-    font: bold 11px geneva, sans-serif;
+    font: normal 11px geneva, sans-serif;
     height: 20px;
     margin-right: 6px;
     padding-right: 10px; /* sliding doors padding */
