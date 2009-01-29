@@ -35,6 +35,7 @@ function onMouseOut(elm)
 function foldSummary(elm)
 {
 	var id = elm.parentNode.id;
+	alert(id);
 	var summaryRow = getSummaryRow(id);
 	
 	if (summaryRow.style.display == 'none')

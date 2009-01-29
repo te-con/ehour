@@ -20,13 +20,13 @@
 				<div class="numbCell" style="width: 19%;margin-top:0;" wicket:id="turnoverLabel">Turnover</div>
 			</div>
 
-			<span wicket:id="projectStatus">
+			<wicket:container wicket:id="projectStatus">
 				<div class="AggregateRow" onclick="foldSummary(this)">
 					<div class="foldCell"><img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" /></div>
 					<div class="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
 					<div class="textCell" wicket:id="projectCode">[projectCode]</div>
 					<div class="textCell" style="width: 19%;overflow:hidden;cursor:pointer">
-							<span wicket:id="projectName" class="toolTipImg" >[projectName]</span>
+							<wicket:container wicket:id="projectName" class="toolTipImg" >[projectName]</wicket:container>
 					</div>
 					<div class="numbCell" wicket:id="rate"></div>
 					<div class="numbCell" wicket:id="monthHours">24.50</div>
@@ -35,14 +35,14 @@
 	
 				<div class="SummaryRow" wicket:id="summaryRow">
 					<div class="foldCell">&nbsp;</div>
-					<span wicket:id="overview.validity"></span>. 
-					<span wicket:id="remainingHoursLabel">
-						<span wicket:id="overview.totalbooked"></span>
-						<span wicket:id="overview.remainingfixed"></span>
-						<span wicket:id="overview.remainingflex"></span>
-					</span>
+					<wicket:container wicket:id="overview.validity"></wicket:container>. 
+					<wicket:container wicket:id="remainingHoursLabel">
+						<wicket:container wicket:id="overview.totalbooked"></wicket:container>
+						<wicket:container wicket:id="overview.remainingfixed"></wicket:container>
+						<wicket:container wicket:id="overview.remainingflex"></wicket:container>
+					</wicket:container>
 				</div>
-			</span>
+			</wicket:container>
 			
 			<div class="TotalRow">
 				<div class="foldCell">&nbsp;</div>

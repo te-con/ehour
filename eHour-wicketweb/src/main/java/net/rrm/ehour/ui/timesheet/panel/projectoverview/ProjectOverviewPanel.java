@@ -35,6 +35,7 @@ import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -59,6 +60,7 @@ import org.wicketstuff.minis.mootipbehavior.MootipBehaviour;
 public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 {
 	private static final long serialVersionUID = -5935376941518756941L;
+	private transient EhourWebSession session;
 	
 	/**
 	 * 
@@ -163,29 +165,23 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	 */
 	private void addColumnLabels(WebMarkupContainer container, EhourConfig config)
 	{
-		Label	label;
-		
 		Label projectLabel = new Label("projectLabel", new ResourceModel("overview.project"));
-		Label customerLabel = new Label("customerLabel", new ResourceModel("overview.customer"));
-		
-		if (!config.isShowTurnover())
-		{
-			customerLabel.add(new SimpleAttributeModifier("style", "width: 30%;margin-top: 0;"));
-			projectLabel.add(new SimpleAttributeModifier("style", "width: 35%;margin-top: 0;"));
-		}
-
+		setProjectLabelWidth(projectLabel);
 		container.add(projectLabel);
+		
+		Label customerLabel = new Label("customerLabel", new ResourceModel("overview.customer"));
+		setCustomerLabelWidth(customerLabel);
 		container.add(customerLabel);
 		
-		label = new Label("rateLabel",  new ResourceModel("overview.rate"));
-		label.setVisible(config.isShowTurnover());
-		container.add(label);
+		Label rateLabel = new Label("rateLabel",  new ResourceModel("overview.rate"));
+		setRateWidthOrHide(rateLabel);
+		container.add(rateLabel);
 		
 		container.add(new Label("bookedHoursLabel",  new ResourceModel("overview.hours")));
 
-		label = new Label("turnoverLabel",  new ResourceModel("overview.turnover"));
-		label.setVisible(config.isShowTurnover());
-		container.add(label);
+		Label turnOverLabel = new Label("turnoverLabel",  new ResourceModel("overview.turnover"));
+		setTurnoverWidthOrHide(turnOverLabel);
+		container.add(turnOverLabel);
 	}
 	
 	/**
@@ -239,86 +235,140 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				item.add(img);
 				
 				Label projectLabel = new Label("projectName", projectStatus.getProjectAssignment().getProject().getName());
+				setProjectLabelWidth(projectLabel);
 				ResourceModel toolTipTitleRM = new ResourceModel("overview.projectDescription");
 				projectLabel.add(new MootipBehaviour( (String)toolTipTitleRM.getObject(), projectStatus.getProjectAssignment().getProject().getDescription() ));
-				Label customerLabel = new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()); 
-				
-				if (!session.getEhourConfig().isShowTurnover())
-				{
-					customerLabel.add(new SimpleAttributeModifier("style", "width: 30%;"));
-					projectLabel.add(new SimpleAttributeModifier("style", "width: 35%;"));
-				}
-				
 				item.add(projectLabel);
+				
+				Label customerLabel = new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()); 
+				setCustomerLabelWidth(customerLabel);
 				item.add(customerLabel);
+
 				item.add(new Label("projectCode", projectStatus.getProjectAssignment().getProject().getProjectCode()));
 				
+				Label rateLabel = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), session.getEhourConfig()));
+				rateLabel.setEscapeModelStrings(false);
+				setRateWidthOrHide(rateLabel);
+				item.add(rateLabel);
+
+				Label hoursLabel = new Label("monthHours", new FloatModel(projectStatus.getHours(), session.getEhourConfig()));
+				item.add(hoursLabel);
+
+				Label turnOverLabel = new Label("turnover", new CurrencyModel(projectStatus.getTurnOver(), session.getEhourConfig()));
+				setTurnoverWidthOrHide(turnOverLabel);
+				item.add(turnOverLabel);
 				
-				Label label = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), session.getEhourConfig()));
-				label.setVisible(session.getEhourConfig().isShowTurnover());
-				label.setEscapeModelStrings(false);
-				item.add(label);
-
-				label = new Label("monthHours", new FloatModel(projectStatus.getHours(), session.getEhourConfig()));
-				item.add(label);
-
-				label = new Label("turnover", new CurrencyModel(projectStatus.getTurnOver(), session.getEhourConfig()));
-				label.setVisible(session.getEhourConfig().isShowTurnover());
-				item.add(label);
-				
-				// SummaryRow placeholder
-				WebMarkupContainer summaryRow = new WebMarkupContainer("summaryRow");
-				summaryRow.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-				{
-					public Object getObject()
-					{
-						return "summaryRow_" + item.getIndex();
-					}
-				}));
-				
-				summaryRow.add(new SimpleAttributeModifier("style", "display: none")); 
-
-				// valid from until label
-				Label validityLabel = new Label("overview.validity", new StringResourceModel("overview.validity", 
-																		this,  null,
-																		new Object[]{new DateModel(projectStatus.getProjectAssignment().getDateStart(), session.getEhourConfig()),
-																						new DateModel(projectStatus.getProjectAssignment().getDateEnd(), session.getEhourConfig())}));
-				validityLabel.setEscapeModelStrings(false);
-				summaryRow.add(validityLabel);
-				
-				WebMarkupContainer cont = new WebMarkupContainer("remainingHoursLabel");
-				// only shown for allotted types
-				cont.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
-
-				label = new Label("overview.totalbooked", new StringResourceModel("overview.totalbooked", 
-																			this,  null,
-																			new Object[]{new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig())}));
-				cont.add(label);
-
-				label = new Label("overview.remainingfixed", new StringResourceModel("overview.remainingfixed", 
-																			this,  null,
-																			new Object[]{new FloatModel(projectStatus.getFixedHoursRemaining(), session.getEhourConfig())})); 
-				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
-				cont.add(label);
-
-				label = new Label("overview.remainingflex", new StringResourceModel("overview.remainingflex",
-																			this,  null,
-																			new Object[]{new FloatModel(projectStatus.getFlexHoursRemaining(), session.getEhourConfig())}));
-
-				// only shown for flex allotted types
-				label.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
-				label.setVersioned(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
-				cont.add(label);
-
-				summaryRow.add(cont);
-
-				item.add(summaryRow);
+				// SummaryRow 
+				item.add(createProjectSummaryRow(item, projectStatus));
 			}
 		};
 		
 		container.add(view);
 	}
+	
+	@SuppressWarnings("serial")
+	private Component createProjectSummaryRow(final ListItem item, UserProjectStatus projectStatus)
+	{
+		// SummaryRow placeholder
+		WebMarkupContainer summaryRow = new WebMarkupContainer("summaryRow");
+		summaryRow.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
+		{
+			public Object getObject()
+			{
+				return "summaryRow_" + item.getIndex();
+			}
+		}));
+		
+		summaryRow.add(new SimpleAttributeModifier("style", "display: none")); 
 
+		// valid from until label
+		Label validityLabel = new Label("overview.validity", new StringResourceModel("overview.validity", 
+																this,  null,
+																new Object[]{new DateModel(projectStatus.getProjectAssignment().getDateStart(), session.getEhourConfig()),
+																				new DateModel(projectStatus.getProjectAssignment().getDateEnd(), session.getEhourConfig())}));
+		validityLabel.setEscapeModelStrings(false);
+		summaryRow.add(validityLabel);
+		
+		WebMarkupContainer cont = new WebMarkupContainer("remainingHoursLabel");
+		// only shown for allotted types
+		cont.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
+
+		Label totalBookedLabel = new Label("overview.totalbooked", new StringResourceModel("overview.totalbooked", 
+																	this,  null,
+																	new Object[]{new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig())}));
+		cont.add(totalBookedLabel);
+
+		Label remainingLabel = new Label("overview.remainingfixed", new StringResourceModel("overview.remainingfixed", 
+																	this,  null,
+																	new Object[]{new FloatModel(projectStatus.getFixedHoursRemaining(), session.getEhourConfig())})); 
+		remainingLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
+		cont.add(remainingLabel);
+
+		Label remainingFlexLabel = new Label("overview.remainingflex", new StringResourceModel("overview.remainingflex",
+																	this,  null,
+																	new Object[]{new FloatModel(projectStatus.getFlexHoursRemaining(), session.getEhourConfig())}));
+
+		// only shown for flex allotted types
+		remainingFlexLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
+		cont.add(remainingFlexLabel);
+
+		summaryRow.add(cont);	
+		
+		return summaryRow;
+	}
+	
+	
+	private void setCustomerLabelWidth(Label label)
+	{
+		if (!isTurnOverVisible())
+		{
+			label.add(new SimpleAttributeModifier("style", "width: 30%;"));
+		}		
+	}
+
+	private void setProjectCodeLabelWidth(Label label)
+	{
+		
+	}
+
+	private void setProjectLabelWidth(Label label)
+	{
+		if (!isTurnOverVisible())
+		{
+			label.add(new SimpleAttributeModifier("style", "width: 35%;"));
+		}		
+	}
+
+	private void setRateWidthOrHide(Label label)
+	{
+		label.setVisible(isTurnOverVisible());
+	}
+	
+	private void setTurnoverWidthOrHide(Label label)
+	{
+		label.setVisible(isTurnOverVisible());
+	}
+
+	private void setHoursWidth(Label label)
+	{
+
+		
+	}
+
+	private boolean isTurnOverVisible()
+	{
+		return getEhourSession().getEhourConfig().isShowTurnover();
+	}
+	
+	private EhourWebSession getEhourSession()
+	{
+		if (session == null)
+		{
+			session = (EhourWebSession)getSession();
+		}
+		return session;
+	}
+	
 	/**
 	 * Make sure the images are preloaded
 	 */
