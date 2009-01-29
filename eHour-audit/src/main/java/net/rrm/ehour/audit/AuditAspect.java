@@ -256,27 +256,8 @@ public class AuditAspect
 	 */
 	private Audit createAudit(User user, Boolean success, AuditActionType auditActionType, ProceedingJoinPoint pjp)
 	{
-		StringBuilder parameters = new StringBuilder();
+		String parameters = getAuditParameters(pjp);
 		
-		int i = 0;
-		
-		for (Object object : pjp.getArgs())
-		{
-			parameters.append(i++ + ":");
-	
-			if (object == null)
-			{
-				parameters.append("null");
-			} else if (object instanceof Calendar)
-			{
-				parameters.append(((Calendar)object).getTime().toString());
-			}
-			else
-			{
-				parameters.append(object.toString());
-			}
-		}
-
 		String page = null;
 		
 		if (RequestCycle.get() != null && RequestCycle.get().getResponsePage() != null)
@@ -298,6 +279,39 @@ public class AuditAspect
 
 
 		return audit;
+	}
+	
+	/**
+	 * Get parameters of advised method
+	 * @param pjp
+	 * @return
+	 */
+	private String getAuditParameters(ProceedingJoinPoint pjp)
+	{
+		StringBuilder parameters = new StringBuilder();
+		
+		int i = 0;
+		
+		for (Object object : pjp.getArgs())
+		{
+			parameters.append(i++ + ":");
+	
+			if (object == null)
+			{
+				parameters.append("null");
+			} else if (object instanceof Calendar)
+			{
+				parameters.append(((Calendar)object).getTime().toString());
+			}
+			else
+			{
+				parameters.append(object.toString());
+			}
+		}		
+		
+		
+		
+		return parameters.length() > 1024 ? parameters.substring(0, 1023) : parameters.toString();
 	}
 
 	

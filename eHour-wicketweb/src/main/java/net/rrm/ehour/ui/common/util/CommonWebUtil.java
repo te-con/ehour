@@ -22,7 +22,6 @@ import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
 
 /**
  * Commons 
