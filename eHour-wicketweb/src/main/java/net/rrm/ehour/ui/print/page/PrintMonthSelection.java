@@ -61,6 +61,12 @@ public class PrintMonthSelection extends BasePage
 {
 	private static final long serialVersionUID = 1891959724639181159L;
 	
+	private enum Action
+	{
+		PRINT,
+		EXCEL;
+	}
+	
 	@SpringBean
 	private ProjectService	projectService;
 	
@@ -167,7 +173,7 @@ public class PrintMonthSelection extends BasePage
 		
 		public SelectionForm(String id, List<ProjectAssignment> assignments, final DateRange printRange)
 		{
-			super(id);
+			super(id, new Model());
 			
 			this.printRange = printRange;
 			
@@ -204,7 +210,38 @@ public class PrintMonthSelection extends BasePage
 			// signoff
 			add(new CheckBox("signOff", new PropertyModel(this, "includeSignOff")));
 			
-			add(new SubmitLink("submitButton"));
+			add(new SubmitLink("submitButton")
+			{
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				public void onSubmit()
+				{
+					SelectionForm.this.getModel().setObject(Action.PRINT);
+				}
+			});
+
+
+			add(new SubmitLink("excelButton")
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onSubmit()
+				{
+					SelectionForm.this.getModel().setObject(Action.EXCEL);
+				}
+			});
+		}
+		
+		private void excelExport()
+		{
+			List<Serializable>	assignmentIds = getWrappedAssignmentIds();
+			
+			for (Serializable serializable : assignmentIds)
+			{	
+//					System.out.println(serializable);
+			}
 		}
 		
 		/*
@@ -213,6 +250,24 @@ public class PrintMonthSelection extends BasePage
 		 */
 		@Override
 		public void onSubmit()
+		{
+			System.out.println("obj: " + SelectionForm.this.getModelObject());
+			
+			List<Serializable>	assignmentIds = getWrappedAssignmentIds();
+			
+			Action action = (Action)SelectionForm.this.getModelObject();
+			
+			if (action == Action.EXCEL)
+			{
+				setResponsePage(new PrintMonth(assignmentIds, printRange, includeSignOff));
+			}
+			else
+			{
+				setResponsePage(new PrintMonth(assignmentIds, printRange, includeSignOff));
+			}
+		}
+		
+		private List<Serializable> getWrappedAssignmentIds()
 		{
 			List<Serializable>	assignmentIds = new ArrayList<Serializable>();
 			
@@ -223,8 +278,8 @@ public class PrintMonthSelection extends BasePage
 					assignmentIds.add(wrapper.getAssignment().getPK());
 				}
 			}
-			
-			setResponsePage(new PrintMonth(assignmentIds, printRange, includeSignOff));
+
+			return assignmentIds;
 		}
 
 		/**
