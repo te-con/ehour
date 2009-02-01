@@ -16,18 +16,30 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<groupId>org.mortbay.jetty</groupId>
+				<version>7.0.0pre3</version>
+				<configuration>
+					<contextPath>/ehour</contextPath>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>8090</port>
+							<host>0.0.0.0</host>
+						</connector>
+					</connectors>
+					<jettyEnvXml>${basedir}/src/test/resources/jetty-env-mysql.xml</jettyEnvXml>
+				</configuration>
+			</plugin>
+				
+			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.5</source>
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<!--<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-			</plugin>
-
-		--></plugins>
+		</plugins>
 
 		<resources>
 			<resource>

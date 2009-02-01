@@ -32,11 +32,15 @@
 			<param-value>false</param-value>
 		</init-param>
 	</filter>
-		<filter> <filter-name>Acegi HTTP Request Security Filter</filter-name>
+	<filter>
+		<filter-name>Acegi HTTP Request Security Filter</filter-name>
 		<filter-class> org.acegisecurity.util.FilterToBeanProxy
-		</filter-class> <init-param> <param-name>targetClass</param-name>
-		<param-value> org.acegisecurity.util.FilterChainProxy </param-value>
-		</init-param> </filter>
+		</filter-class>
+		<init-param>
+			<param-name>targetClass</param-name>
+			<param-value> org.acegisecurity.util.FilterChainProxy </param-value>
+		</init-param>
+	</filter>
 	<filter>
 		<filter-name>EhourWebApplication</filter-name>
 		<filter-class>
