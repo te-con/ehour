@@ -25,6 +25,7 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -188,7 +189,11 @@ public class MonthOverviewPanel extends Panel
 						{
 							TimesheetEntry entry = (TimesheetEntry)item.getModelObject();
 
-	            			item.add(new Label("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode())); 
+							TooltipLabel projectCodeLabel = new TooltipLabel("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode(),
+																			entry.getEntryId().getProjectAssignment().getProject().getDescription(), false);
+							item.add(projectCodeLabel);
+							
+//	            			item.add(new Label("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode())); 
 	            			item.add(new Label("hours", new FloatModel(entry.getHours(), config)));
 						}
 	            	};

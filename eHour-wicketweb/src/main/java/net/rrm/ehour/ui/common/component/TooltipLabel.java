@@ -20,34 +20,52 @@ package net.rrm.ehour.ui.common.component;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.JavaScriptReference;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
+ * Tooltip label with info image next to it.
+ * Displays a tooltip when hovered over the text using SweetTitles
+ * 
  * Created on Feb 1, 2009, 6:57:30 PM
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
 public class TooltipLabel extends Panel
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2407607082770130038L;
 
+	/**
+	 * Includes info img
+	 * @param id
+	 * @param label 
+	 * @param tooltipText
+	 */
 	public TooltipLabel(final String id, String label, String tooltipText)
 	{
-		this(id, new Model(label), new Model(tooltipText));
+		this(id, label, tooltipText, true);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param label
+	 * @param tooltipText
+	 * @param showInfoImg
+	 */
+	public TooltipLabel(final String id, String label, String tooltipText, boolean showInfoImg)
+	{
+		this(id, new Model(label), new Model(tooltipText), showInfoImg);
 	}
 	
 	/**
 	 * @param id
 	 * @param model
 	 */
-	public TooltipLabel(String id, IModel model, IModel tooltipText)
+	public TooltipLabel(String id, IModel model, IModel tooltipText, boolean showInfoImg)
 	{
 		super(id);
 		
@@ -58,6 +76,9 @@ public class TooltipLabel extends Panel
 		
 		add(new AttributeModifier("showtooltip", true, new Model("true")));
 		add(new AttributeModifier("title", true, tooltipText));
-
+		
+		ContextImage img = new ContextImage("infoImg", new Model("img/info.gif"));
+		img.setVisible(showInfoImg);
+		add(img);
 	}
 }
