@@ -189,11 +189,7 @@ public class MonthOverviewPanel extends Panel
 						{
 							TimesheetEntry entry = (TimesheetEntry)item.getModelObject();
 
-							TooltipLabel projectCodeLabel = new TooltipLabel("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode(),
-																			entry.getEntryId().getProjectAssignment().getProject().getDescription(), false);
-							item.add(projectCodeLabel);
-							
-//	            			item.add(new Label("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode())); 
+							item.add(createProjectCodeTooltip(entry));
 	            			item.add(new Label("hours", new FloatModel(entry.getHours(), config)));
 						}
 	            	};
@@ -227,6 +223,19 @@ public class MonthOverviewPanel extends Panel
             	row.add(label);
 	        }
 		}		
+	}
+	
+	private TooltipLabel createProjectCodeTooltip(TimesheetEntry entry)
+	{
+		StringBuilder tooltipText = new StringBuilder(entry.getEntryId().getProjectAssignment().getProject().getDescription());
+		tooltipText.append("<br /><em>");
+		tooltipText.append(entry.getEntryId().getProjectAssignment().getProject().getName());
+		tooltipText.append("</em>");
+
+		TooltipLabel projectCodeLabel = new TooltipLabel("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode(),
+				tooltipText.toString(), false);
+		
+		return projectCodeLabel;
 	}
 	
 	/**
