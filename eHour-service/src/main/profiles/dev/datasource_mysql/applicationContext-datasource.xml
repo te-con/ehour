@@ -7,5 +7,5 @@
 
         <jee:jndi-lookup id="eHourDataSource"
                          jndi-name="jdbc/eHourDS"
-                         resource-ref="false" />
+                         resource-ref="true" />
 </beans>
