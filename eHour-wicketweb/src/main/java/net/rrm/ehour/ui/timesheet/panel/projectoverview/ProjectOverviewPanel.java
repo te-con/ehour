@@ -201,7 +201,6 @@ public class ProjectOverviewPanel extends Panel
 				setProjectLabelWidth(projectLabel);
 				item.add(projectLabel);
 				
-				
 				Label customerLabel = new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()); 
 				setCustomerLabelWidth(customerLabel);
 				item.add(customerLabel);
@@ -368,11 +367,6 @@ public class ProjectOverviewPanel extends Panel
 		}		
 	}
 
-	private void setProjectCodeLabelWidth(Label label)
-	{
-		
-	}
-
 	private void setProjectLabelWidth(Component label)
 	{
 		if (!isTurnOverVisible())
@@ -389,12 +383,6 @@ public class ProjectOverviewPanel extends Panel
 	private void setTurnoverWidthOrHide(Label label)
 	{
 		label.setVisible(isTurnOverVisible());
-	}
-
-	private void setHoursWidth(Label label)
-	{
-
-		
 	}
 
 	private boolean isTurnOverVisible()
