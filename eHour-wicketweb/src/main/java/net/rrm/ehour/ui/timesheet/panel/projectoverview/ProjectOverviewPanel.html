@@ -21,8 +21,8 @@
 			</div>
 
 			<wicket:container wicket:id="projectStatus">
-				<div class="AggregateRow" onclick="foldSummary(this)">
-					<div class="foldCell"><img src="img/icon_up_off.gif" onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" wicket:id="foldImg" /></div>
+				<div class="AggregateRow">
+					<div class="foldCell"><a href="#" wicket:id="foldLink"><img border="0"  src="img/icon_up_off.gif" wicket:id="foldImg" /></a></div>
 					<div class="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
 					<div class="textCell" wicket:id="projectCode">[projectCode]</div>
 					<div class="textCell" style="width: 19%;overflow:hidden;cursor:pointer">
@@ -33,15 +33,7 @@
 					<div class="numbCell" style="width: 19%" wicket:id="turnover">&euro; 16.000</div>
 				</div>
 	
-				<div class="SummaryRow" wicket:id="summaryRow">
-					<div class="foldCell">&nbsp;</div>
-					<wicket:container wicket:id="overview.validity"></wicket:container>. 
-					<wicket:container wicket:id="remainingHoursLabel">
-						<wicket:container wicket:id="overview.totalbooked"></wicket:container>
-						<wicket:container wicket:id="overview.remainingfixed"></wicket:container>
-						<wicket:container wicket:id="overview.remainingflex"></wicket:container>
-					</wicket:container>
-				</div>
+				<span wicket:id="summaryRow"></span>
 			</wicket:container>
 			
 			<div class="TotalRow">
@@ -55,6 +47,19 @@
 			</div>
 		</div>
 	</span>
+	
+	<wicket:fragment wicket:id="summaryRowFragment">
+		<div class="SummaryRow">
+			<div class="foldCell">&nbsp;</div>
+			<wicket:container wicket:id="overview.validity"></wicket:container>. 
+			<wicket:container wicket:id="remainingHoursLabel">
+				<wicket:container wicket:id="overview.totalbooked"></wicket:container>
+				<wicket:container wicket:id="overview.remainingfixed"></wicket:container>
+				<wicket:container wicket:id="overview.remainingflex"></wicket:container>
+			</wicket:container>
+		</div>
+	</wicket:fragment>
+	
 </wicket:panel>
 
 </body>

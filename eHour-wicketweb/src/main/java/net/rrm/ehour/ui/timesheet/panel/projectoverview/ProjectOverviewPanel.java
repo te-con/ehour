@@ -16,17 +16,16 @@
 
 package net.rrm.ehour.ui.timesheet.panel.projectoverview;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
+import net.rrm.ehour.ui.common.component.ImageMouseOver;
+import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.model.CurrencyModel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
@@ -34,33 +33,37 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.util.template.PackagedTextTemplate;
-import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.wicketstuff.minis.mootipbehavior.MootipBehaviour;
 
 /**
  * Panel showing overview
  */
 
-public class ProjectOverviewPanel extends Panel implements IHeaderContributor
+public class ProjectOverviewPanel extends Panel
 {
 	private static final long serialVersionUID = -5935376941518756941L;
+	private static final String ID_GREY_BORDER = "greyBorder";
+	private static final String ID_TABLE_DATA = "projectStatus";
+	private static final String ID_SUMMARY_ROW = "summaryRow";
+	private static final String ID_FOLD_LINK = "foldLink";
+	private static final String ID_FOLD_IMG = "foldImg";
+	
 	private transient EhourWebSession session;
+	private String tableDatePath;
 	
 	/**
 	 * 
@@ -80,37 +83,15 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 																	this,  null,
 																	new Object[]{new DateModel(overviewFor, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)}));
 		
-		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", label, CommonWebUtil.GREYFRAME_WIDTH); 
+		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_GREY_BORDER, label, CommonWebUtil.GREYFRAME_WIDTH); 
 
 		addTotals(greyBorder, projectStatusSet, session.getEhourConfig());
 		addColumnLabels(greyBorder, session.getEhourConfig());
+		
+		tableDatePath = ID_GREY_BORDER;
 		addTableData(greyBorder, projectStatusSet, session.getEhourConfig());
 
-		addJavascript(greyBorder);
-
 		add(greyBorder);
-	}
-	
-	/**
-	 * Add javascript with replaced images
-	 * @param container
-	 */
-	private void addJavascript(WebMarkupContainer container)
-	{
-		CharSequence iconUpOn = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_up_on.gif";
-		CharSequence iconUpOff = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_up_off.gif";
-		CharSequence iconDownOn = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_down_on.gif";
-		CharSequence iconDownOff = getRequest().getRelativePathPrefixToContextRoot() + "img/icon_down_off.gif";
-		
-		PackagedTextTemplate js = new PackagedTextTemplate(ProjectOverviewPanel.class, "js/aggregate.js");
-
-		Map<String, CharSequence> map = new HashMap<String, CharSequence>();
-		map.put("iconUpOn", iconUpOn);
-		map.put("iconUpOff", iconUpOff);
-		map.put("iconDownOn", iconDownOn);
-		map.put("iconDownOff", iconDownOff);
-		
-		add(TextTemplateHeaderContributor.forJavaScript(js, new Model((Serializable)map)));
 	}
 	
 	/**
@@ -190,7 +171,6 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 	 * @param projectStatusSet
 	 * @param config
 	 */
-	@SuppressWarnings("serial")
 	private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
 	{
 		List<UserProjectStatus> stati;
@@ -204,8 +184,9 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 			stati = new ArrayList<UserProjectStatus>(projectStatusSet);
 		}
 			
-		
-		ListView view = new ListView("projectStatus", stati)
+		// table data should reflect the path to the listView
+		this.tableDatePath += ":" + ID_TABLE_DATA;
+		ListView view = new ListView(ID_TABLE_DATA, stati)
 		{
 			private static final long serialVersionUID = -2544424604230082804L;
 			EhourWebSession session = (EhourWebSession)getSession();
@@ -213,27 +194,9 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 			public void populateItem(final ListItem item)
 			{
 				UserProjectStatus projectStatus = (UserProjectStatus) item.getModelObject();
-				// add id to AggregateRow
-				item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-				{
-					public Object getObject()
-					{
-						return "" + item.getIndex();
-					}
-				}));				
-				
-				// set relative URL to image and set id
-				ContextImage img = new ContextImage("foldImg", new Model("img/icon_down_off.gif"));
-				img.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-				{
-					public Object getObject()
-					{
-						return "foldImg_" + item.getIndex();
-					}
-				}));				
-				
-				item.add(img);
-				
+
+				item.add(createFoldLink(projectStatus, item.getId()));
+
 				Label projectLabel = new Label("projectName", projectStatus.getProjectAssignment().getProject().getName());
 				setProjectLabelWidth(projectLabel);
 				ResourceModel toolTipTitleRM = new ResourceModel("overview.projectDescription");
@@ -259,28 +222,108 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 				item.add(turnOverLabel);
 				
 				// SummaryRow 
-				item.add(createProjectSummaryRow(item, projectStatus));
+				item.add(new PlaceholderPanel(ID_SUMMARY_ROW));
 			}
 		};
 		
 		container.add(view);
 	}
 	
+	/**
+	 * Create fold link (also contains the creation of the summary row)
+	 * @param projectStatus
+	 * @return
+	 */
 	@SuppressWarnings("serial")
-	private Component createProjectSummaryRow(final ListItem item, UserProjectStatus projectStatus)
+	private Component createFoldLink(final UserProjectStatus projectStatus, final String domId)
+	{
+		// set relative URL to image and set id
+		ContextImage img = createFoldImage(false);
+
+		AjaxLink foldLink = new AjaxLink(ID_FOLD_LINK)
+		{
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				Component original = ProjectOverviewPanel.this.get(getSummaryRowPath(domId));
+				Component originalImage = ProjectOverviewPanel.this.get(getFoldImagePath(domId));
+				Component replacement;
+				Component replacementImage;
+				
+				if (original instanceof PlaceholderPanel)
+				{	
+					replacement = createProjectSummaryRow(projectStatus);
+					replacementImage = createFoldImage(true);
+				}
+				else
+				{
+					replacement = new PlaceholderPanel(ID_SUMMARY_ROW);
+					replacementImage = createFoldImage(false);
+				}
+
+				original.replaceWith(replacement);
+				originalImage.replaceWith(replacementImage);
+				target.addComponent(replacement);
+				target.addComponent(replacementImage);
+				
+				target.appendJavascript("initImagePreload();");
+			}
+		};
+		
+		foldLink.add(img);
+		return foldLink;
+	}
+	
+	private ContextImage createFoldImage(boolean up)
+	{
+		String upStr = "img/icon_" + (up ? "up_" : "down_");
+		
+		ContextImage img = new ContextImage(ID_FOLD_IMG, new Model(upStr + "off.gif"));
+		img.setOutputMarkupId(true);
+		ImageMouseOver.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif");
+		
+		return img;
+	}
+	
+	private String getContextRoot()
+	{
+		return getRequest().getRelativePathPrefixToContextRoot();
+	}
+	
+	private String getFoldImagePath(String domId)
+	{
+		StringBuilder builder = new StringBuilder(tableDatePath);
+		builder.append(":");
+		builder.append(domId);
+		builder.append(":");
+		builder.append(ID_FOLD_LINK);
+		builder.append(":");
+		builder.append(ID_FOLD_IMG);
+		
+		return builder.toString();
+	}
+	
+	private String getSummaryRowPath(String domId)
+	{
+		StringBuilder builder = new StringBuilder(tableDatePath);
+		builder.append(":");
+		builder.append(domId);
+		builder.append(":");
+		builder.append(ID_SUMMARY_ROW);
+		
+		return builder.toString();
+	}
+
+	/**
+	 * Create project summary row
+	 * @param projectStatus
+	 * @return
+	 */
+	private Component createProjectSummaryRow(UserProjectStatus projectStatus)
 	{
 		// SummaryRow placeholder
-		WebMarkupContainer summaryRow = new WebMarkupContainer("summaryRow");
-		summaryRow.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-		{
-			public Object getObject()
-			{
-				return "summaryRow_" + item.getIndex();
-			}
-		}));
-		
-		summaryRow.add(new SimpleAttributeModifier("style", "display: none")); 
-
+		Fragment summaryRow = new Fragment(ID_SUMMARY_ROW, "summaryRowFragment", ProjectOverviewPanel.this);
+		summaryRow.setOutputMarkupId(true);
 		// valid from until label
 		Label validityLabel = new Label("overview.validity", new StringResourceModel("overview.validity", 
 																this,  null,
@@ -367,13 +410,5 @@ public class ProjectOverviewPanel extends Panel implements IHeaderContributor
 			session = (EhourWebSession)getSession();
 		}
 		return session;
-	}
-	
-	/**
-	 * Make sure the images are preloaded
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		 response.renderOnLoadJavascript("init();");		
 	}
 }
