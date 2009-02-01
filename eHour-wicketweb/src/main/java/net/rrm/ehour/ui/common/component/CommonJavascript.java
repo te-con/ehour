@@ -32,21 +32,34 @@ import org.apache.wicket.model.Model;
  * Adds an onMouseOn & onMouseOff attribute to an image
  *
  */
-public class ImageMouseOver 
+public class CommonJavascript 
 {
+	/**
+	 * Add mouse over on element 
+	 * @param imgComponent the element which has the mouse over effect
+	 * @param parent the parent component (panel/page) of the imgComponent
+	 * @param imageUriOn image URI as text of the mouse over image
+	 * @param imageUriOff image URI as text of the mouse out image
+	 */
 	public static void addMouseOver(Component imgComponent, Component parent, String imageUriOn, String imageUriOff)
 	{
-		parent.add(HeaderContributor.forJavaScript(ImageMouseOver.class, "js/ImageMouseOver.js"));
+		parent.add(HeaderContributor.forJavaScript(CommonJavascript.class, "js/ImageMouseOver.js"));
 		
 		imgComponent.add(new OnMouseOnLoad("onmouseover", true, new Model("onMouseOver(this, '" + imageUriOn + "');")));
 		imgComponent.add(new AttributeModifier("onmouseout", true, new Model("onMouseOut(this, '" + imageUriOff + "');")));
 	}
-
+	
+	/**
+	 * Modifier that makes sure that the images are resetted to null after load
+	 * Created on Feb 1, 2009, 6:47:22 PM
+	 * @author Thies Edeling (thies@te-con.nl) 
+	 *
+	 */
 	private static class OnMouseOnLoad extends AttributeModifier
 	{
 		private static final long serialVersionUID = -5494844004223491158L;
 
-		public OnMouseOnLoad(String attribute, boolean addAttributeIfNotPresent, IModel replaceModel)
+		OnMouseOnLoad(String attribute, boolean addAttributeIfNotPresent, IModel replaceModel)
 		{
 			super(attribute, addAttributeIfNotPresent, replaceModel);
 		}

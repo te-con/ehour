@@ -22,11 +22,11 @@
 
 			<wicket:container wicket:id="projectStatus">
 				<div class="AggregateRow">
-					<div class="foldCell"><a href="#" wicket:id="foldLink"><img border="0"  src="img/icon_up_off.gif" wicket:id="foldImg" /></a></div>
+					<div class="foldCell"><a href="#" wicket:id="foldLink">-<img border="0"  src="img/icon_up_off.gif" wicket:id="foldImg" /></a></div>
 					<div class="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
 					<div class="textCell" wicket:id="projectCode">[projectCode]</div>
 					<div class="textCell" style="width: 19%;overflow:hidden;cursor:pointer">
-							<wicket:container wicket:id="projectName" class="toolTipImg" >[projectName]</wicket:container>
+							<span wicket:id="projectName">[projectName]</span>&nbsp;
 					</div>
 					<div class="numbCell" wicket:id="rate"></div>
 					<div class="numbCell" wicket:id="monthHours">24.50</div>

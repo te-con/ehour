@@ -1,0 +1,63 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * 
+ * eHour is sponsored by TE-CON  - http://www.te-con.nl/
+ */
+
+package net.rrm.ehour.ui.common.component;
+
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.JavaScriptReference;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
+/**
+ * Created on Feb 1, 2009, 6:57:30 PM
+ * @author Thies Edeling (thies@te-con.nl) 
+ *
+ */
+public class TooltipLabel extends Panel
+{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2407607082770130038L;
+
+	public TooltipLabel(final String id, String label, String tooltipText)
+	{
+		this(id, new Model(label), new Model(tooltipText));
+	}
+	
+	/**
+	 * @param id
+	 * @param model
+	 */
+	public TooltipLabel(String id, IModel model, IModel tooltipText)
+	{
+		super(id);
+		
+		add(new Label("content", model));
+		
+		add(new JavaScriptReference("addEventJs", new ResourceReference(TooltipLabel.class, "js/addEvent.js")));
+		add(new JavaScriptReference("sweetTitlesJs", new ResourceReference(TooltipLabel.class, "js/sweetTitles.js")));
+		
+		add(new AttributeModifier("showtooltip", true, new Model("true")));
+		add(new AttributeModifier("title", true, tooltipText));
+
+	}
+}

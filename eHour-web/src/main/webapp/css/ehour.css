@@ -1,251 +1,231 @@
-a:link 
-{
+a {
+	outline: none;
+}
+
+a:link {
 	color: #233e55;
 	font-weight: normal;
 	text-decoration: none;
 }
 
-a:visited
-{
+a:visited {
 	color: #233e55;
 	font-weight: normal;
 	text-decoration: none;
 }
-a:hover
-{
+
+a:hover {
 	text-decoration: underline;
 }
 
-body
-{
+body {
 	background: white;
-	font: 0.8em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	font: 0.8em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
 	color: black;
 	margin: 0px;
 }
 
-div.SidePanelLoc
-{
+div.SidePanelLoc {
 	width: 243px;
-	margin:	0 0 0 5px;
+	margin: 0 0 0 5px;
 	padding: 0;
-	float:	left;
+	float: left;
 }
 
-div.ContentPanelLoc
-{
-	margin:	0;
+div.ContentPanelLoc {
+	margin: 0;
 	padding: 0;
-	float:	left;
+	float: left;
 	WIDTH: 600px;
 }
 
-div.ContentPanelLocFixed
-{
+div.ContentPanelLocFixed {
 	width: 100%;
 	min-width: 500px;
 	max-width: 780px;
-	margin:	0;
+	margin: 0;
 	padding: 0;
 }
 
-div.GreyFrame
-{
+div.GreyFrame {
 	text-align: left;
 	margin: 0 20px 0 0;
 	padding: 0;
 	background-color: white;
 }
 
-
-div.GreyFrame h1
-{
+div.GreyFrame h1 {
 	text-align: left;
-	font:  bold 1.0em Arial, Geneva, Helvetica, sans-serif;	
+	font: bold 1.0em Arial, Geneva, Helvetica, sans-serif;
 	color: #536e87;
 	margin: 0 0 3px 16px;
 	padding: 0;
 }
 
-div.GreyFrame div.ExportIcons
-{
+div.GreyFrame div.ExportIcons {
 	float: right;
 	padding-right: 16px;
 }
 
-div.GreyFrameContainer
-{
-		background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
-} 
-
-div.GreyFrameContainerSquared
-{
-		background: url(../img/grey_frame/pixel_grey.gif);
-		width: 400px;
-		font:  1.0em Geneva, Arial, Helvetica, sans-serif;	
-		color: #3b556d;
-		
+div.GreyFrameContainer {
+	background: url(../img/grey_frame/corner_left_top.gif) top left
+		no-repeat;
 }
 
-div.GreyFrameContainerSquared h3
-{
-		background: 	url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
-		line-height:	16px;
-		padding:		0;
-		margin:			0 0 0px 16px;
-		font:  			bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
-		color: 			#536e87;
-} 
-
-div.GreyFrameContainer h3
-{
-		background: 	url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
-		line-height:	16px;
-		padding:		0;
-		margin:			0 0 0px 16px;
-		font:  			bold 1.0em Geneva, Arial, Helvetica, sans-serif;	
-		color: 			#536e87;
+div.GreyFrameContainerSquared {
+	background: url(../img/grey_frame/pixel_grey.gif);
+	width: 400px;
+	font: 1.0em Geneva, Arial, Helvetica, sans-serif;
+	color: #3b556d;
 }
 
-div.GreyFrameBody
-{
-		background: url(../img/grey_frame/pixel_grey.gif);
-		margin:0px;
-		padding:0;
-		clear: both;
+div.GreyFrameContainerSquared h3 {
+	background: url(../img/grey_frame/corner_right_top.gif) top right
+		no-repeat;
+	line-height: 16px;
+	padding: 0;
+	margin: 0 0 0px 16px;
+	font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
+	color: #536e87;
 }
 
-div.GreyFrameBody p
-{
-		margin: 0 0 0 16px;
-		padding: 0;
-		font:  1.0em/0.9 Geneva, Arial, Helvetica, sans-serif;	
-		color: #3b556d;
+div.GreyFrameContainer h3 {
+	background: url(../img/grey_frame/corner_right_top.gif) top right
+		no-repeat;
+	line-height: 16px;
+	padding: 0;
+	margin: 0 0 0px 16px;
+	font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
+	color: #536e87;
 }
 
-div.GreyFrameFooter
-{
-		background: url(../img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
+div.GreyFrameBody {
+	background: url(../img/grey_frame/pixel_grey.gif);
+	margin: 0px;
+	padding: 0;
+	clear: both;
 }
 
-div.GreyFrameFooter p
-{
-		background: url(../img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
-		padding:	0px;
-		display:	block;
-		margin: 	0;
-		height: 16px;
+div.GreyFrameBody p {
+	margin: 0 0 0 16px;
+	padding: 0;
+	font: 1.0em/ 0.9 Geneva, Arial, Helvetica, sans-serif;
+	color: #3b556d;
 }
 
+div.GreyFrameFooter {
+	background: url(../img/grey_frame/corner_left_bottom.gif) bottom left
+		no-repeat;
+}
 
-div.GreyBlueFrame
-{
-	background: url(../img/bg_blue_grey/gradient_blue.gif) top left repeat-x;
+div.GreyFrameFooter p {
+	background: url(../img/grey_frame/corner_right_bottom.gif) bottom right
+		no-repeat;
+	padding: 0px;
+	display: block;
+	margin: 0;
+	height: 16px;
+}
+
+div.GreyBlueFrame {
+	background: url(../img/bg_blue_grey/gradient_blue.gif) top left repeat-x
+		;
 	margin-left: 15px;
 	margin-right: 15px;
 }
 
-div.GreyBlueFrameHorizontal
-{
-	background: url(../img/bg_blue_grey/gradient_blue_hor.gif) top left repeat-y;
+div.GreyBlueFrameHorizontal {
+	background: url(../img/bg_blue_grey/gradient_blue_hor.gif) top left
+		repeat-y;
 	margin-left: 20px;
 	margin-right: 20px;
 }
 
-div.GreyBlueLeftTop
-{
+div.GreyBlueLeftTop {
 	background: url(../img/bg_blue_grey/left_top.gif) top left no-repeat;
 }
 
-div.GreyBlueRightTop
-{
-  	background: url(../img/bg_blue_grey/right_top.gif) top right no-repeat;
-	font:  bold 1.0em/1.5em Geneva, Arial, Helvetica, sans-serif;	
- 	color: #536e87;
+div.GreyBlueRightTop {
+	background: url(../img/bg_blue_grey/right_top.gif) top right no-repeat;
+	font: bold 1.0em/ 1.5em Geneva, Arial, Helvetica, sans-serif;
+	color: #536e87;
 }
 
-div.GreyBlueRightBottom
-{
-	background: url(../img/bg_blue_grey/right_bottom.gif) bottom right no-repeat;
+div.GreyBlueRightBottom {
+	background: url(../img/bg_blue_grey/right_bottom.gif) bottom right
+		no-repeat;
 }
 
-div.GreyBlueLeftBottom
-{
-	background: url(../img/bg_blue_grey/left_bottom.gif) bottom left no-repeat;
+div.GreyBlueLeftBottom {
+	background: url(../img/bg_blue_grey/left_bottom.gif) bottom left
+		no-repeat;
 }
 
-div.GreyNavFrame
-{
-	background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
+div.GreyNavFrame {
+	background: url(../img/grey_frame/corner_left_top.gif) top left
+		no-repeat;
 	max-height: 500px;
-  	width:		230px;
-} 
-
-div.GreyNavFrame h3
-{
-  background: 	url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
-  line-height:	11px;
-  padding:		0;
-  margin: 0;
-  font: 		bold 1.1em/1.5 Geneva, Arial, Helvetica, sans-serif;
-  color: #536e87;
-  text-align: center;  
+	width: 230px;
 }
 
-div.GreyNavBody
-{
+div.GreyNavFrame h3 {
+	background: url(../img/grey_frame/corner_right_top.gif) top right
+		no-repeat;
+	line-height: 11px;
+	padding: 0;
+	margin: 0;
+	font: bold 1.1em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
+	color: #536e87;
+	text-align: center;
+}
+
+div.GreyNavBody {
 	background: url(../img/grey_frame/pixel_grey.gif);
-  	margin-top: 0em;
-  	padding:0;
+	margin-top: 0em;
+	padding: 0;
 	max-height: 300px;
 	overflow: auto;
 	margin-left: 5px;
 	margin-right: 5px;
 	color: #536e87;
-	font: 0.75em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	font: 0.75em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
 }
 
-div.GreyNavBody a:link
-{
+div.GreyNavBody a:link {
 	color: #536e87;
 	font-weight: normal;
 	text-decoration: none;
 }
 
-div.GreyNavBody a:visited
-{
+div.GreyNavBody a:visited {
 	color: #536e87;
-	font-weight: normal;	
+	font-weight: normal;
 	text-decoration: none;
 }
 
-div.GreyNavBody a:hover
-{
+div.GreyNavBody a:hover {
 	color: #233e55;
 	text-decoration: underline;
 }
 
-div.GreyNavBody a:active
-{
+div.GreyNavBody a:active {
 	text-decoration: none
 }
 
-
-div.GreyNavFrameFooter
-{
-  background: url(../img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
+div.GreyNavFrameFooter {
+	background: url(../img/grey_frame/corner_left_bottom.gif) bottom left
+		no-repeat;
 }
 
-div.GreyNavFrameFooter p
-{
-  background: url(../img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
-  padding:20px;
-  display:block;
-  margin:-2em 0 0 0;
+div.GreyNavFrameFooter p {
+	background: url(../img/grey_frame/corner_right_bottom.gif) bottom right
+		no-repeat;
+	padding: 20px;
+	display: block;
+	margin: -2em 0 0 0;
 }
 
-.submitButton
-{
+.submitButton {
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
@@ -254,8 +234,7 @@ div.GreyNavFrameFooter p
 	border: 0;
 }
 
-.submitButton:hover
-{
+.submitButton:hover {
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
@@ -263,8 +242,7 @@ div.GreyNavFrameFooter p
 	color: #576d83;
 }
 
-.submitButtonBlue
-{
+.submitButtonBlue {
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
@@ -273,15 +251,12 @@ div.GreyNavFrameFooter p
 	border: 0;
 }
 
-
-.submitButtonBlue img
-{
+.submitButtonBlue img {
 	vertical-align: top;
 	margin-top: 2px;
 }
 
-.submitButtonBlue:hover
-{
+.submitButtonBlue:hover {
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
@@ -289,8 +264,7 @@ div.GreyNavFrameFooter p
 	color: #8aa0b8;
 }
 
-.submitButtonLightBackground
-{
+.submitButtonLightBackground {
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
@@ -299,8 +273,7 @@ div.GreyNavFrameFooter p
 	bordeR: 0;
 }
 
-.submitButtonLightBackground:hover
-{
+.submitButtonLightBackground:hover {
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
@@ -308,39 +281,32 @@ div.GreyNavFrameFooter p
 	color: #a5bcd4;
 }
 
-
-div.Help
-{
+div.Help {
 	padding: 20px 5px 0 5px;
-	margin: 0;	
+	margin: 0;
 }
 
-div.Help a:link
-{
+div.Help a:link {
 	font-weight: normal;
 	text-decoration: underline;
 }
 
-div.Help a:visited
-{
-	font-weight: normal;	
+div.Help a:visited {
+	font-weight: normal;
 	text-decoration: underline;
 }
 
-div.Help a:hover
-{
+div.Help a:hover {
 	color: red;
 	text-decoration: underline;
 }
 
-div.Help a:active
-{
+div.Help a:active {
 	color: red;
 	text-decoration: underline;
 }
 
-.textInputSmall
-{
+.textInputSmall {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #cfdbe6;
@@ -350,92 +316,80 @@ div.Help a:active
 	background-color: white;
 }
 
-li a:link
-{
+li a:link {
 	text-decoration: none;
-	font: 0.9em/1em Verdana, Geneva, Arial, Helvetica;
+	font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
 }
 
-li a:visited
-{
+li a:visited {
 	text-decoration: none;
-	font: 0.9em/1em Verdana, Geneva, Arial, Helvetica;
+	font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
 }
 
-li a:hover
-{
+li a:hover {
 	text-decoration: underline;
-	font: 0.9em/1em Verdana, Geneva, Arial, Helvetica;
+	font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
 	color: #233e55;
 }
 
-li a:active
-{
+li a:active {
 	text-decoration: underline;
 	font: 1em Verdana, Geneva, Arial, Helvetica;
 }
 
-div.listScroll
-{
-	height:	200px;
+div.listScroll {
+	height: 200px;
 	margin: 0 5px 0 5px;
 	overflow: auto;
 	padding: 0px;
 	width: 210px;
-	font:  1em Geneva, Arial, Helvetica, sans-serif;
+	font: 1em Geneva, Arial, Helvetica, sans-serif;
 }
 
-.contentTable
-{
+.contentTable {
 	padding: 0px;
 	margin: 0 0 0 10px;
 	spacing: 0px;
 }
 
-.contentTable TR
-{
+.contentTable TR {
 	border: 0px;
 	padding: 0px;
 	margin: 0px;
 }
 
-.contentTable TH
-{
+.contentTable TH {
 	padding: 0px;
 	margin: 0px;
-	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;
+	font: bold 0.9em/ 1em Geneva, Arial, Helvetica, sans-serif;
 	text-align: left;
 	color: #233e55;
 }
 
-.contentTable TD
-{
+.contentTable TD {
 	padding: 0px;
 	margin: 0px;
-	font:  1em Verdana Geneva, Arial, Helvetica, sans-serif;
+	font: 1em Verdana Geneva, Arial, Helvetica, sans-serif;
 	border: 0px;
 	text-align: left;
 	color: #3b556d;
 }
 
-.contentTable td.main
-{
+.contentTable td.main {
 	color: #233e55;
 }
 
-.contentTable td.extra
-{
+.contentTable td.extra {
 	padding: 0 0 0 5px;
 	margin: 0px;
-	font:  1em Verdana Geneva, Arial, Helvetica, sans-serif;
+	font: 1em Verdana Geneva, Arial, Helvetica, sans-serif;
 	border: 0px;
 	text-align: left;
 	color: #86a1bc;
 	border-bottom: 1px solid #6c87a1;
 }
 
-input
-{
+input {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #b3c0cb;
@@ -444,9 +398,7 @@ input
 	color: #233e55;
 }
 
-
-input[type="checkbox"], input[type="radio"]
-{
+input[type="checkbox"],input[type="radio"] {
 	background: transparent;
 	border: 0;
 	margin: 0;
@@ -454,89 +406,75 @@ input[type="checkbox"], input[type="radio"]
 	color: #233e55;
 }
 
-.formValidationError
-{
+.formValidationError {
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 	color: red;
 }
 
-.whiteText
-{
+.whiteText {
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
-	color:white;
+	color: white;
 }
 
-.smallText
-{
-    font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+.smallText {
+	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 }
 
-
-div.UserReportCriteria
-{
+div.UserReportCriteria {
 	margin: 0 10px 0 10px;
 	color: #536e87;
-	font: 1em Arial, Geneva, Helvetica, sans-serif;	
+	font: 1em Arial, Geneva, Helvetica, sans-serif;
 }
 
-.reportCriteriaTableTable 
-{
+.reportCriteriaTableTable {
 	margin: -0.5em 1em 0 0.5em;
 	width: 100%;
 }
 
-
-.reportCriteriaTable th
-{
+.reportCriteriaTable th {
 	padding: 5px 0 5px 0;
-	font:  bold 0.9em/1em Geneva, Arial, Helvetica, sans-serif;	
+	font: bold 0.9em/ 1em Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
 	border: 0;
 	width: 20%;
 	text-align: left;
 }
 
-.reportCriteriaTable th.firstCell
-{
+.reportCriteriaTable th.firstCell {
 	width: 40%;
 }
 
-.reportCriteriaTable td
-{
-	font:  1.0em Geneva, Arial, Helvetica, sans-serif;	
+.reportCriteriaTable td {
+	font: 1.0em Geneva, Arial, Helvetica, sans-serif;
 	color: #233e55;
 	vertical-align: top;
 }
 
-.reportCriteriaTable td.result
-{
+.reportCriteriaTable td.result {
 	border-top-width: 1px;
 	border-top-color: #233e55;
 	border-top-style: solid;
 	font-weight: bold;
 }
 
-div.NavHeader
-{
+div.NavHeader {
 	position: relative;
 	background: url(../img/headerBackground.gif) top left repeat-x;
-	margin:	0;
+	margin: 0;
 	padding: 0;
 	height: 52px;
 }
 
-div.NavHeader div.Logo
-{
+div.NavHeader div.Logo {
 	float: left;
 	position: absolute;
-	left:	50px;
+	left: 50px;
 	bottom: 3px;
 	padding: 0;
 	margin: 0;
 }
 
-div.NavHeader div.Navigation
-{
+div.NavHeader div.Navigation {
 	position: absolute;
 	bottom: 2px;
 	left: 250px;
@@ -544,34 +482,29 @@ div.NavHeader div.Navigation
 	color: white;
 }
 
-div.NavHeader div.Navigation a:link
-{
+div.NavHeader div.Navigation a:link {
 	color: white;
 	font-weight: normal;
 	text-decoration: none;
 }
 
-div.NavHeader div.Navigation a:visited
-{
+div.NavHeader div.Navigation a:visited {
 	color: white;
 	font-weight: normal;
 	text-decoration: none;
 }
 
-div.NavHeader div.Navigation a:hover
-{
+div.NavHeader div.Navigation a:hover {
 	color: #ffb100;
 	text-decoration: none;
 }
 
-div.NavHeader div.Navigation a:active
-{
+div.NavHeader div.Navigation a:active {
 	color: #ef842d;
 	text-decoration: none
 }
 
-div.NavHeader div.LoadingSpinner
-{
+div.NavHeader div.LoadingSpinner {
 	float: right;
 	position: absolute;
 	right: 5px;
@@ -579,132 +512,181 @@ div.NavHeader div.LoadingSpinner
 	visibility: hidden;
 }
 
-div.LoggedInAs
-{
+div.LoggedInAs {
 	text-align: right;
 	padding-right: 7px;
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 	color: #536e87;
 }
 
-div.LoggedInAs a:link,
-div.LoggedInAs a:visited
-{
+div.LoggedInAs a:link,div.LoggedInAs a:visited {
 	text-decoration: underline;
 }
 
-.navColumn
-{
+.navColumn {
 	float: left;
 	width: 250px;
 	margin-left: 5px;
 }
 
-.mainColumn
-{
+.mainColumn {
 	float: left;
 }
 
 /* from http://www.oscaralexander.com/tutorials/how-to-make-sexy-buttons-with-css.html */
-.clear
-{
-    overflow: hidden;
-    width: 100%;
+.clear {
+	overflow: hidden;
+	width: 100%;
 }
 
-a.button
-{
-    background: transparent url('../img/grey_button_a.gif') no-repeat scroll top right;
-    color: #536e87;
-    display: block;
-    float: left;
-    font: normal 11px geneva, sans-serif;
-    height: 20px;
-    margin-right: 6px;
-    padding-right: 10px; /* sliding doors padding */
-    text-decoration: none;
+a.button {
+	background: transparent url('../img/grey_button_a.gif') no-repeat scroll
+		top right;
+	color: #536e87;
+	display: block;
+	float: left;
+	font: normal 11px geneva, sans-serif;
+	height: 20px;
+	margin-right: 6px;
+	padding-right: 10px; /* sliding doors padding */
+	text-decoration: none;
 }
 
 a.button span {
-    background: transparent url('../img/grey_button_span.gif') no-repeat;
-    display: block;
-    line-height: 10px;
-    padding: 4px 0 6px 10px;
-    cursor: pointer;
-    letter-spacing: +1.5px;
-    
+	background: transparent url('../img/grey_button_span.gif') no-repeat;
+	display: block;
+	line-height: 10px;
+	padding: 4px 0 6px 10px;
+	cursor: pointer;
+	letter-spacing: +1.5px;
 }
 
 a.button:active {
-    background-position: bottom right;
-    color: #536e87;
-    outline: none; /* hide dotted outline in Firefox */
+	background-position: bottom right;
+	color: #536e87;
+	outline: none; /* hide dotted outline in Firefox */
 }
 
 a.button:active span {
-    background-position: bottom left;
-    padding: 5px 0 5px 10px; /* push text down 1px */
-    cursor: pointer;
-    letter-spacing: +1.5px;
+	background-position: bottom left;
+	padding: 5px 0 5px 10px; /* push text down 1px */
+	cursor: pointer;
+	letter-spacing: +1.5px;
 }
 
-a.bluebutton
-{
-    background: transparent url('../img/blue_button_a.gif') no-repeat scroll top right;
-    color: #536e87;
-    display: block;
-    float: left;
-    font: normal 11px geneva, sans-serif;
-    height: 20px;
-    margin-right: 6px;
-    padding-right: 10px; /* sliding doors padding */
-    text-decoration: none;
+a.bluebutton {
+	background: transparent url('../img/blue_button_a.gif') no-repeat scroll
+		top right;
+	color: #536e87;
+	display: block;
+	float: left;
+	font: normal 11px geneva, sans-serif;
+	height: 20px;
+	margin-right: 6px;
+	padding-right: 10px; /* sliding doors padding */
+	text-decoration: none;
 }
 
 a.bluebutton span {
-    background: transparent url('../img/blue_button_span.gif') no-repeat;
-    display: block;
-    line-height: 10px;
-    padding: 4px 0 6px 10px;
-    cursor: pointer;
-    letter-spacing: +1.5px;
-    
+	background: transparent url('../img/blue_button_span.gif') no-repeat;
+	display: block;
+	line-height: 10px;
+	padding: 4px 0 6px 10px;
+	cursor: pointer;
+	letter-spacing: +1.5px;
 }
 
 a.bluebutton:active {
-    background-position: bottom right;
-    color: #536e87;
-    outline: none; /* hide dotted outline in Firefox */
+	background-position: bottom right;
+	color: #536e87;
+	outline: none; /* hide dotted outline in Firefox */
 }
 
 a.bluebutton:active span {
-    background-position: bottom left;
-    padding: 5px 0 5px 10px; /* push text down 1px */
-    cursor: pointer;
-    letter-spacing: +1.5px;
+	background-position: bottom left;
+	padding: 5px 0 5px 10px; /* push text down 1px */
+	cursor: pointer;
+	letter-spacing: +1.5px;
 }
 
 /* shouldn't be here but quite convenient */
-a.timesheetEntryComment { background: url(../img/comment/comment_blue_on.gif); }
-a.timesheetEntryComment:link,
-a.timesheetEntryComment:visited  { background: url(../img/comment/comment_blue_off.gif); }
-a.timesheetEntryComment:hover,
-a.timesheetEntryComment:focus { background: url(../img/comment/comment_blue_on.gif); }
+a.timesheetEntryComment {
+	background: url(../img/comment/comment_blue_on.gif);
+}
 
-a.timesheetEntryCommented { background: url(../img/comment/comment_blue_on.gif); }
-a.timesheetEntryCommented:link,
-a.timesheetEntryCommented:visited  { background: url(../img/comment/comment_blue_on.gif); }
-a.timesheetEntryCommented:hover,
-a.timesheetEntryCommented:focus { background: url(../img/comment/comment_blue_on.gif); }
+a.timesheetEntryComment:link,a.timesheetEntryComment:visited {
+	background: url(../img/comment/comment_blue_off.gif);
+}
 
-a.timesheetFoldImg { background: url(../img/icon_up_on.gif); }
-a.timesheetFoldImg:link,
-a.timesheetFoldImg:visited  { background: url(../img/icon_up_off.gif); }
-a.timesheetFoldImg:hover,
-a.timesheetFoldImg:focus { background: url(../img/icon_up_on.gif); }
+a.timesheetEntryComment:hover,a.timesheetEntryComment:focus {
+	background: url(../img/comment/comment_blue_on.gif);
+}
 
-a.timesheetFoldedImg { background: url(../img/icon_down_on.gif); }
-a.timesheetFoldedImg:link,
-a.timesheetFoldedImg:visited  { background: url(../img/icon_down_off.gif); }
-a.timesheetFoldedImg:hover,
-a.timesheetFoldedImg:focus { background: url(../img/icon_down_on.gif); }
+a.timesheetEntryCommented {
+	background: url(../img/comment/comment_blue_on.gif);
+}
+
+a.timesheetEntryCommented:link,a.timesheetEntryCommented:visited {
+	background: url(../img/comment/comment_blue_on.gif);
+}
+
+a.timesheetEntryCommented:hover,a.timesheetEntryCommented:focus {
+	background: url(../img/comment/comment_blue_on.gif);
+}
+
+a.timesheetFoldImg {
+	background: url(../img/icon_up_on.gif);
+}
+
+a.timesheetFoldImg:link,a.timesheetFoldImg:visited {
+	background: url(../img/icon_up_off.gif);
+}
+
+a.timesheetFoldImg:hover,a.timesheetFoldImg:focus {
+	background: url(../img/icon_up_on.gif);
+}
+
+a.timesheetFoldedImg {
+	background: url(../img/icon_down_on.gif);
+}
+
+a.timesheetFoldedImg:link,a.timesheetFoldedImg:visited {
+	background: url(../img/icon_down_off.gif);
+}
+
+a.timesheetFoldedImg:hover,a.timesheetFoldedImg:focus {
+	background: url(../img/icon_down_on.gif);
+}
+
+/* Fading Tooltips By Dustin Diaz*/
+body div#toolTip {
+	position: absolute;
+	z-index: 1000;
+	width: 220px;
+	background: #acc9e6;
+	border: 2px double #edf5fc;
+	text-align: left;
+	padding: 5px;
+	min-height: 1em;
+	-moz-border-radius: 5px;
+}
+
+body div#toolTip p {
+	margin: 0;
+	padding: 0;
+	color: #2f3e4c;
+	font: 11px/ 12px verdana, arial, sans-serif;
+}
+
+body div#toolTip p em {
+	display: block;
+	margin-top: 3px;
+	color: white;
+	font-style: normal;
+	font-weight: bold;
+}
+
+body div#toolTip p em span {
+	font-weight: bold;
+	color: #fff;
+}

@@ -24,8 +24,9 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
-import net.rrm.ehour.ui.common.component.ImageMouseOver;
+import net.rrm.ehour.ui.common.component.CommonJavascript;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
+import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.CurrencyModel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
@@ -47,7 +48,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.wicketstuff.minis.mootipbehavior.MootipBehaviour;
 
 /**
  * Panel showing overview
@@ -197,11 +197,10 @@ public class ProjectOverviewPanel extends Panel
 
 				item.add(createFoldLink(projectStatus, item.getId()));
 
-				Label projectLabel = new Label("projectName", projectStatus.getProjectAssignment().getProject().getName());
+				TooltipLabel projectLabel = new TooltipLabel("projectName", projectStatus.getProjectAssignment().getProject().getName(), projectStatus.getProjectAssignment().getProject().getDescription());
 				setProjectLabelWidth(projectLabel);
-				ResourceModel toolTipTitleRM = new ResourceModel("overview.projectDescription");
-				projectLabel.add(new MootipBehaviour( (String)toolTipTitleRM.getObject(), projectStatus.getProjectAssignment().getProject().getDescription() ));
 				item.add(projectLabel);
+				
 				
 				Label customerLabel = new Label("customerName", projectStatus.getProjectAssignment().getProject().getCustomer().getName()); 
 				setCustomerLabelWidth(customerLabel);
@@ -280,7 +279,7 @@ public class ProjectOverviewPanel extends Panel
 		
 		ContextImage img = new ContextImage(ID_FOLD_IMG, new Model(upStr + "off.gif"));
 		img.setOutputMarkupId(true);
-		ImageMouseOver.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif");
+		CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif");
 		
 		return img;
 	}
@@ -374,7 +373,7 @@ public class ProjectOverviewPanel extends Panel
 		
 	}
 
-	private void setProjectLabelWidth(Label label)
+	private void setProjectLabelWidth(Component label)
 	{
 		if (!isTurnOverVisible())
 		{
