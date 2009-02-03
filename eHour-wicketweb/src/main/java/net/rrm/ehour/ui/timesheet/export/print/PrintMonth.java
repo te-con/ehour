@@ -15,7 +15,7 @@
  *
  */
 
-package net.rrm.ehour.ui.print.page;
+package net.rrm.ehour.ui.timesheet.export.print;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -35,6 +35,7 @@ import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.trend.PrintReport;
+import net.rrm.ehour.ui.timesheet.export.ExportParameters;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -64,7 +65,7 @@ public class PrintMonth extends WebPage
 	/**
 	 * 
 	 */
-	public PrintMonth(List<Serializable> assignmentIds, DateRange printRange, boolean inclSignOffSpace)
+	public PrintMonth(ExportParameters exportParameters)
 	{
 		super();
 
@@ -73,13 +74,15 @@ public class PrintMonth extends WebPage
 		
 		try
 		{
-			PrintReport printReport = initReport(assignmentIds, printRange);
+			DateRange dateRange = exportParameters.getExportRange();
+			
+			PrintReport printReport = initReport(exportParameters.getAssignmentIds(), exportParameters.getExportRange());
 
 			IModel printTitle = new StringResourceModel("printMonth.printHeader",
 					this,
 					null,
 					new Object[]{session.getUser().getUser().getFullName(),
-								 new DateModel(printRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
+								 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
 			
 			Label pageTitle = new Label("pageTitle", printTitle);
 			add(pageTitle);
@@ -87,13 +90,13 @@ public class PrintMonth extends WebPage
 			Label reportHeader = new Label("printHeader", printTitle);
 			add(reportHeader);
 
-			List<Date> dates = DateUtil.createDateSequence(printRange, config);
+			List<Date> dates = DateUtil.createDateSequence(dateRange, config);
 			
 			addDateLabels(dates);
 			addProjects(printReport, dates);
 			addGrandTotal(printReport, dates);
 			
-			addSignOff(inclSignOffSpace, dates);
+			addSignOff(exportParameters.getIncludeSignoff().booleanValue(), dates);
 			
 			add(new Label("printedOn", new StringResourceModel("printMonth.printedOn",
 					this,

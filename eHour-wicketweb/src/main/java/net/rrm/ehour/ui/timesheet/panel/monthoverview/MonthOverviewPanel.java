@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import net.rrm.ehour.ui.print.page.PrintMonthSelection;
+import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.log4j.Logger;
@@ -91,7 +91,7 @@ public class MonthOverviewPanel extends Panel
 			@Override
 			public void onClick()
 			{
-				setResponsePage(new PrintMonthSelection(new Model(overviewForMonth)));
+				setResponsePage(new ExportMonthSelectionPage(new Model(overviewForMonth)));
 			}
 		};
 		

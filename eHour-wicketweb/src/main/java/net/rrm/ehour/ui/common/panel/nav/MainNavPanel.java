@@ -21,9 +21,9 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
-import net.rrm.ehour.ui.print.page.PrintMonthSelection;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
 import net.rrm.ehour.ui.report.user.page.UserReport;
+import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.ui.timesheet.page.Overview;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
@@ -60,7 +60,7 @@ public class MainNavPanel extends AbstractBasePanel
 		wasAdded = addLink(this, "admin", MainConfig.class, false);
 		wasAdded |= addReportLink(this, "userReport", wasAdded);
 		wasAdded |= addLink(this, "pm", ProjectManagement.class, wasAdded);
-		wasAdded |= addLink(this, "print", PrintMonthSelection.class, wasAdded);
+		wasAdded |= addLink(this, "print", ExportMonthSelectionPage.class, wasAdded);
 		wasAdded |= addLink(this, "overview", Overview.class, wasAdded);
 		
 		add(new BookmarkablePageLink("logoffLink", Login.class));

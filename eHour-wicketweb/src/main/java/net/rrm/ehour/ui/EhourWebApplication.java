@@ -28,8 +28,6 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
-import net.rrm.ehour.ui.print.page.PrintMonth;
-import net.rrm.ehour.ui.print.page.PrintMonthSelection;
 import net.rrm.ehour.ui.project.page.ProjectAdmin;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
 import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportExcel;
@@ -38,6 +36,8 @@ import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportExcel;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportExcel;
 import net.rrm.ehour.ui.report.panel.user.UserReportExcel;
 import net.rrm.ehour.ui.report.user.page.UserReport;
+import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
+import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.ui.timesheet.page.Overview;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
@@ -139,7 +139,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount(new HybridUrlCodingStrategy("/consultant/overview", Overview.class));
 		mount(new HybridUrlCodingStrategy("/consultant/report", UserReport.class));
 		
-		mount(new HybridUrlCodingStrategy("/consultant/printform", PrintMonthSelection.class));
+		mount(new HybridUrlCodingStrategy("/consultant/printform", ExportMonthSelectionPage.class));
 		mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));
 		
 		mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));

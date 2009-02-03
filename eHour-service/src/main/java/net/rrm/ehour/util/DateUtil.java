@@ -240,6 +240,11 @@ public class DateUtil
 		return weekRange;
 	}
 
+	public static DateRange getDateRangeForMonth(Date date)
+	{
+		return getDateRangeForMonth(getCalendar(date));
+	}
+	
 	/**
 	 * Get a date range covering the month the supplied calendar is in
 	 * @param calendar
@@ -429,6 +434,21 @@ public class DateUtil
 		calendar.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		return calendar;
 	}
+	
+	/**
+	 * Convert date to calendar (why didn't I use Jodatime from the beginning, argh!)
+	 * @param date
+	 * @return
+	 */
+	public static Calendar getCalendar(Date date)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		
+		return calendar;
+	}
+	
+	
 
 	/**
 	 * Get the dd/mm/yyyy date formatting pattern for a given locale
