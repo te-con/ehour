@@ -117,8 +117,8 @@ public class UserServiceImpl implements UserService
 			// bummer, we need to check if the user booked any hours on the assignments
 			List<Serializable> assignmentIds = new ArrayList<Serializable>();
 
-			assignmentIds.addAll(EhourUtil.getPKsFromDomainObjects(user.getProjectAssignments()));
-			assignmentIds.addAll(EhourUtil.getPKsFromDomainObjects(user.getInactiveProjectAssignments()));
+			assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
+			assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getInactiveProjectAssignments()));
 			
 			List<AssignmentAggregateReportElement> aggregates =aggregateReportService.getHoursPerAssignment(assignmentIds);
 			

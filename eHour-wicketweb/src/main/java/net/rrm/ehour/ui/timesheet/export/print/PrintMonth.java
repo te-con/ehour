@@ -17,9 +17,9 @@
 
 package net.rrm.ehour.ui.timesheet.export.print;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -28,6 +28,7 @@ import java.util.Map;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -76,7 +77,7 @@ public class PrintMonth extends WebPage
 		{
 			DateRange dateRange = exportParameters.getExportRange();
 			
-			PrintReport printReport = initReport(exportParameters.getAssignmentIds(), exportParameters.getExportRange());
+			PrintReport printReport = initReport(exportParameters.getAssignments(), exportParameters.getExportRange());
 
 			IModel printTitle = new StringResourceModel("printMonth.printHeader",
 					this,
@@ -236,15 +237,21 @@ public class PrintMonth extends WebPage
 	 * @return
 	 * @throws ParseException
 	 */
-	private PrintReport initReport(List<Serializable> assignmentIds, DateRange printRange) throws ParseException
+	private PrintReport initReport(Collection<ProjectAssignment> assignments, DateRange printRange) throws ParseException
 	{
 		List<FlatReportElement> results = null;
 		
-		if (assignmentIds != null && assignmentIds.size() > 0)
+		if (assignments != null && assignments.size() > 0)
 		{
-			results = detailedReportService.getDetailedReportData(assignmentIds, printRange).getReportElements();
+			ReportData<FlatReportElement> elements = detailedReportService.getDetailedReportData(assignments, printRange);
+			
+			if (elements != null)
+			{
+				results = elements.getReportElements();
+			}
 		}
-		else
+		
+		if (results == null)
 		{
 			results = new ArrayList<FlatReportElement>();
 		}

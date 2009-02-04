@@ -45,7 +45,7 @@ public class EhourUtilTest extends TestCase
 		projectIds.add(new Project(3));
 		projectIds.add(new Project(4));
 		
-		List<Integer> ints = EhourUtil.getPKsFromDomainObjects(projectIds);
+		List<Integer> ints = EhourUtil.getIdsFromDomainObjects(projectIds);
 		
 		assertEquals(4, ints.size());
 		

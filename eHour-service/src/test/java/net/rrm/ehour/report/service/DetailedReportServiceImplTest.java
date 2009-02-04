@@ -23,12 +23,12 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -137,7 +137,7 @@ public class DetailedReportServiceImplTest
 		expect(detailedReportDAO.getHoursPerDayForAssignment(isA(List.class), isA(DateRange.class)))
 		.andReturn(new ArrayList<FlatReportElement>());
 		replay(detailedReportDAO);
-		detailedReportService.getDetailedReportData(new ArrayList<Serializable>(), dr);
+		detailedReportService.getDetailedReportData(new ArrayList<ProjectAssignment>(), dr);
 		verify(detailedReportDAO);
 	}
 }

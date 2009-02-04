@@ -355,7 +355,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		if (user.getProjectAssignments() != null && user.getProjectAssignments().size() > 0)
 		{
-			timesheetDAO.deleteTimesheetEntries(EhourUtil.getPKsFromDomainObjects(user.getProjectAssignments()));
+			timesheetDAO.deleteTimesheetEntries(EhourUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
 		}
 	}
 		

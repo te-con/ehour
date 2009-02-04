@@ -32,9 +32,11 @@ import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.util.tester.FormTester;
@@ -65,8 +67,11 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 	}
 	
 	@Test
-	public void testProjectAdminRender()
+	public void testSubmitPrint()
 	{
+		DetailedReportService detailedReportService = createMock(DetailedReportService.class);
+		mockContext.putBean("detailedReportService", detailedReportService);
+		
 		DateRange range = DateUtil.getDateRangeForMonth(Calendar.getInstance());
 		
 		Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
@@ -84,10 +89,13 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		
 		tester.startPage(ExportMonthSelectionPage.class);
 		
-//		FormTester formTester = tester.newFormTester("printSelectionFrame:blueBorder:selectionForm");
-//		formTester.select("assignments:0:check", 0);
-//		
-		tester.assertRenderedPage(ExportMonthSelectionPage.class);
+		FormTester formTester = tester.newFormTester("printSelectionFrame:blueBorder:selectionForm");
+		formTester.selectMultiple("assignments", new int[]{0, 2});
+		formTester.setValue("signOff", "true");
+
+		formTester.submit("submitButton");
+		
+		tester.assertRenderedPage(PrintMonth.class);
 		tester.assertNoErrorMessage();
 		
 		verify(projectService);

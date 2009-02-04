@@ -17,10 +17,10 @@
 
 package net.rrm.ehour.report.service;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
@@ -37,7 +37,7 @@ public interface DetailedReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public ReportData<FlatReportElement> getDetailedReportData(List<Serializable> projectAssignmentIds, DateRange dateRange);
+	public ReportData<FlatReportElement> getDetailedReportData(Collection<ProjectAssignment> projectAssignments, DateRange dateRange);
 
 	/**
 	 * Get report data for customer 

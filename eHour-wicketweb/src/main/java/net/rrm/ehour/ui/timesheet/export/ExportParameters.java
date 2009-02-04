@@ -18,10 +18,11 @@
 package net.rrm.ehour.ui.timesheet.export;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.ProjectAssignment;
 
 /**
  * Created on Feb 2, 2009, 7:00:14 PM
@@ -38,25 +39,17 @@ public class ExportParameters implements Serializable
 		EXCEL;
 	}
 	
-	private List<Serializable> assignmentIds;
+	private Collection<ProjectAssignment> assignments;
 	private DateRange exportRange;
 	private Action action;
 	private Boolean includeSignoff;
 	
 	public ExportParameters(DateRange exportRange)
 	{
-		this(null, exportRange,null);
-	}
-	
-	public ExportParameters(List<Serializable> assignmentIds, DateRange exportRange, Action action)
-	{
 		this.exportRange = exportRange;
-		this.assignmentIds = assignmentIds;
-		this.setAction(action);
 		
-		exportRange = new DateRange(new Date(), new Date());
+		assignments = new ArrayList<ProjectAssignment>();
 	}
-	
 	
 	/**
 	 * @param exportRange the exportRange to set
@@ -72,20 +65,7 @@ public class ExportParameters implements Serializable
 	{
 		return exportRange;
 	}
-	/**
-	 * @param assignmentIds the assignmentIds to set
-	 */
-	public void setAssignmentIds(List<Serializable> assignmentIds)
-	{
-		this.assignmentIds = assignmentIds;
-	}
-	/**
-	 * @return the assignmentIds
-	 */
-	public List<Serializable> getAssignmentIds()
-	{
-		return assignmentIds;
-	}
+
 
 	/**
 	 * @param action the action to set
@@ -122,5 +102,21 @@ public class ExportParameters implements Serializable
 	public ExportParameters()
 	{
 		
+	}
+
+	/**
+	 * @param assignments the assignments to set
+	 */
+	public void setAssignments(Collection<ProjectAssignment> assignments)
+	{
+		this.assignments = assignments;
+	}
+
+	/**
+	 * @return the assignments
+	 */
+	public Collection<ProjectAssignment> getAssignments()
+	{
+		return assignments;
 	}
 }

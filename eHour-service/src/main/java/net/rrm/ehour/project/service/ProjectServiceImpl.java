@@ -121,7 +121,7 @@ public class ProjectServiceImpl implements ProjectService
 	 */
 	public void setProjectDeletability(Project project)
 	{
-		List<Serializable> ids = EhourUtil.getPKsFromDomainObjects(project.getProjectAssignments());
+		List<Serializable> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
 		List<AssignmentAggregateReportElement> aggregates = null;
 		
 		if (ids != null && ids.size() > 0)

@@ -17,7 +17,6 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +31,9 @@ import net.rrm.ehour.ui.timesheet.export.ExportParameters.Action;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -46,13 +47,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class ExportMonthSelectionForm extends Form
+class ExportMonthSelectionForm extends Form
 {
 	private static final long serialVersionUID = -1947256964429211340L;
 
 	@SpringBean
 	private ProjectService	projectService;
-	private List<AssignmentWrapper>	wrappers;
 	
 	@SuppressWarnings("serial")
 	public ExportMonthSelectionForm(String id, final ExportParameters exportParameters)
@@ -61,7 +61,7 @@ public class ExportMonthSelectionForm extends Form
 		
 		setOutputMarkupId(true);
 
-		add(getProjectAssignmentList(exportParameters));
+		add(getProjectAssignmentCheckGroup(exportParameters));
 		
 		// signoff
 		add(new CheckBox("signOff", new PropertyModel(this.getModel(), "includeSignoff")));
@@ -97,10 +97,6 @@ public class ExportMonthSelectionForm extends Form
 	{
 		ExportParameters exportParameters = getExportParameters();
 		
-		List<Serializable>	assignmentIds = getSelectedAssignmentIds();
-		
-		exportParameters.setAssignmentIds(assignmentIds);
-		
 		if (exportParameters.getAction() == Action.EXCEL)
 		{
 			excelExport(exportParameters);
@@ -126,30 +122,28 @@ public class ExportMonthSelectionForm extends Form
 	 * @param exportParameters
 	 * @return
 	 */
-	private ListView getProjectAssignmentList(ExportParameters exportParameters)
+	private CheckGroup getProjectAssignmentCheckGroup(ExportParameters exportParameters)
 	{
-		getAssignmentWrappers(exportParameters);
+		CheckGroup checkers = new CheckGroup("assignments");
 		
-		ListView list = new ListView("assignments", wrappers)
+		List<ProjectAssignment> assignments = getAssignments(exportParameters.getExportRange());
+		
+		ListView list = new ListView("assignmentList", assignments)
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(ListItem item)
 			{
-				AssignmentWrapper wrapper = (AssignmentWrapper) item.getModelObject();
-
-				item.add(new Label("project", wrapper.getAssignment().getProject().getFullName()));
-				
-				Label label = new Label("role", "( " +  wrapper.getAssignment().getRole() + " )");
-				label.setVisible(wrapper.getAssignment().getRole() != null && !wrapper.getAssignment().getRole().trim().equals("")); 
-				item.add(label);
-				CheckBox checkbox = new CheckBox("check", new PropertyModel(wrapper, "selected"));
-			item.add(checkbox);
+				item.add(new Check("check", item.getModel()));
+				item.add(new Label("project", new PropertyModel(item.getModel(), "project.fullName")));
+				item.add(new Label("role", new PropertyModel(item.getModel(), "role")));
 			}
 		};
+
+		checkers.add(list);
 		
-		return list;
+		return checkers;
 	}
 
 	/**
@@ -159,25 +153,6 @@ public class ExportMonthSelectionForm extends Form
 	private ExportParameters getExportParameters()
 	{
 		return (ExportParameters)getModelObject();
-	}
-	
-	/**
-	 * Get selected assignments
-	 * @return
-	 */
-	private List<Serializable> getSelectedAssignmentIds()
-	{
-		List<Serializable>	assignmentIds = new ArrayList<Serializable>();
-		
-		for (AssignmentWrapper wrapper : wrappers)
-		{
-			if (wrapper.isSelected())
-			{
-				assignmentIds.add(wrapper.getAssignment().getPK());
-			}
-		}
-
-		return assignmentIds;
 	}
 	
 	/**
@@ -198,79 +173,4 @@ public class ExportMonthSelectionForm extends Form
 
 		return sortedAssignments;
 	}
-	
-	/**
-	 * Get wrapped assignments for date range
-	 * @param exportParameters
-	 * @return
-	 */
-	private List<AssignmentWrapper> getAssignmentWrappers(ExportParameters exportParameters)
-	{
-		List<ProjectAssignment> assignments = getAssignments(exportParameters.getExportRange());
-		
-		wrappers = new ArrayList<AssignmentWrapper>();
-		
-		for (ProjectAssignment projectAssignment : assignments)
-		{
-			wrappers.add(new AssignmentWrapper(projectAssignment));
-		}
-		
-		return wrappers;
-	}
-
-	
-	/**
-	 * 
-	 * Created on Feb 3, 2009, 8:03:17 PM
-	 * @author Thies Edeling (thies@te-con.nl) 
-	 *
-	 */
-	private class AssignmentWrapper implements Serializable
-	{
-		private static final long serialVersionUID = 1L;
-		
-		private ProjectAssignment assignment;
-		private	boolean	selected;
-		
-		AssignmentWrapper(ProjectAssignment assignment)
-		{
-			this.assignment = assignment;
-			this.selected = true;
-		}
-
-
-		/**
-		 * @return the selected
-		 */
-		public boolean isSelected()
-		{
-			return selected;
-		}
-
-		/**
-		 * @param selected the selected to set
-		 */
-		public void setSelected(boolean selected)
-		{
-			this.selected = selected;
-		}
-
-
-		/**
-		 * @return the assignment
-		 */
-		public ProjectAssignment getAssignment()
-		{
-			return assignment;
-		}
-
-
-		/**
-		 * @param assignment the assignment to set
-		 */
-		public void setAssignment(ProjectAssignment assignment)
-		{
-			this.assignment = assignment;
-		}
-	}	
 }

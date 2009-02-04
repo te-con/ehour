@@ -17,12 +17,13 @@
 
 package net.rrm.ehour.report.service;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.dao.DetailedReportDAO;
@@ -64,16 +65,16 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 		}
 		else if (projects == null && users != null)
 		{
-			elements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getPKsFromDomainObjects(users), reportRange);
+			elements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getIdsFromDomainObjects(users), reportRange);
 		}
 		else if (projects != null && users == null)
 		{
-			elements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getPKsFromDomainObjects(projects), reportRange);
+			elements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getIdsFromDomainObjects(projects), reportRange);
 		}
 		else
 		{
-			elements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(EhourUtil.getPKsFromDomainObjects(projects),
-																			EhourUtil.getPKsFromDomainObjects(users),
+			elements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(EhourUtil.getIdsFromDomainObjects(projects),
+																			EhourUtil.getIdsFromDomainObjects(users),
 																			reportRange);
 		}
 		
@@ -84,12 +85,12 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getReportData(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
-	public ReportData<FlatReportElement> getDetailedReportData(List<Serializable> projectAssignmentIds, DateRange dateRange)
+	public ReportData<FlatReportElement> getDetailedReportData(Collection<ProjectAssignment> projectAssignments, DateRange dateRange)
 	{
 		ReportData<FlatReportElement> reportData;
 		
 		reportData = new ReportData<FlatReportElement>();
-		reportData.setReportElements(detailedReportDAO.getHoursPerDayForAssignment(projectAssignmentIds, dateRange));
+		reportData.setReportElements(detailedReportDAO.getHoursPerDayForAssignment(EhourUtil.getIdsFromDomainObjects(projectAssignments), dateRange));
 		
 		return reportData;
 	}

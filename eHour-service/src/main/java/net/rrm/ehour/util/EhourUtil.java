@@ -35,7 +35,7 @@ public class EhourUtil
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static<PK extends Serializable> List<PK> getPKsFromDomainObjects(Collection<? extends DomainObject> domainObjects)
+	public static<PK extends Serializable> List<PK> getIdsFromDomainObjects(Collection<? extends DomainObject> domainObjects)
 	{
 		List<PK> pks = new ArrayList<PK>();
 		
