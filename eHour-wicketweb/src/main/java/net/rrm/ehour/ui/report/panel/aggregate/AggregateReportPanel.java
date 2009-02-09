@@ -21,11 +21,13 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.Fragment;
 
 /**
  * Full report panel containing report data and the charts 
@@ -33,9 +35,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 
 public abstract class AggregateReportPanel extends AbstractReportPanel
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2173644826934093029L;
 
 	/**
@@ -43,7 +42,9 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * @param id
 	 */
 	public AggregateReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData,
-									ReportData<AssignmentAggregateReportElement> data, ReportConfig reportConfig, String excelResourceName)
+									ReportData<AssignmentAggregateReportElement> data, 
+									ReportConfig reportConfig, String excelResourceName,
+									ReportDrawType drawType)
 	{
 		super(id, 460);
 
@@ -52,13 +53,47 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 
 		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportConfig, excelResourceName, getReportWidth() - 50));
 		
-		addCharts(data, greyBorder);
+		if (drawType == ReportDrawType.IMAGE)
+		{
+			addImageCharts(data, greyBorder);
+		}
+		else
+		{
+			addOpenFlashCharts(data, greyBorder);
+		}
+	}
+	
+	private void addOpenFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	{
+		Fragment fragment = new Fragment("image", "flash", this);
+		addFlashCharts(data, fragment);
+		parent.add(fragment);
+	}
+	
+	private void addImageCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	{
+		Fragment fragment = new Fragment("image", "charts", this);
+		addCharts(data, fragment);
+		parent.add(fragment);
 	}
 	
 	/**
-	 * Add charts
+	 * Add image charts
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected abstract void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent);
+	protected void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	{
+		
+	}
+	
+	/**
+	 * Add image charts
+	 * @param reportCriteria
+	 * @return
+	 */
+	protected void addFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	{
+		
+	}	
 }

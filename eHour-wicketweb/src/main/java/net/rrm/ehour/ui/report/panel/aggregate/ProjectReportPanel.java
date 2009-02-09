@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartImage;
 import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartImage;
@@ -27,18 +28,22 @@ import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartImag
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.Model;
 
-/**
- * TODO 
- **/
-
 public class ProjectReportPanel extends AggregateReportPanel
 {
 	private static final long serialVersionUID = 2594554714722639450L;
 
-	public ProjectReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, ReportData<AssignmentAggregateReportElement> data)
+	public ProjectReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, 
+								ReportData<AssignmentAggregateReportElement> data)
 	{
-		super(id, reportData, data, ReportConfig.AGGREGATE_PROJECT, "projectReportExcel");
+		this(id, reportData, data, ReportDrawType.FLASH);
 	}
+	
+	public ProjectReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, 
+			ReportData<AssignmentAggregateReportElement> data, ReportDrawType reportDrawType)
+	{
+		super(id, reportData, data, ReportConfig.AGGREGATE_PROJECT, "projectReportExcel", reportDrawType);
+	}
+	
 
 	@Override
 	protected void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)

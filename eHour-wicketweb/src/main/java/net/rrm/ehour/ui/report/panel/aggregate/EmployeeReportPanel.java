@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.chart.aggregate.UserHoursAggregateChartImage;
 import net.rrm.ehour.ui.report.chart.aggregate.UserTurnoverAggregateChartImage;
@@ -37,8 +38,14 @@ public class EmployeeReportPanel extends AggregateReportPanel
 
 	public EmployeeReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, ReportData<AssignmentAggregateReportElement> data)
 	{
-		super(id, reportData, data, ReportConfig.AGGREGATE_EMPLOYEE, "employeeReportExcel");
+		this(id, reportData, data, ReportDrawType.FLASH);
 	}
+	
+	public EmployeeReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, 
+								ReportData<AssignmentAggregateReportElement> data, ReportDrawType drawType)
+	{
+		super(id, reportData, data, ReportConfig.AGGREGATE_EMPLOYEE, "employeeReportExcel", drawType);
+	}	
 
 	@Override
 	protected void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)

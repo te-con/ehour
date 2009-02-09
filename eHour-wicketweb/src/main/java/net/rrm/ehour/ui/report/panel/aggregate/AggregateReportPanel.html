@@ -11,10 +11,20 @@
 		<span wicket:id="reportTable"></span>
 		
 		<br />
-		<img wicket:id="hoursChart" />
-		<img wicket:id="turnoverChart" />
-		
+        <wicket:container wicket:id="charts"></wicket:container>		
 	</div>
+	
+	
+	<wicket:fragment wicket:id="image">
+        <img wicket:id="hoursChart" />
+        <img wicket:id="turnoverChart" />
+	
+	</wicket:fragment>
+
+    <wicket:fragment wicket:id="flash">
+        <div wicket:id="hoursChart" >[hoursChart]</div>
+        <div wicket:id="turnoverChart" >[turnoverChart]</div>
+    </wicket:fragment>
 </wicket:panel>
 
 </body>

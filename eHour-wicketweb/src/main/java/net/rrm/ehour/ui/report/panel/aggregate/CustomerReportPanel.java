@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
@@ -38,9 +39,15 @@ public class CustomerReportPanel extends AggregateReportPanel
 	public CustomerReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData
 							, ReportData<AssignmentAggregateReportElement> data)
 	{
-		super(id, reportData, data, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel");
+		this(id, reportData, data, ReportDrawType.FLASH);
 	}
 
+	public CustomerReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData
+			, ReportData<AssignmentAggregateReportElement> data, ReportDrawType drawType)
+	{
+		super(id, reportData, data, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel", drawType);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.report.panel.type.ReportPanel#addCharts(net.rrm.ehour.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
