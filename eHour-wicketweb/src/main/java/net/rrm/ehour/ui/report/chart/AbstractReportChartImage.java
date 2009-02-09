@@ -45,9 +45,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 public abstract class AbstractReportChartImage<EL extends ReportElement> extends AbstractChartImage
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3184831758116251336L;
 	private	final static Logger	logger = Logger.getLogger(AbstractReportChartImage.class);
 	
