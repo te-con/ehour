@@ -65,14 +65,14 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	
 	private void addOpenFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
 	{
-		Fragment fragment = new Fragment("image", "flash", this);
+		Fragment fragment = new Fragment("charts", "flash", this);
 		addFlashCharts(data, fragment);
 		parent.add(fragment);
 	}
 	
 	private void addImageCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
 	{
-		Fragment fragment = new Fragment("image", "charts", this);
+		Fragment fragment = new Fragment("charts", "image", this);
 		addCharts(data, fragment);
 		parent.add(fragment);
 	}
@@ -88,7 +88,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	}
 	
 	/**
-	 * Add image charts
+	 * Add image charts. Should add 2 components to the parent with id hoursChart and turnoverChart
 	 * @param reportCriteria
 	 * @return
 	 */
