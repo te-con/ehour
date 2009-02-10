@@ -11,11 +11,20 @@
 		<span wicket:id="reportTable"></span>
 
 		<br />
-		<img wicket:id="customerHoursChart" />
-		<img wicket:id="customerTurnoverChart" />
-		<img wicket:id="projectHoursChart" />
-		<img wicket:id="projectTurnoverChart" />
+		<span wicket:id="charts"></span>
 	</div>
+	
+	
+    <wicket:fragment wicket:id="image">
+        <img wicket:id="customerHoursChart" />
+        <img wicket:id="customerTurnoverChart" />
+        <img wicket:id="projectHoursChart" />
+        <img wicket:id="projectTurnoverChart" />
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="flash">
+        <div wicket:id="customerHoursChart" >[hoursChart]</div>fe
+    </wicket:fragment>	
 </wicket:panel>
 
 </body>

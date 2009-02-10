@@ -95,7 +95,6 @@ public class AbstractOpenFlashChart extends Panel implements IResourceListener
 	{
 		swf.addParameter("data-file", getUrlForJson());
 		super.onBeforeRender();
-
 	}
 
 	/**
