@@ -167,11 +167,12 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		startAndReplay();
 		
 		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
-		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
-		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
-
-		webapp.getSession().cleanupFeedbackMessages();
+//		more than 24 hour can be booked now so this error message doesn't popup anymore
+//		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
+//		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
+//		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
+//
+//		webapp.getSession().cleanupFeedbackMessages();
 		
 		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "12");
 		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
@@ -207,17 +208,17 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:foldLink", "onclick");
 	}
 	
-	@Test
-	public void tooManyHoursFailure()
-	{
-		startAndReplay();
-		
-		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH + "");
-		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
-
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
-		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
-	}
+//	@Test
+//	public void tooManyHoursFailure()
+//	{
+//		startAndReplay();
+//		
+//		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH + "");
+//		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
+//
+//		tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
+//		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
+//	}
 	
 	@Test
 	public void shouldSubmitSuccessful()

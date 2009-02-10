@@ -28,7 +28,6 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
@@ -36,6 +35,7 @@ import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.DummyDataGenerator;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.util.DateUtil;
 
@@ -100,6 +100,5 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		
 		verify(projectService);
 		verify(timesheetService);
-	
 	}
 }

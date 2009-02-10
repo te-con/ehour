@@ -53,11 +53,6 @@ public class DummyDataGenerator
 		User				user;
 		int					customerId, userId, projectId, assignmentId;
 		
-		// IMHO varargs is a stupid addition to the Java language
-		// ah yes, it cleans up your API but it adds an MSN signature style and a lot of bogus code to parse that MSN style crap
-		// let alone that it's completely unknown at what the exact signature functionally means
-		// oh we explain that in javadoc? right..
-		// you know what, why don't we drop type safety at all and change every argument to Object ?
 		int baseId = baseIds[0];
 		
 		customerId = baseId;

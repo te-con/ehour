@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.common.component.ModalWindowFix;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.validator.DoubleRangeWithNullValidator;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
@@ -56,6 +55,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.validation.validator.NumberValidator;
 
 /**
  * Representation of a timesheet row
@@ -222,7 +222,7 @@ public class TimesheetRowList extends ListView
 		
 		// list it on the page
 		dayInput = new TimesheetTextField("day", new FloatModel(cellModel, config, null), Float.class, 1);
-		dayInput.add(new DoubleRangeWithNullValidator(0, 24));
+		dayInput.add(NumberValidator.minimum(0));
 		dayInput.setOutputMarkupId(true);
 		
 		// make sure values are checked
