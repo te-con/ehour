@@ -24,10 +24,12 @@ import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.page.BasePage;
+import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
@@ -43,8 +45,12 @@ import org.apache.wicket.model.StringResourceModel;
 public class ExportMonthSelectionPage extends BasePage
 {
 	private static final long serialVersionUID = 1891959724639181159L;
+	private static final String ID_SELECTION_FORM = "selectionForm";
+	private static final String ID_FRAME = "printSelectionFrame";
+	private static final String ID_BLUE_BORDER = "blueBorder";
 	
 	private Label			titleLabel;
+	
 	
 	/**
 	 * 
@@ -72,12 +78,12 @@ public class ExportMonthSelectionPage extends BasePage
 		titleLabel = getTitleLabel(DateUtil.getCalendar(params.getExportRange().getDateStart()));
 		titleLabel.setOutputMarkupId(true);
 		
-		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("printSelectionFrame", titleLabel);
-		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
+		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_FRAME, titleLabel);
+		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder(ID_BLUE_BORDER);
 		greyBorder.add(blueBorder);
 		add(greyBorder);
 		
-		blueBorder.add(new ExportMonthSelectionForm("selectionForm", params));
+		blueBorder.add(new ExportMonthSelectionForm(ID_SELECTION_FORM, params));
 	}
 	
 	/*
@@ -86,22 +92,24 @@ public class ExportMonthSelectionPage extends BasePage
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		// TODO catch calendar update events
+		if (ajaxEvent.getEventType() == CalendarAjaxEventType.MONTH_CHANGE)
+		{
+			ExportParameters exportParams = new ExportParameters(DateUtil.getDateRangeForMonth(getEhourWebSession().getNavCalendar()));
+			
+			Component originalForm = get(ID_FRAME + ":" + ID_BLUE_BORDER + ":" + ID_SELECTION_FORM);
+			
+			ExportMonthSelectionForm newForm = new ExportMonthSelectionForm(ID_SELECTION_FORM, exportParams);
+			originalForm.replaceWith(newForm);
+			ajaxEvent.getTarget().addComponent(newForm);
+	
+			Label newLabel = getTitleLabel(getEhourWebSession().getNavCalendar());
+			newLabel.setOutputMarkupId(true);
+			titleLabel.replaceWith(newLabel);
+			titleLabel = newLabel;
+			ajaxEvent.getTarget().addComponent(newLabel);
+			
+		}
 		return true;
-//		
-//		
-//		ExportParameters exportParams = new ExportParameters(DateUtil.getDateRangeForMonth(getEhourWebSession().getNavCalendar()));
-//		
-//		SelectionForm newForm = new SelectionForm("printSelectionForm", getAssignments(exportParams.getExportRange()), exportParams);
-//		form.replaceWith(newForm);
-//		form = newForm;
-//		target.addComponent(newForm);
-//
-//		Label newLabel = getTitleLabel(getEhourWebSession().getNavCalendar());
-//		newLabel.setOutputMarkupId(true);
-//		titleLabel.replaceWith(newLabel);
-//		titleLabel = newLabel;
-//		target.addComponent(newLabel);
 	}		
 	
 	/**
