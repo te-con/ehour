@@ -342,6 +342,16 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jxr-maven-plugin</artifactId>
 			</plugin>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>findbugs-maven-plugin</artifactId>
+			<version>1.1.1</version>
+			<configuration>
+				<xmlOutput>true</xmlOutput>
+				<effort>Max</effort>
+			</configuration>
+		</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
@@ -378,4 +388,11 @@
       <url>scp://www.ehour.net:443/var/www/dev.ehour.nl/html/</url>
     </site>
   </distributionManagement>
+<pluginRepositories>
+	<pluginRepository>
+		<id>Codehaus repository</id>
+		<url>http://repository.codehaus.org/</url>
+	</pluginRepository>
+</pluginRepositories>
+
 </project>

@@ -14,9 +14,7 @@
       <item name="eHour" href="http://www.ehour.nl/" />
     </links>
     <menu name="Developing">
-      <item name="Environment" href="index.html" />
-      <item name="Features" href="features.html" />
-      <item name="Online demo" href="demo.html" />
+      <item name="Building" href="building.html" />
     </menu>
     <menu name="Links">
       <item name="Continuum" href="/continuum/" />
