@@ -17,10 +17,6 @@
 
 package net.rrm.ehour.report.service;
 
-import java.util.Collection;
-
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
@@ -31,14 +27,6 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 public interface DetailedReportService
 {
-	/**
-	 * Get report data
-	 * @param projectAssignmentIds
-	 * @param dateRange
-	 * @return
-	 */
-	public ReportData<FlatReportElement> getDetailedReportData(Collection<ProjectAssignment> projectAssignments, DateRange dateRange);
-
 	/**
 	 * Get report data for customer 
 	 * @param customer

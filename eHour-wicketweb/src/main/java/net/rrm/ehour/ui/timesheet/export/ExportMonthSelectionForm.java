@@ -114,7 +114,7 @@ class ExportMonthSelectionForm extends Form
 
 	private void printExport(ExportParameters exportParameters)
 	{
-		setResponsePage(new PrintMonth(exportParameters));
+//		setResponsePage(new PrintMonth(exportParameters));
 	}
 
 	/**

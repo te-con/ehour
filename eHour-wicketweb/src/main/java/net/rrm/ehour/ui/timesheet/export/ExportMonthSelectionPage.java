@@ -22,6 +22,7 @@ import java.util.Calendar;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.ui.common.ajax.AjaxAwareContainer;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -31,6 +32,7 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
+import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -45,7 +47,7 @@ import org.apache.wicket.model.StringResourceModel;
  * Print month page
  **/
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class ExportMonthSelectionPage extends AbstractReportPage
+public class ExportMonthSelectionPage extends AbstractReportPage implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = 1891959724639181159L;
 	private static final String ID_SELECTION_FORM = "selectionForm";
@@ -122,6 +124,16 @@ public class ExportMonthSelectionPage extends AbstractReportPage
 		{
 			changeMonth(ajaxEvent);
 		}
+		else if (ajaxEvent.getEventType() == ExportCriteriaPanel.ExportCriteriaEvent.EXCEL)
+		{
+			
+		}
+		else if (ajaxEvent.getEventType() == ExportCriteriaPanel.ExportCriteriaEvent.PRINT)
+		{
+			setResponsePage(new PrintMonth((ReportCriteria)getModelObject()));
+		}
+		
+		
 		return true;
 	}
 

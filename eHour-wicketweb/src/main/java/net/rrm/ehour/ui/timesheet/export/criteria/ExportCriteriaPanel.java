@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.timesheet.export.criteria;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.ajax.AjaxUtil;
+import net.rrm.ehour.ui.common.component.LoadAwareButton;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
@@ -86,7 +87,7 @@ public class ExportCriteriaPanel extends Panel
 	@SuppressWarnings("serial")
 	private AjaxFallbackButton createSubmitButton(String id, Form form, final ExportCriteriaEvent event)
 	{
-		AjaxFallbackButton button = new AjaxFallbackButton(id, form)
+		AjaxFallbackButton button = new LoadAwareButton(id, form)
 		{
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form)

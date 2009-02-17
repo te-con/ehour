@@ -126,18 +126,4 @@ public class DetailedReportServiceImplTest
 		detailedReportService.getDetailedReportData(rc);
 		verify(detailedReportDAO);
 	}	
-	
-	
-	/**
-	 * Test method for {@link net.rrm.ehour.report.service.DetailedReportServiceImpl#getDetailedReportData(java.util.List, net.rrm.ehour.data.DateRange)}.
-	 */
-	@Test
-	public void testGetDetailedReportDataListOfSerializableDateRange()
-	{
-		expect(detailedReportDAO.getHoursPerDayForAssignment(isA(List.class), isA(DateRange.class)))
-		.andReturn(new ArrayList<FlatReportElement>());
-		replay(detailedReportDAO);
-		detailedReportService.getDetailedReportData(new ArrayList<ProjectAssignment>(), dr);
-		verify(detailedReportDAO);
-	}
 }

@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.timesheet.export.print;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -28,6 +27,8 @@ import java.util.Map;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
@@ -36,9 +37,10 @@ import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.trend.PrintReport;
-import net.rrm.ehour.ui.timesheet.export.ExportParameters;
+import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -66,7 +68,7 @@ public class PrintMonth extends WebPage
 	/**
 	 * 
 	 */
-	public PrintMonth(ExportParameters exportParameters)
+	public PrintMonth(ReportCriteria reportCriteria)
 	{
 		super();
 
@@ -75,9 +77,9 @@ public class PrintMonth extends WebPage
 		
 		try
 		{
-			DateRange dateRange = exportParameters.getExportRange();
+			DateRange dateRange = reportCriteria.getUserCriteria().getReportRange();
 			
-			PrintReport printReport = initReport(exportParameters.getAssignments(), exportParameters.getExportRange());
+			PrintReport printReport = initReport(reportCriteria);
 
 			IModel printTitle = new StringResourceModel("printMonth.printHeader",
 					this,
@@ -97,7 +99,7 @@ public class PrintMonth extends WebPage
 			addProjects(printReport, dates);
 			addGrandTotal(printReport, dates);
 			
-			addSignOff(exportParameters.getIncludeSignoff().booleanValue(), dates);
+			addSignOff(Boolean.valueOf((String)reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF)), dates);
 			
 			add(new Label("printedOn", new StringResourceModel("printMonth.printedOn",
 					this,
@@ -116,7 +118,7 @@ public class PrintMonth extends WebPage
 	 * @param inclSignOffSpace
 	 * @param days
 	 */
-	private void addSignOff(boolean inclSignOffSpace, List<Date> days)
+	private void addSignOff(Boolean inclSignOffSpace, List<Date> days)
 	{
 		WebMarkupContainer signOff = new WebMarkupContainer("signOff");
 		signOff.setVisible(inclSignOffSpace);
@@ -237,27 +239,12 @@ public class PrintMonth extends WebPage
 	 * @return
 	 * @throws ParseException
 	 */
-	private PrintReport initReport(Collection<ProjectAssignment> assignments, DateRange printRange) throws ParseException
+	private PrintReport initReport(ReportCriteria criteria) throws ParseException
 	{
-		List<FlatReportElement> results = null;
-		
-		if (assignments != null && assignments.size() > 0)
-		{
-			ReportData<FlatReportElement> elements = detailedReportService.getDetailedReportData(assignments, printRange);
-			
-			if (elements != null)
-			{
-				results = elements.getReportElements();
-			}
-		}
-		
-		if (results == null)
-		{
-			results = new ArrayList<FlatReportElement>();
-		}
+		ReportData<FlatReportElement> detailedReportData = detailedReportService.getDetailedReportData(criteria);
 		
 		PrintReport printReport = new PrintReport();
-		printReport.initialize(results);
+		printReport.initialize(detailedReportData.getReportElements());
 		
 		return printReport;
 	}

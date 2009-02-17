@@ -18,16 +18,15 @@ package net.rrm.ehour.ui.report.panel.user.criteria;
 
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxUtil;
-import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
+import net.rrm.ehour.ui.common.component.LoadAwareButton;
 import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
@@ -105,24 +104,12 @@ public class UserReportCriteriaPanel extends SidePanel
 	protected void addSubmits(Form form)
 	{
 		@SuppressWarnings("serial")
-		AjaxButton submitButton = new AjaxButton("submitButton", form)
+		AjaxFallbackButton submitButton = new LoadAwareButton("submitButton", form)
 		{
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
-            }
-
-			@Override
-			protected IAjaxCallDecorator getAjaxCallDecorator()
-			{
-				return new LoadingSpinnerDecorator();
-			}
-			
-			@Override
-            protected void onError(AjaxRequestTarget target, Form form)
-			{
-				target.addComponent(form);
             }
         };
         

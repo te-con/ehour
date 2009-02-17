@@ -37,5 +37,4 @@ public class ReportTypeRenderer implements IChoiceRenderer
 	{
 		return Integer.toString(index);
 	}
-
 }

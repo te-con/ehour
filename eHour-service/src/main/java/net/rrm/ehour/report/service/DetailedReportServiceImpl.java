@@ -81,20 +81,6 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 		return elements;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.ReportService#getReportData(java.util.List, net.rrm.ehour.data.DateRange)
-	 */
-	public ReportData<FlatReportElement> getDetailedReportData(Collection<ProjectAssignment> projectAssignments, DateRange dateRange)
-	{
-		ReportData<FlatReportElement> reportData;
-		
-		reportData = new ReportData<FlatReportElement>();
-		reportData.setReportElements(detailedReportDAO.getHoursPerDayForAssignment(EhourUtil.getIdsFromDomainObjects(projectAssignments), dateRange));
-		
-		return reportData;
-	}
-
 	/**
 	 * @param detailedReportDAO the detailedReportDAO to set
 	 */
