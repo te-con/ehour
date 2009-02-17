@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
-import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -128,13 +127,14 @@ public class ExportMonthSelectionPage extends AbstractReportPage
 
 	private void changeMonth(AjaxEvent ajaxEvent)
 	{
-		ExportParameters exportParams = new ExportParameters(DateUtil.getDateRangeForMonth(getEhourWebSession().getNavCalendar()));
+		setCriteriaModel(getEhourWebSession().getNavCalendar());
 		
 		Component originalForm = get(ID_FRAME + ":" + ID_BLUE_BORDER + ":" + ID_SELECTION_FORM);
 		
-		ExportMonthSelectionForm newForm = new ExportMonthSelectionForm(ID_SELECTION_FORM, exportParams);
-		originalForm.replaceWith(newForm);
-		ajaxEvent.getTarget().addComponent(newForm);
+		ExportCriteriaPanel replacementPanel = createExportCriteriaPanel(ID_SELECTION_FORM);
+		
+		originalForm.replaceWith(replacementPanel);
+		ajaxEvent.getTarget().addComponent(replacementPanel);
 
 		Label newLabel = getTitleLabel(getEhourWebSession().getNavCalendar());
 		newLabel.setOutputMarkupId(true);
