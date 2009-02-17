@@ -109,6 +109,5 @@ public class AvailableCriteria implements Serializable
 	public void setProjects(List<Project> projects)
 	{
 		this.projects = projects;
-	}	
-	
+	}
 }

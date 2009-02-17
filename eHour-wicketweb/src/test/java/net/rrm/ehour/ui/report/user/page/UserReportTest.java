@@ -23,7 +23,7 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.ui.report.page.BaseTestReport;
 import net.rrm.ehour.ui.report.user.page.UserReport;
 
@@ -39,7 +39,7 @@ public class UserReportTest extends BaseTestReport
 	@Test
 	public void testUserReportPageRender()
 	{
-		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdate.UPDATE_ALL)))
+		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdateType.UPDATE_ALL)))
 		.andReturn(reportCriteria);	
 
 		expect(aggregateReportService.getAggregateReportData(reportCriteria))

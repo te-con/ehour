@@ -58,7 +58,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @AuthorizeInstantiation("ROLE_REPORT")
-public class GlobalReportPage extends BaseReportPage
+public class GlobalReportPage extends AbstractReportPage
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 	

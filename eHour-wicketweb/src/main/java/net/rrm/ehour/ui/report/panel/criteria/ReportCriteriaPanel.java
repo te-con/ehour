@@ -25,7 +25,7 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
@@ -170,7 +170,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 			protected void onUpdate(AjaxRequestTarget target)
             {
 				// show only projects for selected customers
-				updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
+				updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
                 target.addComponent(projects);
             }
         });	
@@ -185,7 +185,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				updateReportCriteria(ReportCriteriaUpdate.UPDATE_CUSTOMERS);
+				updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
 				target.addComponent(customers);
 			}
 		};		
@@ -217,7 +217,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				updateReportCriteria(ReportCriteriaUpdate.UPDATE_PROJECTS);
+				updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
 				target.addComponent(projects);
 			}
 		};		
@@ -250,7 +250,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
+				updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS);
 				target.addComponent(users);
 			}
 		};
@@ -292,7 +292,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 			protected void onUpdate(AjaxRequestTarget target)
             {
 				// show only projects for selected customers
-				updateReportCriteria(ReportCriteriaUpdate.UPDATE_USERS);
+				updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS);
                 target.addComponent(users);
             }
         });			
@@ -318,7 +318,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 	 * Update report criteria
 	 * @param filter
 	 */
-	protected void updateReportCriteria(ReportCriteriaUpdate updateType)
+	protected void updateReportCriteria(ReportCriteriaUpdateType updateType)
 	{
 		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
 		
@@ -386,7 +386,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 				
 				ReportCriteria criteria = backingBean.getReportCriteria();
 				criteria.setUserCriteria(new UserCriteria());
-				reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdate.UPDATE_ALL);
+				reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);
 				
 				target.addComponent(projects);
 				target.addComponent(customers);

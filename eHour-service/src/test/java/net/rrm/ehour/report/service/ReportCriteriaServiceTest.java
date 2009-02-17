@@ -36,7 +36,7 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.user.dao.UserDAO;
@@ -120,7 +120,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		replay(prjAssignmentDAO);
 		replay(reportAggregatedDAO);
 		
-		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdate.UPDATE_ALL);
+		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
 		
 		verify(reportAggregatedDAO);
 		verify(prjAssignmentDAO);
@@ -173,7 +173,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		expectLastCall().andReturn(null);
 		replay(reportAggregatedDAO);
 		
-		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdate.UPDATE_ALL);
+		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
 		
 		verify(reportAggregatedDAO);
 		verify(projectDAO);

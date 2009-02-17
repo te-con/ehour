@@ -1,5 +1,5 @@
 /**
- * Created on 21-feb-2007
+ * Created on Jul 10, 2007
  * Created by Thies Edeling
  * Copyright (C) 2005, 2006 te-con, All Rights Reserved.
  *
@@ -13,27 +13,16 @@
  *
  */
 
-package net.rrm.ehour.report.service;
+package net.rrm.ehour.report.criteria;
 
-import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
+/**
+ * ReportCriteria update types 
+ **/
 
-/** **/
-
-public interface ReportCriteriaService
+public enum ReportCriteriaUpdateType
 {
-	/**
-	 * 
-	 * @param reportCriteria
-	 * @return
-	 */
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria);
-	
-	/**
-	 * Sync the criteria 
-	 * @param bookedOnly to list only criteria which have entries booked
-	 * @param updateType  
-	 * @return
-	 */
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdateType updateType);
+	UPDATE_ALL,
+	UPDATE_USERS,
+	UPDATE_CUSTOMERS,
+	UPDATE_PROJECTS
 }

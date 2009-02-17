@@ -44,7 +44,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -91,7 +90,7 @@ public class MonthOverviewPanel extends Panel
 			@Override
 			public void onClick()
 			{
-				setResponsePage(new ExportMonthSelectionPage(new Model(overviewForMonth)));
+				setResponsePage(new ExportMonthSelectionPage(overviewForMonth));
 			}
 		};
 		

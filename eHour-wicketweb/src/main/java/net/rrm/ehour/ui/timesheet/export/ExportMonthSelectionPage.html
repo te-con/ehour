@@ -16,55 +16,8 @@
 		    	    	
     		<div class="ContentPanelLoc" wicket:id="printSelectionFrame">
    				<div wicket:id="blueBorder">
-					<form wicket:id="selectionForm">
-						<table class="contentTable">
-							<tr>
-								<td style="border: 0;padding-right: 20px" valign="top">
-									<nobr><wicket:message key="printMonth.selectProjects" /></nobr>
-								</td>
-					
-								<td style="padding-left: 5px">
-									<span wicket:id="assignments">
-										<span wicket:id="assignmentList">
-											<input type="checkbox" wicket:id="check" />
-											<span wicket:id="project"></span>
-											<span wicket:id="role"></span>
-											
-											<br />
-										</span>
-									</span>
-								</td>
-							</tr>
-					
-							<tr>
-								<td colspan="2" style="border: 0">
-									<br />
-								</td>
-							</tr>
-					
-							<tr>
-								<td style="border: 0;padding-right: 20px">
-									<nobr><wicket:message key="printMonth.inclSignatureSpace" /></nobr>
-								</td>
-								
-								<td style="padding-left: 5px">
-									<input type="checkbox" wicket:id="signOff" />
-								</td>
-							</tr>
-							
-							<tr>
-								<td style="border: 0" colspan="2" align="right">
-									<a class="bluebutton" style="float:right" wicket:id="submitButton" >
-										<span><wicket:message key="general.print" /></span>
-									</a>
-									<a class="bluebutton" style="float:right" wicket:id="excelButton" >
-										<span><wicket:message key="general.excel" /></span>
-									</a>
-								</td>
-							</tr>
-						</table>		
-					</form>
-   				</div>
+                    <span wicket:id="selectionForm"></span>
+            	</div>
     		</div>
 	    	
     	</wicket:extend>

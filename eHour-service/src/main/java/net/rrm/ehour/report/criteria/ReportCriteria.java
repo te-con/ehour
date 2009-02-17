@@ -48,7 +48,7 @@ public class ReportCriteria implements Serializable
 	 * Get report range, use the available criteria if the user didn't supply any (yet)
 	 * @return
 	 */
-	
+	// TODO reduce complexity of method 
 	public DateRange getReportRange()
 	{
 		DateRange	reportRange;
@@ -83,7 +83,6 @@ public class ReportCriteria implements Serializable
 				{
 					reportRange.setDateEnd(availableCriteria.getReportRange().getDateEnd());
 				}
-				
 			}
 		}
 
@@ -99,71 +98,6 @@ public class ReportCriteria implements Serializable
 		
 		return reportRange;
 	}
-	
-//	/**
-//	 * 
-//	 *
-//	 */
-//	public void validate(int updateType)
-//	{
-//		if (!userCriteria.isSingleUser())
-//		{
-//			checkIfUserCriteriaAreAvailable();
-//		}
-//	}	
-//
-//	/**
-//	 * After the available criteria are synced, check if the user criteria are still valid
-//	 *
-//	 */
-//	private void checkIfUserCriteriaAreAvailable()
-//	{
-//		checkProjects();
-//		checkUsers();
-//	}
-//	
-//	/**
-//	 *
-//	 */
-//	private void checkUsers()
-//	{
-//		List<User>	usersValid = new ArrayList<User>();
-//		
-//		if (userCriteria.getUsers() != null)
-//		{
-//			for (User user : userCriteria.getUsers())
-//			{
-//				if (availableCriteria.getUsers().contains(user))
-//				{
-//					usersValid.add(user);
-//				}
-//			}
-//			
-//			userCriteria.setUsers(usersValid);
-//		}
-//	}
-//		
-//	/**
-//	 * 
-//	 *
-//	 */
-//	private void checkProjects()
-//	{
-//		List<Project>	validProjects = new ArrayList<Project>();
-//		
-//		if (userCriteria.getProjects() != null)
-//		{
-//			for (Project project : userCriteria.getProjects())
-//			{
-//				if (availableCriteria.getProjects().contains(project))
-//				{
-//					validProjects.add(project);
-//				}
-//			}
-//			
-//			userCriteria.setProjects(validProjects);
-//		}
-//	}
 
 	/**
 	 * @return the userCriteria

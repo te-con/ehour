@@ -17,16 +17,20 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.report.page.AbstractReportPage;
+import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.Component;
@@ -42,7 +46,7 @@ import org.apache.wicket.model.StringResourceModel;
  * Print month page
  **/
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class ExportMonthSelectionPage extends BasePage
+public class ExportMonthSelectionPage extends AbstractReportPage
 {
 	private static final long serialVersionUID = 1891959724639181159L;
 	private static final String ID_SELECTION_FORM = "selectionForm";
@@ -51,31 +55,24 @@ public class ExportMonthSelectionPage extends BasePage
 	
 	private Label			titleLabel;
 	
-	
-	/**
-	 * 
-	 */
 	public ExportMonthSelectionPage()
 	{	
-		this(new CompoundPropertyModel(new ExportParameters(DateUtil.getDateRangeForMonth( ((EhourWebSession) Session.get()).getNavCalendar()))));
+		this(((EhourWebSession) Session.get()).getNavCalendar());
 	}
 	
 	/**
 	 * 
 	 */
-	public ExportMonthSelectionPage(IModel requestModel)
+	public ExportMonthSelectionPage(Calendar forMonth)
 	{
-		super(new ResourceModel("printMonth.title"), requestModel);
+		super(new ResourceModel("printMonth.title"));
+		
+		setCriteriaModel(forMonth);
 		
 		// add calendar panel
-		CalendarPanel calendarPanel = new CalendarPanel("sidePanel", 
-														getEhourWebSession().getUser().getUser(), 
-														false);
-		add(calendarPanel);
+		add(createCalendarPanel("sidePanel"));
 		
-		ExportParameters params = (ExportParameters)getModelObject();
-		
-		titleLabel = getTitleLabel(DateUtil.getCalendar(params.getExportRange().getDateStart()));
+		titleLabel = getTitleLabel(forMonth);
 		titleLabel.setOutputMarkupId(true);
 		
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_FRAME, titleLabel);
@@ -83,7 +80,37 @@ public class ExportMonthSelectionPage extends BasePage
 		greyBorder.add(blueBorder);
 		add(greyBorder);
 		
-		blueBorder.add(new ExportMonthSelectionForm(ID_SELECTION_FORM, params));
+		blueBorder.add(createExportCriteriaPanel(ID_SELECTION_FORM));
+		
+	}
+	
+	private ExportCriteriaPanel createExportCriteriaPanel(String id)
+	{
+		ExportCriteriaPanel criteriaPanel = new ExportCriteriaPanel(id, getModel());
+		
+		return criteriaPanel;
+	}
+	
+	private CalendarPanel createCalendarPanel(String id)
+	{
+		CalendarPanel calendarPanel = new CalendarPanel(id, 
+														getEhourWebSession().getUser().getUser(), 
+														false);
+		
+		return calendarPanel;
+	}
+
+	private void setCriteriaModel(Calendar forMonth)
+	{
+		ReportCriteria reportCriteria = getReportCriteria(true);
+		
+		if (reportCriteria.getUserCriteria().getProjects() == null)
+		{
+			reportCriteria.getUserCriteria().setProjects(new ArrayList<Project>());
+		}
+		
+		IModel	model = new CompoundPropertyModel(reportCriteria);
+		setModel(model);
 	}
 	
 	/*
@@ -94,23 +121,28 @@ public class ExportMonthSelectionPage extends BasePage
 	{
 		if (ajaxEvent.getEventType() == CalendarAjaxEventType.MONTH_CHANGE)
 		{
-			ExportParameters exportParams = new ExportParameters(DateUtil.getDateRangeForMonth(getEhourWebSession().getNavCalendar()));
-			
-			Component originalForm = get(ID_FRAME + ":" + ID_BLUE_BORDER + ":" + ID_SELECTION_FORM);
-			
-			ExportMonthSelectionForm newForm = new ExportMonthSelectionForm(ID_SELECTION_FORM, exportParams);
-			originalForm.replaceWith(newForm);
-			ajaxEvent.getTarget().addComponent(newForm);
-	
-			Label newLabel = getTitleLabel(getEhourWebSession().getNavCalendar());
-			newLabel.setOutputMarkupId(true);
-			titleLabel.replaceWith(newLabel);
-			titleLabel = newLabel;
-			ajaxEvent.getTarget().addComponent(newLabel);
-			
+			changeMonth(ajaxEvent);
 		}
 		return true;
-	}		
+	}
+
+	private void changeMonth(AjaxEvent ajaxEvent)
+	{
+		ExportParameters exportParams = new ExportParameters(DateUtil.getDateRangeForMonth(getEhourWebSession().getNavCalendar()));
+		
+		Component originalForm = get(ID_FRAME + ":" + ID_BLUE_BORDER + ":" + ID_SELECTION_FORM);
+		
+		ExportMonthSelectionForm newForm = new ExportMonthSelectionForm(ID_SELECTION_FORM, exportParams);
+		originalForm.replaceWith(newForm);
+		ajaxEvent.getTarget().addComponent(newForm);
+
+		Label newLabel = getTitleLabel(getEhourWebSession().getNavCalendar());
+		newLabel.setOutputMarkupId(true);
+		titleLabel.replaceWith(newLabel);
+		titleLabel = newLabel;
+		ajaxEvent.getTarget().addComponent(newLabel);
+	}
+	
 	
 	/**
 	 * Get title label

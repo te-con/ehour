@@ -23,7 +23,7 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
-import net.rrm.ehour.ui.report.page.BaseReportPage;
+import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.user.UserReportPanel;
 import net.rrm.ehour.ui.report.panel.user.criteria.UserReportCriteriaPanel;
@@ -40,7 +40,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class UserReport extends BaseReportPage
+public class UserReport extends AbstractReportPage
 {
 	private static final long serialVersionUID = -8867366237264687482L;
 

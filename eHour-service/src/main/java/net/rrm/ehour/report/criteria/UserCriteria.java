@@ -18,7 +18,9 @@ package net.rrm.ehour.report.criteria;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
@@ -31,6 +33,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * User selected criteria 
+ * 
+ * TODO needs a refactor to something more generic
  **/
 
 public class UserCriteria implements Serializable
@@ -54,6 +58,7 @@ public class UserCriteria implements Serializable
 	private boolean		infiniteEndDate;
 	private	boolean		singleUser;
 	private Project		project;
+	private	Map<UserCriteriaCustomParameter, Object> customParameters;
 
 	/**
 	 * 
@@ -69,6 +74,8 @@ public class UserCriteria implements Serializable
 		infiniteEndDate = false;
 		
 		reportRange = DateUtil.getDateRangeForMonth(new GregorianCalendar());
+		
+		setCustomParameters(new HashMap<UserCriteriaCustomParameter, Object>());
 	}
 	
 	/**
@@ -390,5 +397,15 @@ public class UserCriteria implements Serializable
 	{
 		customers = new ArrayList<Customer>();
 		customers.add(customer);
+	}
+
+	public void setCustomParameters(Map<UserCriteriaCustomParameter, Object> customParameters)
+	{
+		this.customParameters = customParameters;
+	}
+
+	public Map<UserCriteriaCustomParameter, Object> getCustomParameters()
+	{
+		return customParameters;
 	}
 }

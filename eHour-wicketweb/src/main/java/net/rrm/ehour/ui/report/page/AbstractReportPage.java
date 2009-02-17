@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report.page;
 
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.ReportCriteriaUpdate;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.page.BasePage;
@@ -34,19 +34,19 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Base page for report criteria
  **/
 
-public abstract class BaseReportPage extends BasePage
+public abstract class AbstractReportPage extends BasePage
 {
 	@SpringBean
 	private ReportCriteriaService	reportCriteriaService;
 
-	protected final static Logger logger = Logger.getLogger(BaseReportPage.class);
+	protected final static Logger logger = Logger.getLogger(AbstractReportPage.class);
 
 	/**
 	 * 
 	 * @param pageTitle
 	 * @param model
 	 */
-	public BaseReportPage(ResourceModel pageTitle)
+	public AbstractReportPage(ResourceModel pageTitle)
 	{
 		super(pageTitle, null);
 	}
@@ -71,7 +71,7 @@ public abstract class BaseReportPage extends BasePage
 		criteria.setAvailableCriteria(getAvailableCriteria());
 		criteria.setUserCriteria(userCriteria);
 		
-		return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdate.UPDATE_ALL);
+		return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);
 	}
 	
 	/**
