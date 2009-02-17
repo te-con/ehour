@@ -193,18 +193,23 @@ public class CalendarPanel extends SidePanel
 
 		        if (fireWeekClicks)
 		        {
-		        	if (highlightWeekStartingAt == null ||
-		        			!DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
-        			{
-						item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
-						item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
-						item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
-		        	}
+		        	fireWeekClicks(item, week);
 		        }
 		        else
 		        {
 		        	item.add(new SimpleAttributeModifier("style", "cursor:default"));
 		        }
+			}
+
+			private void fireWeekClicks(final ListItem item, CalendarWeek week)
+			{
+				if (highlightWeekStartingAt == null ||
+						!DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
+				{
+					item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
+					item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
+					item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
+				}
 			}
 
 			/**

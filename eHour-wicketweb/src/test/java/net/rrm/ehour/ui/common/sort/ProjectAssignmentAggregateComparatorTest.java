@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.sort;
 
 import static org.junit.Assert.assertTrue;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.common.DummyDataGenerator;
+import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentAggregateComparator;
 
 import org.junit.Before;
@@ -39,8 +39,8 @@ public class ProjectAssignmentAggregateComparatorTest
 		a1 = new AssignmentAggregateReportElement();
 		a2 = new AssignmentAggregateReportElement();
 		
-		a1.setProjectAssignment(DummyDataGenerator.getProjectAssignment(1));
-		a2.setProjectAssignment(DummyDataGenerator.getProjectAssignment(2));
+		a1.setProjectAssignment(DummyWebDataGenerator.getProjectAssignment(1));
+		a2.setProjectAssignment(DummyWebDataGenerator.getProjectAssignment(2));
 	}
 
 	/**

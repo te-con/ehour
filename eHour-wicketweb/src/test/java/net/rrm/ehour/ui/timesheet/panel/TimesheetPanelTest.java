@@ -45,7 +45,7 @@ import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.common.DummyDataGenerator;
+import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
@@ -89,13 +89,13 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 		
 		overview.setWeekRange(new DateRange(new Date(), now.getTime()));
 		
-		TimesheetEntry entry = DummyDataGenerator.getTimesheetEntry(1, new Date(), 5);
+		TimesheetEntry entry = DummyWebDataGenerator.getTimesheetEntry(1, new Date(), 5);
 		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
 		entries.add(entry);
 		overview.setTimesheetEntries(entries);
 
 		List<ProjectAssignment> ass = new ArrayList<ProjectAssignment>();
-		ass.add(DummyDataGenerator.getProjectAssignment(1));
+		ass.add(DummyWebDataGenerator.getProjectAssignment(1));
 		overview.setProjectAssignments(ass);
 		
 		overview.setFoldPreferences(new CustomerFoldPreferenceList());

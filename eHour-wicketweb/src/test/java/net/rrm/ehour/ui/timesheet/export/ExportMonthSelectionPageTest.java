@@ -31,11 +31,15 @@ import java.util.Set;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.common.DummyDataGenerator;
+import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.util.DateUtil;
 
@@ -51,19 +55,20 @@ import org.junit.Test;
  */
 public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 {
-	private ProjectService 		projectService;
 	private TimesheetService 	timesheetService;
+	private ReportCriteriaService reportCriteriaService;
 	
 	@Before
 	public void setUp() throws Exception
 	{
 		super.setUp();
 		
-		projectService = createMock(ProjectService.class);
-		mockContext.putBean("projectService", projectService);
-
 		timesheetService = createMock(TimesheetService.class);
 		mockContext.putBean("timesheetService", timesheetService);
+
+		reportCriteriaService = createMock(ReportCriteriaService.class);
+		mockContext.putBean("reportCriteriaService", reportCriteriaService);
+	
 	}
 	
 	@Test
@@ -75,30 +80,35 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		DateRange range = DateUtil.getDateRangeForMonth(Calendar.getInstance());
 		
 		Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
-		assignments.add(DummyDataGenerator.getProjectAssignment(1));
-		assignments.add(DummyDataGenerator.getProjectAssignment(2));
-		assignments.add(DummyDataGenerator.getProjectAssignment(3));
+		assignments.add(DummyWebDataGenerator.getProjectAssignment(1));
+		assignments.add(DummyWebDataGenerator.getProjectAssignment(2));
+		assignments.add(DummyWebDataGenerator.getProjectAssignment(3));
 		
 		expect(timesheetService.getBookedDaysMonthOverview(isA(Integer.class),  isA(Calendar.class)))
 				.andReturn(new ArrayList<BookedDay>());	
 		
-		expect(projectService.getProjectsForUser(1, range))
-				.andReturn(assignments);
+		ReportCriteria criteria = new ReportCriteria();
+		AvailableCriteria availableCriteria = new AvailableCriteria();
+		availableCriteria.setProjects(DummyWebDataGenerator.getProjects(5));
+		criteria.setAvailableCriteria(availableCriteria);
 		
-		replay(projectService, timesheetService);
+		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
+				.andReturn(criteria);
+		
+		replay(timesheetService, reportCriteriaService);
 		
 		tester.startPage(ExportMonthSelectionPage.class);
 		
-		FormTester formTester = tester.newFormTester("printSelectionFrame:blueBorder:selectionForm");
-		formTester.selectMultiple("assignments", new int[]{0, 2});
+		FormTester formTester = tester.newFormTester("printSelectionFrame:blueBorder:selectionForm:criteriaForm");
+		formTester.selectMultiple("projectGroup", new int[]{0, 2});
 		formTester.setValue("signOff", "true");
 
-		formTester.submit("submitButton");
+		formTester.submit("printButton");
 		
 		tester.assertRenderedPage(PrintMonth.class);
 		tester.assertNoErrorMessage();
 		
-		verify(projectService);
 		verify(timesheetService);
+		verify(reportCriteriaService);
 	}
 }

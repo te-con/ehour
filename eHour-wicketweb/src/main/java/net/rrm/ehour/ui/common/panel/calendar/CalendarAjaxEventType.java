@@ -19,10 +19,6 @@ package net.rrm.ehour.ui.common.panel.calendar;
 
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 
-/**
- * TODO 
- **/
-
 public enum CalendarAjaxEventType implements AjaxEventType
 {
 	MONTH_CHANGE,

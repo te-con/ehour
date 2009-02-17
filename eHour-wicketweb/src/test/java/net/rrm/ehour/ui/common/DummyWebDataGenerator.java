@@ -16,8 +16,10 @@
 
 package net.rrm.ehour.ui.common;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.domain.Customer;
@@ -33,11 +35,32 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 
 /**
- * DummyDataGenerator 
+ * DummyWebDataGenerator 
  **/
 
-public class DummyDataGenerator
+public class DummyWebDataGenerator
 {
+	public static List<Project> getProjects(int projectCount)
+	{
+		List<Project> projects = new ArrayList<Project>();
+		
+		for (int i = 0; i < projectCount; i++)
+		{
+			projects.add(getProject(i));
+		}
+		
+		return projects;
+	}
+	
+	public static Project getProject(Integer id)
+	{
+		Project project = new Project(id);
+		project.setActive(true);
+		
+		return project;
+	}
+	
+	
 	/**
 	 * 
 	 * 

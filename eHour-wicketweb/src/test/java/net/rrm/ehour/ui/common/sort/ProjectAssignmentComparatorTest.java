@@ -18,7 +18,7 @@
 package net.rrm.ehour.ui.common.sort;
 
 import static org.junit.Assert.assertTrue;
-import net.rrm.ehour.ui.common.DummyDataGenerator;
+import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class ProjectAssignmentComparatorTest
 	public void testCompareCustDatePrj()
 	{
 		int x = new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ)
-					.compare(DummyDataGenerator.getProjectAssignment(2), DummyDataGenerator.getProjectAssignment(1));
+					.compare(DummyWebDataGenerator.getProjectAssignment(2), DummyWebDataGenerator.getProjectAssignment(1));
 		
 		assertTrue(x > 0);
 	}
@@ -46,7 +46,7 @@ public class ProjectAssignmentComparatorTest
 	public void testCompareName()
 	{
 		int x = new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_NAME)
-					.compare(DummyDataGenerator.getProjectAssignment(2), DummyDataGenerator.getProjectAssignment(1));
+					.compare(DummyWebDataGenerator.getProjectAssignment(2), DummyWebDataGenerator.getProjectAssignment(1));
 		
 		assertTrue(x > 0);
 	}	
@@ -55,7 +55,7 @@ public class ProjectAssignmentComparatorTest
 	public void testCompareStart()
 	{
 		int x = new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_START)
-					.compare(DummyDataGenerator.getProjectAssignment(1), DummyDataGenerator.getProjectAssignment(1));
+					.compare(DummyWebDataGenerator.getProjectAssignment(1), DummyWebDataGenerator.getProjectAssignment(1));
 		
 		assertTrue(x == 0);
 	}	
