@@ -32,7 +32,6 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
-import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
@@ -124,15 +123,6 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 		{
 			changeMonth(ajaxEvent);
 		}
-		else if (ajaxEvent.getEventType() == ExportCriteriaPanel.ExportCriteriaEvent.EXCEL)
-		{
-			
-		}
-		else if (ajaxEvent.getEventType() == ExportCriteriaPanel.ExportCriteriaEvent.PRINT)
-		{
-			setResponsePage(new PrintMonth((ReportCriteria)getModelObject()));
-		}
-		
 		
 		return true;
 	}

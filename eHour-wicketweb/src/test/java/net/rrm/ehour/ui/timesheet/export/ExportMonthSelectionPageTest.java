@@ -23,6 +23,7 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -98,6 +99,16 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		tester.assertRenderedPage(PrintMonth.class);
 		tester.assertNoErrorMessage();
 		assertEquals(Boolean.TRUE, (Boolean) reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name()));
+		
+		assertEquals(2, reportCriteria.getUserCriteria().getProjects().size());
+		
+		Integer id =  reportCriteria.getUserCriteria().getProjects().get(1).getProjectId();
+		
+		// order is unknown
+		if (id != 0 && id != 2)
+		{
+			fail("id should be 0 or 2");
+		}
 		verifyMocks();
 	}
 

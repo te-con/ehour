@@ -17,18 +17,16 @@
 
 package net.rrm.ehour.ui.timesheet.export.criteria;
 
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
-import net.rrm.ehour.ui.common.ajax.AjaxUtil;
-import net.rrm.ehour.ui.common.component.LoadAwareButton;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
+import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -41,20 +39,20 @@ import org.apache.wicket.model.PropertyModel;
 
 public class ExportCriteriaPanel extends Panel
 {
-	public enum ExportCriteriaEvent implements AjaxEventType
-	{
-		PRINT,
-		EXCEL;
-	}
-	
 	private static final long serialVersionUID = -3732529050866431376L;
 
+	private enum ExportType
+	{
+		EXCEL,
+		PRINT;
+	}
+	
 	public ExportCriteriaPanel(String id, IModel model)
 	{
 		super(id, model);
 		setOutputMarkupId(true);
 		
-		add(createCriteriaPanel("criteriaForm"));
+		add(createCriteriaPanel("criteriaForm", model));
 	}
 
 	/**
@@ -62,45 +60,40 @@ public class ExportCriteriaPanel extends Panel
 	 * @param id
 	 * @return
 	 */
-	private Form createCriteriaPanel(String id)
+	private Form createCriteriaPanel(String id, IModel model)
 	{
-		Form form = new Form(id);
+		Form form = new SelectionForm(id, model);
 
 		form.add(createAssignmentCheckboxes("projectGroup"));
 		
 		form.add(createSignOffCheck("signOff"));
 		
-		form.add(createSubmitButton("printButton", form, ExportCriteriaEvent.PRINT));
-		form.add(createSubmitButton("excelButton", form, ExportCriteriaEvent.EXCEL));
+		form.add(createSubmitButton("printButton", form, ExportType.PRINT));
+		form.add(createSubmitButton("excelButton", form, ExportType.EXCEL));
 		
 		return form;
 	}
 
-	private CheckBox createSignOffCheck(String id)
-	{
-		return new CheckBox(id, new PropertyModel(this.getModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
-	}
-	
-	/**
-	 * Create ajax submit buttons which publish their events upwards in the component hierarchy
-	 * @param id
-	 * @param form
-	 * @param event
-	 * @return
-	 */
 	@SuppressWarnings("serial")
-	private AjaxFallbackButton createSubmitButton(String id, Form form, final ExportCriteriaEvent event)
+	private SubmitLink createSubmitButton(String id, Form form, final ExportType type)
 	{
-		AjaxFallbackButton button = new LoadAwareButton(id, form)
+		SubmitLink link = new SubmitLink(id, form)
 		{
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form)
+			public void onSubmit()
 			{
-				AjaxUtil.publishAjaxEvent(ExportCriteriaPanel.this, new AjaxEvent(target, event));
+				ReportCriteria criteria = (ReportCriteria)ExportCriteriaPanel.this.getModelObject();
+				
+				criteria.getUserCriteria().getCustomParameters().put(ExportCriteriaParameter.EXPORT_TYPE, type);
 			}
 		};
 		
-		return button;
+		return link;
+	}
+	
+	private CheckBox createSignOffCheck(String id)
+	{
+		return new CheckBox(id, new PropertyModel(this.getModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
 	}
 	
 	private CheckGroup createAssignmentCheckboxes(String id)
@@ -122,5 +115,39 @@ public class ExportCriteriaPanel extends Panel
 		projectGroup.add(projects);
 		
 		return projectGroup;
+	}
+
+	/**
+	 * 
+	 * Created on Feb 18, 2009, 5:39:23 PM
+	 * @author Thies Edeling (thies@te-con.nl) 
+	 *
+	 */
+	private class SelectionForm extends Form
+	{
+		private static final long serialVersionUID = -8232635495078008621L;
+
+		public SelectionForm(String id, IModel model)
+		{
+			super(id, model);
+		}
+		
+		@Override
+		protected void onSubmit()
+		{
+			ReportCriteria criteria = (ReportCriteria)getModelObject();
+
+			ExportType type = (ExportType)criteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.EXPORT_TYPE);
+			
+			if (type == ExportType.EXCEL)
+			{
+				
+			}
+			else if (type == ExportType.PRINT)
+			{
+				setResponsePage(new PrintMonth(criteria));
+			}
+			
+		}
 	}
 }

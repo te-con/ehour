@@ -20,5 +20,6 @@ package net.rrm.ehour.ui.timesheet.export;
 
 public enum ExportCriteriaParameter
 {
-	INCL_SIGN_OFF;
+	INCL_SIGN_OFF,
+	EXPORT_TYPE;
 }
