@@ -18,12 +18,10 @@
 package net.rrm.ehour.report.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.dao.DetailedReportDAO;

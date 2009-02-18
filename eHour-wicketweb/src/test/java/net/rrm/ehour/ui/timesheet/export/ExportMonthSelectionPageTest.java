@@ -25,15 +25,13 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
@@ -41,9 +39,9 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
-import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.util.tester.FormTester;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,6 +55,7 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 {
 	private TimesheetService 	timesheetService;
 	private ReportCriteriaService reportCriteriaService;
+	private DetailedReportService detailedReportService;
 	
 	@Before
 	public void setUp() throws Exception
@@ -69,36 +68,26 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		reportCriteriaService = createMock(ReportCriteriaService.class);
 		mockContext.putBean("reportCriteriaService", reportCriteriaService);
 	
-	}
-	
-	@Test
-	public void testSubmitPrint()
-	{
-		DetailedReportService detailedReportService = createMock(DetailedReportService.class);
+		detailedReportService = createMock(DetailedReportService.class);
 		mockContext.putBean("detailedReportService", detailedReportService);
 		
-		DateRange range = DateUtil.getDateRangeForMonth(Calendar.getInstance());
-		
-		Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
-		assignments.add(DummyWebDataGenerator.getProjectAssignment(1));
-		assignments.add(DummyWebDataGenerator.getProjectAssignment(2));
-		assignments.add(DummyWebDataGenerator.getProjectAssignment(3));
+		ReportCriteria criteria = createReportCriteria();
 		
 		expect(timesheetService.getBookedDaysMonthOverview(isA(Integer.class),  isA(Calendar.class)))
 				.andReturn(new ArrayList<BookedDay>());	
-		
-		ReportCriteria criteria = new ReportCriteria();
-		AvailableCriteria availableCriteria = new AvailableCriteria();
-		availableCriteria.setProjects(DummyWebDataGenerator.getProjects(5));
-		criteria.setAvailableCriteria(availableCriteria);
-		
 		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
-				.andReturn(criteria);
+				.andReturn(createReportCriteria());
+
+		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
+				.andReturn(createReportData());
+		replay(timesheetService, reportCriteriaService, detailedReportService);
 		
-		replay(timesheetService, reportCriteriaService);
-		
-		tester.startPage(ExportMonthSelectionPage.class);
-		
+		tester.startPage(ExportMonthSelectionPage.class);		
+	}
+	
+	@Test
+	public void submitToPrint()
+	{
 		FormTester formTester = tester.newFormTester("printSelectionFrame:blueBorder:selectionForm:criteriaForm");
 		formTester.selectMultiple("projectGroup", new int[]{0, 2});
 		formTester.setValue("signOff", "true");
@@ -107,8 +96,32 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		
 		tester.assertRenderedPage(PrintMonth.class);
 		tester.assertNoErrorMessage();
-		
+	}
+
+	@After
+	public void verifyMocks()
+	{
 		verify(timesheetService);
 		verify(reportCriteriaService);
+		verify(detailedReportService);
+		
+	}
+	
+	private ReportData<FlatReportElement> createReportData()
+	{
+		ReportData<FlatReportElement> reportData = new ReportData<FlatReportElement>();
+		
+		return reportData;
+	}
+	
+	private ReportCriteria createReportCriteria()
+	{
+		ReportCriteria criteria = new ReportCriteria();
+
+		AvailableCriteria availableCriteria = new AvailableCriteria();
+		availableCriteria.setProjects(DummyWebDataGenerator.getProjects(5));
+		criteria.setAvailableCriteria(availableCriteria);
+		
+		return criteria;
 	}
 }

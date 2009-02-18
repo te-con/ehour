@@ -37,9 +37,6 @@ import net.rrm.ehour.util.DateUtil;
 @SuppressWarnings("unchecked")
 public abstract class TrendReport<RK extends Comparable> extends Report
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8062083697181324496L;
 	protected SortedMap<RK, Map<Date, FlatReportElement>>	rowMap;
 
@@ -53,13 +50,13 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 		Map<Date, FlatReportElement>	rowAggregates;
 		Date	aggregateDate;
 		RK		rowKey;
+		
+		rowMap = new TreeMap<RK, Map<Date, FlatReportElement>>(getRKComparator());
 
 		if (aggregateData == null)
 		{
 			return;
 		}
-		
-		rowMap = new TreeMap<RK, Map<Date, FlatReportElement>>(getRKComparator());
 
 		for (FlatReportElement aggregate : aggregateData)
 		{
