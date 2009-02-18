@@ -22,6 +22,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,7 +32,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
@@ -41,7 +41,6 @@ import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
 import org.apache.wicket.util.tester.FormTester;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,6 +55,7 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 	private TimesheetService 	timesheetService;
 	private ReportCriteriaService reportCriteriaService;
 	private DetailedReportService detailedReportService;
+	private ReportCriteria reportCriteria;
 	
 	@Before
 	public void setUp() throws Exception
@@ -71,12 +71,13 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		detailedReportService = createMock(DetailedReportService.class);
 		mockContext.putBean("detailedReportService", detailedReportService);
 		
-		ReportCriteria criteria = createReportCriteria();
+		reportCriteria = createReportCriteria();
 		
 		expect(timesheetService.getBookedDaysMonthOverview(isA(Integer.class),  isA(Calendar.class)))
 				.andReturn(new ArrayList<BookedDay>());	
+		
 		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
-				.andReturn(createReportCriteria());
+				.andReturn(reportCriteria);
 
 		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
 				.andReturn(createReportData());
@@ -96,9 +97,11 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		
 		tester.assertRenderedPage(PrintMonth.class);
 		tester.assertNoErrorMessage();
+		assertEquals(Boolean.TRUE, (Boolean) reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name()));
+		verifyMocks();
 	}
 
-	@After
+	// don't put these in the teardown (@After) as failed expectations will hide any earlier thrown exceptions
 	public void verifyMocks()
 	{
 		verify(timesheetService);

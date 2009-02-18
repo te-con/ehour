@@ -28,7 +28,6 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
@@ -40,7 +39,6 @@ import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -99,7 +97,7 @@ public class PrintMonth extends WebPage
 			addProjects(printReport, dates);
 			addGrandTotal(printReport, dates);
 			
-			addSignOff(Boolean.valueOf((String)reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF)), dates);
+			add(createSignOff(reportCriteria, dates));
 			
 			add(new Label("printedOn", new StringResourceModel("printMonth.printedOn",
 					this,
@@ -113,23 +111,24 @@ public class PrintMonth extends WebPage
 		}
 	}
 
-	/**
-	 * 
-	 * @param inclSignOffSpace
-	 * @param days
-	 */
-	private void addSignOff(Boolean inclSignOffSpace, List<Date> days)
+	private WebMarkupContainer createSignOff(ReportCriteria reportCriteria, List<Date> days)
 	{
-		WebMarkupContainer signOff = new WebMarkupContainer("signOff");
-		signOff.setVisible(inclSignOffSpace);
-		add(signOff);
+		WebMarkupContainer signOffContainer = new WebMarkupContainer("signOff");
+		signOffContainer.setVisible(isSignOffEnabled(reportCriteria));
 		
-		signOff.add(new Label("userFullName", ((EhourWebSession)getSession()).getUser().getUser().getFullName()));
+		signOffContainer.add(new Label("userFullName", ((EhourWebSession)getSession()).getUser().getUser().getFullName()));
 		
 		WebMarkupContainer colspanner = new WebMarkupContainer("colspanner");
 		// got 16 cells left, 16 cells right
 		colspanner.add(new SimpleAttributeModifier("colspan", Integer.toString(1 + days.size() -15 -16 )));
-		signOff.add(colspanner);
+		signOffContainer.add(colspanner);
+		
+		return signOffContainer;
+	}
+	
+	private boolean isSignOffEnabled(ReportCriteria reportCriteria)
+	{
+		return Boolean.valueOf((String)reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name())).booleanValue();
 	}
 	
 	/**

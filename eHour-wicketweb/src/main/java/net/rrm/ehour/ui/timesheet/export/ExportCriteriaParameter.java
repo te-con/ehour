@@ -17,9 +17,8 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
-import net.rrm.ehour.report.criteria.UserCriteriaCustomParameter;
 
-public enum ExportCriteriaParameter implements UserCriteriaCustomParameter
+public enum ExportCriteriaParameter
 {
 	INCL_SIGN_OFF;
 }

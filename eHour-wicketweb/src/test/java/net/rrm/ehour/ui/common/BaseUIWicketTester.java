@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.ui.test.StrictWicketTester;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -59,7 +60,7 @@ public abstract class BaseUIWicketTester
 		mockContext.putBean("auditService", auditService);
 
 		webapp =  new TestEhourWebApplication(mockContext);
-		tester = new WicketTester(webapp);
+		tester = new StrictWicketTester(webapp);
 		
 		((Settings)webapp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader()
 		{

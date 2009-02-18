@@ -58,7 +58,7 @@ public class UserCriteria implements Serializable
 	private boolean		infiniteEndDate;
 	private	boolean		singleUser;
 	private Project		project;
-	private	Map<UserCriteriaCustomParameter, Object> customParameters;
+	private	Map<String, Object> customParameters;
 
 	/**
 	 * 
@@ -75,7 +75,7 @@ public class UserCriteria implements Serializable
 		
 		reportRange = DateUtil.getDateRangeForMonth(new GregorianCalendar());
 		
-		setCustomParameters(new HashMap<UserCriteriaCustomParameter, Object>());
+		setCustomParameters(new HashMap<String, Object>());
 	}
 	
 	/**
@@ -399,12 +399,12 @@ public class UserCriteria implements Serializable
 		customers.add(customer);
 	}
 
-	public void setCustomParameters(Map<UserCriteriaCustomParameter, Object> customParameters)
+	public void setCustomParameters(Map<String, Object> customParameters)
 	{
 		this.customParameters = customParameters;
 	}
 
-	public Map<UserCriteriaCustomParameter, Object> getCustomParameters()
+	public Map<String, Object> getCustomParameters()
 	{
 		return customParameters;
 	}

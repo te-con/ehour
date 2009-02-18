@@ -46,7 +46,6 @@ public class ExportCriteriaPanel extends Panel
 		PRINT,
 		EXCEL;
 	}
-
 	
 	private static final long serialVersionUID = -3732529050866431376L;
 
@@ -69,7 +68,7 @@ public class ExportCriteriaPanel extends Panel
 
 		form.add(createAssignmentCheckboxes("projectGroup"));
 		
-		form.add(new CheckBox("signOff", new PropertyModel(this.getModel(), "userCriteria.customParameters[INCL_SIGN_OFF]")));
+		form.add(createSignOffCheck("signOff"));
 		
 		form.add(createSubmitButton("printButton", form, ExportCriteriaEvent.PRINT));
 		form.add(createSubmitButton("excelButton", form, ExportCriteriaEvent.EXCEL));
@@ -77,6 +76,11 @@ public class ExportCriteriaPanel extends Panel
 		return form;
 	}
 
+	private CheckBox createSignOffCheck(String id)
+	{
+		return new CheckBox(id, new PropertyModel(this.getModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
+	}
+	
 	/**
 	 * Create ajax submit buttons which publish their events upwards in the component hierarchy
 	 * @param id
