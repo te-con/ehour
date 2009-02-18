@@ -28,7 +28,6 @@ import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.timesheet.export.ExportParameters.Action;
-import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Check;

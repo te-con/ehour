@@ -128,7 +128,9 @@ public class PrintMonth extends WebPage
 	
 	private boolean isSignOffEnabled(ReportCriteria reportCriteria)
 	{
-		return Boolean.valueOf((String)reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name())).booleanValue();
+		Boolean signOff = (Boolean)reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name());
+
+		return (signOff == null) ? false : signOff.booleanValue();
 	}
 	
 	/**

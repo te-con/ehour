@@ -17,6 +17,7 @@ package net.rrm.ehour.report.reports;
 
 import java.io.Serializable;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.MailLogAssignment;
@@ -32,7 +33,7 @@ public class ProjectManagerReport implements Serializable
 	private static final long serialVersionUID = 1768574303126675320L;
 	
 	private Project									project;
-	private	SortedSet<AssignmentAggregateReportElement>	aggregates;
+	private	SortedSet<AssignmentAggregateReportElement>	aggregates = new TreeSet<AssignmentAggregateReportElement>();
 	private	DateRange								reportRange;
 	private	SortedSet<MailLogAssignment>			sentMail;
 	private	Float									totalHoursBooked;

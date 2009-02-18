@@ -88,7 +88,7 @@ public class ProjectManagement extends BasePage
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED)
+		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED && ajaxEvent.getTarget() != null)
 		{
 			WebMarkupContainer replacement = new PmReportPanel("reportPanel", getReportData());
 			reportPanel.replaceWith(replacement);
@@ -124,7 +124,7 @@ public class ProjectManagement extends BasePage
 	 */
 	private ProjectManagerReport getReportData()
 	{
-		ReportCriteria 	criteria = (ReportCriteria)(getModel().getObject());
+		ReportCriteria 	criteria = (ReportCriteria)(getModelObject());
 		ProjectManagerReport reportData = null;
 		DateRange	reportRange = criteria.getUserCriteria().getReportRange();
 		
@@ -142,7 +142,6 @@ public class ProjectManagement extends BasePage
 		{
 			// only one can be there
 			Project project = criteria.getUserCriteria().getProject();
-			
 			reportData = aggregateReportService.getProjectManagerDetailedReport(reportRange, project.getPK());
 		}
 		
