@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<query name="User.findByUsername"> 
+ 	    FROM User as user
+ 	    LEFT JOIN FETCH user.userRoles
+ 		WHERE username = :username
+	</query>
+
+	<query name="User.findByUsernameAndPassword"> 
+		FROM User as user
+		LEFT JOIN FETCH user.userRoles
+	    WHERE username = :username AND password = :password
+	</query>
+
+	<query name="User.findByUsernamePattern"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE lcase(firstName) like  :pattern OR lcase(lastName) like :pattern
+	    ORDER BY lastName, firstName
+	</query>
+	
+	<query name="User.findActiveByUsernamePattern"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like  :pattern OR lcase(lastName) like :pattern) AND active = true
+	    ORDER BY lastName, firstName	    
+	</query>
+
+	<query name="User.findAllActiveUsers"> 
+		SELECT user
+		FROM User as user
+		WHERE active = true
+	    ORDER BY lastName, firstName	    
+	</query>	
+
+	<query name="User.findAllActiveUsersWithEmailSet">
+	<![CDATA[
+		SELECT user
+		FROM User as user
+		WHERE active = true AND email IS NOT NULL AND email <> ''
+	    ORDER BY lastName, firstName	]]>    
+	</query>	
+
+	<query name="UserDepartment.findByNameAndCode"> 
+		FROM UserDepartment as userDepartment
+	    WHERE lcase(name) like :name  AND lcase(code) LIKE :code 
+	    	
+	</query>	
+
+	<query name="User.findActiveByNamePatternForDepartment"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like  :pattern OR lcase(lastName) like :pattern)
+	    		AND active = true
+	    		AND user.userDepartment IN (:departments)
+	    ORDER BY lastName, firstName	    
+	</query>
+
+	<query name="User.findNamePatternForDepartment"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lcase(firstName) like :pattern OR lcase(lastName) like :pattern)
+	    		AND user.userDepartment IN (:departments)
+	    ORDER BY lastName, firstName	    
+	</query>
+
+	<query name="CustomerFoldPreference.findForUserAndCustomers"> 
+		SELECT pref
+		FROM CustomerFoldPreference pref
+	    WHERE pref.foldPreferenceId.user = :user 
+	    		AND pref.foldPreferenceId.customer IN (:customers)
+	</query>	
+	
+	<sql-query name="User.deletePMsWithoutProject">
+		DELETE 
+		FROM USER_TO_USERROLE
+		WHERE ROLE = 'ROLE_PROJECTMANAGER' AND
+				USER_ID NOT IN (SELECT PROJECT_MANAGER FROM PROJECT)
+	</sql-query>
+</hibernate-mapping>

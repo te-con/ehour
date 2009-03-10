@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.domain.TimesheetEntry" table="TIMESHEET_ENTRY">
+		<!--  <cache usage="read-write" /> -->
+        <composite-id name="entryId" class="net.rrm.ehour.domain.TimesheetEntryId">
+		    <key-property name="entryDate" column="ENTRY_DATE" type="date" />
+		    <key-many-to-one name="projectAssignment" class="net.rrm.ehour.domain.ProjectAssignment" column="ASSIGNMENT_ID" lazy="false" />
+        </composite-id>
+
+		<property name="hours" column="HOURS" type="float"/>
+		
+		<property name="comment" column="COMMENT" type="string"/>
+		<property name="updateDate" column="UPDATE_DATE" type="timestamp"/>
+	</class>	
+</hibernate-mapping>

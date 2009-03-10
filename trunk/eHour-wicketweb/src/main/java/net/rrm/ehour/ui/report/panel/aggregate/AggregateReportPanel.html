@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<body>
+
+<wicket:panel>
+	<div wicket:id="reportFrame">
+		<span wicket:id="reportTable"></span>
+		
+		<br />
+        <span wicket:id="charts"></span>		
+	</div>
+	
+	
+	<wicket:fragment wicket:id="image">
+        <img wicket:id="hoursChart" />
+        <img wicket:id="turnoverChart" />
+	</wicket:fragment>
+
+    <wicket:fragment wicket:id="flash">
+        <div wicket:id="hoursChart" >[hoursChart]</div>fe
+        <div wicket:id="turnoverChart" >[turnoverChart]</div>
+    </wicket:fragment>
+</wicket:panel>
+
+</body>
+
+</html>

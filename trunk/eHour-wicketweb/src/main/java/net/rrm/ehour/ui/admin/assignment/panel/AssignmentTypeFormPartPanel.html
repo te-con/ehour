@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/">
+
+<body>
+<wicket:panel>
+		<tr>
+			<td valign="top"><nobr><wicket:message key="admin.assignment.type" />:</nobr></td>
+			<td><select class="textInputSmall" style="width: 15em" wicket:id="projectAssignment.assignmentType"></select>
+				<span wicket:id="typeValidationError"></span>
+			</td>
+		</tr>
+		
+ 		<tr wicket:id="allottedRow">
+ 			<td valign="top"><wicket:message key="admin.assignment.timeAllotted" /> :</td>
+ 			<td><input type="text" wicket:id="projectAssignment.allottedHours" style="width: 5em" class="textInputSmall" />
+ 				<wicket:message key="hours" />
+ 				<span wicket:id="allottedHoursValidationError"></span>
+ 			</td>
+ 		</tr>
+ 		
+ 		<tr wicket:id="overrunRow">
+ 			<td valign="top"><wicket:message key="admin.assignment.allowedOverrun" /> :</td>
+ 			<td><input type="text" wicket:id="projectAssignment.allowedOverrun" style="width: 5em" class="textInputSmall" />
+ 				<wicket:message key="hours" />
+ 				<span wicket:id="overrunHoursValidationError"></span>
+ 			</td>
+ 		</tr>			 		
+
+ 		<tr wicket:id="notifyPmRow">
+ 			<td valign="top"><wicket:message key="admin.assignment.notifyPm" /> :</td>
+ 			<td><input type="checkbox" wicket:id="projectAssignment.notifyPm"  />
+ 				<span wicket:id="notifyDisabled"></span>
+ 			</td>
+ 		</tr>
+
+		<tr>
+			<td colspan="2">
+				<br />
+			</td>
+		</tr>
+
+		<tr>
+			<td valign="top"><wicket:message key="admin.assignment.dateStart" />:</td>
+			<td><span wicket:id="startDateHider">
+					<span wicket:id="innerStartDateHider">
+						<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="projectAssignment.dateStart" />
+						<br />
+					</span>
+					<input type="checkbox" wicket:id="infiniteStartDate" /> <wicket:message key="admin.assignment.infiniteStart" />
+					<span wicket:id="dateStartValidationError"></span>
+				</span>
+			</td>
+		</tr>					
+		
+		<tr>
+			<td valign="top"><wicket:message key="admin.assignment.dateEnd" />:</td>
+			<td><span wicket:id="endDateHider">
+					<span wicket:id="innerEndDateHider">
+						<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="projectAssignment.dateEnd" />
+						<br />
+					</span>
+					<input type="checkbox" wicket:id="infiniteEndDate" /> <wicket:message key="admin.assignment.infiniteEnd" />
+					<span wicket:id="dateEndValidationError"></span>
+				</span>
+			</td>
+		</tr>	
+	</wicket:panel>
+</body>
+</html>		

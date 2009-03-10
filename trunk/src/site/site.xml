@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><project name="eHour">
+  <bannerLeft>
+    <name>eHour</name>
+    <src>http://www.ehour.nl/ehour.gif</src>
+    <href>/</href>
+  </bannerLeft>
+  <skin>
+    <groupId>net.rrm.ehour</groupId>
+    <artifactId>maven-ehour-skin</artifactId>
+    <version>1.0</version>
+  </skin>
+  <body>
+    <links>
+      <item name="eHour" href="http://www.ehour.nl/" />
+    </links>
+    <menu name="Developing">
+      <item name="Building" href="building.html" />
+    </menu>
+    <menu name="Links">
+      <item name="Continuum" href="/continuum/" />
+      <item name="Fisheye" href="/fisheye/" />
+    </menu>
+    <menu name="Modules" ref="modules">
+      <item name="eHour service layer" href="eHour-service/index.html" />
+      <item name="eHour web layer (wicket)" href="eHour-wicketweb/index.html" />
+    </menu>
+  </body>
+</project>

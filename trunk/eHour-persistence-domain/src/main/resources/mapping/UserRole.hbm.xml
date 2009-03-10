@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 26, 2006 11:58:19 PM by Hibernate Tools 3.2.0.beta7 -->
+<hibernate-mapping>
+    <class name="net.rrm.ehour.domain.UserRole" table="USER_ROLE">
+	    <cache usage="read-only" />
+        <id name="role" type="string">
+            <column name="ROLE" />
+        </id>
+        
+        <property name="roleName" type="string">
+            <column name="NAME" length="128" />
+        </property>
+    </class>
+</hibernate-mapping>

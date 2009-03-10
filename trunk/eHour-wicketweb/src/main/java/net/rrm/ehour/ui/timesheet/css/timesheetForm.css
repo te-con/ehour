@@ -1,0 +1,332 @@
+div.timesheet
+{
+	padding: 0 10px 0 10px;
+}
+
+.timesheetTable
+{
+	padding: 0;
+	width: 100%;
+}
+
+.timesheetTable td
+{
+	color:	#536e87;
+	height:	18px;
+	width: 70px;
+	border-right-style: solid;
+	border-right-color:#a1bcd7;
+	border-right-width: 1px;
+}
+
+.timesheetTable tr.weekColumnRow td
+{
+	font:  16px/16px Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+.timesheetTable tr.weekColumnRow td.borderless
+{
+	border: 0;
+}
+
+.timesheetTable tr.weekColumnRow td.project
+{
+	width: 250px;
+	border-width: 0;
+	color: #536e87;
+	text-align: left;
+	vertical-align: bottom;
+	padding-bottom: 1px;
+}
+
+.timesheetTable tr.weekColumnRow td.projectCode
+{
+	border: 0;
+	padding-bottom: 1px;
+	text-align: left;
+	vertical-align: bottom;
+}
+
+
+.timesheetTable tr.weekColumnRow td.spacer
+{
+	border-right: 0;
+	weight: 10em;
+}
+
+
+.timesheetTable tr.weekColumnRow td.spacer
+{
+	border-right: 0;
+}
+
+.timesheetTable tr.projectRow td.fold
+{
+	border-right: 0px;
+	width: 16px;
+}
+
+.timesheetTable tr.projectRow td.project
+{
+	width: 220px;
+	text-align: left;
+	border-right: 0px;
+	font:  1em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	padding: 8px 0 0 0;
+	vertical-align: top;
+}
+
+.timesheetTable tr.projectRow td.projectCode
+{
+	text-align: left;
+	font-weight: normal;
+	border-right: 0px;
+	padding: 8px 0 0 0;
+	vertical-align: top;
+}
+
+
+.timesheetTable tr.projectRow td.customer
+{
+	font-weight: normal;
+	weight: 10em;
+	text-align: left;
+	padding-left: 3px;
+	border-right: 0;
+}
+
+
+.timesheetTable tr.projectRow td.spacer
+{
+	border-right: 0;
+	weight: 10em;
+}
+
+.timesheetTable tr.projectRow td.project a:link
+{
+	text-decoration: none;
+	color: #536e87;
+}
+
+.timesheetTable tr.projectRow td.project a:visited
+{
+	text-decoration: none;
+	color: #536e87;
+}
+
+.timesheetTable tr.projectRow td.project a:hover
+{
+	text-decoration: underline;
+	color: #536e87;
+}
+
+.timesheetTable tr.projectRow td.project a:active
+{
+	text-decoration: none;
+	color: #536e87;
+}
+
+.timesheetTable tr.projectRow td
+{
+	font:  normal  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	padding: 0 0 1px 0;
+	text-align: center;
+	border-bottom-style:  solid;	border-bottom-color: #b9d3ef;	border-bottom-width: 1px;
+}
+
+
+.timesheetTable tr.projectRow
+{
+	padding-bottom: 1px;
+}
+
+.timesheetTable tr.projectRow td a:visited
+{
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: white;
+	text-decoration: none;
+}
+
+.timesheetTable tr.projectRow td a:hover
+{
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	text-decoration: underline;
+}
+
+.timesheetTable tr.projectRow td
+{
+	background-color: #eef6fe;
+}
+
+.timesheetTable tr.projectRow td.sunday
+{
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	text-align: center;
+	background-color: #eef6fe;
+	padding: 1px 0 0 0;
+	vertical-align: top;
+}
+
+.timesheetTable tr.projectRow td.saturday
+{
+	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	border-right: 0px;
+	text-align: center;
+	padding: 1px 0 0 0;
+	vertical-align: top;
+}
+
+.timesheetTable tr.projectRow td.total
+{
+	font:  0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	border-right: 0px;
+	text-align: center;
+	padding: 8px 0 0 0;
+	vertical-align: top;
+	
+}
+
+.timesheetTable tr.customerRow td
+{
+	margin-top: 10px;
+	border-bottom-style:  solid;
+	border-bottom-color: #b9d3ef;
+	border-bottom-width: 1px;	
+}
+
+.timesheetTable tr.customerRow td.weekday
+{
+	margin-top: 10px;
+	background-color: #fefeff;
+}
+
+.timesheetTable tr.customerRow td.saturday
+{
+	margin-top: 10px;
+	background-color: #fefeff;
+	border-right-width: 0;
+}
+
+.timesheetTable tr.customerRow td.foldIcon
+{
+	margin-top: 10px;
+	background-color: #fefeff;
+	border-right-width: 0;
+	padding-left: 3px;
+	width: 9px
+}
+
+.timesheetTable tr.customerRow td.foldIcon a
+{
+	color: red;
+}
+
+.timesheetTable tr.customerRow td.customerCell
+{
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	background-color: #fefeff;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	cursor: pointer;
+}
+
+.timesheetTable tr.projectRow td.weekday
+{
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	text-align: center;
+	padding: 1px 0 0 0;
+	vertical-align: top;
+}
+
+.timesheetTable input
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #cfdbe6;
+	margin: 5px 0 5px 0;
+	font: 1em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	color: #536e87;
+	background-color: white;
+	width: 3em;
+	size: 3;
+	text-align: right;
+	margin-right: 1px;
+}
+
+.timesheetTable tr.totalRow
+{
+	background-color: #fefeff;
+}
+
+.timesheetTable tr.totalRow td
+{
+	font:  0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 5px 0 0 0;
+	padding: 0 13px 0 0;
+	text-align: right;
+}
+
+
+.timesheetCommentsTable
+{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+
+.timesheetPersisted
+{
+	font: 0.9em Geneva, Arial, Helvetica, sans-serif;
+	color:#233e55;
+}
+
+.timesheetCommentsTable td
+{
+	color:	#536e87;
+	border:	0;
+}
+
+.timesheetTextarea
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #b3c0cb;
+	margin: 0 0 5px 0;	
+	font: 0.9em/1.5 Geneva, Arial, Helvetica, sans-serif;
+	overflow-y: auto;
+	width: 500px;
+	color: #536e87;
+	background-color: white;
+}
+
+.commentBody p
+{
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #3b556d;
+	padding: 5px 5px 0 5px;
+	margin: 0;
+}
+
+div.wicket-modal div.w_content_3 {
+	border:  0;
+	padding: 0px;	
+}

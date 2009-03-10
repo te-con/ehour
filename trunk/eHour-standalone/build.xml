@@ -1,0 +1,32 @@
+<project name="eHourDdlExport" 
+		default="database-dump" 
+		basedir="."
+		xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+	<artifact:dependencies pathId="dependency.classpath">
+		<dependency groupId="org.apache.ddlutils" artifactId="ddlutils"
+	              version="1.0"/>
+		<dependency groupId="log4j" artifactId="log4j"
+	              version="1.2.13"/>
+		<dependency groupId="mysql" artifactId="mysql-connector-java" 
+	              version="5.0.5"/>
+	</artifact:dependencies>
+
+	<target name="database-dump" description="Dumps the database structure">
+		<taskdef name="databaseToDdl"
+           classname="org.apache.ddlutils.task.DatabaseToDdlTask">
+			<classpath refid="dependency.classpath"/>
+		</taskdef>
+		
+		<databaseToDdl modelName="ehour-0.7">
+			<database url="jdbc:mysql://127.0.0.1/ehour"
+              driverClassName="com.mysql.jdbc.Driver"
+              username="root"
+              password="admin"/>
+
+			<writeSchemaToFile outputFile="src/main/resources/db/ddl-ehour-0.7.xml"/>
+			<writeDataToFile outputFile="src/main/resources/db/dml-ehour-0.7.xml"/>
+		</databaseToDdl>
+
+	</target>
+</project>

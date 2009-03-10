@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/">
+
+<body>
+<wicket:panel>
+	<div wicket:id="border">
+	
+		<form wicket:id="userForm" style="margin: 0; padding: 0">
+			<table class="contentTable" style="padding: 0 10px 0 0">
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.username" />:</td>
+					<td><input class="textInputSmall" wicket:id="user.username" style="width: 15em" />
+						<span wicket:id="userValidationError"></span>
+					</td>
+				</tr>
+
+                <span wicket:id="password"></span>				
+
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
+				
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.firstName" />:</td>
+					<td><input class="textInputSmall" wicket:id="user.firstName" style="width: 15em" />
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.lastName" />:</td>
+					<td><input class="textInputSmall" wicket:id="user.lastName" style="width: 15em" />
+						<span wicket:id="lastNameValidationError"></span>
+					</td>
+				</tr>
+            
+                <span wicket:id="email"></span>
+
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
+
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.department" />:</td>
+					<td><select class="textInputSmall" style="width: 15em" wicket:id="user.userDepartment"></select>
+						<span wicket:id="departmentValidationError"></span>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
+
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.roles" />:</td>
+					<td><select class="textInputSmall" style="width: 15em" wicket:id="user.userRoles"></select>
+						<span wicket:id="rolesValidationError"></span>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<br />
+					</td>
+				</tr>
+
+				<tr>
+					<td valign="top"><wicket:message key="admin.user.active" />:</td>
+					<td><input type="checkbox" wicket:id="user.active" /></td>
+				</tr>
+
+
+				<tr>
+					<td colspan="2">
+						<br />
+						<span wicket:id="serverMessage"></span>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<a class="button" wicket:id="deleteButton">
+							<span><wicket:message key="general.delete" /></span>
+						</a>
+					</td>
+					<td style="text-align: right">
+						<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+							<span><wicket:message key="general.save" /></span></a>
+					</td>
+				</tr>	
+				
+			</table>
+		</form>		
+	</div>
+</wicket:panel>
+
+</body>
+
+</html>

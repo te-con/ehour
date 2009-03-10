@@ -1,0 +1,88 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>eHour</display-name>
+
+	<context-param>
+		<param-name>configuration</param-name>
+		<param-value>development</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:applicationContext-acegi-security.xml
+			classpath:applicationContext-dao.xml
+			classpath:applicationContext-datasource.xml
+			classpath:applicationContext-service.xml
+			classpath:applicationContext-mail.xml
+			classpath:applicationContext-wicket.xml
+			classpath:applicationContext-audit.xml
+			classpath:applicationContext-props.xml
+		</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>hibernateFilter</filter-name>
+		<filter-class>
+			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
+		</filter-class>
+		<init-param>
+			<param-name>singleSession</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>Acegi HTTP Request Security Filter</filter-name>
+		<filter-class> org.acegisecurity.util.FilterToBeanProxy
+		</filter-class>
+		<init-param>
+			<param-name>targetClass</param-name>
+			<param-value> org.acegisecurity.util.FilterChainProxy </param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>EhourWebApplication</filter-name>
+		<filter-class>
+			org.apache.wicket.protocol.http.WicketFilter
+		</filter-class>
+		<init-param>
+			<param-name>applicationClassName</param-name>
+			<param-value>
+				net.rrm.ehour.ui.EhourWebApplication
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>applicationFactoryClassName</param-name>
+			<param-value>
+				org.apache.wicket.spring.SpringWebApplicationFactory
+			</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>/eh/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>Acegi HTTP Request Security Filter</filter-name>
+		<url-pattern>/eh/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>EhourWebApplication</filter-name>
+		<url-pattern>/eh/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<resource-ref>
+		<res-ref-name>jdbc/eHourDS</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+</web-app>

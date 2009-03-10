@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.domain.Customer" table="CUSTOMER">
+		<!-- <cache usage="read-write" /> -->
+
+		<id name="customerId" column="CUSTOMER_ID" type="integer">
+			<generator class="native" />
+		</id>
+
+		<property name="code" column="CODE" type="string" length="16" />
+		<property name="name" column="NAME" type="string" length="256" />
+		<property name="description" column="DESCRIPTION" type="string" length="1024" />
+
+		<property name="active" column="ACTIVE" type="yes_no" index="IDX_CUSTOMER_ACTIVE" />
+
+		<set name="projects" inverse="true" lazy="true">
+			<key column="CUSTOMER_ID" />
+			<one-to-many class="net.rrm.ehour.domain.Project" />
+		</set>
+	</class>
+</hibernate-mapping>

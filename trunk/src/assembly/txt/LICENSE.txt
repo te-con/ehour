@@ -1,0 +1,29 @@
+Definitions
+
+   1. This Package is defined as all of the files within any archive file or any group of files released in conjunction by TE-CON.
+   2. A Modification, or a Mod, is defined as instructions, to be performed manually or in an automated manner, that alter any part 
+	  of this Package.
+   3. A Modified Package is defined as this Package or a derivative of it with one or more Modification applied to it.
+   4. Distribution is defined as allowing one or more other people to in any way download or receive a copy of this Package.
+   5. The Software is defined as an installed copy of this Package, a Modified Package, or a derivative of this Package.
+   6. The EHOUR Website is defined as http://www.ehour.nl/.
+
+Agreement
+
+   1. Permission is hereby granted to use, copy, distribute this Package, provided that:
+         1. Any Distribution of this Package includes this license is released under the terms of this Agreement.
+         2. This Package may not be sold or released under any paid license. Copying fees for the transport of this Package, 
+			support fees for installation or other services, and hosting fees for hosting the Software may, however, be imposed.
+         3. Any Distribution of this Package requires express written consent from TE-CON.
+   2. You may make Modifications to this Package but not distribute your Modifications in any way.
+   3. Permission is hereby also granted to distribute programs which depend on this Package, provided that you do not distribute any 
+	  Modified Package without express written consent.
+   4. TE-CON reserves the right to change the terms of this Agreement at any time, although those changes are not retroactive to past 
+	  releases. A current copy of this Agreement can be found on the EHOUR Website.
+   5. This Agreement will terminate automatically if you fail to comply with the limitations described herein. Upon termination, you 
+	  must destroy all copies of this Package, the Software, and any derivatives within 48 hours.
+ 
+
+This package is provided "as is" and without any warranty. Any express or implied warranties, including, but not limited to, the 
+implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the authors be liable 
+to any party for any direct, indirect, incidental, special, exemplary, or consequential damages arising in any way out of the use or misuse of this package.

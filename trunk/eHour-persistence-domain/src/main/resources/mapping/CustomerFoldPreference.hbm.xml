@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.domain.CustomerFoldPreference" table="CUSTOMER_FOLD_PREFERENCE">
+		<cache usage="read-write" />
+
+        <composite-id name="foldPreferenceId" class="net.rrm.ehour.domain.CustomerFoldPreferenceId" >
+	        <key-many-to-one name="user" class="net.rrm.ehour.domain.User" column="USER_ID" lazy="false" />
+		    <key-many-to-one name="customer" class="net.rrm.ehour.domain.Customer" column="CUSTOMER_ID" lazy="false" />
+        </composite-id>
+
+		<property name="folded" column="FOLDED" type="yes_no"  />
+	</class>
+</hibernate-mapping>

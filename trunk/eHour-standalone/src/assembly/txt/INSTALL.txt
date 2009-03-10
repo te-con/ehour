@@ -1,0 +1,15 @@
+Install instructions
+--------------------
+Make sure you have a Java 5 runtime environment installed. Download an install the latest version
+from http://java.sun.com/javase/downloads/index.jsp
+
+To start eHour go to the bin/<your OS> directory.
+For windows execute the eHour.bat or run eHour-installService if you want to install eHour as a service.
+Make sure you the path you extract eHour to doesn't contain any spaces.
+c:\program files\ehour will not work, try using c:\ehour instead.
+
+Linux users execute "ehour.sh start" to start eHour.
+
+When eHour is started browse to http://localhost:8000/ to access the web interface.
+
+First time usage documentation can be found at http://www.ehour.nl/first_time_usage.phtml and http://www.ehour.nl/doc.phtml

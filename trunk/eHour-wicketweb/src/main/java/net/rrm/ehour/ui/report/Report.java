@@ -1,0 +1,51 @@
+/**
+ * Created on Sep 15, 2007
+ * Created by Thies Edeling
+ * Created by Thies Edeling
+ * Copyright (C) 2007 TE-CON, All Rights Reserved.
+ *
+ * This Software is copyright TE-CON 2007. This Software is not open source by definition. The source of the Software is available for educational purposes.
+ * TE-CON holds all the ownership rights on the Software.
+ * TE-CON freely grants the right to use the Software. Any reproduction or modification of this Software, whether for commercial use or open source,
+ * is subject to obtaining the prior express authorization of TE-CON.
+ * 
+ * thies@te-con.nl
+ * TE-CON
+ * Legmeerstraat 4-2h, 1058ND, AMSTERDAM, The Netherlands
+ *
+ */
+
+package net.rrm.ehour.ui.report;
+
+import java.io.Serializable;
+
+/**
+ * Type interface for reports 
+ **/
+
+public abstract class Report implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8583320436270110287L;
+	private String	reportId;
+
+	/**
+	 * @return the reportId
+	 */
+	public String getReportId()
+	{
+		return reportId;
+	}
+
+	/**
+	 * @param reportId the reportId to set
+	 */
+	public void setReportId(String reportId)
+	{
+		this.reportId = reportId;
+	}
+	
+
+}

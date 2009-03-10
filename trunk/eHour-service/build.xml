@@ -1,0 +1,28 @@
+<project name="eHourDdlExport" default="database-dump" basedir=".">
+	
+	<property environment="env" /> 	
+	<path id="classpath">
+		<fileset dir="{M2_REPO}">
+			<include name="org/apache/ddlutils/ddlutils/*.jar"/>
+			<include name="mysql/mysql-connector-java/5.0.5/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="database-dump" description="Dumps the database structure">
+		<taskdef name="databaseToDdl"
+           classname="org.apache.ddlutils.task.DatabaseToDdlTask">
+			<classpath refid="classpath"/>
+
+		</taskdef>
+		<databaseToDdl modelName="MyModel">
+			<database url="jdbc:mysql://127.0.0.1/ehour"
+              driverClassName="com.mysql.jdbc.Driver"
+              username="root"
+              password="admin"/>
+
+			<writeSchemaToFile outputFile="db-schema.xml"/>
+			<writeDataToFile outputFile="data.xml"/>
+		</databaseToDdl>
+
+	</target>
+</project>	

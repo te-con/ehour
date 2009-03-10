@@ -1,0 +1,73 @@
+/* TAB PANEL STYLES */
+div.tabpanel div.tab-row {
+	float: left;
+	background-color: #ffffff;
+	line-height: normal;
+	margin-left: -10px;
+}
+
+div.tabpanel div.tab-row ul {
+	margin: 0;
+	padding: 2px 10px 0;
+	list-style: none;
+}
+
+div.tabpanel div.tab-row li {
+	float: left;
+	background: url("../img/tabs/left_off.gif") no-repeat left top;
+	margin: 0;
+	padding: 0 0 0 8px;
+}
+
+div.tabpanel div.tab-row a {
+	display: block;
+	background: url("../img/tabs/right_off.gif") no-repeat right top;
+	padding: 5px 15px 4px 0px;
+	text-decoration: none;
+	font-weight: normal;
+	font-size: 0.8em;
+	white-space: nowrap;
+	color: #3b556d;
+}
+
+div.tabpanel div.tab-row a:hover {
+	color: #fff;
+	text-decoration: none;
+}
+
+div.tabpanel div.tab-row a:link
+{
+	text-decoration: none;
+	font-family: Verdana,Geneva,Arial,Helvetica;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	font-size: 0.8em;
+	line-height:0.8em;
+	font-size-adjust: none;
+	font-stretch: normal;
+}
+
+div.tabpanel div.tab-row li.selected {
+	background-image: url("../img/tabs/left_on.gif");
+}
+
+div.tabpanel div.tab-row li.selected a {
+	background-image: url("../img/tabs/right_on.gif");
+	color: #fff;
+	padding-bottom: 4px;
+}
+
+div.tabpanel div.tab-row li.selected a:link
+{
+	text-decoration: none;
+	font-family: Verdana,Geneva,Arial,Helvetica;
+	font-variant: normal;
+	font-weight: bold;
+	font-size: 0.8em;
+	font-style: normal;
+	line-height:0.8em;
+	font-style:bold;
+	font-size-adjust: none;
+	font-stretch: normal;
+}

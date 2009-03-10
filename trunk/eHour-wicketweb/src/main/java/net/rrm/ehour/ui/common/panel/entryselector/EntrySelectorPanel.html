@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<body>
+
+<wicket:panel>
+	<span wicket:id="entrySelectorFrame">
+	
+		<form onsubmit="return false;" wicket:id="filterForm" style="margin: 0; padding: 0">
+			<p>
+                <span wicket:id="filterInputContainer">
+					<input class="textInput" 
+							type="text" 
+							wicket:id="filterInput"
+							style="width: 220px; background-color: #fefefe;margin: 0 0 3px 0; padding: 0;color: #aaaaaa; "
+							size="25" 
+							/>
+                    <br />
+				</span>
+				
+				<span wicket:id="filterToggleText"></span>&nbsp;&nbsp;&nbsp;<input style="border:0" wicket:id="filterToggle" type="checkbox" />
+			</p>
+		</form>	
+	
+		<div wicket:id="blueBorder" style="width: 250px; padding-top: 0; margin-top: 10px">
+			<div class="listScroll">
+				<span wicket:id="itemListHolder"></span>
+			</div>	
+		</div>
+	</span>
+</wicket:panel>
+
+</body>
+
+</html>

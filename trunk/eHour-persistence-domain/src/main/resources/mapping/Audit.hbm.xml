@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.domain.Audit" table="AUDIT">
+		<cache usage="read-write" />
+		
+		<id name="auditId" column="AUDIT_ID" type="integer">
+			<generator class="native" />
+		</id>		
+		
+        <many-to-one name="user" class="net.rrm.ehour.domain.User" fetch="join" insert="true">
+            <column name="USER_ID" />
+        </many-to-one>
+        
+        <property name="userFullName" column="USER_FULLNAME" type="string" />
+        <property name="date" column="AUDIT_DATE" type="timestamp" />
+        <property name="page" column="PAGE" type="string" />
+		<property name="action" column="ACTION" type="string" />
+		<property name="parameters" column="PARAMETERS" type="string" />
+		<property name="success" column="SUCCESS" type="yes_no"  />
+		<property name="auditActionType" column="AUDIT_ACTION_TYPE" access="property" update="true" insert="true">
+			<type name="net.rrm.ehour.commons.hibernate.GenericEnumUserType">
+				<param name="enumClass">net.rrm.ehour.domain.AuditActionType</param>
+				<param name="identifierMethod">getValue</param>
+				<param name="valueOfMethod">fromString</param>
+			</type>
+		</property>
+	</class>
+</hibernate-mapping>

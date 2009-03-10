@@ -1,0 +1,13 @@
+eHour Developer resources
+
+	eHour is an open source webbased time tracking tool aimed at  companies and organizations who need accurate information on how much time is spend on projects by their people.
+	For more information and usage check {{{http://www.ehour.nl}} www.ehour.nl}}. This site is aimed at people who want to help with eHour.
+
+	As with any open source project, there are several ways you can help:
+
+    * Join the {{{http://www.ehour.nl/forum/}forum}} and answer other user's questions
+    * Report bugs, feature requests and other issues in the {{{http://www.ehour.nl/defects/}issue tracking application}}.
+    * {{{patch}Submit patche}}s to reported issues (both those you find, or that others have filed)
+    
+
+	eHour is built using Java 5, Spring, Hibernate, Apache Wicket and Maven 2.

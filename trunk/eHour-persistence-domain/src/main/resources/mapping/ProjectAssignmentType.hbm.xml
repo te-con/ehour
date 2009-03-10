@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.domain.ProjectAssignmentType" table="PROJECT_ASSIGNMENT_TYPE"  mutable="false">
+	    <cache usage="read-only" />
+		
+		<id name="assignmentTypeId" column="ASSIGNMENT_TYPE_ID" type="integer" />
+
+        <property name="assignmentType" column="ASSIGNMENT_TYPE" type="string" length="64" index="IDX_ASG_TYPE" />
+	</class>	
+</hibernate-mapping>
