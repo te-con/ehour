@@ -18,46 +18,28 @@ package net.rrm.ehour.report.reports;
 import java.io.Serializable;
 import java.util.List;
 
-import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.element.ReportElement;
 
 /**
  * Data holder for aggregate reports
  **/
 
-public class ReportData<RE extends ReportElement> implements Serializable
+public class ReportData implements Serializable
 {
 	private static final long serialVersionUID = -6344570520998830487L;
 	
-	private List<RE>		reportElements;
-	private	ReportCriteria	reportCriteria;
+	private List<? extends ReportElement>		reportElements;
 
-	/**
-	 * @return the reportCriteria
-	 */
-	public ReportCriteria getReportCriteria()
+	public ReportData(List<? extends ReportElement> reportElements)
 	{
-		return reportCriteria;
+		this.reportElements = reportElements;
 	}
-	/**
-	 * @param reportCriteria the reportCriteria to set
-	 */
-	public void setReportCriteria(ReportCriteria reportCriteria)
-	{
-		this.reportCriteria = reportCriteria;
-	}
+	
 	/**
 	 * @return the reportElements
 	 */
-	public List<RE> getReportElements()
+	public List<? extends ReportElement> getReportElements()
 	{
 		return reportElements;
-	}
-	/**
-	 * @param reportElements the reportElements to set
-	 */
-	public void setReportElements(List<RE> reportElements)
-	{
-		this.reportElements = reportElements;
 	}
 }

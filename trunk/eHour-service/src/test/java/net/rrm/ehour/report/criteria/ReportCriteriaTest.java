@@ -28,13 +28,10 @@ import net.rrm.ehour.util.DateUtil;
 public class ReportCriteriaTest extends TestCase
 {
 	ReportCriteriaService 	reportCriteriaService;
-	ReportCriteria	reportCriteria;
 	
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		reportCriteria = new ReportCriteria();
-		reportCriteria.setAvailableCriteria(new AvailableCriteria());
 	}
 
 
@@ -43,10 +40,10 @@ public class ReportCriteriaTest extends TestCase
 	{
 		DateRange dr = DateUtil.calendarToMonthRange(new GregorianCalendar());
 		
-		reportCriteria.setUserCriteria(new UserCriteria());
 		AvailableCriteria availCriteria = new AvailableCriteria();
+		ReportCriteria reportCriteria = new ReportCriteria(availCriteria);
+
 		availCriteria.setReportRange(dr);
-		reportCriteria.setAvailableCriteria(availCriteria);
 		
 		assertEquals(dr, reportCriteria.getReportRange());
 	}

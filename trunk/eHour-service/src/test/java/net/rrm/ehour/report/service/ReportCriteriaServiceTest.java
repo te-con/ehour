@@ -18,6 +18,7 @@ package net.rrm.ehour.report.service;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
@@ -34,7 +35,6 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
-import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -88,7 +88,6 @@ public class ReportCriteriaServiceTest  extends TestCase
 	{
 		ReportCriteria		reportCriteria;
 		UserCriteria		userCriteria;
-		AvailableCriteria	availCriteria;
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
@@ -96,7 +95,6 @@ public class ReportCriteriaServiceTest  extends TestCase
 		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
 		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
 		
-		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called
 //		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
 //		reportCriteria.setReportCriteriaService(rsMock);
@@ -106,15 +104,11 @@ public class ReportCriteriaServiceTest  extends TestCase
 		List ids = new ArrayList();
 		ids.add(new User(1));
 		userCriteria.setUsers(ids);
-		reportCriteria.setUserCriteria(userCriteria);
-		
-		availCriteria = new AvailableCriteria();
-		reportCriteria.setAvailableCriteria(availCriteria);
-		
+		reportCriteria = new ReportCriteria(userCriteria);		
 		prjAssignmentDAO.findProjectAssignmentsForUser(new User(1));
 		expectLastCall().andReturn(prjAsgs);
 
-		reportAggregatedDAO.getMinMaxDateTimesheetEntry(new User(1));
+		reportAggregatedDAO.getMinMaxDateTimesheetEntry(isA(User.class));
 		expectLastCall().andReturn(null);
 		
 		replay(prjAssignmentDAO);
@@ -125,7 +119,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		verify(reportAggregatedDAO);
 		verify(prjAssignmentDAO);
 		
-		assertEquals(2, availCriteria.getCustomers().size());
+		assertEquals(2, reportCriteria.getAvailableCriteria().getCustomers().size());
 	}	
 
 	/**
@@ -136,7 +130,6 @@ public class ReportCriteriaServiceTest  extends TestCase
 	{
 		ReportCriteria		reportCriteria;
 		UserCriteria		userCriteria;
-		AvailableCriteria	availCriteria;
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
@@ -152,10 +145,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		userCriteria.setOnlyActiveUsers(false);
 		userCriteria.setOnlyActiveCustomers(true);
 		userCriteria.setOnlyActiveProjects(false);
-		reportCriteria.setUserCriteria(userCriteria);
-		
-		availCriteria = new AvailableCriteria();
-		reportCriteria.setAvailableCriteria(availCriteria);
+		reportCriteria = new ReportCriteria(userCriteria);
 		
 		expect(userDAO.findUsersByNameMatch(null, false) ).andReturn(new ArrayList<User>());
 		replay(userDAO);

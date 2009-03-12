@@ -100,9 +100,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 			{
 				availCriteria.setUsers(getAvailableUsers(userCriteria));
 			}
-			
-			// not entirely useful but for clarity
-			reportCriteria.setAvailableCriteria(availCriteria);
 		}	
 		
 		return reportCriteria;

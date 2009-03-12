@@ -19,7 +19,6 @@ package net.rrm.ehour.report.service;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 /**
  * Report service for detailed reports
@@ -33,5 +32,5 @@ public interface DetailedReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public ReportData<FlatReportElement> getDetailedReportData(ReportCriteria criteria);
+	public ReportData getDetailedReportData(ReportCriteria criteria);
 }

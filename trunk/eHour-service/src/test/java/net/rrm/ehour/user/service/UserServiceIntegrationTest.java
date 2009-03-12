@@ -18,9 +18,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.util.List;
-
 import net.rrm.ehour.AbstractServiceTest;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.domain.User;
@@ -29,7 +26,6 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -28,11 +28,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  **/
 
 public class AssignmentAggregateReportElement 
-			extends ReportElement 
-			implements Comparable<AssignmentAggregateReportElement>
+			implements Comparable<AssignmentAggregateReportElement>, ReportElement
 {
 	private static final long serialVersionUID = -7175763322632066925L;
 	private ProjectAssignment 	projectAssignment;
+	private Number 				hours;
 
 	
 	/**
@@ -53,6 +53,8 @@ public class AssignmentAggregateReportElement
 		this.hours = hours;
 		this.projectAssignment = projectAssignment;
 	}
+	
+	
 
 	/**
 	 * Get the progress (booked hours) in percentage of the allotted hours, leaving out the overrun
@@ -185,6 +187,23 @@ public class AssignmentAggregateReportElement
 	}
 
 	/**
+	 * @return the hours
+	 */
+	public Number getHours()
+	{
+		return hours;
+	}
+
+	/**
+	 * @param hours the hours to set
+	 */
+	public void setHours(Number hours)
+	{
+		this.hours = hours;
+	}
+
+	
+	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
 	public boolean equals(Object object)
@@ -205,4 +224,5 @@ public class AssignmentAggregateReportElement
 		return new HashCodeBuilder(259442803, 2067843191).appendSuper(super.hashCode()).append(this.projectAssignment).toHashCode();
 	}
 
+	
 }

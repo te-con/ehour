@@ -47,10 +47,9 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 	 * @param reportCriteria
 	 * @return
 	 */
-	// TODO why reportCrtieria? userCriteria should be sufficient
-	protected ReportData<RE> getReportData(ReportCriteria reportCriteria)
+	// TODO why reportCrweria? userCriteria should be sufficient
+	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
-		ReportData<RE> reportData = new ReportData<RE>();
 		UserCriteria	userCriteria;
 		List<Project>	projects = null;
 		List<User>		users = null;
@@ -87,8 +86,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 			projects = getProjects(userCriteria);
 		}		
 		
-		reportData.setReportElements(getReportElements(users, projects, reportRange));
-		reportData.setReportCriteria(reportCriteria);
+		ReportData reportData = new ReportData(getReportElements(users, projects, reportRange));
 		
 		return reportData;
 	}

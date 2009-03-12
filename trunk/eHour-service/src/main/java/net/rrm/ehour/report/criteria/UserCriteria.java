@@ -186,9 +186,11 @@ public class UserCriteria implements Serializable
 	/**
 	 * @param reportRange the reportRange to set
 	 */
-	public void setReportRange(DateRange reportRange)
+	public UserCriteria setReportRange(DateRange reportRange)
 	{
 		this.reportRange = reportRange;
+		
+		return this;
 	}
 
 	/**

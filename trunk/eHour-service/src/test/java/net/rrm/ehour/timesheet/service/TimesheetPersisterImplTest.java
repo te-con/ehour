@@ -67,6 +67,7 @@ public class TimesheetPersisterImplTest {
 	/**
 	 * 
 	 */
+	@SuppressWarnings("deprecation")
 	private void initData()
 	{
 		assignment = new ProjectAssignment(1);
@@ -197,6 +198,7 @@ public class TimesheetPersisterImplTest {
 	 * @throws OverBudgetException 
 	 * @throws OverBudgetException
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testPersistOverrunDecreasingTimesheet() throws OverBudgetException {
 		Date dateC = new Date(2008 - 1900, 4 - 1, 3);

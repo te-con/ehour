@@ -41,9 +41,25 @@ public class ReportCriteria implements Serializable
 	 */
 	public ReportCriteria()
 	{
-		userCriteria = new UserCriteria();
+		this(new AvailableCriteria(), new UserCriteria());
+	}
+
+	public ReportCriteria(AvailableCriteria availableCriteria)
+	{
+		this(availableCriteria, new UserCriteria());
 	}
 	
+	public ReportCriteria(UserCriteria userCriteria)
+	{
+		this(new AvailableCriteria(), userCriteria);
+	}	
+
+	public ReportCriteria(AvailableCriteria availableCriteria, UserCriteria userCriteria)
+	{
+		this.availableCriteria = availableCriteria;
+		this.userCriteria = userCriteria;
+	}
+
 	/**
 	 * Get report range, use the available criteria if the user didn't supply any (yet)
 	 * @return
@@ -106,14 +122,6 @@ public class ReportCriteria implements Serializable
 	{
 		return userCriteria;
 	}
-	
-	/**
-	 * @param userCriteria the userCriteria to set
-	 */
-	public void setUserCriteria(UserCriteria userCriteria)
-	{
-		this.userCriteria = userCriteria;
-	}
 
 	/**
 	 * @return the availableCriteria
@@ -121,13 +129,5 @@ public class ReportCriteria implements Serializable
 	public AvailableCriteria getAvailableCriteria()
 	{
 		return availableCriteria;
-	}
-
-	/**
-	 * @param availableCriteria the availableCriteria to set
-	 */
-	public void setAvailableCriteria(AvailableCriteria availableCriteria)
-	{
-		this.availableCriteria = availableCriteria;
 	}
 }

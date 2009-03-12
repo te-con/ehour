@@ -44,16 +44,7 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 		Criteria criteria = buildCriteria(request, false);
 		criteria.setProjection(Projections.rowCount());
 
-		List<?> results = criteria.list();
-		
-		if (results.size() > 0)
-		{
-			return ((Integer)results.get(0)).intValue();
-		}
-		else
-		{
-			return 0;
-		}
+		return (Integer)criteria.uniqueResult();
 	}
 	
 	/**
@@ -90,14 +81,14 @@ public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number
 		}
 
 		
-		if (request.getDateRange().getDateStart() != null)
+		if (request.getReportRange().getDateStart() != null)
 		{
-			criteria.add(Restrictions.ge("date", request.getDateRange().getDateStart()));
+			criteria.add(Restrictions.ge("date", request.getReportRange().getDateStart()));
 		}
 
-		if (request.getDateRange().getDateEnd() != null)
+		if (request.getReportRange().getDateEnd() != null)
 		{
-			criteria.add(Restrictions.le("date", request.getDateRange().getDateEnd()));
+			criteria.add(Restrictions.le("date", request.getReportRange().getDateEnd()));
 		}
 
 		return criteria;

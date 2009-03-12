@@ -20,30 +20,10 @@ package net.rrm.ehour.report.reports.element;
 import java.io.Serializable;
 
 /**
- * Report element 
+ * Report element, represent a actual cell in the report
  **/
 
-public abstract class ReportElement implements Serializable
+public interface ReportElement extends Serializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5338728111655714167L;
-	protected Number 				hours;
-
-	/**
-	 * @return the hours
-	 */
-	public Number getHours()
-	{
-		return hours;
-	}
-
-	/**
-	 * @param hours the hours to set
-	 */
-	public void setHours(Number hours)
-	{
-		this.hours = hours;
-	}
+	
 }
