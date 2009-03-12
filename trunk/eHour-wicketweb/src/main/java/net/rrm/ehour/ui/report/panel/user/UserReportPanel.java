@@ -16,17 +16,12 @@
 
 package net.rrm.ehour.ui.report.panel.user;
 
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
-import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartImage;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.user.page.UserReportPrint;
@@ -36,11 +31,9 @@ import ofc4j.model.elements.BarChart;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -153,44 +146,44 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addImageCharts(ReportData data, WebMarkupContainer parent)
-	{
-		Model dataModel = new Model(data);
-		
-		// hours per customer
-		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, chartWidth, chartHeight);
-		parent.add(customerHoursChart);
-
-		// turnover per customer
-		if (config.isShowTurnover())
-		{
-			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, chartWidth, chartHeight);
-			parent.add(customerTurnoverChart);
-		}
-		else
-		{
-			// placeholder, not visible anyway
-			Image img = new Image("customerTurnoverChart");
-			img.setVisible(false);
-			parent.add(img);
-		}
-
-		// hours per project
-		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, chartWidth, chartHeight);
-		parent.add(projectHoursChartFactory);
-
-		// turnover per project
-		if (config.isShowTurnover())
-		{
-			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, chartWidth, chartHeight);
-			parent.add(projectTurnoverChart);
-		}
-		else
-		{
-			// placeholder, not visible anyway
-			Image img = new Image("projectTurnoverChart");
-			img.setVisible(false);
-			parent.add(img);
-		}		
-	}	
+//	private void addImageCharts(ReportData data, WebMarkupContainer parent)
+//	{
+//		Model dataModel = new Model(data);
+//		
+//		// hours per customer
+//		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, chartWidth, chartHeight);
+//		parent.add(customerHoursChart);
+//
+//		// turnover per customer
+//		if (config.isShowTurnover())
+//		{
+//			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, chartWidth, chartHeight);
+//			parent.add(customerTurnoverChart);
+//		}
+//		else
+//		{
+//			// placeholder, not visible anyway
+//			Image img = new Image("customerTurnoverChart");
+//			img.setVisible(false);
+//			parent.add(img);
+//		}
+//
+//		// hours per project
+//		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, chartWidth, chartHeight);
+//		parent.add(projectHoursChartFactory);
+//
+//		// turnover per project
+//		if (config.isShowTurnover())
+//		{
+//			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, chartWidth, chartHeight);
+//			parent.add(projectTurnoverChart);
+//		}
+//		else
+//		{
+//			// placeholder, not visible anyway
+//			Image img = new Image("projectTurnoverChart");
+//			img.setVisible(false);
+//			parent.add(img);
+//		}		
+//	}	
 }

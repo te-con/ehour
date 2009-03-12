@@ -17,7 +17,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.print;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -28,9 +27,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -49,7 +46,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Print month page
@@ -59,8 +55,6 @@ public class PrintMonth extends WebPage
 {
 	private static final long serialVersionUID = 1891959724639181159L;
 	
-	@SpringBean
-	private DetailedReportService	detailedReportService;
 	private EhourConfig				config;
 	
 	/**
