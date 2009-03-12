@@ -18,28 +18,18 @@
 package net.rrm.ehour.ui.report.chart.aggregate;
 
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
-
 import org.apache.wicket.model.Model;
 import org.junit.Test;
 
 /**
  * 
  **/
-@SuppressWarnings("unchecked")
-
-public class CustomerTurnoverAggregateImageTest extends BaseUIWicketTester
+public class CustomerTurnoverAggregateImageTest extends AbstractAggregateChartImageTest
 {
 	@Test
 	public void testChartImage() throws Exception
 	{
-		ReportData reportData = new ReportData();
-		reportData.setReportElements(ReportTestUtil.getAssignmentAggregateReportElements());
-		
 		CustomerTurnoverAggregateImage img = new CustomerTurnoverAggregateImage("image", new Model(reportData), 200, 100);
-		img.getChart(reportData);
+		img.getChart(report);
 	}
 }

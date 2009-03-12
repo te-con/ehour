@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
@@ -32,21 +31,19 @@ public class ProjectReportPanel extends AggregateReportPanel
 {
 	private static final long serialVersionUID = 2594554714722639450L;
 
-	public ProjectReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, 
-								ReportData<AssignmentAggregateReportElement> data)
+	public ProjectReportPanel(String id, TreeReport report)
 	{
-		this(id, reportData, data, ReportDrawType.FLASH);
+		this(id, report, ReportDrawType.FLASH);
 	}
 	
-	public ProjectReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, 
-			ReportData<AssignmentAggregateReportElement> data, ReportDrawType reportDrawType)
+	public ProjectReportPanel(String id, TreeReport report, ReportDrawType reportDrawType)
 	{
-		super(id, reportData, data, ReportConfig.AGGREGATE_PROJECT, "projectReportExcel", reportDrawType);
+		super(id, report, ReportConfig.AGGREGATE_PROJECT, "projectReportExcel", reportDrawType);
 	}
 	
 
 	@Override
-	protected void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	protected void addCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 

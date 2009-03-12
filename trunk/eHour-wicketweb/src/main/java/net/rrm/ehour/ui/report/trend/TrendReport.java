@@ -17,49 +17,64 @@
 
 package net.rrm.ehour.ui.report.trend;
 
+import static org.springframework.util.Assert.notNull;
+
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.ui.report.Report;
+import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
 import net.rrm.ehour.util.DateUtil;
+
+import org.apache.log4j.Logger;
 
 /**
  * Base trend report
  **/
 
-@SuppressWarnings("unchecked")
-public abstract class TrendReport<RK extends Comparable> extends Report
+public abstract class TrendReport<RK extends Comparable<?>> extends AbstractCachableReportModel
 {
 	private static final long serialVersionUID = -8062083697181324496L;
-	protected SortedMap<RK, Map<Date, FlatReportElement>>	rowMap;
-
+	
+	private static final Logger LOGGER = Logger.getLogger(TrendReport.class);
+	private transient SortedMap<RK, Map<Date, FlatReportElement>>	rowMap;
+	
 	/**
-	 * Initialize the report
-	 * @param aggregateData
-	 * @throws ParseException 
+	 * @param criteria
 	 */
-	public void initialize(List<FlatReportElement> aggregateData) throws ParseException
+	public TrendReport(ReportCriteria criteria)
+	{
+		super(criteria);
+	}
+	
+	/*
+	 * 3(non-Javadoc)
+	 * @see net.rrm.ehour.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 */
+	@Override
+	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
 		Map<Date, FlatReportElement>	rowAggregates;
 		Date	aggregateDate;
 		RK		rowKey;
 		
+		ReportData aggregateData = getValidReportData(reportCriteria);
+		
 		rowMap = new TreeMap<RK, Map<Date, FlatReportElement>>(getRKComparator());
 
-		if (aggregateData == null)
+		for (ReportElement element : aggregateData.getReportElements())
 		{
-			return;
-		}
-
-		for (FlatReportElement aggregate : aggregateData)
-		{
+			FlatReportElement aggregate = (FlatReportElement)element;
+			
+			
 			rowKey = getRowKey(aggregate);
 			
 			if (rowMap.containsKey(rowKey))
@@ -71,15 +86,29 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 				rowAggregates = new HashMap<Date, FlatReportElement>();
 			}
 			
-			aggregateDate = getAggregateDate(aggregate);
+			aggregateDate = getValidAggregateDate(aggregate);
 			aggregateDate = DateUtil.nullifyTime(aggregateDate);
 			
 			rowAggregates.put(aggregateDate, aggregate);
 			
 			rowMap.put(rowKey, rowAggregates);
 		}
+		
+		return aggregateData;
 	}
+	
+	private ReportData getValidReportData(ReportCriteria reportCriteria)
+	{
+		ReportData reportData = fetchReportData(reportCriteria);
+		
+		notNull(reportData);
+		notNull(reportData.getReportElements());
 
+		return reportData;
+	}
+	
+    protected abstract ReportData fetchReportData(ReportCriteria reportCriteria);
+ 
 	/**
 	 * Get grand total hours
 	 * @return
@@ -119,6 +148,31 @@ public abstract class TrendReport<RK extends Comparable> extends Report
 		return rowMap;
 	}
 
+	private Date getValidAggregateDate(FlatReportElement aggregate)
+	{
+		Date date;
+		
+		try
+		{
+			date = getAggregateDate(aggregate);
+		} catch (ParseException e)
+		{
+			LOGGER.warn("failed to parse date of " + aggregate, e);
+			date = new Date();
+		}
+		
+		return date;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.model.LoadableDetachableModel#onDetach()
+	 */
+	@Override
+	protected void onDetach()
+	{
+		rowMap = null;
+	}
 	/**
 	 * Get the date of the aggregate. Date format is different per report
 	 * @param aggregate

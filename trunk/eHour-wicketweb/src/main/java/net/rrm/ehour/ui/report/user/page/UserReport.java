@@ -94,11 +94,10 @@ public class UserReport extends AbstractReportPage
 		ReportCriteria criteria = (ReportCriteria)getModel().getObject();
 		
 		// add data
-		ReportData<AssignmentAggregateReportElement> reportData = getAggregateReportData(criteria);
-		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
-		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
+		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(criteria);
+		EhourWebSession.getSession().getReportCache().addObjectToCache(customerAggregateReport);
 		
-		UserReportPanel panel = new UserReportPanel("userReportPanel", customerAggregateReport, reportData, true);
+		UserReportPanel panel = new UserReportPanel("userReportPanel", customerAggregateReport, true);
 		panel.setOutputMarkupId(true);
 		return panel;
 	}
@@ -108,10 +107,10 @@ public class UserReport extends AbstractReportPage
 	 * @param reportCriteria
 	 * @return
 	 */
-	private ReportData<AssignmentAggregateReportElement> getAggregateReportData(ReportCriteria reportCriteria)
+	private ReportData getAggregateReportData(ReportCriteria reportCriteria)
 	{
 		logger.debug("Getting aggregated report data");
-		ReportData<AssignmentAggregateReportElement> data = aggregateReportService.getAggregateReportData(reportCriteria);
+		ReportData data = aggregateReportService.getAggregateReportData(reportCriteria);
 		
 		return data;
 	}	

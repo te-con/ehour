@@ -42,10 +42,10 @@ public class DetailedReportTest
 	@Test
 	public void testCreateDetailedReport()
 	{
-		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getFlatReportData(), Locale.ENGLISH);
-		
+//		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getFlatReportData(), Locale.ENGLISH);
+		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
 		// customer = root
-		assertEquals(6, detailedReport.getReportMatrix().size());
+		assertEquals(6, detailedReport.getReportData().getReportElements());
 //		
 //		for (ReportNode node : detailedReport.getNodes())
 //		{
@@ -71,10 +71,9 @@ public class DetailedReportTest
 	@Test
 	public void testCreateNullDetailedReport()
 	{
-		ReportData data = ReportTestUtil.getFlatReportData();
-		data.setReportElements(null);
+		ReportData data = new ReportData(null, null);
 		
-		DetailedReport detailedReport = new DetailedReport(data, Locale.ENGLISH);
+		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
 	}
 	
 	@Test
@@ -82,7 +81,7 @@ public class DetailedReportTest
 	{
 		ReportData data = ReportTestUtil.getFlatReportData();
 		
-		data.setReportElements(new ArrayList<FlatReportElement>());
-		DetailedReport detailedReport = new DetailedReport(data, Locale.ENGLISH);
+//		data.setReportElements(new ReportData(new ArrayList<FlatReportElement>());
+		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
 	}	
 }

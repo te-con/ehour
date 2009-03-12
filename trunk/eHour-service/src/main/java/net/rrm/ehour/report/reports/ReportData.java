@@ -18,6 +18,7 @@ package net.rrm.ehour.report.reports;
 import java.io.Serializable;
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.element.ReportElement;
 
 /**
@@ -29,10 +30,20 @@ public class ReportData implements Serializable
 	private static final long serialVersionUID = -6344570520998830487L;
 	
 	private List<? extends ReportElement>		reportElements;
-
-	public ReportData(List<? extends ReportElement> reportElements)
+	private DateRange reportRange;
+	
+	public ReportData(List<? extends ReportElement> reportElements, DateRange reportRange)
 	{
 		this.reportElements = reportElements;
+		this.reportRange = reportRange;
+	}
+	
+	/**
+	 * @return the reportRange
+	 */
+	public DateRange getReportRange()
+	{
+		return reportRange;
 	}
 	
 	/**

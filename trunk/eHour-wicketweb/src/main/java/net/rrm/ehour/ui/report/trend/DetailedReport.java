@@ -20,10 +20,13 @@ package net.rrm.ehour.ui.report.trend;
 import java.io.Serializable;
 import java.util.Locale;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
@@ -33,28 +36,52 @@ import net.rrm.ehour.ui.report.trend.node.FlatEntryEndNode;
 import net.rrm.ehour.ui.report.trend.node.FlatProjectNode;
 import net.rrm.ehour.ui.report.trend.node.FlatUserNode;
 
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
 /**
  * Detailed report
  **/
 
-public class DetailedReport extends TreeReport<FlatReportElement>
+public class DetailedReport extends TreeReport
 {
 	private static final long serialVersionUID = -21703820501429504L;
+	
+	@SpringBean
+	private DetailedReportService detailedReportService;
+	
 	private Locale locale;
 	
 	/**
 	 * 
 	 * @param reportData
 	 */
-	public DetailedReport(ReportData<FlatReportElement> reportData, Locale locale)
+	public DetailedReport(ReportCriteria reportCriteria, Locale locale)
 	{
-		super();
+		super(reportCriteria, ReportConfig.DETAILED_REPORT);
 		
 		this.locale = locale;
-		
-		this.initializeReport(reportData, ReportConfig.DETAILED_REPORT);
 	}
 
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.ui.report.TreeReport#fetchReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 */
+	@Override
+	protected ReportData fetchReportData(ReportCriteria reportCriteria)
+	{
+		return getDetailedReportService().getDetailedReportData(reportCriteria);
+	}
+
+	
+	private DetailedReportService getDetailedReportService()
+	{
+		if (detailedReportService == null)
+		{
+			CommonWebUtil.springInjection(this);
+		}
+		
+		return detailedReportService;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.report.TreeReport#getReportNodeFactory()

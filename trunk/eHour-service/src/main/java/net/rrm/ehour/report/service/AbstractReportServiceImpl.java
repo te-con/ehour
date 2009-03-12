@@ -86,7 +86,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 			projects = getProjects(userCriteria);
 		}		
 		
-		ReportData reportData = new ReportData(getReportElements(users, projects, reportRange));
+		ReportData reportData = new ReportData(getReportElements(users, projects, reportRange), reportRange);
 		
 		return reportData;
 	}

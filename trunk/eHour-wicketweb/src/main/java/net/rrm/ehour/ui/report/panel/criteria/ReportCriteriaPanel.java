@@ -384,9 +384,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 				backingBean.setQuickMonth(null);
 				backingBean.setQuickQuarter(null);
 				
-				ReportCriteria criteria = backingBean.getReportCriteria();
-				criteria.setUserCriteria(new UserCriteria());
-				reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);
+				ReportCriteria reportCriteria = new ReportCriteria(new UserCriteria());
+				backingBean.setReportCriteria(reportCriteria);
+				reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
 				
 				target.addComponent(projects);
 				target.addComponent(customers);

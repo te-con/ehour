@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
@@ -39,16 +38,14 @@ public class CustomerReportPanel extends AggregateReportPanel
 {
 	private static final long serialVersionUID = 8422287988040603274L;
 
-	public CustomerReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData
-							, ReportData<AssignmentAggregateReportElement> data)
+	public CustomerReportPanel(String id, TreeReport report)
 	{
-		this(id, reportData, data, ReportDrawType.FLASH);
+		this(id, report, ReportDrawType.FLASH);
 	}
 
-	public CustomerReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData
-			, ReportData<AssignmentAggregateReportElement> data, ReportDrawType drawType)
+	public CustomerReportPanel(String id, TreeReport report, ReportDrawType drawType)
 	{
-		super(id, reportData, data, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel", drawType);
+		super(id, report, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel", drawType);
 	}
 	
 	/*
@@ -56,7 +53,7 @@ public class CustomerReportPanel extends AggregateReportPanel
 	 * @see net.rrm.ehour.ui.report.panel.type.ReportPanel#addCharts(net.rrm.ehour.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
-	protected void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	protected void addCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 
@@ -73,7 +70,7 @@ public class CustomerReportPanel extends AggregateReportPanel
 	 * @see net.rrm.ehour.ui.report.panel.aggregate.AggregateReportPanel#addFlashCharts(net.rrm.ehour.report.reports.ReportData, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
-	protected void addFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	protected void addFlashCharts(ReportData data, WebMarkupContainer parent)
 	{
 	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
 	    bar1.setColour("#007FFF");

@@ -4,6 +4,7 @@
 package net.rrm.ehour.ui.audit.page;
 
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.admin.BaseAdminPage;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaForm;
@@ -13,6 +14,8 @@ import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -24,9 +27,9 @@ public class AuditReportPage extends BaseAdminPage
 	
 	public AuditReportPage()
 	{
-		super(new ResourceModel("audit.report.title"), 
-					new CompoundPropertyModel(new AuditReportRequest()), "audit.help.header", "audit.help.body");
-	
+		super(new ResourceModel("audit.report.title"), new Model(), "audit.help.header", "audit.help.body");
+		setModel(getReportCriteriaModel());
+		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder(AuditConstants.PATH_FRAME, new ResourceModel("audit.report.title"));
 		add(greyBorder);
 		
@@ -35,6 +38,14 @@ public class AuditReportPage extends BaseAdminPage
 		
 		AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, getModel());
 		greyBorder.add(dataPanel);
+	}
+	
+	private IModel getReportCriteriaModel()
+	{
+		AuditReportRequest auditReportRequest = new AuditReportRequest();
+		ReportCriteria criteria = new ReportCriteria(auditReportRequest);
+		
+		return new CompoundPropertyModel(criteria);
 	}
 
 	/*

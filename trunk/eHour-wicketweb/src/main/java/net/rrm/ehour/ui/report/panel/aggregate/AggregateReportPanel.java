@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
@@ -41,36 +40,39 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * 
 	 * @param id
 	 */
-	public AggregateReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData,
-									ReportData<AssignmentAggregateReportElement> data, 
+	public AggregateReportPanel(String id, TreeReport report,
 									ReportConfig reportConfig, String excelResourceName,
 									ReportDrawType drawType)
 	{
 		super(id, 460);
 
+		setOutputMarkupId(true);
+		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", getReportWidth());
 		add(greyBorder);
 
-		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, reportConfig, excelResourceName, getReportWidth() - 50));
+		greyBorder.add(new TreeReportDataPanel("reportTable", report, reportConfig, excelResourceName, getReportWidth() - 50));
+		
+		ReportData reportData = report.getReportData();
 		
 		if (drawType == ReportDrawType.IMAGE)
 		{
-			addImageCharts(data, greyBorder);
+			addImageCharts(reportData, greyBorder);
 		}
 		else
 		{
-			addOpenFlashCharts(data, greyBorder);
+			addOpenFlashCharts(reportData, greyBorder);
 		}
 	}
 	
-	private void addOpenFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	private void addOpenFlashCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Fragment fragment = new Fragment("charts", "flash", this);
 		addFlashCharts(data, fragment);
 		parent.add(fragment);
 	}
 	
-	private void addImageCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	private void addImageCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Fragment fragment = new Fragment("charts", "image", this);
 		addCharts(data, fragment);
@@ -82,7 +84,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	protected void addCharts(ReportData data, WebMarkupContainer parent)
 	{
 		
 	}
@@ -92,7 +94,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected void addFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	protected void addFlashCharts(ReportData data, WebMarkupContainer parent)
 	{
 		
 	}	

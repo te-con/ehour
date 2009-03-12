@@ -19,20 +19,16 @@ package net.rrm.ehour.ui.report.aggregate;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
-import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.report.AbstractAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
-/**
- * TODO 
- **/
-
-public class UserAggregateReport extends TreeReport<AssignmentAggregateReportElement>
+public class UserAggregateReport extends AbstractAggregateReport
 {
 	private static final long serialVersionUID = 2883703894793044411L;
 
@@ -40,9 +36,9 @@ public class UserAggregateReport extends TreeReport<AssignmentAggregateReportEle
 	 * 
 	 * @param reportData
 	 */
-	public UserAggregateReport(ReportData<AssignmentAggregateReportElement> reportData)
+	public UserAggregateReport(ReportCriteria reportCriteria)
 	{
-		super(reportData, ReportConfig.AGGREGATE_EMPLOYEE);
+		super(reportCriteria, ReportConfig.AGGREGATE_EMPLOYEE);
 	}
 
 	/*

@@ -23,10 +23,13 @@ import java.util.List;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Audit;
-import net.rrm.ehour.ui.common.report.RangedReport;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.report.TreeReportElement;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -34,56 +37,42 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Audit report
  **/
 
-public class AuditReport extends RangedReport
+public class AuditReport extends AbstractCachableReportModel
 {
 	private static final long serialVersionUID = -5162817322066082796L;
 
 	@SpringBean(name = "auditService")
 	private transient AuditService auditService;
 
-	private transient List<Serializable[]> reportData;
-
-	private AuditReportRequest auditReportRequest;
-
 	/**
-	 * @return the auditReportRequest
+	 * @param criteria
 	 */
-	public AuditReportRequest getAuditReportRequest()
+	public AuditReport(ReportCriteria criteria)
 	{
-		return auditReportRequest;
+		super(criteria);
 	}
 
-	/**
-	 * @param auditReportRequest
-	 *            the auditReportRequest to set
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
-	public void setAuditReportRequest(AuditReportRequest auditReportRequest)
-	{
-		this.auditReportRequest = auditReportRequest;
-	}
-
 	@Override
-	public DateRange getReportRange()
+	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
-		return auditReportRequest.getDateRange();
-	}
-	
-	@Override
-	public List<Serializable[]> getReportMatrix()
-	{
-		if (reportData == null)
-		{
-			CommonWebUtil.springInjection(this);
+		CommonWebUtil.springInjection(this);
 
-			reportData = convert(auditService.getAuditAll(auditReportRequest));
-		}
+		UserCriteria userCriteria = reportCriteria.getUserCriteria();
+		
+		List<Audit> audit = auditService.getAuditAll((AuditReportRequest) userCriteria);
+		
+		ReportData reportData = new ReportData(convert(audit), reportCriteria.getReportRange());
 
 		return reportData;
 	}
 	
-	private List<Serializable[]> convert(List<Audit> data)
+	
+	private List<TreeReportElement> convert(List<Audit> data)
 	{
-		List<Serializable[]> matrix = new ArrayList<Serializable[]>();
+		List<TreeReportElement> matrix = new ArrayList<TreeReportElement>();
 		
 		for (Audit audit : data)
 		{
@@ -94,9 +83,11 @@ public class AuditReport extends RangedReport
 			row[2] = audit.getAction();
 			row[3] = audit.getAuditActionType().getValue();
 			
-			matrix.add(row);
+			matrix.add(new TreeReportElement(row));
 		}
 		
 		return  matrix;
 	}
+
+
 }

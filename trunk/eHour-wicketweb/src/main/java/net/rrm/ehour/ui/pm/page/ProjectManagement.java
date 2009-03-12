@@ -106,7 +106,6 @@ public class ProjectManagement extends BasePage
 	private ReportCriteria getReportCriteria()
 	{
 		ReportCriteria reportCriteria = new ReportCriteria();
-		reportCriteria.setAvailableCriteria(new AvailableCriteria());
 		
 		User user = ((EhourWebSession)getSession()).getUser().getUser();
 		

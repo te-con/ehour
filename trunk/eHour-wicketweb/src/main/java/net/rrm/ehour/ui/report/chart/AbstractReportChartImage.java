@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 
 import org.apache.log4j.Logger;
@@ -67,11 +67,10 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * Generate chart
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	protected JFreeChart generateChart()
 	{
-		ReportData<EL> reportData = (ReportData<EL>)getModelObject();
-		return getChart(reportData);
+		Report report = (Report)getModelObject();
+		return getChart(report);
 	}
 	
 	/**
@@ -81,13 +80,13 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @param reportName
 	 * @return
 	 */
-	public JFreeChart getChart(ReportData<EL> reportData)
+	public JFreeChart getChart(Report report)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
 		logger.debug("Creating " + reportName + " chart");
 		
-		DefaultCategoryDataset dataset = createDataset(reportData);
+		DefaultCategoryDataset dataset = createDataset(report);
 
 		JFreeChart chart = ChartFactory.createBarChart(reportName, // chart title
 				null, // domain axis label
@@ -133,7 +132,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private DefaultCategoryDataset createDataset(ReportData<EL> reportData)
+	private DefaultCategoryDataset createDataset(Report report)
 	{
 		DefaultCategoryDataset dataset;
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
@@ -144,7 +143,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 
 		dataset = new DefaultCategoryDataset();
 
-		for (ReportElement element : reportData.getReportElements())
+		for (ReportElement element : report.getReportData().getReportElements())
 		{
 			rowKey = getRowKey((EL)element);
 			

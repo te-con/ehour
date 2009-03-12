@@ -32,7 +32,6 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
@@ -81,7 +80,7 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 				.andReturn(reportCriteria);
 
 		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-				.andReturn(createReportData());
+				.andReturn(new ReportData(null, null));
 		replay(timesheetService, reportCriteriaService, detailedReportService);
 		
 		tester.startPage(ExportMonthSelectionPage.class);		
@@ -121,20 +120,14 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		
 	}
 	
-	private ReportData<FlatReportElement> createReportData()
-	{
-		ReportData<FlatReportElement> reportData = new ReportData<FlatReportElement>();
-		
-		return reportData;
-	}
-	
 	private ReportCriteria createReportCriteria()
 	{
-		ReportCriteria criteria = new ReportCriteria();
+		
 
 		AvailableCriteria availableCriteria = new AvailableCriteria();
 		availableCriteria.setProjects(DummyWebDataGenerator.getProjects(5));
-		criteria.setAvailableCriteria(availableCriteria);
+		
+		ReportCriteria criteria = new ReportCriteria(availableCriteria);
 		
 		return criteria;
 	}

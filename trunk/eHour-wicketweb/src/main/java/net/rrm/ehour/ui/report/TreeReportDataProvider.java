@@ -33,13 +33,13 @@ public class TreeReportDataProvider implements IDataProvider
 {
 	private static final long serialVersionUID = 4346207207281976523L;
 
-	private List<Serializable[]> nodes;
+	private List<TreeReportElement> nodes;
 	
 	/**
 	 * 
 	 * @param nodes
 	 */
-	public TreeReportDataProvider(List<Serializable[]> nodes)
+	public TreeReportDataProvider(List<TreeReportElement> nodes)
 	{
 		this.nodes = nodes;
 	}
@@ -48,7 +48,7 @@ public class TreeReportDataProvider implements IDataProvider
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#iterator(int, int)
 	 */
-	public Iterator<Serializable[]> iterator(int first, int count)
+	public Iterator<TreeReportElement> iterator(int first, int count)
 	{
 		return nodes.subList(first, first + count).iterator();
 	}
@@ -74,5 +74,4 @@ public class TreeReportDataProvider implements IDataProvider
 	public void detach()
 	{
 	}
-
 }

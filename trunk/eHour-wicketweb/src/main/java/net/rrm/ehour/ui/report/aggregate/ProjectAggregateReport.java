@@ -19,11 +19,11 @@ package net.rrm.ehour.ui.report.aggregate;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
-import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.report.AbstractAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
 import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
@@ -31,10 +31,12 @@ import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
 /**
- * TODO 
- **/
-
-public class ProjectAggregateReport extends TreeReport<AssignmentAggregateReportElement>
+ * Project aggregate report
+ * Created on Mar 12, 2009, 3:30:33 PM
+ * @author Thies Edeling (thies@te-con.nl) 
+ *
+ */
+public class ProjectAggregateReport extends AbstractAggregateReport
 {
 	private static final long serialVersionUID = 6073113076906501807L;
 
@@ -42,9 +44,9 @@ public class ProjectAggregateReport extends TreeReport<AssignmentAggregateReport
 	 * 
 	 * @param reportData
 	 */
-	public ProjectAggregateReport(ReportData<AssignmentAggregateReportElement> reportData)
+	public ProjectAggregateReport(ReportCriteria reportCriteria)
 	{
-		super(reportData, ReportConfig.AGGREGATE_PROJECT);
+		super(reportCriteria, ReportConfig.AGGREGATE_PROJECT);
 	}
 
 	/*
@@ -69,9 +71,11 @@ public class ProjectAggregateReport extends TreeReport<AssignmentAggregateReport
 	                    return new CustomerNode(aggregate, hierarchyLevel);
 	                case 2:
 	                    return new UserEndNode(aggregate, hierarchyLevel);
+	                default:
+	                	throw new RuntimeException("Hierarchy level too deep");
 	            }
 	
-	            throw new RuntimeException("Hierarchy level too deep");
+	            
 	        }
 	
 	        /**

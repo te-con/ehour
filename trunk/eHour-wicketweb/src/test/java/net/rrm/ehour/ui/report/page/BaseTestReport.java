@@ -65,7 +65,6 @@ public abstract class BaseTestReport extends BaseUIWicketTester
 		detailedReportService = createMock(DetailedReportService.class);
 		mockContext.putBean("detailedReportService", detailedReportService);
 
-		reportCriteria = new ReportCriteria();
 		AvailableCriteria availCriteria = new AvailableCriteria();
 
 		List<Customer> customers = new ArrayList<Customer>();
@@ -83,11 +82,9 @@ public abstract class BaseTestReport extends BaseUIWicketTester
 		List<User> usrs = new ArrayList<User>();
 		usrs.add(new User(2));
 		availCriteria.setUsers(usrs);
+
+		reportCriteria = new ReportCriteria(availCriteria);
 		
-		reportCriteria.setAvailableCriteria(availCriteria);
-		
-		data = new ReportData();
-		data.setReportCriteria(reportCriteria);
 		List<AssignmentAggregateReportElement> agg = new ArrayList<AssignmentAggregateReportElement>();
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		ProjectAssignment ass = new ProjectAssignment(1);
@@ -101,6 +98,7 @@ public abstract class BaseTestReport extends BaseUIWicketTester
 		pag.setProjectAssignment(ass);
 		
 		agg.add(pag);
-		data.setReportElements(agg);		
+
+		data = new ReportData(agg, reportCriteria.getReportRange());
 	}
 }

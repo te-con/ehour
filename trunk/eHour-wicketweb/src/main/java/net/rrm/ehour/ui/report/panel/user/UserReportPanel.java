@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.report.panel.user;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -58,11 +57,11 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param id
 	 * @param reportData
 	 */
-	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, ReportData<AssignmentAggregateReportElement> reportData, boolean inclLinks)
+	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, boolean inclLinks)
 	{
 		super(id, -1, 730);
 		
-		add(getReportPanel(aggregateReport, reportData, inclLinks));
+		add(getReportPanel(aggregateReport, inclLinks));
 	}
 	
 	/**
@@ -70,14 +69,14 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param customerAggregateReport
 	 * @return
 	 */
-	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, ReportData<AssignmentAggregateReportElement> reportData, boolean inclLinks)
+	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, boolean inclLinks)
 	{
 		ResourceLink 	excelLink = null;
 		Link			printLink = null;
 		
 		if (inclLinks)
 		{
-			final String reportId = customerAggregateReport.getReportId();
+			final String reportId = customerAggregateReport.getCacheId();
 			
 			ResourceReference excelResource = new ResourceReference("userReportExcel");
 			ValueMap params = new ValueMap();
@@ -112,7 +111,7 @@ public class UserReportPanel extends AbstractReportPanel
 		Fragment frag = new Fragment("charts", "flash", this);
 		greyBorder.add(frag);
 		
-		addFlashCharts(reportData, frag);
+		addFlashCharts(frag);
 		
 		return greyBorder;
 	}
@@ -123,7 +122,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	private void addFlashCharts(WebMarkupContainer parent)
 	{
 	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
 	    bar1.setColour("#007FFF");
@@ -154,7 +153,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addImageCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	private void addImageCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 		

@@ -19,11 +19,8 @@ package net.rrm.ehour.ui.report.panel.detail;
 
 import java.util.Locale;
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
-import net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
 
 import org.apache.wicket.markup.html.panel.Panel;
@@ -43,16 +40,14 @@ public class DetailedReportPanelTest extends BaseUIWicketTester
 	@SuppressWarnings("serial")
 	public void testDetailedReportPanel()
 	{
-		final ReportData<FlatReportElement> reportData = ReportTestUtil.getFlatReportData();
-		final DetailedReport detailedReport = new DetailedReport(reportData, Locale.ENGLISH);
+		final DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
 		
 		tester.startPanel(new TestPanelSource(){
 
 			public Panel getTestPanel(String panelId)
 			{
 				return new DetailedReportPanel(panelId, 
-												detailedReport,
-												reportData);
+												detailedReport);
 			}
 		});
 		

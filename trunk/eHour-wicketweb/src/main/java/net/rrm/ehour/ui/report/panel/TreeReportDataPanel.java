@@ -25,18 +25,18 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.CurrencyModel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
-import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.report.ReportColumn;
+import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
+import net.rrm.ehour.ui.report.TreeReportElement;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ResourceReference;
@@ -74,7 +74,7 @@ public class TreeReportDataPanel extends Panel
 	 * @param report report data
 	 */
 	public TreeReportDataPanel(String id, 
-								TreeReport<? extends ReportElement> report, 
+								TreeReport report, 
 								ReportConfig reportConfig, 
 								String excelResourceName,
 								int reportWidth)
@@ -93,7 +93,7 @@ public class TreeReportDataPanel extends Panel
 		
 		if (excelResourceName != null)
 		{
-			final String reportId = report.getReportId();
+			final String reportId = report.getCacheId();
 			
 			ResourceReference excelResource = new ResourceReference(excelResourceName);
 			ValueMap params = new ValueMap();
@@ -140,7 +140,7 @@ public class TreeReportDataPanel extends Panel
 	 * @param report
 	 * @param parent
 	 */
-	private void addGrandTotal(TreeReport<? extends ReportElement> report, WebMarkupContainer parent)
+	private void addGrandTotal(TreeReport report, WebMarkupContainer parent)
 	{
 		RepeatingView	totalView = new RepeatingView("cell");
 		int				id = 0;
@@ -187,9 +187,12 @@ public class TreeReportDataPanel extends Panel
 	 * @param reportNode
 	 * @return
 	 */
-	private void addReportData(TreeReport<? extends ReportElement> report, WebMarkupContainer parent)
+	@SuppressWarnings("unchecked")
+	private void addReportData(TreeReport report, WebMarkupContainer parent)
 	{
-		DataView dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(report.getReportMatrix()));
+		List<TreeReportElement> elements = (List<TreeReportElement>)report.getReportData().getReportElements();
+		
+		DataView dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
 		dataView.setOutputMarkupId(true);
 		dataView.setItemsPerPage(20);
 		

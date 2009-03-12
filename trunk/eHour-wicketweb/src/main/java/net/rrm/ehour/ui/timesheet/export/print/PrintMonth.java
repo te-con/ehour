@@ -73,42 +73,34 @@ public class PrintMonth extends WebPage
 		EhourWebSession session = (EhourWebSession)getSession();
 		config = session.getEhourConfig();
 		
-		try
-		{
-			DateRange dateRange = reportCriteria.getUserCriteria().getReportRange();
-			
-			PrintReport printReport = initReport(reportCriteria);
+		DateRange dateRange = reportCriteria.getReportRange();
+		
+		PrintReport printReport = new PrintReport(reportCriteria);
 
-			IModel printTitle = new StringResourceModel("printMonth.printHeader",
-					this,
-					null,
-					new Object[]{session.getUser().getUser().getFullName(),
-								 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
-			
-			Label pageTitle = new Label("pageTitle", printTitle);
-			add(pageTitle);
-			
-			Label reportHeader = new Label("printHeader", printTitle);
-			add(reportHeader);
+		IModel printTitle = new StringResourceModel("printMonth.printHeader",
+				this,
+				null,
+				new Object[]{session.getUser().getUser().getFullName(),
+							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
+		
+		Label pageTitle = new Label("pageTitle", printTitle);
+		add(pageTitle);
+		
+		Label reportHeader = new Label("printHeader", printTitle);
+		add(reportHeader);
 
-			List<Date> dates = DateUtil.createDateSequence(dateRange, config);
-			
-			addDateLabels(dates);
-			addProjects(printReport, dates);
-			addGrandTotal(printReport, dates);
-			
-			add(createSignOff(reportCriteria, dates));
-			
-			add(new Label("printedOn", new StringResourceModel("printMonth.printedOn",
-					this,
-					null,
-					new Object[]{new DateModel(new GregorianCalendar() , config)})));
-			
-		} catch (ParseException e)
-		{
-			// TODO Auto-generated catch block. Handle better
-			e.printStackTrace();
-		}
+		List<Date> dates = DateUtil.createDateSequence(dateRange, config);
+		
+		addDateLabels(dates);
+		addProjects(printReport, dates);
+		addGrandTotal(printReport, dates);
+		
+		add(createSignOff(reportCriteria, dates));
+		
+		add(new Label("printedOn", new StringResourceModel("printMonth.printedOn",
+				this,
+				null,
+				new Object[]{new DateModel(new GregorianCalendar() , config)})));
 	}
 
 	private WebMarkupContainer createSignOff(ReportCriteria reportCriteria, List<Date> days)
@@ -231,22 +223,5 @@ public class PrintMonth extends WebPage
 		}
 		
 		add(dateLabels);
-	}
-	
-	/**
-	 * 
-	 * @param assignmentIds
-	 * @param printRange
-	 * @return
-	 * @throws ParseException
-	 */
-	private PrintReport initReport(ReportCriteria criteria) throws ParseException
-	{
-		ReportData<FlatReportElement> detailedReportData = detailedReportService.getDetailedReportData(criteria);
-		
-		PrintReport printReport = new PrintReport();
-		printReport.initialize(detailedReportData.getReportElements());
-		
-		return printReport;
 	}
 }

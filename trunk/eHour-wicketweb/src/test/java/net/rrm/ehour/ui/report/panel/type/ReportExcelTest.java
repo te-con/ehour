@@ -18,9 +18,9 @@
 package net.rrm.ehour.ui.report.panel.type;
 
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.common.report.ReportCache;
+import net.rrm.ehour.ui.common.cache.ObjectCache;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
@@ -40,8 +40,8 @@ import org.junit.Test;
 @SuppressWarnings({"unchecked"})
 public class ReportExcelTest extends BaseUIWicketTester
 {
-	private ReportCache cache;
-	private ReportData reportData;
+	private ObjectCache cache;
+	private ReportCriteria criteria;
 	
 	@Before
 	public void setUp() throws Exception
@@ -50,14 +50,15 @@ public class ReportExcelTest extends BaseUIWicketTester
 		
 		EhourWebSession session = this.webapp.getSession();
 		cache = session.getReportCache();
-		reportData = ReportTestUtil.getAssignmentReportData();
+		
+		criteria = ReportTestUtil.getReportCriteria();
 	}
 
 	@Test
 	public void testCustomerReportExcel() throws Exception
 	{
-		TreeReport report = new CustomerAggregateReport(reportData);
-		String reportCacheId = cache.addReportToCache(report, reportData);
+		TreeReport report = new CustomerAggregateReport(criteria);
+		String reportCacheId = cache.addObjectToCache(report);
 
 		new CustomerReportExcel().getExcelData(reportCacheId);
 	}
@@ -65,8 +66,8 @@ public class ReportExcelTest extends BaseUIWicketTester
 	@Test
 	public void testEmployeeReportExcel() throws Exception
 	{
-		TreeReport report = new UserAggregateReport(reportData);
-		String reportCacheId = cache.addReportToCache(report, reportData);
+		TreeReport report = new UserAggregateReport(criteria);
+		String reportCacheId = cache.addObjectToCache(report);
 
 		new EmployeeReportExcel().getExcelData(reportCacheId);
 	}
@@ -74,8 +75,8 @@ public class ReportExcelTest extends BaseUIWicketTester
 	@Test
 	public void testProjectReportExcel() throws Exception
 	{
-		TreeReport report = new ProjectAggregateReport(reportData);
-		String reportCacheId = cache.addReportToCache(report, reportData);
+		TreeReport report = new ProjectAggregateReport(criteria);
+		String reportCacheId = cache.addObjectToCache(report);
 
 		new ProjectReportExcel().getExcelData(reportCacheId);
 	}	
