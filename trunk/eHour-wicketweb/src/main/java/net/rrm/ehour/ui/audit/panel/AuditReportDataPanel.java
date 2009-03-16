@@ -91,10 +91,17 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
         columns[2] = new PropertyColumn(new ResourceModel("audit.report.column.action"), "action");
         columns[3] = new PropertyColumn(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
-        AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider((AuditReportRequest)model.getObject()), 20);
+        AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
 		dataContainer.add(table);
 		
 		return dataContainer;
+	}
+	
+	private AuditReportRequest getReportRequest(IModel model)
+	{
+		ReportCriteria criteria = (ReportCriteria) model.getObject();
+		
+		return (AuditReportRequest)criteria.getUserCriteria();
 	}
 	
 	private class DateColumn extends AbstractColumn

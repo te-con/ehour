@@ -15,6 +15,7 @@ import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
+import org.apache.wicket.util.tester.FormTester;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,10 +32,12 @@ public class AuditReportPageTest extends BaseUIWicketTester
 	{
 		super.setUp();
 		expect(auditService.getAuditCount(isA(AuditReportRequest.class)))
-			.andReturn(5);
+			.andReturn(5)
+			.anyTimes();
 
 		expect(auditService.getAudit(isA(AuditReportRequest.class)))
-			.andReturn(new ArrayList<Audit>());
+			.andReturn(new ArrayList<Audit>())
+			.anyTimes();
 	}
 	
 	@After
@@ -55,14 +58,20 @@ public class AuditReportPageTest extends BaseUIWicketTester
 		replay(auditService);
 		startPage();
 
-		tester.executeAjaxEvent(AuditConstants.PATH_FRAME + ":" + 
-								AuditConstants.PATH_CRITERIA + ":" + 
-								AuditConstants.PATH_FORM_BORDER + ":" +
-								AuditConstants.ID_FORM + ":" + 
+		String formPath = AuditConstants.PATH_FRAME + ":" + 
+						AuditConstants.PATH_CRITERIA + ":" + 
+						AuditConstants.PATH_FORM_BORDER + ":" +
+						AuditConstants.ID_FORM;
+		
+		tester.executeAjaxEvent(formPath + ":" +  
 								AuditConstants.PATH_FORM_SUBMIT,
 								"onclick");
 		
-//		FormTester formTester = tester.newFormTester(AuditConstants.PATH_FRAME + ":" + AuditConstants.PATH_CRITERIA + ":" + AuditConstants.ID_FORM);
+//		FormTester formTester = tester.newFormTester(formPath);
+//		formTester.submit();
+		
+		tester.assertRenderedPage(AuditReportPage.class);
+		
 		tester.assertNoErrorMessage();
 	}
 	
