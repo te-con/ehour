@@ -93,6 +93,5 @@ public class CustomerReportPanel extends AggregateReportPanel
 
 	    parent.add(new AbstractOpenFlashChart("hoursChart", 300,400,chart2));
 	    parent.add(new AbstractOpenFlashChart("turnoverChart", 300,400,chart2));
-		
 	}
 }

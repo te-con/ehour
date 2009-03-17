@@ -19,11 +19,15 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
+
+import ofc4j.model.Chart;
+import ofc4j.model.elements.BarChart;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -96,6 +100,26 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 */
 	protected void addFlashCharts(ReportData data, WebMarkupContainer parent)
 	{
-		
-	}	
+	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
+	    bar1.setColour("#007FFF");
+	    bar1.setTooltip("Beers:<br>Value:#val#");
+	    bar1.addValues(1,5,8,3,0,2);
+	    bar1.setText("Beers consumed");
+	    bar1.setAlpha(0.1f);
+
+	    BarChart bar2 = new BarChart(BarChart.Style.GLASS);
+	    bar2.setColour("#802A2A");
+	    bar2.setTooltip("#val#<br>bugs fixed");
+	    bar2.setText("bugs fixed");
+	    bar2.setFontSize(15);
+	    bar1.setAlpha(0.9f);
+	    bar2.addValues(2,7,1,5,8,3,0,2);
+
+	    Chart chart2 = new Chart("Beers and bugs");
+	    chart2.addElements(bar1,bar2);
+	    chart2.setBackgroundColour("#FFFFFF");
+
+	    parent.add(new AbstractOpenFlashChart("hoursChart", 300,400,chart2));
+	    parent.add(new AbstractOpenFlashChart("turnoverChart", 300,400,chart2));
+	}
 }
