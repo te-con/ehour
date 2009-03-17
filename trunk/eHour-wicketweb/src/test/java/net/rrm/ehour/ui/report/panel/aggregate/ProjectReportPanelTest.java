@@ -17,24 +17,24 @@
 
 package net.rrm.ehour.ui.report.panel.aggregate;
 
+
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
+import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * Created on Mar 17, 2009, 6:33:02 AM
- * 
- * @author Thies Edeling (thies@te-con.nl)
- * 
+ * Created on Mar 17, 2009, 6:44:27 AM
+ * @author Thies Edeling (thies@te-con.nl) 
+ *
  */
-public class CustomerReportPanelTest extends AbstractReportPanelTest
+public class ProjectReportPanelTest extends AbstractReportPanelTest
 {
 	@Override
 	protected Panel createReportPanel(String panelId, TreeReport report)
 	{
-		return new CustomerReportPanel(panelId, report);
+		return new ProjectReportPanel(panelId, report);
 	}
 
 	/* (non-Javadoc)
@@ -43,6 +43,6 @@ public class CustomerReportPanelTest extends AbstractReportPanelTest
 	@Override
 	protected TreeReport getAggregateReport()
 	{
-		return new CustomerAggregateReport(ReportTestUtil.getReportCriteria());
+		return new ProjectAggregateReport(ReportTestUtil.getReportCriteria());
 	}
 }
