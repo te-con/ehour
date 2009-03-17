@@ -49,7 +49,6 @@ public class DetailedReportPanelTest extends BaseUIWicketTester
 	{
 		detailedReportService = createMock(DetailedReportService.class);
 		mockContext.putBean("detailedReportService", detailedReportService);
-
 	}
 	
 	/**

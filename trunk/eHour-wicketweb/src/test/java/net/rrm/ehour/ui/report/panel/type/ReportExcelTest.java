@@ -18,7 +18,13 @@
 package net.rrm.ehour.ui.report.panel.type;
 
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.cache.ObjectCache;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -31,27 +37,44 @@ import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportExcel;
 import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportExcel;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportExcel;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Excel tester
  **/
-@SuppressWarnings({"unchecked"})
 public class ReportExcelTest extends BaseUIWicketTester
 {
 	private ObjectCache cache;
 	private ReportCriteria criteria;
+	private AggregateReportService aggregateReportService;
+	
 	
 	@Before
 	public void setUp() throws Exception
 	{
 		super.setUp();
 		
+		aggregateReportService = createMock(AggregateReportService.class);
+		mockContext.putBean("aggregateReportService", aggregateReportService);
+
+		
 		EhourWebSession session = this.webapp.getSession();
 		cache = session.getReportCache();
 		
 		criteria = ReportTestUtil.getReportCriteria();
+		
+		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
+			.andReturn(ReportTestUtil.getAssignmentReportData());
+		
+		replay(aggregateReportService);
+	}
+	
+	@After
+	public void tearDown()
+	{
+		verify(aggregateReportService);
 	}
 
 	@Test
