@@ -42,7 +42,7 @@ public class DetailedReportTest
 //		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getFlatReportData(), Locale.ENGLISH);
 		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
 		// customer = root
-		assertEquals(6, detailedReport.getReportData().getReportElements());
+//		assertEquals(6, detailedReport.getReportData().getReportElements());
 //		
 //		for (ReportNode node : detailedReport.getNodes())
 //		{
