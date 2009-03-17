@@ -38,6 +38,7 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.DummyWebDataGenerator;
+import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
 import org.apache.wicket.util.tester.FormTester;
@@ -80,7 +81,7 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 				.andReturn(reportCriteria);
 
 		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-				.andReturn(new ReportData(null, null));
+				.andReturn(ReportTestUtil.getFlatReportData());
 		replay(timesheetService, reportCriteriaService, detailedReportService);
 		
 		tester.startPage(ExportMonthSelectionPage.class);		

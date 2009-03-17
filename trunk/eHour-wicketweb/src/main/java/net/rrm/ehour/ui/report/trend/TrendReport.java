@@ -45,7 +45,7 @@ public abstract class TrendReport<RK extends Comparable<?>> extends AbstractCach
 	private static final long serialVersionUID = -8062083697181324496L;
 	
 	private static final Logger LOGGER = Logger.getLogger(TrendReport.class);
-	private transient SortedMap<RK, Map<Date, FlatReportElement>>	rowMap;
+	private transient SortedMap<RK, Map<Date, FlatReportElement>> rowMap;
 	
 	/**
 	 * @param criteria
@@ -145,7 +145,16 @@ public abstract class TrendReport<RK extends Comparable<?>> extends AbstractCach
 	 */
 	public SortedMap<RK, Map<Date, FlatReportElement>> getValues()
 	{
+		if (rowMap == null)
+		{
+			lazyInitRowMap();
+		}
 		return rowMap;
+	}
+	
+	private void lazyInitRowMap()
+	{
+		load();
 	}
 
 	private Date getValidAggregateDate(FlatReportElement aggregate)

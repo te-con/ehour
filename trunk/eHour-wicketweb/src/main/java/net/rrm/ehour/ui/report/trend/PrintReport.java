@@ -34,6 +34,7 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -98,8 +99,18 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	@Override
 	protected ReportData fetchReportData(ReportCriteria reportCriteria)
 	{
-		ReportData detailedReportData = detailedReportService.getDetailedReportData(reportCriteria);
+		ReportData detailedReportData = getDetailedReportService().getDetailedReportData(reportCriteria);
 		
 		return detailedReportData;
+	}
+	
+	private DetailedReportService getDetailedReportService()
+	{
+		if (detailedReportService == null)
+		{
+			CommonWebUtil.springInjection(this);
+		}
+		
+		return detailedReportService;
 	}
 }
