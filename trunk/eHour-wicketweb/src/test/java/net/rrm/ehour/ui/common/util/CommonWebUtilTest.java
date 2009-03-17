@@ -36,15 +36,6 @@ import org.junit.Test;
  */
 public class CommonWebUtilTest extends ProjectReportPanelTest
 {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-//	@Before
-//	public void setUp() throws Exception
-//	{
-//	}
-
 	/**
 	 * Test method for {@link net.rrm.ehour.ui.common.util.CommonWebUtil#findComponent(org.apache.wicket.MarkupContainer, java.lang.Class)}.
 	 */
@@ -63,8 +54,5 @@ public class CommonWebUtilTest extends ProjectReportPanelTest
 		
 		List<AbstractOpenFlashChart> components = CommonWebUtil.findComponent(panel, AbstractOpenFlashChart.class);
 		assertEquals(2, components.size());
-		
-		
-		
 	}
 }

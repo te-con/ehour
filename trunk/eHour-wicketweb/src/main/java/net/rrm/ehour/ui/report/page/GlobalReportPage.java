@@ -131,6 +131,8 @@ public class GlobalReportPage extends AbstractReportPage
 			{
 				String javascript = flashChart.getSwf().getJavascript();
 		
+				System.out.println(javascript);
+				
 				AjaxRequestTarget.get().appendJavascript(javascript);
 			}
 		}
