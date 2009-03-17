@@ -52,13 +52,13 @@ public abstract class BaseTestReport extends AbstractSpringWebAppTester
 		super.setUp();
 		
 		reportCriteriaService = createMock(ReportCriteriaService.class);
-		mockContext.putBean("reportCriteriaService", reportCriteriaService);
+		getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 
 		aggregateReportService = createMock(AggregateReportService.class);
-		mockContext.putBean("aggregatedReportService", aggregateReportService);
+		getMockContext().putBean("aggregatedReportService", aggregateReportService);
 
 		detailedReportService = createMock(DetailedReportService.class);
-		mockContext.putBean("detailedReportService", detailedReportService);
+		getMockContext().putBean("detailedReportService", detailedReportService);
 
 		AvailableCriteria availCriteria = new AvailableCriteria();
 

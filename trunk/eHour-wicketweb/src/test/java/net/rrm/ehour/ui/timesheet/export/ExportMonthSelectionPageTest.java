@@ -63,13 +63,13 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 		super.setUp();
 		
 		timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 
 		reportCriteriaService = createMock(ReportCriteriaService.class);
-		mockContext.putBean("reportCriteriaService", reportCriteriaService);
+		getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 	
 		detailedReportService = createMock(DetailedReportService.class);
-		mockContext.putBean("detailedReportService", detailedReportService);
+		getMockContext().putBean("detailedReportService", detailedReportService);
 		
 		reportCriteria = createReportCriteria();
 		

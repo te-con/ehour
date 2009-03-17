@@ -41,7 +41,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 		super.setUp();
 		
 		timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 
 	}
 
@@ -63,7 +63,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 
 		replay(timesheetService);
 
-		EhourWebSession session = webapp.getSession();
+		EhourWebSession session = getWebApp().getSession();
 		session.setNavCalendar(requestedMonth);
 		
 		new CalendarPanel("id", new User(1));

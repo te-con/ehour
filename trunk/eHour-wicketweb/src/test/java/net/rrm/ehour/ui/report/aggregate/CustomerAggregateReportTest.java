@@ -32,7 +32,7 @@ public class CustomerAggregateReportTest extends AbstractSpringInjectorTester
 		super.springLocatorSetup();
 		
 		aggregateReportService = createMock(AggregateReportService.class);
-		mockContext.putBean("aggregateReportService", aggregateReportService);
+		getMockContext().putBean("aggregateReportService", aggregateReportService);
 
 	}
 	

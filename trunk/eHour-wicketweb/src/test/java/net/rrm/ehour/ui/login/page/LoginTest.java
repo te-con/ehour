@@ -43,10 +43,10 @@ public class LoginTest extends AbstractSpringWebAppTester
 		getTester().assertNoErrorMessage();
 
 		ConfigurationService configService = createMock(ConfigurationService.class);
-		mockContext.putBean("configService", configService);
+		getMockContext().putBean("configService", configService);
 
 		MailService mailService = createMock(MailService.class);
-		mockContext.putBean("mailService", mailService);
+		getMockContext().putBean("mailService", mailService);
 
 		
 		expect(configService.getConfiguration())

@@ -41,7 +41,7 @@ public abstract class AbstractSpringInjectorTester extends AbstractSpringTester
 
 			public ApplicationContext getSpringContext()
 			{
-				return mockContext;
+				return getMockContext();
 			}
 			
 		};

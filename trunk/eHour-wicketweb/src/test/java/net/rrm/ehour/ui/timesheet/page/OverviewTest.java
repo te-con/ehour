@@ -42,9 +42,9 @@ public class OverviewTest extends AbstractSpringWebAppTester
 	public void testOverviewPageRender()
 	{
 		TimesheetService timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 		
-		MockExpectations.navCalendar(timesheetService, webapp);
+		MockExpectations.navCalendar(timesheetService, getWebApp());
 
 		TimesheetOverview overview = new TimesheetOverview();
 		

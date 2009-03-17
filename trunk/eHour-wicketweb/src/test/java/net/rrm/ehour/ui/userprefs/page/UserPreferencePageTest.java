@@ -36,12 +36,12 @@ public class UserPreferencePageTest extends AbstractSpringWebAppTester
 	public void testReportPageRender() throws ObjectNotFoundException
 	{
 		TimesheetService timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 		
-		MockExpectations.navCalendar(timesheetService, webapp);
+		MockExpectations.navCalendar(timesheetService, getWebApp());
 		
 		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 
 		expect(userService.getUser(1))
 			.andReturn(new User(1));

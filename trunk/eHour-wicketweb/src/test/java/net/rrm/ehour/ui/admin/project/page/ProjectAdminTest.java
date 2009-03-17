@@ -48,13 +48,13 @@ public class ProjectAdminTest extends AbstractSpringWebAppTester
 	public void testProjectAdminRender()
 	{
 		ProjectService	projectService = createMock(ProjectService.class);
-		mockContext.putBean("projectService", projectService);
+		getMockContext().putBean("projectService", projectService);
 
 		UserService		userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 
 		CustomerService	customerService = createMock(CustomerService.class);
-		mockContext.putBean("customerService", customerService);
+		getMockContext().putBean("customerService", customerService);
 		
 
 		expect(customerService.getCustomers(true))

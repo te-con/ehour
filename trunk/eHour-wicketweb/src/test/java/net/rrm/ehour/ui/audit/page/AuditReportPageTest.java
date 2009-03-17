@@ -30,11 +30,11 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 	public void setUp() throws Exception
 	{
 		super.setUp();
-		expect(auditService.getAuditCount(isA(AuditReportRequest.class)))
+		expect(getAuditService().getAuditCount(isA(AuditReportRequest.class)))
 			.andReturn(5)
 			.anyTimes();
 
-		expect(auditService.getAudit(isA(AuditReportRequest.class)))
+		expect(getAuditService().getAudit(isA(AuditReportRequest.class)))
 			.andReturn(new ArrayList<Audit>())
 			.anyTimes();
 	}
@@ -42,7 +42,7 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 	@After
 	public void tearDown()
 	{
-		verify(auditService);
+		verify(getAuditService());
 	}
 	
 	private void startPage()
@@ -54,7 +54,7 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 	@Test
 	public void shouldSubmit()
 	{
-		replay(auditService);
+		replay(getAuditService());
 		startPage();
 
 		String formPath = AuditConstants.PATH_FRAME + ":" + 

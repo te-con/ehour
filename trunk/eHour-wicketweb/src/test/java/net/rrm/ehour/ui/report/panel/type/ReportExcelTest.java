@@ -57,10 +57,10 @@ public class ReportExcelTest extends AbstractSpringWebAppTester
 		super.setUp();
 		
 		aggregateReportService = createMock(AggregateReportService.class);
-		mockContext.putBean("aggregateReportService", aggregateReportService);
+		getMockContext().putBean("aggregateReportService", aggregateReportService);
 
 		
-		EhourWebSession session = this.webapp.getSession();
+		EhourWebSession session = this.getWebApp().getSession();
 		cache = session.getReportCache();
 		
 		criteria = ReportTestUtil.getReportCriteria();

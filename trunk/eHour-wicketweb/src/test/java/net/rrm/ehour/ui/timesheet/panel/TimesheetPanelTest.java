@@ -69,13 +69,13 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 	@Before
 	public void setup()
 	{
-		config.setCompleteDayHours(8l);
+		getConfig().setCompleteDayHours(8l);
 
 		timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 
 		userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 		
 		user = new User(1);
 		cal = new GregorianCalendar();
@@ -188,7 +188,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 	
 		getTester().executeAjaxEvent("panel:timesheetFrame:greyFrame:title:nextWeek", "onclick");
 
-		Calendar cal = webapp.getSession().getNavCalendar();
+		Calendar cal = getWebApp().getSession().getNavCalendar();
 		
 		Calendar now = GregorianCalendar.getInstance();
 		now.add(Calendar.DAY_OF_YEAR, 1);

@@ -40,11 +40,11 @@ public class MainConfigTest extends AbstractSpringWebAppTester
 	public void testMainConfigRender()
 	{
 		ConfigurationService configService = createMock(ConfigurationService.class);
-		mockContext.putBean("configService", configService);
+		getMockContext().putBean("configService", configService);
 		
 
 		MailService mailService = createMock(MailService.class);
-		mockContext.putBean("mailService", mailService);	
+		getMockContext().putBean("mailService", mailService);	
 		
 		expect(configService.getConfiguration())
 				.andReturn(new EhourConfigStub());

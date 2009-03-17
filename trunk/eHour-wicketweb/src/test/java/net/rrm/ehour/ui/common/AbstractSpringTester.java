@@ -34,9 +34,9 @@ import org.junit.Before;
  */
 public abstract class AbstractSpringTester
 {
-	protected AnnotApplicationContextMock	mockContext;
-	protected EhourConfigStub config;
-	protected AuditService auditService;
+	private AnnotApplicationContextMock	mockContext;
+	private EhourConfigStub config;
+	private AuditService auditService;
 
 	@Before
 	public void springContextSetup() throws Exception
@@ -45,9 +45,33 @@ public abstract class AbstractSpringTester
 		config = new EhourConfigStub();
 		config.setFirstDayOfWeek(Calendar.SUNDAY);
 
-		mockContext.putBean("EhourConfig", config);
+		getMockContext().putBean("EhourConfig", config);
 
 		auditService = createMock(AuditService.class);
-		mockContext.putBean("auditService", auditService);
+		getMockContext().putBean("auditService", auditService);
+	}
+	
+	/**
+	 * @return the getMockContext()
+	 */
+	public AnnotApplicationContextMock getMockContext()
+	{
+		return mockContext;
+	}
+	
+	/**
+	 * @return the config
+	 */
+	public EhourConfigStub getConfig()
+	{
+		return config;
+	}
+	
+	/**
+	 * @return the auditService
+	 */
+	public AuditService getAuditService()
+	{
+		return auditService;
 	}
 }

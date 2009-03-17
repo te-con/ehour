@@ -47,17 +47,10 @@ import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.spring.test.ApplicationContextMock;
 
-/**
- * 
- **/
-
 public class TestEhourWebApplication extends EhourWebApplication implements Serializable 
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7336200909844170964L;
-	private transient ApplicationContextMock	mockContext;
+	private transient ApplicationContextMock mockContext;
 	private EhourWebSession				session;
 
 	/**
@@ -93,7 +86,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	@Override
 	protected void springInjection()
 	{
-		addComponentInstantiationListener(new SpringComponentInjector(this, mockContext));
+		addComponentInstantiationListener(new SpringComponentInjector(this, getMockContext()));
 	}
 
 	/**

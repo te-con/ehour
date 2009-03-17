@@ -43,7 +43,7 @@ public class CustomerAdminTest extends AbstractSpringWebAppTester
 	public void testCustomerAdminRender()
 	{
 		CustomerService customerService = createMock(CustomerService.class);
-		mockContext.putBean("customerService", customerService);
+		getMockContext().putBean("customerService", customerService);
 		
 		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
 
@@ -62,7 +62,7 @@ public class CustomerAdminTest extends AbstractSpringWebAppTester
 //	public void testFormSubmit()
 //	{
 //		CustomerService customerService = createMock(CustomerService.class);
-//		mockContext.putBean("customerService", customerService);
+//		getMockContext().putBean("customerService", customerService);
 //		
 //		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
 //

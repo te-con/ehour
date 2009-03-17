@@ -48,7 +48,7 @@ public class DetailedReportTest extends AbstractSpringInjectorTester
 		super.springLocatorSetup();
 		
 		detailedReportService = createMock(DetailedReportService.class);
-		mockContext.putBean("detailedReportService", detailedReportService);
+		getMockContext().putBean("detailedReportService", detailedReportService);
 	}
 	
 	/**

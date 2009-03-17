@@ -45,10 +45,10 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester
 		super.setUp();
 		
 		projectService = createMock(ProjectService.class);
-		mockContext.putBean("projectService", projectService);		
+		getMockContext().putBean("projectService", projectService);		
 		
 		aggregateReportService = createMock(AggregateReportService.class);
-		mockContext.putBean("aggregatedReportService", aggregateReportService);
+		getMockContext().putBean("aggregatedReportService", aggregateReportService);
 	}
 
 

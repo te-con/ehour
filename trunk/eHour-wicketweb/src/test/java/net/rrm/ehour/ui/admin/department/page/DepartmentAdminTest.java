@@ -42,7 +42,7 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 		super.setUp();
 		
 		userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 
 		List<UserDepartment> depts = new ArrayList<UserDepartment>();
 		depts.add(new UserDepartment(1, "user", "DPT"));

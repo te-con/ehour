@@ -48,7 +48,7 @@ public class DetailedReportPanelTest extends AbstractSpringWebAppTester
 	public void setup()
 	{
 		detailedReportService = createMock(DetailedReportService.class);
-		mockContext.putBean("detailedReportService", detailedReportService);
+		getMockContext().putBean("detailedReportService", detailedReportService);
 	}
 	
 	/**

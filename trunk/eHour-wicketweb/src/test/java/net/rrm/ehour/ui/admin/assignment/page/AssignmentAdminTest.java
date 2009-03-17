@@ -51,16 +51,16 @@ public class AssignmentAdminTest extends AbstractSpringWebAppTester
 	public void testAssignmentAdminRender()
 	{
 		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 
 		ProjectService projectService = createMock(ProjectService.class);
-		mockContext.putBean("projectService", projectService);
+		getMockContext().putBean("projectService", projectService);
 		
 		CustomerService customerService = createMock(CustomerService.class);
-		mockContext.putBean("customerService", customerService);
+		getMockContext().putBean("customerService", customerService);
 
 		ProjectAssignmentService assignmentService = createMock(ProjectAssignmentService.class);
-		mockContext.putBean("assignmentService", assignmentService);
+		getMockContext().putBean("assignmentService", assignmentService);
 
 //		expect(projectService.getAllProjectsForUser(66))
 //				.andReturn(new ArrayList<ProjectAssignment>());

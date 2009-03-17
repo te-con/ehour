@@ -46,7 +46,7 @@ public class UserAdminTest extends AbstractSpringWebAppTester
 	public void testUserAdminRender()
 	{
 		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 		
 		List<User>	users = new ArrayList<User>();
 		User user = new User();
