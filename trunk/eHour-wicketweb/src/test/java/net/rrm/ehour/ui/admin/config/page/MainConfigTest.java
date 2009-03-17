@@ -51,9 +51,9 @@ public class MainConfigTest extends AbstractSpringWebAppTester
 
 		replay(configService);
 		
-		tester.startPage(MainConfig.class);
-		tester.assertRenderedPage(MainConfig.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(MainConfig.class);
+		getTester().assertRenderedPage(MainConfig.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(configService);
 	}
@@ -63,11 +63,11 @@ public class MainConfigTest extends AbstractSpringWebAppTester
 ////	 */
 //	public void testSubmitOKNoLocale()
 //	{
-//		FormTester	form = tester.newFormTester("configForm");
+//		FormTester	form = getTester().newFormTester("configForm");
 //	
 //		form.setValue("dontForceLocale", "true");
 //		
-//		tester.executeAjaxEvent("configForm.submitButton", "onclick");
+//		getTester().executeAjaxEvent("configForm.submitButton", "onclick");
 //	}
 	
 }

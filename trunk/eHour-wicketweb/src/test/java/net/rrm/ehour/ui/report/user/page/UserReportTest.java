@@ -47,9 +47,9 @@ public class UserReportTest extends BaseTestReport
 		replay(reportCriteriaService);
 		replay(aggregateReportService);
 		
-		tester.startPage(UserReport.class);
-		tester.assertRenderedPage(UserReport.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(UserReport.class);
+		getTester().assertRenderedPage(UserReport.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(reportCriteriaService);
 		verify(aggregateReportService);

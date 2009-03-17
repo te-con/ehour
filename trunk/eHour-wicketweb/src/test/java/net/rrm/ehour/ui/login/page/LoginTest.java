@@ -38,9 +38,9 @@ public class LoginTest extends AbstractSpringWebAppTester
 	@Test
 	public void testLoginPageRender()
 	{
-		tester.startPage(Login.class);
-		tester.assertRenderedPage(Login.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(Login.class);
+		getTester().assertRenderedPage(Login.class);
+		getTester().assertNoErrorMessage();
 
 		ConfigurationService configService = createMock(ConfigurationService.class);
 		mockContext.putBean("configService", configService);
@@ -54,15 +54,15 @@ public class LoginTest extends AbstractSpringWebAppTester
 				.anyTimes();
 		
 		replay(configService);
-		FormTester form = tester.newFormTester("loginform");
+		FormTester form = getTester().newFormTester("loginform");
 		form.setValue("username", "thies");
 		form.setValue("password", "Ttst");
 
 		form.submit();
 		verify(configService);
 		
-		tester.assertNoErrorMessage();
-		tester.assertRenderedPage(MainConfig.class);
+		getTester().assertNoErrorMessage();
+		getTester().assertRenderedPage(MainConfig.class);
 
 		
 	}

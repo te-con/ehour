@@ -58,9 +58,9 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 	{
 		replay(userService);
 		
-		tester.startPage(DepartmentAdmin.class);
-		tester.assertRenderedPage(DepartmentAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(DepartmentAdmin.class);
+		getTester().assertRenderedPage(DepartmentAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(userService);
 	}
@@ -70,11 +70,11 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 	{
 		replay(userService);
 
-		tester.startPage(DepartmentAdmin.class);
-		tester.assertRenderedPage(DepartmentAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(DepartmentAdmin.class);
+		getTester().assertRenderedPage(DepartmentAdmin.class);
+		getTester().assertNoErrorMessage();
 		
-		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
+		getTester().clickLink("tabs:tabs-container:tabs:1:link", true);
 		verify(userService);
 	}
 	
@@ -86,11 +86,11 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 		
 		replay(userService);
 
-		tester.startPage(DepartmentAdmin.class);
-		tester.assertRenderedPage(DepartmentAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(DepartmentAdmin.class);
+		getTester().assertRenderedPage(DepartmentAdmin.class);
+		getTester().assertNoErrorMessage();
 		
-		tester.clickLink("entrySelectorFrame:deptSelector:entrySelectorFrame:blueBorder:itemListHolder:itemList:0:itemLink", true);
+		getTester().clickLink("entrySelectorFrame:deptSelector:entrySelectorFrame:blueBorder:itemListHolder:itemList:0:itemLink", true);
 		verify(userService);
 	}	
 	
@@ -100,15 +100,15 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 //	{
 //		replay(userService);
 //
-//		tester.startPage(DepartmentAdmin.class);
-//		tester.assertRenderedPage(DepartmentAdmin.class);
-//		tester.assertNoErrorMessage();
+//		getTester().startPage(DepartmentAdmin.class);
+//		getTester().assertRenderedPage(DepartmentAdmin.class);
+//		getTester().assertNoErrorMessage();
 //		
-//		FormTester formTester = tester.newFormTester("tabs:panel:border:deptForm");
+//		FormTester formTester = getTester().newFormTester("tabs:panel:border:deptForm");
 //		formTester.setValue("department.name", "test");
 //		formTester.submit();
 //		
-//		tester.assertErrorMessages(new String[]{"bla"});
+//		getTester().assertErrorMessages(new String[]{"bla"});
 //		
 //		
 //		verify(userService);

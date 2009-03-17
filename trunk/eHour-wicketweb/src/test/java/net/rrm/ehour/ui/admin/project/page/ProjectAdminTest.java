@@ -68,9 +68,9 @@ public class ProjectAdminTest extends AbstractSpringWebAppTester
 		
 		replay(projectService);
 		
-		tester.startPage(ProjectAdmin.class);
-		tester.assertRenderedPage(ProjectAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(ProjectAdmin.class);
+		getTester().assertRenderedPage(ProjectAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(projectService);
 	}

@@ -83,20 +83,20 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 				.andReturn(ReportTestUtil.getFlatReportData());
 		replay(timesheetService, reportCriteriaService, detailedReportService);
 		
-		tester.startPage(ExportMonthSelectionPage.class);		
+		getTester().startPage(ExportMonthSelectionPage.class);		
 	}
 	
 	@Test
 	public void submitToPrint()
 	{
-		FormTester formTester = tester.newFormTester("printSelectionFrame:blueBorder:selectionForm:criteriaForm");
+		FormTester formTester = getTester().newFormTester("printSelectionFrame:blueBorder:selectionForm:criteriaForm");
 		formTester.selectMultiple("projectGroup", new int[]{0, 2});
 		formTester.setValue("signOff", "true");
 
 		formTester.submit("printButton");
 		
-		tester.assertRenderedPage(PrintMonth.class);
-		tester.assertNoErrorMessage();
+		getTester().assertRenderedPage(PrintMonth.class);
+		getTester().assertNoErrorMessage();
 		assertEquals(Boolean.TRUE, (Boolean) reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name()));
 		
 		assertEquals(2, reportCriteria.getUserCriteria().getProjects().size());

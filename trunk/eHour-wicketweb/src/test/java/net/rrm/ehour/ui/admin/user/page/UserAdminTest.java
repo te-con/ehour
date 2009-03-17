@@ -66,9 +66,9 @@ public class UserAdminTest extends AbstractSpringWebAppTester
 
 		replay(userService);
 		
-		tester.startPage(UserAdmin.class);
-		tester.assertRenderedPage(UserAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(UserAdmin.class);
+		getTester().assertRenderedPage(UserAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(userService);
 	}

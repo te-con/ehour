@@ -86,9 +86,9 @@ public class AssignmentAdminTest extends AbstractSpringWebAppTester
 
 		replay(userService);
 		
-		tester.startPage(AssignmentAdmin.class);
-		tester.assertRenderedPage(AssignmentAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(AssignmentAdmin.class);
+		getTester().assertRenderedPage(AssignmentAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(userService);
 //		verify(customerService);

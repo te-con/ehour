@@ -65,7 +65,7 @@ public class DetailedReportPanelTest extends AbstractSpringWebAppTester
 		
 		final DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
 		
-		tester.startPanel(new TestPanelSource(){
+		getTester().startPanel(new TestPanelSource(){
 
 			public Panel getTestPanel(String panelId)
 			{
@@ -74,7 +74,7 @@ public class DetailedReportPanelTest extends AbstractSpringWebAppTester
 			}
 		});
 		
-		tester.assertNoErrorMessage();
+		getTester().assertNoErrorMessage();
 		
 		verify(detailedReportService);
 	}

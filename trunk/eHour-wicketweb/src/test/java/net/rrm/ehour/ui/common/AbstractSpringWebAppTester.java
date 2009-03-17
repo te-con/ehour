@@ -36,7 +36,7 @@ import org.junit.Before;
 @SuppressWarnings("unchecked")
 public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 {
-	protected WicketTester	tester;
+	private WicketTester	tester;
 	protected AnnotApplicationContextMock	mockContext;
 	protected TestEhourWebApplication webapp;
 	
@@ -62,13 +62,13 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 		});
 	}
 	
-	protected void setFormValue(FormTester tester, String path, String value)
+	protected void setFormValue(FormTester formTester, String path, String value)
 	{
-		Component comp = tester.getForm().get(path);
+		Component comp = formTester.getForm().get(path);
 		
 		if (comp != null && (comp instanceof IFormSubmittingComponent || comp instanceof FormComponent))
 		{
-			tester.setValue(path, value);
+			formTester.setValue(path, value);
 		}
 		else if (comp == null)
 		{
@@ -78,6 +78,13 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 		{
 			throw new IllegalArgumentException(path + " not a formcomponent");
 		}
-		
+	}
+	
+	/**
+	 * @return the tester
+	 */
+	public WicketTester getTester()
+	{
+		return tester;
 	}
 }

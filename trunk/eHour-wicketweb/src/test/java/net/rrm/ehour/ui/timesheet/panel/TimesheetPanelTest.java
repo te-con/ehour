@@ -109,18 +109,18 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		
 		final String comment = "commentaar";
 	
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayLink", "onclick");
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayLink", "onclick");
 
-		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
+		FormTester timesheetFormTester = getTester().newFormTester(TIMESHEET_PATH);
 		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:dayWin:content:comment", comment);
 		
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:submit", "onclick");
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:submit", "onclick");
 		
-		Timesheet timesheet = (Timesheet)tester.getComponentFromLastRenderedPage("panel").getModelObject();
+		Timesheet timesheet = (Timesheet)getTester().getComponentFromLastRenderedPage("panel").getModelObject();
 		assertEquals(comment, timesheet.getTimesheetEntries().get(0).getComment());
 		
-		tester.assertNoErrorMessage();
+		getTester().assertNoErrorMessage();
 	}
 	
 	@Test
@@ -130,18 +130,18 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		
 		final String comment = "commentaar";
 	
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayLink", "onclick");
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayLink", "onclick");
 
-		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
+		FormTester timesheetFormTester = getTester().newFormTester(TIMESHEET_PATH);
 		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:dayWin:content:comment", comment);
 		
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:cancel", "onclick");
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin:content:cancel", "onclick");
 		
-		Timesheet timesheet = (Timesheet)tester.getComponentFromLastRenderedPage("panel").getModelObject();
+		Timesheet timesheet = (Timesheet)getTester().getComponentFromLastRenderedPage("panel").getModelObject();
 		assertNull(timesheet.getTimesheetEntries().get(0).getComment());
 
-		tester.assertNoErrorMessage();
+		getTester().assertNoErrorMessage();
 	}	
 		
 	
@@ -150,13 +150,13 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 	{
 		startAndReplay();
 		
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:bookWholeWeek", "onclick");
-		tester.assertNoErrorMessage();
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:bookWholeWeek", "onclick");
+		getTester().assertNoErrorMessage();
 
-		Label grandTotalLabel = (Label)tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:grandTotal");
+		Label grandTotalLabel = (Label)getTester().getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:grandTotal");
 		assertEquals("40.00", grandTotalLabel.getModelObject().toString());
 		
-		tester.assertNoErrorMessage();
+		getTester().assertNoErrorMessage();
 	}
 	
 	@Test
@@ -164,20 +164,20 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 	{
 		startAndReplay();
 		
-		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
+		FormTester timesheetFormTester = getTester().newFormTester(TIMESHEET_PATH);
 //		more than 24 hour can be booked now so this error message doesn't popup anymore
 //		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
-//		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
-//		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
+//		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
+//		getTester().assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
 //
 //		webapp.getSession().cleanupFeedbackMessages();
 		
 		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "12");
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
-		tester.assertNoErrorMessage();
-		tester.assertContains("536e87"); // FormHighlighter -> colormodifier
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
+		getTester().assertNoErrorMessage();
+		getTester().assertContains("536e87"); // FormHighlighter -> colormodifier
 
-		Label grandTotalLabel = (Label)tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:grandTotal");
+		Label grandTotalLabel = (Label)getTester().getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:grandTotal");
 		assertEquals("12.00", grandTotalLabel.getModelObject().toString());
 	}
 	
@@ -186,7 +186,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 	{
 		startAndReplay();
 	
-		tester.executeAjaxEvent("panel:timesheetFrame:greyFrame:title:nextWeek", "onclick");
+		getTester().executeAjaxEvent("panel:timesheetFrame:greyFrame:title:nextWeek", "onclick");
 
 		Calendar cal = webapp.getSession().getNavCalendar();
 		
@@ -203,7 +203,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		
 		startAndReplay();
 
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:foldLink", "onclick");
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:foldLink", "onclick");
 	}
 	
 //	@Test
@@ -211,11 +211,11 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 //	{
 //		startAndReplay();
 //		
-//		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH + "");
+//		FormTester timesheetFormTester = getTester().newFormTester(TIMESHEET_PATH + "");
 //		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
 //
-//		tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
-//		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
+//		getTester().executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
+//		getTester().assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
 //	}
 	
 	@SuppressWarnings("unchecked")
@@ -227,9 +227,9 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		
 		startAndReplay();
 		
-		tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
+		getTester().executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
 		
-		tester.assertNoErrorMessage();
+		getTester().assertNoErrorMessage();
 	}
 	
 	@After
@@ -248,7 +248,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		replay(timesheetService);
 		replay(userService);
 
-		tester.startPanel(new TestPanelSource()
+		getTester().startPanel(new TestPanelSource()
 		{
 			private static final long serialVersionUID = -8296677055637030118L;
 

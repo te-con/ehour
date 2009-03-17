@@ -49,9 +49,9 @@ public class CustomerAdminTest extends AbstractSpringWebAppTester
 
 		replay(customerService);
 		
-		tester.startPage(CustomerAdmin.class);
-		tester.assertRenderedPage(CustomerAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(CustomerAdmin.class);
+		getTester().assertRenderedPage(CustomerAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(customerService);
 	}
@@ -68,12 +68,12 @@ public class CustomerAdminTest extends AbstractSpringWebAppTester
 //
 //		replay(customerService);
 //		
-//		FormTester form = tester.newFormTester("tabs.customerForm");
+//		FormTester form = getTester().newFormTester("tabs.customerForm");
 //		form.submit();
 //		
-//		tester.startPage(CustomerAdmin.class);
-//		tester.assertRenderedPage(CustomerAdmin.class);
-//		tester.assertNoErrorMessage();
+//		getTester().startPage(CustomerAdmin.class);
+//		getTester().assertRenderedPage(CustomerAdmin.class);
+//		getTester().assertNoErrorMessage();
 //		
 //		verify(customerService);
 //	}	

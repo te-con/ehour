@@ -47,8 +47,8 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 	
 	private void startPage()
 	{
-		tester.startPage(AuditReportPage.class);
-		tester.assertRenderedPage(AuditReportPage.class);
+		getTester().startPage(AuditReportPage.class);
+		getTester().assertRenderedPage(AuditReportPage.class);
 	}
 	
 	@Test
@@ -62,16 +62,16 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 						AuditConstants.PATH_FORM_BORDER + ":" +
 						AuditConstants.ID_FORM;
 		
-		tester.executeAjaxEvent(formPath + ":" +  
+		getTester().executeAjaxEvent(formPath + ":" +  
 								AuditConstants.PATH_FORM_SUBMIT,
 								"onclick");
 		
-//		FormTester formTester = tester.newFormTester(formPath);
+//		FormTester formTester = getTester().newFormTester(formPath);
 //		formTester.submit();
 		
-		tester.assertRenderedPage(AuditReportPage.class);
+		getTester().assertRenderedPage(AuditReportPage.class);
 		
-		tester.assertNoErrorMessage();
+		getTester().assertNoErrorMessage();
 	}
 	
 	

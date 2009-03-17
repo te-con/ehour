@@ -49,9 +49,9 @@ public class UserPreferencePageTest extends AbstractSpringWebAppTester
 		replay(userService);
 		replay(timesheetService);
 		
-		tester.startPage(UserPreferencePage.class);
-		tester.assertRenderedPage(UserPreferencePage.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(UserPreferencePage.class);
+		getTester().assertRenderedPage(UserPreferencePage.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(userService);
 		verify(timesheetService);

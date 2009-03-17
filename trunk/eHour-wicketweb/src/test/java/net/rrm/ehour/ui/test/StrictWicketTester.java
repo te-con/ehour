@@ -56,7 +56,7 @@ public class StrictWicketTester extends WicketTester
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.wicket.util.tester.BaseWicketTester#newFormTester(java.lang.String, boolean)
+	 * @see org.apache.wicket.util.getTester().BaseWicketTester#newFormTester(java.lang.String, boolean)
 	 */
 	@Override
 	public FormTester newFormTester(String path, boolean fillBlankString)
@@ -66,7 +66,7 @@ public class StrictWicketTester extends WicketTester
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.apache.wicket.util.tester.BaseWicketTester#executeAjaxEvent(org.apache.wicket.Component, java.lang.String)
+	 * @see org.apache.wicket.util.getTester().BaseWicketTester#executeAjaxEvent(org.apache.wicket.Component, java.lang.String)
 	 */
 	@Override
 	public void executeAjaxEvent(Component component, String event)
