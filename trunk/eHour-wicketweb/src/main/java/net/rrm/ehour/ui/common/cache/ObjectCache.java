@@ -49,10 +49,6 @@ public class ObjectCache implements Serializable
 	 * @param report
 	 * @return
 	 */
-	public String addObjectToCache(CachableObject cacheObject, Object o)
-	{
-		return "";
-	}
 	public String addObjectToCache(CachableObject cacheObject)
 	{
 		initCache();

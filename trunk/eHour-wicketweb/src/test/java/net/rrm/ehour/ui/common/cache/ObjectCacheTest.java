@@ -39,8 +39,8 @@ public class ObjectCacheTest
 
 		MockReport report = new MockReport();
 		long id = report.id;
-		String cacheId = reportCache.addObjectToCache(report, null);
-		
+		String cacheId = reportCache.addObjectToCache(report);
+
 		report = null;
 		
 		report = (MockReport)reportCache.getObjectFromCache(cacheId);
