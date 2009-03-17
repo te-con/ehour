@@ -26,13 +26,13 @@ import java.util.List;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class DepartmentAdminTest extends BaseUIWicketTester
+public class DepartmentAdminTest extends AbstractSpringWebAppTester
 {
 	private UserService	userService;
 	

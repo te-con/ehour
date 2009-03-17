@@ -24,13 +24,13 @@ import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Test;
 
-public class UserPreferencePageTest extends BaseUIWicketTester
+public class UserPreferencePageTest extends AbstractSpringWebAppTester
 {
 	@Test
 	public void testReportPageRender() throws ObjectNotFoundException

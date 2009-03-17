@@ -25,7 +25,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.cache.ObjectCache;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.TreeReport;
@@ -44,7 +44,7 @@ import org.junit.Test;
 /**
  * Excel tester
  **/
-public class ReportExcelTest extends BaseUIWicketTester
+public class ReportExcelTest extends AbstractSpringWebAppTester
 {
 	private ObjectCache cache;
 	private ReportCriteria criteria;

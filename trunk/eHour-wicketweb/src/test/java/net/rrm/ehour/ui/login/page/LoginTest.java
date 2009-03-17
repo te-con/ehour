@@ -24,7 +24,7 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.page.MainConfig;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
@@ -33,7 +33,7 @@ import org.junit.Test;
  * Tests the login tests
  **/
 
-public class LoginTest extends BaseUIWicketTester
+public class LoginTest extends AbstractSpringWebAppTester
 {
 	@Test
 	public void testLoginPageRender()

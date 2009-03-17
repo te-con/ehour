@@ -27,7 +27,7 @@ import java.util.Calendar;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 
 import org.junit.Test;
@@ -36,7 +36,7 @@ import org.junit.Test;
 /**
  * Overview page test
  **/
-public class OverviewTest extends BaseUIWicketTester
+public class OverviewTest extends AbstractSpringWebAppTester
 {
 	@Test
 	public void testOverviewPageRender()

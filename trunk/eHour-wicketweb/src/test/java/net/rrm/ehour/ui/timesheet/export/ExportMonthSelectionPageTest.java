@@ -31,12 +31,11 @@ import java.util.Calendar;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
@@ -51,7 +50,7 @@ import org.junit.Test;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class ExportMonthSelectionPageTest extends BaseUIWicketTester
+public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 {
 	private TimesheetService 	timesheetService;
 	private ReportCriteriaService reportCriteriaService;

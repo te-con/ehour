@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ import org.junit.Test;
  * Customer admin test render
  **/
 
-public class CustomerAdminTest extends BaseUIWicketTester
+public class CustomerAdminTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render

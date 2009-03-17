@@ -31,7 +31,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -42,7 +42,7 @@ import org.junit.Test;
  * TODO 
  **/
 
-public class AssignmentAdminTest extends BaseUIWicketTester
+public class AssignmentAdminTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render

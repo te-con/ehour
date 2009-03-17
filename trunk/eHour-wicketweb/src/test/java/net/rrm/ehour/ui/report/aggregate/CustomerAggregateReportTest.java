@@ -1,11 +1,18 @@
 package net.rrm.ehour.ui.report.aggregate;
 
-import net.rrm.ehour.data.DateRange;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.ui.common.AbstractSpringInjectorTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -15,71 +22,34 @@ import org.junit.Test;
  * @since <pre>09/11/2007</pre>
  * @version 1.0
  */
-public class CustomerAggregateReportTest 
+public class CustomerAggregateReportTest extends AbstractSpringInjectorTester
 {
-    /**
-     * 
-     * @throws Exception
-     */
-    @Test
+	private AggregateReportService aggregateReportService;
+
+	@Before
+	public void setup() throws Exception
+	{
+		super.springLocatorSetup();
+		
+		aggregateReportService = createMock(AggregateReportService.class);
+		mockContext.putBean("aggregateReportService", aggregateReportService);
+
+	}
+	
+	@Test
     public void testCreateReport() throws Exception
     {
+		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
+			.andReturn(ReportTestUtil.getAssignmentReportData());
+		replay(aggregateReportService);
         UserCriteria userCriteria = new UserCriteria();
 
         ReportCriteria rc = new ReportCriteria(userCriteria);
         
-        ReportData aggData = new ReportData(ReportTestUtil.getAssignmentAggregateReportElements(), new DateRange());
-        
         CustomerAggregateReport aggReport = new CustomerAggregateReport(rc);
 
-        // REPXXX
-//        assertEquals(6, aggReport.getReportMatrix().size());
-//        
-//        assertEquals(3, aggReport.getNodes().size());
-//
-//        for (ReportNode node : aggReport.getNodes())
-//        {
-//            if (node.getId().equals(1))
-//            {
-//                assertEquals(51.0f, node.getHours().floatValue(), 0);
-//                assertEquals(2, node.getReportNodes().size());
-//                assertEquals(2, node.getReportNodes().get(0).getReportNodes().size());
-//                
-//             // test matrix creation
-//                int matrixWidth =	node.getColumnValues().length + 
-//                					node.getReportNodes().get(0).getColumnValues().length +
-//                					node.getReportNodes().get(0).getReportNodes().get(0).getColumnValues().length;
-//                
-//                Serializable[][] matrix = node.getNodeMatrix(matrixWidth);
-//                
-//                assertEquals("TestUser, Dummy", matrix[0][3]);
-//                assertEquals(15.0f, matrix[2][6]);
-//            }
-//        }
+        assertEquals(6, aggReport.getReportData().getReportElements().size());
+        
+        verify(aggregateReportService);
     }
-
-//    @Test
-//    public void testCreateReportForId() throws Exception
-//    {
-//
-//        ReportDataAggregate aggData = new ReportDataAggregate();
-//        ReportCriteria rc = new ReportCriteria();
-//        UserCriteria userCriteria = new UserCriteria();
-//        rc.setUserCriteria(userCriteria);
-//        aggData.setReportCriteria(rc);
-//        aggData.setProjectAssignmentAggregates(aggs);
-//        CustomerAggregateReport aggReport = new CustomerAggregateReport(aggData, 1);
-//
-//        assertEquals(1, aggReport.getNodes().size());
-//
-//        for (ReportNode node : aggReport.getNodes())
-//        {
-//            if (node.getId().equals(1))
-//            {
-//                assertEquals(51.0f, node.getHours().floatValue(), 0);
-//                assertEquals(2, node.getReportNodes().size());
-//                assertEquals(2, node.getReportNodes().get(0).getReportNodes().size());
-//            }
-//        }
-//    }
 }

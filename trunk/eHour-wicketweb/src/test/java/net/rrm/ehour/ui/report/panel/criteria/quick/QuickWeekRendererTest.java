@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.Localizer;
 import org.junit.Before;
@@ -35,7 +35,7 @@ import org.junit.Test;
  * TODO 
  **/
 
-public class QuickWeekRendererTest extends BaseUIWicketTester
+public class QuickWeekRendererTest extends AbstractSpringWebAppTester
 {
 	QuickWeekRenderer renderer;
 	Localizer			localizer;

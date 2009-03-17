@@ -27,7 +27,7 @@ import java.util.Locale;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
 
@@ -40,7 +40,7 @@ import org.junit.Test;
  * Detailed report panel test
  **/
 
-public class DetailedReportPanelTest extends BaseUIWicketTester
+public class DetailedReportPanelTest extends AbstractSpringWebAppTester
 {
 	private DetailedReportService detailedReportService;
 	

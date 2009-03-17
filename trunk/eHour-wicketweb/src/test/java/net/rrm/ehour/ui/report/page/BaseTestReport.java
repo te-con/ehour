@@ -34,11 +34,11 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Before;
 
-public abstract class BaseTestReport extends BaseUIWicketTester
+public abstract class BaseTestReport extends AbstractSpringWebAppTester
 {
 	protected ReportCriteriaService reportCriteriaService;
 	protected AggregateReportService aggregateReportService;

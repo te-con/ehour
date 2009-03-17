@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.AuditConstants;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +24,7 @@ import org.junit.Test;
  * @author thies
  *
  */
-public class AuditReportPageTest extends BaseUIWicketTester
+public class AuditReportPageTest extends AbstractSpringWebAppTester
 {
 	@Before
 	public void setUp() throws Exception

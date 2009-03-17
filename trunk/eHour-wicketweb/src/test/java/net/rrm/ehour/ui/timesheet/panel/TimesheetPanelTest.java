@@ -44,7 +44,7 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.user.service.UserService;
@@ -57,7 +57,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TimesheetPanelTest extends BaseUIWicketTester
+public class TimesheetPanelTest extends AbstractSpringWebAppTester
 {
 	private final static String TIMESHEET_PATH = "panel:timesheetFrame:timesheetForm";
 	

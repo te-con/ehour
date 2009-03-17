@@ -17,7 +17,7 @@ import java.util.List;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.junit.Before;
@@ -28,7 +28,7 @@ import org.junit.Test;
  *
  */
 @SuppressWarnings("deprecation")
-public class CalendarPanelTest extends BaseUIWicketTester
+public class CalendarPanelTest extends AbstractSpringWebAppTester
 {
 	private TimesheetService	timesheetService;
 	

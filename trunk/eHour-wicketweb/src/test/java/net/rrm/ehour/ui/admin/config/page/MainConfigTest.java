@@ -23,7 +23,7 @@ import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Test;
 
@@ -31,7 +31,7 @@ import org.junit.Test;
  * TODO 
  **/
 
-public class MainConfigTest extends BaseUIWicketTester
+public class MainConfigTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render
