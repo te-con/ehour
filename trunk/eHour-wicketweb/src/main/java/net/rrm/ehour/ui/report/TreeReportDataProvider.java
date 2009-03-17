@@ -59,7 +59,7 @@ public class TreeReportDataProvider implements IDataProvider
 	 */
 	public IModel model(Object object)
 	{
-		return new Model((Serializable[])object);
+		return new Model((TreeReportElement)object);
 	}
 
 	/*

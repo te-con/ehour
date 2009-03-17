@@ -46,7 +46,7 @@ public class DetailedReport extends TreeReport
 {
 	private static final long serialVersionUID = -21703820501429504L;
 	
-	@SpringBean
+	@SpringBean(name = "detailedReportService")
 	private DetailedReportService detailedReportService;
 	
 	private Locale locale;

@@ -17,14 +17,23 @@
 
 package net.rrm.ehour.ui.report.panel.detail;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.Locale;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -33,6 +42,16 @@ import org.junit.Test;
 
 public class DetailedReportPanelTest extends BaseUIWicketTester
 {
+	private DetailedReportService detailedReportService;
+	
+	@Before
+	public void setup()
+	{
+		detailedReportService = createMock(DetailedReportService.class);
+		mockContext.putBean("detailedReportService", detailedReportService);
+
+	}
+	
 	/**
 	 * Test method for {@link net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel#DetailedReportPanel(java.lang.String, net.rrm.ehour.ui.report.TreeReport, net.rrm.ehour.report.reports.ReportData)}.
 	 */
@@ -40,6 +59,11 @@ public class DetailedReportPanelTest extends BaseUIWicketTester
 	@SuppressWarnings("serial")
 	public void testDetailedReportPanel()
 	{
+		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
+			.andReturn(ReportTestUtil.getFlatReportData());
+		
+		replay(detailedReportService);
+		
 		final DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
 		
 		tester.startPanel(new TestPanelSource(){
@@ -52,6 +76,8 @@ public class DetailedReportPanelTest extends BaseUIWicketTester
 		});
 		
 		tester.assertNoErrorMessage();
+		
+		verify(detailedReportService);
 	}
 
 }

@@ -344,7 +344,7 @@ public class TreeReportDataPanel extends Panel
 		protected void populateItem(Item item)
 		{
 			RepeatingView cells = new RepeatingView("cell");
-			Serializable[] rowValues = (Serializable[])item.getModelObject();
+			TreeReportElement row = (TreeReportElement)item.getModelObject();
 			int i = 0;
 			
 			List<Serializable> thisCellValues = new ArrayList<Serializable>();
@@ -352,7 +352,7 @@ public class TreeReportDataPanel extends Panel
 			boolean newValueInPreviousColumn = false;
 			
 			// add cells for a row
-			for (Serializable cellValue : rowValues)
+			for (Serializable cellValue : row.getRow())
 			{
 				thisCellValues.add(cellValue);
 				
