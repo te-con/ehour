@@ -24,12 +24,14 @@ import org.junit.Test;
 /**
  * 
  **/
-public class CustomerTurnoverAggregateImageTest extends AbstractAggregateChartImageTest
+public class CustomerTurnoverAggregateChartDataConvertorTest extends AbstractAggregateChartImageTest
 {
 	@Test
 	public void testChartImage() throws Exception
 	{
-		CustomerTurnoverAggregateImage img = new CustomerTurnoverAggregateImage("image", new Model(reportData), 200, 100);
-		img.getChart(report);
+		CustomerTurnoverAggregateChartDataConvertor provider = new CustomerTurnoverAggregateChartDataConvertor();
+		
+		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
+		img.getChart(report);	
 	}
 }

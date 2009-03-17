@@ -22,12 +22,15 @@ import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConvertor;
 import ofc4j.model.Chart;
 import ofc4j.model.elements.BarChart;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 
 /**
@@ -58,10 +61,12 @@ public class CustomerReportPanel extends AggregateReportPanel
 		Model dataModel = new Model(data);
 
 		// hours per customer
-		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("hoursChart", dataModel, chartWidth, chartHeight);
+		AggregateChartDataConvertor hourProvider = new CustomerHoursAggregateChartDataConvertor();
+		Image customerHoursChart = new AggregateChartImage("hoursChart", dataModel, chartWidth, chartHeight, hourProvider);
 		parent.add(customerHoursChart);
 
-		CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("turnoverChart", dataModel, chartWidth, chartHeight);
+		AggregateChartDataConvertor turnoverProvider = new CustomerTurnoverAggregateChartDataConvertor();
+		Image customerTurnoverChart = new AggregateChartImage("turnoverChart", dataModel, chartWidth, chartHeight, turnoverProvider);
 		parent.add(customerTurnoverChart);
 	}
 	
@@ -72,6 +77,11 @@ public class CustomerReportPanel extends AggregateReportPanel
 	@Override
 	protected void addFlashCharts(ReportData data, WebMarkupContainer parent)
 	{
+//	    String json = "{\"elements\":[{\"type\":\"bar\",\"values\":[1,2,3,4,5,6,7,8,9]}],\"title\":{\"text\":\"Tue Oct 14 2008\"}}";
+//
+//	    parent.add(new AbstractOpenFlashChart("hoursChart", 200, 300, new Model(json)));	
+//	    parent.add(new AbstractOpenFlashChart("turnoverChart", 200, 300, new Model(json)));
+		
 	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
 	    bar1.setColour("#007FFF");
 	    bar1.setTooltip("Beers:<br>Value:#val#");

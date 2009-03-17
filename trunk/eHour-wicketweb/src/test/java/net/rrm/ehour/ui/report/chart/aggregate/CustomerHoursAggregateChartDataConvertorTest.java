@@ -20,17 +20,19 @@ package net.rrm.ehour.ui.report.chart.aggregate;
 import org.apache.wicket.model.Model;
 import org.junit.Test;
 
-public class CustomerHoursAggregateChartImageTest extends AbstractAggregateChartImageTest
+public class CustomerHoursAggregateChartDataConvertorTest extends AbstractAggregateChartImageTest
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConvertor#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
 	 * @throws Exception 
 	 */
 	@Test
 	public void testCustomerHoursAggregateChartImage() throws Exception
 	{
-		CustomerHoursAggregateChartImage img = new CustomerHoursAggregateChartImage("image", new Model(reportData), 200, 100);
+		CustomerHoursAggregateChartDataConvertor provider = new CustomerHoursAggregateChartDataConvertor();
+		
+		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
 		img.getChart(report);
 	}
 }

@@ -90,6 +90,10 @@ public class AbstractOpenFlashChart extends Panel implements IResourceListener
 		return RequestUtils.toAbsolutePath(dataPath.toString());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.Component#onBeforeRender()
+	 */
 	@Override
 	protected void onBeforeRender()
 	{
@@ -97,6 +101,13 @@ public class AbstractOpenFlashChart extends Panel implements IResourceListener
 		super.onBeforeRender();
 	}
 
+	public String getJavascript()
+	{
+		swf.addParameter("data-file", getUrlForJson());
+		
+		return swf.getJavascript();
+	}
+	
 	/**
 	 * Actually handle the request
 	 */

@@ -43,7 +43,6 @@ public class SWFObject extends AbstractBehavior implements IHeaderContributor
 	private String width;
 	private String height;
 	private Component component;
-	private String javascript;
 
 	@Override
 	public void bind(Component component)
@@ -61,17 +60,14 @@ public class SWFObject extends AbstractBehavior implements IHeaderContributor
 	
 	public String getJavascript()
 	{
-		if (javascript == null)
-		{
-			final String id = component.getMarkupId();
-			String parObj = buildDataObject(getParameters());
-			String attObj = buildDataObject(getAttributes());
+		final String id = component.getMarkupId();
+		String parObj = buildDataObject(getParameters());
+		String attObj = buildDataObject(getAttributes());
 
-			// embedSWF: function(swfUrlStr, replaceElemIdStr, widthStr, heightStr,
-			// swfVersionStr, xiSwfUrlStr, flashvarsObj, parObj, attObj)
+		// embedSWF: function(swfUrlStr, replaceElemIdStr, widthStr, heightStr,
+		// swfVersionStr, xiSwfUrlStr, flashvarsObj, parObj, attObj)
 
-			javascript = String.format("swfobject.embedSWF('%s','%s', '%s', '%s', '%s', '%s', %s, %s );", flashUrl, id, width, height, version, "expressInstall.swf", parObj, attObj);
-		}
+		String javascript = String.format("swfobject.embedSWF('%s','%s', '%s', '%s', '%s', '%s', %s, %s );", flashUrl, id, width, height, version, "expressInstall.swf", parObj, attObj);
 		
 		return javascript;
 		
