@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 import org.junit.Test;

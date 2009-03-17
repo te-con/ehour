@@ -15,7 +15,6 @@ import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
-import org.apache.wicket.util.tester.FormTester;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

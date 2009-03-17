@@ -38,11 +38,6 @@ import net.rrm.ehour.ui.common.BaseUIWicketTester;
 
 import org.junit.Before;
 
-/**
- * TODO 
- **/
-
-@SuppressWarnings("unchecked")
 public abstract class BaseTestReport extends BaseUIWicketTester
 {
 	protected ReportCriteriaService reportCriteriaService;

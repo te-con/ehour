@@ -17,7 +17,6 @@
 
 package net.rrm.ehour.ui.report;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 

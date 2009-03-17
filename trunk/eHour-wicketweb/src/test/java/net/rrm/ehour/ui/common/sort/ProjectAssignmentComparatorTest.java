@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.common.sort;
 
 import static org.junit.Assert.assertTrue;
 import net.rrm.ehour.ui.common.DummyWebDataGenerator;
-import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 
 import org.junit.Test;
 

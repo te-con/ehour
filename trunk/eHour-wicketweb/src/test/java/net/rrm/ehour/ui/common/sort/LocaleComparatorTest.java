@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
 
-import net.rrm.ehour.ui.common.sort.LocaleComparator;
 import net.rrm.ehour.ui.common.sort.LocaleComparator.CompareType;
 
 import org.junit.Test;

@@ -17,8 +17,8 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AbstractBehavior;

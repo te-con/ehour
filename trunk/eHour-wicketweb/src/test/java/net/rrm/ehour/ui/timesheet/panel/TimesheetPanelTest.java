@@ -47,8 +47,6 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.BaseUIWicketTester;
 import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
-import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
-import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -220,6 +218,7 @@ public class TimesheetPanelTest extends BaseUIWicketTester
 //		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
 //	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldSubmitSuccessful()
 	{
