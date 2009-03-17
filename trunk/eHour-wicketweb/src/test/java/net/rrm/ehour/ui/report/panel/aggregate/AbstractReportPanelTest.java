@@ -51,26 +51,47 @@ public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester
 	}
 
 	@Test
-	@SuppressWarnings("serial")
 	public void testDetailedReportPanel()
+	{
+		setupExpectations();
+		
+		replay(aggregateReportService);
+		
+		startReportPanel();
+		
+		getTester().assertNoErrorMessage();
+		
+		verify(aggregateReportService);
+	}
+
+	/**
+	 * 
+	 */
+	protected void setupExpectations()
 	{
 		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
 			.andReturn(ReportTestUtil.getAssignmentReportData())
 			.anyTimes();
-		
-		replay(aggregateReportService);
-		
-		getTester().startPanel(new TestPanelSource(){
+	}
+
+	@SuppressWarnings("serial")
+	protected Panel startReportPanel()
+	{
+		return getTester().startPanel(new TestPanelSource(){
 	
 			public Panel getTestPanel(String panelId)
 			{
 				return createReportPanel(panelId, getAggregateReport());
 			}
 		});
-		
-		getTester().assertNoErrorMessage();
-		
-		verify(aggregateReportService);
+	}
+	
+	/**
+	 * @return the aggregateReportService
+	 */
+	public AggregateReportService getAggregateReportService()
+	{
+		return aggregateReportService;
 	}
 	
 	protected abstract TreeReport getAggregateReport();

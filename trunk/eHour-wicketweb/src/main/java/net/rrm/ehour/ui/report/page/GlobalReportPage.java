@@ -23,8 +23,10 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.cache.CachableObject;
+import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
@@ -40,6 +42,7 @@ import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
@@ -104,6 +107,8 @@ public class GlobalReportPage extends AbstractReportPage
 			if (backingBean.getReportType().equals(ReportType.AGGREGATE))
 			{
 				addAggregateReportPanelTabs	(backingBean);
+				
+				appendOpenFlashChartJavascript();
 			}
 			else
 			{
@@ -115,6 +120,22 @@ public class GlobalReportPage extends AbstractReportPage
 		
 		return false;
 	}
+	
+	private void appendOpenFlashChartJavascript()
+	{
+		List<AbstractOpenFlashChart> charts = CommonWebUtil.findComponent(tabPanel, AbstractOpenFlashChart.class);
+		
+		if (AjaxRequestTarget.get() != null)
+		{
+			for (AbstractOpenFlashChart flashChart : charts)
+			{
+				String javascript = flashChart.getSwf().getJavascript();
+		
+				AjaxRequestTarget.get().appendJavascript(javascript);
+			}
+		}
+	}
+	
 
 	/**
 	 * Clear tabs except for the first one

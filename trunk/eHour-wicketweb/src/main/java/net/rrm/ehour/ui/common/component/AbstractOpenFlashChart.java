@@ -104,4 +104,12 @@ public class AbstractOpenFlashChart extends Panel implements IResourceListener
 	{
 		jsonResource.onResourceRequested();
 	}
+	
+	/**
+	 * @return the swf
+	 */
+	public SWFObject getSwf()
+	{
+		return swf;
+	}
 }
