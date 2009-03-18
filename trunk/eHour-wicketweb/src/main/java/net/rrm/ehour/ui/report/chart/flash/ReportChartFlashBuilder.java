@@ -15,55 +15,48 @@
  * eHour is sponsored by TE-CON  - http://www.te-con.nl/
  */
 
-package net.rrm.ehour.ui.report.chart;
+package net.rrm.ehour.ui.report.chart.flash;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConvertor;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
-import ofc4j.model.elements.HorizontalBarChart;
-
+import ofc4j.model.Chart;
 
 /**
  * Created on Mar 17, 2009, 5:59:26 PM
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class ReportChartFlashBuilder
+public abstract class ReportChartFlashBuilder
 {
 	private static final long serialVersionUID = 753705806177534932L;
 
-	public static HorizontalBarChart createChartElement(ReportData reportData, AggregateChartDataConvertor dataConvertor)
+	/**
+	 * Build chart 
+	 * @param reportData
+	 * @param dataConvertor
+	 * @return
+	 */
+	public final Chart buildChart(ReportData reportData, AggregateChartDataConvertor dataConvertor)
 	{
-		Map<ChartRowKey, Number> valueMap = createChartRowMap(reportData, dataConvertor);
-
-		HorizontalBarChart chart = new HorizontalBarChart();
+		Chart chartContainer = new Chart(dataConvertor.getReportNameKey());
 		
-		List<ChartRowKey> keys = new ArrayList<ChartRowKey>(valueMap.keySet());
+		Map<ChartRowKey, Number> rowMap = createChartRowMap(reportData, dataConvertor);
 		
-		Collections.sort(keys);
+		build(rowMap, chartContainer);
 		
-		List<Number> data = new ArrayList<Number>();
-
-		for (ChartRowKey rowKeyAgg : keys)
-		{
-			data.add(valueMap.get(rowKeyAgg));
-//			dataset.addValue(valueMap.get(rowKeyAgg), valueAxisLabel, rowKeyAgg);
-		}
+		return chartContainer;
 		
-		chart.addValues(data);
-		
-		return chart;
 	}
 	
+	protected abstract void build(Map<ChartRowKey, Number> valueMap, Chart chartContainer);
 	
-	private static Map<ChartRowKey, Number> createChartRowMap(ReportData reportData, AggregateChartDataConvertor dataConvertor)
+	protected Map<ChartRowKey, Number> createChartRowMap(ReportData reportData, AggregateChartDataConvertor dataConvertor)
 	{
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
 		ChartRowKey		rowKey;

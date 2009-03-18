@@ -24,12 +24,11 @@ import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConvertor;
-import net.rrm.ehour.ui.report.chart.ReportChartFlashBuilder;
 import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConvertor;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.flash.HorizontalChartBuilder;
 import ofc4j.model.Chart;
-import ofc4j.model.elements.HorizontalBarChart;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
@@ -82,17 +81,16 @@ public class CustomerReportPanel extends AggregateReportPanel
 		ReportData rawData = ((TreeReportData)data).getRawReportData();
 		AggregateChartDataConvertor hourConvertor = new CustomerHoursAggregateChartDataConvertor();
 
-		HorizontalBarChart chart = ReportChartFlashBuilder.createChartElement(rawData, hourConvertor);
+		Chart chart = new HorizontalChartBuilder().buildChart(rawData, hourConvertor);
 	    
-		chart.setColour("#007FFF");
-		chart.setTooltip("Beers:<br>Value:#val#");
-		chart.setText("Beers consumed");
+//		chart.setColour("#007FFF");
+//		chart.setTooltip("Beers:<br>Value:#val#");
+//		chart.setText("Beers consumed");
+//
+//	    Chart chart2 = new Chart("Beers and bugs");
+//	    chart2.addElements(chart);
+//	    chart2.setBackgroundColour("#FFFFFF");
 
-	    Chart chart2 = new Chart("Beers and bugs");
-	    chart2.addElements(chart);
-	    chart2.setBackgroundColour("#FFFFFF");
-
-	    parent.add(new AbstractOpenFlashChart("hoursChart", 500,300,chart2));
-	    parent.add(new AbstractOpenFlashChart("turnoverChart", 50,50 ,chart2));
+	    parent.add(new AbstractOpenFlashChart("hoursChart", 500,300,chart));
 	}
 }

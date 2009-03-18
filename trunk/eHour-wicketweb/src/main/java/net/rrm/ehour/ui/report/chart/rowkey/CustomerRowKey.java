@@ -25,10 +25,6 @@ package net.rrm.ehour.ui.report.chart.rowkey;
 
 import net.rrm.ehour.domain.Customer;
 
-/**
- * TODO 
- **/
-
 public class CustomerRowKey extends ChartRowKey
 {
 	private Customer	customer;
