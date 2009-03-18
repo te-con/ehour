@@ -23,7 +23,7 @@ import java.util.Map;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.chart.AggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 import ofc4j.model.Chart;
 
@@ -42,7 +42,7 @@ public abstract class ReportChartFlashBuilder
 	 * @param dataConvertor
 	 * @return
 	 */
-	public final Chart buildChart(ReportData reportData, AggregateChartDataConvertor dataConvertor)
+	public final Chart buildChart(ReportData reportData, AggregateChartDataConverter dataConvertor)
 	{
 		Chart chartContainer = new Chart(dataConvertor.getReportNameKey());
 		
@@ -56,7 +56,7 @@ public abstract class ReportChartFlashBuilder
 	
 	protected abstract void build(Map<ChartRowKey, Number> valueMap, Chart chartContainer);
 	
-	protected Map<ChartRowKey, Number> createChartRowMap(ReportData reportData, AggregateChartDataConvertor dataConvertor)
+	protected Map<ChartRowKey, Number> createChartRowMap(ReportData reportData, AggregateChartDataConverter dataConvertor)
 	{
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
 		ChartRowKey		rowKey;

@@ -27,7 +27,7 @@ import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public interface AggregateChartDataConvertor extends Serializable
+public interface AggregateChartDataConverter extends Serializable
 {
 	public String getReportNameKey();
 	

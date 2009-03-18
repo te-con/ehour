@@ -42,15 +42,15 @@ public class EmployeeReportPanel extends AggregateReportPanel
 	}	
 
 	@Override
-	protected void addCharts(ReportData data, WebMarkupContainer parent)
+	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 
 		// hours per customer
-		UserHoursAggregateChartImage hoursChart = new UserHoursAggregateChartImage("hoursChart", dataModel, chartWidth, chartHeight);
+		UserHoursAggregateChartImage hoursChart = new UserHoursAggregateChartImage(hourId, dataModel, chartWidth, chartHeight);
 		parent.add(hoursChart);
 
-		UserTurnoverAggregateChartImage turnoverChart = new UserTurnoverAggregateChartImage("turnoverChart", dataModel, chartWidth, chartHeight);
+		UserTurnoverAggregateChartImage turnoverChart = new UserTurnoverAggregateChartImage(turnOverId, dataModel, chartWidth, chartHeight);
 		parent.add(turnoverChart);	}
 
 }

@@ -23,7 +23,7 @@ import java.util.List;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.cache.CachableObject;
-import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
+import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.component.SWFObject;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -135,11 +135,11 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	{
 		public void onTargetRespond(AjaxRequestTarget target)
 		{
-			List<AbstractOpenFlashChart> charts = CommonWebUtil.findComponent(tabPanel, AbstractOpenFlashChart.class);
+			List<OpenFlashChart> charts = CommonWebUtil.findComponent(tabPanel, OpenFlashChart.class);
 
 			if (AjaxRequestTarget.get() != null)
 			{
-				for (AbstractOpenFlashChart flashChart : charts)
+				for (OpenFlashChart flashChart : charts)
 				{
 					AjaxRequestTarget.get().appendJavascript(flashChart.getJavascript());
 				}

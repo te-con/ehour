@@ -31,33 +31,33 @@ import org.apache.wicket.util.resource.AbstractStringResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 
 
-public class AbstractOpenFlashChart extends Panel implements IResourceListener
+public class OpenFlashChart extends Panel implements IResourceListener
 {
 	private static final long serialVersionUID = -6601630129888436301L;
 
-	static final ResourceReference SWF_RESOURCE = new ResourceReference(AbstractOpenFlashChart.class, "js/open-flash-chart.swf");
+	static final ResourceReference SWF_RESOURCE = new ResourceReference(OpenFlashChart.class, "js/open-flash-chart.swf");
 
 	final WebResource jsonResource;
 
 	final SWFObject swf;
 
-	public AbstractOpenFlashChart(String id, final String width, final String height, final Chart chart)
+	public OpenFlashChart(String id, final String width, final String height, final Chart chart)
 	{
 		this(id, width, height, new Model(chart.toString()));
 	}
 
-	public AbstractOpenFlashChart(String id, final int width, final int height, final Chart chart)
+	public OpenFlashChart(String id, final int width, final int height, final Chart chart)
 	{
 		this(id, String.valueOf(width), String.valueOf(height), new Model(chart.toString()));
 	}
 
-	public AbstractOpenFlashChart(String id, final int width, final int height, IModel jsonModel)
+	public OpenFlashChart(String id, final int width, final int height, IModel jsonModel)
 	{
 		this(id, String.valueOf(width), String.valueOf(height), jsonModel);
 	}
 
 	@SuppressWarnings("serial")
-	public AbstractOpenFlashChart(String id, final String width, final String height, final IModel jsonModel)
+	public OpenFlashChart(String id, final String width, final String height, final IModel jsonModel)
 	{
 		super(id);
 	
@@ -86,7 +86,7 @@ public class AbstractOpenFlashChart extends Panel implements IResourceListener
 
 	private String getUrlForJson()
 	{
-		CharSequence dataPath = RequestCycle.get().urlFor(AbstractOpenFlashChart.this, IResourceListener.INTERFACE);
+		CharSequence dataPath = RequestCycle.get().urlFor(OpenFlashChart.this, IResourceListener.INTERFACE);
 		return RequestUtils.toAbsolutePath(dataPath.toString());
 	}
 

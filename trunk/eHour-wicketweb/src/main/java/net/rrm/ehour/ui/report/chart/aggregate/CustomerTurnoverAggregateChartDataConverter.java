@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.report.chart.aggregate;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.report.chart.AggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.report.chart.rowkey.CustomerRowKey;
 
@@ -25,7 +25,7 @@ import net.rrm.ehour.ui.report.chart.rowkey.CustomerRowKey;
  * Customer turnover chart 
  **/
 
-public class CustomerTurnoverAggregateChartDataConvertor implements AggregateChartDataConvertor
+public class CustomerTurnoverAggregateChartDataConverter implements AggregateChartDataConverter
 {
 	private static final long serialVersionUID = -8028595697498908290L;
 

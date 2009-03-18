@@ -43,15 +43,15 @@ public class ProjectReportPanel extends AggregateReportPanel
 	
 
 	@Override
-	protected void addCharts(ReportData data, WebMarkupContainer parent)
+	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 
 		// hours per customer
-		ProjectHoursAggregateChartImage hoursChart = new ProjectHoursAggregateChartImage("hoursChart", dataModel, chartWidth, chartHeight);
+		ProjectHoursAggregateChartImage hoursChart = new ProjectHoursAggregateChartImage(hourId, dataModel, chartWidth, chartHeight);
 		parent.add(hoursChart);
 
-		ProjectTurnoverAggregateChartImage turnoverChart = new ProjectTurnoverAggregateChartImage("turnoverChart", dataModel, chartWidth, chartHeight);
+		ProjectTurnoverAggregateChartImage turnoverChart = new ProjectTurnoverAggregateChartImage(turnOverId, dataModel, chartWidth, chartHeight);
 		parent.add(turnoverChart);	}
 
 }

@@ -21,7 +21,7 @@ import org.apache.wicket.model.IModel;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.chart.AbstractReportChartImage;
-import net.rrm.ehour.ui.report.chart.AggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 
 /**
@@ -32,9 +32,9 @@ import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggregateReportElement>
 {
 	private static final long serialVersionUID = 7857936136458323251L;
-	private AggregateChartDataConvertor provider;
+	private AggregateChartDataConverter provider;
 	
-	public AggregateChartImage(String id, IModel dataModel, int width, int height, AggregateChartDataConvertor provider)
+	public AggregateChartImage(String id, IModel dataModel, int width, int height, AggregateChartDataConverter provider)
 	{
 		super(id, dataModel, width, height);
 		

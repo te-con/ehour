@@ -18,15 +18,15 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
+import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportData;
-import net.rrm.ehour.ui.report.chart.AggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConvertor;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.flash.HorizontalChartBuilder;
 import ofc4j.model.Chart;
 
@@ -57,17 +57,16 @@ public class CustomerReportPanel extends AggregateReportPanel
 	 * @see net.rrm.ehour.ui.report.panel.type.ReportPanel#addCharts(net.rrm.ehour.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
-	protected void addCharts(ReportData data, WebMarkupContainer parent)
+	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
 		Model dataModel = new Model(data);
 
-		// hours per customer
-		AggregateChartDataConvertor hourProvider = new CustomerHoursAggregateChartDataConvertor();
-		Image customerHoursChart = new AggregateChartImage("hoursChart", dataModel, chartWidth, chartHeight, hourProvider);
+		AggregateChartDataConverter hourConverter = new CustomerHoursAggregateChartDataConverter();
+		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, chartWidth, chartHeight, hourConverter);
 		parent.add(customerHoursChart);
 
-		AggregateChartDataConvertor turnoverProvider = new CustomerTurnoverAggregateChartDataConvertor();
-		Image customerTurnoverChart = new AggregateChartImage("turnoverChart", dataModel, chartWidth, chartHeight, turnoverProvider);
+		AggregateChartDataConverter turnoverConverter = new CustomerTurnoverAggregateChartDataConverter();
+		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, chartWidth, chartHeight, turnoverConverter);
 		parent.add(customerTurnoverChart);
 	}
 	
@@ -76,21 +75,18 @@ public class CustomerReportPanel extends AggregateReportPanel
 	 * @see net.rrm.ehour.ui.report.panel.aggregate.AggregateReportPanel#addFlashCharts(net.rrm.ehour.report.reports.ReportData, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
-	protected void addFlashCharts(ReportData data, WebMarkupContainer parent)
+	protected void addFlashCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
 		ReportData rawData = ((TreeReportData)data).getRawReportData();
-		AggregateChartDataConvertor hourConvertor = new CustomerHoursAggregateChartDataConvertor();
+		
+		parent.add(createFlashChart(hourId, rawData, new CustomerHoursAggregateChartDataConverter()));
+		parent.add(createFlashChart(turnOverId, rawData, new CustomerTurnoverAggregateChartDataConverter()));
+		
+	}
 
-		Chart chart = new HorizontalChartBuilder().buildChart(rawData, hourConvertor);
-	    
-//		chart.setColour("#007FFF");
-//		chart.setTooltip("Beers:<br>Value:#val#");
-//		chart.setText("Beers consumed");
-//
-//	    Chart chart2 = new Chart("Beers and bugs");
-//	    chart2.addElements(chart);
-//	    chart2.setBackgroundColour("#FFFFFF");
-
-	    parent.add(new AbstractOpenFlashChart("hoursChart", 500,300,chart));
+	private OpenFlashChart createFlashChart(String id, ReportData data, AggregateChartDataConverter converter)
+	{
+		Chart chart = new HorizontalChartBuilder().buildChart(data, converter);
+		return new OpenFlashChart(id, 500, 300,chart);
 	}
 }

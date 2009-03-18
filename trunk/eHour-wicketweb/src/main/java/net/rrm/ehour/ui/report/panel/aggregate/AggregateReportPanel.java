@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
+import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
@@ -72,14 +72,14 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	private void addOpenFlashCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Fragment fragment = new Fragment("charts", "flash", this);
-		addFlashCharts(data, fragment);
+		addFlashCharts("hoursChart", "turnoverChart", data, fragment);
 		parent.add(fragment);
 	}
 	
 	private void addImageCharts(ReportData data, WebMarkupContainer parent)
 	{
 		Fragment fragment = new Fragment("charts", "image", this);
-		addCharts(data, fragment);
+		addCharts("hoursChart", "turnoverChart", data, fragment);
 		parent.add(fragment);
 	}
 	
@@ -88,7 +88,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected void addCharts(ReportData data, WebMarkupContainer parent)
+	protected void addCharts(String hourId, String turnoverId, ReportData data, WebMarkupContainer parent)
 	{
 		
 	}
@@ -98,7 +98,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	protected void addFlashCharts(ReportData data, WebMarkupContainer parent)
+	protected void addFlashCharts(String hourId, String turnoverId, ReportData data, WebMarkupContainer parent)
 	{
 	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
 	    bar1.setColour("#007FFF");
@@ -119,7 +119,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	    chart2.addElements(bar1,bar2);
 	    chart2.setBackgroundColour("#FFFFFF");
 
-	    parent.add(new AbstractOpenFlashChart("hoursChart", 300,400,chart2));
-	    parent.add(new AbstractOpenFlashChart("turnoverChart", 300,400,chart2));
+	    parent.add(new OpenFlashChart(hourId, 300,400,chart2));
+	    parent.add(new OpenFlashChart(turnoverId, 300,400,chart2));
 	}
 }

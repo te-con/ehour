@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.report.panel.user;
 
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
+import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
@@ -136,7 +136,7 @@ public class UserReportPanel extends AbstractReportPanel
 	    chart2.addElements(bar1,bar2);
 	    chart2.setBackgroundColour("#FFFFFF");
 
-	    parent.add(new AbstractOpenFlashChart("customerHoursChart", 300,400,chart2));
+	    parent.add(new OpenFlashChart("customerHoursChart", 300,400,chart2));
 		
 	}	
 	
