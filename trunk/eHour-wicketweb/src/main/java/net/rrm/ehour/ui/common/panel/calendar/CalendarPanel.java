@@ -407,7 +407,7 @@ public class CalendarPanel extends SidePanel
 			session.setNavCalendar(month);
 
 			// do it before it gets replaced, otherwise getPage is  null due to new instantiation of links
-			AjaxUtil.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(target, CalendarAjaxEventType.MONTH_CHANGE));
+			AjaxUtil.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(CalendarAjaxEventType.MONTH_CHANGE));
 
 			refreshCalendar(target);
 
@@ -452,7 +452,7 @@ public class CalendarPanel extends SidePanel
 
 			session.setNavCalendar(cal);
 
-			AjaxUtil.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(target, CalendarAjaxEventType.WEEK_CLICK, cal));
+			AjaxUtil.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
 		}
 
 		@Override

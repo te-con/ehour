@@ -23,11 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
-import ofc4j.model.elements.LineChart;
-import ofc4j.model.elements.LineChart.Style;
+import ofc4j.model.elements.HorizontalBarChart;
 
 
 /**
@@ -35,16 +35,15 @@ import ofc4j.model.elements.LineChart.Style;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public abstract class AbstractReportChartFlashBuilder<EL extends ReportElement>
+public class ReportChartFlashBuilder
 {
 	private static final long serialVersionUID = 753705806177534932L;
 
-	
-	public LineChart createChartElement(Report report)
+	public static HorizontalBarChart createChartElement(ReportData reportData, AggregateChartDataConvertor dataConvertor)
 	{
-		Map<ChartRowKey, Number> valueMap = createChartRowMap(report);
+		Map<ChartRowKey, Number> valueMap = createChartRowMap(reportData, dataConvertor);
 
-		LineChart chart = new LineChart(Style.DOT);
+		HorizontalBarChart chart = new HorizontalBarChart();
 		
 		List<ChartRowKey> keys = new ArrayList<ChartRowKey>(valueMap.keySet());
 		
@@ -61,22 +60,20 @@ public abstract class AbstractReportChartFlashBuilder<EL extends ReportElement>
 		chart.addValues(data);
 		
 		return chart;
-
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	private Map<ChartRowKey, Number> createChartRowMap(Report report)
+	private static Map<ChartRowKey, Number> createChartRowMap(ReportData reportData, AggregateChartDataConvertor dataConvertor)
 	{
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
 		ChartRowKey		rowKey;
 		Number 			value;
 
-		for (ReportElement element : report.getReportData().getReportElements())
+		for (ReportElement element : reportData.getReportElements())
 		{
-			rowKey = getRowKey((EL)element);
+			rowKey = dataConvertor.getRowKey((AssignmentAggregateReportElement)element);
 			
-			value = getColumnValue((EL)element);
+			value = dataConvertor.getColumnValue((AssignmentAggregateReportElement)element);
 
 			if (value == null)
 			{
@@ -95,30 +92,4 @@ public abstract class AbstractReportChartFlashBuilder<EL extends ReportElement>
 		
 		return valueMap;
 	}	
-	
-	/**
-	 * Get report name
-	 * @return
-	 */
-	protected abstract String getReportNameKey();
-	
-	/**
-	 * Get value axis label
-	 * @return
-	 */
-	protected abstract String getValueAxisLabelKey();
-	
-	/**
-	 * Get row key from report element
-	 * @param aggregate
-	 * @return
-	 */
-	protected abstract ChartRowKey getRowKey(EL element);
-
-	/**
-	 * Get column value from report element
-	 * @param aggregate
-	 * @return
-	 */
-	protected abstract Number getColumnValue(EL element);	
 }

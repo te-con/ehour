@@ -22,12 +22,14 @@ import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConvertor;
+import net.rrm.ehour.ui.report.chart.ReportChartFlashBuilder;
 import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConvertor;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConvertor;
 import ofc4j.model.Chart;
-import ofc4j.model.elements.BarChart;
+import ofc4j.model.elements.HorizontalBarChart;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
@@ -77,31 +79,20 @@ public class CustomerReportPanel extends AggregateReportPanel
 	@Override
 	protected void addFlashCharts(ReportData data, WebMarkupContainer parent)
 	{
-//	    String json = "{\"elements\":[{\"type\":\"bar\",\"values\":[1,2,3,4,5,6,7,8,9]}],\"title\":{\"text\":\"Tue Oct 14 2008\"}}";
-//
-//	    parent.add(new AbstractOpenFlashChart("hoursChart", 200, 300, new Model(json)));	
-//	    parent.add(new AbstractOpenFlashChart("turnoverChart", 200, 300, new Model(json)));
-		
-	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
-	    bar1.setColour("#007FFF");
-	    bar1.setTooltip("Beers:<br>Value:#val#");
-	    bar1.addValues(1,5,8,3,0,2);
-	    bar1.setText("Beers consumed");
-	    bar1.setAlpha(0.1f);
+		ReportData rawData = ((TreeReportData)data).getRawReportData();
+		AggregateChartDataConvertor hourConvertor = new CustomerHoursAggregateChartDataConvertor();
 
-	    BarChart bar2 = new BarChart(BarChart.Style.GLASS);
-	    bar2.setColour("#802A2A");
-	    bar2.setTooltip("#val#<br>bugs fixed");
-	    bar2.setText("bugs fixed");
-	    bar2.setFontSize(15);
-	    bar1.setAlpha(0.9f);
-	    bar2.addValues(2,7,1,5,8,3,0,2);
+		HorizontalBarChart chart = ReportChartFlashBuilder.createChartElement(rawData, hourConvertor);
+	    
+		chart.setColour("#007FFF");
+		chart.setTooltip("Beers:<br>Value:#val#");
+		chart.setText("Beers consumed");
 
 	    Chart chart2 = new Chart("Beers and bugs");
-	    chart2.addElements(bar1,bar2);
+	    chart2.addElements(chart);
 	    chart2.setBackgroundColour("#FFFFFF");
 
-	    parent.add(new AbstractOpenFlashChart("hoursChart", 300,400,chart2));
-	    parent.add(new AbstractOpenFlashChart("turnoverChart", 300,400,chart2));
+	    parent.add(new AbstractOpenFlashChart("hoursChart", 500,300,chart2));
+	    parent.add(new AbstractOpenFlashChart("turnoverChart", 50,50 ,chart2));
 	}
 }

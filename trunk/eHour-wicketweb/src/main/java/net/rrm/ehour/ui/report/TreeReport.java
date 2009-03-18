@@ -58,13 +58,14 @@ public abstract class TreeReport extends AbstractCachableReportModel
 	{
 		ReportData reportData = getValidReportData(reportCriteria);
 		
+		// flatten the original reportData into a matrix representing the whole report
         ReportBuilder reportBuilder = new ReportBuilder();
         List<ReportNode> rootNodes = reportBuilder.createReport(reportData, getReportNodeFactory());
         
         List<TreeReportElement> matrix = createMatrix(rootNodes, reportConfig.getReportColumns().length);
         calcTotals(rootNodes);
         
-        ReportData wrappedReportData = new ReportData(matrix, reportCriteria.getReportRange());
+        ReportData wrappedReportData = new TreeReportData(matrix, reportCriteria.getReportRange(), reportData);
         
         return wrappedReportData;
         

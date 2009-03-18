@@ -213,8 +213,7 @@ public class EntrySelectorPanel extends AbstractAjaxPanel
 	 */
 	protected void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter)
 	{
-		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(target, 
-																										EntrySelectorAjaxEventType.FILTER_CHANGE,
+		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE,
 																										filter);
 		AjaxUtil.publishAjaxEvent(this, payloadEvent);
 		

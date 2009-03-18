@@ -350,7 +350,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
+				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
             }
 
 			@Override

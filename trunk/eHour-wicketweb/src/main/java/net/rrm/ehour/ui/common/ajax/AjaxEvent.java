@@ -27,30 +27,16 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public class AjaxEvent implements Serializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	private AjaxRequestTarget target;
-	
+	private static final long serialVersionUID = -8723330496152721044L;
 	private AjaxEventType	eventType;
-	
-	/**
-	 * 
-	 */
-	public AjaxEvent()
-	{
-	}
 	
 	/**
 	 * 
 	 * @param target
 	 * @param eventType
 	 */
-	public AjaxEvent(AjaxRequestTarget target, AjaxEventType eventType)
+	public AjaxEvent(AjaxEventType eventType)
 	{
-		this.target = target;
 		this.eventType = eventType;
 	}
 
@@ -59,15 +45,7 @@ public class AjaxEvent implements Serializable
 	 */
 	public AjaxRequestTarget getTarget()
 	{
-		return target;
-	}
-
-	/**
-	 * @param target the target to set
-	 */
-	public void setTarget(AjaxRequestTarget target)
-	{
-		this.target = target;
+		return AjaxRequestTarget.get();
 	}
 
 	/**
@@ -77,13 +55,4 @@ public class AjaxEvent implements Serializable
 	{
 		return eventType;
 	}
-
-	/**
-	 * @param eventType the eventType to set
-	 */
-	public void setEventType(AjaxEventType eventType)
-	{
-		this.eventType = eventType;
-	}
-	
 }

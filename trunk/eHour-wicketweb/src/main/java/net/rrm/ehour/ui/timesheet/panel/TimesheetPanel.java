@@ -275,7 +275,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
 				addFailedProjectMessages(failedProjects, target);
 
-				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.TIMESHEET_SUBMIT));
+				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
 			}
 
 			@Override
@@ -300,7 +300,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				// basically fake a week click
-				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.WEEK_NAV));
+				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.WEEK_NAV));
 			}
 		};
 
@@ -408,7 +408,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		// should update calendar as well
 		session.setNavCalendar(cal);
 
-		AjaxUtil.publishAjaxEvent(this, new AjaxEvent(target, TimesheetAjaxEventType.WEEK_NAV));
+		AjaxUtil.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.WEEK_NAV));
 	}
 
 	/**
