@@ -48,10 +48,10 @@ public class ProjectReportPanel extends AggregateReportPanel
 		Model dataModel = new Model(data);
 
 		// hours per customer
-		ProjectHoursAggregateChartImage hoursChart = new ProjectHoursAggregateChartImage(hourId, dataModel, chartWidth, chartHeight);
+		ProjectHoursAggregateChartImage hoursChart = new ProjectHoursAggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight());
 		parent.add(hoursChart);
 
-		ProjectTurnoverAggregateChartImage turnoverChart = new ProjectTurnoverAggregateChartImage(turnOverId, dataModel, chartWidth, chartHeight);
+		ProjectTurnoverAggregateChartImage turnoverChart = new ProjectTurnoverAggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight());
 		parent.add(turnoverChart);	}
 
 }

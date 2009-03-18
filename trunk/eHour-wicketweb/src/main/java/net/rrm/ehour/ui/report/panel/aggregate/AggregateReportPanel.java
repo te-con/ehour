@@ -38,6 +38,11 @@ import org.apache.wicket.markup.html.panel.Fragment;
 
 public abstract class AggregateReportPanel extends AbstractReportPanel
 {
+	/**
+	 * 
+	 */
+	private static final int CHART_WIDTH = 460;
+
 	private static final long serialVersionUID = 2173644826934093029L;
 
 	/**
@@ -48,7 +53,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 									ReportConfig reportConfig, String excelResourceName,
 									ReportDrawType drawType)
 	{
-		super(id, 460);
+		super(id, CHART_WIDTH);
 
 		setOutputMarkupId(true);
 		

@@ -16,10 +16,12 @@
 
 package net.rrm.ehour.ui.report.panel.user;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
@@ -64,6 +66,8 @@ public class UserReportPanel extends AbstractReportPanel
 	 */
 	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, boolean inclLinks)
 	{
+		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+		
 		ResourceLink 	excelLink = null;
 		Link			printLink = null;
 		

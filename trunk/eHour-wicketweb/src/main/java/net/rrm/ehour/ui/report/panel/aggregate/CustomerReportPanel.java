@@ -62,11 +62,11 @@ public class CustomerReportPanel extends AggregateReportPanel
 		Model dataModel = new Model(data);
 
 		AggregateChartDataConverter hourConverter = new CustomerHoursAggregateChartDataConverter();
-		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, chartWidth, chartHeight, hourConverter);
+		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight(), hourConverter);
 		parent.add(customerHoursChart);
 
 		AggregateChartDataConverter turnoverConverter = new CustomerTurnoverAggregateChartDataConverter();
-		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, chartWidth, chartHeight, turnoverConverter);
+		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight(), turnoverConverter);
 		parent.add(customerTurnoverChart);
 	}
 	
@@ -87,6 +87,6 @@ public class CustomerReportPanel extends AggregateReportPanel
 	private OpenFlashChart createFlashChart(String id, ReportData data, AggregateChartDataConverter converter)
 	{
 		Chart chart = new HorizontalChartBuilder().buildChart(data, converter);
-		return new OpenFlashChart(id, 500, 300,chart);
+		return new OpenFlashChart(id, getChartWidth(), getChartHeight(), chart);
 	}
 }

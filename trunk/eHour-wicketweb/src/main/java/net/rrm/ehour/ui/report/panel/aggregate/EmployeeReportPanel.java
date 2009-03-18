@@ -47,10 +47,10 @@ public class EmployeeReportPanel extends AggregateReportPanel
 		Model dataModel = new Model(data);
 
 		// hours per customer
-		UserHoursAggregateChartImage hoursChart = new UserHoursAggregateChartImage(hourId, dataModel, chartWidth, chartHeight);
+		UserHoursAggregateChartImage hoursChart = new UserHoursAggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight());
 		parent.add(hoursChart);
 
-		UserTurnoverAggregateChartImage turnoverChart = new UserTurnoverAggregateChartImage(turnOverId, dataModel, chartWidth, chartHeight);
+		UserTurnoverAggregateChartImage turnoverChart = new UserTurnoverAggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight());
 		parent.add(turnoverChart);	}
 
 }

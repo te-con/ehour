@@ -68,7 +68,7 @@ public class DetailedReportPanel extends AbstractReportPanel
 
 		public AbstractTrendChartImage<FlatReportElement> getTrendChartImage(String seriesColumn, IModel model)
 		{
-			return new DateHoursTrendImage("hoursChart", model, 920, chartHeight, seriesColumn);
+			return new DateHoursTrendImage("hoursChart", model, 920, getChartHeight(), seriesColumn);
 		}
 	}
 }
