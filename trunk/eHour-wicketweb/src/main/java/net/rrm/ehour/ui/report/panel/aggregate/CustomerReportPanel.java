@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
@@ -27,8 +26,6 @@ import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConverter;
-import net.rrm.ehour.ui.report.chart.flash.HorizontalChartBuilder;
-import ofc4j.model.Chart;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.image.Image;
@@ -79,14 +76,8 @@ public class CustomerReportPanel extends AggregateReportPanel
 	{
 		ReportData rawData = ((TreeReportData)data).getRawReportData();
 		
-		parent.add(createFlashChart(hourId, rawData, new CustomerHoursAggregateChartDataConverter()));
-		parent.add(createFlashChart(turnOverId, rawData, new CustomerTurnoverAggregateChartDataConverter()));
+		parent.add(createHorizontalFlashChart(hourId, rawData, new CustomerHoursAggregateChartDataConverter()));
+		parent.add(createHorizontalFlashChart(turnOverId, rawData, new CustomerTurnoverAggregateChartDataConverter()));
 		
-	}
-
-	private OpenFlashChart createFlashChart(String id, ReportData data, AggregateChartDataConverter converter)
-	{
-		Chart chart = new HorizontalChartBuilder().buildChart(data, converter);
-		return new OpenFlashChart(id, getChartWidth(), getChartHeight(), chart);
 	}
 }

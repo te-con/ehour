@@ -23,6 +23,8 @@ import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.flash.HorizontalChartBuilder;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 
@@ -126,5 +128,12 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 
 	    parent.add(new OpenFlashChart(hourId, 300,400,chart2));
 	    parent.add(new OpenFlashChart(turnoverId, 300,400,chart2));
+	}
+	
+
+	protected OpenFlashChart createHorizontalFlashChart(String id, ReportData data, AggregateChartDataConverter converter)
+	{
+		Chart chart = new HorizontalChartBuilder().buildChart(data, converter);
+		return new OpenFlashChart(id, getChartWidth(), getChartHeight(), chart);
 	}
 }

@@ -21,10 +21,13 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartImage;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
+import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartDataConverter;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 
 public class ProjectReportPanel extends AggregateReportPanel
@@ -47,11 +50,13 @@ public class ProjectReportPanel extends AggregateReportPanel
 	{
 		Model dataModel = new Model(data);
 
-		// hours per customer
-		ProjectHoursAggregateChartImage hoursChart = new ProjectHoursAggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight());
-		parent.add(hoursChart);
+		
+		AggregateChartDataConverter hourConverter = new ProjectHoursAggregateChartDataConverter();
+		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight(), hourConverter);
+		parent.add(customerHoursChart);
 
-		ProjectTurnoverAggregateChartImage turnoverChart = new ProjectTurnoverAggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight());
-		parent.add(turnoverChart);	}
-
+		AggregateChartDataConverter turnoverConverter = new ProjectTurnoverAggregateChartDataConverter();
+		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight(), turnoverConverter);
+		parent.add(customerTurnoverChart);
+	}
 }
