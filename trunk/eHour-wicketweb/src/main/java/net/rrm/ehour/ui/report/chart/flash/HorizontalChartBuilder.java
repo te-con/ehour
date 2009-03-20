@@ -24,6 +24,7 @@ import java.util.Map;
 
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 import ofc4j.model.Chart;
+import ofc4j.model.axis.XAxis;
 import ofc4j.model.axis.YAxis;
 import ofc4j.model.elements.HorizontalBarChart;
 
@@ -56,7 +57,14 @@ public class HorizontalChartBuilder extends ReportChartFlashBuilder
 		}
 
 		chartContainer.addElements(chart);
-		chartContainer.setYAxis(new YAxis()
-			.addLabels(labels));
+		
+		YAxis yAxis = new YAxis()
+						.addLabels(labels)
+						.setTickLength(15);
+		
+		chartContainer.setXAxis(new XAxis().setTickHeight(1));
+		chartContainer.setYAxis(yAxis);
+		
+//		chartContainer.getXAxis().setTickHeight(5);
 	}
 }
