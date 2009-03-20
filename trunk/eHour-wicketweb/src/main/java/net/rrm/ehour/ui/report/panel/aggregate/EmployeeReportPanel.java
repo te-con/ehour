@@ -21,10 +21,14 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.chart.aggregate.UserHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.UserTurnoverAggregateChartImage;
+import net.rrm.ehour.ui.report.TreeReportData;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
+import net.rrm.ehour.ui.report.chart.aggregate.UserHoursAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.UserTurnoverAggregateChartDataConverter;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 
 public class EmployeeReportPanel extends AggregateReportPanel
@@ -46,11 +50,27 @@ public class EmployeeReportPanel extends AggregateReportPanel
 	{
 		Model dataModel = new Model(data);
 
-		// hours per customer
-		UserHoursAggregateChartImage hoursChart = new UserHoursAggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight());
-		parent.add(hoursChart);
+		
+		AggregateChartDataConverter hourConverter = new UserHoursAggregateChartDataConverter();
+		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight(), hourConverter);
+		parent.add(customerHoursChart);
 
-		UserTurnoverAggregateChartImage turnoverChart = new UserTurnoverAggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight());
-		parent.add(turnoverChart);	}
-
+		AggregateChartDataConverter turnoverConverter = new UserTurnoverAggregateChartDataConverter();
+		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight(), turnoverConverter);
+		parent.add(customerTurnoverChart);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.report.panel.aggregate.AggregateReportPanel#addFlashCharts(net.rrm.ehour.report.reports.ReportData, org.apache.wicket.markup.html.WebMarkupContainer)
+	 */
+	@Override
+	protected void addFlashCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
+	{
+		ReportData rawData = ((TreeReportData)data).getRawReportData();
+		
+		parent.add(createHorizontalFlashChart(hourId, rawData, new UserHoursAggregateChartDataConverter()));
+		parent.add(createHorizontalFlashChart(turnOverId, rawData, new UserTurnoverAggregateChartDataConverter()));
+		
+	}
 }

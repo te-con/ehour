@@ -21,12 +21,14 @@ package net.rrm.ehour.ui.report.chart.aggregate;
 import org.apache.wicket.model.Model;
 import org.junit.Test;
 
-public class UserTurnoverAggregateChartImageTest extends AbstractAggregateChartImageTest
+public class UserHoursAggregateChartDataConverterTest extends AbstractAggregateChartImageTest
 {
 	@Test
 	public void testChartImage() throws Exception
 	{
-		UserTurnoverAggregateChartImage img = new UserTurnoverAggregateChartImage("image", new Model(reportData), 200, 100);
+		UserHoursAggregateChartDataConverter provider = new UserHoursAggregateChartDataConverter();
+		
+		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
 		img.getChart(report);
 	}
 }
