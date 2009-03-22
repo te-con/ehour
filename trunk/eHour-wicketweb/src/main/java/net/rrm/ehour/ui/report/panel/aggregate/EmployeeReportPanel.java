@@ -37,7 +37,7 @@ public class EmployeeReportPanel extends AggregateReportPanel
 
 	public EmployeeReportPanel(String id, TreeReport report)
 	{
-		this(id, report, ReportDrawType.FLASH);
+		this(id, report, ReportDrawType.IMAGE);
 	}
 	
 	public EmployeeReportPanel(String id, TreeReport report, ReportDrawType drawType)

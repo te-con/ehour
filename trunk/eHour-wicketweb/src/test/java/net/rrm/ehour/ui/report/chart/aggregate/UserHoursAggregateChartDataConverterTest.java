@@ -29,6 +29,6 @@ public class UserHoursAggregateChartDataConverterTest extends AbstractAggregateC
 		UserHoursAggregateChartDataConverter provider = new UserHoursAggregateChartDataConverter();
 		
 		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
-		img.getChart(report);
+		img.getChart(reportData);
 	}
 }

@@ -29,6 +29,6 @@ public class ProjectTurnoverAggregateChartDataConverterTest extends AbstractAggr
 		ProjectTurnoverAggregateChartDataConverter provider = new ProjectTurnoverAggregateChartDataConverter();
 		
 		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
-		img.getChart(report);
+		img.getChart(reportData);
 	}
 }

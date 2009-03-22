@@ -41,7 +41,7 @@ public class CustomerReportPanel extends AggregateReportPanel
 
 	public CustomerReportPanel(String id, TreeReport report)
 	{
-		this(id, report, ReportDrawType.FLASH);
+		this(id, report, ReportDrawType.IMAGE);
 	}
 
 	public CustomerReportPanel(String id, TreeReport report, ReportDrawType drawType)

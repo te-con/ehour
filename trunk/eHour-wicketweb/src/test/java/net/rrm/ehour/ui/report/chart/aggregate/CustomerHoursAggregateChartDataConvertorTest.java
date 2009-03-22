@@ -33,6 +33,6 @@ public class CustomerHoursAggregateChartDataConvertorTest extends AbstractAggreg
 		CustomerHoursAggregateChartDataConverter provider = new CustomerHoursAggregateChartDataConverter();
 		
 		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
-		img.getChart(report);
+		img.getChart(reportData);
 	}
 }

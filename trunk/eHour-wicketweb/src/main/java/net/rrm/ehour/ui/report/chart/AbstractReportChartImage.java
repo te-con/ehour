@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 
 import org.apache.log4j.Logger;
@@ -69,7 +69,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 */
 	protected JFreeChart generateChart()
 	{
-		Report report = (Report)getModelObject();
+		ReportData report = (ReportData)getModelObject();
 		return getChart(report);
 	}
 	
@@ -80,13 +80,13 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @param reportName
 	 * @return
 	 */
-	public JFreeChart getChart(Report report)
+	public JFreeChart getChart(ReportData reportData)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
 		logger.debug("Creating " + reportName + " chart");
 		
-		DefaultCategoryDataset dataset = createDataset(report);
+		DefaultCategoryDataset dataset = createDataset(reportData);
 
 		JFreeChart chart = ChartFactory.createBarChart(reportName, // chart title
 				null, // domain axis label
@@ -131,9 +131,9 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @param reportData
 	 * @return
 	 */
-	private DefaultCategoryDataset createDataset(Report report)
+	private DefaultCategoryDataset createDataset(ReportData reportData)
 	{
-		Map<ChartRowKey, Number> valueMap = createChartRowMap(report);
+		Map<ChartRowKey, Number> valueMap = createChartRowMap(reportData);
 
 		List<ChartRowKey> keys = new ArrayList<ChartRowKey>(valueMap.keySet());
 		
@@ -151,13 +151,13 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	}
 
 	@SuppressWarnings("unchecked")
-	private Map<ChartRowKey, Number> createChartRowMap(Report report)
+	private Map<ChartRowKey, Number> createChartRowMap(ReportData reportData)
 	{
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
 		ChartRowKey		rowKey;
 		Number 			value;
 
-		for (ReportElement element : report.getReportData().getReportElements())
+		for (ReportElement element : reportData.getReportElements())
 		{
 			rowKey = getRowKey((EL)element);
 			
