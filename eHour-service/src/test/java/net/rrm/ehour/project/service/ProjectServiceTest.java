@@ -133,6 +133,7 @@ public class ProjectServiceTest extends TestCase
 	 * 
 	 *
 	 */
+	@SuppressWarnings("unchecked")
 	public void testDeleteProjectConstraint()
 	{
 		Project prj = new Project();

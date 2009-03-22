@@ -16,18 +16,14 @@
 
 package net.rrm.ehour.ui.report.panel.user;
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
+import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
-import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartImage;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.user.page.UserReportPrint;
@@ -37,11 +33,9 @@ import ofc4j.model.elements.BarChart;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -58,11 +52,11 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param id
 	 * @param reportData
 	 */
-	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, ReportData<AssignmentAggregateReportElement> reportData, boolean inclLinks)
+	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, boolean inclLinks)
 	{
 		super(id, -1, 730);
 		
-		add(getReportPanel(aggregateReport, reportData, inclLinks));
+		add(getReportPanel(aggregateReport, inclLinks));
 	}
 	
 	/**
@@ -70,14 +64,16 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param customerAggregateReport
 	 * @return
 	 */
-	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, ReportData<AssignmentAggregateReportElement> reportData, boolean inclLinks)
+	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, boolean inclLinks)
 	{
+		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+		
 		ResourceLink 	excelLink = null;
 		Link			printLink = null;
 		
 		if (inclLinks)
 		{
-			final String reportId = customerAggregateReport.getReportId();
+			final String reportId = customerAggregateReport.getCacheId();
 			
 			ResourceReference excelResource = new ResourceReference("userReportExcel");
 			ValueMap params = new ValueMap();
@@ -112,7 +108,7 @@ public class UserReportPanel extends AbstractReportPanel
 		Fragment frag = new Fragment("charts", "flash", this);
 		greyBorder.add(frag);
 		
-		addFlashCharts(reportData, frag);
+		addFlashCharts(frag);
 		
 		return greyBorder;
 	}
@@ -123,7 +119,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	private void addFlashCharts(WebMarkupContainer parent)
 	{
 	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
 	    bar1.setColour("#007FFF");
@@ -144,7 +140,7 @@ public class UserReportPanel extends AbstractReportPanel
 	    chart2.addElements(bar1,bar2);
 	    chart2.setBackgroundColour("#FFFFFF");
 
-	    parent.add(new AbstractOpenFlashChart("customerHoursChart", 300,400,chart2));
+	    parent.add(new OpenFlashChart("customerHoursChart", 300,400,chart2));
 		
 	}	
 	
@@ -154,44 +150,44 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param reportCriteria
 	 * @return
 	 */
-	private void addImageCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
-	{
-		Model dataModel = new Model(data);
-		
-		// hours per customer
-		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, chartWidth, chartHeight);
-		parent.add(customerHoursChart);
-
-		// turnover per customer
-		if (config.isShowTurnover())
-		{
-			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, chartWidth, chartHeight);
-			parent.add(customerTurnoverChart);
-		}
-		else
-		{
-			// placeholder, not visible anyway
-			Image img = new Image("customerTurnoverChart");
-			img.setVisible(false);
-			parent.add(img);
-		}
-
-		// hours per project
-		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, chartWidth, chartHeight);
-		parent.add(projectHoursChartFactory);
-
-		// turnover per project
-		if (config.isShowTurnover())
-		{
-			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, chartWidth, chartHeight);
-			parent.add(projectTurnoverChart);
-		}
-		else
-		{
-			// placeholder, not visible anyway
-			Image img = new Image("projectTurnoverChart");
-			img.setVisible(false);
-			parent.add(img);
-		}		
-	}	
+//	private void addImageCharts(ReportData data, WebMarkupContainer parent)
+//	{
+//		Model dataModel = new Model(data);
+//		
+//		// hours per customer
+//		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, chartWidth, chartHeight);
+//		parent.add(customerHoursChart);
+//
+//		// turnover per customer
+//		if (config.isShowTurnover())
+//		{
+//			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, chartWidth, chartHeight);
+//			parent.add(customerTurnoverChart);
+//		}
+//		else
+//		{
+//			// placeholder, not visible anyway
+//			Image img = new Image("customerTurnoverChart");
+//			img.setVisible(false);
+//			parent.add(img);
+//		}
+//
+//		// hours per project
+//		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, chartWidth, chartHeight);
+//		parent.add(projectHoursChartFactory);
+//
+//		// turnover per project
+//		if (config.isShowTurnover())
+//		{
+//			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, chartWidth, chartHeight);
+//			parent.add(projectTurnoverChart);
+//		}
+//		else
+//		{
+//			// placeholder, not visible anyway
+//			Image img = new Image("projectTurnoverChart");
+//			img.setVisible(false);
+//			parent.add(img);
+//		}		
+//	}	
 }

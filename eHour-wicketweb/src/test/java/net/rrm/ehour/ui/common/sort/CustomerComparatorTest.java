@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.common.sort;
 
 import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.ui.common.sort.CustomerComparator;
 
 import org.junit.Test;
 

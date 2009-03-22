@@ -85,7 +85,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.AggregateReportService#getAggregateReportData(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
-	public ReportData<AssignmentAggregateReportElement> getAggregateReportData(ReportCriteria criteria)
+	public ReportData getAggregateReportData(ReportCriteria criteria)
 	{
 		return getReportData(criteria);
 	}	

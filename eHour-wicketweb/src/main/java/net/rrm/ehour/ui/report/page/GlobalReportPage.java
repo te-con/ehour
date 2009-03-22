@@ -21,12 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.cache.CachableObject;
+import net.rrm.ehour.ui.common.component.SWFObject;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
@@ -47,27 +44,26 @@ import net.rrm.ehour.ui.report.trend.DetailedReport;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Reporting 
  **/
 
 @AuthorizeInstantiation("ROLE_REPORT")
-public class GlobalReportPage extends AbstractReportPage
+public class GlobalReportPage extends AbstractReportPage implements IHeaderContributor
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 	
-	@SpringBean
-	private AggregateReportService		aggregateReportService;
-	@SpringBean
-	private DetailedReportService		detailedReportService;
 	private ReportTabbedPanel	tabPanel;
-
+	private static final CompressedResourceReference SWFOBJECT_JS = new CompressedResourceReference(SWFObject.class, "js/swfobject.js");
+	
 	/**
 	 * 
 	 */
@@ -113,6 +109,7 @@ public class GlobalReportPage extends AbstractReportPage
 			if (backingBean.getReportType().equals(ReportType.AGGREGATE))
 			{
 				addAggregateReportPanelTabs	(backingBean);
+				tabPanel.initCharts();
 			}
 			else
 			{
@@ -124,6 +121,7 @@ public class GlobalReportPage extends AbstractReportPage
 		
 		return false;
 	}
+	
 
 	/**
 	 * Clear tabs except for the first one
@@ -144,9 +142,7 @@ public class GlobalReportPage extends AbstractReportPage
 	 */
 	private void addAggregateReportPanelTabs(ReportCriteriaBackingBean backingBean)
 	{
-		ReportCriteria criteria = backingBean.getReportCriteria();
-		
-		final ReportData<AssignmentAggregateReportElement> reportData = getAggregateReportData(criteria);
+		final ReportCriteria criteria = backingBean.getReportCriteria();
 		
 		ITab	customerTab = new AbstractTab(new KeyResourceModel("report.title.customer"))
 		{
@@ -155,7 +151,7 @@ public class GlobalReportPage extends AbstractReportPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return getCustomerReportPanel(panelId, reportData);
+				return getCustomerReportPanel(panelId, criteria);
 			}
 		};		
 		tabPanel.addTab(customerTab);
@@ -167,7 +163,7 @@ public class GlobalReportPage extends AbstractReportPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return getProjectReportPanel(panelId, reportData);
+				return getProjectReportPanel(panelId, criteria);
 			}
 		};		
 		tabPanel.addTab(projectTab);	
@@ -179,7 +175,7 @@ public class GlobalReportPage extends AbstractReportPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return getUserReportPanel(panelId, reportData);
+				return getUserReportPanel(panelId, criteria);
 			}
 		};	
 		tabPanel.addTab(employeeTab);
@@ -192,10 +188,8 @@ public class GlobalReportPage extends AbstractReportPage
 	 */
 	private void addDetailedReportPanelTabs(ReportCriteriaBackingBean backingBean)
 	{
-		ReportCriteria criteria = backingBean.getReportCriteria();
+		final ReportCriteria criteria = backingBean.getReportCriteria();
 		
-		final ReportData<FlatReportElement> reportData = getDetailedReportData(criteria);	
-
 		ITab	detailedTab = new AbstractTab(new KeyResourceModel("report.title.detailed"))
 		{
 			private static final long serialVersionUID = 1L;
@@ -203,7 +197,7 @@ public class GlobalReportPage extends AbstractReportPage
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return getDetailedReportPanel(panelId, reportData);
+				return getDetailedReportPanel(panelId, criteria);
 			}
 		};			
 		tabPanel.addTab(detailedTab);	
@@ -217,13 +211,11 @@ public class GlobalReportPage extends AbstractReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getCustomerReportPanel(String id, ReportData<AssignmentAggregateReportElement> reportData)
+	private Panel getCustomerReportPanel(String id, ReportCriteria reportCriteria)
 	{
-		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
-		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
-		
-		AggregateReportPanel panel = new CustomerReportPanel(id, customerAggregateReport, reportData);
-		panel.setOutputMarkupId(true);
+		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportCriteria);
+		storeInCache(customerAggregateReport);
+		AggregateReportPanel panel = new CustomerReportPanel(id, customerAggregateReport);
 		
 		return panel;
 	}
@@ -234,13 +226,11 @@ public class GlobalReportPage extends AbstractReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getProjectReportPanel(String id, ReportData<AssignmentAggregateReportElement> reportData)
+	private Panel getProjectReportPanel(String id, ReportCriteria reportCriteria)
 	{
-		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportData);
-		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
-		
-		AggregateReportPanel panel = new ProjectReportPanel(id, aggregateReport, reportData);
-		panel.setOutputMarkupId(true);
+		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportCriteria);
+		storeInCache(aggregateReport);
+		AggregateReportPanel panel = new ProjectReportPanel(id, aggregateReport);
 		
 		return panel;
 	}	
@@ -252,13 +242,11 @@ public class GlobalReportPage extends AbstractReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getUserReportPanel(String id, ReportData<AssignmentAggregateReportElement> reportData)
+	private Panel getUserReportPanel(String id, ReportCriteria reportCriteria)
 	{
-		UserAggregateReport	aggregateReport = new UserAggregateReport(reportData);
-		((EhourWebSession)(getSession())).getReportCache().addReportToCache(aggregateReport, reportData);
-		
-		AggregateReportPanel panel = new EmployeeReportPanel(id, aggregateReport, reportData);
-		panel.setOutputMarkupId(true);
+		UserAggregateReport	aggregateReport = new UserAggregateReport(reportCriteria);
+		storeInCache(aggregateReport);
+		AggregateReportPanel panel = new EmployeeReportPanel(id, aggregateReport);
 		
 		return panel;
 	}
@@ -269,37 +257,29 @@ public class GlobalReportPage extends AbstractReportPage
 	 * @param reportData
 	 * @return
 	 */
-	private Panel getDetailedReportPanel(String id, ReportData<FlatReportElement> reportData)
+	private Panel getDetailedReportPanel(String id, ReportCriteria reportCriteria)
 	{
-		DetailedReport detailedReport = new DetailedReport(reportData, this.getConfig().getLocale());
-		
-		// for excel reporting
-		((EhourWebSession)(getSession())).getReportCache().addReportToCache(detailedReport, reportData);
-		
-		DetailedReportPanel panel = new DetailedReportPanel(id, detailedReport, reportData);
-		panel.setOutputMarkupId(true);
+		DetailedReport detailedReport = new DetailedReport(reportCriteria, this.getConfig().getLocale());
+		storeInCache(detailedReport);
+		DetailedReportPanel panel = new DetailedReportPanel(id, detailedReport);
 		
 		return panel;
 	}	
-	
-	/**
-	 * Get aggregated report data
-	 * @param reportCriteria
-	 * @return
-	 */
-	private ReportData<AssignmentAggregateReportElement> getAggregateReportData(ReportCriteria reportCriteria)
-	{
-		return aggregateReportService.getAggregateReportData(reportCriteria);
-	}	
 
-	
 	/**
-	 * Get detailed report data
-	 * @param reportCriteria
-	 * @return
+	 * keep the report available for excel reporting in a later request
+	 * @param report
 	 */
-	private ReportData<FlatReportElement> getDetailedReportData(ReportCriteria reportCriteria)
+	private void storeInCache(CachableObject report)
 	{
-		return detailedReportService.getDetailedReportData(reportCriteria);
-	}	
+		EhourWebSession.getSession().getReportCache().addObjectToCache(report);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
+	 */
+	public void renderHead(IHeaderResponse response)
+	{
+		response.renderJavascriptReference(SWFOBJECT_JS);
+	}
 }

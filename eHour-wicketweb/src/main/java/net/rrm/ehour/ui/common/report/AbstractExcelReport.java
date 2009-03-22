@@ -24,6 +24,7 @@ import java.util.List;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.report.TreeReportElement;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -66,12 +67,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	public byte[] getExcelData(String reportId) throws Exception
 	{
 		EhourWebSession session = (EhourWebSession)Session.get();
-		RangedReport report = (RangedReport)session.getReportCache().getReportFromCache(reportId);
-		
-		if (report == null)
-		{
-			throw new Exception("No report found in cache");
-		}
+		Report report = (Report)session.getReportCache().getObjectFromCache(reportId);
 		
 		logger.trace("Creating excel report");
 		HSSFWorkbook workbook = createWorkbook(report);
@@ -85,7 +81,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * @param treeReport
 	 * @return
 	 */
-	private HSSFWorkbook createWorkbook(RangedReport treeReport)
+	private HSSFWorkbook createWorkbook(Report treeReport)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet 	sheet = wb.createSheet((String)getExcelReportName().getObject());
@@ -164,15 +160,18 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * @param sheet
 	 * @param rowNumber
 	 */
-	protected void fillReportSheet(RangedReport reportData, HSSFSheet sheet, int rowNumber)
+	@SuppressWarnings("unchecked")
+	protected void fillReportSheet(Report reportData, HSSFSheet sheet, int rowNumber)
 	{
-		List<Serializable[]> matrix = reportData.getReportMatrix();
+		List<TreeReportElement> matrix = (List<TreeReportElement>)reportData.getReportData().getReportElements();
 		ReportColumn[]	columnHeaders = reportConfig.getReportColumns();
 		HSSFRow				row;
 		HSSFCell			cell;
 		
-		for (Serializable[] rowValues : matrix)
+		for (TreeReportElement element : matrix)
 		{
+			Serializable[] rowValues = element.getRow();
+			
 			int 	i = 0;
 			short	cellNumber = 0;
 			
@@ -247,7 +246,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * Create header containing report date
 	 * @param sheet
 	 */
-	protected int createHeaders(int rowNumber, HSSFSheet sheet, RangedReport report)
+	protected int createHeaders(int rowNumber, HSSFSheet sheet, Report report)
 	{
 		HSSFRow		row;
 		HSSFCell	cell;
@@ -265,7 +264,8 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 		
 		cell = row.createCell(1);
 		
-		if (report.getReportRange() == null || report.getReportRange().getDateStart() == null)
+		if (report.getReportRange() == null || 
+				report.getReportRange().getDateStart() == null)
 		{
 			cell.setCellStyle(boldCellStyle);
 			cell.setCellValue("--");
@@ -273,7 +273,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 		else
 		{
 			cell.setCellStyle(dateBoldCellStyle);
-			cell.setCellValue(report.getReportRange().getDateStart());
+			cell.setCellValue(report.getReportCriteria().getReportRange().getDateStart());
 		}
 
 		cell = row.createCell(3);

@@ -27,8 +27,7 @@ import java.util.List;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.admin.user.page.UserAdmin;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Test;
@@ -38,7 +37,7 @@ import org.junit.Test;
  * TODO 
  **/
 
-public class UserAdminTest extends BaseUIWicketTester
+public class UserAdminTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render
@@ -47,7 +46,7 @@ public class UserAdminTest extends BaseUIWicketTester
 	public void testUserAdminRender()
 	{
 		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 		
 		List<User>	users = new ArrayList<User>();
 		User user = new User();
@@ -67,9 +66,9 @@ public class UserAdminTest extends BaseUIWicketTester
 
 		replay(userService);
 		
-		tester.startPage(UserAdmin.class);
-		tester.assertRenderedPage(UserAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(UserAdmin.class);
+		getTester().assertRenderedPage(UserAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(userService);
 	}

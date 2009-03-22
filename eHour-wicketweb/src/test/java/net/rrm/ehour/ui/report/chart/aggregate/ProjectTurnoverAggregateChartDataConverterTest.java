@@ -18,27 +18,17 @@
 package net.rrm.ehour.ui.report.chart.aggregate;
 
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.report.chart.aggregate.UserHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
-
 import org.apache.wicket.model.Model;
 import org.junit.Test;
 
-/**
- * TODO 
- **/
-
-public class UserHoursAggregateChartImageTest extends BaseUIWicketTester
+public class ProjectTurnoverAggregateChartDataConverterTest extends AbstractAggregateChartImageTest
 {
 	@Test
 	public void testChartImage() throws Exception
 	{
-		ReportData reportData = new ReportData();
-		reportData.setReportElements(ReportTestUtil.getAssignmentAggregateReportElements());
+		ProjectTurnoverAggregateChartDataConverter provider = new ProjectTurnoverAggregateChartDataConverter();
 		
-		UserHoursAggregateChartImage img = new UserHoursAggregateChartImage("image", new Model(reportData), 200, 100);
+		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
 		img.getChart(reportData);
 	}
 }

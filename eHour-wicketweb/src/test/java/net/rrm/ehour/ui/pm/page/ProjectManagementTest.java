@@ -19,7 +19,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
@@ -29,7 +29,7 @@ import org.junit.Test;
  * @author Thies
  *
  */
-public class ProjectManagementTest extends BaseUIWicketTester
+public class ProjectManagementTest extends AbstractSpringWebAppTester
 {
 	ProjectService	projectService;
 	
@@ -45,10 +45,10 @@ public class ProjectManagementTest extends BaseUIWicketTester
 		super.setUp();
 		
 		projectService = createMock(ProjectService.class);
-		mockContext.putBean("projectService", projectService);		
+		getMockContext().putBean("projectService", projectService);		
 		
 		aggregateReportService = createMock(AggregateReportService.class);
-		mockContext.putBean("aggregatedReportService", aggregateReportService);
+		getMockContext().putBean("aggregatedReportService", aggregateReportService);
 	}
 
 
@@ -72,31 +72,31 @@ public class ProjectManagementTest extends BaseUIWicketTester
 		
 		expect(projectService.getProjectManagerProjects(isA(User.class)))
 						.andReturn(projects);	
-		tester.createRequestCycle();
+		getTester().createRequestCycle();
 		
 		replay(projectService);
 		replay(aggregateReportService);
-		tester.setupRequestAndResponse(true);
-		tester.startPage(ProjectManagement.class);
-		tester.assertRenderedPage(ProjectManagement.class);
-		tester.assertNoErrorMessage();
+		getTester().setupRequestAndResponse(true);
+		getTester().startPage(ProjectManagement.class);
+		getTester().assertRenderedPage(ProjectManagement.class);
+		getTester().assertNoErrorMessage();
 		
 		
-		FormTester form = tester.newFormTester("sidePanel:criteriaForm");
+		FormTester form = getTester().newFormTester("sidePanel:criteriaForm");
 		form.select("userCriteria.projects", 0);
 		
         form.submit("submitButton");
 
-        tester.executeAjaxEvent("sidePanel:criteriaForm:submitButton", "onclick");
+        getTester().executeAjaxEvent("sidePanel:criteriaForm:submitButton", "onclick");
         
-        tester.assertNoErrorMessage();
+        getTester().assertNoErrorMessage();
 		verify(projectService);
 		
 		verify(aggregateReportService);
         
-//        tester.assertComponent("reportPanel", PmReportPanel.class);
-//        tester.assertComponentOnAjaxResponse("reportPanel");
+//        getTester().assertComponent("reportPanel", PmReportPanel.class);
+//        getTester().assertComponentOnAjaxResponse("reportPanel");
         
-//        tester.assertErrorMessages(new String[] { "A Login and Password are required to enable offsite access." });		
+//        getTester().assertErrorMessages(new String[] { "A Login and Password are required to enable offsite access." });		
 	}
 }

@@ -50,7 +50,7 @@ public class QuickDropDownChoice extends DropDownChoice
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				AjaxEvent event = new AjaxEvent(target, QuickDateAjaxEventType.ADMIN_QUICK_DATE_CHANGED);
+				AjaxEvent event = new AjaxEvent(QuickDateAjaxEventType.ADMIN_QUICK_DATE_CHANGED);
 				
 				AjaxUtil.publishAjaxEvent(QuickDropDownChoice.this, event);
 			}

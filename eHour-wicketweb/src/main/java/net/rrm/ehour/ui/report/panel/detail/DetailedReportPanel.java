@@ -17,17 +17,16 @@
 
 package net.rrm.ehour.ui.report.panel.detail;
 
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.report.ReportConfig;
-import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.chart.detailed.AbstractTrendChartImage;
 import net.rrm.ehour.ui.report.chart.detailed.DateHoursTrendImage;
 import net.rrm.ehour.ui.report.chart.detailed.SeriesChartSelector;
 import net.rrm.ehour.ui.report.chart.detailed.TrendChartImageFactory;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
+import net.rrm.ehour.ui.report.trend.DetailedReport;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -40,21 +39,19 @@ public class DetailedReportPanel extends AbstractReportPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	public DetailedReportPanel(String id, 
-									final TreeReport<FlatReportElement> reportData, 
-									final ReportData<FlatReportElement> data)
+	public DetailedReportPanel(String id, final DetailedReport report)
 	{
 		super(id);
 		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", getReportWidth());
 		add(greyBorder);
 		
-		greyBorder.add(new TreeReportDataPanel("reportTable", reportData, ReportConfig.DETAILED_REPORT, "detailedReportExcel", getReportWidth() - 50));
+		greyBorder.add(new TreeReportDataPanel("reportTable", report, ReportConfig.DETAILED_REPORT, "detailedReportExcel", getReportWidth() - 50));
 		
 		DateHoursTrendImageFactory chartFactory = new DateHoursTrendImageFactory();
 
 		// hours per customer
-		AbstractTrendChartImage<FlatReportElement> chart = chartFactory.getTrendChartImage("userReport.report.project", new Model(data));
+		AbstractTrendChartImage<FlatReportElement> chart = chartFactory.getTrendChartImage("userReport.report.project", new Model(report));
 		greyBorder.add(chart);	
 		
 		greyBorder.add(new SeriesChartSelector<FlatReportElement>("serieChartSelector", ReportConfig.DETAILED_REPORT, chart, chartFactory));
@@ -71,8 +68,7 @@ public class DetailedReportPanel extends AbstractReportPanel
 
 		public AbstractTrendChartImage<FlatReportElement> getTrendChartImage(String seriesColumn, IModel model)
 		{
-			return  new DateHoursTrendImage("hoursChart", model, 920, chartHeight, seriesColumn);
+			return new DateHoursTrendImage("hoursChart", model, 920, getChartHeight(), seriesColumn);
 		}
-		
 	}
 }

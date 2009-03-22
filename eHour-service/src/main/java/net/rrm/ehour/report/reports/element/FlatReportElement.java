@@ -24,7 +24,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * Report element for trend reports (more data so each element is flattened)
  **/
 
-public class FlatReportElement extends ReportElement
+public class FlatReportElement implements ReportElement
 {
 	private static final long serialVersionUID = -2146747873763924275L;
 	private	Integer	customerId;
@@ -43,7 +43,30 @@ public class FlatReportElement extends ReportElement
 	private Date	dayDate;
 	private String	comment;
 	private Integer	displayOrder;
+	private Number 	hours;
 	
+	/**
+	 * @return the hours
+	 */
+	public Number getHours()
+	{
+		return hours;
+	}
+
+
+
+
+	/**
+	 * @param hours the hours to set
+	 */
+	public void setHours(Number hours)
+	{
+		this.hours = hours;
+	}
+
+
+
+
 	/**
 	 * Minimal constructor
 	 *
@@ -52,6 +75,9 @@ public class FlatReportElement extends ReportElement
 	{
 	}
 
+
+
+	
 	/**
 	 * @return the customerName
 	 */

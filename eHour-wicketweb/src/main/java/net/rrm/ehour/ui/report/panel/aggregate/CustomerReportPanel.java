@@ -18,17 +18,17 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.common.component.AbstractOpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateImage;
-import ofc4j.model.Chart;
-import ofc4j.model.elements.BarChart;
+import net.rrm.ehour.ui.report.TreeReportData;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConverter;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 
 /**
@@ -39,16 +39,14 @@ public class CustomerReportPanel extends AggregateReportPanel
 {
 	private static final long serialVersionUID = 8422287988040603274L;
 
-	public CustomerReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData
-							, ReportData<AssignmentAggregateReportElement> data)
+	public CustomerReportPanel(String id, TreeReport report)
 	{
-		this(id, reportData, data, ReportDrawType.FLASH);
+		this(id, report, ReportDrawType.IMAGE);
 	}
 
-	public CustomerReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData
-			, ReportData<AssignmentAggregateReportElement> data, ReportDrawType drawType)
+	public CustomerReportPanel(String id, TreeReport report, ReportDrawType drawType)
 	{
-		super(id, reportData, data, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel", drawType);
+		super(id, report, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel", drawType);
 	}
 	
 	/*
@@ -56,15 +54,17 @@ public class CustomerReportPanel extends AggregateReportPanel
 	 * @see net.rrm.ehour.ui.report.panel.type.ReportPanel#addCharts(net.rrm.ehour.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
-	protected void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
-		Model dataModel = new Model(data);
+		ReportData rawData = ((TreeReportData)data).getRawReportData();
+		Model dataModel = new Model(rawData);
 
-		// hours per customer
-		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("hoursChart", dataModel, chartWidth, chartHeight);
+		AggregateChartDataConverter hourConverter = new CustomerHoursAggregateChartDataConverter();
+		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight(), hourConverter);
 		parent.add(customerHoursChart);
 
-		CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("turnoverChart", dataModel, chartWidth, chartHeight);
+		AggregateChartDataConverter turnoverConverter = new CustomerTurnoverAggregateChartDataConverter();
+		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight(), turnoverConverter);
 		parent.add(customerTurnoverChart);
 	}
 	
@@ -73,29 +73,12 @@ public class CustomerReportPanel extends AggregateReportPanel
 	 * @see net.rrm.ehour.ui.report.panel.aggregate.AggregateReportPanel#addFlashCharts(net.rrm.ehour.report.reports.ReportData, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
-	protected void addFlashCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	protected void addFlashCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
-	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
-	    bar1.setColour("#007FFF");
-	    bar1.setTooltip("Beers:<br>Value:#val#");
-	    bar1.addValues(1,5,8,3,0,2);
-	    bar1.setText("Beers consumed");
-	    bar1.setAlpha(0.1f);
-
-	    BarChart bar2 = new BarChart(BarChart.Style.GLASS);
-	    bar2.setColour("#802A2A");
-	    bar2.setTooltip("#val#<br>bugs fixed");
-	    bar2.setText("bugs fixed");
-	    bar2.setFontSize(15);
-	    bar1.setAlpha(0.9f);
-	    bar2.addValues(2,7,1,5,8,3,0,2);
-
-	    Chart chart2 = new Chart("Beers and bugs");
-	    chart2.addElements(bar1,bar2);
-	    chart2.setBackgroundColour("#FFFFFF");
-
-	    parent.add(new AbstractOpenFlashChart("hoursChart", 300,400,chart2));
-	    parent.add(new AbstractOpenFlashChart("turnoverChart", 300,400,chart2));
+		ReportData rawData = ((TreeReportData)data).getRawReportData();
+		
+		parent.add(createHorizontalFlashChart(hourId, rawData, new CustomerHoursAggregateChartDataConverter()));
+		parent.add(createHorizontalFlashChart(turnOverId, rawData, new CustomerTurnoverAggregateChartDataConverter()));
 		
 	}
 }

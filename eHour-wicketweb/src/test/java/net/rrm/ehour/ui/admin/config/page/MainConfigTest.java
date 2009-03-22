@@ -23,8 +23,7 @@ import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.ui.admin.config.page.MainConfig;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Test;
 
@@ -32,7 +31,7 @@ import org.junit.Test;
  * TODO 
  **/
 
-public class MainConfigTest extends BaseUIWicketTester
+public class MainConfigTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render
@@ -41,20 +40,20 @@ public class MainConfigTest extends BaseUIWicketTester
 	public void testMainConfigRender()
 	{
 		ConfigurationService configService = createMock(ConfigurationService.class);
-		mockContext.putBean("configService", configService);
+		getMockContext().putBean("configService", configService);
 		
 
 		MailService mailService = createMock(MailService.class);
-		mockContext.putBean("mailService", mailService);	
+		getMockContext().putBean("mailService", mailService);	
 		
 		expect(configService.getConfiguration())
 				.andReturn(new EhourConfigStub());
 
 		replay(configService);
 		
-		tester.startPage(MainConfig.class);
-		tester.assertRenderedPage(MainConfig.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(MainConfig.class);
+		getTester().assertRenderedPage(MainConfig.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(configService);
 	}
@@ -64,11 +63,11 @@ public class MainConfigTest extends BaseUIWicketTester
 ////	 */
 //	public void testSubmitOKNoLocale()
 //	{
-//		FormTester	form = tester.newFormTester("configForm");
+//		FormTester	form = getTester().newFormTester("configForm");
 //	
 //		form.setValue("dontForceLocale", "true");
 //		
-//		tester.executeAjaxEvent("configForm.submitButton", "onclick");
+//		getTester().executeAjaxEvent("configForm.submitButton", "onclick");
 //	}
 	
 }

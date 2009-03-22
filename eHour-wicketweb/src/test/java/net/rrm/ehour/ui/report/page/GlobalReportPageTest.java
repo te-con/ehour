@@ -43,9 +43,9 @@ public class GlobalReportPageTest extends BaseTestReport
 		
 		replay(reportCriteriaService);
 		
-		tester.startPage(GlobalReportPage.class);
-		tester.assertRenderedPage(GlobalReportPage.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(GlobalReportPage.class);
+		getTester().assertRenderedPage(GlobalReportPage.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(reportCriteriaService);
 	}

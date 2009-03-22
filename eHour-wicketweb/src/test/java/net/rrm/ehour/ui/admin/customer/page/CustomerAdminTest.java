@@ -25,8 +25,7 @@ import java.util.ArrayList;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Test;
 
@@ -35,7 +34,7 @@ import org.junit.Test;
  * Customer admin test render
  **/
 
-public class CustomerAdminTest extends BaseUIWicketTester
+public class CustomerAdminTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render
@@ -44,15 +43,15 @@ public class CustomerAdminTest extends BaseUIWicketTester
 	public void testCustomerAdminRender()
 	{
 		CustomerService customerService = createMock(CustomerService.class);
-		mockContext.putBean("customerService", customerService);
+		getMockContext().putBean("customerService", customerService);
 		
 		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
 
 		replay(customerService);
 		
-		tester.startPage(CustomerAdmin.class);
-		tester.assertRenderedPage(CustomerAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(CustomerAdmin.class);
+		getTester().assertRenderedPage(CustomerAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(customerService);
 	}
@@ -63,18 +62,18 @@ public class CustomerAdminTest extends BaseUIWicketTester
 //	public void testFormSubmit()
 //	{
 //		CustomerService customerService = createMock(CustomerService.class);
-//		mockContext.putBean("customerService", customerService);
+//		getMockContext().putBean("customerService", customerService);
 //		
 //		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
 //
 //		replay(customerService);
 //		
-//		FormTester form = tester.newFormTester("tabs.customerForm");
+//		FormTester form = getTester().newFormTester("tabs.customerForm");
 //		form.submit();
 //		
-//		tester.startPage(CustomerAdmin.class);
-//		tester.assertRenderedPage(CustomerAdmin.class);
-//		tester.assertNoErrorMessage();
+//		getTester().startPage(CustomerAdmin.class);
+//		getTester().assertRenderedPage(CustomerAdmin.class);
+//		getTester().assertNoErrorMessage();
 //		
 //		verify(customerService);
 //	}	

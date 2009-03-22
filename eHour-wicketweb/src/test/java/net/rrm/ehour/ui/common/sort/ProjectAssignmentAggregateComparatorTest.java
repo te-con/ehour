@@ -20,7 +20,6 @@ package net.rrm.ehour.ui.common.sort;
 import static org.junit.Assert.assertTrue;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.DummyWebDataGenerator;
-import net.rrm.ehour.ui.common.sort.ProjectAssignmentAggregateComparator;
 
 import org.junit.Before;
 import org.junit.Test;

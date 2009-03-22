@@ -31,14 +31,13 @@ import java.util.Calendar;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.DummyWebDataGenerator;
+import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
 import org.apache.wicket.util.tester.FormTester;
@@ -51,7 +50,7 @@ import org.junit.Test;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class ExportMonthSelectionPageTest extends BaseUIWicketTester
+public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 {
 	private TimesheetService 	timesheetService;
 	private ReportCriteriaService reportCriteriaService;
@@ -64,13 +63,13 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		super.setUp();
 		
 		timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 
 		reportCriteriaService = createMock(ReportCriteriaService.class);
-		mockContext.putBean("reportCriteriaService", reportCriteriaService);
+		getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 	
 		detailedReportService = createMock(DetailedReportService.class);
-		mockContext.putBean("detailedReportService", detailedReportService);
+		getMockContext().putBean("detailedReportService", detailedReportService);
 		
 		reportCriteria = createReportCriteria();
 		
@@ -81,23 +80,23 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 				.andReturn(reportCriteria);
 
 		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-				.andReturn(createReportData());
+				.andReturn(ReportTestUtil.getFlatReportData());
 		replay(timesheetService, reportCriteriaService, detailedReportService);
 		
-		tester.startPage(ExportMonthSelectionPage.class);		
+		getTester().startPage(ExportMonthSelectionPage.class);		
 	}
 	
 	@Test
 	public void submitToPrint()
 	{
-		FormTester formTester = tester.newFormTester("printSelectionFrame:blueBorder:selectionForm:criteriaForm");
+		FormTester formTester = getTester().newFormTester("printSelectionFrame:blueBorder:selectionForm:criteriaForm");
 		formTester.selectMultiple("projectGroup", new int[]{0, 2});
 		formTester.setValue("signOff", "true");
 
 		formTester.submit("printButton");
 		
-		tester.assertRenderedPage(PrintMonth.class);
-		tester.assertNoErrorMessage();
+		getTester().assertRenderedPage(PrintMonth.class);
+		getTester().assertNoErrorMessage();
 		assertEquals(Boolean.TRUE, (Boolean) reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name()));
 		
 		assertEquals(2, reportCriteria.getUserCriteria().getProjects().size());
@@ -121,20 +120,14 @@ public class ExportMonthSelectionPageTest extends BaseUIWicketTester
 		
 	}
 	
-	private ReportData<FlatReportElement> createReportData()
-	{
-		ReportData<FlatReportElement> reportData = new ReportData<FlatReportElement>();
-		
-		return reportData;
-	}
-	
 	private ReportCriteria createReportCriteria()
 	{
-		ReportCriteria criteria = new ReportCriteria();
+		
 
 		AvailableCriteria availableCriteria = new AvailableCriteria();
 		availableCriteria.setProjects(DummyWebDataGenerator.getProjects(5));
-		criteria.setAvailableCriteria(availableCriteria);
+		
+		ReportCriteria criteria = new ReportCriteria(availableCriteria);
 		
 		return criteria;
 	}

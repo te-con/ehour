@@ -24,8 +24,7 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.page.MainConfig;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.login.page.Login;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
@@ -34,20 +33,20 @@ import org.junit.Test;
  * Tests the login tests
  **/
 
-public class LoginTest extends BaseUIWicketTester
+public class LoginTest extends AbstractSpringWebAppTester
 {
 	@Test
 	public void testLoginPageRender()
 	{
-		tester.startPage(Login.class);
-		tester.assertRenderedPage(Login.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(Login.class);
+		getTester().assertRenderedPage(Login.class);
+		getTester().assertNoErrorMessage();
 
 		ConfigurationService configService = createMock(ConfigurationService.class);
-		mockContext.putBean("configService", configService);
+		getMockContext().putBean("configService", configService);
 
 		MailService mailService = createMock(MailService.class);
-		mockContext.putBean("mailService", mailService);
+		getMockContext().putBean("mailService", mailService);
 
 		
 		expect(configService.getConfiguration())
@@ -55,15 +54,15 @@ public class LoginTest extends BaseUIWicketTester
 				.anyTimes();
 		
 		replay(configService);
-		FormTester form = tester.newFormTester("loginform");
+		FormTester form = getTester().newFormTester("loginform");
 		form.setValue("username", "thies");
 		form.setValue("password", "Ttst");
 
 		form.submit();
 		verify(configService);
 		
-		tester.assertNoErrorMessage();
-		tester.assertRenderedPage(MainConfig.class);
+		getTester().assertNoErrorMessage();
+		getTester().assertRenderedPage(MainConfig.class);
 
 		
 	}

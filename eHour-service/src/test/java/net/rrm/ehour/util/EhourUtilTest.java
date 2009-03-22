@@ -48,8 +48,6 @@ public class EhourUtilTest extends TestCase
 		List<Integer> ints = EhourUtil.getIdsFromDomainObjects(projectIds);
 		
 		assertEquals(4, ints.size());
-		
-		Integer[] ints2 = ints.toArray(new Integer[]{});
 	}
 	
 	@Test

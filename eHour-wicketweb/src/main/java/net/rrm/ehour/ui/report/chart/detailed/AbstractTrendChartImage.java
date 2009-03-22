@@ -82,7 +82,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 * @param reportName
 	 * @return
 	 */
-	public JFreeChart getChart(ReportData<EL> reportData)
+	public JFreeChart getChart(ReportData reportData)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
@@ -132,7 +132,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private TimeSeriesCollection createDataset(ReportData<EL> reportData, EhourConfig config)
+	private TimeSeriesCollection createDataset(ReportData reportData, EhourConfig config)
 	{
 		Map<Object, TimeSeries> timeSeries = new HashMap<Object, TimeSeries>();
 		
@@ -140,7 +140,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 		Number 					value;
 		
 		// 
-		List<Date> dates = DateUtil.createDateSequence(reportData.getReportCriteria().getReportRange(), config);
+		List<Date> dates = DateUtil.createDateSequence(reportData.getReportRange(), config);
 
 		//
 		for (ReportElement element : reportData.getReportElements())

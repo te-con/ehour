@@ -17,57 +17,71 @@
 
 package net.rrm.ehour.ui.report;
 
-import java.io.Serializable;
+
+import static org.springframework.util.Assert.notNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.common.report.RangedReport;
+import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
-public abstract class TreeReport<EL extends ReportElement> extends RangedReport
+public abstract class TreeReport extends AbstractCachableReportModel
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3717854276306653784L;
-	private List<Serializable[]> 	reportMatrix;
-	private float					totalHours;
-	private float					totalTurnover;
+
+	private float totalHours;
+	private float totalTurnover;
+	
+	private ReportConfig	reportConfig;
 	
 	/**
 	 * Default constructor which doesn't initialize the report
 	 */
-	public TreeReport()
+	public TreeReport(ReportCriteria reportCriteria, ReportConfig reportConfig)
 	{
-	}
-	
-    /**
-     *
-     * @param reportData
-     */
-    public TreeReport(ReportData<EL> reportData, ReportConfig reportConfig)
-    {
-    	initializeReport(reportData, reportConfig);
-    }
+		super(reportCriteria);
 
-    /**
-     * Initialize report
-     * @param reportData
-     */
-    protected void initializeReport(ReportData<EL> reportData, ReportConfig reportConfig)
-    {
-        ReportBuilder<EL> reportBuilder = new ReportBuilder<EL>();
+		this.reportConfig = reportConfig;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.ui.common.report.Report#getReportData()
+	 */
+	@Override
+	protected ReportData getReportData(ReportCriteria reportCriteria)
+	{
+		ReportData reportData = getValidReportData(reportCriteria);
+		
+		// flatten the original reportData into a matrix representing the whole report
+        ReportBuilder reportBuilder = new ReportBuilder();
         List<ReportNode> rootNodes = reportBuilder.createReport(reportData, getReportNodeFactory());
         
-        createMatrix(rootNodes, reportConfig.getReportColumns().length);
+        List<TreeReportElement> matrix = createMatrix(rootNodes, reportConfig.getReportColumns().length);
         calcTotals(rootNodes);
         
-        setReportRange(reportData.getReportCriteria().getUserCriteria().getReportRange());
+        ReportData wrappedReportData = new TreeReportData(matrix, reportCriteria.getReportRange(), reportData);
+        
+        return wrappedReportData;
+        
     }
+    
+	private ReportData getValidReportData(ReportCriteria reportCriteria)
+	{
+		ReportData reportData = fetchReportData(reportCriteria);
+		
+		notNull(reportData);
+		notNull(reportData.getReportElements());
+
+		return reportData;
+	}
+	
+    protected abstract ReportData fetchReportData(ReportCriteria reportCriteria);
     
     /**
      * Calculate total turnover & hours booked
@@ -86,14 +100,16 @@ public abstract class TreeReport<EL extends ReportElement> extends RangedReport
      * @param rootNodes
      * @param matrixWidth
      */
-    private void createMatrix(List<ReportNode> rootNodes, int matrixWidth)
+    private List<TreeReportElement> createMatrix(List<ReportNode> rootNodes, int matrixWidth)
     {
-    	reportMatrix = new ArrayList<Serializable[]>();
+    	List<TreeReportElement> reportMatrix = new ArrayList<TreeReportElement>();
     	
     	for (ReportNode reportNode : rootNodes)
 		{
     		reportMatrix.addAll(reportNode.getNodeMatrix(matrixWidth));
 		}
+    	
+    	return reportMatrix;
     }
     
     /**
@@ -101,14 +117,6 @@ public abstract class TreeReport<EL extends ReportElement> extends RangedReport
      * @return
      */
     public abstract ReportNodeFactory getReportNodeFactory();
-
-	/**
-	 * @return the reportMatrix
-	 */
-	public List<Serializable[]> getReportMatrix()
-	{
-		return reportMatrix;
-	}
 
 	/**
 	 * @return the totalHours

@@ -17,8 +17,8 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AbstractBehavior;
@@ -55,6 +55,11 @@ public class SWFObject extends AbstractBehavior implements IHeaderContributor
 	{
 		response.renderJavascriptReference(SWFOBJECT_JS);
 
+		response.renderJavascript(getJavascript(), null);
+	}
+	
+	public String getJavascript()
+	{
 		final String id = component.getMarkupId();
 		String parObj = buildDataObject(getParameters());
 		String attObj = buildDataObject(getAttributes());
@@ -62,9 +67,10 @@ public class SWFObject extends AbstractBehavior implements IHeaderContributor
 		// embedSWF: function(swfUrlStr, replaceElemIdStr, widthStr, heightStr,
 		// swfVersionStr, xiSwfUrlStr, flashvarsObj, parObj, attObj)
 
-		String js = String.format("swfobject.embedSWF('%s','%s', '%s', '%s', '%s', '%s', %s, %s );", flashUrl, id, width, height, version, "expressInstall.swf", parObj, attObj);
-
-		response.renderJavascript(js, null);
+		String javascript = String.format("swfobject.embedSWF('%s','%s', '%s', '%s', '%s', '%s', %s, %s );", flashUrl, id, width, height, version, "expressInstall.swf", parObj, attObj);
+		
+		return javascript;
+		
 	}
 
   /**

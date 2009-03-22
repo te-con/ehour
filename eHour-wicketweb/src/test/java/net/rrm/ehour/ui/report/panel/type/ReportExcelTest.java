@@ -18,9 +18,15 @@
 package net.rrm.ehour.ui.report.panel.type;
 
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.common.report.ReportCache;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.cache.ObjectCache;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
@@ -31,33 +37,51 @@ import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportExcel;
 import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportExcel;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportExcel;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Excel tester
  **/
-@SuppressWarnings({"unchecked"})
-public class ReportExcelTest extends BaseUIWicketTester
+public class ReportExcelTest extends AbstractSpringWebAppTester
 {
-	private ReportCache cache;
-	private ReportData reportData;
+	private ObjectCache cache;
+	private ReportCriteria criteria;
+	private AggregateReportService aggregateReportService;
+	
 	
 	@Before
 	public void setUp() throws Exception
 	{
 		super.setUp();
 		
-		EhourWebSession session = this.webapp.getSession();
+		aggregateReportService = createMock(AggregateReportService.class);
+		getMockContext().putBean("aggregateReportService", aggregateReportService);
+
+		
+		EhourWebSession session = this.getWebApp().getSession();
 		cache = session.getReportCache();
-		reportData = ReportTestUtil.getAssignmentReportData();
+		
+		criteria = ReportTestUtil.getReportCriteria();
+		
+		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
+			.andReturn(ReportTestUtil.getAssignmentReportData());
+		
+		replay(aggregateReportService);
+	}
+	
+	@After
+	public void tearDown()
+	{
+		verify(aggregateReportService);
 	}
 
 	@Test
 	public void testCustomerReportExcel() throws Exception
 	{
-		TreeReport report = new CustomerAggregateReport(reportData);
-		String reportCacheId = cache.addReportToCache(report, reportData);
+		TreeReport report = new CustomerAggregateReport(criteria);
+		String reportCacheId = cache.addObjectToCache(report);
 
 		new CustomerReportExcel().getExcelData(reportCacheId);
 	}
@@ -65,8 +89,8 @@ public class ReportExcelTest extends BaseUIWicketTester
 	@Test
 	public void testEmployeeReportExcel() throws Exception
 	{
-		TreeReport report = new UserAggregateReport(reportData);
-		String reportCacheId = cache.addReportToCache(report, reportData);
+		TreeReport report = new UserAggregateReport(criteria);
+		String reportCacheId = cache.addObjectToCache(report);
 
 		new EmployeeReportExcel().getExcelData(reportCacheId);
 	}
@@ -74,8 +98,8 @@ public class ReportExcelTest extends BaseUIWicketTester
 	@Test
 	public void testProjectReportExcel() throws Exception
 	{
-		TreeReport report = new ProjectAggregateReport(reportData);
-		String reportCacheId = cache.addReportToCache(report, reportData);
+		TreeReport report = new ProjectAggregateReport(criteria);
+		String reportCacheId = cache.addObjectToCache(report);
 
 		new ProjectReportExcel().getExcelData(reportCacheId);
 	}	

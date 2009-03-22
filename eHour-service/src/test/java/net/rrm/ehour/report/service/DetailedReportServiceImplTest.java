@@ -28,7 +28,6 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -61,11 +60,10 @@ public class DetailedReportServiceImplTest
 		detailedReportDAO = createMock(DetailedReportDAO.class);
 		((DetailedReportServiceImpl)detailedReportService).setDetailedReportDAO(detailedReportDAO);
 
-		rc = new ReportCriteria();
 		dr = new DateRange();
 		uc = new UserCriteria();
 		uc.setReportRange(dr);
-		rc.setUserCriteria(uc);		
+		rc = new ReportCriteria(uc);
 	}
 
 	/**

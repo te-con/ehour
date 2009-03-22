@@ -31,8 +31,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -43,7 +42,7 @@ import org.junit.Test;
  * TODO 
  **/
 
-public class AssignmentAdminTest extends BaseUIWicketTester
+public class AssignmentAdminTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render
@@ -52,16 +51,16 @@ public class AssignmentAdminTest extends BaseUIWicketTester
 	public void testAssignmentAdminRender()
 	{
 		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 
 		ProjectService projectService = createMock(ProjectService.class);
-		mockContext.putBean("projectService", projectService);
+		getMockContext().putBean("projectService", projectService);
 		
 		CustomerService customerService = createMock(CustomerService.class);
-		mockContext.putBean("customerService", customerService);
+		getMockContext().putBean("customerService", customerService);
 
 		ProjectAssignmentService assignmentService = createMock(ProjectAssignmentService.class);
-		mockContext.putBean("assignmentService", assignmentService);
+		getMockContext().putBean("assignmentService", assignmentService);
 
 //		expect(projectService.getAllProjectsForUser(66))
 //				.andReturn(new ArrayList<ProjectAssignment>());
@@ -87,9 +86,9 @@ public class AssignmentAdminTest extends BaseUIWicketTester
 
 		replay(userService);
 		
-		tester.startPage(AssignmentAdmin.class);
-		tester.assertRenderedPage(AssignmentAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(AssignmentAdmin.class);
+		getTester().assertRenderedPage(AssignmentAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(userService);
 //		verify(customerService);

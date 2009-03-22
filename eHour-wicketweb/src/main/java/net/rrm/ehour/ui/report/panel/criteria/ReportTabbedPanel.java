@@ -20,7 +20,9 @@ package net.rrm.ehour.ui.report.panel.criteria;
 import java.util.List;
 
 import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -113,5 +115,44 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 			setSelectedTab(tabList.size() - 1);
 		}
 	}
+	
+	public void initCharts()
+	{
+		initCharts(AjaxRequestTarget.get());
+	}
+	
+	
+	@Override
+	protected void onAjaxUpdate(AjaxRequestTarget target)
+	{
+		initCharts(target);
+	}
 
+	/**
+	 * @param target
+	 */
+	private void initCharts(AjaxRequestTarget target)
+	{
+		target.registerRespondListener(new OpenFlashChartInitializeListener());
+	}	
+	
+	/**
+	 * Appends the javascript needed to initialize the open flash charts to the ajaxRequestTarget.
+	 *
+	 */
+	private class OpenFlashChartInitializeListener implements AjaxRequestTarget.ITargetRespondListener
+	{
+		public void onTargetRespond(AjaxRequestTarget target)
+		{
+			List<OpenFlashChart> charts = CommonWebUtil.findComponent(ReportTabbedPanel.this, OpenFlashChart.class);
+
+			if (AjaxRequestTarget.get() != null)
+			{
+				for (OpenFlashChart flashChart : charts)
+				{
+					AjaxRequestTarget.get().appendJavascript(flashChart.getJavascript());
+				}
+			}
+		}
+	}
 }

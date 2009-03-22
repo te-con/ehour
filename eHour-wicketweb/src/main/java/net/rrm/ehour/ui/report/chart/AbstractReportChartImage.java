@@ -40,7 +40,7 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- * Base class for charts 
+ * Base class for image (jfreechart) based charts
  **/
 
 public abstract class AbstractReportChartImage<EL extends ReportElement> extends AbstractChartImage
@@ -67,11 +67,10 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * Generate chart
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	protected JFreeChart generateChart()
 	{
-		ReportData<EL> reportData = (ReportData<EL>)getModelObject();
-		return getChart(reportData);
+		ReportData report = (ReportData)getModelObject();
+		return getChart(report);
 	}
 	
 	/**
@@ -81,7 +80,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @param reportName
 	 * @return
 	 */
-	public JFreeChart getChart(ReportData<EL> reportData)
+	public JFreeChart getChart(ReportData reportData)
 	{
 		String reportNameKey = getReportNameKey();
 		String reportName = getLocalizer().getString(reportNameKey, this);
@@ -132,17 +131,31 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @param reportData
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	private DefaultCategoryDataset createDataset(ReportData<EL> reportData)
+	private DefaultCategoryDataset createDataset(ReportData reportData)
 	{
-		DefaultCategoryDataset dataset;
+		Map<ChartRowKey, Number> valueMap = createChartRowMap(reportData);
+
+		List<ChartRowKey> keys = new ArrayList<ChartRowKey>(valueMap.keySet());
+		
+		Collections.sort(keys);
+		
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		String			valueAxisLabel = getValueAxisLabelKey();
+
+		for (ChartRowKey rowKeyAgg : keys)
+		{
+			dataset.addValue(valueMap.get(rowKeyAgg), valueAxisLabel, rowKeyAgg);
+		}
+
+		return dataset;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<ChartRowKey, Number> createChartRowMap(ReportData reportData)
+	{
 		Map<ChartRowKey, Number> valueMap = new HashMap<ChartRowKey, Number>();
 		ChartRowKey		rowKey;
 		Number 			value;
-		String			valueAxisLabel = getValueAxisLabelKey();
-		List<ChartRowKey>	keys;
-
-		dataset = new DefaultCategoryDataset();
 
 		for (ReportElement element : reportData.getReportElements())
 		{
@@ -164,20 +177,10 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 				valueMap.put(rowKey, value);
 			}
 		}
-
-		keys = new ArrayList<ChartRowKey>(valueMap.keySet());
 		
-		Collections.sort(keys);
-		
-		for (ChartRowKey rowKeyAgg : keys)
-		{
-			dataset.addValue(valueMap.get(rowKeyAgg), valueAxisLabel, rowKeyAgg);
-		}
-
-		return dataset;
+		return valueMap;
 	}
 	
-
 	/**
 	 * Get report name
 	 * @return

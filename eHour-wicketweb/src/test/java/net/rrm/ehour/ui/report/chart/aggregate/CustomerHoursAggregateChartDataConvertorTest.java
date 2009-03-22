@@ -17,33 +17,22 @@
 
 package net.rrm.ehour.ui.report.chart.aggregate;
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
-
 import org.apache.wicket.model.Model;
 import org.junit.Test;
 
-/**
- * 
- **/
-@SuppressWarnings("unchecked")
-
-public class CustomerHoursAggregateChartImageTest extends BaseUIWicketTester
+public class CustomerHoursAggregateChartDataConvertorTest extends AbstractAggregateChartImageTest
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartImage#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
 	 * @throws Exception 
 	 */
 	@Test
 	public void testCustomerHoursAggregateChartImage() throws Exception
 	{
-		ReportData reportData = new ReportData();
-		reportData.setReportElements(ReportTestUtil.getAssignmentAggregateReportElements());
+		CustomerHoursAggregateChartDataConverter provider = new CustomerHoursAggregateChartDataConverter();
 		
-		CustomerHoursAggregateChartImage img = new CustomerHoursAggregateChartImage("image", new Model(reportData), 200, 100);
+		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
 		img.getChart(reportData);
 	}
 }

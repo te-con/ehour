@@ -75,6 +75,7 @@ public class ProjectAssignmentServiceIntegrationTest extends AbstractServiceTest
 		projectAssignmentService.assignUserToProject(pa);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test	
 	public void testGetProjectAssignmentsForUser()
 	{

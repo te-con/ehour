@@ -32,39 +32,39 @@ import org.apache.wicket.model.ResourceModel;
 public class AuditReportCriteriaForm extends Form
 {
 	private static final long serialVersionUID = -4033279032707727816L;
-	
+
 	public enum Events implements AjaxEventType
 	{
 		FORM_SUBMIT;
 	}
-	
+
 	public AuditReportCriteriaForm(String id, IModel model)
 	{
 		super(id, model);
-		
+
 		addDates(model);
-		
+
 		AjaxButton submitButton = new AjaxButton(AuditConstants.PATH_FORM_SUBMIT, this)
 		{
 			private static final long serialVersionUID = -627058322154455051L;
 
 			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form form)
+			protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				AjaxEvent event = new AjaxEvent(target, Events.FORM_SUBMIT);
+				AjaxEvent event = new AjaxEvent(Events.FORM_SUBMIT);
 				AjaxUtil.publishAjaxEvent(AuditReportCriteriaForm.this, event);
 			}
 		};
-		
+
 		add(submitButton);
-		
-		TextField nameField = new TextField(AuditConstants.PATH_FORM_NAME, new PropertyModel(getModel(), "name"));
+
+		TextField nameField = new TextField(AuditConstants.PATH_FORM_NAME, new PropertyModel(getModel(), "userCriteria.name"));
 		add(nameField);
 
-		TextField actionField = new TextField(AuditConstants.PATH_FORM_ACTION, new PropertyModel(getModel(), "action"));
+		TextField actionField = new TextField(AuditConstants.PATH_FORM_ACTION, new PropertyModel(getModel(), "userCriteria.action"));
 		add(actionField);
 	}
-	
+
 	/**
 	 * Add start & end dates
 	 * 
@@ -73,13 +73,11 @@ public class AuditReportCriteriaForm extends Form
 	 */
 	private void addDates(final IModel model)
 	{
-		PropertyModel infiniteStartDateModel = new PropertyModel(model, "infiniteStartDate");
-		PropertyModel infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
+		PropertyModel infiniteStartDateModel = new PropertyModel(model, "userCriteria.infiniteStartDate");
+		PropertyModel infiniteEndDateModel = new PropertyModel(model, "userCriteria.infiniteEndDate");
 
 		// start date
-		DateTextField dateStart = new DateTextField("dateStart", 
-															new PropertyModel(model, "dateRange.dateStart"), 
-															new StyleDateConverter("S-", true));
+		DateTextField dateStart = new DateTextField("dateStart", new PropertyModel(model, "userCriteria.reportRange.dateStart"), new StyleDateConverter("S-", true));
 
 		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
 		dateStart.add(new ValidatingFormComponentAjaxBehavior());
@@ -104,7 +102,7 @@ public class AuditReportCriteriaForm extends Form
 		add(startDateHider);
 
 		// infinite start date toggle
-		AjaxCheckBox infiniteStart = new AjaxCheckBox("infiniteStartDate")
+		AjaxCheckBox infiniteStart = new AjaxCheckBox("infiniteStartDate", infiniteStartDateModel)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -118,7 +116,7 @@ public class AuditReportCriteriaForm extends Form
 		startDateHider.add(infiniteStart);
 
 		// end date
-		DateTextField dateEnd = new DateTextField("dateEnd", new PropertyModel(model, "dateRange.dateEnd"), new StyleDateConverter("S-", false));
+		DateTextField dateEnd = new DateTextField("dateEnd", new PropertyModel(model, "userCriteria.reportRange.dateEnd"), new StyleDateConverter("S-", false));
 		dateEnd.add(new DatePicker());
 		// container for hiding
 
@@ -141,7 +139,7 @@ public class AuditReportCriteriaForm extends Form
 		add(endDateHider);
 
 		// infinite end date toggle
-		AjaxCheckBox infiniteEnd = new AjaxCheckBox("infiniteEndDate")
+		AjaxCheckBox infiniteEnd = new AjaxCheckBox("infiniteEndDate", infiniteEndDateModel)
 		{
 			private static final long serialVersionUID = 1L;
 

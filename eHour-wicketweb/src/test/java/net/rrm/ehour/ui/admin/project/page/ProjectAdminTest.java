@@ -28,7 +28,7 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.project.page.ProjectAdmin;
 import net.rrm.ehour.user.service.UserService;
 
@@ -39,7 +39,7 @@ import org.junit.Test;
  * Render testcase for project admin page
  **/
 
-public class ProjectAdminTest extends BaseUIWicketTester
+public class ProjectAdminTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render
@@ -48,13 +48,13 @@ public class ProjectAdminTest extends BaseUIWicketTester
 	public void testProjectAdminRender()
 	{
 		ProjectService	projectService = createMock(ProjectService.class);
-		mockContext.putBean("projectService", projectService);
+		getMockContext().putBean("projectService", projectService);
 
 		UserService		userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 
 		CustomerService	customerService = createMock(CustomerService.class);
-		mockContext.putBean("customerService", customerService);
+		getMockContext().putBean("customerService", customerService);
 		
 
 		expect(customerService.getCustomers(true))
@@ -68,9 +68,9 @@ public class ProjectAdminTest extends BaseUIWicketTester
 		
 		replay(projectService);
 		
-		tester.startPage(ProjectAdmin.class);
-		tester.assertRenderedPage(ProjectAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(ProjectAdmin.class);
+		getTester().assertRenderedPage(ProjectAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(projectService);
 	}

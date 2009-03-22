@@ -140,8 +140,7 @@ public class AssignmentListPanel extends AbstractBasePanel
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(target, 
-																													AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
 																													assignment));
 					}
 				};
@@ -151,8 +150,7 @@ public class AssignmentListPanel extends AbstractBasePanel
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(target, 
-																													AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
 																													assignment));
 					}
 				};

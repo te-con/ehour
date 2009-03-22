@@ -49,6 +49,7 @@ import org.apache.wicket.model.StringResourceModel;
 public class ExportMonthSelectionPage extends AbstractReportPage implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = 1891959724639181159L;
+	
 	private static final String ID_SELECTION_FORM = "selectionForm";
 	private static final String ID_FRAME = "printSelectionFrame";
 	private static final String ID_BLUE_BORDER = "blueBorder";

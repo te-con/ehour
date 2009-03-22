@@ -17,9 +17,6 @@
 package net.rrm.ehour.ui.report.user.page;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
@@ -33,7 +30,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Reporting for user
@@ -45,8 +41,6 @@ public class UserReport extends AbstractReportPage
 	private static final long serialVersionUID = -8867366237264687482L;
 
 	private WebMarkupContainer		reportDataPanel;
-	@SpringBean
-	private AggregateReportService		aggregateReportService;
 
 	/**
 	 * 
@@ -94,25 +88,12 @@ public class UserReport extends AbstractReportPage
 		ReportCriteria criteria = (ReportCriteria)getModel().getObject();
 		
 		// add data
-		ReportData<AssignmentAggregateReportElement> reportData = getAggregateReportData(criteria);
-		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportData);
-		((EhourWebSession)(getSession())).getReportCache().addReportToCache(customerAggregateReport, reportData);
+		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(criteria);
+		EhourWebSession.getSession().getReportCache().addObjectToCache(customerAggregateReport);
 		
-		UserReportPanel panel = new UserReportPanel("userReportPanel", customerAggregateReport, reportData, true);
+		UserReportPanel panel = new UserReportPanel("userReportPanel", customerAggregateReport, true);
 		panel.setOutputMarkupId(true);
 		return panel;
 	}
 	
-	/**
-	 * Get aggregated report data
-	 * @param reportCriteria
-	 * @return
-	 */
-	private ReportData<AssignmentAggregateReportElement> getAggregateReportData(ReportCriteria reportCriteria)
-	{
-		logger.debug("Getting aggregated report data");
-		ReportData<AssignmentAggregateReportElement> data = aggregateReportService.getAggregateReportData(reportCriteria);
-		
-		return data;
-	}	
 }

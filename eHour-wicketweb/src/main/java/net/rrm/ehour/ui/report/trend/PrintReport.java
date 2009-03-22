@@ -29,8 +29,14 @@ import java.util.Date;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
+
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Print report for printing a timesheet
@@ -38,6 +44,14 @@ import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 
 public class PrintReport extends TrendReport<ProjectAssignment>
 {
+	@SpringBean
+	private DetailedReportService detailedReportService;
+	
+	public PrintReport(ReportCriteria criteria)
+	{
+		super(criteria);
+	}
+
 	private static final long serialVersionUID = 6099016674849151669L;
 	
 	/* (non-Javadoc)
@@ -77,5 +91,26 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	protected Comparator<ProjectAssignment> getRKComparator()
 	{
 		return new ProjectAssignmentComparator();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.ui.report.trend.TrendReport#fetchReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 */
+	@Override
+	protected ReportData fetchReportData(ReportCriteria reportCriteria)
+	{
+		ReportData detailedReportData = getDetailedReportService().getDetailedReportData(reportCriteria);
+		
+		return detailedReportData;
+	}
+	
+	private DetailedReportService getDetailedReportService()
+	{
+		if (detailedReportService == null)
+		{
+			CommonWebUtil.springInjection(this);
+		}
+		
+		return detailedReportService;
 	}
 }

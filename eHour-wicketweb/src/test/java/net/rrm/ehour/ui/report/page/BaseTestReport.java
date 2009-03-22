@@ -34,16 +34,11 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Before;
 
-/**
- * TODO 
- **/
-
-@SuppressWarnings("unchecked")
-public abstract class BaseTestReport extends BaseUIWicketTester
+public abstract class BaseTestReport extends AbstractSpringWebAppTester
 {
 	protected ReportCriteriaService reportCriteriaService;
 	protected AggregateReportService aggregateReportService;
@@ -57,15 +52,14 @@ public abstract class BaseTestReport extends BaseUIWicketTester
 		super.setUp();
 		
 		reportCriteriaService = createMock(ReportCriteriaService.class);
-		mockContext.putBean("reportCriteriaService", reportCriteriaService);
+		getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 
 		aggregateReportService = createMock(AggregateReportService.class);
-		mockContext.putBean("aggregatedReportService", aggregateReportService);
+		getMockContext().putBean("aggregatedReportService", aggregateReportService);
 
 		detailedReportService = createMock(DetailedReportService.class);
-		mockContext.putBean("detailedReportService", detailedReportService);
+		getMockContext().putBean("detailedReportService", detailedReportService);
 
-		reportCriteria = new ReportCriteria();
 		AvailableCriteria availCriteria = new AvailableCriteria();
 
 		List<Customer> customers = new ArrayList<Customer>();
@@ -83,11 +77,9 @@ public abstract class BaseTestReport extends BaseUIWicketTester
 		List<User> usrs = new ArrayList<User>();
 		usrs.add(new User(2));
 		availCriteria.setUsers(usrs);
+
+		reportCriteria = new ReportCriteria(availCriteria);
 		
-		reportCriteria.setAvailableCriteria(availCriteria);
-		
-		data = new ReportData();
-		data.setReportCriteria(reportCriteria);
 		List<AssignmentAggregateReportElement> agg = new ArrayList<AssignmentAggregateReportElement>();
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		ProjectAssignment ass = new ProjectAssignment(1);
@@ -101,6 +93,7 @@ public abstract class BaseTestReport extends BaseUIWicketTester
 		pag.setProjectAssignment(ass);
 		
 		agg.add(pag);
-		data.setReportElements(agg);		
+
+		data = new ReportData(agg, reportCriteria.getReportRange());
 	}
 }

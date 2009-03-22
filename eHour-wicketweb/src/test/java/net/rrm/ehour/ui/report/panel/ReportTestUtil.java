@@ -33,7 +33,7 @@ import net.rrm.ehour.ui.common.DummyWebDataGenerator;
  * Test data
  **/
 
-@SuppressWarnings({"unchecked", "deprecation"})
+@SuppressWarnings({"deprecation"})
 public class ReportTestUtil
 {
 	public static List<FlatReportElement> getFlatReportElements()
@@ -152,12 +152,9 @@ public class ReportTestUtil
 		return els;
 	}
 	
-	public static ReportData<FlatReportElement> getFlatReportData()
+	public static ReportData  getFlatReportData()
 	{
-		ReportData<FlatReportElement> reportData = new ReportData<FlatReportElement>();
-		reportData.setReportElements(ReportTestUtil.getFlatReportElements());
-		
-		reportData.setReportCriteria(getReportCriteria());
+		ReportData reportData = new ReportData(ReportTestUtil.getFlatReportElements(), new DateRange());
 
 		return reportData;		
 	}
@@ -198,10 +195,7 @@ public class ReportTestUtil
 	 */
 	public static ReportData getAssignmentReportData()
 	{
-		ReportData reportData = new ReportData();
-		reportData.setReportElements(ReportTestUtil.getAssignmentAggregateReportElements());
-		
-		reportData.setReportCriteria(getReportCriteria());
+		ReportData reportData = new ReportData(ReportTestUtil.getAssignmentAggregateReportElements(), new DateRange());
 
 		return reportData;
 	}
@@ -212,10 +206,10 @@ public class ReportTestUtil
 	 */
 	public static ReportCriteria getReportCriteria()
 	{
-		ReportCriteria criteria = new ReportCriteria();
+		
 		UserCriteria userCriteria = new UserCriteria();
 		userCriteria.setReportRange(new DateRange(new Date(), new Date()));
-		criteria.setUserCriteria(userCriteria);
+		ReportCriteria criteria = new ReportCriteria(userCriteria);
 
 		return criteria;
 	}

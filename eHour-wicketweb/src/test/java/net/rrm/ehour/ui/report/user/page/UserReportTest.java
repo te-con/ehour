@@ -25,7 +25,6 @@ import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.ui.report.page.BaseTestReport;
-import net.rrm.ehour.ui.report.user.page.UserReport;
 
 import org.junit.Test;
 
@@ -48,9 +47,9 @@ public class UserReportTest extends BaseTestReport
 		replay(reportCriteriaService);
 		replay(aggregateReportService);
 		
-		tester.startPage(UserReport.class);
-		tester.assertRenderedPage(UserReport.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(UserReport.class);
+		getTester().assertRenderedPage(UserReport.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(reportCriteriaService);
 		verify(aggregateReportService);

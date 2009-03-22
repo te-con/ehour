@@ -30,10 +30,13 @@ import org.apache.log4j.Logger;
 
 /**
  * ReportBuilder
+ * Converts a collection of report elements to a hierarchical reportNode tree.
+ * The
+ * 
  * @author Thies
  *
  */
-public class ReportBuilder<EL extends ReportElement>
+public class ReportBuilder
 {
 	protected final static Logger logger = Logger.getLogger(ReportBuilder.class);
 
@@ -43,23 +46,20 @@ public class ReportBuilder<EL extends ReportElement>
 	 * @param nodeFactory
 	 * @return
 	 */
-	public List<ReportNode> createReport(ReportData<EL> reportData, ReportNodeFactory nodeFactory)
+	public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory)
 	{
 		Date profileStart = new Date();
 
         List<ReportNode> reportNodes = new ArrayList<ReportNode>();
         
-        if (reportData != null && reportData.getReportElements() != null)
+        for (ReportElement reportElement : reportData.getReportElements() )
         {
-	        for (ReportElement reportElement : reportData.getReportElements() )
-	        {
-	            if (!processElement(reportElement, nodeFactory, reportNodes))
-	            {
-	                ReportNode node = nodeFactory.createReportNode(reportElement, 0);
-	                node.processElement(reportElement, 0, nodeFactory);
-	                reportNodes.add(node);
-	            }
-	        }
+            if (!processElement(reportElement, nodeFactory, reportNodes))
+            {
+                ReportNode node = nodeFactory.createReportNode(reportElement, 0);
+                node.processElement(reportElement, 0, nodeFactory);
+                reportNodes.add(node);
+            }
         }
         
 		logger.debug("Report took " + (new Date().getTime() - profileStart.getTime()) + "ms to create");
@@ -68,18 +68,19 @@ public class ReportBuilder<EL extends ReportElement>
     }
 
     /**
-     * Process aggregate
-     * @param aggregate
+     * Process report element 
+     * @param element
      * @param factory
      * @return
      */
-    private boolean processElement(ReportElement aggregate, ReportNodeFactory factory, List<ReportNode> reportNodes)
+    private boolean processElement(ReportElement element, ReportNodeFactory factory, List<ReportNode> reportNodes)
     {
         boolean processed = false;
 
-        for(ReportNode reportNode : reportNodes)
+        // check for each reportNode whether 
+        for (ReportNode reportNode : reportNodes)
         {
-            if (reportNode.processElement(aggregate, 0, factory))
+            if (reportNode.processElement(element, 0, factory))
             {
                 processed = true;
                 break;

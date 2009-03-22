@@ -17,13 +17,10 @@
 
 package net.rrm.ehour.ui.report.user.page;
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.panel.user.UserReportPanel;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
@@ -39,13 +36,11 @@ import org.apache.wicket.model.StringResourceModel;
 public class UserReportPrint extends WebPage
 {
 	private static final long serialVersionUID = -8492629550038561271L;
-	private final static Logger logger = Logger.getLogger(UserReportPrint.class);
 
 	/**
 	 * 
 	 * @param parameters
 	 */
-	@SuppressWarnings("unchecked")
 	public UserReportPrint(String reportId)
 	{
 		super();
@@ -57,16 +52,8 @@ public class UserReportPrint extends WebPage
 		add(new Label("pageTitle", pageTitle)); 
 		
 		EhourWebSession session = (EhourWebSession)Session.get();
-		CustomerAggregateReport report = (CustomerAggregateReport)session.getReportCache().getReportFromCache(reportId);
-		ReportData<AssignmentAggregateReportElement> reportData = (ReportData<AssignmentAggregateReportElement>)session.getReportCache().getReportDataFromCache(reportId);
-		
-		if (report == null)
-		{
-			// TODO handle better
-			logger.error("Report data not found in cache");
-			throw new RuntimeException("No report found in cache");
-		}
-		
-		add(new UserReportPanel("userReportPanel", report, reportData, false));
+		CustomerAggregateReport report = (CustomerAggregateReport)session.getReportCache().getObjectFromCache(reportId);
+
+		add(new UserReportPanel("userReportPanel", report, false));
 	}
 }

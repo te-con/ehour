@@ -31,11 +31,10 @@ public abstract class AbstractReportPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		reportWidth = 950;
+	private int reportWidth = 950;
 	
-	protected EhourConfig	config;
-	protected int		chartWidth;
-	protected int		chartHeight;
+	private int	chartWidth;
+	private int	chartHeight;
 	
 	/**
 	 * 
@@ -73,8 +72,8 @@ public abstract class AbstractReportPanel extends Panel
 	{
 		super(id, model);
 		
-		config = ((EhourWebSession)getSession()).getEhourConfig();
-
+		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+		
 		this.reportWidth = reportWidth; 
 		
 		if (chartWidth == -1)
@@ -87,6 +86,22 @@ public abstract class AbstractReportPanel extends Panel
 		}
 		
 		chartHeight = 200;		
+	}
+	
+	/**
+	 * @return the chartWidth
+	 */
+	public int getChartWidth()
+	{
+		return chartWidth;
+	}
+	
+	/**
+	 * @return the chartHeight
+	 */
+	public int getChartHeight()
+	{
+		return chartHeight;
 	}
 	
 	protected int getReportWidth()

@@ -16,10 +16,16 @@
 
 package net.rrm.ehour.ui.common.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.util.EhourConstants;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Component.IVisitor;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.IModel;
 
@@ -54,6 +60,35 @@ public class CommonWebUtil
 	public static void springInjection(Object injectionTarget)
 	{
 		InjectorHolder.getInjector().inject(injectionTarget);
+	}
+	
+	/**
+	 * Get a list of the components in the parent's children that match the classToFind
+	 * @param parent
+	 * @param classToFind
+	 * @return
+	 */
+	public static <CO extends Component> List<CO> findComponent(MarkupContainer parent, final Class<CO> classToFind)
+	{
+		final List<CO> components = new ArrayList<CO>();
+		
+		parent.visitChildren(new Component.IVisitor()
+		{
+
+			@SuppressWarnings("unchecked")
+			public Object component(Component component)
+			{
+				if (component.getClass() == classToFind)
+				{
+					components.add((CO)component);
+				}
+				
+				return IVisitor.CONTINUE_TRAVERSAL;
+			}
+			
+		});
+		
+		return components;
 	}
 	
 	/**

@@ -67,9 +67,9 @@ public abstract class AbstractReportPage extends BasePage
 		
 		userCriteria.setSingleUser(singleUser);
 		
-		ReportCriteria criteria = new ReportCriteria();
-		criteria.setAvailableCriteria(getAvailableCriteria());
-		criteria.setUserCriteria(userCriteria);
+		AvailableCriteria availableCriteria = getAvailableCriteria();
+		
+		ReportCriteria criteria = new ReportCriteria(availableCriteria, userCriteria);
 		
 		return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);
 	}

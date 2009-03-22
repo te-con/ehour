@@ -15,42 +15,56 @@
  *
  */
 
-package net.rrm.ehour.ui.common.session;
+package net.rrm.ehour.ui.common.cache;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
-
-import net.rrm.ehour.ui.common.report.ReportCache;
-import net.rrm.ehour.ui.report.Report;
 
 import org.junit.Test;
 /**
  * TODO 
  **/
 
-public class ReportCacheTest
+public class ObjectCacheTest
 {
 
 	@Test
-	public void testAddReportToCache()
+	public void testAddObjectToCache()
 	{
-		ReportCache reportCache = new ReportCache();
+		ObjectCache reportCache = new ObjectCache();
 
 		MockReport report = new MockReport();
 		long id = report.id;
-		String cacheId = reportCache.addReportToCache(report, null);
-		
+		String cacheId = reportCache.addObjectToCache(report);
+
 		report = null;
 		
-		report = (MockReport)reportCache.getReportFromCache(cacheId);
+		report = (MockReport)reportCache.getObjectFromCache(cacheId);
 		
 		assertEquals(id, report.id);
 	}
 	
-	class MockReport extends Report
+	class MockReport implements CachableObject
 	{
 		private static final long serialVersionUID = 1L;
 		long id = new Date().getTime();
+		private String cacheId;
+		/**
+		 * @return the cacheId
+		 */
+		public String getCacheId()
+		{
+			return cacheId;
+		}
+		/**
+		 * @param cacheId the cacheId to set
+		 */
+		public void setCacheId(String cacheId)
+		{
+			this.cacheId = cacheId;
+		}
+
+		
 	}
 }

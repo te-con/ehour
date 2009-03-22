@@ -55,8 +55,7 @@ public class AggregateReportServiceTest extends TestCase
 	private UserDAO			userDAO;
 	private ProjectDAO			projectDAO;
 	private	ReportAggregatedDAO		reportAggregatedDAO;
-	private	ReportCriteria 	rc;
-	private	ProjectAssignmentService	assignmentService;
+private	ProjectAssignmentService	assignmentService;
 	private MailService mailService;
 	
 	/**
@@ -80,8 +79,6 @@ public class AggregateReportServiceTest extends TestCase
 		
 		mailService = createMock(MailService.class);
 		((AggregateReportServiceImpl)aggregateReportService).setMailService(mailService);
-		
-		rc = new ReportCriteria();
 	}
 	
 //	/**
@@ -116,8 +113,8 @@ public class AggregateReportServiceTest extends TestCase
 		List<User> l = new ArrayList<User>();
 		l.add(new User(1));
 		uc.setUsers(l);
-		rc.setUserCriteria(uc);
 		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
+		ReportCriteria rc = new ReportCriteria(uc);
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
@@ -135,7 +132,7 @@ public class AggregateReportServiceTest extends TestCase
 		DateRange dr = new DateRange();
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);
-		rc.setUserCriteria(uc);
+		ReportCriteria rc = new ReportCriteria(uc);
 		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
@@ -162,7 +159,7 @@ public class AggregateReportServiceTest extends TestCase
 		
 		uc.setDepartments(l);
 		uc.setOnlyActiveUsers(true);
-		rc.setUserCriteria(uc);
+		ReportCriteria rc = new ReportCriteria(uc);
 		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
@@ -195,7 +192,7 @@ public class AggregateReportServiceTest extends TestCase
 		UserCriteria uc = new UserCriteria();
 		uc.setReportRange(dr);
 		uc.setCustomers(customers);
-		rc.setUserCriteria(uc);
+		ReportCriteria rc = new ReportCriteria(uc);
 		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
 		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));

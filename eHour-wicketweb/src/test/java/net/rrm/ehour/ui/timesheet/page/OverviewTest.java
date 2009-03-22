@@ -27,9 +27,8 @@ import java.util.Calendar;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
-import net.rrm.ehour.ui.timesheet.page.Overview;
 
 import org.junit.Test;
 
@@ -37,15 +36,15 @@ import org.junit.Test;
 /**
  * Overview page test
  **/
-public class OverviewTest extends BaseUIWicketTester
+public class OverviewTest extends AbstractSpringWebAppTester
 {
 	@Test
 	public void testOverviewPageRender()
 	{
 		TimesheetService timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 		
-		MockExpectations.navCalendar(timesheetService, webapp);
+		MockExpectations.navCalendar(timesheetService, getWebApp());
 
 		TimesheetOverview overview = new TimesheetOverview();
 		
@@ -55,9 +54,9 @@ public class OverviewTest extends BaseUIWicketTester
 		
 		replay(timesheetService);
 		
-		tester.startPage(Overview.class);
-		tester.assertRenderedPage(Overview.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(Overview.class);
+		getTester().assertRenderedPage(Overview.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(timesheetService);
 	}

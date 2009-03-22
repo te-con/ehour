@@ -19,12 +19,14 @@ package net.rrm.ehour.ui.report.panel.pm;
 
 import java.util.ArrayList;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 
@@ -53,6 +55,8 @@ public class PmReportPanel extends AbstractReportPanel
 		super(id, -1, 730);
 
 		setOutputMarkupId(true);
+		
+		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 		
 		// Report model
 		StringResourceModel reportTitle = new StringResourceModel("pmReport.header", 

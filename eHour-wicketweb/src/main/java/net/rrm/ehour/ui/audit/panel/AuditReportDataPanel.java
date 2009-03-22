@@ -5,6 +5,7 @@ import java.util.Date;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
 import net.rrm.ehour.ui.audit.report.AuditReport;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -61,10 +62,11 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 	{
 		ResourceReference excelResource = new ResourceReference("auditReportExcel");
 		ValueMap params = new ValueMap();
-		AuditReport auditReport = new AuditReport();
-		AuditReportRequest auditReportRequest = (AuditReportRequest)AuditReportDataPanel.this.getModelObject();
-		auditReport.setAuditReportRequest(auditReportRequest);
-		final String reportId = getEhourWebSession().getReportCache().addReportToCache(auditReport);
+		
+		ReportCriteria criteria = (ReportCriteria)AuditReportDataPanel.this.getModelObject();
+		
+		AuditReport auditReport = new AuditReport(criteria);
+		final String reportId = getEhourWebSession().getReportCache().addObjectToCache(auditReport);
 		params.add("reportId", reportId);
 		
 		Link excelLink = new ResourceLink("excelLink", excelResource, params);
@@ -89,10 +91,17 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
         columns[2] = new PropertyColumn(new ResourceModel("audit.report.column.action"), "action");
         columns[3] = new PropertyColumn(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
-        AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider((AuditReportRequest)model.getObject()), 20);
+        AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
 		dataContainer.add(table);
 		
 		return dataContainer;
+	}
+	
+	private AuditReportRequest getReportRequest(IModel model)
+	{
+		ReportCriteria criteria = (ReportCriteria) model.getObject();
+		
+		return (AuditReportRequest)criteria.getUserCriteria();
 	}
 	
 	private class DateColumn extends AbstractColumn

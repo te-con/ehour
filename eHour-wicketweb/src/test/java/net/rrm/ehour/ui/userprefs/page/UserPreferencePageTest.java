@@ -24,25 +24,24 @@ import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
-import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Test;
 
-public class UserPreferencePageTest extends BaseUIWicketTester
+public class UserPreferencePageTest extends AbstractSpringWebAppTester
 {
 	@Test
 	public void testReportPageRender() throws ObjectNotFoundException
 	{
 		TimesheetService timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 		
-		MockExpectations.navCalendar(timesheetService, webapp);
+		MockExpectations.navCalendar(timesheetService, getWebApp());
 		
 		UserService userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 
 		expect(userService.getUser(1))
 			.andReturn(new User(1));
@@ -50,9 +49,9 @@ public class UserPreferencePageTest extends BaseUIWicketTester
 		replay(userService);
 		replay(timesheetService);
 		
-		tester.startPage(UserPreferencePage.class);
-		tester.assertRenderedPage(UserPreferencePage.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(UserPreferencePage.class);
+		getTester().assertRenderedPage(UserPreferencePage.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(userService);
 		verify(timesheetService);

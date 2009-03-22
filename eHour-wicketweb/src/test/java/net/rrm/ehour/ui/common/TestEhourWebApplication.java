@@ -22,7 +22,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.EhourWebApplication;
@@ -46,20 +45,12 @@ import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 import org.apache.wicket.spring.test.ApplicationContextMock;
-
-/**
- * 
- **/
 
 public class TestEhourWebApplication extends EhourWebApplication implements Serializable 
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7336200909844170964L;
-	private transient ApplicationContextMock	mockContext;
+	private transient ApplicationContextMock mockContext;
 	private EhourWebSession				session;
 
 	/**
@@ -95,7 +86,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	@Override
 	protected void springInjection()
 	{
-		addComponentInstantiationListener(new SpringComponentInjector(this, mockContext));
+		addComponentInstantiationListener(new SpringComponentInjector(this, getMockContext()));
 	}
 
 	/**

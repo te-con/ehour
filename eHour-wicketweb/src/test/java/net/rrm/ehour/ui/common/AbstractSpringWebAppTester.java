@@ -16,13 +16,8 @@
 
 package net.rrm.ehour.ui.common;
 
-import static org.easymock.EasyMock.createMock;
-
-import java.util.Calendar;
 import java.util.Locale;
 
-import net.rrm.ehour.audit.service.AuditService;
-import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.test.StrictWicketTester;
 
 import org.apache.wicket.Component;
@@ -30,7 +25,6 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IFormSubmittingComponent;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.settings.Settings;
-import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
@@ -39,30 +33,19 @@ import org.junit.Before;
  * Base class for wicket unit tests 
  **/
 @SuppressWarnings("unchecked")
-public abstract class BaseUIWicketTester
+public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 {
-	protected WicketTester	tester;
-	protected AnnotApplicationContextMock	mockContext;
-	protected EhourConfigStub	config;
-	protected TestEhourWebApplication webapp;
-	protected AuditService auditService;
+	private WicketTester tester;
+	private TestEhourWebApplication webApp;
 	
 	@Before
 	public void setUp() throws Exception
 	{
-		mockContext = new AnnotApplicationContextMock();
-		config = new EhourConfigStub();
-		config.setFirstDayOfWeek(Calendar.SUNDAY);
-
-		mockContext.putBean("EhourConfig", config);
-
-		auditService = createMock(AuditService.class);
-		mockContext.putBean("auditService", auditService);
-
-		webapp =  new TestEhourWebApplication(mockContext);
-		tester = new StrictWicketTester(webapp);
+		super.springContextSetup();
+		webApp =  new TestEhourWebApplication(getMockContext());
+		tester = new StrictWicketTester(webApp);
 		
-		((Settings)webapp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader()
+		((Settings)webApp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader()
 		{
 
 			public String loadStringResource(Component component, String key)
@@ -78,13 +61,13 @@ public abstract class BaseUIWicketTester
 		});
 	}
 	
-	protected void setFormValue(FormTester tester, String path, String value)
+	protected void setFormValue(FormTester formTester, String path, String value)
 	{
-		Component comp = tester.getForm().get(path);
+		Component comp = formTester.getForm().get(path);
 		
 		if (comp != null && (comp instanceof IFormSubmittingComponent || comp instanceof FormComponent))
 		{
-			tester.setValue(path, value);
+			formTester.setValue(path, value);
 		}
 		else if (comp == null)
 		{
@@ -94,6 +77,21 @@ public abstract class BaseUIWicketTester
 		{
 			throw new IllegalArgumentException(path + " not a formcomponent");
 		}
-		
 	}
+	
+	/**
+	 * @return the tester
+	 */
+	public WicketTester getTester()
+	{
+		return tester;
+	}
+	
+	/**
+	 * @return the webapp
+	 */
+	public TestEhourWebApplication getWebApp()
+	{
+		return webApp;
+	};
 }

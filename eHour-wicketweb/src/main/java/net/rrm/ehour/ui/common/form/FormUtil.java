@@ -81,7 +81,7 @@ public class FormUtil
 				if (!config.isInDemoMode())
 				{
 					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel)form.getModel()).getWrappedModel()).getObject();
-					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(target, submitEventType, backingBean);
+					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(submitEventType, backingBean);
 					
 					AjaxUtil.publishAjaxEvent(submitTarget, ajaxEvent);
 				}
@@ -107,7 +107,7 @@ public class FormUtil
 				
 				if (errorEventType != null)
 				{
-					AjaxEvent errorEvent = new AjaxEvent(target, errorEventType);
+					AjaxEvent errorEvent = new AjaxEvent(errorEventType);
 					AjaxUtil.publishAjaxEvent(submitTarget, errorEvent);
 				}
             }
@@ -126,7 +126,7 @@ public class FormUtil
 				if (!config.isInDemoMode())
 				{
 					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel)form.getModel()).getWrappedModel()).getObject();
-					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(target, deleteEventType, backingBean);
+					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(deleteEventType, backingBean);
 					
 					AjaxUtil.publishAjaxEvent(submitTarget, ajaxEvent);
 				}

@@ -15,83 +15,59 @@
  *
  */
 
-package net.rrm.ehour.ui.common.report;
+package net.rrm.ehour.ui.common.cache;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.Report;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Simple report cache that holds report for a specified time in memory
+ * Simple object cache that holds an object for a specified time in memory (INVALID_AFTER)
  * TODO Switch to ehcache someday
  * FIXME add refresh
  **/
 
-public class ReportCache implements Serializable
+public class ObjectCache implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4289955073669895813L;
 	private final static int 	MAX_ENTRIES = 5;
 	private final static long 	INVALID_AFTER = 30 * 60 * 1000;
-	private final static Logger logger = Logger.getLogger(ReportCache.class);
+	private final static Logger LOGGER = Logger.getLogger(ObjectCache.class);
 	
 	private Map<String, CacheEntry>	cache;
 	
 	/**
-	 * 
-	 */
-	public ReportCache()
-	{
-		logger.debug("ReportCache instantiated");
-	}
-	
-	/**
 	 * Add report to cache
 	 * @param report
 	 * @return
 	 */
-	public String addReportToCache(Report report)
-	{
-		return addReportToCache(report, null);
-	}
-	
-	/**
-	 * Add report to cache
-	 * @param report
-	 * @return
-	 */
-	public String addReportToCache(Report report, ReportData<?> reportData)
+	public String addObjectToCache(CachableObject cacheObject)
 	{
 		initCache();
 		
 		checkCacheForAddition();
 		
-		CacheEntry	entry = new CacheEntry();
-		entry.addedTimstamp= new Date().getTime();
-		entry.report = report;
-		entry.reportData = reportData;
 		
+		return addCacheEntryToCache(cacheObject);
+	}
+	
+	private String addCacheEntryToCache(CachableObject object)
+	{
+		CacheEntry	entry = new CacheEntry(object);
+
 		String id = createId();
 		
-		report.setReportId(id);
+		object.setCacheId(id);
 		
 		cache.put(id, entry);
-		
-		logger.debug("Report cached with id " + id);
 		
 		return id;
 	}
@@ -112,7 +88,7 @@ public class ReportCache implements Serializable
 				
 				if (cacheEntry.addedTimstamp < expireBefore)
 				{
-					logger.info("Removing id " + id + " from cache");
+					LOGGER.info("Removing id " + id + " from cache");
 					cache.remove(id);
 				}
 			}
@@ -131,9 +107,9 @@ public class ReportCache implements Serializable
 				List<CacheEntry> entries = new ArrayList<CacheEntry>(cache.values());
 				Collections.sort(entries);
 				
-				String idToDelete = entries.get(0).report.getReportId();
+				String idToDelete = entries.get(0).cachedObject.getCacheId();
 				
-				logger.debug("Removing oldest entry with id " + idToDelete);
+				LOGGER.debug("Removing oldest entry with id " + idToDelete);
 				
 				cache.remove(idToDelete);
 			}
@@ -145,44 +121,22 @@ public class ReportCache implements Serializable
 	 * @param id
 	 * @return
 	 */
-	public Report getReportFromCache(String id)
+	public CachableObject getObjectFromCache(String cacheId)
 	{
 		initCache();
 		
-		logger.debug("Retrieving report from cache with id " + id);
+		LOGGER.debug("Retrieving report from object with id " + cacheId);
 		
-		if (!cache.containsKey(id))
+		if (!cache.containsKey(cacheId))
 		{
-			logger.error("Cache doesn't contain report with id " + id);
-			return null;
+			LOGGER.error("Cache doesn't contain report with id " + cacheId);
+			throw new IllegalArgumentException("Cache doesn't contain object");
 		}
 		else
 		{
-			return cache.get(id).report;
+			return cache.get(cacheId).cachedObject;
 		}
 	}
-	
-	/**
-	 * Get report from cache
-	 * @param id
-	 * @return
-	 */
-	public ReportData<? extends ReportElement> getReportDataFromCache(String id)
-	{
-		initCache();
-		
-		logger.debug("Retrieving report data from cache with id " + id);
-		
-		if (!cache.containsKey(id))
-		{
-			logger.error("Cache doesn't contain report data with id " + id);
-			return null;
-		}
-		else
-		{
-			return cache.get(id).reportData;
-		}
-	}	
 	
 	/**
 	 * Create id based on current timestamp
@@ -204,7 +158,7 @@ public class ReportCache implements Serializable
 	{
 		if (cache == null)
 		{
-			cache = new HashMap<String, CacheEntry>();
+			cache = new ConcurrentHashMap<String, CacheEntry>();
 		}
 	}
 	
@@ -212,8 +166,14 @@ public class ReportCache implements Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		private long		addedTimstamp;
-		private Report		report;
-		private ReportData<? extends ReportElement>	reportData;
+		private CachableObject cachedObject;
+		
+		CacheEntry(CachableObject cachedObject)
+		{
+			this.cachedObject = cachedObject;
+			this.addedTimstamp = new Date().getTime();
+			
+		}
 		
 		public int compareTo(CacheEntry o)
 		{

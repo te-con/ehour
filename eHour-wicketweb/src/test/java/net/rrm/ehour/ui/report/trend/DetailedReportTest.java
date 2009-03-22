@@ -18,71 +18,53 @@
 package net.rrm.ehour.ui.report.trend;
 
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.ui.common.AbstractSpringInjectorTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Test of detailed report 
  **/
-@SuppressWarnings({"unchecked"})
-public class DetailedReportTest
+public class DetailedReportTest extends AbstractSpringInjectorTester
 {
-
+	private DetailedReportService detailedReportService;
+	
+	@Before
+	public void setup() throws Exception
+	{
+		super.springLocatorSetup();
+		
+		detailedReportService = createMock(DetailedReportService.class);
+		getMockContext().putBean("detailedReportService", detailedReportService);
+	}
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Test
 	public void testCreateDetailedReport()
 	{
-		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getFlatReportData(), Locale.ENGLISH);
+		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
+			.andReturn(ReportTestUtil.getFlatReportData());
 		
-		// customer = root
-		assertEquals(6, detailedReport.getReportMatrix().size());
-//		
-//		for (ReportNode node : detailedReport.getNodes())
-//		{
-//			if (((Number)node.getId()).intValue() == 1)
-//			{
-//				assertEquals(2, node.getReportNodes().size());
-//				
-//				for (ReportNode projectNode : node.getReportNodes())
-//				{
-//					if (((Number)projectNode.getId()).intValue() == 1)
-//					{
-//						assertEquals(2, projectNode.getReportNodes().size());
-//						
-//						  ReportNode nodeEnd = projectNode.getReportNodes().get(0).getReportNodes().get(0).getReportNodes().get(0);
-//						  
-//						  assertNotNull( ((FlatEntryEndNode)nodeEnd).getHours());
-//					}
-//				}
-//			}
-//		}
+		replay(detailedReportService);
+		
+		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
+		assertEquals(6, detailedReport.getReportData().getReportElements().size());
+
+		verify(detailedReportService);
 	}
-	
-	@Test
-	public void testCreateNullDetailedReport()
-	{
-		ReportData data = ReportTestUtil.getFlatReportData();
-		data.setReportElements(null);
-		
-		DetailedReport detailedReport = new DetailedReport(data, Locale.ENGLISH);
-	}
-	
-	@Test
-	public void testCreateEmptyDetailedReport()
-	{
-		ReportData data = ReportTestUtil.getFlatReportData();
-		
-		data.setReportElements(new ArrayList<FlatReportElement>());
-		DetailedReport detailedReport = new DetailedReport(data, Locale.ENGLISH);
-	}	
 }

@@ -26,14 +26,13 @@ import java.util.List;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class DepartmentAdminTest extends BaseUIWicketTester
+public class DepartmentAdminTest extends AbstractSpringWebAppTester
 {
 	private UserService	userService;
 	
@@ -43,7 +42,7 @@ public class DepartmentAdminTest extends BaseUIWicketTester
 		super.setUp();
 		
 		userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
+		getMockContext().putBean("userService", userService);
 
 		List<UserDepartment> depts = new ArrayList<UserDepartment>();
 		depts.add(new UserDepartment(1, "user", "DPT"));
@@ -59,9 +58,9 @@ public class DepartmentAdminTest extends BaseUIWicketTester
 	{
 		replay(userService);
 		
-		tester.startPage(DepartmentAdmin.class);
-		tester.assertRenderedPage(DepartmentAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(DepartmentAdmin.class);
+		getTester().assertRenderedPage(DepartmentAdmin.class);
+		getTester().assertNoErrorMessage();
 		
 		verify(userService);
 	}
@@ -71,11 +70,11 @@ public class DepartmentAdminTest extends BaseUIWicketTester
 	{
 		replay(userService);
 
-		tester.startPage(DepartmentAdmin.class);
-		tester.assertRenderedPage(DepartmentAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(DepartmentAdmin.class);
+		getTester().assertRenderedPage(DepartmentAdmin.class);
+		getTester().assertNoErrorMessage();
 		
-		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
+		getTester().clickLink("tabs:tabs-container:tabs:1:link", true);
 		verify(userService);
 	}
 	
@@ -87,11 +86,11 @@ public class DepartmentAdminTest extends BaseUIWicketTester
 		
 		replay(userService);
 
-		tester.startPage(DepartmentAdmin.class);
-		tester.assertRenderedPage(DepartmentAdmin.class);
-		tester.assertNoErrorMessage();
+		getTester().startPage(DepartmentAdmin.class);
+		getTester().assertRenderedPage(DepartmentAdmin.class);
+		getTester().assertNoErrorMessage();
 		
-		tester.clickLink("entrySelectorFrame:deptSelector:entrySelectorFrame:blueBorder:itemListHolder:itemList:0:itemLink", true);
+		getTester().clickLink("entrySelectorFrame:deptSelector:entrySelectorFrame:blueBorder:itemListHolder:itemList:0:itemLink", true);
 		verify(userService);
 	}	
 	
@@ -101,15 +100,15 @@ public class DepartmentAdminTest extends BaseUIWicketTester
 //	{
 //		replay(userService);
 //
-//		tester.startPage(DepartmentAdmin.class);
-//		tester.assertRenderedPage(DepartmentAdmin.class);
-//		tester.assertNoErrorMessage();
+//		getTester().startPage(DepartmentAdmin.class);
+//		getTester().assertRenderedPage(DepartmentAdmin.class);
+//		getTester().assertNoErrorMessage();
 //		
-//		FormTester formTester = tester.newFormTester("tabs:panel:border:deptForm");
+//		FormTester formTester = getTester().newFormTester("tabs:panel:border:deptForm");
 //		formTester.setValue("department.name", "test");
 //		formTester.submit();
 //		
-//		tester.assertErrorMessages(new String[]{"bla"});
+//		getTester().assertErrorMessages(new String[]{"bla"});
 //		
 //		
 //		verify(userService);

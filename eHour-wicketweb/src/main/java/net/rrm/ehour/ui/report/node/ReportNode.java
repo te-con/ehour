@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.reports.element.ReportElement;
-
-import org.apache.log4j.Logger;
+import net.rrm.ehour.ui.report.TreeReportElement;
 
 /**
  * Tree structure of abstract nodes for reporting purposes.
@@ -32,13 +31,8 @@ import org.apache.log4j.Logger;
  */
 public abstract class ReportNode implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8722465589611086312L;
 
-	private final static Logger logger = Logger.getLogger(ReportNode.class);
-	
     protected Serializable[]    columnValues;
     private List<ReportNode>    reportNodes = new ArrayList<ReportNode>();
     protected Serializable      id;
@@ -49,9 +43,9 @@ public abstract class ReportNode implements Serializable
      * 
      * @return
      */
-    public List<Serializable[]> getNodeMatrix(int matrixWidth)
+    public List<TreeReportElement> getNodeMatrix(int matrixWidth)
     {
-    	List<Serializable[]> matrix = new ArrayList<Serializable[]>();
+    	List<TreeReportElement> matrix = new ArrayList<TreeReportElement>();
     	
     	createNodeMatrix(0, new Serializable[matrixWidth], matrix, matrixWidth);
     	
@@ -65,7 +59,7 @@ public abstract class ReportNode implements Serializable
      * @param matrix
      * @return
      */
-    private Serializable[] createNodeMatrix(int currentColumn, Serializable[] columns, List<Serializable[]> matrix, int matrixWidth)
+    private Serializable[] createNodeMatrix(int currentColumn, Serializable[] columns, List<TreeReportElement> matrix, int matrixWidth)
     {
     	if (isLastNode())
     	{
@@ -73,7 +67,7 @@ public abstract class ReportNode implements Serializable
     		
     		setMatrixColumns(columns, currentColumn);
     		
-    		matrix.add(columns);
+    		matrix.add(new TreeReportElement(columns));
     		return returnCols;
     	}
     	else
@@ -82,7 +76,6 @@ public abstract class ReportNode implements Serializable
     		
     		for (ReportNode reportNode : reportNodes)
 			{
-    			
     			columns = reportNode.createNodeMatrix(currentColumn, columns, matrix, matrixWidth);
 			}
     	}
@@ -99,11 +92,6 @@ public abstract class ReportNode implements Serializable
     {
     	for (Serializable columnValue : columnValues)
 		{
-        	if (logger.isDebugEnabled())
-        	{
-        		logger.debug("Setting " + columnValue + " on column " + currentColumn + " from node " + this.getClass());
-        	}
-        	
         	columns[currentColumn++] = columnValue;
 		}    	
     	
@@ -190,7 +178,7 @@ public abstract class ReportNode implements Serializable
      */
     private boolean isProcessElement(ReportElement reportElement)
     {
-        return  this.id.equals(getElementId(reportElement));
+        return getId().equals(getElementId(reportElement));
     }
 
     /**

@@ -17,8 +17,7 @@ import java.util.List;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
-import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.junit.Before;
@@ -29,7 +28,7 @@ import org.junit.Test;
  *
  */
 @SuppressWarnings("deprecation")
-public class CalendarPanelTest extends BaseUIWicketTester
+public class CalendarPanelTest extends AbstractSpringWebAppTester
 {
 	private TimesheetService	timesheetService;
 	
@@ -42,7 +41,7 @@ public class CalendarPanelTest extends BaseUIWicketTester
 		super.setUp();
 		
 		timesheetService = createMock(TimesheetService.class);
-		mockContext.putBean("timesheetService", timesheetService);
+		getMockContext().putBean("timesheetService", timesheetService);
 
 	}
 
@@ -64,7 +63,7 @@ public class CalendarPanelTest extends BaseUIWicketTester
 
 		replay(timesheetService);
 
-		EhourWebSession session = webapp.getSession();
+		EhourWebSession session = getWebApp().getSession();
 		session.setNavCalendar(requestedMonth);
 		
 		new CalendarPanel("id", new User(1));

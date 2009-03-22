@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.AuditConstants;
-import net.rrm.ehour.ui.common.BaseUIWicketTester;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,46 +24,54 @@ import org.junit.Test;
  * @author thies
  *
  */
-public class AuditReportPageTest extends BaseUIWicketTester
+public class AuditReportPageTest extends AbstractSpringWebAppTester
 {
 	@Before
 	public void setUp() throws Exception
 	{
 		super.setUp();
-		expect(auditService.getAuditCount(isA(AuditReportRequest.class)))
-			.andReturn(5);
+		expect(getAuditService().getAuditCount(isA(AuditReportRequest.class)))
+			.andReturn(5)
+			.anyTimes();
 
-		expect(auditService.getAudit(isA(AuditReportRequest.class)))
-			.andReturn(new ArrayList<Audit>());
+		expect(getAuditService().getAudit(isA(AuditReportRequest.class)))
+			.andReturn(new ArrayList<Audit>())
+			.anyTimes();
 	}
 	
 	@After
 	public void tearDown()
 	{
-		verify(auditService);
+		verify(getAuditService());
 	}
 	
 	private void startPage()
 	{
-		tester.startPage(AuditReportPage.class);
-		tester.assertRenderedPage(AuditReportPage.class);
+		getTester().startPage(AuditReportPage.class);
+		getTester().assertRenderedPage(AuditReportPage.class);
 	}
 	
 	@Test
 	public void shouldSubmit()
 	{
-		replay(auditService);
+		replay(getAuditService());
 		startPage();
 
-		tester.executeAjaxEvent(AuditConstants.PATH_FRAME + ":" + 
-								AuditConstants.PATH_CRITERIA + ":" + 
-								AuditConstants.PATH_FORM_BORDER + ":" +
-								AuditConstants.ID_FORM + ":" + 
+		String formPath = AuditConstants.PATH_FRAME + ":" + 
+						AuditConstants.PATH_CRITERIA + ":" + 
+						AuditConstants.PATH_FORM_BORDER + ":" +
+						AuditConstants.ID_FORM;
+		
+		getTester().executeAjaxEvent(formPath + ":" +  
 								AuditConstants.PATH_FORM_SUBMIT,
 								"onclick");
 		
-//		FormTester formTester = tester.newFormTester(AuditConstants.PATH_FRAME + ":" + AuditConstants.PATH_CRITERIA + ":" + AuditConstants.ID_FORM);
-		tester.assertNoErrorMessage();
+//		FormTester formTester = getTester().newFormTester(formPath);
+//		formTester.submit();
+		
+		getTester().assertRenderedPage(AuditReportPage.class);
+		
+		getTester().assertNoErrorMessage();
 	}
 	
 	

@@ -1,10 +1,7 @@
 package net.rrm.ehour.audit.service.dto;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.AuditType;
+import net.rrm.ehour.report.criteria.UserCriteria;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -13,17 +10,16 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author thies
  *
  */
-public class AuditReportRequest implements Serializable
+public class AuditReportRequest extends UserCriteria
 {
 	private static final long serialVersionUID = -8309219696303534810L;
 
-	private DateRange	dateRange = new DateRange();
 	private String		name;
 	private String		action;
 	private AuditType	auditType;
 	private Integer		offset;
 	private Integer		max;
-//	private ProjectAssignment projectAssignment;
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -31,47 +27,12 @@ public class AuditReportRequest implements Serializable
 	public String toString()
 	{
 		return new ToStringBuilder(this)
-									.append("dateRange", dateRange)
+									.append("dateRange", getReportRange())
 									.append("name", name)
 									.append("action", action)
 									.append("auditType", auditType)
 									.toString();
 	}
-	
-	public boolean isInfiniteStartDate()
-	{
-		return getDateRange().getDateStart() == null;
-	}
-
-	public void setInfiniteStartDate(boolean infinite)
-	{
-		if (infinite)
-		{
-			getDateRange().setDateStart(null);
-		}
-		else if (getDateRange().getDateStart() == null)
-		{
-			getDateRange().setDateStart(new Date());
-		}
-	}
-
-	public boolean isInfiniteEndDate()
-	{
-		return getDateRange().getDateEnd() == null;
-	}
-
-	public void setInfiniteEndDate(boolean infinite)
-	{
-		if (infinite)
-		{
-			getDateRange().setDateEnd(null);
-		}
-		else if (getDateRange().getDateEnd() == null)
-		{
-			getDateRange().setDateEnd(new Date());
-		}
-	}
-	
 	
 	/**
 	 * @return the offset
@@ -105,25 +66,11 @@ public class AuditReportRequest implements Serializable
 		return this;
 	}
 	/**
-	 * @return the dateRange
-	 */
-	public DateRange getDateRange()
-	{
-		return dateRange;
-	}
-	/**
 	 * @return the auditType
 	 */
 	public AuditType getAuditType()
 	{
 		return auditType;
-	}
-	/**
-	 * @param dateRange the dateRange to set
-	 */
-	public void setDateRange(DateRange dateRange)
-	{
-		this.dateRange = dateRange;
 	}
 
 	/**

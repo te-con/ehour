@@ -18,45 +18,59 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.chart.aggregate.UserHoursAggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.UserTurnoverAggregateChartImage;
+import net.rrm.ehour.ui.report.TreeReportData;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
+import net.rrm.ehour.ui.report.chart.aggregate.UserHoursAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.UserTurnoverAggregateChartDataConverter;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
-
-/**
- * TODO 
- **/
 
 public class EmployeeReportPanel extends AggregateReportPanel
 {
 	private static final long serialVersionUID = 2594554714722639450L;
 
-	public EmployeeReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, ReportData<AssignmentAggregateReportElement> data)
+	public EmployeeReportPanel(String id, TreeReport report)
 	{
-		this(id, reportData, data, ReportDrawType.FLASH);
+		this(id, report, ReportDrawType.IMAGE);
 	}
 	
-	public EmployeeReportPanel(String id, TreeReport<AssignmentAggregateReportElement> reportData, 
-								ReportData<AssignmentAggregateReportElement> data, ReportDrawType drawType)
+	public EmployeeReportPanel(String id, TreeReport report, ReportDrawType drawType)
 	{
-		super(id, reportData, data, ReportConfig.AGGREGATE_EMPLOYEE, "employeeReportExcel", drawType);
+		super(id, report, ReportConfig.AGGREGATE_EMPLOYEE, "employeeReportExcel", drawType);
 	}	
 
 	@Override
-	protected void addCharts(ReportData<AssignmentAggregateReportElement> data, WebMarkupContainer parent)
+	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
-		Model dataModel = new Model(data);
+		ReportData rawData = ((TreeReportData)data).getRawReportData();
+		Model dataModel = new Model(rawData);
+		
+		AggregateChartDataConverter hourConverter = new UserHoursAggregateChartDataConverter();
+		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight(), hourConverter);
+		parent.add(customerHoursChart);
 
-		// hours per customer
-		UserHoursAggregateChartImage hoursChart = new UserHoursAggregateChartImage("hoursChart", dataModel, chartWidth, chartHeight);
-		parent.add(hoursChart);
-
-		UserTurnoverAggregateChartImage turnoverChart = new UserTurnoverAggregateChartImage("turnoverChart", dataModel, chartWidth, chartHeight);
-		parent.add(turnoverChart);	}
-
+		AggregateChartDataConverter turnoverConverter = new UserTurnoverAggregateChartDataConverter();
+		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, getChartWidth(), getChartHeight(), turnoverConverter);
+		parent.add(customerTurnoverChart);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.report.panel.aggregate.AggregateReportPanel#addFlashCharts(net.rrm.ehour.report.reports.ReportData, org.apache.wicket.markup.html.WebMarkupContainer)
+	 */
+	@Override
+	protected void addFlashCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
+	{
+		ReportData rawData = ((TreeReportData)data).getRawReportData();
+		
+		parent.add(createHorizontalFlashChart(hourId, rawData, new UserHoursAggregateChartDataConverter()));
+		parent.add(createHorizontalFlashChart(turnOverId, rawData, new UserTurnoverAggregateChartDataConverter()));
+		
+	}
 }

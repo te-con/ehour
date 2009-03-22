@@ -48,10 +48,7 @@ public abstract class ChartRowKey implements Comparable<ChartRowKey>
 	 */
 	public abstract Serializable getName();
 	
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+
 	@Override
 	public String toString()
 	{
