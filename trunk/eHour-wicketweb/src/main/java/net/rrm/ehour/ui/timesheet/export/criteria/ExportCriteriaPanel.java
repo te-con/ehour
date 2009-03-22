@@ -147,7 +147,6 @@ public class ExportCriteriaPanel extends Panel
 			{
 				setResponsePage(new PrintMonth(criteria));
 			}
-			
 		}
 	}
 }
