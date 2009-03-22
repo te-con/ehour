@@ -48,8 +48,8 @@ public class EmployeeReportPanel extends AggregateReportPanel
 	@Override
 	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
-		Model dataModel = new Model(data);
-
+		ReportData rawData = ((TreeReportData)data).getRawReportData();
+		Model dataModel = new Model(rawData);
 		
 		AggregateChartDataConverter hourConverter = new UserHoursAggregateChartDataConverter();
 		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth(), getChartHeight(), hourConverter);
