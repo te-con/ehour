@@ -57,4 +57,9 @@ public class UserReportExcel extends AbstractExcelReport
 	{
 		return new ResourceModel("report.user.name");
 	}
+
+	public static String getId()
+	{
+		return "userReportExcel";
+	}
 }

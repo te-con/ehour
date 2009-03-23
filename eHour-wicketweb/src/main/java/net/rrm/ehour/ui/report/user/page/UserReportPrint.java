@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.panel.user.UserReportPanel;
 
-import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -51,8 +50,8 @@ public class UserReportPrint extends WebPage
 		
 		add(new Label("pageTitle", pageTitle)); 
 		
-		EhourWebSession session = (EhourWebSession)Session.get();
-		CustomerAggregateReport report = (CustomerAggregateReport)session.getReportCache().getObjectFromCache(reportId);
+		EhourWebSession session = EhourWebSession.getSession();
+		CustomerAggregateReport report = (CustomerAggregateReport)session.getObjectCache().getObjectFromCache(reportId);
 
 		add(new UserReportPanel("userReportPanel", report, false));
 	}

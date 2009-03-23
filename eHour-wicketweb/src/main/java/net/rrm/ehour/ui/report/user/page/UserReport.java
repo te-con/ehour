@@ -89,7 +89,7 @@ public class UserReport extends AbstractReportPage
 		
 		// add data
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(criteria);
-		EhourWebSession.getSession().getReportCache().addObjectToCache(customerAggregateReport);
+		EhourWebSession.getSession().getObjectCache().addObjectToCache(customerAggregateReport);
 		
 		UserReportPanel panel = new UserReportPanel("userReportPanel", customerAggregateReport, true);
 		panel.setOutputMarkupId(true);

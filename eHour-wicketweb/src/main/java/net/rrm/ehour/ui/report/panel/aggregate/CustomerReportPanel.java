@@ -46,7 +46,7 @@ public class CustomerReportPanel extends AggregateReportPanel
 
 	public CustomerReportPanel(String id, TreeReport report, ReportDrawType drawType)
 	{
-		super(id, report, ReportConfig.AGGREGATE_CUSTOMER, "customerReportExcel", drawType);
+		super(id, report, ReportConfig.AGGREGATE_CUSTOMER, CustomerReportExcel.getId(), drawType);
 	}
 	
 	/*

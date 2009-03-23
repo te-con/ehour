@@ -18,9 +18,13 @@
 package net.rrm.ehour.ui.timesheet.export.criteria;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
+import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -32,9 +36,11 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.target.basic.RedirectRequestTarget;
+import org.apache.wicket.util.value.ValueMap;
 
 /**
- * ExportCriteriaPanel holding the form for month based exports for consultants
+ * ExportCriteriaPanel holding the for`m for month based exports for consultants
  **/
 
 public class ExportCriteriaPanel extends Panel
@@ -57,7 +63,7 @@ public class ExportCriteriaPanel extends Panel
 
 	/**
 	 * Create the criteria panel with the form, assignments and submit buttons
-	 * @param id
+	 * @param idz
 	 * @return
 	 */
 	private Form createCriteriaPanel(String id, IModel model)
@@ -141,12 +147,32 @@ public class ExportCriteriaPanel extends Panel
 			
 			if (type == ExportType.EXCEL)
 			{
-				
+				excelExport(criteria);
 			}
 			else if (type == ExportType.PRINT)
 			{
 				setResponsePage(new PrintMonth(criteria));
 			}
+		}
+
+		/**
+		 * @param criteria
+		 */
+		private void excelExport(ReportCriteria criteria)
+		{
+			PrintReport report = new PrintReport(criteria);
+			EhourWebSession.getSession().getObjectCache().addObjectToCache(report);
+			
+			final String reportId = report.getCacheId();
+			
+			ResourceReference excelResource = new ResourceReference(ExportReportExcel.getId());
+			ValueMap params = new ValueMap();
+			params.add("reportId", reportId);
+			
+			excelResource.bind(getApplication());
+			CharSequence url = getRequestCycle().urlFor(excelResource, params);
+			
+			getRequestCycle().setRequestTarget(new RedirectRequestTarget(url.toString()));
 		}
 	}
 }

@@ -24,10 +24,6 @@ import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInst
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-/**
- * TODO auth not used.. 
- **/
-
 @AuthorizeInstantiation("ROLE_REPORT")
 public class CustomerReportExcel extends AbstractExcelReport
 {
@@ -48,5 +44,10 @@ public class CustomerReportExcel extends AbstractExcelReport
 	protected IModel getHeaderReportName()
 	{
 		return new ResourceModel("report.title.customer");
+	}
+
+	public static String getId()
+	{
+		return "customerReportExcel";
 	}
 }

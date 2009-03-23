@@ -42,7 +42,7 @@ public class ProjectReportPanel extends AggregateReportPanel
 	
 	public ProjectReportPanel(String id, TreeReport report, ReportDrawType reportDrawType)
 	{
-		super(id, report, ReportConfig.AGGREGATE_PROJECT, "projectReportExcel", reportDrawType);
+		super(id, report, ReportConfig.AGGREGATE_PROJECT, ProjectReportExcel.getId(), reportDrawType);
 	}
 	
 

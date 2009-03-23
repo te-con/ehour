@@ -66,7 +66,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 		ReportCriteria criteria = (ReportCriteria)AuditReportDataPanel.this.getModelObject();
 		
 		AuditReport auditReport = new AuditReport(criteria);
-		final String reportId = getEhourWebSession().getReportCache().addObjectToCache(auditReport);
+		final String reportId = getEhourWebSession().getObjectCache().addObjectToCache(auditReport);
 		params.add("reportId", reportId);
 		
 		Link excelLink = new ResourceLink("excelLink", excelResource, params);

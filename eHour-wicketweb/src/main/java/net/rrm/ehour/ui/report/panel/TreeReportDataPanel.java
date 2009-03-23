@@ -101,7 +101,7 @@ public class TreeReportDataPanel extends Panel
 			ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
 			header.add(excelLink);
 
-			EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
+			EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 			
 			header.add(getReportHeaderLabel("reportHeader", report.getReportRange(), config));
 		}
@@ -146,7 +146,7 @@ public class TreeReportDataPanel extends Panel
 		int				id = 0;
 		boolean			totalLabelAdded = false;
 
-		EhourConfig config = ((EhourWebSession)this.getSession()).getEhourConfig();
+		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 		
 		// add cells
 		for (int column = 0; column < reportConfig.getReportColumns().length; column++, id++)

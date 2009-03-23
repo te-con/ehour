@@ -323,7 +323,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 	/**
 	 * @return the reportCache
 	 */
-	public ObjectCache getReportCache()
+	public ObjectCache getObjectCache()
 	{
 		return reportCache;
 	}

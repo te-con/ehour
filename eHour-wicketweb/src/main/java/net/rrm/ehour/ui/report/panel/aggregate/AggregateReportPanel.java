@@ -37,20 +37,12 @@ import org.apache.wicket.markup.html.panel.Fragment;
 /**
  * Full report panel containing report data and the charts 
  **/
-
 public abstract class AggregateReportPanel extends AbstractReportPanel
 {
-	/**
-	 * 
-	 */
 	private static final int CHART_WIDTH = 460;
 
 	private static final long serialVersionUID = 2173644826934093029L;
 
-	/**
-	 * 
-	 * @param id
-	 */
 	public AggregateReportPanel(String id, TreeReport report,
 									ReportConfig reportConfig, String excelResourceName,
 									ReportDrawType drawType)
@@ -101,7 +93,7 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	}
 	
 	/**
-	 * Add image charts. Should add 2 components to the parent with id hoursChart and turnoverChart
+	 * Add image charts. 
 	 * @param reportCriteria
 	 * @return
 	 */

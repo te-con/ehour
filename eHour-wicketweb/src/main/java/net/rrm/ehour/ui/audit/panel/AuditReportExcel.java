@@ -60,4 +60,8 @@ public class AuditReportExcel extends AbstractExcelReport
 		return new ResourceModel("audit.report.title");
 	}
 
+	public static String getId()
+	{
+		return "auditReportExcel";
+	}
 }

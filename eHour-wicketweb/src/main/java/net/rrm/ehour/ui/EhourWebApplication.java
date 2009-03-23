@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.audit.panel.AuditReportExcel;
+import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.config.PageConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
@@ -37,6 +38,7 @@ import net.rrm.ehour.ui.report.panel.detail.DetailedReportExcel;
 import net.rrm.ehour.ui.report.panel.user.UserReportExcel;
 import net.rrm.ehour.ui.report.user.page.UserReport;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
+import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.ui.timesheet.page.Overview;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
@@ -97,35 +99,24 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		}
 	}
 
-
-	/**
-	 * 
-	 */
-	protected void registerSharedResources()
+	private void registerSharedResources()
 	{
-		getSharedResources().add("userReportExcel", new UserReportExcel());
-		mountSharedResource("/userReportExcel", new ResourceReference("userReportExcel").getSharedResourceKey());
-		
-		getSharedResources().add("customerReportExcel", new CustomerReportExcel());
-		mountSharedResource("/customerReportExcel", new ResourceReference("customerReportExcel").getSharedResourceKey());
-		
-		getSharedResources().add("employeeReportExcel", new EmployeeReportExcel());
-		mountSharedResource("/employeeReportExcel", new ResourceReference("employeeReportExcel").getSharedResourceKey());
-		
-		getSharedResources().add("projectReportExcel", new ProjectReportExcel());
-		mountSharedResource("/projectReportExcel", new ResourceReference("projectReportExcel").getSharedResourceKey());
-		
-		getSharedResources().add("detailedReportExcel", new DetailedReportExcel());
-		mountSharedResource("/detailedReportExcel", new ResourceReference("detailedReportExcel").getSharedResourceKey());
-
-		getSharedResources().add("auditReportExcel", new AuditReportExcel());
-		mountSharedResource("/auditReportExcel", new ResourceReference("auditReportExcel").getSharedResourceKey());
-
+		mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
+		mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
+		mountExcelReport(new EmployeeReportExcel(), EmployeeReportExcel.getId());
+		mountExcelReport(new ProjectReportExcel(), ProjectReportExcel.getId());
+		mountExcelReport(new DetailedReportExcel(), DetailedReportExcel.getId());
+		mountExcelReport(new AuditReportExcel(), AuditReportExcel.getId());
+		mountExcelReport(new ExportReportExcel(), ExportReportExcel.getId());
 	}
-	/**
-	 * Mount pages
-	 */
-	protected void mountPages()
+	
+	private void mountExcelReport(AbstractExcelResource excelReport, String id)
+	{
+		getSharedResources().add(id, excelReport);
+		mountSharedResource("/" + id, new ResourceReference(id).getSharedResourceKey());
+	}
+	
+	private void mountPages()
 	{
 		mount("/login", PackageName.forClass(login));
 

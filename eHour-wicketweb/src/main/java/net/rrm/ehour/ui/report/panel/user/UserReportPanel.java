@@ -75,7 +75,7 @@ public class UserReportPanel extends AbstractReportPanel
 		{
 			final String reportId = customerAggregateReport.getCacheId();
 			
-			ResourceReference excelResource = new ResourceReference("userReportExcel");
+			ResourceReference excelResource = new ResourceReference(UserReportExcel.getId());
 			ValueMap params = new ValueMap();
 			params.add("reportId", reportId);
 			excelLink = new ResourceLink("excelLink", excelResource, params);

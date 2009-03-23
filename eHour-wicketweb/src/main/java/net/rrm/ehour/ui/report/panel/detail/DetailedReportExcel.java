@@ -26,4 +26,9 @@ public class DetailedReportExcel  extends AbstractExcelReport
 	{
 		return new ResourceModel("report.title.detailed");
 	}
+
+	public static String getId()
+	{
+		return "detailedReportExcel";
+	}
 }

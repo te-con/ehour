@@ -23,10 +23,6 @@ import net.rrm.ehour.ui.common.report.ReportConfig;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-/**
- * TODO 
- **/
-
 public class ProjectReportExcel extends AbstractExcelReport
 {
 	private static final long serialVersionUID = 1L;
@@ -46,5 +42,10 @@ public class ProjectReportExcel extends AbstractExcelReport
 	protected IModel getHeaderReportName()
 	{
 		return new ResourceModel("report.title.project");
+	}
+
+	public static String getId()
+	{
+		return "projectReportExcel";
 	}
 }

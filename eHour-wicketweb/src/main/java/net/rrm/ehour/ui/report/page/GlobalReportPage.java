@@ -272,7 +272,7 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	 */
 	private void storeInCache(CachableObject report)
 	{
-		EhourWebSession.getSession().getReportCache().addObjectToCache(report);
+		EhourWebSession.getSession().getObjectCache().addObjectToCache(report);
 	}
 
 	/* (non-Javadoc)

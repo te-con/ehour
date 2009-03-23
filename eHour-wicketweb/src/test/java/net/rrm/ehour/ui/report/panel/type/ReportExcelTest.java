@@ -61,7 +61,7 @@ public class ReportExcelTest extends AbstractSpringWebAppTester
 
 		
 		EhourWebSession session = this.getWebApp().getSession();
-		cache = session.getReportCache();
+		cache = session.getObjectCache();
 		
 		criteria = ReportTestUtil.getReportCriteria();
 		

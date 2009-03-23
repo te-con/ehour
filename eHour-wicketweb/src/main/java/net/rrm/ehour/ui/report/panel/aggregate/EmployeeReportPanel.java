@@ -42,7 +42,7 @@ public class EmployeeReportPanel extends AggregateReportPanel
 	
 	public EmployeeReportPanel(String id, TreeReport report, ReportDrawType drawType)
 	{
-		super(id, report, ReportConfig.AGGREGATE_EMPLOYEE, "employeeReportExcel", drawType);
+		super(id, report, ReportConfig.AGGREGATE_EMPLOYEE, EmployeeReportExcel.getId(), drawType);
 	}	
 
 	@Override
