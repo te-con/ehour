@@ -16,11 +16,15 @@
 
 package net.rrm.ehour.ui.common.util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.wicket.Component;
@@ -53,6 +57,19 @@ public class CommonWebUtil
 	
 //	public final static String[] weekDays = new String[]{"sunday", "monday", "tuesday", 
 //															"wednesday", "thursday", "friday", "saturday"};
+	
+	/**
+	 * 
+	 */
+	public static String formatDate(String format, Date date)
+	{
+		Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat(format, locale);
+		
+		return formatter.format(date);
+	}
+
 	
 	/**
 	 * Inject beans into @SpringBean annotated properties

@@ -38,6 +38,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.util.CellRangeAddress;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
 /**
@@ -49,6 +50,8 @@ public class ExportReportExcel extends AbstractExcelResource
 {
 	private static final long serialVersionUID = -4841781257347819473L;
 	private final static Logger LOGGER = Logger.getLogger(ExportReportExcel.class);
+	
+	private static final int CELL_BORDER = 1;
 	
 	public static String getId()
 	{
@@ -78,16 +81,25 @@ public class ExportReportExcel extends AbstractExcelResource
 	{
 		ExcelWorkbook workbook = new ExcelWorkbook();
 		
-		HSSFSheet 	sheet = workbook.createSheet(getShortName(report.getReportRange()));
+		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.formatDate("MMMM", report.getReportRange().getDateStart()));
 
-		int rowNumber = createHeaders(11, sheet, report, workbook);
+		int rowNumber = createHeaders(11 - 1, sheet, report, workbook);
 		
 		return workbook;
 	}
 	
+	private int createBody(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	{
+		
+		return rowNumber;
+	}
+	
 	private int createHeaders(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
 	{
-		rowNumber = addReportTitle(rowNumber, sheet, report, workbook);
+		rowNumber = addTitleRow(rowNumber, sheet, report, workbook);
+		rowNumber = addTitleDateRow(rowNumber, sheet, report, workbook);
+		rowNumber++;
+		
 		return rowNumber;
 	}
 
@@ -98,15 +110,30 @@ public class ExportReportExcel extends AbstractExcelResource
 	 * @param workbook
 	 * @return
 	 */
-	private int addReportTitle(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	private int addTitleRow(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
 	{
 		HSSFRow row = sheet.createRow(rowNumber++);
-		HSSFCell cell = row.createCell(0);
+		HSSFCell cell = row.createCell(CELL_BORDER);
 		cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
 		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(getExcelReportName(report.getReportRange()))));
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
 		return rowNumber;
 	}
+	
+	private int addTitleDateRow(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	{
+		HSSFRow row = sheet.createRow(rowNumber++);
+		HSSFCell cell = row.createCell(CELL_BORDER);
+		cell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
+		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(new ResourceModel("excelMonth.date"))));
+
+		HSSFCell dataCell = row.createCell(CELL_BORDER + 2);
+		dataCell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
+		dataCell.setCellValue(new HSSFRichTextString(CommonWebUtil.formatDate("MMMM yyyy", report.getReportRange().getDateStart())));
+
+		
+		return rowNumber;
+	}	
 
 	
 	private IModel getExcelReportName(DateRange dateRange)
@@ -119,19 +146,9 @@ public class ExportReportExcel extends AbstractExcelResource
 				new Object[]{session.getUser().getUser().getFullName(),
 							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
 		
-		System.out.println(CommonWebUtil.getResourceModelString(title));
-		
 		return title;
 	}
-	
-	private String getShortName(DateRange dateRange)
-	{
-		Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", locale);
-		
-		return formatter.format(dateRange.getDateStart());
-	}
+
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getFilename()
