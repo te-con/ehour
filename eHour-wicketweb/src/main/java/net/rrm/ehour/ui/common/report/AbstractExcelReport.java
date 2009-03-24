@@ -47,7 +47,6 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 
 	private final static Logger logger = Logger.getLogger(AbstractExcelReport.class);
 	
-	private	byte[]			excelData;
 	private ReportConfig	reportConfig;
 	
 	/**
@@ -71,7 +70,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 		
 		logger.trace("Creating excel report");
 		ExcelWorkbook workbook = createWorkbook(report);
-		excelData = workbook.workbookToByteArray();
+		byte[] excelData = workbook.toByteArray();
 		
 		return excelData;
 	}

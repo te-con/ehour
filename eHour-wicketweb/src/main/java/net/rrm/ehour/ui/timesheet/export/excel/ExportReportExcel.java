@@ -17,7 +17,26 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel;
 
+import java.io.IOException;
+
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
+import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.report.ExcelWorkbook;
+import net.rrm.ehour.ui.common.report.Report;
+import net.rrm.ehour.ui.common.report.ExcelWorkbook.StyleType;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.CommonWebUtil;
+
+import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 
 /**
  * Created on Mar 23, 2009, 1:30:04 PM
@@ -27,7 +46,8 @@ import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 public class ExportReportExcel extends AbstractExcelResource
 {
 	private static final long serialVersionUID = -4841781257347819473L;
-
+	private final static Logger LOGGER = Logger.getLogger(ExportReportExcel.class);
+	
 	public static String getId()
 	{
 		return "exportReportExcel";
@@ -37,10 +57,67 @@ public class ExportReportExcel extends AbstractExcelResource
 	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getExcelData(java.lang.String)
 	 */
 	@Override
-	public byte[] getExcelData(String reportId) throws Exception
+	public byte[] getExcelData(String reportId) throws IOException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Report report = (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
+		
+		LOGGER.trace("Creating excel report");
+		ExcelWorkbook workbook = createWorkbook(report);
+		byte[] excelData = workbook.toByteArray();
+		
+		return excelData;
+	}
+
+	/**
+	 * @param report
+	 * @return
+	 */
+	private ExcelWorkbook createWorkbook(Report report)
+	{
+		ExcelWorkbook workbook = new ExcelWorkbook();
+		
+		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.getResourceModelString(getExcelReportName(report.getReportRange())));
+
+		int rowNumber = createHeaders(11, sheet, report, workbook);
+		
+		return workbook;
+	}
+	
+	private int createHeaders(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	{
+		rowNumber = addReportTitle(rowNumber, sheet, report, workbook);
+		return rowNumber;
+	}
+
+	/**
+	 * @param rowNumber
+	 * @param sheet
+	 * @param report
+	 * @param workbook
+	 * @return
+	 */
+	private int addReportTitle(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	{
+		HSSFRow row = sheet.createRow(rowNumber++);
+		HSSFCell cell = row.createCell(0);
+		cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
+		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(getExcelReportName(report.getReportRange()))));
+		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
+		return rowNumber;
+	}
+
+	
+	private IModel getExcelReportName(DateRange dateRange)
+	{
+		EhourWebSession session = EhourWebSession.getSession();
+		EhourConfig config = session.getEhourConfig();
+		
+		IModel title = new StringResourceModel("excelMonth.reportName",
+				null,
+				new Object[]{session.getUser().getUser().getFullName(),
+							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
+		
+		return title;
 	}
 
 	/* (non-Javadoc)

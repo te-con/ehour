@@ -68,6 +68,7 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 	
 	/**
 	 * Get excel data as a byte array
+	 * (public for testing)
 	 * @return
 	 */
 	public abstract byte[] getExcelData(String reportId) throws Exception;

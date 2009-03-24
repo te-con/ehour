@@ -63,7 +63,7 @@ public class ExcelWorkbook extends HSSFWorkbook
 		return cellStyles.get(type);
 	}
 	
-	public byte[] workbookToByteArray() throws IOException
+	public byte[] toByteArray() throws IOException
 	{
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
