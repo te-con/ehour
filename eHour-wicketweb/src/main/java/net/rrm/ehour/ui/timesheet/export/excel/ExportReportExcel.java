@@ -18,6 +18,8 @@
 package net.rrm.ehour.ui.timesheet.export.excel;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
@@ -76,7 +78,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	{
 		ExcelWorkbook workbook = new ExcelWorkbook();
 		
-		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.getResourceModelString(getExcelReportName(report.getReportRange())));
+		HSSFSheet 	sheet = workbook.createSheet(getShortName(report.getReportRange()));
 
 		int rowNumber = createHeaders(11, sheet, report, workbook);
 		
@@ -117,7 +119,18 @@ public class ExportReportExcel extends AbstractExcelResource
 				new Object[]{session.getUser().getUser().getFullName(),
 							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
 		
+		System.out.println(CommonWebUtil.getResourceModelString(title));
+		
 		return title;
+	}
+	
+	private String getShortName(DateRange dateRange)
+	{
+		Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", locale);
+		
+		return formatter.format(dateRange.getDateStart());
 	}
 
 	/* (non-Javadoc)
