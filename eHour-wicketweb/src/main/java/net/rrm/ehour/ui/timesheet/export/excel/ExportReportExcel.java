@@ -18,39 +18,15 @@
 package net.rrm.ehour.ui.timesheet.export.excel;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
 
-import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
-import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.report.ExcelWorkbook.StyleType;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
-import net.rrm.ehour.util.DateUtil;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.util.CellRangeAddress;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 
 /**
  * Created on Mar 23, 2009, 1:30:04 PM
@@ -94,191 +70,11 @@ public class ExportReportExcel extends AbstractExcelResource
 		
 		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.formatDate("MMMM", report.getReportRange().getDateStart()));
 
-		int rowNumber = createHeaders(11 - 1, sheet, report, workbook);
-		rowNumber = createBody(rowNumber, sheet, report, workbook);
+		int rowNumber = new ExportReportHeader(CELL_BORDER).createPart(11 -1, sheet, report, workbook); 
+		rowNumber = new ExportReportBody(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
 		
 		return workbook;
 	}
-	
-	private int createBody(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
-	{
-		Map<Date, List<FlatReportElement>> dateMap = getElementsAsDateMap(report);
-	
-		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-		Locale locale = config.getLocale();
-		DateFormat formatter = new SimpleDateFormat("dd MMM yy", locale);
-		
-		List<Date> dateSequence = DateUtil.createDateSequence(report.getReportRange(), config);
-		
-		for (Date date : dateSequence)
-		{
-			List<FlatReportElement> flatList = dateMap.get(date);
-			
-			if (!CollectionUtils.isEmpty(flatList))
-			{
-				rowNumber = addElementsForDate(date, flatList, rowNumber, sheet, workbook, formatter);
-			}
-			else
-			{
-				rowNumber = addBodyEmptyRow(rowNumber, sheet, workbook, formatter, date);
-			}
-		}
-		
-		return rowNumber;
-	}
-
-	private int addBodyEmptyRow(int rowNumber, HSSFSheet sheet, ExcelWorkbook workbook, DateFormat formatter, Date date)
-	{
-		HSSFRow row = sheet.createRow(rowNumber++);
-		addBodyDate(date, row, workbook, formatter);
-		return rowNumber;
-	}
-	
-	private int addElementsForDate(Date date, List<FlatReportElement> elements, int rowNumber, HSSFSheet sheet, ExcelWorkbook workbook, DateFormat formatter)
-	{
-		boolean addedForDate = false;
-		
-		for (FlatReportElement flatReportElement : elements)
-		{
-			HSSFRow row = sheet.createRow(rowNumber++);
-			
-			if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() > 0.0)
-			{
-				addBodyDate(date, row, workbook, formatter);
-				addBodyProject(flatReportElement.getProjectName(), row, workbook);
-				addBodyHours(flatReportElement.getTotalHours(), row, workbook);
-				
-				addedForDate = true;
-			}
-		}
-		
-		if (!addedForDate)
-		{
-			HSSFRow row = sheet.createRow(rowNumber++);
-			addBodyDate(date, row, workbook, formatter);	
-		}
-		
-		return rowNumber;
-		
-	}
-
-	private void addBodyHours(Number hours, HSSFRow row, ExcelWorkbook workbook)
-	{
-		HSSFCell projectCell = row.createCell(CELL_BORDER + 6);
-		projectCell.setCellStyle(workbook.getCellStyle(StyleType.VALUE_DIGIT));
-		projectCell.setCellValue(hours.doubleValue());
-	}
-
-	
-	private void addBodyProject(String project, HSSFRow row, ExcelWorkbook workbook)
-	{
-		HSSFCell projectCell = row.createCell(CELL_BORDER);
-		projectCell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
-		projectCell.setCellValue(new HSSFRichTextString(project));
-	}
-
-	
-	private void addBodyDate(Date date, HSSFRow row, ExcelWorkbook workbook, DateFormat formatter)
-	{
-		HSSFCell projectCell = row.createCell(CELL_BORDER + 2);
-		projectCell.setCellStyle(workbook.getCellStyle(StyleType.DATE_NORMAL));
-		projectCell.setCellValue(new HSSFRichTextString(formatter.format(date)));
-	}
-	
-	/**
-	 * Return a map with the key being the report's date and a list of a report elements for that date as the value
-	 * @param report
-	 * @return
-	 */
-	private Map<Date, List<FlatReportElement>> getElementsAsDateMap(Report report)
-	{
-		Map<Date, List<FlatReportElement>> flatMap = new TreeMap<Date, List<FlatReportElement>>();
-		
-		ReportData reportData = report.getReportData();
-		
-		for (ReportElement reportElement : reportData.getReportElements())
-		{
-			FlatReportElement flat = (FlatReportElement)reportElement;
-		
-			Date date = DateUtil.nullifyTime(flat.getDayDate());
-			
-			List<FlatReportElement> dateElements;
-			
-			if (flatMap.containsKey(date))
-			{
-				dateElements = flatMap.get(date);
-			}
-			else
-			{
-				dateElements = new ArrayList<FlatReportElement>();
-			}
-			
-			dateElements.add(flat);
-			
-			flatMap.put(date, dateElements);
-		}
-		
-		return flatMap;
-	}
-	
-	
-	
-	
-	private int createHeaders(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
-	{
-		rowNumber = addTitleRow(rowNumber, sheet, report, workbook);
-		rowNumber = addTitleDateRow(rowNumber, sheet, report, workbook);
-		rowNumber++;
-		
-		return rowNumber;
-	}
-
-	/**
-	 * @param rowNumber
-	 * @param sheet
-	 * @param report
-	 * @param workbook
-	 * @return
-	 */
-	private int addTitleRow(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
-	{
-		HSSFRow row = sheet.createRow(rowNumber++);
-		HSSFCell cell = row.createCell(CELL_BORDER);
-		cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
-		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(getExcelReportName(report.getReportRange()))));
-		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
-		return rowNumber;
-	}
-	
-	private int addTitleDateRow(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
-	{
-		HSSFRow row = sheet.createRow(rowNumber++);
-		HSSFCell cell = row.createCell(CELL_BORDER);
-		cell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
-		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(new ResourceModel("excelMonth.date"))));
-
-		HSSFCell dataCell = row.createCell(CELL_BORDER + 2);
-		dataCell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
-		dataCell.setCellValue(new HSSFRichTextString(CommonWebUtil.formatDate("MMMM yyyy", report.getReportRange().getDateStart())));
-
-		
-		return rowNumber;
-	}	
-
-	
-	private IModel getExcelReportName(DateRange dateRange)
-	{
-		EhourWebSession session = EhourWebSession.getSession();
-		EhourConfig config = session.getEhourConfig();
-		
-		IModel title = new StringResourceModel("excelMonth.reportName",
-				null,
-				new Object[]{session.getUser().getUser().getFullName(),
-							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
-		
-		return title;
-	}
-
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getFilename()
