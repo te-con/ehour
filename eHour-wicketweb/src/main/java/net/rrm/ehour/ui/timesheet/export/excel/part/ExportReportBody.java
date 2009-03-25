@@ -34,6 +34,8 @@ import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -75,7 +77,7 @@ public class ExportReportBody extends AbstractExportReportPart
 			}
 			else
 			{
-				rowNumber = addEmptyRow(rowNumber, date);
+				rowNumber = addEmptyRow(rowNumber, date, borderCells);
 			}
 		}
 		return rowNumber;
@@ -90,10 +92,19 @@ public class ExportReportBody extends AbstractExportReportPart
 		
 	}
 
-	private int addEmptyRow(int rowNumber, Date date)
+	private int addEmptyRow(int rowNumber, Date date, boolean borderCels)
 	{
 		HSSFRow row = getSheet().createRow(rowNumber++);
-		createDateCell(date, row);
+		HSSFCell dateCell = createDateCell(date, row);
+		
+		if (borderCels)
+		{
+			addThinSouthBorder(dateCell);
+			
+			// fill up other columns, date = column 2
+			// TODO make constants
+			createEmptyCells(row, 0, 1, 3, 4, 5, 6);
+		}
 		return rowNumber;
 	}
 	
@@ -107,9 +118,18 @@ public class ExportReportBody extends AbstractExportReportPart
 			
 			if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() > 0.0)
 			{
-				createDateCell(date, row);
-				createProjectCell(flatReportElement.getProjectName(), row);
-				createHoursCell(flatReportElement.getTotalHours(), row);
+				HSSFCell dateCell = createDateCell(date, row);
+				HSSFCell projectCell = createProjectCell(flatReportElement.getProjectName(), row);
+				HSSFCell hoursCell = createHoursCell(flatReportElement.getTotalHours(), row);
+				
+				if (borderCells)
+				{
+					addThinSouthBorder(dateCell);
+					addThinSouthBorder(projectCell);
+					addThinSouthBorder(hoursCell);
+					
+					createEmptyCells(row, 1, 3, 4, 5);
+				}
 				
 				addedForDate = true;
 			}
@@ -118,28 +138,46 @@ public class ExportReportBody extends AbstractExportReportPart
 		if (!addedForDate)
 		{
 			HSSFRow row = getSheet().createRow(rowNumber++);
-			createDateCell(date, row);	
+			HSSFCell datecell = createDateCell(date, row);	
+			
+			if (borderCells)
+			{
+				addThinSouthBorder(datecell);
+			}
 		}
 		
 		return rowNumber;
 		
 	}
 
-	private void createHoursCell(Number hours, HSSFRow row)
+	private void addThinSouthBorder(HSSFCell cell)
 	{
-		CellFactory.createCell(row, getCellMargin() + 6 ,hours,  getWorkbook(), CellStyle.DIGIT);
+		HSSFCellStyle cellStyle = cell.getCellStyle();
+		CellStyle.BORDER_SOUTH_THIN.getCellStyleElement().populate(cellStyle, getWorkbook());
+	}
+	
+	private HSSFCell createHoursCell(Number hours, HSSFRow row)
+	{
+		return CellFactory.createCell(row, getCellMargin() + 6 ,hours,  getWorkbook(), CellStyle.DIGIT);
 	}
 
 	
-	private void createProjectCell(String project, HSSFRow row)
+	private HSSFCell createProjectCell(String project, HSSFRow row)
 	{
-		CellFactory.createCell(row, getCellMargin(), project, getWorkbook());
+		return CellFactory.createCell(row, getCellMargin(), project, getWorkbook());
 	}
-
 	
-	private void createDateCell(Date date, HSSFRow row)
+	private HSSFCell createDateCell(Date date, HSSFRow row)
 	{
-		CellFactory.createCell(row, getCellMargin() + 2 , getFormatter().format(date), getWorkbook(), CellStyle.DATE);
+		return CellFactory.createCell(row, getCellMargin() + 2 , getFormatter().format(date), getWorkbook(), CellStyle.DATE);
+	}
+	
+	private void createEmptyCells(HSSFRow row, int... column)
+	{
+		for (int i : column)
+		{
+			CellFactory.createCell(row, getCellMargin() + i, getWorkbook(), CellStyle.BORDER_SOUTH_THIN);	
+		}
 	}
 	
 	/**
