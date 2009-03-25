@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.ExcelWorkbook.StyleType;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.PoiUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -120,25 +121,19 @@ public class ExportReportBody
 
 	private void addBodyHours(Number hours, HSSFRow row, ExcelWorkbook workbook)
 	{
-		HSSFCell projectCell = row.createCell(cellMargin + 6);
-		projectCell.setCellStyle(workbook.getCellStyle(StyleType.VALUE_DIGIT));
-		projectCell.setCellValue(hours.doubleValue());
+		PoiUtil.createCell(row, cellMargin + 6 ,hours.doubleValue(), StyleType.VALUE_DIGIT, workbook);
 	}
 
 	
 	private void addBodyProject(String project, HSSFRow row, ExcelWorkbook workbook)
 	{
-		HSSFCell projectCell = row.createCell(cellMargin);
-		projectCell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
-		projectCell.setCellValue(new HSSFRichTextString(project));
+		PoiUtil.createCell(row, cellMargin, project, workbook);
 	}
 
 	
 	private void addBodyDate(Date date, HSSFRow row, ExcelWorkbook workbook, DateFormat formatter)
 	{
-		HSSFCell projectCell = row.createCell(cellMargin + 2);
-		projectCell.setCellStyle(workbook.getCellStyle(StyleType.DATE_NORMAL));
-		projectCell.setCellValue(new HSSFRichTextString(formatter.format(date)));
+		PoiUtil.createCell(row, cellMargin + 2 , formatter.format(date), StyleType.DATE_NORMAL, workbook);
 	}
 	
 	/**

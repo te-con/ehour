@@ -75,12 +75,12 @@ public abstract class AbstractCachableReportModel extends LoadableDetachableMode
 	@Override
 	protected final Object load()
 	{
-		return getReportData();
+		return getReportData(getReportCriteria());
 	}
 	
-	public ReportData getReportData()
+	public final ReportData getReportData()
 	{
-		return getReportData(getReportCriteria());
+		return (ReportData)getObject();
 	}
 	
 	/**
