@@ -73,11 +73,11 @@ public class ExportReportHeader
 	{
 		HSSFRow row = sheet.createRow(rowNumber++);
 		HSSFCell cell = row.createCell(cellMargin);
-		cell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
+		cell.setCellStyle(workbook.getCellStyle(StyleType.NORMAL));
 		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(new ResourceModel("excelMonth.date"))));
 
 		HSSFCell dataCell = row.createCell(cellMargin + 2);
-		dataCell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
+		dataCell.setCellStyle(workbook.getCellStyle(StyleType.NORMAL));
 		dataCell.setCellValue(new HSSFRichTextString(CommonWebUtil.formatDate("MMMM yyyy", report.getReportRange().getDateStart())));
 
 		return rowNumber;

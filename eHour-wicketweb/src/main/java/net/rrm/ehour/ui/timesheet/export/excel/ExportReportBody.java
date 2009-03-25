@@ -38,8 +38,6 @@ import net.rrm.ehour.ui.common.util.PoiUtil;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 
@@ -121,7 +119,7 @@ public class ExportReportBody
 
 	private void addBodyHours(Number hours, HSSFRow row, ExcelWorkbook workbook)
 	{
-		PoiUtil.createCell(row, cellMargin + 6 ,hours.doubleValue(), StyleType.VALUE_DIGIT, workbook);
+		PoiUtil.createCell(row, cellMargin + 6 ,hours.floatValue(), StyleType.VALUE_DIGIT, workbook);
 	}
 
 	

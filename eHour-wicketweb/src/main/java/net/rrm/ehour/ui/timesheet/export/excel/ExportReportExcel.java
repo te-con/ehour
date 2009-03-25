@@ -70,9 +70,11 @@ public class ExportReportExcel extends AbstractExcelResource
 		
 		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.formatDate("MMMM", report.getReportRange().getDateStart()));
 
-		int rowNumber = new ExportReportHeader(CELL_BORDER).createPart(11 -1, sheet, report, workbook); 
+		int rowNumber = new ExportReportHeader(CELL_BORDER).createPart(11 -1, sheet, report, workbook);
+		rowNumber++;
 		rowNumber = new ExportReportBody(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
-		
+		rowNumber++;
+		rowNumber = new ExportReportTotal(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
 		return workbook;
 	}
 

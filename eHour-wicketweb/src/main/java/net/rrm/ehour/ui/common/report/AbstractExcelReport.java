@@ -217,7 +217,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 						}
 						else
 						{
-							cell.setCellStyle(workbook.getCellStyle(StyleType.DEFAULT));
+							cell.setCellStyle(workbook.getCellStyle(StyleType.NORMAL));
 							cell.setCellValue(new HSSFRichTextString((String)cellValue));
 						}
 					}

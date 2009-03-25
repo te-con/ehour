@@ -42,7 +42,7 @@ public class ExcelWorkbook extends HSSFWorkbook
 		HEADER,
 		BOLD,
 		VALUE_DIGIT,
-		DEFAULT,
+		NORMAL,
 		CURRENCY,
 		DATE_BOLD,
 		DATE_NORMAL
@@ -97,7 +97,7 @@ public class ExcelWorkbook extends HSSFWorkbook
 		
 		HSSFCellStyle defaultCellStyle = createCellStyle();
 		defaultCellStyle.setFont(normalFont);
-		cellStyles.put(StyleType.DEFAULT, defaultCellStyle);
+		cellStyles.put(StyleType.NORMAL, defaultCellStyle);
 		
 		HSSFCellStyle valueDigitCellStyle = createCellStyle();
 		valueDigitCellStyle.setFont(normalFont);

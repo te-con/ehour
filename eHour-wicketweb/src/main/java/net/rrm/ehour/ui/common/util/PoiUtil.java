@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.common.report.ExcelWorkbook.StyleType;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Created on Mar 25, 2009, 6:45:57 AM
@@ -33,9 +34,20 @@ public class PoiUtil
 {
 	public static void createCell(HSSFRow row, int column, String value, ExcelWorkbook workbook)
 	{
-		PoiUtil.createCell(row, column, value, StyleType.DEFAULT, workbook);
+		PoiUtil.createCell(row, column, value, StyleType.NORMAL, workbook);
 	}
 
+	public static void createCell(HSSFRow row, int column, ResourceModel valueModel, ExcelWorkbook workbook)
+	{
+		PoiUtil.createCell(row, column, valueModel, StyleType.NORMAL, workbook);
+	}
+
+	public static void createCell(HSSFRow row, int column, ResourceModel valueModel, StyleType cellStyle, ExcelWorkbook workbook)
+	{
+		createCell(row, column, CommonWebUtil.getResourceModelString(valueModel), cellStyle, workbook);
+	}
+
+	
 	public static void createCell(HSSFRow row, int column, String value, StyleType cellStyle, ExcelWorkbook workbook)
 	{
 		HSSFCell projectCell = row.createCell(column);
@@ -43,7 +55,7 @@ public class PoiUtil
 		projectCell.setCellValue(new HSSFRichTextString(value));
 	}
 
-	public static void createCell(HSSFRow row, int column, double value, StyleType cellStyle, ExcelWorkbook workbook)
+	public static void createCell(HSSFRow row, int column, float value, StyleType cellStyle, ExcelWorkbook workbook)
 	{
 		HSSFCell projectCell = row.createCell(column);
 		projectCell.setCellStyle(workbook.getCellStyle(cellStyle));

@@ -17,18 +17,17 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
+import net.rrm.ehour.ui.common.report.ExcelWorkbook.StyleType;
+import net.rrm.ehour.ui.common.util.PoiUtil;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Created on Mar 25, 2009, 6:40:48 AM
@@ -46,11 +45,25 @@ public class ExportReportTotal
 	
 	public int createPart(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
 	{
+		HSSFRow row = sheet.createRow(rowNumber++);
+		
+		addTotalLabel(row, workbook);
+
 		float total = getTotal(report);
-		
-		
+		addTotalValue(total, row, workbook);
 		
 		return rowNumber;
+	}
+
+	private void addTotalValue(float total, HSSFRow row, ExcelWorkbook workbook)
+	{
+		PoiUtil.createCell(row, cellMargin + 6, total, StyleType.VALUE_DIGIT, workbook);
+	}
+
+	
+	private void addTotalLabel(HSSFRow row, ExcelWorkbook workbook)
+	{
+		PoiUtil.createCell(row, cellMargin, new ResourceModel("excelMonth.total"), StyleType.BOLD, workbook);
 	}
 	
 	private float getTotal(Report report)
