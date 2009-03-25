@@ -47,7 +47,6 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 	 * @param reportCriteria
 	 * @return
 	 */
-	// TODO why reportCrweria? userCriteria should be sufficient
 	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
 		UserCriteria	userCriteria;
