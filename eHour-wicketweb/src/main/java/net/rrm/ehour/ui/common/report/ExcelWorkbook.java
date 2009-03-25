@@ -46,7 +46,8 @@ public class ExcelWorkbook extends HSSFWorkbook
 		CURRENCY,
 		DATE_BOLD,
 		DATE_NORMAL,
-		TABLE_HEADER
+		TABLE_HEADER,
+		NORMAL_BORDER_SOUTH;
 	};
 	
 	private HSSFFont		boldFont;
@@ -91,8 +92,14 @@ public class ExcelWorkbook extends HSSFWorkbook
 		tableHeaderCellStyle.setFont(boldFont);
 		tableHeaderCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
 		tableHeaderCellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
-		cellStyles.put(CellStyle.HEADER, tableHeaderCellStyle);	
-		
+		cellStyles.put(CellStyle.TABLE_HEADER, tableHeaderCellStyle);	
+
+		HSSFCellStyle normalBorderSouthCellStyle = createCellStyle();
+		normalBorderSouthCellStyle.setFont(normalFont);
+		normalBorderSouthCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+		normalBorderSouthCellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+		cellStyles.put(CellStyle.NORMAL_BORDER_SOUTH, normalBorderSouthCellStyle);	
+
 		HSSFCellStyle boldCellStyle = createCellStyle();
 		boldCellStyle.setFont(boldFont);
 		cellStyles.put(CellStyle.BOLD, boldCellStyle);

@@ -42,6 +42,11 @@ public class PoiUtil
 		PoiUtil.createCell(row, column, valueModel, CellStyle.NORMAL, workbook);
 	}
 
+	public static void createCell(HSSFRow row, int column, CellStyle cellStyle, ExcelWorkbook workbook)
+	{
+		createCell(row, column, "", cellStyle, workbook);
+	}
+	
 	public static void createCell(HSSFRow row, int column, ResourceModel valueModel, CellStyle cellStyle, ExcelWorkbook workbook)
 	{
 		createCell(row, column, CommonWebUtil.getResourceModelString(valueModel), cellStyle, workbook);

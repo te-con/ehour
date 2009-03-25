@@ -47,6 +47,9 @@ public class ExportReportBodyHeader
 		PoiUtil.createCell(row, cellMargin + 0, new ResourceModel("excelMonth.body.customer"), CellStyle.TABLE_HEADER, workbook);
 		PoiUtil.createCell(row, cellMargin + 1, new ResourceModel("excelMonth.body.project"), CellStyle.TABLE_HEADER, workbook);
 		PoiUtil.createCell(row, cellMargin + 2, new ResourceModel("excelMonth.body.date"), CellStyle.TABLE_HEADER, workbook);
+		PoiUtil.createCell(row, cellMargin + 3, CellStyle.TABLE_HEADER, workbook);
+		PoiUtil.createCell(row, cellMargin + 4, CellStyle.TABLE_HEADER, workbook);
+		PoiUtil.createCell(row, cellMargin + 5, CellStyle.TABLE_HEADER, workbook);
 		PoiUtil.createCell(row, cellMargin + 6, new ResourceModel("excelMonth.body.hours"), CellStyle.TABLE_HEADER, workbook);
 		
 		return rowNumber;
