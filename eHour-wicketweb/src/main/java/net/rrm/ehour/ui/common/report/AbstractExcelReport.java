@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
-import net.rrm.ehour.ui.common.report.ExcelWorkbook.StyleType;
+import net.rrm.ehour.ui.common.report.ExcelWorkbook.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.TreeReportElement;
@@ -141,7 +141,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 				headerModel = new ResourceModel(reportColumn.getColumnHeaderResourceKey());
 				
 				cell = row.createCell(cellNumber++);
-				cell.setCellStyle(workbook.getCellStyle(ExcelWorkbook.StyleType.HEADER));
+				cell.setCellStyle(workbook.getCellStyle(ExcelWorkbook.CellStyle.HEADER));
 				
 				cell.setCellValue(new HSSFRichTextString((String)headerModel.getObject()));
 			}
@@ -185,7 +185,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 					{
 						if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.HOUR)
 						{
-							cell.setCellStyle(workbook.getCellStyle(StyleType.VALUE_DIGIT));
+							cell.setCellStyle(workbook.getCellStyle(CellStyle.VALUE_DIGIT));
 							
 							if (cellValue instanceof Float)
 							{
@@ -199,7 +199,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 						else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.TURNOVER
 								 || columnHeaders[i].getColumnType() == ReportColumn.ColumnType.RATE)
 						{
-							cell.setCellStyle(workbook.getCellStyle(StyleType.CURRENCY));
+							cell.setCellStyle(workbook.getCellStyle(CellStyle.CURRENCY));
 							
 							if (cellValue instanceof Float)
 							{
@@ -212,12 +212,12 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 						}
 						else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.DATE)
 						{
-							cell.setCellStyle(workbook.getCellStyle(StyleType.DATE_NORMAL));
+							cell.setCellStyle(workbook.getCellStyle(CellStyle.DATE_NORMAL));
 							cell.setCellValue((Date)cellValue);
 						}
 						else
 						{
-							cell.setCellStyle(workbook.getCellStyle(StyleType.NORMAL));
+							cell.setCellStyle(workbook.getCellStyle(CellStyle.NORMAL));
 							cell.setCellValue(new HSSFRichTextString((String)cellValue));
 						}
 					}
@@ -250,13 +250,13 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 
 		row = sheet.createRow(rowNumber++);
 		cell = row.createCell(0);
-		cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
+		cell.setCellStyle(workbook.getCellStyle(CellStyle.BOLD));
 		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(getHeaderReportName())));
 		sheet.addMergedRegion(new Region(0, (short)0, 0, (short)1));
 
 		row = sheet.createRow(rowNumber++);
 		cell = row.createCell(0);
-		cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
+		cell.setCellStyle(workbook.getCellStyle(CellStyle.BOLD));
 		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(new ResourceModel("report.dateStart"))));
 		
 		cell = row.createCell(1);
@@ -264,28 +264,28 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 		if (report.getReportRange() == null || 
 				report.getReportRange().getDateStart() == null)
 		{
-			cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
+			cell.setCellStyle(workbook.getCellStyle(CellStyle.BOLD));
 			cell.setCellValue("--");
 		}
 		else
 		{
-			cell.setCellStyle(workbook.getCellStyle(StyleType.DATE_BOLD));
+			cell.setCellStyle(workbook.getCellStyle(CellStyle.DATE_BOLD));
 			cell.setCellValue(report.getReportCriteria().getReportRange().getDateStart());
 		}
 
 		cell = row.createCell(3);
-		cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
+		cell.setCellStyle(workbook.getCellStyle(CellStyle.BOLD));
 		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(new ResourceModel("report.dateEnd"))));
 		
 		cell = row.createCell(4);
 		if (report.getReportRange() == null || report.getReportRange().getDateEnd() == null)
 		{
-			cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
+			cell.setCellStyle(workbook.getCellStyle(CellStyle.BOLD));
 			cell.setCellValue("--");
 		}
 		else
 		{
-			cell.setCellStyle(workbook.getCellStyle(StyleType.DATE_BOLD));
+			cell.setCellStyle(workbook.getCellStyle(CellStyle.DATE_BOLD));
 			cell.setCellValue(report.getReportRange().getDateEndForDisplay());
 		}
 		

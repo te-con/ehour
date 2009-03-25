@@ -22,7 +22,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.report.ExcelWorkbook.StyleType;
+import net.rrm.ehour.ui.common.report.ExcelWorkbook.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
@@ -63,7 +63,7 @@ public class ExportReportHeader
 	{
 		HSSFRow row = sheet.createRow(rowNumber++);
 		HSSFCell cell = row.createCell(cellMargin);
-		cell.setCellStyle(workbook.getCellStyle(StyleType.BOLD));
+		cell.setCellStyle(workbook.getCellStyle(CellStyle.BOLD));
 		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(getExcelReportName(report.getReportRange()))));
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
 		return rowNumber;
@@ -73,11 +73,11 @@ public class ExportReportHeader
 	{
 		HSSFRow row = sheet.createRow(rowNumber++);
 		HSSFCell cell = row.createCell(cellMargin);
-		cell.setCellStyle(workbook.getCellStyle(StyleType.NORMAL));
+		cell.setCellStyle(workbook.getCellStyle(CellStyle.NORMAL));
 		cell.setCellValue(new HSSFRichTextString(CommonWebUtil.getResourceModelString(new ResourceModel("excelMonth.date"))));
 
 		HSSFCell dataCell = row.createCell(cellMargin + 2);
-		dataCell.setCellStyle(workbook.getCellStyle(StyleType.NORMAL));
+		dataCell.setCellStyle(workbook.getCellStyle(CellStyle.NORMAL));
 		dataCell.setCellValue(new HSSFRichTextString(CommonWebUtil.formatDate("MMMM yyyy", report.getReportRange().getDateStart())));
 
 		return rowNumber;

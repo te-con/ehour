@@ -72,6 +72,7 @@ public class ExportReportExcel extends AbstractExcelResource
 
 		int rowNumber = new ExportReportHeader(CELL_BORDER).createPart(11 -1, sheet, report, workbook);
 		rowNumber++;
+		rowNumber = new ExportReportBodyHeader(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
 		rowNumber = new ExportReportBody(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
 		rowNumber++;
 		rowNumber = new ExportReportTotal(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);

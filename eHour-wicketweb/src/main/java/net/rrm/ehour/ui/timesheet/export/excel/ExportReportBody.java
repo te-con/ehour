@@ -32,7 +32,7 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.report.ExcelWorkbook.StyleType;
+import net.rrm.ehour.ui.common.report.ExcelWorkbook.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.PoiUtil;
 import net.rrm.ehour.util.DateUtil;
@@ -119,7 +119,7 @@ public class ExportReportBody
 
 	private void addBodyHours(Number hours, HSSFRow row, ExcelWorkbook workbook)
 	{
-		PoiUtil.createCell(row, cellMargin + 6 ,hours.floatValue(), StyleType.VALUE_DIGIT, workbook);
+		PoiUtil.createCell(row, cellMargin + 6 ,hours.floatValue(), CellStyle.VALUE_DIGIT, workbook);
 	}
 
 	
@@ -131,7 +131,7 @@ public class ExportReportBody
 	
 	private void addBodyDate(Date date, HSSFRow row, ExcelWorkbook workbook, DateFormat formatter)
 	{
-		PoiUtil.createCell(row, cellMargin + 2 , formatter.format(date), StyleType.DATE_NORMAL, workbook);
+		PoiUtil.createCell(row, cellMargin + 2 , formatter.format(date), CellStyle.DATE_NORMAL, workbook);
 	}
 	
 	/**

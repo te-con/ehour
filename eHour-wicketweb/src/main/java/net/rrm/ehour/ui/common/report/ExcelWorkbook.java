@@ -37,7 +37,7 @@ public class ExcelWorkbook extends HSSFWorkbook
 {
 	private final String FONT_TYPE = "Arial";
 	
-	public enum StyleType
+	public enum CellStyle
 	{
 		HEADER,
 		BOLD,
@@ -45,20 +45,21 @@ public class ExcelWorkbook extends HSSFWorkbook
 		NORMAL,
 		CURRENCY,
 		DATE_BOLD,
-		DATE_NORMAL
+		DATE_NORMAL,
+		TABLE_HEADER
 	};
 	
 	private HSSFFont		boldFont;
 	private HSSFFont		normalFont;
 	
-	private Map<StyleType, HSSFCellStyle> cellStyles;
+	private Map<CellStyle, HSSFCellStyle> cellStyles;
 	
 	public ExcelWorkbook()
 	{
 		initializeCellStyles();
 	}
 	
-	public HSSFCellStyle getCellStyle(StyleType type)
+	public HSSFCellStyle getCellStyle(CellStyle type)
 	{
 		return cellStyles.get(type);
 	}
@@ -74,7 +75,7 @@ public class ExcelWorkbook extends HSSFWorkbook
 	
 	private void initializeCellStyles()
 	{
-		cellStyles = new HashMap<StyleType, HSSFCellStyle>();
+		cellStyles = new HashMap<CellStyle, HSSFCellStyle>();
 		
 		createFonts();
 
@@ -84,35 +85,41 @@ public class ExcelWorkbook extends HSSFWorkbook
 		headerCellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 		headerCellStyle.setFillForegroundColor(HSSFColor.BLUE.index);
 		headerCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		cellStyles.put(StyleType.HEADER, headerCellStyle);
+		cellStyles.put(CellStyle.HEADER, headerCellStyle);
+		
+		HSSFCellStyle tableHeaderCellStyle = createCellStyle();
+		tableHeaderCellStyle.setFont(boldFont);
+		tableHeaderCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+		tableHeaderCellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+		cellStyles.put(CellStyle.HEADER, tableHeaderCellStyle);	
 		
 		HSSFCellStyle boldCellStyle = createCellStyle();
 		boldCellStyle.setFont(boldFont);
-		cellStyles.put(StyleType.BOLD, boldCellStyle);
+		cellStyles.put(CellStyle.BOLD, boldCellStyle);
 
 		HSSFCellStyle dateBoldCellStyle = createCellStyle();
 		dateBoldCellStyle.setFont(boldFont);
 		dateBoldCellStyle.setDataFormat((short)0xf);
-		cellStyles.put(StyleType.DATE_BOLD, dateBoldCellStyle);
+		cellStyles.put(CellStyle.DATE_BOLD, dateBoldCellStyle);
 		
 		HSSFCellStyle defaultCellStyle = createCellStyle();
 		defaultCellStyle.setFont(normalFont);
-		cellStyles.put(StyleType.NORMAL, defaultCellStyle);
+		cellStyles.put(CellStyle.NORMAL, defaultCellStyle);
 		
 		HSSFCellStyle valueDigitCellStyle = createCellStyle();
 		valueDigitCellStyle.setFont(normalFont);
 		valueDigitCellStyle.setDataFormat((short)2);
-		cellStyles.put(StyleType.VALUE_DIGIT, valueDigitCellStyle);
+		cellStyles.put(CellStyle.VALUE_DIGIT, valueDigitCellStyle);
 
 		HSSFCellStyle currencyCellStyle= createCellStyle();
 		currencyCellStyle.setFont(normalFont);
 		currencyCellStyle.setDataFormat((short)0x7);
-		cellStyles.put(StyleType.CURRENCY, currencyCellStyle);
+		cellStyles.put(CellStyle.CURRENCY, currencyCellStyle);
 		
 		HSSFCellStyle dateCellStyle = createCellStyle();
 		dateCellStyle.setFont(normalFont);
 		dateCellStyle.setDataFormat((short)0xf);		
-		cellStyles.put(StyleType.DATE_NORMAL, dateCellStyle);
+		cellStyles.put(CellStyle.DATE_NORMAL, dateCellStyle);
 	}
 
 	private void createFonts()

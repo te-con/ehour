@@ -17,9 +17,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel;
 
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.ExcelWorkbook.CellStyle;
@@ -30,15 +27,15 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.wicket.model.ResourceModel;
 
 /**
- * Created on Mar 25, 2009, 6:40:48 AM
+ * Created on Mar 25, 2009, 7:16:55 AM
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class ExportReportTotal
+public class ExportReportBodyHeader
 {
 	private int cellMargin;
-
-	public ExportReportTotal(int cellMargin)
+	
+	public ExportReportBodyHeader(int cellMargin)
 	{
 		this.cellMargin = cellMargin;
 	}
@@ -47,40 +44,12 @@ public class ExportReportTotal
 	{
 		HSSFRow row = sheet.createRow(rowNumber++);
 		
-		addTotalLabel(row, workbook);
-
-		float total = getTotal(report);
-		addTotalValue(total, row, workbook);
+		PoiUtil.createCell(row, cellMargin + 0, new ResourceModel("excelMonth.body.customer"), CellStyle.TABLE_HEADER, workbook);
+		PoiUtil.createCell(row, cellMargin + 1, new ResourceModel("excelMonth.body.project"), CellStyle.TABLE_HEADER, workbook);
+		PoiUtil.createCell(row, cellMargin + 2, new ResourceModel("excelMonth.body.date"), CellStyle.TABLE_HEADER, workbook);
+		PoiUtil.createCell(row, cellMargin + 6, new ResourceModel("excelMonth.body.hours"), CellStyle.TABLE_HEADER, workbook);
 		
 		return rowNumber;
 	}
-
-	private void addTotalValue(float total, HSSFRow row, ExcelWorkbook workbook)
-	{
-		PoiUtil.createCell(row, cellMargin + 6, total, CellStyle.VALUE_DIGIT, workbook);
-	}
-
-	
-	private void addTotalLabel(HSSFRow row, ExcelWorkbook workbook)
-	{
-		PoiUtil.createCell(row, cellMargin, new ResourceModel("excelMonth.total"), CellStyle.BOLD, workbook);
-	}
-	
-	private float getTotal(Report report)
-	{
-		float total = 0; 
-		
-		ReportData reportData = report.getReportData();
-		
-		for (ReportElement reportElement : reportData.getReportElements())
-		{
-			FlatReportElement flat = (FlatReportElement)reportElement;
-			
-			total += flat.getTotalHours().floatValue();
-		}
-		
-		return total;
-	}
-	
 	
 }
