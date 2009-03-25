@@ -226,8 +226,20 @@ public class MonthOverviewPanel extends Panel
 	
 	private TooltipLabel createProjectCodeTooltip(TimesheetEntry entry)
 	{
-		StringBuilder tooltipText = new StringBuilder(entry.getEntryId().getProjectAssignment().getProject().getDescription());
-		tooltipText.append("<br /><em>");
+		StringBuilder tooltipText;
+		
+		if (entry.getEntryId().getProjectAssignment().getProject().getDescription() != null)
+		{
+			tooltipText = new StringBuilder(entry.getEntryId().getProjectAssignment().getProject().getDescription());
+		}
+		else
+		{
+			tooltipText = new StringBuilder(CommonWebUtil.getResourceModelString(new ResourceModel("general.noDesc")));
+		}
+
+		tooltipText.append("<br />");
+		
+		tooltipText.append("<em>");
 		tooltipText.append(entry.getEntryId().getProjectAssignment().getProject().getName());
 		tooltipText.append("</em>");
 
