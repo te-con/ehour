@@ -24,6 +24,7 @@ import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBody;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -73,7 +74,7 @@ public class ExportReportExcel extends AbstractExcelResource
 		int rowNumber = new ExportReportHeader(CELL_BORDER).createPart(11 -1, sheet, report, workbook);
 		rowNumber++;
 		rowNumber = new ExportReportBodyHeader(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
-		rowNumber = new ExportReportBody(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
+		rowNumber = new ExportReportBody(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		rowNumber++;
 		rowNumber = new ExportReportTotal(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
 		return workbook;
