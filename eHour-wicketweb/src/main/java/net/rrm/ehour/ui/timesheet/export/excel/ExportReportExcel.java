@@ -20,14 +20,17 @@ package net.rrm.ehour.ui.timesheet.export.excel;
 import java.io.IOException;
 
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
-import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBody;
+import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBodyHeader;
+import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportHeader;
+import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportTotal;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Created on Mar 23, 2009, 1:30:04 PM
@@ -55,8 +58,8 @@ public class ExportReportExcel extends AbstractExcelResource
 		Report report = (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
 		
 		LOGGER.trace("Creating excel report");
-		ExcelWorkbook workbook = createWorkbook(report);
-		byte[] excelData = workbook.toByteArray();
+		HSSFWorkbook workbook = createWorkbook(report);
+		byte[] excelData = workbook.getBytes();
 		
 		return excelData;
 	}
@@ -65,18 +68,20 @@ public class ExportReportExcel extends AbstractExcelResource
 	 * @param report
 	 * @return
 	 */
-	private ExcelWorkbook createWorkbook(Report report)
+	private HSSFWorkbook createWorkbook(Report report)
 	{
-		ExcelWorkbook workbook = new ExcelWorkbook();
+		HSSFWorkbook workbook = new HSSFWorkbook();
 		
 		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.formatDate("MMMM", report.getReportRange().getDateStart()));
 
-		int rowNumber = new ExportReportHeader(CELL_BORDER).createPart(11 -1, sheet, report, workbook);
+		int rowNumber = 11 - 1;
+		
+		rowNumber = new ExportReportHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		rowNumber++;
-		rowNumber = new ExportReportBodyHeader(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
+		rowNumber = new ExportReportBodyHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		rowNumber = new ExportReportBody(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		rowNumber++;
-		rowNumber = new ExportReportTotal(CELL_BORDER).createPart(rowNumber, sheet, report, workbook);
+		rowNumber = new ExportReportTotal(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		return workbook;
 	}
 

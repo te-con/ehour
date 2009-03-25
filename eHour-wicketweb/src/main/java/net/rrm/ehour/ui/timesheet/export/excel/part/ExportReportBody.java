@@ -28,15 +28,15 @@ import java.util.TreeMap;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.report.ExcelWorkbook.CellStyle;
-import net.rrm.ehour.ui.common.util.PoiUtil;
+import net.rrm.ehour.ui.common.report.excel.CellFactory;
+import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Created on Mar 25, 2009, 6:35:04 AM
@@ -45,7 +45,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
  */
 public class ExportReportBody extends AbstractExportReportPart
 {
-	public ExportReportBody(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	public ExportReportBody(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
 	{
 		super(cellMargin, sheet, report, workbook);
 	}
@@ -127,19 +127,19 @@ public class ExportReportBody extends AbstractExportReportPart
 
 	private void createHoursCell(Number hours, HSSFRow row)
 	{
-		PoiUtil.createCell(row, getCellMargin() + 6 ,hours.floatValue(), CellStyle.VALUE_DIGIT, getWorkbook());
+		CellFactory.createCell(row, getCellMargin() + 6 ,hours,  getWorkbook(), CellStyle.DIGIT);
 	}
 
 	
 	private void createProjectCell(String project, HSSFRow row)
 	{
-		PoiUtil.createCell(row, getCellMargin(), project, getWorkbook());
+		CellFactory.createCell(row, getCellMargin(), project, getWorkbook());
 	}
 
 	
 	private void createDateCell(Date date, HSSFRow row)
 	{
-		PoiUtil.createCell(row, getCellMargin() + 2 , getFormatter().format(date), CellStyle.DATE_NORMAL, getWorkbook());
+		CellFactory.createCell(row, getCellMargin() + 2 , getFormatter().format(date), getWorkbook(), CellStyle.DATE);
 	}
 	
 	/**

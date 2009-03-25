@@ -21,11 +21,11 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.common.report.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * Created on Mar 25, 2009, 3:34:34 PM
@@ -39,9 +39,9 @@ public abstract class AbstractExportReportPart
 	private SimpleDateFormat formatter;
 	private HSSFSheet sheet;
 	private Report report;
-	private ExcelWorkbook workbook;
+	private HSSFWorkbook workbook;
 	
-	public AbstractExportReportPart(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	public AbstractExportReportPart(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
 	{
 		this.cellMargin = cellMargin;
 		this.sheet = sheet;
@@ -85,7 +85,7 @@ public abstract class AbstractExportReportPart
 		return report;
 	}
 
-	protected ExcelWorkbook getWorkbook()
+	protected HSSFWorkbook getWorkbook()
 	{
 		return workbook;
 	}
