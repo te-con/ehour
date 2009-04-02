@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="net.rrm.ehour.domain.BinaryConfiguration" table="CONFIGURATION_BIN">
+		<cache usage="read-write" />
+		
+		<id name="configKey" column="CONFIG_KEY" type="string" length="64" />
+
+		<property name="configValueBlob" column="CONFIG_VALUE" type="blob" length="256" />
+	</class>
+</hibernate-mapping>

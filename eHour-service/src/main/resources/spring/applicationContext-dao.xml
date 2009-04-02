@@ -111,6 +111,11 @@
 		class="net.rrm.ehour.config.dao.ConfigurationDAOHibernateImpl"
 		parent="abstractDAOTarget" />
 
+	<!-- Binary Configuration DAO -->
+	<bean id="binaryConfigurationDAO"
+		class="net.rrm.ehour.config.dao.BinaryConfigurationDAOHibernateImpl"
+		parent="abstractDAOTarget" />
+
 	<!-- MailLog DAO -->
 	<bean id="mailLogDAO"
 		class="net.rrm.ehour.mail.dao.MailLogDAOHibernateImpl"

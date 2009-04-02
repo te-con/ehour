@@ -22,11 +22,13 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
@@ -43,6 +45,7 @@ public class ConfigurationServiceTest
 	private ConfigurationService configurationService;
 
 	private ConfigurationDAO configDAO;
+	private BinaryConfigurationDAO binaryConfigDao;
 
 	/**
 	 * @throws java.lang.Exception
@@ -54,8 +57,28 @@ public class ConfigurationServiceTest
 
 		configDAO = createMock(ConfigurationDAO.class);
 		((ConfigurationServiceImpl) configurationService).setConfigDAO(configDAO);
+
+		binaryConfigDao = createMock(BinaryConfigurationDAO.class);
+		((ConfigurationServiceImpl) configurationService).setBinConfigDAO(binaryConfigDao);
+
 	}
 
+	@Test
+	public void shouldReturnDefaultExcelLogo()
+	{
+		expect(binaryConfigDao.findById("excelHeaderLogo"))
+			.andReturn(null);
+		
+		replay(binaryConfigDao);
+
+		byte[] excelLogo = configurationService.getExcelLogo();
+		
+		assertTrue(excelLogo.length > 1);
+		
+		verify(binaryConfigDao);
+		
+	}
+	
 	/**
 	 * Test method for {@link net.rrm.ehour.config.service.ConfigurationServiceImpl#getConfiguration()}.
 	 */

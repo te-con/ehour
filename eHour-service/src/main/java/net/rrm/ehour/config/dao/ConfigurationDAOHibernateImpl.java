@@ -18,14 +18,10 @@ package net.rrm.ehour.config.dao;
 import net.rrm.ehour.dao.GenericDAOHibernateImpl;
 import net.rrm.ehour.domain.Configuration;
 
-/**
- * DAO impl
- **/
-
 public class ConfigurationDAOHibernateImpl extends GenericDAOHibernateImpl<Configuration, String>  implements ConfigurationDAO
 {
 	/**
-	 * @todo fix this a bit better
+	 * TODO fix this a bit better
 	 */
 	public ConfigurationDAOHibernateImpl()
 	{

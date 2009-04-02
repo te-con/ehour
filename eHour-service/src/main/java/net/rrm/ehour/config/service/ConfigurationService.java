@@ -36,4 +36,10 @@ public interface ConfigurationService
 	 * @param config
 	 */
 	public void persistConfiguration(EhourConfig config);
+	
+	/**
+	 * Get configured logo
+	 * @return
+	 */
+	public byte[] getExcelLogo();
 }

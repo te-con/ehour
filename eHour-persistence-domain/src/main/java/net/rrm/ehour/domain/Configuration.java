@@ -26,10 +26,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class Configuration extends DomainObject<String, Configuration>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5457250186090868408L;
+
 	private	String	configKey;
 	private	String	configValue;
 	

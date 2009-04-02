@@ -21,13 +21,14 @@ import javax.sql.DataSource;
 
 import net.rrm.ehour.domain.AuditType;
 
+import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.log4j.Logger;
 
 /**
  * Config from database
  **/
 
-public class EhourConfigJdbc extends ExtDatabaseConfiguration implements EhourConfig
+public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfig
 {
 	private	Logger	logger = Logger.getLogger(this.getClass());
 	
@@ -36,9 +37,9 @@ public class EhourConfigJdbc extends ExtDatabaseConfiguration implements EhourCo
 	private Boolean		initialized;
 	private	AuditType	auditType;
 	
-	public EhourConfigJdbc(DataSource datasource, String table, String keyColumn, String valueColumn, String blobValueColumn)
+	public EhourConfigJdbc(DataSource datasource, String table, String keyColumn, String valueColumn)
 	{
-		super(datasource, table, keyColumn, valueColumn, blobValueColumn);
+		super(datasource, table, keyColumn, valueColumn);
 	
 		logger.info("Configuration loaded from database");
 	}

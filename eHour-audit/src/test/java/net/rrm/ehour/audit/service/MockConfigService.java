@@ -31,4 +31,12 @@ public class MockConfigService implements ConfigurationService
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.config.service.ConfigurationService#getExcelLogo()
+	 */
+	public byte[] getExcelLogo()
+	{
+		return null;
+	}
+
 }

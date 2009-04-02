@@ -15,14 +15,20 @@
 
 package net.rrm.ehour.config.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
 import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
 import net.rrm.ehour.domain.AuditType;
+import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
 
 import org.apache.log4j.Logger;
@@ -35,7 +41,63 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConfigurationServiceImpl implements ConfigurationService
 {
 	private ConfigurationDAO	configDAO;
+	private BinaryConfigurationDAO binConfigDAO;
 	private	Logger				logger = Logger.getLogger(this.getClass());
+	
+	
+
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.config.service.ConfigurationService#getLogo()
+	 */
+	@NonAuditable
+	public byte[] getExcelLogo()
+	{
+		byte[] fileBytes;
+		
+		BinaryConfiguration logoDomObj = binConfigDAO.findById("excelHeaderLogo");
+
+		if (logoDomObj == null || logoDomObj.getConfigValue() == null || logoDomObj.getConfigValue().length == 0)
+		{
+			fileBytes = getDefaultExcelLogo();
+		}
+		else
+		{
+			fileBytes = logoDomObj.getConfigValue();
+		}
+		
+		return fileBytes;
+	}
+
+	private byte[] getDefaultExcelLogo()
+	{
+		URL url = Thread.currentThread().getContextClassLoader().getResource("excel_default_logo.png");
+		File file = new File(url.getPath());
+		
+		InputStream is;
+		
+		byte[] bytes;
+		
+		try
+		{
+			is = url.openStream();
+
+			bytes = new byte[(int) file.length()];
+
+			int offset = 0;
+			int numRead = 0;
+			while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0)
+			{
+				offset += numRead;
+			}
+		} catch (IOException e)
+		{
+			logger.error("Could not fetch default logo", e);
+			bytes = new byte[1];
+		}
+
+        return bytes;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
@@ -47,7 +109,8 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		List<Configuration> configs = configDAO.findAll();
 		EhourConfigStub		config = new EhourConfigStub();
 		String				key, value;
-		
+	
+		// spaghetti, anyone?
 		for (Configuration configuration : configs)
 		{
 			key = configuration.getConfigKey();
@@ -187,5 +250,12 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	{
 		this.configDAO = configDAO;
 	}
-
+	
+	/**
+	 * @param binConfigDAO the binConfigDAO to set
+	 */
+	public void setBinConfigDAO(BinaryConfigurationDAO binConfigDAO)
+	{
+		this.binConfigDAO = binConfigDAO;
+	}
 }

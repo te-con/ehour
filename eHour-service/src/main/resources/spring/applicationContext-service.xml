@@ -131,6 +131,7 @@
 	<bean id="configurationService"
 			class="net.rrm.ehour.config.service.ConfigurationServiceImpl">
 			<property name="configDAO" ref="configurationDAO" />
+			<property name="binConfigDAO" ref="binaryConfigurationDAO" />
 	</bean>
 	
 	<!-- Ehour Config -->
@@ -138,8 +139,7 @@
 		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
 		<constructor-arg value="CONFIGURATION" />
 		<constructor-arg value="config_key" />		
-		<constructor-arg value="config_value" />
-		<constructor-arg value="config_bin_value" />		
+		<constructor-arg value="config_value" />		
 	</bean>
 	
 	<!-- Project assignment util class -->
