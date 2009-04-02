@@ -68,6 +68,14 @@ public class ExportReportHeader extends AbstractExportReportPart
 		return rowNumber;
 	}
 
+	private int addLogo(int rowNumber)
+	{
+		
+		
+		return rowNumber;
+	}
+	
+	
 	private int addTitleDateRow(int rowNumber)
 	{
 		HSSFRow row = getSheet().createRow(rowNumber++);

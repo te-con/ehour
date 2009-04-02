@@ -25,6 +25,9 @@
 			<resource>
 				<directory>src/main/resources/hibernate</directory>
 			</resource>
+			<resource>
+				<directory>src/main/resources/img</directory>
+			</resource>
 		</resources>
 	</build>
 	<profiles>
@@ -374,6 +377,11 @@
 					<minimumTokens>100</minimumTokens>
 					<targetJdk>1.5</targetJdk>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.5.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

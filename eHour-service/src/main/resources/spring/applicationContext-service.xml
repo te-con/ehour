@@ -138,7 +138,8 @@
 		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
 		<constructor-arg value="CONFIGURATION" />
 		<constructor-arg value="config_key" />		
-		<constructor-arg value="config_value" />		
+		<constructor-arg value="config_value" />
+		<constructor-arg value="config_bin_value" />		
 	</bean>
 	
 	<!-- Project assignment util class -->
