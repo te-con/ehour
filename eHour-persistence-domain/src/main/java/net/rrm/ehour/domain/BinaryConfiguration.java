@@ -41,7 +41,9 @@ public class BinaryConfiguration extends DomainObject<String, BinaryConfiguratio
 
 	private String configKey;
 	private byte[] configValue;
-
+	private String metadata;
+	
+	
 	/** Don't invoke this. Used by Hibernate only. */
 	public void setValueBlob(Blob imageBlob)
 	{
@@ -186,5 +188,21 @@ public class BinaryConfiguration extends DomainObject<String, BinaryConfiguratio
 	{
 		return new CompareToBuilder()
 				.append(this.getConfigKey(), object.getConfigKey()).toComparison();
+	}
+
+	/**
+	 * @param metadata the metadata to set
+	 */
+	public void setMetadata(String metadata)
+	{
+		this.metadata = metadata;
+	}
+
+	/**
+	 * @return the metadata
+	 */
+	public String getMetadata()
+	{
+		return metadata;
 	}
 }

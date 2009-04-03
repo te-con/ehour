@@ -8,6 +8,9 @@
 		
 		<id name="configKey" column="CONFIG_KEY" type="string" length="64" />
 
-		<property name="configValueBlob" column="CONFIG_VALUE" type="blob" length="256" />
+		<property name="valueBlob" column="CONFIG_VALUE" type="blob" />
+		
+		<property name="metadata" column="METADATA" type="string" length="256" />		
+		
 	</class>
 </hibernate-mapping>

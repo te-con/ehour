@@ -18,6 +18,7 @@
 package net.rrm.ehour.ui.timesheet.export.excel.part;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.Report;
@@ -26,12 +27,15 @@ import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Created on Mar 25, 2009, 6:37:20 AM
@@ -41,6 +45,10 @@ import org.apache.wicket.model.StringResourceModel;
  */
 public class ExportReportHeader extends AbstractExportReportPart
 {
+	@SpringBean(name = "configurationService")
+	private ConfigurationService configurationService;
+	
+	
 	public ExportReportHeader(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
 	{
 		super(cellMargin, sheet, report, workbook);
@@ -52,6 +60,7 @@ public class ExportReportHeader extends AbstractExportReportPart
 	@Override
 	public int createPart(int rowNumber)
 	{
+		addLogo(rowNumber);
 		rowNumber = addTitleRow(rowNumber);
 		rowNumber = addTitleDateRow(rowNumber);
 		rowNumber++;
@@ -70,7 +79,18 @@ public class ExportReportHeader extends AbstractExportReportPart
 
 	private int addLogo(int rowNumber)
 	{
+		byte[] image = getConfigurationService().getExcelLogo();
+	
+		int index = getWorkbook().addPicture(image, HSSFWorkbook.PICTURE_TYPE_PNG);
 		
+		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 1, (short)7, 8);
+//														(short)++col,++row);
+		
+		HSSFPatriarch patriarch=getSheet().createDrawingPatriarch();
+		patriarch.createPicture(anchor,index);
+		anchor.setAnchorType(0); // 0 = Move and size with Cells, 2 = Move but don't size with cells, 3 = Don't move or size with cells.
+
+
 		
 		return rowNumber;
 	}
@@ -97,5 +117,15 @@ public class ExportReportHeader extends AbstractExportReportPart
 							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
 		
 		return title;
+	}
+	
+	private ConfigurationService getConfigurationService()
+	{
+		if (configurationService == null)
+		{
+			CommonWebUtil.springInjection(this);
+		}
+		
+		return configurationService;
 	}
 }
