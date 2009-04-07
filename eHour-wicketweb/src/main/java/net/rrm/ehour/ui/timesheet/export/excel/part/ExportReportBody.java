@@ -89,7 +89,6 @@ public class ExportReportBody extends AbstractExportReportPart
 		cal.setTime(date);
 		
 		return cal.get(Calendar.DAY_OF_WEEK) == getConfig().getFirstDayOfWeek();
-		
 	}
 
 	private int addEmptyRow(int rowNumber, Date date, boolean borderCels)
