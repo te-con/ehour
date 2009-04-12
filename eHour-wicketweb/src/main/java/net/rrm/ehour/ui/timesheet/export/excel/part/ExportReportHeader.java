@@ -82,7 +82,7 @@ public class ExportReportHeader extends AbstractExportReportPart
 	
 		int index = getWorkbook().addPicture(image, HSSFWorkbook.PICTURE_TYPE_PNG);
 		
-		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 1, (short)7, 8);
+		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 1, (short)8, 8);
 //														(short)++col,++row);
 		
 		HSSFPatriarch patriarch=getSheet().createDrawingPatriarch();

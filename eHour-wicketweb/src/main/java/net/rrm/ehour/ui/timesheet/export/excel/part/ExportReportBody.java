@@ -129,13 +129,10 @@ public class ExportReportBody extends AbstractExportReportPart
 					addThinSouthBorder(hoursCell);
 					addThinSouthBorder(customerCell);
 					
-					createEmptyCells(row, 1, 3);
+					createEmptyCells(row, 3);
 					
 					getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, getCellMargin() + 3, getCellMargin() + 5));
-
-					
 				}
-				
 				
 				rowNumber++;
 				addedForDate = true;
