@@ -25,8 +25,6 @@ import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.common.cache.ObjectCache;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
@@ -45,7 +43,6 @@ import org.junit.Test;
  **/
 public class ReportExcelTest extends AbstractSpringWebAppTester
 {
-	private ObjectCache cache;
 	private ReportCriteria criteria;
 	private AggregateReportService aggregateReportService;
 	
@@ -57,10 +54,6 @@ public class ReportExcelTest extends AbstractSpringWebAppTester
 		
 		aggregateReportService = createMock(AggregateReportService.class);
 		getMockContext().putBean("aggregateReportService", aggregateReportService);
-
-		
-		EhourWebSession session = this.getWebApp().getSession();
-		cache = session.getObjectCache();
 		
 		criteria = ReportTestUtil.getReportCriteria();
 		
@@ -80,26 +73,20 @@ public class ReportExcelTest extends AbstractSpringWebAppTester
 	public void testCustomerReportExcel() throws Exception
 	{
 		TreeReport report = new CustomerAggregateReport(criteria);
-		String reportCacheId = cache.addObjectToCache(report);
-
-		new CustomerReportExcel().getExcelData(reportCacheId);
+		new CustomerReportExcel().getExcelData(report);
 	}
 	
 	@Test
 	public void testEmployeeReportExcel() throws Exception
 	{
 		TreeReport report = new UserAggregateReport(criteria);
-		String reportCacheId = cache.addObjectToCache(report);
-
-		new EmployeeReportExcel().getExcelData(reportCacheId);
+		new EmployeeReportExcel().getExcelData(report);
 	}
 	
 	@Test
 	public void testProjectReportExcel() throws Exception
 	{
 		TreeReport report = new ProjectAggregateReport(criteria);
-		String reportCacheId = cache.addObjectToCache(report);
-
-		new ProjectReportExcel().getExcelData(reportCacheId);
+		new ProjectReportExcel().getExcelData(report);
 	}	
 }

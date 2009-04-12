@@ -33,7 +33,6 @@ import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -57,7 +56,7 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 	
 	public ExportMonthSelectionPage()
 	{	
-		this(((EhourWebSession) Session.get()).getNavCalendar());
+		this(EhourWebSession.getSession().getNavCalendar());
 	}
 	
 	/**
@@ -81,7 +80,6 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 		add(greyBorder);
 		
 		blueBorder.add(createExportCriteriaPanel(ID_SELECTION_FORM));
-		
 	}
 	
 	private ExportCriteriaPanel createExportCriteriaPanel(String id)

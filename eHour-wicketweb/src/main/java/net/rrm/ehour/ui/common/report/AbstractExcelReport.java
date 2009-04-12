@@ -23,7 +23,6 @@ import java.util.List;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.TreeReportElement;
 
 import org.apache.log4j.Logger;
@@ -60,10 +59,8 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * @throws Exception 
 	 */
 	@Override
-	public byte[] getExcelData(String reportId) throws IOException
+	public byte[] getExcelData(Report report) throws IOException
 	{
-		Report report = (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
-		
 		logger.trace("Creating excel report");
 		HSSFWorkbook workbook = createWorkbook(report);
 		byte[] excelData = workbook.getBytes();

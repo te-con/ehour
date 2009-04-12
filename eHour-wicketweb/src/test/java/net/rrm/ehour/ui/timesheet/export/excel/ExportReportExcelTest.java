@@ -21,8 +21,10 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,12 +93,22 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		
 		replay(detailedReportService);
 		byte[] excelData = new ExportReportExcel().getExcelData(report);
+		assertTrue(excelData.length > 0);
+//		writeByteData(excelData);
+		
+		verify(detailedReportService);
+	}
 
+	/**
+	 * @param excelData
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	private void writeByteData(byte[] excelData) throws FileNotFoundException, IOException
+	{
 		File outfile = new File("/home/thies/test.xls");
 		FileOutputStream fos = new FileOutputStream(outfile);
 		fos.write(excelData);
 		fos.close();
-		
-		verify(detailedReportService);
 	}
 }

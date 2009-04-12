@@ -16,6 +16,9 @@
 
 package net.rrm.ehour.ui.common.component;
 
+import net.rrm.ehour.ui.common.report.Report;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.DynamicWebResource;
 import org.apache.wicket.protocol.http.WebResponse;
@@ -44,10 +47,11 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 		if (params.containsKey("reportId"))
 		{
 			String reportId = params.getString("reportId");
+			Report report = (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
 			
 			try
 			{
-				byte[] data = getExcelData(reportId);
+				byte[] data = getExcelData(report);
 				state.setData(data);
 				
 			} catch (Exception e)
@@ -70,7 +74,7 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 	 * (public for testing)
 	 * @return
 	 */
-	public abstract byte[] getExcelData(String reportId) throws Exception;
+	public abstract byte[] getExcelData(Report report) throws Exception;
 	
 	protected abstract String getFilename();
 

@@ -20,7 +20,6 @@ import java.io.IOException;
 
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBody;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBodyHeader;
@@ -52,10 +51,8 @@ public class ExportReportExcel extends AbstractExcelResource
 	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getExcelData(java.lang.String)
 	 */
 	@Override
-	public byte[] getExcelData(String reportId) throws IOException
+	public byte[] getExcelData(Report report) throws IOException
 	{
-		Report report = (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
-		
 		LOGGER.trace("Creating excel report");
 		HSSFWorkbook workbook = createWorkbook(report);
 		byte[] excelData = workbook.getBytes();

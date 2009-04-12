@@ -47,13 +47,13 @@ public class ExportReportBodyHeader extends AbstractExportReportPart
 		
 		HSSFRow row = sheet.createRow(rowNumber++);
 		
-		CellFactory.createCell(row, cellMargin + 0, new ResourceModel("excelMonth.body.customer"), workbook, BOLD, BORDER_SOUTH);
-		CellFactory.createCell(row, cellMargin + 1, new ResourceModel("excelMonth.body.project"), workbook, BOLD, BORDER_SOUTH);
-		CellFactory.createCell(row, cellMargin + 2, new ResourceModel("excelMonth.body.date"), workbook, BOLD, BORDER_SOUTH);
+		CellFactory.createCell(row, cellMargin + ExportReportColumn.CUSTOMER.getColumn(), new ResourceModel("excelMonth.body.customer"), workbook, BOLD, BORDER_SOUTH);
+		CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT.getColumn(), new ResourceModel("excelMonth.body.project"), workbook, BOLD, BORDER_SOUTH);
+		CellFactory.createCell(row, cellMargin + ExportReportColumn.DATE.getColumn(), new ResourceModel("excelMonth.body.date"), workbook, BOLD, BORDER_SOUTH);
 		CellFactory.createCell(row, cellMargin + 3, workbook, BORDER_SOUTH);
 		CellFactory.createCell(row, cellMargin + 4, workbook, BORDER_SOUTH);
 		CellFactory.createCell(row, cellMargin + 5, workbook, BORDER_SOUTH);
-		CellFactory.createCell(row, cellMargin + 6, new ResourceModel("excelMonth.body.hours"), workbook, BOLD, BORDER_SOUTH);
+		CellFactory.createCell(row, cellMargin + ExportReportColumn.HOURS.getColumn(), new ResourceModel("excelMonth.body.hours"), workbook, BOLD, BORDER_SOUTH);
 		
 		return rowNumber;
 	}
