@@ -91,6 +91,15 @@ public class CellStyleImpl
 			cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 		}
 	}		
+	
+	public static class BorderNorthThin implements CellStyleElement
+	{
+		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
+		{
+			cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
+		}
+	}	
 
 	public static class Header implements CellStyleElement
 	{

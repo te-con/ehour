@@ -20,6 +20,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Report element for trend reports (more data so each element is flattened)
@@ -292,6 +293,18 @@ public class FlatReportElement implements ReportElement
 	public void setDayDate(Date dayDate)
 	{
 		this.dayDate = dayDate;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this)
+					.append("date", dayDate)
+					.append("totalHours", totalHours)
+					.toString();
 	}
 	
 	/**

@@ -73,7 +73,6 @@ public abstract class TrendReport<RK extends Comparable<?>> extends AbstractCach
 		{
 			FlatReportElement aggregate = (FlatReportElement)element;
 			
-			
 			rowKey = getRowKey(aggregate);
 			
 			if (rowMap.containsKey(rowKey))

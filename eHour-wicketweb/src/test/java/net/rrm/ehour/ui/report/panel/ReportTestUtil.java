@@ -205,7 +205,6 @@ public class ReportTestUtil
 	 */
 	public static ReportCriteria getReportCriteria()
 	{
-		
 		UserCriteria userCriteria = new UserCriteria();
 		userCriteria.setReportRange(new DateRange(new Date(), new Date()));
 		ReportCriteria criteria = new ReportCriteria(userCriteria);

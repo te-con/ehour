@@ -98,11 +98,11 @@ public class ExportReportBody extends AbstractExportReportPart
 		
 		if (borderCels)
 		{
-			addThinSouthBorder(dateCell);
+			addThinNorthBorder(dateCell);
 			
-			// fill up other columns, date = column 2
+			// fill up other columns, date = column 0
 			// TODO make constants
-			createEmptyCells(row, 0, 1, 3, 4, 5, 6);
+			createEmptyCells(row, 1, 2, 3, 4, 5, 6);
 		}
 		return rowNumber;
 	}
@@ -124,10 +124,10 @@ public class ExportReportBody extends AbstractExportReportPart
 				
 				if (borderCells)
 				{
-					addThinSouthBorder(dateCell);
-					addThinSouthBorder(projectCell);
-					addThinSouthBorder(hoursCell);
-					addThinSouthBorder(customerCell);
+					addThinNorthBorder(dateCell);
+					addThinNorthBorder(projectCell);
+					addThinNorthBorder(hoursCell);
+					addThinNorthBorder(customerCell);
 					
 					createEmptyCells(row, 3);
 					
@@ -146,7 +146,7 @@ public class ExportReportBody extends AbstractExportReportPart
 			
 			if (borderCells)
 			{
-				addThinSouthBorder(datecell);
+				addThinNorthBorder(datecell);
 			}
 		}
 		
@@ -154,10 +154,10 @@ public class ExportReportBody extends AbstractExportReportPart
 		
 	}
 
-	private void addThinSouthBorder(HSSFCell cell)
+	private void addThinNorthBorder(HSSFCell cell)
 	{
 		HSSFCellStyle cellStyle = cell.getCellStyle();
-		CellStyle.BORDER_SOUTH_THIN.getCellStyleElement().populate(cellStyle, getWorkbook());
+		CellStyle.BORDER_NORTH_THIN.getCellStyleElement().populate(cellStyle, getWorkbook());
 	}
 	
 	private HSSFCell createHoursCell(Number hours, HSSFRow row)
@@ -185,7 +185,7 @@ public class ExportReportBody extends AbstractExportReportPart
 	{
 		for (int i : column)
 		{
-			CellFactory.createCell(row, getCellMargin() + i, getWorkbook(), CellStyle.BORDER_SOUTH_THIN);	
+			CellFactory.createCell(row, getCellMargin() + i, getWorkbook(), CellStyle.BORDER_NORTH_THIN);	
 		}
 	}
 	

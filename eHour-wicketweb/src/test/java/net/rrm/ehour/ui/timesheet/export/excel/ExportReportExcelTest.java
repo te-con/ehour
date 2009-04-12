@@ -28,17 +28,21 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
+import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.util.DateUtil;
 
@@ -52,17 +56,16 @@ import org.junit.Test;
  */
 public class ExportReportExcelTest extends AbstractSpringWebAppTester
 {
-	private PrintReport report;
 	private ConfigurationServiceImpl configService;
 	private DetailedReportService detailedReportService;
-	
-	private ReportCriteria criteria;
 
 	@Before
 	public void setUp() throws Exception
 	{
 		super.setUp();
 
+		getConfig().setFirstDayOfWeek(Calendar.MONDAY);
+		
 		detailedReportService = createMock(DetailedReportService.class);
 		getMockContext().putBean("detailedReportService", detailedReportService);
 		
@@ -71,27 +74,19 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		
 		BinaryConfigurationDAO binConfigfDao = createMock(BinaryConfigurationDAO.class);
 		configService.setBinConfigDAO(binConfigfDao);
-		
-				
-		criteria = ReportTestUtil.getReportCriteria();
-		report = new PrintReport(criteria);
 	}
 	
 	@Test
 	public void produceExcelReport() throws IOException
 	{
-		List<FlatReportElement>	elements = new ArrayList<FlatReportElement>();
+		List<FlatReportElement> elements = createMonthData();
 		
-		FlatReportElement element = new FlatReportElement();
-		element.setCustomerCode("TE1");
-		element.setCustomerName("TEST #1");
-		element.setProjectName("Project #1");
-		element.setDayDate(new Date());
-		element.setHours(2.5f);
-		element.setTotalHours(2.5f);
-		elements.add(element);
-		
-		ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
+		ReportData data = new ReportData(elements, getRangeForCurrentMonth());
+
+		UserCriteria userCriteria = new UserCriteria();
+		userCriteria.setReportRange(getRangeForCurrentMonth());
+		ReportCriteria criteria = new ReportCriteria(userCriteria);
+		Report report = new PrintReport(criteria);
 		
 		expect(detailedReportService.getDetailedReportData(criteria))
 			.andReturn(data);
@@ -103,7 +98,47 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		
 		verify(detailedReportService);
 	}
+	
+	private List<FlatReportElement> createMonthData()
+	{
+		List<FlatReportElement>	elements = new ArrayList<FlatReportElement>();
+		
+		DateRange range = getRangeForCurrentMonth();
+		
+		List<Date> month = DateUtil.createDateSequence(range, getConfig());
+		
+		for (Date date : month)
+		{
+			if (Math.random() >= 0.2)
+			{
+				elements.add(createElement(date));	
+			}
+		}
+		return elements;
+	}
 
+	private DateRange getRangeForCurrentMonth()
+	{
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.set(Calendar.MONTH, Calendar.NOVEMBER);
+		
+		DateRange range = DateUtil.getDateRangeForMonth(cal);
+		return range;
+	}
+
+	private FlatReportElement createElement(Date date)
+	{
+		FlatReportElement element = new FlatReportElement();
+		element.setCustomerCode("TE1");
+		element.setCustomerName("TEST #1");
+		element.setProjectName("Project #1");
+		element.setDayDate(date);
+		element.setHours(Math.random() * 8);
+		element.setTotalHours(element.getHours());
+
+		return element;
+	}
+	
 	
 	@Test
 	public void produceForEmptyMonth() throws IOException
@@ -111,6 +146,10 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		List<FlatReportElement>	elements = new ArrayList<FlatReportElement>();
 		
 		ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
+		UserCriteria userCriteria = new UserCriteria();
+		userCriteria.setReportRange(getRangeForCurrentMonth());
+		ReportCriteria criteria = new ReportCriteria(userCriteria);
+		Report report = new PrintReport(criteria);
 		
 		expect(detailedReportService.getDetailedReportData(criteria))
 			.andReturn(data);
