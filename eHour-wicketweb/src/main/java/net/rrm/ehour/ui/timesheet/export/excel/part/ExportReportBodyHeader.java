@@ -24,6 +24,7 @@ import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -45,15 +46,16 @@ public class ExportReportBodyHeader extends AbstractExportReportPart
 		HSSFWorkbook workbook = getWorkbook();
 		int cellMargin = getCellMargin();
 		
-		HSSFRow row = sheet.createRow(rowNumber++);
+		HSSFRow row = sheet.createRow(rowNumber);
 		
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.CUSTOMER.getColumn(), new ResourceModel("excelMonth.body.customer"), workbook, BOLD, BORDER_SOUTH);
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT.getColumn(), new ResourceModel("excelMonth.body.project"), workbook, BOLD, BORDER_SOUTH);
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.DATE.getColumn(), new ResourceModel("excelMonth.body.date"), workbook, BOLD, BORDER_SOUTH);
 		CellFactory.createCell(row, cellMargin + 3, workbook, BORDER_SOUTH);
-		CellFactory.createCell(row, cellMargin + 4, workbook, BORDER_SOUTH);
-		CellFactory.createCell(row, cellMargin + 5, workbook, BORDER_SOUTH);
+		sheet.addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, cellMargin + 3, cellMargin + 5));
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.HOURS.getColumn(), new ResourceModel("excelMonth.body.hours"), workbook, BOLD, BORDER_SOUTH);
+		
+		rowNumber++;
 		
 		return rowNumber;
 	}

@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBody;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBodyHeader;
+import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportColumn;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportHeader;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportTotal;
 
@@ -70,6 +71,11 @@ public class ExportReportExcel extends AbstractExcelResource
 		
 		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.formatDate("MMMM", report.getReportRange().getDateStart()));
 
+		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.DATE.getColumn()));
+		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.PROJECT.getColumn()));
+		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.CUSTOMER.getColumn()));
+		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.HOURS.getColumn()));
+		
 		int rowNumber = 11 - 1;
 		
 		rowNumber = new ExportReportHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);

@@ -77,10 +77,34 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		report = new PrintReport(criteria);
 	}
 	
-	/**
-	 * Test method for {@link net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel#getExcelData(java.lang.String)}.
-	 * @throws IOException 
-	 */
+	@Test
+	public void produceExcelReport() throws IOException
+	{
+		List<FlatReportElement>	elements = new ArrayList<FlatReportElement>();
+		
+		FlatReportElement element = new FlatReportElement();
+		element.setCustomerCode("TE1");
+		element.setCustomerName("TEST #1");
+		element.setProjectName("Project #1");
+		element.setDayDate(new Date());
+		element.setHours(2.5f);
+		element.setTotalHours(2.5f);
+		elements.add(element);
+		
+		ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
+		
+		expect(detailedReportService.getDetailedReportData(criteria))
+			.andReturn(data);
+		
+		replay(detailedReportService);
+		byte[] excelData = new ExportReportExcel().getExcelData(report);
+		assertTrue(excelData.length > 0);
+		writeByteData(excelData);
+		
+		verify(detailedReportService);
+	}
+
+	
 	@Test
 	public void produceForEmptyMonth() throws IOException
 	{

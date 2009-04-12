@@ -38,6 +38,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
 
 /**
  * Created on Mar 25, 2009, 6:35:04 AM
@@ -112,23 +113,31 @@ public class ExportReportBody extends AbstractExportReportPart
 		
 		for (FlatReportElement flatReportElement : elements)
 		{
-			HSSFRow row = getSheet().createRow(rowNumber++);
+			HSSFRow row = getSheet().createRow(rowNumber);
 			
 			if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() > 0.0)
 			{
 				HSSFCell dateCell = createDateCell(date, row);
 				HSSFCell projectCell = createProjectCell(flatReportElement.getProjectName(), row);
 				HSSFCell hoursCell = createHoursCell(flatReportElement.getTotalHours(), row);
+				HSSFCell customerCell = createCustomerCell(flatReportElement.getCustomerCode(), row);
 				
 				if (borderCells)
 				{
 					addThinSouthBorder(dateCell);
 					addThinSouthBorder(projectCell);
 					addThinSouthBorder(hoursCell);
+					addThinSouthBorder(customerCell);
 					
-					createEmptyCells(row, 1, 3, 4, 5);
+					createEmptyCells(row, 1, 3);
+					
+					getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, getCellMargin() + 3, getCellMargin() + 5));
+
+					
 				}
 				
+				
+				rowNumber++;
 				addedForDate = true;
 			}
 		}
@@ -156,18 +165,23 @@ public class ExportReportBody extends AbstractExportReportPart
 	
 	private HSSFCell createHoursCell(Number hours, HSSFRow row)
 	{
-		return CellFactory.createCell(row, getCellMargin() + 6 ,hours,  getWorkbook(), CellStyle.DIGIT);
+		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.HOURS.getColumn() ,hours,  getWorkbook(), CellStyle.DIGIT);
 	}
-
 	
 	private HSSFCell createProjectCell(String project, HSSFRow row)
 	{
-		return CellFactory.createCell(row, getCellMargin(), project, getWorkbook());
+		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), project, getWorkbook());
 	}
+
+	private HSSFCell createCustomerCell(String customerCode, HSSFRow row)
+	{
+		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER.getColumn(), customerCode, getWorkbook());
+	}
+
 	
 	private HSSFCell createDateCell(Date date, HSSFRow row)
 	{
-		return CellFactory.createCell(row, getCellMargin() + 2 , getFormatter().format(date), getWorkbook(), CellStyle.DATE);
+		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.DATE.getColumn() , getFormatter().format(date), getWorkbook(), CellStyle.DATE);
 	}
 	
 	private void createEmptyCells(HSSFRow row, int... column)
