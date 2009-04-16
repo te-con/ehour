@@ -96,7 +96,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		replay(detailedReportService);
 		byte[] excelData = new ExportReportExcel().getExcelData(report);
 		assertTrue(excelData.length > 0);
-		writeByteData(excelData);
+//		writeByteData(excelData);
 		
 		verify(detailedReportService);
 	}
