@@ -17,4 +17,10 @@ CREATE TABLE AUDIT (
 
 UPDATE CONFIGURATION SET CONFIG_VALUE = '0.8.3' WHERE CONFIG_KEY = 'version';
 
+CREATE TABLE `CONFIGURATION_BIN` (
+  `config_key` varchar(255) NOT NULL,
+  `config_value` longblob,
+  `metadata` varchar(255) default NULL,
+  PRIMARY KEY  (`config_key`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
