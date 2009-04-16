@@ -51,19 +51,25 @@ public class ExportReportSignOff extends AbstractExportReportPart
 		
 		HSSFRow row = sheet.createRow(rowNumber);
 		
-//		System.out.println(getReport().getReportCriteria().getUserCriteria().getUsers().get(0));
-		
 		CellFactory.createCell(row, cellMargin, new ResourceModel("excelMonth.managerSignature"), workbook);
 		CellFactory.createCell(row, cellMargin + 4, new ResourceModel("excelMonth.userSignature"), workbook);
 
+		rowNumber = createSignOffBox(rowNumber);
+		
+		return rowNumber;
+	}
+
+	private int createSignOffBox(int rowNumber)
+	{
+		HSSFRow boxRow = getSheet().createRow(rowNumber++);
+
+		int cellMargin = getCellMargin();
+		
 		getSheet().addMergedRegion(new CellRangeAddress(rowNumber + 1, rowNumber + 4, cellMargin, cellMargin + 2));
 		getSheet().addMergedRegion(new CellRangeAddress(rowNumber + 1, rowNumber + 4, cellMargin + 4, cellMargin + 6));
-		
-		HSSFRow boxRow = sheet.createRow(rowNumber + 1);
-		
-		CellFactory.createCell(boxRow, cellMargin, workbook, BORDER_THIN);
-		CellFactory.createCell(boxRow, cellMargin  + 4, workbook, BORDER_THIN);
-		
+
+		CellFactory.createCell(boxRow, cellMargin, getWorkbook(), BORDER_THIN);
+		CellFactory.createCell(boxRow, cellMargin  + 4, getWorkbook(), BORDER_THIN);
 		
 		return rowNumber;
 	}
