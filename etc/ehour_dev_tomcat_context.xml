@@ -1,0 +1,8 @@
+<Context path="ehour" reloadable="true" docBase="/home/thies/projects/ehour/workspaces/ehour_0.8.3/trunk/eHour-web/src/main/webapp" workDir="/home/thies/projects/ehour/workspaces/ehour_0.8.3/trunk/eHour-web/work" >
+	<Loader className="org.apache.catalina.loader.DevLoader" reloadable="true" debug="1" useSystemClassLoaderAsParent="false" />
+
+	<Resource name="jdbc/eHourDS" auth="Container" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000" username="root"
+		password="a" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://127.0.0.1:3306/ehour_08?zeroDateTimeBehavior=convertToNull" />
+</Context>
