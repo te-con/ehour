@@ -56,12 +56,13 @@ public class ExportReportSignOff extends AbstractExportReportPart
 		CellFactory.createCell(row, cellMargin, new ResourceModel("excelMonth.managerSignature"), workbook);
 		CellFactory.createCell(row, cellMargin + 4, new ResourceModel("excelMonth.userSignature"), workbook);
 
-		getSheet().addMergedRegion(new CellRangeAddress(rowNumber + 1, rowNumber + 4, cellMargin, cellMargin + 3));
+		getSheet().addMergedRegion(new CellRangeAddress(rowNumber + 1, rowNumber + 4, cellMargin, cellMargin + 2));
 		getSheet().addMergedRegion(new CellRangeAddress(rowNumber + 1, rowNumber + 4, cellMargin + 4, cellMargin + 6));
 		
 		HSSFRow boxRow = sheet.createRow(rowNumber + 1);
 		
 		CellFactory.createCell(boxRow, cellMargin, workbook, BORDER_THIN);
+		CellFactory.createCell(boxRow, cellMargin  + 4, workbook, BORDER_THIN);
 		
 		
 		return rowNumber;

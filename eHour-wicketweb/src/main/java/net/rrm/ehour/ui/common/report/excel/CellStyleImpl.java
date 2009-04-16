@@ -92,6 +92,24 @@ public class CellStyleImpl
 		}
 	}		
 	
+	public static class BorderThin implements CellStyleElement
+	{
+		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
+		{
+			cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
+
+			cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+
+			cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			cellStyle.setLeftBorderColor(HSSFColor.BLACK.index);
+
+			cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			cellStyle.setRightBorderColor(HSSFColor.BLACK.index);
+		}
+	}
+	
 	public static class BorderNorthThin implements CellStyleElement
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)

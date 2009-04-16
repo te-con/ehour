@@ -44,6 +44,7 @@ import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.report.trend.PrintReport;
+import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.util.DateUtil;
 
 import org.junit.Before;
@@ -84,6 +85,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		ReportData data = new ReportData(elements, getRangeForCurrentMonth());
 
 		UserCriteria userCriteria = new UserCriteria();
+		userCriteria.getCustomParameters().put(ExportCriteriaParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
 		userCriteria.setReportRange(getRangeForCurrentMonth());
 		ReportCriteria criteria = new ReportCriteria(userCriteria);
 		Report report = new PrintReport(criteria);

@@ -21,10 +21,12 @@ import java.io.IOException;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBody;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportBodyHeader;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportColumn;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportHeader;
+import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportSignOff;
 import net.rrm.ehour.ui.timesheet.export.excel.part.ExportReportTotal;
 
 import org.apache.log4j.Logger;
@@ -75,6 +77,8 @@ public class ExportReportExcel extends AbstractExcelResource
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.PROJECT.getColumn()));
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.CUSTOMER.getColumn()));
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.HOURS.getColumn()));
+		sheet.setColumnWidth(0, 1024);
+		System.out.println(sheet.getColumnWidth(1));
 		
 		int rowNumber = 11 - 1;
 		
@@ -84,8 +88,23 @@ public class ExportReportExcel extends AbstractExcelResource
 		rowNumber = new ExportReportBody(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		rowNumber++;
 		rowNumber = new ExportReportTotal(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
+		
+		if (isInclSignOff(report))
+		{
+			rowNumber += 2;
+			rowNumber = new ExportReportSignOff(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
+		}
+		
 		return workbook;
 	}
+	
+	private boolean isInclSignOff(Report report)
+	{
+		String key = ExportCriteriaParameter.INCL_SIGN_OFF.name();
+		Object object = report.getReportCriteria().getUserCriteria().getCustomParameters().get(key);
+		return (object == null) ? false : ((Boolean)object).booleanValue();
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getFilename()
