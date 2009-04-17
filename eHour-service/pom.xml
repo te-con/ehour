@@ -267,16 +267,16 @@
 			<version>2.3.0</version>
 			<exclusions>
 				<exclusion>
-					<artifactId>org.apache.poi</artifactId>
-					<groupId>poi</groupId>
+					<groupId>org.apache.poi</groupId>
+					<artifactId>poi</artifactId>
 				</exclusion>
 				<exclusion>
 					<artifactId>junit-addons</artifactId>
 					<groupId>junit-addons</groupId>
 				</exclusion>
 				<exclusion>
-					<artifactId>org.slf4j</artifactId>
-					<groupId>slf4j-nop</groupId>
+					<groupId>org.slf4j</>groupId
+					<artifactId>slf4j-nop</artifactId>
 				</exclusion>
 			</exclusions>
 			<scope>test</scope>
