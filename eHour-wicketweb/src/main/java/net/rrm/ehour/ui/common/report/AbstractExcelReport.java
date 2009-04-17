@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -63,9 +63,8 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	{
 		logger.trace("Creating excel report");
 		HSSFWorkbook workbook = createWorkbook(report);
-		byte[] excelData = workbook.getBytes();
-		
-		return excelData;
+
+		return PoiUtil.getWorkbookAsBytes(workbook);
 	}
 	
 	/**

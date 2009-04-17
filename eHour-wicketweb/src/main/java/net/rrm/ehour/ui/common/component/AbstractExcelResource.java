@@ -46,8 +46,7 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 		
 		if (params.containsKey("reportId"))
 		{
-			String reportId = params.getString("reportId");
-			Report report = (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
+			Report report = getReport(params);
 			
 			try
 			{
@@ -63,10 +62,17 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 		}
 		else
 		{
-			logger.error("No reportId parameter provided");
+			logger.error("No valid report id provided");
 		}
 		
 		return state;
+	}
+
+	private Report getReport(ValueMap params)
+	{
+		String reportId = params.getString("reportId");
+		Report report = (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
+		return report;
 	}
 	
 	/**

@@ -96,7 +96,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		replay(detailedReportService);
 		byte[] excelData = new ExportReportExcel().getExcelData(report);
 		assertTrue(excelData.length > 0);
-//		writeByteData(excelData);
+		writeByteData(excelData);
 		
 		verify(detailedReportService);
 	}
@@ -162,7 +162,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 //		writeByteData(excelData);
 		
 		verify(detailedReportService);
-	}
+	} 
 
 	/**
 	 * @param excelData
@@ -171,7 +171,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 	 */
 	private void writeByteData(byte[] excelData) throws FileNotFoundException, IOException
 	{
-		File outfile = new File("/home/thies/test.xls");
+		File outfile = new File("d:\\test.xls");
 		FileOutputStream fos = new FileOutputStream(outfile);
 		fos.write(excelData);
 		fos.close();

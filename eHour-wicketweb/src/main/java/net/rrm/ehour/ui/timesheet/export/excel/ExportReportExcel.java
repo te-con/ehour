@@ -16,9 +16,11 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
+import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
@@ -58,9 +60,8 @@ public class ExportReportExcel extends AbstractExcelResource
 	{
 		LOGGER.trace("Creating excel report");
 		HSSFWorkbook workbook = createWorkbook(report);
-		byte[] excelData = workbook.getBytes();
-		
-		return excelData;
+
+		return PoiUtil.getWorkbookAsBytes(workbook);
 	}
 
 	/**
@@ -78,7 +79,6 @@ public class ExportReportExcel extends AbstractExcelResource
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.CUSTOMER.getColumn()));
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.HOURS.getColumn()));
 		sheet.setColumnWidth(0, 1024);
-		System.out.println(sheet.getColumnWidth(1));
 		
 		int rowNumber = 11 - 1;
 		
