@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
+import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -101,6 +102,8 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 	private void setCriteriaModel(Calendar forMonth)
 	{
 		ReportCriteria reportCriteria = getReportCriteria(true);
+		
+		reportCriteria.getUserCriteria().setReportRange(DateUtil.getDateRangeForMonth(forMonth));
 		
 		if (reportCriteria.getUserCriteria().getProjects() == null)
 		{
