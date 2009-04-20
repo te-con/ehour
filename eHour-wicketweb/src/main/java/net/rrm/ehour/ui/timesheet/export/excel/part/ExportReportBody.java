@@ -45,6 +45,7 @@ import org.apache.poi.hssf.util.CellRangeAddress;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
+@SuppressWarnings("deprecation")
 public class ExportReportBody extends AbstractExportReportPart
 {
 	public ExportReportBody(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
@@ -100,10 +101,15 @@ public class ExportReportBody extends AbstractExportReportPart
 		{
 			addThinNorthBorder(dateCell);
 			
-			// fill up other columns, date = column 0
-			// TODO make constants
-			createEmptyCells(row, 1, 2, 3, 4, 5, 6);
+			CellStyle border = CellStyle.BORDER_NORTH_THIN;
+			
+			createEmptyCells(row, border);
+			
+			CellFactory.createCell(row, getCellMargin() +  ExportReportColumn.CUSTOMER.getColumn(), getWorkbook(), border);
+			CellFactory.createCell(row, getCellMargin() +  ExportReportColumn.PROJECT.getColumn(), getWorkbook(), border);
+			CellFactory.createCell(row, getCellMargin() +  ExportReportColumn.HOURS.getColumn(), getWorkbook(), border);
 		}
+
 		return rowNumber;
 	}
 	
@@ -129,7 +135,7 @@ public class ExportReportBody extends AbstractExportReportPart
 					addThinNorthBorder(hoursCell);
 					addThinNorthBorder(customerCell);
 					
-					createEmptyCells(row, 3);
+					createEmptyCells(row, CellStyle.BORDER_NORTH_THIN);
 					
 					getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, getCellMargin() + 3, getCellMargin() + 5));
 				}
@@ -179,14 +185,6 @@ public class ExportReportBody extends AbstractExportReportPart
 	private HSSFCell createDateCell(Date date, HSSFRow row)
 	{
 		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.DATE.getColumn() , getFormatter().format(date), getWorkbook(), CellStyle.DATE);
-	}
-	
-	private void createEmptyCells(HSSFRow row, int... column)
-	{
-		for (int i : column)
-		{
-			CellFactory.createCell(row, getCellMargin() + i, getWorkbook(), CellStyle.BORDER_NORTH_THIN);	
-		}
 	}
 	
 	/**

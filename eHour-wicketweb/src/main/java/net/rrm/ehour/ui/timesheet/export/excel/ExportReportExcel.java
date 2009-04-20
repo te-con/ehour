@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;

@@ -32,6 +32,7 @@ import org.apache.wicket.model.ResourceModel;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
+@SuppressWarnings("deprecation")
 public class ExportReportBodyHeader extends AbstractExportReportPart
 {
 	public ExportReportBodyHeader(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
@@ -51,7 +52,9 @@ public class ExportReportBodyHeader extends AbstractExportReportPart
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.CUSTOMER.getColumn(), new ResourceModel("excelMonth.body.customer"), workbook, BOLD, BORDER_SOUTH);
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT.getColumn(), new ResourceModel("excelMonth.body.project"), workbook, BOLD, BORDER_SOUTH);
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.DATE.getColumn(), new ResourceModel("excelMonth.body.date"), workbook, BOLD, BORDER_SOUTH);
-		CellFactory.createCell(row, cellMargin + 3, workbook, BORDER_SOUTH);
+		
+		createEmptyCells(row, BORDER_SOUTH);
+
 		sheet.addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, cellMargin + 3, cellMargin + 5));
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.HOURS.getColumn(), new ResourceModel("excelMonth.body.hours"), workbook, BOLD, BORDER_SOUTH);
 		

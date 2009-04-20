@@ -27,21 +27,28 @@ public enum ExportReportColumn
 	CUSTOMER(1),
 	PROJECT(2),
 	DATE(0),
-	HOURS(6);
+	HOURS(6),
+	EMPTY(3, 4, 5);
 	
+	private int[] columns;
 	
-	private int column;
-	
-	ExportReportColumn(int column)
+	ExportReportColumn(int... columns)
 	{
-		this.column= column;
+		this.columns= columns;
 	}
 	
 	/**
 	 * @return the column
 	 */
+	public int[] getColumns()
+	{
+		return columns;
+	}
+
 	public int getColumn()
 	{
-		return column;
+		return columns[0];
 	}
+
+
 }

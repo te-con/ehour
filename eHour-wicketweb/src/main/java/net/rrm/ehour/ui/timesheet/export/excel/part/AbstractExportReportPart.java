@@ -21,8 +21,11 @@ import java.util.Locale;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.report.Report;
+import net.rrm.ehour.ui.common.report.excel.CellFactory;
+import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -88,4 +91,12 @@ public abstract class AbstractExportReportPart
 	{
 		return workbook;
 	}
+	
+	protected void createEmptyCells(HSSFRow row, CellStyle... cellStyles)
+	{
+		for (int i : ExportReportColumn.EMPTY.getColumns())
+		{
+			CellFactory.createCell(row, getCellMargin() + i, getWorkbook(), cellStyles);	
+		}
+	}	
 }
