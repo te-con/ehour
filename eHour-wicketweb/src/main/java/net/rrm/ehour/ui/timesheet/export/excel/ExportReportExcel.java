@@ -111,7 +111,6 @@ public class ExportReportExcel extends AbstractExcelResource
 	@Override
 	protected String getFilename()
 	{
-		// TODO Auto-generated method stub
-		return "TODO.xls";
+		return "month_report.xls";
 	}
 }

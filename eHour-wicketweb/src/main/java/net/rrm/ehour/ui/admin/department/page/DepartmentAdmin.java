@@ -50,7 +50,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Department admin page
  **/
 
-public class DepartmentAdmin  extends BaseTabbedAdminPage
+public class DepartmentAdmin extends BaseTabbedAdminPage
 {
 	private final String		DEPT_SELECTOR_ID = "deptSelector";
 	private static final long 	serialVersionUID = -6686097898699382233L;

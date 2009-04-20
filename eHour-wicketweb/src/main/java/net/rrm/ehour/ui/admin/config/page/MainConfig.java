@@ -106,11 +106,6 @@ public class MainConfig extends BaseAdminPage
 		createForm(blueBorder);
 	}
 
-	/**
-	 * Create form
-	 * 
-	 * @param parent
-	 */
 	private void createForm(WebMarkupContainer parent)
 	{
 		Form configForm = new Form("configForm", new CompoundPropertyModel(configBackingBean));

@@ -33,12 +33,6 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 {
 	private	AddEditTabbedPanel	tabbedPanel;
 	
-	/**
-	 * 
-	 * @param pageTitle
-	 * @param addTabTitle
-	 * @param editTabTitle
-	 */
 	public BaseTabbedAdminPage(ResourceModel pageTitle,
 								ResourceModel addTabTitle,
 								ResourceModel editTabTitle,
@@ -47,7 +41,6 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 								)
 	{
 		super(pageTitle, null, headerResourceId, bodyResourceId);
-		
 		
 		tabbedPanel = new AddEditTabbedPanel("tabs", addTabTitle, editTabTitle, noEntrySelectedText)
 		{
