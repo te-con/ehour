@@ -7,33 +7,35 @@
 
 	<body>
 		<wicket:panel>
-		<form wicket:id="form" style="margin: 0; padding: 0">
-			<table class="contentTable" style="padding: 0 10px 0 0">
-				<wicket:child></wicket:child>
-
-				<tr>
-					<td colspan="2">
-						<br />
-					</td>
-				</tr>
-				
-				<tr>
-					<td colspan="2">
-						<br />
-						<span wicket:id="serverMessage"></span>
-					</td>
-				</tr>				
-
-				<tr>
-					<td style="text-align: right" colspan="2">
-						<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
-							<span><wicket:message key="general.save" /></span></a>
-					</td>
-				</tr>
-				
-			</table>
-		</form>		
+		<div wicket:id="border">
 	
+			<form wicket:id="form" style="margin: 0; padding: 0">
+				<table class="contentTable" style="padding: 0 10px 0 0">
+					<wicket:child></wicket:child>
+	
+					<tr>
+						<td colspan="2">
+							<br />
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<br />
+							<span wicket:id="serverMessage"></span>
+						</td>
+					</tr>				
+	
+					<tr>
+						<td style="text-align: right" colspan="2">
+							<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+								<span><wicket:message key="general.save" /></span></a>
+						</td>
+					</tr>
+					
+				</table>
+			</form>		
+		</div>
 		</wicket:panel>
 	</body>
 

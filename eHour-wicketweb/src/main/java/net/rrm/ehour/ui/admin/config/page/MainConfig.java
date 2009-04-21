@@ -21,8 +21,6 @@ import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.BaseAdminPage;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.admin.config.panel.ConfigTabPanel;
-import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -49,13 +47,16 @@ public class MainConfig extends BaseAdminPage
 
 	private void setUpPage()
 	{
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("configFrame", new ResourceModel("admin.config.title"));
-		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
-		greyBorder.add(blueBorder);
-		add(greyBorder);
+//		GreyRoundedBorder greyBorder = new GreyRoundedBorder("configFrame", new ResourceModel("admin.config.title"));
+//		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
+//		greyBorder.add(blueBorder);
+//		add(greyBorder);
 
+//		WebMarkupContainer container = new WebMarkupContainer("configFrame");
+//		add(container);
+		
 		MainConfigBackingBean configBackingBean = new MainConfigBackingBean(getDbConfig());
-		blueBorder.add(new ConfigTabPanel("configTabs", new CompoundPropertyModel(configBackingBean)));
+		add(new ConfigTabPanel("configTabs", new CompoundPropertyModel(configBackingBean)));
 	}
 
 	private EhourConfigStub getDbConfig()

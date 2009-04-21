@@ -23,6 +23,7 @@ import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.ajax.DemoDecorator;
 import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 
 import org.apache.log4j.Logger;
@@ -61,8 +62,11 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 	
 	private void createComponents(IModel model)
 	{
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		add(greyBorder);
+		
 		Form form = new Form("form", model);
-		add(form);
+		greyBorder.add(form);
 		form.setOutputMarkupId(true);
 		
 		serverMessage = new WebComponent("serverMessage");
