@@ -24,13 +24,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	
 	private void createTabs()
 	{
-		addTab(ConfigTab.SMTP, new TabFactory()
-		{
-			public Panel createTab(String panelId)
-			{
-				return new MailServerConfigPanel(panelId);
-			}
-		});
+		addTab(ConfigTab.SMTP, new MailServerConfigPanelFactory());
 	}
 	
 	// might want to use reflection.. oh well
@@ -49,6 +43,15 @@ public class ConfigTabPanel extends MultiTabbedPanel
 		};
 
 		getTabs().add(tabDefinition.getTabIndex(), tab);		
+	}
+	
+	
+	private class MailServerConfigPanelFactory implements TabFactory
+	{
+		public Panel createTab(String panelId)
+		{
+			return new MailServerConfigPanel(panelId);
+		}
 	}
 	
 	private interface TabFactory
