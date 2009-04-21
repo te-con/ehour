@@ -16,14 +16,85 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
-import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
+import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
+import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 
-public class MailServerConfigPanel extends AbstractFormSubmittingPanel
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
+import org.apache.wicket.validation.validator.NumberValidator;
+
+
+public class MailServerConfigPanel extends AbstractConfigPanel
 {
 	private static final long serialVersionUID = 1500312866540540312L;
 
-	public MailServerConfigPanel(String id)
+	@SpringBean
+	private MailService				mailService;
+	
+	public MailServerConfigPanel(String id, IModel model)
 	{
-		super(id);
+		super(id, model);
 	}
+	
+	@Override
+	protected void addFormComponents(Form form)
+	{
+		// reply sender
+		RequiredTextField mailFrom = new RequiredTextField("config.mailFrom");
+		mailFrom.add(EmailAddressValidator.getInstance());
+		form.add(mailFrom);
+		form.add(new AjaxFormComponentFeedbackIndicator("mailFromError", mailFrom));
+		
+		// smtp server, port, username, pass
+		TextField mailSmtp = new RequiredTextField("config.mailSmtp");
+		form.add(new AjaxFormComponentFeedbackIndicator("mailSmtpValidationError", mailSmtp));
+		form.add(mailSmtp);
+
+		TextField smtpPort = new RequiredTextField("config.smtpPort");
+		form.add(new AjaxFormComponentFeedbackIndicator("smtpPortValidationError", mailSmtp));
+		smtpPort.setType(Integer.class);
+		smtpPort.add(NumberValidator.POSITIVE);
+		form.add(smtpPort);
+		
+		form.add(new TextField("config.smtpUsername"));
+		form.add(new TextField("config.smtpPassword"));
+		addTestMailSettingsButton(form);		
+	}
+	
+	/**
+	 * Add test mail button
+	 * @param form
+	 */
+	private void addTestMailSettingsButton(Form form)
+	{
+		form.add(new AjaxButton("testMail", form)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				MainConfigBackingBean configBackingBean = (MainConfigBackingBean)getModelObject();
+				
+				mailService.mailTestMessage(configBackingBean.getConfig());
+				
+				Label replacementLabel = new Label("serverMessage", new ResourceModel("admin.config.testSmtpSent"));
+				replacementLabel.setOutputMarkupId(true);
+				replacementLabel.add(new SimpleAttributeModifier("class", "whiteText"));
+				getServerMessage().replaceWith(replacementLabel);
+				setServerMessage(replacementLabel);
+				target.addComponent(replacementLabel);
+			}
+		});
+	}	
 }

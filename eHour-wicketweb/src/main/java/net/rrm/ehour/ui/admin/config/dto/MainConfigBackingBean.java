@@ -40,24 +40,20 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * TODO 
- **/
+ * Configuration backing bean
+ * Created on Apr 21, 2009, 3:13:25 PM
+ * @author Thies Edeling (thies@te-con.nl) 
+ *
+ */
 
 public class MainConfigBackingBean implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -682573285773646807L;
 	private	boolean			translationsOnly = false;
 	private boolean			smtpAuthentication = false;
 	private EhourConfigStub	config;
 	private Date			firstWeekStart;
 
-	/**
-	 * 
-	 * @param config
-	 */
 	public MainConfigBackingBean(EhourConfigStub config)
 	{
 		this.config = config;

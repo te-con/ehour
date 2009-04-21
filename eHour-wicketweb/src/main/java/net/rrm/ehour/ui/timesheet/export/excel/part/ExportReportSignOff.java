@@ -17,7 +17,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel.part;
 
-import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
