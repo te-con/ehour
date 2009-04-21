@@ -6,7 +6,7 @@
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
 	<body>
-		<wicket:panel>
+		<wicket:extend>
 			<tr>
 				<td><wicket:message key="admin.config.showTurnover" />:</td>
 				<td><input type="checkbox" wicket:id="config.showTurnover" /></td>
@@ -24,6 +24,6 @@
 				<td><select style="width: 15em" class="textInputSmall" wicket:id="firstWeekStart"></select></td>
 			</tr>		
 		
-		</wicket:panel>
+		</wicket:extend>
 	</body>
 </html>

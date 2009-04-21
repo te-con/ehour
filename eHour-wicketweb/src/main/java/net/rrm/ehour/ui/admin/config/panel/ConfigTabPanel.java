@@ -1,5 +1,7 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
+import java.io.Serializable;
+
 import net.rrm.ehour.ui.common.component.MultiTabbedPanel;
 
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
@@ -48,6 +50,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 		getTabs().add(tabDefinition.getTabIndex(), tab);		
 	}
 	
+	@SuppressWarnings("serial")
 	private class MiscConfigPanelFactory implements TabFactory
 	{
 		public Panel createTab(String panelId, IModel model)
@@ -56,6 +59,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 		}
 	}
 	
+	@SuppressWarnings("serial")
 	private class LocaleConfigPanelFactory implements TabFactory
 	{
 		public Panel createTab(String panelId, IModel model)
@@ -64,6 +68,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 		}
 	}
 	
+	@SuppressWarnings("serial")
 	private class MailServerConfigPanelFactory implements TabFactory
 	{
 		public Panel createTab(String panelId, IModel model)
@@ -72,7 +77,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 		}
 	}
 	
-	private interface TabFactory
+	private interface TabFactory extends Serializable
 	{
 		Panel createTab(String panelId, IModel model);
 	}

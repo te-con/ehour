@@ -6,7 +6,7 @@
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
 	<body>
-		<wicket:panel>
+		<wicket:extend>
 			<tr>
 				<td valign="top"><wicket:message key="admin.config.locale" />:</td>
 				<td><select style="width: 15em"  class="textInputSmall"  wicket:id="localeCountry"></select>
@@ -49,7 +49,7 @@
 				<td><wicket:message key="admin.config.locale.currency" />:</td>
 				<td><select style="width: 15em" class="textInputSmall" wicket:id="config.currency"></select></td>
 			</tr>
-		</wicket:panel>
+		</wicket:extend>
 	</body>
 
 </html>		

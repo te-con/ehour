@@ -6,7 +6,7 @@
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
 	<body>
-		<wicket:panel>
+		<wicket:extend>
 			<tr>
 				<td valign="top"><wicket:message key="admin.config.mailFrom" />:</td>
 				<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="config.mailFrom" />
@@ -44,7 +44,7 @@
 					<span><wicket:message key="admin.config.testSmtp" /></span></a>
 				</td>
 			</tr>					
-		</wicket:panel>
+		</wicket:extend>
 	</body>
 
 </html>
