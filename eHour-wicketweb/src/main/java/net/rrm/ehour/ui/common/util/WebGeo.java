@@ -43,7 +43,7 @@ public enum WebGeo
 		this.value = value;
 	}
 	
-	public Integer getWidth()
+	public Integer getValue()
 	{
 		return value;
 	}

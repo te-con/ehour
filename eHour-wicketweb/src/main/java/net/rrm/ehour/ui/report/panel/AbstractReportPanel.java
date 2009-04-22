@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.report.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -31,10 +31,10 @@ public abstract class AbstractReportPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
 
-	private WebWidth webWidth= WebWidth.CONTENT_WIDE;
+	private WebGeo webWidth= WebGeo.W_CONTENT_WIDE;
 	
-	private WebWidth	chartWidth;
-	private WebWidth	chartHeight;
+	private WebGeo	chartWidth;
+	private WebGeo	chartHeight;
 	
 	/**
 	 * 
@@ -42,23 +42,23 @@ public abstract class AbstractReportPanel extends Panel
 	 */
 	public AbstractReportPanel(String id)
 	{
-		this(id, WebWidth.DEFAULT);
+		this(id, WebGeo.NOT_DEFINED);
 	}
 	
 	/**
 	 * 
 	 * @param id
 	 */
-	public AbstractReportPanel(String id, WebWidth chartWidth)
+	public AbstractReportPanel(String id, WebGeo chartWidth)
 	{
-		this(id, null, chartWidth, WebWidth.CONTENT_WIDE);
+		this(id, null, chartWidth, WebGeo.W_CONTENT_WIDE);
 	}	
 	
 	/**
 	 * 
 	 * @param id
 	 */
-	public AbstractReportPanel(String id, WebWidth chartWidth, WebWidth reportWidth)
+	public AbstractReportPanel(String id, WebGeo chartWidth, WebGeo reportWidth)
 	{
 		this(id, null, chartWidth, reportWidth);
 	}	
@@ -68,7 +68,7 @@ public abstract class AbstractReportPanel extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public AbstractReportPanel(String id, IModel model, WebWidth chartWidth, WebWidth webWidth)
+	public AbstractReportPanel(String id, IModel model, WebGeo chartWidth, WebGeo webWidth)
 	{
 		super(id, model);
 		
@@ -76,29 +76,29 @@ public abstract class AbstractReportPanel extends Panel
 		
 		this.webWidth = webWidth; 
 		
-		if (chartWidth == WebWidth.DEFAULT)
+		if (chartWidth == WebGeo.NOT_DEFINED)
 		{
-			this.chartWidth = !config.isShowTurnover() ? WebWidth.CHART_WIDE : WebWidth.CHART_SMALL;
+			this.chartWidth = !config.isShowTurnover() ? WebGeo.W_CHART_WIDE : WebGeo.W_CHART_SMALL;
 		}
 		else
 		{
 			this.chartWidth = chartWidth;
 		}
 		
-		chartHeight = WebWidth.CHART_HEIGHT;		
+		chartHeight = WebGeo.H_CHART;		
 	}
 	
-	public WebWidth getChartWidth()
+	public WebGeo getChartWidth()
 	{
 		return chartWidth;
 	}
 	
-	public WebWidth getChartHeight()
+	public WebGeo getChartHeight()
 	{
 		return chartHeight;
 	}
 	
-	protected WebWidth getReportWidth()
+	protected WebGeo getReportWidth()
 	{
 		return webWidth;
 	}

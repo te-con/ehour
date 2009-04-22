@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.util.DateUtil;
 
@@ -99,7 +99,7 @@ public class MonthOverviewPanel extends Panel
 												new ResourceModel("monthoverview.overview"),
 												true,
 												printLink, null,
-												WebWidth.CONTENT_MEDIUM);
+												WebGeo.W_CONTENT_MEDIUM);
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		
 		greyBorder.add(blueBorder);

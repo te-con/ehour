@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.admin.assignment.panel;
 
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 
 import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
@@ -45,7 +45,7 @@ public class NoUserSelectedPanel extends Panel
 		super(id);
 		
 		this.setOutputMarkupId(true);
-		Border greyBorder = new GreyRoundedBorder("border", WebWidth.CONTENT_ADMIN_TAB);
+		Border greyBorder = new GreyRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB);
 		add(greyBorder);
 
 		greyBorder.add(new Label("noEntry", new ResourceModel(resourceId)));

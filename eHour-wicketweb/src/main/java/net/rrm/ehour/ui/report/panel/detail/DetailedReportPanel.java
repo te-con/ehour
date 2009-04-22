@@ -45,7 +45,7 @@ public class DetailedReportPanel extends AbstractReportPanel
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", getReportWidth());
 		add(greyBorder);
 		
-		greyBorder.add(new TreeReportDataPanel("reportTable", report, ReportConfig.DETAILED_REPORT, DetailedReportExcel.getId(), getReportWidth().getWidth() - 50));
+		greyBorder.add(new TreeReportDataPanel("reportTable", report, ReportConfig.DETAILED_REPORT, DetailedReportExcel.getId(), getReportWidth().getValue() - 50));
 		
 		DateHoursTrendImageFactory chartFactory = new DateHoursTrendImageFactory();
 
@@ -62,7 +62,7 @@ public class DetailedReportPanel extends AbstractReportPanel
 
 		public AbstractTrendChartImage<FlatReportElement> getTrendChartImage(String seriesColumn, IModel model)
 		{
-			return new DateHoursTrendImage("hoursChart", model, 920, getChartHeight().getWidth(), seriesColumn);
+			return new DateHoursTrendImage("hoursChart", model, 920, getChartHeight().getValue(), seriesColumn);
 		}
 	}
 }

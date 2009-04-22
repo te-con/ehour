@@ -33,7 +33,7 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.project.common.ProjectAjaxEventType;
 import net.rrm.ehour.ui.project.components.ProjectFormPanel;
 import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBeanImpl;
@@ -86,7 +86,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
 											new ResourceModel("admin.project.title"), 
-											WebWidth.ENTRYSELECTOR_WIDTH);
+											WebGeo.W_ENTRY_SELECTOR);
 		add(greyBorder);		
 		
 		greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,

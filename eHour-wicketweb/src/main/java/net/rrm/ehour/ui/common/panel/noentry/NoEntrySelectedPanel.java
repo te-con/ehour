@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.common.panel.noentry;
 
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -37,7 +37,7 @@ public class NoEntrySelectedPanel extends Panel
 	{
 		super(id);
 		
-		Border greyBorder = (useRoundBorder) ? new GreyRoundedBorder("border", WebWidth.CONTENT_ADMIN_TAB) : new GreySquaredRoundedBorder("border");
+		Border greyBorder = (useRoundBorder) ? new GreyRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB) : new GreySquaredRoundedBorder("border");
 		add(greyBorder);
 
 		greyBorder.add(new Label("noEntry", noEntrySelectedModelText));

@@ -34,7 +34,7 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -80,7 +80,7 @@ public class AssignmentListPanel extends AbstractBasePanel
 		greyBorder = new GreyRoundedBorder("border",
 				 							new StringResourceModel("admin.assignment.assignmentsFor", 
 				 											this, null, new Object[]{new Model(user.getFullName())}),
-											WebWidth.CONTENT_SMALL);
+											WebGeo.W_CONTENT_SMALL);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
 		

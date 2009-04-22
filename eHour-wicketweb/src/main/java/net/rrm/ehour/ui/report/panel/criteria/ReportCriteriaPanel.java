@@ -38,7 +38,7 @@ import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickDateAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickDropDownChoice;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonth;
@@ -107,7 +107,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 	{
 		super(id, model);
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebWidth.CONTENT_WIDE);
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_WIDE);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);	

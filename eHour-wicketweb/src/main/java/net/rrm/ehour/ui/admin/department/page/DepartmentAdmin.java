@@ -31,7 +31,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -80,7 +80,7 @@ public class DepartmentAdmin extends BaseTabbedAdminPage
 
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
 																new ResourceModel("admin.dept.title"),
-																WebWidth.ENTRYSELECTOR_WIDTH);
+																WebGeo.W_ENTRY_SELECTOR);
 		add(greyBorder);
 		
 		greyBorder.add(new EntrySelectorPanel(DEPT_SELECTOR_ID, deptListHolder));

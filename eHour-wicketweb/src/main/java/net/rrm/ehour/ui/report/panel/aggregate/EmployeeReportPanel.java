@@ -51,11 +51,11 @@ public class EmployeeReportPanel extends AggregateReportPanel
 		Model dataModel = new Model(rawData);
 		
 		AggregateChartDataConverter hourConverter = new UserHoursAggregateChartDataConverter();
-		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth().getWidth(), getChartHeight().getWidth(), hourConverter);
+		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
 		parent.add(customerHoursChart);
 
 		AggregateChartDataConverter turnoverConverter = new UserTurnoverAggregateChartDataConverter();
-		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, getChartWidth().getWidth(), getChartHeight().getWidth(), turnoverConverter);
+		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
 		parent.add(customerTurnoverChart);
 	}
 	

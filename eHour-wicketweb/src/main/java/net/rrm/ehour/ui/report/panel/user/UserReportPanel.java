@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.WebWidth;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
@@ -54,7 +54,7 @@ public class UserReportPanel extends AbstractReportPanel
 	 */
 	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, boolean inclLinks)
 	{
-		super(id, WebWidth.DEFAULT, WebWidth.CONTENT_MEDIUM);
+		super(id, WebGeo.NOT_DEFINED, WebGeo.W_CONTENT_MEDIUM);
 		
 		add(getReportPanel(aggregateReport, inclLinks));
 	}
@@ -101,9 +101,9 @@ public class UserReportPanel extends AbstractReportPanel
 																new Object[]{new DateModel(customerAggregateReport.getReportRange().getDateStart(), config),
 																			 new DateModel(customerAggregateReport.getReportRange().getDateEnd(), config)});
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, printLink, excelLink, WebWidth.CONTENT_MEDIUM);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, printLink, excelLink, WebGeo.W_CONTENT_MEDIUM);
 
-		greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportConfig.AGGREGATE_CUSTOMER_SINGLE_USER, null, getReportWidth().getWidth() - 30));
+		greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportConfig.AGGREGATE_CUSTOMER_SINGLE_USER, null, getReportWidth().getValue() - 30));
 		
 		Fragment frag = new Fragment("charts", "flash", this);
 		greyBorder.add(frag);
