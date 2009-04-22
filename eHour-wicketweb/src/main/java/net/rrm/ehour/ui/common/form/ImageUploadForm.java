@@ -147,6 +147,7 @@ public abstract class ImageUploadForm extends Form
 		{
 			if (infoflags == ALLBITS)
 			{
+				System.out.println(infoflags);
 				done = true;
 				return true;
 			}
