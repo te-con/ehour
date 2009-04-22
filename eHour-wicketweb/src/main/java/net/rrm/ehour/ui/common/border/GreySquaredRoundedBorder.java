@@ -53,7 +53,7 @@ public class GreySquaredRoundedBorder extends Border
 		
 		if (width != null)
 		{
-			greySquaredFrame.add(new SimpleAttributeModifier("style", "width: " + width.toString() + "px"));
+			greySquaredFrame.add(new SimpleAttributeModifier("style", "width: " + width.getValue().toString() + "px"));
 		}
 		
 		greySquaredFrame.add(getBodyContainer());

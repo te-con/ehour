@@ -25,6 +25,7 @@ import net.rrm.ehour.ui.common.ajax.DemoDecorator;
 import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
+import net.rrm.ehour.ui.common.util.WebGeo;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -62,7 +63,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 	
 	private void createComponents(IModel model)
 	{
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB);
 		add(greyBorder);
 		
 		Form form = new Form("form", model);
