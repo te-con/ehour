@@ -18,22 +18,42 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import org.junit.Before;
+import static org.easymock.EasyMock.replay;
+import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
+
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.util.tester.FormTester;
+import org.junit.Test;
 
 /**
  * Created on Apr 22, 2009, 4:19:36 PM
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class SkinConfigPanelTest
+public class SkinConfigPanelTest extends AbstractMainConfigTest
 {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception
+	@Test
+	public void shouldSubmit()
 	{
+//		getConfigService().persistConfiguration(getConfigStub());
+		
+		replay(getConfigService());
+		
+		startPage();
+		
+		getTester().assertComponent("configTabs:panel:border:form", Form.class);
+		
+		getTester().clickLink("configTabs:tabs-container:tabs:2:link", true);
+		
+		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
+		
+//		miscFormTester.select("config.currency", 1);
+//		miscFormTester.select("localeCountry", 0);
+//		miscFormTester.select("localeLanguage", 0);
+		
+		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
+//		
+//		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), getConfigStub().getCurrency());
+//		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getLocale());
 	}
-
 }
