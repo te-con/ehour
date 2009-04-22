@@ -420,6 +420,12 @@ input[type="checkbox"],input[type="radio"] {
 	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 }
 
+.smallTextRed {
+	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+	color: red;
+}
+
+
 div.UserReportCriteria {
 	margin: 0 10px 0 10px;
 	color: #536e87;
