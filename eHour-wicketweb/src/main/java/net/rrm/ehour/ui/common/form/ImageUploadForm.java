@@ -37,7 +37,7 @@ import org.apache.wicket.model.IModel;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public abstract class ImageUploadForm extends Form implements ImageObserver
+public abstract class ImageUploadForm extends Form
 {
 	private static final long serialVersionUID = 808442352504816831L;
 	private FileUploadField fileUploadField;
@@ -85,11 +85,43 @@ public abstract class ImageUploadForm extends Form implements ImageObserver
     	
     	ImageLogo logo = new ImageLogo();
     	logo.setImageData(bytes);
-    	logo.setWidth(img.getWidth(this));
-    	logo.setHeight(img.getHeight(this));
-    	logo.setImageType(upload.getClientFileName().substring(upload.getClientFileName().lastIndexOf(".") + 1));
     	
+    	Observer widthObserver = new Observer();
+    	Observer heightObserver = new Observer();
+    	
+    	
+    	logo.setWidth(img.getWidth(widthObserver));
+    	logo.setHeight(img.getHeight(heightObserver));
+    	logo.setImageType(upload.getClientFileName().substring(upload.getClientFileName().lastIndexOf(".") + 1));
+    	waitForObservers(widthObserver, heightObserver);
     	return logo;
+    }
+    
+    private void waitForObservers(Observer... observers)
+    {
+		boolean allDone = true;
+
+		do
+		{
+			allDone = true;
+			
+			for (Observer observer : observers)
+			{
+	    		allDone &= observer.done; 
+			}
+			
+			if (!allDone)
+			{
+				try
+				{
+					Thread.sleep(300);
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		while (!allDone);
     }
     
     private byte[] getBytes(FileUpload upload) throws IOException
@@ -106,8 +138,22 @@ public abstract class ImageUploadForm extends Form implements ImageObserver
 		return bout.toByteArray();
     }
 
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height)
+    
+	private class Observer implements ImageObserver
 	{
-		return true;
+		boolean done = false;
+
+		public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height)
+		{
+			if (infoflags == ALLBITS)
+			{
+				done = true;
+				return true;
+			}
+			
+			return false;
+		}
+
 	}
+
 }	
