@@ -112,7 +112,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 					
 					Label replacementLabel = new Label("serverMessage", msgModel);
 					replacementLabel.setOutputMarkupId(true);
-					replacementLabel.add(new SimpleAttributeModifier("class", "whiteText"));
+					replacementLabel.add(new SimpleAttributeModifier("class", "smallTextRed"));
 					serverMessage.replaceWith(replacementLabel);
 					serverMessage = replacementLabel;
 					target.addComponent(serverMessage);
