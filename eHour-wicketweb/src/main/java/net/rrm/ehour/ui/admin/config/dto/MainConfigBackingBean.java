@@ -123,7 +123,7 @@ public class MainConfigBackingBean implements Serializable
 	 * Available locales
 	 * @return
 	 */
-	public List<Locale> getAvailableLocales()
+	public static List<Locale> getAvailableLocales()
 	{
 		List<Locale> locales = new ArrayList<Locale>();
 		
@@ -144,7 +144,7 @@ public class MainConfigBackingBean implements Serializable
 	 * 
 	 * @return
 	 */
-	public List<Locale> getAvailableCurrencies()
+	public static List<Locale> getAvailableCurrencies()
 	{
 		List<Locale>		locales = getAvailableLocales();
 		SortedSet<Locale>	currencyLocales = new TreeSet<Locale>(new Comparator<Locale>()

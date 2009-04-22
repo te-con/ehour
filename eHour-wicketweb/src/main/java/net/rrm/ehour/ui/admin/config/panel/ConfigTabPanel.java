@@ -30,6 +30,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 		addTab(ConfigTab.MISC, new MiscConfigPanelFactory(), model);
 		addTab(ConfigTab.LOCALE, new LocaleConfigPanelFactory(), model);
 		addTab(ConfigTab.SMTP, new MailServerConfigPanelFactory(), model);
+		addTab(ConfigTab.SKIN, new SkinConfigPanelFactory(), model);
 	}
 	
 	// might want to use reflection.. oh well
@@ -49,6 +50,16 @@ public class ConfigTabPanel extends MultiTabbedPanel
 
 		getTabs().add(tabDefinition.getTabIndex(), tab);		
 	}
+
+	@SuppressWarnings("serial")
+	private class SkinConfigPanelFactory implements TabFactory
+	{
+		public Panel createTab(String panelId, IModel model)
+		{
+			return new SkinConfigPanel(panelId, model);
+		}
+	}
+	
 	
 	@SuppressWarnings("serial")
 	private class MiscConfigPanelFactory implements TabFactory

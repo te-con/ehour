@@ -18,25 +18,20 @@ package net.rrm.ehour.ui.admin.config.page;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.util.tester.FormTester;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
-public class MainConfigTest extends AbstractSpringWebAppTester
+public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester
 {
-
-	
 	private ConfigurationService configService;
 	private MailService mailService;
+	private EhourConfigStub config;
 
 	@Before
 	public void setUp() throws Exception
@@ -48,60 +43,37 @@ public class MainConfigTest extends AbstractSpringWebAppTester
 
 		mailService = createMock(MailService.class);
 		getMockContext().putBean("mailService", mailService);	
-	}
-	
-	@Test
-	public void testMainConfigRender()
-	{
-		EhourConfigStub config = new EhourConfigStub();
+
+		config = new EhourConfigStub();
 		expect(configService.getConfiguration())
 				.andReturn(config);
-
-		configService.persistConfiguration(config);
-		
-		replay(configService);
-		
-		startPage();
-		
-		getTester().assertComponent("configTabs:panel:border:form", Form.class);
-		
-		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
-		
-		miscFormTester.setValue("config.completeDayHours", "4");
-		
-		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
-	
-		verify(configService);
-		
-		assertEquals(4f, config.getCompleteDayHours(), 0.001);
 	}
 
+	@After
+	public void tearDown()
+	{
+		verify(configService);
+	}
 
-
-	/**
-	 * 
-	 */
-	private void startPage()
+	protected void startPage()
 	{
 		getTester().startPage(MainConfig.class);
 		getTester().assertRenderedPage(MainConfig.class);
 		getTester().assertNoErrorMessage();
 	}
-
 	
-	//	
+	protected EhourConfigStub getConfigStub()
+	{
+		return config;
+	}
 	
+	protected ConfigurationService getConfigService()
+	{
+		return configService;
+	}
 	
-//	/**
-//	 * 
-////	 */
-//	public void testSubmitOKNoLocale()
-//	{
-//		FormTester	form = getTester().newFormTester("configForm");
-//	
-//		form.setValue("dontForceLocale", "true");
-//		
-//		getTester().executeAjaxEvent("configForm.submitButton", "onclick");
-//	}
-	
+	protected MailService getMailService()
+	{
+		return mailService;
+	}
 }
