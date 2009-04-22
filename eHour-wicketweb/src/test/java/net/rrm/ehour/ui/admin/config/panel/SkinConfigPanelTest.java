@@ -68,7 +68,7 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 //		miscFormTester.select("localeCountry", 0);
 //		miscFormTester.select("localeLanguage", 0);
 		
-		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
+//		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
 //		
 //		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), getConfigStub().getCurrency());
 //		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getLocale());
