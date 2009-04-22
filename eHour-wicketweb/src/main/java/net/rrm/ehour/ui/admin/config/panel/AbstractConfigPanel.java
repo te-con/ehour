@@ -95,6 +95,8 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 
 				if (!getConfig().isInDemoMode())
 				{
+					
+					
 					try
 					{
 						configService.persistConfiguration(getConfigStub());

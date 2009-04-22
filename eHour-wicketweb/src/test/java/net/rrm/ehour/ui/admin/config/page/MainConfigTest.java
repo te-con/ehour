@@ -20,44 +20,78 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.util.tester.FormTester;
+import org.junit.Before;
 import org.junit.Test;
-
-/**
- * TODO 
- **/
 
 public class MainConfigTest extends AbstractSpringWebAppTester
 {
-	/**
-	 * Test render
-	 */
+
+	
+	private ConfigurationService configService;
+	private MailService mailService;
+
+	@Before
+	public void setUp() throws Exception
+	{
+		super.setUp();
+		
+		configService = createMock(ConfigurationService.class);
+		getMockContext().putBean("configService", configService);
+
+		mailService = createMock(MailService.class);
+		getMockContext().putBean("mailService", mailService);	
+	}
+	
 	@Test
 	public void testMainConfigRender()
 	{
-		ConfigurationService configService = createMock(ConfigurationService.class);
-		getMockContext().putBean("configService", configService);
-		
-
-		MailService mailService = createMock(MailService.class);
-		getMockContext().putBean("mailService", mailService);	
-		
+		EhourConfigStub config = new EhourConfigStub();
 		expect(configService.getConfiguration())
-				.andReturn(new EhourConfigStub());
+				.andReturn(config);
 
+		configService.persistConfiguration(config);
+		
 		replay(configService);
 		
+		startPage();
+		
+		getTester().assertComponent("configTabs:panel:border:form", Form.class);
+		
+		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
+		
+		miscFormTester.setValue("config.completeDayHours", "4");
+		
+		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
+	
+		verify(configService);
+		
+		assertEquals(4f, config.getCompleteDayHours(), 0.001);
+	}
+
+
+
+	/**
+	 * 
+	 */
+	private void startPage()
+	{
 		getTester().startPage(MainConfig.class);
 		getTester().assertRenderedPage(MainConfig.class);
 		getTester().assertNoErrorMessage();
-		
-		verify(configService);
 	}
-//	
+
+	
+	//	
+	
+	
 //	/**
 //	 * 
 ////	 */
