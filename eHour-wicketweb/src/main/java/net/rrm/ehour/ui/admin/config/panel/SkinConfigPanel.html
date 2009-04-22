@@ -13,6 +13,20 @@
 					<img wicket:id="excelImage" />
 				</td>
 			</tr>
+			
+			<tr>
+				<td colspan="2">
+				     <fieldset>
+      <legend>Upload form with ajax progress bar</legend>
+        <p>
+        <label for="upload">File</label>
+        <input wicket:id="fileInput" id="upload" type="file"/>
+        </p>
+        <input type="submit" value="Upload!"/>
+        <span wicket:id="progress">[[ajax upload progressbar]]</span>
+     </fieldset>
+				</td>
+			</tr>	
 		</wicket:extend>
 	</body>
 </html>

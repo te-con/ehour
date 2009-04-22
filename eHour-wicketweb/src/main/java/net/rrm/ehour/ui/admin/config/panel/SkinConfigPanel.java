@@ -18,9 +18,11 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.ui.common.component.ImageResource;
+import net.rrm.ehour.ui.common.form.ImageUploadForm;
 import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
@@ -34,6 +36,8 @@ public class SkinConfigPanel extends AbstractConfigPanel
 {
 	private static final long serialVersionUID = -1274285277029402888L;
 
+	private Image previewImage;
+	
 	public SkinConfigPanel(String id, IModel model)
 	{
 		super(id, model);
@@ -42,10 +46,25 @@ public class SkinConfigPanel extends AbstractConfigPanel
 	@Override
 	protected void addFormComponents(Form form)
 	{
-		Image img = createPreviewImage();
-		form.add(img);
+		previewImage = createPreviewImage();
+		form.add(previewImage);
+		
+		addUploadFormComponents(form);
 	}
 
+	private void addUploadFormComponents(Form form)
+	{
+        form.add(new UploadProgressBar("progress", form));
+	}
+	
+	@Override
+	protected Form createForm(String id, IModel model)
+	{
+		ImageUploadForm uploadForm = new ImageUploadForm(id, model);
+
+		return uploadForm;
+	}
+	
 	private Image createPreviewImage()
 	{
 		final ImageLogo excelLogo = getConfigService().getExcelLogo();
@@ -55,6 +74,7 @@ public class SkinConfigPanel extends AbstractConfigPanel
 		double height = (double)excelLogo.getHeight() / divideBy;
 		
 		Image img = new Image("excelImage");
+		img.setOutputMarkupId(true);
 		img.add(new SimpleAttributeModifier("width", "350"));
 		img.add(new SimpleAttributeModifier("height", Integer.toString((int) height)));
 		

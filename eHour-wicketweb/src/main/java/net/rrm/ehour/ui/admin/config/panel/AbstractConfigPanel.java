@@ -66,7 +66,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB);
 		add(greyBorder);
 		
-		Form form = new Form("form", model);
+		Form form = createForm("form", model);
 		greyBorder.add(form);
 		form.setOutputMarkupId(true);
 		
@@ -76,6 +76,11 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 
 		addFormComponents(form);
 		addSubmitButton(form);
+	}
+	
+	protected Form createForm(String id, IModel model)
+	{
+		return new Form(id, model);
 	}
 
 	/**
