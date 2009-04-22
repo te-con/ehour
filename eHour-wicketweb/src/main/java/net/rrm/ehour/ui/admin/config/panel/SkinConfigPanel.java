@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.admin.config.panel;
 import net.rrm.ehour.ui.common.component.ImageResource;
 import net.rrm.ehour.value.ImageLogo;
 
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
@@ -41,10 +42,23 @@ public class SkinConfigPanel extends AbstractConfigPanel
 	@Override
 	protected void addFormComponents(Form form)
 	{
+		Image img = createPreviewImage();
+		form.add(img);
+	}
+
+	private Image createPreviewImage()
+	{
 		final ImageLogo excelLogo = getConfigService().getExcelLogo();
 		
+		int width = excelLogo.getWidth();
+		double divideBy = width / 350d;
+		double height = (double)excelLogo.getHeight() / divideBy;
+		
 		Image img = new Image("excelImage");
+		img.add(new SimpleAttributeModifier("width", "350"));
+		img.add(new SimpleAttributeModifier("height", Integer.toString((int) height)));
+		
 		img.setImageResource(new ImageResource(excelLogo));
-		form.add(img);
+		return img;
 	}
 }
