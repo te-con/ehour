@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebWidth;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -76,11 +77,10 @@ public class AssignmentListPanel extends AbstractBasePanel
 	
 		setOutputMarkupId(true);
 	
-		// TODO	fixed size
 		greyBorder = new GreyRoundedBorder("border",
 				 							new StringResourceModel("admin.assignment.assignmentsFor", 
 				 											this, null, new Object[]{new Model(user.getFullName())}),
-											450);
+											WebWidth.CONTENT_SMALL);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
 		

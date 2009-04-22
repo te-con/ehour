@@ -20,6 +20,7 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.util.WebWidth;
 import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
@@ -38,22 +39,20 @@ import org.apache.wicket.markup.html.panel.Fragment;
  **/
 public abstract class AggregateReportPanel extends AbstractReportPanel
 {
-	private static final int CHART_WIDTH = 460;
-
 	private static final long serialVersionUID = 2173644826934093029L;
 
 	public AggregateReportPanel(String id, TreeReport report,
 									ReportConfig reportConfig, String excelResourceName,
 									ReportDrawType drawType)
 	{
-		super(id, CHART_WIDTH);
+		super(id, WebWidth.CHART_MEDIUM);
 
 		setOutputMarkupId(true);
 		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("reportFrame", getReportWidth());
 		add(greyBorder);
 
-		greyBorder.add(new TreeReportDataPanel("reportTable", report, reportConfig, excelResourceName, getReportWidth() - 50));
+		greyBorder.add(new TreeReportDataPanel("reportTable", report, reportConfig, excelResourceName, getReportWidth().getWidth() - 50));
 		
 		ReportData reportData = report.getReportData();
 		
@@ -125,6 +124,6 @@ public abstract class AggregateReportPanel extends AbstractReportPanel
 	protected OpenFlashChart createHorizontalFlashChart(String id, ReportData data, AggregateChartDataConverter converter)
 	{
 		Chart chart = new HorizontalChartBuilder().buildChart(data, converter);
-		return new OpenFlashChart(id, getChartWidth(), getChartHeight(), chart);
+		return new OpenFlashChart(id, getChartWidth().getWidth(), getChartHeight().getWidth(), chart);
 	}
 }

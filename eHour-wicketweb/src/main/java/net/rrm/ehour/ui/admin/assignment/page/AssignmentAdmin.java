@@ -29,6 +29,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.util.WebWidth;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -78,7 +79,7 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame", 
 																new ResourceModel("admin.assignment.title"), 
-																EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
+																WebWidth.ENTRYSELECTOR_WIDTH);
 		add(grey);
 
 		grey.add(new EntrySelectorPanel(USER_SELECTOR_ID,

@@ -35,6 +35,7 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
+import net.rrm.ehour.ui.common.util.WebWidth;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -86,7 +87,7 @@ public class CustomerAdmin extends BaseTabbedAdminPage
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
 						new ResourceModel("admin.customer.title"), 
-						EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
+						WebWidth.ENTRYSELECTOR_WIDTH);
 		add(greyBorder);			
 		
 		greyBorder.add(new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,

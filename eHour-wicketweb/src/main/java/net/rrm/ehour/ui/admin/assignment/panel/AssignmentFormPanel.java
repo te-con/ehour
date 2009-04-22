@@ -40,6 +40,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
+import net.rrm.ehour.ui.common.util.WebWidth;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -138,7 +139,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel
 	 */
 	protected void setUpPage(WebMarkupContainer parent, final IModel model)
 	{
-		Border greyBorder = new GreySquaredRoundedBorder("border", 450);
+		Border greyBorder = new GreySquaredRoundedBorder("border", WebWidth.CONTENT_SMALL);
 		add(greyBorder);
 		
 		final Form form = new Form("assignmentForm");

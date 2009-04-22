@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebWidth;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -51,7 +52,7 @@ public class PmReportPanel extends AbstractReportPanel
 	 */
 	public PmReportPanel(String id, ProjectManagerReport report)
 	{
-		super(id, -1, 730);
+		super(id, WebWidth.DEFAULT, WebWidth.CONTENT_MEDIUM);
 
 		setOutputMarkupId(true);
 		
@@ -64,7 +65,7 @@ public class PmReportPanel extends AbstractReportPanel
 																			 new DateModel(report.getReportRange().getDateStart(), config),
 																			 new DateModel(report.getReportRange().getDateEnd(), config)});
 		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, null, null, 730);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, null, null, WebWidth.CONTENT_MEDIUM);
 		add(greyBorder);
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		greyBorder.add(blueBorder);

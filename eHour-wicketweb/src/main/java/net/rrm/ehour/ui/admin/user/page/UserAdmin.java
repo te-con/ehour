@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.util.WebWidth;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -86,7 +87,7 @@ public class UserAdmin extends BaseTabbedAdminPage
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
 															new ResourceModel("admin.user.title"), 
-															EntrySelectorPanel.ENTRYSELECTOR_WIDTH);
+															WebWidth.ENTRYSELECTOR_WIDTH);
 		add(greyBorder);		
 		
 		selectorPanel = new EntrySelectorPanel("userSelector",

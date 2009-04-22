@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.common.border;
 
+import net.rrm.ehour.ui.common.util.WebWidth;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -38,7 +40,7 @@ public class CustomTitledGreyRoundedBorder extends Border
 		this(id, title, null);
 	}
 
-	public CustomTitledGreyRoundedBorder(String id, Component title, Integer width)
+	public CustomTitledGreyRoundedBorder(String id, Component title, WebWidth width)
 	{
 		super(id);
 		
@@ -46,7 +48,7 @@ public class CustomTitledGreyRoundedBorder extends Border
 		
 		if (width != null)
 		{
-			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.toString() + "px"));
+			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.getWidth().toString() + "px"));
 		}
 		
 		greyFrame.add(title);

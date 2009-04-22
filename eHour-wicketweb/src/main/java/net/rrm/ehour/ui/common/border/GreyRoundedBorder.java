@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.common.border;
 
 import net.rrm.ehour.ui.common.util.HtmlUtil;
+import net.rrm.ehour.ui.common.util.WebWidth;
 
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -49,7 +50,7 @@ public class GreyRoundedBorder extends Border
 	 * @param id
 	 * @param width
 	 */
-	public GreyRoundedBorder(String id, Integer width)
+	public GreyRoundedBorder(String id, WebWidth width)
 	{
 		this(id, new Model(), false, null, null, width);
 	}
@@ -91,7 +92,7 @@ public class GreyRoundedBorder extends Border
 	 * @param id
 	 * @param title
 	 */
-	public GreyRoundedBorder(String id, IModel title, Integer width)
+	public GreyRoundedBorder(String id, IModel title, WebWidth width)
 	{
 		this(id, title, true, null, null, width);
 	}	
@@ -117,7 +118,7 @@ public class GreyRoundedBorder extends Border
 	 * @param excelLink
 	 * @param width
 	 */
-	public GreyRoundedBorder(String id, IModel title, boolean showTitle, Link printLink, Link excelLink, Integer width)
+	public GreyRoundedBorder(String id, IModel title, boolean showTitle, Link printLink, Link excelLink, WebWidth width)
 	{
 		super(id);
 		
@@ -125,7 +126,7 @@ public class GreyRoundedBorder extends Border
 		
 		if (width != null)
 		{
-			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.toString() + "px"));
+			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.getWidth().toString() + "px"));
 		}
 		
 		Label	label = new Label("greyTabTitle", title);

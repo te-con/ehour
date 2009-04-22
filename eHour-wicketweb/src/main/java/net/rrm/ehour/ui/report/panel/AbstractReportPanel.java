@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.report.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.WebWidth;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -30,10 +31,10 @@ public abstract class AbstractReportPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
 
-	private int reportWidth = 950;
+	private WebWidth webWidth= WebWidth.CONTENT_WIDE;
 	
-	private int	chartWidth;
-	private int	chartHeight;
+	private WebWidth	chartWidth;
+	private WebWidth	chartHeight;
 	
 	/**
 	 * 
@@ -41,23 +42,23 @@ public abstract class AbstractReportPanel extends Panel
 	 */
 	public AbstractReportPanel(String id)
 	{
-		this(id, -1);
+		this(id, WebWidth.DEFAULT);
 	}
 	
 	/**
 	 * 
 	 * @param id
 	 */
-	public AbstractReportPanel(String id, int chartWidth)
+	public AbstractReportPanel(String id, WebWidth chartWidth)
 	{
-		this(id, null, chartWidth, 950);
+		this(id, null, chartWidth, WebWidth.CONTENT_WIDE);
 	}	
 	
 	/**
 	 * 
 	 * @param id
 	 */
-	public AbstractReportPanel(String id, int chartWidth, int reportWidth)
+	public AbstractReportPanel(String id, WebWidth chartWidth, WebWidth reportWidth)
 	{
 		this(id, null, chartWidth, reportWidth);
 	}	
@@ -67,44 +68,38 @@ public abstract class AbstractReportPanel extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public AbstractReportPanel(String id, IModel model, int chartWidth, int reportWidth)
+	public AbstractReportPanel(String id, IModel model, WebWidth chartWidth, WebWidth webWidth)
 	{
 		super(id, model);
 		
 		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 		
-		this.reportWidth = reportWidth; 
+		this.webWidth = webWidth; 
 		
-		if (chartWidth == -1)
+		if (chartWidth == WebWidth.DEFAULT)
 		{
-			this.chartWidth = !config.isShowTurnover() ? 700 : 350;
+			this.chartWidth = !config.isShowTurnover() ? WebWidth.CHART_WIDE : WebWidth.CHART_SMALL;
 		}
 		else
 		{
 			this.chartWidth = chartWidth;
 		}
 		
-		chartHeight = 200;		
+		chartHeight = WebWidth.CHART_HEIGHT;		
 	}
 	
-	/**
-	 * @return the chartWidth
-	 */
-	public int getChartWidth()
+	public WebWidth getChartWidth()
 	{
 		return chartWidth;
 	}
 	
-	/**
-	 * @return the chartHeight
-	 */
-	public int getChartHeight()
+	public WebWidth getChartHeight()
 	{
 		return chartHeight;
 	}
 	
-	protected int getReportWidth()
+	protected WebWidth getReportWidth()
 	{
-		return reportWidth;
+		return webWidth;
 	}
 }

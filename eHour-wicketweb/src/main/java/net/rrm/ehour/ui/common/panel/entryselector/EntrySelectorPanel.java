@@ -41,8 +41,6 @@ import org.apache.wicket.util.time.Duration;
 
 public class EntrySelectorPanel extends AbstractAjaxPanel
 {
-	public final static int ENTRYSELECTOR_WIDTH = 250;
-	
 	private	StringResourceModel	defaultFilterText;
 	private	IModel	checkBoxPrefixText;
 	private	boolean	includeFilter = false;

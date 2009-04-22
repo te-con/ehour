@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.WebWidth;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -73,7 +74,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 		super(id);
 		
 		setModel(createModel(user));
-		Border greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.title"), 350);
+		Border greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.title"), WebWidth.CONTENT_XSMALL);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);
