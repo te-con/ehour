@@ -33,4 +33,16 @@ public class PoiUtil
 		
 		return excelData;
 	}
+	
+	public static int getImageType(String type)
+	{
+		if (type.equalsIgnoreCase("png"))
+		{
+			return HSSFWorkbook.PICTURE_TYPE_PNG;
+		}
+		else
+		{
+			return HSSFWorkbook.PICTURE_TYPE_JPEG;
+		}
+	}
 }

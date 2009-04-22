@@ -19,6 +19,7 @@ package net.rrm.ehour.config.service;
 import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.value.ImageLogo;
 
 /**
  * Service for modifying the configuration
@@ -42,5 +43,5 @@ public interface ConfigurationService
 	 * Get configured logo
 	 * @return
 	 */
-	public byte[] getExcelLogo();
+	public ImageLogo getExcelLogo();
 }

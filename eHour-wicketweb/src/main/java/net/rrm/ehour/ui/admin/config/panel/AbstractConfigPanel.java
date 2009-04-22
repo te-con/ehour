@@ -162,4 +162,9 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 	{
 		this.serverMessage = serverMessage;
 	}
+	
+	protected ConfigurationService getConfigService()
+	{
+		return configService;
+	}
 }

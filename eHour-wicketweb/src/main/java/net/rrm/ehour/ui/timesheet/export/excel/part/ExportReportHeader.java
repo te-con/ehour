@@ -20,11 +20,13 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
@@ -78,9 +80,11 @@ public class ExportReportHeader extends AbstractExportReportPart
 
 	private int addLogo(int rowNumber)
 	{
-		byte[] image = getConfigurationService().getExcelLogo();
+		ImageLogo excelLogo = getConfigurationService().getExcelLogo();
+		
+		byte[] image = excelLogo.getImageData();
 	
-		int index = getWorkbook().addPicture(image, HSSFWorkbook.PICTURE_TYPE_PNG);
+		int index = getWorkbook().addPicture(image, PoiUtil.getImageType(excelLogo.getImageType()));
 		
 		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 1, (short)8, 8);
 //														(short)++col,++row);

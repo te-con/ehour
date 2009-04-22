@@ -31,6 +31,7 @@ import net.rrm.ehour.config.dao.ConfigurationDAO;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
+import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,32 +45,68 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	private ConfigurationDAO	configDAO;
 	private BinaryConfigurationDAO binConfigDAO;
 	private	Logger				logger = Logger.getLogger(this.getClass());
-	
-	
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigurationService#getLogo()
 	 */
 	@NonAuditable
-	public byte[] getExcelLogo()
+	public ImageLogo getExcelLogo()
 	{
-		byte[] fileBytes;
-		
-		BinaryConfiguration logoDomObj = binConfigDAO.findById("excelHeaderLogo");
+		ImageLogo logo = getPersistedLogo("excelHeader");
 
-		if (logoDomObj == null || logoDomObj.getConfigValue() == null || logoDomObj.getConfigValue().length == 0)
+		if (logo == null)
 		{
-			fileBytes = getDefaultExcelLogo();
-		}
-		else
-		{
-			fileBytes = logoDomObj.getConfigValue();
+			logo = getDefaultExcelLogo();
 		}
 		
-		return fileBytes;
+		return logo;
+	}
+	
+	private ImageLogo getPersistedLogo(String prefix)
+	{
+		BinaryConfiguration logoDomObj = binConfigDAO.findById(prefix + "Logo");
+		ImageLogo logo = null;
+		
+		if (isLogoNotEmpty(logoDomObj))
+		{
+			logo = new ImageLogo();
+			logo.setImageData(logoDomObj.getConfigValue());
+			
+			Configuration logoType = configDAO.findById(prefix + "LogoType");
+			logo.setImageType(logoType.getConfigValue());
+
+			Configuration logoWidth = configDAO.findById(prefix + "LogoWidth");
+			logo.setWidth(Integer.parseInt(logoWidth.getConfigValue()));
+
+			Configuration logoHeight = configDAO.findById(prefix + "LogoHeight");
+			logo.setHeight(Integer.parseInt(logoHeight.getConfigValue()));
+		}
+
+		return logo;
 	}
 
-	private byte[] getDefaultExcelLogo()
+	private boolean isLogoNotEmpty(BinaryConfiguration logoDomObj)
+	{
+		return (logoDomObj != null && logoDomObj.getConfigValue() != null && logoDomObj.getConfigValue().length > 0);
+	}
+
+	private ImageLogo getDefaultExcelLogo()
+	{
+		byte[] bytes = getDefaultExcelLogoBytes();
+
+		ImageLogo logo = new ImageLogo();
+		logo.setImageData(bytes);
+		logo.setImageType("png");
+		logo.setWidth(499);
+		logo.setHeight(120);
+		
+        return logo;
+	}
+
+	/**
+	 * @return
+	 */
+	private byte[] getDefaultExcelLogoBytes()
 	{
 		URL url = Thread.currentThread().getContextClassLoader().getResource("excel_default_logo.png");
 		File file = new File(url.getPath());
@@ -95,8 +132,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			logger.error("Could not fetch default logo", e);
 			bytes = new byte[1];
 		}
-
-        return bytes;
+		return bytes;
 	}
 	
 	

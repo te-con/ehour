@@ -31,6 +31,7 @@ import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
+import net.rrm.ehour.value.ImageLogo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,9 +71,9 @@ public class ConfigurationServiceTest
 		
 		replay(binaryConfigDao);
 
-		byte[] excelLogo = configurationService.getExcelLogo();
+		ImageLogo logo = configurationService.getExcelLogo();
 		
-		assertTrue(excelLogo.length > 1);
+		assertTrue(logo.getImageData().length > 1);
 		
 		verify(binaryConfigDao);
 		

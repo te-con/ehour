@@ -18,8 +18,8 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
 
@@ -64,7 +64,5 @@ public class MailServerConfigPanelTest extends AbstractMainConfigTest
 		assertEquals("thies@thies.net", getConfigStub().getMailFrom());
 		assertEquals("localhost", getConfigStub().getMailSmtp());
 		assertEquals("25", getConfigStub().getSmtpPort());
-		
-		
 	}
 }

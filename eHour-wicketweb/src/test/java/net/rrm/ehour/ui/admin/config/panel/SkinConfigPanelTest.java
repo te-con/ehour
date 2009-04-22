@@ -18,7 +18,10 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.*;
+import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.verify;
+import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
 
 import org.apache.wicket.markup.html.form.Form;
@@ -37,13 +40,27 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 	{
 //		getConfigService().persistConfiguration(getConfigStub());
 		
+		BinaryConfigurationDAO binConfigDao = createMock(BinaryConfigurationDAO.class);
+
+		getConfigService().setBinConfigDAO(binConfigDao);
+
+		expect(binConfigDao.findById("excelHeaderLogo"))
+			.andReturn(null)
+			.anyTimes();
+		
+		
+		replay(binConfigDao);
+		
+		getConfigService().getExcelLogo();
+		
 		replay(getConfigService());
+		replay(getMailService());
 		
 		startPage();
 		
 		getTester().assertComponent("configTabs:panel:border:form", Form.class);
 		
-		getTester().clickLink("configTabs:tabs-container:tabs:2:link", true);
+		getTester().clickLink("configTabs:tabs-container:tabs:3:link", true);
 		
 		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
 		
@@ -55,5 +72,8 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 //		
 //		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), getConfigStub().getCurrency());
 //		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getLocale());
+		
+		verify(getMailService());
+		verify(binConfigDao);
 	}
 }

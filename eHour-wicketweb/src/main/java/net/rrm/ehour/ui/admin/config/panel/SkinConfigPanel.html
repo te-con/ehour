@@ -8,22 +8,11 @@
 	<body>
 		<wicket:extend>
 			<tr>
-				<td><wicket:message key="admin.config.showTurnover" />:</td>
-				<td><input type="checkbox" wicket:id="config.showTurnover" /></td>
-			</tr>
-		
-			<tr>
-				<td valign="top"><wicket:message key="admin.config.workHours" />:</td>
-				<td><input class="textInputSmall" wicket:id="config.completeDayHours" style="width: 5em" />
-					<span wicket:id="workHoursValidationError"></span>
+				<td colspan="2"><wicket:message key="admin.config.skin.excel.title" />
+					<br />
+					<img wicket:id="excelImage" width="200" height="100" />
 				</td>
 			</tr>
-
-			<tr>
-				<td valign="top"><wicket:message key="admin.config.firstDayWeek" />:</td>
-				<td><select style="width: 15em" class="textInputSmall" wicket:id="firstWeekStart"></select></td>
-			</tr>		
-		
 		</wicket:extend>
 	</body>
 </html>

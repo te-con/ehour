@@ -16,11 +16,12 @@
 
 package net.rrm.ehour.ui.admin.config.page;
 
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.verify;
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
@@ -29,21 +30,27 @@ import org.junit.Before;
 
 public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester
 {
-	private ConfigurationService configService;
+	private ConfigurationServiceImpl configService;
 	private MailService mailService;
 	private EhourConfigStub config;
 
 	@Before
+	@SuppressWarnings("fe")
 	public void setUp() throws Exception
 	{
 		super.setUp();
 		
-		configService = createMock(ConfigurationService.class);
+//		configService = createMock(ConfigurationService.class);
+		configService = createMock(ConfigurationServiceImpl.class, 
+				ConfigurationServiceImpl.class.getMethod("getConfiguration", null),
+				ConfigurationServiceImpl.class.getMethod("persistConfiguration", EhourConfig.class));
 		getMockContext().putBean("configService", configService);
 
 		mailService = createMock(MailService.class);
 		getMockContext().putBean("mailService", mailService);	
 
+		
+		
 		config = new EhourConfigStub();
 		expect(configService.getConfiguration())
 				.andReturn(config);
@@ -67,7 +74,7 @@ public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester
 		return config;
 	}
 	
-	protected ConfigurationService getConfigService()
+	protected ConfigurationServiceImpl getConfigService()
 	{
 		return configService;
 	}

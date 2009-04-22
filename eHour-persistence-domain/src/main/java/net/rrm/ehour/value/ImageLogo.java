@@ -15,36 +15,52 @@
  * eHour is sponsored by TE-CON  - http://www.te-con.nl/
  */
 
-package net.rrm.ehour.ui.admin.config.panel;
-
-import net.rrm.ehour.ui.common.component.ImageResource;
-import net.rrm.ehour.value.ImageLogo;
-
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.model.IModel;
+package net.rrm.ehour.value;
 
 /**
- * Created on Apr 22, 2009, 4:14:39 PM
+ * Created on Apr 22, 2009, 5:49:56 PM
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class SkinConfigPanel extends AbstractConfigPanel
+public class ImageLogo
 {
-	private static final long serialVersionUID = -1274285277029402888L;
-
-	public SkinConfigPanel(String id, IModel model)
+	private byte[] imageData;
+	private int		width;
+	private	int		height;
+	private String imageType;
+	
+	public byte[] getImageData()
 	{
-		super(id, model);
+		return imageData;
 	}
-
-	@Override
-	protected void addFormComponents(Form form)
+	public int getWidth()
 	{
-		final ImageLogo excelLogo = getConfigService().getExcelLogo();
-		
-		Image img = new Image("excelImage");
-		img.setImageResource(new ImageResource(excelLogo));
-		form.add(img);
+		return width;
 	}
+	public int getHeight()
+	{
+		return height;
+	}
+	public String getImageType()
+	{
+		return imageType;
+	}
+	public void setImageData(byte[] imageData)
+	{
+		this.imageData = imageData;
+	}
+	public void setWidth(int width)
+	{
+		this.width = width;
+	}
+	public void setHeight(int height)
+	{
+		this.height = height;
+	}
+	public void setImageType(String imageType)
+	{
+		this.imageType = imageType;
+	}
+	
+	
 }
