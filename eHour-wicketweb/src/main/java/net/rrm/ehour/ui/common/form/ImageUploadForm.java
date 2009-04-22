@@ -37,7 +37,7 @@ import org.apache.wicket.model.IModel;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class ImageUploadForm extends Form implements ImageObserver
+public abstract class ImageUploadForm extends Form implements ImageObserver
 {
 	private static final long serialVersionUID = 808442352504816831L;
 	private FileUploadField fileUploadField;
@@ -63,13 +63,19 @@ public class ImageUploadForm extends Form implements ImageObserver
         	try
 			{
 				ImageLogo logo = parseImageLogo(upload);
+				
+				uploadImage(logo);
 			} catch (IOException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				uploadImageError();
 			}
         }
     }
+
+    protected abstract void uploadImage(ImageLogo logo);
+    
+    protected abstract void uploadImageError();  
+    
     
     private ImageLogo parseImageLogo(FileUpload upload) throws IOException
     {

@@ -40,8 +40,14 @@ public interface ConfigurationService
 	public void persistConfiguration(EhourConfig config);
 	
 	/**
-	 * Get configured logo
+	 * Get configured logo for excel reports
 	 * @return
 	 */
 	public ImageLogo getExcelLogo();
+	
+	/**
+	 * Persist image logo
+	 * @param logo
+	 */
+	public void persistExcelLogo(ImageLogo logo);
 }

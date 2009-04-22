@@ -46,6 +46,33 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	private BinaryConfigurationDAO binConfigDAO;
 	private	Logger				logger = Logger.getLogger(this.getClass());
 
+
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.value.ImageLogo)
+	 */
+	@Transactional
+	public void persistExcelLogo(ImageLogo logo)
+	{
+		persistLogo("excelHeader", logo);
+	}
+	
+	private void persistLogo(String prefix, ImageLogo logo)
+	{
+		BinaryConfiguration logoDomObj = new BinaryConfiguration();
+		logoDomObj.setConfigValue(logoDomObj.getConfigValue());
+		logoDomObj.setConfigKey(prefix + "Logo");
+		binConfigDAO.persist(logoDomObj);
+		
+		Configuration logoType = new Configuration(prefix + "LogoType", logo.getImageType());
+		Configuration logoWidth = new Configuration(prefix + "LogoWidth", Integer.toString(logo.getWidth()));
+		Configuration logoHeight = new Configuration(prefix + "LogoHeight", Integer.toString(logo.getHeight()));
+		
+		configDAO.persist(logoType);
+		configDAO.persist(logoWidth);
+		configDAO.persist(logoHeight);
+	}
+
+	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigurationService#getLogo()
 	 */

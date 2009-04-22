@@ -21,6 +21,7 @@ import net.rrm.ehour.ui.common.component.ImageResource;
 import net.rrm.ehour.ui.common.form.ImageUploadForm;
 import net.rrm.ehour.value.ImageLogo;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.form.Form;
@@ -57,12 +58,37 @@ public class SkinConfigPanel extends AbstractConfigPanel
         form.add(new UploadProgressBar("progress", form));
 	}
 	
+	@SuppressWarnings("serial")
 	@Override
 	protected Form createForm(String id, IModel model)
 	{
-		ImageUploadForm uploadForm = new ImageUploadForm(id, model);
+		ImageUploadForm uploadForm = new ImageUploadForm(id, model)
+		{
+
+			@Override
+			protected void uploadImage(ImageLogo logo)
+			{
+				getConfigService().persistExcelLogo(logo);
+				updatePreviewImage();
+			}
+
+			@Override
+			protected void uploadImageError()
+			{
+				System.err.println("whoops");
+			}
+		};
 
 		return uploadForm;
+	}
+	
+	private void updatePreviewImage()
+	{
+		Image replacement = createPreviewImage();
+		previewImage.replaceWith(replacement);
+		previewImage = replacement;
+		
+		AjaxRequestTarget.get().addComponent(previewImage);
 	}
 	
 	private Image createPreviewImage()

@@ -56,4 +56,13 @@ public class MockConfigService implements ConfigurationService
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.value.ImageLogo)
+	 */
+	public void persistExcelLogo(ImageLogo logo)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }
