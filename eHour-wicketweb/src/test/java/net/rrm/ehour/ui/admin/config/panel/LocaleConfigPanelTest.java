@@ -57,6 +57,5 @@ public class LocaleConfigPanelTest extends AbstractMainConfigTest
 		
 		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), getConfigStub().getCurrency());
 		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getLocale());
-
 	}
 }

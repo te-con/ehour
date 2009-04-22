@@ -18,22 +18,44 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import org.junit.Before;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
+
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.util.tester.FormTester;
+import org.junit.Test;
 
 /**
  * Created on Apr 22, 2009, 4:19:23 PM
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class MailServerConfigPanelTest
+public class MailServerConfigPanelTest extends AbstractMainConfigTest
 {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception
+	@Test
+	public void shouldSubmit()
 	{
-	}
+//		getConfigService().persistConfiguration(getConfigStub());
+		
+		replay(getConfigService());
+		
+		startPage();
+		
+		getTester().assertComponent("configTabs:panel:border:form", Form.class);
+		
+		getTester().clickLink("configTabs:tabs-container:tabs:2:link", true);
+		
+		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
+		
+		miscFormTester.setValue("config.mailFrom", "thies@thies.net");
+		miscFormTester.setValue("config.mailSmtp", "localhost");
+		miscFormTester.setValue("config.smtpPort", "25");
 
+		getTester().executeAjaxEvent("configTabs:panel:border:form:testMail", "onclick");
+		
+		assertEquals("thies@thies.net", getConfigStub().getMailFrom());
+		assertEquals("localhost", getConfigStub().getMailSmtp());
+		assertEquals("25", getConfigStub().getSmtpPort());
+	}
 }
