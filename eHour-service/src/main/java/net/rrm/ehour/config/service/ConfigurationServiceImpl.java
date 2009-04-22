@@ -59,7 +59,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	private void persistLogo(String prefix, ImageLogo logo)
 	{
 		BinaryConfiguration logoDomObj = new BinaryConfiguration();
-		logoDomObj.setConfigValue(logoDomObj.getConfigValue());
+		logoDomObj.setConfigValue(logo.getImageData());
 		logoDomObj.setConfigKey(prefix + "Logo");
 		binConfigDAO.persist(logoDomObj);
 		

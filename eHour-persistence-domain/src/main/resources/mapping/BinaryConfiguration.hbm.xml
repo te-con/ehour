@@ -4,8 +4,6 @@
 
 <hibernate-mapping>
 	<class name="net.rrm.ehour.domain.BinaryConfiguration" table="CONFIGURATION_BIN">
-		<cache usage="read-write" />
-		
 		<id name="configKey" column="CONFIG_KEY" type="string" length="64" />
 
 		<property name="valueBlob" column="CONFIG_VALUE" type="blob" />

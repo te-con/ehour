@@ -52,7 +52,7 @@ public class BinaryConfiguration extends DomainObject<String, BinaryConfiguratio
 	/** Don't invoke this. Used by Hibernate only. */
 	public Blob getValueBlob()
 	{
-		return Hibernate.createBlob(this.configValue);
+		return Hibernate.createBlob(this.getConfigValue());
 	}
 
 	/**

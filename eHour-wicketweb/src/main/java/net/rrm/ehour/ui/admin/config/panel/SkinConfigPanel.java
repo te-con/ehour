@@ -68,6 +68,8 @@ public class SkinConfigPanel extends AbstractConfigPanel
 			@Override
 			protected void uploadImage(ImageLogo logo)
 			{
+				System.err.println(logo.getImageData().length);
+				System.err.println(logo.getWidth());
 				getConfigService().persistExcelLogo(logo);
 				updatePreviewImage();
 			}

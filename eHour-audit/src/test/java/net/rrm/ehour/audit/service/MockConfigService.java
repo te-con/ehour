@@ -61,8 +61,5 @@ public class MockConfigService implements ConfigurationService
 	 */
 	public void persistExcelLogo(ImageLogo logo)
 	{
-		// TODO Auto-generated method stub
-		
 	}
-
 }
