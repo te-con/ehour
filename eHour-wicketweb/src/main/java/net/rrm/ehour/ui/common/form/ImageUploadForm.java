@@ -93,7 +93,7 @@ public abstract class ImageUploadForm extends Form
     	logo.setWidth(img.getWidth(widthObserver));
     	logo.setHeight(img.getHeight(heightObserver));
     	logo.setImageType(upload.getClientFileName().substring(upload.getClientFileName().lastIndexOf(".") + 1));
-    	waitForObservers(widthObserver, heightObserver);
+//    	waitForObservers(widthObserver, heightObserver);
     	return logo;
     }
     
