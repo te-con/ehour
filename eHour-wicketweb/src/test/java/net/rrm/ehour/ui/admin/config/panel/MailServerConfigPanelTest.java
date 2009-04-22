@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.admin.config.panel;
 
 
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
 
@@ -36,9 +37,11 @@ public class MailServerConfigPanelTest extends AbstractMainConfigTest
 	@Test
 	public void shouldSubmit()
 	{
-//		getConfigService().persistConfiguration(getConfigStub());
-		
+		getConfigService().persistConfiguration(getConfigStub());
 		replay(getConfigService());
+		
+		getMailService().mailTestMessage(getConfigStub());
+		replay(getMailService());
 		
 		startPage();
 		
@@ -54,8 +57,14 @@ public class MailServerConfigPanelTest extends AbstractMainConfigTest
 
 		getTester().executeAjaxEvent("configTabs:panel:border:form:testMail", "onclick");
 		
+		verify(getMailService());
+		
+		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
+		
 		assertEquals("thies@thies.net", getConfigStub().getMailFrom());
 		assertEquals("localhost", getConfigStub().getMailSmtp());
 		assertEquals("25", getConfigStub().getSmtpPort());
+		
+		
 	}
 }
