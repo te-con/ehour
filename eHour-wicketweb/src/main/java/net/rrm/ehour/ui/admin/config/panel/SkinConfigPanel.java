@@ -17,16 +17,29 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.common.component.ImageResource;
 import net.rrm.ehour.ui.common.form.ImageUploadForm;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.WebGeo;
+import net.rrm.ehour.ui.report.trend.PrintReport;
+import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
+import net.rrm.ehour.ui.timesheet.export.excel.ExportReportDummyCreater;
+import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.value.ImageLogo;
 
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.target.basic.RedirectRequestTarget;
+import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Created on Apr 22, 2009, 4:14:39 PM
@@ -41,22 +54,29 @@ public class SkinConfigPanel extends AbstractConfigPanel
 	
 	public SkinConfigPanel(String id, IModel model)
 	{
-		super(id, model);
+		super(id, model, WebGeo.W_CONTENT_MEDIUM);
 	}
 
+	@SuppressWarnings("serial")
 	@Override
 	protected void addFormComponents(Form form)
 	{
 		previewImage = createPreviewImage();
 		form.add(previewImage);
 		
-		addUploadFormComponents(form);
-	}
-
-	private void addUploadFormComponents(Form form)
-	{
         form.add(new UploadProgressBar("progress", form));
+
+        form.add(new AjaxButton("excelPreview")
+        {
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form form)
+			{
+				createDummyExcelExport();
+			}
+        });
 	}
+	
+	
 	
 	@SuppressWarnings("serial")
 	@Override
@@ -75,7 +95,7 @@ public class SkinConfigPanel extends AbstractConfigPanel
 			@Override
 			protected void uploadImageError()
 			{
-				System.err.println("whoops");
+				replaceFeedbackMessage(new ResourceModel("general.image.invalid"));
 			}
 		};
 
@@ -87,8 +107,6 @@ public class SkinConfigPanel extends AbstractConfigPanel
 		Image replacement = createPreviewImage();
 		previewImage.replaceWith(replacement);
 		previewImage = replacement;
-//		
-//		AjaxRequestTarget.get().addComponent(previewImage);
 	}
 	
 	private Image createPreviewImage()
@@ -106,5 +124,27 @@ public class SkinConfigPanel extends AbstractConfigPanel
 		
 		img.setImageResource(new ImageResource(excelLogo));
 		return img;
+	}
+	
+	private void createDummyExcelExport()
+	{
+		UserCriteria userCriteria = new UserCriteria();
+		userCriteria.getCustomParameters().put(ExportCriteriaParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
+		userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
+		ReportCriteria criteria = new ReportCriteria(userCriteria);
+		PrintReport report = new PrintReport(criteria);
+		
+		EhourWebSession.getSession().getObjectCache().addObjectToCache(report);
+		
+		final String reportId = report.getCacheId();
+		
+		ResourceReference excelResource = new ResourceReference(ExportReportExcel.getId());
+		ValueMap params = new ValueMap();
+		params.add("reportId", reportId);
+		
+		excelResource.bind(getApplication());
+		CharSequence url = getRequestCycle().urlFor(excelResource, params);
+		
+		getRequestCycle().setRequestTarget(new RedirectRequestTarget(url.toString()));		
 	}
 }

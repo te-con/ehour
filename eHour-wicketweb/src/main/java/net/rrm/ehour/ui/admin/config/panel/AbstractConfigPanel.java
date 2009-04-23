@@ -56,14 +56,19 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 
 	public AbstractConfigPanel(String id, IModel model)
 	{
-		super(id, model);
-		
-		createComponents(model);
+		this(id, model, WebGeo.W_CONTENT_ADMIN_TAB);
 	}
 	
-	private void createComponents(IModel model)
+	public AbstractConfigPanel(String id, IModel model, WebGeo width)
 	{
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB);
+		super(id, model);
+		
+		createComponents(model, width);
+	}	
+	
+	private void createComponents(IModel model, WebGeo width)
+	{
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", width);
 		add(greyBorder);
 		
 		Form form = createForm("form", model);
@@ -100,8 +105,6 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 
 				if (!getConfig().isInDemoMode())
 				{
-					
-					
 					try
 					{
 						configService.persistConfiguration(getConfigStub());
@@ -115,15 +118,9 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 					
 					getEhourWebSession().reloadConfig();
 					
-					Label replacementLabel = new Label("serverMessage", msgModel);
-					replacementLabel.setOutputMarkupId(true);
-					replacementLabel.add(new SimpleAttributeModifier("class", "smallTextRed"));
-					serverMessage.replaceWith(replacementLabel);
-					serverMessage = replacementLabel;
-					target.addComponent(serverMessage);
+					replaceFeedbackMessage(msgModel);
 				}
-            }		
-
+            }
 
 			@Override
 			protected IAjaxCallDecorator getAjaxCallDecorator()
@@ -144,6 +141,23 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 				target.addComponent(form);
             }
         });		
+	}
+
+	protected void replaceFeedbackMessage(IModel msgModel)
+	{
+		Label replacementLabel = new Label("serverMessage", msgModel);
+		replacementLabel.setOutputMarkupId(true);
+		replacementLabel.add(new SimpleAttributeModifier("class", "smallTextRed"));
+		serverMessage.replaceWith(replacementLabel);
+		serverMessage = replacementLabel;
+
+		
+		AjaxRequestTarget target = AjaxRequestTarget.get();
+
+		if (target != null)
+		{
+			target.addComponent(serverMessage);
+		}
 	}
 	
 	private EhourConfig getConfigStub()

@@ -30,12 +30,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
@@ -80,13 +78,13 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 	@Test
 	public void produceExcelReport() throws IOException
 	{
-		List<FlatReportElement> elements = createMonthData();
+		List<FlatReportElement> elements = ExportReportDummyCreater.createMonthData(getConfig());
 		
-		ReportData data = new ReportData(elements, getRangeForCurrentMonth());
+		ReportData data = new ReportData(elements, ExportReportDummyCreater.getDateRangeForCurrentMonth());
 
 		UserCriteria userCriteria = new UserCriteria();
 		userCriteria.getCustomParameters().put(ExportCriteriaParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
-		userCriteria.setReportRange(getRangeForCurrentMonth());
+		userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
 		ReportCriteria criteria = new ReportCriteria(userCriteria);
 		Report report = new PrintReport(criteria);
 		
@@ -101,45 +99,6 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		verify(detailedReportService);
 	}
 	
-	private List<FlatReportElement> createMonthData()
-	{
-		List<FlatReportElement>	elements = new ArrayList<FlatReportElement>();
-		
-		DateRange range = getRangeForCurrentMonth();
-		
-		List<Date> month = DateUtil.createDateSequence(range, getConfig());
-		
-		for (Date date : month)
-		{
-			if (Math.random() >= 0.2)
-			{
-				elements.add(createElement(date));	
-			}
-		}
-		return elements;
-	}
-
-	private DateRange getRangeForCurrentMonth()
-	{
-		Calendar cal = GregorianCalendar.getInstance();
-		cal.set(Calendar.MONTH, Calendar.NOVEMBER);
-		
-		DateRange range = DateUtil.getDateRangeForMonth(cal);
-		return range;
-	}
-
-	private FlatReportElement createElement(Date date)
-	{
-		FlatReportElement element = new FlatReportElement();
-		element.setCustomerCode("TE1");
-		element.setCustomerName("TEST #1");
-		element.setProjectName("Project #1");
-		element.setDayDate(date);
-		element.setHours(Math.random() * 8);
-		element.setTotalHours(element.getHours());
-
-		return element;
-	}
 	
 	
 	@Test
@@ -149,7 +108,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		
 		ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
 		UserCriteria userCriteria = new UserCriteria();
-		userCriteria.setReportRange(getRangeForCurrentMonth());
+		userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
 		ReportCriteria criteria = new ReportCriteria(userCriteria);
 		Report report = new PrintReport(criteria);
 		

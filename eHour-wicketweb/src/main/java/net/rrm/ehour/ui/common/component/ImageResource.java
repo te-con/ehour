@@ -67,20 +67,13 @@ public class ImageResource extends DynamicImageResource
 		{
 			return new byte[0];
 		}
-
 	}
 
 	@Override
 	protected void setHeaders(WebResponse response)
 	{
-		if (isCacheable())
-		{
-			super.setHeaders(response);
-		} else
-		{
-			response.setHeader("Pragma", "no-cache");
-			response.setHeader("Cache-Control", "no-cache");
-			response.setDateHeader("Expires", 0);
-		}
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
 	}
 }

@@ -17,9 +17,7 @@
 
 package net.rrm.ehour.ui.common.form;
 
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.ImageObserver;
+import java.awt.Dimension;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,7 +25,11 @@ import java.io.InputStream;
 
 import net.rrm.ehour.value.ImageLogo;
 
+import org.apache.log4j.Logger;
+import org.apache.sanselan.ImageReadException;
+import org.apache.sanselan.Sanselan;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.IModel;
@@ -41,6 +43,8 @@ public abstract class ImageUploadForm extends Form
 {
 	private static final long serialVersionUID = 808442352504816831L;
 	private FileUploadField fileUploadField;
+	
+	private static final Logger LOGGER = Logger.getLogger(ImageUploadForm.class);
 
     public ImageUploadForm(String id, IModel model)
     {
@@ -48,6 +52,8 @@ public abstract class ImageUploadForm extends Form
 
         setMultiPart(true);
         add(fileUploadField = new FileUploadField("fileInput"));
+        
+        add(new SubmitLink("uploadSubmit"));
     }
 
     /**
@@ -65,8 +71,9 @@ public abstract class ImageUploadForm extends Form
 				ImageLogo logo = parseImageLogo(upload);
 				
 				uploadImage(logo);
-			} catch (IOException e)
+			} catch (Exception e)
 			{
+				LOGGER.warn("While uploading new image: " + e.getMessage());
 				uploadImageError();
 			}
         }
@@ -77,51 +84,20 @@ public abstract class ImageUploadForm extends Form
     protected abstract void uploadImageError();  
     
     
-    private ImageLogo parseImageLogo(FileUpload upload) throws IOException
+    private ImageLogo parseImageLogo(FileUpload upload) throws IOException, ImageReadException
     {
     	byte[] bytes = getBytes(upload);
-    	
-    	Image img = Toolkit.getDefaultToolkit().createImage(bytes);
     	
     	ImageLogo logo = new ImageLogo();
     	logo.setImageData(bytes);
     	
-    	Observer widthObserver = new Observer();
-    	Observer heightObserver = new Observer();
-    	
-    	
-    	logo.setWidth(img.getWidth(widthObserver));
-    	logo.setHeight(img.getHeight(heightObserver));
-    	logo.setImageType(upload.getClientFileName().substring(upload.getClientFileName().lastIndexOf(".") + 1));
-//    	waitForObservers(widthObserver, heightObserver);
-    	return logo;
-    }
-    
-    private void waitForObservers(Observer... observers)
-    {
-		boolean allDone = true;
+    	Dimension imageSize = Sanselan.getImageSize(bytes);
 
-		do
-		{
-			allDone = true;
-			
-			for (Observer observer : observers)
-			{
-	    		allDone &= observer.done; 
-			}
-			
-			if (!allDone)
-			{
-				try
-				{
-					Thread.sleep(300);
-				} catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		while (!allDone);
+    	logo.setWidth((int)	imageSize.getWidth());
+    	logo.setHeight((int)imageSize.getHeight());
+    	logo.setImageType(upload.getClientFileName().substring(upload.getClientFileName().lastIndexOf(".") + 1));
+
+    	return logo;
     }
     
     private byte[] getBytes(FileUpload upload) throws IOException
@@ -137,24 +113,4 @@ public abstract class ImageUploadForm extends Form
 		
 		return bout.toByteArray();
     }
-
-    
-	private class Observer implements ImageObserver
-	{
-		boolean done = false;
-
-		public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height)
-		{
-			if (infoflags == ALLBITS)
-			{
-				System.out.println(infoflags);
-				done = true;
-				return true;
-			}
-			
-			return false;
-		}
-
-	}
-
 }	
