@@ -35,7 +35,6 @@ public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester
 	private EhourConfigStub config;
 
 	@Before
-	@SuppressWarnings("fe")
 	public void setUp() throws Exception
 	{
 		super.setUp();

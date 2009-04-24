@@ -37,11 +37,6 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = 7090746921483608658L;
 
-
-	/**
-	 * 
-	 * @param pageTitle
-	 */
 	public BasePage(ResourceModel pageTitle)
 	{
 		super();
@@ -49,11 +44,6 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 		setupPage(pageTitle);
 	}
 	
-	/**
-	 * 
-	 * @param title
-	 * @param model
-	 */
 	public BasePage(ResourceModel pageTitle, IModel model)
 	{
 		super(model);
@@ -61,10 +51,6 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 		setupPage(pageTitle);
 	}	
 
-	/**
-	 * 
-	 * @param pageTitle
-	 */
 	private void setupPage(ResourceModel pageTitle)
 	{
 		add(getMainNavPanel("mainNav"));
@@ -72,24 +58,9 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 		
 	}
 	
-	/**
-	 * Get main navigation panel
-	 * @param id
-	 * @return
-	 */
 	protected Panel getMainNavPanel(String id)
 	{
 		return getPageConfig().getMainNavPanel(id);
-	}
-	
-	/**
-	 * Get ehour application config
-	 * @return
-	 */
-	protected EhourConfig getEhourConfig()
-	{
-		EhourWebSession session = (EhourWebSession)getSession();
-		return session.getEhourConfig();
 	}
 	
 	/**
@@ -125,7 +96,7 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	 */
 	protected EhourWebSession getEhourWebSession()
 	{
-		return ((EhourWebSession)this.getSession());
+		return EhourWebSession.getSession();
 	}
 	
 	/**
@@ -134,6 +105,6 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 	 */
 	protected EhourConfig getConfig()
 	{
-		return EhourWebSession.getSession().getEhourConfig();
+		return getEhourWebSession().getEhourConfig();
 	}
 }

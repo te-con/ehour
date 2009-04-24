@@ -155,6 +155,6 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 	{
 		return new Label( "title", new StringResourceModel("printMonth.header", 
 				this,  null,
-				new Object[]{new DateModel(cal, getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)}));
+				new Object[]{new DateModel(cal, getConfig(), DateModel.DATESTYLE_MONTHONLY)}));
 	}
 }

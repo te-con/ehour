@@ -64,6 +64,8 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 		
 		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
 		
+//		getTester().executeAjaxEvent("configTabs:panel:border:form:excelPreview", "onclick");
+		
 //		miscFormTester.select("config.currency", 1);
 //		miscFormTester.select("localeCountry", 0);
 //		miscFormTester.select("localeLanguage", 0);
