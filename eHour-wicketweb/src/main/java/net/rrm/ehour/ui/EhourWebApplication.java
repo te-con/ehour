@@ -16,6 +16,11 @@
 
 package net.rrm.ehour.ui;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
 import net.rrm.ehour.ui.admin.config.page.MainConfig;
 import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
@@ -44,6 +49,8 @@ import net.rrm.ehour.ui.timesheet.page.Overview;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
 import org.acegisecurity.AuthenticationManager;
+import org.apache.log4j.Logger;
+import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ResourceReference;
@@ -66,6 +73,8 @@ import org.apache.wicket.util.lang.PackageName;
 
 public class EhourWebApplication extends AuthenticatedWebApplication
 {
+	private static final Logger LOGGER = Logger.getLogger(EhourWebApplication.class);
+	
 	private AuthenticationManager authenticationManager;
 	protected Class<? extends WebPage>	login = Login.class;
 	private String version;
@@ -114,6 +123,44 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		getSharedResources().add(id, excelReport);
 		mountSharedResource("/" + id, new ResourceReference(id).getSharedResourceKey());
+	}
+	
+	@Override
+	public String getConfigurationType()
+	{
+		String configurationType;
+		
+		try
+		{
+			Properties props = getEhourProperties();
+			
+			configurationType = props.getProperty("configurationType");
+			
+			if (!configurationType.equalsIgnoreCase(Application.DEPLOYMENT) &&
+					!configurationType.equalsIgnoreCase(Application.DEVELOPMENT))
+			{
+				LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + Application.DEPLOYMENT + " or " + Application.DEVELOPMENT);
+				configurationType = Application.DEVELOPMENT;
+			}
+			
+		} catch (IOException e)
+		{
+			configurationType = Application.DEVELOPMENT;
+		}
+		
+		return configurationType;
+	}
+	
+	private Properties getEhourProperties() throws IOException
+	{
+		ClassLoader classLoader = EhourWebApplication.class.getClassLoader();
+		
+		URL resource = classLoader.getResource("ehour.properties");
+		InputStream inputStream = resource.openStream();
+		Properties props = new Properties();
+		props.load(inputStream);
+		
+		return props;
 	}
 	
 	private void mountPages()

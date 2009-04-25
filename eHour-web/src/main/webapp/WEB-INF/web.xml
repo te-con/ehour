@@ -4,11 +4,6 @@
 	<display-name>eHour</display-name>
 
 	<context-param>
-		<param-name>configuration</param-name>
-		<param-value>development</param-value>
-	</context-param>
-
-	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:applicationContext-acegi-security.xml

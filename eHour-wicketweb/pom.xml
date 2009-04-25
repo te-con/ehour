@@ -57,6 +57,31 @@
 		</resources>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>env-prod</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>prod-derby</value>
+				</property>
+				<property>
+					<name>env</name>
+					<value>prod-mysql</value>
+				</property>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/prod-props
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
