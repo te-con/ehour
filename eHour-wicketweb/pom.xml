@@ -65,6 +65,20 @@
 					<name>env</name>
 					<value>prod-derby</value>
 				</property>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/prod-props
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>env-prod-mysql</id>
+			<activation>
 				<property>
 					<name>env</name>
 					<value>prod-mysql</value>
