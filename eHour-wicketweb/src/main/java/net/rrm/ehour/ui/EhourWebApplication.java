@@ -71,7 +71,7 @@ import org.apache.wicket.util.lang.PackageName;
  * Base config for wicket eHour webapp
  **/
 
-public class EhourWebApplication extends AuthenticatedWebApplication
+public class 1 extends AuthenticatedWebApplication
 {
 	private static final Logger LOGGER = Logger.getLogger(EhourWebApplication.class);
 	
@@ -156,11 +156,19 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		ClassLoader classLoader = EhourWebApplication.class.getClassLoader();
 		
 		URL resource = classLoader.getResource("ehour.properties");
-		InputStream inputStream = resource.openStream();
-		Properties props = new Properties();
-		props.load(inputStream);
 		
-		return props;
+		if (resource != null)
+		{
+			InputStream inputStream = resource.openStream();
+			Properties props = new Properties();
+			props.load(inputStream);
+			
+			return props;
+		}
+		else
+		{
+			throw new FileNotFoundException();
+		}
 	}
 	
 	private void mountPages()
