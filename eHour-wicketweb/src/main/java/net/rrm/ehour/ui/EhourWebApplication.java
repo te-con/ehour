@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -71,7 +72,7 @@ import org.apache.wicket.util.lang.PackageName;
  * Base config for wicket eHour webapp
  **/
 
-public class 1 extends AuthenticatedWebApplication
+public class EhourWebApplication extends AuthenticatedWebApplication
 {
 	private static final Logger LOGGER = Logger.getLogger(EhourWebApplication.class);
 	
