@@ -18,12 +18,13 @@
 			<outputFileNameMapping>eHour-web</outputFileNameMapping>
 			</binaries>
 		</moduleSet>
+<!--
 		<moduleSet>
 			<includes>
 				<include>net.rrm.ehour:eHour-wicketweb</include>
 			</includes>
 			<binaries>
-				<outputDirectory>/lib</outputDirectory>
+				<outputDirectory>/lib2</outputDirectory>
 				<unpack>false</unpack>
 				<includeDependencies>true</includeDependencies>
 				<excludes>
@@ -36,12 +37,14 @@
 				</excludes>
 			</binaries>
 		</moduleSet>
+-->
 		<moduleSet>
 			<includes>
 				<include>net.rrm.ehour:eHour-standalone</include>
 			</includes>
 			<binaries>
 				<outputDirectory>/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
 				<unpack>false</unpack>
 				<excludes>
 					<exclude>tomcat:jasper-compiler</exclude>

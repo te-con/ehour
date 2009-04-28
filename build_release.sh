@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mkdir release
+mkdir -p release
 
 mvn clean package assembly:assembly -Denv=prod-derby
 cp target/*.zip release/

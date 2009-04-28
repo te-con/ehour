@@ -140,5 +140,15 @@
 			<artifactId>wrapper</artifactId>
 			<version>3.2.3</version>
 		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-wicketweb</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-audit</artifactId>
+			<version>${pom.version}</version>
+		</dependency>		
 	</dependencies>
 </project>
