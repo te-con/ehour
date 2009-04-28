@@ -156,7 +156,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		ClassLoader classLoader = EhourWebApplication.class.getClassLoader();
 		
-		URL resource = classLoader.getResource("ehour.properties");
+		URL resource = classLoader.getResource("prod-props/ehour.properties");
 		
 		if (resource != null)
 		{
