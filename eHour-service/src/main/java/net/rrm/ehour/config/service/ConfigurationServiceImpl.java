@@ -285,7 +285,19 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		persistConfig("smtpPort", config.getSmtpPort());
 		persistConfig("initialized", config.isInitialized());
 		persistConfig("firstDayOfWeek", config.getFirstDayOfWeek());
-		persistConfig("auditType", config.getAuditType().getValue());
+		persistConfig("auditType", getAuditType(config).getValue());
+	}
+	
+	private AuditType getAuditType(EhourConfig config)
+	{
+		if (config.getAuditType() == null)
+		{
+			return AuditType.WRITE;
+		}
+		else
+		{
+			return config.getAuditType(); 
+		}
 	}
 	
 	private void persistConfig(String key, String value)
