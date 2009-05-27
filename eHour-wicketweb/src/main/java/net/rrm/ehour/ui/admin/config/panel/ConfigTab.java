@@ -10,7 +10,8 @@ public enum ConfigTab
 	MISC("admin.config.misc.title", 0),
 	LOCALE("admin.config.locale.title", 1),
 	SMTP("admin.config.smtp.title", 2),
-	SKIN("admin.config.skin.title", 3);
+	SKIN("admin.config.skin.title", 3),
+	AUDIT("admin.config.audit.title", 4);
 	
 	private String titleResourceId;
 	private int tabIndex;
