@@ -20,10 +20,10 @@ import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
 import net.rrm.ehour.ui.admin.config.page.MainConfig;
 import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
 import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
+import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.common.border.GreyNavBorder;
-import net.rrm.ehour.ui.project.page.ProjectAdmin;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;

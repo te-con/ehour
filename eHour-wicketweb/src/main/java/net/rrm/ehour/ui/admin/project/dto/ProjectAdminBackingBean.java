@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.project.dto;
+package net.rrm.ehour.ui.admin.project.dto;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
@@ -26,12 +26,12 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 public interface ProjectAdminBackingBean extends AdminBackingBean
 {
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.project.components.dto.ProjectAdminBackingBean#getProject()
+	 * @see net.rrm.ehour.ui.admin.project.panel.dto.ProjectAdminBackingBean#getProject()
 	 */
 	public Project getProject();
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.project.components.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.domain.Project)
+	 * @see net.rrm.ehour.ui.admin.project.panel.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.domain.Project)
 	 */
 	public void setProject(Project project);
 }

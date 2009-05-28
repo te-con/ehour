@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.domain.AuditType;
-import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -48,11 +47,8 @@ public class AuditConfigPanel extends AbstractConfigPanel
 	@Override
 	protected void addFormComponents(Form configForm)
 	{
-		final MainConfigBackingBean configBackingBean = (MainConfigBackingBean)getModelObject();
-		
 		final DropDownChoice	auditTypeDropDown;
 		
-		// currency dropdown
 		auditTypeDropDown = new DropDownChoice("config.auditType",
 											Arrays.asList(AuditType.values()));
 		configForm.add(auditTypeDropDown);

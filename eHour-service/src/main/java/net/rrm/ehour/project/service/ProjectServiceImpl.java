@@ -21,7 +21,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.rrm.ehour.audit.Auditable;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
@@ -157,22 +159,54 @@ public class ProjectServiceImpl implements ProjectService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectService#deleteProject(java.lang.Integer)
 	 */
+	@Transactional
+	@Auditable(actionType=AuditActionType.DELETE)
 	public void deleteProject(Integer projectId) throws ParentChildConstraintException
 	{
 		Project	project;
 		
 		project = projectDAO.findById(projectId);
 		
+		deleteEmptyAssignments(project);
+		logger.debug("Deleting project " + project);
+		projectDAO.delete(project);
+	}
+
+	private void deleteEmptyAssignments(Project project) throws ParentChildConstraintException
+	{
+		checkProjectDeletability(project);
+		
 		if (project.getProjectAssignments() != null &&
-			project.getProjectAssignments().size() > 0)
+				project.getProjectAssignments().size() > 0)
+		{
+			deleteAnyAssignments(project);
+		}
+	}
+	
+	private void deleteAnyAssignments(Project project) throws ParentChildConstraintException
+	{
+		for (ProjectAssignment assignment : project.getProjectAssignments())
+		{
+			try
+			{
+				projectAssignmentService.deleteProjectAssignment(assignment.getAssignmentId());
+			} catch (ObjectNotFoundException e)
+			{
+				// safely ignore
+			}
+		}
+		
+		project.getProjectAssignments().clear();
+	}
+
+	private void checkProjectDeletability(Project project) throws ParentChildConstraintException
+	{
+		setProjectDeletability(project);
+		
+		if (!project.isDeletable())
 		{
 			logger.debug("Can't delete project, still has " + project.getProjectAssignments().size() + " assignments");
 			throw new ParentChildConstraintException("Project assignments still attached");
-		}
-		else
-		{
-			logger.debug("Deleting project " + project);
-			projectDAO.delete(project);
 		}
 	}
 

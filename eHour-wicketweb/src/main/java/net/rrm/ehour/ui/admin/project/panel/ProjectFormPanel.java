@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.project.components;
+package net.rrm.ehour.ui.admin.project.panel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +25,9 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
+import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean;
+import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
@@ -37,9 +40,6 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.UserComparator;
-import net.rrm.ehour.ui.project.common.ProjectAjaxEventType;
-import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBean;
-import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;

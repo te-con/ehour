@@ -242,6 +242,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * 
 	 */
 	@Transactional
+	@Auditable(actionType=AuditActionType.DELETE)
 	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException, ObjectNotFoundException
 	{
 		ProjectAssignment pa = getProjectAssignment(assignmentId);

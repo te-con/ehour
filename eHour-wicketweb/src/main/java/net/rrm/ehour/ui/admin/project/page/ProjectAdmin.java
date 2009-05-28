@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.project.page;
+package net.rrm.ehour.ui.admin.project.page;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +23,9 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
+import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBeanImpl;
+import net.rrm.ehour.ui.admin.project.panel.ProjectFormPanel;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
@@ -34,9 +37,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import net.rrm.ehour.ui.common.util.WebGeo;
-import net.rrm.ehour.ui.project.common.ProjectAjaxEventType;
-import net.rrm.ehour.ui.project.components.ProjectFormPanel;
-import net.rrm.ehour.ui.project.dto.ProjectAdminBackingBeanImpl;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
