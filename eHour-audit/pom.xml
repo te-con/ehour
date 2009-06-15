@@ -3,14 +3,14 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.8.3-SNAPSHOT</version>
+		<version>0.8.4-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
 	<artifactId>eHour-audit</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour audit interceptor</name>
-	<version>${parent.version}</version>
+	<version>0.8.4-SNAPSHOT</version>
 	<build>
 		<resources>
 			<resource>
@@ -37,12 +37,16 @@
 			<artifactId>eHour-wicketweb</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <version>${spring.version}</version>
+		    <scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

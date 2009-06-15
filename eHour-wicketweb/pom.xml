@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.8.3-SNAPSHOT</version>
+		<version>0.8.4-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
 	<artifactId>eHour-wicketweb</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour web layer (wicket)</name>
-	<version>${parent.version}</version>
+	<version>${applicationVersion}</version>
 
 	<build>
 		<finalName>eHour-wicketweb</finalName>
@@ -37,6 +37,8 @@
 						</buildcommand>
 					</additionalBuildcommands>
 				</configuration>
+				 <version>2.7</version>
+
 			</plugin>
 		</plugins>
 

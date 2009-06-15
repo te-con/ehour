@@ -3,14 +3,14 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.8.3-SNAPSHOT</version>
+		<version>0.8.4-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
 	<artifactId>eHour-persistence-domain</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour persistence domain objects</name>
-	<version>${parent.version}</version>
+	<version>${applicationVersion}</version>
 	<build>
 		<resources>
 			<resource>
