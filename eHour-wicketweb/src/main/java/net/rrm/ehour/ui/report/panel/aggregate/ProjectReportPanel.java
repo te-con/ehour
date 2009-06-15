@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.ReportConfig;
-import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
@@ -36,12 +35,7 @@ public class ProjectReportPanel extends AggregateReportPanel
 
 	public ProjectReportPanel(String id, TreeReport report)
 	{
-		this(id, report, ReportDrawType.IMAGE);
-	}
-	
-	public ProjectReportPanel(String id, TreeReport report, ReportDrawType reportDrawType)
-	{
-		super(id, report, ReportConfig.AGGREGATE_PROJECT, ProjectReportExcel.getId(), reportDrawType);
+		super(id, report, ReportConfig.AGGREGATE_PROJECT, ProjectReportExcel.getId());
 	}
 	
 
@@ -59,18 +53,4 @@ public class ProjectReportPanel extends AggregateReportPanel
 		Image customerTurnoverChart = new AggregateChartImage(turnOverId, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
 		parent.add(customerTurnoverChart);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.panel.aggregate.AggregateReportPanel#addFlashCharts(net.rrm.ehour.report.reports.ReportData, org.apache.wicket.markup.html.WebMarkupContainer)
-	 */
-	@Override
-	protected void addFlashCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
-	{
-		ReportData rawData = ((TreeReportData)data).getRawReportData();
-		
-		parent.add(createHorizontalFlashChart(hourId, rawData, new ProjectHoursAggregateChartDataConverter()));
-		parent.add(createHorizontalFlashChart(turnOverId, rawData, new ProjectTurnoverAggregateChartDataConverter()));
-		
-	}	
 }

@@ -52,4 +52,5 @@ public class UserReportTest extends BaseTestReport
 		
 		verify(reportCriteriaService);
 		verify(aggregateReportService);
-	}}
+	}
+}

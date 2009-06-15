@@ -17,25 +17,31 @@
 package net.rrm.ehour.ui.report.panel.user;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.component.OpenFlashChart;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
+import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartDataConverter;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.user.page.UserReportPrint;
-import ofc4j.model.Chart;
-import ofc4j.model.elements.BarChart;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -45,6 +51,14 @@ import org.apache.wicket.util.value.ValueMap;
 
 public class UserReportPanel extends AbstractReportPanel
 {
+	/**
+	 * 
+	 */
+	private static final String PROJECT_TURNOVER_CHART_ID = "projectTurnoverChart";
+	/**
+	 * 
+	 */
+	private static final String CUSTOMER_TURNOVER_CHART_ID = "customerTurnoverChart";
 	private static final long serialVersionUID = -2660092982421858132L;
 	
 	/**
@@ -105,89 +119,71 @@ public class UserReportPanel extends AbstractReportPanel
 
 		greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportConfig.AGGREGATE_CUSTOMER_SINGLE_USER, null, getReportWidth().getValue() - 30));
 		
-		Fragment frag = new Fragment("charts", "flash", this);
+		Fragment frag = new Fragment("charts", "image", this);
 		greyBorder.add(frag);
 		
-		addFlashCharts(frag);
+		addImageCharts(customerAggregateReport.getReportData(), frag);
 		
 		return greyBorder;
 	}
-	
-	
-	/**
-	 * Add charts
-	 * @param reportCriteria
-	 * @return
-	 */
-	private void addFlashCharts(WebMarkupContainer parent)
-	{
-	    BarChart bar1 = new BarChart(BarChart.Style.GLASS);
-	    bar1.setColour("#007FFF");
-	    bar1.setTooltip("Beers:<br>Value:#val#");
-	    bar1.addValues(1,5,8,3,0,2);
-	    bar1.setText("Beers consumed");
-	    bar1.setAlpha(0.1f);
-
-	    BarChart bar2 = new BarChart(BarChart.Style.GLASS);
-	    bar2.setColour("#802A2A");
-	    bar2.setTooltip("#val#<br>bugs fixed");
-	    bar2.setText("bugs fixed");
-	    bar2.setFontSize(15);
-	    bar1.setAlpha(0.9f);
-	    bar2.addValues(2,7,1,5,8,3,0,2);
-
-	    Chart chart2 = new Chart("Beers and bugs");
-	    chart2.addElements(bar1,bar2);
-	    chart2.setBackgroundColour("#FFFFFF");
-
-	    parent.add(new OpenFlashChart("customerHoursChart", 300,400,chart2));
-		
-	}	
-	
 	
 	/**
 	 * Add jfree charts
 	 * @param reportCriteria
 	 * @return
 	 */
-//	private void addImageCharts(ReportData data, WebMarkupContainer parent)
-//	{
-//		Model dataModel = new Model(data);
-//		
-//		// hours per customer
-//		CustomerHoursAggregateChartImage customerHoursChart = new CustomerHoursAggregateChartImage("customerHoursChart", dataModel, chartWidth, chartHeight);
-//		parent.add(customerHoursChart);
-//
-//		// turnover per customer
-//		if (config.isShowTurnover())
-//		{
-//			CustomerTurnoverAggregateImage customerTurnoverChart = new CustomerTurnoverAggregateImage("customerTurnoverChart", dataModel, chartWidth, chartHeight);
-//			parent.add(customerTurnoverChart);
-//		}
-//		else
-//		{
-//			// placeholder, not visible anyway
-//			Image img = new Image("customerTurnoverChart");
-//			img.setVisible(false);
-//			parent.add(img);
-//		}
-//
-//		// hours per project
-//		ProjectHoursAggregateChartImage projectHoursChartFactory = new ProjectHoursAggregateChartImage("projectHoursChart", dataModel, chartWidth, chartHeight);
-//		parent.add(projectHoursChartFactory);
-//
-//		// turnover per project
-//		if (config.isShowTurnover())
-//		{
-//			ProjectTurnoverAggregateChartImage projectTurnoverChart = new ProjectTurnoverAggregateChartImage("projectTurnoverChart", dataModel, chartWidth, chartHeight);
-//			parent.add(projectTurnoverChart);
-//		}
-//		else
-//		{
-//			// placeholder, not visible anyway
-//			Image img = new Image("projectTurnoverChart");
-//			img.setVisible(false);
-//			parent.add(img);
-//		}		
-//	}	
+	private void addImageCharts(ReportData data, WebMarkupContainer parent)
+	{
+		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+		
+		Model dataModel = new Model(data);
+		
+		// hours per customer
+		parent.add(createCustomerHoursChart(dataModel));
+
+		// turnover per customer
+		parent.add(config.isShowTurnover() ? createCustomerTurnOverChart(dataModel) : createInvisibleImage(CUSTOMER_TURNOVER_CHART_ID));
+
+		// hours per project
+		parent.add(createProjectHoursChart(dataModel));
+
+		// turnover per project
+		parent.add(config.isShowTurnover() ? createProjectTurnOverChart(dataModel) : createInvisibleImage(PROJECT_TURNOVER_CHART_ID));
+	}
+
+	private Image createInvisibleImage(String id)
+	{
+		Image img = new Image(id);
+		img.setVisible(false);
+		return img;
+	}
+
+	private Image createProjectHoursChart(Model dataModel)
+	{
+		AggregateChartDataConverter hourConverter = new ProjectHoursAggregateChartDataConverter();
+		Image projectHoursChart = new AggregateChartImage("projectHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
+		return projectHoursChart;
+	}	
+
+	private Image createProjectTurnOverChart(Model dataModel)
+	{
+		AggregateChartDataConverter turnoverConverter = new ProjectTurnoverAggregateChartDataConverter();
+		Image projectTurnoverChart = new AggregateChartImage(PROJECT_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
+		return projectTurnoverChart;
+	}
+
+	
+	private Image createCustomerTurnOverChart(Model dataModel)
+	{
+		AggregateChartDataConverter turnoverConverter = new CustomerTurnoverAggregateChartDataConverter();
+		Image customerTurnoverChart = new AggregateChartImage(CUSTOMER_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
+		return customerTurnoverChart;
+	}
+
+	private Image createCustomerHoursChart(Model dataModel)
+	{
+		AggregateChartDataConverter hourConverter = new CustomerHoursAggregateChartDataConverter();
+		Image customerHoursChart = new AggregateChartImage("customerHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
+		return customerHoursChart;
+	}	
 }

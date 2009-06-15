@@ -108,7 +108,6 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 			if (backingBean.getReportType().equals(ReportType.AGGREGATE))
 			{
 				addAggregateReportPanelTabs	(backingBean);
-				tabPanel.initCharts();
 			}
 			else
 			{

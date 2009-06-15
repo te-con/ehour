@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.ui.report.chart.aggregate;
 
-import org.apache.wicket.model.IModel;
-
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.chart.AbstractReportChartImage;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
+
+import org.apache.wicket.model.IModel;
 
 /**
  * Created on Mar 17, 2009, 6:33:20 PM

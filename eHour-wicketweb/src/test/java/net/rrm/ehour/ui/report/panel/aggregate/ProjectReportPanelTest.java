@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 
-import net.rrm.ehour.ui.report.ReportDrawType;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
@@ -34,7 +33,7 @@ public class ProjectReportPanelTest extends AbstractReportPanelTest
 	@Override
 	protected Panel createReportPanel(String panelId, TreeReport report)
 	{
-		return new ProjectReportPanel(panelId, report, ReportDrawType.FLASH);
+		return new ProjectReportPanel(panelId, report);
 	}
 
 	/* (non-Javadoc)
