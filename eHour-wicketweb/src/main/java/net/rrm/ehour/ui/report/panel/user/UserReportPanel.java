@@ -16,6 +16,9 @@
 
 package net.rrm.ehour.ui.report.panel.user;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
@@ -51,13 +54,12 @@ import org.apache.wicket.util.value.ValueMap;
 
 public class UserReportPanel extends AbstractReportPanel
 {
-	/**
-	 * 
-	 */
+	public enum Option
+	{
+		INCLUDE_LINKS;
+	}
+	
 	private static final String PROJECT_TURNOVER_CHART_ID = "projectTurnoverChart";
-	/**
-	 * 
-	 */
 	private static final String CUSTOMER_TURNOVER_CHART_ID = "customerTurnoverChart";
 	private static final long serialVersionUID = -2660092982421858132L;
 	
@@ -66,11 +68,11 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param id
 	 * @param reportData
 	 */
-	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, boolean inclLinks)
+	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, Option... options)
 	{
 		super(id, WebGeo.NOT_DEFINED, WebGeo.W_CONTENT_MEDIUM);
 		
-		add(getReportPanel(aggregateReport, inclLinks));
+		add(getReportPanel(aggregateReport, options));
 	}
 	
 	/**
@@ -78,14 +80,15 @@ public class UserReportPanel extends AbstractReportPanel
 	 * @param customerAggregateReport
 	 * @return
 	 */
-	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, boolean inclLinks)
+	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, Option... options)
 	{
 		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 		
 		ResourceLink 	excelLink = null;
 		Link			printLink = null;
+		List<Option> optionList = Arrays.asList(options);
 		
-		if (inclLinks)
+		if (optionList.contains(Option.INCLUDE_LINKS))
 		{
 			final String reportId = customerAggregateReport.getCacheId();
 			

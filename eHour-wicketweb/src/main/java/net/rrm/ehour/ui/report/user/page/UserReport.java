@@ -91,7 +91,7 @@ public class UserReport extends AbstractReportPage
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(criteria);
 		EhourWebSession.getSession().getObjectCache().addObjectToCache(customerAggregateReport);
 		
-		UserReportPanel panel = new UserReportPanel("userReportPanel", customerAggregateReport, true);
+		UserReportPanel panel = new UserReportPanel("userReportPanel", customerAggregateReport, UserReportPanel.Option.INCLUDE_LINKS);
 		panel.setOutputMarkupId(true);
 		return panel;
 	}

@@ -52,6 +52,6 @@ public class UserReportPrint extends WebPage
 		EhourWebSession session = EhourWebSession.getSession();
 		CustomerAggregateReport report = (CustomerAggregateReport)session.getObjectCache().getObjectFromCache(reportId);
 
-		add(new UserReportPanel("userReportPanel", report, false));
+		add(new UserReportPanel("userReportPanel", report));
 	}
 }

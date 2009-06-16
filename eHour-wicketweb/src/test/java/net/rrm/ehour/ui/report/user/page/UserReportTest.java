@@ -27,11 +27,6 @@ import net.rrm.ehour.ui.report.page.BaseTestReport;
 
 import org.junit.Test;
 
-
-/**
- * TODO 
- **/
-
 public class UserReportTest extends BaseTestReport
 {
 	@Test

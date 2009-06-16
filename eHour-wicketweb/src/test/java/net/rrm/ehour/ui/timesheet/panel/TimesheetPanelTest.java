@@ -239,9 +239,6 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		
 	}
 	
-	/**
-	 * 
-	 */
 	private void startAndReplay()
 	{
 		replay(timesheetService);
