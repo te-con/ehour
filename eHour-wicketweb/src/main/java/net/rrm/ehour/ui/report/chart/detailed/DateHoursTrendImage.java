@@ -88,7 +88,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 		{
 			return element.getUserId();	
 		}
-		else if (seriesColumnIndex.equals("userReport.report.customer") )
+		else if (seriesColumnIndex.equals("userReport.reporTt.customer") )
 		{
 			return element.getCustomerId();
 		}

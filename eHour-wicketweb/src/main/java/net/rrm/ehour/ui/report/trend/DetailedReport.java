@@ -95,6 +95,7 @@ public class DetailedReport extends TreeReport
 	        {
 	        	FlatReportElement flatElement = (FlatReportElement)element;
 	        	
+	        	// TODO make this a bit more understandable
 	            switch (hierarchyLevel)
 	            {
 	                case 0:

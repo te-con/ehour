@@ -16,9 +16,11 @@
 
 package net.rrm.ehour.ui.report.panel.detail;
 
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.chart.detailed.AbstractTrendChartImage;
 import net.rrm.ehour.ui.report.chart.detailed.DateHoursTrendImage;
 import net.rrm.ehour.ui.report.chart.detailed.SeriesChartSelector;
@@ -49,8 +51,10 @@ public class DetailedReportPanel extends AbstractReportPanel
 		
 		DateHoursTrendImageFactory chartFactory = new DateHoursTrendImageFactory();
 
+		ReportData rawData = report.getReportData();
+		
 		// hours per customer
-		AbstractTrendChartImage<FlatReportElement> chart = chartFactory.getTrendChartImage("userReport.report.project", new Model(report));
+		AbstractTrendChartImage<FlatReportElement> chart = chartFactory.getTrendChartImage("userReport.report.project", new Model(rawData));
 		greyBorder.add(chart);	
 		
 		greyBorder.add(new SeriesChartSelector<FlatReportElement>("serieChartSelector", ReportConfig.DETAILED_REPORT, chart, chartFactory));
