@@ -29,19 +29,10 @@ import org.jfree.chart.JFreeChart;
 
 public abstract class AbstractChartImage extends NonCachingImage
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2926007592965711057L;
 	private int		width;
 	private int		height;
 	
-	/**
-	 * 
-	 * @param id
-	 * @param width
-	 * @param height
-	 */
 	public AbstractChartImage(String id, 
 								int width,
 								int height)
@@ -49,13 +40,6 @@ public abstract class AbstractChartImage extends NonCachingImage
 		this(id, null, width, height);
 	}
 
-	/**
-	 * 
-	 * @param id
-	 * @param dataModel
-	 * @param width
-	 * @param height
-	 */
 	public AbstractChartImage(String id, 
 								IModel dataModel,
 								int width,
@@ -67,10 +51,8 @@ public abstract class AbstractChartImage extends NonCachingImage
 		this.height = height;
 	}
 	
-	
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.wicket.markup.html.image.Image#getImageResource()
 	 */
 	@Override

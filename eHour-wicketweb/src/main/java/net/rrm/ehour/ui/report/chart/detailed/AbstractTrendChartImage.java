@@ -28,6 +28,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.chart.AbstractReportChartImage;
 import net.rrm.ehour.ui.report.chart.UpdatingTimeSeries;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
@@ -49,9 +50,6 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 public abstract class AbstractTrendChartImage<EL extends ReportElement> extends AbstractReportChartImage<EL>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5240166303490011478L;
 
 	private static final Paint[] seriePaints = new Paint[]{new Color(0xa3bcd8), new Color(0xff6b51), new Color(0xbebd4a), new Color(0x65d460), new Color(0x519fff)};
@@ -135,14 +133,14 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	{
 		Map<Object, TimeSeries> timeSeries = new HashMap<Object, TimeSeries>();
 		
-		ChartRowKey			rowKey;
-		Number 					value;
+		TreeReportData treeReportData = (TreeReportData)reportData;
 		
-		// 
+		ChartRowKey	rowKey;
+		Number 		value;
+		
 		List<Date> dates = DateUtil.createDateSequence(reportData.getReportRange(), config);
 
-		//
-		for (ReportElement element : reportData.getReportElements())
+		for (ReportElement element : treeReportData.getRawReportData().getReportElements())
 		{
 			EL castedElement = (EL)element;
 			

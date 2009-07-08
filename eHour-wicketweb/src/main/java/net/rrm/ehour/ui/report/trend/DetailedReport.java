@@ -50,10 +50,6 @@ public class DetailedReport extends TreeReport
 	
 	private Locale locale;
 	
-	/**
-	 * 
-	 * @param reportData
-	 */
 	public DetailedReport(ReportCriteria reportCriteria, Locale locale)
 	{
 		super(reportCriteria, ReportConfig.DETAILED_REPORT);

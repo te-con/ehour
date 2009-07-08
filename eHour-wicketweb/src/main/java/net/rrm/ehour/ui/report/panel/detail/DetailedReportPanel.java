@@ -20,7 +20,6 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.report.ReportConfig;
-import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.chart.detailed.AbstractTrendChartImage;
 import net.rrm.ehour.ui.report.chart.detailed.DateHoursTrendImage;
 import net.rrm.ehour.ui.report.chart.detailed.SeriesChartSelector;
@@ -60,10 +59,9 @@ public class DetailedReportPanel extends AbstractReportPanel
 		greyBorder.add(new SeriesChartSelector<FlatReportElement>("serieChartSelector", ReportConfig.DETAILED_REPORT, chart, chartFactory));
 	}
 
-	class DateHoursTrendImageFactory implements TrendChartImageFactory<FlatReportElement>
+	@SuppressWarnings("serial")
+	private class DateHoursTrendImageFactory implements TrendChartImageFactory<FlatReportElement>
 	{
-		private static final long serialVersionUID = 1L;
-
 		public AbstractTrendChartImage<FlatReportElement> getTrendChartImage(String seriesColumn, IModel model)
 		{
 			return new DateHoursTrendImage("hoursChart", model, 920, getChartHeight().getValue(), seriesColumn);
