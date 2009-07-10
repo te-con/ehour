@@ -35,20 +35,11 @@ public class AssignmentAggregateReportElement
 	private ProjectAssignment 	projectAssignment;
 	private Number 				hours;
 
-	
-	/**
-	 * default construct
-	 */
 	public AssignmentAggregateReportElement()
 	{
 		
 	}
-	
-	/**
-	 * full constructor
-	 * @param projectAssignment
-	 * @param hours
-	 */
+
 	public AssignmentAggregateReportElement(ProjectAssignment projectAssignment, Number hours)
 	{
 		this.hours = hours;
