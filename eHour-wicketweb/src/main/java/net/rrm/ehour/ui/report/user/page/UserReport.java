@@ -76,15 +76,10 @@ public class UserReport extends AbstractReportPage
 		return false;
 	}
 	
-	/**
-	 * Get report
-	 * @return
-	 */
 	private WebMarkupContainer getReport()
 	{
 		ReportCriteria criteria = (ReportCriteria)getModelObject();
 		
-		// add data
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(criteria);
 		EhourWebSession.getSession().getObjectCache().addObjectToCache(customerAggregateReport);
 		

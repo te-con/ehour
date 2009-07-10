@@ -75,5 +75,4 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	{
 		return provider.getValueAxisLabelKey();
 	}
-
 }

@@ -26,6 +26,7 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
+import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
@@ -71,7 +72,6 @@ public class UserReportPanel extends AbstractReportPanel
 	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, Option... options)
 	{
 		super(id, WebGeo.NOT_DEFINED, WebGeo.W_CONTENT_MEDIUM);
-		
 		add(getReportPanel(aggregateReport, options));
 	}
 	
@@ -139,7 +139,9 @@ public class UserReportPanel extends AbstractReportPanel
 	{
 		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 		
-		Model dataModel = new Model(data);
+		ReportData rawData = ((TreeReportData)data).getRawReportData();
+		
+		Model dataModel = new Model(rawData);
 		
 		// hours per customer
 		parent.add(createCustomerHoursChart(dataModel));
