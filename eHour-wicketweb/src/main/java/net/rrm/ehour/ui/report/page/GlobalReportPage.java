@@ -100,7 +100,6 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	{
 		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED)
 		{
-			
 			ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getModel().getObject();
 	
 			clearTabs();

@@ -33,18 +33,16 @@ public class CustomerAggregateReport extends AbstractAggregateReport
 {
 	private static final long serialVersionUID = -3221674649410450972L;
 
-	/**
-	 * @param reportCriteria
-	 * @param reportConfig
-	 */
 	public CustomerAggregateReport(ReportCriteria reportCriteria)
 	{
 		super(reportCriteria, ReportConfig.AGGREGATE_CUSTOMER);
 	}
 
-    /**
-     *
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.report.TreeReport#getReportNodeFactory()
+	 */
+	@Override
     public ReportNodeFactory getReportNodeFactory()
     {
     	return new ReportNodeFactory()
@@ -57,14 +55,7 @@ public class CustomerAggregateReport extends AbstractAggregateReport
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
-	                	if (aggregate != null)
-	                	{
-	                		return new CustomerNode(aggregate, hierarchyLevel);
-	                	}
-	                	else
-	                	{
-	                		return null;
-	                	}
+	                	return (aggregate != null) ? new CustomerNode(aggregate, hierarchyLevel) : null;
 	                case 1:
 	                    return new ProjectNode(aggregate, hierarchyLevel);
 	                case 2:

@@ -83,24 +83,4 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 		
 		verify(timesheetService);
 	}
-
-//
-//	/**
-//	 * Test method for {@link net.rrm.ehour.ui.common.panel.noentry.calendar.CalendarPanel#CalendarPanel(java.lang.String, net.rrm.ehour.user.domain.User, boolean)}.
-//	 */
-//	@Test
-//	public void testCalendarPanelStringUserBoolean()
-//	{
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link net.rrm.ehour.ui.common.panel.noentry.calendar.CalendarPanel#refreshCalendar(org.apache.wicket.ajax.AjaxRequestTarget)}.
-//	 */
-//	@Test
-//	public void testRefreshCalendar()
-//	{
-//		fail("Not yet implemented");
-//	}
-
 }

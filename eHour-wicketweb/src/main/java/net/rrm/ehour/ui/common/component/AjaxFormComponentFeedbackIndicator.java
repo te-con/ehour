@@ -128,6 +128,8 @@ public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedba
 			add(new SimpleAttributeModifier("class", "formValidationError"));
 		}
 		
+		// used by reflection
+		@SuppressWarnings("unused")
 		public Serializable getMessage()
 		{
 			return messages != null && messages.size() > 0 ? messages.get(0).getMessage() : "";

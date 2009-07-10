@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.report.chart.rowkey.CustomerRowKey;
 
 /**
- * Factory for hours per customer chart
+ * Converter for hours per customer chart
  * @author Thies
  *
  */

@@ -115,7 +115,7 @@ public abstract class TreeReport extends AbstractCachableReportModel
      * Get node factory
      * @return
      */
-    public abstract ReportNodeFactory getReportNodeFactory();
+    protected abstract ReportNodeFactory getReportNodeFactory();
 
 	/**
 	 * @return the totalHours

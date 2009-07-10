@@ -42,9 +42,6 @@ public class UserReport extends AbstractReportPage
 
 	private WebMarkupContainer		reportDataPanel;
 
-	/**
-	 * 
-	 */
 	public UserReport()
 	{
 		super(new ResourceModel("userreport.title"));
@@ -85,7 +82,7 @@ public class UserReport extends AbstractReportPage
 	 */
 	private WebMarkupContainer getReport()
 	{
-		ReportCriteria criteria = (ReportCriteria)getModel().getObject();
+		ReportCriteria criteria = (ReportCriteria)getModelObject();
 		
 		// add data
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(criteria);
@@ -95,5 +92,4 @@ public class UserReport extends AbstractReportPage
 		panel.setOutputMarkupId(true);
 		return panel;
 	}
-	
 }

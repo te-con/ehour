@@ -257,17 +257,9 @@ public class TimesheetRow implements Serializable
 		this.timesheet = timesheet;
 	}
 	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
+	@SuppressWarnings("serial")
 	private class AvailableHours implements Serializable
 	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 		int hours;
 		
 		public AvailableHours(int hours)
@@ -275,9 +267,8 @@ public class TimesheetRow implements Serializable
 			this.hours = hours;
 		}
 
-		/**
-		 * @return the hours
-		 */
+		// reflection
+		@SuppressWarnings("unused")
 		public int getHours()
 		{
 			return hours;
