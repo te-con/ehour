@@ -173,20 +173,20 @@ public class ProjectOverviewPanel extends Panel
 	 */
 	private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
 	{
-		List<UserProjectStatus> stati;
+		List<UserProjectStatus> statusses;
 		
 		if (projectStatusSet == null)
 		{
-			stati = new ArrayList<UserProjectStatus>();
+			statusses = new ArrayList<UserProjectStatus>();
 		}
 		else
 		{
-			stati = new ArrayList<UserProjectStatus>(projectStatusSet);
+			statusses = new ArrayList<UserProjectStatus>(projectStatusSet);
 		}
 			
 		// table data should reflect the path to the listView
 		this.tableDatePath += ":" + ID_TABLE_DATA;
-		ListView view = new ListView(ID_TABLE_DATA, stati)
+		ListView view = new ListView(ID_TABLE_DATA, statusses)
 		{
 			private static final long serialVersionUID = -2544424604230082804L;
 			EhourWebSession session = (EhourWebSession)getSession();
