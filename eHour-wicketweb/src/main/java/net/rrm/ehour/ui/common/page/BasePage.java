@@ -90,10 +90,6 @@ public abstract class BasePage extends WebPage implements AjaxAwareContainer
 		ajaxEventReceived(ajaxEvent);
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	protected EhourWebSession getEhourWebSession()
 	{
 		return EhourWebSession.getSession();

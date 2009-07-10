@@ -46,10 +46,6 @@ public class PmReportPanel extends AbstractReportPanel
 {
 	private static final long serialVersionUID = -1735419536027937563L;
 	
-	/**
-	 * 
-	 * @param id
-	 */
 	public PmReportPanel(String id, ProjectManagerReport report)
 	{
 		super(id, WebGeo.NOT_DEFINED, WebGeo.W_CONTENT_MEDIUM);

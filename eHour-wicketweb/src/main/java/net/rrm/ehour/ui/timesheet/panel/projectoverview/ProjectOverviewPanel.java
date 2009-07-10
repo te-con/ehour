@@ -81,7 +81,7 @@ public class ProjectOverviewPanel extends Panel
 		// this should be easier..
 		Label label = new Label("title", new StringResourceModel("projectoverview.aggregatedPerMonth", 
 																	this,  null,
-																	new Object[]{new DateModel(overviewFor, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)}));
+																	new Object[]{new DateModel(overviewFor, EhourWebSession.getSession().getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)}));
 		
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_GREY_BORDER, label, WebGeo.W_CONTENT_MEDIUM); 
 

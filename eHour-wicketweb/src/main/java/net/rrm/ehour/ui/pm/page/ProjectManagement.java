@@ -28,7 +28,6 @@ import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.page.BasePage;
-import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.pm.PmReportPanel;
@@ -69,9 +68,6 @@ public class ProjectManagement extends BasePage
 		IModel	model = new CompoundPropertyModel(reportCriteria);
 		setModel(model);
 		
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp", "pmReport.help.header", "pmReport.help.body"));
-
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model, false));
 		
