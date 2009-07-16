@@ -23,11 +23,13 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
+import net.rrm.ehour.audit.Auditable;
 import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.config.dao.ConfigurationDAO;
+import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
@@ -51,6 +53,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	 * @see net.rrm.ehour.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.value.ImageLogo)
 	 */
 	@Transactional
+	@Auditable(actionType=AuditActionType.UPDATE)
 	public void persistExcelLogo(ImageLogo logo)
 	{
 		persistLogo("excelHeader", logo);
@@ -264,6 +267,8 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.config.service.ConfigService#persistConfiguration(java.util.List)
 	 */
+	@Transactional
+	@Auditable(actionType=AuditActionType.UPDATE)
 	public void persistConfiguration(EhourConfig config)
 	{
 		logger.debug("Persisting config");

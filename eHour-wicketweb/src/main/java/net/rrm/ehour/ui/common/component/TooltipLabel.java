@@ -82,7 +82,7 @@ public class TooltipLabel extends Panel
 		add(new AttributeModifier("title", true, tooltipText));
 		
 		ContextImage img = new ContextImage("infoImg", new Model("img/info.gif"));
-		img.setVisible(showInfoImg);
+		img.setVisible(showInfoImg && showTooltip.booleanValue());
 		add(img);
 	}
 }

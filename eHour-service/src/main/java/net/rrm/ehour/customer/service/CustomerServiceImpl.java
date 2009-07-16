@@ -18,7 +18,9 @@ package net.rrm.ehour.customer.service;
 
 import java.util.List;
 
+import net.rrm.ehour.audit.Auditable;
 import net.rrm.ehour.customer.dao.CustomerDAO;
+import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
@@ -52,6 +54,7 @@ public class CustomerServiceImpl implements CustomerService
 	 * @see net.rrm.ehour.project.service.ProjectService#deleteCustomer(java.lang.Integer)
 	 */
 	@Transactional
+	@Auditable(actionType=AuditActionType.DELETE)
 	public void deleteCustomer(Integer customerId) throws ParentChildConstraintException
 	{
 		Customer customer = customerDAO.findById(customerId);

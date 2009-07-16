@@ -48,6 +48,7 @@ import net.rrm.ehour.util.EhourUtil;
 import org.acegisecurity.providers.encoding.MessageDigestPasswordEncoder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author   Thies
@@ -177,10 +178,7 @@ public class UserServiceImpl implements UserService
 		userRoleDAO = dao;
 	}
 
-	/**
-	 * @throws ObjectNotUniqueException 
-	 * 
-	 */
+	@Transactional
 	public UserDepartment persistUserDepartment(UserDepartment department) throws ObjectNotUniqueException
 	{
 		UserDepartment	otherDept;
@@ -274,7 +272,7 @@ public class UserServiceImpl implements UserService
 	/**
 	 * Persist user
 	 */
-
+	@Transactional
 	public User persistUser(User user) throws PasswordEmptyException, ObjectNotUniqueException
 	{
 		User	dbUser;
@@ -395,6 +393,7 @@ public class UserServiceImpl implements UserService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.user.service.UserService#persistCustomerFoldPreference(net.rrm.ehour.user.domain.CustomerFoldPreference)
 	 */
+	@Transactional
 	public void persistCustomerFoldPreference(CustomerFoldPreference customerFoldPreference)
 	{
 		customerFoldPreferenceDAO.persist(customerFoldPreference);
@@ -446,6 +445,7 @@ public class UserServiceImpl implements UserService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.user.service.UserService#deleteUser(net.rrm.ehour.user.domain.User)
 	 */
+	@Transactional
 	public void deleteUser(Integer userId)
 	{
 		User	user = userDAO.findById(userId);
@@ -459,6 +459,7 @@ public class UserServiceImpl implements UserService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.user.service.UserService#deleteDepartment(java.lang.Integer)
 	 */
+	@Transactional
 	public void deleteDepartment(Integer departmentId)
 	{
 		UserDepartment department = userDepartmentDAO.findById(departmentId);

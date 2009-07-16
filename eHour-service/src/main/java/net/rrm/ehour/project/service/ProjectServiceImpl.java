@@ -140,6 +140,7 @@ public class ProjectServiceImpl implements ProjectService
 	 * @see net.rrm.ehour.project.service.ProjectService#persistProject(net.rrm.ehour.project.domain.Project)
 	 */
 	@Transactional
+	@Auditable(actionType=AuditActionType.CREATE)
 	public Project persistProject(Project project)
 	{
 		projectDAO.persist(project);
