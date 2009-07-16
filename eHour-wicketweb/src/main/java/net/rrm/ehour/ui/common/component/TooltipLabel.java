@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common.component;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.basic.Label;
@@ -28,6 +29,7 @@ import org.apache.wicket.model.Model;
 /**
  * Tooltip label with info image next to it.
  * Displays a tooltip when hovered over the text using SweetTitles
+ * When the tooltipText is empty the tooltip img button is now shown
  * 
  * Created on Feb 1, 2009, 6:57:30 PM
  * @author Thies Edeling (thies@te-con.nl) 
@@ -62,18 +64,23 @@ public class TooltipLabel extends Panel
 	
 	/**
 	 * @param id
-	 * @param model
+	 * @param label
 	 */
-	public TooltipLabel(String id, IModel model, IModel tooltipText, boolean showInfoImg)
+	public TooltipLabel(String id, IModel label, IModel tooltipText, boolean showInfoImg)
 	{
 		super(id);
 		
-		add(new Label("content", model));
+		add(new Label("content", label));
 		
 		add(new JavaScriptReference("addEventJs", new ResourceReference(TooltipLabel.class, "js/addEvent.js")));
 		add(new JavaScriptReference("sweetTitlesJs", new ResourceReference(TooltipLabel.class, "js/sweetTitles.js")));
 		
-		add(new AttributeModifier("showtooltip", true, new Model("true")));
+		if (showInfoImg)
+		{
+			showInfoImg = !StringUtils.isBlank((String)tooltipText.getObject());
+		}
+		
+		add(new AttributeModifier("showtooltip", true, new Model(new Boolean(showInfoImg).toString())));
 		add(new AttributeModifier("title", true, tooltipText));
 		
 		ContextImage img = new ContextImage("infoImg", new Model("img/info.gif"));

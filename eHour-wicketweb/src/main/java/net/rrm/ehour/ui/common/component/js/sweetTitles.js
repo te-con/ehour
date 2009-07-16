@@ -3,6 +3,7 @@ Sweet Titles (c) Creative Commons 2005
 http://creativecommons.org/licenses/by-sa/2.5/
 Author: Dustin Diaz | http://www.dustindiaz.com
 Edited by Johannes Fahrenkrug. The script now honors the showtooltip attribute
+Edited by Thies Edeling. Name is now picked up from the firstChild.firstChild
 */
 var sweetTitles = { 
 	xCord : 0,			// @Number: x pixel value of current cursor position
@@ -83,10 +84,11 @@ var sweetTitles = {
                                 : anch.href);
 			var access = ( anch.accessKey ? ' <span>['+anch.accessKey+']</span> ' : '' );
 		} else if (anch.firstChild){
-			addy = anch.firstChild.nodeValue;
+			addy = anch.childNodes[1].textContent;
 		} else {
 		  addy = '';
 		}
+		
 		this.tip.innerHTML = "<p>"+anch.getAttribute('tip')+"<em>"+access+addy+"</em></p>";
 		if ( parseInt(document.documentElement.clientWidth+document.documentElement.scrollLeft) < 
                     parseInt(this.tip.offsetWidth+lt) ) {
