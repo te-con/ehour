@@ -9,14 +9,14 @@
 <wicket:panel>
 	<div wicket:id="border">
 	<form wicket:id="criteriaForm">
-		<table class="contentTable" style="padding-right: 30px; height: 100px">
+		<table class="contentTable" style="padding-right: 30px; height: 100px; width: 660px">
 			<tr>
 				<td valign="top" align="left"></td>
 				<td></td>
 			</tr>
 
 		<tr>
-			<td><wicket:message key="admin.assignment.dateStart" />:</td>
+			<td valign="top" style="padding-top: 4px"><wicket:message key="admin.assignment.dateStart" />:</td>
 			<td><span wicket:id="startDateHider">
 					<span wicket:id="innerStartDateHider">
 						<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="dateStart" />
@@ -27,12 +27,12 @@
 				</span>
 			</td>
 			<td>&nbsp;&nbsp;</td>
-			<td><wicket:message key="audit.report.filter.name" />:</td>
-			<td><input type="text" wicket:id="name" class="textInputSmall"  /></td>
+			<td valign="top" style="padding-top: 4px"><wicket:message key="audit.report.filter.name" />:</td>
+			<td valign="top" style="padding-top: 4px"><input type="text" wicket:id="name" class="textInputSmall"  /></td>
 		</tr>					
 		
 		<tr>
-			<td><wicket:message key="admin.assignment.dateEnd" />:</td>
+			<td valign="top" style="padding-top: 4px"><wicket:message key="admin.assignment.dateEnd" />:</td>
 			<td><span wicket:id="endDateHider">
 					<span wicket:id="innerEndDateHider">
 						<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="dateEnd" />
@@ -43,15 +43,12 @@
 				</span>
 			</td>
 			<td>&nbsp;&nbsp;</td>
-            <td><wicket:message key="audit.report.filter.action" />:</td>
-            <td><input type="text" wicket:id="action" class="textInputSmall"  /></td>
+            <td valign="top" style="padding-top: 4px"><wicket:message key="audit.report.filter.action" />:</td>
+            <td valign="top" style="padding-top: 4px"><input type="text" wicket:id="action" class="textInputSmall"  /></td>
+            
+            <td valign="bottom" align="right" width="150px"><a class="bluebutton" wicket:id="submitButton"><span><wicket:message key="audit.report.filter.submit" /></span></a></td>
 		</tr>
 		
-		<tr>
-			<td colspan="5">
-			     <a class="bluebutton"  wicket:id="submitButton"><span>submit</span></a> 
-			</td>
-		</tr>
 	</table>
 	</form>
 	</div>
