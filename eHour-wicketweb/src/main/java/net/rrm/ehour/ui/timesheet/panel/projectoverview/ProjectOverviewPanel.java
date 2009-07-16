@@ -30,7 +30,7 @@ import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.CurrencyModel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
 
@@ -44,7 +44,6 @@ import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -53,7 +52,7 @@ import org.apache.wicket.model.StringResourceModel;
  * Panel showing overview
  */
 
-public class ProjectOverviewPanel extends Panel
+public class ProjectOverviewPanel extends AbstractBasePanel
 {
 	private static final long serialVersionUID = -5935376941518756941L;
 	private static final String ID_GREY_BORDER = "greyBorder";
@@ -62,34 +61,26 @@ public class ProjectOverviewPanel extends Panel
 	private static final String ID_FOLD_LINK = "foldLink";
 	private static final String ID_FOLD_IMG = "foldImg";
 	
-	private transient EhourWebSession session;
 	private String tableDatePath;
 	
-	/**
-	 * 
-	 * @param id
-	 * @param projectStatus
-	 */
 	public ProjectOverviewPanel(String id, Calendar overviewFor, Collection<UserProjectStatus> projectStatusSet)
 	{
 		super(id);
 		
 		this.setOutputMarkupId(true);
 		
-		EhourWebSession session = (EhourWebSession)getSession();
-
 		// this should be easier..
 		Label label = new Label("title", new StringResourceModel("projectoverview.aggregatedPerMonth", 
 																	this,  null,
-																	new Object[]{new DateModel(overviewFor, EhourWebSession.getSession().getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)}));
+																	new Object[]{new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY)}));
 		
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_GREY_BORDER, label, WebGeo.W_CONTENT_MEDIUM); 
 
-		addTotals(greyBorder, projectStatusSet, session.getEhourConfig());
-		addColumnLabels(greyBorder, session.getEhourConfig());
+		addTotals(greyBorder, projectStatusSet, getConfig());
+		addColumnLabels(greyBorder, getConfig());
 		
 		tableDatePath = ID_GREY_BORDER;
-		addTableData(greyBorder, projectStatusSet, session.getEhourConfig());
+		addTableData(greyBorder, projectStatusSet, getConfig());
 
 		add(greyBorder);
 	}
@@ -189,8 +180,6 @@ public class ProjectOverviewPanel extends Panel
 		ListView view = new ListView(ID_TABLE_DATA, statusses)
 		{
 			private static final long serialVersionUID = -2544424604230082804L;
-			EhourWebSession session = (EhourWebSession)getSession();
-			
 			public void populateItem(final ListItem item)
 			{
 				UserProjectStatus projectStatus = (UserProjectStatus) item.getModelObject();
@@ -207,15 +196,15 @@ public class ProjectOverviewPanel extends Panel
 
 				item.add(new Label("projectCode", projectStatus.getProjectAssignment().getProject().getProjectCode()));
 				
-				Label rateLabel = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), session.getEhourConfig()));
+				Label rateLabel = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), getConfig()));
 				rateLabel.setEscapeModelStrings(false);
 				setRateWidthOrHide(rateLabel);
 				item.add(rateLabel);
 
-				Label hoursLabel = new Label("monthHours", new FloatModel(projectStatus.getHours(), session.getEhourConfig()));
+				Label hoursLabel = new Label("monthHours", new FloatModel(projectStatus.getHours(), getConfig()));
 				item.add(hoursLabel);
 
-				Label turnOverLabel = new Label("turnover", new CurrencyModel(projectStatus.getTurnOver(), session.getEhourConfig()));
+				Label turnOverLabel = new Label("turnover", new CurrencyModel(projectStatus.getTurnOver(), getConfig()));
 				setTurnoverWidthOrHide(turnOverLabel);
 				item.add(turnOverLabel);
 				
@@ -325,8 +314,8 @@ public class ProjectOverviewPanel extends Panel
 		// valid from until label
 		Label validityLabel = new Label("overview.validity", new StringResourceModel("overview.validity", 
 																this,  null,
-																new Object[]{new DateModel(projectStatus.getProjectAssignment().getDateStart(), session.getEhourConfig()),
-																				new DateModel(projectStatus.getProjectAssignment().getDateEnd(), session.getEhourConfig())}));
+																new Object[]{new DateModel(projectStatus.getProjectAssignment().getDateStart(), getConfig()),
+																				new DateModel(projectStatus.getProjectAssignment().getDateEnd(), getConfig())}));
 		validityLabel.setEscapeModelStrings(false);
 		summaryRow.add(validityLabel);
 		
@@ -336,18 +325,18 @@ public class ProjectOverviewPanel extends Panel
 
 		Label totalBookedLabel = new Label("overview.totalbooked", new StringResourceModel("overview.totalbooked", 
 																	this,  null,
-																	new Object[]{new FloatModel(projectStatus.getTotalBookedHours(), session.getEhourConfig())}));
+																	new Object[]{new FloatModel(projectStatus.getTotalBookedHours(), getConfig())}));
 		cont.add(totalBookedLabel);
 
 		Label remainingLabel = new Label("overview.remainingfixed", new StringResourceModel("overview.remainingfixed", 
 																	this,  null,
-																	new Object[]{new FloatModel(projectStatus.getFixedHoursRemaining(), session.getEhourConfig())})); 
+																	new Object[]{new FloatModel(projectStatus.getFixedHoursRemaining(), getConfig())})); 
 		remainingLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 		cont.add(remainingLabel);
 
 		Label remainingFlexLabel = new Label("overview.remainingflex", new StringResourceModel("overview.remainingflex",
 																	this,  null,
-																	new Object[]{new FloatModel(projectStatus.getFlexHoursRemaining(), session.getEhourConfig())}));
+																	new Object[]{new FloatModel(projectStatus.getFlexHoursRemaining(), getConfig())}));
 
 		// only shown for flex allotted types
 		remainingFlexLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
@@ -387,15 +376,6 @@ public class ProjectOverviewPanel extends Panel
 
 	private boolean isTurnOverVisible()
 	{
-		return getEhourSession().getEhourConfig().isShowTurnover();
-	}
-	
-	private EhourWebSession getEhourSession()
-	{
-		if (session == null)
-		{
-			session = (EhourWebSession)getSession();
-		}
-		return session;
+		return getConfig().isShowTurnover();
 	}
 }
