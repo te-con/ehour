@@ -75,12 +75,10 @@ public class TooltipLabel extends Panel
 		add(new JavaScriptReference("addEventJs", new ResourceReference(TooltipLabel.class, "js/addEvent.js")));
 		add(new JavaScriptReference("sweetTitlesJs", new ResourceReference(TooltipLabel.class, "js/sweetTitles.js")));
 		
-		if (showInfoImg)
-		{
-			showInfoImg = !StringUtils.isBlank((String)tooltipText.getObject());
-		}
+		Boolean showTooltip = StringUtils.isBlank((String)tooltipText.getObject()) ? Boolean.FALSE : Boolean.TRUE;
 		
-		add(new AttributeModifier("showtooltip", true, new Model(new Boolean(showInfoImg).toString())));
+		
+		add(new AttributeModifier("showtooltip", true, new Model(showTooltip.toString())));
 		add(new AttributeModifier("title", true, tooltipText));
 		
 		ContextImage img = new ContextImage("infoImg", new Model("img/info.gif"));

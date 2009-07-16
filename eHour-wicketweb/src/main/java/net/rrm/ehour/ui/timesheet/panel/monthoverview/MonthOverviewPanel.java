@@ -35,6 +35,7 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -61,11 +62,7 @@ public class MonthOverviewPanel extends Panel
 	private	final int				thisYear;
 	private final Calendar			overviewFor;
 	private final EhourConfig		config;
-	
-	/**
-	 * 
-	 * @param id
-	 */
+
 	public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, final Calendar overviewForMonth)
 	{
 		super(id);
@@ -158,80 +155,100 @@ public class MonthOverviewPanel extends Panel
 		{
 			String dayId = "day" + i + "Value";
 
-			Fragment fragment;
-			
 	        if (overviewFor.get(Calendar.MONTH) == thisMonth)
 	        {
-				boolean isWeekend = DateUtil.isWeekend(overviewFor);
-
-				List<TimesheetEntry> timesheetEntries = null;
-	        	
-	        	if (timesheetOverview.getTimesheetEntries() != null)
-	        	{
-	        		timesheetEntries = timesheetOverview.getTimesheetEntries().get(overviewFor.get(Calendar.DAY_OF_MONTH));
-	        	}
-	        	
-	            if (timesheetEntries != null
-	            		&& timesheetEntries.size() > 0)
-	            {
-	            	fragment = new Fragment(dayId, "showProjects", this);
-	            	
-	            	ListView projects = new ListView("projects", timesheetEntries)
-	            	{
-						private static final long serialVersionUID = 1L;
-
-						/*
-						 * (non-Javadoc)
-						 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
-						 */
-						@Override
-						protected void populateItem(ListItem item)
-						{
-							TimesheetEntry entry = (TimesheetEntry)item.getModelObject();
-
-							item.add(createProjectCodeTooltip(entry));
-	            			item.add(new Label("hours", new FloatModel(entry.getHours(), config)));
-						}
-	            	};
-	            	
-	            	fragment.add(projects);
-	            }
-	            else
-	            {
-	            	fragment = new Fragment(dayId, "noProjects", this);
-	            }
-	            
-            	if (isWeekend)
-            	{
-            		fragment.add(new SimpleAttributeModifier("style", "background-color: #eef6fe"));
-            	}	            
-	            row.add(fragment);
+	        	row.add(createDay(dayId));	            
 	        }
 	        else
 	        {
-	        	Label label = HtmlUtil.getNbspLabel(dayId);
-	        	
-            	if (monthIsBeforeCurrent(overviewFor, thisMonth, thisYear))
-            	{
-            		label.add(new SimpleAttributeModifier("class", "noMonthBefore"));
-            	}
-            	else
-            	{
-            		label.add(new SimpleAttributeModifier("class", "noMonthAfter"));
-            	}
-
-            	row.add(label);
+	        	row.add(createEmptyDay(dayId));
 	        }
 		}		
+	}
+
+	/**
+	 * @param dayId
+	 * @return
+	 */
+	private Fragment createDay(String dayId)
+	{
+		Fragment fragment;
+
+		List<TimesheetEntry> timesheetEntries = null;
+		
+		if (timesheetOverview.getTimesheetEntries() != null)
+		{
+			timesheetEntries = timesheetOverview.getTimesheetEntries().get(overviewFor.get(Calendar.DAY_OF_MONTH));
+		}
+		
+		if (timesheetEntries != null
+				&& timesheetEntries.size() > 0)
+		{
+			fragment = createDayContents(dayId, timesheetEntries);
+		}
+		else
+		{
+			fragment = new Fragment(dayId, "noProjects", this);
+		}
+		
+		if (DateUtil.isWeekend(overviewFor))
+		{
+			fragment.add(new SimpleAttributeModifier("style", "background-color: #eef6fe"));
+		}
+		
+		return fragment;
+	}
+
+	@SuppressWarnings("serial")
+	private Fragment createDayContents(String dayId, List<TimesheetEntry> timesheetEntries)
+	{
+		Fragment fragment;
+		fragment = new Fragment(dayId, "showProjects", this);
+		
+		ListView projects = new ListView("projects", timesheetEntries)
+		{
+			@Override
+			protected void populateItem(ListItem item)
+			{
+				TimesheetEntry entry = (TimesheetEntry)item.getModelObject();
+
+				item.add(createProjectCodeTooltip(entry));
+				item.add(new Label("hours", new FloatModel(entry.getHours(), config)));
+			}
+		};
+		
+		fragment.add(projects);
+		return fragment;
+	}
+
+	/**
+	 * @param dayId
+	 * @return
+	 */
+	private Label createEmptyDay(String dayId)
+	{
+		Label label = HtmlUtil.getNbspLabel(dayId);
+		
+		if (monthIsBeforeCurrent(overviewFor, thisMonth, thisYear))
+		{
+			label.add(new SimpleAttributeModifier("class", "noMonthBefore"));
+		}
+		else
+		{
+			label.add(new SimpleAttributeModifier("class", "noMonthAfter"));
+		}
+		return label;
 	}
 	
 	private TooltipLabel createProjectCodeTooltip(TimesheetEntry entry)
 	{
 		StringBuilder tooltipText;
 		
-		if (entry.getEntryId().getProjectAssignment().getProject().getDescription() != null)
+		String description = entry.getEntryId().getProjectAssignment().getProject().getDescription();
+		
+		if (!StringUtils.isBlank(description))
 		{
-			tooltipText = new StringBuilder(entry.getEntryId().getProjectAssignment().getProject().getDescription());
+			tooltipText = new StringBuilder(description);
 		}
 		else
 		{
@@ -243,8 +260,10 @@ public class MonthOverviewPanel extends Panel
 		tooltipText.append("<em>");
 		tooltipText.append(entry.getEntryId().getProjectAssignment().getProject().getName());
 		tooltipText.append("</em>");
+		
+		String projectCode = entry.getEntryId().getProjectAssignment().getProject().getProjectCode();
 
-		TooltipLabel projectCodeLabel = new TooltipLabel("projectCode", entry.getEntryId().getProjectAssignment().getProject().getProjectCode(),
+		TooltipLabel projectCodeLabel = new TooltipLabel("projectCode", projectCode,
 				tooltipText.toString(), false);
 		
 		return projectCodeLabel;

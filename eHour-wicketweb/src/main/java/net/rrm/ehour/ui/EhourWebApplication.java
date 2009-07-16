@@ -99,7 +99,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 			super.init();
 			springInjection();
 	
-//			getMarkupSettings().setStripWicketTags(true);
+			getMarkupSettings().setStripWicketTags(true);
 			mountPages();
 			getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
 			setupSecurity();
