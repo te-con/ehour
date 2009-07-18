@@ -3,14 +3,14 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.9-SNAPSHOT</version>
+		<version>0.8.3</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
 	<artifactId>eHour-audit</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour audit interceptor</name>
-	<version>0.9-SNAPSHOT</version>
+	<version>${applicationVersion}</version>
 	<build>
 		<resources>
 			<resource>
