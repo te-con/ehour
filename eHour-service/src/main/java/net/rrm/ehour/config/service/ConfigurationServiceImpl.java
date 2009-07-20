@@ -80,6 +80,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	 * @see net.rrm.ehour.config.service.ConfigurationService#getLogo()
 	 */
 	@NonAuditable
+	@Transactional
 	public ImageLogo getExcelLogo()
 	{
 		ImageLogo logo = getPersistedLogo("excelHeader");
