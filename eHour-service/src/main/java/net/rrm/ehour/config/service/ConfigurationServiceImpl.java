@@ -47,7 +47,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 {
 	private ConfigurationDAO	configDAO;
 	private BinaryConfigurationDAO binConfigDAO;
-	private	Logger				logger = Logger.getLogger(this.getClass());
+	private	static final Logger				logger = Logger.getLogger(ConfigurationServiceImpl.class);
 
 
 	/* (non-Javadoc)
