@@ -69,7 +69,7 @@ public abstract class AbstractReportPage extends BasePage
 		}
 		
 		AvailableCriteria availableCriteria = getAvailableCriteria();
-		
+
 		ReportCriteria criteria = new ReportCriteria(availableCriteria, userCriteria);
 		
 		return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);

@@ -136,7 +136,7 @@ public class AuditAspect
 	{
 		Object returnObject;
 		
-		LOGGER.debug("doAudit entry");
+//		LOGGER.debug("doAudit entry");
 
 		boolean isAuditable = isAuditable(pjp);
 
@@ -147,7 +147,7 @@ public class AuditAspect
 		
 		User user = getUser();
 		
-		LOGGER.debug("auditable: " + isAuditable);
+//		LOGGER.debug("auditable: " + isAuditable);
 		
 		try
 		{
@@ -168,7 +168,7 @@ public class AuditAspect
 			auditService.doAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));
 		}
 		
-		LOGGER.debug("exiting audit");
+//		LOGGER.debug("exiting audit");
 		
 		return returnObject;		
 	}
