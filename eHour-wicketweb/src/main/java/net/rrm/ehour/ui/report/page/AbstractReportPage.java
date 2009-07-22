@@ -63,8 +63,10 @@ public abstract class AbstractReportPage extends BasePage
 			userCriteria = initUserCriteria(singleUser);
 			EhourWebSession.getSession().setUserCriteria(userCriteria);
 		}
-		
-		userCriteria.setSingleUser(singleUser);
+		else
+		{
+			setSingleUserCriteria(singleUser, userCriteria);
+		}
 		
 		AvailableCriteria availableCriteria = getAvailableCriteria();
 		
@@ -89,15 +91,24 @@ public abstract class AbstractReportPage extends BasePage
 	{
 		UserCriteria userCriteria = new UserCriteria();
 		
+		setSingleUserCriteria(singleUser, userCriteria);
+		
+		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
+		
+		return userCriteria;
+	}
+
+	/**
+	 * @param singleUser
+	 * @param userCriteria
+	 */
+	private void setSingleUserCriteria(boolean singleUser, UserCriteria userCriteria)
+	{
 		userCriteria.setSingleUser(singleUser);
 		
 		if (singleUser)
 		{
 			userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
 		}
-		
-		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
-		
-		return userCriteria;
 	}	
 }
