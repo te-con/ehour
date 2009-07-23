@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Date;
 
-import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.dao.AbstractDaoTest;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 
@@ -32,7 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SuppressWarnings({"deprecation"})
-public class TimesheetCommentDAOTest extends BaseDAOTest
+public class TimesheetCommentDAOTest extends AbstractDaoTest
 { 
 	@Autowired
 	private TimesheetCommentDAO	timesheetCommentDAO;

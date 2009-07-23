@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.dao.AbstractDaoTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -44,7 +44,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @SuppressWarnings("deprecation")
-public class ProjectAssignmentDAOTest extends BaseDAOTest
+public class ProjectAssignmentDAOTest extends AbstractDaoTest
 {
 	@Autowired
 	private	ProjectAssignmentDAO	projectAssignmentDAO;

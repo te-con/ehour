@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 									"classpath:applicationContext-dao.xml"})
 @Transactional
 @TransactionConfiguration(defaultRollback=true)
-public abstract class BaseDAOTest
+public abstract class AbstractDaoTest
 {
 	@Autowired
 	private DataSource	eHourDataSource;

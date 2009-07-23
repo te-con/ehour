@@ -337,6 +337,7 @@ public class UserServiceImpl implements UserService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.user.service.UserService#addAndcheckProjectManagementRoles(java.lang.Integer)
 	 */
+	@Transactional
 	public User addAndcheckProjectManagementRoles(Integer userId)
 	{
 		User user = null;
@@ -374,7 +375,7 @@ public class UserServiceImpl implements UserService
 		
 		user.getUserRoles().add(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		
-		persistUser(user);
+		userDAO.persist(user);
 		
 		return user;
 	}

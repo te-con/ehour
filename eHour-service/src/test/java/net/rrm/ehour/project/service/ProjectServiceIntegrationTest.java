@@ -32,9 +32,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * TODO 
- **/
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProjectServiceIntegrationTest  extends AbstractServiceTest
 {
@@ -74,5 +71,15 @@ public class ProjectServiceIntegrationTest  extends AbstractServiceTest
 	{
 		List<Project> projects = projectService.getProjects("days", true);
 		assertEquals(2, projects.size());
+	}
+	
+	@Test
+	public void shouldAddProjectManager() throws ObjectNotFoundException
+	{
+		User user = new User(5);
+		Project project = projectService.getProject(4);
+		project.setProjectManager(user);
+		projectService.persistProject(project);
+		
 	}
 }
