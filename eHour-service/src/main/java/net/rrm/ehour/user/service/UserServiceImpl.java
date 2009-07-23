@@ -351,11 +351,11 @@ public class UserServiceImpl implements UserService
 			userDAO.deletePmWithoutProject();
 		} catch (PasswordEmptyException e)
 		{
-			// TODO Auto-generated catch block
+			// won't happen
 			e.printStackTrace();
 		} catch (ObjectNotUniqueException e)
 		{
-			// TODO Auto-generated catch block
+			// won't happen
 			e.printStackTrace();
 		}
 		
@@ -373,7 +373,9 @@ public class UserServiceImpl implements UserService
 	{
 		User user = userDAO.findById(userId);
 		
-		user.getUserRoles().add(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
+		UserRole userRole = userRoleDAO.findById(EhourConstants.ROLE_PROJECTMANAGER);
+		
+		user.getUserRoles().add(userRole);
 		
 		userDAO.persist(user);
 		
