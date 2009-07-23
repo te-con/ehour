@@ -152,7 +152,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 		if (userBackingBean.isPm())
 		{
 			LOGGER.debug("Re-adding PM role after edit");
-			userBackingBean.getUser().addUserRole(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
+			userBackingBean.getUser().addUserRole(userService.getUserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		}
 		
 		userService.persistUser(userBackingBean.getUser());
