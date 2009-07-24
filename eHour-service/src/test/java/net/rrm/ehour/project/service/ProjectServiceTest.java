@@ -22,14 +22,10 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;

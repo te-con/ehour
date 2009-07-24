@@ -10,7 +10,7 @@
 	<artifactId>eHour-audit</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour audit interceptor</name>
-	<version>0.8.3</version>
+	<version>${applicationVersion}</version>
 	<build>
 		<resources>
 			<resource>

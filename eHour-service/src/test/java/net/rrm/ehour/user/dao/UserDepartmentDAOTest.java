@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.dao.AbstractDaoTest;
 import net.rrm.ehour.domain.UserDepartment;
 
 import org.junit.Test;
@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @SuppressWarnings("unchecked")
-public class UserDepartmentDAOTest extends BaseDAOTest 
+public class UserDepartmentDAOTest extends AbstractDaoTest 
 {	
 	@Autowired
 	private	UserDepartmentDAO	userDepartmentDAO;

@@ -71,6 +71,10 @@
 			<outputDirectory>/lib</outputDirectory>
 		</fileSet>
 		<fileSet>
+			<directory>eHour-service/src/main/resources/img</directory>
+			<outputDirectory>/app/WEB-INF/classes</outputDirectory>
+		</fileSet>
+		<fileSet>
 			<directory>eHour-standalone/src/assembly/conf</directory>
 			<outputDirectory>/conf</outputDirectory>
 		</fileSet>

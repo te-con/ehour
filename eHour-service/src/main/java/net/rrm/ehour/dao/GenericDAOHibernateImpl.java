@@ -57,7 +57,6 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	 * @param cachingRegion
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List findByNamedQueryAndNamedParam(final String queryName, 
 												final String param, 
 												final Object value,
@@ -77,7 +76,6 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	 * @return
 	 * @throws DataAccessException
 	 */
-	@SuppressWarnings("unchecked")
 	public List findByNamedQueryAndNamedParam(final String queryName, 
 												final String[] paramNames, 
 												final Object[] values,
@@ -114,7 +112,6 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	/**
 	 * Find all domain objects
 	 */
-	@SuppressWarnings("unchecked")
 	public List<T> findAll()
 	{
 		return getHibernateTemplate().loadAll(type);
@@ -154,7 +151,6 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	 * @param id
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public T findById(PK id)
 	{
 		return (T)getHibernateTemplate().get(type, id);
@@ -164,7 +160,6 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	 * Merge
 	 * @param domobj
 	 */
-	@SuppressWarnings("unchecked")
 	public T merge(T domobj)
 	{
 		return (T)getHibernateTemplate().merge(domobj);

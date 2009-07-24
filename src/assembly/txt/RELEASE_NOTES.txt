@@ -1,3 +1,30 @@
+eHour 0.8.3 release notes - 20 July 2009
+----------------------------------------
+0.8.3 - the Revival release - adds an excel export of the current month with customizable logo, 
+removes the limit of 24 hours on a single timesheet entry so you can use it for different purposes 
+than just to track time and fixes a few bugs.
+Most notable change is the change of license, eHour is now open source licensed under GPL v2.
+
+Change log (http://www.ehour.nl/defects/):
+
+New features:
+(157) Excel export of current month added
+(049) Users can now change their own password
+(119) Filtering of inactive assignments to the admin screen 
+
+Fixed bugs:
+(162) Input in timesheets were limited to 24 hours, removed
+(159) NullPointerException in addFlexAssignmentStatus fixed
+(120) Internal Error while running Departmental Filter report fixed
+(149) Hangs with socket write error fixed
+(155) Delete button shown on Project admin screen while it can't be deleted, fixed
+(161) When turnover is switched off, hours are placed in the wrong column in the overview, fixed
+(153) eHour registration page sums inactive projects incorrectly, fixed
+(154) Switching 'first day of week' messes up already booked hours, fixed
+(148) Serialization errors in log file, fixed
+(103) Adding a new default Project does not reflect for existing employees, fixed
+(121) Javascript error in IE7 when adding rate to assignment, fixed 
+
 eHour 0.8.2 release notes - 10 June 2008
 ----------------------------------------
 0.8.2 - the Oranje release - has the following changes. If you make use of the

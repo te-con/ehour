@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.dao.AbstractDaoTest;
 import net.rrm.ehour.domain.UserRole;
 
 import org.junit.Test;
@@ -29,7 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SuppressWarnings("unchecked")
-public class UserRoleDAOTest extends BaseDAOTest 
+public class UserRoleDAOTest extends AbstractDaoTest 
 {
 	@Autowired
 	private	UserRoleDAO	userRoleDAO;

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.dao.BaseDAOTest;
+import net.rrm.ehour.dao.AbstractDaoTest;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 
@@ -36,7 +36,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SuppressWarnings("unchecked")
-public class CustomerFoldPreferenceDAOImplTest extends BaseDAOTest 
+public class CustomerFoldPreferenceDAOImplTest extends AbstractDaoTest 
 {
 	@Autowired
 	private CustomerFoldPreferenceDAO	customerFoldPreferenceDAO;

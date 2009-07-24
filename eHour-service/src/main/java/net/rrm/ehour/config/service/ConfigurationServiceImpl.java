@@ -36,6 +36,7 @@ import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.log4j.Logger;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -46,7 +47,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 {
 	private ConfigurationDAO	configDAO;
 	private BinaryConfigurationDAO binConfigDAO;
-	private	Logger				logger = Logger.getLogger(this.getClass());
+	private	static final Logger				logger = Logger.getLogger(ConfigurationServiceImpl.class);
 
 
 	/* (non-Javadoc)
@@ -80,12 +81,14 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	 * @see net.rrm.ehour.config.service.ConfigurationService#getLogo()
 	 */
 	@NonAuditable
+	@Transactional
 	public ImageLogo getExcelLogo()
 	{
 		ImageLogo logo = getPersistedLogo("excelHeader");
 
 		if (logo == null)
 		{
+			logger.debug("No logo found in database, using default logo.");
 			logo = getDefaultExcelLogo();
 		}
 		
@@ -133,20 +136,24 @@ public class ConfigurationServiceImpl implements ConfigurationService
         return logo;
 	}
 
-	/**
-	 * @return
-	 */
 	private byte[] getDefaultExcelLogoBytes()
 	{
-		URL url = Thread.currentThread().getContextClassLoader().getResource("excel_default_logo.png");
-		File file = new File(url.getPath());
-		
-		InputStream is;
-		
 		byte[] bytes;
 		
 		try
 		{
+			ClassPathResource rsrc = new ClassPathResource("excel_default_logo.png");
+			URL url = rsrc.getURL();
+			
+			File file = new ClassPathResource("excel_default_logo.png").getFile();
+			
+			if (!file.exists())
+			{
+				logger.error("default logo not found");
+			}
+			
+			InputStream is;
+			
 			is = url.openStream();
 
 			bytes = new byte[(int) file.length()];
@@ -162,6 +169,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			logger.error("Could not fetch default logo", e);
 			bytes = new byte[1];
 		}
+		
 		return bytes;
 	}
 	

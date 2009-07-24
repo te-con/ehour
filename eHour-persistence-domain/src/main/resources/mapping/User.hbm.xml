@@ -22,7 +22,7 @@
 		<property name="active" column="ACTIVE" type="yes_no" index="IDX_USER_ACTIVE" />
 		
         <set name="userRoles" table="USER_TO_USERROLE" cascade="merge,persist,save-update">
-			<cache usage="read-write" />
+		   <cache usage="read-write" />
            <key column="USER_ID" />
            <many-to-many column="ROLE" entity-name="net.rrm.ehour.domain.UserRole"/>
         </set>		

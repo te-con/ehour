@@ -10,6 +10,16 @@
 		<column name="config_value" primaryKey="false" required="false"
 			type="VARCHAR" size="255" autoIncrement="false" />
 	</table>
+	<table name="configuration_bin">
+		<column name="config_key" primaryKey="true" required="true"
+			type="VARCHAR" size="255" autoIncrement="false" />
+		<column name="config_value" primaryKey="false" required="false"
+			type="BLOB"  autoIncrement="false" />
+		<column name="metadata" primaryKey="false" required="false"
+			type="VARCHAR" size="255" autoIncrement="false" />
+			
+			
+	</table>
 	<table name="customer">
 		<column name="CUSTOMER_ID" primaryKey="true" required="true"
 			type="INTEGER" size="10" autoIncrement="true" />

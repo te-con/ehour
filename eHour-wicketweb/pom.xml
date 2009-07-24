@@ -72,7 +72,7 @@
 				<resources>
 					<resource>
 						<directory>
-							src/main/profiles/prod-props
+							src/main/profiles/prod
 						</directory>
 					</resource>
 				</resources>
@@ -90,7 +90,7 @@
 				<resources>
 					<resource>
 						<directory>
-							src/main/profiles/prod-props
+							src/main/profiles/prod
 						</directory>
 					</resource>
 				</resources>

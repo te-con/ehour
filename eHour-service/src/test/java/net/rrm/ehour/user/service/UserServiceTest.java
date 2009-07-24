@@ -232,12 +232,10 @@ public class UserServiceTest extends TestCase
 		expect(userDAO.findById(new Integer(1)))
 			.andReturn(user);
 		
-		expect(userDAO.findByUsername("user"))
+		expect(userDAO.persist(user))
 			.andReturn(user);
 
 		userDAO.deletePmWithoutProject();
-		expect(userDAO.merge(user))
-			.andReturn(user);
 		
 		replay(userDAO);
 		

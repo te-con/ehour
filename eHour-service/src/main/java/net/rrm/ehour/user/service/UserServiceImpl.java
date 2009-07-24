@@ -337,6 +337,7 @@ public class UserServiceImpl implements UserService
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.user.service.UserService#addAndcheckProjectManagementRoles(java.lang.Integer)
 	 */
+	@Transactional
 	public User addAndcheckProjectManagementRoles(Integer userId)
 	{
 		User user = null;
@@ -350,11 +351,11 @@ public class UserServiceImpl implements UserService
 			userDAO.deletePmWithoutProject();
 		} catch (PasswordEmptyException e)
 		{
-			// TODO Auto-generated catch block
+			// won't happen
 			e.printStackTrace();
 		} catch (ObjectNotUniqueException e)
 		{
-			// TODO Auto-generated catch block
+			// won't happen
 			e.printStackTrace();
 		}
 		
@@ -372,9 +373,11 @@ public class UserServiceImpl implements UserService
 	{
 		User user = userDAO.findById(userId);
 		
-		user.getUserRoles().add(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
+		UserRole userRole = userRoleDAO.findById(EhourConstants.ROLE_PROJECTMANAGER);
 		
-		persistUser(user);
+		user.getUserRoles().add(userRole);
+		
+		userDAO.persist(user);
 		
 		return user;
 	}
