@@ -84,14 +84,14 @@
 			<fileMode>750</fileMode>
 		</fileSet>
 		<fileSet>
-			<directory>src/assembly/txt</directory>
+			<directory>src/assembly/txt/common</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>*.txt</include>
 			</includes>
 		</fileSet>		
 		<fileSet>
-			<directory>eHour-standalone/src/assembly/txt</directory>
+			<directory>src/assembly/txt/standalone</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>*.txt</include>

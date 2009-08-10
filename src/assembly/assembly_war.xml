@@ -24,7 +24,7 @@
 	</moduleSets>
 	<fileSets>
 		<fileSet>
-			<directory>src/assembly/txt</directory>
+			<directory>src/assembly/txt/common</directory>
 			<lineEnding>dos</lineEnding>
 			<outputDirectory>/</outputDirectory>
 			<includes>
@@ -32,7 +32,7 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>src/assembly/txt_war</directory>
+			<directory>src/assembly/txt/war</directory>
 			<lineEnding>dos</lineEnding>
 			<outputDirectory>/</outputDirectory>
 			<includes>
@@ -47,7 +47,7 @@
 		</fileSet>
 
 		<fileSet>
-			<directory>src/assembly/sql</directory>
+			<directory>src/assembly/sql/mysql</directory>
 			<outputDirectory>sql</outputDirectory>
 			<lineEnding>dos</lineEnding>
 		</fileSet>
