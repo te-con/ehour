@@ -17,9 +17,6 @@
 				<directory>src/main/resources/db</directory>
 			</resource>
 			<resource>
-				<directory>src/main/resources/i18n</directory>
-			</resource>
-			<resource>
 				<directory>src/main/resources/spring</directory>
 			</resource>
 			<resource>
@@ -42,30 +39,19 @@
 	</build>
 	<profiles>
 		<profile>
-			<id>env-prod-derby</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>prod-derby</value>
-				</property>
-			</activation>
+			<id>derby</id>
 			<build>
-				<finalName>
-					ehour-service_prod-derby-${version}
-				</finalName>
 				<resources>
 					<resource>
 						<directory>
-							src/main/profiles/prod/datasource_derby
+							src/main/profiles/datasource/derby
 						</directory>
 					</resource>
 					<resource>
 						<directory>src/main/profiles/derby</directory>
 					</resource>
 					<resource>
-						<directory>
-							src/main/profiles/hibernate/derby
-						</directory>
+						<directory>src/main/profiles/hibernate/derby</directory>
 					</resource>
 				</resources>
 			</build>
@@ -93,13 +79,7 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>env-prod-mysql</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>prod-mysql</value>
-				</property>
-			</activation>
+			<id>mysql</id>
 			<dependencies>
 				<dependency>
 					<groupId>mysql</groupId>
@@ -121,124 +101,51 @@
 				</dependency>
 			</dependencies>
 			<build>
-				<finalName>
-					ehour-service_prod-mysql-${version}
-				</finalName>
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/prod/datasource_mysql
+						<directory>src/main/profiles/datasource/generic
 						</directory>
 					</resource>
 					<resource>
-						<directory>
-							src/main/profiles/hibernate/mysql
-						</directory>
+						<directory>src/main/profiles/hibernate/mysql</directory>
 					</resource>
 				</resources>
 			</build>
 		</profile>
 		<profile>
-			<id>env-dev-derby</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>dev-derby</value>
-				</property>
-			</activation>
-			<build>
-				<finalName>
-					ehour-service_dev-derby-${version}
-				</finalName>
-				<resources>
-					<resource>
-						<directory>
-							src/main/profiles/dev/datasource_derby
-						</directory>
-					</resource>
-					<resource>
-						<directory>
-							src/main/profiles/hibernate/derby
-						</directory>
-					</resource>
-				</resources>
-			</build>
+			<id>postgresql</id>
 			<dependencies>
 				<dependency>
-					<groupId>org.apache.derby</groupId>
-					<artifactId>derby</artifactId>
-					<version>10.4.2.0</version>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.ddlutils</groupId>
-					<artifactId>ddlutils</artifactId>
-					<version>1.0</version>
-					<exclusions>
-						<exclusion>
-							<groupId>commons-dbcp</groupId>
-							<artifactId>commons-dbcp</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>xerces</groupId>
-							<artifactId>xercesImpl</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>env-dev-mysql</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>dev-mysql</value>
-				</property>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-					<version>5.0.8</version>
+					<groupId>postgresql</groupId>
+					<artifactId>postgresql</artifactId>
+					<version>8.3.jdbc4</version>
+					<scope>test</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.apache.derby</groupId>
 					<artifactId>derby</artifactId>
 					<version>10.4.2.0</version>
+					<scope>provided</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.apache.ddlutils</groupId>
 					<artifactId>ddlutils</artifactId>
 					<version>1.0</version>
-					<exclusions>
-						<exclusion>
-							<groupId>commons-dbcp</groupId>
-							<artifactId>commons-dbcp</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>xerces</groupId>
-							<artifactId>xercesImpl</artifactId>
-						</exclusion>
-					</exclusions>
+					<scope>provided</scope>
 				</dependency>
 			</dependencies>
 			<build>
-				<finalName>
-					ehour-service_dev-mysql-${version}
-				</finalName>
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/dev/datasource_mysql
+						<directory>src/main/profiles/datasource/generic
 						</directory>
 					</resource>
 					<resource>
-						<directory>
-							src/main/profiles/hibernate/mysql
-						</directory>
+						<directory>src/main/profiles/hibernate/mysql</directory>
 					</resource>
 				</resources>
 			</build>
-		</profile>
+		</profile>		
 	</profiles>
 	<dependencies>
 		<dependency>

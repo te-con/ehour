@@ -39,6 +39,22 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<packagingExcludes>
+						WEB-INF/lib/*.jar
+					</packagingExcludes>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>			
 		</plugins>
 
 		<resources>
@@ -57,32 +73,8 @@
 
 	<profiles>
 		<profile>
-			<id>env-prod-derby</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>prod-derby</value>
-				</property>
-			</activation>
+			<id>prod</id>
 			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<packagingExcludes>
-								WEB-INF/lib/*.jar
-							</packagingExcludes>
-							<archive>
-								<manifest>
-									<addClasspath>true</addClasspath>
-									<classpathPrefix>lib/</classpathPrefix>
-								</manifest>
-							</archive>
-						</configuration>
-					</plugin>
-				</plugins>
-
 				<resources>
 					<resource>
 						<directory>src/main/profiles/prod/standalone</directory>
@@ -92,65 +84,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>env-dev-derby</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>dev-derby</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<packagingExcludes>
-								WEB-INF/lib/*.jar
-							</packagingExcludes>
-							<archive>
-								<manifest>
-									<addClasspath>true</addClasspath>
-									<classpathPrefix>lib/</classpathPrefix>
-								</manifest>
-							</archive>
-						</configuration>
-					</plugin>
-				</plugins>
-
-				<resources>
-					<resource>
-						<directory>src/main/profiles/dev</directory>
-					</resource>
-				</resources>
-			</build>
-		</profile>
-
-		<profile>
-			<id>env-prod-mysql</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>prod-mysql</value>
-				</property>
-			</activation>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/prod/war</directory>
-					</resource>
-				</resources>
-			</build>
-		</profile>
-
-		<profile>
-			<id>env-dev-mysql</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>dev-mysql</value>
-				</property>
-			</activation>
+			<id>dev</id>
 			<build>
 				<resources>
 					<resource>
