@@ -141,7 +141,7 @@
 						</directory>
 					</resource>
 					<resource>
-						<directory>src/main/profiles/hibernate/mysql</directory>
+						<directory>src/main/profiles/hibernate/postgresql</directory>
 					</resource>
 				</resources>
 			</build>
