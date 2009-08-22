@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.8.4-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
@@ -43,12 +43,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>
-							src/main/profiles/datasource/derby
-						</directory>
-					</resource>
-					<resource>
-						<directory>src/main/profiles/derby</directory>
+						<directory>src/main/profiles/datasource/derby</directory>
 					</resource>
 					<resource>
 						<directory>src/main/profiles/hibernate/derby</directory>
@@ -103,8 +98,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/profiles/datasource/generic
-						</directory>
+						<directory>src/main/profiles/datasource/generic</directory>
 					</resource>
 					<resource>
 						<directory>src/main/profiles/hibernate/mysql</directory>
