@@ -84,12 +84,18 @@ public class SkinConfigPanel extends AbstractConfigPanel
 	{
 		ImageUploadForm uploadForm = new ImageUploadForm(id, model)
 		{
-
 			@Override
 			protected void uploadImage(ImageLogo logo)
 			{
-				getConfigService().persistExcelLogo(logo);
-				updatePreviewImage();
+				if (!getConfig().isInDemoMode())
+				{
+					getConfigService().persistExcelLogo(logo);
+					updatePreviewImage();
+				}
+				else
+				{
+					replaceFeedbackMessage(new ResourceModel("demoMode"));
+				}
 			}
 
 			@Override
