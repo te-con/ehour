@@ -231,7 +231,6 @@
 	<profiles>
 		<profile>
 			<id>standalone</id>
-
 			<build>
 				<plugins>
 					<plugin>

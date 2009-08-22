@@ -47,7 +47,7 @@
 		</fileSet>
 
 		<fileSet>
-			<directory>src/assembly/sql/mysql</directory>
+			<directory>src/assembly/sql</directory>
 			<outputDirectory>sql</outputDirectory>
 			<lineEnding>dos</lineEnding>
 		</fileSet>

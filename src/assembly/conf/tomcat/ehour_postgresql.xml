@@ -1,4 +1,4 @@
-<Context path="/ehour" reloadable="false" cookies="true" docBase="${catalina.home}/deploy/ehour-0.8.3.war">
+<Context path="/ehour" reloadable="false" cookies="true" docBase="${catalina.home}/deploy/ehour-0.8.4.war">
   <Resource name="jdbc/eHourDS"
   			auth="Container"
   			type="javax.sql.DataSource"
@@ -7,8 +7,8 @@
             maxWait="10000"
             username="@ehour.db.username"
 	       	password="@ehour.db.password"
-	       	driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://@ehour.db.hostname:3306/@ehour.db.name?zeroDateTimeBehavior=convertToNull"/>
+	       	driverClassName="org.postgresql.Driver"
+            url="jdbc:postgresql://@ehour.db.hostname:5432/@ehour.db.name"/>
   <ResourceParams name="jdbc/eHourDS" >
     <parameter>
       <name>validationQuery</name>
