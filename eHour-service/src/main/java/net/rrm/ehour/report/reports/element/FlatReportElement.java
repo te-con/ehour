@@ -32,8 +32,8 @@ public class FlatReportElement implements ReportElement
 	private	Integer	customerId;
 	private	String	customerName;
 	private	String	customerCode;
-	private	Number	totalHours;
-	private	Number	totalTurnOver;
+	private	Number	totalHours = new Float(0);
+	private	Number	totalTurnOver = new Float(0);
 	private	String	entryDate;
 	private	Integer	userId;
 	private	String	userLastName;
@@ -45,7 +45,7 @@ public class FlatReportElement implements ReportElement
 	private Date	dayDate;
 	private String	comment;
 	private Integer	displayOrder;
-	private Number 	hours;
+	private Number 	hours = new Float(0);
 	
 	/**
 	 * @return the hours

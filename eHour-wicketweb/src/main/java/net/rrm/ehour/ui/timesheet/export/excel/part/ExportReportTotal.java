@@ -74,7 +74,10 @@ public class ExportReportTotal extends AbstractExportReportPart
 		{
 			FlatReportElement flat = (FlatReportElement)reportElement;
 			
-			total += flat.getTotalHours().floatValue();
+			if (flat.getTotalHours() != null)
+			{
+				total += flat.getTotalHours().floatValue();
+			}
 		}
 		
 		return total;
