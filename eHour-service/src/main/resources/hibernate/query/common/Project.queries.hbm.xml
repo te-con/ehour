@@ -9,7 +9,7 @@
 	
 	<query name="Customer.findByNameAndCode">
 		FROM Customer customer
-	    WHERE lcase(name) = :name AND lcase(code) = :code
+	    WHERE lower(name) = :name AND lower(code) = :code
 	</query>	
 	
 	<query name="Project.findAllActive">
@@ -22,7 +22,7 @@
 	<query name="Project.findByNamePattern"> 
 		SELECT project
 		FROM Project as project
-	    WHERE lcase(name) like  :pattern
+	    WHERE lower(name) like  :pattern
 	    ORDER BY name
 	</query>
 	
