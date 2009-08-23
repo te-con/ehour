@@ -121,7 +121,11 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		addGeneralInfo(form);
 		addMisc(form);
 		form.add(getProjectManager());
+		
+		form.add(new CheckBox("project.billable"));
+		
 	}
+	
 	
 	/**
 	 * Add form components to form

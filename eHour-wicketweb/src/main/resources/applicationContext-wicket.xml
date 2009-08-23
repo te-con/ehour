@@ -5,7 +5,7 @@
 
 	<bean id="wicketApplication" class="net.rrm.ehour.ui.EhourWebApplication">
 		<property name="authenticationManager" ref="authenticationManager" />
-		<property name="version" value="0.8.3"></property>
+		<property name="version" value="0.8.4"></property>
 		<property name="pageConfig" ref="pageConfig" />
 	</bean>
 	
