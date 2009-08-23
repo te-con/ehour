@@ -16,6 +16,7 @@
 		<property name="name" column="NAME" type="string" length="256" />
 		<property name="defaultProject" column="DEFAULT_PROJECT" type="yes_no"/>
 		<property name="active" column="ACTIVE" type="yes_no" index="IDX_PROJECT_ACTIVE" />
+		<property name="billable" column="BILLABLE" type="yes_no" />
 		
         <many-to-one name="customer" outer-join="auto" fetch="join"
                 class="net.rrm.ehour.domain.Customer" column="CUSTOMER_ID"/>

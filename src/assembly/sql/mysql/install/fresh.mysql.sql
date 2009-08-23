@@ -134,6 +134,7 @@ CREATE TABLE `PROJECT` (
   `PROJECT_CODE` varchar(32) NOT NULL,
   `DEFAULT_PROJECT` char(1) NOT NULL default 'N',
   `ACTIVE` char(1) NOT NULL default 'Y',
+  `BILLABLE` char(1) default 'Y',  
   `PROJECT_MANAGER` int(11) default NULL,
   PRIMARY KEY  (`PROJECT_ID`),
   KEY `CUSTOMER_ID` (`CUSTOMER_ID`),

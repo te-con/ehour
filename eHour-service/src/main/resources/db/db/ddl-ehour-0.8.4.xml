@@ -118,6 +118,8 @@
 			type="CHAR" size="1" default="N" autoIncrement="false" />
 		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
 			size="1" default="Y" autoIncrement="false" />
+		<column name="BILLABLE" primaryKey="false" required="true" type="CHAR"
+			size="1" default="Y" autoIncrement="false" />
 		<column name="PROJECT_MANAGER" primaryKey="false" required="false"
 			type="INTEGER" size="10" autoIncrement="false" />
 		<foreign-key foreignTable="customer" name="PROJECT_fk">
@@ -128,6 +130,9 @@
 		</foreign-key>
 		<index name="CUSTOMER_ID">
 			<index-column name="CUSTOMER_ID" />
+		</index>
+		<index name="PROJECT_ACTIVE_ID">
+			<index-column name="ACTIVE" />
 		</index>
 	</table>
 	<table name="project_assignment">

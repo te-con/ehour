@@ -27,12 +27,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Project extends DomainObject<Integer, Project>
 {
-
-	// Fields    
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6553709211219335091L;
 
 	private Integer projectId;
@@ -52,7 +46,19 @@ public class Project extends DomainObject<Integer, Project>
 	private User	projectManager;
 	private boolean	deletable;
 	
+	private boolean billable;
+	
 	// Constructors
+
+	public boolean isBillable()
+	{
+		return billable;
+	}
+
+	public void setBillable(boolean billable)
+	{
+		this.billable = billable;
+	}
 
 	/** default constructor */
 	public Project()
