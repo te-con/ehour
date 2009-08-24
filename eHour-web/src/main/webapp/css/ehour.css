@@ -615,54 +615,6 @@ a.bluebutton:active span {
 	letter-spacing: +1.5px;
 }
 
-/* shouldn't be here but quite convenient */
-a.timesheetEntryComment {
-	background: url(../img/comment/comment_blue_on.gif);
-}
-
-a.timesheetEntryComment:link,a.timesheetEntryComment:visited {
-	background: url(../img/comment/comment_blue_off.gif);
-}
-
-a.timesheetEntryComment:hover,a.timesheetEntryComment:focus {
-	background: url(../img/comment/comment_blue_on.gif);
-}
-
-a.timesheetEntryCommented {
-	background: url(../img/comment/comment_blue_on.gif);
-}
-
-a.timesheetEntryCommented:link,a.timesheetEntryCommented:visited {
-	background: url(../img/comment/comment_blue_on.gif);
-}
-
-a.timesheetEntryCommented:hover,a.timesheetEntryCommented:focus {
-	background: url(../img/comment/comment_blue_on.gif);
-}
-
-a.timesheetFoldImg {
-	background: url(../img/icon_up_on.gif);
-}
-
-a.timesheetFoldImg:link,a.timesheetFoldImg:visited {
-	background: url(../img/icon_up_off.gif);
-}
-
-a.timesheetFoldImg:hover,a.timesheetFoldImg:focus {
-	background: url(../img/icon_up_on.gif);
-}
-
-a.timesheetFoldedImg {
-	background: url(../img/icon_down_on.gif);
-}
-
-a.timesheetFoldedImg:link,a.timesheetFoldedImg:visited {
-	background: url(../img/icon_down_off.gif);
-}
-
-a.timesheetFoldedImg:hover,a.timesheetFoldedImg:focus {
-	background: url(../img/icon_down_on.gif);
-}
 
 /* Fading Tooltips By Dustin Diaz*/
 body div#toolTip {
