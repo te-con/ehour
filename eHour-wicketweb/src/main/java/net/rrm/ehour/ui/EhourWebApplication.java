@@ -186,7 +186,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount(new HybridUrlCodingStrategy("/consultant/overview", Overview.class));
 		mount(new HybridUrlCodingStrategy("/consultant/report", UserReport.class));
 		
-		mount(new HybridUrlCodingStrategy("/consultant/printform", ExportMonthSelectionPage.class));
+		mount(new HybridUrlCodingStrategy("/consultant/exportmonth", ExportMonthSelectionPage.class));
 		mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));
 		
 		mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));
