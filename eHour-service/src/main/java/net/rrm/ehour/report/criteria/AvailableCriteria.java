@@ -17,6 +17,7 @@
 package net.rrm.ehour.report.criteria;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;

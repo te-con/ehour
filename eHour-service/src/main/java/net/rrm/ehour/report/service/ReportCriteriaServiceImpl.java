@@ -201,7 +201,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		
 		user = reportCriteria.getUserCriteria().getUsers().get(0);
 		
-		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user);
+		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId(), reportCriteria.getUserCriteria().getReportRange());
 		
 		for (ProjectAssignment assignment : assignments)
 		{

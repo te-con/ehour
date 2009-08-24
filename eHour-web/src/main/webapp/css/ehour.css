@@ -648,3 +648,11 @@ body div#toolTip p em span {
 	font-weight: bold;
 	color: #fff;
 }
+
+hr
+{
+	background-color: white;
+	color: white;
+	margin: 1px 0 0 0;
+	padding: 2px 0 0 0;
+}

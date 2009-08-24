@@ -16,6 +16,10 @@
 
 package net.rrm.ehour.ui.timesheet.export.criteria;
 
+import java.util.List;
+
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.trend.PrintReport;
@@ -39,7 +43,7 @@ import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.util.value.ValueMap;
 
 /**
- * ExportCriteriaPanel holding the for`m for month based exports for consultants
+ * ExportCriteriaPanel holding the form for month based exports for consultants
  **/
 
 public class ExportCriteriaPanel extends Panel
@@ -105,10 +109,24 @@ public class ExportCriteriaPanel extends Panel
 	{
 		CheckGroup projectGroup = new CheckGroup(id, new PropertyModel(getModel(), "userCriteria.projects"));
 		
-		ListView projects = new ListView("projects", new PropertyModel(getModel(), "availableCriteria.projects"))
-		{
-			private static final long serialVersionUID = 6398866296089860246L;
+		ReportCriteria criteria = (ReportCriteria)getModelObject();
+		
+		List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
+		
+		ListView billableProjects = getAssignmentCheckboxesForProjects("billableProjects", ProjectUtil.getBillableProjects(allProjects));
+		projectGroup.add(billableProjects);
 
+		ListView unbillableProjects = getAssignmentCheckboxesForProjects("unbillableProjects", ProjectUtil.getUnbillableProjects(allProjects));
+		projectGroup.add(unbillableProjects);
+
+		return projectGroup;
+	}
+
+	@SuppressWarnings("serial")
+	private ListView getAssignmentCheckboxesForProjects(String id, List<Project> projects)
+	{
+		ListView projectsListView = new ListView(id, projects)
+		{
 			@Override
 			protected void populateItem(ListItem item)
 			{
@@ -116,10 +134,7 @@ public class ExportCriteriaPanel extends Panel
 				item.add(new Label("project", new PropertyModel(item.getModel(), "fullName")));
 			}
 		};
-		
-		projectGroup.add(projects);
-		
-		return projectGroup;
+		return projectsListView;
 	}
 
 	/**

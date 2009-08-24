@@ -35,19 +35,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * User selected criteria 
  * 
- * TODO needs a refactor to something more generic
+ * TODO needs a heavy refactor
  **/
 
 public class UserCriteria implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 375613059093184619L;
 	private DateRange	reportRange;
 	private	boolean		onlyActiveProjects = true;
 	private	boolean		onlyActiveCustomers = true;
 	private	boolean		onlyActiveUsers = true;
+	private boolean		onlyProjectsWithBookedHours = false;		
 	private	int			userActivityFilter;
 	private	String		userFilter;
 	private	String		customerFilter;
@@ -410,5 +408,15 @@ public class UserCriteria implements Serializable
 	public Map<Object, Object> getCustomParameters()
 	{
 		return customParameters;
+	}
+
+	public boolean isOnlyProjectsWithBookedHours()
+	{
+		return onlyProjectsWithBookedHours;
+	}
+
+	public void setOnlyProjectsWithBookedHours(boolean onlyProjectsWithBookedHours)
+	{
+		this.onlyProjectsWithBookedHours = onlyProjectsWithBookedHours;
 	}
 }

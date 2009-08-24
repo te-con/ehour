@@ -11,18 +11,33 @@
 	    <table class="contentTable">
 	        <tr>
 	            <td style="border: 0;padding-right: 20px" valign="top">
-	                <nobr><wicket:message key="printMonth.selectProjects" /></nobr>
+	                <nobr><wicket:message key="printMonth.selectProjects" />:</nobr>
 	            </td>
 	
 	            <td style="padding-left: 5px">
-	                <span wicket:id="projectGroup">
-	                    <span wicket:id="projects">
+	            	<strong><wicket:message key="printMonth.billable" /></strong><br />
+	                <wicket:container wicket:id="projectGroup">
+
+					<p style="border-top: solid 1px white;margin:0 0 5px 0;padding:0">
+	                    <wicket:container wicket:id="billableProjects">
 	                        <input type="checkbox" wicket:id="check" />
-	                        <span wicket:id="project"></span>
+	                        <wicket:container wicket:id="project"></wicket:container>
 	                        
 	                        <br />
-	                    </span>
-	                </span>
+	                    </wicket:container>
+		            </p>
+					<br />
+	            	<strong><wicket:message key="printMonth.unbillable" /></strong>
+	            	<p style="border-top: solid 1px white;margin:0 0 5px 0;padding:0">
+	                    <wicket:container wicket:id="unbillableProjects" >
+	                        <input type="checkbox" wicket:id="check" />
+	                        <wicket:container wicket:id="project"></wicket:container>
+	                        
+	                        <br />
+	                    </wicket:container>
+	                </p>
+	                </wicket:container>
+
 	            </td>
 	        </tr>
 	
