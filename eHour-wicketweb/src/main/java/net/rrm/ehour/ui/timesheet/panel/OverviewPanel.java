@@ -59,7 +59,7 @@ public class OverviewPanel extends Panel
 		
 		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, overviewFor);
 		
-		add(new StyleSheetReference("overviewStyle", new CompressedResourceReference(OverviewPanel.class, "style/overview.css")));
+		add(new StyleSheetReference("overviewStyle", new CompressedResourceReference(OverviewPanel.class, "css/overview.css")));
 		
 		add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
 		add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
