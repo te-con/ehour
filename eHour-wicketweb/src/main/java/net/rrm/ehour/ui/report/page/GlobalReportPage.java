@@ -63,9 +63,6 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	private ReportTabbedPanel	tabPanel;
 	private static final CompressedResourceReference SWFOBJECT_JS = new CompressedResourceReference(SWFObject.class, "js/swfobject.js");
 	
-	/**
-	 * 
-	 */
 	public GlobalReportPage()
 	{
 		super(new ResourceModel("report.global.title"));

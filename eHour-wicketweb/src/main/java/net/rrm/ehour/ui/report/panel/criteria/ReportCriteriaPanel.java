@@ -109,7 +109,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 		
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_WIDE);
 		add(greyBorder);
-		
+
 		setOutputMarkupId(true);	
 		
 		Form form = new Form("criteriaForm");
@@ -178,24 +178,53 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 		parent.add(customers);
 		
 		// hide active/inactive customers checkbox 
-		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveCustomers")
-		{
-			private static final long serialVersionUID = 2585047163449150793L;
+		AjaxCheckBox deactivateBox = createOnlyActiveCheckbox();		
+		parent.add(deactivateBox);
+		
+		parent.add(createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableCustomers"));
+	}
 
+	@SuppressWarnings("serial")
+	private AjaxCheckBox createOnlyActiveCheckbox()
+	{
+		AjaxCheckBox	deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveCustomers")
+		{
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
 				updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
 				target.addComponent(customers);
 			}
-		};		
+		};
 		
-		parent.add(deactivateBox);
+		deactivateBox.setOutputMarkupId(true);
 		
-		Label filterToggleText = new Label("onlyActiveCustomersLabel", new ResourceModel("report.hideInactive"));
-		parent.add(filterToggleText);
+		return deactivateBox;
 	}
-	
+
+	@SuppressWarnings("serial")
+	private AjaxCheckBox createOnlyBillableCheckbox(String id)
+	{
+		AjaxCheckBox	deactivateBox = new AjaxCheckBox(id, new PropertyModel(getModel(), "reportCriteria.userCriteria.onlyBillableProjects"))
+		{
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
+				updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
+				target.addComponent(customers);
+				target.addComponent(projects);
+				
+				// bahh!
+				target.addComponent(ReportCriteriaPanel.this.get("border:criteriaForm:customerProjectsBorder:reportCriteria.userCriteria.onlyBillableCustomers"));
+				target.addComponent(ReportCriteriaPanel.this.get("border:criteriaForm:customerProjectsBorder:reportCriteria.userCriteria.onlyBillableProjects"));
+			}
+		};
+		
+		deactivateBox.setMarkupId(id);
+		return deactivateBox;
+	}
+
 	/**
 	 * Add project selection
 	 * @param parent
@@ -224,8 +253,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel
 		
 		parent.add(deactivateBox);
 		
-		Label filterToggleText = new Label("onlyActiveProjectsLabel", new ResourceModel("report.hideInactive"));
-		parent.add(filterToggleText);		
+		parent.add(createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableProjects"));
 	}		
 	
 

@@ -155,6 +155,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	{
 		List<Customer> billableCustomers = new ArrayList<Customer>();
 		
+		logger.debug("Finding on billable only: " + userCriteria.isOnlyBillableProjects());
+		
 		if (userCriteria.isOnlyBillableProjects())
 		{
 			for (Customer customer : customers)
