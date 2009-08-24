@@ -35,7 +35,7 @@
 						<td class="borderless" >&nbsp;</td>
 					</tr>
 					
-					<div wicket:id="customers">
+					<wicket:container wicket:id="customers">
 						<tr class="customerRow">
 							<td class="foldIcon"><a class="timesheetFoldedImg" wicket:id="foldLink" href="#"><img src="img/transpixel.gif" height="10" width="8" border="0" /></a></td>	
 							<td class="customerCell" colspan="4" wicket:id="customer">customer</td>
@@ -48,7 +48,7 @@
 							<td class="saturday">&nbsp;</td>
 						</tr>
 						
-						<span wicket:id="rows">
+						<wicket:container wicket:id="rows">
 							<tr class="projectRow">
 								<td class="fold">&nbsp;</td>
 								<td class="projectCode" wicket:id="projectCode">projectCode</td>
@@ -67,8 +67,8 @@
 								<td class="saturday" wicket:id="day7"></td>
 								<td class="total" style="text-align: right;padding-right: 10px" wicket:id="total"></td>
 							</tr>
-						</span>
-					</div>
+						</wicket:container>
+					</wicket:container>
 					
 					<tr class="totalRow">
 						<td colspan="4" style="border: 0" >&nbsp;</td>
@@ -132,7 +132,7 @@
    	<wicket:fragment wicket:id="title">
    		<h1>
 	   		<a wicket:id="previousWeek"><img src="img/icon_left.gif" border="0" /></a>
-	   		<span wicket:id="titleLabel"></span>
+	   		<wicket:container wicket:id="titleLabel"></wicket:container>
 	   		<a wicket:id="nextWeek"><img src="img/icon_right.gif" border="0" /></a>
    		</h1>
 	</wicket:fragment>
@@ -145,8 +145,6 @@
    	<wicket:fragment wicket:id="dayInputHidden">
    		&nbsp;
 	</wicket:fragment>
-
-	
 </wicket:panel>
 
 </body>

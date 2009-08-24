@@ -153,7 +153,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		commentsFrame.add(serverMsgLabel);
 
 		// add CSS & JS
-		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "../css/timesheetForm.css")));
+		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "css/timesheetForm.css")));
 		addJavascript(this);
 	}
 
@@ -480,12 +480,11 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param foldPreference
 	 * @return
 	 */
+	@SuppressWarnings("serial")
 	private AjaxLink getFoldLink(final String id, final CustomerFoldPreference foldPreference)
 	{
 		AjaxLink foldLink = new AjaxLink("foldLink")
 		{
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
@@ -500,7 +499,6 @@ public class TimesheetPanel extends Panel implements Serializable
 		};
 
 		foldLink.add(new SimpleAttributeModifier("id", "foldcss" + id));
-
 
 		return foldLink;
 	}
@@ -553,7 +551,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 */
 	private void addJavascript(WebMarkupContainer container)
 	{
-		PackagedTextTemplate js = new PackagedTextTemplate(TimesheetPanel.class, "../js/timesheet.js");
+		PackagedTextTemplate js = new PackagedTextTemplate(TimesheetPanel.class, "js/timesheet.js");
 
 		Map<String, CharSequence> map = new HashMap<String, CharSequence>();
 

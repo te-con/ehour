@@ -121,7 +121,6 @@ public class MonthOverviewPanel extends Panel
 	    while ((overviewFor.get(Calendar.YEAR) == thisYear) &&
 	    		(overviewFor.get(Calendar.MONTH) <= thisMonth) || overviewFor.get(Calendar.YEAR) < thisYear)
 	    {
-			logger.debug("Adding month overview row for " + overviewFor.getTime().toString());
 			WebMarkupContainer	row = new WebMarkupContainer(calendarView.newChildId());
 			calendarView.add(row);
 	    	

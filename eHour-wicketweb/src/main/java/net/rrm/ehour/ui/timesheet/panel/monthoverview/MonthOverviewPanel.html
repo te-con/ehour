@@ -23,7 +23,7 @@
 								<td class="lastChild" wicket:id="day7"></td>							
 							</tr>
 							
-							<span wicket:id="calendarView">
+							<wicket:container wicket:id="calendarView">
 								<tr class="dateRow">
 									<td class="weekNumber">&nbsp;</td>
 									<td wicket:id="day1"></td>
@@ -47,7 +47,7 @@
 									<td wicket:id="day6Value"></td>
 									<td class="lastChild" wicket:id="day7Value"></td>							
 								</tr>
-							</span>								
+							</wicket:container>								
 						</table>
 					</td>
 					<td width="5">&nbsp;</td>
@@ -60,7 +60,7 @@
 		<div class='bookedHours' wicket:id="projects">
 			<span wicket:id="projectCode"></span>:
 			<div class='bookedHourValue'>
-				<span wicket:id="hours"></span><wicket:message key="hoursShort" />
+				<wicket:container wicket:id="hours"></wicket:container><wicket:message key="hoursShort" />
 			</div>
 			<br />
 		</div>

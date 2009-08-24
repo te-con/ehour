@@ -40,6 +40,7 @@ public class ContextualHelpPanel extends Panel
 		Label body = new Label("body", new ResourceModel(bodyResourceId));
 		body.setEscapeModelStrings(false);
 		add(body);
+		setOutputMarkupId(true);
 	}
 
 }
