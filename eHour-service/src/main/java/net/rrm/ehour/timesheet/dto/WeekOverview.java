@@ -34,15 +34,11 @@ import net.rrm.ehour.domain.User;
 
 public class WeekOverview implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3281374385102106958L;
 	private List<TimesheetEntry>	timesheetEntries;
 	private TimesheetComment		comment;
 	private	List<ProjectAssignment>	projectAssignments;
 	private	DateRange				weekRange;
-	private	CustomerFoldPreferenceList foldPreferences;
 	private	User					user;
 	private	Set<Customer>			customers;
 
@@ -129,20 +125,6 @@ public class WeekOverview implements Serializable
 	public void setComment(TimesheetComment comment)
 	{
 		this.comment = comment;
-	}
-	/**
-	 * @return the foldPreferences
-	 */
-	public CustomerFoldPreferenceList getFoldPreferences()
-	{
-		return foldPreferences;
-	}
-	/**
-	 * @param foldPreferences the foldPreferences to set
-	 */
-	public void setFoldPreferences(CustomerFoldPreferenceList foldPreferences)
-	{
-		this.foldPreferences = foldPreferences;
 	}
 
 	/**

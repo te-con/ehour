@@ -44,7 +44,6 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.dto.BookedDay;
-import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.util.DateUtil;
 
 import org.junit.Before;
@@ -61,8 +60,6 @@ public class TimesheetServiceTest
 	private TimesheetCommentDAO timesheetCommentDAO;
 
 	private EhourConfig config;
-
-	private CustomerFoldPreferenceDAO foldPref;
 
 	private AggregateReportService aggregateReportService;
 
@@ -81,14 +78,12 @@ public class TimesheetServiceTest
 		aggregateReportService = createMock(AggregateReportService.class);
 		timesheetCommentDAO = createMock(TimesheetCommentDAO.class);
 		projectAssignmentService = createMock(ProjectAssignmentService.class);
-		foldPref = createMock(CustomerFoldPreferenceDAO.class);
 
 		((TimesheetServiceImpl) timesheetService).setTimesheetDAO(timesheetDAO);
 		((TimesheetServiceImpl) timesheetService).setReportService(aggregateReportService);
 		((TimesheetServiceImpl) timesheetService).setEhourConfig(config);
 		((TimesheetServiceImpl) timesheetService).setTimesheetCommentDAO(timesheetCommentDAO);
 		((TimesheetServiceImpl) timesheetService).setProjectAssignmentService(projectAssignmentService);
-		((TimesheetServiceImpl) timesheetService).setCustomerFoldPreferenceDAO(foldPref);
 	}
 
 	/**

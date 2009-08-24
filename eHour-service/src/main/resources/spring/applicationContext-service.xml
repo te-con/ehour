@@ -48,7 +48,6 @@
 		<property name="userDepartmentDAO" ref="userDepartmentDAO" />	
 		<property name="userRoleDAO" ref="userRoleDAO" />
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
-		<property name="customerFoldPreferenceDAO" ref="customerFoldPreferenceDAO" />
 		<property name="aggregateReportService" ref="aggregateReportService" />		
 	</bean>
 
@@ -94,7 +93,6 @@
 	<!-- Timesheet service -->
 	<bean id="timesheetService" class="net.rrm.ehour.timesheet.service.TimesheetServiceImpl">
 		<property name="projectAssignmentService" ref="projectAssignmentService" />
-		<property name="customerFoldPreferenceDAO" ref="customerFoldPreferenceDAO" />
 		<property name="aggregateReportService" ref="aggregateReportService" />
 		<property name="timesheetPersister" ref="timesheetPersister" />
 	</bean>

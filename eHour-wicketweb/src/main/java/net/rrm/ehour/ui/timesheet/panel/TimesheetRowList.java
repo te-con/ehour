@@ -34,7 +34,6 @@ import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -51,7 +50,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -65,8 +63,6 @@ public class TimesheetRowList extends ListView
 {
 	private static final long serialVersionUID = -6905022018110510887L;
 
-	private int 			counter;
-	private final boolean 	hidden;
 	private	EhourConfig		config;
 	private final GrandTotal	grandTotals;
 	private	Form			form;
@@ -77,12 +73,10 @@ public class TimesheetRowList extends ListView
 	 * @param model
 	 * @param hidden
 	 */
-	public TimesheetRowList(String id, final List<TimesheetRow> model, boolean hidden, GrandTotal grandTotals, Form form)
+	public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form form)
 	{
 		super(id, model);
 		setReuseItems(true);
-		counter = 1;
-		this.hidden = hidden;
 		this.grandTotals = grandTotals;
 		this.form = form;
 		
@@ -97,17 +91,6 @@ public class TimesheetRowList extends ListView
 	protected void populateItem(ListItem item)
 	{
 		final TimesheetRow row = (TimesheetRow) item.getModelObject();
-
-		// add id to row
-		item.add(new AttributeModifier("id", true, new AbstractReadOnlyModel()
-		{
-			private static final long serialVersionUID = 1L;
-
-			public Object getObject()
-			{
-				return "pw" + row.getProjectAssignment().getProject().getCustomer().getCustomerId().toString() + counter++;
-			}
-		}));
 
 		// add project + link to book whole week on project
 		// TODO use icon instead of project list
@@ -158,19 +141,6 @@ public class TimesheetRowList extends ListView
 		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
 		totalHours.setOutputMarkupId(true);
 		item.add(totalHours);
-
-		if (hidden)
-		{
-			item.add(new AttributeModifier("style", true, new AbstractReadOnlyModel()
-			{
-				private static final long serialVersionUID = -6996376634435316294L;
-
-				public Object getObject()
-				{
-					return "display: none";
-				}
-			}));
-		}
 	}
 	
 	/**

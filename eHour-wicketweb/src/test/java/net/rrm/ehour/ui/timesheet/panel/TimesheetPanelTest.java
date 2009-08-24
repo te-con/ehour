@@ -34,13 +34,11 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
-import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
@@ -95,8 +93,6 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		ass.add(DummyWebDataGenerator.getProjectAssignment(1));
 		overview.setProjectAssignments(ass);
 		
-		overview.setFoldPreferences(new CustomerFoldPreferenceList());
-	
 		expect(timesheetService.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))
 				.andReturn(overview);			
 	}
@@ -193,16 +189,6 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		now.add(Calendar.DAY_OF_YEAR, 1);
 		
 		assertTrue(now.getTime().before(cal.getTime()));
-	}
-	
-	@Test
-	public void foldCustomerRow()
-	{
-		userService.persistCustomerFoldPreference(isA(CustomerFoldPreference.class));
-		
-		startAndReplay();
-
-		getTester().executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:foldLink", "onclick");
 	}
 	
 //	@Test

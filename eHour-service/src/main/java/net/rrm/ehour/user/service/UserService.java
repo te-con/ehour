@@ -18,7 +18,6 @@ package net.rrm.ehour.user.service;
 
 import java.util.List;
 
-import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
@@ -137,12 +136,6 @@ public interface UserService
      * @param userId to add pm role to
      */
     public User addAndcheckProjectManagementRoles(Integer userId);
-    
-    /**
-     * Customer fold preference
-     * @param customerFoldPreference
-     */
-    public void persistCustomerFoldPreference(CustomerFoldPreference customerFoldPreference);
 
     /**
      * Cascading delete of user

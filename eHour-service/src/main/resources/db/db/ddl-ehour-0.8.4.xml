@@ -36,14 +36,6 @@
 			<unique-column name="CODE" />
 		</unique>
 	</table>
-	<table name="customer_fold_preference">
-		<column name="CUSTOMER_ID" primaryKey="true" required="true"
-			type="INTEGER" size="10" autoIncrement="false" />
-		<column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
-			size="10" autoIncrement="false" />
-		<column name="FOLDED" primaryKey="false" required="true" type="CHAR"
-			size="1" default="N" autoIncrement="false" />
-	</table>
 	<table name="mail_log">
 		<column name="MAIL_LOG_ID" primaryKey="true" required="true"
 			type="INTEGER" size="10" autoIncrement="true" />

@@ -21,20 +21,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
-import net.rrm.ehour.ui.common.ajax.OnClickDecorator;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
@@ -49,12 +45,10 @@ import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
-import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -72,13 +66,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.template.PackagedTextTemplate;
-import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 
 /**
  * The main panel - timesheet form
@@ -87,9 +77,6 @@ import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 public class TimesheetPanel extends Panel implements Serializable
 {
 	private static final long serialVersionUID = 7704288648724599187L;
-
-	@SpringBean
-	private UserService userService;
 
 	private EhourConfig config;
 	private WebComponent serverMsgLabel;
@@ -152,9 +139,8 @@ public class TimesheetPanel extends Panel implements Serializable
 		serverMsgLabel.setOutputMarkupId(true);
 		commentsFrame.add(serverMsgLabel);
 
-		// add CSS & JS
+		// add CSS
 		add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "css/timesheetForm.css")));
-		addJavascript(this);
 	}
 
 	/**
@@ -444,26 +430,9 @@ public class TimesheetPanel extends Panel implements Serializable
 				final Customer customer = (Customer) item.getModelObject();
 
 				Timesheet timesheet = (Timesheet) TimesheetPanel.this.getModelObject();
+				item.add(getCustomerLabel(customer));
 
-				// check for any preference
-				CustomerFoldPreference foldPreference = timesheet.getFoldPreferences().get(customer);
-
-				if (foldPreference == null)
-				{
-					foldPreference = new CustomerFoldPreference(timesheet.getUser(), customer, false);
-				}
-
-				boolean hidden = (foldPreference != null && foldPreference.isFolded());
-
-				AjaxLink foldLink = getFoldLink(customer.getCustomerId().toString(), foldPreference);
-				foldLink.add(new SimpleAttributeModifier("class", hidden ? "timesheetFoldedImg" : "timesheetFoldImg"));
-				item.add(foldLink);
-
-				item.add(getCustomerLabel(customer, foldPreference));
-				// item.add(new Label("customerDesc",
-				// customer.getDescription()));
-
-				item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), hidden, grandTotals, form));
+				item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), grandTotals, form));
 			}
 		};
 		customers.setReuseItems(true);
@@ -474,87 +443,14 @@ public class TimesheetPanel extends Panel implements Serializable
 	}
 
 	/**
-	 * Add fold link
-	 * 
-	 * @param id
-	 * @param foldPreference
-	 * @return
-	 */
-	@SuppressWarnings("serial")
-	private AjaxLink getFoldLink(final String id, final CustomerFoldPreference foldPreference)
-	{
-		AjaxLink foldLink = new AjaxLink("foldLink")
-		{
-			@Override
-			public void onClick(AjaxRequestTarget target)
-			{
-				foldRow(foldPreference);
-			}
-
-			@Override
-			protected IAjaxCallDecorator getAjaxCallDecorator()
-			{
-				return new OnClickDecorator("toggleProjectRow", id);
-			}
-		};
-
-		foldLink.add(new SimpleAttributeModifier("id", "foldcss" + id));
-
-		return foldLink;
-	}
-
-	/**
 	 * Get customer label
 	 * 
 	 * @param customer
 	 * @return
 	 */
-	private Label getCustomerLabel(final Customer customer, final CustomerFoldPreference foldPreference)
+	private Label getCustomerLabel(final Customer customer)
 	{
-		Label label;
-		label = new Label("customer", customer.getName());
-
-		label.add(new AjaxEventBehavior("onclick")
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onEvent(AjaxRequestTarget target)
-			{
-				foldRow(foldPreference);
-			}
-
-			@Override
-			protected IAjaxCallDecorator getAjaxCallDecorator()
-			{
-				return new OnClickDecorator("toggleProjectRow", customer.getCustomerId().toString());
-			}
-		});
-
+		Label label = new Label("customer", customer.getName());
 		return label;
-	}
-
-	/**
-	 * Fold row
-	 * @param foldPreference
-	 */
-	private void foldRow(CustomerFoldPreference foldPreference)
-	{
-		foldPreference.toggleFolded();
-		userService.persistCustomerFoldPreference(foldPreference);
-	}
-
-	/**
-	 * Add javascript with replaced images TODO add js directly to header
-	 * 
-	 * @param container
-	 */
-	private void addJavascript(WebMarkupContainer container)
-	{
-		PackagedTextTemplate js = new PackagedTextTemplate(TimesheetPanel.class, "js/timesheet.js");
-
-		Map<String, CharSequence> map = new HashMap<String, CharSequence>();
-
-		add(TextTemplateHeaderContributor.forJavaScript(js, new Model((Serializable) map)));
 	}
 }

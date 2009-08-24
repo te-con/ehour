@@ -29,7 +29,6 @@ import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
-import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 
 /**
  * Representation of a timesheet
@@ -37,9 +36,6 @@ import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 
 public class Timesheet implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long 	serialVersionUID = -547682050331580675L;
 	private SortedMap<Customer, List<TimesheetRow>>	customers;
 	private	Date[]				dateSequence;
@@ -47,7 +43,6 @@ public class Timesheet implements Serializable
 	private	Date				weekEnd;
 	private	User				user;
 	private	TimesheetComment	comment;
-	private	CustomerFoldPreferenceList foldPreferences;	
 	private	float				maxHoursPerDay;
 	
 	/**
@@ -266,20 +261,7 @@ public class Timesheet implements Serializable
 	{
 		this.dateSequence = dateSequence;
 	}
-	/**
-	 * @return the foldPreferences
-	 */
-	public CustomerFoldPreferenceList getFoldPreferences()
-	{
-		return foldPreferences;
-	}
-	/**
-	 * @param foldPreferences the foldPreferences to set
-	 */
-	public void setFoldPreferences(CustomerFoldPreferenceList foldPreferences)
-	{
-		this.foldPreferences = foldPreferences;
-	}
+
 	/**
 	 * @return the user
 	 */

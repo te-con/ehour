@@ -10,6 +10,8 @@ function toggleProjectRow(customerId)
 	{
 		row = document.getElementById("pw" + customerId + "" + i++);
 
+		alert(row);
+		
 		if (row != null)
 		{
 			if (row.style.display == 'none')

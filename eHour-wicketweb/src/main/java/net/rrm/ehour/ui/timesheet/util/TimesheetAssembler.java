@@ -92,7 +92,6 @@ public class TimesheetAssembler
 	
 		timesheet.setComment(weekOverview.getComment());
 		timesheet.setUser(weekOverview.getUser());
-		timesheet.setFoldPreferences(weekOverview.getFoldPreferences());
 		
 		return timesheet;
 	}

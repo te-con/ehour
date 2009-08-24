@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
@@ -37,7 +36,6 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
@@ -55,7 +53,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class UserServiceImpl implements UserService
 {
-	private CustomerFoldPreferenceDAO	customerFoldPreferenceDAO;
 	private	UserDAO				userDAO;
 	private	UserDepartmentDAO	userDepartmentDAO;
 	private	UserRoleDAO			userRoleDAO;
@@ -390,24 +387,6 @@ public class UserServiceImpl implements UserService
 	private String encryptPassword(String plainPassword, Object salt)
 	{
 		return passwordEncoder.encodePassword(plainPassword, salt);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#persistCustomerFoldPreference(net.rrm.ehour.user.domain.CustomerFoldPreference)
-	 */
-	@Transactional
-	public void persistCustomerFoldPreference(CustomerFoldPreference customerFoldPreference)
-	{
-		customerFoldPreferenceDAO.persist(customerFoldPreference);
-	}
-
-	/**
-	 * @param customerFoldPreferenceDAO the customerFoldPreferenceDAO to set
-	 */
-	public void setCustomerFoldPreferenceDAO(CustomerFoldPreferenceDAO customerFoldPreferenceDAO)
-	{
-		this.customerFoldPreferenceDAO = customerFoldPreferenceDAO;
 	}
 
 	/*

@@ -30,7 +30,6 @@ import java.util.TreeSet;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.CustomerFoldPreference;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
@@ -45,11 +44,9 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.dto.BookedDay;
-import net.rrm.ehour.timesheet.dto.CustomerFoldPreferenceList;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
-import net.rrm.ehour.user.dao.CustomerFoldPreferenceDAO;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
 
@@ -65,7 +62,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class TimesheetServiceImpl implements TimesheetService
 {
-	private CustomerFoldPreferenceDAO	customerFoldPreferenceDAO;
 	private	TimesheetDAO		timesheetDAO;
 	private TimesheetCommentDAO	timesheetCommentDAO;
 	private	AggregateReportService		aggregateReportService;
@@ -245,8 +241,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	{
 		WeekOverview	weekOverview;
 		DateRange		range;
-		List<CustomerFoldPreference> prefs = null;
-		
+
 		weekOverview = new WeekOverview();
 		
 		requestedWeek.setFirstDayOfWeek(config.getFirstDayOfWeek());
@@ -264,22 +259,6 @@ public class TimesheetServiceImpl implements TimesheetService
 		logger.debug("Week overview: project assignments found for userId " + user.getUserId() + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
 		
 		weekOverview.initCustomers();
-		
-		if (weekOverview.getCustomers() != null && weekOverview.getCustomers().size() > 0)
-		{
-			prefs = customerFoldPreferenceDAO.getPreferenceForUser(user, weekOverview.getCustomers());
-		}
-			
-		if (prefs != null)
-		{
-			weekOverview.setFoldPreferences(new CustomerFoldPreferenceList(prefs));
-		}
-		else
-		{
-			weekOverview.setFoldPreferences(new CustomerFoldPreferenceList());
-		}
-		
-		logger.debug("Week overview: customer fold preferences found for userId " + user.getUserId() + ": " + weekOverview.getFoldPreferences().size());
 		
 		weekOverview.setUser(user);
 		
@@ -403,14 +382,6 @@ public class TimesheetServiceImpl implements TimesheetService
 	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
 	{
 		this.projectAssignmentService = projectAssignmentService;
-	}
-
-	/**
-	 * @param customerFoldPreferenceDAO the customerFoldPreferenceDAO to set
-	 */
-	public void setCustomerFoldPreferenceDAO(CustomerFoldPreferenceDAO customerFoldPreferenceDAO)
-	{
-		this.customerFoldPreferenceDAO = customerFoldPreferenceDAO;
 	}
 
 	/**

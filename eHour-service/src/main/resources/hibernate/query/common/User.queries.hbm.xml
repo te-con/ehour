@@ -65,13 +65,6 @@
 	    		AND user.userDepartment IN (:departments)
 	    ORDER BY lastName, firstName	    
 	</query>
-
-	<query name="CustomerFoldPreference.findForUserAndCustomers"> 
-		SELECT pref
-		FROM CustomerFoldPreference pref
-	    WHERE pref.foldPreferenceId.user = :user 
-	    		AND pref.foldPreferenceId.customer IN (:customers)
-	</query>	
 	
 	<sql-query name="User.deletePMsWithoutProject">
 		DELETE 
