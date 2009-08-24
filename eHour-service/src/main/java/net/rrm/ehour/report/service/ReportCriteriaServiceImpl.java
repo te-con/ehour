@@ -17,6 +17,7 @@
 package net.rrm.ehour.report.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
@@ -37,6 +39,7 @@ import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -139,15 +142,55 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	{
 		List<Customer> customers;
 		
+		customers = fetchCustomers(userCriteria);
+		
+		List<Customer> billableCustomers = checkForOnlyBillableCustomers(userCriteria, customers);
+		
+		Collections.sort(billableCustomers);
+		
+		return billableCustomers;
+	}
+
+	private List<Customer> checkForOnlyBillableCustomers(UserCriteria userCriteria, List<Customer> customers)
+	{
+		List<Customer> billableCustomers = new ArrayList<Customer>();
+		
+		if (userCriteria.isOnlyBillableProjects())
+		{
+			for (Customer customer : customers)
+			{
+				List<Project> billableProjects;
+				
+				if (userCriteria.isOnlyActiveProjects())
+				{
+					 billableProjects = ProjectUtil.getBillableProjects(customer.getActiveProjects());
+				}
+				else
+				{
+					 billableProjects = ProjectUtil.getBillableProjects(customer.getProjects());
+				}
+				
+				if (!CollectionUtils.isEmpty(billableProjects))
+				{
+					billableCustomers.add(customer);
+				}
+			}
+		}
+		
+		return billableCustomers;
+	}
+
+	private List<Customer> fetchCustomers(UserCriteria userCriteria)
+	{
+		List<Customer> customers;
 		if (userCriteria.isOnlyActiveCustomers())
 		{
-			customers = customerDAO.findAll(true);
+			customers = customerDAO.findAllActive();
 		}
 		else
 		{
 			customers = customerDAO.findAll();
 		}
-		
 		return customers;
 	}
 	
@@ -162,27 +205,43 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		
 		if (userCriteria.isEmptyCustomers()) 
 		{
-			if (userCriteria.isOnlyActiveProjects())
-			{
-				logger.debug("Fetching only active projects");
-
-				projects = projectDAO.findAllActive();
-			}
-			else
-			{
-				logger.debug("Fetching all projects");
-				
-				projects = projectDAO.findAll();
-			}
+			projects = fetchProjects(userCriteria);
 		}
 		else
 		{
-			logger.debug("Fetching projects for selected customers");
-			
 			projects = projectDAO.findProjectForCustomers(userCriteria.getCustomers(), 
 															userCriteria.isOnlyActiveProjects());
 		}
 		
+		projects = checkForOnlyBillableProjects(userCriteria, projects);
+		
+		return projects;
+	}
+
+	private List<Project> checkForOnlyBillableProjects(UserCriteria userCriteria, List<Project> projects)
+	{
+		if (userCriteria.isOnlyBillableProjects())
+		{
+			projects = ProjectUtil.getBillableProjects(projects);
+		}
+		return projects;
+	}
+
+	private List<Project> fetchProjects(UserCriteria userCriteria)
+	{
+		List<Project> projects;
+		if (userCriteria.isOnlyActiveProjects())
+		{
+			logger.debug("Fetching only active projects");
+
+			projects = projectDAO.findAllActive();
+		}
+		else
+		{
+			logger.debug("Fetching all projects");
+			
+			projects = projectDAO.findAll();
+		}
 		return projects;
 	}
 		

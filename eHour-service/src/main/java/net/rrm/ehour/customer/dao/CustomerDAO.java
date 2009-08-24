@@ -28,11 +28,29 @@ import net.rrm.ehour.domain.Customer;
 public interface CustomerDAO extends GenericDAO<Customer, Integer>
 {
 	/**
+	 * Find all active customers with billable projects
+	 * @return
+	 */
+	public List<Customer> findAllActiveWithBillableProjects();
+	
+	/**
+	 * Find all customers with billable projects
+	 * @return
+	 */
+	public List<Customer> findAllWithBillableProjects();
+
+	/**
 	 * Get all customers
 	 * @param active
 	 * @return
 	 */
-	public List<Customer> findAll(boolean active);
+	public List<Customer> findAll();
+	
+	/**
+	 * Find all active customers
+	 * @return
+	 */
+	public List<Customer> findAllActive();
 	
 	/**
 	 * Find customer on name and code

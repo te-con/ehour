@@ -17,6 +17,7 @@
 package net.rrm.ehour.project.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.domain.Project;
@@ -33,17 +34,17 @@ public class ProjectUtil
 		
 	}
 	
-	public static List<Project> getBillableProjects(List<Project> projects)
+	public static List<Project> getBillableProjects(Collection<Project> projects)
 	{
 		return getProjectsOnBillability(projects, true);
 	}
 
-	public static List<Project> getUnbillableProjects(List<Project> projects)
+	public static List<Project> getUnbillableProjects(Collection<Project> projects)
 	{
 		return getProjectsOnBillability(projects, false);
 	}
 
-	private static List<Project> getProjectsOnBillability(List<Project> projects, boolean billable)
+	private static List<Project> getProjectsOnBillability(Collection<Project> projects, boolean billable)
 	{
 		List<Project> sortedProjects = new ArrayList<Project>();
 		

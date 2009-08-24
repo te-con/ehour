@@ -45,7 +45,7 @@ public class UserCriteria implements Serializable
 	private	boolean		onlyActiveProjects = true;
 	private	boolean		onlyActiveCustomers = true;
 	private	boolean		onlyActiveUsers = true;
-	private boolean		onlyProjectsWithBookedHours = false;		
+	private boolean		onlyBillableProjects = false;		
 	private	int			userActivityFilter;
 	private	String		userFilter;
 	private	String		customerFilter;
@@ -410,13 +410,13 @@ public class UserCriteria implements Serializable
 		return customParameters;
 	}
 
-	public boolean isOnlyProjectsWithBookedHours()
+	public boolean isOnlyBillableProjects()
 	{
-		return onlyProjectsWithBookedHours;
+		return onlyBillableProjects;
 	}
 
-	public void setOnlyProjectsWithBookedHours(boolean onlyProjectsWithBookedHours)
+	public void setOnlyBillableProjects(boolean onlyBillableProjects)
 	{
-		this.onlyProjectsWithBookedHours = onlyProjectsWithBookedHours;
+		this.onlyBillableProjects = onlyBillableProjects;
 	}
 }

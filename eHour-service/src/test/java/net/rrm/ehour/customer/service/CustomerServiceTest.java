@@ -125,7 +125,7 @@ public class CustomerServiceTest extends TestCase
 
 	public void testGetActiveCustomers()
 	{
-		customerDAO.findAll(true);
+		customerDAO.findAllActive();
 		expectLastCall().andReturn(null);
 		
 		replay(customerDAO);

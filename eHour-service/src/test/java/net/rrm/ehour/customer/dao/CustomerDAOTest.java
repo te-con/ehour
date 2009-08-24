@@ -65,7 +65,7 @@ public class CustomerDAOTest  extends AbstractDaoTest
 	@Test
 	public void testFindAllActive()
 	{
-		List customers = customerDAO.findAll(true);
+		List customers = customerDAO.findAllActive();
 		assertEquals(3, customers.size());
 	}
 	

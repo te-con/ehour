@@ -36,16 +36,6 @@ public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, 
 	{
 		super(Customer.class);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.customer.dao.CustomerDAO#findAll(boolean)
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Customer> findAll(boolean active)
-	{
-		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", active, false, CACHEREGION);
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -69,6 +59,24 @@ public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, 
 			return results.get(0);
 		}
 		
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Customer> findAllActive()
+	{
+		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", true, false, CACHEREGION);
+	}
+
+	public List<Customer> findAllActiveWithBillableProjects()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Customer> findAllWithBillableProjects()
+	{
+		// TODO Auto-generated method stub
 		return null;
 	}
 

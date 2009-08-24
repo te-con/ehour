@@ -171,7 +171,7 @@ public class CustomerServiceImpl implements CustomerService
 	@Transactional(readOnly=true)
 	public List<Customer> getCustomers(boolean hideInactive)
 	{
-		return customerDAO.findAll(hideInactive);
+		return (hideInactive) ? customerDAO.findAllActive() : customerDAO.findAll();
 	}
 
 	

@@ -22,13 +22,14 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
 import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.customer.dao.CustomerDAO;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -43,12 +44,16 @@ import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * test case for report criteria 
  **/
 
 @SuppressWarnings("unchecked")
-public class ReportCriteriaServiceTest  extends TestCase
+
+public class ReportCriteriaServiceTest  
 {
 	private	ReportCriteriaService	reportCriteriaService;
 	
@@ -59,10 +64,8 @@ public class ReportCriteriaServiceTest  extends TestCase
 	private	ProjectDAO		projectDAO;
 	private UserDepartmentDAO userDepartmentDAO;
 	
-	/**
-	 * 
-	 */
-	protected void setUp()
+	@Before
+	public void setup()
 	{
 		reportCriteriaService = new ReportCriteriaServiceImpl();
 
@@ -85,6 +88,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		((ReportCriteriaServiceImpl)reportCriteriaService).setUserDepartmentDAO(userDepartmentDAO);
 	}
 	
+	@Test
 	public void testSyncUserReportCriteriaUserSingle()
 	{
 		ReportCriteria		reportCriteria;
@@ -106,7 +110,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		ids.add(new User(1));
 		userCriteria.setUsers(ids);
 		reportCriteria = new ReportCriteria(userCriteria);		
-		prjAssignmentDAO.findProjectAssignmentsForUser(new User(1));
+		prjAssignmentDAO.findProjectAssignmentsForUser(isA(Integer.class), isA(DateRange.class));
 		expectLastCall().andReturn(prjAsgs);
 
 		reportAggregatedDAO.getMinMaxDateTimesheetEntry(isA(User.class));
@@ -123,10 +127,7 @@ public class ReportCriteriaServiceTest  extends TestCase
 		assertEquals(2, reportCriteria.getAvailableCriteria().getCustomers().size());
 	}	
 
-	/**
-	 * 
-	 *
-	 */
+	@Test
 	public void testSyncUserReportCriteriaUserAll()
 	{
 		ReportCriteria		reportCriteria;
@@ -151,7 +152,54 @@ public class ReportCriteriaServiceTest  extends TestCase
 		expect(userDAO.findUsersByNameMatch(null, false) ).andReturn(new ArrayList<User>());
 		replay(userDAO);
 		
-		expect(customerDAO.findAll(true)).andReturn(new ArrayList<Customer>());
+		expect(customerDAO.findAllActive()).andReturn(new ArrayList<Customer>());
+		replay(customerDAO);
+		
+		expect(projectDAO.findAll()).andReturn(new ArrayList<Project>());
+		replay(projectDAO);
+
+		expect(userDepartmentDAO.findAll()).andReturn(new ArrayList<UserDepartment>());
+		replay(userDepartmentDAO);
+
+		reportAggregatedDAO.getMinMaxDateTimesheetEntry();
+		expectLastCall().andReturn(null);
+		replay(reportAggregatedDAO);
+		
+		reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
+		
+		verify(reportAggregatedDAO);
+		verify(projectDAO);
+		verify(customerDAO);
+		verify(userDAO);
+	}
+	
+	@Test
+	public void shouldSyncUserReportCriteriaUserAllBillable()
+	{
+		ReportCriteria		reportCriteria;
+		UserCriteria		userCriteria;
+		
+		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
+		
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
+		
+		reportCriteria = new ReportCriteria();
+		// bit odd but otherwise unnecc. stuff is called
+//		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
+//		reportCriteria.setReportCriteriaService(rsMock);
+		
+		userCriteria = new UserCriteria();
+		userCriteria.setOnlyActiveUsers(false);
+		userCriteria.setOnlyActiveCustomers(true);
+		userCriteria.setOnlyActiveProjects(false);
+		userCriteria.setOnlyBillableProjects(true);
+		reportCriteria = new ReportCriteria(userCriteria);
+		
+		expect(userDAO.findUsersByNameMatch(null, false) ).andReturn(new ArrayList<User>());
+		replay(userDAO);
+		
+		expect(customerDAO.findAllActive()).andReturn(new ArrayList<Customer>());
 		replay(customerDAO);
 		
 		expect(projectDAO.findAll()).andReturn(new ArrayList<Project>());
