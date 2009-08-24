@@ -176,6 +176,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 				}
 			}
 		}
+		else
+		{
+			return customers;
+		}
 		
 		return billableCustomers;
 	}
