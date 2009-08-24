@@ -40,12 +40,12 @@ public class CommonJavascript
 	 * @param imageUriOn image URI as text of the mouse over image
 	 * @param imageUriOff image URI as text of the mouse out image
 	 */
-	public static void addMouseOver(Component imgComponent, Component parent, String imageUriOn, String imageUriOff)
+	public static void addMouseOver(Component imgComponent, Component parent, String imageUriOn, String imageUriOff, String id)
 	{
 		parent.add(HeaderContributor.forJavaScript(CommonJavascript.class, "js/ImageMouseOver.js"));
 		
-		imgComponent.add(new OnMouseOnLoad("onmouseover", true, new Model("onMouseOver(this, '" + imageUriOn + "');")));
-		imgComponent.add(new AttributeModifier("onmouseout", true, new Model("onMouseOut(this, '" + imageUriOff + "');")));
+		imgComponent.add(new OnMouseOnLoad("onmouseover", true, new Model("onMouseOver(this, '" + imageUriOn + "', '" + id + "');")));
+		imgComponent.add(new AttributeModifier("onmouseout", true, new Model("onMouseOut(this, '" + imageUriOff + "', '" + id + "');")));
 	}
 	
 	/**
@@ -54,10 +54,9 @@ public class CommonJavascript
 	 * @author Thies Edeling (thies@te-con.nl) 
 	 *
 	 */
+	@SuppressWarnings("serial")
 	private static class OnMouseOnLoad extends AttributeModifier
 	{
-		private static final long serialVersionUID = -5494844004223491158L;
-
 		OnMouseOnLoad(String attribute, boolean addAttributeIfNotPresent, IModel replaceModel)
 		{
 			super(attribute, addAttributeIfNotPresent, replaceModel);

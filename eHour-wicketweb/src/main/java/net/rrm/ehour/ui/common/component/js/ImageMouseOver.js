@@ -1,30 +1,32 @@
-var imgOn = null
-	, imgOff = null;
+var imgs = 
+{
+	Set : function(key, value) {this[key] = value;},
+	Get : function(key) {return this[key];}
+}
 
 function initImagePreload()
 {
-	imgOn = null;
-	imgOff = null;
 }
 
-function onMouseOver(elm, img)
+function onMouseOver(elm, img, id)
 {
-	if (imgOn == null)
+	if (imgs[id + 'over'] == null)
 	{
-		imgOn = new Image();
-		imgOn.src = img;
+		imgs[id + 'over'] = new Image();
+		imgs[id + 'over'].src = img;
 	}
 	
-	elm.src = imgOn.src;
+	elm.src = imgs[id + 'over'].src;
 }
 
-function onMouseOut(elm, img)
+function onMouseOut(elm, img, id)
 {
-	if (imgOff == null)
+	if (imgs[id + 'out'] == null)
 	{
-		imgOff = new Image();
-		imgOff.src = img;
+		imgs[id + 'out'] = new Image();
+		imgs[id + 'out'].src = img;
 	}
 
-	elm.src = imgOff.src;
+	elm.src = imgs[id + 'out'].src;
 }
+

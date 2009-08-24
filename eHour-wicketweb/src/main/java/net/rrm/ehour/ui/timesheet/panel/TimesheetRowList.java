@@ -93,18 +93,14 @@ public class TimesheetRowList extends ListView
 		item.add(createBookWholeWeekLink(row));
 		item.add(createProjectLabel(row));
 		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
-		
-		// status message
 		item.add(createStatusLabel(item));
-				
 		addInputCells(item, row);
-
 		item.add(createTotalHoursLabel(row));
 	}
 
 	private Label createTotalHoursLabel(final TimesheetRow row)
 	{
-		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
+		Label totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
 		totalHours.setOutputMarkupId(true);
 		return totalHours;
 	}
@@ -149,8 +145,7 @@ public class TimesheetRowList extends ListView
 		};
 		
 		ContextImage img = new ContextImage("bookImg", new Model("img/check_all_off.png"));
-//		img.setOutputMarkupId(true);
-		CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/check_all_on.png", getContextRoot() + "img/check_all_off.png");
+		CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/check_all_on.png", getContextRoot() + "img/check_all_off.png", "bwh");
 		projectLink.add(img);
 		
 		return projectLink;
@@ -274,6 +269,7 @@ public class TimesheetRowList extends ListView
 	 * @param row
 	 * @param index
 	 */
+	@SuppressWarnings("serial")
 	private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent)
 	{
 		final ModalWindow modalWindow;
@@ -291,8 +287,6 @@ public class TimesheetRowList extends ListView
 		
 		commentLink = new AjaxLink("dayLink")
 		{
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
@@ -302,8 +296,6 @@ public class TimesheetRowList extends ListView
 		
 		modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback()
 		{
-			private static final long serialVersionUID = 1L;
-
 			public void onClose(AjaxRequestTarget target)
 			{
 				setCommentLinkClass(commentModel, commentLink);
@@ -317,7 +309,19 @@ public class TimesheetRowList extends ListView
 		commentLink.setOutputMarkupId(true);
 		commentLink.add(CommonModifiers.tabIndexModifier(255));
 		
-		setCommentLinkClass(commentModel, commentLink);
+		ContextImage img;
+		if (StringUtils.isBlank((String)commentModel.getObject()))
+		{
+			img = new ContextImage("commentLinkImg", new Model("img/comment/comment_blue_off.gif"));
+			CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/comment/comment_blue_on.gif", getContextRoot() + "img/comment/comment_blue_off.gif", "comment");
+		}
+		else
+		{
+			img = new ContextImage("commentLinkImg", new Model("img/comment/comment_blue_on.gif"));
+		}
+		commentLink.add(img);
+		
+//		setCommentLinkClass(commentModel, commentLink);
 		
 		parent.add(commentLink);
 	}

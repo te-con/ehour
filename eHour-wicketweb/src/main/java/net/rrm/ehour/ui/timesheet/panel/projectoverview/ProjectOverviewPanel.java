@@ -267,7 +267,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel
 		
 		ContextImage img = new ContextImage(ID_FOLD_IMG, new Model(upStr + "off.gif"));
 		img.setOutputMarkupId(true);
-		CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif");
+		CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif", "upDown");
 		
 		return img;
 	}

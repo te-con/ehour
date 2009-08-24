@@ -338,10 +338,6 @@ public class TimesheetPanel extends Panel implements Serializable
 
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	private Label updateErrorMessage()
 	{
 		IModel model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null, new Object[] {});
