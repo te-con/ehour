@@ -48,11 +48,14 @@
 						
 						<wicket:container wicket:id="rows">
 							<tr class="projectRow">
-								<td class="fold">&nbsp;</td>
+								<td class="fold"><a wicket:id="bookWholeWeek"><img wicket:id="bookImg" src="img/check_all_off.png" border="0" /></a></td>
 								<td class="projectCode" wicket:id="projectCode">projectCode</td>
-								<td class="project">
-										<a wicket:id="bookWholeWeek"><span wicket:id="project"></span></a>
-											<span style="clear:both;padding: 1px 0 0 0;float:left;color:red;font-size:0.8em" wicket:id="status"><br /></span>
+								<td class="project"><span wicket:id="project"></span>
+									<wicket:enclosure>
+										<br clear="both"/>
+											<span style="clear:both;padding: 1px 0 0 0;color:red;font-size:0.8em" wicket:id="status"></span>
+										<br />
+									</wicket:enclosure>
 								</td>
 								<td class="spacer">&nbsp;</td>
 								

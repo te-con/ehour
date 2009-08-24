@@ -98,7 +98,6 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		config = session.getEhourConfig();
 
-		// dom id's
 		this.setOutputMarkupId(true);
 
 		// set the model

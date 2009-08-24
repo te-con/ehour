@@ -59,14 +59,14 @@ public class TooltipLabel extends Panel
 	 */
 	public TooltipLabel(final String id, String label, String tooltipText, boolean showInfoImg)
 	{
-		this(id, new Model(label), new Model(tooltipText), showInfoImg);
+		this(id, new Model(label), new Model(tooltipText), showInfoImg, false);
 	}
 	
 	/**
 	 * @param id
 	 * @param label
 	 */
-	public TooltipLabel(String id, IModel label, IModel tooltipText, boolean showInfoImg)
+	public TooltipLabel(String id, IModel label, IModel tooltipText, boolean showInfoImg, boolean showBlue)
 	{
 		super(id);
 		
@@ -77,11 +77,10 @@ public class TooltipLabel extends Panel
 		
 		Boolean showTooltip = StringUtils.isBlank((String)tooltipText.getObject()) ? Boolean.FALSE : Boolean.TRUE;
 		
-		
 		add(new AttributeModifier("showtooltip", true, new Model(showTooltip.toString())));
 		add(new AttributeModifier("title", true, tooltipText));
 		
-		ContextImage img = new ContextImage("infoImg", new Model("img/info.gif"));
+		ContextImage img = new ContextImage("infoImg", new Model( ((showBlue) ? "img/info_blue.png" : "img/info.gif" )));
 		img.setVisible(showInfoImg && showTooltip.booleanValue());
 		add(img);
 	}

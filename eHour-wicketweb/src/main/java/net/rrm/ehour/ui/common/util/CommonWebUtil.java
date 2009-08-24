@@ -34,27 +34,15 @@ import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.IModel;
 
 /**
- * Commons 
+ * Common functionality
  **/
 
 public class CommonWebUtil
 {
-//	public final static int	AJAX_CALENDARPANEL_MONTH_CHANGE = 1;
-//	public final static int	AJAX_CALENDARPANEL_WEEK_CLICK = 2;
-//	public final static int	AJAX_ENTRYSELECTOR_FILTER_CHANGE = 3;
-//	public final static int	AJAX_FORM_SUBMIT = 4;
-//	public final static int	AJAX_DELETE = 5;
-//	public final static int AJAX_LIST_CHANGE = 6;
-//	public final static int	AJAX_CALENDARPANEL_WEEK_NAV = 7;
-//	public final static int AJAX_CUSTOMER_ADD_TAB_REQUEST = 8;
-	
 	public final static String ROLE_CONSULTANT = "ROLE_CONSULTANT";
 	public final static String ROLE_ADMIN = "ROLE_ADMIN";
 	public final static String ROLE_REPORT = "ROLE_REPORT";
 	public final static String ROLE_PM = "ROLE_PROJECTMANAGER";
-	
-//	public final static String[] weekDays = new String[]{"sunday", "monday", "tuesday", 
-//															"wednesday", "thursday", "friday", "saturday"};
 	
 	/**
 	 * 

@@ -68,6 +68,8 @@ div.timesheet
 {
 	border-right: 0px;
 	width: 16px;
+	vertical-align: top;
+	padding: 11px 2px 0 5px;
 }
 
 .timesheetTable tr.projectRow td.project

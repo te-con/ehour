@@ -21,9 +21,11 @@ import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.ui.common.component.CommonJavascript;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.component.ModalWindowFix;
+import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -45,12 +47,14 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.validation.validator.NumberValidator;
@@ -67,12 +71,6 @@ public class TimesheetRowList extends ListView
 	private final GrandTotal	grandTotals;
 	private	Form			form;
 	
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 * @param hidden
-	 */
 	public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form form)
 	{
 		super(id, model);
@@ -92,30 +90,27 @@ public class TimesheetRowList extends ListView
 	{
 		final TimesheetRow row = (TimesheetRow) item.getModelObject();
 
-		// add project + link to book whole week on project
-		// TODO use icon instead of project list
-		AjaxLink projectLink = new AjaxLink("bookWholeWeek")
-		{
-			private static final long serialVersionUID = -663239917205218384L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target)
-			{
-				row.bookRemainingHoursOnRow();
-				target.addComponent(form);
-			}
-		};
-		
-		projectLink.add(new Label("project", row.getProjectAssignment().getProject().getName()));
-		item.add(projectLink);
+		item.add(createBookWholeWeekLink(row));
+		item.add(createProjectLabel(row));
 		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
 		
 		// status message
-		Label label = new Label("status", new PropertyModel(item.getModel(), "status"));
-		label.setEscapeModelStrings(false);
-		label.setOutputMarkupId(true);
-		item.add(label);
+		item.add(createStatusLabel(item));
 				
+		addInputCells(item, row);
+
+		item.add(createTotalHoursLabel(row));
+	}
+
+	private Label createTotalHoursLabel(final TimesheetRow row)
+	{
+		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
+		totalHours.setOutputMarkupId(true);
+		return totalHours;
+	}
+
+	private void addInputCells(ListItem item, final TimesheetRow row)
+	{
 		Calendar dateIterator = (Calendar)row.getFirstDayOfWeekDate().clone();
 
 		DateRange range = new DateRange(row.getProjectAssignment().getDateStart(),
@@ -137,10 +132,52 @@ public class TimesheetRowList extends ListView
 				createEmptyTimesheetEntry(id, item);
 			}
 		}
+	}
+
+	private AjaxLink createBookWholeWeekLink(final TimesheetRow row)
+	{
+		AjaxLink projectLink = new AjaxLink("bookWholeWeek")
+		{
+			private static final long serialVersionUID = -663239917205218384L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				row.bookRemainingHoursOnRow();
+				target.addComponent(form);
+			}
+		};
 		
-		Label	totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
-		totalHours.setOutputMarkupId(true);
-		item.add(totalHours);
+		ContextImage img = new ContextImage("bookImg", new Model("img/check_all_off.png"));
+//		img.setOutputMarkupId(true);
+		CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/check_all_on.png", getContextRoot() + "img/check_all_off.png");
+		projectLink.add(img);
+		
+		return projectLink;
+	}
+	
+	private String getContextRoot()
+	{
+		return getRequest().getRelativePathPrefixToContextRoot();
+	}
+
+
+	private TooltipLabel createProjectLabel(final TimesheetRow row)
+	{
+		TooltipLabel projectLabel = new TooltipLabel("project", 
+														new Model(row.getProjectAssignment().getProject().getName()),  
+														new Model(row.getProjectAssignment().getProject().getDescription()),
+														true,
+														true);
+		return projectLabel;
+	}
+
+	private Label createStatusLabel(ListItem item)
+	{
+		Label label = new Label("status", new PropertyModel(item.getModel(), "status"));
+		label.setEscapeModelStrings(false);
+		label.setOutputMarkupId(true);
+		return label;
 	}
 	
 	/**
