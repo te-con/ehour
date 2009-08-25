@@ -14,7 +14,6 @@
 		<module>eHour-service</module>
 		<module>eHour-wicketweb</module>
 		<module>eHour-web</module>
-		<module>eHour-standalone</module>
 		<module>eHour-audit</module>
 	</modules>
 	<description>
@@ -231,6 +230,9 @@
 	<profiles>
 		<profile>
 			<id>standalone</id>
+			<modules>
+				<module>eHour-standalone</module>
+			</modules>
 			<build>
 				<plugins>
 					<plugin>
@@ -333,6 +335,7 @@
 
 		</plugins>
 	</reporting>
+	<!-- currently down, up half sept
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
@@ -340,18 +343,12 @@
 			<url>http://dev.ehour.nl/nexus/content/groups/public</url>
 			<layout>default</layout>
 		</repository>
-	</repositories>
-  <distributionManagement>
-    <site>
-      <id>website</id>
-      <url>scp://www.ehour.net:443/var/www/dev.ehour.nl/html/</url>
-    </site>
-  </distributionManagement>
-<pluginRepositories>
-	<pluginRepository>
-		<id>Codehaus repository</id>
-		<url>http://repository.codehaus.org/</url>
-	</pluginRepository>
-</pluginRepositories>
+	</repositories>-->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Codehaus repository</id>
+			<url>http://repository.codehaus.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>
