@@ -57,12 +57,10 @@
 	</div>
 
 	<wicket:fragment wicket:id="showProjects">
-		<div class='bookedHours' wicket:id="projects">
-			<span wicket:id="projectCode"></span>:
-			<div class='bookedHourValue'>
-				<wicket:container wicket:id="hours"></wicket:container><wicket:message key="hoursShort" />
-			</div>
-			<br />
+		<div class="bookedHours" wicket:id="projects">
+			<div style="float:left" wicket:id="projectCode"></div>
+			<div class="bookedHourValue" wicket:id="hours" />
+			<br clear="both"/>
 		</div>
 	</wicket:fragment>
 
