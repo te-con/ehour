@@ -7,6 +7,22 @@
 	<baseDirectory>ehour-${pom.version}</baseDirectory>
 	<includeBaseDirectory>true</includeBaseDirectory>
 
+  	<moduleSets>
+		<moduleSet>
+			<includes>
+				<include>net.rrm.ehour:eHour-web</include>
+			</includes>
+			<binaries>
+				<outputDirectory>/</outputDirectory>
+				<unpack>false</unpack>
+				<includeDependencies>false</includeDependencies>
+				<outputFileNameMapping>ehour-${version}.war</outputFileNameMapping>
+				<excludes>
+					<exclude>javax.servlet:servlet-api</exclude>
+				</excludes>
+			</binaries>
+		</moduleSet>
+	</moduleSets>
 	<fileSets>
 		<fileSet>
 			<directory>${project.basedir}/src/assembly/txt/common</directory>

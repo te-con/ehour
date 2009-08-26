@@ -79,32 +79,6 @@
 			</build>
 		</profile>
 		<profile>
-			<id>war</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/assembly/assembly_war.xml</descriptor>
-							</descriptors>
-						</configuration>
-
-
-						<executions>
-							<execution>
-								<id>Build eHour Package</id>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
 			<id>standalone</id>
 			<build>
 				<plugins>
@@ -120,23 +94,6 @@
 								</manifest>
 							</archive>
 						</configuration>
-					</plugin>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/assembly/assembly_standalone.xml</descriptor>
-							</descriptors>
-						</configuration>
-						<executions>
-							<execution>
-								<id>Build eHour Package</id>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>
