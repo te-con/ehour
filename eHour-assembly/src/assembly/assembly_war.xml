@@ -6,25 +6,10 @@
 	</formats>
 	<baseDirectory>ehour-${pom.version}</baseDirectory>
 	<includeBaseDirectory>true</includeBaseDirectory>
-	<moduleSets>
-		<moduleSet>
-			<includes>
-				<include>net.rrm.ehour:eHour-web</include>
-			</includes>
-			<binaries>
-				<outputDirectory>/</outputDirectory>
-				<unpack>false</unpack>
-				<includeDependencies>false</includeDependencies>
-				<outputFileNameMapping>ehour-${version}.war</outputFileNameMapping>
-				<excludes>
-					<exclude>javax.servlet:servlet-api</exclude>
-				</excludes>
-			</binaries>
-		</moduleSet>
-	</moduleSets>
+
 	<fileSets>
 		<fileSet>
-			<directory>src/assembly/txt/common</directory>
+			<directory>${project.basedir}/src/assembly/txt/common</directory>
 			<lineEnding>dos</lineEnding>
 			<outputDirectory>/</outputDirectory>
 			<includes>
@@ -32,7 +17,7 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>src/assembly/txt/war</directory>
+			<directory>${project.basedir}/src/assembly/txt/war</directory>
 			<lineEnding>dos</lineEnding>
 			<outputDirectory>/</outputDirectory>
 			<includes>
@@ -41,13 +26,13 @@
 		</fileSet>
 
 		<fileSet>
-			<directory>src/assembly/conf</directory>
+			<directory>${project.basedir}/src/assembly/conf</directory>
 			<outputDirectory>/conf</outputDirectory>
 			<lineEnding>dos</lineEnding>
 		</fileSet>
 
 		<fileSet>
-			<directory>src/assembly/sql</directory>
+			<directory>${project.basedir}/src/assembly/sql</directory>
 			<outputDirectory>sql</outputDirectory>
 			<lineEnding>dos</lineEnding>
 		</fileSet>

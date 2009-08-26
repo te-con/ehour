@@ -227,42 +227,10 @@
 	<profiles>
 		<profile>
 			<id>standalone</id>
-			<modules>
-				<module>eHour-standalone</module>
-			</modules>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>
-									src/assembly/assembly_standalone.xml
-								</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 
 		<profile>
-			<id>wara</id>
-
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>
-									src/assembly/assembly_war.xml
-								</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
+			<id>war</id>
 		</profile>
 	</profiles>
 	<reporting>

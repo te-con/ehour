@@ -31,7 +31,7 @@
 					<jettyEnvXml>${basedir}/src/test/resources/jetty-env-mysql.xml</jettyEnvXml>
 				</configuration>
 			</plugin>
-				
+
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -39,7 +39,7 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 
 		<resources>
@@ -62,7 +62,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/profiles/prod</directory>
+						<directory>${project.basedir}/src/main/profiles/prod</directory>
 					</resource>
 				</resources>
 
@@ -73,9 +73,35 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/profiles/dev</directory>
+						<directory>${project.basedir}/src/main/profiles/dev</directory>
 					</resource>
 				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>war</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assembly/assembly_war.xml</descriptor>
+							</descriptors>
+						</configuration>
+
+
+						<executions>
+							<execution>
+								<id>Build eHour Package</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
 			</build>
 		</profile>
 		<profile>
@@ -94,11 +120,30 @@
 								</manifest>
 							</archive>
 						</configuration>
-					</plugin>			
+					</plugin>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assembly/assembly_standalone.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<executions>
+							<execution>
+								<id>Build eHour Package</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
+
+
 
 	<dependencies>
 		<dependency>
