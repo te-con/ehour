@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
+import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
@@ -74,6 +75,8 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 		
 		titleLabel = getTitleLabel(forMonth);
 		titleLabel.setOutputMarkupId(true);
+		
+		add(new ContextualHelpPanel("contextHelp", "printMonth.help.header", "printMonth.help.body", "Export+month"));
 		
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_FRAME, titleLabel);
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder(ID_BLUE_BORDER);
