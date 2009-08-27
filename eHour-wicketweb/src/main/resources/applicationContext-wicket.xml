@@ -7,6 +7,7 @@
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="version" value="0.8.4"></property>
 		<property name="pageConfig" ref="pageConfig" />
+		<property name="wikiBaseUrl" value="http://www.ehour.nl/confluence/display/DOCU" />
 	</bean>
 	
 	<bean id="pageConfig" class="net.rrm.ehour.ui.common.config.PageConfigImpl" />

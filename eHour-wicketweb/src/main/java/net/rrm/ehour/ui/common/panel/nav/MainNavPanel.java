@@ -24,7 +24,7 @@ import net.rrm.ehour.ui.pm.page.ProjectManagement;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
 import net.rrm.ehour.ui.report.user.page.UserReport;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
-import net.rrm.ehour.ui.timesheet.page.Overview;
+import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -61,7 +61,7 @@ public class MainNavPanel extends AbstractBasePanel
 		wasAdded |= addReportLink(this, "userReport", wasAdded);
 		wasAdded |= addLink(this, "pm", ProjectManagement.class, wasAdded);
 		wasAdded |= addLink(this, "print", ExportMonthSelectionPage.class, wasAdded);
-		wasAdded |= addLink(this, "overview", Overview.class, wasAdded);
+		wasAdded |= addLink(this, "overview", MonthOverviewPage.class, wasAdded);
 		
 		add(new BookmarkablePageLink("logoffLink", Login.class));
 	}

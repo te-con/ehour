@@ -46,7 +46,7 @@ import net.rrm.ehour.ui.report.user.page.UserReport;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
-import net.rrm.ehour.ui.timesheet.page.Overview;
+import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
 import org.acegisecurity.AuthenticationManager;
@@ -62,6 +62,7 @@ import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListen
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.request.urlcompressing.UrlCompressingWebRequestProcessor;
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
@@ -80,6 +81,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	protected Class<? extends WebPage>	login = Login.class;
 	private String version;
 	private PageConfig pageConfig;
+	private String wikiBaseUrl;
 	private boolean initialized;
 	
 	public EhourWebApplication()
@@ -183,7 +185,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount(new HybridUrlCodingStrategy("/admin/project", ProjectAdmin.class));
 		mount(new HybridUrlCodingStrategy("/admin/assignment", AssignmentAdmin.class));
 		
-		mount(new HybridUrlCodingStrategy("/consultant/overview", Overview.class));
+		mount(new HybridUrlCodingStrategy("/consultant/overview", MonthOverviewPage.class));
 		mount(new HybridUrlCodingStrategy("/consultant/report", UserReport.class));
 		
 		mount(new HybridUrlCodingStrategy("/consultant/exportmonth", ExportMonthSelectionPage.class));
@@ -236,7 +238,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	@Override
 	public Class<? extends WebPage> getHomePage()
 	{
-		return Overview.class;
+		return MonthOverviewPage.class;
 	}
 
 	/**
@@ -282,6 +284,11 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{ 
 	    return new UrlCompressingWebRequestProcessor();
 	}
+	
+	public static EhourWebApplication get()
+	{
+		return (EhourWebApplication) WebApplication.get();
+	}
 
 	/**
 	 * @return the version
@@ -313,5 +320,15 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	public void setPageConfig(PageConfig pageConfig)
 	{
 		this.pageConfig = pageConfig;
-	}	
+	}
+	
+	public String getWikiBaseUrl()
+	{
+		return wikiBaseUrl;
+	}
+	
+	public void setWikiBaseUrl(String wikiBaseUrl)
+	{
+		this.wikiBaseUrl = wikiBaseUrl;
+	}
 }

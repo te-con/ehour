@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
-import net.rrm.ehour.ui.timesheet.page.Overview;
+import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.panel.UserPasswordChangePanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -61,7 +61,7 @@ public class UserPreferencePage extends BasePage
 		if (type == CalendarAjaxEventType.WEEK_CLICK 
 				|| type == TimesheetAjaxEventType.WEEK_NAV)
 		{
-			setResponsePage(new Overview(Overview.OpenPanel.TIMESHEET));
+			setResponsePage(new MonthOverviewPage(MonthOverviewPage.OpenPanel.TIMESHEET));
 		}
 		
 		return false;

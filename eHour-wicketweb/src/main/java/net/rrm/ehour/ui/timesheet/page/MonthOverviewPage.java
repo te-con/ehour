@@ -38,7 +38,7 @@ import org.apache.wicket.model.ResourceModel;
  */
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class Overview extends BasePage
+public class MonthOverviewPage extends BasePage
 {
 	private static final long serialVersionUID = -6873845464139697303L;
 
@@ -52,7 +52,7 @@ public class Overview extends BasePage
 	 * Setup the page
 	 *
 	 */
-	public Overview()
+	public MonthOverviewPage()
 	{
 		this(OpenPanel.OVERVIEW);
 	}
@@ -61,7 +61,7 @@ public class Overview extends BasePage
 	 * 
 	 * @param panelToOpen
 	 */
-	public Overview(OpenPanel panelToOpen)
+	public MonthOverviewPage(OpenPanel panelToOpen)
 	{
 		super(new ResourceModel("overview.title"), null);
 		
@@ -72,7 +72,7 @@ public class Overview extends BasePage
 		if (panelToOpen == OpenPanel.OVERVIEW)
 		{
 			// contextual help
-			helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
+			helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body", "Month+overview");
 			
 			// content
 			contentContainer = new OverviewPanel("contentContainer");
@@ -178,7 +178,8 @@ public class Overview extends BasePage
 	{
 		ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp", 
 				"timesheet.help.header",
-				"timesheet.help.body");
+				"timesheet.help.body",
+				"Entering+hours");
 		
 		helpPanel.setOutputMarkupId(true);
 		

@@ -54,8 +54,8 @@ public class OverviewTest extends AbstractSpringWebAppTester
 		
 		replay(timesheetService);
 		
-		getTester().startPage(Overview.class);
-		getTester().assertRenderedPage(Overview.class);
+		getTester().startPage(MonthOverviewPage.class);
+		getTester().assertRenderedPage(MonthOverviewPage.class);
 		getTester().assertNoErrorMessage();
 		
 		verify(timesheetService);
