@@ -20,10 +20,6 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.util.tester.WicketTester;
 
-/**
- * TODO 
- **/
-
 public class EhourWicketTester extends WicketTester
 {
 	public EhourWicketTester(WebApplication webapp)
