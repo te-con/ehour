@@ -41,20 +41,30 @@ import net.rrm.ehour.user.dao.UserDepartmentDAO;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Report Criteria services
  **/
 @NonAuditable
+@Service("reportCriteriaService")
 public class ReportCriteriaServiceImpl implements ReportCriteriaService
 {
+	@Autowired
 	private	UserDAO					userDAO;
+	@Autowired
 	private	UserDepartmentDAO		userDepartmentDAO;
+	@Autowired
 	private	CustomerDAO				customerDAO;
+	@Autowired
 	private	ProjectDAO				projectDAO;
+	@Autowired
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
+	@Autowired
 	private	ReportAggregatedDAO		reportAggregatedDAO;
-	private	Logger					logger = Logger.getLogger(this.getClass());
+
+	private	static final Logger	LOGGER = Logger.getLogger(ReportCriteriaServiceImpl.class);
 	
 	/*
 	 * (non-Javadoc)
@@ -124,7 +134,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		}
 		else
 		{
-			logger.debug("Finding users for departments with filter '" + userCriteria.getUserFilter() + "'");
+			LOGGER.debug("Finding users for departments with filter '" + userCriteria.getUserFilter() + "'");
 			users = userDAO.findUsersForDepartments(userCriteria.getUserFilter()
 														, userCriteria.getDepartments()
 														, userCriteria.isOnlyActiveUsers());
@@ -155,7 +165,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	{
 		List<Customer> billableCustomers = new ArrayList<Customer>();
 		
-		logger.debug("Finding on billable only: " + userCriteria.isOnlyBillableProjects());
+		LOGGER.debug("Finding on billable only: " + userCriteria.isOnlyBillableProjects());
 		
 		if (userCriteria.isOnlyBillableProjects())
 		{
@@ -238,13 +248,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		List<Project> projects;
 		if (userCriteria.isOnlyActiveProjects())
 		{
-			logger.debug("Fetching only active projects");
+			LOGGER.debug("Fetching only active projects");
 
 			projects = projectDAO.findAllActive();
 		}
 		else
 		{
-			logger.debug("Fetching all projects");
+			LOGGER.debug("Fetching all projects");
 			
 			projects = projectDAO.findAll();
 		}

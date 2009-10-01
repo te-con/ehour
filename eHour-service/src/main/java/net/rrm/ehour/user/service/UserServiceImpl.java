@@ -46,20 +46,32 @@ import net.rrm.ehour.util.EhourUtil;
 import org.acegisecurity.providers.encoding.MessageDigestPasswordEncoder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author   Thies
  */
+@Service("userService")
 public class UserServiceImpl implements UserService
 {
+	private	static final Logger	LOGGER = Logger.getLogger(UserServiceImpl.class);
+
+	@Autowired
 	private	UserDAO				userDAO;
+	@Autowired
 	private	UserDepartmentDAO	userDepartmentDAO;
+	@Autowired
 	private	UserRoleDAO			userRoleDAO;
-	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
+	@Autowired
 	private	ProjectAssignmentService		projectAssignmentService;
+	@Autowired
 	private	AggregateReportService		aggregateReportService;
+	@Autowired
 	private TimesheetService	timesheetService;
+
+	@Autowired
 	private MessageDigestPasswordEncoder	passwordEncoder;
 
 	/**
@@ -124,7 +136,7 @@ public class UserServiceImpl implements UserService
 			user.setDeletable(EhourUtil.isEmptyAggregateList(aggregates));
 		}
 		
-		logger.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());
+		LOGGER.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());
 		
 		return user;
 	}
@@ -274,7 +286,7 @@ public class UserServiceImpl implements UserService
 	{
 		User	dbUser;
 
-		logger.info("Persisting user: " + user);
+		LOGGER.info("Persisting user: " + user);
 
 		// check username uniqueness
 		dbUser = userDAO.findByUsername(user.getUsername());
@@ -395,7 +407,7 @@ public class UserServiceImpl implements UserService
 	 */
 	public List<User> getUsers(UserRole userRole)
 	{
-		logger.debug("Finding users on role");
+		LOGGER.debug("Finding users on role");
 		List<User> users = getUsersByNameMatch(null, true, userRole);
 		
 //		userDAO.initializeObject(users);
@@ -446,11 +458,11 @@ public class UserServiceImpl implements UserService
 	{
 		UserDepartment department = userDepartmentDAO.findById(departmentId);
 
-		logger.info("Deleting department: " + department);
+		LOGGER.info("Deleting department: " + department);
 		
 		for (User user : department.getUsers()) 
 		{
-			logger.info("Deleting user: " + user);
+			LOGGER.info("Deleting user: " + user);
 			
 			deleteUser(user.getUserId());
 		}

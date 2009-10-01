@@ -38,21 +38,28 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides reporting services on timesheets. 
  * @author Thies
  *
  */
-
+@Service("aggregateReportService")
 public class AggregateReportServiceImpl extends AbstractReportServiceImpl<AssignmentAggregateReportElement> 
 										implements AggregateReportService 
 {
+	@Autowired
 	private	ReportAggregatedDAO	reportAggregatedDAO;
+
+	@Autowired
 	private	MailService			mailService;
+
+	@Autowired
 	private	ProjectAssignmentService	projectAssignmentService;
 	
-	private	Logger				logger = Logger.getLogger(this.getClass());
+	private	static final Logger LOGGER = Logger.getLogger(AggregateReportServiceImpl.class);
 	
 	
 	/*
@@ -181,7 +188,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		// get the project
 		project = getProjectDAO().findById(projectId);
 		report.setProject(project);
-		logger.debug("PM report for project " + project.getName());
+		LOGGER.debug("PM report for project " + project.getName());
 		
 		// get a proper report range
 		reportRange = getReportRangeForProject(reportRange, project);
@@ -252,7 +259,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 			}
 		}
 		
-		logger.debug("Used date range for pm report: " + reportRange + " on report " + project);
+		LOGGER.debug("Used date range for pm report: " + reportRange + " on report " + project);
 		
 		return reportRange;
 	}

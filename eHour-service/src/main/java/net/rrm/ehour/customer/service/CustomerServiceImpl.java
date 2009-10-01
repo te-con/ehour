@@ -27,18 +27,21 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Customer service implementation 
  **/
-
+@Service("customerService")
 public class CustomerServiceImpl implements CustomerService
 {
+	@Autowired
 	private	CustomerDAO		customerDAO;
-	private	Logger			logger = Logger.getLogger(this.getClass());
 	
+	private	static final Logger	LOGGER = Logger.getLogger(CustomerServiceImpl.class);
 
 	/*
 	 * (non-Javadoc)
@@ -59,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService
 	{
 		Customer customer = customerDAO.findById(customerId);
 		
-		logger.info("Deleting customer: " + customer);
+		LOGGER.info("Deleting customer: " + customer);
 		
 		if (customer != null)
 		{
@@ -150,7 +153,7 @@ public class CustomerServiceImpl implements CustomerService
 	@Transactional
 	public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException
 	{
-		logger.info("Persisting customer: " + customer);
+		LOGGER.info("Persisting customer: " + customer);
 		
 		try
 		{

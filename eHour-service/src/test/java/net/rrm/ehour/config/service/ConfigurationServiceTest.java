@@ -36,10 +36,6 @@ import net.rrm.ehour.value.ImageLogo;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * TODO 
- **/
-
 public class ConfigurationServiceTest
 {
 	private ConfigurationService configurationService;

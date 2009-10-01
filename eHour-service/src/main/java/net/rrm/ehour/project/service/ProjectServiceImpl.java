@@ -36,18 +36,28 @@ import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Project service
  **/
-
+@Service("projectService")
 public class ProjectServiceImpl implements ProjectService
 {
+	private	static final Logger	LOGGER = Logger.getLogger(ProjectServiceImpl.class);
+
+	@Autowired
 	private	ProjectDAO					projectDAO;   
-	private	Logger						logger = Logger.getLogger(ProjectServiceImpl.class);
+
+	@Autowired
 	private ProjectAssignmentService	projectAssignmentService;
+	
+	@Autowired
 	private	AggregateReportService		aggregateReportService;
+	
+	@Autowired
 	private UserService					userService;
 	
 	/**
@@ -68,12 +78,12 @@ public class ProjectServiceImpl implements ProjectService
 		
 		if (hideInactive)
 		{
-			logger.debug("Finding all active projects");
+			LOGGER.debug("Finding all active projects");
 			res = projectDAO.findAllActive();
 		}
 		else
 		{
-			logger.debug("Finding all projects");
+			LOGGER.debug("Finding all projects");
 			res = projectDAO.findAll();
 		}
 
@@ -169,7 +179,7 @@ public class ProjectServiceImpl implements ProjectService
 		project = projectDAO.findById(projectId);
 		
 		deleteEmptyAssignments(project);
-		logger.debug("Deleting project " + project);
+		LOGGER.debug("Deleting project " + project);
 		projectDAO.delete(project);
 	}
 
@@ -206,7 +216,7 @@ public class ProjectServiceImpl implements ProjectService
 		
 		if (!project.isDeletable())
 		{
-			logger.debug("Can't delete project, still has " + project.getProjectAssignments().size() + " assignments");
+			LOGGER.debug("Can't delete project, still has " + project.getProjectAssignments().size() + " assignments");
 			throw new ParentChildConstraintException("Project assignments still attached");
 		}
 	}

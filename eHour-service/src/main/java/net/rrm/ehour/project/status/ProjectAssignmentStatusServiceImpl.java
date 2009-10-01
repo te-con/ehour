@@ -27,15 +27,19 @@ import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConstants;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * Time allotted util class
  **/
-
+@Service("projectAssignmentStatusService")
 public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStatusService
 {
+	@Autowired
 	private	ReportAggregatedDAO	reportAggregatedDAO;
+	@Autowired
 	private TimesheetDAO		timesheetDAO;
-	
 
 	/*
 	 * (non-Javadoc)

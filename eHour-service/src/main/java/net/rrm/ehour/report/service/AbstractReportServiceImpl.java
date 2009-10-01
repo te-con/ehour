@@ -29,6 +29,7 @@ import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.user.dao.UserDAO;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Abstract report service provides utility methods for dealing
@@ -38,7 +39,11 @@ import org.apache.log4j.Logger;
 public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 {
 	private	Logger	logger = Logger.getLogger(this.getClass());
+	
+	@Autowired
 	private	UserDAO		userDAO;
+
+	@Autowired
 	private	ProjectDAO	projectDAO;
 	
 	/**

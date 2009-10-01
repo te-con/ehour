@@ -42,15 +42,28 @@ import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+@Service("projectAssignmentService")
 public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 {
 	private	final static Logger		LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 
+	@Autowired
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
+
+	@Autowired
 	private	ProjectDAO				projectDAO;
+	
+	@Autowired
 	private	ProjectAssignmentStatusService	projectAssignmentStatusService;
+	
+	@Autowired
 	private	ReportAggregatedDAO		reportAggregatedDAO;
+	
+	@Autowired
 	private UserService				userService;
 	
 	/*

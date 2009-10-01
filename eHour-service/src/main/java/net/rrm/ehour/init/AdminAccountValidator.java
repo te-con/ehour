@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.init;
 
+import javax.annotation.PostConstruct;
+
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
@@ -25,22 +27,29 @@ import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Checks whether the admin account is present when eHour is started first 
  **/
-
+@Service
 public class AdminAccountValidator
 {
 	private final static Logger logger = Logger.getLogger(AdminAccountValidator.class);
+	
+	@Autowired
 	private EhourConfig ehourConfig;
+	@Autowired
 	private UserService	userService;
+	@Autowired
 	private ConfigurationService	configService;
 	
 	
 	/**
 	 * Check whether the admin account exists.
 	 */
+	@PostConstruct
 	public void checkAdminAccount()
 	{
 		if (!ehourConfig.isInitialized())

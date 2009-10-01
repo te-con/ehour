@@ -37,28 +37,35 @@ import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * Mail servce which takes of sending mail async
  **/
 @NonAuditable
+@Service("mailService")
 public class MailServiceImpl implements MailService
 {
-	private	Logger			logger = Logger.getLogger(this.getClass());
+	private	final static Logger	LOGGER = Logger.getLogger(MailServiceImpl.class);
+	
+	@Autowired
 	private MailLogDAO		mailLogDAO;
+
 	private	TaskExecutor	taskExecutor;
+
+	@Autowired
 	private ConfigurationService 	configurationService;
+
+	@Autowired
 	private AssignmentMsgCallback	assignmentMsgCallback;
 	
-	/**
-	 * 
-	 * @param config
-	 */
+	@Autowired
 	public MailServiceImpl(TaskExecutor taskExecutor)
 	{
 		this.taskExecutor = taskExecutor;
@@ -306,7 +313,7 @@ public class MailServiceImpl implements MailService
 				&& mailLog.getSuccess().booleanValue())
 			{
 				alreadySent = true;
-				logger.info("Mail was already sent for assignment " + aggregate.getProjectAssignment().getAssignmentId() + ", not sending again");
+				LOGGER.info("Mail was already sent for assignment " + aggregate.getProjectAssignment().getAssignmentId() + ", not sending again");
 				break;
 			}
 		}
@@ -341,7 +348,7 @@ public class MailServiceImpl implements MailService
 			msg.setTo(mailTaskMessage.getToUser().getEmail());
 			try
 			{
-				logger.debug("Sending email to " + msg.getTo()[0] + " using " + ((JavaMailSenderImpl)javaMailSender).getHost());	
+				LOGGER.debug("Sending email to " + msg.getTo()[0] + " using " + ((JavaMailSenderImpl)javaMailSender).getHost());	
 				javaMailSender.send(msg);
 				
 				if (mailTaskMessage.getCallback() != null)
@@ -351,7 +358,7 @@ public class MailServiceImpl implements MailService
 			}
 			catch (MailException me)
 			{
-				logger.info("Failed to e-mail to " + msg.getTo()[0] + ": " + me.getMessage());
+				LOGGER.info("Failed to e-mail to " + msg.getTo()[0] + ": " + me.getMessage());
 				mailTaskMessage.getCallback().mailTaskFailure(mailTaskMessage, me);
 			}			
 		}
@@ -385,7 +392,7 @@ public class MailServiceImpl implements MailService
 			}
 			catch (NumberFormatException nfe)
 			{
-				logger.error("Using default port 25, couldn't parse configured port " + config.getSmtpPort());
+				LOGGER.error("Using default port 25, couldn't parse configured port " + config.getSmtpPort());
 			}
 		}
 		
@@ -393,7 +400,7 @@ public class MailServiceImpl implements MailService
 		if (! StringUtils.isBlank(config.getSmtpUsername())
 				&& ! StringUtils.isBlank(config.getSmtpPassword())) 
 		{
-			logger.debug("Using SMTP authentication");
+			LOGGER.debug("Using SMTP authentication");
 			
 			Properties prop = new Properties();
 			prop.put("mail.smtp.auth", "true");

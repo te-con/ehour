@@ -28,13 +28,17 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.util.EhourUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * Report service for detailed reports implementation
  **/
-
+@Service("detailedReportService")
 public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatReportElement>
 										implements DetailedReportService
 {
+	@Autowired
 	private	DetailedReportDAO	detailedReportDAO;
 
 	/*

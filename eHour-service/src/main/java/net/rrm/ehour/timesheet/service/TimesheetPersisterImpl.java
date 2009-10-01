@@ -32,6 +32,8 @@ import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,12 +41,18 @@ import org.springframework.transaction.annotation.Transactional;
  * Timesheet persister
  **/
 @NonAuditable
+@Service("timesheetPersister")
 public class TimesheetPersisterImpl implements TimesheetPersister
 {
-	private	Logger				logger = Logger.getLogger(TimesheetPersisterImpl.class);
+	private	static final Logger	LOGGER = Logger.getLogger(TimesheetPersisterImpl.class);
 
+	@Autowired
 	private	TimesheetDAO		timesheetDAO;
+
+	@Autowired
 	private ProjectAssignmentStatusService	projectAssignmentStatusService;
+	
+	@Autowired
 	private MailService			mailService;
 	
 	/*
@@ -99,7 +107,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 		{
 			if (!entry.getEntryId().getProjectAssignment().equals(assignment))
 			{
-				logger.error("Invalid entry in assignment list, skipping: " + entry);
+				LOGGER.error("Invalid entry in assignment list, skipping: " + entry);
 				continue;
 			}
 			
@@ -119,9 +127,9 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 		
 		for (TimesheetEntry entry : dbEntries)
 		{
-			if (logger.isDebugEnabled())
+			if (LOGGER.isDebugEnabled())
 			{
-				logger.debug("Deleting stale timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+				LOGGER.debug("Deleting stale timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
 						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
 			}
 			
@@ -137,9 +145,9 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	{
 		if (existingEntry != null)
 		{
-			if (logger.isDebugEnabled())
+			if (LOGGER.isDebugEnabled())
 			{
-				logger.debug("Deleting timesheet entry for assignment id " + existingEntry.getEntryId().getProjectAssignment().getAssignmentId() +
+				LOGGER.debug("Deleting timesheet entry for assignment id " + existingEntry.getEntryId().getProjectAssignment().getAssignmentId() +
 						" for date " + existingEntry.getEntryId().getEntryDate() + ", hours booked: " + existingEntry.getHours());
 			}
 			
@@ -163,9 +171,9 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 			throw new OverBudgetException();
 		}
 		
-		if (logger.isDebugEnabled())
+		if (LOGGER.isDebugEnabled())
 		{
-			logger.debug("Persisting timesheet entry for assignment id " + newEntry.getEntryId().getProjectAssignment().getAssignmentId() +
+			LOGGER.debug("Persisting timesheet entry for assignment id " + newEntry.getEntryId().getProjectAssignment().getAssignmentId() +
 					" for date " + newEntry.getEntryId().getEntryDate() + ", hours booked: " + newEntry.getHours()
 					+ ", comment: " + newEntry.getComment()
 			);

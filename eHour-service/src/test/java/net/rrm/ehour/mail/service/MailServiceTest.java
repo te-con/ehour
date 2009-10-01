@@ -18,23 +18,18 @@ package net.rrm.ehour.mail.service;
 
 import java.util.Date;
 
+import net.rrm.ehour.AbstractServiceTest;
 import net.rrm.ehour.DummyDataGenerator;
-import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * TODO 
- **/
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:applicationContext-mail.xml", "classpath:applicationContext-service.xml"})
-public class MailServiceTest extends AbstractAnnotationDaoTest
+public class MailServiceTest extends AbstractServiceTest
 {
 	@Autowired
 	private MailService	mailService;

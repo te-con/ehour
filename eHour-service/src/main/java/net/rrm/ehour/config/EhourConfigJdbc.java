@@ -24,11 +24,13 @@ import net.rrm.ehour.domain.AuditType;
 
 import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Config from database
  **/
-
+@Service("eHourConfig")
 public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfig
 {
 	private	Logger	logger = Logger.getLogger(this.getClass());
@@ -37,10 +39,10 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	private String[]	availableTranslations;
 	private Boolean		initialized;
 	private	AuditType	auditType;
-	
-	public EhourConfigJdbc(DataSource datasource, String table, String keyColumn, String valueColumn)
+	@Autowired 
+	public EhourConfigJdbc(DataSource datasource)
 	{
-		super(datasource, table, keyColumn, valueColumn);
+		super(datasource, "CONFIGURATION", "config_key", "config_value");
 	
 		logger.info("Configuration loaded from database");
 	}

@@ -36,18 +36,24 @@ import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Configuration service
  **/
-
+@Service("configurationService")
 public class ConfigurationServiceImpl implements ConfigurationService
 {
+	@Autowired
 	private ConfigurationDAO	configDAO;
+	
+	@Autowired
 	private BinaryConfigurationDAO binConfigDAO;
-	private	static final Logger				logger = Logger.getLogger(ConfigurationServiceImpl.class);
+	
+	private	static final Logger	logger = Logger.getLogger(ConfigurationServiceImpl.class);
 
 
 	/* (non-Javadoc)
