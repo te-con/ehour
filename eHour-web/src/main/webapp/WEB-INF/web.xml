@@ -6,14 +6,17 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
+			classpath:context-scanner.xml
+			classpath:context-dbconnectivity.xml
+
 			classpath:applicationContext-acegi-security.xml
-			classpath:applicationContext-dao.xml
 			classpath:applicationContext-datasource.xml
 			classpath:applicationContext-service.xml
 			classpath:applicationContext-mail.xml
 			classpath:applicationContext-wicket.xml
 			classpath:applicationContext-audit.xml
 			classpath:applicationContext-props.xml
+			classpath:context-scanner.xml
 		</param-value>
 	</context-param>
 

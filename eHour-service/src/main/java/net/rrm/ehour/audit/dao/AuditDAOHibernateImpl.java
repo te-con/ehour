@@ -19,7 +19,7 @@ package net.rrm.ehour.audit.dao;
 import java.util.List;
 
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.Audit;
 
 import org.apache.commons.lang.StringUtils;
@@ -27,8 +27,10 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
-public class AuditDAOHibernateImpl extends GenericDAOHibernateImpl<Audit, Number>  implements AuditDAO
+@Repository("auditDao")
+public class AuditDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit, Number>  implements AuditDAO
 {
 	/**
 	 * @todo fix this a bit better

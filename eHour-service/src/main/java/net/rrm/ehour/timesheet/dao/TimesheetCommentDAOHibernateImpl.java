@@ -16,24 +16,22 @@
 
 package net.rrm.ehour.timesheet.dao;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
 /**
  * CRUD on timesheetComment domain obj 
  **/
-
+@Repository("timesheetCommentDAO")
 public class TimesheetCommentDAOHibernateImpl 
-			extends GenericDAOHibernateImpl<TimesheetComment, TimesheetCommentId>
+			extends AbstractGenericDaoHibernateImpl<TimesheetComment, TimesheetCommentId>
 			implements TimesheetCommentDAO
 {
-	/**
-	 * @todo fix this a bit better
-	 */
 	public TimesheetCommentDAOHibernateImpl()
 	{
 		super(TimesheetComment.class);

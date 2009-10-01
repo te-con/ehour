@@ -16,10 +16,13 @@
 
 package net.rrm.ehour.config.dao;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import org.springframework.stereotype.Repository;
+
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.Configuration;
 
-public class ConfigurationDAOHibernateImpl extends GenericDAOHibernateImpl<Configuration, String>  implements ConfigurationDAO
+@Repository("configurationDAO")
+public class ConfigurationDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Configuration, String>  implements ConfigurationDAO
 {
 	/**
 	 * TODO fix this a bit better

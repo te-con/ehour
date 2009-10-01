@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.config.dao;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.BinaryConfiguration;
 
 /**
@@ -24,7 +24,7 @@ import net.rrm.ehour.domain.BinaryConfiguration;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public interface BinaryConfigurationDAO extends GenericDAO<BinaryConfiguration, String>
+public interface BinaryConfigurationDAO extends GenericDao<BinaryConfiguration, String>
 {
 
 }

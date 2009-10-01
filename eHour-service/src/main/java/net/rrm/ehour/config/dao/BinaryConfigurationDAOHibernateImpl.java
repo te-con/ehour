@@ -16,7 +16,9 @@
 
 package net.rrm.ehour.config.dao;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import org.springframework.stereotype.Repository;
+
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.BinaryConfiguration;
 
 /**
@@ -24,7 +26,8 @@ import net.rrm.ehour.domain.BinaryConfiguration;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class BinaryConfigurationDAOHibernateImpl extends GenericDAOHibernateImpl<BinaryConfiguration, String>  implements BinaryConfigurationDAO
+@Repository("binaryConfigurationDAO")
+public class BinaryConfigurationDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<BinaryConfiguration, String>  implements BinaryConfigurationDAO
 {
 	/**
 	 * TODO fix this a bit better

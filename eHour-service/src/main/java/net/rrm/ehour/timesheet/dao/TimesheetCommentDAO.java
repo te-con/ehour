@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.timesheet.dao;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 
@@ -24,7 +24,7 @@ import net.rrm.ehour.domain.TimesheetCommentId;
  * CRUD on timesheetComment domain obj
  **/
 
-public interface TimesheetCommentDAO  extends GenericDAO<TimesheetComment, TimesheetCommentId>
+public interface TimesheetCommentDAO  extends GenericDao<TimesheetComment, TimesheetCommentId>
 {
 	/**
 	 * Delete comments for user

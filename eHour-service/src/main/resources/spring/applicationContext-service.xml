@@ -37,11 +37,11 @@
 	</bean>
 
 	<!-- Audit service -->
+<!-- 
 	<bean id="auditService" class="net.rrm.ehour.audit.service.AuditServiceImpl">
-<!-- 	<constructor-arg index="0" ref="transactionManager" /> -->	
 		<property name="auditDAO" ref="auditDAO" />
 	</bean>
-	
+ -->
 	<!-- User service -->
 	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl">
 		<property name="userDAO" ref="userDAO" />	

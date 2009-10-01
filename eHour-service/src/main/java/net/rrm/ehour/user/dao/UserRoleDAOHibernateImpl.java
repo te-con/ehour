@@ -16,12 +16,13 @@
 
 package net.rrm.ehour.user.dao;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.UserRole;
 
-/** **/
+import org.springframework.stereotype.Repository;
 
-public class UserRoleDAOHibernateImpl  extends GenericDAOHibernateImpl<UserRole, String> implements UserRoleDAO
+@Repository("userRoleDAO")
+public class UserRoleDAOHibernateImpl  extends AbstractGenericDaoHibernateImpl<UserRole, String> implements UserRoleDAO
 {
 	public UserRoleDAOHibernateImpl()
 	{

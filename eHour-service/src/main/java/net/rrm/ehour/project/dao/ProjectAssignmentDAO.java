@@ -18,7 +18,7 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -30,7 +30,7 @@ import net.rrm.ehour.domain.User;
  * CRUD on ProjectAssignment domain object
  **/
 
-public interface ProjectAssignmentDAO  extends GenericDAO<ProjectAssignment, Integer>
+public interface ProjectAssignmentDAO  extends GenericDao<ProjectAssignment, Integer>
 {
 	/**
 	 * Find assigned (active) project for user

@@ -18,16 +18,15 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import org.springframework.stereotype.Repository;
+
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 
-/**
- *  
- **/
-
-public class ProjectDAOHibernateImpl extends GenericDAOHibernateImpl<Project, Integer> implements ProjectDAO
+@Repository("projectDAO")
+public class ProjectDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Project, Integer> implements ProjectDAO
 {
 	protected final static String	CACHEREGION = "query.Project";
 	

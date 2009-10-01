@@ -18,7 +18,7 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -29,7 +29,7 @@ import net.rrm.ehour.domain.User;
  *
  */
 
-public interface ProjectDAO extends GenericDAO<Project, Integer>
+public interface ProjectDAO extends GenericDao<Project, Integer>
 {
 	/**
 	 * Get all projects

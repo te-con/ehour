@@ -18,7 +18,9 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import org.springframework.stereotype.Repository;
+
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -29,9 +31,9 @@ import net.rrm.ehour.domain.User;
 /**
  * CRUD stuff on PA do 
  **/
-
+@Repository("projectAssignmentDAO")
 public class ProjectAssignmentDAOHibernateImpl
-	extends GenericDAOHibernateImpl<ProjectAssignment, Integer> 
+	extends AbstractGenericDaoHibernateImpl<ProjectAssignment, Integer> 
 	implements ProjectAssignmentDAO
 {
 	protected final static String	CACHEREGION = "query.ProjectAssignment";

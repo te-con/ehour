@@ -19,21 +19,22 @@ package net.rrm.ehour.report.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import net.rrm.ehour.dao.AbstractAnnotationDaoHibernateImpl;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
 /**
  * Reporting data operations 
  * @author Thies
  *
  */
-
-public class ReportAggregatedDAOHibernateImpl extends HibernateDaoSupport implements ReportAggregatedDAO
+@Repository("reportAggregatedDAO")
+public class ReportAggregatedDAOHibernateImpl extends AbstractAnnotationDaoHibernateImpl implements ReportAggregatedDAO
 {
 	/*
 	 * (non-Javadoc)

@@ -18,14 +18,14 @@ package net.rrm.ehour.customer.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.Customer;
 
 /**
  * CRUD on the Customer domain object 
  **/
 
-public interface CustomerDAO extends GenericDAO<Customer, Integer>
+public interface CustomerDAO extends GenericDao<Customer, Integer>
 {
 	/**
 	 * Find all active customers with billable projects

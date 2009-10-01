@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
-			<version>3.3.1.GA</version>
+			<version>3.4.0.GA</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-collections</artifactId>

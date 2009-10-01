@@ -18,7 +18,7 @@ package net.rrm.ehour.mail.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.domain.MailLogAssignment;
 
@@ -26,7 +26,7 @@ import net.rrm.ehour.domain.MailLogAssignment;
  * DAO for MailLog db operations 
  **/
 
-public interface MailLogDAO  extends GenericDAO<MailLog, Integer>
+public interface MailLogDAO  extends GenericDao<MailLog, Integer>
 {
 	/**
 	 * Get mail log on project assignment id's

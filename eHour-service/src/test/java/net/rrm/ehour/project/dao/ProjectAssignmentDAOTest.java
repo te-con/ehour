@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.dao.AbstractDaoTest;
+import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -44,7 +44,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @SuppressWarnings("deprecation")
-public class ProjectAssignmentDAOTest extends AbstractDaoTest
+public class ProjectAssignmentDAOTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
@@ -74,7 +74,7 @@ public class ProjectAssignmentDAOTest extends AbstractDaoTest
 	
 	
 	/**
-	 * Test method for {@link net.rrm.ehour.dao.GenericDAOHibernateImpl#findAll()}.
+	 * Test method for {@link net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl#findAll()}.
 	 */
 	@Test
 	public void testFindAll()
@@ -85,7 +85,7 @@ public class ProjectAssignmentDAOTest extends AbstractDaoTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.dao.GenericDAOHibernateImpl#delete(net.rrm.ehour.domain.DomainObject)}.
+	 * Test method for {@link net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl#delete(net.rrm.ehour.domain.DomainObject)}.
 	 */
 	@Test
 	public void testDelete()
@@ -102,7 +102,7 @@ public class ProjectAssignmentDAOTest extends AbstractDaoTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.dao.GenericDAOHibernateImpl#persist(net.rrm.ehour.domain.DomainObject)}.
+	 * Test method for {@link net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl#persist(net.rrm.ehour.domain.DomainObject)}.
 	 */
 	@Test
 	public void testPersist()
@@ -122,7 +122,7 @@ public class ProjectAssignmentDAOTest extends AbstractDaoTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.dao.GenericDAOHibernateImpl#findById(java.io.Serializable)}.
+	 * Test method for {@link net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl#findById(java.io.Serializable)}.
 	 */
 	@Test
 	public void testFindById()

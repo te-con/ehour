@@ -18,11 +18,11 @@ package net.rrm.ehour.user.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 
-public interface UserDAO extends GenericDAO<User, Integer>
+public interface UserDAO extends GenericDao<User, Integer>
 {
 	/**
 	 * Find a user by username and password

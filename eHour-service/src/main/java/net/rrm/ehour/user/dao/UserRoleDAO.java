@@ -16,13 +16,13 @@
 
 package net.rrm.ehour.user.dao;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.UserRole;
 
 /**
  * CRUD on UserRole domain object
  **/
 
-public interface UserRoleDAO  extends GenericDAO<UserRole, String>
+public interface UserRoleDAO  extends GenericDao<UserRole, String>
 {
 }

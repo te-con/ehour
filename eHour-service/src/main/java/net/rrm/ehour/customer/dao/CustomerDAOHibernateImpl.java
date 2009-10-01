@@ -18,14 +18,17 @@ package net.rrm.ehour.customer.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import org.springframework.stereotype.Repository;
+
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.Customer;
 
 /**
  * Customer DAO 
  **/
 
-public class CustomerDAOHibernateImpl extends GenericDAOHibernateImpl<Customer, Integer> implements CustomerDAO
+@Repository("customerDAO")
+public class CustomerDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Customer, Integer> implements CustomerDAO
 {
 	private final static String	CACHEREGION = "query.Customer";
 	

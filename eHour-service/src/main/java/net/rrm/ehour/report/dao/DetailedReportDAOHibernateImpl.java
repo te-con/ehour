@@ -19,19 +19,20 @@ package net.rrm.ehour.report.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import net.rrm.ehour.dao.AbstractAnnotationDaoHibernateImpl;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
 /**
  * PerMonth DAO impl using sql-queries  
  **/
-
-public class DetailedReportDAOHibernateImpl extends HibernateDaoSupport implements DetailedReportDAO
+@Repository("detailedReportDAO")
+public class DetailedReportDAOHibernateImpl extends AbstractAnnotationDaoHibernateImpl implements DetailedReportDAO
 {
 	@SuppressWarnings("unchecked")
 	public List<FlatReportElement> getHoursPerMonthPerAssignmentForUsers(List<Serializable> userIds, List<Serializable> projectIds, DateRange dateRange)

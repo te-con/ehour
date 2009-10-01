@@ -20,14 +20,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 
-public interface TimesheetDAO extends GenericDAO<TimesheetEntry, TimesheetEntryId>
+public interface TimesheetDAO extends GenericDao<TimesheetEntry, TimesheetEntryId>
 {
 	/**
 	 * Get timesheet entries within date range for a user

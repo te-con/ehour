@@ -18,15 +18,17 @@ package net.rrm.ehour.mail.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import org.springframework.stereotype.Repository;
+
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.domain.MailLogAssignment;
 
 /**
  * DAO for MailLog db operations 
  **/
-
-public class MailLogDAOHibernateImpl extends GenericDAOHibernateImpl<MailLog, Integer>  implements MailLogDAO
+@Repository("mailLogDAO")
+public class MailLogDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<MailLog, Integer>  implements MailLogDAO
 {
 	/**
 	 * @todo fix this a bit better

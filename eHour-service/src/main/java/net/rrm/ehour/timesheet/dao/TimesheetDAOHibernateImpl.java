@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.dao.GenericDAOHibernateImpl;
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
@@ -31,9 +31,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.stereotype.Repository;
 
+@Repository("timesheetDAO")
 public class TimesheetDAOHibernateImpl 
-		extends GenericDAOHibernateImpl<TimesheetEntry, TimesheetEntryId>
+		extends AbstractGenericDaoHibernateImpl<TimesheetEntry, TimesheetEntryId>
 		implements TimesheetDAO
 {
 	/**

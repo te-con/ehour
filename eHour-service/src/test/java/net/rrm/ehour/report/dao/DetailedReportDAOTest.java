@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.dao.AbstractDaoTest;
+import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 
@@ -30,13 +30,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-/**
- * 
- **/
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SuppressWarnings({"unchecked", "deprecation"})
-public class DetailedReportDAOTest extends AbstractDaoTest
+public class DetailedReportDAOTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
 	private	DetailedReportDAO	detailedReportDAO;

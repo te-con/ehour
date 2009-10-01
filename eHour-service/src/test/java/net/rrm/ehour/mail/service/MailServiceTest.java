@@ -19,7 +19,7 @@ package net.rrm.ehour.mail.service;
 import java.util.Date;
 
 import net.rrm.ehour.DummyDataGenerator;
-import net.rrm.ehour.dao.AbstractDaoTest;
+import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:applicationContext-mail.xml", "classpath:applicationContext-service.xml"})
-public class MailServiceTest extends AbstractDaoTest
+public class MailServiceTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
 	private MailService	mailService;

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import net.rrm.ehour.dao.AbstractDaoTest;
+import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.domain.MailLogAssignment;
 
 import org.junit.Test;
@@ -33,7 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  **/
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class MailLogDAOTest extends AbstractDaoTest
+public class MailLogDAOTest extends AbstractAnnotationDaoTest
 {
 	
 	@Autowired

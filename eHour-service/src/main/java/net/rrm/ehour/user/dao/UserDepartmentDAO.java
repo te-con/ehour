@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.user.dao;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.UserDepartment;
 
 /**
  * CRUD on UserDepartment domain object 
  **/
 
-public interface UserDepartmentDAO extends GenericDAO<UserDepartment, Integer>
+public interface UserDepartmentDAO extends GenericDao<UserDepartment, Integer>
 {
 	public UserDepartment findOnNameAndCode(String name, String code);
 }

@@ -16,13 +16,13 @@
 
 package net.rrm.ehour.config.dao;
 
-import net.rrm.ehour.dao.GenericDAO;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.Configuration;
 
 /**
  * CRUD on configuration 
  **/
 
-public interface ConfigurationDAO extends GenericDAO<Configuration, String>
+public interface ConfigurationDAO extends GenericDao<Configuration, String>
 {
 }

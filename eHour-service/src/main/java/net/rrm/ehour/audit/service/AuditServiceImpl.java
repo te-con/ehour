@@ -23,6 +23,8 @@ import net.rrm.ehour.audit.dao.AuditDAO;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,11 +32,16 @@ import org.springframework.transaction.annotation.Transactional;
  * @author thies
  *
  */
+@Service("auditService")
 public class AuditServiceImpl implements AuditService
 {
-//	private final static Logger LOGGER = Logger.getLogger(AuditServiceImpl.class);
-	
 	private AuditDAO	auditDAO;
+	
+	@Autowired
+	public AuditServiceImpl(AuditDAO auditDao)
+	{
+		this.auditDAO = auditDao;
+	}
 	
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.audit.service.AuditService#persistAudit(net.rrm.ehour.domain.Audit)
@@ -64,14 +71,6 @@ public class AuditServiceImpl implements AuditService
 	{
 		return auditDAO.findAuditAll(request);
 	}	
-	
-	/**
-	 * @param auditDAO the auditDAO to set
-	 */
-	public void setAuditDAO(AuditDAO auditDAO)
-	{
-		this.auditDAO = auditDAO;
-	}
 
 	/*
 	 * (non-Javadoc)

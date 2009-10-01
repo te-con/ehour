@@ -24,16 +24,17 @@ import net.rrm.ehour.domain.DomainObject;
 import org.hibernate.Hibernate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
 /**
  * GenericDAO interface for CRUD on domain objects
  **/
 
 @SuppressWarnings("unchecked")
-public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extends Serializable>
-			extends HibernateDaoSupport
-			implements GenericDAO<T, PK>
+@Repository
+public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject, PK extends Serializable>
+	extends AbstractAnnotationDaoHibernateImpl
+	implements GenericDao<T, PK>
 {
 	private Class<T>	type;
 
@@ -41,7 +42,7 @@ public abstract class GenericDAOHibernateImpl <T extends DomainObject, PK extend
 	 * 1.5 aware dao's
 	 * @param type
 	 */
-	public GenericDAOHibernateImpl(Class<T> type)
+	public AbstractGenericDaoHibernateImpl(Class<T> type)
 	{
 		super();
 		

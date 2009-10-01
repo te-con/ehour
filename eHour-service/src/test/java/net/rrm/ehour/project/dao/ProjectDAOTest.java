@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.dao.AbstractDaoTest;
+import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -32,13 +32,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * TODO 
- **/
-
 @SuppressWarnings("unchecked")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ProjectDAOTest extends AbstractDaoTest
+public class ProjectDAOTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
 	private	ProjectDAO	projectDAO;
