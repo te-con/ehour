@@ -23,8 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * Adds min. service contexts 
  **/
-@ContextConfiguration(locations={"classpath:applicationContext-mail.xml", 
-									"classpath:context-service.xml",
+@ContextConfiguration(locations={"classpath:context-service.xml",
 									"classpath:test-context-scanner-service.xml"})
 public abstract class AbstractServiceTest extends AbstractAnnotationDaoTest
 {

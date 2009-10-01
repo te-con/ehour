@@ -22,14 +22,17 @@ import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.mail.dao.MailLogDAO;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
+import org.springframework.stereotype.Component;
 
 /**
  * Mail task callback
  **/
-
+@Component
 public abstract class MailTaskCallback
 {
+	@Autowired
 	protected MailLogDAO	mailLogDAO;
 	
 	/**

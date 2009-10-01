@@ -48,7 +48,7 @@ public class AuditAspect
 {
 //	private final static Logger LOGGER = Logger.getLogger(AuditAspect.class);
 	
-	@Resource //@Resource not injecting??
+	@Resource
 	private AuditService	auditService;
 	
 	@Resource

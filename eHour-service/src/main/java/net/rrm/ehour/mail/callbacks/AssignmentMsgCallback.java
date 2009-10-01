@@ -21,14 +21,14 @@ import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 
 import org.springframework.mail.MailException;
+import org.springframework.stereotype.Component;
 
 /**
  * Callback 
  **/
-
+@Component
 public class AssignmentMsgCallback extends MailTaskCallback
 {
-
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.mail.callbacks.MailTaskCallback#failure(org.springframework.mail.MailException)
 	 */
