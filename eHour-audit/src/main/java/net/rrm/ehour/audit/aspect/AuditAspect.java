@@ -31,7 +31,6 @@ import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.RequestCycle;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -47,7 +46,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuditAspect
 {
-	private final static Logger LOGGER = Logger.getLogger(AuditAspect.class);
+//	private final static Logger LOGGER = Logger.getLogger(AuditAspect.class);
 	
 	@Autowired
 	private AuditService	auditService;
@@ -136,8 +135,6 @@ public class AuditAspect
 	{
 		Object returnObject;
 		
-		LOGGER.debug("doAudit entry");
-
 		boolean isAuditable = isAuditable(pjp);
 
 		if (isAuditable)
