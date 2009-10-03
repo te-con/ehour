@@ -86,14 +86,12 @@ public class ExportReportHeader extends AbstractExportReportPart
 	
 		int index = getWorkbook().addPicture(image, PoiUtil.getImageType(excelLogo.getImageType()));
 		
-		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 1, (short)8, 8);
+		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 0, (short)8, 7);
 //														(short)++col,++row);
 		
 		HSSFPatriarch patriarch=getSheet().createDrawingPatriarch();
 		patriarch.createPicture(anchor,index);
 		anchor.setAnchorType(0); // 0 = Move and size with Cells, 2 = Move but don't size with cells, 3 = Don't move or size with cells.
-
-
 		
 		return rowNumber;
 	}

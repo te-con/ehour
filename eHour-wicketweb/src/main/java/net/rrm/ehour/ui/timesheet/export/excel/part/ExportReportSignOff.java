@@ -82,8 +82,8 @@ public class ExportReportSignOff extends AbstractExportReportPart
 	{
 		int cellMargin = getCellMargin();
 		
-		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 4, cellMargin, cellMargin + 2));
-		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 4, cellMargin + 4, cellMargin + 6));
+		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 2, cellMargin, cellMargin + 2));
+		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 2, cellMargin + 4, cellMargin + 6));
 
 		// doesn't work properly, box is not around the whole merged cells
 //		HSSFRow boxRow = getSheet().createRow(rowNumber);

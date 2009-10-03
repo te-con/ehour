@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.common.report.excel;
 
 import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.BoldFont;
+import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.BorderNorth;
 import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.BorderNorthThin;
 import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.BorderSouth;
 import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.BorderSouthThin;
@@ -27,8 +28,6 @@ import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.DateValue;
 import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.DigitValue;
 import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.Header;
 import net.rrm.ehour.ui.common.report.excel.CellStyleImpl.NormalFont;
-
-
 
 /**
  * Created on Mar 25, 2009, 5:13:17 PM
@@ -46,6 +45,7 @@ public enum CellStyle
 	BORDER_SOUTH(new BorderSouth()),
 	BORDER_SOUTH_THIN(new BorderSouthThin()),
 	BORDER_NORTH_THIN(new BorderNorthThin()),
+	BORDER_NORTH(new BorderNorth()),
 	HEADER(new Header());
 	
 	private CellStyleElement cellStyleElement;
