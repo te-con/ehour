@@ -19,7 +19,7 @@ package net.rrm.ehour.timesheet.service;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;

@@ -18,12 +18,12 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+
+import org.springframework.stereotype.Repository;
 
 @Repository("projectDAO")
 public class ProjectDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Project, Integer> implements ProjectDAO

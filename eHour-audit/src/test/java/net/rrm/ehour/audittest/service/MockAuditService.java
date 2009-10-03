@@ -14,21 +14,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.audit.service;
+package net.rrm.ehour.audittest.service;
 
-import org.springframework.stereotype.Component;
-
-/**
- * @author thies
- *
- */
-@Component
-public class MockAuditServiceImpl implements MockAuditService
+public interface MockAuditService
 {
-
-	public void getAuditMethod()
-	{
-	
-	}
-	
+	public void getAuditMethod();
 }

@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.rrm.ehour.audit.Auditable;
+import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;

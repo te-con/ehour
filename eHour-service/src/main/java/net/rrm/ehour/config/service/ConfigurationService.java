@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.config.service;
 
-import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.value.ImageLogo;

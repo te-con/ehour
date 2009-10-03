@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;

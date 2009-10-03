@@ -23,8 +23,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
-import net.rrm.ehour.audit.Auditable;
-import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.audit.annot.Auditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.dao.BinaryConfigurationDAO;

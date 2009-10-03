@@ -14,14 +14,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.audit;
+package net.rrm.ehour.audit.aspect;
 
 import java.lang.annotation.Annotation;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.annotation.Resource;
-
+import net.rrm.ehour.audit.annot.Auditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.service.ConfigurationService;
@@ -31,6 +31,7 @@ import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.RequestCycle;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -42,46 +43,46 @@ import org.springframework.stereotype.Component;
 /**
  * Auditable Aspect
  **/
-@Component
 @Aspect
+@Component
 public class AuditAspect
 {
-//	private final static Logger LOGGER = Logger.getLogger(AuditAspect.class);
+	private final static Logger LOGGER = Logger.getLogger(AuditAspect.class);
 	
-	@Resource
+	@Autowired
 	private AuditService	auditService;
 	
-	@Resource
+	@Autowired
 	private ConfigurationService configurationService;
 
 	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service*.get*(..)) && " +
-			"!@annotation(Auditable) && " +
-			"!@annotation(NonAuditable)")
+			"!@annotation(net.rrm.ehour.audit.annot.Auditable) && " +
+			"!@annotation(net.rrm.ehour.audit.annot.NonAuditable)")
 	public void publicGetMethod()
 	{
 	}
 	
 	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service.persist*(..)) && " +
-			"!@annotation(Auditable) && " +
-			"!@annotation(NonAuditable)")
+			"!@annotation(net.rrm.ehour.audit.annot.Auditable) && " +
+			"!@annotation(net.rrm.ehour.audit.annot.NonAuditable)")
 	public void publicPersistMethod()
 	{
 	}
 	
 	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service.delete*(..)) && " +
-			"!@annotation(Auditable) && " +
-			"!@annotation(NonAuditable)")
+			"!@annotation(net.rrm.ehour.audit.annot.Auditable) && " +
+			"!@annotation(net.rrm.ehour.audit.annot.NonAuditable)")
 	public void publicDeleteMethod()
 	{
 	}	
-
+	
 	/**
 	 * Around advise for read-only get methods
 	 * @param pjp
 	 * @return
 	 * @throws Throwable
 	 */
-	@Around("net.rrm.ehour.audit.AuditAspect.publicGetMethod()")
+	@Around("net.rrm.ehour.audit.aspect.AuditAspect.publicGetMethod()")
 	public Object auditOnGet(ProceedingJoinPoint pjp) throws Throwable
 	{
 		return doAudit(pjp, AuditActionType.READ);
@@ -93,7 +94,7 @@ public class AuditAspect
 	 * @return
 	 * @throws Throwable
 	 */
-	@Around("net.rrm.ehour.audit.AuditAspect.publicPersistMethod()")
+	@Around("net.rrm.ehour.audit.aspect.AuditAspect.publicPersistMethod()")
 	public Object auditOnPersist(ProceedingJoinPoint pjp) throws Throwable
 	{
 		return doAudit(pjp, AuditActionType.UPDATE);
@@ -105,7 +106,7 @@ public class AuditAspect
 	 * @return
 	 * @throws Throwable
 	 */
-	@Around("net.rrm.ehour.audit.AuditAspect.publicDeleteMethod()")
+	@Around("net.rrm.ehour.audit.aspect.AuditAspect.publicDeleteMethod()")
 	public Object auditOnDelete(ProceedingJoinPoint pjp) throws Throwable
 	{
 		return doAudit(pjp, AuditActionType.DELETE);
@@ -119,7 +120,7 @@ public class AuditAspect
 	 * @throws Throwable
 	 */
 	@Around("@annotation(auditable)")
-	public Object auditable(ProceedingJoinPoint pjp, Auditable auditable) throws Throwable
+	public Object doAudit(ProceedingJoinPoint pjp, Auditable auditable) throws Throwable
 	{	
 		return doAudit(pjp, auditable.actionType());
 	}
@@ -135,7 +136,7 @@ public class AuditAspect
 	{
 		Object returnObject;
 		
-//		LOGGER.debug("doAudit entry");
+		LOGGER.debug("doAudit entry");
 
 		boolean isAuditable = isAuditable(pjp);
 
@@ -316,7 +317,6 @@ public class AuditAspect
 	/**
 	 * @param auditService the auditService to set
 	 */
-	@Autowired
 	public void setAuditService(AuditService auditService)
 	{
 		this.auditService = auditService;
@@ -325,7 +325,6 @@ public class AuditAspect
 	/**
 	 * @param configurationService the configurationService to set
 	 */
-	@Autowired
 	public void setConfigurationService(ConfigurationService configurationService)
 	{
 		this.configurationService = configurationService;

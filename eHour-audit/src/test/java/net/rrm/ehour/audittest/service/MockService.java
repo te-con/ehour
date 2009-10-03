@@ -14,19 +14,48 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.audit;
+package net.rrm.ehour.audittest.service;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.rrm.ehour.audit.annot.Auditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
+import net.rrm.ehour.domain.AuditActionType;
 
-/**
- *  
- **/
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
-public @interface NonAuditable
+import org.springframework.stereotype.Service;
+
+
+@Service("mockService")
+public class MockService
 {
+	@Auditable(actionType=AuditActionType.CREATE)
+	public void annotatedMethod()
+	{
+		
+	}
+	public void getNonAnnotatedMethod()
+	{
+		
+	}
+	
+	public void persistNonAnnotatedMethod()
+	{
+		
+	}	
+
+	public void deleteNonAnnotatedMethod()
+	{
+		
+	}	
+
+	@Auditable(actionType=AuditActionType.READ)
+	public void deleteButReadAnnotatedMethod()
+	{
+		
+	}	
+
+	@NonAuditable
+	public void deleteButNonAuditable()
+	{
+		
+	}	
 
 }

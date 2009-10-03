@@ -18,10 +18,10 @@ package net.rrm.ehour.user.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.UserDepartment;
+
+import org.springframework.stereotype.Repository;
 
 @Repository("userDepartmentDAO")
 public class UserDepartmentDAOHibernateImpl 

@@ -18,11 +18,11 @@ package net.rrm.ehour.mail.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.domain.MailLogAssignment;
+
+import org.springframework.stereotype.Repository;
 
 /**
  * DAO for MailLog db operations 

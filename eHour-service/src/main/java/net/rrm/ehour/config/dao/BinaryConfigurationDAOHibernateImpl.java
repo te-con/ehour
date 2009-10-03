@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.config.dao;
 
-import org.springframework.stereotype.Repository;
-
 import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.BinaryConfiguration;
+
+import org.springframework.stereotype.Repository;
 
 /**
  * Created on Apr 2, 2009, 4:32:29 PM

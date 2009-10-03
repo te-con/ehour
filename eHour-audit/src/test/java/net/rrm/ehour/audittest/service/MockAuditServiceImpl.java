@@ -14,48 +14,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.audit.service;
-
-import net.rrm.ehour.audit.Auditable;
-import net.rrm.ehour.audit.NonAuditable;
-import net.rrm.ehour.domain.AuditActionType;
+package net.rrm.ehour.audittest.service;
 
 import org.springframework.stereotype.Component;
 
-
+/**
+ * @author thies
+ *
+ */
 @Component
-public class MockService
+public class MockAuditServiceImpl implements MockAuditService
 {
-	@Auditable(actionType=AuditActionType.CREATE)
-	public void annotatedMethod()
+
+	public void getAuditMethod()
 	{
-		
-	}
-	public void getNonAnnotatedMethod()
-	{
-		
+	
 	}
 	
-	public void persistNonAnnotatedMethod()
-	{
-		
-	}	
-
-	public void deleteNonAnnotatedMethod()
-	{
-		
-	}	
-
-	@Auditable(actionType=AuditActionType.READ)
-	public void deleteButReadAnnotatedMethod()
-	{
-		
-	}	
-
-	@NonAuditable
-	public void deleteButNonAuditable()
-	{
-		
-	}	
-
 }

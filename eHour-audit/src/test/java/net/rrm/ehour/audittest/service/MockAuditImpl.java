@@ -14,11 +14,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.audit.service;
+package net.rrm.ehour.audittest.service;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
+import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 
@@ -49,12 +50,10 @@ public class MockAuditImpl implements AuditService, MockAudit
 	@NonAuditable
 	public Number getAuditCount(AuditReportRequest request)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 	public List<Audit> getAuditAll(AuditReportRequest request)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

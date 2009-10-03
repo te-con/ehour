@@ -18,10 +18,10 @@ package net.rrm.ehour.customer.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.Customer;
+
+import org.springframework.stereotype.Repository;
 
 /**
  * Customer DAO 

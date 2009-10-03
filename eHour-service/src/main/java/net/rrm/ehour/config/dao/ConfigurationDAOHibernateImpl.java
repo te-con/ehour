@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.config.dao;
 
-import org.springframework.stereotype.Repository;
-
 import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.Configuration;
+
+import org.springframework.stereotype.Repository;
 
 @Repository("configurationDAO")
 public class ConfigurationDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Configuration, String>  implements ConfigurationDAO

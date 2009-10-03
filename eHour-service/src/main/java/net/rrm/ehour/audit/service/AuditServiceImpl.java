@@ -18,7 +18,7 @@ package net.rrm.ehour.audit.service;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.audit.dao.AuditDAO;
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;

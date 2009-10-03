@@ -12,6 +12,8 @@
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName">
 
+	<aop:aspectj-autoproxy/>
+
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- the transactional advice  -->
@@ -31,7 +33,6 @@
 		<property name="maxPoolSize" value="10" />
 		<property name="queueCapacity" value="25" />
 	</bean>
-
 
 	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder">
 		<constructor-arg value="1" />

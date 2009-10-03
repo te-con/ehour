@@ -18,8 +18,6 @@ package net.rrm.ehour.project.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
@@ -27,6 +25,8 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
+
+import org.springframework.stereotype.Repository;
 
 /**
  * CRUD stuff on PA do 
