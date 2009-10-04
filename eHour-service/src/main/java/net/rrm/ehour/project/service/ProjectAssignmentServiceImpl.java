@@ -277,7 +277,12 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	public List<ProjectAssignment> getProjectAssignments(Project project, DateRange range)
 	{
 		return projectAssignmentDAO.findProjectAssignmentsForProject(project, range);
-		
+	}
+
+	public List<ProjectAssignment> getProjectAssignments(Project project, boolean hideInActive)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*

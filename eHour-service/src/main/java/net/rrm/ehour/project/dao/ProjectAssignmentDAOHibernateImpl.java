@@ -26,6 +26,8 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -149,6 +151,26 @@ public class ProjectAssignmentDAOHibernateImpl
 													, CACHEREGION);
 		
 		return results;
+	}
+
+	public List<ProjectAssignment> findProjectAssignments(Project project)
+	{
+		return findProjectAssignments(project, null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProjectAssignment> findProjectAssignments(Project project, Boolean onlyActive)
+	{
+		Criteria crit = getSession().createCriteria(ProjectAssignment.class);
+		
+		if (onlyActive != null)
+		{
+			crit.add(Restrictions.eq("active", onlyActive));
+		}
+		
+		crit.add(Restrictions.eq("project", project));
+		
+		return crit.list();
 	}
 
 	/*

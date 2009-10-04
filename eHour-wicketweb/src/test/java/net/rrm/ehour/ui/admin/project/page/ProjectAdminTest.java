@@ -20,23 +20,17 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.DummUIDataGenerator;
-import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.user.service.UserService;
 
-import org.apache.wicket.Component;
 import org.junit.Before;
 import org.junit.Test;
 

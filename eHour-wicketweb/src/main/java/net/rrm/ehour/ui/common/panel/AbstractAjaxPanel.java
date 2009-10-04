@@ -21,28 +21,16 @@ import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 
 import org.apache.wicket.model.IModel;
 
-/**
- * Base panel
- **/
 
 public abstract class AbstractAjaxPanel extends AbstractBasePanel implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = 5723792133447447887L;
 
-	/**
-	 * 
-	 * @param id
-	 */
 	public AbstractAjaxPanel(String id)
 	{
 		super(id);
 	}
 
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 */
 	public AbstractAjaxPanel(String id, IModel model)
 	{
 		super(id, model);

@@ -42,7 +42,6 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -140,14 +139,14 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		getTabbedPanel().addTab(new AbstractTab(new ResourceModel("admin.project.assignusers.title"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getBaseAddPanel(panelId);
-			}
-		}, TABPOS_USERS);
+//		getTabbedPanel().addTab(new AbstractTab(new ResourceModel("admin.project.assignusers.title"))
+//		{
+//			@Override
+//			public Panel getPanel(String panelId)
+//			{
+//				return new ModifyProjectUsersPanel(panelId);
+//			}
+//		}, TABPOS_USERS);
 		
 		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
 				

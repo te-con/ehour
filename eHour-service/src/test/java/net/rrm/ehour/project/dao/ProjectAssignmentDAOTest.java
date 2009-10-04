@@ -121,9 +121,6 @@ public class ProjectAssignmentDAOTest extends AbstractAnnotationDaoTest
 		projectAssignmentDAO.persist(pa);
 	}
 
-	/**
-	 * Test method for {@link net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl#findById(java.io.Serializable)}.
-	 */
 	@Test
 	public void testFindById()
 	{
@@ -132,9 +129,6 @@ public class ProjectAssignmentDAOTest extends AbstractAnnotationDaoTest
 		assertEquals("eHour", pa.getProject().getName());
 	}
 
-	/**
-	 * 
-	 */
 	@Test
 	public void testFindProjectAssignmentsForUserInRange()
 	{
@@ -155,5 +149,23 @@ public class ProjectAssignmentDAOTest extends AbstractAnnotationDaoTest
 		results = projectAssignmentDAO.findProjectAssignmentsForCustomer(cust, range);
 		
 		assertEquals(2, results.size());
+	}
+	
+	public void shouldFindAllAssignmentsForProject()
+	{
+		Project prj = new Project(1);
+		
+		List<ProjectAssignment> list = projectAssignmentDAO.findProjectAssignments(prj);
+		
+		assertEquals(4, list.size());
+	}
+
+	public void shouldFindActiveAssignmentsForProject()
+	{
+		Project prj = new Project(1);
+		
+		List<ProjectAssignment> list = projectAssignmentDAO.findProjectAssignments(prj, Boolean.TRUE);
+		
+		assertEquals(3, list.size());
 	}
 }
