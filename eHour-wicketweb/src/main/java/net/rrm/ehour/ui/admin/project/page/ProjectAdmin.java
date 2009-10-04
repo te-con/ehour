@@ -22,7 +22,7 @@ import java.util.List;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.admin.project.panel.ProjectFormPanel;
@@ -42,6 +42,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -56,20 +57,19 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Project admin page 
  **/
 
-public class ProjectAdmin  extends BaseTabbedAdminPage
+public class ProjectAdmin  extends AbstractTabbedAdminPage
 {
 	private static final String	PROJECT_SELECTOR_ID = "projectSelector";
 	private static final long 	serialVersionUID = 9196677804018589806L;
+	
+	private static final int TABPOS_USERS = 2;
 	
 	@SpringBean
 	private ProjectService		projectService;
 	private	final static Logger	logger = Logger.getLogger(ProjectAdmin.class);
 	private EntrySelectorFilter	currentFilter;
 	private	ListView			projectListView;
-	
-	/**
-	 * 
-	 */
+
 	public ProjectAdmin()
 	{
 		super(new ResourceModel("admin.project.title"),
@@ -79,8 +79,7 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 				"admin.project.help.header",
 				"admin.project.help.body");
 		
-		List<Project>	projects;
-		projects = getProjects();
+		List<Project> projects = getProjects();
 		
 		Fragment projectListHolder = getProjectListHolder(projects);
 		
@@ -130,10 +129,6 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 	}
 
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
-	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
@@ -141,21 +136,32 @@ public class ProjectAdmin  extends BaseTabbedAdminPage
 									new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
-	 */
+	@SuppressWarnings("serial")
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
+		getTabbedPanel().addTab(new AbstractTab(new ResourceModel("admin.project.assignusers.title"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return getBaseAddPanel(panelId);
+			}
+		}, TABPOS_USERS);
+		
 		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
 				
 	}
+	
+	@Override
+	protected void onTabSwitch(int index)
+	{
+		if (index == AddEditTabbedPanel.TABPOS_ADD)
+		{
+			getTabbedPanel().removeTab(TABPOS_USERS);
+		}
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
-	 */
 	@Override
 	protected AdminBackingBean getNewAddBaseBackingBean()
 	{

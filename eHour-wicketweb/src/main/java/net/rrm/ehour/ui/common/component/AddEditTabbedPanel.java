@@ -57,8 +57,8 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 		this.editTabTitle = editTabTitle;
 		this.noEntrySelectedText = noEntrySelectedText;
 		
-		addBackingBean = getNewAddBackingBean();
-		editBackingBean = getNewEditBackingBean();
+		addBackingBean = createAddBackingBean();
+		editBackingBean = createEditBackingBean();
 		
 		setUpTabs();
 	}
@@ -69,7 +69,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	 */
 	public void succesfulSave(AjaxRequestTarget target)
 	{
-		addBackingBean = getNewAddBackingBean();
+		addBackingBean = createAddBackingBean();
 		addBackingBean.setServerMessage(getLocalizer().getString("general.dataSaved", this));
 		addAddTab();
 		setSelectedTab(TABPOS_ADD);
@@ -94,7 +94,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	private void setUpTabs()
 	{
 		addAddTab();
-		addNoUserTab();
+		addNoSelectionTab();
 	}	
 
 	/**
@@ -105,7 +105,6 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	public void addTab(AbstractTab tab, int tabIndex)
 	{
 		removeTab(tabIndex);
-		
 		getTabs().add(tabIndex, tab);
 	}
 	
@@ -150,7 +149,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	/**
 	 * Add no user selected tab at position 1
 	 */
-	protected void addNoUserTab()
+	private void addNoSelectionTab()
 	{
 		removeTab(TABPOS_EDIT);
 		
@@ -171,7 +170,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	 * @param panelId
 	 * @return
 	 */
-	protected Panel getNoSelectionPanel(String panelId)
+	private Panel getNoSelectionPanel(String panelId)
 	{
 		return new NoEntrySelectedPanel(panelId, false, noEntrySelectedText);
 	}	
@@ -183,20 +182,27 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	 * @param index
 	 */
 	@Override
-	protected void preProcessTabSwitch(int index)
+	protected final void preProcessTabSwitch(int index)
 	{
 		// if "Add" tab is clicked again, reset the backing bean as it's the
 		// only way out if for some reason the save went wrong and the page is stuck on
 		// an error
 		if (getSelectedTab() == index && index == 0)
 		{
-			addBackingBean = getNewAddBackingBean();
+			addBackingBean = createAddBackingBean();
 		}
 		
 		// reset server messages
 		addBackingBean.setServerMessage(null);
 		editBackingBean.setServerMessage(null);
+		
+		onTabSwitch(index);
 	}	
+	
+	protected void onTabSwitch(int index)
+	{
+		
+	}
 
 	
 	/**
@@ -238,7 +244,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	 * Get the backing bean for the add panel
 	 * @return
 	 */
-	protected abstract AdminBackingBean getNewAddBackingBean();
+	protected abstract AdminBackingBean createAddBackingBean();
 	
 	
 	/**
@@ -270,7 +276,7 @@ public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 	 * Get the backing bean for the edit panel
 	 * @return
 	 */
-	protected abstract AdminBackingBean getNewEditBackingBean();
+	protected abstract AdminBackingBean createEditBackingBean();
 
 	/**
 	 * @param editBackingBean the editBackingBean to set

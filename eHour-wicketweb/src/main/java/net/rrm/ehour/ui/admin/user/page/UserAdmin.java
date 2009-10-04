@@ -22,7 +22,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
 import net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType;
@@ -54,7 +54,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel 
  **/
 
-public class UserAdmin extends BaseTabbedAdminPage
+public class UserAdmin extends AbstractTabbedAdminPage
 {
 	private	final static Logger		logger = Logger.getLogger(UserAdmin.class);
 

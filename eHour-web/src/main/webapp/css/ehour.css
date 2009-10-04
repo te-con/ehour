@@ -32,6 +32,13 @@ div.SidePanelLoc {
 	float: left;
 }
 
+div.AdminSidePanelLocation {
+	width: 100px;
+	margin: 0 0 0 5px;
+	padding: 0;
+	float: left;
+}
+
 div.ContentPanelLoc {
 	margin: 0;
 	padding: 0;
@@ -531,7 +538,7 @@ div.LoggedInAs a:link,div.LoggedInAs a:visited {
 
 .navColumn {
 	float: left;
-	width: 250px;
+	width: 150px;
 	margin-left: 5px;
 }
 

@@ -44,32 +44,23 @@ public abstract class AbstractSpringTester
 		config = new EhourConfigStub();
 		config.setFirstDayOfWeek(Calendar.SUNDAY);
 
-		getMockContext().putBean("EhourConfig", config);
+		mockContext.putBean("EhourConfig", config);
 
 		auditService = createMock(AuditService.class);
-		getMockContext().putBean("auditService", auditService);
+		mockContext.putBean("auditService", auditService);
 	}
 	
-	/**
-	 * @return the getMockContext()
-	 */
-	public AnnotApplicationContextMock getMockContext()
+	public final AnnotApplicationContextMock getMockContext()
 	{
 		return mockContext;
 	}
 	
-	/**
-	 * @return the config
-	 */
-	public EhourConfigStub getConfig()
+	public final EhourConfigStub getConfig()
 	{
 		return config;
 	}
 	
-	/**
-	 * @return the auditService
-	 */
-	public AuditService getAuditService()
+	public final AuditService getAuditService()
 	{
 		return auditService;
 	}

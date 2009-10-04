@@ -84,13 +84,13 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 			}
 
 			@Override
-			protected AdminBackingBean getNewAddBackingBean()
+			protected AdminBackingBean createAddBackingBean()
 			{
 				return AssignmentAdminBackingBeanImpl.createAssignmentAdminBackingBean(user);
 			}
 
 			@Override
-			protected AdminBackingBean getNewEditBackingBean()
+			protected AdminBackingBean createEditBackingBean()
 			{
 				return AssignmentAdminBackingBeanImpl.createAssignmentAdminBackingBean(user);
 			}

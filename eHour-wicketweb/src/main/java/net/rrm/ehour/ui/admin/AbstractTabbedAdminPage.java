@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.admin;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -29,11 +28,11 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @SuppressWarnings("serial")
-public abstract class BaseTabbedAdminPage extends BaseAdminPage
+public abstract class AbstractTabbedAdminPage extends AbstractAdminPage
 {
 	private	AddEditTabbedPanel	tabbedPanel;
 	
-	public BaseTabbedAdminPage(ResourceModel pageTitle,
+	public AbstractTabbedAdminPage(ResourceModel pageTitle,
 								ResourceModel addTabTitle,
 								ResourceModel editTabTitle,
 								ResourceModel noEntrySelectedText,
@@ -57,19 +56,30 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 			}
 
 			@Override
-			protected AdminBackingBean getNewAddBackingBean()
+			protected AdminBackingBean createAddBackingBean()
 			{
 				return getNewAddBaseBackingBean();
 			}
 
 			@Override
-			protected AdminBackingBean getNewEditBackingBean()
+			protected AdminBackingBean createEditBackingBean()
 			{
 				return getNewEditBaseBackingBean();
+			}
+			
+			@Override
+			protected void onTabSwitch(int index)
+			{
+				AbstractTabbedAdminPage.this.onTabSwitch(index);
 			}
 		};
 		
 		add(tabbedPanel);
+	}
+	
+	protected void onTabSwitch(int index)
+	{
+		
 	}
 	
 	/**
@@ -105,15 +115,5 @@ public abstract class BaseTabbedAdminPage extends BaseAdminPage
 	public AddEditTabbedPanel getTabbedPanel()
 	{
 		return tabbedPanel;
-	}
-	
-	/**
-	 * 
-	 * @param tab
-	 * @return
-	 */
-	public int addExtraTab(ITab tab)
-	{
-		return 0;
 	}
 }

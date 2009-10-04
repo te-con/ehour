@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.audit.page;
 
 import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.admin.BaseAdminPage;
+import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaForm;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
@@ -35,7 +35,7 @@ import org.apache.wicket.model.ResourceModel;
  * @author thies
  *
  */
-public class AuditReportPage extends BaseAdminPage 
+public class AuditReportPage extends AbstractAdminPage 
 {
 	
 	public AuditReportPage()

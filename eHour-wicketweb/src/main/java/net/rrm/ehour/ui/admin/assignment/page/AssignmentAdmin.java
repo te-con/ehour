@@ -20,7 +20,7 @@ import java.util.List;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.admin.BaseAdminPage;
+import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.assignment.panel.AssignmentPanel;
 import net.rrm.ehour.ui.admin.assignment.panel.NoUserSelectedPanel;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
@@ -51,7 +51,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentAdmin extends BaseAdminPage
+public class AssignmentAdmin extends AbstractAdminPage
 {
 	private static final long serialVersionUID = 566527529422873370L;
 	private final String			USER_SELECTOR_ID = "userSelector";

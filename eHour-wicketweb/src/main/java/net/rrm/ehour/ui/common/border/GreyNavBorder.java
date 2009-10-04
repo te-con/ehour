@@ -26,9 +26,6 @@ import org.apache.wicket.model.IModel;
 
 public class GreyNavBorder extends Border
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -9055202623773090602L;
 
 	public GreyNavBorder(String id, IModel title)

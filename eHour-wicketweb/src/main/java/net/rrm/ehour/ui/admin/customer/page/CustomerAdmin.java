@@ -22,7 +22,7 @@ import java.util.List;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.customer.common.CustomerAjaxEventType;
 import net.rrm.ehour.ui.admin.customer.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.admin.customer.panel.CustomerFormPanel;
@@ -53,7 +53,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Customer admin page
  **/
 
-public class CustomerAdmin extends BaseTabbedAdminPage
+public class CustomerAdmin extends AbstractTabbedAdminPage
 {
 	private final String	CUSTOMER_SELECTOR_ID = "customerSelector";
 	

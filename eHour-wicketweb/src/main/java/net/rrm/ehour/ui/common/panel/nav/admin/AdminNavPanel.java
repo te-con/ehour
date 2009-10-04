@@ -41,16 +41,16 @@ public class AdminNavPanel extends Panel
 	{
 		super(id);
 
-		GreyNavBorder greyNavBorder = new GreyNavBorder("navBorder", new ResourceModel("admin.nav.userAdmin"));
-
-		add(greyNavBorder);
+//		GreyNavBorder greyNavBorder = new GreyNavBorder("navBorder", new ResourceModel("admin.nav.userAdmin"));
+//
+//		add(greyNavBorder);
 		
-		greyNavBorder.add(new BookmarkablePageLink("mainConfig", MainConfig.class));
-		greyNavBorder.add(new BookmarkablePageLink("userAdmin", UserAdmin.class));
-		greyNavBorder.add(new BookmarkablePageLink("deptAdmin", DepartmentAdmin.class));
-		greyNavBorder.add(new BookmarkablePageLink("customerAdmin", CustomerAdmin.class));
-		greyNavBorder.add(new BookmarkablePageLink("projectAdmin", ProjectAdmin.class));
-		greyNavBorder.add(new BookmarkablePageLink("assignmentAdmin", AssignmentAdmin.class));
-		greyNavBorder.add(new BookmarkablePageLink("auditReport", AuditReportPage.class));
+		add(new BookmarkablePageLink("mainConfig", MainConfig.class));
+		add(new BookmarkablePageLink("userAdmin", UserAdmin.class));
+		add(new BookmarkablePageLink("deptAdmin", DepartmentAdmin.class));
+		add(new BookmarkablePageLink("customerAdmin", CustomerAdmin.class));
+		add(new BookmarkablePageLink("projectAdmin", ProjectAdmin.class));
+		add(new BookmarkablePageLink("assignmentAdmin", AssignmentAdmin.class));
+		add(new BookmarkablePageLink("auditReport", AuditReportPage.class));
 	}
 }

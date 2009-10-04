@@ -52,7 +52,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -73,12 +72,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 
 	private static final long serialVersionUID = -8677950352090140144L;
 	
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 */
-	public ProjectFormPanel(String id, CompoundPropertyModel model)
+	public ProjectFormPanel(String id, IModel model)
 	{
 		super(id, model);
 		
@@ -87,11 +81,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		setUpPage(this, model);
 	}
 
-	/**
-	 * 
-	 * @param parent
-	 */
-	protected void setUpPage(WebMarkupContainer parent, IModel model)
+	private void setUpPage(WebMarkupContainer parent, IModel model)
 	{
 		Border border = new GreySquaredRoundedBorder("border");
 		add(border);
@@ -114,7 +104,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 	 * Add form components
 	 * @param form
 	 */
-	protected void addFormComponents(Form form)
+	private void addFormComponents(Form form)
 	{
 		addCustomer(form);
 		addDescriptionAndContact(form);
@@ -131,7 +121,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 	 * Add form components to form
 	 * @param parent
 	 */
-	protected void addGeneralInfo(WebMarkupContainer parent)
+	private void addGeneralInfo(WebMarkupContainer parent)
 	{
 		// name
 		RequiredTextField	nameField = new RequiredTextField("project.name");
@@ -150,7 +140,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		parent.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 	}
 	
-	protected void addCustomer(WebMarkupContainer parent)
+	private void addCustomer(WebMarkupContainer parent)
 	{
 		// customers
 		DropDownChoice customerDropdown = new DropDownChoice("project.customer", getCustomers(), new ChoiceRenderer("fullName"));
@@ -161,7 +151,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		parent.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
 	}
 	
-	protected DropDownChoice getProjectManager()
+	private DropDownChoice getProjectManager()
 	{
 		// project manager
 		DropDownChoice projectManager = new DropDownChoice("project.projectManager", getEligablePms(), new ChoiceRenderer("fullName"));
@@ -170,7 +160,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		return projectManager;
 	}
 	
-	protected void addDescriptionAndContact(WebMarkupContainer parent)
+	private void addDescriptionAndContact(WebMarkupContainer parent)
 	{
 		// description
 		TextArea	textArea = new KeepAliveTextArea("project.description");
@@ -182,9 +172,8 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		parent.add(contactField);
 	}
 
-	protected void addMisc(WebMarkupContainer parent)
+	private void addMisc(WebMarkupContainer parent)
 	{
-		
 		// default project
 		parent.add(new CheckBox("project.defaultProject"));
 		

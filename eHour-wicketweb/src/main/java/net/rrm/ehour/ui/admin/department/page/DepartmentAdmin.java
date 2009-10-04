@@ -21,7 +21,7 @@ import java.util.List;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
+import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.department.common.DepartmentAjaxEventType;
 import net.rrm.ehour.ui.admin.department.dto.DepartmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.department.panel.DepartmentFormPanel;
@@ -51,7 +51,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Department admin page
  **/
 
-public class DepartmentAdmin extends BaseTabbedAdminPage
+public class DepartmentAdmin extends AbstractTabbedAdminPage
 {
 	private final String		DEPT_SELECTOR_ID = "deptSelector";
 	private static final long 	serialVersionUID = -6686097898699382233L;
