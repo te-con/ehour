@@ -24,13 +24,13 @@ import org.apache.wicket.model.ResourceModel;
 
 /**
  * Base admin page template with 2 tabs, add & edit
- * TODO need refactor, remove those Base methods
+ * TODO need refactor away from Templating to something a bit more flexible (see hacks in ProjectAdmin)
  **/
 
 @SuppressWarnings("serial")
-public abstract class AbstractTabbedAdminPage extends AbstractAdminPage
+public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractAdminPage
 {
-	private	AddEditTabbedPanel	tabbedPanel;
+	private	AddEditTabbedPanel<BB>	tabbedPanel;
 	
 	public AbstractTabbedAdminPage(ResourceModel pageTitle,
 								ResourceModel addTabTitle,
@@ -41,7 +41,7 @@ public abstract class AbstractTabbedAdminPage extends AbstractAdminPage
 	{
 		super(pageTitle, null, headerResourceId, bodyResourceId);
 		
-		tabbedPanel = new AddEditTabbedPanel("tabs", addTabTitle, editTabTitle, noEntrySelectedText)
+		tabbedPanel = new AddEditTabbedPanel<BB>("tabs", addTabTitle, editTabTitle, noEntrySelectedText)
 		{
 			@Override
 			protected Panel getAddPanel(String panelId)
@@ -56,13 +56,13 @@ public abstract class AbstractTabbedAdminPage extends AbstractAdminPage
 			}
 
 			@Override
-			protected AdminBackingBean createAddBackingBean()
+			protected BB createAddBackingBean()
 			{
 				return getNewAddBaseBackingBean();
 			}
 
 			@Override
-			protected AdminBackingBean createEditBackingBean()
+			protected BB createEditBackingBean()
 			{
 				return getNewEditBaseBackingBean();
 			}
@@ -87,13 +87,13 @@ public abstract class AbstractTabbedAdminPage extends AbstractAdminPage
 	 * 
 	 * @return
 	 */
-	protected abstract AdminBackingBean getNewAddBaseBackingBean();
+	protected abstract BB getNewAddBaseBackingBean();
 	
 	/**
 	 * Get the backing bean for the edit panel
 	 * @return
 	 */
-	protected abstract AdminBackingBean getNewEditBaseBackingBean();
+	protected abstract BB getNewEditBaseBackingBean();
 	
 	/**
 	 * Get the panel for the add tab
@@ -112,7 +112,7 @@ public abstract class AbstractTabbedAdminPage extends AbstractAdminPage
 	/**
 	 * @return the tabbedPanel
 	 */
-	public AddEditTabbedPanel getTabbedPanel()
+	public AddEditTabbedPanel<BB> getTabbedPanel()
 	{
 		return tabbedPanel;
 	}

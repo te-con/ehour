@@ -24,14 +24,15 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
+import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBeanImpl;
+import net.rrm.ehour.ui.admin.project.panel.ModifyProjectUsersPanel;
 import net.rrm.ehour.ui.admin.project.panel.ProjectFormPanel;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
-import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
@@ -42,6 +43,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -56,7 +58,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Project admin page 
  **/
 
-public class ProjectAdmin  extends AbstractTabbedAdminPage
+public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBean>
 {
 	private static final String	PROJECT_SELECTOR_ID = "projectSelector";
 	private static final long 	serialVersionUID = 9196677804018589806L;
@@ -139,16 +141,19 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-//		getTabbedPanel().addTab(new AbstractTab(new ResourceModel("admin.project.assignusers.title"))
-//		{
-//			@Override
-//			public Panel getPanel(String panelId)
-//			{
-//				return new ModifyProjectUsersPanel(panelId);
-//			}
-//		}, TABPOS_USERS);
+		ProjectAdminBackingBean backingBean = getTabbedPanel().getEditBackingBean();
+		final Project project = backingBean.getProject();
 		
-		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
+		getTabbedPanel().addTab(new AbstractTab(new ResourceModel("admin.project.assignusers.title"))
+		{
+			@Override
+			public Panel getPanel(String panelId)
+			{
+				return new ModifyProjectUsersPanel(panelId, project);
+			}
+		}, TABPOS_USERS);
+		
+		return new ProjectFormPanel(panelId, new CompoundPropertyModel(backingBean));
 				
 	}
 	
@@ -162,7 +167,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage
 	}
 
 	@Override
-	protected AdminBackingBean getNewAddBaseBackingBean()
+	protected ProjectAdminBackingBean getNewAddBaseBackingBean()
 	{
 		Project	project = new Project();
 		project.setActive(true);
@@ -175,7 +180,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage
 	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewEditBaseBackingBean()
+	protected ProjectAdminBackingBean getNewEditBaseBackingBean()
 	{
 		return new ProjectAdminBackingBeanImpl(new Project());	
 	}

@@ -30,7 +30,6 @@ import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
@@ -53,7 +52,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Customer admin page
  **/
 
-public class CustomerAdmin extends AbstractTabbedAdminPage
+public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingBean>
 {
 	private final String	CUSTOMER_SELECTOR_ID = "customerSelector";
 	
@@ -123,7 +122,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage
 	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewAddBaseBackingBean()
+	protected CustomerAdminBackingBean getNewAddBaseBackingBean()
 	{
 		return CustomerAdminBackingBean.createCustomerAdminBackingBean();
 	}
@@ -133,7 +132,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage
 	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewEditBaseBackingBean()
+	protected CustomerAdminBackingBean getNewEditBaseBackingBean()
 	{
 		return CustomerAdminBackingBean.createCustomerAdminBackingBean();
 	}

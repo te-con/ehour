@@ -28,7 +28,6 @@ import net.rrm.ehour.ui.admin.department.panel.DepartmentFormPanel;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.common.util.WebGeo;
@@ -51,7 +50,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Department admin page
  **/
 
-public class DepartmentAdmin extends AbstractTabbedAdminPage
+public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBackingBean>
 {
 	private final String		DEPT_SELECTOR_ID = "deptSelector";
 	private static final long 	serialVersionUID = -6686097898699382233L;
@@ -111,7 +110,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage
 	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewAddBaseBackingBean()
+	protected DepartmentAdminBackingBean getNewAddBaseBackingBean()
 	{
 		return new DepartmentAdminBackingBean(new UserDepartment());
 	}
@@ -121,7 +120,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage
 	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewEditBaseBackingBean()
+	protected DepartmentAdminBackingBean getNewEditBaseBackingBean()
 	{
 		return new DepartmentAdminBackingBean(new UserDepartment());
 	}

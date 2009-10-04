@@ -1,6 +1,9 @@
 package net.rrm.ehour.ui.admin.project.panel;
 
+import java.util.List;
+
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
@@ -22,9 +25,11 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 		
 		Border border = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB_WIDE);
 		add(border);
-		
-//		new ListCurrentProjectUsersPanel("currentUsers", assignmentService.getProjectAssignments(project, dateRange))
 
+		List<ProjectAssignment> assignments = assignmentService.getProjectAssignments(project, true);
+		
+		ListCurrentProjectUsersPanel currentProjectUsersPanel = new ListCurrentProjectUsersPanel("currentUsers", assignments);
+		border.add(currentProjectUsersPanel);
 	}
 
 }

@@ -20,6 +20,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
 import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
@@ -45,7 +46,7 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 	private	final static Logger	logger = Logger.getLogger(AssignmentPanel.class);
 	@SpringBean
 	private	ProjectAssignmentService	assignmentService;
-	private AddEditTabbedPanel			tabbedPanel;
+	private AddEditTabbedPanel<AssignmentAdminBackingBean> tabbedPanel;
 	private	AssignmentListPanel			listPanel;
 	
 	/**
@@ -63,7 +64,7 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 		listPanel = new AssignmentListPanel("assignmentList", user);
 		add(listPanel);
 		
-		tabbedPanel = new AddEditTabbedPanel("assignmentTabs",
+		tabbedPanel = new AddEditTabbedPanel<AssignmentAdminBackingBean>("assignmentTabs",
 												new ResourceModel("admin.assignment.newAssignment"),
 												new ResourceModel("admin.assignment.editAssignment"),
 												new ResourceModel("admin.assignment.noEditEntrySelected"))
@@ -84,13 +85,13 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 			}
 
 			@Override
-			protected AdminBackingBean createAddBackingBean()
+			protected AssignmentAdminBackingBean createAddBackingBean()
 			{
 				return AssignmentAdminBackingBeanImpl.createAssignmentAdminBackingBean(user);
 			}
 
 			@Override
-			protected AdminBackingBean createEditBackingBean()
+			protected AssignmentAdminBackingBean createEditBackingBean()
 			{
 				return AssignmentAdminBackingBeanImpl.createAssignmentAdminBackingBean(user);
 			}

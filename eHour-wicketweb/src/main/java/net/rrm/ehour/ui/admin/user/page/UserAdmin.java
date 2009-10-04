@@ -30,7 +30,6 @@ import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
@@ -54,7 +53,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel 
  **/
 
-public class UserAdmin extends AbstractTabbedAdminPage
+public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 {
 	private	final static Logger		logger = Logger.getLogger(UserAdmin.class);
 
@@ -227,7 +226,7 @@ public class UserAdmin extends AbstractTabbedAdminPage
 	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewAddBaseBackingBean()
+	protected UserBackingBean getNewAddBaseBackingBean()
 	{
 		UserBackingBean	userBean;
 		
@@ -242,7 +241,7 @@ public class UserAdmin extends AbstractTabbedAdminPage
 	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected AdminBackingBean getNewEditBaseBackingBean()
+	protected UserBackingBean getNewEditBaseBackingBean()
 	{
 		return new UserBackingBean(new User());
 	}
