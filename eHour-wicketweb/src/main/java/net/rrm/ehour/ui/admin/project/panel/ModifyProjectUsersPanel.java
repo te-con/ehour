@@ -9,6 +9,8 @@ import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -30,6 +32,16 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 		
 		ListCurrentProjectUsersPanel currentProjectUsersPanel = new ListCurrentProjectUsersPanel("currentUsers", assignments);
 		border.add(currentProjectUsersPanel);
+		
+		AjaxLink link = new AjaxLink("submit")
+		{
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+		};
 	}
 
 }
