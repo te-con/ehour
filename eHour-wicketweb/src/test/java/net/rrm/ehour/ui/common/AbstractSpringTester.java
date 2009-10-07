@@ -33,7 +33,7 @@ import org.junit.Before;
  */
 public abstract class AbstractSpringTester
 {
-	private AnnotApplicationContextMock	mockContext;
+	protected AnnotApplicationContextMock	mockContext;
 	private EhourConfigStub config;
 	private AuditService auditService;
 

@@ -35,8 +35,8 @@ import org.junit.Before;
 @SuppressWarnings("unchecked")
 public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 {
-	private WicketTester tester;
-	private TestEhourWebApplication webApp;
+	protected WicketTester tester;
+	protected TestEhourWebApplication webApp;
 	
 	@Before
 	public void setUp() throws Exception

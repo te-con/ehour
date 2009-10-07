@@ -38,10 +38,6 @@ import net.rrm.ehour.util.EhourConstants;
 import org.junit.Test;
 
 
-/**
- * TODO 
- **/
-
 public class AssignmentAdminTest extends AbstractSpringWebAppTester
 {
 	/**

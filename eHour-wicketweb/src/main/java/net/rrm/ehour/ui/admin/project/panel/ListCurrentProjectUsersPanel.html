@@ -1,20 +1,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    
-<html 
-	xmlns="http://www.w3.org/1999/xhtml" 
+
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
 <body>
 <wicket:panel>
 	<table class="contentTable">
+		<tr>
+			<th></th>
+			<th><wicket:message key="admin.assignment.startHeader" /></th>
+			<th><wicket:message key="admin.assignment.endHeader" /></th>
+			<th><wicket:message key="admin.assignment.roleHeader" /></th>
+			<th><wicket:message key="admin.assignment.rateHeader" /></th>
+			<th><wicket:message key="admin.assignment.active" /></th>
+			<th></th>
+		</tr>
+
 		<wicket:container wicket:id="assignmentList">
 			<tr>
-				<td wicket:id="user"></td>			
+				<td wicket:id="user"></td>
+				<td class="main" style="padding-right: 1em" wicket:id="dateStart"></td>
+				<td class="main" wicket:id="dateEnd"></td>
+				<td class="main" wicket:id="role"></td>
+				<td class="main"><span wicket:id="currency"></span><span wicket:id="rate"></span></td>
+				<td class="main"><input type="checkbox" wicket:id="active" /></td>
 			</tr>
 		</wicket:container>
-	</table>		
-		
+	</table>
+
 </wicket:panel>
 
 </body>

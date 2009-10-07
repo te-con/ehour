@@ -21,22 +21,18 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.ui.admin.assignment.component.EditDatePanel;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
-import org.apache.wicket.datetime.StyleDateConverter;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -188,88 +184,12 @@ public class AssignmentTypeFormPartPanel extends Panel
 	 */
 	private void addDates(Form form, final IModel model)
 	{
-		PropertyModel	infiniteStartDateModel = new PropertyModel(model, "infiniteStartDate");
-		PropertyModel	infiniteEndDateModel = new PropertyModel(model, "infiniteEndDate");
-		
-		// start date
-        final DateTextField dateStart = new DateTextField("projectAssignment.dateStart", new PropertyModel(model,
-        "projectAssignment.dateStart"), new StyleDateConverter("S-", true));
-		
-		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
-		dateStart.add(new ValidatingFormComponentAjaxBehavior());
-		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
-        dateStart.add(new DatePicker());
+		EditDatePanel dateStart = new EditDatePanel("dateStart", new ResourceModel("admin.assignment.dateStart"), new PropertyModel(model, "projectAssignment.dateStart"), new PropertyModel(model, "infiniteStartDate"));
+		EditDatePanel dateEnd = new EditDatePanel("dateEnd", new ResourceModel("admin.assignment.dateEnd"), new PropertyModel(model, "projectAssignment.dateEnd"), new PropertyModel(model, "infiniteEndDate"));
 
-        // container for hiding
-		final WebMarkupContainer startDateHider = new WebMarkupContainer("startDateHider");
-		startDateHider.setOutputMarkupId(true);
+		add(dateStart);
+		add(dateEnd);
 		
-		// indicator for validation issues
-		startDateHider.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart));
-
-		
-		// the inner hider is just there to hide the <br /> as well
-		final WebMarkupContainer innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
-		innerStartDateHider.setOutputMarkupId(true);
-		innerStartDateHider.add(dateStart);
-		innerStartDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteStartDateModel, true));
-
-		startDateHider.add(innerStartDateHider);
-
-		add(startDateHider);
-		
-		// infinite start date toggle
-		AjaxCheckBox infiniteStart = new AjaxCheckBox("infiniteStartDate")
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.addComponent(startDateHider);
-			}
-		};
-		
-		startDateHider.add(infiniteStart);
-
-		// end date
-        final DateTextField dateEnd = new DateTextField("projectAssignment.dateEnd", new PropertyModel(model,
-        										"projectAssignment.dateEnd"), new StyleDateConverter("S-", false));
-        dateEnd.add(new DatePicker());
-		// container for hiding
-		
-		dateEnd.add(new ValidatingFormComponentAjaxBehavior());
-		dateEnd.add(new ConditionalRequiredValidator(infiniteEndDateModel));
-		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
-		
-		final WebMarkupContainer	endDateHider = new WebMarkupContainer("endDateHider");
-		endDateHider.setOutputMarkupId(true);
-		
-		// indicator for validation issues
-		endDateHider.add(new AjaxFormComponentFeedbackIndicator("dateEndValidationError", dateEnd));
-		
-		// the inner hider is just there to hide the <br /> as well
-		final WebMarkupContainer	innerEndDateHider = new WebMarkupContainer("innerEndDateHider");
-		innerEndDateHider.setOutputMarkupId(true);
-		innerEndDateHider.add(dateEnd);
-		innerEndDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteEndDateModel, true));
-		endDateHider.add(innerEndDateHider);		
-		add(endDateHider);	
-		
-		// infinite end date toggle
-		AjaxCheckBox infiniteEnd = new AjaxCheckBox("infiniteEndDate")
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.addComponent(endDateHider);
-			}
-		};	
-
-		endDateHider.add(infiniteEnd);
-		
-		form.add(new DateOverlapValidator(dateStart, dateEnd));
+		form.add(new DateOverlapValidator(dateStart.getDateInputFormComponent(), dateEnd.getDateInputFormComponent()));
 	}	
 }

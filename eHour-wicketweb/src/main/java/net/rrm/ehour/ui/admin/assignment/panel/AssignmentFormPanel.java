@@ -53,7 +53,6 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -80,12 +79,11 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel
 	 * @param customers
 	 * @param assignmenTypes
 	 */
-	public AssignmentFormPanel(String id,
-								final CompoundPropertyModel model)
+	public AssignmentFormPanel(String id, final IModel model)
 	{
 		super(id, model);
 		
-		config = ((EhourWebSession)getSession()).getEhourConfig();
+		config = EhourWebSession.getSession().getEhourConfig();
 		
 		setOutputMarkupId(true);
 		

@@ -30,7 +30,7 @@ import org.junit.Before;
 
 public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester
 {
-	private ConfigurationServiceImpl configService;
+	protected ConfigurationServiceImpl configService;
 	private MailService mailService;
 	private EhourConfigStub config;
 
