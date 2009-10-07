@@ -184,8 +184,8 @@ public class AssignmentTypeFormPartPanel extends Panel
 	 */
 	private void addDates(Form form, final IModel model)
 	{
-		EditDatePanel dateStart = new EditDatePanel("dateStart", new ResourceModel("admin.assignment.dateStart"), new PropertyModel(model, "projectAssignment.dateStart"), new PropertyModel(model, "infiniteStartDate"));
-		EditDatePanel dateEnd = new EditDatePanel("dateEnd", new ResourceModel("admin.assignment.dateEnd"), new PropertyModel(model, "projectAssignment.dateEnd"), new PropertyModel(model, "infiniteEndDate"));
+		EditDatePanel dateStart = new EditDatePanel("dateStart", new PropertyModel(model, "projectAssignment.dateStart"), new PropertyModel(model, "infiniteStartDate"));
+		EditDatePanel dateEnd = new EditDatePanel("dateEnd", new PropertyModel(model, "projectAssignment.dateEnd"), new PropertyModel(model, "infiniteEndDate"));
 
 		add(dateStart);
 		add(dateEnd);

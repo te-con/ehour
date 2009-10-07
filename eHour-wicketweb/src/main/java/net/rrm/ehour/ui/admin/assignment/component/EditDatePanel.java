@@ -11,11 +11,9 @@ import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
 
 public class EditDatePanel extends Panel
 {
@@ -23,17 +21,15 @@ public class EditDatePanel extends Panel
 
 	private DateTextField dateInputField;
 	
-	public EditDatePanel(String id, ResourceModel dateLabelModel, IModel dateModel, IModel infiniteModel)
+	public EditDatePanel(String id, IModel dateModel, IModel infiniteModel)
 	{
 		super(id);
 		
-		add(new Label("dateLabel", dateLabelModel));
-		
-		addDates(dateLabelModel, dateModel, infiniteModel);
+		addDates(dateModel, infiniteModel);
 	}
 	
 	@SuppressWarnings("serial")
-	private void addDates(ResourceModel dateLabelModel, IModel dateModel, IModel infiniteModel)
+	private void addDates(IModel dateModel, IModel infiniteModel)
 	{
         // container for hiding input field
 		final WebMarkupContainer updateTarget = new WebMarkupContainer("updateTarget");
@@ -46,7 +42,6 @@ public class EditDatePanel extends Panel
 
         dateInputField.add(new ConditionalRequiredValidator(infiniteModel));
 		dateInputField.add(new ValidatingFormComponentAjaxBehavior());
-		dateInputField.setLabel(dateLabelModel);
         dateInputField.add(new DatePicker());
         dateInputField.setVisible( !((Boolean)infiniteModel.getObject()).booleanValue());
 		
