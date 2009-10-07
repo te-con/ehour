@@ -50,7 +50,7 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 				item.add(addRole("role", new PropertyModel(assignment, "role")));
 				
 				item.add(new Label("currency", Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
-				item.add(addRate("rate" , new FloatModel(assignment.getHourlyRate(), config)));
+				item.add(new AjaxEditableLabel("rate" , new FloatModel(assignment.getHourlyRate(), config)));
 				
 				item.add(new CheckBox("active", new PropertyModel(assignment, "active")));
 			}
@@ -59,18 +59,6 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 		add(assignmentList);
 	}
 
-	@SuppressWarnings("serial")
-	private AjaxEditableLabel addRate(String id, IModel model)
-	{
-		AjaxEditableLabel label = new AjaxEditableLabel(id, model)
-		{
-
-		};
-
-		return label;
-	}
-	
-	
 	@SuppressWarnings("serial")
 	private AjaxEditableLabel addDate(String id, IModel model)
 	{
