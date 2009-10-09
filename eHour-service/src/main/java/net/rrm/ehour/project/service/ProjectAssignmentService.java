@@ -99,4 +99,10 @@ public interface ProjectAssignmentService
 	 * @return
 	 */
 	public List<ProjectAssignmentType> getProjectAssignmentTypes();
+	
+	/**
+	 * Update project assignment
+	 * @param assignment
+	 */
+	public void updateProjectAssignment(ProjectAssignment assignment);
 }

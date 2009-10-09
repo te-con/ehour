@@ -21,6 +21,7 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 	@SpringBean
 	private ProjectAssignmentService assignmentService;
 	
+	@SuppressWarnings("serial")
 	public ModifyProjectUsersPanel(String id, Project project)
 	{
 		super(id);
@@ -28,7 +29,7 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 		Border border = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB_WIDE);
 		add(border);
 
-		List<ProjectAssignment> assignments = assignmentService.getProjectAssignments(project, true);
+		final List<ProjectAssignment> assignments = assignmentService.getProjectAssignments(project, true);
 		
 		ListCurrentProjectUsersPanel currentProjectUsersPanel = new ListCurrentProjectUsersPanel("currentUsers", assignments);
 		border.add(currentProjectUsersPanel);
@@ -38,10 +39,14 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
-				// TODO Auto-generated method stub
-				
+				for (ProjectAssignment projectAssignment : assignments)
+				{
+					assignmentService.updateProjectAssignment(projectAssignment);
+				}
 			}
 		};
+		
+		border.add(link);	
 	}
 
 }

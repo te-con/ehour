@@ -208,6 +208,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	public String toString()
 	{
 		return new ToStringBuilder(this).append("assignmentId", getAssignmentId())
+										.append("active", isActive())
 										.append("project", getProject())
 										.append("user", getUser())
 //										.append("type", getAssignmentType())		

@@ -335,4 +335,10 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	{
 		this.userService = userService;
 	}
+
+	@Transactional
+	public void updateProjectAssignment(ProjectAssignment assignment)
+	{
+		projectAssignmentDAO.persist(assignment);
+	}
 }
