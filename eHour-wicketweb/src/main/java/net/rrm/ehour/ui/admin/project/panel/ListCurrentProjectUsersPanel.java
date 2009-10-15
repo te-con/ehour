@@ -67,8 +67,6 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 		
 		add(assignmentList);
 	}
-	
-
 
 	@SuppressWarnings("serial")
 	private AjaxEditableLabel addRate(String id, IModel model)
