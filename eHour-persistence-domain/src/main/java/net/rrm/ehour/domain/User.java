@@ -19,12 +19,11 @@ package net.rrm.ehour.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
  * @author  Thies

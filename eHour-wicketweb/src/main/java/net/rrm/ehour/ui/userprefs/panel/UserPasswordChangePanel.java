@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.userprefs.panel;
 
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
@@ -33,7 +34,6 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -151,7 +151,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 		if (userBackingBean.isPm())
 		{
 			LOGGER.debug("Re-adding PM role after edit");
-			userBackingBean.getUser().addUserRole(userService.getUserRole(EhourConstants.ROLE_PROJECTMANAGER));
+			userBackingBean.getUser().addUserRole(UserRole.PROJECTMANAGER);
 		}
 		
 		userService.persistUser(userBackingBean.getUser());

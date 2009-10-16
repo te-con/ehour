@@ -38,7 +38,6 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.log4j.Logger;
@@ -74,7 +73,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	@Auditable(actionType=AuditActionType.UPDATE)
 	public void assignUsersToProjects(Project project)
 	{
-		List<User> users = userService.getUsers(new UserRole(EhourConstants.ROLE_CONSULTANT));
+		List<User> users = userService.getUsers(UserRole.CONSULTANT);
 		
 		for (User user : users)
 		{

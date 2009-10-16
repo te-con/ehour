@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -172,7 +171,7 @@ public class AssignmentAdmin extends AbstractAdminPage
 		
 		if (currentFilter == null)
 		{
-			users = userService.getUsers(new UserRole(EhourConstants.ROLE_CONSULTANT));
+			users = userService.getUsers(UserRole.CONSULTANT);
 		}
 		else
 		{
@@ -181,7 +180,7 @@ public class AssignmentAdmin extends AbstractAdminPage
 				logger.debug("Filtering on " + currentFilter.getCleanFilterInput());
 			}
 			
-			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, new UserRole(EhourConstants.ROLE_CONSULTANT));
+			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, UserRole.CONSULTANT);
 		}
 		
 		return users;

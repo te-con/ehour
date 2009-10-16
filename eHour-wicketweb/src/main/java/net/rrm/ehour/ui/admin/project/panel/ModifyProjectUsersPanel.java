@@ -27,11 +27,25 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 
 	private Component message;
 	
-	@SuppressWarnings("serial")
 	public ModifyProjectUsersPanel(String id, Project project)
 	{
 		super(id);
 		
+		addModifyPanel(project);
+		
+		addAddPanel(project);
+	}
+
+	private void addAddPanel(Project project)
+	{
+		Border border = new GreySquaredRoundedBorder("addBorder", WebGeo.W_CONTENT_ADMIN_TAB_WIDE);
+		add(border);
+		
+	}
+	
+	@SuppressWarnings("serial")
+	private void addModifyPanel(Project project)
+	{
 		Border border = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB_WIDE);
 		add(border);
 
@@ -62,7 +76,7 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 			}
 		};
 		
-		border.add(link);	
+		border.add(link);
 	}
 
 }

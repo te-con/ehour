@@ -18,7 +18,8 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
 import net.rrm.ehour.config.dao.BinaryConfigurationDAO;

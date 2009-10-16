@@ -34,7 +34,6 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -174,7 +173,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		if (userBackingBean.isPm())
 		{
 			logger.debug("Re-adding PM role after edit");
-			userBackingBean.getUser().addUserRole(userService.getUserRole(EhourConstants.ROLE_PROJECTMANAGER));
+			userBackingBean.getUser().addUserRole(UserRole.PROJECTMANAGER);
 		}
 		
 		userService.persistUser(userBackingBean.getUser());

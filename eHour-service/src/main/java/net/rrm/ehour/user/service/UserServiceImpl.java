@@ -40,7 +40,6 @@ import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.util.DateUtil;
-import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 
 import org.acegisecurity.providers.encoding.MessageDigestPasswordEncoder;
@@ -382,7 +381,7 @@ public class UserServiceImpl implements UserService
 	{
 		User user = userDAO.findById(userId);
 		
-		UserRole userRole = userRoleDAO.findById(EhourConstants.ROLE_PROJECTMANAGER);
+		UserRole userRole = userRoleDAO.findById(UserRole.ROLE_PROJECTMANAGER);
 		
 		user.getUserRoles().add(userRole);
 		

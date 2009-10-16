@@ -19,10 +19,6 @@ package net.rrm.ehour.ui.common.renderers;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
-/**
- * TODO 
- **/
-
 public class UserRoleRenderer  extends LocalizedResourceRenderer
 {
 	private static final long serialVersionUID = -4020935210828625185L;
