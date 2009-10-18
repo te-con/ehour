@@ -10,6 +10,7 @@ import java.util.List;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
@@ -28,6 +29,7 @@ public class AssignmentFormPanelTest extends AbstractSpringWebAppTester
 	private AssignmentAdminBackingBean backingBean;
 	private CustomerService customerService;
 	private ProjectAssignmentService assignmentService;
+	private ProjectAssignmentManagementService managementService;
 	
 	@Before
 	public void setup()
@@ -37,6 +39,9 @@ public class AssignmentFormPanelTest extends AbstractSpringWebAppTester
 
 		assignmentService = createMock(ProjectAssignmentService.class);
 		mockContext.putBean(assignmentService);
+		
+		managementService = createMock(ProjectAssignmentManagementService.class);
+		mockContext.putBean(managementService);
 		
 		customerService = createMock(CustomerService.class);
 		mockContext.putBean(customerService);
@@ -55,13 +60,13 @@ public class AssignmentFormPanelTest extends AbstractSpringWebAppTester
 		expect(customerService.getCustomers(true))
 			.andReturn(customers);
 		
-		replay(customerService, assignmentService);
+		replay(customerService, assignmentService, managementService);
 //		replay(getConfigService());
 		startPanel();
 		
 		tester.assertNoErrorMessage();
 		
-		verify(customerService, assignmentService);
+		verify(customerService, assignmentService, managementService);
 	}
 	
 	@SuppressWarnings("serial")
