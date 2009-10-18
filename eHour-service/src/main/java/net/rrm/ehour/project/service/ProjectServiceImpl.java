@@ -52,7 +52,11 @@ public class ProjectServiceImpl implements ProjectService
 	private	ProjectDAO					projectDAO;   
 
 	@Autowired
+	private ProjectAssignmentManagementService	projectAssignmentManagementService;
+
+	@Autowired
 	private ProjectAssignmentService	projectAssignmentService;
+
 	
 	@Autowired
 	private	AggregateReportService		aggregateReportService;
@@ -160,7 +164,7 @@ public class ProjectServiceImpl implements ProjectService
 		if (project.isDefaultProject() &&
 				project.isActive())
 		{
-			projectAssignmentService.assignUsersToProjects(project);
+			projectAssignmentManagementService.assignUsersToProjects(project);
 		}
 		
 		return project;
@@ -200,7 +204,7 @@ public class ProjectServiceImpl implements ProjectService
 		{
 			try
 			{
-				projectAssignmentService.deleteProjectAssignment(assignment.getAssignmentId());
+				projectAssignmentManagementService.deleteProjectAssignment(assignment.getAssignmentId());
 			} catch (ObjectNotFoundException e)
 			{
 				// safely ignore
@@ -264,6 +268,11 @@ public class ProjectServiceImpl implements ProjectService
 	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
 	{
 		this.projectAssignmentService = projectAssignmentService;
+	}
+
+	public void setProjectAssignmentManagementService(ProjectAssignmentManagementService projectAssignmentManagementService)
+	{
+		this.projectAssignmentManagementService = projectAssignmentManagementService;
 	}
 
 	/**

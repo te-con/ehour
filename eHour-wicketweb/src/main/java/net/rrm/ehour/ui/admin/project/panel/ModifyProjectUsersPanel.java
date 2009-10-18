@@ -4,7 +4,9 @@ import java.util.List;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.ui.admin.project.panel.editusers.ListCurrentProjectUsersPanel;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
@@ -21,6 +23,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = -2500957894019585211L;
+
+	@SpringBean
+	private ProjectAssignmentManagementService assignmentManagementService;
 
 	@SpringBean
 	private ProjectAssignmentService assignmentService;
@@ -64,7 +69,7 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 			{
 				for (ProjectAssignment projectAssignment : assignments)
 				{
-					assignmentService.updateProjectAssignment(projectAssignment);
+					assignmentManagementService.updateProjectAssignment(projectAssignment);
 				}
 				
 				Label label = new Label("message", new ResourceModel("admin.project.assignmentsUpdated"));

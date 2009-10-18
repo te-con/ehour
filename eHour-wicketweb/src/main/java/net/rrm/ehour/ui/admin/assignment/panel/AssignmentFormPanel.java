@@ -28,7 +28,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -70,7 +70,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel
 	@SpringBean
 	private CustomerService	customerService;
 	@SpringBean
-	private ProjectAssignmentService projectAssignmentService;
+	private ProjectAssignmentManagementService projectAssignmentManagementService;
 	protected EhourConfig		config;
 	/**
 	 * 
@@ -117,7 +117,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel
 	 */
 	private void persistAssignment(AssignmentAdminBackingBean backingBean)
 	{
-		projectAssignmentService.assignUserToProject(backingBean.getProjectAssignmentForSave());
+		projectAssignmentManagementService.assignUserToProject(backingBean.getProjectAssignmentForSave());
 	}
 	
 	/**
@@ -128,7 +128,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel
 	 */
 	private void deleteAssignment(AssignmentAdminBackingBean backingBean) throws ObjectNotFoundException, ParentChildConstraintException
 	{
-		projectAssignmentService.deleteProjectAssignment(backingBean.getProjectAssignment().getAssignmentId());
+		projectAssignmentManagementService.deleteProjectAssignment(backingBean.getProjectAssignment().getAssignmentId());
 	}
 	
 	

@@ -18,150 +18,36 @@ package net.rrm.ehour.project.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
-import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourUtil;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service("projectAssignmentService")
 public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 {
-	private	final static Logger		LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
-
 	@Autowired
 	private	ProjectAssignmentDAO	projectAssignmentDAO;
 
-	@Autowired
-	private	ProjectDAO				projectDAO;
-	
 	@Autowired
 	private	ProjectAssignmentStatusService	projectAssignmentStatusService;
 	
 	@Autowired
 	private	ReportAggregatedDAO		reportAggregatedDAO;
-	
-	@Autowired
-	private UserService				userService;
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#assignUsersToProjects(net.rrm.ehour.domain.Project)
-	 */
-	@Transactional
-	@Auditable(actionType=AuditActionType.UPDATE)
-	public void assignUsersToProjects(Project project)
-	{
-		List<User> users = userService.getUsers(UserRole.CONSULTANT);
-		
-		for (User user : users)
-		{
-			ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(project, user);
 
-			if (!isAlreadyAssigned(assignment, user.getProjectAssignments()))
-			{
-				LOGGER.debug("Assigning user " + user + " to " + project);
-				assignUserToProject(assignment);	
-			}
-		}
-	}
-	
-	/**
-	 * Assign user to project
-	 *
-	 */
-	@Transactional
-	@Auditable(actionType=AuditActionType.UPDATE)
-	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) 
-	{
-		projectAssignmentDAO.persist(projectAssignment);
-		
-		return projectAssignment;
-	}
-	
-	/**
-	 * Assign user to default projects
-	 */
-	@Transactional
-	@Auditable(actionType=AuditActionType.UPDATE)
-	public User assignUserToDefaultProjects(User user)
-	{
-		List<Project>		defaultProjects;
-		ProjectAssignment	assignment;
-		
-		defaultProjects = projectDAO.findDefaultProjects();
-		
-		for (Project project : defaultProjects)
-		{
-			assignment = ProjectAssignment.createProjectAssignment(project, user);
-			
-			if (!isAlreadyAssigned(assignment, user.getProjectAssignments()))
-			{
-				LOGGER.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
-				user.addProjectAssignment(assignment);
-			}
-		}
-		
-		return user;
-	}
-	
-	/**
-	 * Check if this default assignment is already assigned
-	 * 
-	 * @param projectAssignment
-	 * @param user
-	 * @return
-	 */
-	private boolean isAlreadyAssigned(ProjectAssignment projectAssignment, Collection<ProjectAssignment> assignments)
-	{
-		boolean		alreadyAssigned = false;
-		int			projectId;
-		
-		if (assignments == null)
-		{
-			return false;
-		}
-		
-		projectId = projectAssignment.getProject().getProjectId().intValue();
-		
-		for (ProjectAssignment assignment : assignments)
-		{
-			if (assignment.getProject().getProjectId().intValue() == projectId)
-			{
-				if (LOGGER.isDebugEnabled())
-				{
-					LOGGER.debug("Default assignment is already assigned as assignmentId " + assignment.getAssignmentId());
-				}
-				
-				alreadyAssigned = true;
-				break;
-			}
-		}
-			
-		return alreadyAssigned;
-	}
-	
 	/**
 	 * Get active projects for user in date range 
 	 * @param userId
@@ -249,26 +135,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		return assignment;
 	}
 
-	/**
-	 * @throws ObjectNotFoundException 
-	 * 
-	 */
-	@Transactional
-	@Auditable(actionType=AuditActionType.DELETE)
-	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException, ObjectNotFoundException
-	{
-		ProjectAssignment pa = getProjectAssignment(assignmentId);
-		
-		if (pa.isDeletable())
-		{
-			projectAssignmentDAO.delete(pa);
-		}
-		else
-		{
-			throw new ParentChildConstraintException("Timesheet entries booked on assignment.");
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#getProjectAssignments(net.rrm.ehour.project.domain.Project, net.rrm.ehour.data.DateRange)
@@ -302,16 +168,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	}
 
 	/**
-	 * 
-	 * @param dao
-	 */
-
-	public void setProjectDAO(ProjectDAO dao)
-	{
-		this.projectDAO = dao;
-	}
-
-	/**
 	 * @param projectAssignmentStatusService the projectAssignmentStatusService to set
 	 */
 	public void setProjectAssignmentStatusService(ProjectAssignmentStatusService projectAssignmentStatusService)
@@ -325,19 +181,5 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
-	}
-
-	/**
-	 * @param userService the userService to set
-	 */
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}
-
-	@Transactional
-	public void updateProjectAssignment(ProjectAssignment assignment)
-	{
-		projectAssignmentDAO.persist(assignment);
 	}
 }

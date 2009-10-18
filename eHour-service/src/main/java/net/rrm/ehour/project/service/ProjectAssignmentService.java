@@ -24,7 +24,6 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 
 /**
  * Service for handling project assignments
@@ -32,25 +31,6 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 
 public interface ProjectAssignmentService
 {
-	/**
-	 * Assign user to project
-	 * @param projectAssignment
-	 */
-	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment);
-	
-	/**
-	 * 
-	 * @param project
-	 */
-	public void assignUsersToProjects(Project project);
-	
-	/**
-	 * Assign user to default projects
-	 * @param user
-	 * @return
-	 */
-	public User assignUserToDefaultProjects(User user);
-	
 	/**
 	 * Get active projects for user in date range 
 	 * @param userId
@@ -75,12 +55,6 @@ public interface ProjectAssignmentService
 	public ProjectAssignment getProjectAssignment(Integer assignmentId)  throws ObjectNotFoundException;
 	
 	/**
-	 * Delete project assignment
-	 * @param assignmentId
-	 */
-	public void deleteProjectAssignment(Integer assignmentId) throws ObjectNotFoundException, ParentChildConstraintException;
-	
-	/**
 	 * Get project assignments for project
 	 * @param project
 	 */
@@ -99,10 +73,4 @@ public interface ProjectAssignmentService
 	 * @return
 	 */
 	public List<ProjectAssignmentType> getProjectAssignmentTypes();
-	
-	/**
-	 * Update project assignment
-	 * @param assignment
-	 */
-	public void updateProjectAssignment(ProjectAssignment assignment);
 }

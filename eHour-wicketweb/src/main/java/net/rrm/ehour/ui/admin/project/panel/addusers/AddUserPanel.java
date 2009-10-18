@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.admin.project.panel;
+package net.rrm.ehour.ui.admin.project.panel.addusers;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.UserRole;

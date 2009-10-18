@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.admin.project.panel;
+package net.rrm.ehour.ui.admin.project.panel.editusers;
 
 import java.util.Currency;
 import java.util.List;

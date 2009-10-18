@@ -32,6 +32,7 @@ import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService
 	@Autowired
 	private	UserRoleDAO			userRoleDAO;
 	@Autowired
-	private	ProjectAssignmentService		projectAssignmentService;
+	private	ProjectAssignmentManagementService		projectAssignmentManagementService;
 	@Autowired
 	private	AggregateReportService		aggregateReportService;
 	@Autowired
@@ -316,7 +317,7 @@ public class UserServiceImpl implements UserService
 		// assign new users to default projects
 		if (user.getUserId() == null)
 		{
-			projectAssignmentService.assignUserToDefaultProjects(user);
+			projectAssignmentManagementService.assignUserToDefaultProjects(user);
 		}
 		
 		userDAO.merge(user);
@@ -324,13 +325,6 @@ public class UserServiceImpl implements UserService
 		return user;
 	}
 
-	/**
-	 * @param projectAssignmentService the projectAssignmentService to set
-	 */
-	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
-	{
-		this.projectAssignmentService = projectAssignmentService;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -491,5 +485,10 @@ public class UserServiceImpl implements UserService
 	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder)
 	{
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public void setProjectAssignmentManagementService(ProjectAssignmentManagementService projectAssignmentManagementService)
+	{
+		this.projectAssignmentManagementService = projectAssignmentManagementService;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
+import net.rrm.ehour.ui.admin.project.panel.editusers.ListCurrentProjectUsersPanel;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.markup.html.panel.Panel;
