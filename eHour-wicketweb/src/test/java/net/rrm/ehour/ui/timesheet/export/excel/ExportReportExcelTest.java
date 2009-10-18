@@ -59,10 +59,8 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 	private DetailedReportService detailedReportService;
 
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
-		super.setUp();
-
 		getConfig().setFirstDayOfWeek(Calendar.MONDAY);
 		
 		detailedReportService = createMock(DetailedReportService.class);

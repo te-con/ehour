@@ -46,10 +46,8 @@ public class ProjectAdminTest extends AbstractSpringWebAppTester
 	private CustomerService customerService;
 	
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
-		super.setUp();
-		
 		projectService = createMock(ProjectService.class);
 		getMockContext().putBean("projectService", projectService);
 

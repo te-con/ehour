@@ -35,7 +35,6 @@ import net.rrm.ehour.ui.report.page.BaseTestReport;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -45,13 +44,6 @@ import org.junit.Test;
  */
 public class UserReportPanelTest extends BaseTestReport
 {
-	@Before
-	public void setUp() throws Exception
-	{
-		super.setUp();
-
-	}
-	
 	@Test
 	public void shouldRenderWithGraphs()
 	{

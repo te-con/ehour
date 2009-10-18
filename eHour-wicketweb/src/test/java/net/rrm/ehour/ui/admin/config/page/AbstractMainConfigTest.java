@@ -35,10 +35,8 @@ public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester
 	private EhourConfigStub config;
 
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
-		super.setUp();
-		
 //		configService = createMock(ConfigurationService.class);
 		configService = createMock(ConfigurationServiceImpl.class, 
 				ConfigurationServiceImpl.class.getMethod("getConfiguration", null),

@@ -40,9 +40,8 @@ import org.junit.Test;
 public class AuditReportPageTest extends AbstractSpringWebAppTester
 {
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
-		super.setUp();
 		expect(getAuditService().getAuditCount(isA(AuditReportRequest.class)))
 			.andReturn(5)
 			.anyTimes();

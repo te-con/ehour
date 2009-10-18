@@ -57,10 +57,8 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 	private ReportCriteria reportCriteria;
 	
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
-		super.setUp();
-		
 		timesheetService = createMock(TimesheetService.class);
 		getMockContext().putBean("timesheetService", timesheetService);
 

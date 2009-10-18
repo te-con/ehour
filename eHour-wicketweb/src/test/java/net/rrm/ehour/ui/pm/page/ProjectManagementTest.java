@@ -47,16 +47,10 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester
 	ProjectService	projectService;
 	
 	AggregateReportService aggregateReportService;
-		
 	
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
-		super.setUp();
-		
 		projectService = createMock(ProjectService.class);
 		getMockContext().putBean("projectService", projectService);		
 		

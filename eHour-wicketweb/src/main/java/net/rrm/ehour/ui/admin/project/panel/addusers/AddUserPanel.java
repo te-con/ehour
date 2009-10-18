@@ -1,6 +1,9 @@
 package net.rrm.ehour.ui.admin.project.panel.addusers;
 
+import java.util.List;
+
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.user.service.UserService;
@@ -18,7 +21,10 @@ public class AddUserPanel extends AbstractBasePanel
 	{
 		super(id);
 		
-		userService.getUsers(UserRole.CONSULTANT);
+		List<User> users = userService.getUsers(UserRole.CONSULTANT);
+		
+		add(new ListUsersPanel("users", users));
+		
 	}
 
 }

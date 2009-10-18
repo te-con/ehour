@@ -45,14 +45,9 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 {
 	private TimesheetService	timesheetService;
 	
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
-		super.setUp();
-		
 		timesheetService = createMock(TimesheetService.class);
 		getMockContext().putBean("timesheetService", timesheetService);
 

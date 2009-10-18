@@ -40,7 +40,7 @@ public class QuickWeekRendererTest extends AbstractSpringWebAppTester
 	Localizer			localizer;
 	
 	@Before
-	public void setUp()
+	public void before()
 	{
 		localizer = createMock(Localizer.class); 
 		

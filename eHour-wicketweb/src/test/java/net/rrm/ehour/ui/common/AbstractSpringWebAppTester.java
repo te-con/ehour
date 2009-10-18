@@ -39,7 +39,7 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 	protected TestEhourWebApplication webApp;
 	
 	@Before
-	public void setUp() throws Exception
+	public final void setUp() throws Exception
 	{
 		super.springContextSetup();
 		webApp =  new TestEhourWebApplication(getMockContext());

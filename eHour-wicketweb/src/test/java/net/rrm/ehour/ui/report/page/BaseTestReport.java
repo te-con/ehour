@@ -46,10 +46,8 @@ public abstract class BaseTestReport extends AbstractSpringWebAppTester
 	protected ReportCriteria reportCriteria;
 	
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
-		super.setUp();
-		
 		reportCriteriaService = createMock(ReportCriteriaService.class);
 		getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 
