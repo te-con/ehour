@@ -184,18 +184,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.atlassian.maven.plugins</groupId>
-				<artifactId>maven-clover2-plugin</artifactId>
-				<version>2.6.0-M1</version>
-				<configuration>
-					<![CDATA[QnqONtanreIGMsCbqgOIemeErpmBPRBhIEOHsXpBhlWWuHM
-mj2Km8foj4CJWVTM02SgcIpX2L04iXacI9g6cw9XRNGPhJ6
-MrRouWPNooNOPmRpPoRStQPmMOOqMQoMQqUxvvsUuutmQMn
-mqmUUnoqurpmqmmmmmUUnoqurpmqmmmmmUUb8lroUUnmm]]>
-
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
