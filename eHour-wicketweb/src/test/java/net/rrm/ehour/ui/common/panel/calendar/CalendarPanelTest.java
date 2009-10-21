@@ -33,6 +33,8 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.util.tester.TestPanelSource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,23 +61,76 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 	@Test
 	public void testCalendarPanelStringUser()
 	{
-		Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
-		List<BookedDay> days = new ArrayList<BookedDay>();
-		BookedDay day = new BookedDay();
-		day.setDate(new Date(2007 - 1900, 12 - 1, 15));
-		day.setHours(8);
-		days.add(day);
+		Calendar requestedMonth = new ComparableGreggieCalendar(2009, 10 - 1, 22);
+		EhourWebSession session = getWebApp().getSession();
+		session.setNavCalendar(requestedMonth);
 		
+		List<BookedDay> days = generateBookDays();
+
 		expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
 				.andReturn(days);					
 
 		replay(timesheetService);
-
-		EhourWebSession session = getWebApp().getSession();
-		session.setNavCalendar(requestedMonth);
 		
-		new CalendarPanel("id", new User(1));
+		startPanel();
 		
 		verify(timesheetService);
+	}
+
+	private List<BookedDay> generateBookDays()
+	{
+		List<BookedDay> days = new ArrayList<BookedDay>();
+		
+		BookedDay day = new BookedDay();
+		day.setDate(new Date(2007 - 1900, 12 - 1, 15));
+		day.setHours(8);
+		days.add(day);
+		return days;
+	}
+
+	@SuppressWarnings("serial")
+	private void startPanel()
+	{
+		tester.startPanel(new TestPanelSource()
+		{
+			
+			public Panel getTestPanel(String panelId)
+			{
+				return new CalendarPanel(panelId, new User(1));
+			}
+		});
+	}
+	
+	@SuppressWarnings("serial")
+	class ComparableGreggieCalendar extends GregorianCalendar
+	{
+		public ComparableGreggieCalendar(int year, int month, int day)
+		{
+			super(year, month, day);
+		}
+
+		@Override
+		public boolean equals(Object obj)
+		{
+			boolean equals = super.equals(obj);
+			
+			if (equals)
+			{
+				return equals;
+			}
+			else
+			{
+				GregorianCalendar cal = (GregorianCalendar)obj;
+				
+				equals = true;
+				
+				equals &= this.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH);
+				equals &= this.get(Calendar.MONTH) == cal.get(Calendar.MONTH);
+				equals &= this.get(Calendar.YEAR) == cal.get(Calendar.YEAR);
+				
+				return equals;
+			}
+			
+		}
 	}
 }
