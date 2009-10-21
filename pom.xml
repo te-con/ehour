@@ -184,6 +184,11 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>com.atlassian.maven.plugins</groupId>
+				<artifactId>maven-clover2-plugin</artifactId>
+				<version>2.6.0</version>
+		       </plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
@@ -277,11 +282,6 @@
 					<targetJdk>1.5</targetJdk>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.atlassian.maven.plugins</groupId>
-				<artifactId>maven-clover2-plugin</artifactId>
-				<version>2.6.0</version>
-		       </plugin>
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
