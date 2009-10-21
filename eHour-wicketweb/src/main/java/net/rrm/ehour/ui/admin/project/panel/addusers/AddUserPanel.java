@@ -10,6 +10,7 @@ import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
 import net.rrm.ehour.ui.admin.assignment.panel.AssignmentFormPanel;
 import net.rrm.ehour.ui.admin.assignment.panel.AssignmentFormPanel.DisplayOption;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -33,6 +34,6 @@ public class AddUserPanel extends AbstractBasePanel
 		ProjectAssignment assignment = new ProjectAssignment();
 		AssignmentAdminBackingBeanImpl bBean = new AssignmentAdminBackingBeanImpl(assignment);
 		
-		add(new AssignmentFormPanel("assignmentInfo", new CompoundPropertyModel(bBean), DisplayOption.HIDE_DELETE_BUTTON, DisplayOption.HIDE_PROJECT_SELECTION));
+		add(new AssignmentFormPanel("assignmentInfo", new CompoundPropertyModel(bBean), WebGeo.W_CONTENT_XXSMALL, DisplayOption.HIDE_DELETE_BUTTON, DisplayOption.HIDE_PROJECT_SELECTION));
 	}
 }

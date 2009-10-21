@@ -58,6 +58,8 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel implements 
 	{
 		HIDE_PROJECT_SELECTION,
 		SHOW_PROJECT_SELECTION,
+		HIDE_SAVE_BUTTON,
+		SHOW_SAVE_BUTTON,
 		HIDE_DELETE_BUTTON,
 		SHOW_DELETE_BUTTON;
 	}
@@ -72,10 +74,10 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel implements 
 
 	public AssignmentFormPanel(String id, final IModel model)
 	{
-		this(id, model, DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_DELETE_BUTTON);
+		this(id, model, WebGeo.W_CONTENT_SMALL, DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON);
 	}
 	
-	public AssignmentFormPanel(String id, final IModel model, DisplayOption... displayOptions)
+	public AssignmentFormPanel(String id, final IModel model, WebGeo panelWidth, DisplayOption... displayOptions)
 	{
 		super(id, model);
 		
@@ -83,7 +85,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel implements 
 		
 		setOutputMarkupId(true);
 		
-		setUpPage(this, model, Arrays.asList(displayOptions));
+		setUpPage(this, model, panelWidth, Arrays.asList(displayOptions));
 	}
 
 	@Override
@@ -127,9 +129,9 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel implements 
 	/**
 	 * Setup form
 	 */
-	private void setUpPage(WebMarkupContainer parent, final IModel model, List<DisplayOption> displayOptions)
+	private void setUpPage(WebMarkupContainer parent, final IModel model, WebGeo panelWidth, List<DisplayOption> displayOptions)
 	{
-		Border greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_SMALL);
+		Border greyBorder = new GreySquaredRoundedBorder("border", panelWidth);
 		add(greyBorder);
 		
 		final Form form = new Form("assignmentForm");

@@ -25,6 +25,7 @@ package net.rrm.ehour.ui.common.util;
 public enum WebGeo
 {
 	NOT_DEFINED(-1),
+	W_CONTENT_XXSMALL(300),
 	W_CONTENT_XSMALL(350),
 	W_CONTENT_SMALL(450),
 	W_CONTENT_MEDIUM(730),
