@@ -56,8 +56,10 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel implements 
 {
 	public enum DisplayOption
 	{
-		PROJECT_SELECTION,
-		DELETE_BUTTON;
+		HIDE_PROJECT_SELECTION,
+		SHOW_PROJECT_SELECTION,
+		HIDE_DELETE_BUTTON,
+		SHOW_DELETE_BUTTON;
 	}
 	
 	private static final long serialVersionUID = -85486044225123470L;
@@ -66,12 +68,11 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel implements 
 	private ProjectAssignmentManagementService projectAssignmentManagementService;
 	
 	private EhourConfig		config;
-
 	private AssignmentTypeFormPartPanel typeFormPartPanel;
 
 	public AssignmentFormPanel(String id, final IModel model)
 	{
-		this(id, model, DisplayOption.PROJECT_SELECTION, DisplayOption.DELETE_BUTTON);
+		this(id, model, DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_DELETE_BUTTON);
 	}
 	
 	public AssignmentFormPanel(String id, final IModel model, DisplayOption... displayOptions)
@@ -162,7 +163,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel implements 
 	
 	private WebMarkupContainer createProjectSelection(String id, IModel model, List<DisplayOption> displayOptions)
 	{
-		if (displayOptions.contains(DisplayOption.PROJECT_SELECTION))
+		if (displayOptions.contains(DisplayOption.SHOW_PROJECT_SELECTION))
 		{
 			return new AssignmentProjectSelectionPanel(id, model);
 		}

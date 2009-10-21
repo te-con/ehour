@@ -6,6 +6,7 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.ui.admin.project.panel.addusers.AddUserPanel;
 import net.rrm.ehour.ui.admin.project.panel.editusers.ListCurrentProjectUsersPanel;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
@@ -45,6 +46,8 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 	{
 		Border border = new GreySquaredRoundedBorder("addBorder", WebGeo.W_CONTENT_ADMIN_TAB_WIDE);
 		add(border);
+		
+		border.add(new AddUserPanel("addUsers", project));
 		
 	}
 	

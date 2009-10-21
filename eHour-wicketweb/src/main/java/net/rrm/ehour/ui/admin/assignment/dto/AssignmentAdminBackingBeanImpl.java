@@ -38,9 +38,6 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	private	boolean				infiniteStartDate;
 	private	boolean				infiniteEndDate;
 
-	/**
-	 * 
-	 */
 	public AssignmentAdminBackingBeanImpl()
 	{
 	}
@@ -59,7 +56,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 	
 	/**
-	 * Factory method
+	 * Factory method (move to a separate factory)
 	 * @param user
 	 * @return
 	 */

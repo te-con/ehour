@@ -5,12 +5,16 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
@@ -25,12 +29,20 @@ public class AddUserPanelTest extends AbstractSpringWebAppTester
 {
 	private UserService userService;
 	private Project project;
+	private ProjectAssignmentManagementService managementService;
+	private ProjectAssignmentService assignmentService;
 
 	@Before
 	public void before()
 	{
 		userService = createMock(UserService.class);
 		mockContext.putBean("userService", userService);
+		
+		managementService = createMock(ProjectAssignmentManagementService.class);
+		mockContext.putBean("projectAssignmentManagementService", managementService);
+		
+		assignmentService = createMock(ProjectAssignmentService.class);
+		mockContext.putBean("projectAssignmentService", assignmentService);
 		
 		project = new Project();
 	}
@@ -41,14 +53,17 @@ public class AddUserPanelTest extends AbstractSpringWebAppTester
 		User user = DummyUIDataGenerator.getUser();
 		List<User> users = Collections.singletonList(user);
 		
+		expect(assignmentService.getProjectAssignmentTypes())
+			.andReturn(new ArrayList<ProjectAssignmentType>());
+		
 		expect(userService.getUsers(UserRole.CONSULTANT))
 			.andReturn(users);
 		
-		replay(userService);
+		replay(userService, managementService, assignmentService);
 	
 		startPanel(project);
 		
-		verify(userService);
+		verify(userService, managementService, assignmentService);
 		
 	}
 	
