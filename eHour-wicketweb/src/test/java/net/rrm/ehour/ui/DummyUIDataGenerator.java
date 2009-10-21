@@ -144,6 +144,14 @@ public class DummyUIDataGenerator
 		return user;
 	}
 	
+	public static List<User> getUserList()
+	{
+		ArrayList<User> list = new ArrayList<User>();
+		list.add(getUser());
+		
+		return list;
+	}
+	
 	public static TimesheetEntry getTimesheetEntry(int prjId, Date date, float hours)
 	{
 		TimesheetEntry 	entry;
