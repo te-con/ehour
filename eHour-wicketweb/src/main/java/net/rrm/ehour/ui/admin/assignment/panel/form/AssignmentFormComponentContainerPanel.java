@@ -107,7 +107,9 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel
 	 */
 	private AssignmentTypeFormPartPanel createProjectDuration(Form form, final IModel model)
 	{
-		return new AssignmentTypeFormPartPanel("assignmentType", model, form);
+		typeFormPartPanel = new AssignmentTypeFormPartPanel("assignmentType", model, form);
+		
+		return typeFormPartPanel;
 	}
 	
 	@Override
