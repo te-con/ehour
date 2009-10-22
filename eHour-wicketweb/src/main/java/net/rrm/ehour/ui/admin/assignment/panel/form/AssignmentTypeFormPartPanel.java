@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.assignment.panel;
+package net.rrm.ehour.ui.admin.assignment.panel.form;
 
 import java.util.List;
 
@@ -69,10 +69,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		addDates(form, model);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
+
 	public Component[] getNotifiableComponents()
 	{
 		return notifiableComponents;

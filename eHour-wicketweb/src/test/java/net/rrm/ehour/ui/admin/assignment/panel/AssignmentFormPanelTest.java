@@ -61,7 +61,6 @@ public class AssignmentFormPanelTest extends AbstractSpringWebAppTester
 			.andReturn(customers);
 		
 		replay(customerService, assignmentService, managementService);
-//		replay(getConfigService());
 		startPanel();
 		
 		tester.assertNoErrorMessage();

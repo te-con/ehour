@@ -113,7 +113,6 @@ public class FormUtil
             }
         };
         
-        
         submitButton.setModel(new ResourceModel("general.save"));
 		// default submit
 		form.add(submitButton);

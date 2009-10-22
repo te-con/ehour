@@ -97,8 +97,6 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 			}
 		};
 		
-//		tabbedPanel.setVisible(user.getUserId() != null)
-		
 		add(tabbedPanel);
 	}
 	

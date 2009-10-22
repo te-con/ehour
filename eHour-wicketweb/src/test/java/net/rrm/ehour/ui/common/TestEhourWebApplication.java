@@ -118,11 +118,10 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	{
 		session = new EhourWebSession(request)
 		{
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = -430393231818258496L;
 
+
+			
 			public AuthUser getUser()
 			{
 				User user = new User(1);

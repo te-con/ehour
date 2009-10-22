@@ -60,7 +60,7 @@ public class CalendarPanel extends SidePanel
 {
 	private static final long serialVersionUID = -7777893083323915299L;
 
-	private final static Logger logger = Logger.getLogger(CalendarPanel.class);
+	private final static Logger LOGGER = Logger.getLogger(CalendarPanel.class);
 
 	@SpringBean
 	private TimesheetService 	timesheetService;
@@ -92,8 +92,7 @@ public class CalendarPanel extends SidePanel
 
 		setOutputMarkupId(true);
 
-		EhourWebSession 	session = (EhourWebSession)getSession();
-		config = session.getEhourConfig();
+		config = EhourWebSession.getSession().getEhourConfig();
 
 		this.user = user;
 		fireWeekClicks = allowWeekClicks;
@@ -139,10 +138,11 @@ public class CalendarPanel extends SidePanel
 	private void buildCalendar(WebMarkupContainer parent)
 	{
 		// first get the data
-		Calendar month = ((EhourWebSession)this.getSession()).getNavCalendar();
+		System.out.println(EhourWebSession.getSession());
+		Calendar month = EhourWebSession.getSession().getNavCalendar();
 		List<CalendarWeek>	weeks;
 
-		logger.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
+		LOGGER.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
 		weeks = createWeeks(user.getUserId(), ((GregorianCalendar)month.clone()));
 
 		// set month label
@@ -400,7 +400,7 @@ public class CalendarPanel extends SidePanel
 		@Override
 		public void onClick(AjaxRequestTarget target)
         {
-			EhourWebSession session = (EhourWebSession)this.getSession();
+			EhourWebSession session = EhourWebSession.getSession();
 			Calendar month = session.getNavCalendar();
 			month.add(Calendar.MONTH, monthChange);
 			month.set(Calendar.DAY_OF_MONTH, 1);

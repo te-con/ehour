@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.admin.assignment.panel;
+package net.rrm.ehour.ui.admin.assignment.panel.form;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +31,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 {
 	private static final long serialVersionUID = 5513770467507708949L;
 
-	private	final static Logger	LOGGER = Logger.getLogger(AssignmentFormPanel.class);
+	private	final static Logger	LOGGER = Logger.getLogger(AssignmentFormComponentContainerPanel.class);
 	
 	public enum EntrySelectorAjaxEventType implements AjaxEventType
 	{
