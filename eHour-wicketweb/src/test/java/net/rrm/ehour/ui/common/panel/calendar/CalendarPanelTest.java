@@ -80,7 +80,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 //		verify(timesheetService);
 //	}
 
-//	@Test
+	@Test
 	public void shouldRender()
 	{
 		Calendar requestedMonth = new ComparableGreggieCalendar(2009, 10 - 1, 22);
