@@ -55,30 +55,29 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 
 	}
 	
-	
 //	@Test
-//	public void reproduceIssueEHO131()
-//	{
-//		Calendar requestedMonth = new ComparableGreggieCalendar(2009, 1 - 1, 2);
-//		System.out.println("yy: " + requestedMonth.get(Calendar.MONTH));
-//		EhourWebSession session = EhourWebSession.getSession();
-//		System.out.println("s:" + getWebApp().getSession());
-//
-//		session.setNavCalendar(requestedMonth);
-//		
-//		List<BookedDay> days = generateBookDays();
-//
-//		expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
-//				.andReturn(days);					
-//
-//		replay(timesheetService);
-//		
-//		startPanel();
-//		
-////		tester.executeAjaxEvent("calendarFrame:weeks:id", "onclick");
-//		
-//		verify(timesheetService);
-//	}
+	public void reproduceIssueEHO131()
+	{
+		Calendar requestedMonth = new ComparableGreggieCalendar(2009, 1 - 1, 2);
+		System.out.println("yy: " + requestedMonth.get(Calendar.MONTH));
+		EhourWebSession session = getWebApp().getSession();
+		System.out.println("s:" + getWebApp().getSession());
+
+		session.setNavCalendar(requestedMonth);
+		
+		List<BookedDay> days = generateBookDays();
+
+		expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
+				.andReturn(days);					
+
+		replay(timesheetService);
+		
+		startPanel();
+		
+//		tester.executeAjaxEvent("calendarFrame:weeks:id", "onclick");
+		
+		verify(timesheetService);
+	}
 
 	@Test
 	public void shouldRender()

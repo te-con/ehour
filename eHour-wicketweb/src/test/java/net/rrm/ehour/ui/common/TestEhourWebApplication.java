@@ -53,10 +53,6 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	private transient ApplicationContextMock mockContext;
 	private EhourWebSession				session;
 
-	/**
-	 * 
-	 * @param context
-	 */
 	public TestEhourWebApplication(ApplicationContextMock context)
 	{
 		this.mockContext = context;
