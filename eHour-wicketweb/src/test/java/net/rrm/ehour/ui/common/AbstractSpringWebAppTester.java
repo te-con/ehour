@@ -62,20 +62,13 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 			
 		});
 	}
-
 	
-	/**
-	 * @return the tester
-	 */
-	public WicketTester getTester()
+	protected WicketTester getTester()
 	{
 		return tester;
 	}
 	
-	/**
-	 * @return the webapp
-	 */
-	public TestEhourWebApplication getWebApp()
+	protected TestEhourWebApplication getWebApp()
 	{
 		return webApp;
 	};

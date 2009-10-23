@@ -55,13 +55,11 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 
 	}
 	
-//	@Test
+	@Test
 	public void reproduceIssueEHO131()
 	{
 		Calendar requestedMonth = new ComparableGreggieCalendar(2009, 1 - 1, 2);
-		System.out.println("yy: " + requestedMonth.get(Calendar.MONTH));
 		EhourWebSession session = getWebApp().getSession();
-		System.out.println("s:" + getWebApp().getSession());
 
 		session.setNavCalendar(requestedMonth);
 		
@@ -74,7 +72,9 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 		
 		startPanel();
 		
-//		tester.executeAjaxEvent("calendarFrame:weeks:id", "onclick");
+//		Component page = tester.getComponentFromLastRenderedPage("panel:calendarFrame:weeks");
+		
+		tester.executeAjaxEvent("panel:calendarFrame:weeks:0", "onclick");
 		
 		verify(timesheetService);
 	}

@@ -51,7 +51,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 {
 	private static final long serialVersionUID = -7336200909844170964L;
 	private transient ApplicationContextMock mockContext;
-	private EhourWebSession				session;
+	private EhourWebSession	session;
 
 	public TestEhourWebApplication(ApplicationContextMock context)
 	{
@@ -109,15 +109,12 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.authentication.AuthenticatedWebApplication#newSession(org.apache.wicket.Request, org.apache.wicket.Response)
 	 */
+	@SuppressWarnings("serial")
 	@Override
 	public Session newSession(final Request request, final Response response)
 	{
 		session = new EhourWebSession(request)
 		{
-			private static final long serialVersionUID = -430393231818258496L;
-
-
-			
 			public AuthUser getUser()
 			{
 				User user = new User(1);
@@ -169,7 +166,14 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	
 	protected ISessionStore newSessionStore()
 	{
-		return new HttpSessionStore(this);
+		return new HttpSessionStore(this)
+		{
+			@Override
+			public Session lookup(Request request)
+			{
+				return session;
+			}
+		};
 	}
 	
 	protected WebResponse newWebResponse(final HttpServletResponse servletResponse)
