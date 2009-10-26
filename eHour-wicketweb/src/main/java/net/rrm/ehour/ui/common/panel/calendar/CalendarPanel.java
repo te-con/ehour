@@ -148,16 +148,26 @@ public class CalendarPanel extends SidePanel
 		parent.add(new Label("currentMonth", new DateModel(month, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
 
 		// previous & next month links
-		AjaxLink previousMonthLink = new ChangeMonthLink("previousMonthLink", -1);
-		previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
-		parent.add(previousMonthLink);
+		parent.add(createPreviousMonthLink("previousMonthLink"));
 
-		AjaxLink nextMonthLink = new ChangeMonthLink("nextMonthLink", 1);
-		nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
-		parent.add(nextMonthLink);
+		parent.add(createNextMonthLink("nextMonthLink"));
 
 		// content
 		addCalendarWeeks(parent, weeks);
+	}
+
+	private AjaxLink createNextMonthLink(String id)
+	{
+		AjaxLink nextMonthLink = new ChangeMonthLink(id, 1);
+		nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
+		return nextMonthLink;
+	}
+
+	private AjaxLink createPreviousMonthLink(String id)
+	{
+		AjaxLink previousMonthLink = new ChangeMonthLink(id, -1);
+		previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
+		return previousMonthLink;
 	}
 
 	/**

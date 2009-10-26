@@ -120,7 +120,33 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 		verify(timesheetService);
 	}
 
+	
+	@Test
+	public void shouldMoveToNextMonth()
+	{
+		Calendar requestedMonth = new ComparableGreggieCalendar(2009, 10 - 1, 22);
+		Calendar nextMonth = new ComparableGreggieCalendar(2009, 11 - 1, 1);
+		
+		EhourWebSession session = getWebApp().getSession();
+		session.setNavCalendar(requestedMonth);
+		
+		List<BookedDay> days = generateBookDays();
 
+		expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
+				.andReturn(days);					
+
+		expect(timesheetService.getBookedDaysMonthOverview(1, nextMonth))
+				.andReturn(days);					
+
+		replay(timesheetService);
+		
+		startPanel();
+
+		tester.executeAjaxEvent("panel:calendarFrame:nextMonthLink", "onclick");
+		
+		verify(timesheetService);
+	}
+	
 	private List<BookedDay> generateBookDays()
 	{
 		List<BookedDay> days = new ArrayList<BookedDay>();
@@ -191,9 +217,6 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 		
 		private boolean compare(Calendar other,int property)
 		{
-			System.out.println("this: " + get(property));
-			System.out.println("other: " + other.get(property));
-			System.out.println("--");
 			return this.get(property) == other.get(property);
 		}
 	}
