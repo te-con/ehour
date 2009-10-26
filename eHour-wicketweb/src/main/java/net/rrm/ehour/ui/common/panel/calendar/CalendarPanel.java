@@ -28,7 +28,7 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxUtil;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -407,7 +407,7 @@ public class CalendarPanel extends SidePanel
 			session.setNavCalendar(month);
 
 			// do it before it gets replaced, otherwise getPage is  null due to new instantiation of links
-			AjaxUtil.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(CalendarAjaxEventType.MONTH_CHANGE));
+			EventPublisher.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(CalendarAjaxEventType.MONTH_CHANGE));
 
 			refreshCalendar(target);
 
@@ -452,7 +452,7 @@ public class CalendarPanel extends SidePanel
 
 			session.setNavCalendar(cal);
 
-			AjaxUtil.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
+			EventPublisher.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
 		}
 
 		@Override

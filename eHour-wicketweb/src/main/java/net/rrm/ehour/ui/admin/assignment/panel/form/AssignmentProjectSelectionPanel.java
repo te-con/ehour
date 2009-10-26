@@ -13,7 +13,7 @@ import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.AjaxUtil;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 
 import org.apache.log4j.Logger;
@@ -127,7 +127,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 			{
 				AjaxEvent ajaxEvent = new AjaxEvent(EntrySelectorAjaxEventType.PROJECT_CHANGE);
 				
-				AjaxUtil.publishAjaxEvent(AssignmentProjectSelectionPanel.this, ajaxEvent);
+				EventPublisher.publishAjaxEvent(AssignmentProjectSelectionPanel.this, ajaxEvent);
 			}
 		});
 	}

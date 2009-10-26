@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.panel.entryselector;
 
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.event.AjaxUtil;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 
@@ -213,7 +213,7 @@ public class EntrySelectorPanel extends AbstractAjaxPanel
 	{
 		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE,
 																										filter);
-		AjaxUtil.publishAjaxEvent(this, payloadEvent);
+		EventPublisher.publishAjaxEvent(this, payloadEvent);
 		
     	target.addComponent(blueBorder);
 	}

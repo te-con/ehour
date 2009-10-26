@@ -21,7 +21,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.Component.IVisitor;
 
-public class AjaxUtil
+public class EventPublisher
 {
 	/**
 	 * Publish ajax event to container and upwards upto and including the page

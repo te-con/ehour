@@ -20,7 +20,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.component.JavaScriptConfirmation;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.AjaxUtil;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.DemoDecorator;
 import net.rrm.ehour.ui.common.event.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
@@ -83,7 +83,7 @@ public class FormUtil
 					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel)form.getModel()).getWrappedModel()).getObject();
 					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(submitEventType, backingBean);
 					
-					AjaxUtil.publishAjaxEvent(submitTarget, ajaxEvent);
+					EventPublisher.publishAjaxEvent(submitTarget, ajaxEvent);
 				}
             }
 
@@ -108,7 +108,7 @@ public class FormUtil
 				if (errorEventType != null)
 				{
 					AjaxEvent errorEvent = new AjaxEvent(errorEventType);
-					AjaxUtil.publishAjaxEvent(submitTarget, errorEvent);
+					EventPublisher.publishAjaxEvent(submitTarget, errorEvent);
 				}
             }
         };
@@ -127,7 +127,7 @@ public class FormUtil
 					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel)form.getModel()).getWrappedModel()).getObject();
 					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(deleteEventType, backingBean);
 					
-					AjaxUtil.publishAjaxEvent(submitTarget, ajaxEvent);
+					EventPublisher.publishAjaxEvent(submitTarget, ajaxEvent);
 				}
             }
 

@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.AjaxUtil;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
 
@@ -68,7 +68,7 @@ public class AuditReportCriteriaForm extends Form
 			protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				AjaxEvent event = new AjaxEvent(Events.FORM_SUBMIT);
-				AjaxUtil.publishAjaxEvent(AuditReportCriteriaForm.this, event);
+				EventPublisher.publishAjaxEvent(AuditReportCriteriaForm.this, event);
 			}
 		};
 
