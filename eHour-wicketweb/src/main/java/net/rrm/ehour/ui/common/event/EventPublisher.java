@@ -23,18 +23,22 @@ import org.apache.wicket.Component.IVisitor;
 
 public class EventPublisher
 {
+	public static AjaxEventListener listenerHook;
+
 	/**
 	 * Publish ajax event to container and upwards upto and including the page
-	 * @param ajaxEvent
+	 * @param event
 	 * @param container
 	 */
-	public static void publishAjaxEvent(MarkupContainer container, AjaxEvent ajaxEvent)
+	public static void publishAjaxEvent(MarkupContainer container, AjaxEvent event)
 	{
 		boolean proceed = true;
 		
+		notifyHook(event);
+		
 		if (container instanceof AjaxEventListener)
 		{
-			proceed = ((AjaxEventListener)container).ajaxEventReceived(ajaxEvent);
+			proceed = ((AjaxEventListener)container).ajaxEventReceived(event);
 		}
 		
 		if (proceed && !(container instanceof Page))
@@ -46,7 +50,7 @@ public class EventPublisher
 				parent = container.getPage();
 			}
 			
-			publishAjaxEvent(parent, ajaxEvent);
+			publishAjaxEvent(parent, event);
 		}
 	}
 	
@@ -57,6 +61,8 @@ public class EventPublisher
 	 */
 	public static void publishAjaxEventToPageChildren(MarkupContainer parent, AjaxEvent event)
 	{
+		notifyHook(event);
+
 		IVisitor visitor = new AjaxEventVisitor(event);
 		
 		visitor.component(parent.getPage());
@@ -70,14 +76,19 @@ public class EventPublisher
 	 */
 	public static void publishAjaxEventToParentChildren(MarkupContainer parent, AjaxEvent event)
 	{
+		notifyHook(event);
+		
 		parent.visitChildren(AjaxEventListener.class, new AjaxEventVisitor(event));
 	}	
 	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
+	private static void notifyHook(AjaxEvent event)
+	{
+		if (listenerHook != null)
+		{
+			listenerHook.ajaxEventReceived(event);
+		}
+	}
+	
 	private static class AjaxEventVisitor implements IVisitor
 	{
 		private AjaxEvent event;
