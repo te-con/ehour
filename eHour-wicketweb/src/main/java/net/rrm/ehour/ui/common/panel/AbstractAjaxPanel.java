@@ -16,13 +16,13 @@
 
 package net.rrm.ehour.ui.common.panel;
 
-import net.rrm.ehour.ui.common.event.AjaxAwareContainer;
+import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 
 import org.apache.wicket.model.IModel;
 
 
-public abstract class AbstractAjaxPanel extends AbstractBasePanel implements AjaxAwareContainer
+public abstract class AbstractAjaxPanel extends AbstractBasePanel implements AjaxEventListener
 {
 	private static final long serialVersionUID = 5723792133447447887L;
 

@@ -21,7 +21,7 @@ package net.rrm.ehour.ui.common.event;
  * Ajax aware container providing a callback method for ajax requests
  **/
 
-public interface AjaxAwareContainer
+public interface AjaxEventListener
 {
 	/**
 	 * Ajax event received

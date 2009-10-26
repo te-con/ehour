@@ -32,9 +32,9 @@ public class EventPublisher
 	{
 		boolean proceed = true;
 		
-		if (container instanceof AjaxAwareContainer)
+		if (container instanceof AjaxEventListener)
 		{
-			proceed = ((AjaxAwareContainer)container).ajaxEventReceived(ajaxEvent);
+			proceed = ((AjaxEventListener)container).ajaxEventReceived(ajaxEvent);
 		}
 		
 		if (proceed && !(container instanceof Page))
@@ -60,7 +60,7 @@ public class EventPublisher
 		IVisitor visitor = new AjaxEventVisitor(event);
 		
 		visitor.component(parent.getPage());
-		parent.getPage().visitChildren(AjaxAwareContainer.class, visitor);
+		parent.getPage().visitChildren(AjaxEventListener.class, visitor);
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class EventPublisher
 	 */
 	public static void publishAjaxEventToParentChildren(MarkupContainer parent, AjaxEvent event)
 	{
-		parent.visitChildren(AjaxAwareContainer.class, new AjaxEventVisitor(event));
+		parent.visitChildren(AjaxEventListener.class, new AjaxEventVisitor(event));
 	}	
 	
 	/**
@@ -91,9 +91,9 @@ public class EventPublisher
 		{
 			boolean proceed = true;
 			
-			if (component instanceof AjaxAwareContainer)
+			if (component instanceof AjaxEventListener)
 			{
-				proceed = ((AjaxAwareContainer)component).ajaxEventReceived(event);
+				proceed = ((AjaxEventListener)component).ajaxEventReceived(event);
 			}
 			
 			return proceed ? IVisitor.CONTINUE_TRAVERSAL : IVisitor.STOP_TRAVERSAL;
