@@ -16,28 +16,11 @@
 
 package net.rrm.ehour.ui.common.event;
 
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-
 /**
- * LoadingSpinner decorator 
+ * Generic ajax event type
  **/
 
-public class LoadingSpinnerDecorator implements IAjaxCallDecorator
+public enum  CommonAjaxEventType implements AjaxEventType
 {
-	private static final long serialVersionUID = 1432993030793501257L;
-
-	public CharSequence decorateOnFailureScript(CharSequence script)
-	{
-		return "showHideSpinner(false);" + script;
-	}
-
-	public CharSequence decorateOnSuccessScript(CharSequence script)
-	{
-		return "showHideSpinner(false);" + script;
-	}
-
-	public CharSequence decorateScript(CharSequence script)
-	{
-		return "showHideSpinner(true);" + script;
-	}
+	SUBMIT_ERROR;
 }

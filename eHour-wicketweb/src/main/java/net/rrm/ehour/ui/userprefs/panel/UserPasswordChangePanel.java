@@ -27,7 +27,7 @@ import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
 import net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.GenericAjaxEventType;
+import net.rrm.ehour.ui.common.event.CommonAjaxEventType;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
@@ -93,7 +93,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 									,this
 									,UserEditAjaxEventType.USER_UPDATED
 									,UserEditAjaxEventType.USER_DELETED
-									,GenericAjaxEventType.SUBMIT_ERROR
+									,CommonAjaxEventType.SUBMIT_ERROR
 									,((EhourWebSession)getSession()).getEhourConfig());
 		
 		greyBorder.add(form);		

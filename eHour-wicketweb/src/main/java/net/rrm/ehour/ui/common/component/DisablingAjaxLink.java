@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import net.rrm.ehour.ui.common.event.OnClickDecorator;
+import net.rrm.ehour.ui.common.decorator.OnClickDecorator;
 
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;

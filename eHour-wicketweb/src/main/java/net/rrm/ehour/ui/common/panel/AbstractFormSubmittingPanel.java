@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.common.panel;
 
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.GenericAjaxEventType;
+import net.rrm.ehour.ui.common.event.CommonAjaxEventType;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 
@@ -55,7 +55,7 @@ public abstract class AbstractFormSubmittingPanel extends AbstractAjaxPanel
 	@SuppressWarnings("unchecked")
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		if (ajaxEvent.getEventType() == GenericAjaxEventType.SUBMIT_ERROR)
+		if (ajaxEvent.getEventType() == CommonAjaxEventType.SUBMIT_ERROR)
 		{
 			return processFormSubmitError(ajaxEvent.getTarget());
 		}

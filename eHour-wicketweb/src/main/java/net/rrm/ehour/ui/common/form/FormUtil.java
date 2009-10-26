@@ -18,11 +18,11 @@ package net.rrm.ehour.ui.common.form;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.component.JavaScriptConfirmation;
+import net.rrm.ehour.ui.common.decorator.DemoDecorator;
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.event.EventPublisher;
-import net.rrm.ehour.ui.common.event.DemoDecorator;
-import net.rrm.ehour.ui.common.event.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 

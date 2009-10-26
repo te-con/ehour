@@ -14,13 +14,30 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.event;
+package net.rrm.ehour.ui.common.decorator;
+
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 
 /**
- * Generic ajax event type
+ * LoadingSpinner decorator 
  **/
 
-public enum  GenericAjaxEventType implements AjaxEventType
+public class LoadingSpinnerDecorator implements IAjaxCallDecorator
 {
-	SUBMIT_ERROR;
+	private static final long serialVersionUID = 1432993030793501257L;
+
+	public CharSequence decorateOnFailureScript(CharSequence script)
+	{
+		return "showHideSpinner(false);" + script;
+	}
+
+	public CharSequence decorateOnSuccessScript(CharSequence script)
+	{
+		return "showHideSpinner(false);" + script;
+	}
+
+	public CharSequence decorateScript(CharSequence script)
+	{
+		return "showHideSpinner(true);" + script;
+	}
 }
