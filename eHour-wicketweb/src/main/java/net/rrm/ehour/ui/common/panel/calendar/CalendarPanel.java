@@ -138,7 +138,6 @@ public class CalendarPanel extends SidePanel
 	private void buildCalendar(WebMarkupContainer parent)
 	{
 		// first get the data
-		System.out.println(EhourWebSession.getSession());
 		Calendar month = EhourWebSession.getSession().getNavCalendar();
 		List<CalendarWeek>	weeks;
 

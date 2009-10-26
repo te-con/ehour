@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +32,10 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventListener;
+import net.rrm.ehour.ui.common.event.EventPublisher;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.panel.Panel;
@@ -55,9 +60,13 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void reproduceIssueEHO131()
 	{
+		AjaxEventHook hook = new AjaxEventHook();
+		EventPublisher.listenerHook = hook;
+		
 		Calendar requestedMonth = new ComparableGreggieCalendar(2009, 1 - 1, 2);
 		EhourWebSession session = getWebApp().getSession();
 
@@ -73,6 +82,20 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 		startPanel();
 		
 		tester.executeAjaxEvent("panel:calendarFrame:weeks:0", "onclick");
+		
+		assertEquals(1, hook.events.size());
+		
+		for (AjaxEvent event : hook.events)
+		{
+			assertEquals(CalendarAjaxEventType.WEEK_CLICK, event.getEventType());
+			
+			PayloadAjaxEvent<Calendar> pae = (PayloadAjaxEvent<Calendar>)event;
+			
+			assertEquals(12 -1, pae.getPayload().get(Calendar.MONTH));
+			assertEquals(2008, pae.getPayload().get(Calendar.YEAR));
+			assertEquals(28, pae.getPayload().get(Calendar.DAY_OF_MONTH));
+		}
+		
 		
 		verify(timesheetService);
 	}
@@ -120,6 +143,18 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 				return new CalendarPanel(panelId, new User(1));
 			}
 		});
+	}
+	
+	class AjaxEventHook implements AjaxEventListener
+	{
+		List<AjaxEvent> events = new ArrayList<AjaxEvent>();
+		
+		public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+		{
+			events.add(ajaxEvent);
+			return true;
+		}
+		
 	}
 	
 	@SuppressWarnings("serial")

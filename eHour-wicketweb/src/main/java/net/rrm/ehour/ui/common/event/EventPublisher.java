@@ -23,6 +23,7 @@ import org.apache.wicket.Component.IVisitor;
 
 public class EventPublisher
 {
+	// purely for junit testing
 	public static AjaxEventListener listenerHook;
 
 	/**
@@ -32,10 +33,15 @@ public class EventPublisher
 	 */
 	public static void publishAjaxEvent(MarkupContainer container, AjaxEvent event)
 	{
-		boolean proceed = true;
-		
 		notifyHook(event);
-		
+
+		recursivePublishAjaxEvent(container, event);
+	}
+
+	private static void recursivePublishAjaxEvent(MarkupContainer container, AjaxEvent event)
+	{
+		boolean proceed = true;
+
 		if (container instanceof AjaxEventListener)
 		{
 			proceed = ((AjaxEventListener)container).ajaxEventReceived(event);
@@ -50,7 +56,7 @@ public class EventPublisher
 				parent = container.getPage();
 			}
 			
-			publishAjaxEvent(parent, event);
+			recursivePublishAjaxEvent(parent, event);
 		}
 	}
 	
