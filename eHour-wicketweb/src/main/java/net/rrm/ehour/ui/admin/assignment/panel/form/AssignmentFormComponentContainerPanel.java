@@ -20,8 +20,8 @@ package net.rrm.ehour.ui.admin.assignment.panel.form;
 import java.util.Arrays;
 import java.util.List;
 
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 
 import org.apache.wicket.Component;

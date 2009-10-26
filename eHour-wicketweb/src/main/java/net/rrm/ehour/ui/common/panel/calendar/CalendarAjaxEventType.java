@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.common.panel.calendar;
 
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
 
 public enum CalendarAjaxEventType implements AjaxEventType
 {

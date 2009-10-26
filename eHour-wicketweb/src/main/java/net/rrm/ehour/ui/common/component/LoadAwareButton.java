@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.event.LoadingSpinnerDecorator;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;

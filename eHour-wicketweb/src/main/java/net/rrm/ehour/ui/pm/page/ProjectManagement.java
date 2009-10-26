@@ -26,7 +26,7 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;

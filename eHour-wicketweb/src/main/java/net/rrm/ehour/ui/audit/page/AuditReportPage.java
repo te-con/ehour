@@ -23,8 +23,8 @@ import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaForm;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
 import net.rrm.ehour.ui.audit.panel.AuditReportDataPanel;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;

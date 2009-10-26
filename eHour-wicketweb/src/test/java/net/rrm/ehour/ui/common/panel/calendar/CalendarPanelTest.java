@@ -72,8 +72,6 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 		
 		startPanel();
 		
-//		Component page = tester.getComponentFromLastRenderedPage("panel:calendarFrame:weeks");
-		
 		tester.executeAjaxEvent("panel:calendarFrame:weeks:0", "onclick");
 		
 		verify(timesheetService);

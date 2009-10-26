@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.common.panel;
 
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
-import net.rrm.ehour.ui.common.ajax.GenericAjaxEventType;
-import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.event.GenericAjaxEventType;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 
 import org.apache.log4j.Logger;

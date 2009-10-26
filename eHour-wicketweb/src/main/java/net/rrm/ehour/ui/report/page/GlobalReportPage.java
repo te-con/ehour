@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.cache.CachableObject;
 import net.rrm.ehour.ui.common.component.SWFObject;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;

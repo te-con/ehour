@@ -21,10 +21,10 @@ import java.util.Calendar;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.common.event.AjaxAwareContainer;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;

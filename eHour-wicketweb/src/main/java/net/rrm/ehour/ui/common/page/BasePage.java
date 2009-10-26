@@ -18,9 +18,9 @@ package net.rrm.ehour.ui.common.page;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.common.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.config.PageConfig;
+import net.rrm.ehour.ui.common.event.AjaxAwareContainer;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.WebPage;

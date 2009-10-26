@@ -22,10 +22,10 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
-import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 

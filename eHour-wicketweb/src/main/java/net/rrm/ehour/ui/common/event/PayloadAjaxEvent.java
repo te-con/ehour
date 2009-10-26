@@ -14,13 +14,38 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.ajax;
+package net.rrm.ehour.ui.common.event;
 
 /**
- * Generic ajax event type
+ * AjaxEvent with payload
  **/
 
-public enum  GenericAjaxEventType implements AjaxEventType
+public class PayloadAjaxEvent<PL> extends AjaxEvent
 {
-	SUBMIT_ERROR;
+	private static final long serialVersionUID = 4671730483379447278L;
+	private PL payload;
+
+
+	public PayloadAjaxEvent(AjaxEventType eventType, PL payload)
+	{
+		super(eventType);
+		
+		this.payload = payload;
+	}
+
+	/**
+	 * @return the payload
+	 */
+	public PL getPayload()
+	{
+		return payload;
+	}
+
+	/**
+	 * @param payload the payload to set
+	 */
+	public void setPayload(PL payload)
+	{
+		this.payload = payload;
+	}
 }

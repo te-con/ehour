@@ -14,18 +14,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.ajax;
+package net.rrm.ehour.ui.common.event;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.Component.IVisitor;
 
-/**
- * 
- * @author Thies
- *
- */
 public class AjaxUtil
 {
 	/**

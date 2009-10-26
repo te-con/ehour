@@ -21,9 +21,9 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
-import net.rrm.ehour.ui.common.ajax.DemoDecorator;
-import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
+import net.rrm.ehour.ui.common.event.DemoDecorator;
+import net.rrm.ehour.ui.common.event.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 

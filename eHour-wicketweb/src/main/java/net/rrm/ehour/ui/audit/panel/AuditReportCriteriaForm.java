@@ -17,12 +17,12 @@
 package net.rrm.ehour.ui.audit.panel;
 
 import net.rrm.ehour.ui.audit.AuditConstants;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
-import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.event.AjaxUtil;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
 

@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.report.user.page;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;

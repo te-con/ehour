@@ -14,16 +14,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.project.common;
-
-import net.rrm.ehour.ui.common.event.AjaxEventType;
+package net.rrm.ehour.ui.common.event;
 
 /**
- * TODO 
+ * Generic ajax event type
  **/
 
-public enum ProjectAjaxEventType implements AjaxEventType
+public enum  GenericAjaxEventType implements AjaxEventType
 {
-	PROJECT_UPDATED,
-	PROJECT_DELETED;
+	SUBMIT_ERROR;
 }

@@ -14,30 +14,44 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.ajax;
+package net.rrm.ehour.ui.common.event;
 
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import java.io.Serializable;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
 
 /**
- * LoadingSpinner decorator 
+ * Transfer object for ajax events
  **/
 
-public class LoadingSpinnerDecorator implements IAjaxCallDecorator
+public class AjaxEvent implements Serializable
 {
-	private static final long serialVersionUID = 1432993030793501257L;
-
-	public CharSequence decorateOnFailureScript(CharSequence script)
+	private static final long serialVersionUID = -8723330496152721044L;
+	private AjaxEventType	eventType;
+	
+	/**
+	 * 
+	 * @param target
+	 * @param eventType
+	 */
+	public AjaxEvent(AjaxEventType eventType)
 	{
-		return "showHideSpinner(false);" + script;
+		this.eventType = eventType;
 	}
 
-	public CharSequence decorateOnSuccessScript(CharSequence script)
+	/**
+	 * @return the target
+	 */
+	public AjaxRequestTarget getTarget()
 	{
-		return "showHideSpinner(false);" + script;
+		return AjaxRequestTarget.get();
 	}
 
-	public CharSequence decorateScript(CharSequence script)
+	/**
+	 * @return the eventType
+	 */
+	public AjaxEventType getEventType()
 	{
-		return "showHideSpinner(true);" + script;
+		return eventType;
 	}
 }

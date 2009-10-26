@@ -14,38 +14,30 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.ajax;
+package net.rrm.ehour.ui.common.event;
+
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 
 /**
- * AjaxEvent with payload
+ * LoadingSpinner decorator 
  **/
 
-public class PayloadAjaxEvent<PL> extends AjaxEvent
+public class LoadingSpinnerDecorator implements IAjaxCallDecorator
 {
-	private static final long serialVersionUID = 4671730483379447278L;
-	private PL payload;
+	private static final long serialVersionUID = 1432993030793501257L;
 
-
-	public PayloadAjaxEvent(AjaxEventType eventType, PL payload)
+	public CharSequence decorateOnFailureScript(CharSequence script)
 	{
-		super(eventType);
-		
-		this.payload = payload;
+		return "showHideSpinner(false);" + script;
 	}
 
-	/**
-	 * @return the payload
-	 */
-	public PL getPayload()
+	public CharSequence decorateOnSuccessScript(CharSequence script)
 	{
-		return payload;
+		return "showHideSpinner(false);" + script;
 	}
 
-	/**
-	 * @param payload the payload to set
-	 */
-	public void setPayload(PL payload)
+	public CharSequence decorateScript(CharSequence script)
 	{
-		this.payload = payload;
+		return "showHideSpinner(true);" + script;
 	}
 }

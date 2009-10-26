@@ -16,8 +16,8 @@
 
 package net.rrm.ehour.ui.common.panel;
 
-import net.rrm.ehour.ui.common.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxAwareContainer;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 
 import org.apache.wicket.model.IModel;
 

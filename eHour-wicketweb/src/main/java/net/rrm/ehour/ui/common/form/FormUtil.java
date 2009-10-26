@@ -17,13 +17,13 @@
 package net.rrm.ehour.ui.common.form;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
-import net.rrm.ehour.ui.common.ajax.AjaxUtil;
-import net.rrm.ehour.ui.common.ajax.DemoDecorator;
-import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
-import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.component.JavaScriptConfirmation;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.event.AjaxUtil;
+import net.rrm.ehour.ui.common.event.DemoDecorator;
+import net.rrm.ehour.ui.common.event.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 
 import org.apache.wicket.MarkupContainer;

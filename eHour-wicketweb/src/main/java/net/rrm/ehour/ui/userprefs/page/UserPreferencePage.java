@@ -17,8 +17,8 @@
 package net.rrm.ehour.ui.userprefs.page;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;

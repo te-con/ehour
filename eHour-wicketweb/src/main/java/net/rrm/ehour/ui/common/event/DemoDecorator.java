@@ -14,44 +14,38 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.ajax;
+package net.rrm.ehour.ui.common.event;
 
-import java.io.Serializable;
-
-import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.model.IModel;
 
 /**
- * Transfer object for ajax events
+ * Display demo decorator
  **/
 
-public class AjaxEvent implements Serializable
+public class DemoDecorator implements IAjaxCallDecorator
 {
-	private static final long serialVersionUID = -8723330496152721044L;
-	private AjaxEventType	eventType;
+	private static final long serialVersionUID = 1432993030793501257L;
+
+	private IModel	msgModel;
 	
-	/**
-	 * 
-	 * @param target
-	 * @param eventType
-	 */
-	public AjaxEvent(AjaxEventType eventType)
+	public DemoDecorator(IModel msgModel)
 	{
-		this.eventType = eventType;
+		this.msgModel = msgModel;
+	}
+	
+	public CharSequence decorateOnFailureScript(CharSequence script)
+	{
+		return "alert('" + msgModel.getObject() + "');";
 	}
 
-	/**
-	 * @return the target
-	 */
-	public AjaxRequestTarget getTarget()
+	public CharSequence decorateOnSuccessScript(CharSequence script)
 	{
-		return AjaxRequestTarget.get();
+		return "alert('" +  msgModel.getObject() + "');";
 	}
 
-	/**
-	 * @return the eventType
-	 */
-	public AjaxEventType getEventType()
+	public CharSequence decorateScript(CharSequence script)
 	{
-		return eventType;
+		return "alert('" +  msgModel.getObject() + "');";
 	}
 }
