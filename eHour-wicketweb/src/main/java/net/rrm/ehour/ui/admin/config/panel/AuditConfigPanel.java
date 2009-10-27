@@ -17,13 +17,14 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
+import java.util.Arrays;
+
 import net.rrm.ehour.domain.AuditType;
 
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created on May 5, 2009, 12:36:56 AM
@@ -49,8 +50,7 @@ public class AuditConfigPanel extends AbstractConfigPanel
 	{
 		final DropDownChoice	auditTypeDropDown;
 		
-		auditTypeDropDown = new DropDownChoice("config.auditType",
-											Arrays.asList(AuditType.values()));
+		auditTypeDropDown = new DropDownChoice("config.auditType", Arrays.asList(AuditType.values()));
 		configForm.add(auditTypeDropDown);
 	}
 }

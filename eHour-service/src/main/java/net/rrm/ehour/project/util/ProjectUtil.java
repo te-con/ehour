@@ -18,10 +18,10 @@ package net.rrm.ehour.project.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import net.rrm.ehour.domain.Project;
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Thies on Aug 24, 2009 10:40:38 PM

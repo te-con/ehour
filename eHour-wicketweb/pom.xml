@@ -11,7 +11,7 @@
 	<artifactId>eHour-wicketweb</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour web layer (wicket)</name>
-	<version>${applicationVersion}</version>
+	<version>${parent.version}</version>
 
 	<build>
 		<finalName>eHour-wicketweb</finalName>
@@ -91,7 +91,7 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
-			<version>${pom.version}</version>
+			<version>${parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>

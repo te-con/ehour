@@ -10,7 +10,6 @@
 	<artifactId>eHour-audit</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour audit interceptor</name>
-	<version>${applicationVersion}</version>
 	<build>
 		<resources>
 			<resource>
@@ -35,7 +34,7 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-wicketweb</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
