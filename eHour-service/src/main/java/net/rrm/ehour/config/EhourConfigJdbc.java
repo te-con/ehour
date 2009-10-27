@@ -17,6 +17,7 @@
 package net.rrm.ehour.config;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.sql.DataSource;
 
@@ -39,12 +40,18 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	private String[]	availableTranslations;
 	private Boolean		initialized;
 	private	AuditType	auditType;
+	
 	@Autowired 
 	public EhourConfigJdbc(DataSource datasource)
 	{
 		super(datasource, "CONFIGURATION", "config_key", "config_value");
 	
 		logger.info("Configuration loaded from database");
+	}
+	
+	public TimeZone getTzAsTimeZone()
+	{
+		return EhourConfigUtil.getTzAsTimeZone(this);
 	}
 	
 	public float getCompleteDayHours()

@@ -18,6 +18,7 @@ package net.rrm.ehour.config;
 
 import java.util.Locale;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import net.rrm.ehour.domain.AuditType;
 
@@ -29,6 +30,11 @@ public class EhourConfigProps implements EhourConfig
 {
 	private	Properties	props;
 
+	public TimeZone getTzAsTimeZone()
+	{
+		return EhourConfigUtil.getTzAsTimeZone(this);
+	}
+	
 	public void setPropertiesConfig(Properties props)
 	{
 		this.props = props;

@@ -17,6 +17,7 @@
 package net.rrm.ehour.config;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
 import net.rrm.ehour.domain.AuditType;
 
@@ -44,6 +45,9 @@ public interface EhourConfig
 	 * @return
 	 */
 	public String getTimeZone();
+	
+	
+	public TimeZone getTzAsTimeZone();
 
 	/**
 	 * Get locale based on language and country

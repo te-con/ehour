@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
@@ -420,18 +419,8 @@ public class DateUtil
 	public static Calendar getCalendar(EhourConfig config)
 	{
 		Calendar	calendar;
-		TimeZone	timeZone;
 
-		if (config.getTimeZone() != null && !config.getTimeZone().equals(""))
-		{
-			timeZone = TimeZone.getTimeZone(config.getTimeZone());
-		}
-		else
-		{
-			timeZone = TimeZone.getDefault();
-		}
-
-		calendar = new GregorianCalendar(timeZone);
+		calendar = new GregorianCalendar(config.getTzAsTimeZone());
 		calendar.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		return calendar;
 	}
