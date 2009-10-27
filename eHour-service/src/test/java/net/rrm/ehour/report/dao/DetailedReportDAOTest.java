@@ -106,12 +106,7 @@ public class DetailedReportDAOTest extends AbstractAnnotationDaoTest
 			    new Date(2008 - 1900, 1, 3));
 		
 		List<FlatReportElement> results = detailedReportDAO.getHoursPerDay(dateRange);
-		
-		for (FlatReportElement flatReportElement : results)
-		{
-			System.out.println(flatReportElement.getTotalHours());
-		}
-		
+
 		assertEquals(12, results.size());
 	}	
 }

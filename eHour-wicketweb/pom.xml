@@ -151,17 +151,12 @@
 		<dependency>
 			<groupId>jfree</groupId>
 			<artifactId>jfreechart</artifactId>
-			<version>1.0.9</version>
+			<version>1.0.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.5-beta5</version>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>1.5</version>
+			<version>3.5-FINAL</version>
 		</dependency>
 		<dependency>
 			<groupId>org.easymock</groupId>
