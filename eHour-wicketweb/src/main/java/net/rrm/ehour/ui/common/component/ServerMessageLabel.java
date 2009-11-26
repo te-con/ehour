@@ -38,7 +38,7 @@ public class ServerMessageLabel extends Label
 		this(id, cssClass, null);
 	}
 	
-	public ServerMessageLabel(String id, String cssClass, IModel model)
+	public ServerMessageLabel(String id, String cssClass, IModel<?> model)
 	{
 		super(id, model);
 
@@ -60,6 +60,6 @@ public class ServerMessageLabel extends Label
 
 	public boolean isVisible()
 	{
-		return overrideVisibility ? false : getModel() != null && getModel().getObject()!= null;
+		return overrideVisibility ? false : getDefaultModel() != null && getDefaultModelObject()!= null;
 	}		
 }

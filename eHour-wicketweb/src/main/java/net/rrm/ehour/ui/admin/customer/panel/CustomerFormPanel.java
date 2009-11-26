@@ -192,8 +192,8 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel
 			if (!StringUtils.isBlank(components[0].getInput())
 					&& !StringUtils.isBlank(components[1].getInput()))
 			{
-				String orgName = ((CustomerAdminBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalCustomerName();
-				String orgCode = ((CustomerAdminBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalCustomerCode();
+				String orgName = ((CustomerAdminBackingBean)((CompoundPropertyModel)getDefaultModel()).getObject()).getOriginalCustomerName();
+				String orgCode = ((CustomerAdminBackingBean)((CompoundPropertyModel)getDefaultModel()).getObject()).getOriginalCustomerCode();
 				
 				if ((StringUtils.equals(orgName, components[0].getInput()))
 						&& StringUtils.equals(orgCode, components[1].getInput()))

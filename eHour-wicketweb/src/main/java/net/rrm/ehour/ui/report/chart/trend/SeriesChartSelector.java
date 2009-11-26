@@ -86,7 +86,7 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 				
 				if (selectedColumn != null)
 				{
-					AbstractTrendChartImage<RE> newImg = imgFactory.getTrendChartImage(selectedColumn, targetImage.getModel());
+					AbstractTrendChartImage<RE> newImg = imgFactory.getTrendChartImage(selectedColumn, targetImage.getDefaultModel());
 					
 					img.replaceWith(newImg);
 					target.addComponent(newImg);

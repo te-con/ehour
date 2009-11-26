@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.report.chart.aggregate;
 
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.chart.AbstractReportChartImage;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
@@ -33,7 +34,7 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	private static final long serialVersionUID = 7857936136458323251L;
 	private AggregateChartDataConverter provider;
 	
-	public AggregateChartImage(String id, IModel dataModel, int width, int height, AggregateChartDataConverter provider)
+	public AggregateChartImage(String id, IModel<ReportData> dataModel, int width, int height, AggregateChartDataConverter provider)
 	{
 		super(id, dataModel, width, height);
 		

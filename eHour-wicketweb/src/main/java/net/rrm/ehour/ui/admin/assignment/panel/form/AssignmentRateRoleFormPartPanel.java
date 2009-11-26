@@ -21,7 +21,6 @@ import java.util.Currency;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -55,8 +54,8 @@ public class AssignmentRateRoleFormPartPanel extends Panel
 		add(role);
 		
 		// add hourly rate
-		TextField	hourlyRate = new TextField("projectAssignment.hourlyRate",
-											new FloatModel(new PropertyModel(model, "projectAssignment.hourlyRate"), config, null));
+		TextField<Float> hourlyRate = new TextField<Float>("projectAssignment.hourlyRate",
+											new PropertyModel<Float>(model, "projectAssignment.hourlyRate"));
 		hourlyRate.setType(Float.class);
 		hourlyRate.add(new ValidatingFormComponentAjaxBehavior());
 		hourlyRate.add(NumberValidator.minimum(0));

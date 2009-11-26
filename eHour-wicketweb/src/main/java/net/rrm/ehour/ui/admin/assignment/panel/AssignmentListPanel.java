@@ -29,7 +29,6 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
@@ -177,7 +176,7 @@ public class AssignmentListPanel extends AbstractBasePanel
 										: assignment.getRole()));
 				
 				item.add(new Label("currency",  Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
-				item.add(new Label("rate", new FloatModel(assignment.getHourlyRate(), config)));
+				item.add(new Label("rate", new Model<Float>(assignment.getHourlyRate())));
 
 			}
 		};

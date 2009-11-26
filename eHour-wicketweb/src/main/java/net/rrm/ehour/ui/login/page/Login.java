@@ -25,6 +25,7 @@ import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.Roles;
@@ -149,7 +150,7 @@ public class Login extends WebPage
 				// When authenticated decide the redirect
 				if (session.signIn(username, password))
 				{
-					Class<? extends WebPage> homepage = getHomepageForRole(session.getRoles());
+					Class<? extends Page> homepage = getHomepageForRole(session.getRoles());
 					
 					if (logger.isDebugEnabled())
 					{
@@ -175,9 +176,9 @@ public class Login extends WebPage
 	 * @param roles
 	 * @return
 	 */
-	protected Class<? extends WebPage> getHomepageForRole(Roles roles)
+	private Class<? extends Page> getHomepageForRole(Roles roles)
 	{
-		Class<? extends WebPage>	homepage;
+		Class<? extends Page>	homepage;
 		
 		if (roles.contains(CommonWebUtil.ROLE_ADMIN))
 		{

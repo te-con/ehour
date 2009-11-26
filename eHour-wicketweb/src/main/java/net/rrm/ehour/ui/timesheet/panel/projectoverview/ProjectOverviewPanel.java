@@ -25,11 +25,12 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.CommonJavascript;
+import net.rrm.ehour.ui.common.component.ConverterLabel;
+import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.component.TooltipLabel;
-import net.rrm.ehour.ui.common.model.CurrencyModel;
+import net.rrm.ehour.ui.common.converter.CurrencyConverter;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
@@ -106,9 +107,10 @@ public class ProjectOverviewPanel extends AbstractBasePanel
 			}
 		}
 		
-		container.add(new Label("grandTotalHours", new FloatModel(totalHours, config)));
+		container.add(new Label("grandTotalHours", new Model<Float>(totalHours)));
 		
-		label = new Label("grandTotalTurnover", new CurrencyModel(totalTurnover, config));
+		label = new ConverterLabel("grandTotalTurnover", new Model<Float>(totalTurnover), CurrencyConverter.getInstance());
+		
 		label.setVisible(config.isShowTurnover());
 		label.setEscapeModelStrings(false);
 		container.add(label);
@@ -162,6 +164,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel
 	 * @param projectStatusSet
 	 * @param config
 	 */
+	@SuppressWarnings("serial")
 	private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
 	{
 		List<UserProjectStatus> statusses;
@@ -177,12 +180,11 @@ public class ProjectOverviewPanel extends AbstractBasePanel
 			
 		// table data should reflect the path to the listView
 		this.tableDatePath += ":" + ID_TABLE_DATA;
-		ListView view = new ListView(ID_TABLE_DATA, statusses)
+		ListView<UserProjectStatus> view = new ListView<UserProjectStatus>(ID_TABLE_DATA, statusses)
 		{
-			private static final long serialVersionUID = -2544424604230082804L;
-			public void populateItem(final ListItem item)
+			public void populateItem(final ListItem<UserProjectStatus> item)
 			{
-				UserProjectStatus projectStatus = (UserProjectStatus) item.getModelObject();
+				UserProjectStatus projectStatus = item.getModelObject();
 
 				item.add(createFoldLink(projectStatus, item.getId()));
 
@@ -196,19 +198,20 @@ public class ProjectOverviewPanel extends AbstractBasePanel
 
 				item.add(new Label("projectCode", projectStatus.getProjectAssignment().getProject().getProjectCode()));
 				
-				Label rateLabel = new Label("rate", new CurrencyModel(projectStatus.getProjectAssignment().getHourlyRate(), getConfig()));
+				Label rateLabel = new CurrencyLabel("rate", projectStatus.getProjectAssignment().getHourlyRate());
+				
 				rateLabel.setEscapeModelStrings(false);
 				setRateWidthOrHide(rateLabel);
 				item.add(rateLabel);
 
-				Label hoursLabel = new Label("monthHours", new FloatModel(projectStatus.getHours(), getConfig()));
+				Label hoursLabel = new Label("monthHours", new Model<Float>(projectStatus.getHours().floatValue()));
 				item.add(hoursLabel);
 
 				Label turnOverLabel;
 				
 				if (projectStatus.getProjectAssignment().getProject().isBillable())
 				{
-					turnOverLabel = new Label("turnover", new CurrencyModel(projectStatus.getTurnOver(), getConfig()));
+					turnOverLabel = new CurrencyLabel("turnover", projectStatus.getTurnOver().floatValue());
 				}
 				else
 				{
@@ -237,7 +240,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel
 		// set relative URL to image and set id
 		ContextImage img = createFoldImage(false);
 
-		AjaxLink foldLink = new AjaxLink(ID_FOLD_LINK)
+		AjaxLink<String> foldLink = new AjaxLink<String>(ID_FOLD_LINK)
 		{
 			@Override
 			public void onClick(AjaxRequestTarget target)
@@ -275,7 +278,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel
 	{
 		String upStr = "img/icon_" + (up ? "up_" : "down_");
 		
-		ContextImage img = new ContextImage(ID_FOLD_IMG, new Model(upStr + "off.gif"));
+		ContextImage img = new ContextImage(ID_FOLD_IMG, new Model<String>(upStr + "off.gif"));
 		img.setOutputMarkupId(true);
 		CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif", "upDown");
 		
@@ -335,18 +338,18 @@ public class ProjectOverviewPanel extends AbstractBasePanel
 
 		Label totalBookedLabel = new Label("overview.totalbooked", new StringResourceModel("overview.totalbooked", 
 																	this,  null,
-																	new Object[]{new FloatModel(projectStatus.getTotalBookedHours(), getConfig())}));
+																	new Object[]{new Model<Float>(projectStatus.getTotalBookedHours().floatValue())}));
 		cont.add(totalBookedLabel);
 
 		Label remainingLabel = new Label("overview.remainingfixed", new StringResourceModel("overview.remainingfixed", 
 																	this,  null,
-																	new Object[]{new FloatModel(projectStatus.getFixedHoursRemaining(), getConfig())})); 
+																	new Object[]{new Model<Float>(projectStatus.getFixedHoursRemaining())})); 
 		remainingLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 		cont.add(remainingLabel);
 
 		Label remainingFlexLabel = new Label("overview.remainingflex", new StringResourceModel("overview.remainingflex",
 																	this,  null,
-																	new Object[]{new FloatModel(projectStatus.getFlexHoursRemaining(), getConfig())}));
+																	new Object[]{new Model<Float>(projectStatus.getFlexHoursRemaining())}));
 
 		// only shown for flex allotted types
 		remainingFlexLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());

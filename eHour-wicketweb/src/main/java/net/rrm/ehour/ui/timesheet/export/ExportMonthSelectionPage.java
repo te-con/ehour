@@ -88,7 +88,7 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 	
 	private ExportCriteriaPanel createExportCriteriaPanel(String id)
 	{
-		ExportCriteriaPanel criteriaPanel = new ExportCriteriaPanel(id, getModel());
+		ExportCriteriaPanel criteriaPanel = new ExportCriteriaPanel(id, getDefaultModel());
 		
 		return criteriaPanel;
 	}
@@ -114,7 +114,7 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 		}
 		
 		IModel	model = new CompoundPropertyModel(reportCriteria);
-		setModel(model);
+		setDefaultModel(model);
 	}
 	
 	/*

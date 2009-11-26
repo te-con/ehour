@@ -31,7 +31,7 @@ import org.apache.wicket.model.IModel;
  * ajax request
  **/
 
-public abstract class AbstractFormSubmittingPanel extends AbstractAjaxPanel
+public abstract class AbstractFormSubmittingPanel<T> extends AbstractAjaxPanel<T>
 {
 	private static final long serialVersionUID = 1L;
 	private	static final Logger	logger = Logger.getLogger(AbstractFormSubmittingPanel.class);
@@ -42,7 +42,7 @@ public abstract class AbstractFormSubmittingPanel extends AbstractAjaxPanel
 		super(id);
 	}	
 	
-	public AbstractFormSubmittingPanel(String id, IModel model)
+	public AbstractFormSubmittingPanel(String id, IModel<T> model)
 	{
 		super(id, model);
 	}

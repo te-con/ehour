@@ -84,7 +84,7 @@ public class MailServerConfigPanel extends AbstractConfigPanel
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				MainConfigBackingBean configBackingBean = (MainConfigBackingBean) MailServerConfigPanel.this.getModelObject();
+				MainConfigBackingBean configBackingBean = (MainConfigBackingBean) MailServerConfigPanel.this.getDefaultModelObject();
 				
 				mailService.mailTestMessage(configBackingBean.getConfig());
 				

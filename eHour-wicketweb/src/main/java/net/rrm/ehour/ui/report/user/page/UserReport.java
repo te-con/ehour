@@ -47,8 +47,8 @@ public class UserReport extends AbstractReportPage
 		super(new ResourceModel("userreport.title"));
 		
 		ReportCriteria reportCriteria = getReportCriteria(true);
-		IModel	model = new CompoundPropertyModel(reportCriteria);
-		setModel(model);
+		IModel<ReportCriteria>	model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
+		setDefaultModel(model);
 
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model));
@@ -78,7 +78,7 @@ public class UserReport extends AbstractReportPage
 	
 	private WebMarkupContainer getReport()
 	{
-		ReportCriteria criteria = (ReportCriteria)getModelObject();
+		ReportCriteria criteria = (ReportCriteria)getDefaultModelObject();
 		
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(criteria);
 		EhourWebSession.getSession().getObjectCache().addObjectToCache(customerAggregateReport);

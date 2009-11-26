@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
 /**
@@ -34,7 +34,7 @@ public class MultiTabbedPanel extends AjaxTabbedPanel
 
 	public MultiTabbedPanel(String id)
 	{
-		super(id, new ArrayList<AbstractTab>());
+		super(id, new ArrayList<ITab>());
 	}
 
 	/**
@@ -66,7 +66,6 @@ public class MultiTabbedPanel extends AjaxTabbedPanel
 	 * 
 	 * @param tab
 	 */
-	@SuppressWarnings("unchecked")
 	public void addOrUpdateTab(AbstractIdTab tab)
 	{
 		int idx = getIndexForTabId(tab.getId());

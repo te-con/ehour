@@ -201,7 +201,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		protected void onValidate(IValidatable validatable)
 		{
 			String username = (String)validatable.getValue();
-			String orgUsername = ((UserBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalUsername();
+			String orgUsername = ((UserBackingBean)((CompoundPropertyModel)getDefaultModel()).getObject()).getOriginalUsername();
 
 			if (orgUsername != null && orgUsername.length() > 0 && username.equalsIgnoreCase(orgUsername))
 			{

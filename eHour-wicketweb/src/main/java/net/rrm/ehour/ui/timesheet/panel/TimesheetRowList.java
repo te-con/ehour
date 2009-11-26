@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.component.ModalWindowFix;
 import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
@@ -57,6 +56,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.validation.validator.MinimumValidator;
 import org.apache.wicket.validation.validator.NumberValidator;
 
 /**
@@ -100,7 +100,7 @@ public class TimesheetRowList extends ListView
 
 	private Label createTotalHoursLabel(final TimesheetRow row)
 	{
-		Label totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
+		Label totalHours = new Label("total", new ProjectTotalModel(row));
 		totalHours.setOutputMarkupId(true);
 		return totalHours;
 	}
@@ -212,19 +212,19 @@ public class TimesheetRowList extends ListView
 	 * @param index
 	 * @return
 	 */
-	private TextField createValidatedTextField(TimesheetRow row, final int index)
+	private TimesheetTextField createValidatedTextField(TimesheetRow row, final int index)
 	{
 		final TimesheetTextField	dayInput;
-		PropertyModel				cellModel;
+		PropertyModel<Float>		cellModel;
 		
-		cellModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours");
+		cellModel = new PropertyModel<Float>(row, "timesheetCells[" + index + "].timesheetEntry.hours");
 		
 		// make sure it's added to the grandtotal
 		grandTotals.addValue(index, cellModel);
 		
 		// list it on the page
-		dayInput = new TimesheetTextField("day", new FloatModel(cellModel, config, null), Float.class, 1);
-		dayInput.add(NumberValidator.minimum(0));
+		dayInput = new TimesheetTextField("day", cellModel, 1);
+		dayInput.add(new MinimumValidator<Float>(0f));
 		dayInput.setOutputMarkupId(true);
 		
 		// make sure values are checked
@@ -273,8 +273,8 @@ public class TimesheetRowList extends ListView
 	private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent)
 	{
 		final ModalWindow modalWindow;
-		final AjaxLink commentLink;
-		final PropertyModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment");
+		final AjaxLink<Void> commentLink;
+		final PropertyModel<String> commentModel = new PropertyModel<String>(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 		
 		modalWindow = new ModalWindowFix("dayWin");
 		modalWindow.setResizable(false);
@@ -285,7 +285,7 @@ public class TimesheetRowList extends ListView
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 																		commentModel, row, index, modalWindow));
 		
-		commentLink = new AjaxLink("dayLink")
+		commentLink = new AjaxLink<Void>("dayLink")
 		{
 			@Override
 			public void onClick(AjaxRequestTarget target)
@@ -312,12 +312,12 @@ public class TimesheetRowList extends ListView
 		ContextImage img;
 		if (StringUtils.isBlank((String)commentModel.getObject()))
 		{
-			img = new ContextImage("commentLinkImg", new Model("img/comment/comment_blue_off.gif"));
+			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
 			CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/comment/comment_blue_on.gif", getContextRoot() + "img/comment/comment_blue_off.gif", "comment");
 		}
 		else
 		{
-			img = new ContextImage("commentLinkImg", new Model("img/comment/comment_blue_on.gif"));
+			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
 		}
 		commentLink.add(img);
 		
@@ -363,7 +363,7 @@ public class TimesheetRowList extends ListView
 												new Object[]{row.getProjectAssignment().getFullName(),
 															 new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
 			
-			final TextArea textArea = new KeepAliveTextArea("comment", model);
+			final KeepAliveTextArea textArea = new KeepAliveTextArea("comment", model);
 			textArea.add(new AjaxFormComponentUpdatingBehavior("onchange")
 			{
 				private static final long serialVersionUID = 1L;

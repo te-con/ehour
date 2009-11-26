@@ -67,7 +67,7 @@ public class UserReportPanelTest extends BaseTestReport
 
 		final CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportCriteria);
 		
-		Panel startPanel = getTester().startPanel(new TestPanelSource()
+		Panel startPanel = getTester().startPanelWithHead(new TestPanelSource()
 		{
 			public Panel getTestPanel(String panelId)
 			{

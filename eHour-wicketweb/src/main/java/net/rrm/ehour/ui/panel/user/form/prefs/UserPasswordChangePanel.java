@@ -51,7 +51,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * User preferences form
  **/
 
-public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
+public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBackingBean>
 {
 	private static final long serialVersionUID = 7670153126514499168L;
 
@@ -60,7 +60,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 	
 	private final static Logger LOGGER = Logger.getLogger(UserAdminFormPanel.class);
 	private WebComponent serverMessage;
-	private Form		form;
+	private Form<UserBackingBean>		form;
 
 	/**
 	 * 
@@ -72,13 +72,13 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 	{
 		super(id);
 		
-		setModel(createModel(user));
+		setDefaultModel(createModel(user));
 		Border greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.title"), WebGeo.W_CONTENT_XSMALL);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);
 		
-		form = new Form("userForm");
+		form = new Form<UserBackingBean>("userForm");
 		form.setOutputMarkupId(true);
 		
 		// password inputs
@@ -164,9 +164,9 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 	 * @return
 	 * @throws ObjectNotFoundException 
 	 */
-	private IModel createModel(User user) throws ObjectNotFoundException
+	private IModel<UserBackingBean> createModel(User user) throws ObjectNotFoundException
 	{
 		User dbUser = userService.getUser(user.getUserId());
-		return new CompoundPropertyModel(new UserBackingBean(dbUser));
+		return new CompoundPropertyModel<UserBackingBean>(new UserBackingBean(dbUser));
 	}
 }

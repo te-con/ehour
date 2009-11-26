@@ -44,7 +44,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Project management base station :)
  **/
 @AuthorizeInstantiation("ROLE_PROJECTMANAGER")
-public class ProjectManagement extends BasePage
+public class ProjectManagement extends BasePage<ReportCriteria>
 {
 	private static final long serialVersionUID = 898442184509251553L;
 
@@ -61,12 +61,12 @@ public class ProjectManagement extends BasePage
 	 */
 	public ProjectManagement()
 	{
-		super(new ResourceModel("pmReport.title"), null);
+		super(new ResourceModel("pmReport.title"));
 		
 		ReportCriteria reportCriteria = getReportCriteria();
 		
-		IModel	model = new CompoundPropertyModel(reportCriteria);
-		setModel(model);
+		IModel<ReportCriteria>	model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
+		setDefaultModel(model);
 		
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model, false));
@@ -102,7 +102,7 @@ public class ProjectManagement extends BasePage
 	{
 		ReportCriteria reportCriteria = new ReportCriteria();
 		
-		User user = ((EhourWebSession)getSession()).getUser().getUser();
+		User user = EhourWebSession.getSession().getUser().getUser();
 		
 		List<Project> projects = projectService.getProjectManagerProjects(user);
 		
@@ -118,7 +118,7 @@ public class ProjectManagement extends BasePage
 	 */
 	private ProjectManagerReport getReportData()
 	{
-		ReportCriteria 	criteria = (ReportCriteria)(getModelObject());
+		ReportCriteria 	criteria = (ReportCriteria)(getDefaultModelObject());
 		ProjectManagerReport reportData = null;
 		DateRange	reportRange = criteria.getUserCriteria().getReportRange();
 		

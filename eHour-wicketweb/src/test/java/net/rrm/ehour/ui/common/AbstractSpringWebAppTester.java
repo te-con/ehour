@@ -23,7 +23,6 @@ import net.rrm.ehour.ui.test.StrictWicketTester;
 import org.apache.wicket.Component;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.settings.Settings;
-import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 
 /**
@@ -32,7 +31,7 @@ import org.junit.Before;
 @SuppressWarnings("unchecked")
 public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 {
-	protected WicketTester tester;
+	protected StrictWicketTester tester;
 	protected TestEhourWebApplication webApp;
 	
 	@Before
@@ -63,7 +62,7 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 		});
 	}
 	
-	protected WicketTester getTester()
+	protected StrictWicketTester getTester()
 	{
 		return tester;
 	}

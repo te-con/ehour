@@ -42,7 +42,7 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	 * @param id
 	 * @param tabs
 	 */
-	public ReportTabbedPanel(final String id, final List<AbstractTab> tabs)
+	public ReportTabbedPanel(final String id, final List<ITab> tabs)
 	{
 		super(id, tabs);
 		
@@ -53,13 +53,12 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel#newLink(java.lang.String, int)
 	 */
+	@SuppressWarnings("serial")
 	@Override
 	protected WebMarkupContainer newLink(final String linkId, final int index)
 	{
-		return new AjaxFallbackLink(linkId)
+		return new AjaxFallbackLink<String>(linkId)
 		{
-			private static final long serialVersionUID = 1L;
-
 			public void onClick(final AjaxRequestTarget target)
 			{
 				setSelectedTab(index);
@@ -76,7 +75,6 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 			{
 				return new LoadingSpinnerDecorator();
 			}			
-
 		};
 	}	
 	

@@ -68,19 +68,20 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 		super(new ResourceModel("report.global.title"));
 		
 		final ReportCriteria reportCriteria = getReportCriteria(false);
-		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));
-		setModel(model);		
+		final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<ReportCriteriaBackingBean>(new ReportCriteriaBackingBean(reportCriteria));
+		setDefaultModel(model);		
 		
-		List<AbstractTab> tabList = new ArrayList<AbstractTab>();
+		List<ITab> tabList = new ArrayList<ITab>();
 		
 		tabList.add(new AbstractTab(new KeyResourceModel("report.criteria.title"))
 		{
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new ReportCriteriaPanel(panelId, getModel());
+				return new ReportCriteriaPanel(panelId, (IModel<ReportCriteriaBackingBean>)getDefaultModel());
 			}
 		});
 		
@@ -97,7 +98,7 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	{
 		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED)
 		{
-			ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getModel().getObject();
+			ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getDefaultModelObject();
 	
 			clearTabs();
 			
@@ -120,10 +121,9 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	/**
 	 * Clear tabs except for the first one
 	 */
-	@SuppressWarnings("unchecked")
 	private void clearTabs()
 	{
-		List<AbstractTab> tabs = tabPanel.getTabs();
+		List<ITab> tabs = tabPanel.getTabs();
 		
 		while (tabs.size() > 1)
 		{

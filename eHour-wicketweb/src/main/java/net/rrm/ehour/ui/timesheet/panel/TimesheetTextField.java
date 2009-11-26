@@ -16,11 +16,9 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import java.util.Locale;
-
 import net.rrm.ehour.ui.common.component.CommonModifiers;
+import net.rrm.ehour.ui.timesheet.converter.TimesheetFloatConverter;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
@@ -29,23 +27,15 @@ import org.apache.wicket.util.convert.IConverter;
  * Timesheet textfield which remembers its previous validation state
  **/
 
-public class TimesheetTextField extends TextField
+public class TimesheetTextField extends TextField<Float>
 {
 	private static final long serialVersionUID = 7033801704569935582L;
 	private	boolean	wasInvalid;
 	private Object	previousValue;
 
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 * @param type
-	 * @param tabIndex
-	 */
-	@SuppressWarnings("unchecked")
-	public TimesheetTextField(final String id, IModel model, Class type, int tabIndex)
+	public TimesheetTextField(final String id, IModel<Float> model, int tabIndex)
 	{
-		super(id, model, type);
+		super(id, model, Float.class);
 		
 		setConvertEmptyInputStringToNull(true);
 		
@@ -59,44 +49,10 @@ public class TimesheetTextField extends TextField
 		add(CommonModifiers.tabIndexModifier(tabIndex)); 
 	}
 
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.Component#getConverter(java.lang.Class)
-	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public IConverter getConverter(Class c)
+	public IConverter getConverter(Class<?> c)
 	{
-		return new IConverter()
-		{
-			private static final long serialVersionUID = 1L;
-
-			public Object convertToObject(String value, Locale locale)
-			{
-				if (!StringUtils.isBlank(value))
-				{
-					try
-					{
-						return Float.parseFloat(value.replace(",", "."));
-					}
-					catch (NumberFormatException nfe)
-					{
-						return value;
-					}
-				}
-				else
-				{
-					return null;
-				}
-			}
-
-			public String convertToString(Object value, Locale locale)
-			{
-				return (String)value;
-			}
-			
-		};
+		return TimesheetFloatConverter.getInstance();
 	}
 	
 	/**

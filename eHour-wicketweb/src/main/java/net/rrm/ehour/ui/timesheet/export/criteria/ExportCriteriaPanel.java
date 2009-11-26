@@ -91,7 +91,7 @@ public class ExportCriteriaPanel extends Panel
 			@Override
 			public void onSubmit()
 			{
-				ReportCriteria criteria = (ReportCriteria)ExportCriteriaPanel.this.getModelObject();
+				ReportCriteria criteria = (ReportCriteria)ExportCriteriaPanel.this.getDefaultModelObject();
 				
 				criteria.getUserCriteria().getCustomParameters().put(ExportCriteriaParameter.EXPORT_TYPE, type);
 			}
@@ -102,14 +102,14 @@ public class ExportCriteriaPanel extends Panel
 	
 	private CheckBox createSignOffCheck(String id)
 	{
-		return new CheckBox(id, new PropertyModel(this.getModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
+		return new CheckBox(id, new PropertyModel(this.getDefaultModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
 	}
 	
 	private CheckGroup createAssignmentCheckboxes(String id)
 	{
-		CheckGroup projectGroup = new CheckGroup(id, new PropertyModel(getModel(), "userCriteria.projects"));
+		CheckGroup projectGroup = new CheckGroup(id, new PropertyModel(getDefaultModel(), "userCriteria.projects"));
 		
-		ReportCriteria criteria = (ReportCriteria)getModelObject();
+		ReportCriteria criteria = (ReportCriteria)getDefaultModelObject();
 		
 		List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
 		

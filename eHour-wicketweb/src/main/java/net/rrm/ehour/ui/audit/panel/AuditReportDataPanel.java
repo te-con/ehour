@@ -79,7 +79,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 		ResourceReference excelResource = new ResourceReference("auditReportExcel");
 		ValueMap params = new ValueMap();
 		
-		ReportCriteria criteria = (ReportCriteria)AuditReportDataPanel.this.getModelObject();
+		ReportCriteria criteria = (ReportCriteria)AuditReportDataPanel.this.getDefaultModelObject();
 		
 		AuditReport auditReport = new AuditReport(criteria);
 		final String reportId = getEhourWebSession().getObjectCache().addObjectToCache(auditReport);

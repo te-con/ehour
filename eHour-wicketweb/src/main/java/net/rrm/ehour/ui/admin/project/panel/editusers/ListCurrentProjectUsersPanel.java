@@ -8,20 +8,20 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.converter.RoleConverter;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.validator.NumberValidator;
@@ -53,7 +53,7 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 				item.add(addRole("role", new PropertyModel(assignment, "role")));
 				
 				item.add(new Label("currency", Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
-				item.add(addRate("rate" , new FloatModel(assignment.getHourlyRate(), config)));
+				item.add(addRate("rate" , new Model<Float>(assignment.getHourlyRate())));
 				
 				item.add(new AjaxCheckBox("active", new PropertyModel(assignment, "active"))
 				{
@@ -69,7 +69,7 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 	}
 
 	@SuppressWarnings("serial")
-	private AjaxEditableLabel addRate(String id, IModel model)
+	private AjaxEditableLabel addRate(String id, IModel<Float> model)
 	{
 		AjaxEditableLabel editableLabel = new AjaxEditableLabel("rate", model)
 		{
@@ -96,7 +96,7 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 		AjaxEditableLabel label = new AjaxEditableLabel(id, model)
 		{
 			@Override
-			protected Component newLabel(MarkupContainer parent, String componentId, IModel model)
+			protected WebComponent newLabel(MarkupContainer parent, String componentId, IModel model)
 			{
 				Label dateStart = new Label(componentId, new DateModel(model, config, DateModel.DATESTYLE_FULL_SHORT));
 				dateStart.setEscapeModelStrings(false);

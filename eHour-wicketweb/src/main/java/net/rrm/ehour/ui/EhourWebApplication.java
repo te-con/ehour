@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.audit.panel.AuditReportExcel;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.config.PageConfig;
+import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
@@ -53,6 +54,7 @@ import org.acegisecurity.AuthenticationManager;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
@@ -67,6 +69,7 @@ import org.apache.wicket.protocol.http.request.urlcompressing.UrlCompressingWebR
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.convert.ConverterLocator;
 import org.apache.wicket.util.lang.PackageName;
 
 /**
@@ -200,17 +203,11 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount(new HybridUrlCodingStrategy("/prefs", UserPreferencePage.class));
 	}
 	
-	/**
-	 * 
-	 */
 	protected void springInjection()
 	{
 		addComponentInstantiationListener(new SpringComponentInjector(this));
 	}
 
-	/**
-	 * 
-	 */
 	protected void setupSecurity()
 	{
 		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
@@ -231,6 +228,15 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 			}
 		});
 	}
+	
+	@Override
+	protected IConverterLocator newConverterLocator()
+	{
+		ConverterLocator converterLocator = new ConverterLocator();
+		converterLocator.set(Float.class, new FloatConverter());
+		return converterLocator;
+	}
+
 
 	/**
 	 * Set the homepage

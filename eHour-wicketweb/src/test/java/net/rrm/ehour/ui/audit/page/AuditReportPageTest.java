@@ -28,6 +28,7 @@ import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
+import org.apache.wicket.Component;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +74,9 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 						AuditConstants.PATH_CRITERIA + ":" + 
 						AuditConstants.PATH_FORM_BORDER + ":" +
 						AuditConstants.ID_FORM;
+		
+		Component componentFromLastRenderedPage = tester.getComponentFromLastRenderedPage("frame:reportCriteria:border:criteriaForm:submitButton");
+		System.out.println(componentFromLastRenderedPage);
 		
 		getTester().executeAjaxEvent(formPath + ":" +  
 								AuditConstants.PATH_FORM_SUBMIT,

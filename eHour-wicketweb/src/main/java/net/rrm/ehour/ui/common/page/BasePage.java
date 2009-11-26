@@ -33,7 +33,7 @@ import org.apache.wicket.model.ResourceModel;
  * Base layout of all pages, adds header panel
  **/
 
-public abstract class BasePage extends WebPage implements AjaxEventListener
+public abstract class BasePage<T> extends WebPage implements AjaxEventListener
 {
 	private static final long serialVersionUID = 7090746921483608658L;
 
@@ -44,7 +44,7 @@ public abstract class BasePage extends WebPage implements AjaxEventListener
 		setupPage(pageTitle);
 	}
 	
-	public BasePage(ResourceModel pageTitle, IModel model)
+	public BasePage(ResourceModel pageTitle, IModel<T> model)
 	{
 		super(model);
 		

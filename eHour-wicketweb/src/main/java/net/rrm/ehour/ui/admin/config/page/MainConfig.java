@@ -47,16 +47,8 @@ public class MainConfig extends AbstractAdminPage
 
 	private void setUpPage()
 	{
-//		GreyRoundedBorder greyBorder = new GreyRoundedBorder("configFrame", new ResourceModel("admin.config.title"));
-//		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueBorder");
-//		greyBorder.add(blueBorder);
-//		add(greyBorder);
-
-//		WebMarkupContainer container = new WebMarkupContainer("configFrame");
-//		add(container);
-		
 		MainConfigBackingBean configBackingBean = new MainConfigBackingBean(getDbConfig());
-		add(new ConfigTabPanel("configTabs", new CompoundPropertyModel(configBackingBean)));
+		add(new ConfigTabPanel("configTabs", new CompoundPropertyModel<MainConfigBackingBean>(configBackingBean)));
 	}
 
 	private EhourConfigStub getDbConfig()

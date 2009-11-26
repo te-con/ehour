@@ -23,14 +23,14 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class AssignmentFormPanel extends AbstractFormSubmittingPanel
+public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentAdminBackingBean>
 {
 	private static final long serialVersionUID = 7704141227799017924L;
 
 	@SpringBean
 	private ProjectAssignmentManagementService projectAssignmentManagementService;
 	
-	public AssignmentFormPanel(String id, final IModel model)
+	public AssignmentFormPanel(String id, final IModel<AssignmentAdminBackingBean> model)
 	{
 		super(id, model);
 
@@ -39,17 +39,18 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel
 		setUpPage(model);
 	}
 
-	private void setUpPage(IModel model)
+	private void setUpPage(IModel<AssignmentAdminBackingBean> model)
 	{
 		Border greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_SMALL);
 		add(greyBorder);
 		
-		final Form form = new Form("assignmentForm");
+		final Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("assignmentForm");
 		greyBorder.add(form);
 		
+
 		// add submit form
 		FormUtil.setSubmitActions(form 
-									,((AssignmentAdminBackingBean)getModelObject()).getProjectAssignment().isDeletable() 
+									,((AssignmentAdminBackingBean)getDefaultModelObject()).getProjectAssignment().isDeletable() 
 									,this
 									,AssignmentAjaxEventType.ASSIGNMENT_UPDATED
 									,AssignmentAjaxEventType.ASSIGNMENT_DELETED

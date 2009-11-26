@@ -25,7 +25,6 @@ import net.rrm.ehour.ui.admin.assignment.component.EditDatePanel;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
@@ -100,7 +99,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		
 		// allotted hours 
 		final TextField allottedHours = new RequiredTextField("projectAssignment.allottedHours",
-												new FloatModel(new PropertyModel(model, "projectAssignment.allottedHours"), config, null));
+												new PropertyModel<Float>(model, "projectAssignment.allottedHours"));
 		allottedHours.setType(float.class);
 		allottedHours.add(new ValidatingFormComponentAjaxBehavior());
 		allottedHours.add(NumberValidator.POSITIVE);
@@ -118,7 +117,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		
 		// overrun hours 
 		final TextField overrunHours = new RequiredTextField("projectAssignment.allowedOverrun",
-											new FloatModel(new PropertyModel(model, "projectAssignment.allowedOverrun"), config, null));
+											new PropertyModel<Float>(model, "projectAssignment.allowedOverrun"));
 		overrunHours.setType(float.class);
 		overrunHours.add(new ValidatingFormComponentAjaxBehavior());
 		overrunHours.add(NumberValidator.POSITIVE);

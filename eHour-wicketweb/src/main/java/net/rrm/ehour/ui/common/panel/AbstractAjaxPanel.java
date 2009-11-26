@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import org.apache.wicket.model.IModel;
 
 
-public abstract class AbstractAjaxPanel extends AbstractBasePanel implements AjaxEventListener
+public abstract class AbstractAjaxPanel<T> extends AbstractBasePanel<T> implements AjaxEventListener
 {
 	private static final long serialVersionUID = 5723792133447447887L;
 
@@ -31,7 +31,7 @@ public abstract class AbstractAjaxPanel extends AbstractBasePanel implements Aja
 		super(id);
 	}
 
-	public AbstractAjaxPanel(String id, IModel model)
+	public AbstractAjaxPanel(String id, IModel<T> model)
 	{
 		super(id, model);
 	}

@@ -27,7 +27,7 @@ import org.apache.wicket.util.time.Duration;
  * http://chillenious.wordpress.com/2007/06/19/how-to-create-a-text-area-with-a-heart-beat-with-wicket/
  */
 
-public class KeepAliveTextArea extends TextArea
+public class KeepAliveTextArea extends TextArea<String>
 {
 	/**
 	 * 

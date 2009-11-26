@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.admin.config.panel;
 
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
@@ -47,47 +48,47 @@ public class LocaleConfigPanel extends AbstractConfigPanel
 {
 	private static final long serialVersionUID = 3411339351917181309L;
 
-	public LocaleConfigPanel(String id, IModel model)
+	public LocaleConfigPanel(String id, IModel<MainConfigBackingBean> model)
 	{
 		super(id, model);
 	}
 
 	@SuppressWarnings("serial")
 	@Override
-	protected void addFormComponents(Form configForm)
+	protected void addFormComponents(Form<MainConfigBackingBean> configForm)
 	{
-		final DropDownChoice	localeDropDownChoice;
-		final DropDownChoice	languageDropDownChoice;
+		final DropDownChoice<Locale>	localeDropDownChoice;
+		final DropDownChoice<Locale>	languageDropDownChoice;
 		final AjaxCheckBox		onlyTranslationsBox;
-		final DropDownChoice	currencyDropDownChoice;
+		final DropDownChoice<Locale>	currencyDropDownChoice;
 		final Label				dateFormat;
 		
-		final MainConfigBackingBean configBackingBean = (MainConfigBackingBean)getModelObject();
+		final MainConfigBackingBean configBackingBean = (MainConfigBackingBean)getDefaultModelObject();
 		
 		configForm.setOutputMarkupId(true);
 
 		// currency dropdown
-		currencyDropDownChoice = new DropDownChoice("config.currency",
-											new PropertyModel(configBackingBean, "availableCurrencies"),
+		currencyDropDownChoice = new DropDownChoice<Locale>("config.currency",
+											new PropertyModel<List<Locale>>(configBackingBean, "availableCurrencies"),
 											new LocaleChoiceRenderer(2));
 		currencyDropDownChoice.setOutputMarkupId(true);
 		configForm.add(currencyDropDownChoice);
 		
 		// date format example
 		dateFormat = new Label("dateFormat", 
-							new DateModel(new Model(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
+							new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
 		dateFormat.setOutputMarkupId(true);
 		configForm.add(dateFormat);
 
 		// language selection
-		languageDropDownChoice = new DropDownChoice("localeLanguage",
-													new PropertyModel(configBackingBean, "localeLanguage"),
-													new PropertyModel(configBackingBean, "availableLanguages"),
+		languageDropDownChoice = new DropDownChoice<Locale>("localeLanguage",
+													new PropertyModel<Locale>(configBackingBean, "localeLanguage"),
+													new PropertyModel<List<Locale>>(configBackingBean, "availableLanguages"),
 													new LocaleChoiceRenderer(1)); 
 
 		// locale selection
-		localeDropDownChoice = new DropDownChoice("localeCountry",
-													new PropertyModel(configBackingBean, "availableLocales"),
+		localeDropDownChoice = new DropDownChoice<Locale>("localeCountry",
+													new PropertyModel<List<Locale>>(configBackingBean, "availableLocales"),
 													new LocaleChoiceRenderer(0)); 
 		localeDropDownChoice.setOutputMarkupId(true);
 		localeDropDownChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
@@ -96,7 +97,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel
 			protected void onUpdate(AjaxRequestTarget target)
 			{
 				// update the date format example
-				dateFormat.setModel(new DateModel(new Model(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
+				dateFormat.setDefaultModel(new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
 				target.addComponent(dateFormat);
 				
 				// refresh langugae
@@ -123,7 +124,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel
 		configForm.add(languageDropDownChoice);		
 		
 		// only translations
-		onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel(configBackingBean, "translationsOnly"))
+		onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel<Boolean>(configBackingBean, "translationsOnly"))
 		{
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
@@ -154,7 +155,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel
      * Choice for a locale.
      */
 	@SuppressWarnings("serial")
-    private final class LocaleChoiceRenderer extends ChoiceRenderer
+    private final class LocaleChoiceRenderer extends ChoiceRenderer<Locale>
     {
 		int type;
 		
@@ -167,9 +168,8 @@ public class LocaleConfigPanel extends AbstractConfigPanel
          * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(Object)
          */
     	@Override
-        public Object getDisplayValue(Object object)
+        public Object getDisplayValue(Locale locale)
         {
-            Locale locale = (Locale)object;
             String display;
             
             if (type == 0)
@@ -203,10 +203,8 @@ public class LocaleConfigPanel extends AbstractConfigPanel
     	 * @see org.apache.wicket.markup.html.form.ChoiceRenderer#getIdValue(java.lang.Object, int)
     	 */
     	@Override
-    	public String getIdValue(Object o, int index)
+    	public String getIdValue(Locale locale, int index)
     	{
-    		Locale locale = (Locale)o;
-    		
     		if (type == 0)
     		{
     			return locale.getCountry() + "_" + locale.getLanguage();

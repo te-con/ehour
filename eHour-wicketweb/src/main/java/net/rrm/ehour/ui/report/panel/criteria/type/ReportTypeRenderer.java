@@ -23,16 +23,16 @@ import org.apache.wicket.model.ResourceModel;
  * Renderer which looks up a resource key
  **/
 
-public class ReportTypeRenderer implements IChoiceRenderer
+public class ReportTypeRenderer implements IChoiceRenderer<ReportType>
 {
 	private static final long serialVersionUID = 1L;
 
-	public Object getDisplayValue(Object object)
+	public Object getDisplayValue(ReportType object)
 	{
-		return new  ResourceModel(object.toString()).getObject();
+		return new  ResourceModel(object.name()).getObject();
 	}
 
-	public String getIdValue(Object object, int index)
+	public String getIdValue(ReportType object, int index)
 	{
 		return Integer.toString(index);
 	}

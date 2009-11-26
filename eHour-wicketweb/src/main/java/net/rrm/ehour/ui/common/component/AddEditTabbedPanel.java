@@ -28,7 +28,7 @@ import org.apache.wicket.model.ResourceModel;
 /**
  * AjaxTabbedPanel that passes the index to a pre process method
  **/
-@SuppressWarnings({"unchecked", "serial"})
+@SuppressWarnings({"serial"})
 public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends MultiTabbedPanel
 {
 	private static final long serialVersionUID = -2437819961082840272L;

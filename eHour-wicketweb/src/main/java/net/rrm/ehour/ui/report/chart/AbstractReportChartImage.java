@@ -56,7 +56,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @param height
 	 */
 	public AbstractReportChartImage(String id, 
-								IModel dataModel,
+								IModel<ReportData> dataModel,
 								int width,
 								int height)
 	{
@@ -69,7 +69,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 */
 	protected JFreeChart generateChart()
 	{
-		ReportData report = (ReportData)getModelObject();
+		ReportData report = (ReportData)getDefaultModelObject();
 		return getChart(report);
 	}
 	

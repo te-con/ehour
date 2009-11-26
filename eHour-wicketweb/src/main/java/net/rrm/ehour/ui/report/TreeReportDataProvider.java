@@ -27,7 +27,7 @@ import org.apache.wicket.model.Model;
  * DataProvider for tree report nodes, not the most efficient memory-wise 
  **/
 
-public class TreeReportDataProvider implements IDataProvider
+public class TreeReportDataProvider implements IDataProvider<TreeReportElement>
 {
 	private static final long serialVersionUID = 4346207207281976523L;
 
@@ -55,9 +55,9 @@ public class TreeReportDataProvider implements IDataProvider
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
 	 */
-	public IModel model(Object object)
+	public IModel<TreeReportElement> model(TreeReportElement object)
 	{
-		return new Model((TreeReportElement)object);
+		return new Model<TreeReportElement>(object);
 	}
 
 	/*
