@@ -29,7 +29,7 @@ public class ReportTypeRenderer implements IChoiceRenderer<ReportType>
 
 	public Object getDisplayValue(ReportType object)
 	{
-		return new  ResourceModel(object.name()).getObject();
+		return new ResourceModel(object.toString()).getObject();
 	}
 
 	public String getIdValue(ReportType object, int index)
