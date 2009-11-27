@@ -70,6 +70,8 @@ public enum ReportConfig
 	AGGREGATE_CUSTOMER_SINGLE_USER (new ReportColumn("userReport.report.customer"),
 									new ReportColumn("userReport.report.project"),
 									new ReportColumn("userReport.report.projectCode"),
+									new ReportColumn("userReport.report.rate"),
+									new ReportColumn("userReport.report.rate"),
 									new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
 									new TurnoverTreeReportColumn("userReport.report.turnover", CurrencyConverter.getInstance())),
 
