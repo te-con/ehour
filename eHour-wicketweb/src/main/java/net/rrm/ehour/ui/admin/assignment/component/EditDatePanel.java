@@ -1,5 +1,7 @@
 package net.rrm.ehour.ui.admin.assignment.component;
 
+import java.util.Date;
+
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
@@ -21,7 +23,7 @@ public class EditDatePanel extends Panel
 
 	private DateTextField dateInputField;
 	
-	public EditDatePanel(String id, IModel dateModel, IModel infiniteModel)
+	public EditDatePanel(String id, IModel<Date> dateModel, IModel infiniteModel)
 	{
 		super(id);
 		

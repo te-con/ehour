@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.timesheet.page;
 
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.page.BasePage;
+import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
@@ -38,7 +38,7 @@ import org.apache.wicket.model.ResourceModel;
  */
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class MonthOverviewPage extends BasePage
+public class MonthOverviewPage extends AbstractBasePage
 {
 	private static final long serialVersionUID = -6873845464139697303L;
 

@@ -102,13 +102,13 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * Get report name for the filename
 	 * @return
 	 */
-	protected abstract IModel getExcelReportName();
+	protected abstract IModel<String> getExcelReportName();
 	
 	/**
 	 * Get report header
 	 * @return
 	 */
-	protected abstract IModel getHeaderReportName();
+	protected abstract IModel<String> getHeaderReportName();
 
 	
 	/**
@@ -121,7 +121,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	{
 		HSSFRow		row;
 		int			cellNumber = 0;
-		IModel		headerModel;
+		IModel<String> headerModel;
 		
 		row = sheet.createRow(rowNumber++);
 		

@@ -27,9 +27,9 @@ public class DemoDecorator implements IAjaxCallDecorator
 {
 	private static final long serialVersionUID = 1432993030793501257L;
 
-	private IModel	msgModel;
+	private IModel<String>	msgModel;
 	
-	public DemoDecorator(IModel msgModel)
+	public DemoDecorator(IModel<String> msgModel)
 	{
 		this.msgModel = msgModel;
 	}

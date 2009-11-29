@@ -35,7 +35,7 @@ import org.apache.wicket.model.ResourceModel;
  * @author thies
  *
  */
-public class AuditReportPage extends AbstractAdminPage 
+public class AuditReportPage extends AbstractAdminPage<String> 
 {
 	
 	public AuditReportPage()

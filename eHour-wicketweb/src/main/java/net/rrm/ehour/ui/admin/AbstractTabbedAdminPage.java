@@ -28,7 +28,7 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @SuppressWarnings("serial")
-public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractAdminPage
+public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractAdminPage<BB>
 {
 	private	AddEditTabbedPanel<BB>	tabbedPanel;
 	

@@ -20,7 +20,6 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanelTest;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import org.junit.Test;
 
 /**
@@ -39,8 +38,6 @@ public class CommonWebUtilTest extends ProjectReportPanelTest
 		setupExpectations();
 		
 		replay(getAggregateReportService());
-		
-		Panel panel = startReportPanel();
 		
 		getTester().assertNoErrorMessage();
 		

@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.admin.assignment.panel.form;
 import java.util.Currency;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -28,7 +29,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.validator.NumberValidator;
+import org.apache.wicket.validation.validator.MinimumValidator;
 
 /**
  * Rate & role 
@@ -43,14 +44,14 @@ public class AssignmentRateRoleFormPartPanel extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public AssignmentRateRoleFormPartPanel(String id, IModel model)
+	public AssignmentRateRoleFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model)
 	{
 		super(id, model);
 
 		EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
 		
 		// add role
-		TextField role = new TextField("projectAssignment.role");
+		TextField<String> role = new TextField<String>("projectAssignment.role");
 		add(role);
 		
 		// add hourly rate
@@ -58,7 +59,7 @@ public class AssignmentRateRoleFormPartPanel extends Panel
 											new PropertyModel<Float>(model, "projectAssignment.hourlyRate"));
 		hourlyRate.setType(Float.class);
 		hourlyRate.add(new ValidatingFormComponentAjaxBehavior());
-		hourlyRate.add(NumberValidator.minimum(0));
+		hourlyRate.add(new MinimumValidator<Float>(0f));
 		add(hourlyRate);
 		add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
 

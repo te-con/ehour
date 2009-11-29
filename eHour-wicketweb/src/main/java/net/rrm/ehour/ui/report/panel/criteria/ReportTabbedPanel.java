@@ -25,7 +25,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -82,7 +81,6 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	 * Add tab, replacing any tabs that have the same title resource key
 	 * @param newTab make sure to use a KeyResourceModel for the title
 	 */
-	@SuppressWarnings("unchecked")
 	public void addTab(final ITab newTab)
 	{
 		final List<ITab> 	tabList = getTabs();

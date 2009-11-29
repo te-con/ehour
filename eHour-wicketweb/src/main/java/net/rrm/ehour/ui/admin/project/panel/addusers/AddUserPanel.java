@@ -6,13 +6,11 @@ import java.util.List;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
 import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel;
 import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel.DisplayOption;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;

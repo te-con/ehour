@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.common.page;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.config.PageConfig;
-import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.markup.html.WebPage;
@@ -33,18 +33,18 @@ import org.apache.wicket.model.ResourceModel;
  * Base layout of all pages, adds header panel
  **/
 
-public abstract class BasePage<T> extends WebPage implements AjaxEventListener
+public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventListener
 {
 	private static final long serialVersionUID = 7090746921483608658L;
 
-	public BasePage(ResourceModel pageTitle)
+	public AbstractBasePage(ResourceModel pageTitle)
 	{
 		super();
 		
 		setupPage(pageTitle);
 	}
 	
-	public BasePage(ResourceModel pageTitle, IModel<T> model)
+	public AbstractBasePage(ResourceModel pageTitle, IModel<T> model)
 	{
 		super(model);
 		

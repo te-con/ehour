@@ -41,7 +41,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 	@SpringBean
 	private CustomerService	customerService;
 	
-	public AssignmentProjectSelectionPanel(String id, IModel model)
+	public AssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model)
 	{
 		super(id);
 		
@@ -49,23 +49,19 @@ public class AssignmentProjectSelectionPanel extends Panel
 	}
 
 	@SuppressWarnings("serial")
-	private void addCustomerAndProjectChoices(final IModel model)
+	private void addCustomerAndProjectChoices(final IModel<AssignmentAdminBackingBean> model)
 	{
 		List<Customer> customers = customerService.getCustomers(true);
 
 		// customer
-		DropDownChoice customerChoice = new DropDownChoice("customer", customers, new ChoiceRenderer("fullName"));
-		customerChoice.setRequired(true);
-		customerChoice.setNullValid(false);
-		customerChoice.setLabel(new ResourceModel("admin.assignment.customer"));
-		add(customerChoice);
-		add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerChoice));
+		DropDownChoice<Customer> customerChoice = createCustomerDropdown(customers);
 
 		// project model
-		IModel projectChoices = new AbstractReadOnlyModel()
+		IModel<List<Project>> projectChoices = new AbstractReadOnlyModel<List<Project>>()
 		{
+			@SuppressWarnings("unchecked")
 			@Override
-			public Object getObject()
+			public List<Project> getObject()
 			{
 				// need to re-get it, project set is lazy
 				Customer selectedCustomer = ((AssignmentAdminBackingBean) model.getObject()).getCustomer();
@@ -85,7 +81,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 				if (customer == null || customer.getProjects() == null || customer.getProjects().size() == 0)
 				{
 					LOGGER.debug("Empty project set for customer: " + customer);
-					return Collections.EMPTY_LIST;
+					return (List<Project>)Collections.EMPTY_LIST;
 				} else
 				{
 					List<Project> projects = new ArrayList<Project>(customer.getActiveProjects());
@@ -98,7 +94,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 		};
 
 		// project
-		final DropDownChoice projectChoice = new DropDownChoice("projectAssignment.project", projectChoices, new ChoiceRenderer("fullName"));
+		final DropDownChoice<Project> projectChoice = new DropDownChoice<Project>("projectAssignment.project", projectChoices, new ChoiceRenderer<Project>("fullName"));
 		projectChoice.setRequired(true);
 		projectChoice.setOutputMarkupId(true);
 		projectChoice.setNullValid(false);
@@ -130,5 +126,16 @@ public class AssignmentProjectSelectionPanel extends Panel
 				EventPublisher.publishAjaxEvent(AssignmentProjectSelectionPanel.this, ajaxEvent);
 			}
 		});
+	}
+
+	private DropDownChoice<Customer> createCustomerDropdown(List<Customer> customers)
+	{
+		DropDownChoice<Customer> customerChoice = new DropDownChoice<Customer>("customer", customers, new ChoiceRenderer<Customer>("fullName"));
+		customerChoice.setRequired(true);
+		customerChoice.setNullValid(false);
+		customerChoice.setLabel(new ResourceModel("admin.assignment.customer"));
+		add(customerChoice);
+		add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerChoice));
+		return customerChoice;
 	}
 }

@@ -30,15 +30,11 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
  * Dropdown choice which generates an event when the dropdown was changed 
  **/
 
-public class QuickDropDownChoice extends DropDownChoice
+public class QuickDropDownChoice<T extends QuickPeriod> extends DropDownChoice<T>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
-	@SuppressWarnings("unchecked")
-	public QuickDropDownChoice(final String id, final List data, final IChoiceRenderer renderer)
+	public QuickDropDownChoice(final String id, final List<T> data, final IChoiceRenderer<T> renderer)
 	{
 		super(id, data, renderer);
 

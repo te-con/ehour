@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.userprefs.page;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.page.BasePage;
+import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
@@ -33,7 +33,7 @@ import org.apache.wicket.model.ResourceModel;
  * User preference page 
  **/
 @AuthorizeInstantiation({"ROLE_CONSULTANT", "ROLE_ADMIN", "ROLE_REPORT"})
-public class UserPreferencePage extends BasePage
+public class UserPreferencePage extends AbstractBasePage
 {
 	private CalendarPanel		calendarPanel;
 	

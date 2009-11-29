@@ -20,6 +20,7 @@ package net.rrm.ehour.ui.admin.assignment.panel.form;
 import java.util.Arrays;
 import java.util.List;
 
+import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
@@ -35,7 +36,7 @@ import org.apache.wicket.model.IModel;
  * Assignment form
  **/
 
-public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel
+public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<AssignmentAdminBackingBean>
 {
 	public enum DisplayOption
 	{
@@ -51,7 +52,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel
 	
 	private AssignmentTypeFormPartPanel typeFormPartPanel;
 	
-	public AssignmentFormComponentContainerPanel(String id, Form form, final IModel model, DisplayOption... displayOptions)
+	public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions)
 	{
 		super(id, model);
 		
@@ -61,7 +62,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel
 	/**
 	 * Setup panel
 	 */
-	private void setUpPanel(Form form, final IModel model, List<DisplayOption> displayOptions)
+	private void setUpPanel(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions)
 	{
 		// setup the customer & project dropdowns
 		add(createProjectSelection("projectSelection", model, displayOptions));
@@ -76,7 +77,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel
 		add(new CheckBox("projectAssignment.active"));
 	}
 	
-	private WebMarkupContainer createProjectSelection(String id, IModel model, List<DisplayOption> displayOptions)
+	private WebMarkupContainer createProjectSelection(String id, IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions)
 	{
 		if (displayOptions.contains(DisplayOption.SHOW_PROJECT_SELECTION))
 		{
@@ -94,7 +95,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel
 	 * @param model
 	 * @return 
 	 */
-	private WebMarkupContainer createRateRole(IModel model)
+	private WebMarkupContainer createRateRole(IModel<AssignmentAdminBackingBean> model)
 	{
 		return new AssignmentRateRoleFormPartPanel("rateRole", model);
 	}
@@ -105,7 +106,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel
 	 * @param model
 	 * @return 
 	 */
-	private AssignmentTypeFormPartPanel createProjectDuration(Form form, final IModel model)
+	private AssignmentTypeFormPartPanel createProjectDuration(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model)
 	{
 		typeFormPartPanel = new AssignmentTypeFormPartPanel("assignmentType", model, form);
 		

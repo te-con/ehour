@@ -27,7 +27,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.page.BasePage;
+import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.pm.PmReportPanel;
@@ -44,7 +44,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Project management base station :)
  **/
 @AuthorizeInstantiation("ROLE_PROJECTMANAGER")
-public class ProjectManagement extends BasePage<ReportCriteria>
+public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 {
 	private static final long serialVersionUID = 898442184509251553L;
 
