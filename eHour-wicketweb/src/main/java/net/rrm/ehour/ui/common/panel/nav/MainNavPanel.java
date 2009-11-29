@@ -37,7 +37,7 @@ import org.apache.wicket.model.Model;
  * Main navigation panel 
  **/
 
-public class MainNavPanel extends AbstractBasePanel
+public class MainNavPanel extends AbstractBasePanel<Void>
 {
 	private static final long serialVersionUID = 854412484275829659L;
 
@@ -63,7 +63,7 @@ public class MainNavPanel extends AbstractBasePanel
 		wasAdded |= addLink(this, "print", ExportMonthSelectionPage.class, wasAdded);
 		wasAdded |= addLink(this, "overview", MonthOverviewPage.class, wasAdded);
 		
-		add(new BookmarkablePageLink("logoffLink", Login.class));
+		add(new BookmarkablePageLink<Login>("logoffLink", Login.class));
 	}
 	
 	/**
@@ -71,10 +71,10 @@ public class MainNavPanel extends AbstractBasePanel
 	 */
 	private void addLoggedInUser()
 	{
-		BookmarkablePageLink link = new BookmarkablePageLink("prefsLink", UserPreferencePage.class);
+		BookmarkablePageLink<UserPreferencePage> link = new BookmarkablePageLink<UserPreferencePage>("prefsLink", UserPreferencePage.class);
 		add(link);
 		
-		Label loggedInUserLabel = new Label("loggedInUser", new Model(AuthUtil.getUser().getFullName()) );
+		Label loggedInUserLabel = new Label("loggedInUser", new Model<String>(AuthUtil.getUser().getFullName()) );
 		link.add(loggedInUserLabel);
 	}
 	
@@ -107,13 +107,13 @@ public class MainNavPanel extends AbstractBasePanel
 	 * @param id
 	 * @param linkPage
 	 */
-	private boolean addLink(WebMarkupContainer parent, String id, Class<? extends WebPage> linkPage, boolean inclSeperator)
+	private <L extends WebPage> boolean addLink(WebMarkupContainer parent, String id, Class<L> linkPage, boolean inclSeperator)
 	{
-		BookmarkablePageLink	link;
+		BookmarkablePageLink<L>	link;
 		
 		boolean isVisible = AuthUtil.userAuthorizedForPage(linkPage);
 		
-		link = new BookmarkablePageLink(id + "Link", linkPage);
+		link = new BookmarkablePageLink<L>(id + "Link", linkPage);
 		link.setVisible(isVisible);
 		parent.add(link);
 		
