@@ -197,6 +197,7 @@
 	</dependencies>
 	<build>
 		<plugins>
+<!--
 			<plugin>
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<artifactId>maven-clover2-plugin</artifactId>
@@ -206,6 +207,7 @@
 				</configuration>
 
 		       </plugin>
+-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
