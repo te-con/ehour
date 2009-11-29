@@ -40,7 +40,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentPanel extends AbstractFormSubmittingPanel
+public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
 {
 	private static final long serialVersionUID = -3721224427697057895L;
 	private	final static Logger	logger = Logger.getLogger(AssignmentPanel.class);
@@ -74,14 +74,14 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 			protected Panel getAddPanel(String panelId)
 			{
 				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel(getAddBackingBean()));
+												new CompoundPropertyModel<AssignmentAdminBackingBean>(getAddBackingBean()));
 			}
 
 			@Override
 			protected Panel getEditPanel(String panelId)
 			{
 				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel(getEditBackingBean()));
+												new CompoundPropertyModel<AssignmentAdminBackingBean>(getEditBackingBean()));
 			}
 
 			@Override

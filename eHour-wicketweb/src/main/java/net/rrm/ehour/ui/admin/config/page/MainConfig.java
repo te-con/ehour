@@ -29,7 +29,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * Main config page
  **/
-public class MainConfig extends AbstractAdminPage
+public class MainConfig extends AbstractAdminPage<Void>
 {
 	private static final long serialVersionUID = 8613594529875207988L;
 	

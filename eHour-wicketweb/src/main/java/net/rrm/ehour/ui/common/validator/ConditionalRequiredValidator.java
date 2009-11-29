@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.common.validator;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.validation.INullAcceptingValidator;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 
@@ -25,17 +24,17 @@ import org.apache.wicket.validation.validator.AbstractValidator;
  * Conditional required validator, field is only required when the model evaluates to true 
  **/
 
-public class ConditionalRequiredValidator extends AbstractValidator implements INullAcceptingValidator
+public class ConditionalRequiredValidator<T> extends AbstractValidator<T>
 {
 	private static final long serialVersionUID = 6633525281870496233L;
-	private IModel	conditionalModel;
+	private IModel<Boolean>	conditionalModel;
 	private	boolean	reverse;
 
 	/**
 	 * 
 	 * @param conditionalModel
 	 */
-	public ConditionalRequiredValidator(IModel conditionalModel)
+	public ConditionalRequiredValidator(IModel<Boolean> conditionalModel)
 	{
 		this(conditionalModel, false);
 	}
@@ -45,7 +44,7 @@ public class ConditionalRequiredValidator extends AbstractValidator implements I
 	 * @param conditionalModel
 	 * @param reverse the conditional model
 	 */
-	public ConditionalRequiredValidator(IModel conditionalModel, boolean reverse)
+	public ConditionalRequiredValidator(IModel<Boolean> conditionalModel, boolean reverse)
 	{
 		this.conditionalModel = conditionalModel;
 	}
@@ -56,9 +55,9 @@ public class ConditionalRequiredValidator extends AbstractValidator implements I
 	 * @see org.apache.wicket.validation.validator.AbstractValidator#onValidate(org.apache.wicket.validation.IValidatable)
 	 */
 	@Override
-	public void onValidate(IValidatable validatable)
+	public void onValidate(IValidatable<T> validatable)
 	{
-		boolean	condition = ((Boolean)conditionalModel.getObject()).booleanValue();
+		boolean	condition = conditionalModel.getObject().booleanValue();
 		
 		if ( (reverse && condition || !reverse && !condition)
 				&& (validatable.getValue() == null 

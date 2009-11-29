@@ -23,7 +23,7 @@ public class EditDatePanel extends Panel
 
 	private DateTextField dateInputField;
 	
-	public EditDatePanel(String id, IModel<Date> dateModel, IModel infiniteModel)
+	public EditDatePanel(String id, IModel<Date> dateModel, IModel<Boolean> infiniteModel)
 	{
 		super(id);
 		
@@ -31,7 +31,7 @@ public class EditDatePanel extends Panel
 	}
 	
 	@SuppressWarnings("serial")
-	private void addDates(IModel dateModel, IModel infiniteModel)
+	private void addDates(IModel<Date> dateModel, IModel<Boolean> infiniteModel)
 	{
         // container for hiding input field
 		final WebMarkupContainer updateTarget = new WebMarkupContainer("updateTarget");
@@ -42,7 +42,7 @@ public class EditDatePanel extends Panel
         dateInputField = new DateTextField("date", dateModel, new StyleDateConverter("S-", true));
 		updateTarget.add(dateInputField);
 
-        dateInputField.add(new ConditionalRequiredValidator(infiniteModel));
+        dateInputField.add(new ConditionalRequiredValidator<Date>(infiniteModel));
 		dateInputField.add(new ValidatingFormComponentAjaxBehavior());
         dateInputField.add(new DatePicker());
         dateInputField.setVisible( !((Boolean)infiniteModel.getObject()).booleanValue());
@@ -68,7 +68,7 @@ public class EditDatePanel extends Panel
 		updateTarget.add(infiniteDate);
 	}	
 	
-	public FormComponent getDateInputFormComponent()
+	public FormComponent<Date> getDateInputFormComponent()
 	{
 		return dateInputField;
 	}

@@ -176,10 +176,10 @@ public class AssignmentTypeFormPartPanel extends Panel
 	 * @param form
 	 * @param model
 	 */
-	private void addDates(Form form, final IModel model)
+	private void addDates(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model)
 	{
-		EditDatePanel dateStart = new EditDatePanel("dateStart", new PropertyModel<Date>(model, "projectAssignment.dateStart"), new PropertyModel(model, "infiniteStartDate"));
-		EditDatePanel dateEnd = new EditDatePanel("dateEnd", new PropertyModel<Date>(model, "projectAssignment.dateEnd"), new PropertyModel(model, "infiniteEndDate"));
+		EditDatePanel dateStart = new EditDatePanel("dateStart", new PropertyModel<Date>(model, "projectAssignment.dateStart"), new PropertyModel<Boolean>(model, "infiniteStartDate"));
+		EditDatePanel dateEnd = new EditDatePanel("dateEnd", new PropertyModel<Date>(model, "projectAssignment.dateEnd"), new PropertyModel<Boolean>(model, "infiniteEndDate"));
 
 		add(dateStart);
 		add(dateEnd);

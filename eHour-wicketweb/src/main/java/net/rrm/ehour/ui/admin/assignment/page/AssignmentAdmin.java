@@ -50,7 +50,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentAdmin extends AbstractAdminPage
+public class AssignmentAdmin extends AbstractAdminPage<Void>
 {
 	private static final long serialVersionUID = 566527529422873370L;
 	private final String			USER_SELECTOR_ID = "userSelector";
@@ -58,8 +58,8 @@ public class AssignmentAdmin extends AbstractAdminPage
 	@SpringBean
 	private	UserService					userService;
 	private EntrySelectorFilter			currentFilter;
-	private	final static Logger			logger = Logger.getLogger(AssignmentAdmin.class);
-	private ListView					userListView;
+	private	final static Logger			LOGGER = Logger.getLogger(AssignmentAdmin.class);
+	private ListView<User>				userListView;
 	private	Panel						assignmentPanel;		
 	
 	/**
@@ -119,14 +119,14 @@ public class AssignmentAdmin extends AbstractAdminPage
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
 		
-		userListView = new ListView("itemList", users)
+		userListView = new ListView<User>("itemList", users)
 		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<User> item)
 			{
-				final User		user = (User)item.getModelObject();
+				final User user = item.getModelObject();
 				
-				AjaxLink	link = new AjaxLink("itemLink")
+				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)
@@ -175,9 +175,9 @@ public class AssignmentAdmin extends AbstractAdminPage
 		}
 		else
 		{
-			if (logger.isDebugEnabled())
+			if (LOGGER.isDebugEnabled())
 			{
-				logger.debug("Filtering on " + currentFilter.getCleanFilterInput());
+				LOGGER.debug("Filtering on " + currentFilter.getCleanFilterInput());
 			}
 			
 			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, UserRole.CONSULTANT);
