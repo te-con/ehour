@@ -45,7 +45,7 @@ public class FormUtil
 	 * Set submit actions for form
 	 * @param form
 	 */
-	public static void setSubmitActions(final Form form, 
+	public static <T> void setSubmitActions(final Form<T> form, 
 										boolean includeDelete, 
 										final MarkupContainer submitTarget,
 										final AjaxEventType submitEventType,
@@ -65,7 +65,7 @@ public class FormUtil
 	 * @param errorEventType
 	 * @param config
 	 */
-	public static void setSubmitActions(final Form form, 
+	public static <T> void setSubmitActions(final Form<T> form, 
 										boolean includeDelete, 
 										final MarkupContainer submitTarget,
 										final AjaxEventType submitEventType,
@@ -76,11 +76,11 @@ public class FormUtil
 		AjaxButton submitButton = new AjaxButton("submitButton", form)
 		{
 			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form form)
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
 			{
 				if (!config.isInDemoMode())
 				{
-					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel)form.getModel()).getWrappedModel()).getObject();
+					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel<?>)form.getModel()).getWrappedModel()).getObject();
 					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(submitEventType, backingBean);
 					
 					EventPublisher.publishAjaxEvent(submitTarget, ajaxEvent);
@@ -101,7 +101,7 @@ public class FormUtil
 			}
 			
 			@Override
-            protected void onError(AjaxRequestTarget target, Form form)
+            protected void onError(AjaxRequestTarget target, Form<?> form)
 			{
 				target.addComponent(form);
 				
@@ -117,14 +117,14 @@ public class FormUtil
 		// default submit
 		form.add(submitButton);
 
-		AjaxLink deleteButton = new AjaxLink("deleteButton")
+		AjaxLink<Void> deleteButton = new AjaxLink<Void>("deleteButton")
         {
 			@Override
             public void onClick(AjaxRequestTarget target)
 			{
 				if (!config.isInDemoMode())
 				{
-					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel)form.getModel()).getWrappedModel()).getObject();
+					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel<?>)form.getModel()).getWrappedModel()).getObject();
 					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(deleteEventType, backingBean);
 					
 					EventPublisher.publishAjaxEvent(submitTarget, ajaxEvent);

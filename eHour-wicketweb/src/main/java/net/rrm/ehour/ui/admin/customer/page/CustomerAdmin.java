@@ -60,7 +60,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	
 	@SpringBean
 	private CustomerService		customerService;
-	private	ListView			customerListView;
+	private	ListView<Customer> customerListView;
 	private EntrySelectorFilter	currentFilter;
 	
 	/**
@@ -104,7 +104,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
-		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
+		return new CustomerFormPanel(panelId, new CompoundPropertyModel<CustomerAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
 	}
 
 	/*
@@ -114,7 +114,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
+		return new CustomerFormPanel(panelId, new CompoundPropertyModel<CustomerAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
 	}
 
 	/*
@@ -184,15 +184,15 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", CustomerAdmin.this);
 		
-		customerListView = new ListView("itemList", customers)
+		customerListView = new ListView<Customer>("itemList", customers)
 		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<Customer> item)
 			{
-				Customer		customer = (Customer)item.getModelObject();
+				Customer		customer = item.getModelObject();
 				final Integer	customerId = customer.getCustomerId();
 				
-				AjaxLink	link = new AjaxLink("itemLink")
+				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)

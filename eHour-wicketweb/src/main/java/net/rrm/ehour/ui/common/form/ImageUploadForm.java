@@ -39,14 +39,14 @@ import org.apache.wicket.model.IModel;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public abstract class ImageUploadForm extends Form
+public abstract class ImageUploadForm<T> extends Form<T>
 {
 	private static final long serialVersionUID = 808442352504816831L;
 	private FileUploadField fileUploadField;
 	
 	private static final Logger LOGGER = Logger.getLogger(ImageUploadForm.class);
 
-    public ImageUploadForm(String id, IModel model)
+    public ImageUploadForm(String id, IModel<T> model)
     {
         super(id, model);
 
