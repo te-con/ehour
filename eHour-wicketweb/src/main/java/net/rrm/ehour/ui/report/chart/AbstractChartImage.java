@@ -41,7 +41,7 @@ public abstract class AbstractChartImage extends NonCachingImage
 	}
 
 	public AbstractChartImage(String id, 
-								IModel dataModel,
+								IModel<?> dataModel,
 								int width,
 								int height)
 	{

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -28,7 +27,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * Multi tabbed
  **/
 
-public class MultiTabbedPanel extends AjaxTabbedPanel
+public class MultiTabbedPanel extends AbstractTabbedPanel
 {
 	private static final long serialVersionUID = -6237966897046476493L;
 
@@ -127,7 +126,7 @@ public class MultiTabbedPanel extends AjaxTabbedPanel
 	@Override
 	protected WebMarkupContainer newLink(String linkId, final int index)
 	{
-		return new AjaxFallbackLink(linkId)
+		return new AjaxFallbackLink<Void>(linkId)
 		{
 
 			private static final long serialVersionUID = 1L;

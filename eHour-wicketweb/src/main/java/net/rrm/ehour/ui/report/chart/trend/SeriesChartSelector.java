@@ -66,9 +66,9 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 			}
 		}
 		
-		final IModel model = new Model();
+		final IModel<Serializable> model = new Model<Serializable>();
 		
-		final DropDownChoice columnSelection = new DropDownChoice("serieChartSelector", model, columns, new TreeReportColumnRenderer());
+		final DropDownChoice<Serializable> columnSelection = new DropDownChoice<Serializable>("serieChartSelector", model, columns, new TreeReportColumnRenderer());
 
 		columnSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
 		{

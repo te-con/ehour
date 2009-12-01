@@ -33,7 +33,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Base page for report criteria
  **/
 
-public abstract class AbstractReportPage extends AbstractBasePage
+public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 {
 	@SpringBean
 	private ReportCriteriaService	reportCriteriaService;

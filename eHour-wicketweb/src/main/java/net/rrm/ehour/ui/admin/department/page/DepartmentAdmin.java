@@ -58,7 +58,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 	@SpringBean
 	private UserService			userService;
 	private	static final Logger	logger = Logger.getLogger(DepartmentAdmin.class);
-	private	ListView			deptListView;
+	private	ListView<UserDepartment> deptListView;
 	
 	/**
 	 * Default constructor
@@ -92,7 +92,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
-		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
+		return new DepartmentFormPanel(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
 	}
 
 	/*
@@ -102,7 +102,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
+		return new DepartmentFormPanel(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
 	}
 
 	/*
@@ -164,15 +164,15 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", DepartmentAdmin.this);
 		
-		deptListView = new ListView("itemList", departments)
+		deptListView = new ListView<UserDepartment>("itemList", departments)
 		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<UserDepartment> item)
 			{
-				UserDepartment	dept = (UserDepartment)item.getModelObject();
+				UserDepartment	dept = item.getModelObject();
 				final Integer	deptId = dept.getDepartmentId();
 				
-				AjaxLink	link = new AjaxLink("itemLink")
+				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)

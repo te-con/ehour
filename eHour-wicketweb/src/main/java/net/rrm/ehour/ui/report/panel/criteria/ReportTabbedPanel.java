@@ -18,13 +18,13 @@ package net.rrm.ehour.ui.report.panel.criteria;
 
 import java.util.List;
 
+import net.rrm.ehour.ui.common.component.AbstractTabbedPanel;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -32,7 +32,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * Ajax tabbed report panel
  **/
 
-public class ReportTabbedPanel extends AjaxTabbedPanel
+public class ReportTabbedPanel extends AbstractTabbedPanel
 {
 	private static final long serialVersionUID = 5957279200970383021L;
 
@@ -84,9 +84,9 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 	public void addTab(final ITab newTab)
 	{
 		final List<ITab> 	tabList = getTabs();
-		boolean		tabAdded = false;
-		final String		key = ((KeyResourceModel)newTab.getTitle()).getKey();
-		int			tabIndex = 0;
+		boolean	tabNotAdded = true;
+		final String key = ((KeyResourceModel)newTab.getTitle()).getKey();
+		int	tabIndex = 0;
 		
 		for (final ITab tab : tabList)
 		{
@@ -95,14 +95,14 @@ public class ReportTabbedPanel extends AjaxTabbedPanel
 				tabList.set(tabIndex, newTab);
 				this.setSelectedTab(tabIndex);
 
-				tabAdded = true;
+				tabNotAdded = false;
 				break;
 			}
 			
 			tabIndex++;
 		}
 	
-		if (!tabAdded)
+		if (tabNotAdded)
 		{
 			getTabs().add(newTab);
 			setSelectedTab(tabList.size() - 1);

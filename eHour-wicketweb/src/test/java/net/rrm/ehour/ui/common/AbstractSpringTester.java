@@ -38,7 +38,7 @@ public abstract class AbstractSpringTester
 	private AuditService auditService;
 
 	@Before
-	public void springContextSetup() throws Exception
+	public final void springContextSetup() throws Exception
 	{
 		mockContext = new AnnotApplicationContextMock();
 		config = new EhourConfigStub();

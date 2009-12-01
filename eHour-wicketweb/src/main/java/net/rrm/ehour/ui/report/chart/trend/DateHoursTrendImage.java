@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.report.chart.trend;
 
 import java.util.Locale;
 
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
@@ -34,7 +35,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	private static final long serialVersionUID = -7877973718547907932L;
 	private Locale locale;
 	
-	public DateHoursTrendImage(String id, IModel dataModel, int width, int height, String seriesColumn)
+	public DateHoursTrendImage(String id, IModel<ReportData> dataModel, int width, int height, String seriesColumn)
 	{
 		super(id, dataModel, width, height, seriesColumn);
 		

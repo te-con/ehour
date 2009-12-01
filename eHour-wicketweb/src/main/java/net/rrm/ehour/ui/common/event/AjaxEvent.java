@@ -28,6 +28,7 @@ public class AjaxEvent implements Serializable
 {
 	private static final long serialVersionUID = -8723330496152721044L;
 	private AjaxEventType	eventType;
+	private AjaxRequestTarget target;
 	
 	/**
 	 * 
@@ -36,15 +37,29 @@ public class AjaxEvent implements Serializable
 	 */
 	public AjaxEvent(AjaxEventType eventType)
 	{
-		this.eventType = eventType;
+		this(eventType, null);
 	}
 
+	public AjaxEvent(AjaxEventType eventType, AjaxRequestTarget target)
+	{
+		this.eventType = eventType;
+		this.target = target;
+	}
+
+	
 	/**
 	 * @return the target
 	 */
 	public AjaxRequestTarget getTarget()
 	{
-		return AjaxRequestTarget.get();
+		if (target != null)
+		{
+			return target;
+		}
+		else
+		{
+			return AjaxRequestTarget.get();
+		}
 	}
 
 	/**
