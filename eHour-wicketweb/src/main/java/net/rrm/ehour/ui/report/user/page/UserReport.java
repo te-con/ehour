@@ -36,7 +36,7 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class UserReport extends AbstractReportPage
+public class UserReport extends AbstractReportPage<ReportCriteria>
 {
 	private static final long serialVersionUID = -8867366237264687482L;
 

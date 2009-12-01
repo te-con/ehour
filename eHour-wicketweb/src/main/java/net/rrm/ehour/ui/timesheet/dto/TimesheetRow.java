@@ -102,7 +102,7 @@ public class TimesheetRow implements Serializable
 			
 				Localizer localizer = Application.get().getResourceSettings().getLocalizer();
 				
-				return localizer.getString("timesheet.errorNoHours", null, new Model(hours));
+				return localizer.getString("timesheet.errorNoHours", null, new Model<AvailableHours>(hours));
 			}
 			
 			

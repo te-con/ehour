@@ -46,7 +46,7 @@ import org.apache.wicket.model.StringResourceModel;
  * Print month page
  **/
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class ExportMonthSelectionPage extends AbstractReportPage implements AjaxEventListener
+public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria> implements AjaxEventListener
 {
 	private static final long serialVersionUID = 1891959724639181159L;
 	
@@ -86,9 +86,10 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 		blueBorder.add(createExportCriteriaPanel(ID_SELECTION_FORM));
 	}
 	
+	@SuppressWarnings("unchecked")
 	private ExportCriteriaPanel createExportCriteriaPanel(String id)
 	{
-		ExportCriteriaPanel criteriaPanel = new ExportCriteriaPanel(id, getDefaultModel());
+		ExportCriteriaPanel criteriaPanel = new ExportCriteriaPanel(id, (IModel<ReportCriteria>)getDefaultModel());
 		
 		return criteriaPanel;
 	}
@@ -113,7 +114,7 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 			reportCriteria.getUserCriteria().setProjects(new ArrayList<Project>());
 		}
 		
-		IModel	model = new CompoundPropertyModel(reportCriteria);
+		IModel<ReportCriteria> model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
 		setDefaultModel(model);
 	}
 	

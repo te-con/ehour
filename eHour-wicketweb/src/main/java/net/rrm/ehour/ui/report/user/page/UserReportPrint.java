@@ -44,7 +44,7 @@ public class UserReportPrint extends WebPage
 		super();
 		
 		StringResourceModel pageTitle = new StringResourceModel("userReport.printTitle", 
-				this, null, new Object[]{new Model(((EhourWebSession)getSession()).getUser().getUser().getFullName())});
+				this, null, new Object[]{new Model<String>(EhourWebSession.getSession().getUser().getUser().getFullName())});
 
 		
 		add(new Label("pageTitle", pageTitle)); 
