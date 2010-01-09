@@ -1,6 +1,5 @@
 package net.rrm.ehour.ui.admin.project.panel.addusers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.domain.User;
@@ -26,27 +25,25 @@ public class ListUsersPanel extends Panel
 	{
 		super(id);
 		
-		List<User> list = new ArrayList<User>();
-		
-		CheckGroup checkers = new CheckGroup("group", selectedUsers);
+		CheckGroup<User> checkers = new CheckGroup<User>("group", selectedUsers);
 
 		List<User> users = userService.getUsers(UserRole.CONSULTANT);
-		ListView listView = createUserList(users);
+		ListView<User> listView = createUserList(users);
 		checkers.add(listView);
 		add(checkers);
 	}
 	
 	@SuppressWarnings("serial")
-	private ListView createUserList(List<User> users)
+	private ListView<User> createUserList(List<User> users)
 	{
-		ListView listView = new ListView("users",users)
+		ListView<User> listView = new ListView<User>("users",users)
 		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<User> item)
 			{
-				User user = (User)item.getModelObject();
+				User user = item.getModelObject();
 				
-				item.add(new Check("check", item.getModel()));
+				item.add(new Check<User>("check", item.getModel()));
 				item.add(new Label("name", user.getFullName()));
 			}
 		};

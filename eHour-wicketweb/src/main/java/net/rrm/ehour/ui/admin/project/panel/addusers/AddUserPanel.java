@@ -29,7 +29,6 @@ public class AddUserPanel extends AbstractBasePanel
 		Form form = new Form("form");
 		add(form);
 		
-		
 		final List<User> users = new ArrayList<User>();
 		ListUsersPanel listUsersPanel = new ListUsersPanel("users", users);
 		form.add(listUsersPanel);

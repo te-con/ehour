@@ -1,7 +1,10 @@
 package net.rrm.ehour.ui.admin.project.panel.editusers;
 
 import java.util.Currency;
+import java.util.Date;
 import java.util.List;
+
+import javax.management.relation.Role;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -14,7 +17,9 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxEditableLabel;
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -24,9 +29,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.validation.validator.NumberValidator;
+import org.apache.wicket.validation.validator.MinimumValidator;
 
-public class ListCurrentProjectUsersPanel extends AbstractBasePanel
+public class ListCurrentProjectUsersPanel extends AbstractBasePanel<Void>
 {
 	private static final long serialVersionUID = 7558151841882107334L;
 	private EhourConfig config;
@@ -35,27 +40,29 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 	public ListCurrentProjectUsersPanel(String id, List<ProjectAssignment> assignments)
 	{
 		super(id);
+
+		add(CSSPackageResource.getHeaderContribution(ListCurrentProjectUsersPanel.class, "ListCurrentProjectUsersPanel.css"));
 		
 		config = ((EhourWebSession)getSession()).getEhourConfig();
 		
-		ListView assignmentList = new ListView("assignmentList", assignments)
+		ListView<ProjectAssignment> assignmentList = new ListView<ProjectAssignment>("assignmentList", assignments)
 		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<ProjectAssignment> item)
 			{
-				ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
+				ProjectAssignment assignment = item.getModelObject();
 				
 				item.add(new Label("user", assignment.getUser().getFullName()));
 				
-				item.add(addDate("dateStart", new PropertyModel(assignment, "dateStart")));
-				item.add(addDate("dateEnd", new PropertyModel(assignment, "dateEnd")));
+				item.add(addDate("dateStart", new PropertyModel<Date>(assignment, "dateStart")));
+				item.add(addDate("dateEnd", new PropertyModel<Date>(assignment, "dateEnd")));
 				
-				item.add(addRole("role", new PropertyModel(assignment, "role")));
+				item.add(addRole("role", new PropertyModel<Role>(assignment, "role")));
 				
 				item.add(new Label("currency", Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
 				item.add(addRate("rate" , new Model<Float>(assignment.getHourlyRate())));
 				
-				item.add(new AjaxCheckBox("active", new PropertyModel(assignment, "active"))
+				item.add(new AjaxCheckBox("active", new PropertyModel<Boolean>(assignment, "active"))
 				{
 					@Override
 					protected void onUpdate(AjaxRequestTarget target)
@@ -69,19 +76,20 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 	}
 
 	@SuppressWarnings("serial")
-	private AjaxEditableLabel addRate(String id, IModel<Float> model)
+	private AjaxEditableLabel<Float> addRate(String id, IModel<Float> model)
 	{
-		AjaxEditableLabel editableLabel = new AjaxEditableLabel("rate", model)
+		AjaxEditableLabel<Float> editableLabel = new AjaxEditableLabel<Float>("rate", model)
 		{
 			@Override
-			protected FormComponent newEditor(MarkupContainer parent, String componentId, IModel model)
+			protected FormComponent<Float> newEditor(MarkupContainer parent, String componentId, IModel<Float> model)
 			{
-				FormComponent editor = super.newEditor(parent, componentId, model);
+				FormComponent<Float> editor = super.newEditor(parent, componentId, model);
 
 				editor.setType(Float.class);
 				editor.add(new ValidatingFormComponentAjaxBehavior());
-				editor.add(NumberValidator.minimum(0));
-				
+				editor.add(new MinimumValidator<Float>(0f));
+				editor.add(new SimpleAttributeModifier("style", "width: 50px"));
+
 				return editor;
 			}
 		};
@@ -91,12 +99,12 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 
 
 	@SuppressWarnings("serial")
-	private AjaxEditableLabel addDate(String id, IModel model)
+	private AjaxEditableLabel<Date> addDate(String id, IModel<Date> model)
 	{
-		AjaxEditableLabel label = new AjaxEditableLabel(id, model)
+		AjaxEditableLabel<Date> label = new AjaxEditableLabel<Date>(id, model)
 		{
 			@Override
-			protected WebComponent newLabel(MarkupContainer parent, String componentId, IModel model)
+			protected WebComponent newLabel(MarkupContainer parent, String componentId, IModel<Date> model)
 			{
 				Label dateStart = new Label(componentId, new DateModel(model, config, DateModel.DATESTYLE_FULL_SHORT));
 				dateStart.setEscapeModelStrings(false);
@@ -111,13 +119,12 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel
 	}
 	
 	@SuppressWarnings("serial")
-	private AjaxEditableLabel addRole(String id, IModel model)
+	private AjaxEditableLabel<Role> addRole(String id, IModel<Role> model)
 	{
-		AjaxEditableLabel label = new AjaxEditableLabel(id, model)
+		AjaxEditableLabel<Role> label = new AjaxEditableLabel<Role>(id, model)
 		{
-			@SuppressWarnings("unchecked")
 			@Override
-			public IConverter getConverter(Class type)
+			public IConverter getConverter(Class<?> type)
 			{
 				return new RoleConverter();
 			}
