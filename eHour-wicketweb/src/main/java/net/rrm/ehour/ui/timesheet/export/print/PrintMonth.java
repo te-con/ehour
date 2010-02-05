@@ -70,7 +70,7 @@ public class PrintMonth extends WebPage
 		
 		PrintReport printReport = new PrintReport(reportCriteria);
 
-		IModel printTitle = new StringResourceModel("printMonth.printHeader",
+		IModel<String> printTitle = new StringResourceModel("printMonth.printHeader",
 				this,
 				null,
 				new Object[]{session.getUser().getUser().getFullName(),
@@ -136,12 +136,12 @@ public class PrintMonth extends WebPage
 	 */
 	private void addProjects(final PrintReport report, final List<Date> days)
 	{
-		ListView reports = new ListView("projects", new ArrayList<ProjectAssignment>(report.getValues().keySet()))
+		ListView<ProjectAssignment> reports = new ListView<ProjectAssignment>("projects", new ArrayList<ProjectAssignment>(report.getValues().keySet()))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<ProjectAssignment> item)
 			{
 				addProjectRow(item, days, report);
 			}
@@ -156,7 +156,7 @@ public class PrintMonth extends WebPage
 	 * @param days
 	 * @param report
 	 */
-	private void addProjectRow(ListItem item, List<Date> days, PrintReport report)
+	private void addProjectRow(ListItem<ProjectAssignment> item, List<Date> days, PrintReport report)
 	{
 		ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
 

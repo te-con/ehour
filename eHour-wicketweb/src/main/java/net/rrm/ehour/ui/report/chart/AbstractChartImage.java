@@ -51,10 +51,6 @@ public abstract class AbstractChartImage extends NonCachingImage
 		this.height = height;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.image.Image#getImageResource()
-	 */
 	@Override
 	protected Resource getImageResource()
 	{

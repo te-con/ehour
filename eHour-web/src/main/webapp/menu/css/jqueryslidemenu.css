@@ -3,6 +3,7 @@
 	width: 100%;
 	padding-top: 1px;
 	cursor: pointer;
+	color: white;
 }
 
 .jqueryslidemenu ul {
@@ -17,8 +18,11 @@
 	display: inline;
 	background: transparent;
 	float: left;
-	width: 160px;
+	margin-right: 16px;
+	padding-right: 16px;
 	font: 1.4em Geneva, Arial, Helvetica, sans-serif;
+	border-right: 1px solid #778;
+	border-right-color: white;
 }
 
 /*Top level menu link items style*/

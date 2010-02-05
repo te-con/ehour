@@ -61,8 +61,8 @@ public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester
 
 	protected void startPage()
 	{
-		getTester().startPage(MainConfig.class);
-		getTester().assertRenderedPage(MainConfig.class);
+		getTester().startPage(MainConfigPage.class);
+		getTester().assertRenderedPage(MainConfigPage.class);
 		getTester().assertNoErrorMessage();
 	}
 	

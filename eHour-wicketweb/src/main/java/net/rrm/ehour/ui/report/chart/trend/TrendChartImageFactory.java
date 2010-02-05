@@ -30,5 +30,5 @@ public interface TrendChartImageFactory<RE extends ReportElement> extends Serial
 	 * @param model
 	 * @return
 	 */
-	public AbstractTrendChartImage<RE> getTrendChartImage(String seriesColumn, IModel model);
+	public AbstractTrendChartImage<RE> getTrendChartImage(String seriesColumn, IModel<RE> model);
 }

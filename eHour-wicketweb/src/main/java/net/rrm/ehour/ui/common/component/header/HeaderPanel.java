@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.component.header;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.ui.admin.config.page.MainConfig;
+import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.component.header.menu.MenuItem;
 import net.rrm.ehour.ui.common.component.header.menu.SlideMenu;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
@@ -33,8 +33,6 @@ import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -71,33 +69,31 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 		}		
 
 		{
-			MenuItem item = new MenuItem("nav.report.report");
+			MenuItem item = new MenuItem("nav.report");
 			item.addSubMenu(new MenuItem("nav.report.userreport", UserReport.class));
 			item.addSubMenu(new MenuItem("nav.report.report", GlobalReportPage.class));
 			items.add(item);
 		}		
 
+		{
+			MenuItem item = new MenuItem("nav.pm");
+			item.addSubMenu(new MenuItem("nav.pm.report", ProjectManagement.class));
+			items.add(item);
+		}		
+
+		{
+			MenuItem item = new MenuItem("nav.admin");
+			item.addSubMenu(new MenuItem("nav.admin.config", MainConfigPage.class));
+			item.addSubMenu(new MenuItem("nav.admin.assignment", MainConfigPage.class));
+			items.add(item);
+		}		
+
+		
 		
 		return new SlideMenu(id, items);
 	}
+
 	
-	private void addLinks()
-	{
-		boolean wasAdded = false;
-		
-		wasAdded = addLink(this, "admin", MainConfig.class, false);
-		wasAdded |= addReportLink(this, "userReport", wasAdded);
-		wasAdded |= addLink(this, "pm", ProjectManagement.class, wasAdded);
-		wasAdded |= addLink(this, "print", ExportMonthSelectionPage.class, wasAdded);
-		wasAdded |= addLink(this, "overview", MonthOverviewPage.class, wasAdded);
-		
-		
-	}
-	
-	/**
-	 * @return 
-	 * 
-	 */
 	private Link<UserPreferencePage> addLoggedInUser(String id)
 	{
 		BookmarkablePageLink<UserPreferencePage> link = new BookmarkablePageLink<UserPreferencePage>(id, UserPreferencePage.class);
@@ -107,51 +103,4 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 		
 		return link;
 	}
-	
-	/**
-	 * Add report link, global reporting when user has report role, user report when user is consultant
-	 * @param parent
-	 * @param id
-	 */
-	private boolean addReportLink(WebMarkupContainer parent, String id, boolean inclSeperator)
-	{
-		Class<? extends WebPage> 	linkPage;
-		
-		if (AuthUtil.userAuthorizedForPage(GlobalReportPage.class))
-		{
-			linkPage = GlobalReportPage.class;
-		}
-		else 
-		{
-			linkPage = UserReport.class;
-		}
-		
-		addLink(parent, id, linkPage, inclSeperator);
-		
-		return true;
-	}
-	
-	/**
-	 * Add link to hierarchy, visibility off if user is not authorized to view the page
-	 * @param parent
-	 * @param id
-	 * @param linkPage
-	 */
-	private <L extends WebPage> boolean addLink(WebMarkupContainer parent, String id, Class<L> linkPage, boolean inclSeparator)
-	{
-		BookmarkablePageLink<L>	link;
-		
-		boolean isVisible = AuthUtil.userAuthorizedForPage(linkPage);
-		
-		link = new BookmarkablePageLink<L>(id + "Link", linkPage);
-		link.setVisible(isVisible);
-		parent.add(link);
-		
-		Label label = new Label(id + "Seperator", "&nbsp;&nbsp;|&nbsp;&nbsp;");
-		label.setEscapeModelStrings(false);
-		label.setVisible(inclSeparator && isVisible);
-		parent.add(label);
-		
-		return isVisible;
-	}	
 }

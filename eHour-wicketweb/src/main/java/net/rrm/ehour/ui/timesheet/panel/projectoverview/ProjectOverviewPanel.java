@@ -53,7 +53,7 @@ import org.apache.wicket.model.StringResourceModel;
  * Panel showing overview
  */
 
-public class ProjectOverviewPanel extends AbstractBasePanel
+public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 {
 	private static final long serialVersionUID = -5935376941518756941L;
 	private static final String ID_GREY_BORDER = "greyBorder";

@@ -77,7 +77,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 		
 		setOutputMarkupId(true);
 		
-		form = new Form("userForm");
+		form = new Form<UserBackingBean>("userForm");
 		form.setOutputMarkupId(true);
 		
 		// password inputs

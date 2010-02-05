@@ -16,16 +16,13 @@ import org.apache.wicket.model.ResourceModel;
 public class SlideMenu extends Panel
 {
 	private static final long serialVersionUID = 6026029033263227314L;
+
 	public SlideMenu(String id, List<MenuItem> menuItemList)
-	
 	{
 		super(id);
 
-//		setRenderBodyOnly(true);
-
-		Menu multiLevelMenu = new Menu("slideMenu", menuItemList);
-//		multiLevelMenu.setRenderBodyOnly(true);
-		add(multiLevelMenu);
+		Menu menu = new Menu("slideMenu", menuItemList);
+		add(menu);
 	}
 
 	@SuppressWarnings("serial")
@@ -61,6 +58,8 @@ public class SlideMenu extends Panel
 
 					// sub menus
 					item.add(createSubMenus(menuItem));
+					
+					item.setVisible(menuItem.isVisibleForLoggedInUser());
 				}
 
 				private WebMarkupContainer createSubMenus(final MenuItem menuItem)
@@ -89,7 +88,6 @@ public class SlideMenu extends Panel
 							}
 						}
 					};
-//					link.setRenderBodyOnly(true);
 					
 					linkFragment.add(link);
 					

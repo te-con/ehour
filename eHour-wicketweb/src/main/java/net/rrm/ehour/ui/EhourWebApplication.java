@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.Properties;
 
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
-import net.rrm.ehour.ui.admin.config.page.MainConfig;
+import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
 import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
@@ -181,7 +181,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		mount("/login", PackageName.forClass(login));
 
-		mount(new HybridUrlCodingStrategy("/admin", MainConfig.class));
+		mount(new HybridUrlCodingStrategy("/admin", MainConfigPage.class));
 		mount(new HybridUrlCodingStrategy("/admin/employee", UserAdmin.class));
 		mount(new HybridUrlCodingStrategy("/admin/department", DepartmentAdmin.class));
 		mount(new HybridUrlCodingStrategy("/admin/customer", CustomerAdmin.class));

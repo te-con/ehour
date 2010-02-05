@@ -495,27 +495,6 @@ div.NavHeader div.Navigation {
 	color: white;
 }
 
-div.NavHeader div.Navigation a:link {
-	color: white;
-	font-weight: normal;
-	text-decoration: none;
-}
-
-div.NavHeader div.Navigation a:visited {
-	color: white;
-	font-weight: normal;
-	text-decoration: none;
-}
-
-div.NavHeader div.Navigation a:hover {
-	color: #ffb100;
-	text-decoration: none;
-}
-
-div.NavHeader div.Navigation a:active {
-	color: #ef842d;
-	text-decoration: none
-}
 
 div.NavHeader div.LoadingSpinner {
 	float: right;

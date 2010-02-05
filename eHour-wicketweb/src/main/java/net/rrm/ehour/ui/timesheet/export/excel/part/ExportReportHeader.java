@@ -107,12 +107,12 @@ public class ExportReportHeader extends AbstractExportReportPart
 		return rowNumber;
 	}
 	
-	private IModel getExcelReportName(DateRange dateRange)
+	private IModel<String> getExcelReportName(DateRange dateRange)
 	{
 		EhourWebSession session = EhourWebSession.getSession();
 		EhourConfig config = session.getEhourConfig();
 		
-		IModel title = new StringResourceModel("excelMonth.reportName",
+		IModel<String> title = new StringResourceModel("excelMonth.reportName",
 				null,
 				new Object[]{session.getUser().getUser().getFullName(),
 							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});

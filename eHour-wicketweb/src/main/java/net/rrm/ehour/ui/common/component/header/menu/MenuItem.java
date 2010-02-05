@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.ui.common.util.AuthUtil;
+
 import org.apache.wicket.markup.html.WebPage;
 
 public class MenuItem implements Serializable
@@ -25,6 +27,24 @@ public class MenuItem implements Serializable
 		
 		this.responsePageClass = destinationPage;
 	}
+	
+	public boolean isVisibleForLoggedInUser()
+	{
+		boolean visible = true;
+		
+		if (isLink())
+		{
+			visible = AuthUtil.userAuthorizedForPage(responsePageClass);
+		}
+		
+		for (MenuItem menu : subMenus)
+		{
+			visible |= menu.isVisibleForLoggedInUser();
+		}
+		
+		return visible;
+	}
+	
 	
 	public boolean isLink()
 	{

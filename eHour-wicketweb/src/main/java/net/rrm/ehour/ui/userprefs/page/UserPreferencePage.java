@@ -33,7 +33,7 @@ import org.apache.wicket.model.ResourceModel;
  * User preference page 
  **/
 @AuthorizeInstantiation({"ROLE_CONSULTANT", "ROLE_ADMIN", "ROLE_REPORT"})
-public class UserPreferencePage extends AbstractBasePage
+public class UserPreferencePage extends AbstractBasePage<Void>
 {
 	private CalendarPanel		calendarPanel;
 	

@@ -70,7 +70,7 @@ public class ExportReportSignOff extends AbstractExportReportPart
 
 	private void createUserSignature(HSSFWorkbook workbook, int cellMargin, HSSFRow row)
 	{
-		IModel userSignature = new StringResourceModel("excelMonth.userSignature",
+		IModel<String> userSignature = new StringResourceModel("excelMonth.userSignature",
 				null,
 				new Object[]{EhourWebSession.getSession().getUser().getUser().getFullName()});
 

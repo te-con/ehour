@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.login.page;
 import java.io.Serializable;
 
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.admin.config.page.MainConfig;
+import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
@@ -182,7 +182,7 @@ public class Login extends WebPage
 		
 		if (roles.contains(CommonWebUtil.ROLE_ADMIN))
 		{
-			homepage = MainConfig.class;
+			homepage = MainConfigPage.class;
 		}
 		else if (roles.contains(CommonWebUtil.ROLE_REPORT))
 		{

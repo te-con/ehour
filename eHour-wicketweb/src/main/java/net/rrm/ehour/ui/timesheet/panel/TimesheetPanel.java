@@ -46,7 +46,6 @@ import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.util.DateUtil;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -78,7 +77,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
 	private EhourConfig config;
 	private WebComponent serverMsgLabel;
-	private Form timesheetForm;
+	private Form<TimesheetModel> timesheetForm;
 
 	/**
 	 * Construct timesheetPanel for entering hours
@@ -109,7 +108,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		add(greyBorder);
 
 		// add form
-		timesheetForm = new Form("timesheetForm");
+		timesheetForm = new Form<TimesheetModel>("timesheetForm");
 		timesheetForm.setOutputMarkupId(true);
 		greyBorder.add(timesheetForm);
 
@@ -155,11 +154,11 @@ public class TimesheetPanel extends Panel implements Serializable
 		Calendar cal = DateUtil.getCalendar(config);
 		cal.setTime(weekStart);
 
-		IModel weekLabelModel = new StringResourceModel("timesheet.weekTitle", this, null, new Object[] { cal.get(Calendar.WEEK_OF_YEAR), dateFormatter.format(weekStart), dateFormatter.format(weekEnd) });
+		IModel<String> weekLabelModel = new StringResourceModel("timesheet.weekTitle", this, null, new Object[] { cal.get(Calendar.WEEK_OF_YEAR), dateFormatter.format(weekStart), dateFormatter.format(weekEnd) });
 
 		titleFragment.add(new Label("titleLabel", weekLabelModel));
 
-		AjaxLink previousWeekLink = new AjaxLink("previousWeek")
+		AjaxLink<Void> previousWeekLink = new AjaxLink<Void>("previousWeek")
 		{
 			@Override
 			public void onClick(AjaxRequestTarget target)
@@ -170,7 +169,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		titleFragment.add(previousWeekLink);
 
-		AjaxLink nextWeekLink = new AjaxLink("nextWeek")
+		AjaxLink<Void> nextWeekLink = new AjaxLink<Void>("nextWeek")
 		{
 			@Override
 			public void onClick(AjaxRequestTarget target)
@@ -237,7 +236,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param form
 	 * @param timesheet
 	 */
-	private void setSubmitActions(Form form, MarkupContainer parent)
+	private void setSubmitActions(Form<?> form, MarkupContainer parent)
 	{
 		// default submit
 		parent.add(new AjaxButton("submitButton", form)
@@ -245,7 +244,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form)
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form)
 			{
 				List<ProjectAssignmentStatus> failedProjects = persistTimesheetEntries();
 
@@ -270,7 +269,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			}
 
 			@Override
-			protected void onError(final AjaxRequestTarget target, Form form)
+			protected void onError(final AjaxRequestTarget target, Form<?> form)
 			{
 				form.visitFormComponents(new FormHighlighter(target));
 			}
@@ -282,7 +281,7 @@ public class TimesheetPanel extends Panel implements Serializable
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form)
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form)
 			{
 				// basically fake a week click
 				EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.WEEK_NAV));
@@ -305,11 +304,10 @@ public class TimesheetPanel extends Panel implements Serializable
 	{
 		((Timesheet) getDefaultModelObject()).updateFailedProjects(failedProjects);
 
-		timesheetForm.visitChildren(Label.class, new IVisitor()
+		timesheetForm.visitChildren(Label.class, new IVisitor<Label>()
 		{
-			public Object component(Component component)
+			public Object component(Label label)
 			{
-				Label label = (Label) component;
 				if (label.getId().equals("status"))
 				{
 					target.addComponent(label);
@@ -329,8 +327,12 @@ public class TimesheetPanel extends Panel implements Serializable
 	private Label updatePostPersistMessage()
 	{
 		// server message
-		IModel model = new StringResourceModel("timesheet.weekSaved", TimesheetPanel.this, null, new Object[] { new PropertyModel(getDefaultModel(), "totalBookedHours"), new DateModel(new PropertyModel(getDefaultModel(), "weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
-				new DateModel(new PropertyModel(getDefaultModel(), "weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT) });
+		IModel<String> model = new StringResourceModel("timesheet.weekSaved", 
+														TimesheetPanel.this, 
+														null, 
+														new Object[] { new PropertyModel<Date>(getDefaultModel(), "totalBookedHours"), 
+																		new DateModel(new PropertyModel<Date>(getDefaultModel(), "weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
+																		new DateModel(new PropertyModel<Date>(getDefaultModel(), "weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT) });
 
 		return updateServerMessage(model);
 
@@ -338,7 +340,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
 	private Label updateErrorMessage()
 	{
-		IModel model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null, new Object[] {});
+		IModel<String> model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null, new Object[] {});
 
 		return updateServerMessage(model);
 	}
@@ -348,7 +350,7 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * 
 	 * @param model
 	 */
-	private Label updateServerMessage(IModel model)
+	private Label updateServerMessage(IModel<String> model)
 	{
 		Label label = new Label("serverMessage", model);
 		label.add(new SimpleAttributeModifier("style", "timesheetPersisted"));
@@ -367,7 +369,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		for (int i = 1, j = 0; i <= 7; i++, j++)
 		{
-			label = new Label("day" + i + "Label", new DateModel(new PropertyModel(getDefaultModelObject(), "dateSequence[" + j + "]"), config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+			label = new Label("day" + i + "Label", new DateModel(new PropertyModel<Date>(getDefaultModelObject(), "dateSequence[" + j + "]"), config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
 			label.setEscapeModelStrings(false);
 			parent.add(label);
 		}
@@ -409,18 +411,18 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * @param parent
 	 * @param timesheet
 	 */
-	private GrandTotal buildForm(final Form form, WebMarkupContainer parent)
+	private GrandTotal buildForm(final Form<?> form, WebMarkupContainer parent)
 	{
 		final GrandTotal grandTotals = new GrandTotal();
 
-		ListView customers = new ListView("customers", new PropertyModel(getDefaultModelObject(), "customerList"))
+		ListView<Customer> customers = new ListView<Customer>("customers", new PropertyModel<List<Customer>>(getDefaultModelObject(), "customerList"))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<Customer> item)
 			{
-				final Customer customer = (Customer) item.getModelObject();
+				final Customer customer = item.getModelObject();
 
 				Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
 				item.add(getCustomerLabel(customer));
