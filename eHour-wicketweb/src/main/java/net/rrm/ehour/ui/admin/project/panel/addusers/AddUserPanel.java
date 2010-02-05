@@ -6,6 +6,7 @@ import java.util.List;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
 import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel;
 import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel.DisplayOption;
@@ -16,7 +17,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-public class AddUserPanel extends AbstractBasePanel
+public class AddUserPanel extends AbstractBasePanel<Void>
 {
 	private static final long serialVersionUID = 3355347499532412241L;
 
@@ -26,7 +27,7 @@ public class AddUserPanel extends AbstractBasePanel
 	{
 		super(id);
 
-		Form form = new Form("form");
+		Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("form");
 		add(form);
 		
 		final List<User> users = new ArrayList<User>();
@@ -34,9 +35,9 @@ public class AddUserPanel extends AbstractBasePanel
 		form.add(listUsersPanel);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
-		AssignmentAdminBackingBeanImpl bBean = new AssignmentAdminBackingBeanImpl(assignment);
+		AssignmentAdminBackingBean bBean = new AssignmentAdminBackingBeanImpl(assignment);
 		
-		form.add(new AssignmentFormComponentContainerPanel("assignmentInfo", form, new CompoundPropertyModel(bBean), DisplayOption.HIDE_DELETE_BUTTON, DisplayOption.HIDE_PROJECT_SELECTION));
+		form.add(new AssignmentFormComponentContainerPanel("assignmentInfo", form, new CompoundPropertyModel<AssignmentAdminBackingBean>(bBean), DisplayOption.HIDE_DELETE_BUTTON, DisplayOption.HIDE_PROJECT_SELECTION));
 		
 		AjaxButton button = new AjaxButton("submit", form)
 		{

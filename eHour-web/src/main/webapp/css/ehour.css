@@ -489,7 +489,7 @@ div.NavHeader div.Logo {
 
 div.NavHeader div.Navigation {
 	position: absolute;
-	bottom: 2px;
+	bottom: 0px;
 	left: 250px;
 	font: 1.4em Geneva, Arial, Helvetica, sans-serif;
 	color: white;

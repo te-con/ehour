@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.common.config;
 
-import net.rrm.ehour.ui.common.panel.nav.MainNavPanel;
+import net.rrm.ehour.ui.common.component.header.HeaderPanel;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
@@ -31,6 +31,6 @@ public class PageConfigImpl implements PageConfig
 	 */
 	public Panel getMainNavPanel(String id)
 	{
-		return new MainNavPanel(id);
+		return new HeaderPanel(id);
 	}
 }

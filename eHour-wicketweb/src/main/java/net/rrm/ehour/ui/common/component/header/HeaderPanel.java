@@ -14,9 +14,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.panel.nav;
+package net.rrm.ehour.ui.common.component.header;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.rrm.ehour.ui.admin.config.page.MainConfig;
+import net.rrm.ehour.ui.common.component.header.menu.MenuItem;
+import net.rrm.ehour.ui.common.component.header.menu.SlideMenu;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.login.page.Login;
@@ -27,32 +32,55 @@ import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 
 /**
  * Main navigation panel 
  **/
 
-public class MainNavPanel extends AbstractBasePanel<Void>
+public class HeaderPanel extends AbstractBasePanel<Void>
 {
 	private static final long serialVersionUID = 854412484275829659L;
 
-	/**
-	 * 
-	 * @param id
-	 */
-	public MainNavPanel(String id)
+	public HeaderPanel(String id)
 	{
 		super(id);
-		
-		addLinks();
-		addLoggedInUser();
+	
+		add(createNav("nav"));
+
+		add(new BookmarkablePageLink<Login>("logoffLink", Login.class));
+		add(addLoggedInUser("prefsLink"));
 	}
 
+	private Component createNav(String id)
+	{
+		List<MenuItem> items = new ArrayList<MenuItem>();
+		
+		{
+			MenuItem item = new MenuItem("nav.hours.yourHours");
+			item.addSubMenu(new MenuItem("nav.hours.enter", MonthOverviewPage.class));
+			item.addSubMenu(new MenuItem("nav.hours.overview", MonthOverviewPage.class));
+			item.addSubMenu(new MenuItem("nav.hours.export", ExportMonthSelectionPage.class));
+			items.add(item);
+		}		
+
+		{
+			MenuItem item = new MenuItem("nav.report.report");
+			item.addSubMenu(new MenuItem("nav.report.userreport", UserReport.class));
+			item.addSubMenu(new MenuItem("nav.report.report", GlobalReportPage.class));
+			items.add(item);
+		}		
+
+		
+		return new SlideMenu(id, items);
+	}
+	
 	private void addLinks()
 	{
 		boolean wasAdded = false;
@@ -63,19 +91,21 @@ public class MainNavPanel extends AbstractBasePanel<Void>
 		wasAdded |= addLink(this, "print", ExportMonthSelectionPage.class, wasAdded);
 		wasAdded |= addLink(this, "overview", MonthOverviewPage.class, wasAdded);
 		
-		add(new BookmarkablePageLink<Login>("logoffLink", Login.class));
+		
 	}
 	
 	/**
+	 * @return 
 	 * 
 	 */
-	private void addLoggedInUser()
+	private Link<UserPreferencePage> addLoggedInUser(String id)
 	{
-		BookmarkablePageLink<UserPreferencePage> link = new BookmarkablePageLink<UserPreferencePage>("prefsLink", UserPreferencePage.class);
-		add(link);
+		BookmarkablePageLink<UserPreferencePage> link = new BookmarkablePageLink<UserPreferencePage>(id, UserPreferencePage.class);
 		
 		Label loggedInUserLabel = new Label("loggedInUser", new Model<String>(AuthUtil.getUser().getFullName()) );
 		link.add(loggedInUserLabel);
+		
+		return link;
 	}
 	
 	/**
@@ -107,7 +137,7 @@ public class MainNavPanel extends AbstractBasePanel<Void>
 	 * @param id
 	 * @param linkPage
 	 */
-	private <L extends WebPage> boolean addLink(WebMarkupContainer parent, String id, Class<L> linkPage, boolean inclSeperator)
+	private <L extends WebPage> boolean addLink(WebMarkupContainer parent, String id, Class<L> linkPage, boolean inclSeparator)
 	{
 		BookmarkablePageLink<L>	link;
 		
@@ -119,7 +149,7 @@ public class MainNavPanel extends AbstractBasePanel<Void>
 		
 		Label label = new Label(id + "Seperator", "&nbsp;&nbsp;|&nbsp;&nbsp;");
 		label.setEscapeModelStrings(false);
-		label.setVisible(inclSeperator && isVisible);
+		label.setVisible(inclSeparator && isVisible);
 		parent.add(label);
 		
 		return isVisible;
