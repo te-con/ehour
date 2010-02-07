@@ -250,4 +250,14 @@ public class Customer extends DomainObject<Integer, Customer>
 		this.deletable = deletable;
 	}	
 
+	public void addProject(Project project)
+	{
+		if (projects == null)
+		{
+			projects = new HashSet<Project>();
+		}
+		
+		projects.add(project);
+	}
+	
 }

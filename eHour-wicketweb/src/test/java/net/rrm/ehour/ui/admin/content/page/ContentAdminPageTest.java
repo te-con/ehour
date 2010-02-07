@@ -4,6 +4,8 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.domain.CustomerMother;
 import net.rrm.ehour.domain.UserDepartmentMother;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
@@ -20,10 +22,14 @@ import org.junit.Test;
 public class ContentAdminPageTest extends AbstractSpringWebAppTester
 {
 	private UserService userService;
-
+	private CustomerService customerService;
+	
 	@Before
 	public void setup()
 	{
+		customerService = createMock(CustomerService.class);
+		mockContext.putBean("customerService", customerService);
+		
 		userService = createMock(UserService.class);
 		mockContext.putBean("userService", userService);
 	}
@@ -34,11 +40,14 @@ public class ContentAdminPageTest extends AbstractSpringWebAppTester
 		expect(userService.getUserDepartments())
 			.andReturn(UserDepartmentMother.createUserDepartments());
 		
-		replay(userService);
+		expect(customerService.getCustomers())
+			.andReturn(CustomerMother.createCustomers());
+		
+		replay(userService, customerService);
 		
 		tester.startPage(ContentAdminPage.class);
 		tester.assertNoErrorMessage();
 		
-		verify(userService);
+		verify(userService, customerService);
 	}
 }

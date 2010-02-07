@@ -2,6 +2,7 @@ package net.rrm.ehour.ui.admin.content.page;
 
 import org.apache.wicket.model.ResourceModel;
 
+import net.rrm.ehour.ui.admin.content.assignables.AssignablesPanel;
 import net.rrm.ehour.ui.admin.content.assignees.AssigneesPanel;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 
@@ -25,6 +26,9 @@ public class ContentAdminPage extends AbstractBasePage<Void>
 	{
 		AssigneesPanel assigneesPanel = new AssigneesPanel("assignees");
 		add(assigneesPanel);
-	}
 
+		AssignablesPanel assignablesPanel = new AssignablesPanel("assignables");
+		add(assignablesPanel);
+
+	}
 }

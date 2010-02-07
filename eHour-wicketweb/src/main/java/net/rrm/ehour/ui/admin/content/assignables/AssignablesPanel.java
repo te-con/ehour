@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.admin.content.assignees;
+package net.rrm.ehour.ui.admin.content.assignables;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,32 +9,32 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeModel;
 
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.ui.admin.content.assignees.tree.AssigneeTreeNode;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
-import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.markup.html.tree.LinkTree;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * Created on Feb 6, 2010 10:08:17 PM
+ * Created on Feb 7, 2010 4:45:13 PM
  *
  * @author thies (www.te-con.nl)
  *
  */
-public class AssigneesPanel extends AbstractAjaxPanel<Void>
+public class AssignablesPanel extends AbstractAjaxPanel<Void>
 {
-	private static final long serialVersionUID = 2727952773526028264L;
+	private static final long serialVersionUID = -7159173007695522322L;
 
 	@SpringBean
-	private UserService userService;
+	private CustomerService customerService;
 	
-	public AssigneesPanel(String id)
+	public AssignablesPanel(String id)
 	{
 		super(id);
-	
+		
 		TreeModel model = createTreeModel();
 		
 		LinkTree tree = new LinkTree("tree", model);
@@ -42,7 +42,7 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 		add(tree);
 		
 	}
-
+	
 	private TreeModel createTreeModel()
 	{
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
@@ -55,22 +55,24 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 
 	private void addNodesToRoot(MutableTreeNode rootNode)
 	{
-		List<UserDepartment> departments = userService.getUserDepartments();
+		List<Customer> customers = customerService.getCustomers();
 		
-		for (UserDepartment department : departments)
+		for (Customer customer : customers)
 		{
-			AssigneeTreeNode<UserDepartment> departmentNode = new AssigneeTreeNode<UserDepartment>(department);
+			AssigneeTreeNode<Customer> customerNode = new AssigneeTreeNode<Customer>(customer);
 			
-			rootNode.insert(departmentNode, 0);
+			rootNode.insert(customerNode, 0);
 			
-			List<User> users = new ArrayList<User>(department.getUsers());
-			Collections.sort(users);
+			customer.getProjects();
 			
-			for (User user : users)
+			List<Project> projects = new ArrayList<Project>(customer.getProjects());
+			Collections.sort(projects);
+			
+			for (Project project : projects)
 			{
-				AssigneeTreeNode<User> userNode = new AssigneeTreeNode<User>(user);
-				departmentNode.add(userNode);
+				AssigneeTreeNode<Project> projectNode = new AssigneeTreeNode<Project>(project);
+				customerNode.add(projectNode);
 			}
 		}
-	}
+	}	
 }

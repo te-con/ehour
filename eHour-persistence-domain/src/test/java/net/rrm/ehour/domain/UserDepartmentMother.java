@@ -20,7 +20,6 @@ public class UserDepartmentMother
 		return department;
 	}
 	
-	
 	public static List<UserDepartment> createUserDepartments()
 	{
 		return MotherUtil.createMultiple(createUserDepartment());
