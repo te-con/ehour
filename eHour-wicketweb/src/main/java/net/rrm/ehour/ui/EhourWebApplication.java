@@ -92,11 +92,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		
 	}
 
-	public EhourWebApplication(Class<? extends WebPage> loginClass)
-	{
-		this.login = loginClass;
-	}
-
 	public void init()
 	{
 		if (!initialized)

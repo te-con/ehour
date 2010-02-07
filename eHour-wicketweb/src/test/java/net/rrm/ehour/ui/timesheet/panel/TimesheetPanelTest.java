@@ -35,14 +35,15 @@ import java.util.List;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.TimesheetEntryMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.common.component.ModalWindowFix;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.user.service.UserService;
@@ -85,13 +86,13 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		
 		overview.setWeekRange(new DateRange(new Date(), now.getTime()));
 		
-		TimesheetEntry entry = DummyWebDataGenerator.getTimesheetEntry(1, new Date(), 5);
+		TimesheetEntry entry = TimesheetEntryMother.getTimesheetEntry(1, new Date(), 5);
 		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
 		entries.add(entry);
 		overview.setTimesheetEntries(entries);
 
 		List<ProjectAssignment> ass = new ArrayList<ProjectAssignment>();
-		ass.add(DummyWebDataGenerator.getProjectAssignment(1));
+		ass.add(ProjectAssignmentMother.createProjectAssignment(1));
 		overview.setProjectAssignments(ass);
 		
 		expect(timesheetService.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))

@@ -25,7 +25,7 @@ import org.junit.Test;
 public class ProjectHoursAggregateChartDataConverterTest extends AbstractAggregateChartImageTest
 {
 	@Test
-	public void testChartImage() throws Exception
+	public void shouldDrawChart() throws Exception
 	{
 		ProjectHoursAggregateChartDataConverter provider = new ProjectHoursAggregateChartDataConverter();
 		

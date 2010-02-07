@@ -20,9 +20,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import net.rrm.ehour.AbstractServiceTest;
-import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.UserMother;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
@@ -55,7 +55,7 @@ public class UserServiceIntegrationTest extends AbstractServiceTest
 	@Test
 	public void testAddUser() throws Exception
 	{
-		User	user = DummyDataGenerator.getUser();
+		User user = UserMother.createUser();
 		user.setUpdatedPassword("aa");
 		userService.persistUser(user);
 	}

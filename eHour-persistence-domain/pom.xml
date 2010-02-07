@@ -17,6 +17,20 @@
 				<directory>src/main/resources/</directory>
 			</resource>
 		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencies>
@@ -86,34 +100,4 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<configuration>
-					<linkXref>true</linkXref>
-					<sourceEncoding>utf-8</sourceEncoding>
-					<minimumTokens>100</minimumTokens>
-					<targetJdk>1.5</targetJdk>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jdepend-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jxr-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>taglist-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>

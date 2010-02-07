@@ -32,10 +32,7 @@ public class MenuItem implements Serializable
 	{
 		boolean visible = true;
 		
-		if (isLink())
-		{
-			visible = AuthUtil.userAuthorizedForPage(responsePageClass);
-		}
+		visible = isLink() ? AuthUtil.userAuthorizedForPage(responsePageClass) : false;
 		
 		for (MenuItem menu : subMenus)
 		{
@@ -44,7 +41,6 @@ public class MenuItem implements Serializable
 		
 		return visible;
 	}
-	
 	
 	public boolean isLink()
 	{

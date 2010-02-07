@@ -27,12 +27,12 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.mail.service.MailService;
@@ -43,6 +43,7 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
 import net.rrm.ehour.user.dao.UserDAO;
 
 /**
@@ -117,9 +118,9 @@ private	ProjectAssignmentService	assignmentService;
 		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		ReportCriteria rc = new ReportCriteria(uc);
 		
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
 		
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
 					.andReturn(pags);
@@ -136,9 +137,9 @@ private	ProjectAssignmentService	assignmentService;
 		ReportCriteria rc = new ReportCriteria(uc);
 		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
 		
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignment(isA(DateRange.class))).andReturn(pags);
 		replay(reportAggregatedDAO);
@@ -163,9 +164,9 @@ private	ProjectAssignmentService	assignmentService;
 		ReportCriteria rc = new ReportCriteria(uc);
 		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
 		
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
 		.andReturn(pags);
@@ -196,9 +197,9 @@ private	ProjectAssignmentService	assignmentService;
 		ReportCriteria rc = new ReportCriteria(uc);
 		List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 		
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(1, 1, 1));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(2, 2, 2));
-		pags.add(DummyDataGenerator.getProjectAssignmentAggregate(3, 3, 3));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
+		pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
 		
 		expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(isA(List.class), isA(DateRange.class)))
 		.andReturn(pags);
@@ -227,7 +228,7 @@ private	ProjectAssignmentService	assignmentService;
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				elms.add(DummyDataGenerator.getProjectAssignmentAggregate(j, i, i));	
+				elms.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(j, i, i));	
 			}
 		}
 		
@@ -236,7 +237,7 @@ private	ProjectAssignmentService	assignmentService;
 		
 		List<ProjectAssignment> assignments = new ArrayList<ProjectAssignment>();
 		
-		assignments.add(DummyDataGenerator.getProjectAssignment(2));
+		assignments.add(ProjectAssignmentMother.createProjectAssignment(2));
 		
 		expect(assignmentService.getProjectAssignments(prj, dr))
 			.andReturn(assignments);

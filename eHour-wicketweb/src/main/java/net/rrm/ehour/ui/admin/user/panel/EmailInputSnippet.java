@@ -40,7 +40,7 @@ public class EmailInputSnippet extends Panel
 		super(id);
 		
 		// email
-		TextField	emailField = new TextField("user.email");
+		TextField<String> emailField = new TextField<String>("user.email");
 		emailField.add(EmailAddressValidator.getInstance());
 		emailField.add(new ValidatingFormComponentAjaxBehavior());
 		add(emailField);

@@ -19,9 +19,9 @@ package net.rrm.ehour.mail.service;
 import java.util.Date;
 
 import net.rrm.ehour.AbstractServiceTest;
-import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class MailServiceTest extends AbstractServiceTest
 		User	user = new User(1);
 		user.setEmail("spam@rrm.net");
 		
-		AssignmentAggregateReportElement asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
+		AssignmentAggregateReportElement asg = AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1,1);
 		asg.getProjectAssignment().setAssignmentId(1);
 		asg.setHours(new Float(121.1f));
 		asg.getProjectAssignment().setAllottedHours(100f);
@@ -62,7 +62,7 @@ public class MailServiceTest extends AbstractServiceTest
 		User	user = new User(1);
 		user.setEmail("unknownemailaddress@rrm.net");
 		
-		AssignmentAggregateReportElement asg = DummyDataGenerator.getProjectAssignmentAggregate(1, 1,1);
+		AssignmentAggregateReportElement asg = AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1,1);
 		asg.getProjectAssignment().setAssignmentId(1);
 		asg.setHours(new Float(121.1f));
 		asg.getProjectAssignment().setAllottedHours(100f);

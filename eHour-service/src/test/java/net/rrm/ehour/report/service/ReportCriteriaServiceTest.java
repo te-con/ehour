@@ -27,12 +27,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.DummyDataGenerator;
 import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
@@ -97,8 +97,8 @@ public class ReportCriteriaServiceTest
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
 		
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
+		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
+		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
 		
 		// bit odd but otherwise unnecc. stuff is called
 //		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
@@ -135,8 +135,8 @@ public class ReportCriteriaServiceTest
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
+		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
+		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
 		
 		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called
@@ -181,8 +181,8 @@ public class ReportCriteriaServiceTest
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
-		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
+		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
+		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
 		
 		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called

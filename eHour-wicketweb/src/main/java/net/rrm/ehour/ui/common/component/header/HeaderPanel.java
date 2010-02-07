@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
+import net.rrm.ehour.ui.admin.content.page.ContentAdminPage;
 import net.rrm.ehour.ui.common.component.header.menu.MenuItem;
 import net.rrm.ehour.ui.common.component.header.menu.SlideMenu;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
@@ -84,7 +85,7 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 		{
 			MenuItem item = new MenuItem("nav.admin");
 			item.addSubMenu(new MenuItem("nav.admin.config", MainConfigPage.class));
-			item.addSubMenu(new MenuItem("nav.admin.assignment", MainConfigPage.class));
+			item.addSubMenu(new MenuItem("nav.admin.assignment", ContentAdminPage.class));
 			items.add(item);
 		}		
 
