@@ -40,7 +40,6 @@ public class ContentNodePanel extends LabelIconPanel
 			{
 				
 				onNodeLinkClicked(model.getObject(), tree, target);
-				System.out.println(ContentNodePanel.this.getPageRelativePath());
 			}
 		};
 
@@ -55,7 +54,6 @@ public class ContentNodePanel extends LabelIconPanel
 			{
 				onNodeLinkSelected(model.getObject(), tree, target);
 				System.out.println(ContentNodePanel.this.getPageRelativePath());
-//				System.out.println(link.getPath());
 			}
 		};
 		

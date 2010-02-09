@@ -33,7 +33,7 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxEventListener;
+import net.rrm.ehour.ui.common.event.AjaxEventHook;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -169,18 +169,6 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 				return new CalendarPanel(panelId, new User(1));
 			}
 		});
-	}
-	
-	class AjaxEventHook implements AjaxEventListener
-	{
-		List<AjaxEvent> events = new ArrayList<AjaxEvent>();
-		
-		public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-		{
-			events.add(ajaxEvent);
-			return true;
-		}
-		
 	}
 	
 	@SuppressWarnings("serial")

@@ -40,7 +40,6 @@ public class ContentTree extends LinkTree
 			protected void onNodeLinkClicked(Object node, BaseTree tree, AjaxRequestTarget target)
 			{
 				super.onNodeLinkClicked(node, tree, target);
-				ContentTree.this.onNodeLinkClicked(node, tree, target);
 			}
 			
 			@Override
