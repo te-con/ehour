@@ -8,6 +8,23 @@ package net.rrm.ehour.ui.admin.content.tree;
  */
 public enum NodeType
 {
-	ASSIGNEE,
-	ASSIGNABLE;
+	DEPARTMENT(true),
+	USER(true),
+	CUSTOMER(false),
+	PROJECT(false);
+	
+	private boolean assignee;
+	
+	private NodeType(boolean assignee)
+	{
+		this.assignee = assignee;
+	}
+	
+	/**
+	 * @return the assignee
+	 */
+	public boolean isAssignee()
+	{
+		return assignee;
+	}
 }

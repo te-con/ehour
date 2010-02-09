@@ -20,7 +20,7 @@ public class UserMother
 	public static User createUser(UserDepartment department)
 	{
 		User user = new User();
-		
+		user.setUserId(1);
 		user.setActive(true);
 		user.setEmail("thies@te-con.nl");
 		user.setUsername("testmetoo");

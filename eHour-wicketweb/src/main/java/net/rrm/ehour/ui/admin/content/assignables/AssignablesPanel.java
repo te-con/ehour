@@ -67,7 +67,7 @@ public class AssignablesPanel extends AbstractAjaxPanel<Void>
 		
 		for (Customer customer : customers)
 		{
-			AssigneeTreeNode<Customer> customerNode = new AssigneeTreeNode<Customer>(customer, NodeType.ASSIGNABLE);
+			AssigneeTreeNode<Customer> customerNode = new AssigneeTreeNode<Customer>(customer, NodeType.CUSTOMER);
 			
 			rootNode.insert(customerNode, 0);
 			
@@ -78,7 +78,7 @@ public class AssignablesPanel extends AbstractAjaxPanel<Void>
 			
 			for (Project project : projects)
 			{
-				AssigneeTreeNode<Project> projectNode = new AssigneeTreeNode<Project>(project, NodeType.ASSIGNABLE)
+				AssigneeTreeNode<Project> projectNode = new AssigneeTreeNode<Project>(project, NodeType.CUSTOMER)
 				{
 					@Override
 					public Set<?> getSelectedNodeObjects()

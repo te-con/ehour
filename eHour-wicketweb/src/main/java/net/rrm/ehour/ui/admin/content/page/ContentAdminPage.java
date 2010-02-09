@@ -1,10 +1,13 @@
 package net.rrm.ehour.ui.admin.content.page;
 
+import java.util.Collection;
 import java.util.Set;
 
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.admin.content.assignables.AssignablesPanel;
 import net.rrm.ehour.ui.admin.content.assignees.AssigneesPanel;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
+import net.rrm.ehour.ui.admin.content.tree.NodeType;
 import net.rrm.ehour.ui.admin.content.tree.TreeNodeEventType;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
@@ -22,6 +25,11 @@ import org.apache.wicket.model.ResourceModel;
 @AuthorizeInstantiation("ROLE_ADMIN")
 public class ContentAdminPage extends AbstractBasePage<Void>
 {
+	private static final String ID_ASSIGNABLES = "assignables";
+	private static final String ID_ASSIGNEES = "assignees";
+	private AssignablesPanel assignablesPanel;
+	private AssigneesPanel assigneesPanel;
+
 	public ContentAdminPage()
 	{
 		super(new ResourceModel("admin.content.title"));
@@ -31,10 +39,10 @@ public class ContentAdminPage extends AbstractBasePage<Void>
 	
 	private void initComponents()
 	{
-		AssigneesPanel assigneesPanel = new AssigneesPanel("assignees");
+		assigneesPanel = new AssigneesPanel(ID_ASSIGNEES);
 		add(assigneesPanel);
 
-		AssignablesPanel assignablesPanel = new AssignablesPanel("assignables");
+		assignablesPanel = new AssignablesPanel(ID_ASSIGNABLES);
 		add(assignablesPanel);
 	}
 	
@@ -44,12 +52,17 @@ public class ContentAdminPage extends AbstractBasePage<Void>
 	{
 		if (event.getEventType() == TreeNodeEventType.NODE_SELECTED)
 		{
-			PayloadAjaxEvent<AssigneeTreeNode> payloadEvent = (PayloadAjaxEvent<AssigneeTreeNode>)event;
-			Set objects = payloadEvent.getPayload().getSelectedNodeObjects();
+			PayloadAjaxEvent<AssigneeTreeNode<?>> payloadEvent = (PayloadAjaxEvent<AssigneeTreeNode<?>>)event;
 			
-			for (Object object : objects)
+			AssigneeTreeNode<?> node = payloadEvent.getPayload();
+			
+			Set<?> objects = node.getSelectedNodeObjects();
+			
+			if (!node.getNodeType().isAssignee())
 			{
-				System.out.println(object);
+				Collection<ProjectAssignment> assignments = (Collection<ProjectAssignment>)objects; 
+				
+				assigneesPanel.selectUsers(assignments);
 			}
 		}
 		
