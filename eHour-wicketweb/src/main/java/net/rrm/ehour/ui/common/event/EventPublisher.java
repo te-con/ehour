@@ -31,14 +31,14 @@ public class EventPublisher
 	 * @param event
 	 * @param container
 	 */
-	public static void publishAjaxEvent(MarkupContainer container, AjaxEvent event)
+	public static void publishAjaxEvent(Component container, AjaxEvent event)
 	{
 		notifyHook(event);
 
 		recursivePublishAjaxEvent(container, event);
 	}
 
-	private static void recursivePublishAjaxEvent(MarkupContainer container, AjaxEvent event)
+	private static void recursivePublishAjaxEvent(Component container, AjaxEvent event)
 	{
 		boolean proceed = true;
 
@@ -69,7 +69,7 @@ public class EventPublisher
 	{
 		notifyHook(event);
 
-		IVisitor visitor = new AjaxEventVisitor(event);
+		IVisitor<Component> visitor = new AjaxEventVisitor(event);
 		
 		visitor.component(parent.getPage());
 		parent.getPage().visitChildren(AjaxEventListener.class, visitor);
@@ -95,7 +95,7 @@ public class EventPublisher
 		}
 	}
 	
-	private static class AjaxEventVisitor implements IVisitor
+	private static class AjaxEventVisitor implements IVisitor<Component>
 	{
 		private AjaxEvent event;
 		

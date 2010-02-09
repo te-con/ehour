@@ -12,10 +12,10 @@ import javax.swing.tree.TreeModel;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.ui.admin.content.assignees.tree.AssigneeTreeNode;
+import net.rrm.ehour.ui.admin.content.tree.ContentTree;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.user.service.UserService;
 
-import org.apache.wicket.markup.html.tree.LinkTree;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -37,7 +37,7 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 	
 		TreeModel model = createTreeModel();
 		
-		LinkTree tree = new LinkTree("tree", model);
+		ContentTree tree = new ContentTree("tree", model);
 		tree.setRootLess(true);
 		add(tree);
 		
