@@ -12,20 +12,20 @@ import javax.swing.tree.TreeModel;
  * @author thies (www.te-con.nl)
  *
  */
-public class TreeFinder<T>
+public class TreeFinder
 {
-	private UserObjectMatcher<T> matcher;
+	private UserObjectMatcher matcher;
 	
-	public TreeFinder(UserObjectMatcher<T> matcher)
+	public TreeFinder(UserObjectMatcher matcher)
 	{
 		this.matcher = matcher;
 	}
 	
-	public List<T> findMatchingNodes(TreeModel treeModel, Collection<Integer> matchIds)
+	public List<AssigneeTreeNode<?>> findMatchingNodes(TreeModel treeModel, Collection<Integer> matchIds)
 	{
 		Object rootNode = treeModel.getRoot();
 
-		List<T> matches = new ArrayList<T>();
+		List<AssigneeTreeNode<?>> matches = new ArrayList<AssigneeTreeNode<?>>();
 		
 		matches = findObject(treeModel, rootNode, matchIds, matches);
 		
@@ -33,7 +33,7 @@ public class TreeFinder<T>
 	}
 	
 	
-	private List<T> findObject(TreeModel treeModel, Object parent, Collection<Integer> matchIds, List<T> matches)
+	private List<AssigneeTreeNode<?>> findObject(TreeModel treeModel, Object parent, Collection<Integer> matchIds, List<AssigneeTreeNode<?>> matches)
 	{
 		int childCount = treeModel.getChildCount(parent);
 		
@@ -43,11 +43,9 @@ public class TreeFinder<T>
 			
 			Object userObject = node.getUserObject();
 
-			T match = matcher.isMatch(matchIds, userObject);
-			
-			if (match != null)
+			if (matcher.isMatch(matchIds, userObject))
 			{
-				matches.add(match);
+				matches.add(node);
 			}
 			
 			findObject(treeModel, node, matchIds, matches);
@@ -56,8 +54,8 @@ public class TreeFinder<T>
 		return matches;
 	}
 	
-	public interface UserObjectMatcher<T>
+	public interface UserObjectMatcher
 	{
-		public T isMatch(Collection<?> matchIds, Object userObject);
+		public boolean isMatch(Collection<?> matchIds, Object userObject);
 	}
 }

@@ -38,7 +38,7 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 	private UserService userService;
 
 	private ContentTree tree;
-	private static final TreeFinder<User> finder = new TreeFinder<User>(UserMatcher.getInstance());
+	private static final TreeFinder finder = new TreeFinder(UserMatcher.getInstance());
 	
 	public AssigneesPanel(String id)
 	{
@@ -59,7 +59,12 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 		
 		TreeModel treeModel = tree.getModelObject();
 		
-		List<User> nodes = finder.findMatchingNodes(treeModel, ids);
+		List<AssigneeTreeNode<?>> nodes = finder.findMatchingNodes(treeModel, ids);
+		
+		for (AssigneeTreeNode<?> assigneeTreeNode : nodes)
+		{
+			
+		}
 	}
 	
 	private Set<Integer> getUserIdsFromAssignments(Collection<ProjectAssignment> assignments)

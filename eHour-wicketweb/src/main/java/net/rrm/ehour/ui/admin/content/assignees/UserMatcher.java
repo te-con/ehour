@@ -11,7 +11,7 @@ import net.rrm.ehour.ui.admin.content.tree.TreeFinder;
  * @author thies (www.te-con.nl)
  *
  */
-public class UserMatcher implements TreeFinder.UserObjectMatcher<User>
+public class UserMatcher implements TreeFinder.UserObjectMatcher
 {
 	private static final UserMatcher instance = new UserMatcher();
 	
@@ -26,18 +26,15 @@ public class UserMatcher implements TreeFinder.UserObjectMatcher<User>
 	}
 	
 	@Override
-	public User isMatch(Collection<?> matchIds, Object userObject)
+	public boolean isMatch(Collection<?> matchIds, Object userObject)
 	{
 		if (userObject instanceof User)
 		{
 			User user = (User)userObject;
 			
-			if (matchIds.contains(user.getUserId()))
-			{
-				return user;
-			}
+			return matchIds.contains(user.getUserId());
 		}
 			
-		return null;
+		return false;
 	}
 }

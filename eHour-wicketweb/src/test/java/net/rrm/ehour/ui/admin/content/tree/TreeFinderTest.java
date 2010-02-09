@@ -28,7 +28,8 @@ import org.junit.Test;
 public class TreeFinderTest
 {
 	private TreeModel treeModel;
-
+	private AssigneeTreeNode<User> userNode1, userNode2;
+	
 	@Before
 	public void setUp()
 	{
@@ -41,26 +42,27 @@ public class TreeFinderTest
 		AssigneeTreeNode<UserDepartment> departmentNode = new AssigneeTreeNode<UserDepartment>(department, NodeType.DEPARTMENT);
 		rootNode.add(departmentNode);
 		
-		AssigneeTreeNode<User> userNode = new AssigneeTreeNode<User>(department.getUsers().iterator().next(), NodeType.USER);
-		departmentNode.add(userNode);
+		userNode1 = new AssigneeTreeNode<User>(department.getUsers().iterator().next(), NodeType.USER);
+		departmentNode.add(userNode1);
 		
 		User user = UserMother.createUser();
 		user.setUserId(2);
 
-		userNode = new AssigneeTreeNode<User>(user, NodeType.USER);
-		departmentNode.add(userNode);
+		userNode2 = new AssigneeTreeNode<User>(user, NodeType.USER);
+		departmentNode.add(userNode2);
 	}
 	
 	@Test
 	public void findUser()
 	{
-		TreeFinder<User> finder = new TreeFinder<User>(UserMatcher.getInstance());
+		TreeFinder finder = new TreeFinder(UserMatcher.getInstance());
 		
 		List<Integer> userIds = new ArrayList<Integer>();
 		userIds.add(1);
 		
-		List<User> nodes = finder.findMatchingNodes(treeModel, userIds);
+		List<AssigneeTreeNode<?>> nodes = finder.findMatchingNodes(treeModel, userIds);
 		
 		assertEquals(1, nodes.size());
+		assertEquals(userNode1, nodes.get(0));
 	}
 }
