@@ -16,7 +16,7 @@ public class UserDepartmentMother
 		department.setCode("aa");
 		department.setName("bb");
 		
-		department.setUsers(MotherUtil.asSet(UserMother.createUsers()));
+		department.setUsers(MotherUtil.asSet(UserMother.createUsers(department)));
 		return department;
 	}
 	

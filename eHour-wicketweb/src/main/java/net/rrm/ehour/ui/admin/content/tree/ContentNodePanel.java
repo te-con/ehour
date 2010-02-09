@@ -38,7 +38,9 @@ public class ContentNodePanel extends LabelIconPanel
 		{
 			public void onClick(AjaxRequestTarget target)
 			{
+				
 				onNodeLinkClicked(model.getObject(), tree, target);
+				System.out.println(ContentNodePanel.this.getPageRelativePath());
 			}
 		};
 
@@ -52,6 +54,8 @@ public class ContentNodePanel extends LabelIconPanel
 			public void onClick(AjaxRequestTarget target)
 			{
 				onNodeLinkSelected(model.getObject(), tree, target);
+				System.out.println(ContentNodePanel.this.getPageRelativePath());
+//				System.out.println(link.getPath());
 			}
 		};
 		

@@ -32,5 +32,4 @@ public class CustomerMother
 	{
 		return MotherUtil.createMultiple(createCustomer());
 	}
-
 }

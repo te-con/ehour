@@ -14,6 +14,11 @@ public class UserMother
 {
 	public static User createUser()
 	{
+		return createUser(new UserDepartment(1));
+	}
+	
+	public static User createUser(UserDepartment department)
+	{
 		User user = new User();
 		
 		user.setActive(true);
@@ -23,7 +28,7 @@ public class UserMother
 		user.setLastName("TestUser");
 		user.setPassword("abc");
 		
-		user.setUserDepartment(new UserDepartment(1));
+		user.setUserDepartment(department);
 		
 		Set<UserRole> roles = new HashSet<UserRole>();
 		roles.add(UserRoleMother.createUserRole());
@@ -31,9 +36,15 @@ public class UserMother
 		
 		return user;
 	}
-	
+
 	public static List<User> createUsers()
 	{
-		return MotherUtil.createMultiple(createUser());
+		return MotherUtil.createMultiple(createUser(new UserDepartment(1)));
+	}
+
+	
+	public static List<User> createUsers(UserDepartment department)
+	{
+		return MotherUtil.createMultiple(createUser(department));
 	}
 }

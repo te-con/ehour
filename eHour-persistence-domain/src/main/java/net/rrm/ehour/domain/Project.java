@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -281,4 +282,14 @@ public class Project extends DomainObject<Integer, Project>
 		this.deletable = deletable;
 	}	
 
+	public void addProjectAssignment(ProjectAssignment assignment)
+	{
+		if (projectAssignments == null)
+		{
+			projectAssignments = new HashSet<ProjectAssignment>();
+		}
+		
+		projectAssignments.add(assignment);
+	}
+	
 }

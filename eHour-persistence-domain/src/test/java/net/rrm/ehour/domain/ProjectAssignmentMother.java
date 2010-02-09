@@ -10,6 +10,16 @@ import net.rrm.ehour.util.EhourConstants;
  */
 public class ProjectAssignmentMother
 {
+	public static ProjectAssignment createProjectAssignment(User user, Project project)
+	{
+		ProjectAssignment assignment = new ProjectAssignment(user, project);
+		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
+		assignment.setActive(true);
+		assignment.setAssignmentId(1);
+		
+		return assignment;
+	}
+	
 	/**
 	 * 
 	 * 

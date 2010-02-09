@@ -11,8 +11,9 @@ import javax.swing.tree.TreeModel;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.ui.admin.content.assignees.tree.AssigneeTreeNode;
+import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
 import net.rrm.ehour.ui.admin.content.tree.ContentTree;
+import net.rrm.ehour.ui.admin.content.tree.NodeType;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.user.service.UserService;
 
@@ -59,7 +60,7 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 		
 		for (UserDepartment department : departments)
 		{
-			AssigneeTreeNode<UserDepartment> departmentNode = new AssigneeTreeNode<UserDepartment>(department);
+			AssigneeTreeNode<UserDepartment> departmentNode = new AssigneeTreeNode<UserDepartment>(department, NodeType.ASSIGNEE);
 			
 			rootNode.insert(departmentNode, 0);
 			
@@ -68,7 +69,7 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 			
 			for (User user : users)
 			{
-				AssigneeTreeNode<User> userNode = new AssigneeTreeNode<User>(user);
+				AssigneeTreeNode<User> userNode = new AssigneeTreeNode<User>(user, NodeType.ASSIGNEE);
 				departmentNode.add(userNode);
 			}
 		}
