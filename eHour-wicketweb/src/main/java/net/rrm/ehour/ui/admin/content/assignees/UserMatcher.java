@@ -3,7 +3,7 @@ package net.rrm.ehour.ui.admin.content.assignees;
 import java.util.Collection;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.ui.admin.content.tree.TreeFinder;
+import net.rrm.ehour.ui.admin.content.tree.UserObjectMatcher;
 
 /**
  * Created on Feb 9, 2010 11:44:25 PM
@@ -11,7 +11,7 @@ import net.rrm.ehour.ui.admin.content.tree.TreeFinder;
  * @author thies (www.te-con.nl)
  *
  */
-public class UserMatcher implements TreeFinder.UserObjectMatcher
+public class UserMatcher implements UserObjectMatcher
 {
 	private static final UserMatcher instance = new UserMatcher();
 	
@@ -26,15 +26,15 @@ public class UserMatcher implements TreeFinder.UserObjectMatcher
 	}
 	
 	@Override
-	public boolean isMatch(Collection<?> matchIds, Object userObject)
+	public MatchResult matches(Collection<?> matchIds, Object userObject)
 	{
 		if (userObject instanceof User)
 		{
 			User user = (User)userObject;
 			
-			return matchIds.contains(user.getUserId());
+			return matchIds.contains(user.getUserId()) ? MatchResult.MATCH : MatchResult.NO_MATCH;
 		}
 			
-		return false;
+		return MatchResult.INCOMPATIBLE;
 	}
 }

@@ -18,7 +18,7 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
 import net.rrm.ehour.ui.admin.content.tree.ContentTree;
 import net.rrm.ehour.ui.admin.content.tree.NodeType;
-import net.rrm.ehour.ui.admin.content.tree.TreeFinder;
+import net.rrm.ehour.ui.admin.content.tree.TreeNodeSelector;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.user.service.UserService;
 
@@ -38,7 +38,7 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 	private UserService userService;
 
 	private ContentTree tree;
-	private static final TreeFinder finder = new TreeFinder(UserMatcher.getInstance());
+	private static final TreeNodeSelector nodeSelector = new TreeNodeSelector(UserMatcher.getInstance());
 	
 	public AssigneesPanel(String id)
 	{
@@ -56,21 +56,9 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 	{
 		Set<Integer> ids = getUserIdsFromAssignments(assignments);
 		
-		TreeModel treeModel = tree.getModelObject();
-		DefaultTreeModel defaultTreeModel =((DefaultTreeModel)treeModel);
+		DefaultTreeModel model = (DefaultTreeModel)tree.getModelObject();
 		
-		List<AssigneeTreeNode<?>> nodes = finder.findMatchingNodes(treeModel, ids);
-		
-		for (AssigneeTreeNode<?> assigneeTreeNode : nodes)
-		{
-			assigneeTreeNode.setSelectable(true);
-			assigneeTreeNode.setSelected(true);
-			
-			tree.getTreeState().expandNode(assigneeTreeNode.getParent());
-			
-			defaultTreeModel.nodeChanged(assigneeTreeNode);
-		}
-		
+		nodeSelector.selectMatchingNodes(model, tree.getTreeState(), ids);
 		tree.updateTree();
 	}
 	
