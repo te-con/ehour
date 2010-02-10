@@ -42,6 +42,8 @@ public class AssignablesPanel extends AbstractAjaxPanel<Void>
 	{
 		super(id);
 		
+		setOutputMarkupId(true);
+		
 		TreeModel model = createTreeModel();
 		
 		ContentTree tree = new ContentTree("tree", model);

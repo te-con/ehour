@@ -44,12 +44,11 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 	{
 		super(id);
 	
-		setOutputMarkupId(true);
-		
 		TreeModel model = createTreeModel();
 		
 		tree = new ContentTree("tree", model);
 		tree.setRootLess(true);
+		tree.setOutputMarkupId(true);
 		add(tree);
 	}
 	
@@ -58,13 +57,21 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 		Set<Integer> ids = getUserIdsFromAssignments(assignments);
 		
 		TreeModel treeModel = tree.getModelObject();
+		DefaultTreeModel defaultTreeModel =((DefaultTreeModel)treeModel);
 		
 		List<AssigneeTreeNode<?>> nodes = finder.findMatchingNodes(treeModel, ids);
 		
 		for (AssigneeTreeNode<?> assigneeTreeNode : nodes)
 		{
+			assigneeTreeNode.setSelectable(true);
+			assigneeTreeNode.setSelected(true);
 			
+			tree.getTreeState().expandNode(assigneeTreeNode.getParent());
+			
+			defaultTreeModel.nodeChanged(assigneeTreeNode);
 		}
+		
+		tree.updateTree();
 	}
 	
 	private Set<Integer> getUserIdsFromAssignments(Collection<ProjectAssignment> assignments)

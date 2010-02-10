@@ -18,6 +18,8 @@ public class AssigneeTreeNode<T extends DomainObject<?, ?>> extends DefaultMutab
 	private static final long serialVersionUID = -4757873193229912865L;
 
 	private NodeType nodeType;
+	private boolean selected;
+	private boolean selectable;
 	
 	public AssigneeTreeNode(T userObject, NodeType nodeType)
 	{
@@ -50,5 +52,25 @@ public class AssigneeTreeNode<T extends DomainObject<?, ?>> extends DefaultMutab
 	public String toString()
 	{
 		return ((T)getUserObject()).getFullName(); 
+	}
+
+	public boolean isSelected()
+	{
+		return selected;
+	}
+
+	public void setSelected(boolean selected)
+	{
+		this.selected = selected;
+	}
+
+	public boolean isSelectable()
+	{
+		return selectable;
+	}
+
+	public void setSelectable(boolean selectable)
+	{
+		this.selectable = selectable;
 	}
 }

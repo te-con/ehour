@@ -7,7 +7,6 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.admin.content.assignables.AssignablesPanel;
 import net.rrm.ehour.ui.admin.content.assignees.AssigneesPanel;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
-import net.rrm.ehour.ui.admin.content.tree.NodeType;
 import net.rrm.ehour.ui.admin.content.tree.TreeNodeEventType;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
