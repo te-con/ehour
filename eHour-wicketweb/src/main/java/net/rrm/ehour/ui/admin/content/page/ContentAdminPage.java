@@ -6,8 +6,10 @@ import java.util.Set;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.admin.content.assignables.AssignablesPanel;
 import net.rrm.ehour.ui.admin.content.assignees.AssigneesPanel;
+import net.rrm.ehour.ui.admin.content.assignment.ProjectAssignmentManagementPanel;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
 import net.rrm.ehour.ui.admin.content.tree.TreeNodeEventType;
+import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
@@ -24,10 +26,13 @@ import org.apache.wicket.model.ResourceModel;
 @AuthorizeInstantiation("ROLE_ADMIN")
 public class ContentAdminPage extends AbstractBasePage<Void>
 {
+	private static final String ID_ASSIGNMENT_MANAGEMENT = "assignmentManagement";
 	private static final String ID_ASSIGNABLES = "assignables";
 	private static final String ID_ASSIGNEES = "assignees";
+
 	private AssignablesPanel assignablesPanel;
 	private AssigneesPanel assigneesPanel;
+	private PlaceholderPanel managementPanel;
 
 	public ContentAdminPage()
 	{
@@ -43,28 +48,59 @@ public class ContentAdminPage extends AbstractBasePage<Void>
 
 		assignablesPanel = new AssignablesPanel(ID_ASSIGNABLES);
 		add(assignablesPanel);
+		
+		managementPanel = new PlaceholderPanel(ID_ASSIGNMENT_MANAGEMENT);
+		add(managementPanel);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent event)
 	{
 		if (event.getEventType() == TreeNodeEventType.NODE_SELECTED)
 		{
-			PayloadAjaxEvent<AssigneeTreeNode<?>> payloadEvent = (PayloadAjaxEvent<AssigneeTreeNode<?>>)event;
-			
-			AssigneeTreeNode<?> node = payloadEvent.getPayload();
-			
-			Set<?> objects = node.getSelectedNodeObjects();
-			
-			if (!node.getNodeType().isAssignee())
-			{
-				Collection<ProjectAssignment> assignments = (Collection<ProjectAssignment>)objects; 
-				
-				assigneesPanel.selectUsers(assignments);
-			}
+			onNodeSelectedEvent(event);
 		}
 		
 		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void onNodeSelectedEvent(AjaxEvent event)
+	{
+		PayloadAjaxEvent<AssigneeTreeNode<?>> payloadEvent = (PayloadAjaxEvent<AssigneeTreeNode<?>>)event;
+		
+		AssigneeTreeNode<?> node = payloadEvent.getPayload();
+		
+		Set<?> objects = node.getSelectedNodeObjects();
+		
+		if (!node.getNodeType().isAssignee())
+		{
+			onAssignableNodeEvent(objects);
+		}
+		
+		// TODO broken for anything other than assignments
+		updateManagementPanel(event, objects);
+	}
+
+	private void updateManagementPanel(AjaxEvent event, Set<?> objects)
+	{
+		Collection<ProjectAssignment> assignments = objectsToAssignments(objects);
+		
+		ProjectAssignmentManagementPanel panel = new ProjectAssignmentManagementPanel(ID_ASSIGNMENT_MANAGEMENT, assignments);
+		managementPanel.replaceWith(panel);
+		event.getTarget().addComponent(panel);
+	}
+
+	private void onAssignableNodeEvent(Set<?> objects)
+	{
+		Collection<ProjectAssignment> assignments = objectsToAssignments(objects); 
+		assigneesPanel.selectUsers(assignments);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Collection<ProjectAssignment> objectsToAssignments(Set<?> objects)
+	{
+		Collection<ProjectAssignment> assignments = (Collection<ProjectAssignment>)objects;
+		return assignments;
 	}
 }

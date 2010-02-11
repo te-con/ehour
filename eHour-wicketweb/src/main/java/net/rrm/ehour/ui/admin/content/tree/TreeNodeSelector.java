@@ -52,37 +52,11 @@ public class TreeNodeSelector
 
 			if (matchResult.isCompatible()) 
 			{
-				boolean updateForSelectableStateSwitch = !node.isSelectable();
-				
-				boolean updateForSelectedStateSwitch = node.isSelected();
-				updateForSelectedStateSwitch ^= matchResult == MATCH;
-				
-				boolean needUpdate = updateForSelectableStateSwitch | updateForSelectedStateSwitch;
-				
-				node.setSelectable(true);
-				node.setSelected(matchResult == MATCH);
-
-				if (needUpdate)
-				{
-					treeModel.nodeChanged(node);
-				}
-				
-				treeState.expandNode(node.getParent());
-				
-				if (matchResult == MATCH)
-				{
-					matches.add(node);
-				}
+				compatibleNode(treeModel, treeState, matches, node, matchResult);
 			}
 			else
 			{
-				if (node.isSelectable())
-				{
-					node.setSelectable(false);
-					treeModel.nodeChanged(node);
-				}
-				
-				node.setSelected(false);
+				inCompatibleNode(treeModel, node);
 			}
 			
 			
@@ -90,5 +64,41 @@ public class TreeNodeSelector
 		}
 		
 		return matches;
+	}
+
+	private void compatibleNode(DefaultTreeModel treeModel, ITreeState treeState, List<AssigneeTreeNode<?>> matches, AssigneeTreeNode<?> node, MatchResult matchResult)
+	{
+		boolean updateForSelectableStateSwitch = !node.isSelectable();
+		
+		boolean updateForSelectedStateSwitch = node.isSelected();
+		updateForSelectedStateSwitch ^= matchResult == MATCH;
+		
+		boolean needUpdate = updateForSelectableStateSwitch | updateForSelectedStateSwitch;
+		
+		node.setSelectable(true);
+		node.setSelected(matchResult == MATCH);
+
+		if (needUpdate)
+		{
+			treeModel.nodeChanged(node);
+		}
+		
+		treeState.expandNode(node.getParent());
+		
+		if (matchResult == MATCH)
+		{
+			matches.add(node);
+		}
+	}
+
+	private void inCompatibleNode(DefaultTreeModel treeModel, AssigneeTreeNode<?> node)
+	{
+		if (node.isSelectable())
+		{
+			node.setSelectable(false);
+			treeModel.nodeChanged(node);
+		}
+		
+		node.setSelected(false);
 	}
 }
