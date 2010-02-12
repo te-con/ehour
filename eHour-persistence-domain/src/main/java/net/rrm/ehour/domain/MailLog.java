@@ -28,12 +28,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public class MailLog extends DomainObject<Integer, MailLog>
 {
-
-	// Fields    
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3984593984762448559L;
 
 	private Integer mailLogId;

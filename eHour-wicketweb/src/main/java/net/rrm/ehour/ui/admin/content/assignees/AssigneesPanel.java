@@ -1,9 +1,7 @@
 package net.rrm.ehour.ui.admin.content.assignees;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,7 +10,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeModel;
 
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
@@ -52,28 +49,14 @@ public class AssigneesPanel extends AbstractAjaxPanel<Void>
 		add(tree);
 	}
 	
-	public void selectUsers(Collection<ProjectAssignment> assignments)
+	public void selectUsers(Set<Integer> userIds)
 	{
-		Set<Integer> ids = getUserIdsFromAssignments(assignments);
-		
 		DefaultTreeModel model = (DefaultTreeModel)tree.getModelObject();
 		
-		nodeSelector.selectMatchingNodes(model, tree.getTreeState(), ids);
+		nodeSelector.selectMatchingNodes(model, tree.getTreeState(), userIds);
 		tree.updateTree();
 	}
 	
-	private Set<Integer> getUserIdsFromAssignments(Collection<ProjectAssignment> assignments)
-	{
-		Set<Integer> userIds = new HashSet<Integer>();
-		
-		for (ProjectAssignment projectAssignment : assignments)
-		{
-			userIds.add(projectAssignment.getUser().getPK());
-		}
-		
-		return userIds;
-	}
-		
 	private TreeModel createTreeModel()
 	{
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();

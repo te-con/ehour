@@ -188,20 +188,6 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 		this.deletable = deletable;
 	}
 	
-	@Override
-	public boolean equals(Object other)
-	{
-		if ((this == other))
-			return true;
-		if (!(other instanceof UserDepartment))
-			return false;
-		
-		UserDepartment castOther = (UserDepartment) other;
-		
-		return new EqualsBuilder()
-			.append(this.getDepartmentId(), castOther.getDepartmentId()).isEquals();
-	}
-	
 
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
@@ -213,16 +199,20 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 			.append(this.getCode(), object.getCode())
 			.append(this.getDepartmentId(), object.getDepartmentId()).toComparison();
 	}
-	
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
+
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof UserDepartment))
+			return false;
+		UserDepartment castOther = (UserDepartment) other;
+		return new EqualsBuilder().append(name, castOther.name).append(code, castOther.code).isEquals();
+	}
+
+	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder(-2038170721, -475387721)
-				.append(this.getDepartmentId())
-				.append(this.getCode())
-				.append(this.getName())
-				.toHashCode();
-	}	
+		return new HashCodeBuilder().append(name).append(code).toHashCode();
+	}
+	
 }

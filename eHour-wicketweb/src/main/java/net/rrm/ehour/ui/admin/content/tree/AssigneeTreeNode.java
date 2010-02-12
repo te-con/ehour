@@ -27,16 +27,6 @@ public class AssigneeTreeNode<T extends DomainObject<?, ?>> extends DefaultMutab
 		
 		this.nodeType = nodeType;
 	}
-
-	/**
-	 * Get selected objects in other tree. 
-	 * Override to provide a meaningful list
-	 * @return
-	 */
-	public Set<?> getSelectedNodeObjects()
-	{
-		return new HashSet<DomainObject<?, ?>>();
-	}
 	
 	/**
 	 * Get this node type

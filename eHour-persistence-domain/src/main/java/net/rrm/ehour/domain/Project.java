@@ -186,43 +186,6 @@ public class Project extends DomainObject<Integer, Project>
 		this.projectAssignments = projectAssignments;
 	}
 
-
-	
-	/**
-	 * Equals
-	 */
-	@Override
-	public boolean equals(Object other)
-	{
-		if ((this == other))
-		{
-			return true;
-		}
-		
-		if (!(other instanceof Project))
-		{
-			return false;
-		}
-		
-		Project castOther = (Project) other;
-		
-		if (castOther.getProjectId() == null && this.getProjectId() != null)
-		{
-			return false;
-		}
-		
-		return new EqualsBuilder().append(this.getProjectId(), castOther.getProjectId()).isEquals();
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(getProjectId()).toHashCode();
-	}
-
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
@@ -290,6 +253,22 @@ public class Project extends DomainObject<Integer, Project>
 		}
 		
 		projectAssignments.add(assignment);
+	}
+
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof Project))
+			return false;
+		Project castOther = (Project) other;
+		return new EqualsBuilder().append(projectCode, castOther.projectCode).append(contact, castOther.contact).append(description, castOther.description).append(name, castOther.name).append(defaultProject, castOther.defaultProject).append(active, castOther.active).append(
+				customer, castOther.customer).append(billable, castOther.billable).isEquals();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(projectCode).append(contact).append(description).append(name).append(defaultProject).append(active).append(customer).append(billable).toHashCode();
 	}
 	
 }

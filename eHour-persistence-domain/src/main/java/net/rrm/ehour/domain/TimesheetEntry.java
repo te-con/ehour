@@ -81,22 +81,6 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	}
 
 
-
-	public boolean equals(Object other)
-	{
-		if ((this == other))
-			return true;
-		if (!(other instanceof TimesheetEntry))
-			return false;
-		TimesheetEntry castOther = (TimesheetEntry) other;
-		return new EqualsBuilder().append(this.getEntryId(), castOther.getEntryId()).isEquals();
-	}
-
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(getEntryId()).toHashCode();
-	}
-
 	@Override
 	public TimesheetEntryId getPK()
 	{
@@ -149,5 +133,20 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	public void setUpdateDate(Date updateDate)
 	{
 		this.updateDate = updateDate;
+	}
+
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof TimesheetEntry))
+			return false;
+		TimesheetEntry castOther = (TimesheetEntry) other;
+		return new EqualsBuilder().append(entryId, castOther.entryId).append(hours, castOther.hours).append(updateDate, castOther.updateDate).isEquals();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(entryId).append(hours).append(updateDate).toHashCode();
 	}
 }

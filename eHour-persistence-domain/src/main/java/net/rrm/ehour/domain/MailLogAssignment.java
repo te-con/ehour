@@ -65,22 +65,6 @@ public class MailLogAssignment extends MailLog
 		this.projectAssignment = projectAssignment;
 	}
 
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object)
-	{
-		if (!(object instanceof MailLogAssignment))
-		{
-			return false;
-		}
-		
-		MailLogAssignment rhs = (MailLogAssignment) object;
-		return new EqualsBuilder()
-			.appendSuper(super.equals(object))
-			.append(this.getProjectAssignment(), rhs.getProjectAssignment())
-			.isEquals();
-	}
 
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
@@ -92,16 +76,7 @@ public class MailLogAssignment extends MailLog
 			.toComparison();
 	}
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode()
-	{
-		return new HashCodeBuilder(-1194418173, 1339254353)
-				.appendSuper(super.hashCode())
-				.append(this.getProjectAssignment())
-				.toHashCode();
-	}
+
 
 	/**
 	 * @return the bookDate
@@ -133,6 +108,21 @@ public class MailLogAssignment extends MailLog
 	public void setBookedHours(Float bookedHours)
 	{
 		this.bookedHours = bookedHours;
+	}
+
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof MailLogAssignment))
+			return false;
+		MailLogAssignment castOther = (MailLogAssignment) other;
+		return new EqualsBuilder().append(projectAssignment, castOther.projectAssignment).append(bookedHours, castOther.bookedHours).append(bookDate, castOther.bookDate).isEquals();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(projectAssignment).append(bookedHours).append(bookDate).toHashCode();
 	}
 
 }

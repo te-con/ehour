@@ -231,37 +231,22 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 			.toComparison();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.domain.DomainObject#equals(java.lang.Object)
-	 */
-	public boolean equals(Object other)
+
+	
+	public boolean equalsIgnoringUser(ProjectAssignment assignment)
 	{
-		if ((this == other))
-			return true;
-		if (!(other instanceof ProjectAssignment))
-			return false;
-		ProjectAssignment castOther = (ProjectAssignment) other;
-		
-		if (castOther.getAssignmentId() == null)
-		{
-			return false;
-		}
-		
-		if (this.getAssignmentId() == null)
-		{
-			return false;
-		}
-		
 		return new EqualsBuilder()
-			.append(this.getAssignmentId(), castOther.getAssignmentId())
+			.append(this.getAllottedHours(), assignment.getAllottedHours())
+			.append(this.getAllowedOverrun(), assignment.getAllowedOverrun())
+			.append(this.getAssignmentType(), assignment.getAssignmentType())
+			.append(this.getDateEnd(), assignment.getDateEnd())
+			.append(this.getDateStart(), assignment.getDateStart())
+			.append(this.getFullName(), assignment.getFullName())
+			.append(this.getHourlyRate(), assignment.getHourlyRate())
+			.append(this.getProject(), assignment.getProject())
 			.isEquals();
 	}
 
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(getAssignmentId()).toHashCode();
-	}
 
 	public boolean isDeletable()
 	{
@@ -357,6 +342,22 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 	public void setNotifyPm(boolean notifyPm)
 	{
 		this.notifyPm = notifyPm;
+	}
+
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof ProjectAssignment))
+			return false;
+		ProjectAssignment castOther = (ProjectAssignment) other;
+		return new EqualsBuilder().append(user, castOther.user).append(project, castOther.project).append(hourlyRate, castOther.hourlyRate).append(dateStart, castOther.dateStart).append(dateEnd, castOther.dateEnd).append(role, castOther.role).append(assignmentType,
+				castOther.assignmentType).append(allottedHours, castOther.allottedHours).append(allowedOverrun, castOther.allowedOverrun).append(active, castOther.active).isEquals();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(user).append(project).append(hourlyRate).append(dateStart).append(dateEnd).append(role).append(assignmentType).append(allottedHours).append(allowedOverrun).append(active).toHashCode();
 	}
 
 }

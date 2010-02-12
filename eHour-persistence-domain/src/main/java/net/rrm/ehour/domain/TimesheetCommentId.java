@@ -24,16 +24,10 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-/**
- * TODO 
- **/
-
 public class TimesheetCommentId implements Serializable, Comparable<TimesheetCommentId>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
 	private	Integer	userId;
 	private	Date	commentDate;
 	

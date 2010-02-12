@@ -92,28 +92,6 @@ public class TimesheetComment extends DomainObject<TimesheetCommentId, Timesheet
 										.append("comment", getComment()).toString();
 	}
 
-	public boolean equals(Object other)
-	{
-		if ((this == other))
-		{
-			return true;
-		}
-		
-		if (!(other instanceof TimesheetComment))
-		{
-			return false;
-		}
-		
-		TimesheetComment castOther = (TimesheetComment) other;
-
-		return new EqualsBuilder().append(this.getCommentId(),castOther.getCommentId())
-									.append(this.getComment(), castOther.getComment()).isEquals();
-	}
-
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(getCommentId()).append(getComment()).toHashCode();
-	}
 
 	@Override
 	public TimesheetCommentId getPK()
@@ -130,5 +108,21 @@ public class TimesheetComment extends DomainObject<TimesheetCommentId, Timesheet
 			.append(this.getComment(), object.getComment())
 			.append(this.getCommentId(), object.getCommentId()).toComparison();
 	}
+
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof TimesheetComment))
+			return false;
+		TimesheetComment castOther = (TimesheetComment) other;
+		return new EqualsBuilder().append(commentId, castOther.commentId).append(comment, castOther.comment).append(newComment, castOther.newComment).isEquals();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(commentId).append(comment).append(newComment).toHashCode();
+	}
+
 
 }

@@ -36,7 +36,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Audit extends DomainObject<Number, Audit>
 {
 	private static final long serialVersionUID = -5025801585806813596L;
-
 	
 	@Id @GeneratedValue
 	@Column (name = "AUDIT_ID")

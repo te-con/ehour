@@ -3,7 +3,6 @@ package net.rrm.ehour.ui.admin.content.assignables;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -13,8 +12,6 @@ import javax.swing.tree.TreeModel;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
 import net.rrm.ehour.ui.admin.content.tree.ContentTree;
 import net.rrm.ehour.ui.admin.content.tree.NodeType;
@@ -34,9 +31,6 @@ public class AssignablesPanel extends AbstractAjaxPanel<Void>
 
 	@SpringBean
 	private CustomerService customerService;
-	
-	@SpringBean
-	private ProjectService projectService;
 	
 	public AssignablesPanel(String id)
 	{
@@ -62,7 +56,6 @@ public class AssignablesPanel extends AbstractAjaxPanel<Void>
 		return model;
 	}
 
-	@SuppressWarnings("serial")
 	private void addNodesToRoot(MutableTreeNode rootNode)
 	{
 		List<Customer> customers = customerService.getCustomers();
@@ -80,26 +73,7 @@ public class AssignablesPanel extends AbstractAjaxPanel<Void>
 			
 			for (Project project : projects)
 			{
-				AssigneeTreeNode<Project> projectNode = new AssigneeTreeNode<Project>(project, NodeType.CUSTOMER)
-				{
-					@Override
-					public Set<?> getSelectedNodeObjects()
-					{
-						Integer projectId = ((Project)getUserObject()).getPK();
-						
-						try
-						{
-							Project project = projectService.getProject(projectId);
-							return project.getProjectAssignments();
-							
-						} catch (ObjectNotFoundException e)
-						{
-							e.printStackTrace();
-						}
-						
-						return super.getSelectedNodeObjects();
-					}
-				};
+				AssigneeTreeNode<Project> projectNode = new AssigneeTreeNode<Project>(project, NodeType.CUSTOMER);
 				
 				customerNode.add(projectNode);
 			}

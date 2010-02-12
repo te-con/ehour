@@ -8,6 +8,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.ProjectMother;
 import net.rrm.ehour.domain.UserMother;
+import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.markup.html.panel.Panel;
@@ -42,7 +43,7 @@ public class ProjectAssignmentManagementPanelTest extends AbstractSpringWebAppTe
 			@Override
 			public Panel getTestPanel(String panelId)
 			{
-				return new ProjectAssignmentManagementPanel(panelId, assignments);
+				return new ProjectAssignmentManagementPanel(panelId, new ProjectAssignmentCollection());
 			}
 		});
 	}

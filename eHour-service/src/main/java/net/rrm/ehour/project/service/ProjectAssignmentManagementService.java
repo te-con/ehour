@@ -5,11 +5,11 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 
 public interface ProjectAssignmentManagementService
 {
-	
-	
+	public ProjectAssignmentCollection getCombinedProjectAssignments(Integer projectId);
 	
 	/**
 	 * Assign user to project

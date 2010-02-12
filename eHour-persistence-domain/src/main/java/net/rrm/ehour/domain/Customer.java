@@ -27,11 +27,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Customer extends DomainObject<Integer, Customer>
 {
 
-	// Fields
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7179070624535327915L;
 
 	private Integer customerId;
@@ -206,27 +201,7 @@ public class Customer extends DomainObject<Integer, Customer>
 	}
 	
 	
-	@Override
-	public boolean equals(Object other)
-	{
-		Customer 	castOther;
-		
-		if (other instanceof Customer)
-		{
-			castOther = (Customer)other;
-			return new EqualsBuilder().append(this.getCustomerId(), castOther.getCustomerId()).isEquals();
-		}
-		else
-		{
-			return false;
-		}
-	}	
-	
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(getCustomerId()).toHashCode();
-	}
+
 
 	@Override
 	public Integer getPK()
@@ -258,6 +233,21 @@ public class Customer extends DomainObject<Integer, Customer>
 		}
 		
 		projects.add(project);
+	}
+
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof Customer))
+			return false;
+		Customer castOther = (Customer) other;
+		return new EqualsBuilder().append(code, castOther.code).append(name, castOther.name).append(description, castOther.description).append(active, castOther.active).isEquals();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(code).append(name).append(description).append(active).toHashCode();
 	}
 	
 }

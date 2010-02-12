@@ -13,6 +13,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -155,6 +156,25 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 	{
 		projectAssignmentDAO.persist(assignment);
 	}
+	
+
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.project.service.ProjectAssignmentManagementService#getCombinedProjectAssignments(net.rrm.ehour.domain.Project)
+	 */
+	@Override
+	public ProjectAssignmentCollection getCombinedProjectAssignments(Integer projectId)
+	{
+		Project project = projectDAO.findById(projectId);
+		
+		ProjectAssignmentCollection collection = new ProjectAssignmentCollection();
+		
+		for (ProjectAssignment assignment : project.getProjectAssignments())
+		{
+			collection.addProjectAssignment(assignment);
+		}
+		
+		return collection;
+	}	
 
 	public void setUserService(UserService userService)
 	{
@@ -175,5 +195,4 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 	{
 		this.projectAssignmentService = projectAssignmentService;
 	}
-
 }

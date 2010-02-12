@@ -290,30 +290,7 @@ public class User extends DomainObject<Integer, User>
 		this.inactiveProjectAssignments = inactiveProjectAssignments;
 	}
 
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object)
-	{
-		if (!(object instanceof User))
-		{
-			return false;
-		}
-		User rhs = (User) object;
-		return new EqualsBuilder()
-					.append(this.getUserId(), rhs.getUserId())
-					.isEquals();
-	}
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode()
-	{
-		return new HashCodeBuilder(-2038170721, -475387721)
-				.append(this.getUserId())
-				.toHashCode();
-	}
 
 	@Override
 	public Integer getPK()
@@ -390,5 +367,20 @@ public class User extends DomainObject<Integer, User>
 	public void setUpdatedPassword(String updatedPassword)
 	{
 		this.updatedPassword = updatedPassword;
+	}
+
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof User))
+			return false;
+		User castOther = (User) other;
+		return new EqualsBuilder().append(username, castOther.username).append(firstName, castOther.firstName).append(lastName, castOther.lastName).append(email, castOther.email).append(active, castOther.active).isEquals();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(username).append(firstName).append(lastName).append(email).append(active).toHashCode();
 	}
 }
