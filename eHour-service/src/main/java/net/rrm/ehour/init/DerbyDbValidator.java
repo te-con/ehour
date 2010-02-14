@@ -36,7 +36,6 @@ import org.apache.ddlutils.io.DatabaseIO;
 import org.apache.ddlutils.model.Database;
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.event.ContextClosedEvent;
@@ -47,7 +46,7 @@ import org.springframework.core.io.ResourceLoader;
  * Derby database accessor methods
  **/
 
-public class DerbyDbValidator implements ApplicationListener, ResourceLoaderAware  
+public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>, ResourceLoaderAware  
 {
 	private String		ddlFile;
 	private String		dmlFile;
@@ -63,13 +62,10 @@ public class DerbyDbValidator implements ApplicationListener, ResourceLoaderAwar
 	 * (non-Javadoc)
 	 * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
 	 */
-	public void onApplicationEvent(ApplicationEvent event)
+	public void onApplicationEvent(ContextClosedEvent event)
 	{
-		if (event instanceof ContextClosedEvent)
-		{
-			logger.info("Application shutting down, shutting down database");
-			((EmbeddedDataSource)dataSource).setShutdownDatabase("shutdown");	
-		}
+		logger.info("Application shutting down, shutting down database");
+		((EmbeddedDataSource)dataSource).setShutdownDatabase("shutdown");	
 	}	
 	
 	/**
