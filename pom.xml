@@ -325,18 +325,4 @@
 
 		</plugins>
 	</reporting>
-	<!--
-		currently down, up half sept <repositories> <repository>
-		<id>maven2-repository.dev.java.net</id> <name>eHour dev
-		repository</name>
-		<url>http://dev.ehour.nl/nexus/content/groups/public</url>
-		<layout>default</layout> </repository> </repositories>
-	-->
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Codehaus repository</id>
-			<url>http://repository.codehaus.org/</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 </project>

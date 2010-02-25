@@ -1,1 +1,2 @@
-mvn clean install eclipse:eclipse -Denv=dev-mysql -Dwtpversion=1.5 
+mvn clean install eclipse:eclipse -Pmysql -Pwar -Pdev -Dwtpversion=1.5 -DdownloadSources=true
+
