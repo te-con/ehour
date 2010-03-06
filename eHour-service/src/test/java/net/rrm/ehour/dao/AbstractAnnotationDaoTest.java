@@ -32,6 +32,7 @@ public abstract class AbstractAnnotationDaoTest
 	@Autowired
 	private DataSource	eHourDataSource;
 	
+	@SuppressWarnings("deprecation")
 	@Before
 	public void setUpDatabase() throws Exception
 	{

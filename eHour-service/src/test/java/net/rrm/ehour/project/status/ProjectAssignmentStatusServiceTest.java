@@ -30,9 +30,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
@@ -40,10 +40,6 @@ import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-
-/**
- * 
- **/
 
 public class ProjectAssignmentStatusServiceTest
 {
@@ -65,29 +61,28 @@ public class ProjectAssignmentStatusServiceTest
 	@Test
 	public final void testGetAssignmentStatusDateIn()
 	{
-		ProjectAssignment assignment = new ProjectAssignment();
-		assignment.setAssignmentId(1);
-		assignment.setUser(new User(1));
+		ProjectAssignment assignment = ProjectAssignmentMother.createProjectAssignment(1);
+		
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
 		assignment.setAssignmentType(type);
 		
 		Calendar startCal = new GregorianCalendar();
 		startCal.add(Calendar.DAY_OF_YEAR, -5);
-		Date start = startCal.getTime();
+		Date startDate = startCal.getTime();
 		
-		assignment.setDateStart(startCal.getTime());
+		assignment.setDateStart(startDate);
 
 		Calendar endCal = new GregorianCalendar();
 		endCal.add(Calendar.DAY_OF_YEAR, 2);
-		Date end = endCal.getTime();
-		assignment.setDateEnd(endCal.getTime());
+		Date endDate = endCal.getTime();
+		assignment.setDateEnd(endDate);
 
-		expect(timesheetDAO.getTimesheetEntriesBefore(new ProjectAssignment(1), start))
+		expect(timesheetDAO.getTimesheetEntriesBefore(assignment, startDate))
 			.andReturn(new ArrayList<TimesheetEntry>());
 
-		expect(timesheetDAO.getTimesheetEntriesAfter(new ProjectAssignment(1), end))
-		.andReturn(new ArrayList<TimesheetEntry>());
+		expect(timesheetDAO.getTimesheetEntriesAfter(assignment, endDate))
+			.andReturn(new ArrayList<TimesheetEntry>());
 		
 		replay(timesheetDAO);
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
@@ -100,8 +95,8 @@ public class ProjectAssignmentStatusServiceTest
 	@Test
 	public final void testGetAssignmentStatusDateOut()
 	{
-		ProjectAssignment assignment = new ProjectAssignment(1);
-		assignment.setUser(new User(1));
+		ProjectAssignment assignment = ProjectAssignmentMother.createProjectAssignment(1);
+
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
 		assignment.setAssignmentType(type);
@@ -116,18 +111,17 @@ public class ProjectAssignmentStatusServiceTest
 		assignment.setDateEnd(endCal.getTime());
 		Date end = endCal.getTime();
 		
-		expect(timesheetDAO.getTimesheetEntriesBefore(new ProjectAssignment(1), start))
+		expect(timesheetDAO.getTimesheetEntriesBefore(assignment, start))
 		.andReturn(new ArrayList<TimesheetEntry>());
 
 		List<TimesheetEntry> entry = new ArrayList<TimesheetEntry>();
 		entry.add(new TimesheetEntry());
-		expect(timesheetDAO.getTimesheetEntriesAfter(new ProjectAssignment(1), end))
+		expect(timesheetDAO.getTimesheetEntriesAfter(assignment, end))
 			.andReturn(entry);
 
 		replay(timesheetDAO);
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		verify(timesheetDAO);
-
 
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE));
 		assertEquals(1, status.getStatusses().size());

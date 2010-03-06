@@ -78,6 +78,13 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		status.setAggregate(aggregate);
 
+		addStatusForAssignmentType(assignment, status);
+		
+		return status;
+	}
+
+	private void addStatusForAssignmentType(ProjectAssignment assignment, ProjectAssignmentStatus status)
+	{
 		int assignmentTypeId = assignment.getAssignmentType().getAssignmentTypeId().intValue();
 		
 		if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
@@ -88,8 +95,6 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 		{
 			addFlexAssignmentStatus(assignment, status);
 		}
-		
-		return status;
 	}
 
 	/**
@@ -156,7 +161,8 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	}	
 	
 	/**
-	 * Get the status for a fixed assignment
+	 * Get the status for a fixed assignment.
+	 * 
 	 * @param assignment
 	 * @return
 	 */
@@ -174,8 +180,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 			else
 			{
 				compared = new Float(0).compareTo(statusAggregateHours);
-			};
-			
+			}
 			
 			if (compared <= 0)
 			{

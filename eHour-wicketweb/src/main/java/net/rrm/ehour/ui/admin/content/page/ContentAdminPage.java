@@ -13,6 +13,7 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -32,7 +33,7 @@ public class ContentAdminPage extends AbstractBasePage<Void>
 
 	private AssignablesPanel assignablesPanel;
 	private AssigneesPanel assigneesPanel;
-	private PlaceholderPanel managementPanel;
+	private Component managementPanel;
 
 	@SpringBean(name = "projectAssignmentManagementService")
 	private ProjectAssignmentManagementService projectAssignmentManagementService;
@@ -83,8 +84,11 @@ public class ContentAdminPage extends AbstractBasePage<Void>
 	private void updateManagementPanel(AjaxEvent event, ProjectAssignmentCollection collection)
 	{
 		ProjectAssignmentManagementPanel panel = new ProjectAssignmentManagementPanel(ID_ASSIGNMENT_MANAGEMENT, collection);
+		panel.setOutputMarkupId(true);
 		managementPanel.replaceWith(panel);
+		managementPanel = panel;
 		event.getTarget().addComponent(panel);
+		
 	}
 
 	private void onAssignableNodeEvent(AjaxEvent event, AssigneeTreeNode<?> node)

@@ -48,39 +48,36 @@ import org.junit.Test;
 
 /**
  * @author thies
- *
+ * 
  */
-public class TimesheetPersisterImplTest {
+public class TimesheetPersisterImplTest
+{
 	private TimesheetPersisterImpl persister;
-	private TimesheetDAO			timesheetDAO;
-	private MailService				mailService;
+	private TimesheetDAO timesheetDAO;
+	private MailService mailService;
 	private ProjectAssignmentStatusService statusService;
 	private ProjectAssignment assignment;
 	private List<TimesheetEntry> newEntries;
 	private List<TimesheetEntry> existingEntries;
-	
-	
+
 	@Before
 	public void setUp()
 	{
 		persister = new TimesheetPersisterImpl();
-		
+
 		timesheetDAO = createMock(TimesheetDAO.class);
 		persister.setTimesheetDAO(timesheetDAO);
 
 		statusService = createMock(ProjectAssignmentStatusService.class);
 		persister.setProjectAssignmentStatusService(statusService);
-		
+
 		mailService = createMock(MailService.class);
 		persister.setMailService(mailService);
-		
+
 		initData();
 	}
-	
-	/**
-	 * 
-	 */
-	@SuppressWarnings("deprecation")
+
+	@SuppressWarnings("deprecation") //new dates
 	private void initData()
 	{
 		assignment = new ProjectAssignment(1);
@@ -90,14 +87,14 @@ public class TimesheetPersisterImplTest {
 		assignment.setProject(new Project(1));
 		assignment.getProject().setProjectManager(u);
 		assignment.setNotifyPm(true);
-		
+
 		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX));
-		
+
 		newEntries = new ArrayList<TimesheetEntry>();
-		
+
 		Date dateA = new Date(2008 - 1900, 4 - 1, 1);
 		Date dateB = new Date(2008 - 1900, 4 - 1, 2);
-		
+
 		{
 			TimesheetEntry entry = new TimesheetEntry();
 			TimesheetEntryId id = new TimesheetEntryId();
@@ -107,7 +104,7 @@ public class TimesheetPersisterImplTest {
 			entry.setHours(8f);
 			newEntries.add(entry);
 		}
-		
+
 		{
 			TimesheetEntry entryDel = new TimesheetEntry();
 			TimesheetEntryId idDel = new TimesheetEntryId();
@@ -117,7 +114,7 @@ public class TimesheetPersisterImplTest {
 			entryDel.setHours(0f);
 			newEntries.add(entryDel);
 		}
-		
+
 		existingEntries = new ArrayList<TimesheetEntry>();
 		{
 			TimesheetEntry entry = new TimesheetEntry();
@@ -128,7 +125,7 @@ public class TimesheetPersisterImplTest {
 			entry.setHours(5f);
 			existingEntries.add(entry);
 		}
-		
+
 		{
 			TimesheetEntry entryDel = new TimesheetEntry();
 			TimesheetEntryId idDel = new TimesheetEntryId();
@@ -139,62 +136,51 @@ public class TimesheetPersisterImplTest {
 			existingEntries.add(entryDel);
 		}
 	}
-	
 
-	/**
-	 * Test method for {@link net.rrm.ehour.timesheet.service.TimesheetPersisterImpl#validateAndPersist(net.rrm.ehour.domain.ProjectAssignment, java.util.List)}.
-	 * @throws OverBudgetException 
-	 */
 	@Test
-	public void testPersistValidatedTimesheet() throws OverBudgetException {
+	public void shouldPersistValidatedTimesheet() throws OverBudgetException
+	{
 		timesheetDAO.delete(isA(TimesheetEntry.class));
-		
-		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
-			.andReturn(null);
 
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
-			.andReturn(existingEntries);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(new ProjectAssignmentStatus())
-			.times(2);
-		
+		expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
+
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class))).andReturn(existingEntries);
+
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(new ProjectAssignmentStatus()).times(2);
+
 		replay(statusService);
 		replay(timesheetDAO);
-		
+
 		persister.validateAndPersist(assignment, newEntries, new DateRange());
-		
+
 		verify(timesheetDAO);
 		verify(statusService);
 	}
-	
+
 	/**
 	 * 
 	 * @throws OverBudgetException
 	 */
 	@Test
-	public void testPersistInvalidTimesheet() {
+	public void testPersistInvalidTimesheet()
+	{
 		timesheetDAO.delete(isA(TimesheetEntry.class));
-		
-		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
-			.andReturn(null);
-		
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
-			.andReturn(existingEntries);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(new ProjectAssignmentStatus());
+
+		expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
+
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class))).andReturn(existingEntries);
+
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(new ProjectAssignmentStatus());
 
 		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
 		status.addStatus(Status.OVER_OVERRUN);
 		status.setValid(false);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(status);
-		
+
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(status);
+
 		replay(statusService);
 		replay(timesheetDAO);
-		
+
 		try
 		{
 			persister.validateAndPersist(assignment, newEntries, new DateRange());
@@ -205,20 +191,21 @@ public class TimesheetPersisterImplTest {
 			verify(statusService);
 		}
 	}
-	
+
 	/**
 	 * 
-	 * @throws OverBudgetException 
+	 * @throws OverBudgetException
 	 * @throws OverBudgetException
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testPersistOverrunDecreasingTimesheet() throws OverBudgetException {
+	public void testPersistOverrunDecreasingTimesheet() throws OverBudgetException
+	{
 		Date dateC = new Date(2008 - 1900, 4 - 1, 3);
-		
+
 		newEntries.clear();
 		existingEntries.clear();
-	
+
 		{
 			TimesheetEntry entryDel = new TimesheetEntry();
 			TimesheetEntryId idDel = new TimesheetEntryId();
@@ -239,85 +226,76 @@ public class TimesheetPersisterImplTest {
 			existingEntries.add(entryDel);
 		}
 
-		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
-			.andReturn(null);
-		
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
-			.andReturn(existingEntries);
+		expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
+
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class))).andReturn(existingEntries);
 
 		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
 		beforeStatus.addStatus(Status.OVER_OVERRUN);
 		beforeStatus.setValid(false);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(beforeStatus);
+
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(beforeStatus);
 
 		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
 		status.addStatus(Status.OVER_OVERRUN);
 		status.setValid(false);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(status);
-		
+
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(status);
+
 		replay(statusService);
 		replay(timesheetDAO);
-		
+
 		persister.validateAndPersist(assignment, newEntries, new DateRange());
 		verify(timesheetDAO);
 		verify(statusService);
-	}	
-	
+	}
+
 	/**
 	 * 
-	 * @throws OverBudgetException 
+	 * @throws OverBudgetException
 	 * @throws OverBudgetException
 	 */
 	@Test
-	public void testPersistOverrunInvalidTimesheet() {
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
-			.andReturn(existingEntries);
+	public void testPersistOverrunInvalidTimesheet()
+	{
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class))).andReturn(existingEntries);
 
 		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
 		beforeStatus.setValid(false);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(beforeStatus);
+
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(beforeStatus);
 
 		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
 		status.addStatus(Status.OVER_OVERRUN);
 		status.setValid(false);
-		
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(status);
-		
+
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(status);
+
 		replay(statusService);
 		replay(timesheetDAO);
-		
+
 		try
 		{
 			persister.validateAndPersist(assignment, newEntries, new DateRange());
 			fail();
-		}
-		catch (OverBudgetException obe)
+		} catch (OverBudgetException obe)
 		{
-			
+
 		}
 		verify(timesheetDAO);
 		verify(statusService);
-	}	
-	
-	@Test
-	public void testMailStatusChange() throws OverBudgetException {
-		timesheetDAO.delete(isA(TimesheetEntry.class));
-		
-		expect(timesheetDAO.getLatestTimesheetEntryForAssignment(1))
-			.andReturn(newEntries.get(0));
-		
-		expect(timesheetDAO.merge(isA(TimesheetEntry.class)))
-			.andReturn(null);
+	}
 
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class)))
-			.andReturn(existingEntries);
+	@Test
+	public void testMailStatusChange() throws OverBudgetException
+	{
+		timesheetDAO.delete(isA(TimesheetEntry.class));
+
+		expect(timesheetDAO.getLatestTimesheetEntryForAssignment(1)).andReturn(newEntries.get(0));
+
+		expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
+
+		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class))).andReturn(existingEntries);
 
 		ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
 		beforeStatus.addStatus(Status.IN_ALLOTTED);
@@ -328,23 +306,21 @@ public class TimesheetPersisterImplTest {
 		afterStatus.setValid(true);
 		afterStatus.setAggregate(new AssignmentAggregateReportElement());
 
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(beforeStatus);
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(beforeStatus);
 
-		expect(statusService.getAssignmentStatus(assignment))
-			.andReturn(afterStatus);
+		expect(statusService.getAssignmentStatus(assignment)).andReturn(afterStatus);
 
 		mailService.mailPMFlexAllottedReached(isA(AssignmentAggregateReportElement.class), isA(Date.class), isA(User.class));
-		
+
 		replay(statusService);
 		replay(timesheetDAO);
 		replay(mailService);
-		
+
 		persister.validateAndPersist(assignment, newEntries, new DateRange());
-		
+
 		verify(timesheetDAO);
 		verify(statusService);
 		verify(mailService);
-	}	
+	}
 
 }

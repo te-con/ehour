@@ -177,7 +177,6 @@ public class ProjectAssignmentDAOHibernateImpl
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.project.dao.ProjectAssignmentDAO#findProjectAssignmentTypes()
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ProjectAssignmentType> findProjectAssignmentTypes()
 	{
 		return getHibernateTemplate().loadAll(ProjectAssignmentType.class);
