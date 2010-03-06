@@ -191,11 +191,12 @@
 			<artifactId>sanselan</artifactId>
 			<version>0.97-incubator</version>
 		</dependency>
+		<!-- 
 		<dependency>
 		        <groupId>org.odlabs.wiquery</groupId>
 		        <artifactId>wiquery</artifactId>
 		        <version>1.0</version>
 		</dependency>		
-		
+		 -->
 	</dependencies>
 </project>
