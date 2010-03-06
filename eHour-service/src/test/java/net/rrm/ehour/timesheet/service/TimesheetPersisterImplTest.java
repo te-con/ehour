@@ -28,12 +28,13 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserMother;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
@@ -80,12 +81,8 @@ public class TimesheetPersisterImplTest
 	@SuppressWarnings("deprecation") //new dates
 	private void initData()
 	{
-		assignment = new ProjectAssignment(1);
-		User u = new User(1);
-		u.setEmail("ik@daar.net");
-		assignment.setUser(u);
-		assignment.setProject(new Project(1));
-		assignment.getProject().setProjectManager(u);
+		assignment = ProjectAssignmentMother.createProjectAssignment(1);
+		assignment.getProject().setProjectManager(UserMother.createUser());
 		assignment.setNotifyPm(true);
 
 		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX));
@@ -140,18 +137,20 @@ public class TimesheetPersisterImplTest
 	@Test
 	public void shouldPersistValidatedTimesheet() throws OverBudgetException
 	{
+		DateRange dateRange = new DateRange();
+		
 		timesheetDAO.delete(isA(TimesheetEntry.class));
 
 		expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
 
-		expect(timesheetDAO.getTimesheetEntriesInRange(isA(ProjectAssignment.class), isA(DateRange.class))).andReturn(existingEntries);
+		expect(timesheetDAO.getTimesheetEntriesInRange(assignment, dateRange)).andReturn(existingEntries);
 
 		expect(statusService.getAssignmentStatus(assignment)).andReturn(new ProjectAssignmentStatus()).times(2);
 
 		replay(statusService);
 		replay(timesheetDAO);
 
-		persister.validateAndPersist(assignment, newEntries, new DateRange());
+		persister.validateAndPersist(assignment, newEntries, dateRange);
 
 		verify(timesheetDAO);
 		verify(statusService);
@@ -291,7 +290,7 @@ public class TimesheetPersisterImplTest
 	{
 		timesheetDAO.delete(isA(TimesheetEntry.class));
 
-		expect(timesheetDAO.getLatestTimesheetEntryForAssignment(1)).andReturn(newEntries.get(0));
+		expect(timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId())).andReturn(newEntries.get(0));
 
 		expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
 

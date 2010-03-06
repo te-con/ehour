@@ -19,6 +19,7 @@ package net.rrm.ehour.domain;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -26,10 +27,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntry>
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3258176976827482751L;
 
 	/** identifier field */
@@ -60,6 +57,12 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 		this.entryId = entryId;
 	}
 
+	public boolean isEmptyEntry()
+	{
+		return StringUtils.isBlank(getComment())
+				&& (getHours() == null || getHours().equals(0f));
+	}
+	
 	public TimesheetEntryId getEntryId()
 	{
 		return this.entryId;
@@ -141,12 +144,12 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 		if (!(other instanceof TimesheetEntry))
 			return false;
 		TimesheetEntry castOther = (TimesheetEntry) other;
-		return new EqualsBuilder().append(entryId, castOther.entryId).append(hours, castOther.hours).append(updateDate, castOther.updateDate).isEquals();
+		return new EqualsBuilder().append(getEntryId(), castOther.getEntryId()).isEquals();
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(entryId).append(hours).append(updateDate).toHashCode();
+		return new HashCodeBuilder().append(entryId).toHashCode();
 	}
 }

@@ -30,7 +30,6 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.util.EhourConstants;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,7 +100,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	 */
 	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException
 	{
-		List<TimesheetEntry> dbEntries = timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange);
+		List<TimesheetEntry> previousEntries = timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange);
 		
 		for (TimesheetEntry entry : entries)
 		{
@@ -111,21 +110,24 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 				continue;
 			}
 			
-			if (StringUtils.isBlank(entry.getComment())
-					&& (entry.getHours() == null || entry.getHours().equals(0f)))
+			if (entry.isEmptyEntry())
 			{
-				deleteEntry(getEntry(dbEntries, entry));
+				deleteEntry(getEntry(previousEntries, entry));
 			}
 			else
 			{
-				persistEntry(onlyLessThanExisting, entry, getEntry(dbEntries, entry));
+				persistEntry(onlyLessThanExisting, entry, getEntry(previousEntries, entry));
 			}
 			
-			dbEntries.remove(entry);
+			previousEntries.remove(entry);
 		}
 		
-		
-		for (TimesheetEntry entry : dbEntries)
+		removeOldEntries(previousEntries);
+	}
+
+	private void removeOldEntries(List<TimesheetEntry> previousEntries)
+	{
+		for (TimesheetEntry entry : previousEntries)
 		{
 			if (LOGGER.isDebugEnabled())
 			{
