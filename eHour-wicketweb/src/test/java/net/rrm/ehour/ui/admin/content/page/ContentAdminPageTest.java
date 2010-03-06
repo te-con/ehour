@@ -13,8 +13,10 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.DomainMother;
 import net.rrm.ehour.domain.MotherUtil;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
@@ -91,7 +93,7 @@ public class ContentAdminPageTest extends AbstractSpringWebAppTester
 	}
 	
 	@SuppressWarnings("unchecked")
-//	@Test
+	@Test
 	public void selectProjectLink() throws ObjectNotFoundException
 	{
 		Project project = customers.get(0).getProjects().iterator().next();
@@ -101,8 +103,13 @@ public class ContentAdminPageTest extends AbstractSpringWebAppTester
 			.anyTimes()
 			;
 		
+		ProjectAssignmentCollection assignmentCollection = new ProjectAssignmentCollection();
+		assignmentCollection.addProjectAssignment(ProjectAssignmentMother.createProjectAssignment(1));
 		
-		replay(userService, customerService, projectService);
+		expect(managementService.getCombinedProjectAssignments(project.getPK()))
+			.andReturn(assignmentCollection);
+		
+		replay(userService, customerService, projectService, managementService);
 		
 		tester.startPage(ContentAdminPage.class);
 		
@@ -111,7 +118,7 @@ public class ContentAdminPageTest extends AbstractSpringWebAppTester
 		
 		tester.assertNoErrorMessage();
 		
-		verify(userService, customerService, projectService);
+		verify(userService, customerService, projectService, managementService);
 		
 		assertEquals(1, hook.events.size());
 		assertEquals(TreeNodeEventType.NODE_SELECTED, hook.events.get(0).getEventType());

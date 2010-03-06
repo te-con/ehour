@@ -8,6 +8,9 @@ import java.util.Set;
 import net.rrm.ehour.domain.ProjectAssignment;
 
 /**
+ * A ProjectAssignment collection is a set of unique assignments with multiple views.
+ * You can either get the assignments or get a set of user id's involved in the assignments
+ * 
  * Created on Feb 12, 2010 2:39:38 PM
  *
  * @author thies (www.te-con.nl)
@@ -16,6 +19,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 public class ProjectAssignmentCollection
 {
 	private final List<List<ProjectAssignment>> assignments;
+	
 	public ProjectAssignmentCollection()
 	{
 		assignments = new ArrayList<List<ProjectAssignment>>();
