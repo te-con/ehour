@@ -10,6 +10,7 @@
 	<artifactId>eHour-standalone</artifactId>
 	<name>eHour standalone</name>
 	<packaging>jar</packaging>
+	<version>${applicationVersion}</version>
 
 	<build>
 		<resources>
@@ -130,12 +131,12 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-wicketweb</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-audit</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>		
 	</dependencies>
 </project>

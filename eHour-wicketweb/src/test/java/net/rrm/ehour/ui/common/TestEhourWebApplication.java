@@ -44,19 +44,11 @@ import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.session.ISessionStore;
-import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.spring.test.ApplicationContextMock;
 
 public class TestEhourWebApplication extends EhourWebApplication implements Serializable 
 {
 	private static final long serialVersionUID = -7336200909844170964L;
-	private transient ApplicationContextMock mockContext;
 	private EhourWebSession	session;
-
-	public TestEhourWebApplication(ApplicationContextMock context)
-	{
-		this.mockContext = context;
-	}
 	
 	/**
 	 * When not authorized, just let it pass
@@ -75,25 +67,6 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
             }
         });		
 	}
-
-	/**
-	 * Override to provide our mock injector
-	 */
-	@Override
-	protected void springInjection()
-	{
-		addComponentInstantiationListener(new SpringComponentInjector(this, getMockContext()));
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public ApplicationContextMock getMockContext()
-	{
-		return mockContext;
-	}
-
 	
 	/*
 	 * (non-Javadoc)

@@ -10,7 +10,7 @@
 	<artifactId>eHour-service</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour service layer</name>
-	<version>${parent.version}</version>
+	<version>${applicationVersion}</version>
 	<build>
 		<resources>
 			<resource>
@@ -159,13 +159,13 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>

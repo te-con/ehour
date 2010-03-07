@@ -51,7 +51,7 @@ public class AuditReportPage extends AbstractAdminPage<String>
 		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(AuditConstants.PATH_CRITERIA, criteriaModel);
 		greyBorder.add(criteriaPanel);
 		
-		AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, getDefaultModel());
+		AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, criteriaModel);
 		greyBorder.add(dataPanel);
 	}
 	

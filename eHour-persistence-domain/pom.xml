@@ -10,7 +10,7 @@
 	<artifactId>eHour-persistence-domain</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour persistence domain objects</name>
-	<version>${parent.version}</version>
+	<version>${applicationVersion}</version>
 	<build>
 		<resources>
 			<resource>

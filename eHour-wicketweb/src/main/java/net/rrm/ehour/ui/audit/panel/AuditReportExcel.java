@@ -47,14 +47,14 @@ public class AuditReportExcel extends AbstractExcelReport
 
 
 	@Override
-	protected IModel getExcelReportName()
+	protected IModel<String> getExcelReportName()
 	{
 		return new ResourceModel("audit.report.title");
 	}
 
 
 	@Override
-	protected IModel getHeaderReportName()
+	protected IModel<String> getHeaderReportName()
 	{
 		return new ResourceModel("audit.report.title");
 	}

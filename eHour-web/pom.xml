@@ -97,17 +97,17 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-wicketweb</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-audit</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -32,8 +32,6 @@ public abstract class AbstractSpringInjectorTester extends AbstractSpringTester
 	@Before
 	public void springLocatorSetup() throws Exception
 	{
-		super.springContextSetup();
-		
 		ISpringContextLocator springContextLocator = new ISpringContextLocator()
 		{
 			private static final long serialVersionUID = 4009835114662176903L;

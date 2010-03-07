@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.test.StrictWicketTester;
 import org.apache.wicket.Component;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.settings.Settings;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.junit.Before;
 
 /**
@@ -34,11 +35,19 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 	protected StrictWicketTester tester;
 	protected TestEhourWebApplication webApp;
 	
+	@SuppressWarnings("serial")
 	@Before
 	public final void setUp() throws Exception
 	{
-		super.springContextSetup();
-		webApp =  new TestEhourWebApplication(getMockContext());
+		webApp =  new TestEhourWebApplication()
+		{
+			@Override
+			protected void springInjection()
+			{
+				addComponentInstantiationListener(new SpringComponentInjector(this, getMockContext(), true));
+			}
+		};
+		
 		tester = new StrictWicketTester(webApp);
 		
 		bypassStringResourceLoading();

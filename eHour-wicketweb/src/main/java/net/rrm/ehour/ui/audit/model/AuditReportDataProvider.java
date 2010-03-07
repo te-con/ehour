@@ -29,12 +29,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-/**
- * 
- * @author thies
- *
- */
-public class AuditReportDataProvider extends SortableDataProvider
+public class AuditReportDataProvider extends SortableDataProvider<Audit>
 {
 	private static final long serialVersionUID = 8795552030531153903L;
 
@@ -94,9 +89,9 @@ public class AuditReportDataProvider extends SortableDataProvider
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
 	 */
-	public IModel model(Object object)
+	public IModel<Audit> model(Audit audit)
 	{
-		return new CompoundPropertyModel(object);
+		return new CompoundPropertyModel<Audit>(audit);
 	}
 
 	/*

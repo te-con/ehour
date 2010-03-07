@@ -11,7 +11,7 @@
 	<artifactId>eHour-wicketweb</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour web layer (wicket)</name>
-	<version>${parent.version}</version>
+	<version>${applicationVersion}</version>
 
 	<build>
 		<finalName>eHour-wicketweb</finalName>
@@ -30,8 +30,6 @@
 						</buildcommand>
 					</additionalBuildcommands>
 				</configuration>
-				<version>2.7</version>
-
 			</plugin>
 		</plugins>
 
@@ -73,13 +71,13 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>
@@ -94,13 +92,13 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
-			<version>${parent.version}</version>
+			<version>${applicationVersion}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
-			<version>${pom.version}</version>
+			<version>${applicationVersion}</version>
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>

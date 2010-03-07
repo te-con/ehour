@@ -24,7 +24,6 @@ import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
 
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
-import org.junit.Before;
 
 /**
  * Created on Mar 17, 2009, 5:31:37 AM
@@ -33,12 +32,11 @@ import org.junit.Before;
  */
 public abstract class AbstractSpringTester
 {
-	protected AnnotApplicationContextMock	mockContext;
+	protected AnnotApplicationContextMock mockContext;
 	private EhourConfigStub config;
 	private AuditService auditService;
 
-	@Before
-	public final void springContextSetup() throws Exception
+	private void createContextSetup() 
 	{
 		mockContext = new AnnotApplicationContextMock();
 		config = new EhourConfigStub();
@@ -52,6 +50,11 @@ public abstract class AbstractSpringTester
 	
 	public final AnnotApplicationContextMock getMockContext()
 	{
+		if (mockContext == null)
+		{
+			createContextSetup();
+		}
+		
 		return mockContext;
 	}
 	
