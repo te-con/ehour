@@ -75,7 +75,7 @@ public class CommonWebUtil
 	{
 		final List<CO> components = new ArrayList<CO>();
 		
-		parent.visitChildren(new Component.IVisitor()
+		parent.visitChildren(new Component.IVisitor<Component>()
 		{
 
 			@SuppressWarnings("unchecked")
@@ -99,9 +99,9 @@ public class CommonWebUtil
 	 * @param model
 	 * @return
 	 */
-	public static String getResourceModelString(IModel model)
+	public static String getResourceModelString(IModel<String> model)
 	{
-		return (String)model.getObject();
+		return model.getObject();
 	}
 	
 	/**

@@ -41,12 +41,14 @@ public class AuditReportPage extends AbstractAdminPage<String>
 	public AuditReportPage()
 	{
 		super(new ResourceModel("audit.report.title"), new Model<String>(), "audit.help.header", "audit.help.body");
-		setDefaultModel(getReportCriteriaModel());
+		
+		IModel<ReportCriteria> criteriaModel = getReportCriteriaModel();
+		setDefaultModel(criteriaModel);
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder(AuditConstants.PATH_FRAME, new ResourceModel("audit.report.title"));
 		add(greyBorder);
 		
-		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(AuditConstants.PATH_CRITERIA, getDefaultModel());
+		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(AuditConstants.PATH_CRITERIA, criteriaModel);
 		greyBorder.add(criteriaPanel);
 		
 		AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, getDefaultModel());

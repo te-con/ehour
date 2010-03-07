@@ -126,6 +126,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unused")
 	private void writeByteData(byte[] excelData) throws FileNotFoundException, IOException
 	{
 		File outfile = new File("d:\\test.xls");

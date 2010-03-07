@@ -48,7 +48,7 @@ public class CellFactory
 		return createCell(row, column, "", workbook, cellStyles);
 	}
 	
-	public static HSSFCell createCell(HSSFRow row, int column, IModel valueModel, HSSFWorkbook workbook, CellStyle... cellStyles)
+	public static HSSFCell createCell(HSSFRow row, int column, IModel<String> valueModel, HSSFWorkbook workbook, CellStyle... cellStyles)
 	{
 		return createCell(row, column, CommonWebUtil.getResourceModelString(valueModel), workbook, cellStyles);
 	}
