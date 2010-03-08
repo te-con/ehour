@@ -341,7 +341,7 @@
 						<version>${clover.version}</version>
 
 						<configuration>
-							<outputDirectory>/tmp/cloverReport/${pom.artifactId}</outputDirectory>
+<!--							<outputDirectory>/tmp/cloverReport/${pom.artifactId}</outputDirectory>-->
 							<license><![CDATA[QnqONtanreIGMsCbqgOIemeErpmBPRBhIEOHsXpBhlWWuHM
 							mj2Km8foj4CJWVTM02SgcIpX2L04iXacI9g6cw9XRNGPhJ6
 							MrRouWPNooNOPmRpPoRStQPmMOOqMQoMQqUxvvsUuutmQMn
