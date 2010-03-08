@@ -42,6 +42,7 @@ import org.junit.Test;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
+@SuppressWarnings("serial")
 public class UserReportPanelTest extends BaseTestReport
 {
 	@Test
@@ -53,7 +54,6 @@ public class UserReportPanelTest extends BaseTestReport
 		assertNotNull(img);
 	}
 	
-	@SuppressWarnings("serial")
 	private Panel start()
 	{
 		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdateType.UPDATE_ALL)))

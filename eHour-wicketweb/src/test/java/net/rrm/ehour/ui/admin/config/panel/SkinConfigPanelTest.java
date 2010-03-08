@@ -34,6 +34,7 @@ import org.junit.Test;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
+@SuppressWarnings("serial")
 public class SkinConfigPanelTest extends AbstractMainConfigTest
 {
 	@Test
@@ -63,6 +64,7 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 		
 		getTester().clickLink("configTabs:tabs-container:tabs:3:link", true);
 		
+		@SuppressWarnings("unused")
 		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
 		
 //		getTester().executeAjaxEvent("configTabs:panel:border:form:excelPreview", "onclick");

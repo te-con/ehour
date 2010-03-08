@@ -49,6 +49,7 @@ import org.apache.wicket.util.tester.ITestPageSource;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("serial")
 public class GlobalReportPageTest extends BaseTestReport
 {
 	private AggregateCommand aggregateCommand;
@@ -124,7 +125,6 @@ public class GlobalReportPageTest extends BaseTestReport
 		verify(reportCriteriaService);
 	}	
 	
-	@SuppressWarnings("serial")
 	private List<ITab> createTabs(int amount)
 	{
 		List<ITab> tabs = new ArrayList<ITab>();
@@ -148,7 +148,6 @@ public class GlobalReportPageTest extends BaseTestReport
 		
 	}
 	
-	@SuppressWarnings("serial")
 	private void startPage()
 	{
 		getTester().startPage(new ITestPageSource()
@@ -164,7 +163,6 @@ public class GlobalReportPageTest extends BaseTestReport
 		getTester().assertNoErrorMessage();
 	}
 	
-	@SuppressWarnings({ "serial" })
 	private class AggregateCommand implements GlobalReportPageAggregateCommand
 	{
 		ReportCriteriaBackingBean argBean;
@@ -178,7 +176,6 @@ public class GlobalReportPageTest extends BaseTestReport
 		
 	}
 	
-	@SuppressWarnings("serial")
 	private class DetailedCommand implements GlobalReportPageDetailedCommand
 	{
 		ReportCriteriaBackingBean argBean;

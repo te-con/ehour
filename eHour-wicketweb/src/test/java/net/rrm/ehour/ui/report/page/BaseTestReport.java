@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.report.page;
 
 import static org.easymock.EasyMock.createMock;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,8 @@ import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Before;
 
-public abstract class BaseTestReport extends AbstractSpringWebAppTester
+@SuppressWarnings("serial")
+public abstract class BaseTestReport extends AbstractSpringWebAppTester implements Serializable
 {
 	protected ReportCriteriaService reportCriteriaService;
 	protected AggregateReportService aggregateReportService;

@@ -63,6 +63,7 @@
 		<aspectj.version>1.6.6</aspectj.version>
 		<hibernate.version>3.3.2.GA</hibernate.version>
 		<scala.version>2.8.0.Beta1</scala.version>
+		<clover.version>2.6.3</clover.version>
 	</properties>
 
 	<dependencies>
@@ -329,7 +330,31 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<profile>
+			<id>clover</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.atlassian.maven.plugins</groupId>
+						<artifactId>maven-clover2-plugin</artifactId>
+						<version>${clover.version}</version>
+
+						<configuration>
+							<outputDirectory>/tmp/cloverReport/${pom.artifactId}</outputDirectory>
+							<license><![CDATA[QnqONtanreIGMsCbqgOIemeErpmBPRBhIEOHsXpBhlWWuHM
+							mj2Km8foj4CJWVTM02SgcIpX2L04iXacI9g6cw9XRNGPhJ6
+							MrRouWPNooNOPmRpPoRStQPmMOOqMQoMQqUxvvsUuutmQMn
+							mqmUUnoqurpmqmmmmmUUnoqurpmqmmmmmUUb8lroUUnmm]]></license>
+							<generateXml>true</generateXml>
+							<generateHtml>true</generateHtml>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
+
 	<reporting>
 		<plugins>
 			<plugin>

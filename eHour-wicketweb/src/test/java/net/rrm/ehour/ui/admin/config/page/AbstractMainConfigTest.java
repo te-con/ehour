@@ -19,6 +19,9 @@ package net.rrm.ehour.ui.admin.config.page;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.verify;
+
+import java.io.Serializable;
+
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
@@ -28,7 +31,8 @@ import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import org.junit.After;
 import org.junit.Before;
 
-public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester
+@SuppressWarnings("serial")
+public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester implements Serializable
 {
 	protected ConfigurationServiceImpl configService;
 	private MailService mailService;
