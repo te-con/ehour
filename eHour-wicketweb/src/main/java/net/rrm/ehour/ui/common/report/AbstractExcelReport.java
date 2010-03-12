@@ -169,24 +169,31 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 		// add cells for a row
 		for (Serializable cellValue : element.getRow())
 		{
-			if (columnHeaders[i].isVisible() && cellValue != null)
+			if (columnHeaders[i].isVisible())
 			{
-				if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.HOUR)
+				if (cellValue != null)
 				{
-					CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DIGIT);
-				}
-				else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.TURNOVER
-						 || columnHeaders[i].getColumnType() == ReportColumn.ColumnType.RATE)
-				{
-					CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.CURRENCY);
-				}
-				else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.DATE)
-				{
-					CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DATE);
+					if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.HOUR)
+					{
+						CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DIGIT);
+					}
+					else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.TURNOVER
+							 || columnHeaders[i].getColumnType() == ReportColumn.ColumnType.RATE)
+					{
+						CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.CURRENCY);
+					}
+					else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.DATE)
+					{
+						CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DATE);
+					}
+					else
+					{
+						CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.NORMAL);
+					}
 				}
 				else
 				{
-					CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.NORMAL);
+					cellNumber++;
 				}
 			}
 			

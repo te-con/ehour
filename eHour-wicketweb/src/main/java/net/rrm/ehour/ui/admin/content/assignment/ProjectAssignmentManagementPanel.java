@@ -1,5 +1,8 @@
 package net.rrm.ehour.ui.admin.content.assignment;
 
+import java.util.List;
+
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 
@@ -17,6 +20,12 @@ public class ProjectAssignmentManagementPanel extends AbstractAjaxPanel<Void>
 	public ProjectAssignmentManagementPanel(String id, ProjectAssignmentCollection paCollection)
 	{
 		super(id);
+		
+		for (List<ProjectAssignment> assignment : paCollection.getAssignments())
+		{
+			
+		}
+		
 	}
 	
 //	private List<ProjectAs>

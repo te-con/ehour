@@ -27,7 +27,7 @@ public class DefaultGlobalReportPageDetailedCommand implements GlobalReportPageD
 	{
 		final ReportCriteria criteria = backingBean.getReportCriteria();
 		
-		ITab	detailedTab = new AbstractTab(new KeyResourceModel("report.title.detailed"))
+		ITab detailedTab = new AbstractTab(new KeyResourceModel("report.title.detailed"))
 		{
 			private static final long serialVersionUID = 1L;
 
