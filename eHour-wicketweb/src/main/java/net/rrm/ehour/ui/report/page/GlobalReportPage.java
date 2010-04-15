@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.component.SWFObject;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.report.page.command.DefaultGlobalReportPageAggregateCommand;
@@ -36,10 +35,7 @@ import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -49,10 +45,9 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @AuthorizeInstantiation("ROLE_REPORT")
-public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean> implements IHeaderContributor
+public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean>
 {
 	private static final long serialVersionUID = 6614404841734599622L;
-	private static final CompressedResourceReference SWFOBJECT_JS = new CompressedResourceReference(SWFObject.class, "js/swfobject.js");
 	
 	private ReportTabbedPanel tabPanel;
 	private GlobalReportPageAggregateCommand aggregateCommand;
@@ -164,13 +159,5 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 		addTabs(tabs);
 		
 		tabPanel.setSelectedTab(1);	
-	}
-
-	/* (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		response.renderJavascriptReference(SWFOBJECT_JS);
 	}
 }
