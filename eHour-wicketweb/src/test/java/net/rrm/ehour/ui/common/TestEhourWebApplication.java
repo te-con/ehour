@@ -153,4 +153,9 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	{
 		return new WebResponse(servletResponse);
 	}
+	
+	@Override
+	protected void outputDevelopmentModeWarning()
+	{
+	}
 }
