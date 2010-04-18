@@ -162,9 +162,11 @@
 			<groupId>org.apache.sanselan</groupId>
 			<artifactId>sanselan</artifactId>
 		</dependency>
+<!--
 		<dependency>
 		        <groupId>org.odlabs.wiquery</groupId>
 		        <artifactId>wiquery</artifactId>
 		</dependency>		
+-->
 	</dependencies>
 </project>
