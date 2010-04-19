@@ -18,14 +18,14 @@ package net.rrm.ehour.ui.common.authorization;
 
 import net.rrm.ehour.domain.User;
 
-import org.acegisecurity.GrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 
 
 /**
  * Acegi wrapper around User
  */
 
-public class AuthUser extends org.acegisecurity.userdetails.User
+public class AuthUser extends org.springframework.security.core.userdetails.User
 {
 	private	User		user;
 	/**

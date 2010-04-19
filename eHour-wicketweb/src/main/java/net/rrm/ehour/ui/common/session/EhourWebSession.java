@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.common.session;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -32,20 +33,20 @@ import net.rrm.ehour.ui.common.cache.ObjectCache;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.util.DateUtil;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.AuthenticationManager;
-import org.acegisecurity.AuthenticationServiceException;
-import org.acegisecurity.BadCredentialsException;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * Ehour Web session
@@ -235,17 +236,14 @@ public class EhourWebSession extends AuthenticatedWebSession
 			// one with user roles.
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 			
 			if (auth != null)
 			{
-				
-				GrantedAuthority[] authorities = auth.getAuthorities();
-				
-				for (int i = 0; i < authorities.length; i++)
+				Collection<GrantedAuthority> authorities = auth.getAuthorities();
+
+				for (GrantedAuthority grantedAuthority : authorities)
 				{
-					GrantedAuthority authority = authorities[i];
-					roles.add(authority.getAuthority());
+					roles.add(grantedAuthority.getAuthority());
 				}
 				
 				if (roles.size() == 0)

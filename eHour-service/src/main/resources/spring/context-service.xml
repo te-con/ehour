@@ -34,7 +34,7 @@
 		<property name="queueCapacity" value="25" />
 	</bean>
 
-	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder">
+	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
 		<constructor-arg value="1" />
 	</bean>
 </beans>

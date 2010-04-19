@@ -50,7 +50,6 @@ import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
-import org.acegisecurity.AuthenticationManager;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
@@ -71,6 +70,7 @@ import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.ConverterLocator;
 import org.apache.wicket.util.lang.PackageName;
+import org.springframework.security.authentication.AuthenticationManager;
 
 /**
  * Base config for wicket eHour webapp

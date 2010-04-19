@@ -81,8 +81,8 @@
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -93,7 +93,7 @@
 			<artifactId>eHour-service</artifactId>
 			<version>${applicationVersion}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
@@ -101,7 +101,7 @@
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
@@ -121,6 +121,10 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -162,11 +166,25 @@
 			<groupId>org.apache.sanselan</groupId>
 			<artifactId>sanselan</artifactId>
 		</dependency>
-<!--
 		<dependency>
-		        <groupId>org.odlabs.wiquery</groupId>
-		        <artifactId>wiquery</artifactId>
-		</dependency>		
--->
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+		<!--
+			<dependency> <groupId>org.odlabs.wiquery</groupId>
+			<artifactId>wiquery</artifactId> </dependency>
+		-->
 	</dependencies>
 </project>

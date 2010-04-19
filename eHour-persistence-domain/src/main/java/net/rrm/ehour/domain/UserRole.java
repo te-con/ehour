@@ -16,9 +16,10 @@
 
 package net.rrm.ehour.domain;
 
-import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import org.springframework.security.core.GrantedAuthority;
 
 public class UserRole extends DomainObject<String, UserRole> implements GrantedAuthority
 {

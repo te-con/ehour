@@ -41,7 +41,7 @@ import net.rrm.ehour.user.dao.UserDAO;
 import net.rrm.ehour.user.dao.UserDepartmentDAO;
 import net.rrm.ehour.user.dao.UserRoleDAO;
 
-import org.acegisecurity.providers.encoding.ShaPasswordEncoder;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 
 /**
