@@ -57,7 +57,7 @@
 	<properties>
 		<applicationVersion>0.9.0-SNAPSHOT</applicationVersion>
 		<spring.version>3.0.2.RELEASE</spring.version>
-		<wicket.version>1.4.7</wicket.version>
+		<wicket.version>1.4.8</wicket.version>
 		<jetty.version>6.1.11</jetty.version>
 		<derbydb.version>10.4.2.0</derbydb.version>
 		<aspectj.version>1.6.6</aspectj.version>
