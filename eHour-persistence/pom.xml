@@ -7,9 +7,9 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
-	<artifactId>eHour-persistence-domain</artifactId>
+	<artifactId>eHour-persistence</artifactId>
 	<packaging>jar</packaging>
-	<name>eHour persistence domain objects</name>
+	<name>eHour persistence</name>
 	<version>${applicationVersion}</version>
 	<build>
 		<resources>
@@ -69,5 +69,30 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-common</artifactId>
+		</dependency>				
 	</dependencies>
 </project>

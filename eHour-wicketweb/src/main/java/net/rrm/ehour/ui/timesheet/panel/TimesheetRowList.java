@@ -24,7 +24,6 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.component.CommonJavascript;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
-import net.rrm.ehour.ui.common.component.ModalWindowFix;
 import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -273,7 +272,7 @@ public class TimesheetRowList extends ListView
 		final AjaxLink<Void> commentLink;
 		final PropertyModel<String> commentModel = new PropertyModel<String>(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 		
-		modalWindow = new ModalWindowFix("dayWin");
+		modalWindow = new ModalWindow("dayWin");
 		modalWindow.setResizable(false);
 		modalWindow.setInitialWidth(400);
 		modalWindow.setInitialHeight(225);

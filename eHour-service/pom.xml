@@ -51,96 +51,15 @@
 			</plugin>
 		</plugins>		
 	</build>
-	<profiles>
-		<profile>
-			<id>derby</id>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/datasource/derby</directory>
-					</resource>
-					<resource>
-						<directory>src/main/profiles/hibernate/derby</directory>
-					</resource>
-				</resources>
-			</build>
-			<dependencies>
-				<dependency>
-					<groupId>org.apache.derby</groupId>
-					<artifactId>derby</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.ddlutils</groupId>
-					<artifactId>ddlutils</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>mysql</id>
-			<dependencies>
-				<dependency>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.derby</groupId>
-					<artifactId>derby</artifactId>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.ddlutils</groupId>
-					<artifactId>ddlutils</artifactId>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/datasource/generic</directory>
-					</resource>
-					<resource>
-						<directory>src/main/profiles/hibernate/mysql</directory>
-					</resource>
-				</resources>
-			</build>
-		</profile>
-		<profile>
-			<id>postgresql</id>
-			<dependencies>
-				<dependency>
-					<groupId>postgresql</groupId>
-					<artifactId>postgresql</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.derby</groupId>
-					<artifactId>derby</artifactId>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.apache.ddlutils</groupId>
-					<artifactId>ddlutils</artifactId>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/datasource/generic
-						</directory>
-					</resource>
-					<resource>
-						<directory>src/main/profiles/hibernate/postgresql</directory>
-					</resource>
-				</resources>
-			</build>
-		</profile>		
-	</profiles>
 	<dependencies>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${applicationVersion}</version>
+			<artifactId>eHour-persistence</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-common</artifactId>
 		</dependency>
 
 		<dependency>
@@ -149,15 +68,6 @@
 			<version>${applicationVersion}</version>
 			<scope>test</scope>
 			<classifier>tests</classifier>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.dbunit</groupId>
-			<artifactId>dbunit</artifactId>
 		</dependency>
 
 		<dependency>

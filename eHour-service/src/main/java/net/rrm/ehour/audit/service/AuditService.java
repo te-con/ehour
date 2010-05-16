@@ -18,7 +18,7 @@ package net.rrm.ehour.audit.service;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.service.dto.AuditReportRequest;
+import net.rrm.ehour.audit.domain.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 
 /**

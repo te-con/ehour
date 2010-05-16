@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.audit.service.dto.AuditReportRequest;
+import net.rrm.ehour.audit.domain.AuditReportRequest;
 import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Audit;

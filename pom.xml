@@ -9,7 +9,11 @@
 	<name>eHour</name>
 	<url>http://www.ehour.nl/</url>
 	<modules>
-		<module>eHour-persistence-domain</module>
+		<module>eHour-common</module>
+		<module>eHour-persistence</module>
+		<module>eHour-persistence-derby</module>
+		<module>eHour-persistence-mysql</module>
+		<module>eHour-persistence-postgresql</module>
 		<module>eHour-service</module>
 		<module>eHour-wicketweb</module>
 		<module>eHour-web</module>
@@ -487,6 +491,19 @@
 				<artifactId>spring-security-config</artifactId>
 				<version>3.0.2.RELEASE</version>
 			</dependency>
+
+			<dependency>
+				<groupId>net.rrm.ehour</groupId>
+				<artifactId>eHour-persistence</artifactId>
+				<version>${applicationVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.rrm.ehour</groupId>
+				<artifactId>eHour-common</artifactId>
+				<version>${applicationVersion}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

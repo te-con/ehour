@@ -17,6 +17,12 @@
 		</param-value>
 	</context-param>
 
+<!-- 	
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>net.rrm.ehour.ui.boot.ConditionalXmlWebApplicationContext</param-value>
+	</context-param>
+ -->
 	<filter>
 		<filter-name>hibernateFilter</filter-name>
 		<filter-class>
