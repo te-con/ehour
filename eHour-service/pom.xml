@@ -64,7 +64,7 @@
 
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-persistence-domain</artifactId>
+			<artifactId>eHour-common</artifactId>
 			<version>${applicationVersion}</version>
 			<scope>test</scope>
 			<classifier>tests</classifier>
