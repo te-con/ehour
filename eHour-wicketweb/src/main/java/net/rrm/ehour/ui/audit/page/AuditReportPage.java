@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.audit.page;
 
-import net.rrm.ehour.audit.domain.AuditReportRequest;
+import net.rrm.ehour.audit.dao.AuditReportRequest;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.audit.AuditConstants;

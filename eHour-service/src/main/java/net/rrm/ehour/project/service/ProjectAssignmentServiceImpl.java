@@ -31,7 +31,7 @@ import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.util.EhourUtil;
+import net.rrm.ehour.report.reports.util.ReportUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -130,7 +130,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 		
 		// call to report service needed but due to circular reference go straight to DAO
 		aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids);
-		assignment.setDeletable(EhourUtil.isEmptyAggregateList(aggregates));
+		assignment.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
 		
 		return assignment;
 	}

@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 /**
  * Ehour util 
@@ -47,28 +46,4 @@ public class EhourUtil
 		
 		return pks;
 	}
-	
-	/**
-	 * Check if aggregate list is empty
-	 * @param aggregates
-	 * @return
-	 */
-	public static boolean isEmptyAggregateList(Collection<AssignmentAggregateReportElement> aggregates)
-	{
-		float	hours = 0f;
-		
-		if (aggregates != null)
-		{
-			for (AssignmentAggregateReportElement assignmentAggregateReportElement : aggregates)
-			{
-				if (assignmentAggregateReportElement.getHours() != null)
-				{
-					hours += assignmentAggregateReportElement.getHours().floatValue();
-				}
-			}
-		}
-		
-		return hours == 0f;
-	}	
-
 }

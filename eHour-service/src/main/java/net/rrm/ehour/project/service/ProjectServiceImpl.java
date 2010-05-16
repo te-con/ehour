@@ -31,6 +31,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourUtil;
@@ -146,7 +147,7 @@ public class ProjectServiceImpl implements ProjectService
 			aggregates = aggregateReportService.getHoursPerAssignment(ids);
 		}
 		
-		project.setDeletable(EhourUtil.isEmptyAggregateList(aggregates));
+		project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
 	}
 
 	/*

@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.audit.model;
 import java.util.Iterator;
 import java.util.List;
 
-import net.rrm.ehour.audit.domain.AuditReportRequest;
+import net.rrm.ehour.audit.dao.AuditReportRequest;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;

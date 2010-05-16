@@ -34,6 +34,7 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.user.dao.UserDAO;
@@ -132,7 +133,7 @@ public class UserServiceImpl implements UserService
 			
 			List<AssignmentAggregateReportElement> aggregates =aggregateReportService.getHoursPerAssignment(assignmentIds);
 			
-			user.setDeletable(EhourUtil.isEmptyAggregateList(aggregates));
+			user.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
 		}
 		
 		LOGGER.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());

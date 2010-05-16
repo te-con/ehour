@@ -19,7 +19,7 @@ package net.rrm.ehour.audittest.service;
 import java.util.List;
 
 import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.audit.domain.AuditReportRequest;
+import net.rrm.ehour.audit.dao.AuditReportRequest;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.domain.Audit;
 

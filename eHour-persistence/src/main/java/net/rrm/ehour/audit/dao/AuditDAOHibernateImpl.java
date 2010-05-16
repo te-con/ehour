@@ -18,7 +18,6 @@ package net.rrm.ehour.audit.dao;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.Audit;
 
