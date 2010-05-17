@@ -34,7 +34,7 @@ public abstract class AbstractAnnotationDaoTest
 	
 	@SuppressWarnings("deprecation")
 	@Before
-	public void setUpDatabase() throws Exception
+	public final void setUpDatabase() throws Exception
 	{
 		Connection con = DataSourceUtils.getConnection(eHourDataSource);
 		IDatabaseConnection connection = new DatabaseConnection(con);

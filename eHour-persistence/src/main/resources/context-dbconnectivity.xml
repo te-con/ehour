@@ -13,7 +13,7 @@
 			<list>
 				<value>classpath:mapping/*.hbm.xml</value>
 				<value>classpath:query/common/*.hbm.xml</value>
-				<value>classpath:query/dbspecific/${reportquery.filename}</value>
+				<value>classpath:query/${reportquery.filename}</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

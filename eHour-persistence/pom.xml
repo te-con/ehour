@@ -24,6 +24,12 @@
 				<groupId>org.dbunit</groupId>
 				<artifactId>dbunit</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-persistence-derby</artifactId>
+			<scope>test</scope>
+		</dependency>
 	
 		<dependency>
 			<groupId>org.hibernate</groupId>
