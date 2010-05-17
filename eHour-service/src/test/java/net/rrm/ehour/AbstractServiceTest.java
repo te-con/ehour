@@ -16,8 +16,6 @@
 
 package net.rrm.ehour;
 
-import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
-
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -25,7 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
  **/
 @ContextConfiguration(locations={"classpath:context-service.xml",
 									"classpath:test-context-scanner-service.xml"})
-public abstract class AbstractServiceTest extends AbstractAnnotationDaoTest
+public abstract class AbstractServiceTest /*extends AbstractAnnotationDaoTest*/
 {
 
 }

@@ -9,6 +9,7 @@ import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +20,7 @@ public class ProjectAssignmentManagementServiceImplTest extends AbstractServiceT
 	private	ProjectAssignmentManagementService projectAssignmentManagementService;
 
 	@Test	
+	@Ignore
 	public void testAssignUserToProjectSuccess() throws ProjectAlreadyAssignedException
 	{
 		ProjectAssignment pa = new ProjectAssignment();

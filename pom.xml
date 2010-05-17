@@ -165,13 +165,11 @@
 				<artifactId>sanselan</artifactId>
 				<version>0.97-incubator</version>
 			</dependency>
-<!--
-			<dependency>
-				<groupId>org.odlabs.wiquery</groupId>
-				<artifactId>wiquery</artifactId>
-				<version>1.0</version>
-			</dependency>
--->
+			<!--
+				<dependency> <groupId>org.odlabs.wiquery</groupId>
+				<artifactId>wiquery</artifactId> <version>1.0</version>
+				</dependency>
+			-->
 			<dependency>
 				<groupId>org.apache.derby</groupId>
 				<artifactId>derby</artifactId>
@@ -286,9 +284,9 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-			    <groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>${spring.version}</version>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -495,6 +493,24 @@
 			<dependency>
 				<groupId>net.rrm.ehour</groupId>
 				<artifactId>eHour-persistence</artifactId>
+				<version>${applicationVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.rrm.ehour</groupId>
+				<artifactId>eHour-persistence-derby</artifactId>
+				<version>${applicationVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.rrm.ehour</groupId>
+				<artifactId>eHour-persistence-mysql</artifactId>
+				<version>${applicationVersion}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.rrm.ehour</groupId>
+				<artifactId>eHour-persistence-postgresql</artifactId>
 				<version>${applicationVersion}</version>
 			</dependency>
 
