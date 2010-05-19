@@ -19,6 +19,9 @@
 			<resource>
 				<directory>src/main/resources/hibernate</directory>
 			</resource>
+			<resource>
+				<directory>src/main/resources/ddl</directory>
+			</resource>
 		</resources>
 	</build>
 
