@@ -71,7 +71,6 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 						AuditConstants.ID_FORM;
 		
 		Component componentFromLastRenderedPage = tester.getComponentFromLastRenderedPage("frame:reportCriteria:border:criteriaForm:submitButton");
-		System.out.println(componentFromLastRenderedPage);
 		
 		getTester().executeAjaxEvent(formPath + ":" +  
 								AuditConstants.PATH_FORM_SUBMIT,

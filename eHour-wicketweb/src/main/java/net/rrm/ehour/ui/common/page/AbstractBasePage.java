@@ -68,7 +68,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
 		
 		if (type.equalsIgnoreCase(Application.DEVELOPMENT))
 		{
-			return  new DebugBar(id);
+			return new DebugBar(id);
 		}
 		else
 		{

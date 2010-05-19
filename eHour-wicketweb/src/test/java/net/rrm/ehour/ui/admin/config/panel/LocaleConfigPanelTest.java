@@ -17,7 +17,6 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
-
 import static org.easymock.classextension.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;

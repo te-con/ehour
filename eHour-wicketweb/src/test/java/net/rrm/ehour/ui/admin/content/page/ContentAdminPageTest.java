@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.rrm.ehour.customer.service.CustomerService;
@@ -36,8 +37,9 @@ import org.junit.Test;
  * @author thies (www.te-con.nl)
  *
  */
-public class ContentAdminPageTest extends AbstractSpringWebAppTester
+public class ContentAdminPageTest extends AbstractSpringWebAppTester implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private UserService userService;
 	private CustomerService customerService;
 	private ProjectService projectService;

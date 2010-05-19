@@ -19,6 +19,7 @@ package net.rrm.ehour.config.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Configuration service
  **/
 @Service("configurationService")
-public class ConfigurationServiceImpl implements ConfigurationService
+public class ConfigurationServiceImpl implements ConfigurationService, Serializable
 {
 	@Autowired
 	private ConfigurationDAO	configDAO;
