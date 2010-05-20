@@ -11,13 +11,6 @@
 	<packaging>jar</packaging>
 	<name>eHour persistence</name>
 	<version>${applicationVersion}</version>
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources/</directory>
-			</resource>
-		</resources>
-	</build>
 
 	<dependencies>
 		<dependency>
