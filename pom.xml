@@ -608,12 +608,6 @@
 			<testResource>
 				<filtering>false</filtering>
 				<directory>src/test/resources</directory>
-				<includes>
-					<include>**</include>
-				</includes>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
 			</testResource>
 		</testResources>
 
