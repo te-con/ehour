@@ -34,11 +34,11 @@
 	</scm>
 	<issueManagement>
 		<system>eHour bugtracker</system>
-		<url>http://www.ehour.nl/jira/</url>
+		<url>http://dev.ehour.nl/jira/</url>
 	</issueManagement>
 	<ciManagement>
 		<system>hudson</system>
-		<url>http://dev.ehour.nl/hudson/</url>
+		<url>http://dev.ehour.nl/bamboo/</url>
 		<notifiers>
 			<notifier>
 				<configuration>
@@ -388,22 +388,6 @@
 					<exclusion>
 						<artifactId>commons-collections</artifactId>
 						<groupId>commons-collections</groupId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>3.4.0.GA</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>commons-collections</artifactId>
-						<groupId>commons-collections</groupId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>

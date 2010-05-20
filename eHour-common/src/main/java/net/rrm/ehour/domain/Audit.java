@@ -18,49 +18,23 @@ package net.rrm.ehour.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-@Entity
-@Table(name="AUDIT")
+
 public class Audit extends DomainObject<Number, Audit>
 {
 	private static final long serialVersionUID = -5025801585806813596L;
 	
-	@Id @GeneratedValue
-	@Column (name = "AUDIT_ID")
 	private Number	auditId;
-	
-	@ManyToOne
-	@JoinColumn(name="USER_ID")
 	private User 	user;
-	
-	@Column(name = "AUDIT_DATE")
 	private Date 	date;
-	
-	@Column(name = "ACTION")
 	private String 	action;
-	
-	@Column(name = "PARAMETERS")
 	private String	parameters;
-	
-	@Column(name = "SUCCESS")
 	private Boolean	success;
-	
-	@Column(name = "USER_FULLNAME")
 	private String	userFullName;
-	
-	@Column(name = "PAGE")
 	private String	page;
 	private AuditActionType auditActionType;
 	
