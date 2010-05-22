@@ -25,7 +25,7 @@ import net.rrm.ehour.domain.Customer;
  * CRUD on the Customer domain object 
  **/
 
-public interface CustomerDAO extends GenericDao<Customer, Integer>
+public interface CustomerDao extends GenericDao<Customer, Integer>
 {
 	/**
 	 * Find all active customers with billable projects

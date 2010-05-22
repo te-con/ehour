@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.customer.dao.CustomerDAO;
+import net.rrm.ehour.customer.dao.CustomerDao;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -60,7 +60,7 @@ public class ReportCriteriaServiceTest
 	private	ReportAggregatedDAO		reportAggregatedDAO;
 	private	UserDAO			userDAO;
 	private	ProjectAssignmentDAO	prjAssignmentDAO;
-	private	CustomerDAO		customerDAO;
+	private	CustomerDao		customerDAO;
 	private	ProjectDAO		projectDAO;
 	private UserDepartmentDAO userDepartmentDAO;
 	
@@ -78,7 +78,7 @@ public class ReportCriteriaServiceTest
 		userDAO = createMock(UserDAO.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setUserDAO(userDAO);
 
-		customerDAO = createMock(CustomerDAO.class);
+		customerDAO = createMock(CustomerDao.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setCustomerDAO(customerDAO);
 
 		projectDAO = createMock(ProjectDAO.class);

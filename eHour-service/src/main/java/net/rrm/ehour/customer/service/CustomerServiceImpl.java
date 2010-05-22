@@ -19,7 +19,7 @@ package net.rrm.ehour.customer.service;
 import java.util.List;
 
 import net.rrm.ehour.audit.annot.Auditable;
-import net.rrm.ehour.customer.dao.CustomerDAO;
+import net.rrm.ehour.customer.dao.CustomerDao;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerServiceImpl implements CustomerService
 {
 	@Autowired
-	private	CustomerDAO		customerDAO;
+	private	CustomerDao		customerDAO;
 	
 	private	static final Logger	LOGGER = Logger.getLogger(CustomerServiceImpl.class);
 
@@ -181,7 +181,7 @@ public class CustomerServiceImpl implements CustomerService
 	/**
 	 * @param customerDAO the customerDAO to set
 	 */
-	public void setCustomerDAO(CustomerDAO customerDAO)
+	public void setCustomerDAO(CustomerDao customerDAO)
 	{
 		this.customerDAO = customerDAO;
 	}

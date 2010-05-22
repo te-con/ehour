@@ -26,74 +26,75 @@ import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.domain.Customer;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Customer DAO test
  **/
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SuppressWarnings("unchecked")
-public class CustomerDAOTest  extends AbstractAnnotationDaoTest 
+public class CustomerDaoTest extends AbstractAnnotationDaoTest 
 {
 	@Autowired
-	private	CustomerDAO	customerDAO;
+	private	CustomerDao	customerDao;
 
+	public CustomerDaoTest()
+	{
+		super("dataset-customer.xml");
+	}
+	
 	@Test
-	public void testDelete()
+	public void shouldDeleteCustomerOnId()
 	{
 		Customer customer;
 
-		customer = customerDAO.findById(new Integer(2));
+		customer = customerDao.findById(new Integer(2));
 		assertNotNull(customer);
 		
-		customerDAO.delete(customer);
+		customerDao.delete(customer);
 		
-		customer = customerDAO.findById(new Integer(2));
+		customer = customerDao.findById(new Integer(2));
 		assertNull(customer);
 	}
 
 	@Test
-	public void testFindAll()
+	public void shouldFindAll()
 	{
-		List customers = customerDAO.findAll();
+		List<Customer> customers = customerDao.findAll();
 		assertEquals(4, customers.size());
 	}
 
 	@Test
-	public void testFindAllActive()
+	public void shouldFindAllActive()
 	{
-		List customers = customerDAO.findAllActive();
+		List<Customer> customers = customerDao.findAllActive();
 		assertEquals(3, customers.size());
 	}
 	
 	@Test
-	public void testFindById()
+	public void shouldFindOnId()
 	{
-		Customer customer = customerDAO.findById(2);
+		Customer customer = customerDao.findById(2);
 		assertEquals("Tester", customer.getName());
 	}
 
 	@Test
-	public void testPersist()
+	public void shouldPersist()
 	{
-		Customer	customer = new Customer();
+		Customer customer = new Customer();
 		customer.setName("it's so real");
 		customer.setDescription("what you feel");
 		customer.setCode("oakenfold");
 		customer.setActive(true);
 		
-		customerDAO.persist(customer);
+		customerDao.persist(customer);
 		
 		assertNotNull(customer.getCustomerId());
 	}
 	
 	@Test
-	public void testFindNameCode()
+	public void shouldFindOnNameAndCode()
 	{
-		assertEquals("TEC", customerDAO.findOnNameAndCode("te-con", "TEC").getCode());
+		assertEquals("TEC", customerDao.findOnNameAndCode("te-con", "TEC").getCode());
 	}	
 
 }

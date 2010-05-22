@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.customer.dao.CustomerDAO;
+import net.rrm.ehour.customer.dao.CustomerDao;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -56,7 +56,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	@Autowired
 	private	UserDepartmentDAO		userDepartmentDAO;
 	@Autowired
-	private	CustomerDAO				customerDAO;
+	private	CustomerDao				customerDAO;
 	@Autowired
 	private	ProjectDAO				projectDAO;
 	@Autowired
@@ -301,7 +301,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param customerDAO the customerDAO to set
 	 */
-	public void setCustomerDAO(CustomerDAO customerDAO)
+	public void setCustomerDAO(CustomerDao customerDAO)
 	{
 		this.customerDAO = customerDAO;
 	}
