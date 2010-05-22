@@ -33,9 +33,9 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
@@ -44,16 +44,16 @@ import org.junit.Test;
 public class ProjectAssignmentStatusServiceTest
 {
 	private	ProjectAssignmentStatusServiceImpl util;
-	private	ReportAggregatedDAO	raDAO;
-	private TimesheetDAO timesheetDAO;
+	private	ReportAggregatedDao	raDAO;
+	private TimesheetDao timesheetDAO;
 	
 	@Before
 	public void setUp() throws Exception
 	{
 		util = new ProjectAssignmentStatusServiceImpl();
 
-		raDAO = createMock(ReportAggregatedDAO.class);
-		timesheetDAO = createMock(TimesheetDAO.class);
+		raDAO = createMock(ReportAggregatedDao.class);
+		timesheetDAO = createMock(TimesheetDao.class);
 		util.setTimesheetDAO(timesheetDAO);
 		util.setReportAggregatedDAO(raDAO);
 	}

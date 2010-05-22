@@ -35,14 +35,14 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
-import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.dao.ProjectAssignmentDao;
+import net.rrm.ehour.project.dao.ProjectDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
-import net.rrm.ehour.user.dao.UserDAO;
-import net.rrm.ehour.user.dao.UserDepartmentDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.user.dao.UserDao;
+import net.rrm.ehour.user.dao.UserDepartmentDao;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,34 +57,34 @@ public class ReportCriteriaServiceTest
 {
 	private	ReportCriteriaService	reportCriteriaService;
 	
-	private	ReportAggregatedDAO		reportAggregatedDAO;
-	private	UserDAO			userDAO;
-	private	ProjectAssignmentDAO	prjAssignmentDAO;
+	private	ReportAggregatedDao		reportAggregatedDAO;
+	private	UserDao			userDAO;
+	private	ProjectAssignmentDao	prjAssignmentDAO;
 	private	CustomerDao		customerDAO;
-	private	ProjectDAO		projectDAO;
-	private UserDepartmentDAO userDepartmentDAO;
+	private	ProjectDao		projectDAO;
+	private UserDepartmentDao userDepartmentDAO;
 	
 	@Before
 	public void setup()
 	{
 		reportCriteriaService = new ReportCriteriaServiceImpl();
 
-		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
+		reportAggregatedDAO = createMock(ReportAggregatedDao.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setReportAggregatedDAO(reportAggregatedDAO);
 		
-		prjAssignmentDAO = createMock(ProjectAssignmentDAO.class);
+		prjAssignmentDAO = createMock(ProjectAssignmentDao.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setProjectAssignmentDAO(prjAssignmentDAO);
 
-		userDAO = createMock(UserDAO.class);
+		userDAO = createMock(UserDao.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setUserDAO(userDAO);
 
 		customerDAO = createMock(CustomerDao.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setCustomerDAO(customerDAO);
 
-		projectDAO = createMock(ProjectDAO.class);
+		projectDAO = createMock(ProjectDao.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setProjectDAO(projectDAO);
 
-		userDepartmentDAO = createMock(UserDepartmentDAO.class);
+		userDepartmentDAO = createMock(UserDepartmentDao.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setUserDepartmentDAO(userDepartmentDAO);
 	}
 	

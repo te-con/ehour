@@ -23,7 +23,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.dao.DetailedReportDAO;
+import net.rrm.ehour.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.util.EhourUtil;
@@ -39,7 +39,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 										implements DetailedReportService
 {
 	@Autowired
-	private	DetailedReportDAO	detailedReportDAO;
+	private	DetailedReportDao	detailedReportDAO;
 
 	/*
 	 * (non-Javadoc)
@@ -86,7 +86,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 	/**
 	 * @param detailedReportDAO the detailedReportDAO to set
 	 */
-	public void setDetailedReportDAO(DetailedReportDAO detailedReportDAO)
+	public void setDetailedReportDAO(DetailedReportDao detailedReportDAO)
 	{
 		this.detailedReportDAO = detailedReportDAO;
 	}

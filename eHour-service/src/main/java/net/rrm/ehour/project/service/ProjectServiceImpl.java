@@ -29,7 +29,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.dao.ProjectDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
@@ -50,7 +50,7 @@ public class ProjectServiceImpl implements ProjectService
 	private	static final Logger	LOGGER = Logger.getLogger(ProjectServiceImpl.class);
 
 	@Autowired
-	private	ProjectDAO					projectDAO;   
+	private	ProjectDao					projectDAO;   
 
 	@Autowired
 	private ProjectAssignmentManagementService	projectAssignmentManagementService;
@@ -258,7 +258,7 @@ public class ProjectServiceImpl implements ProjectService
 	 * @param dao
 	 */
 
-	public void setProjectDAO(ProjectDAO dao)
+	public void setProjectDAO(ProjectDao dao)
 	{
 		this.projectDAO = dao;
 	}

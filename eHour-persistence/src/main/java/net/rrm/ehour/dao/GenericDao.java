@@ -24,8 +24,7 @@ import net.rrm.ehour.domain.DomainObject;
 /**
  * GenericDAO interface for CRUD on domain objects **/
 
-@SuppressWarnings("unchecked")
-public interface GenericDao <T extends DomainObject, PK extends Serializable>
+public interface GenericDao <T extends DomainObject<?, ?>, PK extends Serializable>
 {
 	/**
 	 * Find all domain objects

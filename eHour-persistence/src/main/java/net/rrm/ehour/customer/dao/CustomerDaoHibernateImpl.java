@@ -44,7 +44,6 @@ public class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Cu
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.customer.dao.CustomerDAO#findOnNameAndCode(java.lang.String, java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	public Customer findOnNameAndCode(String name, String code)
 	{
 		String[]	keys = new String[]{"name", "code"};
@@ -65,7 +64,6 @@ public class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Cu
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Customer> findAllActive()
 	{
 		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", true, false, CACHEREGION);
@@ -73,14 +71,11 @@ public class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Cu
 
 	public List<Customer> findAllActiveWithBillableProjects()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		throw new IllegalArgumentException("not implemented");
 	}
 
 	public List<Customer> findAllWithBillableProjects()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		throw new IllegalArgumentException("not implemented");
 	}
-
 }

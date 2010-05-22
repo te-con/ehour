@@ -37,9 +37,9 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.user.dao.UserDAO;
-import net.rrm.ehour.user.dao.UserDepartmentDAO;
-import net.rrm.ehour.user.dao.UserRoleDAO;
+import net.rrm.ehour.user.dao.UserDao;
+import net.rrm.ehour.user.dao.UserDepartmentDao;
+import net.rrm.ehour.user.dao.UserRoleDao;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
 
@@ -59,11 +59,11 @@ public class UserServiceImpl implements UserService
 	private	static final Logger	LOGGER = Logger.getLogger(UserServiceImpl.class);
 
 	@Autowired
-	private	UserDAO				userDAO;
+	private	UserDao				userDAO;
 	@Autowired
-	private	UserDepartmentDAO	userDepartmentDAO;
+	private	UserDepartmentDao	userDepartmentDAO;
 	@Autowired
-	private	UserRoleDAO			userRoleDAO;
+	private	UserRoleDao			userRoleDAO;
 	@Autowired
 	private	ProjectAssignmentManagementService		projectAssignmentManagementService;
 	@Autowired
@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService
 	 * @uml.property  name="userDAO"
 	 */
 	
-	public void setUserDAO(UserDAO dao)
+	public void setUserDAO(UserDao dao)
 	{
 		userDAO = dao;
 	}
@@ -177,12 +177,12 @@ public class UserServiceImpl implements UserService
 	 * Set the user dept dao
 	 * @param dao
 	 */
-	public void setUserDepartmentDAO(UserDepartmentDAO dao)
+	public void setUserDepartmentDAO(UserDepartmentDao dao)
 	{
 		userDepartmentDAO = dao;
 	}
 
-	public void setUserRoleDAO(UserRoleDAO dao)
+	public void setUserRoleDAO(UserRoleDao dao)
 	{
 		userRoleDAO = dao;
 	}

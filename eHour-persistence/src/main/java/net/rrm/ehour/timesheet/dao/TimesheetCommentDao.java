@@ -14,34 +14,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.user.dao;
-import static org.junit.Assert.assertEquals;
+package net.rrm.ehour.timesheet.dao;
 
-import java.util.List;
+import net.rrm.ehour.dao.GenericDao;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetCommentId;
 
-import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
-import net.rrm.ehour.domain.UserRole;
+/**
+ * CRUD on timesheetComment domain obj
+ **/
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-public class UserRoleDAOTest extends AbstractAnnotationDaoTest 
+public interface TimesheetCommentDao  extends GenericDao<TimesheetComment, TimesheetCommentId>
 {
-	@Autowired
-	private	UserRoleDao	userRoleDAO;
-	
-	@Test
-	public void shouldFindById()
-	{
-		UserRole role = userRoleDAO.findById("ROLE_ADMIN");
-		assertEquals("Administrator", role.getRoleName());
-	}
-
-	@Test
-	public void shouldFindUserRoles()
-	{
-		List<UserRole> list = userRoleDAO.findAll();
-		assertEquals(4, list.size());
-	}
-
+	/**
+	 * Delete comments for user
+	 * @param user
+	 * @return
+	 */
+	public int deleteCommentsForUser(Integer userId);
 }

@@ -41,8 +41,8 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.timesheet.dao.TimesheetCommentDao;
+import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
@@ -66,10 +66,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class TimesheetServiceImpl implements TimesheetService
 {
 	@Autowired
-	private	TimesheetDAO		timesheetDAO;
+	private	TimesheetDao		timesheetDAO;
 
 	@Autowired
-	private TimesheetCommentDAO	timesheetCommentDAO;
+	private TimesheetCommentDao	timesheetCommentDAO;
 	
 	@Autowired
 	private	AggregateReportService		aggregateReportService;
@@ -360,7 +360,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * DAO setter (Spring)
 	 * @param dao
 	 */
-	public void setTimesheetDAO(TimesheetDAO dao)
+	public void setTimesheetDAO(TimesheetDao dao)
 	{
 		timesheetDAO = dao;
 	}
@@ -387,7 +387,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	/**
 	 * @param timesheetCommentDAO the timesheetCommentDAO to set
 	 */
-	public void setTimesheetCommentDAO(TimesheetCommentDAO timesheetCommentDAO)
+	public void setTimesheetCommentDAO(TimesheetCommentDao timesheetCommentDAO)
 	{
 		this.timesheetCommentDAO = timesheetCommentDAO;
 	}

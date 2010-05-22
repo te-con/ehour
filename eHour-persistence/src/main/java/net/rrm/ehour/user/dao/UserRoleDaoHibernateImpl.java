@@ -15,33 +15,17 @@
  */
 
 package net.rrm.ehour.user.dao;
-import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
-import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.domain.UserRole;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-public class UserRoleDAOTest extends AbstractAnnotationDaoTest 
+@Repository("userRoleDao")
+public class UserRoleDaoHibernateImpl  extends AbstractGenericDaoHibernateImpl<UserRole, String> implements UserRoleDao
 {
-	@Autowired
-	private	UserRoleDao	userRoleDAO;
-	
-	@Test
-	public void shouldFindById()
+	public UserRoleDaoHibernateImpl()
 	{
-		UserRole role = userRoleDAO.findById("ROLE_ADMIN");
-		assertEquals("Administrator", role.getRoleName());
-	}
-
-	@Test
-	public void shouldFindUserRoles()
-	{
-		List<UserRole> list = userRoleDAO.findAll();
-		assertEquals(4, list.size());
-	}
-
+		super(UserRole.class);
+	}	
 }

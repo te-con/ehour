@@ -15,33 +15,14 @@
  */
 
 package net.rrm.ehour.user.dao;
-import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
-import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.UserRole;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+/**
+ * CRUD on UserRole domain object
+ **/
 
-public class UserRoleDAOTest extends AbstractAnnotationDaoTest 
+public interface UserRoleDao  extends GenericDao<UserRole, String>
 {
-	@Autowired
-	private	UserRoleDao	userRoleDAO;
-	
-	@Test
-	public void shouldFindById()
-	{
-		UserRole role = userRoleDAO.findById("ROLE_ADMIN");
-		assertEquals("Administrator", role.getRoleName());
-	}
-
-	@Test
-	public void shouldFindUserRoles()
-	{
-		List<UserRole> list = userRoleDAO.findAll();
-		assertEquals(4, list.size());
-	}
-
 }

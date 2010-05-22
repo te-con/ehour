@@ -27,9 +27,9 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
+import net.rrm.ehour.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 
@@ -40,13 +40,13 @@ import org.springframework.stereotype.Service;
 public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 {
 	@Autowired
-	private	ProjectAssignmentDAO	projectAssignmentDAO;
+	private	ProjectAssignmentDao	projectAssignmentDAO;
 
 	@Autowired
 	private	ProjectAssignmentStatusService	projectAssignmentStatusService;
 	
 	@Autowired
-	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private	ReportAggregatedDao		reportAggregatedDAO;
 
 	/**
 	 * Get active projects for user in date range 
@@ -162,7 +162,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	 * 
 	 * @param dao
 	 */
-	public void setProjectAssignmentDAO(ProjectAssignmentDAO dao)
+	public void setProjectAssignmentDAO(ProjectAssignmentDao dao)
 	{
 		this.projectAssignmentDAO = dao;
 	}
@@ -178,7 +178,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 	/**
 	 * @param reportAggregatedDAO the reportAggregatedDAO to set
 	 */
-	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
+	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}

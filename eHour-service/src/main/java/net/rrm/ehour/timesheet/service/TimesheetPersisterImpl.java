@@ -27,7 +27,7 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
@@ -46,7 +46,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	private	static final Logger	LOGGER = Logger.getLogger(TimesheetPersisterImpl.class);
 
 	@Autowired
-	private	TimesheetDAO		timesheetDAO;
+	private	TimesheetDao		timesheetDAO;
 
 	@Autowired
 	private ProjectAssignmentStatusService	projectAssignmentStatusService;
@@ -266,7 +266,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	/**
 	 * @param timesheetDAO the timesheetDAO to set
 	 */
-	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
+	public void setTimesheetDAO(TimesheetDao timesheetDAO)
 	{
 		this.timesheetDAO = timesheetDAO;
 	}

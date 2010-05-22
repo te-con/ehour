@@ -41,7 +41,7 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;
@@ -54,7 +54,7 @@ import org.junit.Test;
 public class TimesheetPersisterImplTest
 {
 	private TimesheetPersisterImpl persister;
-	private TimesheetDAO timesheetDAO;
+	private TimesheetDao timesheetDAO;
 	private MailService mailService;
 	private ProjectAssignmentStatusService statusService;
 	private ProjectAssignment assignment;
@@ -66,7 +66,7 @@ public class TimesheetPersisterImplTest
 	{
 		persister = new TimesheetPersisterImpl();
 
-		timesheetDAO = createMock(TimesheetDAO.class);
+		timesheetDAO = createMock(TimesheetDao.class);
 		persister.setTimesheetDAO(timesheetDAO);
 
 		statusService = createMock(ProjectAssignmentStatusService.class);

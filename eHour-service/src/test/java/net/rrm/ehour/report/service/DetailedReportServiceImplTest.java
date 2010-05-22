@@ -30,7 +30,7 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.DetailedReportDAO;
+import net.rrm.ehour.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 import org.junit.Before;
@@ -42,7 +42,7 @@ import org.junit.Test;
 @SuppressWarnings({"unchecked"})
 public class DetailedReportServiceImplTest
 {
-	private	DetailedReportDAO		detailedReportDAO;
+	private	DetailedReportDao		detailedReportDAO;
 	private	DetailedReportService	detailedReportService;
 	private	ReportCriteria			rc;
 	private UserCriteria 			uc;
@@ -56,7 +56,7 @@ public class DetailedReportServiceImplTest
 	{
 		detailedReportService = new DetailedReportServiceImpl();
 
-		detailedReportDAO = createMock(DetailedReportDAO.class);
+		detailedReportDAO = createMock(DetailedReportDao.class);
 		((DetailedReportServiceImpl)detailedReportService).setDetailedReportDAO(detailedReportDAO);
 
 		dr = new DateRange();

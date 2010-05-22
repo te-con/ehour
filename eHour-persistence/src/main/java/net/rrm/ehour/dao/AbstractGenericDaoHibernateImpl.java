@@ -30,9 +30,8 @@ import org.springframework.stereotype.Repository;
  * GenericDAO interface for CRUD on domain objects
  **/
 
-@SuppressWarnings("unchecked")
 @Repository
-public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject, PK extends Serializable>
+public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?, ?>, PK extends Serializable>
 	extends AbstractAnnotationDaoHibernateImpl
 	implements GenericDao<T, PK>
 {
@@ -58,7 +57,7 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject, P
 	 * @param cachingRegion
 	 * @return
 	 */
-	public List findByNamedQueryAndNamedParam(final String queryName, 
+	public List<T> findByNamedQueryAndNamedParam(final String queryName, 
 												final String param, 
 												final Object value,
 												final boolean isCaching,
@@ -77,7 +76,8 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject, P
 	 * @return
 	 * @throws DataAccessException
 	 */
-	public List findByNamedQueryAndNamedParam(final String queryName, 
+	@SuppressWarnings("unchecked")
+	public List<T> findByNamedQueryAndNamedParam(final String queryName, 
 												final String[] paramNames, 
 												final Object[] values,
 												boolean isCaching,
@@ -88,7 +88,7 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject, P
 		
 		if (!isCaching)
 		{
-			return getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, paramNames, values);
+			return (List<T>)getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, paramNames, values);
 		}
 		else
 		{

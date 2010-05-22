@@ -11,8 +11,8 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
-import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.dao.ProjectAssignmentDao;
+import net.rrm.ehour.project.dao.ProjectDao;
 import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.user.service.UserService;
 
@@ -30,10 +30,10 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 	private UserService				userService;
 
 	@Autowired
-	private	ProjectDAO				projectDAO;
+	private	ProjectDao				projectDAO;
 
 	@Autowired
-	private	ProjectAssignmentDAO	projectAssignmentDAO;
+	private	ProjectAssignmentDao	projectAssignmentDAO;
 	
 	@Autowired
 	private ProjectAssignmentService projectAssignmentService;
@@ -181,12 +181,12 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 		this.userService = userService;
 	}
 
-	public void setProjectDAO(ProjectDAO projectDAO)
+	public void setProjectDAO(ProjectDao projectDAO)
 	{
 		this.projectDAO = projectDAO;
 	}
 
-	public void setProjectAssignmentDAO(ProjectAssignmentDAO projectAssignmentDAO)
+	public void setProjectAssignmentDAO(ProjectAssignmentDao projectAssignmentDAO)
 	{
 		this.projectAssignmentDAO = projectAssignmentDAO;
 	}

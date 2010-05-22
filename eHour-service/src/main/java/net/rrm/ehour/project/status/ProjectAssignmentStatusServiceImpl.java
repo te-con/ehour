@@ -21,9 +21,9 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
+import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -37,9 +37,9 @@ import org.springframework.stereotype.Service;
 public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStatusService
 {
 	@Autowired
-	private	ReportAggregatedDAO	reportAggregatedDAO;
+	private	ReportAggregatedDao	reportAggregatedDAO;
 	@Autowired
-	private TimesheetDAO		timesheetDAO;
+	private TimesheetDao		timesheetDAO;
 
 	/*
 	 * (non-Javadoc)
@@ -240,7 +240,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	/**
 	 * @param reportAggregatedDAO the reportAggregatedDAO to set
 	 */
-	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
+	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
@@ -248,7 +248,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	/**
 	 * @param timesheetDAO the timesheetDAO to set
 	 */
-	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
+	public void setTimesheetDAO(TimesheetDao timesheetDAO)
 	{
 		this.timesheetDAO = timesheetDAO;
 	}

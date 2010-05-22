@@ -27,9 +27,9 @@ import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
+import net.rrm.ehour.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 import org.junit.Before;
@@ -39,8 +39,8 @@ import org.junit.Test;
 public class ProjectAssignmentServiceTest
 {
 	private	ProjectAssignmentService	projectAssignmentService;
-	private	ProjectAssignmentDAO	projectAssignmentDAO;
-	private ReportAggregatedDAO		reportAggregatedDAO;
+	private	ProjectAssignmentDao	projectAssignmentDAO;
+	private ReportAggregatedDao		reportAggregatedDAO;
 	private ProjectAssignmentStatusService	statusService;
 	
 	/**
@@ -51,10 +51,10 @@ public class ProjectAssignmentServiceTest
 	{
 		projectAssignmentService = new ProjectAssignmentServiceImpl();
 
-		projectAssignmentDAO = createMock(ProjectAssignmentDAO.class);
+		projectAssignmentDAO = createMock(ProjectAssignmentDao.class);
 		((ProjectAssignmentServiceImpl)projectAssignmentService).setProjectAssignmentDAO(projectAssignmentDAO);
 		
-		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
+		reportAggregatedDAO = createMock(ReportAggregatedDao.class);
 		((ProjectAssignmentServiceImpl)projectAssignmentService).setReportAggregatedDAO(reportAggregatedDAO);
 		
 		statusService = createMock(ProjectAssignmentStatusService.class);

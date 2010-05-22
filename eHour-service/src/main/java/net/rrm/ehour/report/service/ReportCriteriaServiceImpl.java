@@ -28,16 +28,16 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
-import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.dao.ProjectAssignmentDao;
+import net.rrm.ehour.project.dao.ProjectDao;
 import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
-import net.rrm.ehour.user.dao.UserDAO;
-import net.rrm.ehour.user.dao.UserDepartmentDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.user.dao.UserDao;
+import net.rrm.ehour.user.dao.UserDepartmentDao;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -52,17 +52,17 @@ import org.springframework.stereotype.Service;
 public class ReportCriteriaServiceImpl implements ReportCriteriaService
 {
 	@Autowired
-	private	UserDAO					userDAO;
+	private	UserDao					userDAO;
 	@Autowired
-	private	UserDepartmentDAO		userDepartmentDAO;
+	private	UserDepartmentDao		userDepartmentDAO;
 	@Autowired
 	private	CustomerDao				customerDAO;
 	@Autowired
-	private	ProjectDAO				projectDAO;
+	private	ProjectDao				projectDAO;
 	@Autowired
-	private	ProjectAssignmentDAO	projectAssignmentDAO;
+	private	ProjectAssignmentDao	projectAssignmentDAO;
 	@Autowired
-	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private	ReportAggregatedDao		reportAggregatedDAO;
 
 	private	static final Logger	LOGGER = Logger.getLogger(ReportCriteriaServiceImpl.class);
 	
@@ -293,7 +293,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param userDAO the userDAO to set
 	 */
-	public void setUserDAO(UserDAO userDAO)
+	public void setUserDAO(UserDao userDAO)
 	{
 		this.userDAO = userDAO;
 	}
@@ -309,7 +309,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param projectDAO the projectDAO to set
 	 */
-	public void setProjectDAO(ProjectDAO projectDAO)
+	public void setProjectDAO(ProjectDao projectDAO)
 	{
 		this.projectDAO = projectDAO;
 	}
@@ -317,7 +317,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param userDepartmentDAO the userDepartmentDAO to set
 	 */
-	public void setUserDepartmentDAO(UserDepartmentDAO userDepartmentDAO)
+	public void setUserDepartmentDAO(UserDepartmentDao userDepartmentDAO)
 	{
 		this.userDepartmentDAO = userDepartmentDAO;
 	}
@@ -325,7 +325,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param projectAssignmentDAO the projectAssignmentDAO to set
 	 */
-	public void setProjectAssignmentDAO(ProjectAssignmentDAO projectAssignmentDAO)
+	public void setProjectAssignmentDAO(ProjectAssignmentDao projectAssignmentDAO)
 	{
 		this.projectAssignmentDAO = projectAssignmentDAO;
 	}	
@@ -334,7 +334,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	 *  
 	 *
 	 */
-	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
+	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}

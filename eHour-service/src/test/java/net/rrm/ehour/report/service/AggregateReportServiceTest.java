@@ -36,15 +36,15 @@ import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.project.dao.ProjectDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
-import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.dao.UserDao;
 
 /**
  *  
@@ -54,9 +54,9 @@ import net.rrm.ehour.user.dao.UserDAO;
 public class AggregateReportServiceTest extends TestCase
 {
 	private	AggregateReportService	aggregateReportService;
-	private UserDAO			userDAO;
-	private ProjectDAO			projectDAO;
-	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private UserDao			userDAO;
+	private ProjectDao			projectDAO;
+	private	ReportAggregatedDao		reportAggregatedDAO;
 private	ProjectAssignmentService	assignmentService;
 	private MailService mailService;
 	
@@ -67,13 +67,13 @@ private	ProjectAssignmentService	assignmentService;
 	{
 		aggregateReportService = new AggregateReportServiceImpl();
 
-		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
+		reportAggregatedDAO = createMock(ReportAggregatedDao.class);
 		((AggregateReportServiceImpl)aggregateReportService).setReportAggregatedDAO(reportAggregatedDAO);
 
-		userDAO = createMock(UserDAO.class);
+		userDAO = createMock(UserDao.class);
 		((AggregateReportServiceImpl)aggregateReportService).setUserDAO(userDAO);
 
-		projectDAO = createMock(ProjectDAO.class);
+		projectDAO = createMock(ProjectDao.class);
 		((AggregateReportServiceImpl)aggregateReportService).setProjectDAO(projectDAO);
 
 		assignmentService = createMock(ProjectAssignmentService.class);

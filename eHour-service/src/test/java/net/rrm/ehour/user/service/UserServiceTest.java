@@ -37,9 +37,9 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.user.dao.UserDAO;
-import net.rrm.ehour.user.dao.UserDepartmentDAO;
-import net.rrm.ehour.user.dao.UserRoleDAO;
+import net.rrm.ehour.user.dao.UserDao;
+import net.rrm.ehour.user.dao.UserDepartmentDao;
+import net.rrm.ehour.user.dao.UserRoleDao;
 
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
@@ -52,9 +52,9 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 public class UserServiceTest extends TestCase 
 {
 	private	UserService			userService;
-	private	UserDAO				userDAO;
-	private	UserDepartmentDAO	userDepartmentDAO;
-	private	UserRoleDAO			userRoleDAO;
+	private	UserDao				userDAO;
+	private	UserDepartmentDao	userDepartmentDAO;
+	private	UserRoleDao			userRoleDAO;
 	
 	/**
 	 * 
@@ -62,9 +62,9 @@ public class UserServiceTest extends TestCase
 	protected void setUp()
 	{
 		userService = new UserServiceImpl();
-		userDAO = createMock(UserDAO.class);
-		userDepartmentDAO = createMock(UserDepartmentDAO.class);
-		userRoleDAO = createMock(UserRoleDAO.class);
+		userDAO = createMock(UserDao.class);
+		userDepartmentDAO = createMock(UserDepartmentDao.class);
+		userRoleDAO = createMock(UserRoleDao.class);
 		
 		((UserServiceImpl)userService).setUserDAO(userDAO);
 		((UserServiceImpl)userService).setUserDepartmentDAO(userDepartmentDAO);
