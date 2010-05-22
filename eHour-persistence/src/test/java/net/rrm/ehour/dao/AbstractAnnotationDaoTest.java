@@ -7,8 +7,8 @@ import javax.sql.DataSource;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -32,21 +32,46 @@ public abstract class AbstractAnnotationDaoTest
 	@Autowired
 	private DataSource	eHourDataSource;
 	
-	@SuppressWarnings("deprecation")
+	private static FlatXmlDataSet userDataSet;
+	private String[] additionalDataSetFileNames = new String[0];
+	
+	static {
+		try
+		{
+			userDataSet = new FlatXmlDataSetBuilder().build(new File("src/test/resources/datasets/dataset-users.xml"));
+		} catch (Exception e)
+		{
+			throw new IllegalArgumentException(e);
+		} 
+	}
+	
+	public AbstractAnnotationDaoTest()
+	{
+	}
+	
+	public AbstractAnnotationDaoTest(String... dataSetFileNames) {
+		this.additionalDataSetFileNames = dataSetFileNames;
+	}
+	
 	@Before
 	public final void setUpDatabase() throws Exception
 	{
 		Connection con = DataSourceUtils.getConnection(eHourDataSource);
 		IDatabaseConnection connection = new DatabaseConnection(con);
 
-		IDataSet dataSet = new FlatXmlDataSet(new File("src/test/resources/test-dataset.xml"));
-		
 		try
 		{
-			DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+			DatabaseOperation.CLEAN_INSERT.execute(connection, userDataSet);
+			
+			for (String dataSetFileName : additionalDataSetFileNames)
+			{
+				FlatXmlDataSet additionalDataSet = new FlatXmlDataSetBuilder().build(new File("src/test/resources/datasets/" + dataSetFileName));
+				DatabaseOperation.INSERT.execute(connection, additionalDataSet);
+			}
 		} finally
 		{
 			connection.close();
 		}
 	}
+
 }

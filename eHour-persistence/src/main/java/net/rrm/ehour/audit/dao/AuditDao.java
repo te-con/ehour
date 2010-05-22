@@ -21,21 +21,26 @@ import java.util.List;
 import net.rrm.ehour.dao.GenericDao;
 import net.rrm.ehour.domain.Audit;
 
-public interface AuditDAO extends GenericDao<Audit, Number>
+public interface AuditDao extends GenericDao<Audit, Number>
 {
 	/**
-	 * 
+	 * Find audit for request
 	 * @param request
 	 * @return
 	 */
 	public List<Audit> findAudit(AuditReportRequest request);
-	
-	public List<Audit> findAuditAll(AuditReportRequest request);
-	
+
 	/**
-	 * 
+	 * Find all audits for a request
 	 * @param request
 	 * @return
 	 */
-	public Number findAuditCount(AuditReportRequest request);
+	public List<Audit> findAllAudits(AuditReportRequest request);
+	
+	/**
+	 * Count audits for request
+	 * @param request
+	 * @return
+	 */
+	public Number count(AuditReportRequest request);
 }

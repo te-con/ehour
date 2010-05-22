@@ -32,11 +32,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class AuditDAOHibernateImplTest extends AbstractAnnotationDaoTest
+public class AuditDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
-	private AuditDAO auditDAO;
+	private AuditDao auditDAO;
 	private AuditReportRequest request;
+	
+	public AuditDaoHibernateImplTest()
+	{
+		super("dataset-audit.xml");
+	}
 	
 	@Before
 	public void before()
@@ -48,11 +53,10 @@ public class AuditDAOHibernateImplTest extends AbstractAnnotationDaoTest
 		DateRange range = DateUtil.getDateRangeForMonth(cal);
 		request = new AuditReportRequest();		
 		request.setReportRange(range);
-	
 	}
 	
 	@Test
-	public void testFindAudit()
+	public void shouldFind20AuditRecords()
 	{
 		request.setMax(20)
 			   .setOffset(10);
@@ -65,10 +69,18 @@ public class AuditDAOHibernateImplTest extends AbstractAnnotationDaoTest
 	}
 	
 	@Test
-	public void testFindAuditCount()
+	public void shouldCouldAllCount()
 	{
-		Number count = auditDAO.findAuditCount(request);
+		Number count = auditDAO.count(request);
 		
 		assertEquals(40, count.intValue());
+	}
+	
+	@Test
+	public void shouldFindAll()
+	{
+		List<Audit> all = auditDAO.findAllAudits(request);
+		
+		assertEquals(40, all.size());
 	}
 }

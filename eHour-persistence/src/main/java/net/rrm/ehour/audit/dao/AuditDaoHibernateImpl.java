@@ -29,12 +29,12 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 @Repository("auditDao")
-public class AuditDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit, Number>  implements AuditDAO
+public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit, Number>  implements AuditDao
 {
 	/**
 	 * @todo fix this a bit better
 	 */
-	public AuditDAOHibernateImpl()
+	public AuditDaoHibernateImpl()
 	{
 		super(Audit.class);
 	}
@@ -56,7 +56,7 @@ public class AuditDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.audit.dao.AuditDAO#findAuditCount(net.rrm.ehour.audit.service.dto.AuditReportRequest)
 	 */
-	public Number findAuditCount(AuditReportRequest request)
+	public Number count(AuditReportRequest request)
 	{
 		Criteria criteria = buildCriteria(request, false);
 		criteria.setProjection(Projections.rowCount());
@@ -115,7 +115,7 @@ public class AuditDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.audit.dao.AuditDAO#findAuditAll(net.rrm.ehour.audit.service.dto.AuditReportRequest)
 	 */
-	public List<Audit> findAuditAll(AuditReportRequest request)
+	public List<Audit> findAllAudits(AuditReportRequest request)
 	{
 		return findAudit(request, true);
 	}

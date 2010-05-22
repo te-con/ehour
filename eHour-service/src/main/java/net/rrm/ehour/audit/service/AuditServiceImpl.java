@@ -19,7 +19,7 @@ package net.rrm.ehour.audit.service;
 import java.util.List;
 
 import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.audit.dao.AuditDAO;
+import net.rrm.ehour.audit.dao.AuditDao;
 import net.rrm.ehour.audit.dao.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 
@@ -35,10 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("auditService")
 public class AuditServiceImpl implements AuditService
 {
-	private AuditDAO	auditDAO;
+	private AuditDao	auditDAO;
 	
 	@Autowired
-	public AuditServiceImpl(AuditDAO auditDao)
+	public AuditServiceImpl(AuditDao auditDao)
 	{
 		this.auditDAO = auditDao;
 	}
@@ -69,7 +69,7 @@ public class AuditServiceImpl implements AuditService
 	@NonAuditable
 	public List<Audit> getAuditAll(AuditReportRequest request)
 	{
-		return auditDAO.findAuditAll(request);
+		return auditDAO.findAllAudits(request);
 	}	
 
 	/*
@@ -79,6 +79,6 @@ public class AuditServiceImpl implements AuditService
 	@NonAuditable
 	public Number getAuditCount(AuditReportRequest request)
 	{
-		return auditDAO.findAuditCount(request);
+		return auditDAO.count(request);
 	}
 }
