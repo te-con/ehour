@@ -24,25 +24,22 @@ import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.domain.MailLogAssignment;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * TODO 
- **/
-
-@RunWith(SpringJUnit4ClassRunner.class)
-public class MailLogDAOTest extends AbstractAnnotationDaoTest
+public class MailLogDaoTest extends AbstractAnnotationDaoTest
 {
-	
 	@Autowired
-	private MailLogDAO	mailLogDAO;
+	private MailLogDao mailLogDao;
+	
+	public MailLogDaoTest()
+	{
+		super("dataset-maillog.xml");
+	}
 	
 	@Test
-	public final void testGetMailLogAssignment()
+	public final void shouldFindMailLogOnAssignmentId()
 	{
-		List<MailLogAssignment> mla = mailLogDAO.findMailLogOnAssignmentIds(new Integer[]{2});
+		List<MailLogAssignment> mla = mailLogDao.findMailLogOnAssignmentIds(new Integer[]{2});
 		
 		assertEquals(1, mla.size());
 		assertEquals(9, mla.get(0).getMailLogId().intValue());

@@ -27,13 +27,10 @@ import org.springframework.stereotype.Repository;
 /**
  * DAO for MailLog db operations 
  **/
-@Repository("mailLogDAO")
-public class MailLogDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<MailLog, Integer>  implements MailLogDAO
+@Repository("mailLogDao")
+public class MailLogDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<MailLog, Integer>  implements MailLogDao
 {
-	/**
-	 * @todo fix this a bit better
-	 */
-	public MailLogDAOHibernateImpl()
+	public MailLogDaoHibernateImpl()
 	{
 		super(MailLog.class);
 	}

@@ -26,7 +26,7 @@ import net.rrm.ehour.domain.MailLogAssignment;
  * DAO for MailLog db operations 
  **/
 
-public interface MailLogDAO  extends GenericDao<MailLog, Integer>
+public interface MailLogDao  extends GenericDao<MailLog, Integer>
 {
 	/**
 	 * Get mail log on project assignment id's

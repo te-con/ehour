@@ -29,7 +29,7 @@ import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.domain.MailType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.mail.callbacks.AssignmentMsgCallback;
-import net.rrm.ehour.mail.dao.MailLogDAO;
+import net.rrm.ehour.mail.dao.MailLogDao;
 import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -55,7 +55,7 @@ public class MailServiceImpl implements MailService
 	private	final static Logger	LOGGER = Logger.getLogger(MailServiceImpl.class);
 	
 	@Autowired
-	private MailLogDAO		mailLogDAO;
+	private MailLogDao		mailLogDAO;
 
 	private	TaskExecutor	taskExecutor;
 
@@ -424,7 +424,7 @@ public class MailServiceImpl implements MailService
 	/**
 	 * @param mailLogDAO the mailLogDAO to set
 	 */
-	public void setMailLogDAO(MailLogDAO mailLogDAO)
+	public void setMailLogDAO(MailLogDao mailLogDAO)
 	{
 		this.mailLogDAO = mailLogDAO;
 	}

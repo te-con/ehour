@@ -66,7 +66,7 @@ public abstract class AbstractAnnotationDaoTest
 			for (String dataSetFileName : additionalDataSetFileNames)
 			{
 				FlatXmlDataSet additionalDataSet = new FlatXmlDataSetBuilder().build(new File("src/test/resources/datasets/" + dataSetFileName));
-				DatabaseOperation.INSERT.execute(connection, additionalDataSet);
+				DatabaseOperation.CLEAN_INSERT.execute(connection, additionalDataSet);
 			}
 		} finally
 		{
