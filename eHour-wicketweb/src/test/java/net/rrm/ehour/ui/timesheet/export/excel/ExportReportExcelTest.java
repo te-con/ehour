@@ -32,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
+import net.rrm.ehour.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -69,7 +69,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		configService = new ConfigurationServiceImpl();
 		getMockContext().putBean("configurationService", configService);
 		
-		BinaryConfigurationDAO binConfigfDao = createMock(BinaryConfigurationDAO.class);
+		BinaryConfigurationDao binConfigfDao = createMock(BinaryConfigurationDao.class);
 		configService.setBinConfigDAO(binConfigfDao);
 	}
 	

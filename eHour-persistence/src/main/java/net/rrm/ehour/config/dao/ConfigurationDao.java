@@ -23,6 +23,6 @@ import net.rrm.ehour.domain.Configuration;
  * CRUD on configuration 
  **/
 
-public interface ConfigurationDAO extends GenericDao<Configuration, String>
+public interface ConfigurationDao extends GenericDao<Configuration, String>
 {
 }

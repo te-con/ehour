@@ -24,7 +24,7 @@ import net.rrm.ehour.domain.BinaryConfiguration;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public interface BinaryConfigurationDAO extends GenericDao<BinaryConfiguration, String>
+public interface BinaryConfigurationDao extends GenericDao<BinaryConfiguration, String>
 {
 
 }

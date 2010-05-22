@@ -21,13 +21,13 @@ import net.rrm.ehour.domain.Configuration;
 
 import org.springframework.stereotype.Repository;
 
-@Repository("configurationDAO")
-public class ConfigurationDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<Configuration, String>  implements ConfigurationDAO
+@Repository("configurationDao")
+public class ConfigurationDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Configuration, String>  implements ConfigurationDao
 {
 	/**
 	 * TODO fix this a bit better
 	 */
-	public ConfigurationDAOHibernateImpl()
+	public ConfigurationDaoHibernateImpl()
 	{
 		super(Configuration.class);
 	}

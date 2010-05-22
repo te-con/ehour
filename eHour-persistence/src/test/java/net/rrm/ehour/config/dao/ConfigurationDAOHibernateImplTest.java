@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ConfigurationDAOHibernateImplTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
-	private ConfigurationDAO dao;
+	private ConfigurationDao dao;
 	
 	@Test
-	public void shouldSave()
+	public void shouldSaveNewConfig()
 	{
 		Configuration config = new Configuration();
 		config.setConfigKey("test");

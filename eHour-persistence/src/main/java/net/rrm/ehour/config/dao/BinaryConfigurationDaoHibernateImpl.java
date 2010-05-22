@@ -26,13 +26,13 @@ import org.springframework.stereotype.Repository;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-@Repository("binaryConfigurationDAO")
-public class BinaryConfigurationDAOHibernateImpl extends AbstractGenericDaoHibernateImpl<BinaryConfiguration, String>  implements BinaryConfigurationDAO
+@Repository("binaryConfigurationDao")
+public class BinaryConfigurationDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<BinaryConfiguration, String>  implements BinaryConfigurationDao
 {
 	/**
 	 * TODO fix this a bit better
 	 */
-	public BinaryConfigurationDAOHibernateImpl()
+	public BinaryConfigurationDaoHibernateImpl()
 	{
 		super(BinaryConfiguration.class);
 	}

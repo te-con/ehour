@@ -8,10 +8,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class BinaryConfigurationDAOHibernateImplTest extends AbstractAnnotationDaoTest
+public class BinaryConfigurationDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
-	private BinaryConfigurationDAO dao;
+	private BinaryConfigurationDao dao;
 	
 	@Test
 	public void shouldSave()

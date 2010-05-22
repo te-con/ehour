@@ -22,7 +22,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
-import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
+import net.rrm.ehour.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
 
 import org.apache.wicket.markup.html.form.Form;
@@ -42,7 +42,7 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 	{
 //		getConfigService().persistConfiguration(getConfigStub());
 		
-		BinaryConfigurationDAO binConfigDao = createMock(BinaryConfigurationDAO.class);
+		BinaryConfigurationDao binConfigDao = createMock(BinaryConfigurationDao.class);
 
 		getConfigService().setBinConfigDAO(binConfigDao);
 

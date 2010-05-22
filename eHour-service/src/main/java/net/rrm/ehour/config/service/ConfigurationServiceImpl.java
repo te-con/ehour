@@ -28,8 +28,8 @@ import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
-import net.rrm.ehour.config.dao.ConfigurationDAO;
+import net.rrm.ehour.config.dao.BinaryConfigurationDao;
+import net.rrm.ehour.config.dao.ConfigurationDao;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.BinaryConfiguration;
@@ -49,10 +49,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConfigurationServiceImpl implements ConfigurationService, Serializable
 {
 	@Autowired
-	private ConfigurationDAO	configDAO;
+	private ConfigurationDao	configDAO;
 	
 	@Autowired
-	private BinaryConfigurationDAO binConfigDAO;
+	private BinaryConfigurationDao binConfigDAO;
 	
 	private	static final Logger	logger = Logger.getLogger(ConfigurationServiceImpl.class);
 
@@ -342,7 +342,7 @@ public class ConfigurationServiceImpl implements ConfigurationService, Serializa
 	/**
 	 * @param configDAO the configDAO to set
 	 */
-	public void setConfigDAO(ConfigurationDAO configDAO)
+	public void setConfigDAO(ConfigurationDao configDAO)
 	{
 		this.configDAO = configDAO;
 	}
@@ -350,7 +350,7 @@ public class ConfigurationServiceImpl implements ConfigurationService, Serializa
 	/**
 	 * @param binConfigDAO the binConfigDAO to set
 	 */
-	public void setBinConfigDAO(BinaryConfigurationDAO binConfigDAO)
+	public void setBinConfigDAO(BinaryConfigurationDao binConfigDAO)
 	{
 		this.binConfigDAO = binConfigDAO;
 	}

@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
-import net.rrm.ehour.config.dao.ConfigurationDAO;
+import net.rrm.ehour.config.dao.BinaryConfigurationDao;
+import net.rrm.ehour.config.dao.ConfigurationDao;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.value.ImageLogo;
@@ -40,8 +40,8 @@ public class ConfigurationServiceTest
 {
 	private ConfigurationService configurationService;
 
-	private ConfigurationDAO configDAO;
-	private BinaryConfigurationDAO binaryConfigDao;
+	private ConfigurationDao configDAO;
+	private BinaryConfigurationDao binaryConfigDao;
 
 	/**
 	 * @throws java.lang.Exception
@@ -51,10 +51,10 @@ public class ConfigurationServiceTest
 	{
 		configurationService = new ConfigurationServiceImpl();
 
-		configDAO = createMock(ConfigurationDAO.class);
+		configDAO = createMock(ConfigurationDao.class);
 		((ConfigurationServiceImpl) configurationService).setConfigDAO(configDAO);
 
-		binaryConfigDao = createMock(BinaryConfigurationDAO.class);
+		binaryConfigDao = createMock(BinaryConfigurationDao.class);
 		((ConfigurationServiceImpl) configurationService).setBinConfigDAO(binaryConfigDao);
 
 	}
