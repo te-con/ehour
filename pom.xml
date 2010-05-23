@@ -504,6 +504,14 @@
 				<version>${applicationVersion}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>net.rrm.ehour</groupId>
+				<artifactId>eHour-common</artifactId>
+				<version>${applicationVersion}</version>
+				<scope>test</scope>
+				<classifier>tests</classifier>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
