@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:context-props_test.xml",
-									"classpath:context-datasource_test.xml",
+@ContextConfiguration(locations={"classpath:test-context-props.xml",
+									"classpath:test-context-datasource.xml",
 									"classpath:context-dbconnectivity.xml", 
 									"classpath:test-context-scanner-repository.xml"})
 @Transactional
