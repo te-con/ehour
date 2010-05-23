@@ -25,11 +25,8 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
  * AjaxLink which disables itself after first click
  **/
 
-public abstract class DisablingAjaxLink extends AjaxLink
+public abstract class DisablingAjaxLink extends AjaxLink<Void>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6432581905417785191L;
 
 	public DisablingAjaxLink(String id)

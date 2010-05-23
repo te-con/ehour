@@ -24,7 +24,7 @@ import org.apache.wicket.validation.validator.AbstractValidator;
  * Double range validator allowing nulls
  */
 
-public class DoubleRangeWithNullValidator extends AbstractValidator implements INullAcceptingValidator
+public class DoubleRangeWithNullValidator extends AbstractValidator<Number> implements INullAcceptingValidator<Number>
 {
 	private static final long serialVersionUID = -8111638763473340175L;
 
@@ -39,11 +39,11 @@ public class DoubleRangeWithNullValidator extends AbstractValidator implements I
 	}
 
 	@Override
-	public void onValidate(IValidatable validatable)
+	public void onValidate(IValidatable<Number> validatable)
 	{
 		try
 		{
-			Number value = (Number) validatable.getValue();
+			Number value = validatable.getValue();
 			
 			if (value.doubleValue() < minimum || value.doubleValue() > maximum)
 			{

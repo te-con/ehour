@@ -21,20 +21,17 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${pom.version}</version>
+			<artifactId>eHour-common</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
-			<version>${pom.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-wicketweb</artifactId>
-			<version>${applicationVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>

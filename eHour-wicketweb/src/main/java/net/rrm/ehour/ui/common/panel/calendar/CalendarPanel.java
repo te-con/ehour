@@ -156,16 +156,16 @@ public class CalendarPanel extends SidePanel
 		addCalendarWeeks(parent, weeks);
 	}
 
-	private AjaxLink createNextMonthLink(String id)
+	private AjaxLink<Void> createNextMonthLink(String id)
 	{
-		AjaxLink nextMonthLink = new ChangeMonthLink(id, 1);
+		AjaxLink<Void> nextMonthLink = new ChangeMonthLink(id, 1);
 		nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
 		return nextMonthLink;
 	}
 
-	private AjaxLink createPreviousMonthLink(String id)
+	private AjaxLink<Void> createPreviousMonthLink(String id)
 	{
-		AjaxLink previousMonthLink = new ChangeMonthLink(id, -1);
+		AjaxLink<Void> previousMonthLink = new ChangeMonthLink(id, -1);
 		previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
 		return previousMonthLink;
 	}
@@ -178,11 +178,11 @@ public class CalendarPanel extends SidePanel
 	@SuppressWarnings("serial")
 	private void addCalendarWeeks(WebMarkupContainer container, List<CalendarWeek> weeks)
 	{
-		ListView view = new ListView("weeks", weeks)
+		ListView<CalendarWeek> view = new ListView<CalendarWeek>("weeks", weeks)
 		{
-			public void populateItem(final ListItem item)
+			public void populateItem(final ListItem<CalendarWeek> item)
 			{
-				CalendarWeek week = (CalendarWeek) item.getModelObject();
+				CalendarWeek week = item.getModelObject();
 				Calendar renderDate = (Calendar)week.getWeekStart().clone();
 
 				for (int i = 1; i <= 7; i++)
@@ -210,7 +210,7 @@ public class CalendarPanel extends SidePanel
 		        }
 			}
 
-			private void fireWeekClicks(final ListItem item, CalendarWeek week)
+			private void fireWeekClicks(final ListItem<CalendarWeek> item, CalendarWeek week)
 			{
 				if (highlightWeekStartingAt == null ||
 						!DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
@@ -240,7 +240,7 @@ public class CalendarPanel extends SidePanel
 				}
 				else
 				{
-					label = new Label(id, new PropertyModel(day, "monthDay"));
+					label = new Label(id, new PropertyModel<Integer>(day, "monthDay"));
 				}
 
 				// determine css class
