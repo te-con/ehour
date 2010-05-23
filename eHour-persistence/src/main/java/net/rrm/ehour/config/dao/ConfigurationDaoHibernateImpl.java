@@ -24,9 +24,6 @@ import org.springframework.stereotype.Repository;
 @Repository("configurationDao")
 public class ConfigurationDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Configuration, String>  implements ConfigurationDao
 {
-	/**
-	 * TODO fix this a bit better
-	 */
 	public ConfigurationDaoHibernateImpl()
 	{
 		super(Configuration.class);

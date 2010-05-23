@@ -43,22 +43,12 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
 	@SuppressWarnings("unchecked")
 	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users, DateRange dateRange)
 	{
-		List<AssignmentAggregateReportElement> results;
-		String[] keys = new String[3];
-		Object[] params = new Object[3];
+		String[] keys = new String[]{"dateStart", "dateEnd", "users"};
+		Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), users.toArray()};
+
 		
-		keys[0] = "dateStart";
-		keys[1] = "dateEnd";
-		keys[2] = "users";
-		
-		params[0] = dateRange.getDateStart();
-		params[1] = dateRange.getDateEnd();
-		params[2] = users.toArray();
-		
-		results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsers"
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsers"
 																		, keys, params);
-		
-		return results;		
 	}
 
 	/*
@@ -91,14 +81,8 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
 	@SuppressWarnings("unchecked")
 	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users, List<Project> projects)
 	{
-		String[]	keys = new String[2];
-		Object[]	params = new Object[2];
-		
-		keys[0] = "users";
-		keys[1] = "projects";
-		
-		params[0] = users.toArray();
-		params[1] = projects.toArray();
+		String[] keys = new String[]{"users", "projects"};
+		Object[] params = new Object[]{users.toArray(), projects.toArray()};
 		
 		return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUsersAndProjects"
 																		, keys, params);
@@ -113,21 +97,10 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
 																					List<Project> projects,
 																					DateRange dateRange)
 	{
-		String[]	keys = new String[4];
-		Object[]	params = new Object[4];
+		String[] keys = new String[]{"dateStart", "dateEnd", "users", "projects"};
+		Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), users.toArray(), projects.toArray()};
 		
-		keys[0] = "dateStart";
-		keys[1] = "dateEnd";
-		keys[2] = "users";
-		keys[3] = "projects";
-		
-		params[0] = dateRange.getDateStart();
-		params[1] = dateRange.getDateEnd();
-		params[2] = users.toArray();
-		params[3] = projects.toArray();
-		
-		return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects"
-																		, keys, params);
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects", keys, params);
 	}
 
 	/*
@@ -151,14 +124,8 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
 	@SuppressWarnings("unchecked")
 	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignment(DateRange dateRange)
 	{
-		String[]	keys = new String[2];
-		Object[]	params = new Object[2];
-		
-		keys[0] = "dateStart";
-		keys[1] = "dateEnd";		
-
-		params[0] = dateRange.getDateStart();
-		params[1] = dateRange.getDateEnd();
+		String[] keys = new String[]{"dateStart", "dateEnd"};
+		Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd()};
 		
 		return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignment"
 																			, keys, params);
@@ -171,17 +138,9 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
 	@SuppressWarnings("unchecked")
 	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForProjects(List<Project> projects, DateRange dateRange)
 	{
-		String[]	keys = new String[3];
-		Object[]	params = new Object[3];
-		
-		keys[0] = "dateStart";
-		keys[1] = "dateEnd";		
-		keys[2] = "projects";
+		String[]	keys = new String[]{"dateStart", "dateEnd", "projects"};
+		Object[]	params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), projects.toArray()};	
 
-		params[0] = dateRange.getDateStart();
-		params[1] = dateRange.getDateEnd();
-		params[2] = projects.toArray();
-		
 		return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForProjects"
 																			, keys, params);
 	}

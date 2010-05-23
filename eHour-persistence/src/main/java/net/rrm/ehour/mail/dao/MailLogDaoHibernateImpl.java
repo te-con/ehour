@@ -35,10 +35,6 @@ public class MailLogDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Mai
 		super(MailLog.class);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.mail.dao.MailLogDAO#getMailLogAssignment(java.lang.Integer)
-	 */
 	@SuppressWarnings("unchecked")
 	public List<MailLogAssignment> findMailLogOnAssignmentIds(Integer[] projectAssignmentIds)
 	{
