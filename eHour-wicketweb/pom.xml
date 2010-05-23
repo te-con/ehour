@@ -70,14 +70,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${applicationVersion}</version>
+			<artifactId>eHour-common</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${applicationVersion}</version>
+			<artifactId>eHour-common</artifactId>
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>
