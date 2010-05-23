@@ -32,6 +32,10 @@ public class EhourWrapper
 	{
 		Server server = new Server();
 		
+		if (filename == null) {
+			filename = "src/main/profiles/dev/jetty.xml";
+		}
+		
 		XmlConfiguration configuration = new XmlConfiguration(new FileInputStream(filename));
 		configuration.configure(server);
 		server.start();		
@@ -39,6 +43,6 @@ public class EhourWrapper
 	
 	public static void main(String[] arg) throws Exception
 	{
-		new EhourWrapper().start(arg[0]);
+		new EhourWrapper().start(arg.length > 0 ? arg[0] : null);
 	}
 }

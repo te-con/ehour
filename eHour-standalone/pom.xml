@@ -62,10 +62,7 @@
 		<profile>
 			<id>dev</id>
 			<activation>
-				<property>
-					<name>env</name>
-					<value>dev-derby</value>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<resources>
