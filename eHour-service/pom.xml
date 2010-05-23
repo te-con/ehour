@@ -14,15 +14,10 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/resources/db</directory>
-			</resource>
-			<resource>
 				<directory>src/main/resources/spring</directory>
 			</resource>
 			<resource>
-				<directory>src/main/resources/hibernate</directory>
-			</resource>
-			<resource>
+				<filtering>true</filtering>
 				<directory>src/main/resources/img</directory>
 			</resource>
 			<resource>

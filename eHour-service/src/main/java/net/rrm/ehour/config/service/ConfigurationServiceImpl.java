@@ -19,7 +19,6 @@ package net.rrm.ehour.config.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
@@ -46,8 +45,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Configuration service
  **/
 @Service("configurationService")
-public class ConfigurationServiceImpl implements ConfigurationService, Serializable
+public class ConfigurationServiceImpl implements ConfigurationService
 {
+	private static final String EXCEL_DEFAULT_LOGO = "excel_default_logo.png";
+
 	private static final long serialVersionUID = -8862725896852558151L;
 
 	@Autowired
@@ -56,7 +57,7 @@ public class ConfigurationServiceImpl implements ConfigurationService, Serializa
 	@Autowired
 	private BinaryConfigurationDao binConfigDAO;
 	
-	private	static final Logger	logger = Logger.getLogger(ConfigurationServiceImpl.class);
+	private	static final Logger	LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
 
 
 	/* (non-Javadoc)
@@ -97,7 +98,7 @@ public class ConfigurationServiceImpl implements ConfigurationService, Serializa
 
 		if (logo == null)
 		{
-			logger.debug("No logo found in database, using default logo.");
+			LOGGER.debug("No logo found in database, using default logo.");
 			logo = getDefaultExcelLogo();
 		}
 		
@@ -151,14 +152,14 @@ public class ConfigurationServiceImpl implements ConfigurationService, Serializa
 		
 		try
 		{
-			ClassPathResource rsrc = new ClassPathResource("excel_default_logo.png");
+			ClassPathResource rsrc = new ClassPathResource(EXCEL_DEFAULT_LOGO);
 			URL url = rsrc.getURL();
 			
-			File file = new ClassPathResource("excel_default_logo.png").getFile();
+			File file = new ClassPathResource(EXCEL_DEFAULT_LOGO).getFile();
 			
 			if (!file.exists())
 			{
-				logger.error("default logo not found");
+				LOGGER.error("default logo not found");
 			}
 			
 			InputStream is;
@@ -175,7 +176,7 @@ public class ConfigurationServiceImpl implements ConfigurationService, Serializa
 			}
 		} catch (IOException e)
 		{
-			logger.error("Could not fetch default logo", e);
+			LOGGER.error("Could not fetch default logo", e);
 			bytes = new byte[1];
 		}
 		
@@ -288,7 +289,7 @@ public class ConfigurationServiceImpl implements ConfigurationService, Serializa
 	@Auditable(actionType=AuditActionType.UPDATE)
 	public void persistConfiguration(EhourConfig config)
 	{
-		logger.debug("Persisting config");
+		LOGGER.debug("Persisting config");
 		persistConfig("localeCurrency", config.getCurrency().getLanguage() + "_" + config.getCurrency().getCountry());
 		
 		if (config.getCompleteDayHours() != 0)
