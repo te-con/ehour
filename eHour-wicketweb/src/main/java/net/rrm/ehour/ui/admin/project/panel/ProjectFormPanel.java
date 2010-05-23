@@ -61,7 +61,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * Project admin form
  **/
 
-public class ProjectFormPanel extends AbstractFormSubmittingPanel
+public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBackingBean>
 {
 	@SpringBean
 	private ProjectService	projectService;
@@ -72,7 +72,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 
 	private static final long serialVersionUID = -8677950352090140144L;
 	
-	public ProjectFormPanel(String id, IModel model)
+	public ProjectFormPanel(String id, IModel<ProjectAdminBackingBean> model)
 	{
 		super(id, model);
 		
@@ -81,20 +81,20 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		setUpPage(this, model);
 	}
 
-	private void setUpPage(WebMarkupContainer parent, IModel model)
+	private void setUpPage(WebMarkupContainer parent, IModel<ProjectAdminBackingBean> model)
 	{
 		Border border = new GreySquaredRoundedBorder("border");
 		add(border);
 
-		final Form form = new Form("projectForm");
+		final Form<Void> form = new Form<Void>("projectForm");
 		addFormComponents(form);
 
 		FormUtil.setSubmitActions(form
-									,((ProjectAdminBackingBean)model.getObject()).getProject().isDeletable()
+									,model.getObject().getProject().isDeletable()
 									,this
 									,ProjectAjaxEventType.PROJECT_UPDATED
 									,ProjectAjaxEventType.PROJECT_DELETED
-									,((EhourWebSession)getSession()).getEhourConfig());
+									,EhourWebSession.getSession().getEhourConfig());
 
 		border.add(form);
 
@@ -104,7 +104,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 	 * Add form components
 	 * @param form
 	 */
-	private void addFormComponents(Form form)
+	private void addFormComponents(Form<Void> form)
 	{
 		addCustomer(form);
 		addDescriptionAndContact(form);
@@ -124,7 +124,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 	private void addGeneralInfo(WebMarkupContainer parent)
 	{
 		// name
-		RequiredTextField	nameField = new RequiredTextField("project.name");
+		RequiredTextField<String> nameField = new RequiredTextField<String>("project.name");
 		parent.add(nameField);
 		nameField.add(new StringValidator.MaximumLengthValidator(64));
 		nameField.setLabel(new ResourceModel("admin.project.name"));
@@ -132,7 +132,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		parent.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 
 		// project code
-		RequiredTextField	codeField = new RequiredTextField("project.projectCode");
+		RequiredTextField<String> codeField = new RequiredTextField<String>("project.projectCode");
 		parent.add(codeField);
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
 		codeField.setLabel(new ResourceModel("admin.project.code"));
@@ -143,7 +143,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 	private void addCustomer(WebMarkupContainer parent)
 	{
 		// customers
-		DropDownChoice customerDropdown = new DropDownChoice("project.customer", getCustomers(), new ChoiceRenderer("fullName"));
+		DropDownChoice<Customer> customerDropdown = new DropDownChoice<Customer>("project.customer", getCustomers(), new ChoiceRenderer<Customer>("fullName"));
 		customerDropdown.setRequired(true);
 		customerDropdown.setLabel(new ResourceModel("admin.project.customer"));
 		customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
@@ -151,10 +151,10 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 		parent.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
 	}
 	
-	private DropDownChoice getProjectManager()
+	private DropDownChoice<User> getProjectManager()
 	{
 		// project manager
-		DropDownChoice projectManager = new DropDownChoice("project.projectManager", getEligablePms(), new ChoiceRenderer("fullName"));
+		DropDownChoice<User> projectManager = new DropDownChoice<User>("project.projectManager", getEligablePms(), new ChoiceRenderer<User>("fullName"));
 		projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
 		
 		return projectManager;
@@ -163,12 +163,12 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel
 	private void addDescriptionAndContact(WebMarkupContainer parent)
 	{
 		// description
-		TextArea	textArea = new KeepAliveTextArea("project.description");
+		TextArea<String> textArea = new KeepAliveTextArea("project.description");
 		textArea.setLabel(new ResourceModel("admin.project.description"));;
 		parent.add(textArea);
 
 		// contact
-		TextField	contactField = new TextField("project.contact");
+		TextField<String> contactField = new TextField<String>("project.contact");
 		parent.add(contactField);
 	}
 

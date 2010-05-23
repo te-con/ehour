@@ -55,7 +55,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * User Form Panel for admin
  **/
 
-public class UserAdminFormPanel extends AbstractFormSubmittingPanel
+public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingBean>
 {
 	private static final long serialVersionUID = -7427807216389657732L;
 
@@ -71,7 +71,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 	 * @param departments
 	 */
 	public UserAdminFormPanel(String id,
-							CompoundPropertyModel userModel,
+							CompoundPropertyModel<UserBackingBean> userModel,
 							List<UserRole> roles,
 							List<UserDepartment> departments)
 	{
@@ -82,13 +82,13 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		
 		setOutputMarkupId(true);
 		
-		final Form form = new Form("userForm");
+		final Form<Void> form = new Form<Void>("userForm");
 
 		// password inputs
 		form.add(new PasswordInputSnippet("password", form));
 		
 		// username
-		RequiredTextField	usernameField = new RequiredTextField("user.username");
+		RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
 		form.add(usernameField);
 		usernameField.add(new StringValidator.MaximumLengthValidator(32));
 		usernameField.add(new DuplicateUsernameValidator());
@@ -97,10 +97,10 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
 		
 		// first & last name
-		TextField	firstNameField = new TextField("user.firstName");
+		TextField<String> firstNameField = new TextField<String>("user.firstName");
 		form.add(firstNameField);
 
-		TextField	lastNameField = new RequiredTextField("user.lastName");
+		TextField<String> lastNameField = new RequiredTextField<String>("user.lastName");
 		form.add(lastNameField);
 		lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
 		lastNameField.add(new ValidatingFormComponentAjaxBehavior());
@@ -110,7 +110,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		form.add(new EmailInputSnippet("email"));
 		
 		// department
-		DropDownChoice userDepartment = new DropDownChoice("user.userDepartment", departments, new ChoiceRenderer("name"));
+		DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", departments, new ChoiceRenderer<UserDepartment>("name"));
 		userDepartment.setRequired(true);
 		userDepartment.setLabel(new ResourceModel("admin.user.department"));
 		userDepartment.add(new ValidatingFormComponentAjaxBehavior());
@@ -118,7 +118,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
 		
 		// user roles
-		ListMultipleChoice userRoles = new ListMultipleChoice("user.userRoles", roles, new UserRoleRenderer());
+		ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", roles, new UserRoleRenderer());
 		userRoles.setMaxRows(4);
 		userRoles.setLabel(new ResourceModel("admin.user.roles"));
 		userRoles.setRequired(true);
@@ -193,15 +193,15 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 	 * @author Thies
 	 *
 	 */
-	private class DuplicateUsernameValidator extends AbstractValidator
+	private class DuplicateUsernameValidator extends AbstractValidator<String>
 	{
 		private static final long serialVersionUID = 542950054849279025L;
 
 		@Override
-		protected void onValidate(IValidatable validatable)
+		protected void onValidate(IValidatable<String> validatable)
 		{
-			String username = (String)validatable.getValue();
-			String orgUsername = ((UserBackingBean)((CompoundPropertyModel)getDefaultModel()).getObject()).getOriginalUsername();
+			String username = validatable.getValue();
+			String orgUsername = ((UserBackingBean)getDefaultModelObject()).getOriginalUsername();
 
 			if (orgUsername != null && orgUsername.length() > 0 && username.equalsIgnoreCase(orgUsername))
 			{

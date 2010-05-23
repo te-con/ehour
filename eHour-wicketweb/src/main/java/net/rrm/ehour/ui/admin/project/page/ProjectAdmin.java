@@ -69,7 +69,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	private ProjectService		projectService;
 	private	final static Logger	logger = Logger.getLogger(ProjectAdmin.class);
 	private EntrySelectorFilter	currentFilter;
-	private	ListView			projectListView;
+	private	ListView<Project> 	projectListView;
 
 	public ProjectAdmin()
 	{
@@ -134,7 +134,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	protected Panel getBaseAddPanel(String panelId)
 	{
 		return new ProjectFormPanel(panelId,
-									new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
+									new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
 	}
 
 	@SuppressWarnings("serial")
@@ -153,7 +153,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 			}
 		}, TABPOS_USERS);
 		
-		return new ProjectFormPanel(panelId, new CompoundPropertyModel(backingBean));
+		return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(backingBean));
 				
 	}
 	
@@ -195,15 +195,15 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdmin.this);
 		
-		projectListView = new ListView("itemList", projects)
+		projectListView = new ListView<Project>("itemList", projects)
 		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<Project> item)
 			{
-				Project 		project = (Project)item.getModelObject();
+				Project project = item.getModelObject();
 				final Integer	projectId = project.getProjectId();
 				
-				AjaxLink	link = new AjaxLink("itemLink")
+				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)

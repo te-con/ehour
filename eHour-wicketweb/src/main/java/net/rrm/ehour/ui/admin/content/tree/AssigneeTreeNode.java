@@ -1,8 +1,5 @@
 package net.rrm.ehour.ui.admin.content.tree;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.rrm.ehour.domain.DomainObject;

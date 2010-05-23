@@ -59,7 +59,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 
 	@SpringBean
 	private	UserService				userService;
-	private	ListView				userListView;
+	private	ListView<User>			userListView;
 	private EntrySelectorFilter		currentFilter;
 	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;
@@ -105,17 +105,17 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", UserAdmin.this);
 		
-		userListView = new ListView("itemList", users)
+		userListView = new ListView<User>("itemList", users)
 		{
 			private static final long serialVersionUID = 5334338761736798802L;
 
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<User> item)
 			{
-				final User		user = (User)item.getModelObject();
+				final User		user = item.getModelObject();
 				final Integer	userId = user.getUserId();
 				
-				AjaxLink	link = new AjaxLink("itemLink")
+				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					private static final long serialVersionUID = -3898942767521616039L;
 
@@ -216,7 +216,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	protected Panel getBaseAddPanel(String panelId)
 	{
 		return new UserAdminFormPanel(panelId,
-				new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()),
+				new CompoundPropertyModel<UserBackingBean>(getTabbedPanel().getAddBackingBean()),
 				getUserRoles(),
 				getUserDepartments());
 	}
@@ -254,7 +254,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	protected Panel getBaseEditPanel(String panelId)
 	{
 		return new UserAdminFormPanel(panelId,
-				new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()),
+				new CompoundPropertyModel<UserBackingBean>(getTabbedPanel().getEditBackingBean()),
 				getUserRoles(),
 				getUserDepartments());
 	}

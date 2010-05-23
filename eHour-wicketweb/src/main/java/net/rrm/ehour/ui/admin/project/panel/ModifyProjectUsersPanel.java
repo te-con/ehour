@@ -21,7 +21,7 @@ import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
+public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel<Void>
 {
 	private static final long serialVersionUID = -2500957894019585211L;
 
@@ -65,7 +65,7 @@ public class ModifyProjectUsersPanel extends AbstractFormSubmittingPanel
 		message = new PlaceholderPanel("message");
 		border.add(message);
 		
-		AjaxLink link = new AjaxLink("submit")
+		AjaxLink<Void> link = new AjaxLink<Void>("submit")
 		{
 			@Override
 			public void onClick(AjaxRequestTarget target)

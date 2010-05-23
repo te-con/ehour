@@ -38,7 +38,7 @@ import org.apache.wicket.model.ResourceModel;
  */
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class MonthOverviewPage extends AbstractBasePage
+public class MonthOverviewPage extends AbstractBasePage<Void>
 {
 	private static final long serialVersionUID = -6873845464139697303L;
 
