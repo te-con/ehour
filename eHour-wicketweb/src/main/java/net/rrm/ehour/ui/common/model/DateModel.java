@@ -32,7 +32,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
- * Date model 
+ * TODO rewrite this, should be a renderer or a converter; not a model
  **/
 
 public class DateModel implements IModel

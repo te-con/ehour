@@ -44,7 +44,6 @@ import org.apache.wicket.model.ResourceModel;
  * Login page 
  **/
 
-@SuppressWarnings("unchecked")
 public class Login extends WebPage
 {
 	private static final long serialVersionUID = -134022212692477120L;
@@ -97,7 +96,7 @@ public class Login extends WebPage
 	 * {@link Form} class that attempts to authenticate the login request using
 	 * Wicket auth (which again delegates to Acegi Security).
 	 */
-	public final class SignInForm extends Form
+	public final class SignInForm extends Form<SimpleUser>
 	{
 		private static final long serialVersionUID = -4355842488508724254L;
 
@@ -108,13 +107,13 @@ public class Login extends WebPage
 		 */
 		public SignInForm(String id, SimpleUser model)
 		{
-			super(id, new CompoundPropertyModel(model));
+			super(id, new CompoundPropertyModel<SimpleUser>(model));
 
 			FeedbackPanel	feedback = new LoginFeedbackPanel("feedback");
 			feedback.setMaxMessages(1);
 			
 			add(feedback);
-			TextField usernameInput = new RequiredTextField("username");
+			TextField<String> usernameInput = new RequiredTextField<String>("username");
 			usernameInput.setPersistent(true);
 			add(usernameInput);
 			add(new PasswordTextField("password").setResetPassword(true));

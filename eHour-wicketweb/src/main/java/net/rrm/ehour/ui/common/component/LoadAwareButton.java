@@ -33,7 +33,7 @@ public abstract class LoadAwareButton extends AjaxFallbackButton
 {
 	private static final long serialVersionUID = -6504165692150025275L;
 
-	public LoadAwareButton(String id, Form form)
+	public LoadAwareButton(String id, Form<?> form)
 	{
 		super(id, form);
 	}
@@ -45,7 +45,7 @@ public abstract class LoadAwareButton extends AjaxFallbackButton
 	}
 
 	@Override
-	protected void onError(AjaxRequestTarget target, Form form)
+	protected void onError(AjaxRequestTarget target, Form<?> form)
 	{
 		target.addComponent(form);
 	}

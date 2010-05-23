@@ -42,7 +42,7 @@ public class UserReportExcel extends AbstractExcelReport
 	 * @see net.rrm.ehour.ui.report.panel.AbstractAggregateExcelReport#getExcelReportName()
 	 */
 	@Override
-	protected IModel getExcelReportName()
+	protected IModel<String> getExcelReportName()
 	{
 		return new ResourceModel("report.user.name");
 	}
@@ -52,7 +52,7 @@ public class UserReportExcel extends AbstractExcelReport
 	 * @see net.rrm.ehour.ui.report.panel.AbstractAggregateExcelReport#getHeaderReportName()
 	 */
 	@Override
-	protected IModel getHeaderReportName()
+	protected IModel<String> getHeaderReportName()
 	{
 		return new ResourceModel("report.user.name");
 	}

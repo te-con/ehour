@@ -59,15 +59,15 @@ import org.apache.wicket.validation.validator.MinimumValidator;
  * Representation of a timesheet row
  **/
 
-public class TimesheetRowList extends ListView
+public class TimesheetRowList extends ListView<TimesheetRow>
 {
 	private static final long serialVersionUID = -6905022018110510887L;
 
-	private	EhourConfig		config;
+	private	EhourConfig config;
 	private final GrandTotal	grandTotals;
-	private	Form			form;
+	private	Form<?> form;
 	
-	public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form form)
+	public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
 	{
 		super(id, model);
 		setReuseItems(true);
@@ -82,7 +82,7 @@ public class TimesheetRowList extends ListView
 	 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
 	 */
 	@Override
-	protected void populateItem(ListItem item)
+	protected void populateItem(ListItem<TimesheetRow> item)
 	{
 		final TimesheetRow row = (TimesheetRow) item.getModelObject();
 
@@ -101,7 +101,7 @@ public class TimesheetRowList extends ListView
 		return totalHours;
 	}
 
-	private void addInputCells(ListItem item, final TimesheetRow row)
+	private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row)
 	{
 		Calendar dateIterator = (Calendar)row.getFirstDayOfWeekDate().clone();
 
@@ -126,9 +126,9 @@ public class TimesheetRowList extends ListView
 		}
 	}
 
-	private AjaxLink createBookWholeWeekLink(final TimesheetRow row)
+	private AjaxLink<Void> createBookWholeWeekLink(final TimesheetRow row)
 	{
-		AjaxLink projectLink = new AjaxLink("bookWholeWeek")
+		AjaxLink<Void> projectLink = new AjaxLink<Void>("bookWholeWeek")
 		{
 			private static final long serialVersionUID = -663239917205218384L;
 
@@ -140,7 +140,7 @@ public class TimesheetRowList extends ListView
 			}
 		};
 		
-		ContextImage img = new ContextImage("bookImg", new Model("img/check_all_off.png"));
+		ContextImage img = new ContextImage("bookImg", new Model<String>("img/check_all_off.png"));
 		CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/check_all_on.png", getContextRoot() + "img/check_all_off.png", "bwh");
 		projectLink.add(img);
 		
@@ -156,16 +156,16 @@ public class TimesheetRowList extends ListView
 	private TooltipLabel createProjectLabel(final TimesheetRow row)
 	{
 		TooltipLabel projectLabel = new TooltipLabel("project", 
-														new Model(row.getProjectAssignment().getProject().getName()),  
-														new Model(row.getProjectAssignment().getProject().getDescription()),
+														new Model<String>(row.getProjectAssignment().getProject().getName()),  
+														new Model<String>(row.getProjectAssignment().getProject().getDescription()),
 														true,
 														true);
 		return projectLabel;
 	}
 
-	private Label createStatusLabel(ListItem item)
+	private Label createStatusLabel(ListItem<TimesheetRow> item)
 	{
-		Label label = new Label("status", new PropertyModel(item.getModel(), "status"));
+		Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status"));
 		label.setEscapeModelStrings(false);
 		label.setOutputMarkupId(true);
 		return label;
@@ -176,7 +176,7 @@ public class TimesheetRowList extends ListView
 	 * @param id
 	 * @param item
 	 */
-	private void createEmptyTimesheetEntry(String id, ListItem item)
+	private void createEmptyTimesheetEntry(String id, ListItem<TimesheetRow> item)
 	{
 		Fragment fragment = new Fragment(id, "dayInputHidden", this);
 		
@@ -190,7 +190,7 @@ public class TimesheetRowList extends ListView
 	 * @param index
 	 * @return
 	 */
-	private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem item)
+	private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item)
 	{
 		Fragment fragment = new Fragment(id, "dayInput", this);
 		
@@ -327,7 +327,7 @@ public class TimesheetRowList extends ListView
 	 * @param commentModel
 	 * @param commentLink
 	 */
-	private void setCommentLinkClass(IModel commentModel, AjaxLink commentLink)
+	private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink)
 	{
 		commentLink.add(new SimpleAttributeModifier("class"
 				, StringUtils.isBlank((String)commentModel.getObject()) ? "timesheetEntryComment"
@@ -343,7 +343,7 @@ public class TimesheetRowList extends ListView
 	{
 		private static final long serialVersionUID = 1L;
 
-		public TimesheetEntryCommentPanel(String id, final IModel model, TimesheetRow row, int index, final ModalWindow window)
+		public TimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window)
 		{
 			super(id);
 
@@ -351,7 +351,7 @@ public class TimesheetRowList extends ListView
 			// Use the render order, not the index order, when calculating the date
 			thisDate.add(Calendar.DAY_OF_YEAR, grandTotals.getOrderForIndex(index)-1);
 
-			final Object previousModel = model.getObject();
+			final String previousModel = model.getObject();
 			add(new Label("dayComments",
 					new StringResourceModel("timesheet.dayComments",
 												this,
@@ -373,7 +373,7 @@ public class TimesheetRowList extends ListView
 			
 			add(textArea);
 			
-			AjaxLink submitButton = new AjaxLink("submit")
+			AjaxLink<Void> submitButton = new AjaxLink<Void>("submit")
 			{
 				private static final long serialVersionUID = 1L;
 
@@ -385,7 +385,7 @@ public class TimesheetRowList extends ListView
 			};
 			add(submitButton);
 
-			AbstractLink cancelButton = new AjaxLink("cancel")
+			AbstractLink cancelButton = new AjaxLink<Void>("cancel")
 			{
 				private static final long serialVersionUID = 1L;
 

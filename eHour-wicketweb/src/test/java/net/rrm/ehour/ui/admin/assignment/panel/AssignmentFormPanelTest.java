@@ -76,7 +76,7 @@ public class AssignmentFormPanelTest extends AbstractSpringWebAppTester
 			
 			public Panel getTestPanel(String panelId)
 			{
-				return new AssignmentFormPanel(panelId, new CompoundPropertyModel(backingBean));
+				return new AssignmentFormPanel(panelId, new CompoundPropertyModel<AssignmentAdminBackingBean>(backingBean));
 			}
 		});
 	}

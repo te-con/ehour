@@ -125,7 +125,7 @@ public class ContentAdminPageTest extends AbstractSpringWebAppTester implements 
 		assertEquals(1, hook.events.size());
 		assertEquals(TreeNodeEventType.NODE_SELECTED, hook.events.get(0).getEventType());
 		
-		PayloadAjaxEvent<AssigneeTreeNode> event = (PayloadAjaxEvent<AssigneeTreeNode>) hook.events.get(0);
+		PayloadAjaxEvent<AssigneeTreeNode<?>> event = (PayloadAjaxEvent<AssigneeTreeNode<?>>) hook.events.get(0);
 		
 		assertEquals(1, ((Project)event.getPayload().getUserObject()).getPK().intValue());
 	}	

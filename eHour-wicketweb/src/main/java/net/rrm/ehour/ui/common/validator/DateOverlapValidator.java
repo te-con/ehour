@@ -30,15 +30,16 @@ import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 public class DateOverlapValidator extends AbstractFormValidator
 {
 	private static final long serialVersionUID = -7176398632862551019L;
-	private FormComponent[] components;
+	private FormComponent<Date>[] components;
 	
 	/**
 	 * 
 	 * @param passwordField
 	 * @param confirmField
 	 */
-	public DateOverlapValidator(FormComponent startDate,
-								FormComponent endDate)
+	@SuppressWarnings("unchecked")
+	public DateOverlapValidator(FormComponent<Date> startDate,
+								FormComponent<Date> endDate)
 	{
 		components = new FormComponent[]{startDate, endDate};
 	}
@@ -47,7 +48,7 @@ public class DateOverlapValidator extends AbstractFormValidator
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
 	 */
-	public FormComponent[] getDependentFormComponents()
+	public FormComponent<Date>[] getDependentFormComponents()
 	{
 		return components;
 	}
@@ -56,7 +57,7 @@ public class DateOverlapValidator extends AbstractFormValidator
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
 	 */
-	public void validate(Form form)
+	public void validate(Form<?> form)
 	{
 		if (components[0].isVisible() 
 				&& components[1].isVisible()
@@ -65,8 +66,8 @@ public class DateOverlapValidator extends AbstractFormValidator
 				&& components[1].getInput() != null
 				&& components[1].getConvertedInput() != null)
 		{
-			Date startDate = (Date)components[0].getConvertedInput();
-			Date endDate = (Date)components[1].getConvertedInput();
+			Date startDate = components[0].getConvertedInput();
+			Date endDate = components[1].getConvertedInput();
 			
 			if (endDate.before(startDate))
 			{

@@ -16,51 +16,17 @@
 
 package net.rrm.ehour.ui.common.authorization;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import net.rrm.ehour.domain.User;
 
 import org.springframework.security.core.GrantedAuthority;
 
-
-/**
- * Acegi wrapper around User
- */
-
 public class AuthUser extends org.springframework.security.core.userdetails.User
 {
 	private	User		user;
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -9086733140310198830L;
-
-	/**
-	 * 
-	 * @param username
-	 * @param password
-	 * @param enabled
-	 * @param authorities
-	 * @throws IllegalArgumentException
-	 */
-	public AuthUser(String username, String password, boolean enabled, GrantedAuthority[] authorities) throws IllegalArgumentException
-	{
-		this(username, password, enabled, true, true, authorities);
-	}
-	
-	/**
-	 * 
-	 * @param username
-	 * @param password
-	 * @param enabled
-	 * @param accountNonExpired
-	 * @param credentialsNonExpired
-	 * @param authorities
-	 * @throws IllegalArgumentException
-	 */
-
-	public AuthUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, GrantedAuthority[] authorities) throws IllegalArgumentException
-	{
-		this(username, password, enabled, accountNonExpired, credentialsNonExpired, true, authorities);
-	}
 
 	/**
 	 * 
@@ -73,19 +39,15 @@ public class AuthUser extends org.springframework.security.core.userdetails.User
 	 * @param authorities
 	 * @throws IllegalArgumentException
 	 */
-	public AuthUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, GrantedAuthority[] authorities) throws IllegalArgumentException
+	public AuthUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<GrantedAuthority> authorities) throws IllegalArgumentException
 	{
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 	}
 	
-	/**
-	 * 
-	 * @param user
-	 */
 	public AuthUser(User user)
 	{
-		super(user.getUsername(), user.getPassword(), true, true, true, true, 
-				(GrantedAuthority[]) (user.getUserRoles().toArray(new GrantedAuthority[user.getUserRoles().size()])));
+		this(user.getUsername(), user.getPassword(), true, true, true, true, 
+				Arrays.asList((GrantedAuthority[]) (user.getUserRoles().toArray(new GrantedAuthority[user.getUserRoles().size()]))));
 		
 		this.user = user;
 	}

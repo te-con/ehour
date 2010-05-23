@@ -29,10 +29,7 @@ import org.apache.wicket.util.time.Duration;
 
 public class KeepAliveTextArea extends TextArea<String>
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7443361204848769680L;
+	private static final long serialVersionUID = 744361204848769680L;
 
 	public KeepAliveTextArea(String id)
 	{
@@ -40,7 +37,7 @@ public class KeepAliveTextArea extends TextArea<String>
 		add(new KeepAliveBehavior());
 	}
 
-	public KeepAliveTextArea(String id, IModel model)
+	public KeepAliveTextArea(String id, IModel<String> model)
 	{
 		super(id, model);
 		add(new KeepAliveBehavior());

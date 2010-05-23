@@ -187,7 +187,7 @@ public class TreeReportDataPanel extends Panel
 	{
 		List<TreeReportElement> elements = (List<TreeReportElement>)report.getReportData().getReportElements();
 		
-		DataView dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
+		DataView<TreeReportElement> dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
 		dataView.setOutputMarkupId(true);
 		dataView.setItemsPerPage(20);
 		

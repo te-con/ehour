@@ -51,9 +51,9 @@ public class ContextualHelpPanel extends Panel
 	}
 	
 	@SuppressWarnings("serial")
-	private Link createReadMoreLink(final String pageTitle)
+	private Link<Void> createReadMoreLink(final String pageTitle)
 	{
-		Link readMoreLink = new Link("readMoreLink")
+		Link<Void> readMoreLink = new Link<Void>("readMoreLink")
 		{
 			@Override
 			public void onClick()

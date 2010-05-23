@@ -35,7 +35,7 @@ public class JavaScriptConfirmation extends AttributeModifier
 	 */
 	public JavaScriptConfirmation(String event, String msg)
 	{
-		this(event, new Model(msg));
+		this(event, new Model<String>(msg));
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class JavaScriptConfirmation extends AttributeModifier
 	 * @param event
 	 * @param msg
 	 */
-	public JavaScriptConfirmation(String event, IModel msg)
+	public JavaScriptConfirmation(String event, IModel<String> msg)
 	{
 		super(event, true, msg);
 	}

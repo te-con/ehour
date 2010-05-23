@@ -29,7 +29,6 @@ import org.junit.Before;
 /**
  * Base class for wicket unit tests 
  **/
-@SuppressWarnings("unchecked")
 public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 {
 	protected StrictWicketTester tester;
@@ -63,7 +62,7 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 				return key;
 			}
 
-			public String loadStringResource(Class clazz, String key, Locale locale, String style)
+			public String loadStringResource(Class<?> clazz, String key, Locale locale, String style)
 			{
 				return key;
 			}

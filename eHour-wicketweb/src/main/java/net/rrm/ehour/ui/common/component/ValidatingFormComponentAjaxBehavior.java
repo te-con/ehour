@@ -54,7 +54,7 @@ public class ValidatingFormComponentAjaxBehavior extends AjaxFormComponentUpdati
 	
 	private void addFeedbackPanels(final AjaxRequestTarget target)
 	{
-		getComponent().getPage().visitChildren(IFeedback.class, new IVisitor()
+		getComponent().getPage().visitChildren(IFeedback.class, new IVisitor<Component>()
 		{
 			public Object component(Component component)
 			{
