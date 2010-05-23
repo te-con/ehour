@@ -19,6 +19,7 @@ package net.rrm.ehour.audit.dao;
 import java.util.List;
 
 import net.rrm.ehour.dao.GenericDao;
+import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 
 public interface AuditDao extends GenericDao<Audit, Number>

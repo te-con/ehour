@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.audit.panel;
 
 import java.util.Date;
 
-import net.rrm.ehour.audit.dao.AuditReportRequest;
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;

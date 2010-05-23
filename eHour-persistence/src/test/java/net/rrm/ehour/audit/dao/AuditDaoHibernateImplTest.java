@@ -22,8 +22,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.audit.dao.AuditReportRequest;
 import net.rrm.ehour.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.util.DateUtil;

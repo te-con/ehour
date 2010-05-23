@@ -34,9 +34,9 @@
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
-			</resource>			
+			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -49,7 +49,7 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>		
+		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
@@ -106,5 +106,11 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+
 	</dependencies>
 </project>

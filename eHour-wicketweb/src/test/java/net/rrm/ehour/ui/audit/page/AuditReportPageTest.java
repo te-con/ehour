@@ -23,7 +23,7 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 
-import net.rrm.ehour.audit.dao.AuditReportRequest;
+import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;

@@ -20,7 +20,7 @@ import java.util.List;
 
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.audit.dao.AuditDao;
-import net.rrm.ehour.audit.dao.AuditReportRequest;
+import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 
 import org.springframework.beans.factory.annotation.Autowired;
