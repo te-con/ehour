@@ -128,7 +128,7 @@ public class TimesheetDaoHibernateImpl
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.timesheet.dao.TimesheetDAO#deleteTimesheetEntries(java.util.List)
 	 */
-	public int deleteTimesheetEntries(List<Serializable> assignmentIds)
+	public int deleteTimesheetEntries(List<? extends Serializable> assignmentIds)
 	{
 		Session session = getSession();
 		Query	query = session.getNamedQuery("Timesheet.deleteOnAssignmentIds");

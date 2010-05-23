@@ -66,7 +66,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
 	 */
-	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Serializable> projectAssignmentIds)
+	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds)
 	{
 		return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
 	}

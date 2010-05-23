@@ -166,7 +166,7 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
 	 * @see net.rrm.ehour.report.dao.ReportAggregatedDAO#getCumulatedHoursPerAssignmentForAssignments(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForAssignments(List<Serializable> projectAssignmentIds)
+	public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForAssignments(List<? extends Serializable> projectAssignmentIds)
 	{
 		return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForAssignmentIds"
 																		, "assignmentIds", projectAssignmentIds.toArray());

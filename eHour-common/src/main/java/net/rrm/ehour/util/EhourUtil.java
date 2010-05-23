@@ -34,12 +34,11 @@ public class EhourUtil
 	 * @param projects
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public static<PK extends Serializable> List<PK> getIdsFromDomainObjects(Collection<? extends DomainObject> domainObjects)
+	public static<PK extends Serializable> List<PK> getIdsFromDomainObjects(Collection<? extends DomainObject<PK, ?>> domainObjects)
 	{
 		List<PK> pks = new ArrayList<PK>();
 		
-		for (DomainObject<PK,? extends DomainObject> domainObject : domainObjects)
+		for (DomainObject<PK, ?> domainObject : domainObjects)
 		{
 			pks.add(domainObject.getPK());
 		}

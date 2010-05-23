@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.project.service;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -139,7 +138,7 @@ public class ProjectServiceImpl implements ProjectService
 	 */
 	public void setProjectDeletability(Project project)
 	{
-		List<Serializable> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
+		List<Integer> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
 		List<AssignmentAggregateReportElement> aggregates = null;
 		
 		if (ids != null && ids.size() > 0)

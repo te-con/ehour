@@ -50,7 +50,7 @@ public interface AggregateReportService
 	 * @param projectAssignmentIds
 	 * @return
 	 */
-	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Serializable> projectAssignmentIds);
+	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds);
 	
 	/**
 	 * Get aggregate report data

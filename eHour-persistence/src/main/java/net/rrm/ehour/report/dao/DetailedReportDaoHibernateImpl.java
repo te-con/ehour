@@ -41,7 +41,7 @@ public class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHiberna
 	 * @return
 	 */	
 	@SuppressWarnings("unchecked")
-	public List<FlatReportElement> getHoursPerDayForAssignment(List<Serializable> assignmentIds, DateRange dateRange)
+	public List<FlatReportElement> getHoursPerDayForAssignment(List<? extends Serializable> assignmentIds, DateRange dateRange)
 	{
 		Session session = this.getSession();
 		
@@ -59,7 +59,7 @@ public class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHiberna
 	 * @see net.rrm.ehour.report.dao.DetailedReportDAO#getHoursPerDayForUsers(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatReportElement> getHoursPerDayForUsers(List<Serializable> userIds, DateRange dateRange)
+	public List<FlatReportElement> getHoursPerDayForUsers(List<? extends Serializable> userIds, DateRange dateRange)
 	{
 		Session session = this.getSession();
 		
@@ -77,7 +77,7 @@ public class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHiberna
 	 * @see net.rrm.ehour.report.dao.DetailedReportDAO#getHoursPerDayForProjects(java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatReportElement> getHoursPerDayForProjects(List<Serializable> projectIds, DateRange dateRange)
+	public List<FlatReportElement> getHoursPerDayForProjects(List<? extends Serializable> projectIds, DateRange dateRange)
 	{
 		Session session = this.getSession();
 		
@@ -95,7 +95,7 @@ public class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHiberna
 	 * @see net.rrm.ehour.report.dao.DetailedReportDAO#getHoursPerDayForProjectsAndUsers(java.util.List, java.util.List, net.rrm.ehour.data.DateRange)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<Serializable> projectIds, List<Serializable> userIds, DateRange dateRange)
+	public List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<? extends Serializable> projectIds, List<? extends Serializable> userIds, DateRange dateRange)
 	{
 		Session session = this.getSession();
 		

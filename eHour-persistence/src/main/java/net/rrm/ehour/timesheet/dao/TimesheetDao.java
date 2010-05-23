@@ -84,5 +84,5 @@ public interface TimesheetDao extends GenericDao<TimesheetEntry, TimesheetEntryI
 	 * @param assignmentIds
 	 * @return entries deleted
 	 */
-	public int deleteTimesheetEntries(List<Serializable> assignmentIds);
+	public int deleteTimesheetEntries(List<? extends Serializable> assignmentIds);
 }
