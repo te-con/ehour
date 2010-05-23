@@ -48,6 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("configurationService")
 public class ConfigurationServiceImpl implements ConfigurationService, Serializable
 {
+	private static final long serialVersionUID = -8862725896852558151L;
+
 	@Autowired
 	private ConfigurationDao	configDAO;
 	
