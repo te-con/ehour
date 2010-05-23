@@ -48,7 +48,6 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
  * @author Thies
  *
  */
-@SuppressWarnings("unchecked")
 public class UserServiceTest extends TestCase 
 {
 	private	UserService			userService;
@@ -78,36 +77,10 @@ public class UserServiceTest extends TestCase
 	 * 
 	 *
 	 */
-//	public void testLoadUserByUsername()
-//	{
-//		User	user;
-//		user = new User();
-//		user.setActive(false);
-//		
-//		expect(userDAO.findByUsername("test"))
-//			.andReturn(user);
-//		
-//		replay(userDAO);
-//		
-//		try
-//		{
-//			userService.loadUserByUsername("test");
-//			fail("No exception thrown");
-//		}
-//		catch (UsernameNotFoundException unne)
-//		{
-//			verify(userDAO);	
-//		}
-//	}
-	
-	/**
-	 * 
-	 *
-	 */
 	public void testGetUsersByNameMatch()
 	{
 		expect(userDAO.findUsersByNameMatch("test", true))
-				.andReturn(new ArrayList());
+				.andReturn(new ArrayList<User>());
 		
 		replay(userDAO);
 		
@@ -122,43 +95,43 @@ public class UserServiceTest extends TestCase
 	public void testGetUser() throws ObjectNotFoundException
 	{
 		User				user;
-		ProjectAssignment	paA, paB;
-		Project				prA, prB;
-		Set					pas = new HashSet();
+		ProjectAssignment	assignmentA, assignmentB;
+		Project				projectA, projectB;
+		Set<ProjectAssignment>	assignments = new HashSet<ProjectAssignment>();
 		Calendar			calA, calB;
 		
 		
 		user = new User("thies", "pwd");
 
-		prA = new Project();
-		prA.setActive(true);
-		paA = new ProjectAssignment();
-		paA.setAssignmentId(1);
-		paA.setAssignmentType(new ProjectAssignmentType(0));
+		projectA = new Project();
+		projectA.setActive(true);
+		assignmentA = new ProjectAssignment();
+		assignmentA.setAssignmentId(1);
+		assignmentA.setAssignmentType(new ProjectAssignmentType(0));
 		calA = new GregorianCalendar();
 		calA.add(Calendar.MONTH, -5);
-		paA.setDateStart(calA.getTime());
+		assignmentA.setDateStart(calA.getTime());
 		calA.add(Calendar.MONTH, 1);
-		paA.setDateEnd(calA.getTime());
-		paA.setProject(prA);
-		pas.add(paA);
+		assignmentA.setDateEnd(calA.getTime());
+		assignmentA.setProject(projectA);
+		assignments.add(assignmentA);
 		
-		prB = new Project();
-		prB.setActive(true);
+		projectB = new Project();
+		projectB.setActive(true);
 
-		paB = new ProjectAssignment();
-		paB.setAssignmentId(2);
-		paB.setAssignmentType(new ProjectAssignmentType(0));
+		assignmentB = new ProjectAssignment();
+		assignmentB.setAssignmentId(2);
+		assignmentB.setAssignmentType(new ProjectAssignmentType(0));
 		calB = new GregorianCalendar();
 		calB.add(Calendar.MONTH, -2);
-		paB.setDateStart(calB.getTime());
+		assignmentB.setDateStart(calB.getTime());
 		calB = new GregorianCalendar();
 		calB.add(Calendar.MONTH, 1);
-		paB.setDateEnd(calB.getTime());
-		paB.setProject(prB);
-		pas.add(paB);
+		assignmentB.setDateEnd(calB.getTime());
+		assignmentB.setProject(projectB);
+		assignments.add(assignmentB);
 		
-		user.setProjectAssignments(pas);
+		user.setProjectAssignments(assignments);
 		
 		expect(userDAO.findById(1))
 				.andReturn(user);

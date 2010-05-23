@@ -79,7 +79,7 @@ public class ConfigurationServiceTest
 	 * Test method for {@link net.rrm.ehour.config.service.ConfigurationServiceImpl#getConfiguration()}.
 	 */
 	@Test
-	public void testGetConfiguration()
+	public void shouldGetConfiguration()
 	{
 		List<Configuration> configs = new ArrayList<Configuration>();
 		configs.add(new Configuration("availableTranslations", "en,nl"));
@@ -106,7 +106,7 @@ public class ConfigurationServiceTest
 	 * Test method for {@link net.rrm.ehour.config.service.ConfigurationServiceImpl#persistConfiguration(net.rrm.ehour.config.EhourConfig)}.
 	 */
 	@Test
-	public void testPersistConfiguration()
+	public void shouldPersistConfiguration()
 	{
 
 		EhourConfigStub stub = new EhourConfigStub();

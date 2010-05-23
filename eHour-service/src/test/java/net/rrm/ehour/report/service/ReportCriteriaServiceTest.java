@@ -51,8 +51,6 @@ import org.junit.Test;
  * test case for report criteria 
  **/
 
-@SuppressWarnings("unchecked")
-
 public class ReportCriteriaServiceTest  
 {
 	private	ReportCriteriaService	reportCriteriaService;
@@ -106,7 +104,7 @@ public class ReportCriteriaServiceTest
 		
 		userCriteria = new UserCriteria();
 		userCriteria.setSingleUser(true);
-		List ids = new ArrayList();
+		List<User> ids = new ArrayList<User>();
 		ids.add(new User(1));
 		userCriteria.setUsers(ids);
 		reportCriteria = new ReportCriteria(userCriteria);		

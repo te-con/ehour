@@ -29,9 +29,6 @@ import net.rrm.ehour.data.DateRange;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-/**
- * TODO 
- **/
 @SuppressWarnings("deprecation")
 public class DateUtilTest extends TestCase
 {
@@ -244,10 +241,9 @@ public class DateUtilTest extends TestCase
 
 	
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testCreateCalendarSequence()
 	{
-		List res = DateUtil.createDateSequence(new DateRange(new Date(2007 - 1900, 5 - 1, 2),new Date(2007 - 1900, 5 - 1, 8)), new EhourConfigStub());
+		List<Date> res = DateUtil.createDateSequence(new DateRange(new Date(2007 - 1900, 5 - 1, 2),new Date(2007 - 1900, 5 - 1, 8)), new EhourConfigStub());
 		
 		assertEquals(7, res.size());
 	}	
