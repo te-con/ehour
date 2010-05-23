@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.user.service;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -51,7 +50,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author   Thies
+ * 
+ * @author Thies Edeling (thies@te-con.nl)
+ *
  */
 @Service("userService")
 public class UserServiceImpl implements UserService
@@ -126,7 +127,7 @@ public class UserServiceImpl implements UserService
 		else
 		{
 			// bummer, we need to check if the user booked any hours on the assignments
-			List<Serializable> assignmentIds = new ArrayList<Serializable>();
+			List<Integer> assignmentIds = new ArrayList<Integer>();
 
 			assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
 			assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getInactiveProjectAssignments()));
@@ -152,10 +153,6 @@ public class UserServiceImpl implements UserService
 		return user;
 	}	
 
-	/**
-	 * 
-	 */
-	
 	public List<UserDepartment> getUserDepartments()
 	{
 		return userDepartmentDAO.findAll();

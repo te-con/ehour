@@ -138,39 +138,6 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		return aggregates;
 	}
 	
-	
-	/**
-	 * Get weekly project report
-	 * @param 
-	 * @return
-	 */
-//	private List<FlatProjectAssignmentAggregate> getWeeklyReportData(List<User> users,
-//																	 List<Project> projects,
-//																		DateRange reportRange)
-//	{
-//		List<FlatProjectAssignmentAggregate> aggregates = null;
-//
-//		if (users == null && projects == null)
-//		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignment(reportRange);
-//		}
-//		else if (projects == null && users != null)
-//		{		
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(EhourUtil.getPKsFromDomainObjects(users), reportRange);
-//		}
-//		else if (projects != null && users == null)
-//		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(EhourUtil.getPKsFromDomainObjects(projects), reportRange);
-//		}
-//		else
-//		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(EhourUtil.getPKsFromDomainObjects(users),
-//																					EhourUtil.getPKsFromDomainObjects(projects), reportRange);
-//		}	
-//		
-//		return aggregates;
-//	}	
-
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.report.service.ReportService#getProjectManagerReport(net.rrm.ehour.data.DateRange, java.lang.Integer)
