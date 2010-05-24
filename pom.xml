@@ -62,7 +62,7 @@
 		<applicationVersion>0.9.0-SNAPSHOT</applicationVersion>
 		<spring.version>3.0.2.RELEASE</spring.version>
 		<wicket.version>1.4.8</wicket.version>
-		<jetty.version>6.1.11</jetty.version>
+		<jetty.version>7.1.2.v20100523</jetty.version>
 		<derbydb.version>10.4.2.0</derbydb.version>
 		<aspectj.version>1.6.6</aspectj.version>
 		<hibernate.version>3.3.2.GA</hibernate.version>
@@ -176,18 +176,23 @@
 				<version>${derbydb.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty</artifactId>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-servlet</artifactId>
 				<version>${jetty.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-naming</artifactId>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-jndi</artifactId>
 				<version>${jetty.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.mortbay.jetty</groupId>
+				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-plus</artifactId>
+				<version>${jetty.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-deploy</artifactId>
 				<version>${jetty.version}</version>
 			</dependency>
 			<dependency>

@@ -18,8 +18,9 @@ package net.rrm.ehour;
 
 import java.io.FileInputStream;
 
-import org.mortbay.jetty.Server;
-import org.mortbay.xml.XmlConfiguration;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.xml.XmlConfiguration;
+
 
 /**
  * Start jetty 
