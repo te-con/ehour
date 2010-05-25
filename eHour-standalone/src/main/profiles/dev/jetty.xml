@@ -3,10 +3,6 @@
 
 <Configure id="Server" class="org.eclipse.jetty.server.Server">
 
-	<Call class="org.eclipse.jetty.util.log.Log" name="debug">
-		<Arg>executing jetty-web.xml</Arg>
-	</Call>
-
 	<Call name="addConnector">
 		<Arg>
 			<New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
@@ -56,11 +52,7 @@
 				<Set name="contexts">
 					<Ref id="Contexts" />
 				</Set>
-				<Call name="setContextAttribute">
-					<Arg>org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern
-					</Arg>
-					<Arg>.*/jsp-api-[^/]*\.jar$|.*/jsp-[^/]*\.jar$</Arg>
-				</Call>
+
 
 				<Call name="addAppProvider">
 					<Arg>

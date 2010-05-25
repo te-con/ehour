@@ -39,7 +39,8 @@ public class EhourWrapper
 		
 		XmlConfiguration configuration = new XmlConfiguration(new FileInputStream(filename));
 		configuration.configure(server);
-		server.start();		
+		server.start();	
+		server.join();
 	}
 	
 	public static void main(String[] arg) throws Exception

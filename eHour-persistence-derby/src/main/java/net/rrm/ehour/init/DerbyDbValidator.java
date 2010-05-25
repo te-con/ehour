@@ -216,8 +216,13 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 		}
 		finally
 		{
-			results.close();
-			stmt.close();
+			if (results != null) {
+				results.close();
+			}
+			
+			if (stmt != null) {
+				stmt.close();
+			}
 		}
 		
 		return version;

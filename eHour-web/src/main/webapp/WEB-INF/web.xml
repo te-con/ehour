@@ -13,7 +13,6 @@
 			classpath:context-security.xml
 			classpath:context-datasource.xml
 			classpath:context-wicket.xml
-			classpath:context-props.xml
 		</param-value>
 	</context-param>
 

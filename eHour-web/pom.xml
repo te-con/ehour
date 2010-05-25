@@ -15,25 +15,6 @@
 	<version>${applicationVersion}</version>
 
 	<build>
-		<plugins>
-			<plugin>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<groupId>org.mortbay.jetty</groupId>
-				<version>7.0.0pre3</version>
-				<configuration>
-					<contextPath>/ehour</contextPath>
-					<scanIntervalSeconds>3</scanIntervalSeconds>
-					<connectors>
-						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-							<port>8090</port>
-							<host>0.0.0.0</host>
-						</connector>
-					</connectors>
-					<jettyEnvXml>${basedir}/src/test/resources/jetty-env-mysql.xml</jettyEnvXml>
-				</configuration>
-			</plugin>
-		</plugins>
-
 		<resources>
 			<resource>
 				<filtering>false</filtering>
@@ -62,6 +43,9 @@
 		</profile>
 		<profile>
 			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<build>
 				<resources>
 					<resource>
@@ -72,6 +56,9 @@
 		</profile>
 		<profile>
 			<id>standalone</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>			
 			<build>
 				<plugins>
 					<plugin>
@@ -98,17 +85,14 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
-			<version>${applicationVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-wicketweb</artifactId>
-			<version>${applicationVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-audit</artifactId>
-			<version>${applicationVersion}</version>
 		</dependency>
 	</dependencies>
 </project>
