@@ -52,8 +52,7 @@ public class AssignablesPanel extends AbstractAjaxPanel<Void>
 		
 		addNodesToRoot(rootNode);
 		
-		DefaultTreeModel model = new DefaultTreeModel(rootNode);
-		return model;
+		return new DefaultTreeModel(rootNode);
 	}
 
 	private void addNodesToRoot(MutableTreeNode rootNode)

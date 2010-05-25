@@ -35,7 +35,7 @@ public class AjaxDataTable<T> extends DataTable<T>
 	@SuppressWarnings("unchecked")
 	public AjaxDataTable(String id, final List<IColumn<T>> columns, ISortableDataProvider<T> dataProvider, int rowsPerPage)
 	{
-		this(id, (IColumn<T>[])columns.toArray(), dataProvider, rowsPerPage);
+		this(id, (IColumn<T>[]) columns.toArray(), dataProvider, rowsPerPage);
 	}
 
 

@@ -56,7 +56,7 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 	
 	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
 	
-	private final static Logger logger = Logger.getLogger(DerbyDbValidator.class);
+	private final static Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
 
 	/*
 	 * (non-Javadoc)
@@ -64,7 +64,7 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 	 */
 	public void onApplicationEvent(ContextClosedEvent event)
 	{
-		logger.info("Application shutting down, shutting down database");
+		LOGGER.info("Application shutting down, shutting down database");
 		((EmbeddedDataSource)dataSource).setShutdownDatabase("shutdown");	
 	}	
 	
@@ -80,13 +80,15 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 		String 	currentVersion = null;
 		DdlType ddlType = DdlType.CREATE_TABLE;
 		
-		logger.info("Verifying datamodel version. Minimum version: " + version);
+		LOGGER.info("Verifying datamodel version. Minimum version: " + version);
 
+		Connection connection = null;
+		
 		try
 		{
 			((EmbeddedDataSource)dataSource).setCreateDatabase("create");
 
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			
 			currentVersion = getCurrentVersion(connection);
 			
@@ -95,11 +97,11 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 			if (databaseInState)
 			{
 				ddlType = DdlType.NONE;
-				logger.info("Datamodel is the required version.");
+				LOGGER.info("Datamodel is the required version.");
 			}
 			else
 			{
-				logger.info("Datamodel of version " + currentVersion + " found. Upgrading to " + version);
+				LOGGER.info("Datamodel of version " + currentVersion + " found. Upgrading to " + version);
 
 				ddlType = DdlType.ALTER_TABLE;
 			}
@@ -108,11 +110,22 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 		} catch (SQLException e)
 		{
 			ddlType = DdlType.CREATE_TABLE;
-			logger.info("Could not determine datamodel's version, recreating..");
+			LOGGER.info("Could not determine datamodel's version, recreating..");
 		}
 		finally
 		{
 			((EmbeddedDataSource)dataSource).setCreateDatabase("");
+			
+			try
+			{
+				if (connection != null)
+				{
+					connection.close();
+				}
+			} catch (SQLException e)
+			{
+				LOGGER.error("Failed to close connection", e);
+			}
 		}
 		
 		if (ddlType != DdlType.NONE)
@@ -122,7 +135,7 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 				createOrAlterDatamodel(dataSource, ddlType);
 			} catch (Exception e)
 			{
-				logger.error("Failed to create or upgrade datamodel", e);
+				LOGGER.error("Failed to create or upgrade datamodel", e);
 			}
 		}
 	}
@@ -176,7 +189,7 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
         
         dataIO.writeDataToDatabase(dataReader, new InputStreamReader(resource.getInputStream()));
         
-        logger.info("Data inserted");
+        LOGGER.info("Data inserted");
 	}
 	
 	/**
@@ -188,18 +201,24 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 	private String getCurrentVersion(Connection connection) throws SQLException
 	{
 		String version = null;
+		Statement stmt = null;
+		ResultSet results = null;
 		
-		Statement stmt = connection.createStatement();
-		ResultSet results = stmt.executeQuery("SELECT config_value FROM CONFIGURATION WHERE config_key = 'version'");
-		
-		if (results.next())
+		try
 		{
-			version = results.getString("config_value");
+			stmt = connection.createStatement();
+			results = stmt.executeQuery("SELECT config_value FROM CONFIGURATION WHERE config_key = 'version'");
+			
+			if (results.next())
+			{
+				version = results.getString("config_value");
+			}
 		}
-		
-		
-		results.close();
-		stmt.close();
+		finally
+		{
+			results.close();
+			stmt.close();
+		}
 		
 		return version;
 	}

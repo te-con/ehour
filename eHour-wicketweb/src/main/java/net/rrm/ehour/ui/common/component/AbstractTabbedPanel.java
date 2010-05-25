@@ -33,7 +33,7 @@ public abstract class AbstractTabbedPanel extends AjaxTabbedPanel
 			throw new IndexOutOfBoundsException();
 		}
 
-		setDefaultModelObject(new Integer(index));
+		setDefaultModelObject(Integer.valueOf(index));
 
 		final Component component;
 

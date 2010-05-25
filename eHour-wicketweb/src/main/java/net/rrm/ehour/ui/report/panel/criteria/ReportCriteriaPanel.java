@@ -79,6 +79,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBackingBean> 
 {
+	private static final int MAX_CRITERIA_ROW = 4;
+
 	private static final long serialVersionUID = 161160822264046559L;
 	
 	@SpringBean
@@ -97,17 +99,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 	 * @param model
 	 */
 	public ReportCriteriaPanel(String id, IModel<ReportCriteriaBackingBean> model)
-	{
-		this(id, model, true);
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 * @param multipleCustomer
-	 */
-	public ReportCriteriaPanel(String id, IModel<ReportCriteriaBackingBean> model, boolean multipleCustomer)
 	{
 		super(id, model);
 		
@@ -162,7 +153,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 				new PropertyModel<List<Customer>>(bean, "reportCriteria.availableCriteria.customers"),
 				new DomainObjectChoiceRenderer<Customer>());
 		
-		customers.setMaxRows(4);	
+		customers.setMaxRows(MAX_CRITERIA_ROW);	
 
 		customers.setOutputMarkupId(true);
 
@@ -238,7 +229,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 		projects = new ListMultipleChoice<Project>("reportCriteria.userCriteria.projects",
 											new PropertyModel<List<Project>>(getDefaultModel(), "reportCriteria.availableCriteria.projects"),
 											new DomainObjectChoiceRenderer<Project>());
-		projects.setMaxRows(4);
+		projects.setMaxRows(MAX_CRITERIA_ROW);
 		projects.setOutputMarkupId(true);
 		parent.add(projects);
 		
@@ -271,7 +262,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 								new PropertyModel<List<User>>(getDefaultModel(), "reportCriteria.availableCriteria.users"),
 								new DomainObjectChoiceRenderer<User>());
 		users.setOutputMarkupId(true);
-		users.setMaxRows(4);
+		users.setMaxRows(MAX_CRITERIA_ROW);
 		parent.add(users);
 		
 		// hide active checkbox
@@ -314,7 +305,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 		departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userCriteria.userDepartments",
 								new PropertyModel<List<UserDepartment>>(getDefaultModel(), "reportCriteria.availableCriteria.userDepartments"),
 								new DomainObjectChoiceRenderer<UserDepartment>());
-		departments.setMaxRows(4);
+		departments.setMaxRows(MAX_CRITERIA_ROW);
 		
 		// update projects when customer(s) selected
 		departments.add(new AjaxFormComponentUpdatingBehavior("onchange")
@@ -350,7 +341,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 	 * Update report criteria
 	 * @param filter
 	 */
-	protected void updateReportCriteria(ReportCriteriaUpdateType updateType)
+	private void updateReportCriteria(ReportCriteriaUpdateType updateType)
 	{
 		ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
 		
@@ -363,22 +354,21 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 	 * Get backingbean from model
 	 * @return
 	 */
-	protected ReportCriteriaBackingBean getBackingBeanFromModel()
+	private ReportCriteriaBackingBean getBackingBeanFromModel()
 	{
-		return (ReportCriteriaBackingBean)getDefaultModel().getObject();
+		return (ReportCriteriaBackingBean)getDefaultModelObject();
 	}	
 	
 	/**
 	 * Add submit link
 	 * @param parent
 	 */
+	@SuppressWarnings("serial")
 	private void addCreateReportSubmit(Form<ReportCriteriaBackingBean> form)
 	{
 		// Submit
 		AjaxButton submitButton = new AjaxButton("createReport", form)
 		{
-			private static final long serialVersionUID = 4373085964708354107L;
-
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form)
 			{
@@ -390,7 +380,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 			{
 				return new LoadingSpinnerDecorator();
 			}
-			
 			
 			@Override
             protected void onError(AjaxRequestTarget target, Form<?> form)
@@ -405,8 +394,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 		// reset button
 		AjaxButton resetButton = new AjaxButton("resetCriteria")
 		{
-			private static final long serialVersionUID = 4373085964708354107L;
-
 			@Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form)
 			{
@@ -442,7 +429,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 	 * Add dates
 	 * @param parent
 	 */
-	protected void addDates(Form<ReportCriteriaBackingBean> form, IModel<ReportCriteriaBackingBean> model)
+	private void addDates(Form<ReportCriteriaBackingBean> form, IModel<ReportCriteriaBackingBean> model)
 	{
         startDatePicker = new DateTextField("reportCriteria.userCriteria.reportRange.dateStart", 
         										new PropertyModel<Date>(model, "reportCriteria.userCriteria.reportRange.dateStart"), new StyleDateConverter("S-", false));
@@ -572,7 +559,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 	 * Sort available report criteria
 	 * @param reportCriteria
 	 */
-	protected void sortReportCriteria(ReportCriteria reportCriteria)
+	private void sortReportCriteria(ReportCriteria reportCriteria)
 	{
 		Collections.sort((reportCriteria.getAvailableCriteria()).getCustomers(), new CustomerComparator());
 		Collections.sort((reportCriteria.getAvailableCriteria()).getProjects(), new ProjectComparator());
@@ -582,7 +569,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.ui.common.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public final boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == QuickDateAjaxEventType.ADMIN_QUICK_DATE_CHANGED)
 		{

@@ -425,7 +425,7 @@ public class TimesheetPanel extends Panel implements Serializable
 				final Customer customer = item.getModelObject();
 
 				Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
-				item.add(getCustomerLabel(customer));
+				item.add(new Label("customer", customer.getName()));
 
 				item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), grandTotals, form));
 			}
@@ -435,17 +435,5 @@ public class TimesheetPanel extends Panel implements Serializable
 		parent.add(customers);
 
 		return grandTotals;
-	}
-
-	/**
-	 * Get customer label
-	 * 
-	 * @param customer
-	 * @return
-	 */
-	private Label getCustomerLabel(final Customer customer)
-	{
-		Label label = new Label("customer", customer.getName());
-		return label;
 	}
 }

@@ -58,8 +58,7 @@ public class ExportReportDummyCreater
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.set(Calendar.MONTH, Calendar.NOVEMBER);
 		
-		DateRange range = DateUtil.getDateRangeForMonth(cal);
-		return range;
+		return DateUtil.getDateRangeForMonth(cal);
 	}
 	
 	private static FlatReportElement createElement(Date date)

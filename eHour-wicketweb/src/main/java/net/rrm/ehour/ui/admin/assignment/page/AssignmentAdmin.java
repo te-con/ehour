@@ -53,7 +53,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class AssignmentAdmin extends AbstractAdminPage<Void>
 {
 	private static final long serialVersionUID = 566527529422873370L;
-	private final String			USER_SELECTOR_ID = "userSelector";
+	private static final String			USER_SELECTOR_ID = "userSelector";
 	
 	@SpringBean
 	private	UserService					userService;

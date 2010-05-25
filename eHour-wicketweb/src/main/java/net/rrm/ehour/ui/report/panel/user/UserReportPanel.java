@@ -166,29 +166,25 @@ public class UserReportPanel extends AbstractReportPanel
 	private Image createProjectHoursChart(Model<ReportData> dataModel)
 	{
 		AggregateChartDataConverter hourConverter = new ProjectHoursAggregateChartDataConverter();
-		Image projectHoursChart = new AggregateChartImage("projectHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
-		return projectHoursChart;
+		return new AggregateChartImage("projectHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
 	}	
 
 	private Image createProjectTurnOverChart(Model<ReportData> dataModel)
 	{
 		AggregateChartDataConverter turnoverConverter = new ProjectTurnoverAggregateChartDataConverter();
-		Image projectTurnoverChart = new AggregateChartImage(PROJECT_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
-		return projectTurnoverChart;
+		return new AggregateChartImage(PROJECT_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
 	}
 
 	
 	private Image createCustomerTurnOverChart(Model<ReportData> dataModel)
 	{
 		AggregateChartDataConverter turnoverConverter = new CustomerTurnoverAggregateChartDataConverter();
-		Image customerTurnoverChart = new AggregateChartImage(CUSTOMER_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
-		return customerTurnoverChart;
+		return new AggregateChartImage(CUSTOMER_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
 	}
 
 	private Image createCustomerHoursChart(Model<ReportData> dataModel)
 	{
 		AggregateChartDataConverter hourConverter = new CustomerHoursAggregateChartDataConverter();
-		Image customerHoursChart = new AggregateChartImage("customerHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
-		return customerHoursChart;
+		return new AggregateChartImage("customerHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
 	}	
 }

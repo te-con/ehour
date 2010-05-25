@@ -55,7 +55,7 @@ public class CustomerNode extends ReportNode
 		}
 		else
 		{
-			return new Integer(1);
+			return Integer.valueOf(1);
 		}
     }
 }

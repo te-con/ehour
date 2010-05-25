@@ -268,7 +268,7 @@ public class AuditAspect
 				.setSuccess(success)
 				.setAction(pjp.getSignature().toShortString())
 				.setAuditActionType(auditActionType)
-				.setParameters(parameters.toString())
+				.setParameters(parameters)
 				.setPage(page)
 				;
 		

@@ -54,7 +54,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingBean>
 {
-	private final String	CUSTOMER_SELECTOR_ID = "customerSelector";
+	private static final String	CUSTOMER_SELECTOR_ID = "customerSelector";
 	
 	private static final long serialVersionUID = 3190421612132110664L;
 	

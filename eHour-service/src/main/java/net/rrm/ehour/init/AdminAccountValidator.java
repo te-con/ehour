@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminAccountValidator
 {
-	private final static Logger logger = Logger.getLogger(AdminAccountValidator.class);
+	private final static Logger LOGGER = Logger.getLogger(AdminAccountValidator.class);
 	
 	@Autowired
 	private EhourConfig ehourConfig;
@@ -54,12 +54,12 @@ public class AdminAccountValidator
 	{
 		if (!ehourConfig.isInitialized())
 		{
-			logger.info("eHour not initialized, initializing...");
+			LOGGER.info("eHour not initialized, initializing...");
 			updateAdminPassword();
 		}
 		else
 		{
-			logger.info("eHour already initialized");
+			LOGGER.info("eHour already initialized");
 		}
 	}
 	
@@ -68,13 +68,13 @@ public class AdminAccountValidator
 	 */
 	private void updateAdminPassword()
 	{
-		logger.info("Setting password of admin account to default value");
+		LOGGER.info("Setting password of admin account to default value");
 		
 		User user = userService.getUser("admin");
 		
 		if (user == null)
 		{
-			logger.warn("Admin account not found, maybe the SQL scripts failed to run properly?");
+			LOGGER.warn("Admin account not found, maybe the SQL scripts failed to run properly?");
 		}
 		else
 		{
@@ -82,15 +82,15 @@ public class AdminAccountValidator
 			try
 			{
 				userService.persistUser(user);
-				logger.info("Password set to default value: " + user.getPassword());
+				LOGGER.info("Password set to default value: " + user.getPassword());
 				
 				setEhourInitialized();
 			} catch (PasswordEmptyException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Supplied password is empty - how can this happen?");
 			} catch (ObjectNotUniqueException e)
 			{
-				e.printStackTrace();
+				LOGGER.error("Admin account already exists", e);
 			}
 		}
 	}
@@ -104,7 +104,7 @@ public class AdminAccountValidator
 		config.setInitialized(true);
 		configService.persistConfiguration(config);
 
-		logger.info("eHour's state to initialized");
+		LOGGER.info("eHour's state to initialized");
 		
 	}
 	

@@ -351,11 +351,11 @@ public class UserServiceImpl implements UserService
 		} catch (PasswordEmptyException e)
 		{
 			// won't happen
-			e.printStackTrace();
+			LOGGER.error("Password empty");
 		} catch (ObjectNotUniqueException e)
 		{
 			// won't happen
-			e.printStackTrace();
+			LOGGER.error("Account already exists", e);
 		}
 		
 		return user;

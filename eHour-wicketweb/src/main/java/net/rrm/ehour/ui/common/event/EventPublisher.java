@@ -23,6 +23,9 @@ import org.apache.wicket.Component.IVisitor;
 
 public class EventPublisher
 {
+	private EventPublisher() {
+	}
+	
 	// purely for junit testing
 	public static AjaxEventListener listenerHook;
 

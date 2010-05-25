@@ -24,8 +24,6 @@ import net.rrm.ehour.ui.common.converter.DateConverter;
 import net.rrm.ehour.ui.common.report.ReportColumn.ColumnType;
 import net.rrm.ehour.ui.report.panel.user.TurnoverTreeReportColumn;
 
-
-
 /**
  * All report definitions
  **/
@@ -79,7 +77,7 @@ public enum ReportConfig
 					new ReportColumn("audit.report.column.lastName"),
 					new ReportColumn("audit.report.column.action"),
 					new ReportColumn("audit.report.column.type"));
-												
+
 	private ReportColumn[] 	reportColumns;
 	private int groupByColumn;
 	
