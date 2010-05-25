@@ -6,12 +6,12 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:context-scanner.xml
+			classpath:context-datasource.xml
 			classpath:context-dbconnectivity.xml
+			classpath:context-scanner.xml
 			classpath:context-scanner.xml
 			classpath:context-service.xml
 			classpath:context-security.xml
-			classpath:context-datasource.xml
 			classpath:context-wicket.xml
 		</param-value>
 	</context-param>
