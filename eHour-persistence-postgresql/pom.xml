@@ -11,22 +11,6 @@
 	<packaging>jar</packaging>
 	<name>eHour DB PostgreSQL connectivity</name>
 	<version>${applicationVersion}</version>
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources/datasource</directory>
-			</resource>
-			<resource>
-				<directory>src/main/resources/query</directory>
-			</resource>
-			<resource>
-				<directory>src/main/resources/hibernate</directory>
-			</resource>
-		</resources>
-
-
-
-	</build>
 
 	<dependencies>
 		<dependency>

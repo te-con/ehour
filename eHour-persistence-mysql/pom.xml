@@ -11,16 +11,6 @@
 	<packaging>jar</packaging>
 	<name>eHour DB MySQL connectivity</name>
 	<version>${applicationVersion}</version>
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources/datasource</directory>
-			</resource>
-			<resource>
-				<directory>src/main/resources/hibernate</directory>
-			</resource>
-		</resources>
-	</build>
 
 	<dependencies>
 		<dependency>

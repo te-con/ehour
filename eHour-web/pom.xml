@@ -11,23 +11,7 @@
 	<artifactId>eHour-web</artifactId>
 	<packaging>war</packaging>
 	<name>eHour web UI</name>
-
 	<version>${applicationVersion}</version>
-
-	<build>
-		<resources>
-			<resource>
-				<filtering>false</filtering>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**</include>
-				</includes>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
-	</build>
 
 	<profiles>
 		<profile>

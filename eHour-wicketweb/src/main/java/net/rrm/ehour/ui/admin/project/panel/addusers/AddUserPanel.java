@@ -43,7 +43,7 @@ public class AddUserPanel extends AbstractBasePanel<Void>
 		{
 			
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form)
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form)
 			{
 				System.out.println(users);
 			}

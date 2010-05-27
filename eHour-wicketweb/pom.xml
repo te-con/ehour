@@ -15,23 +15,6 @@
 
 	<build>
 		<finalName>eHour-wicketweb</finalName>
-		<plugins>
-			<plugin>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<additionalProjectnatures>
-						<projectnature>
-							wicketbench.wicketnature
-						</projectnature>
-					</additionalProjectnatures>
-					<additionalBuildcommands>
-						<buildcommand>
-							wicketbench.associatedMarkupAuditor
-						</buildcommand>
-					</additionalBuildcommands>
-				</configuration>
-			</plugin>
-		</plugins>
 
 		<resources>
 			<resource>
@@ -43,9 +26,6 @@
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
 	</build>
@@ -180,9 +160,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
-		<!--
-			<dependency> <groupId>org.odlabs.wiquery</groupId>
-			<artifactId>wiquery</artifactId> </dependency>
-		-->
+		<!-- <dependency> <groupId>org.odlabs.wiquery</groupId> <artifactId>wiquery</artifactId> 
+			</dependency> -->
 	</dependencies>
 </project>
