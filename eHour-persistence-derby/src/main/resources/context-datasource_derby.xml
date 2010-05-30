@@ -18,6 +18,6 @@
 		<property name="dmlFile" value="classpath:ddl/dml-ehour-0.8.4.xml" />
 	</bean>
 
-	<context:property-placeholder location="classpath:hibernate_derby.properties" />
+	<context:property-placeholder  location="classpath:hibernate_derby.properties" />
 
 </beans>

@@ -36,6 +36,7 @@ import org.apache.ddlutils.io.DatabaseIO;
 import org.apache.ddlutils.model.Database;
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.event.ContextClosedEvent;
@@ -46,9 +47,9 @@ import org.springframework.core.io.ResourceLoader;
  * Derby database accessor methods
  **/
 
-public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>, ResourceLoaderAware  
+public class DerbyDbValidatorImpl implements ApplicationListener<ContextClosedEvent>, ResourceLoaderAware  
 {
-	private String		ddlFile;
+	private @Value("${jdbcProperties.url}") String		ddlFile;
 	private String		dmlFile;
 	private DataSource	dataSource;
 	private	String		version;
@@ -56,7 +57,7 @@ public class DerbyDbValidator implements ApplicationListener<ContextClosedEvent>
 	
 	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
 	
-	private final static Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
+	private final static Logger LOGGER = Logger.getLogger(DerbyDbValidatorImpl.class);
 
 	/*
 	 * (non-Javadoc)

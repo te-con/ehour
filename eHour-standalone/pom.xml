@@ -137,5 +137,9 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-common</artifactId>
+		</dependency>
 	</dependencies>
 </project>

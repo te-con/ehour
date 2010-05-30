@@ -27,6 +27,12 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
+
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+
 		</resources>
 	</build>
 

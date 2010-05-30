@@ -137,6 +137,11 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 			
 			configurationType = props.getProperty("configurationType");
 			
+			if (configurationType == null) {
+				configurationType = Application.DEVELOPMENT;
+			}
+			
+			// TODO
 			if (!configurationType.equalsIgnoreCase(Application.DEPLOYMENT) &&
 					!configurationType.equalsIgnoreCase(Application.DEVELOPMENT))
 			{
