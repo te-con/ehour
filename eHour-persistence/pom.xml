@@ -21,7 +21,16 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-persistence-derby</artifactId>
-			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-persistence-mysql</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-persistence-postgresql</artifactId>
 		</dependency>
 	
 		<dependency>
@@ -48,7 +57,6 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
