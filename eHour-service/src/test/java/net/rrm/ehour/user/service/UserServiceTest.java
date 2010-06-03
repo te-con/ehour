@@ -34,9 +34,11 @@ import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.service.exception.ObjectNotFoundException;
+import net.rrm.ehour.service.exception.ObjectNotUniqueException;
+import net.rrm.ehour.service.exception.PasswordEmptyException;
+import net.rrm.ehour.service.user.service.UserService;
+import net.rrm.ehour.service.user.service.UserServiceImpl;
 import net.rrm.ehour.user.dao.UserDao;
 import net.rrm.ehour.user.dao.UserDepartmentDao;
 import net.rrm.ehour.user.dao.UserRoleDao;
@@ -89,7 +91,7 @@ public class UserServiceTest extends TestCase
 		verify(userDAO);
 	}
 	/**
-	 * Test method for {@link net.rrm.ehour.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
+	 * Test method for {@link net.rrm.ehour.service.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
 	 * @throws ObjectNotFoundException 
 	 */
 	public void testGetUser() throws ObjectNotFoundException

@@ -9,19 +9,22 @@ import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.convert.IConverter;
 
 public class EditDatePanel extends Panel
 {
 	private static final long serialVersionUID = -7769909552498244968L;
 
-	private DateTextField dateInputField;
+	private TextField dateInputField;
 	
 	public EditDatePanel(String id, IModel<Date> dateModel, IModel<Boolean> infiniteModel)
 	{
@@ -39,7 +42,14 @@ public class EditDatePanel extends Panel
 		updateTarget.setOutputMarkupId(true);
 
 		// start date
-        dateInputField = new DateTextField("date", dateModel, new StyleDateConverter("S-", true));
+        dateInputField = new TextField("date", dateModel)
+        {
+        	@Override
+        	public IConverter getConverter(Class<?> type)
+        	{
+        		return new PatternDateConverter("dd-MM-yyyy", false);
+        	}
+        };
 		updateTarget.add(dateInputField);
 
         dateInputField.add(new ConditionalRequiredValidator<Date>(infiniteModel));

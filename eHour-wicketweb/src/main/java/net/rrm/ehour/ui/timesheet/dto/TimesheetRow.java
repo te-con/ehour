@@ -25,7 +25,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.service.project.status.ProjectAssignmentStatus;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;

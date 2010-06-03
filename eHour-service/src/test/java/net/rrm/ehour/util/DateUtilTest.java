@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Locale;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.service.config.EhourConfigStub;
 
 import org.joda.time.DateTime;
 import org.junit.Test;

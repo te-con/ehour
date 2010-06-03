@@ -32,6 +32,8 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.service.report.service.DetailedReportService;
+import net.rrm.ehour.service.report.service.DetailedReportServiceImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +68,7 @@ public class DetailedReportServiceImplTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.report.service.DetailedReportServiceImpl#getDetailedReportData(net.rrm.ehour.report.criteria.ReportCriteria)}.
+	 * Test method for {@link net.rrm.ehour.service.report.service.DetailedReportServiceImpl#getDetailedReportData(net.rrm.ehour.service.report.criteria.ReportCriteria)}.
 	 */
 	@Test
 	public void testGetDetailedReportAll()

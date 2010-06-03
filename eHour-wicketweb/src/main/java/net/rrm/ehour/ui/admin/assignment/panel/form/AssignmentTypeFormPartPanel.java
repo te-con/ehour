@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.service.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.admin.assignment.component.EditDatePanel;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;

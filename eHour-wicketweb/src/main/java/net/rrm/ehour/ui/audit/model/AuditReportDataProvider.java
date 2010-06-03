@@ -19,9 +19,9 @@ package net.rrm.ehour.ui.audit.model;
 import java.util.Iterator;
 import java.util.List;
 
-import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.service.audit.service.AuditService;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;

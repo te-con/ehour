@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.common.report;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.service.report.reports.ReportData;
 import net.rrm.ehour.ui.common.cache.CachableObject;
 
 import org.apache.wicket.model.LoadableDetachableModel;

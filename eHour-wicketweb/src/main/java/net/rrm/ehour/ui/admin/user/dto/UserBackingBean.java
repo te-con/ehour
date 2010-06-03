@@ -96,7 +96,7 @@ public class UserBackingBean extends AdminBackingBeanImpl
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.model.AdminBackingBean#getDomainObject()
+	 * @see net.rrm.ehour.service.ui.common.model.AdminBackingBean#getDomainObject()
 	 */
 	
 	public User getDomainObject()

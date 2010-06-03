@@ -25,8 +25,8 @@ import static org.easymock.EasyMock.verify;
 import java.util.Calendar;
 
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.service.timesheet.service.TimesheetService;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
-import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 

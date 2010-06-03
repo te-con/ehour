@@ -28,7 +28,7 @@ import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.service.project.status.ProjectAssignmentStatus;
 
 /**
  * Representation of a timesheet

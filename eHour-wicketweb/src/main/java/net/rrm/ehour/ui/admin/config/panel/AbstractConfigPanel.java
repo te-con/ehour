@@ -18,8 +18,8 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.service.config.EhourConfigStub;
+import net.rrm.ehour.service.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.decorator.DemoDecorator;

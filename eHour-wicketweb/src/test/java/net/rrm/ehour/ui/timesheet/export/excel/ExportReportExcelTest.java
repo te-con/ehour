@@ -33,12 +33,12 @@ import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.config.dao.BinaryConfigurationDao;
-import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.service.config.service.ConfigurationServiceImpl;
+import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.service.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.report.trend.PrintReport;

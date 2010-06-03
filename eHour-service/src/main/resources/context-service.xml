@@ -20,7 +20,7 @@
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="persist*" propagation="REQUIRED"
-				rollback-for="net.rrm.ehour.exception.BusinessException,net.rrm.ehour.exception.ObjectNotUniqueException,net.rrm.ehour.exception.ParentChildConstraintException" />
+				rollback-for="net.rrm.ehour.service.exception.BusinessException,net.rrm.ehour.service.exception.ObjectNotUniqueException,net.rrm.ehour.service.exception.ParentChildConstraintException" />
 			<tx:method name="delete*" propagation="REQUIRED" />
 			<tx:method name="assign*" propagation="REQUIRED" />
 		</tx:attributes>

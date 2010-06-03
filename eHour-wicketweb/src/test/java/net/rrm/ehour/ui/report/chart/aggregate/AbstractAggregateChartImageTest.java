@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.report.chart.aggregate;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.service.report.reports.ReportData;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;

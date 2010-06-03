@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.report.panel.pm;
 import java.util.ArrayList;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.service.report.reports.ProjectManagerReport;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;

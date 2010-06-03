@@ -40,12 +40,12 @@ import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryMother;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.service.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.service.timesheet.service.TimesheetService;
+import net.rrm.ehour.service.user.service.UserService;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
-import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
-import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;

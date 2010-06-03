@@ -10,7 +10,7 @@
     <aop:aspectj-autoproxy />
     
     <context:annotation-config />
-    <context:component-scan base-package="net.rrm.ehour.audit.aspect" />
-    <context:component-scan base-package="net.rrm.ehour.audittest.service" />
+    <context:component-scan base-package="net.rrm.ehour.service.audit.aspect" />
+    <context:component-scan base-package="net.rrm.ehour.service.audittest.service" />
     
 </beans>

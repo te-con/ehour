@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.service.exception.ObjectNotFoundException;
+import net.rrm.ehour.service.user.service.UserService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;

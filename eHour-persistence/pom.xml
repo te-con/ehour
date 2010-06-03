@@ -14,10 +14,10 @@
 
 	<dependencies>
 		<dependency>
-				<groupId>org.dbunit</groupId>
-				<artifactId>dbunit</artifactId>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-persistence-derby</artifactId>
@@ -32,7 +32,7 @@
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-persistence-postgresql</artifactId>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -62,30 +62,35 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-common</artifactId>
-		</dependency>				
+		</dependency>
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+		</dependency>
 	</dependencies>
 </project>

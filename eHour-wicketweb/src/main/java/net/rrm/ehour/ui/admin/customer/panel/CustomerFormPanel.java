@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.admin.customer.panel;
 
-import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.service.customer.service.CustomerService;
+import net.rrm.ehour.service.exception.ObjectNotUniqueException;
+import net.rrm.ehour.service.exception.ParentChildConstraintException;
 import net.rrm.ehour.ui.admin.customer.common.CustomerAjaxEventType;
 import net.rrm.ehour.ui.admin.customer.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -114,7 +114,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
+	 * @see net.rrm.ehour.service.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.service.ui.common.model.AdminBackingBean, int)
 	 */
 	@Override
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception

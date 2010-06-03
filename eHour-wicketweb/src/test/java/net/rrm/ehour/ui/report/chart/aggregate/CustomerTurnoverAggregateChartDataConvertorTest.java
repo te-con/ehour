@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.report.chart.aggregate;
 
 
-import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.service.report.reports.ReportData;
 
 import org.apache.wicket.model.Model;
 import org.junit.Test;

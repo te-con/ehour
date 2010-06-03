@@ -23,9 +23,9 @@ import java.util.Date;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.service.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
@@ -48,7 +48,7 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	private static final long serialVersionUID = 6099016674849151669L;
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.reports.TimelineReport#getRowKey(net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate)
+	 * @see net.rrm.ehour.service.web.report.reports.TimelineReport#getRowKey(net.rrm.ehour.service.report.reports.FlatProjectAssignmentAggregate)
 	 */
 	@Override
 	protected ProjectAssignment getRowKey(FlatReportElement aggregate)
@@ -87,7 +87,7 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.trend.TrendReport#fetchReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.service.ui.report.trend.TrendReport#fetchReportData(net.rrm.ehour.service.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected ReportData fetchReportData(ReportCriteria reportCriteria)

@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Locale;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.service.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringInjectorTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 

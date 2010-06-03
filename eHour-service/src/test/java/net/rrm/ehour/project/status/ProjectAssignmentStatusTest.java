@@ -22,14 +22,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
+import net.rrm.ehour.service.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.service.project.status.ProjectAssignmentStatus.Status;
 
 import org.junit.Test;
 
 public class ProjectAssignmentStatusTest
 {
 	/**
-	 * Test method for {@link net.rrm.ehour.project.status.ProjectAssignmentStatus#isAssignmentBookable()}.
+	 * Test method for {@link net.rrm.ehour.service.project.status.ProjectAssignmentStatus#isAssignmentBookable()}.
 	 */
 	@Test
 	public void testIsAssignmentBookable()

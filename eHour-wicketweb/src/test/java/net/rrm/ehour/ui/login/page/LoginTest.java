@@ -20,9 +20,9 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.service.ConfigurationService;
-import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.service.config.EhourConfigStub;
+import net.rrm.ehour.service.config.service.ConfigurationService;
+import net.rrm.ehour.service.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 

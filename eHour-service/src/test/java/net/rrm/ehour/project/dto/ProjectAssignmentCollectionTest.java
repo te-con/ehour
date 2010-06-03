@@ -10,6 +10,7 @@ import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.ProjectMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserMother;
+import net.rrm.ehour.service.project.dto.ProjectAssignmentCollection;
 
 import org.junit.Before;
 import org.junit.Test;

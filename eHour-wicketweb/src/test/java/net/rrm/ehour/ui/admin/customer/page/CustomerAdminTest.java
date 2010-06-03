@@ -23,8 +23,8 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 
-import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.service.customer.service.CustomerService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Test;

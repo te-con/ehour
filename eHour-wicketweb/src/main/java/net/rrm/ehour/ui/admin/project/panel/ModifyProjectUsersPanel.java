@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.service.project.service.ProjectAssignmentManagementService;
+import net.rrm.ehour.service.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.admin.project.panel.addusers.AddUserPanel;
 import net.rrm.ehour.ui.admin.project.panel.editusers.ListCurrentProjectUsersPanel;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;

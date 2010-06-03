@@ -29,11 +29,11 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.service.report.service.AggregateReportService;
+import net.rrm.ehour.service.report.service.DetailedReportService;
+import net.rrm.ehour.service.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.Before;

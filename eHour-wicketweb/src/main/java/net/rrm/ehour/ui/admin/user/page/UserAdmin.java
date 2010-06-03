@@ -21,7 +21,8 @@ import java.util.List;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.service.exception.ObjectNotFoundException;
+import net.rrm.ehour.service.user.service.UserService;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
@@ -34,7 +35,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
-import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -210,7 +210,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
+	 * @see net.rrm.ehour.service.ui.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
@@ -223,7 +223,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 * @see net.rrm.ehour.service.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
 	protected UserBackingBean getNewAddBaseBackingBean()
@@ -238,7 +238,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.service.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
 	protected UserBackingBean getNewEditBaseBackingBean()
@@ -248,7 +248,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
+	 * @see net.rrm.ehour.service.ui.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)

@@ -16,7 +16,8 @@
 
 package net.rrm.ehour.ui.admin.department.panel;
 
-import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.service.exception.ObjectNotUniqueException;
+import net.rrm.ehour.service.user.service.UserService;
 import net.rrm.ehour.ui.admin.department.common.DepartmentAjaxEventType;
 import net.rrm.ehour.ui.admin.department.dto.DepartmentAdminBackingBean;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -28,7 +29,6 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
@@ -118,7 +118,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
+	 * @see net.rrm.ehour.service.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.service.ui.common.model.AdminBackingBean, int)
 	 */
 	@Override
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception

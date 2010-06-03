@@ -18,10 +18,10 @@ package net.rrm.ehour.audittest.service;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.service.audit.annot.NonAuditable;
+import net.rrm.ehour.service.audit.service.AuditService;
 
 import org.springframework.stereotype.Component;
 

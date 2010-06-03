@@ -36,44 +36,36 @@ import org.apache.ddlutils.io.DatabaseIO;
 import org.apache.ddlutils.model.Database;
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.ResourceLoaderAware;
-import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Service;
 
 /**
  * Derby database accessor methods
  **/
-
-public class DerbyDbValidatorImpl implements ApplicationListener<ContextClosedEvent>, ResourceLoaderAware  
+@Service
+public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidator  
 {
-	private @Value("${jdbcProperties.url}") String		ddlFile;
-	private String		dmlFile;
+	private static final String DDL_FILE = "ddl-ehour-%s.xml";
+	private static final String DML_FILE = "dml-ehour-%s.xml";
+	
+	@Value("${ehour.db.version}") 
+	private String version;
+
+	@Autowired 
 	private DataSource	dataSource;
-	private	String		version;
+
 	private ResourceLoader	resourceLoader;
 	
 	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
 	
 	private final static Logger LOGGER = Logger.getLogger(DerbyDbValidatorImpl.class);
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
-	 */
-	public void onApplicationEvent(ContextClosedEvent event)
-	{
-		LOGGER.info("Application shutting down, shutting down database");
-		((EmbeddedDataSource)dataSource).setShutdownDatabase("shutdown");	
-	}	
 	
-	/**
-	 * 
-	 * @param dataSource
-	 * @param version
-	 * @param xmlPath
+	/* (non-Javadoc)
+	 * @see net.rrm.ehour.init.DerbyDbValidator#checkDatabaseState()
 	 */
 	public void checkDatabaseState()
 	{
@@ -150,7 +142,7 @@ public class DerbyDbValidatorImpl implements ApplicationListener<ContextClosedEv
 	{
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
 		
-		Resource resource = this.resourceLoader.getResource(ddlFile);
+		Resource resource = this.resourceLoader.getResource(getDdlFilename());
 
 		DatabaseIO reader = new DatabaseIO();
 		reader.setValidateXml(false);
@@ -161,7 +153,7 @@ public class DerbyDbValidatorImpl implements ApplicationListener<ContextClosedEv
 		if (ddlType == DdlType.CREATE_TABLE)
 		{
 			platform.createTables(ddlModel, false, false);
-			insertData(platform, ddlModel, dmlFile);
+			insertData(platform, ddlModel, getDmlFilename());
 		}
 		else
 		{
@@ -245,23 +237,17 @@ public class DerbyDbValidatorImpl implements ApplicationListener<ContextClosedEv
 
 		platform.insert(database, configuration);
 	}
+
+	private String getDdlFilename()
+	{
+		return String.format(DDL_FILE, version);
+	}
 	
-	/**
-	 * @param dataSource the dataSource to set
-	 */
-	public void setDataSource(DataSource dataSource)
+	private String getDmlFilename()
 	{
-		this.dataSource = dataSource;
+		return String.format(DML_FILE, version);
 	}
-
-	/**
-	 * @param version the version to set
-	 */
-	public void setVersion(String version)
-	{
-		this.version = version;
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.context.ResourceLoaderAware#setResourceLoader(org.springframework.core.io.ResourceLoader)
@@ -271,16 +257,4 @@ public class DerbyDbValidatorImpl implements ApplicationListener<ContextClosedEv
 		this.resourceLoader = resourceLoader; 
 	}
 
-	/**
-	 * @param ddlFile the ddlFile to set
-	 */
-	public void setDdlFile(String ddlFile)
-	{
-		this.ddlFile = ddlFile;
-	}
-
-	public void setDmlFile(String dmlFile)
-	{
-		this.dmlFile = dmlFile;
-	}
 }

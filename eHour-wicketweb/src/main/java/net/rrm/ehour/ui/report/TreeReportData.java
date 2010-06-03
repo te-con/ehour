@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.report;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.service.report.reports.ReportData;
 
 /**
  * Created on Mar 17, 2009, 11:55:00 PM

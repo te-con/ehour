@@ -8,7 +8,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.ProjectMother;
 import net.rrm.ehour.domain.UserMother;
-import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
+import net.rrm.ehour.service.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.markup.html.panel.Panel;

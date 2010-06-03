@@ -51,7 +51,7 @@ public class DepartmentAdminBackingBean extends AdminBackingBeanImpl
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.model.AdminBackingBean#getDomainObject()
+	 * @see net.rrm.ehour.service.ui.common.model.AdminBackingBean#getDomainObject()
 	 */
 	public UserDepartment getDomainObject()
 	{

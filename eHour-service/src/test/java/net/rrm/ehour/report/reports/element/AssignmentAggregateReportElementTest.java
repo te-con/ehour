@@ -35,7 +35,7 @@ public class AssignmentAggregateReportElementTest
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement#getProgressPercentage()}.
+	 * Test method for {@link net.rrm.ehour.service.report.reports.element.AssignmentAggregateReportElement#getProgressPercentage()}.
 	 */
 	@Test
 	public void testGetProgressPercentageAllotted()
@@ -74,7 +74,7 @@ public class AssignmentAggregateReportElementTest
 	
 
 	/**
-	 * Test method for {@link net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement#getAvailableHours()}.
+	 * Test method for {@link net.rrm.ehour.service.report.reports.element.AssignmentAggregateReportElement#getAvailableHours()}.
 	 */
 	@Test
 	public void testGetAvailableHoursFixed()
@@ -92,7 +92,7 @@ public class AssignmentAggregateReportElementTest
 	
 
 	/**
-	 * Test method for {@link net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement#getAvailableHours()}.
+	 * Test method for {@link net.rrm.ehour.service.report.reports.element.AssignmentAggregateReportElement#getAvailableHours()}.
 	 */
 	@Test
 	public void testGetAvailableHoursFlex()

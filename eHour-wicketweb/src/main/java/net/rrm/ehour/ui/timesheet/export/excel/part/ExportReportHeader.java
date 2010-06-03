@@ -17,8 +17,8 @@
 package net.rrm.ehour.ui.timesheet.export.excel.part;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.service.config.service.ConfigurationService;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
@@ -56,7 +56,7 @@ public class ExportReportHeader extends AbstractExportReportPart
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.timesheet.export.excel.part.AbstractExportReportPart#createPart(int)
+	 * @see net.rrm.ehour.service.ui.timesheet.export.excel.part.AbstractExportReportPart#createPart(int)
 	 */
 	@Override
 	public int createPart(int rowNumber)

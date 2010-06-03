@@ -31,7 +31,7 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.service.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
@@ -567,7 +567,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.service.ui.common.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.service.ui.common.ajax.AjaxEvent)
 	 */
 	public final boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

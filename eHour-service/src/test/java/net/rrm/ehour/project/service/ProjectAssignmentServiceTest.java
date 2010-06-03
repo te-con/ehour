@@ -26,11 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.dao.ProjectAssignmentDao;
-import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.service.exception.ObjectNotFoundException;
+import net.rrm.ehour.service.project.service.ProjectAssignmentService;
+import net.rrm.ehour.service.project.service.ProjectAssignmentServiceImpl;
+import net.rrm.ehour.service.project.status.ProjectAssignmentStatusService;
 
 import org.junit.Before;
 import org.junit.Test;

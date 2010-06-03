@@ -44,7 +44,7 @@ public class FlatCustomerNode extends ReportNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.node.ReportNode#getElementId(net.rrm.ehour.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.service.ui.report.node.ReportNode#getElementId(net.rrm.ehour.service.report.reports.element.ReportElement)
 	 */
 	@Override
 	protected Serializable getElementId(ReportElement element)

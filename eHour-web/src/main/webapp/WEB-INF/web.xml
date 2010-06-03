@@ -18,7 +18,7 @@
 <!-- 	
 	<context-param>
 		<param-name>contextClass</param-name>
-		<param-value>net.rrm.ehour.ui.boot.ConditionalXmlWebApplicationContext</param-value>
+		<param-value>net.rrm.ehour.service.ui.boot.ConditionalXmlWebApplicationContext</param-value>
 	</context-param>
  -->
 	<filter>
@@ -43,7 +43,7 @@
 		<init-param>
 			<param-name>applicationClassName</param-name>
 			<param-value>
-				net.rrm.ehour.ui.EhourWebApplication
+				net.rrm.ehour.service.ui.EhourWebApplication
 			</param-value>
 		</init-param>
 		<init-param>

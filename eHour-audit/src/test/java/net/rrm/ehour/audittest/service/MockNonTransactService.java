@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.audittest.service;
 
-import net.rrm.ehour.audit.annot.NonAuditable;
+import net.rrm.ehour.service.audit.annot.NonAuditable;
 
 import org.springframework.stereotype.Component;
 

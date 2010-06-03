@@ -32,7 +32,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.service.config.EhourConfigStub;
 import net.rrm.ehour.ui.common.sort.LocaleComparator;
 import net.rrm.ehour.util.DateUtil;
 

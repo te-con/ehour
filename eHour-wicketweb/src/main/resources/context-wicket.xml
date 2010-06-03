@@ -3,16 +3,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="wicketApplication" class="net.rrm.ehour.ui.EhourWebApplication">
+	<bean id="wicketApplication" class="net.rrm.ehour.service.ui.EhourWebApplication">
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="version" value="0.8.4"></property>
 		<property name="pageConfig" ref="pageConfig" />
 		<property name="wikiBaseUrl" value="http://wiki.ehour.nl/confluence/display/DOCU" />
 	</bean>
 	
-	<bean id="pageConfig" class="net.rrm.ehour.ui.common.config.PageConfigImpl" />
+	<bean id="pageConfig" class="net.rrm.ehour.service.ui.common.config.PageConfigImpl" />
 	
 	<!-- 
-	<bean id="boot" class="net.rrm.ehour.ui.boot.ConditionBeanFactoryPostProcessor" />
+	<bean id="boot" class="net.rrm.ehour.service.ui.boot.ConditionBeanFactoryPostProcessor" />
 	 -->
 </beans>

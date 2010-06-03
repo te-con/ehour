@@ -28,9 +28,11 @@ import junit.framework.TestCase;
 import net.rrm.ehour.customer.dao.CustomerDao;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.service.customer.service.CustomerService;
+import net.rrm.ehour.service.customer.service.CustomerServiceImpl;
+import net.rrm.ehour.service.exception.ObjectNotFoundException;
+import net.rrm.ehour.service.exception.ObjectNotUniqueException;
+import net.rrm.ehour.service.exception.ParentChildConstraintException;
 
 /**
  * TODO 

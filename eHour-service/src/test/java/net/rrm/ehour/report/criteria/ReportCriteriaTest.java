@@ -19,7 +19,7 @@ import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.service.report.service.ReportCriteriaService;
 import net.rrm.ehour.util.DateUtil;
 
 /**

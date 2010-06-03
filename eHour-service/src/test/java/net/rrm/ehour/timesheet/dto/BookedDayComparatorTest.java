@@ -19,7 +19,7 @@ package net.rrm.ehour.timesheet.dto;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.timesheet.service.BookedDayComparator;
+import net.rrm.ehour.service.timesheet.service.BookedDayComparator;
 
 /**
  * 

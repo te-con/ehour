@@ -203,7 +203,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.component.AbstractExcelReport#getFilename()
+	 * @see net.rrm.ehour.service.ui.common.component.AbstractExcelReport#getFilename()
 	 */
 	@Override
 	protected String getFilename()

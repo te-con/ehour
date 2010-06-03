@@ -20,12 +20,12 @@ import static org.junit.Assert.assertEquals;
 
 import javax.annotation.Resource;
 
-import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.audittest.service.MockAudit;
 import net.rrm.ehour.audittest.service.MockAuditService;
 import net.rrm.ehour.audittest.service.MockNonTransactService;
 import net.rrm.ehour.audittest.service.MockService;
 import net.rrm.ehour.domain.AuditActionType;
+import net.rrm.ehour.service.audit.service.AuditService;
 
 import org.junit.Before;
 import org.junit.Test;

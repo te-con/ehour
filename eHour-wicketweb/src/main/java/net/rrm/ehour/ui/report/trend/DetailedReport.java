@@ -20,10 +20,10 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.service.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.TreeReport;
@@ -58,7 +58,7 @@ public class DetailedReport extends TreeReport
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.TreeReport#fetchReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.service.ui.report.TreeReport#fetchReportData(net.rrm.ehour.service.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected ReportData fetchReportData(ReportCriteria reportCriteria)
@@ -79,7 +79,7 @@ public class DetailedReport extends TreeReport
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.TreeReport#getReportNodeFactory()
+	 * @see net.rrm.ehour.service.ui.report.TreeReport#getReportNodeFactory()
 	 */
 	@Override
 	public ReportNodeFactory getReportNodeFactory()

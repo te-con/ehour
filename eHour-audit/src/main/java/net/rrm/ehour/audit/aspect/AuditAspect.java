@@ -20,15 +20,15 @@ import java.lang.annotation.Annotation;
 import java.util.Calendar;
 import java.util.Date;
 
-import net.rrm.ehour.audit.annot.Auditable;
-import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.service.audit.annot.Auditable;
+import net.rrm.ehour.service.audit.annot.NonAuditable;
+import net.rrm.ehour.service.audit.service.AuditService;
+import net.rrm.ehour.service.config.service.ConfigurationService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.RequestCycle;
@@ -54,23 +54,23 @@ public class AuditAspect
 	@Autowired
 	private ConfigurationService configurationService;
 
-	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service*.get*(..)) && " +
-			"!@annotation(net.rrm.ehour.audit.annot.Auditable) && " +
-			"!@annotation(net.rrm.ehour.audit.annot.NonAuditable)")
+	@Pointcut("execution(public * net.rrm.ehour.service.*.service.*Service*.get*(..)) && " +
+			"!@annotation(net.rrm.ehour.service.audit.annot.Auditable) && " +
+			"!@annotation(net.rrm.ehour.service.audit.annot.NonAuditable)")
 	public void publicGetMethod()
 	{
 	}
 	
-	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service.persist*(..)) && " +
-			"!@annotation(net.rrm.ehour.audit.annot.Auditable) && " +
-			"!@annotation(net.rrm.ehour.audit.annot.NonAuditable)")
+	@Pointcut("execution(public * net.rrm.ehour.service.*.service.*Service.persist*(..)) && " +
+			"!@annotation(net.rrm.ehour.service.audit.annot.Auditable) && " +
+			"!@annotation(net.rrm.ehour.service.audit.annot.NonAuditable)")
 	public void publicPersistMethod()
 	{
 	}
 	
-	@Pointcut("execution(public * net.rrm.ehour.*.service.*Service.delete*(..)) && " +
-			"!@annotation(net.rrm.ehour.audit.annot.Auditable) && " +
-			"!@annotation(net.rrm.ehour.audit.annot.NonAuditable)")
+	@Pointcut("execution(public * net.rrm.ehour.service.*.service.*Service.delete*(..)) && " +
+			"!@annotation(net.rrm.ehour.service.audit.annot.Auditable) && " +
+			"!@annotation(net.rrm.ehour.service.audit.annot.NonAuditable)")
 	public void publicDeleteMethod()
 	{
 	}	
@@ -81,7 +81,7 @@ public class AuditAspect
 	 * @return
 	 * @throws Throwable
 	 */
-	@Around("net.rrm.ehour.audit.aspect.AuditAspect.publicGetMethod()")
+	@Around("net.rrm.ehour.service.audit.aspect.AuditAspect.publicGetMethod()")
 	public Object auditOnGet(ProceedingJoinPoint pjp) throws Throwable
 	{
 		return doAudit(pjp, AuditActionType.READ);
@@ -93,7 +93,7 @@ public class AuditAspect
 	 * @return
 	 * @throws Throwable
 	 */
-	@Around("net.rrm.ehour.audit.aspect.AuditAspect.publicPersistMethod()")
+	@Around("net.rrm.ehour.service.audit.aspect.AuditAspect.publicPersistMethod()")
 	public Object auditOnPersist(ProceedingJoinPoint pjp) throws Throwable
 	{
 		return doAudit(pjp, AuditActionType.UPDATE);
@@ -105,7 +105,7 @@ public class AuditAspect
 	 * @return
 	 * @throws Throwable
 	 */
-	@Around("net.rrm.ehour.audit.aspect.AuditAspect.publicDeleteMethod()")
+	@Around("net.rrm.ehour.service.audit.aspect.AuditAspect.publicDeleteMethod()")
 	public Object auditOnDelete(ProceedingJoinPoint pjp) throws Throwable
 	{
 		return doAudit(pjp, AuditActionType.DELETE);

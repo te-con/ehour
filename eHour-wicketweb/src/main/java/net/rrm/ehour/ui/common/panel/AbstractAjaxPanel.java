@@ -38,7 +38,7 @@ public abstract class AbstractAjaxPanel<T> extends AbstractBasePanel<T> implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.service.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

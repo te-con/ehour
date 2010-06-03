@@ -21,12 +21,12 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
-import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.service.audit.service.AuditService;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.cache.ObjectCache;
