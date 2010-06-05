@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.commons.beanutils.DynaBean;
@@ -41,12 +42,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Service;
 
 /**
  * Derby database accessor methods
  **/
-@Service
 public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidator  
 {
 	private static final String DDL_FILE = "ddl-ehour-%s.xml";
@@ -67,6 +66,7 @@ public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidat
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.init.DerbyDbValidator#checkDatabaseState()
 	 */
+	@PostConstruct
 	public void checkDatabaseState()
 	{
 		boolean databaseInState = false;

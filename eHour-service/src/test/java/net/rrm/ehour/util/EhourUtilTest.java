@@ -22,7 +22,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.service.report.reports.util.ReportUtil;
+import net.rrm.ehour.report.reports.util.ReportUtil;
 
 import org.junit.Test;
 

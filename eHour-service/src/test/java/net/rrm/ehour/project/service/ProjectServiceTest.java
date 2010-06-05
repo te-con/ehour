@@ -25,13 +25,10 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.dao.ProjectDao;
-import net.rrm.ehour.service.exception.ObjectNotFoundException;
-import net.rrm.ehour.service.project.service.ProjectAssignmentService;
-import net.rrm.ehour.service.project.service.ProjectService;
-import net.rrm.ehour.service.project.service.ProjectServiceImpl;
-import net.rrm.ehour.service.report.service.AggregateReportService;
-import net.rrm.ehour.service.user.service.UserService;
+import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.user.service.UserService;
 
 /**
  *  

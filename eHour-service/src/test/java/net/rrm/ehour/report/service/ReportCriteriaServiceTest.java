@@ -41,8 +41,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.service.report.service.ReportCriteriaService;
-import net.rrm.ehour.service.report.service.ReportCriteriaServiceImpl;
 import net.rrm.ehour.user.dao.UserDao;
 import net.rrm.ehour.user.dao.UserDepartmentDao;
 

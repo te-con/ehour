@@ -7,8 +7,7 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.service.exception.ProjectAlreadyAssignedException;
-import net.rrm.ehour.service.project.service.ProjectAssignmentManagementService;
+import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 
 import org.junit.Ignore;
 import org.junit.Test;

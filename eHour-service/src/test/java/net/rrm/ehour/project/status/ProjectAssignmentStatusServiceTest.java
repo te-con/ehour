@@ -35,8 +35,6 @@ import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.service.project.status.ProjectAssignmentStatus;
-import net.rrm.ehour.service.project.status.ProjectAssignmentStatusServiceImpl;
 import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.EhourConstants;
 

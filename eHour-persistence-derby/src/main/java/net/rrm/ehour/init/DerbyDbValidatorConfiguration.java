@@ -31,7 +31,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DerbyDbValidatorConfiguration
 {
-	private @Value("${ehour.database}") String databaseName;
+	@Value("${ehour.database}") 
+	private String databaseName;
 	
 	private static final DerbyDbValidator DUMMY_VALIDATOR = new DerbyDbValidator()
 	{
