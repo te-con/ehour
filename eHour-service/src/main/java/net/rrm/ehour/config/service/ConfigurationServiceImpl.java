@@ -27,13 +27,13 @@ import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.dao.BinaryConfigurationDao;
-import net.rrm.ehour.config.dao.ConfigurationDao;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
-import net.rrm.ehour.value.ImageLogo;
+import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
+import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
+import net.rrm.ehour.persistence.value.ImageLogo;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.value.ImageLogo)
+	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.persistence.persistence.value.ImageLogo)
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)
@@ -88,7 +88,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.config.service.ConfigurationService#getLogo()
+	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#getLogo()
 	 */
 	@NonAuditable
 	@Transactional
@@ -185,7 +185,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
+	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#getConfiguration()
 	 */
 	@Transactional
 	@NonAuditable
@@ -283,7 +283,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.config.service.ConfigService#persistConfiguration(java.util.List)
+	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#persistConfiguration(java.util.List)
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)

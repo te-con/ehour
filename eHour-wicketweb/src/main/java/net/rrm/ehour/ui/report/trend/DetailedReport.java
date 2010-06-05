@@ -58,7 +58,7 @@ public class DetailedReport extends TreeReport
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.TreeReport#fetchReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#fetchReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected ReportData fetchReportData(ReportCriteria reportCriteria)
@@ -79,7 +79,7 @@ public class DetailedReport extends TreeReport
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.TreeReport#getReportNodeFactory()
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#getReportNodeFactory()
 	 */
 	@Override
 	public ReportNodeFactory getReportNodeFactory()

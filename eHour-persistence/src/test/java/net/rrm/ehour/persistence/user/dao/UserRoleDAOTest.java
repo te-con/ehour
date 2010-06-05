@@ -1,0 +1,48 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+package net.rrm.ehour.persistence.user.dao;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.persistence.user.dao.UserRoleDao;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class UserRoleDAOTest extends AbstractAnnotationDaoTest 
+{
+	@Autowired
+	private	UserRoleDao	userRoleDAO;
+	
+	@Test
+	public void shouldFindById()
+	{
+		UserRole role = userRoleDAO.findById("ROLE_ADMIN");
+		assertEquals("Administrator", role.getRoleName());
+	}
+
+	@Test
+	public void shouldFindUserRoles()
+	{
+		List<UserRole> list = userRoleDAO.findAll();
+		assertEquals(4, list.size());
+	}
+
+}

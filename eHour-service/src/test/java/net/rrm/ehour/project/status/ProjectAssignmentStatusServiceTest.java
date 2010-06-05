@@ -33,9 +33,9 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Before;

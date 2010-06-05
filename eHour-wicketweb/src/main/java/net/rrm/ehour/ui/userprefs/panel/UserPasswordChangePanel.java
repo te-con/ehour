@@ -101,7 +101,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
 	 */
 	@Override
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
@@ -126,7 +126,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmitError(org.apache.wicket.ajax.AjaxRequestTarget)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmitError(org.apache.wicket.ajax.AjaxRequestTarget)
 	 */
 	@Override
 	protected boolean processFormSubmitError(AjaxRequestTarget target)

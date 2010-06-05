@@ -97,7 +97,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -177,7 +177,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
 	protected ProjectAdminBackingBean getNewEditBaseBackingBean()

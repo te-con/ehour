@@ -44,7 +44,7 @@ public class AuditConfigPanel extends AbstractConfigPanel
 	
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.config.panel.AbstractConfigPanel#addFormComponents(org.apache.wicket.markup.html.form.Form)
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.config.panel.AbstractConfigPanel#addFormComponents(org.apache.wicket.markup.html.form.Form)
 	 */
 	@Override
 	protected void addFormComponents(Form<MainConfigBackingBean> configForm)

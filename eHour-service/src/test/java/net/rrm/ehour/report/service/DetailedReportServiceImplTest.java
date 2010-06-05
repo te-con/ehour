@@ -28,9 +28,9 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 import org.junit.Before;
@@ -66,7 +66,7 @@ public class DetailedReportServiceImplTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.report.service.DetailedReportServiceImpl#getDetailedReportData(net.rrm.ehour.report.criteria.ReportCriteria)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.report.service.DetailedReportServiceImpl#getDetailedReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)}.
 	 */
 	@Test
 	public void testGetDetailedReportAll()

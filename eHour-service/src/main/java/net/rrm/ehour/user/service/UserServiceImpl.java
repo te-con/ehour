@@ -31,14 +31,14 @@ import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.persistence.user.dao.UserDao;
+import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
+import net.rrm.ehour.persistence.user.dao.UserRoleDao;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.user.dao.UserDao;
-import net.rrm.ehour.user.dao.UserDepartmentDao;
-import net.rrm.ehour.user.dao.UserRoleDao;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
 
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#getUserAndCheckDeletability(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUserAndCheckDeletability(java.lang.Integer)
 	 */
 	public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException
 	{
@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#getUser(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUser(java.lang.String)
 	 */
 	public User getUser(String username) 
 	{
@@ -325,7 +325,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#getUsersWithEmailSet()
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsersWithEmailSet()
 	 */
 	public List<User> getUsersWithEmailSet()
 	{
@@ -334,7 +334,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#addAndcheckProjectManagementRoles(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#addAndcheckProjectManagementRoles(java.lang.Integer)
 	 */
 	@Transactional
 	public User addAndcheckProjectManagementRoles(Integer userId)
@@ -393,7 +393,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#getUsers(net.rrm.ehour.user.domain.UserRole)
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsers(net.rrm.ehour.persistence.persistence.user.domain.UserRole)
 	 */
 	public List<User> getUsers(UserRole userRole)
 	{
@@ -406,7 +406,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#getUsersByNameMatch(java.lang.String, boolean, net.rrm.ehour.user.domain.UserRole)
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsersByNameMatch(java.lang.String, boolean, net.rrm.ehour.persistence.persistence.user.domain.UserRole)
 	 */
 	public List<User> getUsersByNameMatch(String match, boolean inclInactive, UserRole userRole)
 	{
@@ -427,7 +427,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#deleteUser(net.rrm.ehour.user.domain.User)
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#deleteUser(net.rrm.ehour.persistence.persistence.user.domain.User)
 	 */
 	@Transactional
 	public void deleteUser(Integer userId)
@@ -441,7 +441,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.user.service.UserService#deleteDepartment(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#deleteDepartment(java.lang.Integer)
 	 */
 	@Transactional
 	public void deleteDepartment(Integer departmentId)

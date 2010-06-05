@@ -59,7 +59,7 @@ public class QuickWeekRendererTest extends AbstractSpringWebAppTester
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeekRenderer#getDisplayValue(java.lang.Object)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.report.panel.criteria.quick.QuickWeekRenderer#getDisplayValue(java.lang.Object)}.
 	 */
 	@Test
 	public void testGetDisplayValueCurrent()

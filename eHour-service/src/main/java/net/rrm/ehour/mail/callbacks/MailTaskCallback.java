@@ -19,8 +19,8 @@ package net.rrm.ehour.mail.callbacks;
 import java.util.Date;
 
 import net.rrm.ehour.domain.MailLog;
-import net.rrm.ehour.mail.dao.MailLogDao;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
+import net.rrm.ehour.persistence.mail.dao.MailLogDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;

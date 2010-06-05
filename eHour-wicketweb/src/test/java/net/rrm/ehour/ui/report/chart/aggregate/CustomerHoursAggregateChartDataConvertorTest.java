@@ -25,7 +25,7 @@ public class CustomerHoursAggregateChartDataConvertorTest extends AbstractAggreg
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
 	 * @throws Exception 
 	 */
 	@Test

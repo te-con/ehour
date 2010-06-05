@@ -27,9 +27,9 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.project.dao.ProjectAssignmentDao;
+import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
-import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 
@@ -77,7 +77,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getAllProjectsForUser(net.rrm.ehour.domain.User, boolean)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getAllProjectsForUser(net.rrm.ehour.persistence.persistence.domain.User, boolean)
 	 */
 	public List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive)
 	{
@@ -137,7 +137,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#getProjectAssignments(net.rrm.ehour.project.domain.Project, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectAssignmentService#getProjectAssignments(net.rrm.ehour.persistence.persistence.project.domain.Project, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	public List<ProjectAssignment> getProjectAssignments(Project project, DateRange range)
 	{
@@ -151,7 +151,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectAssignmentService#getProjectAssignmentTypes()
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectAssignmentService#getProjectAssignmentTypes()
 	 */
 	public List<ProjectAssignmentType> getProjectAssignmentTypes()
 	{

@@ -99,7 +99,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
@@ -109,7 +109,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
@@ -119,7 +119,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
 	protected CustomerAdminBackingBean getNewAddBaseBackingBean()
@@ -129,7 +129,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
 	protected CustomerAdminBackingBean getNewEditBaseBackingBean()

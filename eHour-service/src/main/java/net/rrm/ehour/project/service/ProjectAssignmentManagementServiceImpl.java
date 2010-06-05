@@ -11,8 +11,8 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.dao.ProjectAssignmentDao;
-import net.rrm.ehour.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.user.service.UserService;
 
@@ -159,7 +159,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 	
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectAssignmentManagementService#getCombinedProjectAssignments(net.rrm.ehour.domain.Project)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectAssignmentManagementService#getCombinedProjectAssignments(net.rrm.ehour.persistence.persistence.domain.Project)
 	 */
 	@Override
 	public ProjectAssignmentCollection getCombinedProjectAssignments(Integer projectId)

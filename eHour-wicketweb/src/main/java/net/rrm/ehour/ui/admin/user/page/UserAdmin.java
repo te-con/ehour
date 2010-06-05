@@ -210,7 +210,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
@@ -223,7 +223,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
 	protected UserBackingBean getNewAddBaseBackingBean()
@@ -238,7 +238,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
 	protected UserBackingBean getNewEditBaseBackingBean()
@@ -248,7 +248,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)

@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
+import net.rrm.ehour.persistence.value.ImageLogo;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
@@ -28,7 +29,6 @@ import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportDummyCreater;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
-import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;

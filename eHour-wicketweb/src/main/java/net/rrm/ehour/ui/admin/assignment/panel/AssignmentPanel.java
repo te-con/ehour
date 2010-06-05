@@ -102,7 +102,7 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")

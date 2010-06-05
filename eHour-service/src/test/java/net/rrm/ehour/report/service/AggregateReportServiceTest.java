@@ -36,15 +36,15 @@ import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
-import net.rrm.ehour.user.dao.UserDao;
 
 /**
  *  

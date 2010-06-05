@@ -28,7 +28,7 @@ import org.junit.Test;
 public class CustomerComparatorTest
 {
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.common.sort.CustomerComparator#compare(net.rrm.ehour.domain.Customer, net.rrm.ehour.domain.Customer)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.sort.CustomerComparator#compare(net.rrm.ehour.persistence.persistence.domain.Customer, net.rrm.ehour.persistence.persistence.domain.Customer)}.
 	 */
 	@Test
 	public void testCompare()

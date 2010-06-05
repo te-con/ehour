@@ -25,9 +25,9 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
-import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
@@ -56,7 +56,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.timesheet.service.TimesheetPersister#validateAndPersist(net.rrm.ehour.domain.ProjectAssignment, java.util.List, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.timesheet.service.TimesheetPersister#validateAndPersist(net.rrm.ehour.persistence.persistence.domain.ProjectAssignment, java.util.List, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	@Transactional(rollbackFor=OverBudgetException.class,
 					propagation=Propagation.REQUIRES_NEW)

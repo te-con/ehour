@@ -133,7 +133,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.EhourConfig#getSmtpPassword()
+	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpPassword()
 	 */
 	public String getSmtpPassword() {
 		return this.getString("smtpUsername");
@@ -141,7 +141,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.EhourConfig#getSmtpUsername()
+	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpUsername()
 	 */
 	public String getSmtpUsername() {
 		return this.getString("smtpPassword");
@@ -156,7 +156,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.EhourConfig#getFirstDayOfWeek()
+	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getFirstDayOfWeek()
 	 */
 	public int getFirstDayOfWeek()
 	{
@@ -165,7 +165,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.EhourConfig#getAuditType()
+	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getAuditType()
 	 */
 	public AuditType getAuditType()
 	{

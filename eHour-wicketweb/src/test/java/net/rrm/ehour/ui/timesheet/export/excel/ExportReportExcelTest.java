@@ -32,8 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
+import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;

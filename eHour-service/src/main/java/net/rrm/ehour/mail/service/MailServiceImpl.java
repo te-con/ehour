@@ -29,9 +29,9 @@ import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.domain.MailType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.mail.callbacks.AssignmentMsgCallback;
-import net.rrm.ehour.mail.dao.MailLogDao;
 import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
+import net.rrm.ehour.persistence.mail.dao.MailLogDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -73,7 +73,7 @@ public class MailServiceImpl implements MailService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.mail.service.MailService#mailTestMessage(net.rrm.ehour.config.EhourConfig)
+	 * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#mailTestMessage(net.rrm.ehour.persistence.persistence.config.EhourConfig)
 	 */
 	public void mailTestMessage(EhourConfig config)
 	{
@@ -101,7 +101,7 @@ public class MailServiceImpl implements MailService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.mail.service.MailService#mailPMFixedAllottedReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
+	 * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#mailPMFixedAllottedReached(net.rrm.ehour.persistence.persistence.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.persistence.persistence.user.domain.User)
 	 */
 	public void mailPMFixedAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
 	{
@@ -153,7 +153,7 @@ public class MailServiceImpl implements MailService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
+	 * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.persistence.persistence.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.persistence.persistence.user.domain.User)
 	 */
 	public void mailPMFlexOverrunReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
 	{
@@ -211,7 +211,7 @@ public class MailServiceImpl implements MailService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.user.domain.User)
+	 * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.persistence.persistence.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.persistence.persistence.user.domain.User)
 	 */
 	public void mailPMFlexAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
 	{
@@ -366,7 +366,7 @@ public class MailServiceImpl implements MailService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.mail.service.MailService#getSentMailForAssignment(java.lang.Integer[])
+	 * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#getSentMailForAssignment(java.lang.Integer[])
 	 */
 	public List<MailLogAssignment> getSentMailForAssignment(Integer[] assignmentIds)
 	{

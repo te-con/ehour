@@ -60,7 +60,7 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester
 
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.pm.page.ProjectManagement#ProjectManagement()}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.pm.page.ProjectManagement#ProjectManagement()}.
 	 * @throws NoSuchMethodException 
 	 * @throws SecurityException 
 	 */

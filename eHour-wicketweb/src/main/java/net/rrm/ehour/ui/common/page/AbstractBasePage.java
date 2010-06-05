@@ -95,7 +95,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
@@ -104,7 +104,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#publishAjaxEvent(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#publishAjaxEvent(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	public void publishAjaxEvent(AjaxEvent ajaxEvent)
 	{

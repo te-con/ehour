@@ -23,21 +23,21 @@ import java.util.List;
 import java.util.Set;
 
 import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.customer.dao.CustomerDao;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.project.dao.ProjectAssignmentDao;
-import net.rrm.ehour.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.customer.dao.CustomerDao;
+import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
+import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.user.dao.UserDao;
-import net.rrm.ehour.user.dao.UserDepartmentDao;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -68,7 +68,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.ReportCriteriaService#syncUserReportCriteria(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.persistence.persistence.report.service.ReportCriteriaService#syncUserReportCriteria(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
 	 */
 	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria)
 	{

@@ -21,9 +21,9 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConstants;
 
@@ -43,7 +43,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.domain.ProjectAssignment, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.persistence.persistence.domain.ProjectAssignment, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment, DateRange period)
 	{
@@ -56,7 +56,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.domain.ProjectAssignment)
+	 * @see net.rrm.ehour.persistence.persistence.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.persistence.persistence.domain.ProjectAssignment)
 	 */
 	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment)
 	{

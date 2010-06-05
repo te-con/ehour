@@ -37,12 +37,12 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.OverBudgetException;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.timesheet.dao.TimesheetCommentDao;
-import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
@@ -283,7 +283,7 @@ public class TimesheetServiceImpl implements TimesheetService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.timesheet.service.TimesheetService#persistTimesheetWeek(java.util.Collection, net.rrm.ehour.domain.TimesheetComment, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.timesheet.service.TimesheetService#persistTimesheetWeek(java.util.Collection, net.rrm.ehour.persistence.persistence.domain.TimesheetComment, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	@Transactional
 	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, 
@@ -342,7 +342,7 @@ public class TimesheetServiceImpl implements TimesheetService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.timesheet.service.TimesheetService#deleteTimesheetEntries(net.rrm.ehour.user.domain.User)
+	 * @see net.rrm.ehour.persistence.persistence.timesheet.service.TimesheetService#deleteTimesheetEntries(net.rrm.ehour.persistence.persistence.user.domain.User)
 	 */
 	@Transactional
 	public void deleteTimesheetEntries(User user)

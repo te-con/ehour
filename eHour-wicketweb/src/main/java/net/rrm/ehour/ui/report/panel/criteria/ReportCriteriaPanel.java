@@ -567,7 +567,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	public final boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

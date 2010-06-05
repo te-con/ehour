@@ -38,11 +38,11 @@ import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.timesheet.dao.TimesheetCommentDao;
-import net.rrm.ehour.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.util.DateUtil;
 

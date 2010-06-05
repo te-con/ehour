@@ -19,7 +19,7 @@ package net.rrm.ehour.config.service;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.value.ImageLogo;
+import net.rrm.ehour.persistence.value.ImageLogo;
 
 /**
  * Service for modifying the configuration

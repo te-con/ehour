@@ -72,7 +72,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see net.rrm.ehour.ui.EhourWebApplication#newRequestCycleProcessor()
+	 * @see net.rrm.ehour.persistence.persistence.ui.EhourWebApplication#newRequestCycleProcessor()
 	 */
 	@Override
 	protected IRequestCycleProcessor newRequestCycleProcessor()

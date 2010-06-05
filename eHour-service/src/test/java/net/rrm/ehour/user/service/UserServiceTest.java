@@ -37,9 +37,9 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.user.dao.UserDao;
-import net.rrm.ehour.user.dao.UserDepartmentDao;
-import net.rrm.ehour.user.dao.UserRoleDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
+import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
+import net.rrm.ehour.persistence.user.dao.UserRoleDao;
 
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
@@ -89,7 +89,7 @@ public class UserServiceTest extends TestCase
 		verify(userDAO);
 	}
 	/**
-	 * Test method for {@link net.rrm.ehour.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
 	 * @throws ObjectNotFoundException 
 	 */
 	public void testGetUser() throws ObjectNotFoundException

@@ -39,7 +39,7 @@ public class ProjectAssignmentAggregateComparatorTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.common.sort.ProjectAssignmentAggregateComparator#compare(net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement, net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.sort.ProjectAssignmentAggregateComparator#compare(net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement, net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement)}.
 	 */
 	@Test
 	public void testCompareProject()

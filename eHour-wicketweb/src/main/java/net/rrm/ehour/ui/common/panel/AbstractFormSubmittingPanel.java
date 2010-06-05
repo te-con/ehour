@@ -49,7 +49,7 @@ public abstract class AbstractFormSubmittingPanel<T> extends AbstractAjaxPanel<T
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")

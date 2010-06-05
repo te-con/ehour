@@ -28,7 +28,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
@@ -74,7 +74,7 @@ public class ProjectServiceImpl implements ProjectService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getAllProjects(boolean)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getAllProjects(boolean)
 	 */
 	public List<Project> getAllProjects(boolean hideInactive)
 	{
@@ -96,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getProjects(java.lang.String, boolean)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjects(java.lang.String, boolean)
 	 */
 	public List<Project> getProjects(String filter, boolean hideInactive)
 	{
@@ -105,7 +105,7 @@ public class ProjectServiceImpl implements ProjectService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getProject(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProject(java.lang.Integer)
 	 */
 	public Project getProject(Integer projectId) throws ObjectNotFoundException
 	{
@@ -121,7 +121,7 @@ public class ProjectServiceImpl implements ProjectService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
 	 */
 	public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException
 	{
@@ -134,7 +134,7 @@ public class ProjectServiceImpl implements ProjectService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#setProjectDeletability(net.rrm.ehour.project.domain.Project)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#setProjectDeletability(net.rrm.ehour.persistence.persistence.project.domain.Project)
 	 */
 	public void setProjectDeletability(Project project)
 	{
@@ -151,7 +151,7 @@ public class ProjectServiceImpl implements ProjectService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#persistProject(net.rrm.ehour.project.domain.Project)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#persistProject(net.rrm.ehour.persistence.persistence.project.domain.Project)
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.CREATE)
@@ -172,7 +172,7 @@ public class ProjectServiceImpl implements ProjectService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#deleteProject(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#deleteProject(java.lang.Integer)
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.DELETE)
@@ -228,7 +228,7 @@ public class ProjectServiceImpl implements ProjectService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getProjectsForUser(java.lang.Integer, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectsForUser(java.lang.Integer, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange)
 	{
@@ -244,7 +244,7 @@ public class ProjectServiceImpl implements ProjectService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getProjectManagerProjects(net.rrm.ehour.user.domain.User)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectManagerProjects(net.rrm.ehour.persistence.persistence.user.domain.User)
 	 */
 	public List<Project> getProjectManagerProjects(User user)
 	{

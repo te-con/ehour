@@ -25,12 +25,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.customer.dao.CustomerDao;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.persistence.customer.dao.CustomerDao;
 
 /**
  * TODO 

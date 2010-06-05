@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import junit.framework.TestCase;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
 

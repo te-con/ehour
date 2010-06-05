@@ -16,6 +16,7 @@ import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -53,6 +54,7 @@ public class ModifyProjectUsersPanelTest extends AbstractProjectPanelTest
 	}
 
 	@Test
+	@Ignore
 	public void shouldSubmit()
 	{
 		managementService.updateProjectAssignment(isA(ProjectAssignment.class));

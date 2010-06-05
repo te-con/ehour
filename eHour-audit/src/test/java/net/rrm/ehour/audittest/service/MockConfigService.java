@@ -21,7 +21,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.AuditType;
-import net.rrm.ehour.value.ImageLogo;
+import net.rrm.ehour.persistence.value.ImageLogo;
 
 import org.springframework.stereotype.Component;
 
@@ -41,7 +41,7 @@ public class MockConfigService implements ConfigurationService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.service.ConfigurationService#persistConfiguration(net.rrm.ehour.config.EhourConfig)
+	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#persistConfiguration(net.rrm.ehour.persistence.persistence.config.EhourConfig)
 	 */
 	public void persistConfiguration(EhourConfig config)
 	{
@@ -49,7 +49,7 @@ public class MockConfigService implements ConfigurationService
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.config.service.ConfigurationService#getExcelLogo()
+	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#getExcelLogo()
 	 */
 	public ImageLogo getExcelLogo()
 	{
@@ -57,7 +57,7 @@ public class MockConfigService implements ConfigurationService
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.value.ImageLogo)
+	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.persistence.persistence.value.ImageLogo)
 	 */
 	public void persistExcelLogo(ImageLogo logo)
 	{

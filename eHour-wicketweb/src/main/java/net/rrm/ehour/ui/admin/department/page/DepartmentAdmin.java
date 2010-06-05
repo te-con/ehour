@@ -87,7 +87,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
@@ -97,7 +97,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
@@ -107,7 +107,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
 	protected DepartmentAdminBackingBean getNewAddBaseBackingBean()
@@ -117,7 +117,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
 	protected DepartmentAdminBackingBean getNewEditBaseBackingBean()
@@ -127,7 +127,7 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)

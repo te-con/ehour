@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.dao.BinaryConfigurationDao;
-import net.rrm.ehour.config.dao.ConfigurationDao;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
-import net.rrm.ehour.value.ImageLogo;
+import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
+import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
+import net.rrm.ehour.persistence.value.ImageLogo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +76,7 @@ public class ConfigurationServiceTest
 	}
 	
 	/**
-	 * Test method for {@link net.rrm.ehour.config.service.ConfigurationServiceImpl#getConfiguration()}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.config.service.ConfigurationServiceImpl#getConfiguration()}.
 	 */
 	@Test
 	public void shouldGetConfiguration()
@@ -103,7 +103,7 @@ public class ConfigurationServiceTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.config.service.ConfigurationServiceImpl#persistConfiguration(net.rrm.ehour.config.EhourConfig)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.config.service.ConfigurationServiceImpl#persistConfiguration(net.rrm.ehour.persistence.persistence.config.EhourConfig)}.
 	 */
 	@Test
 	public void shouldPersistConfiguration()

@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.rrm.ehour.value.ImageLogo;
+import net.rrm.ehour.persistence.value.ImageLogo;
 
 import org.apache.log4j.Logger;
 import org.apache.sanselan.ImageReadException;

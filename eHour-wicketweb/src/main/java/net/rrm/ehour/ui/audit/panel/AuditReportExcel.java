@@ -37,7 +37,7 @@ public class AuditReportExcel extends AbstractExcelReport
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getFilename()
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.component.AbstractExcelResource#getFilename()
 	 */
 	@Override
 	protected String getFilename()

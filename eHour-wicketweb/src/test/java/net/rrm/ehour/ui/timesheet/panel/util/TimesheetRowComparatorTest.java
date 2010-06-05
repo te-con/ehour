@@ -33,7 +33,7 @@ public class TimesheetRowComparatorTest
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator#compare(net.rrm.ehour.ui.timesheet.dto.TimesheetRow, net.rrm.ehour.ui.timesheet.dto.TimesheetRow)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.timesheet.util.TimesheetRowComparator#compare(net.rrm.ehour.persistence.persistence.ui.timesheet.dto.TimesheetRow, net.rrm.ehour.persistence.persistence.ui.timesheet.dto.TimesheetRow)}.
 	 */
 	@Test
 	public void testCompare()

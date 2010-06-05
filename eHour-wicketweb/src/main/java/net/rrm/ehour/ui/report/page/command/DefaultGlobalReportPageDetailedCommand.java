@@ -21,7 +21,7 @@ public class DefaultGlobalReportPageDetailedCommand implements GlobalReportPageD
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.page.command.GlobalReportPageDetailedCommand#createDetailedReportTabs(net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.page.command.GlobalReportPageDetailedCommand#createDetailedReportTabs(net.rrm.ehour.persistence.persistence.ui.report.panel.criteria.ReportCriteriaBackingBean)
 	 */
 	public List<ITab> createDetailedReportTabs(ReportCriteriaBackingBean backingBean)
 	{

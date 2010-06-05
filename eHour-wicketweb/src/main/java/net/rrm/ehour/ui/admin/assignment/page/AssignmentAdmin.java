@@ -92,7 +92,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)

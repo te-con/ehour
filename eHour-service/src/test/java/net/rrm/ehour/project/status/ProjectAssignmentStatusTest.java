@@ -29,7 +29,7 @@ import org.junit.Test;
 public class ProjectAssignmentStatusTest
 {
 	/**
-	 * Test method for {@link net.rrm.ehour.project.status.ProjectAssignmentStatus#isAssignmentBookable()}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.project.status.ProjectAssignmentStatus#isAssignmentBookable()}.
 	 */
 	@Test
 	public void testIsAssignmentBookable()

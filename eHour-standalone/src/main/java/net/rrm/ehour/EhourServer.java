@@ -23,7 +23,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import net.rrm.ehour.datasource.DerbyDataSourceFactory;
+import net.rrm.ehour.persistence.datasource.DerbyDataSourceFactory;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.jetty.jndi.NamingUtil;

@@ -42,7 +42,7 @@ public class UserAggregateReport extends AbstractAggregateReport
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.aggregate.AggregateReport#getReportNodeFactory()
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.aggregate.AggregateReport#getReportNodeFactory()
 	 */
 	@Override
 	public ReportNodeFactory getReportNodeFactory()

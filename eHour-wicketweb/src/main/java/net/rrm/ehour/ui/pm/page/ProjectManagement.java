@@ -78,7 +78,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)

@@ -19,9 +19,9 @@ package net.rrm.ehour.audit.service;
 import java.util.List;
 
 import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.audit.dao.AuditDao;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.persistence.audit.dao.AuditDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,7 @@ public class AuditServiceImpl implements AuditService
 	}
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.audit.service.AuditService#persistAudit(net.rrm.ehour.domain.Audit)
+	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#persistAudit(net.rrm.ehour.persistence.persistence.domain.Audit)
 	 */
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	@NonAuditable
@@ -55,7 +55,7 @@ public class AuditServiceImpl implements AuditService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.audit.service.AuditService#getAudit(net.rrm.ehour.audit.service.dto.AuditReportRequest)
+	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#getAudit(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
 	 */
 	@NonAuditable
 	public List<Audit> getAudit(AuditReportRequest request)
@@ -74,7 +74,7 @@ public class AuditServiceImpl implements AuditService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.audit.service.AuditService#getAuditCount(net.rrm.ehour.audit.service.dto.AuditReportRequest)
+	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#getAuditCount(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
 	 */
 	@NonAuditable
 	public Number getAuditCount(AuditReportRequest request)

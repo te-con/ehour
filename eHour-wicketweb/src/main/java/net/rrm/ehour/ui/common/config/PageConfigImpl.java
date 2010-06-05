@@ -27,7 +27,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 public class PageConfigImpl implements PageConfig
 {
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.config.PageConfig#getMainNavPanel(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.config.PageConfig#getMainNavPanel(java.lang.String)
 	 */
 	public Panel getMainNavPanel(String id)
 	{
