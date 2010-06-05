@@ -50,7 +50,7 @@ public class ProjectAggregateReport extends AbstractAggregateReport
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.aggregate.AggregateReport#getReportNodeFactory()
+	 * @see net.rrm.ehour.ui.report.aggregate.AggregateReport#getReportNodeFactory()
 	 */
 	@Override
 	public ReportNodeFactory getReportNodeFactory()

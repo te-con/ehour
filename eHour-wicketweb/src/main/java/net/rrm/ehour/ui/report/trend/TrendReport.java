@@ -27,9 +27,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.service.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
 import net.rrm.ehour.util.DateUtil;
 
@@ -56,7 +56,7 @@ public abstract class TrendReport<RK extends Comparable<?>> extends AbstractCach
 	
 	/*
 	 * 3(non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.service.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected ReportData getReportData(ReportCriteria reportCriteria)

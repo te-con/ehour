@@ -15,7 +15,7 @@
  * eHour is sponsored by TE-CON  - http://www.te-con.nl/
  */
 
-package net.rrm.ehour.init;
+package net.rrm.ehour.derby;
 
 import javax.sql.DataSource;
 
@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.stereotype.Service;
 
 /**
  * Shutdowns the Derby database gracefully when the application goes down
@@ -33,13 +32,12 @@ import org.springframework.stereotype.Service;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-@Service
-public class DerbyDbManager implements ApplicationListener<ContextClosedEvent>
+public class DerbyDbManagerImpl implements ApplicationListener<ContextClosedEvent>, DerbyDbManager
 {
+	private static final Logger LOGGER = Logger.getLogger(DerbyDbManagerImpl.class);
+
 	@Autowired
 	private DataSource	dataSource;
-
-	private static final Logger LOGGER = Logger.getLogger(DerbyDbValidatorImpl.class);
 	
 	@Override
 	public void onApplicationEvent(ContextClosedEvent event)

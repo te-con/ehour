@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.timesheet.panel;
 import java.util.Calendar;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.service.timesheet.service.TimesheetService;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
+import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.panel.monthoverview.MonthOverviewPanel;
 import net.rrm.ehour.ui.timesheet.panel.projectoverview.ProjectOverviewPanel;

@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.service.project.util.ProjectUtil;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;

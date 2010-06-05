@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.report.panel.aggregate;
 
-import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportData;
@@ -44,7 +44,7 @@ public class CustomerReportPanel extends AggregateReportPanel
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.panel.type.ReportPanel#addCharts(net.rrm.ehour.service.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
+	 * @see net.rrm.ehour.ui.report.panel.type.ReportPanel#addCharts(net.rrm.ehour.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
 	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)

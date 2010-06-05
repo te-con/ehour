@@ -16,8 +16,8 @@
 
 package net.rrm.ehour.ui.admin.config.page;
 
-import net.rrm.ehour.service.config.EhourConfigStub;
-import net.rrm.ehour.service.config.service.ConfigurationService;
+import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.admin.config.panel.ConfigTabPanel;

@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportData;
 
 /**
  * Created on Mar 11, 2009, 5:21:23 PM

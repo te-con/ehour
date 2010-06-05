@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
-import net.rrm.ehour.service.mail.service.MailService;
+import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 

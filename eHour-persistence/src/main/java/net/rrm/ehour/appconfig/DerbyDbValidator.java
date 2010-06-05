@@ -1,4 +1,4 @@
-package net.rrm.ehour.init;
+package net.rrm.ehour.appconfig;
 
 public interface DerbyDbValidator
 {

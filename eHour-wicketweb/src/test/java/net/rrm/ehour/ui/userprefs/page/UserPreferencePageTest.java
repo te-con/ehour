@@ -21,11 +21,11 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.service.exception.ObjectNotFoundException;
-import net.rrm.ehour.service.timesheet.service.TimesheetService;
-import net.rrm.ehour.service.user.service.UserService;
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
+import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Test;
 

@@ -3,7 +3,7 @@ package net.rrm.ehour.ui.admin.content.assignment;
 import java.util.List;
 
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.service.project.dto.ProjectAssignmentCollection;
+import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 
 /**

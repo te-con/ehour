@@ -15,7 +15,7 @@
  * eHour is sponsored by TE-CON  - http://www.te-con.nl/
  */
 
-package net.rrm.ehour.init;
+package net.rrm.ehour.appconfig;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -47,7 +47,7 @@ public class DerbyDbValidatorConfiguration
 	@Bean
 	public DerbyDbValidator createDerbyDbValidator()
 	{
-		if ("derby".equalsIgnoreCase(databaseName))
+		if (DatabaseType.DERBY.isDatabase(databaseName))
 		{
 			return new DerbyDbValidatorImpl();
 		} else

@@ -30,7 +30,7 @@ import org.junit.Test;
 public class CommonWebUtilTest extends ProjectReportPanelTest
 {
 	/**
-	 * Test method for {@link net.rrm.ehour.service.ui.common.util.CommonWebUtil#findComponent(org.apache.wicket.MarkupContainer, java.lang.Class)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.util.CommonWebUtil#findComponent(org.apache.wicket.MarkupContainer, java.lang.Class)}.
 	 */
 	@Test
 	public void testFindComponent()

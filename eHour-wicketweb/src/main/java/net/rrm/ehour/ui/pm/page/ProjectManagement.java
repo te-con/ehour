@@ -21,11 +21,11 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.service.project.service.ProjectService;
-import net.rrm.ehour.service.report.reports.ProjectManagerReport;
-import net.rrm.ehour.service.report.service.AggregateReportService;
+import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -78,7 +78,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.service.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)

@@ -24,7 +24,7 @@ import static org.easymock.classextension.EasyMock.verify;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import net.rrm.ehour.service.config.EhourConfigStub;
+import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.Localizer;
@@ -59,7 +59,7 @@ public class QuickWeekRendererTest extends AbstractSpringWebAppTester
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.service.ui.report.panel.criteria.quick.QuickWeekRenderer#getDisplayValue(java.lang.Object)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeekRenderer#getDisplayValue(java.lang.Object)}.
 	 */
 	@Test
 	public void testGetDisplayValueCurrent()

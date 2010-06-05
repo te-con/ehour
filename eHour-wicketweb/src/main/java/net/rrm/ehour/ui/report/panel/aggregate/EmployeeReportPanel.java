@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.report.panel.aggregate;
 
-import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportData;

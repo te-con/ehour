@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.service.user.service.UserService;
+import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Check;

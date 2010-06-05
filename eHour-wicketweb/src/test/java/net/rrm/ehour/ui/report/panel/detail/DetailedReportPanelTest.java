@@ -25,7 +25,7 @@ import static org.easymock.EasyMock.verify;
 import java.util.Locale;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.service.report.service.DetailedReportService;
+import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
@@ -51,7 +51,7 @@ public class DetailedReportPanelTest extends AbstractSpringWebAppTester
 	}
 	
 	/**
-	 * Test method for {@link net.rrm.ehour.service.ui.report.panel.detail.DetailedReportPanel#DetailedReportPanel(java.lang.String, net.rrm.ehour.service.ui.report.TreeReport, net.rrm.ehour.service.report.reports.ReportData)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel#DetailedReportPanel(java.lang.String, net.rrm.ehour.ui.report.TreeReport, net.rrm.ehour.report.reports.ReportData)}.
 	 */
 	@Test
 	@SuppressWarnings("serial")

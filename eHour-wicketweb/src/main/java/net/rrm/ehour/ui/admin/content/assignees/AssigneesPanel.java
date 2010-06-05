@@ -12,12 +12,12 @@ import javax.swing.tree.TreeModel;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.service.user.service.UserService;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
 import net.rrm.ehour.ui.admin.content.tree.ContentTree;
 import net.rrm.ehour.ui.admin.content.tree.NodeType;
 import net.rrm.ehour.ui.admin.content.tree.TreeNodeSelector;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
+import net.rrm.ehour.user.service.UserService;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 

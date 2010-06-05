@@ -50,7 +50,7 @@ public class FlatEntryEndNode extends ReportNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.node.ReportNode#getElementId(net.rrm.ehour.service.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.ui.report.node.ReportNode#getElementId(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
 	protected Serializable getElementId(ReportElement element)
@@ -60,7 +60,7 @@ public class FlatEntryEndNode extends ReportNode
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.node.ReportNode#getHours()
+	 * @see net.rrm.ehour.ui.report.node.ReportNode#getHours()
 	 */
     @Override
     public Number getHours()
@@ -70,7 +70,7 @@ public class FlatEntryEndNode extends ReportNode
 
     /*
      * (non-Javadoc)
-     * @see net.rrm.ehour.service.ui.report.node.ReportNode#getTurnover()
+     * @see net.rrm.ehour.ui.report.node.ReportNode#getTurnover()
      */
     @Override
     public Number getTurnover()
@@ -80,7 +80,7 @@ public class FlatEntryEndNode extends ReportNode
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.node.ReportNode#isLastNode()
+	 * @see net.rrm.ehour.ui.report.node.ReportNode#isLastNode()
 	 */
     @Override
     protected boolean isLastNode()

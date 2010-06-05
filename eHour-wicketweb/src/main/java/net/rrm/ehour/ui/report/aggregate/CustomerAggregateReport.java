@@ -40,7 +40,7 @@ public class CustomerAggregateReport extends AbstractAggregateReport
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.TreeReport#getReportNodeFactory()
+	 * @see net.rrm.ehour.ui.report.TreeReport#getReportNodeFactory()
 	 */
 	@Override
     public ReportNodeFactory getReportNodeFactory()

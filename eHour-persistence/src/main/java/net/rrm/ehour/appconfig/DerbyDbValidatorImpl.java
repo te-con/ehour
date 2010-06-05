@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.init;
+package net.rrm.ehour.appconfig;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidat
 	private final static Logger LOGGER = Logger.getLogger(DerbyDbValidatorImpl.class);
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.init.DerbyDbValidator#checkDatabaseState()
+	 * @see net.rrm.ehour.derby.DerbyDbValidator#checkDatabaseState()
 	 */
 	@PostConstruct
 	public void checkDatabaseState()

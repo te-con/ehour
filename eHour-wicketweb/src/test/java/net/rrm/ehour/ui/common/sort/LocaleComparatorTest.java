@@ -32,7 +32,7 @@ public class LocaleComparatorTest
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.service.ui.common.sort.LocaleComparator#compare(java.util.Locale, java.util.Locale)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.sort.LocaleComparator#compare(java.util.Locale, java.util.Locale)}.
 	 */
 	@Test
 	public void testCompareCountry()

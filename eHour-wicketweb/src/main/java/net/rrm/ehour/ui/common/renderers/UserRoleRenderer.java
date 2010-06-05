@@ -24,7 +24,7 @@ public class UserRoleRenderer  extends LocalizedResourceRenderer<UserRole>
 	private static final long serialVersionUID = -4020935210828625185L;
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.renderers.LocalizedResourceRenderer#getResourceKey(java.lang.Object)
+	 * @see net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer#getResourceKey(java.lang.Object)
 	 */
 	@Override
 	protected String getResourceKey(UserRole role)

@@ -36,7 +36,7 @@ public class ProjectAdminBackingBeanImpl extends AdminBackingBeanImpl implements
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.project.panel.dto.ProjectAdminBackingBean#getProject()
+	 * @see net.rrm.ehour.ui.admin.project.panel.dto.ProjectAdminBackingBean#getProject()
 	 */
 	public Project getProject()
 	{
@@ -44,7 +44,7 @@ public class ProjectAdminBackingBeanImpl extends AdminBackingBeanImpl implements
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.project.panel.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.service.domain.Project)
+	 * @see net.rrm.ehour.ui.admin.project.panel.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.domain.Project)
 	 */
 	public void setProject(Project project)
 	{
@@ -53,7 +53,7 @@ public class ProjectAdminBackingBeanImpl extends AdminBackingBeanImpl implements
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.model.AdminBackingBean#getDomainObject()
+	 * @see net.rrm.ehour.ui.common.model.AdminBackingBean#getDomainObject()
 	 */
 	public Project getDomainObject()
 	{

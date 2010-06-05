@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.service.report.reports.ReportData;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 
 import org.apache.log4j.Logger;

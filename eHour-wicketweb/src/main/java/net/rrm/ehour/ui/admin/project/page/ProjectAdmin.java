@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.List;
 
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.service.exception.ObjectNotFoundException;
-import net.rrm.ehour.service.project.service.ProjectService;
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean;
@@ -97,7 +97,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.service.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -177,7 +177,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
 	protected ProjectAdminBackingBean getNewEditBaseBackingBean()

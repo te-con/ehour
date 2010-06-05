@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.authorization;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.service.user.service.UserService;
+import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

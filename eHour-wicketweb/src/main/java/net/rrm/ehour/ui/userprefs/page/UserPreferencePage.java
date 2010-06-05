@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.userprefs.page;
 
-import net.rrm.ehour.service.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;

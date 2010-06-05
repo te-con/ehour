@@ -1,8 +1,8 @@
 package net.rrm.ehour.ui.admin.content.page;
 
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.service.project.dto.ProjectAssignmentCollection;
-import net.rrm.ehour.service.project.service.ProjectAssignmentManagementService;
+import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.ui.admin.content.assignables.AssignablesPanel;
 import net.rrm.ehour.ui.admin.content.assignees.AssigneesPanel;
 import net.rrm.ehour.ui.admin.content.assignment.ProjectAssignmentManagementPanel;

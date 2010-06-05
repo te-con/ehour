@@ -29,9 +29,9 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.service.project.service.ProjectService;
-import net.rrm.ehour.service.report.reports.ProjectManagerReport;
-import net.rrm.ehour.service.report.service.AggregateReportService;
+import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.apache.wicket.util.tester.FormTester;
@@ -60,7 +60,7 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester
 
 
 	/**
-	 * Test method for {@link net.rrm.ehour.service.ui.pm.page.ProjectManagement#ProjectManagement()}.
+	 * Test method for {@link net.rrm.ehour.ui.pm.page.ProjectManagement#ProjectManagement()}.
 	 * @throws NoSuchMethodException 
 	 * @throws SecurityException 
 	 */

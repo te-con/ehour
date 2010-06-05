@@ -17,9 +17,9 @@
 package net.rrm.ehour.ui.timesheet.export.excel.part;
 
 import static net.rrm.ehour.ui.common.report.excel.CellStyle.BORDER_NORTH;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.service.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;

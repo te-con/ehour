@@ -6,8 +6,9 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
+			classpath:context-propertyconfig.xml
+			classpath:context-datasource.xml
 			classpath:context-dbconnectivity.xml
-			classpath:context-scanner.xml
 			classpath:context-scanner.xml
 			classpath:context-service.xml
 			classpath:context-security.xml
@@ -18,7 +19,7 @@
 <!-- 	
 	<context-param>
 		<param-name>contextClass</param-name>
-		<param-value>net.rrm.ehour.service.ui.boot.ConditionalXmlWebApplicationContext</param-value>
+		<param-value>net.rrm.ehour.ui.boot.ConditionalXmlWebApplicationContext</param-value>
 	</context-param>
  -->
 	<filter>
@@ -43,7 +44,7 @@
 		<init-param>
 			<param-name>applicationClassName</param-name>
 			<param-value>
-				net.rrm.ehour.service.ui.EhourWebApplication
+				net.rrm.ehour.ui.EhourWebApplication
 			</param-value>
 		</init-param>
 		<init-param>

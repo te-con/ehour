@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.admin.assignment.panel;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.service.exception.ObjectNotFoundException;
-import net.rrm.ehour.service.project.service.ProjectAssignmentService;
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
@@ -102,7 +102,7 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#ajaxEventReceived(net.rrm.ehour.service.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")

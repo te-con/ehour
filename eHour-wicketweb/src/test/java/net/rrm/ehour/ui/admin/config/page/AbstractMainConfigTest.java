@@ -23,9 +23,9 @@ import static org.easymock.classextension.EasyMock.verify;
 import java.io.Serializable;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.service.config.EhourConfigStub;
-import net.rrm.ehour.service.config.service.ConfigurationServiceImpl;
-import net.rrm.ehour.service.mail.service.MailService;
+import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.service.ConfigurationServiceImpl;
+import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
 import org.junit.After;

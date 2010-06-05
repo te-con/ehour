@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;

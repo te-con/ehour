@@ -33,7 +33,7 @@ public class CustomerRowKey extends ChartRowKey
 	
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.web.report.charts.rowkey.ChartRowKey#getName()
+	 * @see net.rrm.ehour.web.report.charts.rowkey.ChartRowKey#getName()
 	 */
 	public String getName()
 	{
@@ -42,7 +42,7 @@ public class CustomerRowKey extends ChartRowKey
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.chart.rowkey.ChartRowKey#getId()
+	 * @see net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey#getId()
 	 */
 	public Integer getId()
 	{

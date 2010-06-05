@@ -20,12 +20,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.service.audit.service.AuditService;
-import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.TreeReportElement;
@@ -52,7 +52,7 @@ public class AuditReport extends AbstractCachableReportModel
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.service.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected ReportData getReportData(ReportCriteria reportCriteria)

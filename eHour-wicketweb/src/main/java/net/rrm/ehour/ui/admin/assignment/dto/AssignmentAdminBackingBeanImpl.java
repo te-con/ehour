@@ -73,7 +73,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}	
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isShowAllottedHours()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isShowAllottedHours()
 	 */
 	public boolean isShowAllottedHours()
 	{
@@ -83,7 +83,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isNotifyPmEnabled()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isNotifyPmEnabled()
 	 */
 	public boolean isNotifyPmEnabled()
 	{
@@ -93,7 +93,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isShowOverrunHours()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isShowOverrunHours()
 	 */
 	public boolean isShowOverrunHours()
 	{
@@ -103,7 +103,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}	
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjectAssignment()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjectAssignment()
 	 */
 	public ProjectAssignment getProjectAssignment()
 	{
@@ -111,7 +111,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjectAssignmentForSave()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjectAssignmentForSave()
 	 */
 	public ProjectAssignment getProjectAssignmentForSave()
 	{
@@ -130,21 +130,21 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setProjectAssignment(net.rrm.ehour.service.domain.ProjectAssignment)
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setProjectAssignment(net.rrm.ehour.domain.ProjectAssignment)
 	 */
 	public void setProjectAssignment(ProjectAssignment projectAssignment)
 	{
 		this.projectAssignment = projectAssignment;
 	}
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjects()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjects()
 	 */
 	public List<Project> getProjects()
 	{
 		return projects;
 	}
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setProjects(java.util.List)
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setProjects(java.util.List)
 	 */
 	public void setProjects(List<Project> projects)
 	{
@@ -152,7 +152,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getCustomer()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getCustomer()
 	 */
 	public Customer getCustomer()
 	{
@@ -160,7 +160,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setCustomer(net.rrm.ehour.service.domain.Customer)
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setCustomer(net.rrm.ehour.domain.Customer)
 	 */
 	public void setCustomer(Customer customer)
 	{
@@ -168,7 +168,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isInfiniteStartDate()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isInfiniteStartDate()
 	 */
 	public boolean isInfiniteStartDate()
 	{
@@ -176,7 +176,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setInfiniteStartDate(boolean)
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setInfiniteStartDate(boolean)
 	 */
 	public void setInfiniteStartDate(boolean infiniteStartDate)
 	{
@@ -184,7 +184,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isInfiniteEndDate()
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isInfiniteEndDate()
 	 */
 	public boolean isInfiniteEndDate()
 	{
@@ -192,7 +192,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setInfiniteEndDate(boolean)
+	 * @see net.rrm.ehour.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setInfiniteEndDate(boolean)
 	 */
 	public void setInfiniteEndDate(boolean infiniteEndDate)
 	{
@@ -201,7 +201,7 @@ public class AssignmentAdminBackingBeanImpl extends AdminBackingBeanImpl impleme
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.model.AdminBackingBean#getDomainObject()
+	 * @see net.rrm.ehour.ui.common.model.AdminBackingBean#getDomainObject()
 	 */
 	public DomainObject<?, ?> getDomainObject()
 	{

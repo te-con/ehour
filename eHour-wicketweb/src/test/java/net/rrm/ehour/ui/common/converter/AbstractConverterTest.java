@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.common.converter;
 
-import net.rrm.ehour.service.config.EhourConfigStub;
+import net.rrm.ehour.config.EhourConfigStub;
 
 import org.junit.Before;
 

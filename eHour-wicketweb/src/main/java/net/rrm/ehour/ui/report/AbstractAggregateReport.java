@@ -17,8 +17,8 @@
 package net.rrm.ehour.ui.report;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.service.report.reports.ReportData;
-import net.rrm.ehour.service.report.service.AggregateReportService;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
@@ -41,7 +41,7 @@ public abstract class AbstractAggregateReport extends TreeReport
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.TreeReport#fetchReportData(net.rrm.ehour.service.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.ui.report.TreeReport#fetchReportData(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected final ReportData fetchReportData(ReportCriteria reportCriteria)

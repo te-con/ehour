@@ -52,7 +52,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.component.AbstractExcelResource#getExcelData(java.lang.String)
+	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getExcelData(java.lang.String)
 	 */
 	@Override
 	public byte[] getExcelData(Report report) throws IOException
@@ -104,7 +104,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.component.AbstractExcelResource#getFilename()
+	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getFilename()
 	 */
 	@Override
 	protected String getFilename()

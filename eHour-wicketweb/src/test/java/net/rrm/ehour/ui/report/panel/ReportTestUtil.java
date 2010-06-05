@@ -23,10 +23,10 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.service.report.reports.ReportData;
 
 /**
  * Test data

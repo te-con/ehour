@@ -21,12 +21,12 @@ import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 
 import org.springframework.mail.MailException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Callback 
  **/
-@Component
+@Service
 public class AssignmentMsgCallback extends MailTaskCallback
 {
 	/* (non-Javadoc)

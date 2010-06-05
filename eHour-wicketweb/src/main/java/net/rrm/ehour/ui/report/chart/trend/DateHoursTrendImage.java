@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.report.chart.trend;
 
 import java.util.Locale;
 
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.service.report.reports.ReportData;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.report.chart.rowkey.DateRowKey;
@@ -43,7 +43,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.chart.AbstractReportChartImage#getColumnValue(net.rrm.ehour.service.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.ui.report.chart.AbstractReportChartImage#getColumnValue(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
 	protected Number getColumnValue(FlatReportElement element)
@@ -52,7 +52,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.chart.AbstractReportChartImage#getReportNameKey()
+	 * @see net.rrm.ehour.ui.report.chart.AbstractReportChartImage#getReportNameKey()
 	 */
 	@Override
 	protected String getReportNameKey()
@@ -61,7 +61,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.chart.AbstractReportChartImage#getRowKey(net.rrm.ehour.service.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.ui.report.chart.AbstractReportChartImage#getRowKey(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
 	protected ChartRowKey getRowKey(FlatReportElement element)
@@ -70,7 +70,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.chart.AbstractReportChartImage#getValueAxisLabelKey()
+	 * @see net.rrm.ehour.ui.report.chart.AbstractReportChartImage#getValueAxisLabelKey()
 	 */
 	@Override
 	protected String getValueAxisLabelKey()
@@ -80,7 +80,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.chart.trend.AbstractTrendChartImage#getSeriesKey(net.rrm.ehour.service.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.ui.report.chart.trend.AbstractTrendChartImage#getSeriesKey(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
 	protected Object getSeriesKey(FlatReportElement element)
@@ -101,7 +101,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.report.chart.trend.AbstractTrendChartImage#getSeriesName(net.rrm.ehour.service.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.ui.report.chart.trend.AbstractTrendChartImage#getSeriesName(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
 	protected Comparable<?> getSeriesName(FlatReportElement element)

@@ -8,10 +8,10 @@ import static org.easymock.classextension.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.service.customer.service.CustomerService;
-import net.rrm.ehour.service.project.service.ProjectAssignmentManagementService;
-import net.rrm.ehour.service.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBeanImpl;

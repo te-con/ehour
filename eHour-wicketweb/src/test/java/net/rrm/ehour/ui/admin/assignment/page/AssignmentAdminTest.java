@@ -24,15 +24,15 @@ import static org.easymock.EasyMock.verify;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.service.customer.service.CustomerService;
-import net.rrm.ehour.service.project.service.ProjectAssignmentService;
-import net.rrm.ehour.service.project.service.ProjectService;
-import net.rrm.ehour.service.user.service.UserService;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.user.service.UserService;
 
 import org.junit.Test;
 

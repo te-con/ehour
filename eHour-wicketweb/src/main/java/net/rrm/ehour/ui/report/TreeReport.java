@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.service.report.reports.ReportData;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.node.ReportNode;
@@ -50,7 +50,7 @@ public abstract class TreeReport extends AbstractCachableReportModel
 
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.service.ui.common.report.Report#getReportData()
+	 * @see net.rrm.ehour.ui.common.report.Report#getReportData()
 	 */
 	@Override
 	protected ReportData getReportData(ReportCriteria reportCriteria)

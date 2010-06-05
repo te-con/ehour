@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.service.report.reports.ReportData;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.chart.AbstractReportChartImage;

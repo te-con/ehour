@@ -20,8 +20,8 @@ import static org.easymock.EasyMock.createMock;
 
 import java.util.Calendar;
 
-import net.rrm.ehour.service.audit.service.AuditService;
-import net.rrm.ehour.service.config.EhourConfigStub;
+import net.rrm.ehour.audit.service.AuditService;
+import net.rrm.ehour.config.EhourConfigStub;
 
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 

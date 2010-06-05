@@ -9,9 +9,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeModel;
 
+import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.service.customer.service.CustomerService;
 import net.rrm.ehour.ui.admin.content.tree.AssigneeTreeNode;
 import net.rrm.ehour.ui.admin.content.tree.ContentTree;
 import net.rrm.ehour.ui.admin.content.tree.NodeType;
