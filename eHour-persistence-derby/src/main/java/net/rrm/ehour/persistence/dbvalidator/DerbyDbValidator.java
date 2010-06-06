@@ -49,7 +49,7 @@ public class DerbyDbValidator
 	
 	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
 	
-	private final static Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
+	private static final Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
 	
 	private EmbeddedDataSource dataSource;
 	private String requiredDbVersion;

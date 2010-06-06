@@ -1,5 +1,7 @@
 package net.rrm.ehour;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,16 +51,24 @@ public class ServerPropertiesConfigurator
 	private Properties loadProperties(String filename) throws FileNotFoundException, IOException
 	{
 		Properties props = new Properties();
-
-		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
-
-		if (inputStream == null)
-		{
-			throw new FileNotFoundException("property file '" + filename + "' not found in the classpath");
-		}
-
-		props.load(inputStream);
 		
+		File file = new File(filename);
+		
+		if (file.exists())
+		{
+			props.load(new FileInputStream(file));
+		} else
+		{
+			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
+
+			if (inputStream == null)
+			{
+				throw new FileNotFoundException("property file '" + filename + "' not found in the classpath");
+			}
+
+			props.load(inputStream);
+
+		}
 		return props;
 	}
 }

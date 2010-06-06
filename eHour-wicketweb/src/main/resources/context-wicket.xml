@@ -11,8 +11,4 @@
 	</bean>
 	
 	<bean id="pageConfig" class="net.rrm.ehour.ui.common.config.PageConfigImpl" />
-	
-	<!-- 
-	<bean id="boot" class="net.rrm.ehour.ui.boot.ConditionBeanFactoryPostProcessor" />
-	 -->
 </beans>

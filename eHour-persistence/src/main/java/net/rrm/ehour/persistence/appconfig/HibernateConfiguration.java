@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 
 import net.rrm.ehour.appconfig.ConfigPropertiesLoader;
 
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,12 +33,15 @@ public class HibernateConfiguration
 	private String databaseName;
 
 	private static final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+	private static final Logger LOGGER = Logger.getLogger(HibernateConfiguration.class);
 	
 	@Bean(name="sessionFactory")
 	public SessionFactory getSessionFactory() throws Exception
 	{
 		Properties configProperties = ConfigPropertiesLoader.loadDatabaseProperties(databaseName);
 
+		LOGGER.info("Using database type: " + databaseName);
+		
 		LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
 

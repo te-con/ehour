@@ -33,16 +33,6 @@
 		</New>
 	</Set>
 
-	<New id="Datasource" class="org.eclipse.jetty.plus.jndi.Resource">
-		<Arg>jdbc/eHourDS</Arg>
-		<Arg>
-			<New class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource">
-				<Set name="DatabaseName">ehourDb</Set>
-			</New>
-		</Arg>
-	</New>
-
-
 	<Call name="addBean">
 		<Arg>
 			<New id="DeploymentManager" class="org.eclipse.jetty.deploy.DeploymentManager">
