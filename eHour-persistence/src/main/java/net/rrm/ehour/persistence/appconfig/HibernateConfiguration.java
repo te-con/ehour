@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import net.rrm.ehour.appconfig.DatabaseConfigPropertiesLoader;
+import net.rrm.ehour.appconfig.ConfigPropertiesLoader;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class HibernateConfiguration
 	@Bean(name="sessionFactory")
 	public SessionFactory getSessionFactory() throws Exception
 	{
-		Properties configProperties = DatabaseConfigPropertiesLoader.loadProperties(databaseName);
+		Properties configProperties = ConfigPropertiesLoader.loadDatabaseProperties(databaseName);
 
 		LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);

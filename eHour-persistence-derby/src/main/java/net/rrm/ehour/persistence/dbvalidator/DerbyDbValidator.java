@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.persistence.appconfig;
+package net.rrm.ehour.persistence.dbvalidator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,7 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.commons.beanutils.DynaBean;
@@ -37,55 +36,51 @@ import org.apache.ddlutils.io.DatabaseIO;
 import org.apache.ddlutils.model.Database;
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ResourceLoaderAware;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 
 /**
  * Derby database accessor methods
  **/
-public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidator  
+public class DerbyDbValidator
 {
-	private static final String DDL_FILE = "ddl-ehour-%s.xml";
-	private static final String DML_FILE = "dml-ehour-%s.xml";
-	
-	@Value("${ehour.db.version}") 
-	private String version;
-
-	@Autowired 
-	private DataSource	dataSource;
-
-	private ResourceLoader	resourceLoader;
+	private static final String DDL_FILE = "ddl/ddl-ehour-%s.xml";
+	private static final String DML_FILE = "ddl/dml-ehour-%s.xml";
 	
 	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
 	
-	private final static Logger LOGGER = Logger.getLogger(DerbyDbValidatorImpl.class);
+	private final static Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
 	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.persistence.derby.DerbyDbValidator#checkDatabaseState()
-	 */
-	@PostConstruct
+	private EmbeddedDataSource dataSource;
+	private String requiredDbVersion;
+	
+	
+	public DerbyDbValidator(String requiredDbVersion, DataSource dataSource)
+	{
+		this.requiredDbVersion = requiredDbVersion;
+		this.dataSource = (EmbeddedDataSource)dataSource;
+	}
+	
+	
 	public void checkDatabaseState()
 	{
 		boolean databaseInState = false;
 		String 	currentVersion = null;
 		DdlType ddlType = DdlType.CREATE_TABLE;
 		
-		LOGGER.info("Verifying datamodel version. Minimum version: " + version);
+		LOGGER.info("Verifying datamodel version. Minimum version: " + requiredDbVersion);
 
 		Connection connection = null;
 		
 		try
 		{
-			((EmbeddedDataSource)dataSource).setCreateDatabase("create");
+			dataSource.setCreateDatabase("create");
 
 			connection = dataSource.getConnection();
 			
 			currentVersion = getCurrentVersion(connection);
 			
-			databaseInState = (currentVersion != null) ? currentVersion.equalsIgnoreCase(version) : false;
+			databaseInState = (currentVersion != null) ? currentVersion.equalsIgnoreCase(requiredDbVersion) : false;
 			
 			if (databaseInState)
 			{
@@ -94,7 +89,7 @@ public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidat
 			}
 			else
 			{
-				LOGGER.info("Datamodel of version " + currentVersion + " found. Upgrading to " + version);
+				LOGGER.info("Datamodel of version " + currentVersion + " found. Upgrading to " + requiredDbVersion);
 
 				ddlType = DdlType.ALTER_TABLE;
 			}
@@ -142,7 +137,7 @@ public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidat
 	{
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
 		
-		Resource resource = this.resourceLoader.getResource(getDdlFilename());
+		Resource resource = new ClassPathResource(getDdlFilename());
 
 		DatabaseIO reader = new DatabaseIO();
 		reader.setValidateXml(false);
@@ -170,7 +165,7 @@ public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidat
 	 * @throws FileNotFoundException 
 	 * @throws DdlUtilsException 
 	 */
-	private void insertData(Platform platform, Database model, String dmlFile) throws DdlUtilsException, FileNotFoundException, IOException
+	private void insertData(Platform platform, Database model, String dmlFile) throws DdlUtilsException, IOException
 	{
 		DatabaseDataIO	dataIO = new DatabaseDataIO();
 		
@@ -178,7 +173,7 @@ public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidat
 		
         dataReader.getSink().start();
         
-        Resource resource = this.resourceLoader.getResource(dmlFile);
+        Resource resource = new ClassPathResource(getDmlFilename());
         
         dataIO.writeDataToDatabase(dataReader, new InputStreamReader(resource.getInputStream()));
         
@@ -233,28 +228,18 @@ public class DerbyDbValidatorImpl implements ResourceLoaderAware, DerbyDbValidat
 		configuration.set("config_key", "version");
 		platform.delete(database, configuration);
 
-		configuration.set("config_value", version);
+		configuration.set("config_value", requiredDbVersion);
 
 		platform.insert(database, configuration);
 	}
 
 	private String getDdlFilename()
 	{
-		return String.format(DDL_FILE, version);
+		return String.format(DDL_FILE, requiredDbVersion);
 	}
 	
 	private String getDmlFilename()
 	{
-		return String.format(DML_FILE, version);
+		return String.format(DML_FILE, requiredDbVersion);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.springframework.context.ResourceLoaderAware#setResourceLoader(org.springframework.core.io.ResourceLoader)
-	 */
-	public void setResourceLoader(ResourceLoader resourceLoader)
-	{
-		this.resourceLoader = resourceLoader; 
-	}
-
 }
