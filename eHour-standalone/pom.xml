@@ -10,7 +10,6 @@
 	<artifactId>eHour-standalone</artifactId>
 	<name>eHour standalone</name>
 	<packaging>jar</packaging>
-	<version>${applicationVersion}</version>
 
 	<build>
 		<plugins>
@@ -124,6 +123,14 @@
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-persistence-derby</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-persistence-mysql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-persistence-postgresql</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>

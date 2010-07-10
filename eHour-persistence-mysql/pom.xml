@@ -10,7 +10,6 @@
 	<artifactId>eHour-persistence-mysql</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour DB MySQL connectivity</name>
-	<version>${applicationVersion}</version>
 
 	<dependencies>
 		<dependency>

@@ -10,7 +10,6 @@
 	<artifactId>eHour-persistence-derby</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour DB Derby connectivity</name>
-	<version>${applicationVersion}</version>
 
 	<dependencies>
 		<dependency>

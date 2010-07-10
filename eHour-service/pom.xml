@@ -10,7 +10,7 @@
 	<artifactId>eHour-service</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour service layer</name>
-	<version>${applicationVersion}</version>
+
 	<build>
 		<resources>
 			<resource>

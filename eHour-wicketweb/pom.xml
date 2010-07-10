@@ -11,7 +11,6 @@
 	<artifactId>eHour-wicketweb</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour web layer (wicket)</name>
-	<version>${applicationVersion}</version>
 
 	<build>
 		<finalName>eHour-wicketweb</finalName>
@@ -35,23 +34,6 @@
 
 		</resources>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>prod</id>
-			<build>
-				<resources>
-					<resource>
-						<directory>
-							src/main/profiles/prod
-						</directory>
-					</resource>
-				</resources>
-			</build>
-		</profile>
-	</profiles>
-	<repositories>
-	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -107,10 +89,6 @@
 			<artifactId>wicket-spring</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-auth-roles</artifactId>
 		</dependency>
@@ -149,10 +127,6 @@
 		<dependency>
 			<groupId>org.apache.sanselan</groupId>
 			<artifactId>sanselan</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>

@@ -10,7 +10,6 @@
 	<artifactId>eHour-persistence</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour persistence</name>
-	<version>${applicationVersion}</version>
 
 	<dependencies>
 		<dependency>

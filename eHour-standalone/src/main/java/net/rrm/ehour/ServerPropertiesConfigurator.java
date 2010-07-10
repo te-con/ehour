@@ -24,7 +24,9 @@ public class ServerPropertiesConfigurator
 						.setDataBaseURL(props.getProperty("ehour.database.url"))
 						.setDataBaseUsername(props.getProperty("ehour.database.username"))
 						.setDataBasePassword(props.getProperty("ehour.database.password"))
-						.setPort(parseServerPort(props));
+						.setPort(parseServerPort(props))
+						.setDefaultConfigFileName(props.getProperty("jetty.config.location"))
+						;
 		
 		return builder;
 		

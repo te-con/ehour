@@ -17,8 +17,7 @@
 package net.rrm.ehour.ui.common.page;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.common.config.PageConfig;
+import net.rrm.ehour.ui.common.component.header.HeaderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -29,7 +28,6 @@ import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -57,7 +55,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
 
 	private void setupPage(ResourceModel pageTitle)
 	{
-		add(getMainNavPanel("mainNav"));
+		add(new HeaderPanel("mainNav"));
 		add(new Label("pageTitle", pageTitle));
 		add(createDebugBar("debug"));
 	}
@@ -79,20 +77,6 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
 		
 	}
 	
-	protected Panel getMainNavPanel(String id)
-	{
-		return getPageConfig().getMainNavPanel(id);
-	}
-	
-	/**
-	 * Get page config
-	 * @return
-	 */
-	protected PageConfig getPageConfig()
-	{
-		return ((EhourWebApplication)getApplication()).getPageConfig();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)

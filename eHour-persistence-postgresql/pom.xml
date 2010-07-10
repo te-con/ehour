@@ -10,7 +10,6 @@
 	<artifactId>eHour-persistence-postgresql</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour DB PostgreSQL connectivity</name>
-	<version>${applicationVersion}</version>
 
 	<dependencies>
 		<dependency>

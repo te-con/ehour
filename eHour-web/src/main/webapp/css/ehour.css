@@ -605,7 +605,7 @@ a.bluebutton:active span {
 /* Fading Tooltips By Dustin Diaz*/
 body div#toolTip {
 	position: absolute;
-	z-index: 1000;
+	-index: 1000;
 	width: 220px;
 	background: #acc9e6;
 	border: 2px double #edf5fc;

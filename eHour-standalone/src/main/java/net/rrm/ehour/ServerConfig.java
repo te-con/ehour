@@ -1,5 +1,7 @@
 package net.rrm.ehour;
 
+import org.apache.commons.lang.StringUtils;
+
 public class ServerConfig
 {
 	private int port;
@@ -26,7 +28,10 @@ public class ServerConfig
 	
 	public ServerConfig setDefaultConfigFileName(String defaultConfigFileName)
 	{
-		this.defaultConfigFileName = defaultConfigFileName;
+		if (StringUtils.isNotBlank(defaultConfigFileName)) {
+			this.defaultConfigFileName = defaultConfigFileName;
+		}
+		
 		return this;
 	}
 	

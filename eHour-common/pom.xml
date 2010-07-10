@@ -10,7 +10,6 @@
 	<artifactId>eHour-common</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour common</name>
-	<version>${applicationVersion}</version>
 
 	<build>
 		<plugins>
@@ -26,6 +25,16 @@
 				</executions>
 			</plugin>
 		</plugins>
+		
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/profiles/dev/resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</resource>
+		</resources>		
 	</build>
 
 	<dependencies>

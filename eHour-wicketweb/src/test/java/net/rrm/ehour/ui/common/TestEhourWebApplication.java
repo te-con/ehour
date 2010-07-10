@@ -26,8 +26,6 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
-import net.rrm.ehour.ui.common.config.PageConfig;
-import net.rrm.ehour.ui.common.config.PageConfigImpl;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
@@ -134,12 +132,6 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 	public EhourWebSession getSession()
 	{
 		return session;
-	}
-
-	@Override
-	public PageConfig getPageConfig()
-	{
-		return new PageConfigImpl();
 	}
 
 	protected ISessionStore newSessionStore()

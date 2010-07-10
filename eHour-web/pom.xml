@@ -11,7 +11,6 @@
 	<artifactId>eHour-web</artifactId>
 	<packaging>war</packaging>
 	<name>eHour web UI</name>
-	<version>${applicationVersion}</version>
 
 	<profiles>
 		<profile>

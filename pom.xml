@@ -238,14 +238,12 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>5.1.12</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>postgresql</groupId>
 				<artifactId>postgresql</artifactId>
 				<version>8.3-603.jdbc4</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
@@ -631,15 +629,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<ajdtVersion>none</ajdtVersion>
-				</configuration>
-				<version>2.7</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
 					<execution>
@@ -684,13 +673,6 @@
 			activated by default to allow release plugin to run without profile
 		-->
 		<profile>
-			<id>mysql</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-
-		<profile>
 			<id>war</id>
 			<build>
 				<plugins>
@@ -705,8 +687,14 @@
 				</plugins>
 			</build>
 		</profile>
+
 		<profile>
 			<id>standalone</id>
+
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
 			<build>
 				<plugins>
 					<plugin>

@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.admin.user.page.UserAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.audit.panel.AuditReportExcel;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
-import net.rrm.ehour.ui.common.config.PageConfig;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
@@ -70,6 +69,7 @@ import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.ConverterLocator;
 import org.apache.wicket.util.lang.PackageName;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
 /**
@@ -83,9 +83,11 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	private AuthenticationManager authenticationManager;
 	protected Class<? extends WebPage>	login = Login.class;
 	private String version;
-	private PageConfig pageConfig;
 	private String wikiBaseUrl;
 	private boolean initialized;
+	
+	@Value("${ehour.configurationType}") 
+	private String configurationType;
 	
 	public EhourWebApplication()
 	{
@@ -129,52 +131,14 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	@Override
 	public String getConfigurationType()
 	{
-		String configurationType;
-		
-		try
+		if (configurationType == null || (!configurationType.equalsIgnoreCase(Application.DEPLOYMENT) &&
+				!configurationType.equalsIgnoreCase(Application.DEVELOPMENT)))
 		{
-			Properties props = getEhourProperties();
-			
-			configurationType = props.getProperty("configurationType");
-			
-			if (configurationType == null) {
-				configurationType = Application.DEVELOPMENT;
-			}
-			
-			// TODO
-			if (!configurationType.equalsIgnoreCase(Application.DEPLOYMENT) &&
-					!configurationType.equalsIgnoreCase(Application.DEVELOPMENT))
-			{
-				LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + Application.DEPLOYMENT + " or " + Application.DEVELOPMENT);
-				configurationType = Application.DEVELOPMENT;
-			}
-			
-		} catch (IOException e)
-		{
-			configurationType = Application.DEVELOPMENT;
+			LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + Application.DEPLOYMENT + " or " + Application.DEVELOPMENT);
+			return Application.DEVELOPMENT;
 		}
 		
 		return configurationType;
-	}
-	
-	private Properties getEhourProperties() throws IOException
-	{
-		ClassLoader classLoader = EhourWebApplication.class.getClassLoader();
-		
-		URL resource = classLoader.getResource("ehour.properties");
-		
-		if (resource != null)
-		{
-			InputStream inputStream = resource.openStream();
-			Properties props = new Properties();
-			props.load(inputStream);
-			
-			return props;
-		}
-		else
-		{
-			throw new FileNotFoundException();
-		}
 	}
 	
 	private void mountPages()
@@ -312,22 +276,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		this.version = version;
 	}
 
-	/**
-	 * @return the pageConfig
-	 */
-	public PageConfig getPageConfig()
-	{
-		return pageConfig;
-	}
-
-	/**
-	 * @param pageConfig the pageConfig to set
-	 */
-	public void setPageConfig(PageConfig pageConfig)
-	{
-		this.pageConfig = pageConfig;
-	}
-	
 	public String getWikiBaseUrl()
 	{
 		return wikiBaseUrl;
