@@ -29,7 +29,7 @@
 		<resources>
 			<resource>
 				<filtering>false</filtering>
-				<directory>src/profiles/dev/resources</directory>
+				<directory>src/main/resources</directory>
 				<includes>
 					<include>**</include>
 				</includes>
