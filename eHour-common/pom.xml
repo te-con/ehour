@@ -25,7 +25,7 @@
 				</executions>
 			</plugin>
 		</plugins>
-		
+
 		<resources>
 			<resource>
 				<filtering>false</filtering>
@@ -34,7 +34,27 @@
 					<include>**</include>
 				</includes>
 			</resource>
-		</resources>		
+		</resources>
+
+		<testResources>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</testResource>
+		</testResources>
 	</build>
 
 	<dependencies>
