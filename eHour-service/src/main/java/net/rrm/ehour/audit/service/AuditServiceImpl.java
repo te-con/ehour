@@ -79,6 +79,8 @@ public class AuditServiceImpl implements AuditService
 	@NonAuditable
 	public Number getAuditCount(AuditReportRequest request)
 	{
-		return auditDAO.count(request);
+		Number number = auditDAO.count(request);
+		
+		return (number == null) ? 0 : number;
 	}
 }
