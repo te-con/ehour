@@ -13,8 +13,6 @@
 	<name>eHour web layer (wicket)</name>
 
 	<build>
-		<finalName>eHour-wicketweb</finalName>
-
 		<resources>
 			<resource>
 				<filtering>false</filtering>
