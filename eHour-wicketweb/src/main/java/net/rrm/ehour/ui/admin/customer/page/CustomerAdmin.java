@@ -22,14 +22,15 @@ import java.util.List;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
+import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.admin.customer.common.CustomerAjaxEventType;
 import net.rrm.ehour.ui.admin.customer.dto.CustomerAdminBackingBean;
 import net.rrm.ehour.ui.admin.customer.panel.CustomerFormPanel;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
@@ -52,15 +53,15 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Customer admin page
  **/
 
-public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingBean>
+public class CustomerAdmin extends BaseTabbedAdminPage
 {
-	private static final String	CUSTOMER_SELECTOR_ID = "customerSelector";
+	private final String	CUSTOMER_SELECTOR_ID = "customerSelector";
 	
 	private static final long serialVersionUID = 3190421612132110664L;
 	
 	@SpringBean
 	private CustomerService		customerService;
-	private	ListView<Customer> customerListView;
+	private	ListView			customerListView;
 	private EntrySelectorFilter	currentFilter;
 	
 	/**
@@ -99,40 +100,40 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
-		return new CustomerFormPanel(panelId, new CompoundPropertyModel<CustomerAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
+		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		return new CustomerFormPanel(panelId, new CompoundPropertyModel<CustomerAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
+		return new CustomerFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected CustomerAdminBackingBean getNewAddBaseBackingBean()
+	protected AdminBackingBean getNewAddBaseBackingBean()
 	{
 		return CustomerAdminBackingBean.createCustomerAdminBackingBean();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected CustomerAdminBackingBean getNewEditBaseBackingBean()
+	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
 		return CustomerAdminBackingBean.createCustomerAdminBackingBean();
 	}
@@ -184,15 +185,15 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", CustomerAdmin.this);
 		
-		customerListView = new ListView<Customer>("itemList", customers)
+		customerListView = new ListView("itemList", customers)
 		{
 			@Override
-			protected void populateItem(ListItem<Customer> item)
+			protected void populateItem(ListItem item)
 			{
-				Customer		customer = item.getModelObject();
+				Customer		customer = (Customer)item.getModelObject();
 				final Integer	customerId = customer.getCustomerId();
 				
-				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
+				AjaxLink	link = new AjaxLink("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)

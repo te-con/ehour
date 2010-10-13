@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
@@ -45,7 +46,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -79,8 +79,9 @@ public class MonthOverviewPanel extends Panel
 	    this.overviewFor = (Calendar)overviewForMonth.clone();
 	    DateUtil.dayOfWeekFix(overviewFor);
 	    overviewFor.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+
 		
-		Link<String> printLink = new Link<String>("printLink")
+		Link printLink = new Link("printLink")
 		{
 			private static final long serialVersionUID = 4816200369282788652L;
 
@@ -203,15 +204,15 @@ public class MonthOverviewPanel extends Panel
 		Fragment fragment;
 		fragment = new Fragment(dayId, "showProjects", this);
 		
-		ListView<TimesheetEntry> projects = new ListView<TimesheetEntry>("projects", timesheetEntries)
+		ListView projects = new ListView("projects", timesheetEntries)
 		{
 			@Override
-			protected void populateItem(ListItem<TimesheetEntry> item)
+			protected void populateItem(ListItem item)
 			{
-				TimesheetEntry entry = item.getModelObject();
+				TimesheetEntry entry = (TimesheetEntry)item.getModelObject();
 
 				item.add(createProjectCodeTooltip(entry));
-				item.add(new Label("hours", new Model<Float>(entry.getHours())));
+				item.add(new Label("hours", new FloatModel(entry.getHours(), config)));
 			}
 		};
 		

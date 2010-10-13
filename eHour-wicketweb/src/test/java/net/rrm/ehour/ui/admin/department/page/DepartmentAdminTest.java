@@ -37,8 +37,10 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 	private UserService	userService;
 	
 	@Before
-	public void before() throws Exception
+	public void setUp() throws Exception
 	{
+		super.setUp();
+		
 		userService = createMock(UserService.class);
 		getMockContext().putBean("userService", userService);
 

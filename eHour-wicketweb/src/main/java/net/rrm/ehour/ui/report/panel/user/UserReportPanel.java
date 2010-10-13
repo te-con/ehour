@@ -84,8 +84,8 @@ public class UserReportPanel extends AbstractReportPanel
 	{
 		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 		
-		ResourceLink<String> 	excelLink = null;
-		Link<String>			printLink = null;
+		ResourceLink 	excelLink = null;
+		Link			printLink = null;
 		List<Option> optionList = Arrays.asList(options);
 		
 		if (optionList.contains(Option.INCLUDE_LINKS))
@@ -95,9 +95,9 @@ public class UserReportPanel extends AbstractReportPanel
 			ResourceReference excelResource = new ResourceReference(UserReportExcel.getId());
 			ValueMap params = new ValueMap();
 			params.add("reportId", reportId);
-			excelLink = new ResourceLink<String>("excelLink", excelResource, params);
+			excelLink = new ResourceLink("excelLink", excelResource, params);
 			
-			printLink = new Link<String>("printLink")
+			printLink = new Link("printLink")
 			{
 				private static final long serialVersionUID = 7739711270923594216L;
 
@@ -141,7 +141,7 @@ public class UserReportPanel extends AbstractReportPanel
 		
 		ReportData rawData = ((TreeReportData)data).getRawReportData();
 		
-		Model<ReportData> dataModel = new Model<ReportData>(rawData);
+		Model dataModel = new Model(rawData);
 		
 		// hours per customer
 		parent.add(createCustomerHoursChart(dataModel));
@@ -163,28 +163,32 @@ public class UserReportPanel extends AbstractReportPanel
 		return img;
 	}
 
-	private Image createProjectHoursChart(Model<ReportData> dataModel)
+	private Image createProjectHoursChart(Model dataModel)
 	{
 		AggregateChartDataConverter hourConverter = new ProjectHoursAggregateChartDataConverter();
-		return new AggregateChartImage("projectHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
+		Image projectHoursChart = new AggregateChartImage("projectHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
+		return projectHoursChart;
 	}	
 
-	private Image createProjectTurnOverChart(Model<ReportData> dataModel)
+	private Image createProjectTurnOverChart(Model dataModel)
 	{
 		AggregateChartDataConverter turnoverConverter = new ProjectTurnoverAggregateChartDataConverter();
-		return new AggregateChartImage(PROJECT_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
+		Image projectTurnoverChart = new AggregateChartImage(PROJECT_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
+		return projectTurnoverChart;
 	}
 
 	
-	private Image createCustomerTurnOverChart(Model<ReportData> dataModel)
+	private Image createCustomerTurnOverChart(Model dataModel)
 	{
 		AggregateChartDataConverter turnoverConverter = new CustomerTurnoverAggregateChartDataConverter();
-		return new AggregateChartImage(CUSTOMER_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
+		Image customerTurnoverChart = new AggregateChartImage(CUSTOMER_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
+		return customerTurnoverChart;
 	}
 
-	private Image createCustomerHoursChart(Model<ReportData> dataModel)
+	private Image createCustomerHoursChart(Model dataModel)
 	{
 		AggregateChartDataConverter hourConverter = new CustomerHoursAggregateChartDataConverter();
-		return new AggregateChartImage("customerHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
+		Image customerHoursChart = new AggregateChartImage("customerHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
+		return customerHoursChart;
 	}	
 }

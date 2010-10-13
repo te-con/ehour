@@ -22,7 +22,7 @@ import net.rrm.ehour.ui.common.report.ReportConfig;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-public class DetailedReportExcel extends AbstractExcelReport
+public class DetailedReportExcel  extends AbstractExcelReport
 {
 	private static final long serialVersionUID = 7211392869328367507L;
 	
@@ -32,13 +32,13 @@ public class DetailedReportExcel extends AbstractExcelReport
 	}
 	
 	@Override
-	protected IModel<String> getExcelReportName()
+	protected IModel getExcelReportName()
 	{
 		return new ResourceModel("report.title.detailed");
 	}
 
 	@Override
-	protected IModel<String> getHeaderReportName()
+	protected IModel getHeaderReportName()
 	{
 		return new ResourceModel("report.title.detailed");
 	}

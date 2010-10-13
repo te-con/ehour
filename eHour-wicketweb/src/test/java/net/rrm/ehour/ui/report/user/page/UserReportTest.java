@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.report.page.BaseTestReport;
 
 import org.junit.Test;
 
-@SuppressWarnings("serial")
 public class UserReportTest extends BaseTestReport
 {
 	@Test

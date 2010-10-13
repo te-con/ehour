@@ -51,7 +51,7 @@ public class DetailedReportPanelTest extends AbstractSpringWebAppTester
 	}
 	
 	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.report.panel.detail.DetailedReportPanel#DetailedReportPanel(java.lang.String, net.rrm.ehour.persistence.persistence.ui.report.TreeReport, net.rrm.ehour.persistence.persistence.report.reports.ReportData)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel#DetailedReportPanel(java.lang.String, net.rrm.ehour.ui.report.TreeReport, net.rrm.ehour.report.reports.ReportData)}.
 	 */
 	@Test
 	@SuppressWarnings("serial")

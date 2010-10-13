@@ -50,7 +50,7 @@ public abstract class TreeReport extends AbstractCachableReportModel
 
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.report.Report#getReportData()
+	 * @see net.rrm.ehour.ui.common.report.Report#getReportData()
 	 */
 	@Override
 	protected ReportData getReportData(ReportCriteria reportCriteria)

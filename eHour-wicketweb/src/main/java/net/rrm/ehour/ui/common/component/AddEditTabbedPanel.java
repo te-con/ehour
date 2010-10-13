@@ -28,16 +28,16 @@ import org.apache.wicket.model.ResourceModel;
 /**
  * AjaxTabbedPanel that passes the index to a pre process method
  **/
-@SuppressWarnings({"serial"})
-public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends MultiTabbedPanel
+@SuppressWarnings({"unchecked", "serial"})
+public abstract class AddEditTabbedPanel extends MultiTabbedPanel
 {
 	private static final long serialVersionUID = -2437819961082840272L;
 
 	public static final int TABPOS_ADD = 0;
 	public static final int TABPOS_EDIT = 1;
 	
-	private BB	addBackingBean;
-	private BB	editBackingBean;
+	private AdminBackingBean	addBackingBean;
+	private AdminBackingBean	editBackingBean;
 	private	ResourceModel		addTabTitle;
 	private	ResourceModel		editTabTitle;
 	private ResourceModel 		noEntrySelectedText;
@@ -57,8 +57,8 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 		this.editTabTitle = editTabTitle;
 		this.noEntrySelectedText = noEntrySelectedText;
 		
-		addBackingBean = createAddBackingBean();
-		editBackingBean = createEditBackingBean();
+		addBackingBean = getNewAddBackingBean();
+		editBackingBean = getNewEditBackingBean();
 		
 		setUpTabs();
 	}
@@ -69,7 +69,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 */
 	public void succesfulSave(AjaxRequestTarget target)
 	{
-		addBackingBean = createAddBackingBean();
+		addBackingBean = getNewAddBackingBean();
 		addBackingBean.setServerMessage(getLocalizer().getString("general.dataSaved", this));
 		addAddTab();
 		setSelectedTab(TABPOS_ADD);
@@ -94,7 +94,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	private void setUpTabs()
 	{
 		addAddTab();
-		addNoSelectionTab();
+		addNoUserTab();
 	}	
 
 	/**
@@ -105,6 +105,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	public void addTab(AbstractTab tab, int tabIndex)
 	{
 		removeTab(tabIndex);
+		
 		getTabs().add(tabIndex, tab);
 	}
 	
@@ -149,7 +150,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	/**
 	 * Add no user selected tab at position 1
 	 */
-	private void addNoSelectionTab()
+	protected void addNoUserTab()
 	{
 		removeTab(TABPOS_EDIT);
 		
@@ -170,7 +171,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * @param panelId
 	 * @return
 	 */
-	private Panel getNoSelectionPanel(String panelId)
+	protected Panel getNoSelectionPanel(String panelId)
 	{
 		return new NoEntrySelectedPanel(panelId, false, noEntrySelectedText);
 	}	
@@ -182,27 +183,20 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * @param index
 	 */
 	@Override
-	protected final void preProcessTabSwitch(int index)
+	protected void preProcessTabSwitch(int index)
 	{
 		// if "Add" tab is clicked again, reset the backing bean as it's the
 		// only way out if for some reason the save went wrong and the page is stuck on
 		// an error
 		if (getSelectedTab() == index && index == 0)
 		{
-			addBackingBean = createAddBackingBean();
+			addBackingBean = getNewAddBackingBean();
 		}
 		
 		// reset server messages
 		addBackingBean.setServerMessage(null);
 		editBackingBean.setServerMessage(null);
-		
-		onTabSwitch(index);
 	}	
-	
-	protected void onTabSwitch(int index)
-	{
-		
-	}
 
 	
 	/**
@@ -244,7 +238,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * Get the backing bean for the add panel
 	 * @return
 	 */
-	protected abstract BB createAddBackingBean();
+	protected abstract AdminBackingBean getNewAddBackingBean();
 	
 	
 	/**
@@ -258,7 +252,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * 
 	 * @return
 	 */
-	public BB getAddBackingBean()
+	public AdminBackingBean getAddBackingBean()
 	{
 		return addBackingBean;
 	}	
@@ -267,7 +261,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * 
 	 * @return
 	 */
-	public BB getEditBackingBean()
+	public AdminBackingBean getEditBackingBean()
 	{
 		return editBackingBean;
 	}	
@@ -276,12 +270,12 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * Get the backing bean for the edit panel
 	 * @return
 	 */
-	protected abstract BB createEditBackingBean();
+	protected abstract AdminBackingBean getNewEditBackingBean();
 
 	/**
 	 * @param editBackingBean the editBackingBean to set
 	 */
-	public void setEditBackingBean(BB editBackingBean)
+	public void setEditBackingBean(AdminBackingBean editBackingBean)
 	{
 		this.editBackingBean = editBackingBean;
 	}

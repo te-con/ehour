@@ -24,6 +24,7 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
@@ -34,7 +35,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
@@ -66,23 +66,23 @@ public class PmReportPanel extends AbstractReportPanel
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 		greyBorder.add(blueBorder);
 		
-		blueBorder.add(new ListView<AssignmentAggregateReportElement>("report", new ArrayList<AssignmentAggregateReportElement>(report.getAggregates()))
+		blueBorder.add(new ListView("report", new ArrayList<AssignmentAggregateReportElement>(report.getAggregates()))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem<AssignmentAggregateReportElement> item)
+			protected void populateItem(ListItem item)
 			{
-				AssignmentAggregateReportElement aggregate = item.getModelObject();
+				AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)item.getModelObject();
 				
 				item.add(new Label("user", aggregate.getProjectAssignment().getUser().getFullName()));
 				item.add(new Label("role", aggregate.getProjectAssignment().getRole()));
 				item.add(new Label("type", new ResourceModel(CommonWebUtil.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType()))));
-				item.add(new Label("booked", new Model<Float>(aggregate.getHours().floatValue())));
-				item.add(new Label("allotted", new Model<Float>(aggregate.getProjectAssignment().getAllottedHours())));
-				item.add(new Label("overrun", new Model<Float>(aggregate.getProjectAssignment().getAllowedOverrun())));
-				item.add(new Label("available", new Model<Float>(aggregate.getAvailableHours())));
-				item.add(new Label("percentageUsed", new Model<Float>(aggregate.getProgressPercentage())));
+				item.add(new Label("booked", new FloatModel(aggregate.getHours(), config)));
+				item.add(new Label("allotted", new FloatModel(aggregate.getProjectAssignment().getAllottedHours(), config)));
+				item.add(new Label("overrun", new FloatModel(aggregate.getProjectAssignment().getAllowedOverrun(), config)));
+				item.add(new Label("available", new FloatModel(aggregate.getAvailableHours(), config)));
+				item.add(new Label("percentageUsed", new FloatModel(aggregate.getProgressPercentage(), config)));
 				
 			}
 		});

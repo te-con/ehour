@@ -18,11 +18,10 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
-import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
+import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
 
 import org.apache.wicket.markup.html.form.Form;
@@ -34,7 +33,6 @@ import org.junit.Test;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-@SuppressWarnings("serial")
 public class SkinConfigPanelTest extends AbstractMainConfigTest
 {
 	@Test
@@ -42,7 +40,7 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 	{
 //		getConfigService().persistConfiguration(getConfigStub());
 		
-		BinaryConfigurationDao binConfigDao = createMock(BinaryConfigurationDao.class);
+		BinaryConfigurationDAO binConfigDao = createMock(BinaryConfigurationDAO.class);
 
 		getConfigService().setBinConfigDAO(binConfigDao);
 
@@ -64,7 +62,6 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 		
 		getTester().clickLink("configTabs:tabs-container:tabs:3:link", true);
 		
-		@SuppressWarnings("unused")
 		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
 		
 //		getTester().executeAjaxEvent("configTabs:panel:border:form:excelPreview", "onclick");

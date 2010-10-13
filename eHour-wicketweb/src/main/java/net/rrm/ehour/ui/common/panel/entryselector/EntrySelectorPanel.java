@@ -16,9 +16,9 @@
 
 package net.rrm.ehour.ui.common.panel.entryselector;
 
+import net.rrm.ehour.ui.common.ajax.AjaxUtil;
+import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.event.EventPublisher;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 
 import org.apache.wicket.AttributeModifier;
@@ -39,10 +39,10 @@ import org.apache.wicket.util.time.Duration;
  * Selector with autocompletion filter 
  **/
 
-public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
+public class EntrySelectorPanel extends AbstractAjaxPanel
 {
 	private	StringResourceModel	defaultFilterText;
-	private	IModel<String> checkBoxPrefixText;
+	private	IModel	checkBoxPrefixText;
 	private	boolean	includeFilter = false;
 	private	boolean	includeCheckboxToggle = false;
 	private GreyBlueRoundedBorder blueBorder;
@@ -80,7 +80,7 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 	 * @param defaultFilterText
 	 * @param checkboxPrefix
 	 */
-	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, StringResourceModel defaultFilter, IModel<String> checkboxPrefix)
+	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, StringResourceModel defaultFilter, IModel checkboxPrefix)
 	{
 		super(id);
 
@@ -130,24 +130,24 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 	 * Setup the filter form
 	 * @param parent
 	 */
-	protected Form<Void> getFilterForm()
+	protected Form getFilterForm()
 	{
 		final EntrySelectorFilter filter = new EntrySelectorFilter(defaultFilterText);
 		filter.setOnId(this.getId());
 		filter.setActivateToggle(getEhourWebSession().getHideInactiveSelections());
 		
-		Form<Void> filterForm = new Form<Void>("filterForm");
+		Form	filterForm = new Form("filterForm");
 		
 		WebMarkupContainer filterInputContainer = new WebMarkupContainer("filterInputContainer");
 		add(filterInputContainer);
 		filterInputContainer.setVisible(this.includeFilter);
 		filterForm.add(filterInputContainer);
 		
-		final TextField<String>	filterInputField = new TextField<String>("filterInput", new PropertyModel<String>(filter, "filterInput"));
+		final TextField	filterInputField = new TextField("filterInput", new PropertyModel(filter, "filterInput"));
 		filterInputField.setVisible(this.includeFilter);
 		filterInputContainer.add(filterInputField);
 		
-		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(filter, "activateToggle"))
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel(filter, "activateToggle"))
 		{
 			private static final long serialVersionUID = 2585047163449150793L;
 
@@ -169,10 +169,10 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 		// if filter included, attach onchange ajax behaviour otherwise hide it
 		if (includeFilter)
 		{
-			filterInputField.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel<String>()
+			filterInputField.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel()
 	        {
 				private static final long serialVersionUID = -1;
-	            public String getObject()
+	            public Object getObject()
 	            {
 	                return "this.style.color='#233e55';if (this.value == '" + defaultFilterText.getString() + "') { this.value='';}";
 	            }
@@ -213,7 +213,7 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 	{
 		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE,
 																										filter);
-		EventPublisher.publishAjaxEvent(this, payloadEvent);
+		AjaxUtil.publishAjaxEvent(this, payloadEvent);
 		
     	target.addComponent(blueBorder);
 	}

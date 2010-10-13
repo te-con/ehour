@@ -8,7 +8,7 @@
             username="@ehour.db.username"
 	       	password="@ehour.db.password"
 	       	driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://@ehour.db.hostname:3306/@ehour.db.name?zeroDateTimeBehavior=convertToNull&amp;useOldAliasMetadataBehavior=true" />
+            url="jdbc:mysql://@ehour.db.hostname:3306/@ehour.db.name?zeroDateTimeBehavior=convertToNull"/>
   <ResourceParams name="jdbc/eHourDS" >
     <parameter>
       <name>validationQuery</name>

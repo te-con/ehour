@@ -37,7 +37,7 @@ public class ProjectReportPanelTest extends AbstractReportPanelTest
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.panel.aggregate.AbstractReportPanelTest#getAggregateReport()
+	 * @see net.rrm.ehour.ui.report.panel.aggregate.AbstractReportPanelTest#getAggregateReport()
 	 */
 	@Override
 	protected TreeReport getAggregateReport()

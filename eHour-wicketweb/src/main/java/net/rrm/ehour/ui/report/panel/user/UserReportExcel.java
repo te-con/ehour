@@ -39,20 +39,20 @@ public class UserReportExcel extends AbstractExcelReport
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.panel.AbstractAggregateExcelReport#getExcelReportName()
+	 * @see net.rrm.ehour.ui.report.panel.AbstractAggregateExcelReport#getExcelReportName()
 	 */
 	@Override
-	protected IModel<String> getExcelReportName()
+	protected IModel getExcelReportName()
 	{
 		return new ResourceModel("report.user.name");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.panel.AbstractAggregateExcelReport#getHeaderReportName()
+	 * @see net.rrm.ehour.ui.report.panel.AbstractAggregateExcelReport#getHeaderReportName()
 	 */
 	@Override
-	protected IModel<String> getHeaderReportName()
+	protected IModel getHeaderReportName()
 	{
 		return new ResourceModel("report.user.name");
 	}

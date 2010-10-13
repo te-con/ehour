@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="filterChainProxy"
+		class="org.acegisecurity.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/**=httpSessionContextIntegrationFilter
+			</value>
+		</property>
+	</bean>
+
+	<bean id="authService" class="net.rrm.ehour.ui.common.authorization.AuthService">
+		<property name="userService" ref="userService" />
+	</bean>
+
+
+	<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+		<property name="forceEagerSessionCreation" value="true" />
+	</bean>
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="authenticationProvider" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="authenticationProvider"
+		class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="authService" />
+		<property name="passwordEncoder"><ref local="passwordEncoder" /></property>
+		<property name="saltSource"><ref bean="saltSource"/></property>
+	</bean>
+
+	<bean id="passwordEncoder"
+		class="org.acegisecurity.providers.encoding.ShaPasswordEncoder" />
+
+	<bean id="saltSource" class="org.acegisecurity.providers.dao.salt.ReflectionSaltSource">
+		<property name="userPropertyToUse" value="getSalt" />
+	</bean>
+</beans>

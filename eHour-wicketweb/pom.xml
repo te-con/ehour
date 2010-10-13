@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.8.4</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -11,8 +11,37 @@
 	<artifactId>eHour-wicketweb</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour web layer (wicket)</name>
+	<version>${applicationVersion}</version>
 
 	<build>
+		<finalName>eHour-wicketweb</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<additionalProjectnatures>
+						<projectnature>
+							wicketbench.wicketnature
+						</projectnature>
+					</additionalProjectnatures>
+					<additionalBuildcommands>
+						<buildcommand>
+							wicketbench.associatedMarkupAuditor
+						</buildcommand>
+					</additionalBuildcommands>
+				</configuration>
+				 <version>2.7</version>
+
+			</plugin>
+		</plugins>
+
 		<resources>
 			<resource>
 				<filtering>false</filtering>
@@ -24,121 +53,129 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
-
 			<resource>
-				<filtering>false</filtering>
 				<directory>src/main/resources</directory>
 			</resource>
-
 		</resources>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>prod</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>
+							src/main/profiles/prod
+						</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-common</artifactId>
+			<artifactId>eHour-persistence-domain</artifactId>
+			<version>${pom.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-common</artifactId>
-			<scope>test</scope>
-			<classifier>tests</classifier>
-		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
+			<version>2.3</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
-			<version>${applicationVersion}</version>
+			<version>${pom.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-service</artifactId>
-			<version>${applicationVersion}</version>
-			<scope>test</scope>
-			<classifier>tests</classifier>
-		</dependency>
-
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
+			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
+			<version>${wicket.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.thoughtworks.xstream</groupId>
+		    <artifactId>xstream</artifactId>
+		    <version>1.3.1</version>
+		</dependency>         		
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-devutils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-spring</artifactId>
+			<artifactId>wicket-spring-annot</artifactId>
+			<version>${wicket.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-auth-roles</artifactId>
+			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-datetime</artifactId>
+			<version>${wicket.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+			<version>1.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
+			<version>1.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>jfree</groupId>
 			<artifactId>jfreechart</artifactId>
+			<version>1.0.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
+			<version>3.5-beta5</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymockclassextension</artifactId>
+			<version>2.4</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.sanselan</groupId>
 			<artifactId>sanselan</artifactId>
+			<version>0.97-incubator</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-		</dependency>
-		<!-- <dependency> <groupId>org.odlabs.wiquery</groupId> <artifactId>wiquery</artifactId> 
-			</dependency> -->
 	</dependencies>
 </project>

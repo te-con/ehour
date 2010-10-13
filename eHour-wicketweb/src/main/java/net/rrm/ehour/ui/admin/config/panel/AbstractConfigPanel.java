@@ -21,9 +21,9 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
+import net.rrm.ehour.ui.common.ajax.DemoDecorator;
+import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.common.decorator.DemoDecorator;
-import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 
@@ -44,7 +44,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<MainConfigBackingBean>
+public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = -3129819024578782528L;
 	private static final Logger LOGGER = Logger.getLogger(AbstractConfigPanel.class);
@@ -54,24 +54,24 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 	@SpringBean
 	private ConfigurationService	configService;
 
-	public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model)
+	public AbstractConfigPanel(String id, IModel model)
 	{
 		this(id, model, WebGeo.W_CONTENT_ADMIN_TAB);
 	}
 	
-	public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model, WebGeo width)
+	public AbstractConfigPanel(String id, IModel model, WebGeo width)
 	{
 		super(id, model);
 		
 		createComponents(model, width);
 	}	
 	
-	private void createComponents(IModel<MainConfigBackingBean> model, WebGeo width)
+	private void createComponents(IModel model, WebGeo width)
 	{
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", width);
 		add(greyBorder);
 		
-		Form<MainConfigBackingBean> form = createForm("form", model);
+		Form form = createForm("form", model);
 		greyBorder.add(form);
 		form.setOutputMarkupId(true);
 		
@@ -83,9 +83,9 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 		addSubmitButton(form);
 	}
 	
-	protected Form<MainConfigBackingBean> createForm(String id, IModel<MainConfigBackingBean> model)
+	protected Form createForm(String id, IModel model)
 	{
-		return new Form<MainConfigBackingBean>(id, model);
+		return new Form(id, model);
 	}
 
 	/**
@@ -94,14 +94,14 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 	 * @param dbConfig
 	 */
 	@SuppressWarnings("serial")
-	private void addSubmitButton(Form<MainConfigBackingBean> form)
+	private void addSubmitButton(Form form)
 	{
 		form.add(new AjaxButton("submitButton", form)
 		{
 			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+            protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				IModel<?> msgModel;
+				IModel msgModel;
 
 				if (!getConfig().isInDemoMode())
 				{
@@ -136,14 +136,14 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 			}			
 			
 			@Override
-			protected void onError(final AjaxRequestTarget target, Form<?> form)
+			protected void onError(final AjaxRequestTarget target, Form form)
 			{
 				target.addComponent(form);
             }
         });		
 	}
 
-	protected void replaceFeedbackMessage(IModel<?> msgModel)
+	protected void replaceFeedbackMessage(IModel msgModel)
 	{
 		Label replacementLabel = new Label("serverMessage", msgModel);
 		replacementLabel.setOutputMarkupId(true);
@@ -162,10 +162,10 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 	
 	private EhourConfig getConfigStub()
 	{
-		return ((MainConfigBackingBean)getDefaultModelObject()).getConfig();
+		return ((MainConfigBackingBean) getModelObject()).getConfig();
 	}
 	
-	protected abstract void addFormComponents(Form<MainConfigBackingBean> form);
+	protected abstract void addFormComponents(Form form);
 	
 	protected final EhourConfigStub getDbConfig()
 	{

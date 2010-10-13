@@ -23,21 +23,26 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 
-import net.rrm.ehour.data.AuditReportRequest;
+import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 
-import org.apache.wicket.Component;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
+/**
+ * @author thies
+ *
+ */
 public class AuditReportPageTest extends AbstractSpringWebAppTester
 {
 	@Before
-	public void before() throws Exception
+	public void setUp() throws Exception
 	{
+		super.setUp();
 		expect(getAuditService().getAuditCount(isA(AuditReportRequest.class)))
 			.andReturn(5)
 			.anyTimes();
@@ -69,8 +74,6 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 						AuditConstants.PATH_CRITERIA + ":" + 
 						AuditConstants.PATH_FORM_BORDER + ":" +
 						AuditConstants.ID_FORM;
-		
-		Component componentFromLastRenderedPage = tester.getComponentFromLastRenderedPage("frame:reportCriteria:border:criteriaForm:submitButton");
 		
 		getTester().executeAjaxEvent(formPath + ":" +  
 								AuditConstants.PATH_FORM_SUBMIT,

@@ -43,7 +43,7 @@ public class ExportReportSignOff extends AbstractExportReportPart
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.timesheet.export.excel.part.AbstractExportReportPart#createPart(int)
+	 * @see net.rrm.ehour.ui.timesheet.export.excel.part.AbstractExportReportPart#createPart(int)
 	 */
 	@Override
 	public int createPart(int rowNumber)
@@ -70,7 +70,7 @@ public class ExportReportSignOff extends AbstractExportReportPart
 
 	private void createUserSignature(HSSFWorkbook workbook, int cellMargin, HSSFRow row)
 	{
-		IModel<String> userSignature = new StringResourceModel("excelMonth.userSignature",
+		IModel userSignature = new StringResourceModel("excelMonth.userSignature",
 				null,
 				new Object[]{EhourWebSession.getSession().getUser().getUser().getFullName()});
 
@@ -82,8 +82,8 @@ public class ExportReportSignOff extends AbstractExportReportPart
 	{
 		int cellMargin = getCellMargin();
 		
-		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 2, cellMargin, cellMargin + 2));
-		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 2, cellMargin + 4, cellMargin + 6));
+		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 4, cellMargin, cellMargin + 2));
+		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 4, cellMargin + 4, cellMargin + 6));
 
 		// doesn't work properly, box is not around the whole merged cells
 //		HSSFRow boxRow = getSheet().createRow(rowNumber);

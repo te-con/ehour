@@ -21,16 +21,16 @@ import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 
 import org.springframework.mail.MailException;
-import org.springframework.stereotype.Service;
 
 /**
  * Callback 
  **/
-@Service
+
 public class AssignmentMsgCallback extends MailTaskCallback
 {
+
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.mail.callbacks.MailTaskCallback#failure(org.springframework.mail.MailException)
+	 * @see net.rrm.ehour.mail.callbacks.MailTaskCallback#failure(org.springframework.mail.MailException)
 	 */
 	public void mailTaskFailure(MailTaskMessage mailTaskMessage, MailException me)
 	{
@@ -38,7 +38,7 @@ public class AssignmentMsgCallback extends MailTaskCallback
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.mail.callbacks.MailTaskCallback#success()
+	 * @see net.rrm.ehour.mail.callbacks.MailTaskCallback#success()
 	 */
 	public void mailTaskSuccess(MailTaskMessage mailTaskMessage)
 	{

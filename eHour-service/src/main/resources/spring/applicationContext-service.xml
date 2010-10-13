@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName">
+
+	<aop:aspectj-autoproxy/>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- the transactional advice  -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="persist*" propagation="REQUIRED" rollback-for="net.rrm.ehour.exception.BusinessException,net.rrm.ehour.exception.ObjectNotUniqueException,net.rrm.ehour.exception.ParentChildConstraintException" />
+			<tx:method name="delete*" propagation="REQUIRED" />			
+			<tx:method name="assign*" propagation="REQUIRED" />						
+		</tx:attributes>
+	</tx:advice>
+ 
+<!-- 
+	<aop:config>
+		<aop:pointcut id="serviceOperation" expression="execution(* net.rrm.ehour.*.service.*Service.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
+	</aop:config>
+ -->
+	<!-- Status Change observer aspect -->
+	<bean id="statusChangeAspect" class="net.rrm.ehour.project.status.StatusChangeAspect">
+		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
+	</bean>
+
+	<!-- Audit service -->
+	<bean id="auditService" class="net.rrm.ehour.audit.service.AuditServiceImpl">
+<!-- 	<constructor-arg index="0" ref="transactionManager" /> -->	
+		<property name="auditDAO" ref="auditDAO" />
+	</bean>
+	
+	<!-- User service -->
+	<bean id="userService" class="net.rrm.ehour.user.service.UserServiceImpl">
+		<property name="userDAO" ref="userDAO" />	
+		<property name="userDepartmentDAO" ref="userDepartmentDAO" />	
+		<property name="userRoleDAO" ref="userRoleDAO" />
+		<property name="projectAssignmentService" ref="projectAssignmentService" />
+		<property name="aggregateReportService" ref="aggregateReportService" />		
+	</bean>
+
+	 <bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder">
+	     <constructor-arg value="1"/>
+	 </bean>
+
+	<!-- Abstract report service -->
+	<bean id="abstractReportService" 
+			class="net.rrm.ehour.report.service.AbstractReportServiceImpl"
+			abstract="true">
+		<property name="userDAO" ref="userDAO" />	
+		<property name="projectDAO" ref="projectDAO" />	
+	</bean>
+
+	<!-- Aggregate Report service -->
+	<bean id="aggregateReportService" 
+			class="net.rrm.ehour.report.service.AggregateReportServiceImpl"
+			parent="abstractReportService">
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
+		<property name="mailService" ref="mailService" />
+		<property name="projectAssignmentService" ref="projectAssignmentService" />
+	</bean>
+
+	<!-- Detailed Report service -->
+	<bean id="detailedReportService" 
+			class="net.rrm.ehour.report.service.DetailedReportServiceImpl"
+			parent="abstractReportService">
+		<property name="detailedReportDAO" ref="detailedReportDAO" />
+	</bean>
+
+	<!-- Report criteria service -->
+	<bean id="reportCriteriaService" class="net.rrm.ehour.report.service.ReportCriteriaServiceImpl">
+		<property name="userDAO" ref="userDAO" />	
+		<property name="userDepartmentDAO" ref="userDepartmentDAO" />	
+		<property name="customerDAO" ref="customerDAO" />	
+		<property name="projectDAO" ref="projectDAO" />	
+		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />			
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
+	</bean>
+
+
+	<!-- Timesheet service -->
+	<bean id="timesheetService" class="net.rrm.ehour.timesheet.service.TimesheetServiceImpl">
+		<property name="projectAssignmentService" ref="projectAssignmentService" />
+		<property name="aggregateReportService" ref="aggregateReportService" />
+		<property name="timesheetPersister" ref="timesheetPersister" />
+	</bean>
+	
+	<!-- Timesheet persister -->
+	<bean id="timesheetPersister" class="net.rrm.ehour.timesheet.service.TimesheetPersisterImpl">
+		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
+		<property name="timesheetDAO" ref="timesheetDAO" />
+		<property name="mailService" ref="mailService" />
+	</bean>
+
+	<!-- Project service -->
+	<bean id="projectService" class="net.rrm.ehour.project.service.ProjectServiceImpl">
+		<property name="projectDAO" ref="projectDAO" />	
+		<property name="aggregateReportService" ref="aggregateReportService" />
+		<property name="userService" ref="userService" />
+	</bean>
+	
+	<!-- Customer service -->
+	<bean id="customerService" class="net.rrm.ehour.customer.service.CustomerServiceImpl">
+		<property name="customerDAO" ref="customerDAO" />	
+	</bean>
+
+	<!-- Project assignment service -->
+	<bean id="projectAssignmentService" class="net.rrm.ehour.project.service.ProjectAssignmentServiceImpl">
+		<property name="projectAssignmentDAO" ref="projectAssignmentDAO" />				
+		<property name="projectDAO" ref="projectDAO" />		
+		<property name="projectAssignmentStatusService" ref="projectAssignmentStatusService" />
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />	
+		<property name="userService" ref="userService" />
+	</bean>
+	
+	<!-- Configuration service -->
+	<bean id="configurationService"
+			class="net.rrm.ehour.config.service.ConfigurationServiceImpl">
+			<property name="configDAO" ref="configurationDAO" />
+			<property name="binConfigDAO" ref="binaryConfigurationDAO" />
+	</bean>
+	
+	<!-- Ehour Config -->
+	<bean id="ehourConfig" class="net.rrm.ehour.config.EhourConfigJdbc">
+		<constructor-arg><ref bean="eHourDataSource" /></constructor-arg>
+		<constructor-arg value="CONFIGURATION" />
+		<constructor-arg value="config_key" />		
+		<constructor-arg value="config_value" />		
+	</bean>
+	
+	<!-- Project assignment util class -->
+	<bean id="projectAssignmentStatusService" class="net.rrm.ehour.project.status.ProjectAssignmentStatusServiceImpl">
+		<property name="reportAggregatedDAO" ref="reportAggregatedDAO" />
+		<property name="timesheetDAO" ref="timesheetDAO" />	
+	</bean>
+	
+	<!-- Admin account validator -->
+	<bean id="adminAccountValidator" class="net.rrm.ehour.init.AdminAccountValidator"
+		init-method="checkAdminAccount">
+		<property name="ehourConfig" ref="ehourConfig" />
+		<property name="userService" ref="userService" />
+		<property name="configService" ref="configurationService" />
+	</bean>	
+</beans>

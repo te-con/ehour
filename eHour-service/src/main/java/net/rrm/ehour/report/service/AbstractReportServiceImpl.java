@@ -21,15 +21,14 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.persistence.project.dao.ProjectDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
+import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.user.dao.UserDAO;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Abstract report service provides utility methods for dealing
@@ -39,12 +38,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 {
 	private	Logger	logger = Logger.getLogger(this.getClass());
-	
-	@Autowired
-	private	UserDao		userDAO;
-
-	@Autowired
-	private	ProjectDao	projectDAO;
+	private	UserDAO		userDAO;
+	private	ProjectDAO	projectDAO;
 	
 	/**
 	 * Get report data for criteria
@@ -175,7 +170,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 	/**
 	 * @param userDAO the userDAO to set
 	 */
-	public void setUserDAO(UserDao userDAO)
+	public void setUserDAO(UserDAO userDAO)
 	{
 		this.userDAO = userDAO;
 	}
@@ -183,7 +178,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 	/**
 	 * @param projectDAO the projectDAO to set
 	 */
-	public void setProjectDAO(ProjectDao projectDAO)
+	public void setProjectDAO(ProjectDAO projectDAO)
 	{
 		this.projectDAO = projectDAO;
 	}
@@ -191,7 +186,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 	/**
 	 * @return the projectDAO
 	 */
-	protected ProjectDao getProjectDAO()
+	protected ProjectDAO getProjectDAO()
 	{
 		return projectDAO;
 	}

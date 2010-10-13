@@ -29,7 +29,7 @@ import org.apache.wicket.Localizer;
  * @author Thies
  *
  */
-public class QuickWeekRenderer extends QuickRenderer<QuickWeek>
+public class QuickWeekRenderer extends QuickRenderer
 {
 	private static final long serialVersionUID = -7860131083740371031L;
 	private Date	currentWeekStart;
@@ -78,29 +78,34 @@ public class QuickWeekRenderer extends QuickRenderer<QuickWeek>
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
 	 */
-	public Object getDisplayValue(QuickWeek quickWeek)
+	public Object getDisplayValue(Object object)
 	{
 		Localizer localizer = getLocalizer();
 		
 		String value = "unknown";
 		
-		if (quickWeek.getPeriodStart().before(previousWeekStart)
-				|| quickWeek.getPeriodStart().after(nextWeekEnd))
+		if (object instanceof QuickWeek)
 		{
-			value = localizer.getString("report.criteria.week", null);
-			value += " " + quickWeek.getPeriodIndex();
-		}
-		else if (quickWeek.getPeriodStart().before(currentWeekStart))
-		{
-			value = localizer.getString("report.criteria.previousWeek", null);
-		}
-		else if (quickWeek.getPeriodStart().before(nextWeekStart))
-		{
-			value = localizer.getString("report.criteria.currentWeek", null);
-		}
-		else
-		{
-			value = localizer.getString("report.criteria.nextWeek", null);
+			QuickWeek	quickWeek = (QuickWeek)object;
+		
+			if (quickWeek.getPeriodStart().before(previousWeekStart)
+					|| quickWeek.getPeriodStart().after(nextWeekEnd))
+			{
+				value = localizer.getString("report.criteria.week", null);
+				value += " " + quickWeek.getPeriodIndex();
+			}
+			else if (quickWeek.getPeriodStart().before(currentWeekStart))
+			{
+				value = localizer.getString("report.criteria.previousWeek", null);
+			}
+			else if (quickWeek.getPeriodStart().before(nextWeekStart))
+			{
+				value = localizer.getString("report.criteria.currentWeek", null);
+			}
+			else
+			{
+				value = localizer.getString("report.criteria.nextWeek", null);
+			}
 		}
 		
 		return value;
@@ -110,7 +115,7 @@ public class QuickWeekRenderer extends QuickRenderer<QuickWeek>
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object, int)
 	 */
-	public String getIdValue(QuickWeek object, int index)
+	public String getIdValue(Object object, int index)
 	{
 		return Integer.toString(index);
 	}

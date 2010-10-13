@@ -27,7 +27,6 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import net.rrm.ehour.domain.ProjectMother;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
@@ -36,6 +35,7 @@ import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 
@@ -57,8 +57,10 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 	private ReportCriteria reportCriteria;
 	
 	@Before
-	public void before() throws Exception
+	public void setUp() throws Exception
 	{
+		super.setUp();
+		
 		timesheetService = createMock(TimesheetService.class);
 		getMockContext().putBean("timesheetService", timesheetService);
 
@@ -122,7 +124,7 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 		
 
 		AvailableCriteria availableCriteria = new AvailableCriteria();
-		availableCriteria.setProjects(ProjectMother.createProjects(5));
+		availableCriteria.setProjects(DummyWebDataGenerator.getProjects(5));
 		
 		ReportCriteria criteria = new ReportCriteria(availableCriteria);
 		

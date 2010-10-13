@@ -23,45 +23,35 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
-import net.rrm.ehour.audit.annot.Auditable;
-import net.rrm.ehour.audit.annot.NonAuditable;
+import net.rrm.ehour.audit.Auditable;
+import net.rrm.ehour.audit.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
+import net.rrm.ehour.config.dao.ConfigurationDAO;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
-import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
-import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
-import net.rrm.ehour.persistence.value.ImageLogo;
+import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Configuration service
  **/
-@Service("configurationService")
+
 public class ConfigurationServiceImpl implements ConfigurationService
 {
-	private static final String EXCEL_DEFAULT_LOGO = "excel_default_logo.png";
-
-	private static final long serialVersionUID = -8862725896852558151L;
-
-	@Autowired
-	private ConfigurationDao	configDAO;
-	
-	@Autowired
-	private BinaryConfigurationDao binConfigDAO;
-	
-	private	static final Logger	LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
+	private ConfigurationDAO	configDAO;
+	private BinaryConfigurationDAO binConfigDAO;
+	private	static final Logger				logger = Logger.getLogger(ConfigurationServiceImpl.class);
 
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.persistence.persistence.value.ImageLogo)
+	 * @see net.rrm.ehour.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.value.ImageLogo)
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)
@@ -88,7 +78,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#getLogo()
+	 * @see net.rrm.ehour.config.service.ConfigurationService#getLogo()
 	 */
 	@NonAuditable
 	@Transactional
@@ -98,7 +88,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 
 		if (logo == null)
 		{
-			LOGGER.debug("No logo found in database, using default logo.");
+			logger.debug("No logo found in database, using default logo.");
 			logo = getDefaultExcelLogo();
 		}
 		
@@ -152,14 +142,14 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		
 		try
 		{
-			ClassPathResource rsrc = new ClassPathResource(EXCEL_DEFAULT_LOGO);
+			ClassPathResource rsrc = new ClassPathResource("excel_default_logo.png");
 			URL url = rsrc.getURL();
 			
-			File file = new ClassPathResource(EXCEL_DEFAULT_LOGO).getFile();
+			File file = new ClassPathResource("excel_default_logo.png").getFile();
 			
 			if (!file.exists())
 			{
-				LOGGER.error("default logo not found");
+				logger.error("default logo not found");
 			}
 			
 			InputStream is;
@@ -176,7 +166,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			}
 		} catch (IOException e)
 		{
-			LOGGER.error("Could not fetch default logo", e);
+			logger.error("Could not fetch default logo", e);
 			bytes = new byte[1];
 		}
 		
@@ -185,7 +175,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#getConfiguration()
+	 * @see net.rrm.ehour.config.service.ConfigService#getConfiguration()
 	 */
 	@Transactional
 	@NonAuditable
@@ -283,13 +273,13 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#persistConfiguration(java.util.List)
+	 * @see net.rrm.ehour.config.service.ConfigService#persistConfiguration(java.util.List)
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)
 	public void persistConfiguration(EhourConfig config)
 	{
-		LOGGER.debug("Persisting config");
+		logger.debug("Persisting config");
 		persistConfig("localeCurrency", config.getCurrency().getLanguage() + "_" + config.getCurrency().getCountry());
 		
 		if (config.getCompleteDayHours() != 0)
@@ -345,7 +335,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/**
 	 * @param configDAO the configDAO to set
 	 */
-	public void setConfigDAO(ConfigurationDao configDAO)
+	public void setConfigDAO(ConfigurationDAO configDAO)
 	{
 		this.configDAO = configDAO;
 	}
@@ -353,7 +343,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	/**
 	 * @param binConfigDAO the binConfigDAO to set
 	 */
-	public void setBinConfigDAO(BinaryConfigurationDao binConfigDAO)
+	public void setBinConfigDAO(BinaryConfigurationDAO binConfigDAO)
 	{
 		this.binConfigDAO = binConfigDAO;
 	}

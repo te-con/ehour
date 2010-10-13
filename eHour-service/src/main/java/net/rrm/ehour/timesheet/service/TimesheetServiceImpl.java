@@ -37,12 +37,12 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.OverBudgetException;
-import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
-import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
+import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
@@ -52,8 +52,6 @@ import net.rrm.ehour.util.EhourUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -62,30 +60,16 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Thies
  *
  */
-@Service("timesheetService")
 public class TimesheetServiceImpl implements TimesheetService
 {
-	@Autowired
-	private	TimesheetDao		timesheetDAO;
-
-	@Autowired
-	private TimesheetCommentDao	timesheetCommentDAO;
-	
-	@Autowired
+	private	TimesheetDAO		timesheetDAO;
+	private TimesheetCommentDAO	timesheetCommentDAO;
 	private	AggregateReportService		aggregateReportService;
-	
-	@Autowired
 	private ProjectAssignmentService	projectAssignmentService;
-	
-	@Autowired
 	private	EhourConfig			configuration;
-	
-	@Autowired
+	private	Logger				logger = Logger.getLogger(TimesheetServiceImpl.class);
 	private TimesheetPersister	timesheetPersister;
 	
-
-	private	static final Logger	LOGGER = Logger.getLogger(TimesheetServiceImpl.class);
-
 	/**
 	 * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
 	 * requested month and a list with all timesheet entries for that month.
@@ -102,12 +86,12 @@ public class TimesheetServiceImpl implements TimesheetService
 		Map<Integer, List<TimesheetEntry>>	calendarMap = null;
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
-		LOGGER.debug("Getting timesheet overview for userId " + user.getUserId() + " in range " + monthRange);
+		logger.debug("Getting timesheet overview for userId " + user.getUserId() + " in range " + monthRange);
 		
 		overview.setProjectStatus(getProjectStatus(user.getUserId(), monthRange));
 		
 		timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), monthRange);
-		LOGGER.debug("Timesheet entries found for userId " + user.getUserId() + " in range " + monthRange + ": " + timesheetEntries.size());
+		logger.debug("Timesheet entries found for userId " + user.getUserId() + " in range " + monthRange + ": " + timesheetEntries.size());
 
 		calendarMap = entriesToCalendarMap(timesheetEntries);
 		overview.setTimesheetEntries(calendarMap);
@@ -132,7 +116,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		
 		aggregates = aggregateReportService.getHoursPerAssignmentInRange(userId, monthRange);
 		
-		LOGGER.debug("Getting project status for " + aggregates.size() + " assignments");
+		logger.debug("Getting project status for " + aggregates.size() + " assignments");
 		
 		// only flex & fixed needed, others can already be added to the returned list
 		for (AssignmentAggregateReportElement aggregate : aggregates)
@@ -144,7 +128,7 @@ public class TimesheetServiceImpl implements TimesheetService
 				assignmentIds.add(assignmentId);
 				originalAggregates.put(assignmentId, aggregate);
 
-				LOGGER.debug("Fetching total hours for assignment Id: " + assignmentId);
+				logger.debug("Fetching total hours for assignment Id: " + assignmentId);
 			}
 			else
 			{
@@ -182,7 +166,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		List<BookedDay>	bookedDaysReturn = new ArrayList<BookedDay>();
 		
 		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
-		LOGGER.debug("Getting booked days overview for userId " + userId + " in range " + monthRange);
+		logger.debug("Getting booked days overview for userId " + userId + " in range " + monthRange);
 		
 		bookedDays = timesheetDAO.getBookedHoursperDayInRange(userId, monthRange);
 		
@@ -195,8 +179,8 @@ public class TimesheetServiceImpl implements TimesheetService
 			}
 		}
 		
-		LOGGER.debug("Booked days found for userId " + userId + ": " + bookedDaysReturn.size());
-		LOGGER.debug("Total booked days found for userId " + userId + ": " + bookedDays.size());
+		logger.debug("Booked days found for userId " + userId + ": " + bookedDaysReturn.size());
+		logger.debug("Total booked days found for userId " + userId + ": " + bookedDays.size());
 		
 		Collections.sort(bookedDaysReturn, new BookedDayComparator());
 		
@@ -266,13 +250,13 @@ public class TimesheetServiceImpl implements TimesheetService
 		weekOverview.setWeekRange(range);
 		
 		weekOverview.setTimesheetEntries(timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), range));
-		LOGGER.debug("Week overview: timesheet entries found for userId " + user.getUserId() + ": " + weekOverview.getTimesheetEntries().size());
+		logger.debug("Week overview: timesheet entries found for userId " + user.getUserId() + ": " + weekOverview.getTimesheetEntries().size());
 
 		weekOverview.setComment(timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart())));
-		LOGGER.debug("Week overview: comments found for userId " + user.getUserId() + ": " + (weekOverview.getComment() != null));
+		logger.debug("Week overview: comments found for userId " + user.getUserId() + ": " + (weekOverview.getComment() != null));
 
 		weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range));
-		LOGGER.debug("Week overview: project assignments found for userId " + user.getUserId() + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
+		logger.debug("Week overview: project assignments found for userId " + user.getUserId() + " in range " + range + ": " + weekOverview.getProjectAssignments().size());
 		
 		weekOverview.initCustomers();
 		
@@ -283,7 +267,7 @@ public class TimesheetServiceImpl implements TimesheetService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.timesheet.service.TimesheetService#persistTimesheetWeek(java.util.Collection, net.rrm.ehour.persistence.persistence.domain.TimesheetComment, net.rrm.ehour.persistence.persistence.data.DateRange)
+	 * @see net.rrm.ehour.timesheet.service.TimesheetService#persistTimesheetWeek(java.util.Collection, net.rrm.ehour.domain.TimesheetComment, net.rrm.ehour.data.DateRange)
 	 */
 	@Transactional
 	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, 
@@ -308,7 +292,7 @@ public class TimesheetServiceImpl implements TimesheetService
 		if (comment.getNewComment() == Boolean.FALSE ||
 				!StringUtils.isBlank(comment.getComment()))
 		{
-			LOGGER.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
+			logger.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
 			timesheetCommentDAO.persist(comment);
 		}
 		
@@ -342,7 +326,7 @@ public class TimesheetServiceImpl implements TimesheetService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.timesheet.service.TimesheetService#deleteTimesheetEntries(net.rrm.ehour.persistence.persistence.user.domain.User)
+	 * @see net.rrm.ehour.timesheet.service.TimesheetService#deleteTimesheetEntries(net.rrm.ehour.user.domain.User)
 	 */
 	@Transactional
 	public void deleteTimesheetEntries(User user)
@@ -360,7 +344,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * DAO setter (Spring)
 	 * @param dao
 	 */
-	public void setTimesheetDAO(TimesheetDao dao)
+	public void setTimesheetDAO(TimesheetDAO dao)
 	{
 		timesheetDAO = dao;
 	}
@@ -387,7 +371,7 @@ public class TimesheetServiceImpl implements TimesheetService
 	/**
 	 * @param timesheetCommentDAO the timesheetCommentDAO to set
 	 */
-	public void setTimesheetCommentDAO(TimesheetCommentDao timesheetCommentDAO)
+	public void setTimesheetCommentDAO(TimesheetCommentDAO timesheetCommentDAO)
 	{
 		this.timesheetCommentDAO = timesheetCommentDAO;
 	}

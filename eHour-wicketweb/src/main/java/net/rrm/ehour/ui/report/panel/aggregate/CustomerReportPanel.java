@@ -44,13 +44,13 @@ public class CustomerReportPanel extends AggregateReportPanel
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.panel.type.ReportPanel#addCharts(net.rrm.ehour.persistence.persistence.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
+	 * @see net.rrm.ehour.ui.report.panel.type.ReportPanel#addCharts(net.rrm.ehour.report.reports.ReportDataAggregate, org.apache.wicket.markup.html.WebMarkupContainer)
 	 */
 	@Override
 	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
 		ReportData rawData = ((TreeReportData)data).getRawReportData();
-		Model<ReportData> dataModel = new Model<ReportData>(rawData);
+		Model dataModel = new Model(rawData);
 
 		AggregateChartDataConverter hourConverter = new CustomerHoursAggregateChartDataConverter();
 		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);

@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.springframework.security.core.codec.Hex;
-import org.springframework.util.DigestUtils;
 
 /**
  * Simple object cache that holds an object for a specified time in memory (INVALID_AFTER)
@@ -145,9 +145,9 @@ public class ObjectCache implements Serializable
 	{
 		byte[]	shaTimestamp;
 		
-		shaTimestamp = DigestUtils.md5Digest(Long.toString(new Date().getTime()).getBytes());
+		shaTimestamp = DigestUtils.sha(Long.toString(new Date().getTime()));
 		
-		return new String(Hex.encode(shaTimestamp));
+		return new String(Hex.encodeHex(shaTimestamp));
 	}
 	
 	/**

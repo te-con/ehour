@@ -1,56 +1,77 @@
-<?xml version="1.0"?>
-<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
 
-<Configure id="Server" class="org.eclipse.jetty.server.Server">
+<Configure class="org.mortbay.jetty.Server">
+
+	<Call class="org.mortbay.log.Log" name="debug">
+		<Arg>executing jetty-web.xml</Arg>
+	</Call>
 
 	<Call name="addConnector">
 		<Arg>
-			<New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+			<New class="org.mortbay.jetty.nio.SelectChannelConnector">
+				<Set name="port">
+					<SystemProperty name="jetty.port" default="8000" />
+				</Set>
 			</New>
 		</Arg>
 	</Call>
 
 	<Set name="handler">
-		<New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+		<New id="Handlers"
+			class="org.mortbay.jetty.handler.HandlerCollection">
 			<Set name="handlers">
-				<Array type="org.eclipse.jetty.server.Handler">
+				<Array type="org.mortbay.jetty.Handler">
 					<Item>
 						<New id="Contexts"
-							class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
-							<New class="org.eclipse.jetty.webapp.WebAppContext">
+							class="org.mortbay.jetty.handler.ContextHandlerCollection">
+							<New
+								class="org.mortbay.jetty.webapp.WebAppContext">
 								<Set name="contextPath">/</Set>
 							</New>
 						</New>
 					</Item>
 					<Item>
-						<New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler" />
+						<New id="DefaultHandler"
+							class="org.mortbay.jetty.handler.DefaultHandler" />
 					</Item>
 					<Item>
-						<New id="RequestLog" class="org.eclipse.jetty.server.handler.RequestLogHandler" />
+						<New id="RequestLog"
+							class="org.mortbay.jetty.handler.RequestLogHandler" />
 					</Item>
 				</Array>
 			</Set>
 		</New>
 	</Set>
 
-	<Call name="addBean">
+	<New id="Datasource"
+		class="org.mortbay.jetty.plus.naming.Resource">
+		<Arg>jdbc/eHourDS</Arg>
 		<Arg>
-			<New id="DeploymentManager" class="org.eclipse.jetty.deploy.DeploymentManager">
+			<New class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource">
+				<Set name="DatabaseName">ehourDb</Set>
+			</New>
+		</Arg>
+	</New>
+
+	<Call name="addLifeCycle">
+		<Arg>
+			<New class="org.mortbay.jetty.deployer.ContextDeployer">
 				<Set name="contexts">
 					<Ref id="Contexts" />
 				</Set>
-
-
-				<Call name="addAppProvider">
-					<Arg>
-						<New class="org.eclipse.jetty.deploy.providers.ContextProvider">
-							<Set name="monitoredDir">../../conf/contexts</Set>
-							<Set name="scanInterval">5</Set>
-						</New>
-					</Arg>
-				</Call>
+				<Set name="configurationDir">
+					../../conf/contexts/
+				</Set>
+				<Set name="scanInterval">1</Set>
 			</New>
 		</Arg>
 	</Call>
 
+	<Set name="ThreadPool">
+		<New class="org.mortbay.thread.BoundedThreadPool">
+			<Set name="minThreads">10</Set>
+			<Set name="maxThreads">100</Set>
+		</New>
+	</Set>
 </Configure>

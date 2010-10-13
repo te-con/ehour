@@ -22,14 +22,15 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
+import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
 import net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
@@ -53,13 +54,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel 
  **/
 
-public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
+public class UserAdmin extends BaseTabbedAdminPage
 {
 	private	final static Logger		logger = Logger.getLogger(UserAdmin.class);
 
 	@SpringBean
 	private	UserService				userService;
-	private	ListView<User>			userListView;
+	private	ListView				userListView;
 	private EntrySelectorFilter		currentFilter;
 	private List<UserRole>			roles ;
 	private List<UserDepartment>	departments;
@@ -105,17 +106,17 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", UserAdmin.this);
 		
-		userListView = new ListView<User>("itemList", users)
+		userListView = new ListView("itemList", users)
 		{
 			private static final long serialVersionUID = 5334338761736798802L;
 
 			@Override
-			protected void populateItem(ListItem<User> item)
+			protected void populateItem(ListItem item)
 			{
-				final User		user = item.getModelObject();
+				final User		user = (User)item.getModelObject();
 				final Integer	userId = user.getUserId();
 				
-				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
+				AjaxLink	link = new AjaxLink("itemLink")
 				{
 					private static final long serialVersionUID = -3898942767521616039L;
 
@@ -210,23 +211,23 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
+	 * @see net.rrm.ehour.ui.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
 		return new UserAdminFormPanel(panelId,
-				new CompoundPropertyModel<UserBackingBean>(getTabbedPanel().getAddBackingBean()),
+				new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()),
 				getUserRoles(),
 				getUserDepartments());
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected UserBackingBean getNewAddBaseBackingBean()
+	protected AdminBackingBean getNewAddBaseBackingBean()
 	{
 		UserBackingBean	userBean;
 		
@@ -238,23 +239,23 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected UserBackingBean getNewEditBaseBackingBean()
+	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
 		return new UserBackingBean(new User());
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
+	 * @see net.rrm.ehour.ui.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
 		return new UserAdminFormPanel(panelId,
-				new CompoundPropertyModel<UserBackingBean>(getTabbedPanel().getEditBackingBean()),
+				new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()),
 				getUserRoles(),
 				getUserDepartments());
 	}

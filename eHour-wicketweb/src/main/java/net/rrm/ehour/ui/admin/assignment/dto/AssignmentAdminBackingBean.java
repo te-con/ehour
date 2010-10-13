@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -19,192 +19,89 @@ package net.rrm.ehour.ui.admin.assignment.dto;
 import java.util.List;
 
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
+import net.rrm.ehour.ui.common.model.AdminBackingBean;
 
 /**
- * Backing bean for project assignments
+ * Assignment admin backing bean
  **/
 
-public class AssignmentAdminBackingBean extends AdminBackingBeanImpl
+public interface AssignmentAdminBackingBean extends AdminBackingBean
 {
-	private static final long serialVersionUID = 487430742116953930L;
-	private	ProjectAssignment	projectAssignment;
-	private	List<Project>		projects;
-	private	Customer			customer;
-	private	boolean				infiniteStartDate;
-	private	boolean				infiniteEndDate;
-
-	public AssignmentAdminBackingBean()
-	{
-	}
 
 	/**
-	 *
-	 * @param assignment
-	 */
-	public AssignmentAdminBackingBean(ProjectAssignment assignment)
-	{
-		projectAssignment = assignment;
-		this.customer = (assignment.getProject() != null) ? assignment.getProject().getCustomer() : null;
-
-		infiniteStartDate = assignment.getDateStart() == null;
-		infiniteEndDate = assignment.getDateEnd() == null;
-	}
-
-	/**
-	 * Factory method (move to a separate factory)
-	 * @param user
+	 * Show allotted hours?
 	 * @return
 	 */
-	public static AssignmentAdminBackingBean createAssignmentAdminBackingBean(User user)
-	{
-		ProjectAssignment			projectAssignment;
+	public abstract boolean isShowAllottedHours();
 
-		projectAssignment = new ProjectAssignment();
-		projectAssignment.setUser(user);
-		projectAssignment.setActive(true);
-
-		return new AssignmentAdminBackingBean(projectAssignment);
-
-	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isShowAllottedHours()
+	/**
+	 * Can notify pm be enabled? is a pm assigned?
+	 * @return
 	 */
-	public boolean isShowAllottedHours()
-	{
-		return (projectAssignment.getAssignmentType() != null)
-					? projectAssignment.getAssignmentType().isAllottedType()
-					: false;
-	}
+	public abstract boolean isNotifyPmEnabled();
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isNotifyPmEnabled()
+	/**
+	 * Show overrun hours?
+	 * @return
 	 */
-	public boolean isNotifyPmEnabled()
-	{
-		return (projectAssignment.getProject() != null)
-				? projectAssignment.getProject().getProjectManager() != null
-				: false;
-	}
+	public abstract boolean isShowOverrunHours();
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isShowOverrunHours()
+	/**
+	 * @return the projectAssignment
 	 */
-	public boolean isShowOverrunHours()
-	{
-		return (projectAssignment.getAssignmentType() != null)
-					? projectAssignment.getAssignmentType().isFlexAllottedType()
-					: false;
-	}
+	public abstract ProjectAssignment getProjectAssignment();
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjectAssignment()
+	/**
+	 * Get project assignment for saving
+	 * @return
 	 */
-	public ProjectAssignment getProjectAssignment()
-	{
-		return projectAssignment;
-	}
+	public abstract ProjectAssignment getProjectAssignmentForSave();
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjectAssignmentForSave()
+	/**
+	 * @param projectAssignment the projectAssignment to set
 	 */
-	public ProjectAssignment getProjectAssignmentForSave()
-	{
-		if (isInfiniteStartDate())
-		{
-			projectAssignment.setDateStart(null);
-		}
+	public abstract void setProjectAssignment(ProjectAssignment projectAssignment);
 
-
-		if (isInfiniteEndDate())
-		{
-			projectAssignment.setDateEnd(null);
-		}
-
-		return projectAssignment;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setProjectAssignment(net.rrm.ehour.persistence.persistence.domain.ProjectAssignment)
+	/**
+	 * @return the projects
 	 */
-	public void setProjectAssignment(ProjectAssignment projectAssignment)
-	{
-		this.projectAssignment = projectAssignment;
-	}
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjects()
-	 */
-	public List<Project> getProjects()
-	{
-		return projects;
-	}
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setProjects(java.util.List)
-	 */
-	public void setProjects(List<Project> projects)
-	{
-		this.projects = projects;
-	}
+	public abstract List<Project> getProjects();
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getCustomer()
+	/**
+	 * @param projects the projects to set
 	 */
-	public Customer getCustomer()
-	{
-		return customer;
-	}
+	public abstract void setProjects(List<Project> projects);
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setCustomer(net.rrm.ehour.persistence.persistence.domain.Customer)
+	/**
+	 * @return the customer
 	 */
-	public void setCustomer(Customer customer)
-	{
-		this.customer = customer;
-	}
+	public abstract Customer getCustomer();
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isInfiniteStartDate()
+	/**
+	 * @param customer the customer to set
 	 */
-	public boolean isInfiniteStartDate()
-	{
-		return infiniteStartDate;
-	}
+	public abstract void setCustomer(Customer customer);
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setInfiniteStartDate(boolean)
+	/**
+	 * @return the infiniteStartDate
 	 */
-	public void setInfiniteStartDate(boolean infiniteStartDate)
-	{
-		this.infiniteStartDate = infiniteStartDate;
-	}
+	public abstract boolean isInfiniteStartDate();
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isInfiniteEndDate()
+	/**
+	 * @param infiniteStartDate the infiniteStartDate to set
 	 */
-	public boolean isInfiniteEndDate()
-	{
-		return infiniteEndDate;
-	}
+	public abstract void setInfiniteStartDate(boolean infiniteStartDate);
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setInfiniteEndDate(boolean)
+	/**
+	 * @return the infiniteEndDate
 	 */
-	public void setInfiniteEndDate(boolean infiniteEndDate)
-	{
-		this.infiniteEndDate = infiniteEndDate;
-	}
+	public abstract boolean isInfiniteEndDate();
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean#getDomainObject()
+	/**
+	 * @param infiniteEndDate the infiniteEndDate to set
 	 */
-	public DomainObject<?, ?> getDomainObject()
-	{
-		return getProjectAssignment();
-	}
+	public abstract void setInfiniteEndDate(boolean infiniteEndDate);
+
 }

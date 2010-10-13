@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.report.chart.aggregate;
 
-import net.rrm.ehour.report.reports.ReportData;
-
 import org.apache.wicket.model.Model;
 import org.junit.Test;
 
@@ -25,7 +23,7 @@ public class CustomerHoursAggregateChartDataConvertorTest extends AbstractAggreg
 {
 
 	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter#CustomerHoursAggregateChartImage(java.lang.String, org.apache.wicket.model.Model, int, int)}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -33,7 +31,7 @@ public class CustomerHoursAggregateChartDataConvertorTest extends AbstractAggreg
 	{
 		CustomerHoursAggregateChartDataConverter provider = new CustomerHoursAggregateChartDataConverter();
 		
-		AggregateChartImage img = new AggregateChartImage("image", new Model<ReportData>(reportData), 200, 100, provider);
+		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
 		img.getChart(reportData);
 	}
 }

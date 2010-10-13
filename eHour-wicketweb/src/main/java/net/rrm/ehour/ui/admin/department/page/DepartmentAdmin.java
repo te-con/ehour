@@ -21,13 +21,14 @@ import java.util.List;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
+import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.admin.department.common.DepartmentAjaxEventType;
 import net.rrm.ehour.ui.admin.department.dto.DepartmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.department.panel.DepartmentFormPanel;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.common.util.WebGeo;
@@ -50,15 +51,15 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Department admin page
  **/
 
-public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBackingBean>
+public class DepartmentAdmin extends BaseTabbedAdminPage
 {
-	private static final String	DEPT_SELECTOR_ID = "deptSelector";
+	private final String		DEPT_SELECTOR_ID = "deptSelector";
 	private static final long 	serialVersionUID = -6686097898699382233L;
 
 	@SpringBean
 	private UserService			userService;
 	private	static final Logger	logger = Logger.getLogger(DepartmentAdmin.class);
-	private	ListView<UserDepartment> deptListView;
+	private	ListView			deptListView;
 	
 	/**
 	 * Default constructor
@@ -87,47 +88,47 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
-		return new DepartmentFormPanel(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
+		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
 	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		return new DepartmentFormPanel(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
+		return new DepartmentFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
 	 */
 	@Override
-	protected DepartmentAdminBackingBean getNewAddBaseBackingBean()
+	protected AdminBackingBean getNewAddBaseBackingBean()
 	{
 		return new DepartmentAdminBackingBean(new UserDepartment());
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected DepartmentAdminBackingBean getNewEditBaseBackingBean()
+	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
 		return new DepartmentAdminBackingBean(new UserDepartment());
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
@@ -164,15 +165,15 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", DepartmentAdmin.this);
 		
-		deptListView = new ListView<UserDepartment>("itemList", departments)
+		deptListView = new ListView("itemList", departments)
 		{
 			@Override
-			protected void populateItem(ListItem<UserDepartment> item)
+			protected void populateItem(ListItem item)
 			{
-				UserDepartment	dept = item.getModelObject();
+				UserDepartment	dept = (UserDepartment)item.getModelObject();
 				final Integer	deptId = dept.getDepartmentId();
 				
-				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
+				AjaxLink	link = new AjaxLink("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)

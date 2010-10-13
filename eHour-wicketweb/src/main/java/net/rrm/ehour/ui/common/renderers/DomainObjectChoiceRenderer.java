@@ -24,17 +24,27 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
  * Domain object renderer choice renders
  **/
 
-public class DomainObjectChoiceRenderer<T extends DomainObject<?, ?>> implements IChoiceRenderer<T>
+public class DomainObjectChoiceRenderer implements IChoiceRenderer
 {
 	private static final long serialVersionUID = 9021045667533511410L;
 
-	public Object getDisplayValue(T object)
+	public Object getDisplayValue(Object object)
 	{
-		return object.getFullName();
+		if  (object instanceof DomainObject<?, ?>)
+		{
+			return ((DomainObject<?, ?>) object).getFullName();
+		}
+
+		return object.toString();
 	}
 
-	public String getIdValue(T object, int index)
+	public String getIdValue(Object object, int index)
 	{
-		return object.getPK().toString();
+		if  (object instanceof DomainObject<?, ?>)
+		{
+			return ((DomainObject<?, ?>) object).getPK().toString();
+		}
+
+		return Integer.toString(index);
 	}
 }

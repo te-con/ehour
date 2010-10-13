@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanelTest;
 
+import org.apache.wicket.markup.html.panel.Panel;
 import org.junit.Test;
 
 /**
@@ -30,7 +31,7 @@ import org.junit.Test;
 public class CommonWebUtilTest extends ProjectReportPanelTest
 {
 	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.util.CommonWebUtil#findComponent(org.apache.wicket.MarkupContainer, java.lang.Class)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.util.CommonWebUtil#findComponent(org.apache.wicket.MarkupContainer, java.lang.Class)}.
 	 */
 	@Test
 	public void testFindComponent()
@@ -38,6 +39,8 @@ public class CommonWebUtilTest extends ProjectReportPanelTest
 		setupExpectations();
 		
 		replay(getAggregateReportService());
+		
+		Panel panel = startReportPanel();
 		
 		getTester().assertNoErrorMessage();
 		

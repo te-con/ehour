@@ -32,7 +32,7 @@ import org.apache.wicket.model.PropertyModel;
 public class GrandTotal implements Serializable
 {
 	private static final long serialVersionUID = -8908496992290848165L;
-	private Map<Integer, List<PropertyModel<Float>>>	weekMatrix;
+	private Map<Integer, List<PropertyModel>>	weekMatrix;
 	private Map<Integer, Integer> renderDayOrder;
 	
 	/**
@@ -40,7 +40,7 @@ public class GrandTotal implements Serializable
 	 */
 	public GrandTotal()
 	{
-		weekMatrix = new HashMap<Integer, List<PropertyModel<Float>>>();
+		weekMatrix = new HashMap<Integer, List<PropertyModel>>();
 		renderDayOrder= new HashMap<Integer, Integer>();
 	}
 
@@ -71,9 +71,9 @@ public class GrandTotal implements Serializable
 	 * @param index
 	 * @param model
 	 */
-	public void addValue(int index, PropertyModel<Float> model)
+	public void addValue(int index, PropertyModel model)
 	{
-		List<PropertyModel<Float>>	dayModels;
+		List<PropertyModel>	dayModels;
 		
 		if (weekMatrix.containsKey(index))
 		{
@@ -81,7 +81,7 @@ public class GrandTotal implements Serializable
 		}
 		else
 		{
-			dayModels = new ArrayList<PropertyModel<Float>>();
+			dayModels = new ArrayList<PropertyModel>();
 		}
 		
 		dayModels.add(model);
@@ -96,14 +96,14 @@ public class GrandTotal implements Serializable
 	public float[] getValues()
 	{
 		float[]				dayValues = new float[7];
-		List<PropertyModel<Float>>	dayModels;
+		List<PropertyModel>	dayModels;
 		Object				modelValue;
 		
 		for (Integer dayInWeek : weekMatrix.keySet())
 		{
 			dayModels = weekMatrix.get(dayInWeek);
 			
-			for (PropertyModel<Float> propertyModel : dayModels)
+			for (PropertyModel propertyModel : dayModels)
 			{
 				modelValue = propertyModel.getObject();
 				

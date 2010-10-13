@@ -25,7 +25,7 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.Session;
 
-public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
+public class QuickMonthRenderer extends QuickRenderer
 {
 	private static final long serialVersionUID = 1983255096043016545L;
 	private int	currentMonth;
@@ -42,33 +42,36 @@ public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
 	 */
-	public Object getDisplayValue(QuickMonth object)
+	public Object getDisplayValue(Object object)
 	{
 		String	value = null;
 		
-		QuickMonth quickMonth = (QuickMonth)object;
-		
-		int month = quickMonth.getPeriodIndex();
-		
-		if ( (currentMonth == 0 && month == 11)
-				|| (currentMonth - 1 == month))
+		if (object instanceof QuickMonth)
 		{
-			value = getLocalizer().getString("report.criteria.previousMonth", null);
-		}
-		else if (currentMonth == month)
-		{
-			value = getLocalizer().getString("report.criteria.currentMonth", null);
-		}
-		else if ( (currentMonth + 1 == month || (currentMonth == 11 && month == 0)))
-		{
-			value = getLocalizer().getString("report.criteria.nextMonth", null);
-		}
-		else
-		{
-			EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
+			QuickMonth quickMonth = (QuickMonth)object;
 			
-			SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getLocale());
-			value = format.format(quickMonth.getPeriodStart());
+			int month = quickMonth.getPeriodIndex();
+			
+			if ( (currentMonth == 0 && month == 11)
+					|| (currentMonth - 1 == month))
+			{
+				value = getLocalizer().getString("report.criteria.previousMonth", null);
+			}
+			else if (currentMonth == month)
+			{
+				value = getLocalizer().getString("report.criteria.currentMonth", null);
+			}
+			else if ( (currentMonth + 1 == month || (currentMonth == 11 && month == 0)))
+			{
+				value = getLocalizer().getString("report.criteria.nextMonth", null);
+			}
+			else
+			{
+				EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
+				
+				SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getLocale());
+				value = format.format(quickMonth.getPeriodStart());
+			}
 		}
 		
 		return value;
@@ -77,7 +80,7 @@ public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
 	/**
 	 * 
 	 */
-	public String getIdValue(QuickMonth object, int index)
+	public String getIdValue(Object object, int index)
 	{
 		return Integer.toString(index);
 	}

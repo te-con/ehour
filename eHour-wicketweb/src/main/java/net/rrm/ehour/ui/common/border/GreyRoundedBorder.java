@@ -42,7 +42,7 @@ public class GreyRoundedBorder extends Border
 	 */
 	public GreyRoundedBorder(String id)
 	{
-		this(id, new Model<String>(), null, null);
+		this(id, new Model(), null, null);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class GreyRoundedBorder extends Border
 	 */
 	public GreyRoundedBorder(String id, WebGeo width)
 	{
-		this(id, new Model<String>(), false, null, null, width);
+		this(id, new Model(), false, null, null, width);
 	}
 
 	
@@ -62,9 +62,9 @@ public class GreyRoundedBorder extends Border
 	 * @param printLink
 	 * @param excelLink
 	 */
-	public GreyRoundedBorder(String id, Link<Void> printLink, Link<Void> excelLink)
+	public GreyRoundedBorder(String id, Link printLink, Link excelLink)
 	{
-		this(id, new Model<String>(), false, printLink, excelLink, null);
+		this(id, new Model(), false, printLink, excelLink, null);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class GreyRoundedBorder extends Border
 	 */
 	public GreyRoundedBorder(String id, String title)
 	{
-		this(id, new Model<String>(title));
+		this(id, new Model(title));
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class GreyRoundedBorder extends Border
 	 * @param id
 	 * @param title
 	 */
-	public GreyRoundedBorder(String id, IModel<String> title)
+	public GreyRoundedBorder(String id, IModel title)
 	{
 		this(id, title, null, null);
 	}
@@ -92,7 +92,7 @@ public class GreyRoundedBorder extends Border
 	 * @param id
 	 * @param title
 	 */
-	public GreyRoundedBorder(String id, IModel<String> title, WebGeo width)
+	public GreyRoundedBorder(String id, IModel title, WebGeo width)
 	{
 		this(id, title, true, null, null, width);
 	}	
@@ -104,7 +104,7 @@ public class GreyRoundedBorder extends Border
 	 * @param printLink
 	 * @param excelLink
 	 */
-	public GreyRoundedBorder(String id, IModel<String> title, Link<Void> printLink, Link<Void> excelLink)
+	public GreyRoundedBorder(String id, IModel title, Link printLink, Link excelLink)
 	{
 		this(id, title, true, printLink, excelLink, null);
 	}
@@ -118,7 +118,7 @@ public class GreyRoundedBorder extends Border
 	 * @param excelLink
 	 * @param width
 	 */
-	public GreyRoundedBorder(String id, IModel<String> title, boolean showTitle, Link<?> printLink, Link<?> excelLink, WebGeo width)
+	public GreyRoundedBorder(String id, IModel title, boolean showTitle, Link printLink, Link excelLink, WebGeo width)
 	{
 		super(id);
 		

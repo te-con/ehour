@@ -16,15 +16,10 @@
 
 package net.rrm.ehour.ui.report.panel.user.criteria;
 
-import java.util.Date;
-import java.util.List;
-
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.LoadAwareButton;
-import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
@@ -56,7 +51,7 @@ public class UserReportCriteriaPanel extends SidePanel
 	 * @param id
 	 * @param model
 	 */
-	public UserReportCriteriaPanel(String id, IModel<ReportCriteria> model)
+	public UserReportCriteriaPanel(String id, IModel model)
 	{
 		this(id, model, true);
 	}
@@ -66,33 +61,34 @@ public class UserReportCriteriaPanel extends SidePanel
 	 * @param id
 	 * @param model
 	 */
-	public UserReportCriteriaPanel(String id, IModel<ReportCriteria> model, boolean multipleChoice)
+	public UserReportCriteriaPanel(String id, IModel model, boolean multipleChoice)
 	{
 		super(id);
 
-		Form<Void> form = new Form<Void>("criteriaForm");
+		Form form = new Form("criteriaForm");
 		
 		if (multipleChoice)
 		{
-			ListMultipleChoice<Project> projectDropDown;
-			projectDropDown = new ListMultipleChoice<Project>("userCriteria.projects", 
-												new PropertyModel<List<Project>>(model, "availableCriteria.projects"),
-												new DomainObjectChoiceRenderer<Project>());
+			ListMultipleChoice projectDropDown;
+			projectDropDown = new ListMultipleChoice("userCriteria.projects", 
+												new PropertyModel(model, "availableCriteria.projects"),
+												new DomainObjectChoiceRenderer());
 			projectDropDown.setMaxRows(3);
 			form.add(projectDropDown);
 		}
 		else
 		{
-			ListChoice<Project> projectDropDown;
-			projectDropDown = new ListChoice<Project>("userCriteria.projects", 
-											new PropertyModel<Project>(model, "userCriteria.project"),
-											new PropertyModel<List<Project>>(model, "availableCriteria.projects"),
-											new DomainObjectChoiceRenderer<Project>());
+			ListChoice projectDropDown;
+			projectDropDown = new ListChoice("userCriteria.projects", 
+											new PropertyModel(model, "userCriteria.project"),
+											new PropertyModel(model, "availableCriteria.projects"),
+											new DomainObjectChoiceRenderer());
 			projectDropDown.setNullValid(false);
 			projectDropDown.setMaxRows(1);
 			projectDropDown.setRequired(true);
 			form.add(projectDropDown);
 		}
+		
 		
 		addDatePickers(form, model);
 		
@@ -105,15 +101,15 @@ public class UserReportCriteriaPanel extends SidePanel
 	 * Add submits
 	 * @param form
 	 */
-	protected void addSubmits(Form<?> form)
+	protected void addSubmits(Form form)
 	{
 		@SuppressWarnings("serial")
 		AjaxFallbackButton submitButton = new LoadAwareButton("submitButton", form)
 		{
 			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+            protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
-				EventPublisher.publishAjaxEvent(this, new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
+				AjaxUtil.publishAjaxEvent(this, new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
             }
         };
         
@@ -125,7 +121,7 @@ public class UserReportCriteriaPanel extends SidePanel
 	 * @param parent
 	 * @param reportCriteria
 	 */
-	private void addDatePickers(WebMarkupContainer parent, IModel<ReportCriteria> model)
+	private void addDatePickers(WebMarkupContainer parent, IModel model)
 	{
 		parent.add(addDate("Start", model));
 		parent.add(addDate("End", model));
@@ -137,11 +133,11 @@ public class UserReportCriteriaPanel extends SidePanel
 	 * @param model
 	 * @return
 	 */
-	private WebMarkupContainer addDate(String idPrefix, IModel<ReportCriteria> model)
+	private WebMarkupContainer addDate(String idPrefix, IModel model)
 	{
-		PropertyModel<Boolean> infiniteDateModel = new PropertyModel<Boolean>(model, "userCriteria.infinite" + idPrefix + "Date");
+		PropertyModel	infiniteDateModel = new PropertyModel(model, "userCriteria.infinite" + idPrefix + "Date");
 		
-        DateTextField datePicker = new DateTextField("userCriteria.reportRange.date" + idPrefix, new PropertyModel<Date>(model,
+        DateTextField datePicker = new DateTextField("userCriteria.reportRange.date" + idPrefix, new PropertyModel(model,
         													"userCriteria.reportRange.date" + idPrefix), new StyleDateConverter("S-", false));
         datePicker.add(new DatePicker());
 		
@@ -153,7 +149,7 @@ public class UserReportCriteriaPanel extends SidePanel
 		final WebMarkupContainer	innerDateHider = new WebMarkupContainer("inner" + idPrefix + "DateHider");
 		innerDateHider.setOutputMarkupId(true);
 		innerDateHider.add(datePicker);
-		innerDateHider.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), infiniteDateModel, true));
+		innerDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteDateModel, true));
 
 		dateHider.add(innerDateHider);
 

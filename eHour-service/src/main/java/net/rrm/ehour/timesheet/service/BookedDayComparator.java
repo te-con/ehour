@@ -28,16 +28,20 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 
 public class BookedDayComparator implements Comparator<BookedDay>, Serializable
 {
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 3811098485423672398L;
 
-	public int compare(BookedDay dayA, BookedDay dayB)
+	public int compare(BookedDay a, BookedDay b)
 	{
 		int			compare;
 		Date		bda,
 					bdb;
 		
-    	bda = dayA.getDate();
-    	bdb = dayB.getDate();
+    	bda = ((BookedDay)a).getDate();
+    	bdb = ((BookedDay)b).getDate();
     	
     	compare = bda.equals(bdb) ? 0 :
     			  bda.before(bdb) ? - 1 : 1; 

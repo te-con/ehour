@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
+import net.rrm.ehour.util.EhourConstants;
 
 /**
  * Backing bean for users
@@ -45,7 +46,7 @@ public class UserBackingBean extends AdminBackingBeanImpl
 			this.originalPassword = user.getPassword();
 			
 			// barfff
-			isPm = new ArrayList<UserRole>(user.getUserRoles()).contains(UserRole.PROJECTMANAGER);
+			isPm = new ArrayList<UserRole>(user.getUserRoles()).contains(new UserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		}
 	}
 
@@ -96,7 +97,7 @@ public class UserBackingBean extends AdminBackingBeanImpl
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean#getDomainObject()
+	 * @see net.rrm.ehour.ui.common.model.AdminBackingBean#getDomainObject()
 	 */
 	
 	public User getDomainObject()

@@ -19,27 +19,27 @@ package net.rrm.ehour.ui.common.authorization;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.user.service.UserService;
 
+import org.acegisecurity.userdetails.UserDetails;
+import org.acegisecurity.userdetails.UserDetailsService;
+import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides userDetails 
  **/
-@Service("authService")
+
 public class AuthService implements UserDetailsService
 {
-	@Autowired
 	private	UserService	userService;
-	private	final static Logger LOGGER = Logger.getLogger(AuthService.class);	
+	private	final static Logger logger = Logger.getLogger(AuthService.class);	
 
 	/**
 	 * Get user by username (acegi)
 	 * @param username
+	 */
+	/**
+	 * 
 	 */
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
@@ -51,9 +51,9 @@ public class AuthService implements UserDetailsService
 		
 		if (user == null || !user.isActive())
 		{
-			if (LOGGER.isDebugEnabled())
+			if (logger.isDebugEnabled())
 			{
-				LOGGER.debug("Load user by username for " + username + " but user unknown or inactive");
+				logger.debug("Load user by username for " + username + " but user unknown or inactive");
 			}
 			
 			throw new UsernameNotFoundException("User unknown");

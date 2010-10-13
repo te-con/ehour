@@ -17,11 +17,14 @@
 package net.rrm.ehour.ui.common.sort;
 
 import static org.junit.Assert.assertTrue;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.ui.common.DummyWebDataGenerator;
 
 import org.junit.Before;
 import org.junit.Test;
+/**
+ * TODO 
+ **/
 
 public class ProjectAssignmentAggregateComparatorTest
 {
@@ -34,12 +37,12 @@ public class ProjectAssignmentAggregateComparatorTest
 		a1 = new AssignmentAggregateReportElement();
 		a2 = new AssignmentAggregateReportElement();
 		
-		a1.setProjectAssignment(ProjectAssignmentMother.createProjectAssignment(1));
-		a2.setProjectAssignment(ProjectAssignmentMother.createProjectAssignment(2));
+		a1.setProjectAssignment(DummyWebDataGenerator.getProjectAssignment(1));
+		a2.setProjectAssignment(DummyWebDataGenerator.getProjectAssignment(2));
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.sort.ProjectAssignmentAggregateComparator#compare(net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement, net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement)}.
+	 * Test method for {@link net.rrm.ehour.ui.common.sort.ProjectAssignmentAggregateComparator#compare(net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement, net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement)}.
 	 */
 	@Test
 	public void testCompareProject()

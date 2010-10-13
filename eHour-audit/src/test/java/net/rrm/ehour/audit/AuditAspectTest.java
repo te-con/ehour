@@ -21,10 +21,10 @@ import static org.junit.Assert.assertEquals;
 import javax.annotation.Resource;
 
 import net.rrm.ehour.audit.service.AuditService;
-import net.rrm.ehour.audittest.service.MockAudit;
-import net.rrm.ehour.audittest.service.MockAuditService;
-import net.rrm.ehour.audittest.service.MockNonTransactService;
-import net.rrm.ehour.audittest.service.MockService;
+import net.rrm.ehour.audit.service.MockAudit;
+import net.rrm.ehour.audit.service.MockAuditService;
+import net.rrm.ehour.audit.service.MockNonTransactService;
+import net.rrm.ehour.audit.service.MockService;
 import net.rrm.ehour.domain.AuditActionType;
 
 import org.junit.Before;
@@ -34,7 +34,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:test-context-audit.xml"})
+@ContextConfiguration(locations={"classpath:applicationContext-audit-test.xml"})
 public class AuditAspectTest
 {
 	@Resource
@@ -53,7 +53,7 @@ public class AuditAspectTest
 	}
 	
 	@Test
-	public void shouldAuditAnnotatedMethod()
+	public void testAnnotated()
 	{
 		mockService.annotatedMethod();
 		
@@ -62,7 +62,7 @@ public class AuditAspectTest
 	}
 	
 	@Test
-	public void shouldAuditGetMethod()
+	public void testNonAnnotated()
 	{
 		mockService.getNonAnnotatedMethod();
 		
@@ -116,6 +116,7 @@ public class AuditAspectTest
 		assertEquals(null, ((MockAudit)auditService).getAudit());
 	}
 	
+	// test for 
 	@Test
 	public void testPackage()
 	{

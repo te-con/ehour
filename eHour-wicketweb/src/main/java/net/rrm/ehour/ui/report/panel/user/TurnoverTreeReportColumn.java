@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report.panel.user;
 import net.rrm.ehour.ui.common.report.ReportColumn;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
-import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.model.IModel;
 
 /**
  * ReportColumn with visibility depending on whether to show turnover or not 
@@ -30,11 +30,14 @@ public class TurnoverTreeReportColumn extends ReportColumn
 	private static final long serialVersionUID = 1L;
 
 	public TurnoverTreeReportColumn(String columnHeaderResourceKey, 
-									IConverter converter)
+									Class<? extends IModel> conversionModel)
 	{
-		super(columnHeaderResourceKey, ColumnType.TURNOVER, converter, DisplayType.VISIBLE, DisplayType.ALLOW_DUPLICATES);
+		super(columnHeaderResourceKey, conversionModel, true, ColumnType.TURNOVER);
 	}
 	
+	/**
+	 * @return the visible
+	 */
 	@Override
 	public boolean isVisible()
 	{

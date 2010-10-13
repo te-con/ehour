@@ -27,7 +27,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
  * Type interface for reports 
  **/
 
-public abstract class AbstractCachableReportModel extends LoadableDetachableModel<ReportData> implements CachableObject, Report 
+public abstract class AbstractCachableReportModel extends LoadableDetachableModel implements CachableObject, Report 
 {
 	private static final long serialVersionUID = -8583320436270110287L;
 	private String cacheId;
@@ -72,7 +72,7 @@ public abstract class AbstractCachableReportModel extends LoadableDetachableMode
 	 * @see org.apache.wicket.model.LoadableDetachableModel#load()
 	 */
 	@Override
-	protected final ReportData load()
+	protected final Object load()
 	{
 		return getReportData(getReportCriteria());
 	}

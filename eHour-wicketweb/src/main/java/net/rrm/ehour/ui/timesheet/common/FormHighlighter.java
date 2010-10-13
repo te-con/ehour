@@ -45,7 +45,7 @@ public class FormHighlighter implements FormComponent.IVisitor, Serializable
 	
     public Object formComponent(IFormVisitorParticipant visitor)
     {
-    	FormComponent<?> formComponent = (FormComponent<?>)visitor;
+    	FormComponent formComponent = (FormComponent)visitor;
 
     	if (target != null)
     	{
@@ -83,12 +83,13 @@ public class FormHighlighter implements FormComponent.IVisitor, Serializable
      * @param color
      * @return
      */
-    @SuppressWarnings("serial")
-	private AttributeModifier getColorModifier(final String color)
+    private AttributeModifier getColorModifier(final String color)
     {
-    	return new AttributeModifier("style", true, new AbstractReadOnlyModel<String>()
+    	return new AttributeModifier("style", true, new AbstractReadOnlyModel()
         {
-			public String getObject()
+			private static final long serialVersionUID = 1L;
+
+			public Object getObject()
             {
                 return "color: " + color;
             }

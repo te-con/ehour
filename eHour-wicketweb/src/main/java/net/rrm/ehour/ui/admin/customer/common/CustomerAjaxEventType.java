@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.admin.customer.common;
 
-import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 
 /**
  * Ajax event types

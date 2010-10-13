@@ -41,6 +41,7 @@ import org.apache.wicket.model.PropertyModel;
 
 public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedback
 {
+
 	private static final long serialVersionUID = 7840885174109746055L;
 	private	List<FeedbackMessage>	messages = new ArrayList<FeedbackMessage>();
 	private IFeedbackMessageFilter filter;
@@ -92,6 +93,7 @@ public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedba
 	 * @see org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator#onBeforeRender()
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public void onBeforeRender()
 	{
 		super.onBeforeRender();
@@ -114,7 +116,7 @@ public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedba
 		{
 			super(id);
 
-			add(new Label("errorText", new PropertyModel<String>(this, "message"))
+			add(new Label("errorText", new PropertyModel(this, "message"))
 			{
 				@Override
 				public boolean isVisible()

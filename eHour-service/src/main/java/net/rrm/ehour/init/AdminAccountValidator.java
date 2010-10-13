@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.init;
 
-import javax.annotation.PostConstruct;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
@@ -27,39 +25,32 @@ import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Checks whether the admin account is present when eHour is started first 
  **/
-@Service
+
 public class AdminAccountValidator
 {
-	private final static Logger LOGGER = Logger.getLogger(AdminAccountValidator.class);
-	
-	@Autowired
+	private final static Logger logger = Logger.getLogger(AdminAccountValidator.class);
 	private EhourConfig ehourConfig;
-	@Autowired
 	private UserService	userService;
-	@Autowired
 	private ConfigurationService	configService;
 	
 	
 	/**
 	 * Check whether the admin account exists.
 	 */
-	@PostConstruct
 	public void checkAdminAccount()
 	{
 		if (!ehourConfig.isInitialized())
 		{
-			LOGGER.info("eHour not initialized, initializing...");
+			logger.info("eHour not initialized, initializing...");
 			updateAdminPassword();
 		}
 		else
 		{
-			LOGGER.info("eHour already initialized");
+			logger.info("eHour already initialized");
 		}
 	}
 	
@@ -68,13 +59,13 @@ public class AdminAccountValidator
 	 */
 	private void updateAdminPassword()
 	{
-		LOGGER.info("Setting password of admin account to default value");
+		logger.info("Setting password of admin account to default value");
 		
 		User user = userService.getUser("admin");
 		
 		if (user == null)
 		{
-			LOGGER.warn("Admin account not found, maybe the SQL scripts failed to run properly?");
+			logger.warn("Admin account not found, maybe the SQL scripts failed to run properly?");
 		}
 		else
 		{
@@ -82,15 +73,15 @@ public class AdminAccountValidator
 			try
 			{
 				userService.persistUser(user);
-				LOGGER.info("Password set to default value: " + user.getPassword());
+				logger.info("Password set to default value: " + user.getPassword());
 				
 				setEhourInitialized();
 			} catch (PasswordEmptyException e)
 			{
-				LOGGER.error("Supplied password is empty - how can this happen?");
+				e.printStackTrace();
 			} catch (ObjectNotUniqueException e)
 			{
-				LOGGER.error("Admin account already exists", e);
+				e.printStackTrace();
 			}
 		}
 	}
@@ -104,7 +95,7 @@ public class AdminAccountValidator
 		config.setInitialized(true);
 		configService.persistConfiguration(config);
 
-		LOGGER.info("eHour's state to initialized");
+		logger.info("eHour's state to initialized");
 		
 	}
 	

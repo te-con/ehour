@@ -24,8 +24,10 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.component.CommonJavascript;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
+import net.rrm.ehour.ui.common.component.ModalWindowFix;
 import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
@@ -43,6 +45,8 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -53,21 +57,21 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.NumberValidator;
 
 /**
  * Representation of a timesheet row
  **/
 
-public class TimesheetRowList extends ListView<TimesheetRow>
+public class TimesheetRowList extends ListView
 {
 	private static final long serialVersionUID = -6905022018110510887L;
 
-	private	EhourConfig config;
+	private	EhourConfig		config;
 	private final GrandTotal	grandTotals;
-	private	Form<?> form;
+	private	Form			form;
 	
-	public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
+	public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form form)
 	{
 		super(id, model);
 		setReuseItems(true);
@@ -82,7 +86,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
 	 */
 	@Override
-	protected void populateItem(ListItem<TimesheetRow> item)
+	protected void populateItem(ListItem item)
 	{
 		final TimesheetRow row = (TimesheetRow) item.getModelObject();
 
@@ -96,12 +100,12 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 
 	private Label createTotalHoursLabel(final TimesheetRow row)
 	{
-		Label totalHours = new Label("total", new ProjectTotalModel(row));
+		Label totalHours = new Label("total", new FloatModel(new ProjectTotalModel(row), config));
 		totalHours.setOutputMarkupId(true);
 		return totalHours;
 	}
 
-	private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row)
+	private void addInputCells(ListItem item, final TimesheetRow row)
 	{
 		Calendar dateIterator = (Calendar)row.getFirstDayOfWeekDate().clone();
 
@@ -126,9 +130,9 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		}
 	}
 
-	private AjaxLink<Void> createBookWholeWeekLink(final TimesheetRow row)
+	private AjaxLink createBookWholeWeekLink(final TimesheetRow row)
 	{
-		AjaxLink<Void> projectLink = new AjaxLink<Void>("bookWholeWeek")
+		AjaxLink projectLink = new AjaxLink("bookWholeWeek")
 		{
 			private static final long serialVersionUID = -663239917205218384L;
 
@@ -140,7 +144,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			}
 		};
 		
-		ContextImage img = new ContextImage("bookImg", new Model<String>("img/check_all_off.png"));
+		ContextImage img = new ContextImage("bookImg", new Model("img/check_all_off.png"));
 		CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/check_all_on.png", getContextRoot() + "img/check_all_off.png", "bwh");
 		projectLink.add(img);
 		
@@ -156,16 +160,16 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	private TooltipLabel createProjectLabel(final TimesheetRow row)
 	{
 		TooltipLabel projectLabel = new TooltipLabel("project", 
-														new Model<String>(row.getProjectAssignment().getProject().getName()),  
-														new Model<String>(row.getProjectAssignment().getProject().getDescription()),
+														new Model(row.getProjectAssignment().getProject().getName()),  
+														new Model(row.getProjectAssignment().getProject().getDescription()),
 														true,
 														true);
 		return projectLabel;
 	}
 
-	private Label createStatusLabel(ListItem<TimesheetRow> item)
+	private Label createStatusLabel(ListItem item)
 	{
-		Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status"));
+		Label label = new Label("status", new PropertyModel(item.getModel(), "status"));
 		label.setEscapeModelStrings(false);
 		label.setOutputMarkupId(true);
 		return label;
@@ -176,7 +180,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	 * @param id
 	 * @param item
 	 */
-	private void createEmptyTimesheetEntry(String id, ListItem<TimesheetRow> item)
+	private void createEmptyTimesheetEntry(String id, ListItem item)
 	{
 		Fragment fragment = new Fragment(id, "dayInputHidden", this);
 		
@@ -190,7 +194,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	 * @param index
 	 * @return
 	 */
-	private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item)
+	private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem item)
 	{
 		Fragment fragment = new Fragment(id, "dayInput", this);
 		
@@ -208,19 +212,19 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	 * @param index
 	 * @return
 	 */
-	private TimesheetTextField createValidatedTextField(TimesheetRow row, final int index)
+	private TextField createValidatedTextField(TimesheetRow row, final int index)
 	{
 		final TimesheetTextField	dayInput;
-		PropertyModel<Float>		cellModel;
+		PropertyModel				cellModel;
 		
-		cellModel = new PropertyModel<Float>(row, "timesheetCells[" + index + "].timesheetEntry.hours");
+		cellModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.hours");
 		
 		// make sure it's added to the grandtotal
 		grandTotals.addValue(index, cellModel);
 		
 		// list it on the page
-		dayInput = new TimesheetTextField("day", cellModel, 1);
-		dayInput.add(new MinimumValidator<Float>(0f));
+		dayInput = new TimesheetTextField("day", new FloatModel(cellModel, config, null), Float.class, 1);
+		dayInput.add(NumberValidator.minimum(0));
 		dayInput.setOutputMarkupId(true);
 		
 		// make sure values are checked
@@ -269,10 +273,10 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent)
 	{
 		final ModalWindow modalWindow;
-		final AjaxLink<Void> commentLink;
-		final PropertyModel<String> commentModel = new PropertyModel<String>(row, "timesheetCells[" + index + "].timesheetEntry.comment");
+		final AjaxLink commentLink;
+		final PropertyModel commentModel = new PropertyModel(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 		
-		modalWindow = new ModalWindow("dayWin");
+		modalWindow = new ModalWindowFix("dayWin");
 		modalWindow.setResizable(false);
 		modalWindow.setInitialWidth(400);
 		modalWindow.setInitialHeight(225);
@@ -281,7 +285,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 																		commentModel, row, index, modalWindow));
 		
-		commentLink = new AjaxLink<Void>("dayLink")
+		commentLink = new AjaxLink("dayLink")
 		{
 			@Override
 			public void onClick(AjaxRequestTarget target)
@@ -308,12 +312,12 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		ContextImage img;
 		if (StringUtils.isBlank((String)commentModel.getObject()))
 		{
-			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
+			img = new ContextImage("commentLinkImg", new Model("img/comment/comment_blue_off.gif"));
 			CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/comment/comment_blue_on.gif", getContextRoot() + "img/comment/comment_blue_off.gif", "comment");
 		}
 		else
 		{
-			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
+			img = new ContextImage("commentLinkImg", new Model("img/comment/comment_blue_on.gif"));
 		}
 		commentLink.add(img);
 		
@@ -327,7 +331,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	 * @param commentModel
 	 * @param commentLink
 	 */
-	private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink)
+	private void setCommentLinkClass(IModel commentModel, AjaxLink commentLink)
 	{
 		commentLink.add(new SimpleAttributeModifier("class"
 				, StringUtils.isBlank((String)commentModel.getObject()) ? "timesheetEntryComment"
@@ -343,7 +347,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	{
 		private static final long serialVersionUID = 1L;
 
-		public TimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window)
+		public TimesheetEntryCommentPanel(String id, final IModel model, TimesheetRow row, int index, final ModalWindow window)
 		{
 			super(id);
 
@@ -351,7 +355,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			// Use the render order, not the index order, when calculating the date
 			thisDate.add(Calendar.DAY_OF_YEAR, grandTotals.getOrderForIndex(index)-1);
 
-			final String previousModel = model.getObject();
+			final Object previousModel = model.getObject();
 			add(new Label("dayComments",
 					new StringResourceModel("timesheet.dayComments",
 												this,
@@ -359,7 +363,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 												new Object[]{row.getProjectAssignment().getFullName(),
 															 new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
 			
-			final KeepAliveTextArea textArea = new KeepAliveTextArea("comment", model);
+			final TextArea textArea = new KeepAliveTextArea("comment", model);
 			textArea.add(new AjaxFormComponentUpdatingBehavior("onchange")
 			{
 				private static final long serialVersionUID = 1L;
@@ -373,7 +377,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			
 			add(textArea);
 			
-			AjaxLink<Void> submitButton = new AjaxLink<Void>("submit")
+			AjaxLink submitButton = new AjaxLink("submit")
 			{
 				private static final long serialVersionUID = 1L;
 
@@ -385,7 +389,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			};
 			add(submitButton);
 
-			AbstractLink cancelButton = new AjaxLink<Void>("cancel")
+			AbstractLink cancelButton = new AjaxLink("cancel")
 			{
 				private static final long serialVersionUID = 1L;
 

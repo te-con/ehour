@@ -26,12 +26,12 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 public interface ProjectAdminBackingBean extends AdminBackingBean
 {
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.project.panel.dto.ProjectAdminBackingBean#getProject()
+	 * @see net.rrm.ehour.ui.admin.project.panel.dto.ProjectAdminBackingBean#getProject()
 	 */
 	public Project getProject();
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.project.panel.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.persistence.persistence.domain.Project)
+	 * @see net.rrm.ehour.ui.admin.project.panel.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.domain.Project)
 	 */
 	public void setProject(Project project);
 }

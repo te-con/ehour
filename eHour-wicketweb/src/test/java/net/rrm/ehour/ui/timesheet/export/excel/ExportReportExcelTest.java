@@ -32,8 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
-import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
@@ -59,8 +59,10 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 	private DetailedReportService detailedReportService;
 
 	@Before
-	public void before() throws Exception
+	public void setUp() throws Exception
 	{
+		super.setUp();
+
 		getConfig().setFirstDayOfWeek(Calendar.MONDAY);
 		
 		detailedReportService = createMock(DetailedReportService.class);
@@ -69,7 +71,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		configService = new ConfigurationServiceImpl();
 		getMockContext().putBean("configurationService", configService);
 		
-		BinaryConfigurationDao binConfigfDao = createMock(BinaryConfigurationDao.class);
+		BinaryConfigurationDAO binConfigfDao = createMock(BinaryConfigurationDAO.class);
 		configService.setBinConfigDAO(binConfigfDao);
 	}
 	
@@ -126,7 +128,6 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unused")
 	private void writeByteData(byte[] excelData) throws FileNotFoundException, IOException
 	{
 		File outfile = new File("d:\\test.xls");

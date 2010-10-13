@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import net.rrm.ehour.ui.common.decorator.OnClickDecorator;
+import net.rrm.ehour.ui.common.ajax.OnClickDecorator;
 
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -25,8 +25,11 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
  * AjaxLink which disables itself after first click
  **/
 
-public abstract class DisablingAjaxLink extends AjaxLink<Void>
+public abstract class DisablingAjaxLink extends AjaxLink
 {
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = -6432581905417785191L;
 
 	public DisablingAjaxLink(String id)

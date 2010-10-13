@@ -19,11 +19,11 @@ package net.rrm.ehour.ui.admin.department.panel;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.ui.admin.department.common.DepartmentAjaxEventType;
 import net.rrm.ehour.ui.admin.department.dto.DepartmentAdminBackingBean;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
@@ -42,7 +42,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * user department form panel
  **/
 
-public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentAdminBackingBean>
+public class DepartmentFormPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = -6469066920645156569L;
 
@@ -54,7 +54,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 	 * @param id
 	 * @param model
 	 */
-	public DepartmentFormPanel(String id, CompoundPropertyModel<DepartmentAdminBackingBean> model)
+	public DepartmentFormPanel(String id, CompoundPropertyModel model)
 	{
 		super(id, model);
 		
@@ -63,10 +63,10 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 		
 		setOutputMarkupId(true);
 		
-		final Form<Void> form = new Form<Void>("deptForm");
+		final Form form = new Form("deptForm");
 		
 		// name
-		RequiredTextField<String> nameField = new RequiredTextField<String>("department.name");
+		RequiredTextField	nameField = new RequiredTextField("department.name");
 		form.add(nameField);
 		nameField.add(new StringValidator.MaximumLengthValidator(64));
 		nameField.setLabel(new ResourceModel("admin.dept.name"));
@@ -74,7 +74,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 			
 		// code
-		RequiredTextField<String> codeField = new RequiredTextField<String>("department.code");
+		RequiredTextField	codeField = new RequiredTextField("department.code");
 		form.add(codeField);
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
 		codeField.setLabel(new ResourceModel("admin.dept.code"));
@@ -86,11 +86,11 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 	
 		//
 		FormUtil.setSubmitActions(form
-									,model.getObject().getDepartment().isDeletable()
+									,((DepartmentAdminBackingBean)model.getObject()).getDepartment().isDeletable()
 									,this
 									,DepartmentAjaxEventType.DEPARTMENT_UPDATED
 									,DepartmentAjaxEventType.DEPARTMENT_DELETED
-									,EhourWebSession.getSession().getEhourConfig());
+									,((EhourWebSession)getSession()).getEhourConfig());
 		
 		greyBorder.add(form);
 	}
@@ -118,7 +118,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
+	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
 	 */
 	@Override
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception

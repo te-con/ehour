@@ -18,9 +18,7 @@ package net.rrm.ehour.config;
 
 import java.util.Locale;
 import java.util.Properties;
-import java.util.TimeZone;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.AuditType;
 
 /**
@@ -31,11 +29,6 @@ public class EhourConfigProps implements EhourConfig
 {
 	private	Properties	props;
 
-	public TimeZone getTzAsTimeZone()
-	{
-		return EhourConfigUtil.getTzAsTimeZone(this);
-	}
-	
 	public void setPropertiesConfig(Properties props)
 	{
 		this.props = props;
@@ -108,7 +101,7 @@ public class EhourConfigProps implements EhourConfig
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpPassword()
+	 * @see net.rrm.ehour.config.EhourConfig#getSmtpPassword()
 	 */
 	public String getSmtpPassword() {
 		return props.getProperty("smtpPassword");
@@ -116,7 +109,7 @@ public class EhourConfigProps implements EhourConfig
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpUsername()
+	 * @see net.rrm.ehour.config.EhourConfig#getSmtpUsername()
 	 */
 	public String getSmtpUsername() {
 		return props.getProperty("smtpUsername");
@@ -129,7 +122,7 @@ public class EhourConfigProps implements EhourConfig
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getFirstDayOfWeek()
+	 * @see net.rrm.ehour.config.EhourConfig#getFirstDayOfWeek()
 	 */
 	public int getFirstDayOfWeek()
 	{
@@ -138,7 +131,7 @@ public class EhourConfigProps implements EhourConfig
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getAuditType()
+	 * @see net.rrm.ehour.config.EhourConfig#getAuditType()
 	 */
 	public AuditType getAuditType()
 	{

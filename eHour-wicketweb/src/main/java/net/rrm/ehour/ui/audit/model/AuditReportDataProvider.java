@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.rrm.ehour.audit.service.AuditService;
-import net.rrm.ehour.data.AuditReportRequest;
+import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 
@@ -29,7 +29,12 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class AuditReportDataProvider extends SortableDataProvider<Audit>
+/**
+ * 
+ * @author thies
+ *
+ */
+public class AuditReportDataProvider extends SortableDataProvider
 {
 	private static final long serialVersionUID = 8795552030531153903L;
 
@@ -89,9 +94,9 @@ public class AuditReportDataProvider extends SortableDataProvider<Audit>
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
 	 */
-	public IModel<Audit> model(Audit audit)
+	public IModel model(Object object)
 	{
-		return new CompoundPropertyModel<Audit>(audit);
+		return new CompoundPropertyModel(object);
 	}
 
 	/*

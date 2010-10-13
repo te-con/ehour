@@ -2,7 +2,6 @@ package net.rrm.ehour.ui.admin.config.panel;
 
 import java.io.Serializable;
 
-import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.MultiTabbedPanel;
 
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
@@ -19,14 +18,14 @@ public class ConfigTabPanel extends MultiTabbedPanel
 {
 	private static final long serialVersionUID = -8241216529074995434L;
 
-	public ConfigTabPanel(String id, IModel<MainConfigBackingBean> model)
+	public ConfigTabPanel(String id, IModel model)
 	{
 		super(id);
 		
 		createTabs(model);
 	}
 	
-	private void createTabs(IModel<MainConfigBackingBean> model)
+	private void createTabs(IModel model)
 	{
 		addTab(ConfigTab.MISC, new MiscConfigPanelFactory(), model);
 		addTab(ConfigTab.LOCALE, new LocaleConfigPanelFactory(), model);
@@ -35,8 +34,9 @@ public class ConfigTabPanel extends MultiTabbedPanel
 		addTab(ConfigTab.AUDIT, new AuditConfigPanelFactory(), model);
 	}
 	
-	@SuppressWarnings({ "serial" })
-	private void addTab(ConfigTab tabDefinition, final TabFactory tabFactory, final IModel<MainConfigBackingBean> model)
+	// might want to use reflection.. oh well
+	@SuppressWarnings({ "serial", "unchecked" })
+	private void addTab(ConfigTab tabDefinition, final TabFactory tabFactory, final IModel model)
 	{
 		removeTab(tabDefinition.getTabIndex());
 		
@@ -55,7 +55,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	@SuppressWarnings("serial")
 	private class AuditConfigPanelFactory implements TabFactory
 	{
-		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
+		public Panel createTab(String panelId, IModel model)
 		{
 			return new AuditConfigPanel(panelId, model);
 		}
@@ -64,7 +64,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	@SuppressWarnings("serial")
 	private class SkinConfigPanelFactory implements TabFactory
 	{
-		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
+		public Panel createTab(String panelId, IModel model)
 		{
 			return new SkinConfigPanel(panelId, model);
 		}
@@ -74,7 +74,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	@SuppressWarnings("serial")
 	private class MiscConfigPanelFactory implements TabFactory
 	{
-		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
+		public Panel createTab(String panelId, IModel model)
 		{
 			return new MiscConfigPanel(panelId, model);
 		}
@@ -83,7 +83,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	@SuppressWarnings("serial")
 	private class LocaleConfigPanelFactory implements TabFactory
 	{
-		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
+		public Panel createTab(String panelId, IModel model)
 		{
 			return new LocaleConfigPanel(panelId, model);
 		}
@@ -92,7 +92,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	@SuppressWarnings("serial")
 	private class MailServerConfigPanelFactory implements TabFactory
 	{
-		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
+		public Panel createTab(String panelId, IModel model)
 		{
 			return new MailServerConfigPanel(panelId, model);
 		}
@@ -100,6 +100,6 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	
 	private interface TabFactory extends Serializable
 	{
-		Panel createTab(String panelId, IModel<MainConfigBackingBean> model);
+		Panel createTab(String panelId, IModel model);
 	}
 }

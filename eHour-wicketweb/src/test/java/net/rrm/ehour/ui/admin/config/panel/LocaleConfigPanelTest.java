@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
+
 import static org.easymock.classextension.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
@@ -31,7 +32,6 @@ import org.junit.Test;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-@SuppressWarnings("serial")
 public class LocaleConfigPanelTest extends AbstractMainConfigTest
 {
 	@Test

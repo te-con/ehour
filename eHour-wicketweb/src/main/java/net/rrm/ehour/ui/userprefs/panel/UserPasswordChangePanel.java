@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.userprefs.panel;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
@@ -25,15 +24,16 @@ import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.admin.user.panel.PasswordInputSnippet;
 import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
 import net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.GenericAjaxEventType;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.CommonAjaxEventType;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -51,7 +51,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * User preferences form
  **/
 
-public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBackingBean>
+public class UserPasswordChangePanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = 7670153126514499168L;
 
@@ -60,7 +60,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 	
 	private final static Logger LOGGER = Logger.getLogger(UserAdminFormPanel.class);
 	private WebComponent serverMessage;
-	private Form<UserBackingBean> form;
+	private Form		form;
 	/**
 	 * 
 	 * @param id
@@ -71,13 +71,13 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 	{
 		super(id);
 		
-		setDefaultModel(createModel(user));
+		setModel(createModel(user));
 		Border greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.title"), WebGeo.W_CONTENT_XSMALL);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);
 		
-		form = new Form<UserBackingBean>("userForm");
+		form = new Form("userForm");
 		form.setOutputMarkupId(true);
 		
 		// password inputs
@@ -93,7 +93,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 									,this
 									,UserEditAjaxEventType.USER_UPDATED
 									,UserEditAjaxEventType.USER_DELETED
-									,CommonAjaxEventType.SUBMIT_ERROR
+									,GenericAjaxEventType.SUBMIT_ERROR
 									,((EhourWebSession)getSession()).getEhourConfig());
 		
 		greyBorder.add(form);		
@@ -101,7 +101,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
+	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
 	 */
 	@Override
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
@@ -126,7 +126,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmitError(org.apache.wicket.ajax.AjaxRequestTarget)
+	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmitError(org.apache.wicket.ajax.AjaxRequestTarget)
 	 */
 	@Override
 	protected boolean processFormSubmitError(AjaxRequestTarget target)
@@ -151,7 +151,7 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 		if (userBackingBean.isPm())
 		{
 			LOGGER.debug("Re-adding PM role after edit");
-			userBackingBean.getUser().addUserRole(UserRole.PROJECTMANAGER);
+			userBackingBean.getUser().addUserRole(userService.getUserRole(EhourConstants.ROLE_PROJECTMANAGER));
 		}
 		
 		userService.persistUser(userBackingBean.getUser());
@@ -163,9 +163,9 @@ public class UserPasswordChangePanel extends AbstractFormSubmittingPanel<UserBac
 	 * @return
 	 * @throws ObjectNotFoundException 
 	 */
-	private IModel<UserBackingBean> createModel(User user) throws ObjectNotFoundException
+	private IModel createModel(User user) throws ObjectNotFoundException
 	{
 		User dbUser = userService.getUser(user.getUserId());
-		return new CompoundPropertyModel<UserBackingBean>(new UserBackingBean(dbUser));
+		return new CompoundPropertyModel(new UserBackingBean(dbUser));
 	}
 }

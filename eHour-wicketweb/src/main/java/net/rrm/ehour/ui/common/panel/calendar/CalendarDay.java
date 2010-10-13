@@ -24,6 +24,10 @@ public class CalendarDay implements Serializable
 	private int monthDay;
 	private boolean booked;
 
+	public CalendarDay()
+	{
+
+	}
 
 	public CalendarDay(int monthDay, boolean booked, boolean weekendDay)
 	{
@@ -38,7 +42,13 @@ public class CalendarDay implements Serializable
 	{
 		return monthDay;
 	}
-
+	/**
+	 * @param monthDay the monthDay to set
+	 */
+	public void setMonthDay(int monthDay)
+	{
+		this.monthDay = monthDay;
+	}
 	/**
 	 * @return the booked
 	 */
@@ -46,5 +56,11 @@ public class CalendarDay implements Serializable
 	{
 		return booked;
 	}
-
+	/**
+	 * @param booked the booked to set
+	 */
+	public void setBooked(boolean booked)
+	{
+		this.booked = booked;
+	}
 }

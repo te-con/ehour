@@ -24,6 +24,7 @@ import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
 
 import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
+import org.junit.Before;
 
 /**
  * Created on Mar 17, 2009, 5:31:37 AM
@@ -32,38 +33,43 @@ import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock
  */
 public abstract class AbstractSpringTester
 {
-	protected AnnotApplicationContextMock mockContext;
+	private AnnotApplicationContextMock	mockContext;
 	private EhourConfigStub config;
 	private AuditService auditService;
 
-	private void createContextSetup() 
+	@Before
+	public void springContextSetup() throws Exception
 	{
 		mockContext = new AnnotApplicationContextMock();
 		config = new EhourConfigStub();
 		config.setFirstDayOfWeek(Calendar.SUNDAY);
 
-		mockContext.putBean("EhourConfig", config);
+		getMockContext().putBean("EhourConfig", config);
 
 		auditService = createMock(AuditService.class);
-		mockContext.putBean("auditService", auditService);
+		getMockContext().putBean("auditService", auditService);
 	}
 	
-	public final AnnotApplicationContextMock getMockContext()
+	/**
+	 * @return the getMockContext()
+	 */
+	public AnnotApplicationContextMock getMockContext()
 	{
-		if (mockContext == null)
-		{
-			createContextSetup();
-		}
-		
 		return mockContext;
 	}
 	
-	public final EhourConfigStub getConfig()
+	/**
+	 * @return the config
+	 */
+	public EhourConfigStub getConfig()
 	{
 		return config;
 	}
 	
-	public final AuditService getAuditService()
+	/**
+	 * @return the auditService
+	 */
+	public AuditService getAuditService()
 	{
 		return auditService;
 	}

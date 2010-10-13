@@ -26,8 +26,8 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.page.AbstractBasePage;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.pm.PmReportPanel;
@@ -44,7 +44,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Project management base station :)
  **/
 @AuthorizeInstantiation("ROLE_PROJECTMANAGER")
-public class ProjectManagement extends AbstractBasePage<ReportCriteria>
+public class ProjectManagement extends BasePage
 {
 	private static final long serialVersionUID = 898442184509251553L;
 
@@ -61,12 +61,12 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 	 */
 	public ProjectManagement()
 	{
-		super(new ResourceModel("pmReport.title"));
+		super(new ResourceModel("pmReport.title"), null);
 		
 		ReportCriteria reportCriteria = getReportCriteria();
 		
-		IModel<ReportCriteria>	model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
-		setDefaultModel(model);
+		IModel	model = new CompoundPropertyModel(reportCriteria);
+		setModel(model);
 		
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model, false));
@@ -78,7 +78,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
@@ -102,7 +102,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 	{
 		ReportCriteria reportCriteria = new ReportCriteria();
 		
-		User user = EhourWebSession.getSession().getUser().getUser();
+		User user = ((EhourWebSession)getSession()).getUser().getUser();
 		
 		List<Project> projects = projectService.getProjectManagerProjects(user);
 		
@@ -118,7 +118,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 	 */
 	private ProjectManagerReport getReportData()
 	{
-		ReportCriteria 	criteria = (ReportCriteria)(getDefaultModelObject());
+		ReportCriteria 	criteria = (ReportCriteria)(getModelObject());
 		ProjectManagerReport reportData = null;
 		DateRange	reportRange = criteria.getUserCriteria().getReportRange();
 		

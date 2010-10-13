@@ -16,9 +16,11 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import net.rrm.ehour.ui.common.component.CommonModifiers;
-import net.rrm.ehour.ui.timesheet.converter.TimesheetFloatConverter;
+import java.util.Locale;
 
+import net.rrm.ehour.ui.common.component.CommonModifiers;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
@@ -27,15 +29,23 @@ import org.apache.wicket.util.convert.IConverter;
  * Timesheet textfield which remembers its previous validation state
  **/
 
-public class TimesheetTextField extends TextField<Float>
+public class TimesheetTextField extends TextField
 {
 	private static final long serialVersionUID = 7033801704569935582L;
 	private	boolean	wasInvalid;
 	private Object	previousValue;
 
-	public TimesheetTextField(final String id, IModel<Float> model, int tabIndex)
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 * @param type
+	 * @param tabIndex
+	 */
+	@SuppressWarnings("unchecked")
+	public TimesheetTextField(final String id, IModel model, Class type, int tabIndex)
 	{
-		super(id, model, Float.class);
+		super(id, model, type);
 		
 		setConvertEmptyInputStringToNull(true);
 		
@@ -49,10 +59,44 @@ public class TimesheetTextField extends TextField<Float>
 		add(CommonModifiers.tabIndexModifier(tabIndex)); 
 	}
 
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.Component#getConverter(java.lang.Class)
+	 */
 	@Override
-	public IConverter getConverter(Class<?> c)
+	@SuppressWarnings("unchecked")
+	public IConverter getConverter(Class c)
 	{
-		return TimesheetFloatConverter.getInstance();
+		return new IConverter()
+		{
+			private static final long serialVersionUID = 1L;
+
+			public Object convertToObject(String value, Locale locale)
+			{
+				if (!StringUtils.isBlank(value))
+				{
+					try
+					{
+						return Float.parseFloat(value.replace(",", "."));
+					}
+					catch (NumberFormatException nfe)
+					{
+						return value;
+					}
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			public String convertToString(Object value, Locale locale)
+			{
+				return (String)value;
+			}
+			
+		};
 	}
 	
 	/**

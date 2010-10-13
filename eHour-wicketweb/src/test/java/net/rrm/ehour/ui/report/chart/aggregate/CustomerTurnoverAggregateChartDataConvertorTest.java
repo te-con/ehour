@@ -17,8 +17,6 @@
 package net.rrm.ehour.ui.report.chart.aggregate;
 
 
-import net.rrm.ehour.report.reports.ReportData;
-
 import org.apache.wicket.model.Model;
 import org.junit.Test;
 
@@ -32,7 +30,7 @@ public class CustomerTurnoverAggregateChartDataConvertorTest extends AbstractAgg
 	{
 		CustomerTurnoverAggregateChartDataConverter provider = new CustomerTurnoverAggregateChartDataConverter();
 		
-		AggregateChartImage img = new AggregateChartImage("image", new Model<ReportData>(reportData), 200, 100, provider);
+		AggregateChartImage img = new AggregateChartImage("image", new Model(reportData), 200, 100, provider);
 		img.getChart(reportData);	
 	}
 }

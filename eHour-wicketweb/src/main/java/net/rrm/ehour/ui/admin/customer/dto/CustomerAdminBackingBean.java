@@ -100,7 +100,7 @@ public class CustomerAdminBackingBean extends AdminBackingBeanImpl
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean#getDomainObject()
+	 * @see net.rrm.ehour.ui.common.model.AdminBackingBean#getDomainObject()
 	 */
 	public Customer getDomainObject()
 	{

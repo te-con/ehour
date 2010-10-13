@@ -47,10 +47,16 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester
 	ProjectService	projectService;
 	
 	AggregateReportService aggregateReportService;
+		
 	
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@Before
-	public void before() throws Exception
+	public void setUp() throws Exception
 	{
+		super.setUp();
+		
 		projectService = createMock(ProjectService.class);
 		getMockContext().putBean("projectService", projectService);		
 		
@@ -60,7 +66,7 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester
 
 
 	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.pm.page.ProjectManagement#ProjectManagement()}.
+	 * Test method for {@link net.rrm.ehour.ui.pm.page.ProjectManagement#ProjectManagement()}.
 	 * @throws NoSuchMethodException 
 	 * @throws SecurityException 
 	 */

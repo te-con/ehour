@@ -3,16 +3,28 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.8.4</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
 	<artifactId>eHour-service</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour service layer</name>
-
+	<version>${applicationVersion}</version>
 	<build>
 		<resources>
+			<resource>
+				<directory>src/main/resources/db</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources/spring</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources/hibernate</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources/img</directory>
+			</resource>
 			<resource>
 				<filtering>false</filtering>
 				<directory>src/main/java</directory>
@@ -22,88 +34,281 @@
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
-			</resource>
-			
-			<resource>
-				<filtering>false</filtering>
-				<directory>src/main/resources</directory>
-			</resource>
+			</resource>			
 		</resources>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>derby</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/profiles/datasource/derby</directory>
+					</resource>
+					<resource>
+						<directory>src/main/profiles/hibernate/derby</directory>
+					</resource>
+				</resources>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.4.2.0</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.ddlutils</groupId>
+					<artifactId>ddlutils</artifactId>
+					<version>1.0</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-dbcp</groupId>
+							<artifactId>commons-dbcp</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>xerces</groupId>
+							<artifactId>xercesImpl</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>mysql</id>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>5.0.8</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.4.2.0</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.ddlutils</groupId>
+					<artifactId>ddlutils</artifactId>
+					<version>1.0</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/profiles/datasource/generic</directory>
+					</resource>
+					<resource>
+						<directory>src/main/profiles/hibernate/mysql</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>postgresql</id>
+			<dependencies>
+				<dependency>
+					<groupId>postgresql</groupId>
+					<artifactId>postgresql</artifactId>
+					<version>8.3-603.jdbc4</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.derby</groupId>
+					<artifactId>derby</artifactId>
+					<version>10.4.2.0</version>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.ddlutils</groupId>
+					<artifactId>ddlutils</artifactId>
+					<version>1.0</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/profiles/datasource/generic
+						</directory>
+					</resource>
+					<resource>
+						<directory>src/main/profiles/hibernate/postgresql</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>		
+	</profiles>
 	<dependencies>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-persistence</artifactId>
+			<artifactId>eHour-persistence-domain</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 
 		<dependency>
-			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-common</artifactId>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.1.GA</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>asm-attrs</artifactId>
+					<groupId>asm</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>asm</artifactId>
+					<groupId>asm</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>cglib</artifactId>
+					<groupId>cglib</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
 		<dependency>
-			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-common</artifactId>
-			<version>${applicationVersion}</version>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.3.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.poi</groupId>
+					<artifactId>poi</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>junit-addons</artifactId>
+					<groupId>junit-addons</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-nop</artifactId>
+				</exclusion>
+			</exclusions>
 			<scope>test</scope>
-			<classifier>tests</classifier>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
+			<version>2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
+			<version>1.5</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>xerces</artifactId>
+					<groupId>xercesImpl</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>xalan</artifactId>
+					<groupId>xalan</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>javax.servlet</artifactId>
+					<groupId>servlet-api</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
+			<version>2.1_3</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
+			<version>1.4</version>
 		</dependency>
-
+		<!--
+			<dependency> <groupId>org.springmodules</groupId>
+			<artifactId>spring-modules-cache</artifactId> <version>0.8</version>
+			<exclusions> <exclusion> <artifactId>spring</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> <exclusion>
+			<artifactId>spring-mock</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> </exclusions>
+			</dependency>
+		-->
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.5</version>
 		</dependency>
-
 	</dependencies>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.5.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jxr-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

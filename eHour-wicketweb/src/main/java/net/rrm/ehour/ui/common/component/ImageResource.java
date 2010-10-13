@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.component;
 
 import java.awt.image.BufferedImage;
 
-import net.rrm.ehour.persistence.value.ImageLogo;
+import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.protocol.http.WebResponse;

@@ -48,8 +48,10 @@ public class ReportExcelTest extends AbstractSpringWebAppTester
 	
 	
 	@Before
-	public void before() throws Exception
+	public void setUp() throws Exception
 	{
+		super.setUp();
+		
 		aggregateReportService = createMock(AggregateReportService.class);
 		getMockContext().putBean("aggregateReportService", aggregateReportService);
 		

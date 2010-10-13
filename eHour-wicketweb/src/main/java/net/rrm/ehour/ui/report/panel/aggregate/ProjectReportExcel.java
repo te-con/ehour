@@ -32,13 +32,13 @@ public class ProjectReportExcel extends AbstractExcelReport
 	}
 	
 	@Override
-	protected IModel<String> getExcelReportName()
+	protected IModel getExcelReportName()
 	{
 		return new ResourceModel("report.title.project");
 	}
 
 	@Override
-	protected IModel<String> getHeaderReportName()
+	protected IModel getHeaderReportName()
 	{
 		return new ResourceModel("report.title.project");
 	}

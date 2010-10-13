@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.report.chart.aggregate;
 
-import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.chart.AbstractReportChartImage;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
@@ -34,7 +33,7 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	private static final long serialVersionUID = 7857936136458323251L;
 	private AggregateChartDataConverter provider;
 	
-	public AggregateChartImage(String id, IModel<ReportData> dataModel, int width, int height, AggregateChartDataConverter provider)
+	public AggregateChartImage(String id, IModel dataModel, int width, int height, AggregateChartDataConverter provider)
 	{
 		super(id, dataModel, width, height);
 		
@@ -42,7 +41,7 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getColumnValue(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.ui.report.chart.AbstractReportChartImage#getColumnValue(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
 	protected Number getColumnValue(AssignmentAggregateReportElement element)
@@ -51,7 +50,7 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getReportNameKey()
+	 * @see net.rrm.ehour.ui.report.chart.AbstractReportChartImage#getReportNameKey()
 	 */
 	@Override
 	protected String getReportNameKey()
@@ -60,7 +59,7 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getRowKey(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.ui.report.chart.AbstractReportChartImage#getRowKey(net.rrm.ehour.report.reports.element.ReportElement)
 	 */
 	@Override
 	protected ChartRowKey getRowKey(AssignmentAggregateReportElement element)
@@ -69,7 +68,7 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getValueAxisLabelKey()
+	 * @see net.rrm.ehour.ui.report.chart.AbstractReportChartImage#getValueAxisLabelKey()
 	 */
 	@Override
 	protected String getValueAxisLabelKey()

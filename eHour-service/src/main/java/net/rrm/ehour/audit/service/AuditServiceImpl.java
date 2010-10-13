@@ -18,13 +18,11 @@ package net.rrm.ehour.audit.service;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.data.AuditReportRequest;
+import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.audit.dao.AuditDAO;
+import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
-import net.rrm.ehour.persistence.audit.dao.AuditDao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,19 +30,14 @@ import org.springframework.transaction.annotation.Transactional;
  * @author thies
  *
  */
-@Service("auditService")
 public class AuditServiceImpl implements AuditService
 {
-	private AuditDao	auditDAO;
+//	private final static Logger LOGGER = Logger.getLogger(AuditServiceImpl.class);
 	
-	@Autowired
-	public AuditServiceImpl(AuditDao auditDao)
-	{
-		this.auditDAO = auditDao;
-	}
+	private AuditDAO	auditDAO;
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#persistAudit(net.rrm.ehour.persistence.persistence.domain.Audit)
+	 * @see net.rrm.ehour.audit.service.AuditService#persistAudit(net.rrm.ehour.domain.Audit)
 	 */
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	@NonAuditable
@@ -55,7 +48,7 @@ public class AuditServiceImpl implements AuditService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#getAudit(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
+	 * @see net.rrm.ehour.audit.service.AuditService#getAudit(net.rrm.ehour.audit.service.dto.AuditReportRequest)
 	 */
 	@NonAuditable
 	public List<Audit> getAudit(AuditReportRequest request)
@@ -69,18 +62,24 @@ public class AuditServiceImpl implements AuditService
 	@NonAuditable
 	public List<Audit> getAuditAll(AuditReportRequest request)
 	{
-		return auditDAO.findAllAudits(request);
+		return auditDAO.findAuditAll(request);
 	}	
+	
+	/**
+	 * @param auditDAO the auditDAO to set
+	 */
+	public void setAuditDAO(AuditDAO auditDAO)
+	{
+		this.auditDAO = auditDAO;
+	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#getAuditCount(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
+	 * @see net.rrm.ehour.audit.service.AuditService#getAuditCount(net.rrm.ehour.audit.service.dto.AuditReportRequest)
 	 */
 	@NonAuditable
 	public Number getAuditCount(AuditReportRequest request)
 	{
-		Number number = auditDAO.count(request);
-		
-		return (number == null) ? 0 : number;
+		return auditDAO.findAuditCount(request);
 	}
 }

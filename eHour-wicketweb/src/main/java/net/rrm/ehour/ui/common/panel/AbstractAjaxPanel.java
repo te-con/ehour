@@ -16,29 +16,41 @@
 
 package net.rrm.ehour.ui.common.panel;
 
-import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxEventListener;
+import net.rrm.ehour.ui.common.ajax.AjaxAwareContainer;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 
 import org.apache.wicket.model.IModel;
 
+/**
+ * Base panel
+ **/
 
-public abstract class AbstractAjaxPanel<T> extends AbstractBasePanel<T> implements AjaxEventListener
+public abstract class AbstractAjaxPanel extends AbstractBasePanel implements AjaxAwareContainer
 {
 	private static final long serialVersionUID = 5723792133447447887L;
 
+	/**
+	 * 
+	 * @param id
+	 */
 	public AbstractAjaxPanel(String id)
 	{
 		super(id);
 	}
 
-	public AbstractAjaxPanel(String id, IModel<T> model)
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 */
+	public AbstractAjaxPanel(String id, IModel model)
 	{
 		super(id, model);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

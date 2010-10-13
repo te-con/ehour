@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.criteria;
 
-import java.util.Collection;
 import java.util.List;
 
 import net.rrm.ehour.domain.Project;
@@ -57,7 +56,7 @@ public class ExportCriteriaPanel extends Panel
 		PRINT;
 	}
 	
-	public ExportCriteriaPanel(String id, IModel<ReportCriteria> model)
+	public ExportCriteriaPanel(String id, IModel model)
 	{
 		super(id, model);
 		setOutputMarkupId(true);
@@ -70,9 +69,9 @@ public class ExportCriteriaPanel extends Panel
 	 * @param idz
 	 * @return
 	 */
-	private Form<ReportCriteria> createCriteriaPanel(String id, IModel<ReportCriteria> model)
+	private Form createCriteriaPanel(String id, IModel model)
 	{
-		SelectionForm form = new SelectionForm(id, model);
+		Form form = new SelectionForm(id, model);
 
 		form.add(createAssignmentCheckboxes("projectGroup"));
 		
@@ -85,14 +84,14 @@ public class ExportCriteriaPanel extends Panel
 	}
 
 	@SuppressWarnings("serial")
-	private SubmitLink createSubmitButton(String id, SelectionForm form, final ExportType type)
+	private SubmitLink createSubmitButton(String id, Form form, final ExportType type)
 	{
 		SubmitLink link = new SubmitLink(id, form)
 		{
 			@Override
 			public void onSubmit()
 			{
-				ReportCriteria criteria = (ReportCriteria)ExportCriteriaPanel.this.getDefaultModelObject();
+				ReportCriteria criteria = (ReportCriteria)ExportCriteriaPanel.this.getModelObject();
 				
 				criteria.getUserCriteria().getCustomParameters().put(ExportCriteriaParameter.EXPORT_TYPE, type);
 			}
@@ -103,36 +102,36 @@ public class ExportCriteriaPanel extends Panel
 	
 	private CheckBox createSignOffCheck(String id)
 	{
-		return new CheckBox(id, new PropertyModel<Boolean>(this.getDefaultModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
+		return new CheckBox(id, new PropertyModel(this.getModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
 	}
 	
-	private CheckGroup<Project> createAssignmentCheckboxes(String id)
+	private CheckGroup createAssignmentCheckboxes(String id)
 	{
-		CheckGroup<Project> projectGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(getDefaultModel(), "userCriteria.projects"));
+		CheckGroup projectGroup = new CheckGroup(id, new PropertyModel(getModel(), "userCriteria.projects"));
 		
-		ReportCriteria criteria = (ReportCriteria)getDefaultModelObject();
+		ReportCriteria criteria = (ReportCriteria)getModelObject();
 		
 		List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
 		
-		ListView<Project> billableProjects = getAssignmentCheckboxesForProjects("billableProjects", ProjectUtil.getBillableProjects(allProjects));
+		ListView billableProjects = getAssignmentCheckboxesForProjects("billableProjects", ProjectUtil.getBillableProjects(allProjects));
 		projectGroup.add(billableProjects);
 
-		ListView<Project> unbillableProjects = getAssignmentCheckboxesForProjects("unbillableProjects", ProjectUtil.getUnbillableProjects(allProjects));
+		ListView unbillableProjects = getAssignmentCheckboxesForProjects("unbillableProjects", ProjectUtil.getUnbillableProjects(allProjects));
 		projectGroup.add(unbillableProjects);
 
 		return projectGroup;
 	}
 
 	@SuppressWarnings("serial")
-	private ListView<Project> getAssignmentCheckboxesForProjects(String id, List<Project> projects)
+	private ListView getAssignmentCheckboxesForProjects(String id, List<Project> projects)
 	{
-		ListView<Project> projectsListView = new ListView<Project>(id, projects)
+		ListView projectsListView = new ListView(id, projects)
 		{
 			@Override
-			protected void populateItem(ListItem<Project> item)
+			protected void populateItem(ListItem item)
 			{
-				item.add(new Check<Project>("check", item.getModel()));
-				item.add(new Label("project", new PropertyModel<String>(item.getModel(), "fullName")));
+				item.add(new Check("check", item.getModel()));
+				item.add(new Label("project", new PropertyModel(item.getModel(), "fullName")));
 			}
 		};
 		return projectsListView;
@@ -144,11 +143,11 @@ public class ExportCriteriaPanel extends Panel
 	 * @author Thies Edeling (thies@te-con.nl) 
 	 *
 	 */
-	private class SelectionForm extends Form<ReportCriteria>
+	private class SelectionForm extends Form
 	{
 		private static final long serialVersionUID = -8232635495078008621L;
 
-		public SelectionForm(String id, IModel<ReportCriteria> model)
+		public SelectionForm(String id, IModel model)
 		{
 			super(id, model);
 		}
@@ -156,7 +155,7 @@ public class ExportCriteriaPanel extends Panel
 		@Override
 		protected void onSubmit()
 		{
-			ReportCriteria criteria = getModelObject();
+			ReportCriteria criteria = (ReportCriteria)getModelObject();
 
 			ExportType type = (ExportType)criteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.EXPORT_TYPE);
 			

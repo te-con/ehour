@@ -33,10 +33,10 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.validation.validator.MaximumValidator;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.NumberValidator;
 
 /**
  * Created on Apr 21, 2009, 5:10:16 PM
@@ -51,37 +51,37 @@ public class MiscConfigPanel extends AbstractConfigPanel
 	 * @param id
 	 * @param model
 	 */
-	public MiscConfigPanel(String id, IModel<MainConfigBackingBean> model)
+	public MiscConfigPanel(String id, IModel model)
 	{
 		super(id, model);
 	}
 
 	@Override
-	protected void addFormComponents(Form<MainConfigBackingBean> form)
+	protected void addFormComponents(Form form)
 	{
 		// show turnover checkbox
 		form.add(new CheckBox("config.showTurnover"));		
 		
-		final MainConfigBackingBean configBackingBean = (MainConfigBackingBean)getDefaultModelObject();
+		final MainConfigBackingBean configBackingBean = (MainConfigBackingBean)getModelObject();
 
 		// working hours
-		TextField<Float> workHours = new TextField<Float>("config.completeDayHours", Float.class);
+		TextField workHours = new RequiredTextField("config.completeDayHours");
+		workHours.setType(Float.class);
 		workHours.add(new ValidatingFormComponentAjaxBehavior());
-		workHours.add(new MinimumValidator<Float>(0f));
-		workHours.add(new MaximumValidator<Float>(24f));
+		workHours.add(NumberValidator.POSITIVE);
+		workHours.add(new NumberValidator.MaximumValidator(24));
 		form.add(new AjaxFormComponentFeedbackIndicator("workHoursValidationError", workHours));
 		form.add(workHours);
 		
 		// weeks start at
-		
-		DropDownChoice<Date> weekStartsAt = new DropDownChoice<Date>("firstWeekStart",
+		DropDownChoice weekStartsAt = new DropDownChoice("firstWeekStart",
 															DateUtil.createDateSequence(DateUtil.getDateRangeForWeek(new GregorianCalendar()), new EhourConfigStub()),
 															new WeekDayRenderer(configBackingBean.getLocaleLanguage()));
 		form.add(weekStartsAt);
 		
 	}
 	
-	private final class WeekDayRenderer extends ChoiceRenderer<Date>
+	private final class WeekDayRenderer extends ChoiceRenderer
 	{
 		private static final long serialVersionUID = -2044803875511515992L;
 		SimpleDateFormat formatter;
@@ -91,17 +91,25 @@ public class MiscConfigPanel extends AbstractConfigPanel
 			formatter = new SimpleDateFormat("EEEE", locale);
 		}
     	@Override
-        public Object getDisplayValue(Date date)
+        public Object getDisplayValue(Object object)
     	{
+    		Date date = (Date)object;
+    		
     		return formatter.format(date);
     	}
     	
     	@Override
-    	public String getIdValue(Date date, int index)
+    	public String getIdValue(Object object, int index)
     	{
-    		Calendar cal = new GregorianCalendar();
-    		cal.setTime(date);
-    		return Integer.toString(cal.get(Calendar.DAY_OF_WEEK));
+    		if (object instanceof Date)
+    		{
+        		Date date = (Date)object;
+        		Calendar cal = new GregorianCalendar();
+        		cal.setTime(date);
+        		return Integer.toString(cal.get(Calendar.DAY_OF_WEEK));
+    		}
+    		
+    		return object.toString();
     	}    	
 	}	
 

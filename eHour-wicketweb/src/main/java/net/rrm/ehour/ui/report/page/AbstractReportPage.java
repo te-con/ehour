@@ -21,7 +21,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.ui.common.page.AbstractBasePage;
+import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
 
@@ -33,7 +33,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Base page for report criteria
  **/
 
-public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
+public abstract class AbstractReportPage extends BasePage
 {
 	@SpringBean
 	private ReportCriteriaService	reportCriteriaService;

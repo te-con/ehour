@@ -18,13 +18,14 @@ package net.rrm.ehour.ui.report.panel.criteria;
 
 import java.util.List;
 
-import net.rrm.ehour.ui.common.component.AbstractTabbedPanel;
-import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -32,7 +33,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * Ajax tabbed report panel
  **/
 
-public class ReportTabbedPanel extends AbstractTabbedPanel
+public class ReportTabbedPanel extends AjaxTabbedPanel
 {
 	private static final long serialVersionUID = 5957279200970383021L;
 
@@ -41,7 +42,7 @@ public class ReportTabbedPanel extends AbstractTabbedPanel
 	 * @param id
 	 * @param tabs
 	 */
-	public ReportTabbedPanel(final String id, final List<ITab> tabs)
+	public ReportTabbedPanel(final String id, final List<AbstractTab> tabs)
 	{
 		super(id, tabs);
 		
@@ -52,12 +53,13 @@ public class ReportTabbedPanel extends AbstractTabbedPanel
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel#newLink(java.lang.String, int)
 	 */
-	@SuppressWarnings("serial")
 	@Override
 	protected WebMarkupContainer newLink(final String linkId, final int index)
 	{
-		return new AjaxFallbackLink<String>(linkId)
+		return new AjaxFallbackLink(linkId)
 		{
+			private static final long serialVersionUID = 1L;
+
 			public void onClick(final AjaxRequestTarget target)
 			{
 				setSelectedTab(index);
@@ -74,6 +76,7 @@ public class ReportTabbedPanel extends AbstractTabbedPanel
 			{
 				return new LoadingSpinnerDecorator();
 			}			
+
 		};
 	}	
 	
@@ -81,12 +84,13 @@ public class ReportTabbedPanel extends AbstractTabbedPanel
 	 * Add tab, replacing any tabs that have the same title resource key
 	 * @param newTab make sure to use a KeyResourceModel for the title
 	 */
+	@SuppressWarnings("unchecked")
 	public void addTab(final ITab newTab)
 	{
 		final List<ITab> 	tabList = getTabs();
-		boolean	tabNotAdded = true;
-		final String key = ((KeyResourceModel)newTab.getTitle()).getKey();
-		int	tabIndex = 0;
+		boolean		tabAdded = false;
+		final String		key = ((KeyResourceModel)newTab.getTitle()).getKey();
+		int			tabIndex = 0;
 		
 		for (final ITab tab : tabList)
 		{
@@ -95,14 +99,14 @@ public class ReportTabbedPanel extends AbstractTabbedPanel
 				tabList.set(tabIndex, newTab);
 				this.setSelectedTab(tabIndex);
 
-				tabNotAdded = false;
+				tabAdded = true;
 				break;
 			}
 			
 			tabIndex++;
 		}
 	
-		if (tabNotAdded)
+		if (!tabAdded)
 		{
 			getTabs().add(newTab);
 			setSelectedTab(tabList.size() - 1);

@@ -43,7 +43,7 @@ public class ProjectReportPanel extends AggregateReportPanel
 	protected void addCharts(String hourId, String turnOverId, ReportData data, WebMarkupContainer parent)
 	{
 		ReportData rawData = ((TreeReportData)data).getRawReportData();
-		Model<ReportData> dataModel = new Model<ReportData>(rawData);
+		Model dataModel = new Model(rawData);
 		
 		AggregateChartDataConverter hourConverter = new ProjectHoursAggregateChartDataConverter();
 		Image customerHoursChart = new AggregateChartImage(hourId, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);

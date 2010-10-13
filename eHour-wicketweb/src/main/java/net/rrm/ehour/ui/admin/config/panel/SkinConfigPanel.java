@@ -17,10 +17,8 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
-import net.rrm.ehour.persistence.value.ImageLogo;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.ImageResource;
 import net.rrm.ehour.ui.common.form.ImageUploadForm;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -29,6 +27,7 @@ import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportDummyCreater;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
+import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -53,14 +52,14 @@ public class SkinConfigPanel extends AbstractConfigPanel
 
 	private Image previewImage;
 	
-	public SkinConfigPanel(String id, IModel<MainConfigBackingBean> model)
+	public SkinConfigPanel(String id, IModel model)
 	{
 		super(id, model, WebGeo.W_CONTENT_MEDIUM);
 	}
 
 	@SuppressWarnings("serial")
 	@Override
-	protected void addFormComponents(Form<MainConfigBackingBean> form)
+	protected void addFormComponents(Form form)
 	{
 		previewImage = createPreviewImage();
 		form.add(previewImage);
@@ -70,7 +69,7 @@ public class SkinConfigPanel extends AbstractConfigPanel
         form.add(new AjaxButton("excelPreview")
         {
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+			protected void onSubmit(AjaxRequestTarget target, Form form)
 			{
 				createDummyExcelExport();
 			}
@@ -81,9 +80,9 @@ public class SkinConfigPanel extends AbstractConfigPanel
 	
 	@SuppressWarnings("serial")
 	@Override
-	protected Form<MainConfigBackingBean> createForm(String id, IModel<MainConfigBackingBean> model)
+	protected Form createForm(String id, IModel model)
 	{
-		ImageUploadForm<MainConfigBackingBean> uploadForm = new ImageUploadForm<MainConfigBackingBean>(id, model)
+		ImageUploadForm uploadForm = new ImageUploadForm(id, model)
 		{
 			@Override
 			protected void uploadImage(ImageLogo logo)

@@ -17,13 +17,13 @@
 package net.rrm.ehour.ui.userprefs.page;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.page.AbstractBasePage;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.page.BasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
-import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
+import net.rrm.ehour.ui.timesheet.page.Overview;
 import net.rrm.ehour.ui.userprefs.panel.UserPasswordChangePanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -33,7 +33,7 @@ import org.apache.wicket.model.ResourceModel;
  * User preference page 
  **/
 @AuthorizeInstantiation({"ROLE_CONSULTANT", "ROLE_ADMIN", "ROLE_REPORT"})
-public class UserPreferencePage extends AbstractBasePage<Void>
+public class UserPreferencePage extends BasePage
 {
 	private CalendarPanel		calendarPanel;
 	
@@ -61,7 +61,7 @@ public class UserPreferencePage extends AbstractBasePage<Void>
 		if (type == CalendarAjaxEventType.WEEK_CLICK 
 				|| type == TimesheetAjaxEventType.WEEK_NAV)
 		{
-			setResponsePage(new MonthOverviewPage(MonthOverviewPage.OpenPanel.TIMESHEET));
+			setResponsePage(new Overview(Overview.OpenPanel.TIMESHEET));
 		}
 		
 		return false;

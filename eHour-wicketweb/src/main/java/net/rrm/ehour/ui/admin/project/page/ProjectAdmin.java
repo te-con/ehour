@@ -22,17 +22,16 @@ import java.util.List;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
+import net.rrm.ehour.ui.admin.BaseTabbedAdminPage;
 import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
-import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBeanImpl;
-import net.rrm.ehour.ui.admin.project.panel.ModifyProjectUsersPanel;
 import net.rrm.ehour.ui.admin.project.panel.ProjectFormPanel;
+import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
-import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
@@ -43,7 +42,6 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -58,19 +56,20 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Project admin page 
  **/
 
-public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBean>
+public class ProjectAdmin  extends BaseTabbedAdminPage
 {
 	private static final String	PROJECT_SELECTOR_ID = "projectSelector";
 	private static final long 	serialVersionUID = 9196677804018589806L;
-	
-	private static final int TABPOS_USERS = 2;
 	
 	@SpringBean
 	private ProjectService		projectService;
 	private	final static Logger	logger = Logger.getLogger(ProjectAdmin.class);
 	private EntrySelectorFilter	currentFilter;
-	private	ListView<Project> 	projectListView;
-
+	private	ListView			projectListView;
+	
+	/**
+	 * 
+	 */
 	public ProjectAdmin()
 	{
 		super(new ResourceModel("admin.project.title"),
@@ -80,7 +79,8 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 				"admin.project.help.header",
 				"admin.project.help.body");
 		
-		List<Project> projects = getProjects();
+		List<Project>	projects;
+		projects = getProjects();
 		
 		Fragment projectListHolder = getProjectListHolder(projects);
 		
@@ -97,7 +97,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -130,44 +130,34 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	}
 
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
+	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
 		return new ProjectFormPanel(panelId,
-									new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
+									new CompoundPropertyModel(getTabbedPanel().getAddBackingBean()));
 	}
 
-	@SuppressWarnings("serial")
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
+	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		ProjectAdminBackingBean backingBean = getTabbedPanel().getEditBackingBean();
-		final Project project = backingBean.getProject();
-		
-		getTabbedPanel().addTab(new AbstractTab(new ResourceModel("admin.project.assignusers.title"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new ModifyProjectUsersPanel(panelId, project);
-			}
-		}, TABPOS_USERS);
-		
-		return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(backingBean));
+		return new ProjectFormPanel(panelId, new CompoundPropertyModel(getTabbedPanel().getEditBackingBean()));
 				
 	}
-	
-	@Override
-	protected void onTabSwitch(int index)
-	{
-		if (index == AddEditTabbedPanel.TABPOS_ADD)
-		{
-			getTabbedPanel().removeTab(TABPOS_USERS);
-		}
-	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+	 */
 	@Override
-	protected ProjectAdminBackingBean getNewAddBaseBackingBean()
+	protected AdminBackingBean getNewAddBaseBackingBean()
 	{
 		Project	project = new Project();
 		project.setActive(true);
@@ -177,10 +167,10 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+	 * @see net.rrm.ehour.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
 	 */
 	@Override
-	protected ProjectAdminBackingBean getNewEditBaseBackingBean()
+	protected AdminBackingBean getNewEditBaseBackingBean()
 	{
 		return new ProjectAdminBackingBeanImpl(new Project());	
 	}
@@ -195,15 +185,15 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdmin.this);
 		
-		projectListView = new ListView<Project>("itemList", projects)
+		projectListView = new ListView("itemList", projects)
 		{
 			@Override
-			protected void populateItem(ListItem<Project> item)
+			protected void populateItem(ListItem item)
 			{
-				Project project = item.getModelObject();
+				Project 		project = (Project)item.getModelObject();
 				final Integer	projectId = project.getProjectId();
 				
-				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
+				AjaxLink	link = new AjaxLink("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)

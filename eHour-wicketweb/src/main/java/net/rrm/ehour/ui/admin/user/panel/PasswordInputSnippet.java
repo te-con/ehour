@@ -36,7 +36,7 @@ public class PasswordInputSnippet extends Panel
 	 * 
 	 * @param id
 	 */
-	public PasswordInputSnippet(String id, Form<?> form)
+	public PasswordInputSnippet(String id, Form form)
 	{
 		super(id);
 		

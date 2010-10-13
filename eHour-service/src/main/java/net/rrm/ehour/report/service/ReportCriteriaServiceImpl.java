@@ -22,53 +22,43 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.rrm.ehour.audit.annot.NonAuditable;
+import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.persistence.customer.dao.CustomerDao;
-import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
-import net.rrm.ehour.persistence.project.dao.ProjectDao;
-import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
-import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
+import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
+import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.dao.UserDepartmentDAO;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Report Criteria services
  **/
 @NonAuditable
-@Service("reportCriteriaService")
 public class ReportCriteriaServiceImpl implements ReportCriteriaService
 {
-	@Autowired
-	private	UserDao					userDAO;
-	@Autowired
-	private	UserDepartmentDao		userDepartmentDAO;
-	@Autowired
-	private	CustomerDao				customerDAO;
-	@Autowired
-	private	ProjectDao				projectDAO;
-	@Autowired
-	private	ProjectAssignmentDao	projectAssignmentDAO;
-	@Autowired
-	private	ReportAggregatedDao		reportAggregatedDAO;
-
-	private	static final Logger	LOGGER = Logger.getLogger(ReportCriteriaServiceImpl.class);
+	private	UserDAO					userDAO;
+	private	UserDepartmentDAO		userDepartmentDAO;
+	private	CustomerDAO				customerDAO;
+	private	ProjectDAO				projectDAO;
+	private	ProjectAssignmentDAO	projectAssignmentDAO;
+	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private	Logger					logger = Logger.getLogger(this.getClass());
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.ReportCriteriaService#syncUserReportCriteria(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.report.service.ReportCriteriaService#syncUserReportCriteria(net.rrm.ehour.report.criteria.ReportCriteria)
 	 */
 	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria)
 	{
@@ -134,7 +124,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		}
 		else
 		{
-			LOGGER.debug("Finding users for departments with filter '" + userCriteria.getUserFilter() + "'");
+			logger.debug("Finding users for departments with filter '" + userCriteria.getUserFilter() + "'");
 			users = userDAO.findUsersForDepartments(userCriteria.getUserFilter()
 														, userCriteria.getDepartments()
 														, userCriteria.isOnlyActiveUsers());
@@ -165,7 +155,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	{
 		List<Customer> billableCustomers = new ArrayList<Customer>();
 		
-		LOGGER.debug("Finding on billable only: " + userCriteria.isOnlyBillableProjects());
+		logger.debug("Finding on billable only: " + userCriteria.isOnlyBillableProjects());
 		
 		if (userCriteria.isOnlyBillableProjects())
 		{
@@ -248,13 +238,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		List<Project> projects;
 		if (userCriteria.isOnlyActiveProjects())
 		{
-			LOGGER.debug("Fetching only active projects");
+			logger.debug("Fetching only active projects");
 
 			projects = projectDAO.findAllActive();
 		}
 		else
 		{
-			LOGGER.debug("Fetching all projects");
+			logger.debug("Fetching all projects");
 			
 			projects = projectDAO.findAll();
 		}
@@ -293,7 +283,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param userDAO the userDAO to set
 	 */
-	public void setUserDAO(UserDao userDAO)
+	public void setUserDAO(UserDAO userDAO)
 	{
 		this.userDAO = userDAO;
 	}
@@ -301,7 +291,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param customerDAO the customerDAO to set
 	 */
-	public void setCustomerDAO(CustomerDao customerDAO)
+	public void setCustomerDAO(CustomerDAO customerDAO)
 	{
 		this.customerDAO = customerDAO;
 	}
@@ -309,7 +299,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param projectDAO the projectDAO to set
 	 */
-	public void setProjectDAO(ProjectDao projectDAO)
+	public void setProjectDAO(ProjectDAO projectDAO)
 	{
 		this.projectDAO = projectDAO;
 	}
@@ -317,7 +307,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param userDepartmentDAO the userDepartmentDAO to set
 	 */
-	public void setUserDepartmentDAO(UserDepartmentDao userDepartmentDAO)
+	public void setUserDepartmentDAO(UserDepartmentDAO userDepartmentDAO)
 	{
 		this.userDepartmentDAO = userDepartmentDAO;
 	}
@@ -325,7 +315,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	/**
 	 * @param projectAssignmentDAO the projectAssignmentDAO to set
 	 */
-	public void setProjectAssignmentDAO(ProjectAssignmentDao projectAssignmentDAO)
+	public void setProjectAssignmentDAO(ProjectAssignmentDAO projectAssignmentDAO)
 	{
 		this.projectAssignmentDAO = projectAssignmentDAO;
 	}	
@@ -334,7 +324,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	 *  
 	 *
 	 */
-	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
+	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}

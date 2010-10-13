@@ -27,9 +27,12 @@ import org.apache.wicket.util.time.Duration;
  * http://chillenious.wordpress.com/2007/06/19/how-to-create-a-text-area-with-a-heart-beat-with-wicket/
  */
 
-public class KeepAliveTextArea extends TextArea<String>
+public class KeepAliveTextArea extends TextArea
 {
-	private static final long serialVersionUID = 744361204848769680L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7443361204848769680L;
 
 	public KeepAliveTextArea(String id)
 	{
@@ -37,7 +40,7 @@ public class KeepAliveTextArea extends TextArea<String>
 		add(new KeepAliveBehavior());
 	}
 
-	public KeepAliveTextArea(String id, IModel<String> model)
+	public KeepAliveTextArea(String id, IModel model)
 	{
 		super(id, model);
 		add(new KeepAliveBehavior());

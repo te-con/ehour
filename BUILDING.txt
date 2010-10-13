@@ -25,7 +25,7 @@ Compiling
 ---------------------------------------
 Compile and generate the Eclipse metadata with 
 mvn dependency:sources
-mvn clean install eclipse:clean eclipse:eclipse -Pmysql -Pdev -Pwar -DdownloadSources
+mvn clean install eclipse:clean eclipse:eclipse -Denv=mysql-dev -DdownloadSources
 
 Or use the build.bat/sh or build_src.bat/sh scripts. The build_src scripts also download the source jars of dependencies, useful but it takes a bit to download everything.
 

@@ -22,12 +22,12 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.ui.admin.customer.common.CustomerAjaxEventType;
 import net.rrm.ehour.ui.admin.customer.dto.CustomerAdminBackingBean;
+import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
@@ -50,7 +50,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * Customer admin form panel
  **/
 
-public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdminBackingBean>
+public class CustomerFormPanel extends AbstractFormSubmittingPanel
 {
 	private static final long serialVersionUID = 8536721437867359030L;
 
@@ -62,7 +62,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 	 * @param id
 	 * @param model
 	 */
-	public CustomerFormPanel(String id, CompoundPropertyModel<CustomerAdminBackingBean> model)
+	public CustomerFormPanel(String id, CompoundPropertyModel model)
 	{
 		super(id, model);
 		
@@ -71,10 +71,10 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 		
 		setOutputMarkupId(true);
 		
-		final Form<CustomerAdminBackingBean> form = new Form<CustomerAdminBackingBean>("customerForm");
+		final Form form = new Form("customerForm");
 		
 		// name
-		RequiredTextField<String> nameField = new RequiredTextField<String>("customer.name");
+		RequiredTextField	nameField = new RequiredTextField("customer.name");
 		form.add(nameField);
 		nameField.add(new StringValidator.MaximumLengthValidator(64));
 		nameField.setLabel(new ResourceModel("admin.customer.name"));
@@ -82,7 +82,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 			
 		// code
-		final RequiredTextField<String>	codeField = new RequiredTextField<String>("customer.code");
+		final RequiredTextField	codeField = new RequiredTextField("customer.code");
 		form.add(codeField);
 		codeField.add(new StringValidator.MaximumLengthValidator(16));
 		codeField.setLabel(new ResourceModel("admin.customer.code"));
@@ -91,7 +91,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
 		
 		// description
-		TextArea<String> textArea = new KeepAliveTextArea("customer.description");
+		TextArea	textArea = new KeepAliveTextArea("customer.description");
 		textArea.setLabel(new ResourceModel("admin.customer.description"));;
 		form.add(textArea);
 			
@@ -103,7 +103,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 	
 		//
 		FormUtil.setSubmitActions(form 
-									,model.getObject().getCustomer().isDeletable()
+									,((CustomerAdminBackingBean)model.getObject()).getCustomer().isDeletable()
 									,this
 									,CustomerAjaxEventType.CUSTOMER_UPDATED
 									,CustomerAjaxEventType.CUSTOMER_DELETED
@@ -114,7 +114,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
+	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
 	 */
 	@Override
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
@@ -158,16 +158,18 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 	 */
 	private class UniqueCustomerValidator extends AbstractFormValidator
 	{
+		/**
+		 * 
+		 */
 		private static final long serialVersionUID = 1181184585571474550L;
-		private FormComponent<String>[] components;
+		private FormComponent[] components;
 		
 		/**
 		 * 
 		 * @param passwordField
 		 * @param confirmField
 		 */
-		@SuppressWarnings("unchecked")
-		public UniqueCustomerValidator(FormComponent<String> customerName, FormComponent<String> customerCode)
+		public UniqueCustomerValidator(FormComponent customerName, FormComponent customerCode)
 		{
 			components = new FormComponent[]{customerName, customerCode};
 		}
@@ -176,7 +178,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 		 * (non-Javadoc)
 		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
 		 */
-		public FormComponent<?>[] getDependentFormComponents()
+		public FormComponent[] getDependentFormComponents()
 		{
 			return components;
 		}
@@ -185,13 +187,13 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 		 * (non-Javadoc)
 		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
 		 */
-		public void validate(Form<?> form)
+		public void validate(Form form)
 		{
 			if (!StringUtils.isBlank(components[0].getInput())
 					&& !StringUtils.isBlank(components[1].getInput()))
 			{
-				String orgName = ((CustomerAdminBackingBean)getDefaultModelObject()).getOriginalCustomerName();
-				String orgCode = ((CustomerAdminBackingBean)getDefaultModelObject()).getOriginalCustomerCode();
+				String orgName = ((CustomerAdminBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalCustomerName();
+				String orgCode = ((CustomerAdminBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalCustomerCode();
 				
 				if ((StringUtils.equals(orgName, components[0].getInput()))
 						&& StringUtils.equals(orgCode, components[1].getInput()))

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.user.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -31,48 +32,34 @@ import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.persistence.user.dao.UserDao;
-import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
-import net.rrm.ehour.persistence.user.dao.UserRoleDao;
-import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
+import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.dao.UserDepartmentDAO;
+import net.rrm.ehour.user.dao.UserRoleDAO;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 
+import org.acegisecurity.providers.encoding.MessageDigestPasswordEncoder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 
- * @author Thies Edeling (thies@te-con.nl)
- *
+ * @author   Thies
  */
-@Service("userService")
 public class UserServiceImpl implements UserService
 {
-	private	static final Logger	LOGGER = Logger.getLogger(UserServiceImpl.class);
-
-	@Autowired
-	private	UserDao				userDAO;
-	@Autowired
-	private	UserDepartmentDao	userDepartmentDAO;
-	@Autowired
-	private	UserRoleDao			userRoleDAO;
-	@Autowired
-	private	ProjectAssignmentManagementService		projectAssignmentManagementService;
-	@Autowired
+	private	UserDAO				userDAO;
+	private	UserDepartmentDAO	userDepartmentDAO;
+	private	UserRoleDAO			userRoleDAO;
+	private	Logger				logger = Logger.getLogger(UserServiceImpl.class);
+	private	ProjectAssignmentService		projectAssignmentService;
 	private	AggregateReportService		aggregateReportService;
-	@Autowired
 	private TimesheetService	timesheetService;
-
-	@Autowired
 	private MessageDigestPasswordEncoder	passwordEncoder;
 
 	/**
@@ -113,7 +100,7 @@ public class UserServiceImpl implements UserService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUserAndCheckDeletability(java.lang.Integer)
+	 * @see net.rrm.ehour.user.service.UserService#getUserAndCheckDeletability(java.lang.Integer)
 	 */
 	public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException
 	{
@@ -127,24 +114,24 @@ public class UserServiceImpl implements UserService
 		else
 		{
 			// bummer, we need to check if the user booked any hours on the assignments
-			List<Integer> assignmentIds = new ArrayList<Integer>();
+			List<Serializable> assignmentIds = new ArrayList<Serializable>();
 
 			assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
 			assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getInactiveProjectAssignments()));
 			
 			List<AssignmentAggregateReportElement> aggregates =aggregateReportService.getHoursPerAssignment(assignmentIds);
 			
-			user.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
+			user.setDeletable(EhourUtil.isEmptyAggregateList(aggregates));
 		}
 		
-		LOGGER.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());
+		logger.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());
 		
 		return user;
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUser(java.lang.String)
+	 * @see net.rrm.ehour.user.service.UserService#getUser(java.lang.String)
 	 */
 	public User getUser(String username) 
 	{
@@ -153,6 +140,10 @@ public class UserServiceImpl implements UserService
 		return user;
 	}	
 
+	/**
+	 * 
+	 */
+	
 	public List<UserDepartment> getUserDepartments()
 	{
 		return userDepartmentDAO.findAll();
@@ -165,7 +156,7 @@ public class UserServiceImpl implements UserService
 	 * @uml.property  name="userDAO"
 	 */
 	
-	public void setUserDAO(UserDao dao)
+	public void setUserDAO(UserDAO dao)
 	{
 		userDAO = dao;
 	}
@@ -174,12 +165,12 @@ public class UserServiceImpl implements UserService
 	 * Set the user dept dao
 	 * @param dao
 	 */
-	public void setUserDepartmentDAO(UserDepartmentDao dao)
+	public void setUserDepartmentDAO(UserDepartmentDAO dao)
 	{
 		userDepartmentDAO = dao;
 	}
 
-	public void setUserRoleDAO(UserRoleDao dao)
+	public void setUserRoleDAO(UserRoleDAO dao)
 	{
 		userRoleDAO = dao;
 	}
@@ -283,7 +274,7 @@ public class UserServiceImpl implements UserService
 	{
 		User	dbUser;
 
-		LOGGER.info("Persisting user: " + user);
+		logger.info("Persisting user: " + user);
 
 		// check username uniqueness
 		dbUser = userDAO.findByUsername(user.getUsername());
@@ -314,7 +305,7 @@ public class UserServiceImpl implements UserService
 		// assign new users to default projects
 		if (user.getUserId() == null)
 		{
-			projectAssignmentManagementService.assignUserToDefaultProjects(user);
+			projectAssignmentService.assignUserToDefaultProjects(user);
 		}
 		
 		userDAO.merge(user);
@@ -322,10 +313,17 @@ public class UserServiceImpl implements UserService
 		return user;
 	}
 
+	/**
+	 * @param projectAssignmentService the projectAssignmentService to set
+	 */
+	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
+	{
+		this.projectAssignmentService = projectAssignmentService;
+	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsersWithEmailSet()
+	 * @see net.rrm.ehour.user.service.UserService#getUsersWithEmailSet()
 	 */
 	public List<User> getUsersWithEmailSet()
 	{
@@ -334,7 +332,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#addAndcheckProjectManagementRoles(java.lang.Integer)
+	 * @see net.rrm.ehour.user.service.UserService#addAndcheckProjectManagementRoles(java.lang.Integer)
 	 */
 	@Transactional
 	public User addAndcheckProjectManagementRoles(Integer userId)
@@ -351,11 +349,11 @@ public class UserServiceImpl implements UserService
 		} catch (PasswordEmptyException e)
 		{
 			// won't happen
-			LOGGER.error("Password empty");
+			e.printStackTrace();
 		} catch (ObjectNotUniqueException e)
 		{
 			// won't happen
-			LOGGER.error("Account already exists", e);
+			e.printStackTrace();
 		}
 		
 		return user;
@@ -372,7 +370,7 @@ public class UserServiceImpl implements UserService
 	{
 		User user = userDAO.findById(userId);
 		
-		UserRole userRole = userRoleDAO.findById(UserRole.ROLE_PROJECTMANAGER);
+		UserRole userRole = userRoleDAO.findById(EhourConstants.ROLE_PROJECTMANAGER);
 		
 		user.getUserRoles().add(userRole);
 		
@@ -393,11 +391,11 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsers(net.rrm.ehour.persistence.persistence.user.domain.UserRole)
+	 * @see net.rrm.ehour.user.service.UserService#getUsers(net.rrm.ehour.user.domain.UserRole)
 	 */
 	public List<User> getUsers(UserRole userRole)
 	{
-		LOGGER.debug("Finding users on role");
+		logger.debug("Finding users on role");
 		List<User> users = getUsersByNameMatch(null, true, userRole);
 		
 //		userDAO.initializeObject(users);
@@ -406,7 +404,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsersByNameMatch(java.lang.String, boolean, net.rrm.ehour.persistence.persistence.user.domain.UserRole)
+	 * @see net.rrm.ehour.user.service.UserService#getUsersByNameMatch(java.lang.String, boolean, net.rrm.ehour.user.domain.UserRole)
 	 */
 	public List<User> getUsersByNameMatch(String match, boolean inclInactive, UserRole userRole)
 	{
@@ -427,7 +425,7 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#deleteUser(net.rrm.ehour.persistence.persistence.user.domain.User)
+	 * @see net.rrm.ehour.user.service.UserService#deleteUser(net.rrm.ehour.user.domain.User)
 	 */
 	@Transactional
 	public void deleteUser(Integer userId)
@@ -441,18 +439,18 @@ public class UserServiceImpl implements UserService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#deleteDepartment(java.lang.Integer)
+	 * @see net.rrm.ehour.user.service.UserService#deleteDepartment(java.lang.Integer)
 	 */
 	@Transactional
 	public void deleteDepartment(Integer departmentId)
 	{
 		UserDepartment department = userDepartmentDAO.findById(departmentId);
 
-		LOGGER.info("Deleting department: " + department);
+		logger.info("Deleting department: " + department);
 		
 		for (User user : department.getUsers()) 
 		{
-			LOGGER.info("Deleting user: " + user);
+			logger.info("Deleting user: " + user);
 			
 			deleteUser(user.getUserId());
 		}
@@ -482,10 +480,5 @@ public class UserServiceImpl implements UserService
 	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder)
 	{
 		this.passwordEncoder = passwordEncoder;
-	}
-
-	public void setProjectAssignmentManagementService(ProjectAssignmentManagementService projectAssignmentManagementService)
-	{
-		this.projectAssignmentManagementService = projectAssignmentManagementService;
 	}
 }

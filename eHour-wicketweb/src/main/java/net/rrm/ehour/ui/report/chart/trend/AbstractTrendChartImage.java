@@ -56,7 +56,7 @@ public abstract class AbstractTrendChartImage<EL extends ReportElement> extends 
 	
 	protected String seriesColumnIndex;
 	
-	public AbstractTrendChartImage(String id, IModel<ReportData> dataModel, int width, int height, String seriesColumn)
+	public AbstractTrendChartImage(String id, IModel dataModel, int width, int height, String seriesColumn)
 	{
 		super(id, dataModel, width, height);
 		

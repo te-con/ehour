@@ -68,7 +68,7 @@ public abstract class AbstractReportPanel extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public AbstractReportPanel(String id, IModel<Void> model, WebGeo chartWidth, WebGeo webWidth)
+	public AbstractReportPanel(String id, IModel model, WebGeo chartWidth, WebGeo webWidth)
 	{
 		super(id, model);
 		

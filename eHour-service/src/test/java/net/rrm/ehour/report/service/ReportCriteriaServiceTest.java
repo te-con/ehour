@@ -27,22 +27,22 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.DummyDataGenerator;
+import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.persistence.customer.dao.CustomerDao;
-import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
-import net.rrm.ehour.persistence.project.dao.ProjectDao;
-import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
-import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
+import net.rrm.ehour.project.dao.ProjectAssignmentDAO;
+import net.rrm.ehour.project.dao.ProjectDAO;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.user.dao.UserDAO;
+import net.rrm.ehour.user.dao.UserDepartmentDAO;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,38 +51,40 @@ import org.junit.Test;
  * test case for report criteria 
  **/
 
+@SuppressWarnings("unchecked")
+
 public class ReportCriteriaServiceTest  
 {
 	private	ReportCriteriaService	reportCriteriaService;
 	
-	private	ReportAggregatedDao		reportAggregatedDAO;
-	private	UserDao			userDAO;
-	private	ProjectAssignmentDao	prjAssignmentDAO;
-	private	CustomerDao		customerDAO;
-	private	ProjectDao		projectDAO;
-	private UserDepartmentDao userDepartmentDAO;
+	private	ReportAggregatedDAO		reportAggregatedDAO;
+	private	UserDAO			userDAO;
+	private	ProjectAssignmentDAO	prjAssignmentDAO;
+	private	CustomerDAO		customerDAO;
+	private	ProjectDAO		projectDAO;
+	private UserDepartmentDAO userDepartmentDAO;
 	
 	@Before
 	public void setup()
 	{
 		reportCriteriaService = new ReportCriteriaServiceImpl();
 
-		reportAggregatedDAO = createMock(ReportAggregatedDao.class);
+		reportAggregatedDAO = createMock(ReportAggregatedDAO.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setReportAggregatedDAO(reportAggregatedDAO);
 		
-		prjAssignmentDAO = createMock(ProjectAssignmentDao.class);
+		prjAssignmentDAO = createMock(ProjectAssignmentDAO.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setProjectAssignmentDAO(prjAssignmentDAO);
 
-		userDAO = createMock(UserDao.class);
+		userDAO = createMock(UserDAO.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setUserDAO(userDAO);
 
-		customerDAO = createMock(CustomerDao.class);
+		customerDAO = createMock(CustomerDAO.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setCustomerDAO(customerDAO);
 
-		projectDAO = createMock(ProjectDao.class);
+		projectDAO = createMock(ProjectDAO.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setProjectDAO(projectDAO);
 
-		userDepartmentDAO = createMock(UserDepartmentDao.class);
+		userDepartmentDAO = createMock(UserDepartmentDAO.class);
 		((ReportCriteriaServiceImpl)reportCriteriaService).setUserDepartmentDAO(userDepartmentDAO);
 	}
 	
@@ -95,8 +97,8 @@ public class ReportCriteriaServiceTest
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
 		
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
 		
 		// bit odd but otherwise unnecc. stuff is called
 //		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
@@ -104,7 +106,7 @@ public class ReportCriteriaServiceTest
 		
 		userCriteria = new UserCriteria();
 		userCriteria.setSingleUser(true);
-		List<User> ids = new ArrayList<User>();
+		List ids = new ArrayList();
 		ids.add(new User(1));
 		userCriteria.setUsers(ids);
 		reportCriteria = new ReportCriteria(userCriteria);		
@@ -133,8 +135,8 @@ public class ReportCriteriaServiceTest
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
 		
 		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called
@@ -179,8 +181,8 @@ public class ReportCriteriaServiceTest
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(1));
+		prjAsgs.add(DummyDataGenerator.getProjectAssignment(2));
 		
 		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called
