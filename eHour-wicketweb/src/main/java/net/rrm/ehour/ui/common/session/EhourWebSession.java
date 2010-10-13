@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -62,35 +62,34 @@ public class EhourWebSession extends AuthenticatedWebSession
 	private	UserCriteria	userCriteria;
 	private ObjectCache		reportCache = new ObjectCache();
 	private Boolean			hideInactiveSelections = Boolean.TRUE;
-	
+
 	private	static Logger logger = Logger.getLogger(EhourWebSession.class);
-	
+
 	private static final long serialVersionUID = 93189812483240412L;
 
 	/**
-	 * 
+	 *
 	 * @param app
 	 * @param req
 	 */
 	public EhourWebSession(Request req)
 	{
 		super(req);
-		
+
 		reloadConfig();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void reloadConfig()
 	{
 		CommonWebUtil.springInjection(this);
-		
+
 		if (!ehourConfig.isDontForceLanguage())
 		{
 			logger.debug("Setting locale to " + ehourConfig.getLocale().getDisplayLanguage());
 
-			Locale.setDefault(ehourConfig.getLocale());
 			setLocale(ehourConfig.getLocale());
 		} else
 		{
@@ -116,7 +115,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 
 	/**
 	 * Get ehour config
-	 * 
+	 *
 	 * @return
 	 */
 	public EhourConfig getEhourConfig()
@@ -156,7 +155,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 		if (isSignedIn())
 		{
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			
+
 			if (authentication != null)
 			{
 				user = (AuthUser) authentication.getPrincipal();
@@ -173,32 +172,32 @@ public class EhourWebSession extends AuthenticatedWebSession
 	{
 		String u = username == null ? "" : username;
 		String p = password == null ? "" : password;
-		
+
 		// Create an Acegi authentication request.
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
-		
+
 		// Attempt authentication.
 		try
 		{
 			AuthenticationManager authenticationManager = ((EhourWebApplication) getApplication()).getAuthenticationManager();
-			
+
 			if (authenticationManager == null)
 			{
 				throw new AuthenticationServiceException("no authentication manager defined");
 			}
-			
+
 			Authentication authResult = authenticationManager.authenticate(authRequest);
 			setAuthentication(authResult);
-			
+
 			User user = ((AuthUser)authResult.getPrincipal()).getUser();
-			
+
 			auditService.doAudit(new Audit()
 										.setAuditActionType(AuditActionType.LOGIN)
 										.setUser(user)
 										.setUserFullName(user.getFullName())
 										.setDate(new Date())
-										.setSuccess(Boolean.TRUE));												
-		
+										.setSuccess(Boolean.TRUE));
+
 			logger.info("Login by user '" + username + "'.");
 			return true;
 
@@ -234,9 +233,9 @@ public class EhourWebSession extends AuthenticatedWebSession
 			Roles roles = new Roles();
 			// Retrieve the granted authorities from the current authentication. These correspond one on
 			// one with user roles.
-			
+
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			
+
 			if (auth != null)
 			{
 				Collection<GrantedAuthority> authorities = auth.getAuthorities();
@@ -245,12 +244,12 @@ public class EhourWebSession extends AuthenticatedWebSession
 				{
 					roles.add(grantedAuthority.getAuthority());
 				}
-				
+
 				if (roles.size() == 0)
 				{
 					logger.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
 				}
-				
+
 				return roles;
 			}
 			else
@@ -272,22 +271,22 @@ public class EhourWebSession extends AuthenticatedWebSession
 		{
 			logger.info("Logout by user '" + user.getUsername() + "'.");
 		}
-		
+
 		setAuthentication(null);
 		invalidate();
 		super.signOut();
-		
+
 		auditService.doAudit(new Audit()
 			.setAuditActionType(AuditActionType.LOGOUT)
 			.setUser(user.getUser())
 			.setUserFullName(user.getUser().getFullName())
 			.setDate(new Date())
-			.setSuccess(Boolean.TRUE));			
+			.setSuccess(Boolean.TRUE));
 	}
 
 	/**
 	 * Sets the acegi authentication.
-	 * @param authentication the authentication or null to clear 
+	 * @param authentication the authentication or null to clear
 	 */
 	private void setAuthentication(Authentication authentication)
 	{
