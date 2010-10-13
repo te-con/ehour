@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -48,22 +48,22 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.MinimumValidator;
 
 /**
- * Assignment type part of form 
+ * Assignment type part of form
  **/
 
 public class AssignmentTypeFormPartPanel extends Panel
 {
 	private static final long serialVersionUID = 1L;
 	private Component[] notifiableComponents;
-	
-	
+
+
 	@SpringBean
 	private ProjectAssignmentService	projectAssignmentService;
-	
+
 	public AssignmentTypeFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model, Form<AssignmentAdminBackingBean> form)
 	{
 		super(id, model);
-		
+
 		addAssignmentType(model);
 		addDates(form, model);
 	}
@@ -73,7 +73,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 	{
 		return notifiableComponents;
 	}
-	
+
 	/**
 	 * Add assignment types and options
 	 * @param form
@@ -81,11 +81,11 @@ public class AssignmentTypeFormPartPanel extends Panel
 	 */
 	private void addAssignmentType(IModel<AssignmentAdminBackingBean> model)
 	{
-		List<ProjectAssignmentType> assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();		
+		List<ProjectAssignmentType> assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();
 
 		final PropertyModel<Boolean> showAllottedHoursModel = new PropertyModel<Boolean>(model, "showAllottedHours");
 		final PropertyModel<Boolean> showOverrunHoursModel = new PropertyModel<Boolean>(model, "showOverrunHours");
-		
+
 		// assignment type
 		final DropDownChoice<ProjectAssignmentType> assignmentTypeChoice = new DropDownChoice<ProjectAssignmentType>("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer());
 		assignmentTypeChoice.setRequired(true);
@@ -94,8 +94,8 @@ public class AssignmentTypeFormPartPanel extends Panel
 		assignmentTypeChoice.add(new ValidatingFormComponentAjaxBehavior());
 		add(assignmentTypeChoice);
 		add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
-		
-		// allotted hours 
+
+		// allotted hours
 		final TextField<Float> allottedHours = new RequiredTextField<Float>("projectAssignment.allottedHours",
 												new PropertyModel<Float>(model, "projectAssignment.allottedHours"));
 		allottedHours.setType(float.class);
@@ -104,7 +104,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		allottedHours.setOutputMarkupId(true);
 		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
 		allottedHours.setEnabled(((Boolean)showAllottedHoursModel.getObject()).booleanValue());
-		
+
 		// allotted hours row
 		final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
 		allottedRow.setOutputMarkupId(true);
@@ -112,8 +112,8 @@ public class AssignmentTypeFormPartPanel extends Panel
 		allottedRow.add(new AjaxFormComponentFeedbackIndicator("allottedHoursValidationError", allottedHours));
 		allottedRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showAllottedHoursModel));
 		add(allottedRow);
-		
-		// overrun hours 
+
+		// overrun hours
 		final TextField<Float> overrunHours = new RequiredTextField<Float>("projectAssignment.allowedOverrun",
 											new PropertyModel<Float>(model, "projectAssignment.allowedOverrun"));
 		overrunHours.setType(float.class);
@@ -122,7 +122,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		overrunHours.setOutputMarkupId(true);
 		overrunHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
 		overrunHours.setLabel(new ResourceModel("admin.assignment.allowedOverrun"));
-		
+
 		// overrun hours row
 		final WebMarkupContainer overrunRow = new WebMarkupContainer("overrunRow");
 		overrunRow.setOutputMarkupId(true);
@@ -130,17 +130,17 @@ public class AssignmentTypeFormPartPanel extends Panel
 		overrunRow.add(new AjaxFormComponentFeedbackIndicator("overrunHoursValidationError", overrunHours));
 		overrunRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showOverrunHoursModel));
 		add(overrunRow);
-		
+
 		// notify PM when possible
 		CheckBox notifyPm = new CheckBox("projectAssignment.notifyPm");
 		notifyPm.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled")));
 		notifyPm.setOutputMarkupId(true);
-		
+
 		Label notifyDisabled = new Label("notifyDisabled", new ResourceModel("admin.assignment.cantNotify"));
-		notifyDisabled.add(new DynamicAttributeModifier("style", true, 
+		notifyDisabled.add(new DynamicAttributeModifier("style", true,
 														new Model<String>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled"), true));
 		notifyDisabled.setOutputMarkupId(true);
-		
+
 		// notify PM row
 		final WebMarkupContainer notifyPmRow = new WebMarkupContainer("notifyPmRow");
 		notifyPmRow.setOutputMarkupId(true);
@@ -148,7 +148,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		notifyPmRow.add(notifyDisabled);
 		notifyPmRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showAllottedHoursModel));
 		add(notifyPmRow);
-		
+
 		assignmentTypeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
         {
 			private static final long serialVersionUID = 1L;
@@ -160,17 +160,17 @@ public class AssignmentTypeFormPartPanel extends Panel
 				overrunHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
 				target.addComponent(allottedHours);
 				target.addComponent(overrunHours);
-				
+
 				// show/hide rows dependent on the assignment type selected
 				target.addComponent(allottedRow);
 				target.addComponent(overrunRow);
 				target.addComponent(notifyPmRow);
             }
-        });	
-		
+        });
+
 		notifiableComponents = new Component[]{notifyPm, notifyDisabled};
 	}
-	
+
 	/**
 	 * Add start & end dates
 	 * @param form
@@ -183,7 +183,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 
 		add(dateStart);
 		add(dateEnd);
-		
-		form.add(new DateOverlapValidator(dateStart.getDateInputFormComponent(), dateEnd.getDateInputFormComponent()));
-	}	
+
+		form.add(new DateOverlapValidator("dateStartDateEnd", dateStart.getDateInputFormComponent(), dateEnd.getDateInputFormComponent()));
+	}
 }

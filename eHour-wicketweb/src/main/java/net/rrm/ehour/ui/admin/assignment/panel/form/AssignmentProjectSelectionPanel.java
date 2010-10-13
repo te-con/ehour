@@ -31,20 +31,20 @@ public class AssignmentProjectSelectionPanel extends Panel
 {
 	private static final long serialVersionUID = 5513770467507708949L;
 
-	private	final static Logger	LOGGER = Logger.getLogger(AssignmentFormComponentContainerPanel.class);
-	
+	private	static final Logger	LOGGER = Logger.getLogger(AssignmentFormComponentContainerPanel.class);
+
 	public enum EntrySelectorAjaxEventType implements AjaxEventType
 	{
 		PROJECT_CHANGE;
 	}
-	
+
 	@SpringBean
 	private CustomerService	customerService;
-	
+
 	public AssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model)
 	{
 		super(id);
-		
+
 		addCustomerAndProjectChoices(model);
 	}
 
@@ -122,7 +122,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 			protected void onUpdate(AjaxRequestTarget target)
 			{
 				AjaxEvent ajaxEvent = new AjaxEvent(EntrySelectorAjaxEventType.PROJECT_CHANGE);
-				
+
 				EventPublisher.publishAjaxEvent(AssignmentProjectSelectionPanel.this, ajaxEvent);
 			}
 		});

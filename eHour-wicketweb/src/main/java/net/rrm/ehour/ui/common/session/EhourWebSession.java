@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.common.session;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Locale;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfig;
@@ -56,6 +55,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 {
 	@SpringBean
 	private EhourConfig 	ehourConfig;
+
 	@SpringBean
 	private AuditService	auditService;
 	private Calendar 		navCalendar;
@@ -63,7 +63,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 	private ObjectCache		reportCache = new ObjectCache();
 	private Boolean			hideInactiveSelections = Boolean.TRUE;
 
-	private	static Logger logger = Logger.getLogger(EhourWebSession.class);
+	private	static final Logger LOGGER = Logger.getLogger(EhourWebSession.class);
 
 	private static final long serialVersionUID = 93189812483240412L;
 
@@ -88,12 +88,12 @@ public class EhourWebSession extends AuthenticatedWebSession
 
 		if (!ehourConfig.isDontForceLanguage())
 		{
-			logger.debug("Setting locale to " + ehourConfig.getLocale().getDisplayLanguage());
+			LOGGER.debug("Setting locale to " + ehourConfig.getLocale().getDisplayLanguage());
 
 			setLocale(ehourConfig.getLocale());
 		} else
 		{
-			logger.debug("Not forcing locale, using browser's locale");
+			LOGGER.debug("Not forcing locale, using browser's locale");
 		}
 	}
 
@@ -198,24 +198,24 @@ public class EhourWebSession extends AuthenticatedWebSession
 										.setDate(new Date())
 										.setSuccess(Boolean.TRUE));
 
-			logger.info("Login by user '" + username + "'.");
+			LOGGER.info("Login by user '" + username + "'.");
 			return true;
 
 		} catch (BadCredentialsException e)
 		{
-			logger.info("Failed login by user '" + username + "'.");
+			LOGGER.info("Failed login by user '" + username + "'.");
 			setAuthentication(null);
 			return false;
 
 		} catch (AuthenticationException e)
 		{
-			logger.info("Could not authenticate a user", e);
+			LOGGER.info("Could not authenticate a user", e);
 			setAuthentication(null);
 			throw e;
 
 		} catch (RuntimeException e)
 		{
-			logger.info("Unexpected exception while authenticating a user", e);
+			LOGGER.info("Unexpected exception while authenticating a user", e);
 			setAuthentication(null);
 			throw e;
 		}
@@ -247,14 +247,14 @@ public class EhourWebSession extends AuthenticatedWebSession
 
 				if (roles.size() == 0)
 				{
-					logger.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
+					LOGGER.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
 				}
 
 				return roles;
 			}
 			else
 			{
-				logger.warn("User is signed in but authentication is not set!");
+				LOGGER.warn("User is signed in but authentication is not set!");
 			}
 		}
 		return null;
@@ -269,7 +269,7 @@ public class EhourWebSession extends AuthenticatedWebSession
 
 		if (user != null)
 		{
-			logger.info("Logout by user '" + user.getUsername() + "'.");
+			LOGGER.info("Logout by user '" + user.getUsername() + "'.");
 		}
 
 		setAuthentication(null);

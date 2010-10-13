@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -47,18 +47,18 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 		HIDE_DELETE_BUTTON,
 		SHOW_DELETE_BUTTON;
 	}
-	
+
 	private static final long serialVersionUID = -85486044225123470L;
-	
+
 	private AssignmentTypeFormPartPanel typeFormPartPanel;
-	
+
 	public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions)
 	{
 		super(id, model);
-		
+
 		setUpPanel(form, model, Arrays.asList(displayOptions));
 	}
-	
+
 	/**
 	 * Setup panel
 	 */
@@ -66,17 +66,17 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 	{
 		// setup the customer & project dropdowns
 		add(createProjectSelection("projectSelection", model, displayOptions));
-		
+
 		// Add rate & role
-		add(createRateRole(model));
+		add(new AssignmentRateRoleFormPartPanel("rateRole", model));
 
 		// Project duration form components
-		add(createProjectDuration(form, model));
+		add(new AssignmentTypeFormPartPanel("assignmentType", model, form));
 
 		// active
 		add(new CheckBox("projectAssignment.active"));
 	}
-	
+
 	private WebMarkupContainer createProjectSelection(String id, IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions)
 	{
 		if (displayOptions.contains(DisplayOption.SHOW_PROJECT_SELECTION))
@@ -88,48 +88,24 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 			return new PlaceholderPanel(id);
 		}
 	}
-	
-	/**
-	 * Add rate, role & active
-	 * @param form
-	 * @param model
-	 * @return 
-	 */
-	private WebMarkupContainer createRateRole(IModel<AssignmentAdminBackingBean> model)
-	{
-		return new AssignmentRateRoleFormPartPanel("rateRole", model);
-	}
-	
-	/**
-	 * Add project duration
-	 * @param form
-	 * @param model
-	 * @return 
-	 */
-	private AssignmentTypeFormPartPanel createProjectDuration(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model)
-	{
-		typeFormPartPanel = new AssignmentTypeFormPartPanel("assignmentType", model, form);
-		
-		return typeFormPartPanel;
-	}
-	
+
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE)
 		{
 			updateNotifiableComponents(ajaxEvent.getTarget());
-			
+
 			return false;
 		}
-		
+
 		return super.ajaxEventReceived(ajaxEvent);
 	}
-	
+
 	private void updateNotifiableComponents(AjaxRequestTarget target)
 	{
 		Component[] components = typeFormPartPanel.getNotifiableComponents();
-		
+
 		for (Component component : components)
 		{
 			target.addComponent(component);

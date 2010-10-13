@@ -58,23 +58,23 @@ public class SlideMenu extends Panel
 
 					// sub menus
 					item.add(createSubMenus(menuItem));
-					
+
 					item.setVisible(menuItem.isVisibleForLoggedInUser());
 				}
 
 				private WebMarkupContainer createSubMenus(final MenuItem menuItem)
 				{
 					List<MenuItem> submenuItemList = menuItem.getSubMenus();
-					
-					return CollectionUtils.isEmpty(submenuItemList) 
-								? new WebMarkupContainer(ID_SUBMENU_LIST_CONTAINER) 
+
+					return CollectionUtils.isEmpty(submenuItemList)
+								? new WebMarkupContainer(ID_SUBMENU_LIST_CONTAINER)
 								: new Menu(ID_SUBMENU_LIST_CONTAINER, submenuItemList);
 				}
 
 				private Fragment createLinkFragment(MenuItem menuItem)
 				{
 					Fragment linkFragment = new Fragment(ID_CONTENT, "link", Menu.this);
-					
+
 					Link<MenuItem> link = new Link<MenuItem>("menuLink", new Model<MenuItem>(menuItem))
 					{
 						@Override
@@ -88,25 +88,24 @@ public class SlideMenu extends Panel
 							}
 						}
 					};
-					
+
 					linkFragment.add(link);
-					
+
 
 					Label linkText = new Label("menuLinkText", new ResourceModel(menuItem.getTitleId()));
 					link.add(linkText);
 					return linkFragment;
 				}
-				
+
 				private Fragment createTextOnlyFragment(MenuItem menuItem)
 				{
 					Fragment linkFragment = new Fragment(ID_CONTENT, "textOnly", Menu.this);
 
 					Label linkText = new Label("menuText", new ResourceModel(menuItem.getTitleId()));
-					
-					
+
 					linkFragment.add(linkText);
 					return linkFragment;
-				}				
+				}
 			};
 		}
 	}

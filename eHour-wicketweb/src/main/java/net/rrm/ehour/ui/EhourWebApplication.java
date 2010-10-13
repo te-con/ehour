@@ -3,24 +3,18 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
 package net.rrm.ehour.ui;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Properties;
 
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
@@ -79,19 +73,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 public class EhourWebApplication extends AuthenticatedWebApplication
 {
 	private static final Logger LOGGER = Logger.getLogger(EhourWebApplication.class);
-	
+
 	private AuthenticationManager authenticationManager;
 	protected Class<? extends WebPage>	login = Login.class;
 	private String version;
 	private String wikiBaseUrl;
 	private boolean initialized;
-	
-	@Value("${ehour.configurationType}") 
+
+	@Value("${ehour.configurationType}")
 	private String configurationType;
-	
+
 	public EhourWebApplication()
 	{
-		
+
 	}
 
 	public void init()
@@ -100,13 +94,13 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		{
 			super.init();
 			springInjection();
-	
+
 			getMarkupSettings().setStripWicketTags(true);
 			mountPages();
 			getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
 			setupSecurity();
 			registerSharedResources();
-			
+
 			initialized = true;
 		}
 	}
@@ -121,13 +115,13 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mountExcelReport(new AuditReportExcel(), AuditReportExcel.getId());
 		mountExcelReport(new ExportReportExcel(), ExportReportExcel.getId());
 	}
-	
+
 	private void mountExcelReport(AbstractExcelResource excelReport, String id)
 	{
 		getSharedResources().add(id, excelReport);
 		mountSharedResource("/" + id, new ResourceReference(id).getSharedResourceKey());
 	}
-	
+
 	@Override
 	public String getConfigurationType()
 	{
@@ -137,10 +131,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 			LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + Application.DEPLOYMENT + " or " + Application.DEVELOPMENT);
 			return Application.DEVELOPMENT;
 		}
-		
+
 		return configurationType;
 	}
-	
+
 	private void mountPages()
 	{
 		mount("/login", PackageName.forClass(login));
@@ -151,22 +145,22 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount(new HybridUrlCodingStrategy("/admin/customer", CustomerAdmin.class));
 		mount(new HybridUrlCodingStrategy("/admin/project", ProjectAdmin.class));
 		mount(new HybridUrlCodingStrategy("/admin/assignment", AssignmentAdmin.class));
-		
+
 		mount(new HybridUrlCodingStrategy("/consultant/overview", MonthOverviewPage.class));
 		mount(new HybridUrlCodingStrategy("/consultant/report", UserReport.class));
-		
+
 		mount(new HybridUrlCodingStrategy("/consultant/exportmonth", ExportMonthSelectionPage.class));
 		mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));
-		
+
 		mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));
-		
+
 		mount(new HybridUrlCodingStrategy("/audit", AuditReportPage.class));
-		
+
 		mount(new HybridUrlCodingStrategy("/pm", ProjectManagement.class));
-		
+
 		mount(new HybridUrlCodingStrategy("/prefs", UserPreferencePage.class));
 	}
-	
+
 	protected void springInjection()
 	{
 		addComponentInstantiationListener(new SpringComponentInjector(this));
@@ -192,7 +186,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 			}
 		});
 	}
-	
+
 	@Override
 	protected IConverterLocator newConverterLocator()
 	{
@@ -220,7 +214,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	}
 
 	/*
-	 * 
+	 *
 	 */
 	public AuthenticationManager getAuthenticationManager()
 	{
@@ -244,17 +238,17 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		this.authenticationManager = authenticationManager;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.protocol.http.WebApplication#newRequestCycleProcessor()
 	 */
 	@Override
-	protected IRequestCycleProcessor newRequestCycleProcessor() 
-	{ 
+	protected IRequestCycleProcessor newRequestCycleProcessor()
+	{
 	    return new UrlCompressingWebRequestProcessor();
 	}
-	
+
 	public static EhourWebApplication get()
 	{
 		return (EhourWebApplication) WebApplication.get();
@@ -280,7 +274,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	{
 		return wikiBaseUrl;
 	}
-	
+
 	public void setWikiBaseUrl(String wikiBaseUrl)
 	{
 		this.wikiBaseUrl = wikiBaseUrl;
