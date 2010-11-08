@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -26,7 +26,6 @@ import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBeanImpl;
-import net.rrm.ehour.ui.admin.project.panel.ModifyProjectUsersPanel;
 import net.rrm.ehour.ui.admin.project.panel.ProjectFormPanel;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
@@ -43,7 +42,6 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -55,16 +53,16 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * Project admin page 
+ * Project admin page
  **/
 
-public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBean>
+public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBean>
 {
 	private static final String	PROJECT_SELECTOR_ID = "projectSelector";
 	private static final long 	serialVersionUID = 9196677804018589806L;
-	
+
 	private static final int TABPOS_USERS = 2;
-	
+
 	@SpringBean
 	private ProjectService		projectService;
 	private	final static Logger	logger = Logger.getLogger(ProjectAdmin.class);
@@ -79,22 +77,22 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 				new ResourceModel("admin.project.noEditEntrySelected"),
 				"admin.project.help.header",
 				"admin.project.help.body");
-		
+
 		List<Project> projects = getProjects();
-		
+
 		Fragment projectListHolder = getProjectListHolder(projects);
-		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
-											new ResourceModel("admin.project.title"), 
+
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame",
+											new ResourceModel("admin.project.title"),
 											WebGeo.W_ENTRY_SELECTOR);
-		add(greyBorder);		
-		
+		add(greyBorder);
+
 		greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
 											projectListHolder,
 											new StringResourceModel("admin.project.filter", this, null),
-											new ResourceModel("admin.project.hideInactive")));		
+											new ResourceModel("admin.project.hideInactive")));
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
@@ -104,11 +102,11 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		AjaxEventType type = ajaxEvent.getEventType();
-		
+
 		if (type == EntrySelectorAjaxEventType.FILTER_CHANGE)
 		{
 			currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent).getPayload();
-			
+
 			List<Project> projects = getProjects();
 			projectListView.setList(projects);
 		}
@@ -118,14 +116,14 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 			// update project list
 			List<Project> projects = getProjects();
 			projectListView.setList(projects);
-			
+
 			((EntrySelectorPanel)
 					((MarkupContainer)get("entrySelectorFrame"))
 						.get(PROJECT_SELECTOR_ID)).refreshList(ajaxEvent.getTarget());
-			
+
 			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
 		}
-		
+
 		return false;
 	}
 
@@ -137,26 +135,13 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 									new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
 	}
 
-	@SuppressWarnings("serial")
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
-		ProjectAdminBackingBean backingBean = getTabbedPanel().getEditBackingBean();
-		final Project project = backingBean.getProject();
-		
-		getTabbedPanel().addTab(new AbstractTab(new ResourceModel("admin.project.assignusers.title"))
-		{
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new ModifyProjectUsersPanel(panelId, project);
-			}
-		}, TABPOS_USERS);
-		
-		return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(backingBean));
-				
+		return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
+
 	}
-	
+
 	@Override
 	protected void onTabSwitch(int index)
 	{
@@ -171,7 +156,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	{
 		Project	project = new Project();
 		project.setActive(true);
-		
+
 		return new ProjectAdminBackingBeanImpl(project);
 	}
 
@@ -182,7 +167,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	@Override
 	protected ProjectAdminBackingBean getNewEditBaseBackingBean()
 	{
-		return new ProjectAdminBackingBeanImpl(new Project());	
+		return new ProjectAdminBackingBeanImpl(new Project());
 	}
 
 	/**
@@ -194,7 +179,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	private Fragment getProjectListHolder(List<Project> projects)
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdmin.this);
-		
+
 		projectListView = new ListView<Project>("itemList", projects)
 		{
 			@Override
@@ -202,7 +187,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 			{
 				Project project = item.getModelObject();
 				final Integer	projectId = project.getProjectId();
-				
+
 				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
@@ -218,18 +203,18 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 						}
 					}
 				};
-				
+
 				item.add(link);
 
-				link.add(new Label("linkLabel", project.getProjectCode() + " - " + project.getName() + (project.isActive() ? "" : "*"))); 				
+				link.add(new Label("linkLabel", project.getProjectCode() + " - " + project.getName() + (project.isActive() ? "" : "*")));
 			}
 		};
-		
+
 		fragment.add(projectListView);
-		
+
 		return fragment;
-	}	
-	
+	}
+
 	/**
 	 * Get the projects from the backend
 	 * @return
@@ -237,7 +222,7 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 	private List<Project> getProjects()
 	{
 		List<Project> projects;;
-		
+
 		if (currentFilter == null)
 		{
 			projects = projectService.getAllProjects(true);
@@ -248,12 +233,12 @@ public class ProjectAdmin  extends AbstractTabbedAdminPage<ProjectAdminBackingBe
 			{
 				logger.debug("Filtering on " + currentFilter.getCleanFilterInput() + ", hide active: " + currentFilter.isActivateToggle());
 			}
-			
+
 			projects = projectService.getProjects(currentFilter.getCleanFilterInput(), currentFilter.isActivateToggle());
 		}
 
 		Collections.sort(projects, new ProjectComparator());
-		
+
 		return projects;
 	}
 }
