@@ -288,8 +288,12 @@ div.GreyNavFrameFooter p {
 	color: #a5bcd4;
 }
 
+div.ContextualHelp {
+	padding: 20px 0 0 0;
+}
+
 div.Help {
-	padding: 20px 5px 0 5px;
+	padding: 0px 5px 0 5px;
 	margin: 0;
 }
 

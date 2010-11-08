@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.admin;
 
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
+import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
@@ -35,11 +36,7 @@ public abstract class AbstractAdminPage<T> extends AbstractBasePage<T>
 	{
 		super(pageTitle, model);
 
-//		add(new AdminNavPanel("adminNav"));
-
 		// contextual help
-//		add(new ContextualHelpPanel("contextHelp", headerResourceId, bodyResourceId));
-
+		add(new ContextualHelpPanel("contextHelp", headerResourceId, bodyResourceId));
 	}
-
 }

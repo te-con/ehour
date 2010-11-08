@@ -1,19 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    
-<html 
-	xmlns="http://www.w3.org/1999/xhtml" 
+
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
    	<head>
 		<wicket:head>
 			<link rel="stylesheet" type="text/css" href="css/ehourTabs.css" />
-		</wicket:head>    
+		</wicket:head>
     </head>
-    
+
     <body>
-    
     	<wicket:extend>
+    	 	<div style="float: left">
+    	 		<br />
+	    		<div class="SidePanelLoc" wicket:id="adminNav"></div>
+
+				<br clear="all" />
+
+	    		<div class="ContextualHelp" wicket:id="contextHelp" style="padding: 0 5px 0 5px"></div>
+		    </div>
+
    			<wicket:child />
 			<div style="float:left; ">
    				<div wicket:id="tabs" class="tabpanel"></div>
