@@ -18,31 +18,34 @@ package net.rrm.ehour.customer.service;
 
 import java.util.List;
 
-import net.rrm.ehour.audit.Auditable;
-import net.rrm.ehour.customer.dao.CustomerDAO;
+import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.persistence.customer.dao.CustomerDao;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Customer service implementation 
  **/
-
+@Service("customerService")
 public class CustomerServiceImpl implements CustomerService
 {
-	private	CustomerDAO		customerDAO;
-	private	Logger			logger = Logger.getLogger(this.getClass());
+	@Autowired
+	private	CustomerDao		customerDAO;
 	
+	private	static final Logger	LOGGER = Logger.getLogger(CustomerServiceImpl.class);
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomer(java.lang.String, java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.customer.service.CustomerService#getCustomer(java.lang.String, java.lang.String)
 	 */
 	@Transactional(readOnly=true)
 	public Customer getCustomer(String customerName, String customerCode)
@@ -51,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService
 	}	
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#deleteCustomer(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#deleteCustomer(java.lang.Integer)
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.DELETE)
@@ -59,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService
 	{
 		Customer customer = customerDAO.findById(customerId);
 		
-		logger.info("Deleting customer: " + customer);
+		LOGGER.info("Deleting customer: " + customer);
 		
 		if (customer != null)
 		{
@@ -84,7 +87,7 @@ public class CustomerServiceImpl implements CustomerService
 
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getCustomer(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getCustomer(java.lang.Integer)
 	 */
 	@Transactional(readOnly=true)
 	public Customer getCustomer(Integer customerId) throws ObjectNotFoundException
@@ -101,7 +104,7 @@ public class CustomerServiceImpl implements CustomerService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomerAndCheckDeletability(java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.customer.service.CustomerService#getCustomerAndCheckDeletability(java.lang.Integer)
 	 */
 	@Transactional(readOnly=true)
 	public Customer getCustomerAndCheckDeletability(Integer customerId)
@@ -136,7 +139,7 @@ public class CustomerServiceImpl implements CustomerService
 	}	
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#getCustomers()
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getCustomers()
 	 */
 	@Transactional(readOnly=true)
 	public List<Customer> getCustomers()
@@ -145,12 +148,12 @@ public class CustomerServiceImpl implements CustomerService
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.project.service.ProjectService#persistCustomer(net.rrm.ehour.project.domain.Customer)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#persistCustomer(net.rrm.ehour.persistence.persistence.project.domain.Customer)
 	 */
 	@Transactional
 	public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException
 	{
-		logger.info("Persisting customer: " + customer);
+		LOGGER.info("Persisting customer: " + customer);
 		
 		try
 		{
@@ -166,7 +169,7 @@ public class CustomerServiceImpl implements CustomerService
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.customer.service.CustomerService#getCustomers(boolean)
+	 * @see net.rrm.ehour.persistence.persistence.customer.service.CustomerService#getCustomers(boolean)
 	 */
 	@Transactional(readOnly=true)
 	public List<Customer> getCustomers(boolean hideInactive)
@@ -178,7 +181,7 @@ public class CustomerServiceImpl implements CustomerService
 	/**
 	 * @param customerDAO the customerDAO to set
 	 */
-	public void setCustomerDAO(CustomerDAO customerDAO)
+	public void setCustomerDAO(CustomerDao customerDAO)
 	{
 		this.customerDAO = customerDAO;
 	}

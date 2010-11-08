@@ -18,15 +18,8 @@ package net.rrm.ehour.ui.timesheet.dto;
 
 import org.apache.wicket.model.Model;
 
-/**
- * TODO 
- **/
-
-public class ProjectTotalModel extends Model
+public class ProjectTotalModel extends Model<Float>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4141505357937939279L;
 	private	TimesheetRow	row;
 	
@@ -36,7 +29,7 @@ public class ProjectTotalModel extends Model
 	}
 	
 	@Override
-	public Object getObject()
+	public Float getObject()
 	{
 		float	totalHours = 0;
 		

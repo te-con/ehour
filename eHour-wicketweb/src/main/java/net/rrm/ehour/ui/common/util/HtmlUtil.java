@@ -59,9 +59,9 @@ public class HtmlUtil
 	 * @param id
 	 * @return
 	 */
-	public static Link getInvisibleLink(String id)
+	public static Link<Void> getInvisibleLink(String id)
 	{
-		Link link = new Link(id)
+		Link<Void> link = new Link<Void>(id)
 		{
 			private static final long serialVersionUID = 1L;
 

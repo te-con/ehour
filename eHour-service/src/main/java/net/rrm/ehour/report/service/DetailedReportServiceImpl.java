@@ -22,24 +22,28 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.dao.DetailedReportDAO;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.util.EhourUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * Report service for detailed reports implementation
  **/
-
+@Service("detailedReportService")
 public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatReportElement>
 										implements DetailedReportService
 {
-	private	DetailedReportDAO	detailedReportDAO;
+	@Autowired
+	private	DetailedReportDao	detailedReportDAO;
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.DetailedReportService#getDetailedReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.persistence.persistence.report.service.DetailedReportService#getDetailedReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
 	 */
 	public ReportData getDetailedReportData(ReportCriteria reportCriteria)
 	{
@@ -48,7 +52,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	@Override
 	protected List<FlatReportElement> getReportElements(List<User> users,
@@ -82,7 +86,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 	/**
 	 * @param detailedReportDAO the detailedReportDAO to set
 	 */
-	public void setDetailedReportDAO(DetailedReportDAO detailedReportDAO)
+	public void setDetailedReportDAO(DetailedReportDao detailedReportDAO)
 	{
 		this.detailedReportDAO = detailedReportDAO;
 	}

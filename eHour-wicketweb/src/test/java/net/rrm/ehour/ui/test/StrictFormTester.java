@@ -28,7 +28,7 @@ import org.apache.wicket.util.tester.FormTester;
 
 public class StrictFormTester extends FormTester
 {
-	protected StrictFormTester(String path, Form workingForm, BaseWicketTester wicketTester, boolean fillBlankString)
+	protected StrictFormTester(String path, Form<?> workingForm, BaseWicketTester wicketTester, boolean fillBlankString)
 	{
 		super(path, workingForm, wicketTester, fillBlankString);
 	}

@@ -19,19 +19,20 @@ package net.rrm.ehour.timesheet.service;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.audit.NonAuditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.util.EhourConstants;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,17 +40,23 @@ import org.springframework.transaction.annotation.Transactional;
  * Timesheet persister
  **/
 @NonAuditable
+@Service("timesheetPersister")
 public class TimesheetPersisterImpl implements TimesheetPersister
 {
-	private	Logger				logger = Logger.getLogger(TimesheetPersisterImpl.class);
+	private	static final Logger	LOGGER = Logger.getLogger(TimesheetPersisterImpl.class);
 
-	private	TimesheetDAO		timesheetDAO;
+	@Autowired
+	private	TimesheetDao		timesheetDAO;
+
+	@Autowired
 	private ProjectAssignmentStatusService	projectAssignmentStatusService;
+	
+	@Autowired
 	private MailService			mailService;
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.timesheet.service.TimesheetPersister#validateAndPersist(net.rrm.ehour.domain.ProjectAssignment, java.util.List, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.timesheet.service.TimesheetPersister#validateAndPersist(net.rrm.ehour.persistence.persistence.domain.ProjectAssignment, java.util.List, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	@Transactional(rollbackFor=OverBudgetException.class,
 					propagation=Propagation.REQUIRES_NEW)
@@ -93,35 +100,38 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	 */
 	private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException
 	{
-		List<TimesheetEntry> dbEntries = timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange);
+		List<TimesheetEntry> previousEntries = timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange);
 		
 		for (TimesheetEntry entry : entries)
 		{
 			if (!entry.getEntryId().getProjectAssignment().equals(assignment))
 			{
-				logger.error("Invalid entry in assignment list, skipping: " + entry);
+				LOGGER.error("Invalid entry in assignment list, skipping: " + entry);
 				continue;
 			}
 			
-			if (StringUtils.isBlank(entry.getComment())
-					&& (entry.getHours() == null || entry.getHours().equals(0f)))
+			if (entry.isEmptyEntry())
 			{
-				deleteEntry(getEntry(dbEntries, entry));
+				deleteEntry(getEntry(previousEntries, entry));
 			}
 			else
 			{
-				persistEntry(onlyLessThanExisting, entry, getEntry(dbEntries, entry));
+				persistEntry(onlyLessThanExisting, entry, getEntry(previousEntries, entry));
 			}
 			
-			dbEntries.remove(entry);
+			previousEntries.remove(entry);
 		}
 		
-		
-		for (TimesheetEntry entry : dbEntries)
+		removeOldEntries(previousEntries);
+	}
+
+	private void removeOldEntries(List<TimesheetEntry> previousEntries)
+	{
+		for (TimesheetEntry entry : previousEntries)
 		{
-			if (logger.isDebugEnabled())
+			if (LOGGER.isDebugEnabled())
 			{
-				logger.debug("Deleting stale timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
+				LOGGER.debug("Deleting stale timesheet entry for assignment id " + entry.getEntryId().getProjectAssignment().getAssignmentId() +
 						" for date " + entry.getEntryId().getEntryDate() + ", hours booked: " + entry.getHours());
 			}
 			
@@ -137,9 +147,9 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	{
 		if (existingEntry != null)
 		{
-			if (logger.isDebugEnabled())
+			if (LOGGER.isDebugEnabled())
 			{
-				logger.debug("Deleting timesheet entry for assignment id " + existingEntry.getEntryId().getProjectAssignment().getAssignmentId() +
+				LOGGER.debug("Deleting timesheet entry for assignment id " + existingEntry.getEntryId().getProjectAssignment().getAssignmentId() +
 						" for date " + existingEntry.getEntryId().getEntryDate() + ", hours booked: " + existingEntry.getHours());
 			}
 			
@@ -163,9 +173,9 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 			throw new OverBudgetException();
 		}
 		
-		if (logger.isDebugEnabled())
+		if (LOGGER.isDebugEnabled())
 		{
-			logger.debug("Persisting timesheet entry for assignment id " + newEntry.getEntryId().getProjectAssignment().getAssignmentId() +
+			LOGGER.debug("Persisting timesheet entry for assignment id " + newEntry.getEntryId().getProjectAssignment().getAssignmentId() +
 					" for date " + newEntry.getEntryId().getEntryDate() + ", hours booked: " + newEntry.getHours()
 					+ ", comment: " + newEntry.getComment()
 			);
@@ -256,7 +266,7 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	/**
 	 * @param timesheetDAO the timesheetDAO to set
 	 */
-	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
+	public void setTimesheetDAO(TimesheetDao timesheetDAO)
 	{
 		this.timesheetDAO = timesheetDAO;
 	}

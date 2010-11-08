@@ -34,13 +34,13 @@ public class CustomerReportExcel extends AbstractExcelReport
 	}
 	
 	@Override
-	protected IModel getExcelReportName()
+	protected IModel<String> getExcelReportName()
 	{
 		return new ResourceModel("report.title.customer");
 	}
 
 	@Override
-	protected IModel getHeaderReportName()
+	protected IModel<String> getHeaderReportName()
 	{
 		return new ResourceModel("report.title.customer");
 	}

@@ -52,7 +52,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getExcelData(java.lang.String)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.component.AbstractExcelResource#getExcelData(java.lang.String)
 	 */
 	@Override
 	public byte[] getExcelData(Report report) throws IOException
@@ -79,18 +79,16 @@ public class ExportReportExcel extends AbstractExcelResource
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.HOURS.getColumn()));
 		sheet.setColumnWidth(0, 1024);
 		
-		int rowNumber = 11 - 1;
+		int rowNumber = 9;
 		
 		rowNumber = new ExportReportHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
-		rowNumber++;
 		rowNumber = new ExportReportBodyHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		rowNumber = new ExportReportBody(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
-		rowNumber++;
 		rowNumber = new ExportReportTotal(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		
 		if (isInclSignOff(report))
 		{
-			rowNumber += 2;
+			rowNumber++;
 			rowNumber = new ExportReportSignOff(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 		}
 		
@@ -106,7 +104,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getFilename()
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.component.AbstractExcelResource#getFilename()
 	 */
 	@Override
 	protected String getFilename()

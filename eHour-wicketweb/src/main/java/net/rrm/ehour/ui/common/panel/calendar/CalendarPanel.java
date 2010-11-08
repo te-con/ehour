@@ -26,11 +26,11 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxUtil;
-import net.rrm.ehour.ui.common.ajax.LoadingSpinnerDecorator;
-import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.component.DisablingAjaxLink;
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.EventPublisher;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -60,7 +60,7 @@ public class CalendarPanel extends SidePanel
 {
 	private static final long serialVersionUID = -7777893083323915299L;
 
-	private final static Logger logger = Logger.getLogger(CalendarPanel.class);
+	private final static Logger LOGGER = Logger.getLogger(CalendarPanel.class);
 
 	@SpringBean
 	private TimesheetService 	timesheetService;
@@ -92,8 +92,7 @@ public class CalendarPanel extends SidePanel
 
 		setOutputMarkupId(true);
 
-		EhourWebSession 	session = (EhourWebSession)getSession();
-		config = session.getEhourConfig();
+		config = EhourWebSession.getSession().getEhourConfig();
 
 		this.user = user;
 		fireWeekClicks = allowWeekClicks;
@@ -139,26 +138,36 @@ public class CalendarPanel extends SidePanel
 	private void buildCalendar(WebMarkupContainer parent)
 	{
 		// first get the data
-		Calendar month = ((EhourWebSession)this.getSession()).getNavCalendar();
+		Calendar month = EhourWebSession.getSession().getNavCalendar();
 		List<CalendarWeek>	weeks;
 
-		logger.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
+		LOGGER.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
 		weeks = createWeeks(user.getUserId(), ((GregorianCalendar)month.clone()));
 
 		// set month label
 		parent.add(new Label("currentMonth", new DateModel(month, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
 
 		// previous & next month links
-		AjaxLink previousMonthLink = new ChangeMonthLink("previousMonthLink", -1);
-		previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
-		parent.add(previousMonthLink);
+		parent.add(createPreviousMonthLink("previousMonthLink"));
 
-		AjaxLink nextMonthLink = new ChangeMonthLink("nextMonthLink", 1);
-		nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
-		parent.add(nextMonthLink);
+		parent.add(createNextMonthLink("nextMonthLink"));
 
 		// content
 		addCalendarWeeks(parent, weeks);
+	}
+
+	private AjaxLink<Void> createNextMonthLink(String id)
+	{
+		AjaxLink<Void> nextMonthLink = new ChangeMonthLink(id, 1);
+		nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
+		return nextMonthLink;
+	}
+
+	private AjaxLink<Void> createPreviousMonthLink(String id)
+	{
+		AjaxLink<Void> previousMonthLink = new ChangeMonthLink(id, -1);
+		previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
+		return previousMonthLink;
 	}
 
 	/**
@@ -169,11 +178,11 @@ public class CalendarPanel extends SidePanel
 	@SuppressWarnings("serial")
 	private void addCalendarWeeks(WebMarkupContainer container, List<CalendarWeek> weeks)
 	{
-		ListView view = new ListView("weeks", weeks)
+		ListView<CalendarWeek> view = new ListView<CalendarWeek>("weeks", weeks)
 		{
-			public void populateItem(final ListItem item)
+			public void populateItem(final ListItem<CalendarWeek> item)
 			{
-				CalendarWeek week = (CalendarWeek) item.getModelObject();
+				CalendarWeek week = item.getModelObject();
 				Calendar renderDate = (Calendar)week.getWeekStart().clone();
 
 				for (int i = 1; i <= 7; i++)
@@ -201,7 +210,7 @@ public class CalendarPanel extends SidePanel
 		        }
 			}
 
-			private void fireWeekClicks(final ListItem item, CalendarWeek week)
+			private void fireWeekClicks(final ListItem<CalendarWeek> item, CalendarWeek week)
 			{
 				if (highlightWeekStartingAt == null ||
 						!DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
@@ -231,7 +240,7 @@ public class CalendarPanel extends SidePanel
 				}
 				else
 				{
-					label = new Label(id, new PropertyModel(day, "monthDay"));
+					label = new Label(id, new PropertyModel<Integer>(day, "monthDay"));
 				}
 
 				// determine css class
@@ -400,14 +409,14 @@ public class CalendarPanel extends SidePanel
 		@Override
 		public void onClick(AjaxRequestTarget target)
         {
-			EhourWebSession session = (EhourWebSession)this.getSession();
+			EhourWebSession session = EhourWebSession.getSession();
 			Calendar month = session.getNavCalendar();
 			month.add(Calendar.MONTH, monthChange);
 			month.set(Calendar.DAY_OF_MONTH, 1);
 			session.setNavCalendar(month);
 
 			// do it before it gets replaced, otherwise getPage is  null due to new instantiation of links
-			AjaxUtil.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(CalendarAjaxEventType.MONTH_CHANGE));
+			EventPublisher.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(CalendarAjaxEventType.MONTH_CHANGE));
 
 			refreshCalendar(target);
 
@@ -452,7 +461,7 @@ public class CalendarPanel extends SidePanel
 
 			session.setNavCalendar(cal);
 
-			AjaxUtil.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
+			EventPublisher.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
 		}
 
 		@Override

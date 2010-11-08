@@ -41,7 +41,7 @@ public abstract class AbstractChartImage extends NonCachingImage
 	}
 
 	public AbstractChartImage(String id, 
-								IModel dataModel,
+								IModel<?> dataModel,
 								int width,
 								int height)
 	{
@@ -51,10 +51,6 @@ public abstract class AbstractChartImage extends NonCachingImage
 		this.height = height;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.image.Image#getImageResource()
-	 */
 	@Override
 	protected Resource getImageResource()
 	{

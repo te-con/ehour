@@ -35,7 +35,6 @@ import net.rrm.ehour.ui.report.page.BaseTestReport;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -43,15 +42,9 @@ import org.junit.Test;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
+@SuppressWarnings("serial")
 public class UserReportPanelTest extends BaseTestReport
 {
-	@Before
-	public void setUp() throws Exception
-	{
-		super.setUp();
-
-	}
-	
 	@Test
 	public void shouldRenderWithGraphs()
 	{
@@ -61,7 +54,6 @@ public class UserReportPanelTest extends BaseTestReport
 		assertNotNull(img);
 	}
 	
-	@SuppressWarnings("serial")
 	private Panel start()
 	{
 		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdateType.UPDATE_ALL)))
@@ -75,7 +67,7 @@ public class UserReportPanelTest extends BaseTestReport
 
 		final CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportCriteria);
 		
-		Panel startPanel = getTester().startPanel(new TestPanelSource()
+		Panel startPanel = getTester().startPanelWithHead(new TestPanelSource()
 		{
 			public Panel getTestPanel(String panelId)
 			{

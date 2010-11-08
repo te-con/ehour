@@ -38,11 +38,11 @@ import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.timesheet.dao.TimesheetCommentDAO;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.util.DateUtil;
 
@@ -55,9 +55,9 @@ public class TimesheetServiceTest
 {
 	private TimesheetService timesheetService;
 
-	private TimesheetDAO timesheetDAO;
+	private TimesheetDao timesheetDAO;
 
-	private TimesheetCommentDAO timesheetCommentDAO;
+	private TimesheetCommentDao timesheetCommentDAO;
 
 	private EhourConfig config;
 
@@ -74,9 +74,9 @@ public class TimesheetServiceTest
 		timesheetService = new TimesheetServiceImpl();
 
 		config = createMock(EhourConfig.class);
-		timesheetDAO = createMock(TimesheetDAO.class);
+		timesheetDAO = createMock(TimesheetDao.class);
 		aggregateReportService = createMock(AggregateReportService.class);
-		timesheetCommentDAO = createMock(TimesheetCommentDAO.class);
+		timesheetCommentDAO = createMock(TimesheetCommentDao.class);
 		projectAssignmentService = createMock(ProjectAssignmentService.class);
 
 		((TimesheetServiceImpl) timesheetService).setTimesheetDAO(timesheetDAO);

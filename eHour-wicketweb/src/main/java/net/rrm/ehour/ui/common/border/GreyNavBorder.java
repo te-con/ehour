@@ -20,18 +20,11 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.model.IModel;
 
-/**
- * Grey nav border
- **/
-
 public class GreyNavBorder extends Border
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -9055202623773090602L;
 
-	public GreyNavBorder(String id, IModel title)
+	public GreyNavBorder(String id, IModel<String> title)
 	{
 		super(id);
 		

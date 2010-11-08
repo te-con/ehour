@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.admin.assignment.panel;
 
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
 
 /**
  * Assignment ajax event type

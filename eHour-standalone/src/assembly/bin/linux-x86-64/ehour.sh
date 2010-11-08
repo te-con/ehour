@@ -1,18 +1,8 @@
 #! /bin/sh
 
-#
-# Copyright (c) 1999, 2006 Tanuki Software Inc.
-#
-# Java Service Wrapper sh script.  Suitable for starting and stopping
-#  wrapped Java applications on UNIX platforms.
-#
-
-#-----------------------------------------------------------------------------
-# These settings can be modified to fit the needs of your application
-
 # Application
 APP_NAME="eHour"
-APP_LONG_NAME="eHour timesheet management"
+APP_LONG_NAME="eHour - http://www.ehour.nl/"
 
 # Wrapper
 WRAPPER_CMD="./wrapper"
@@ -24,6 +14,21 @@ PRIORITY=
 
 # Location of the pid file.
 PIDDIR="."
+
+PLIST_DOMAIN="nl.tecon.ehour"
+
+# Wrapper will start the JVM asynchronously. Your application may have some
+#  initialization tasks and it may be desirable to wait a few seconds
+#  before returning.  For example, to delay the invocation of following
+#  startup scripts.  Setting WAIT_AFTER_STARTUP to a positive number will
+#  cause the start command to delay for the indicated period of time 
+#  (in seconds).
+# 
+WAIT_AFTER_STARTUP=0
+
+# If set, wait for the wrapper to report that the daemon has started
+WAIT_FOR_STARTED_STATUS=true
+WAIT_FOR_STARTED_TIMEOUT=120
 
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and
@@ -47,6 +52,12 @@ PIDDIR="."
 
 # Do not modify anything beyond this point
 #-----------------------------------------------------------------------------
+# Required for HP-UX Startup
+
+# Required for HP-UX Startup
+if [ `uname -s` = "HP-UX" -o `uname -s` = "HP-UX64" ] ; then
+        PATH=$PATH:/usr/bin
+fi
 
 # Get the fully qualified path to the script
 case $0 in
@@ -120,32 +131,41 @@ fi
 
 # Process ID
 ANCHORFILE="$PIDDIR/$APP_NAME.anchor"
+STATUSFILE="$PIDDIR/$APP_NAME.status"
+JAVASTATUSFILE="$PIDDIR/$APP_NAME.java.status"
 PIDFILE="$PIDDIR/$APP_NAME.pid"
 LOCKDIR="/var/lock/subsys"
 LOCKFILE="$LOCKDIR/$APP_NAME"
 pid=""
 
 # Resolve the location of the 'ps' command
-PSEXE="/usr/bin/ps"
-if [ ! -x "$PSEXE" ]
-then
-    PSEXE="/bin/ps"
+PSEXE="/usr/ucb/ps"
     if [ ! -x "$PSEXE" ]
     then
-        echo "Unable to locate 'ps'."
-        echo "Please report this message along with the location of the command on your system."
-        exit 1
+        PSEXE="/usr/bin/ps"
+        if [ ! -x "$PSEXE" ]
+        then
+            PSEXE="/bin/ps"
+            if [ ! -x "$PSEXE" ]
+            then
+                echo "Unable to locate 'ps'."
+                echo "Please report this message along with the location of the command on your system."
+                exit 1
+            fi
+        fi
     fi
-fi
 
 # Resolve the os
-DIST_OS=`uname -s | tr [:upper:] [:lower:] | tr -d [:blank:]`
+DIST_OS=`uname -s | tr [A-Z] [a-z] | tr -d ' '`
 case "$DIST_OS" in
     'sunos')
         DIST_OS="solaris"
         ;;
     'hp-ux' | 'hp-ux64')
+        # HP-UX needs the XPG4 version of ps (for -o args)
         DIST_OS="hpux"
+        UNIX95=""
+        export UNIX95   
         ;;
     'darwin')
         DIST_OS="macosx"
@@ -153,34 +173,116 @@ case "$DIST_OS" in
     'unix_sv')
         DIST_OS="unixware"
         ;;
+    'os/390')
+        DIST_OS="zos"
+        ;;
 esac
 
 # Resolve the architecture
-DIST_ARCH=`uname -p | tr [:upper:] [:lower:] | tr -d [:blank:]`
-if [ "$DIST_ARCH" = "unknown" ]
+if [ "$DIST_OS" = "macosx" ]
 then
-    DIST_ARCH=`uname -m | tr [:upper:] [:lower:] | tr -d [:blank:]`
+    DIST_ARCH="universal"
+    APP_PLIST_BASE=${PLIST_DOMAIN}.${APP_NAME}
+    APP_PLIST=${APP_PLIST_BASE}.plist
+else
+    DIST_ARCH=
+    DIST_ARCH=`uname -p 2>/dev/null | tr [A-Z] [a-z] | tr -d ' '`
+    if [ "X$DIST_ARCH" = "X" ]
+    then
+        DIST_ARCH="unknown"
+    fi
+    if [ "$DIST_ARCH" = "unknown" ]
+    then
+        DIST_ARCH=`uname -m 2>/dev/null | tr [A-Z] [a-z] | tr -d ' '`
+    fi
+    case "$DIST_ARCH" in
+        'athlon' | 'i386' | 'i486' | 'i586' | 'i686')
+            DIST_ARCH="x86"
+            if [ "${DIST_OS}" = "solaris" ] ; then
+                DIST_BITS=`isainfo -b`
+            else
+                DIST_BITS="32"
+            fi
+            ;;
+        'amd64' | 'x86_64')
+            DIST_ARCH="x86"
+            DIST_BITS="64"
+            ;;
+        'ia32')
+            DIST_ARCH="ia"
+            DIST_BITS="32"
+            ;;
+        'ia64' | 'ia64n' | 'ia64w')
+            DIST_ARCH="ia"
+            DIST_BITS="64"
+            ;;
+        'ip27')
+            DIST_ARCH="mips"
+            DIST_BITS="32"
+            ;;
+        'power' | 'powerpc' | 'power_pc' | 'ppc64')
+            if [ "${DIST_ARCH}" = "ppc64" ] ; then
+                DIST_BITS="64"
+            else
+                DIST_BITS="32"
+            fi
+            DIST_ARCH="ppc"
+            if [ "${DIST_OS}" = "aix" ] ; then
+                if [ `getconf KERNEL_BITMODE` -eq 64 ]; then
+                    DIST_BITS="64"
+                else
+                    DIST_BITS="32"
+                fi
+            fi
+            ;;
+        'pa_risc' | 'pa-risc')
+            DIST_ARCH="parisc"
+            if [ `getconf KERNEL_BITS` -eq 64 ]; then
+                DIST_BITS="64"
+            else
+                DIST_BITS="32"
+            fi    
+            ;;
+        'sun4u' | 'sparcv9' | 'sparc')
+            DIST_ARCH="sparc"
+            DIST_BITS=`isainfo -b`
+            if [ ! -f /usr/lib/libm.so.2 -a "${DIST_BITS}" = "32" ]; then
+                ln -s /usr/lib/libm.so.1 /usr/lib/libm.so.2
+            elif [ ! -f /usr/lib/sparcv9/libm.so.2 -a "${DIST_BITS}" = "64" ]; then
+                ln -s /usr/lib/sparcv9/libm.so.1 /usr/lib/sparcv9/libm.so.2
+            fi
+            ;;
+        '9000/800' | '9000/785')
+            DIST_ARCH="parisc"
+            if [ `getconf KERNEL_BITS` -eq 64 ]; then
+                DIST_BITS="64"
+            else
+                DIST_BITS="32"
+            fi
+            ;;
+        '2097')
+            DIST_ARCH="390"
+            DIST_BITS="32"
+            ;;
+    esac
 fi
-case "$DIST_ARCH" in
-    'amd64' | 'athlon' | 'ia32' | 'ia64' | 'i386' | 'i486' | 'i586' | 'i686' | 'x86_64')
-        DIST_ARCH="x86"
-        ;;
-    'ip27')
-        DIST_ARCH="mips"
-        ;;
-    'power' | 'powerpc' | 'power_pc' | 'ppc64')
-        DIST_ARCH="ppc"
-        ;;
-    'pa_risc' | 'pa-risc')
-        DIST_ARCH="parisc"
-        ;;
-    'sun4u' | 'sparcv9')
-        DIST_ARCH="sparc"
-        ;;
-    '9000/800')
-        DIST_ARCH="parisc"
-        ;;
-esac
+
+# OSX always places Java in the same location so we can reliably set JAVA_HOME
+if [ "$DIST_OS" = "macosx" ]
+then
+    if [ -z "$JAVA_HOME" ]; then
+        JAVA_HOME="/Library/Java/Home"; export JAVA_HOME
+    fi
+fi
+
+# Test Echo
+ECHOTEST=`echo -n "x"`
+if [ "$ECHOTEST" = "x" ]
+then
+    ECHOOPT="-n "
+else
+    ECHOOPT=""
+fi
 
 outputFile() {
     if [ -f "$1" ]
@@ -192,59 +294,30 @@ outputFile() {
 }
 
 # Decide on the wrapper binary to use.
-# If a 32-bit wrapper binary exists then it will work on 32 or 64 bit
-#  platforms, if the 64-bit binary exists then the distribution most
-#  likely wants to use long names.  Otherwise, look for the default.
-# For macosx, we also want to look for universal binaries.
-WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
+# If the bits of the OS could be detected, we will try to look for the
+#  binary with the correct bits value.  If it doesn't exist, fall back
+#  and look for the 32-bit binary.  If that doesn't exist either then
+#  look for the default.
+WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-$DIST_BITS"
 if [ -x "$WRAPPER_TEST_CMD" ]
 then
     WRAPPER_CMD="$WRAPPER_TEST_CMD"
 else
-    if [ "$DIST_OS" = "macosx" ]
+    WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
+    if [ -x "$WRAPPER_TEST_CMD" ]
     then
-        WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-universal-32"
-        if [ -x "$WRAPPER_TEST_CMD" ]
-        then
-            WRAPPER_CMD="$WRAPPER_TEST_CMD"
-        else
-            WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-            if [ -x "$WRAPPER_TEST_CMD" ]
-            then
-                WRAPPER_CMD="$WRAPPER_TEST_CMD"
-            else
-                WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-universal-64"
-                if [ -x "$WRAPPER_TEST_CMD" ]
-                then
-                    WRAPPER_CMD="$WRAPPER_TEST_CMD"
-                else
-                    if [ ! -x "$WRAPPER_CMD" ]
-                    then
-                        echo "Unable to locate any of the following binaries:"
-                        outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
-                        outputFile "$WRAPPER_CMD-$DIST_OS-universal-32"
-                        outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-                        outputFile "$WRAPPER_CMD-$DIST_OS-universal-64"
-                        outputFile "$WRAPPER_CMD"
-                        exit 1
-                    fi
-                fi
-            fi
-        fi
+        WRAPPER_CMD="$WRAPPER_TEST_CMD"
     else
-        WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-        if [ -x "$WRAPPER_TEST_CMD" ]
+        if [ ! -x "$WRAPPER_CMD" ]
         then
-            WRAPPER_CMD="$WRAPPER_TEST_CMD"
-        else
-            if [ ! -x "$WRAPPER_CMD" ]
+            echo "Unable to locate any of the following binaries:"
+            outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-$DIST_BITS"
+            if [ ! "$DIST_BITS" = "32" ]
             then
-                echo "Unable to locate any of the following binaries:"
                 outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
-                outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-                outputFile "$WRAPPER_CMD"
-                exit 1
             fi
+            outputFile "$WRAPPER_CMD"
+            exit 1
         fi
     fi
 fi
@@ -266,6 +339,24 @@ else
    ANCHORPROP=wrapper.anchorfile=\"$ANCHORFILE\"
    IGNOREPROP=wrapper.ignore_signals=TRUE
 fi
+
+# Build the status file clause.
+if [ "X$DETAIL_STATUS$WAIT_FOR_STARTED_STATUS" = "X" ]
+then
+   STATUSPROP=
+else
+   STATUSPROP="wrapper.statusfile=\"$STATUSFILE\" wrapper.java.statusfile=\"$JAVASTATUSFILE\""
+fi
+
+if [ ! -n "$WAIT_FOR_STARTED_STATUS" ]
+then
+    WAIT_FOR_STARTED_STATUS=true
+fi
+
+if [ $WAIT_FOR_STARTED_STATUS = true ] ; then
+    DETAIL_STATUS=true
+fi
+
 
 # Build the lock file clause.  Only create a lock file if the lock directory exists on this platform.
 LOCKPROP=
@@ -296,7 +387,7 @@ checkUser() {
                 exit 1
             fi
         fi
-    
+
         if [ "`$IDEXE -u -n`" = "$RUN_AS_USER" ]
         then
             # Already running as the configured user.  Avoid password prompts by not calling su.
@@ -326,7 +417,15 @@ checkUser() {
 
         # Still want to change users, recurse.  This means that the user will only be
         #  prompted for a password once. Variables shifted by 1
-        su -m $RUN_AS_USER -c "\"$REALPATH\" $2"
+        # 
+        # Use "runuser" if this exists.  runuser should be used on RedHat in preference to su.
+        #
+        if test -f "/sbin/runuser"
+        then
+            /sbin/runuser - $RUN_AS_USER -c "\"$REALPATH\" $2"
+        else
+            su - $RUN_AS_USER -c "\"$REALPATH\" $2"
+        fi
 
         # Now that we are the original user again, we may need to clean up the lock file.
         if [ "X$LOCKPROP" != "X" ]
@@ -347,6 +446,7 @@ checkUser() {
 }
 
 getpid() {
+    pid=""
     if [ -f "$PIDFILE" ]
     then
         if [ -r "$PIDFILE" ]
@@ -359,7 +459,57 @@ getpid() {
                 #  common is during system startup after an unclean shutdown.
                 # The ps statement below looks for the specific wrapper command running as
                 #  the pid.  If it is not found then the pid file is considered to be stale.
-                pidtest=`$PSEXE -p $pid -o args | grep "$WRAPPER_CMD" | tail -1`
+                case "$DIST_OS" in
+                    'freebsd')
+                        pidtest=`$PSEXE -p $pid -o args | tail -1`
+                        if [ "X$pidtest" = "XCOMMAND" ]
+                        then 
+                            pidtest=""
+                        fi
+                        ;;
+                    'macosx')
+                        pidtest=`$PSEXE -ww -p $pid -o command | grep "$WRAPPER_CMD" | tail -1`
+                        ;;
+                    'solaris')
+                        if [ -f "/usr/bin/pargs" ]
+                        then
+                            pidtest=`pargs $pid | grep "$WRAPPER_CMD" | tail -1`
+                        else
+                            case "$PSEXE" in
+                            '/usr/ucb/ps')
+                                pidtest=`$PSEXE -auxww  $pid | grep "$WRAPPER_CMD" | tail -1`
+                                ;;
+                            '/usr/bin/ps')
+                                TRUNCATED_CMD=`$PSEXE -o comm -p $pid | tail -1`
+                                COUNT=`echo $TRUNCATED_CMD | wc -m`
+                                COUNT=`echo ${COUNT}`
+                                COUNT=`expr $COUNT - 1`
+                                TRUNCATED_CMD=`echo $WRAPPER_CMD | cut -c1-$COUNT`
+                                pidtest=`$PSEXE -o comm -p $pid | grep "$TRUNCATED_CMD" | tail -1`
+                                ;;
+                            '/bin/ps')
+                                TRUNCATED_CMD=`$PSEXE -o comm -p $pid | tail -1`
+                                COUNT=`echo $TRUNCATED_CMD | wc -m`
+                                COUNT=`echo ${COUNT}`
+                                COUNT=`expr $COUNT - 1`
+                                TRUNCATED_CMD=`echo $WRAPPER_CMD | cut -c1-$COUNT`
+                                pidtest=`$PSEXE -o comm -p $pid | grep "$TRUNCATED_CMD" | tail -1`
+                                ;;
+                            *)
+                                echo "Unsupported ps command $PSEXE"
+                                exit 1
+                                ;;
+                            esac
+                        fi
+                        ;;
+                    'hpux')
+                        pidtest=`$PSEXE -p $pid -x -o args | grep "$WRAPPER_CMD" | tail -1`
+                        ;;
+                    *)
+                        pidtest=`$PSEXE -p $pid -o args | grep "$WRAPPER_CMD" | tail -1`
+                        ;;
+                esac
+
                 if [ "X$pidtest" = "X" ]
                 then
                     # This is a stale pid file.
@@ -375,8 +525,57 @@ getpid() {
     fi
 }
 
+getstatus() {
+    STATUS=
+    if [ -f "$STATUSFILE" ]
+    then
+        if [ -r "$STATUSFILE" ]
+        then
+            STATUS=`cat "$STATUSFILE"`
+        fi
+    fi
+    if [ "X$STATUS" = "X" ]
+    then
+        STATUS="Unknown"
+    fi
+    
+    JAVASTATUS=
+    if [ -f "$JAVASTATUSFILE" ]
+    then
+        if [ -r "$JAVASTATUSFILE" ]
+        then
+            JAVASTATUS=`cat "$JAVASTATUSFILE"`
+        fi
+    fi
+    if [ "X$JAVASTATUS" = "X" ]
+    then
+        JAVASTATUS="Unknown"
+    fi
+}
+
 testpid() {
-    pid=`$PSEXE -p $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+    case "$DIST_OS" in
+     'solaris')
+        case "$PSEXE" in
+        '/usr/ucb/ps')
+            pid=`$PSEXE  $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+            ;;
+        '/usr/bin/ps')
+            pid=`$PSEXE -p $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+            ;;
+        '/bin/ps')
+            pid=`$PSEXE -p $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+            ;;
+        *)
+            echo "Unsupported ps command $PSEXE"
+            exit 1
+            ;;
+        esac
+        ;;
+    *)
+        pid=`$PSEXE -p $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1` 2>/dev/null
+        ;;
+    esac
     if [ "X$pid" = "X" ]
     then
         # Process is gone so remove the pid file.
@@ -385,40 +584,169 @@ testpid() {
     fi
 }
 
+launchdtrap() {
+    stopit
+    exit 
+}
+
+waitforwrapperstop() {
+    getpid
+    while [ "X$pid" != "X" ] ; do
+        sleep 1
+        getpid
+    done
+}
+
+launchdinternal() {
+    getpid
+    trap launchdtrap TERM 
+    if [ "X$pid" = "X" ]
+    then 
+        # The string passed to eval must handles spaces in paths correctly.
+        COMMAND_LINE="$CMDNICE \"$WRAPPER_CMD\" \"$WRAPPER_CONF\" wrapper.syslog.ident=\"$APP_NAME\" wrapper.pidfile=\"$PIDFILE\" wrapper.name=\"$APP_NAME\" wrapper.displayname=\"$APP_LONG_NAME\" wrapper.daemonize=TRUE $ANCHORPROP $IGNOREPROP $STATUSPROP $LOCKPROP"
+        eval $COMMAND_LINE
+    else
+        echo "$APP_LONG_NAME is already running."
+        exit 1
+    fi
+    # launchd expects that this script stay up and running so we need to do our own monitoring of the Wrapper process.
+    if [ $WAIT_FOR_STARTED_STATUS = true ]
+    then
+        waitforwrapperstop
+    fi
+}
+
 console() {
     echo "Running $APP_LONG_NAME..."
     getpid
     if [ "X$pid" = "X" ]
     then
+        trap '' 3
         # The string passed to eval must handles spaces in paths correctly.
-        COMMAND_LINE="$CMDNICE \"$WRAPPER_CMD\" \"$WRAPPER_CONF\" wrapper.syslog.ident=$APP_NAME wrapper.pidfile=\"$PIDFILE\" $ANCHORPROP $LOCKPROP"
+        COMMAND_LINE="$CMDNICE \"$WRAPPER_CMD\" \"$WRAPPER_CONF\" wrapper.syslog.ident=\"$APP_NAME\" wrapper.pidfile=\"$PIDFILE\" wrapper.name=\"$APP_NAME\" wrapper.displayname=\"$APP_LONG_NAME\" $ANCHORPROP $STATUSPROP $LOCKPROP"
         eval $COMMAND_LINE
     else
         echo "$APP_LONG_NAME is already running."
         exit 1
     fi
 }
+
+waitforjavastartup() {
+    getstatus
+    echo $ECHOOPT"Waiting for $APP_LONG_NAME..."
+    
+    # Wait until the timeout or we have something besides Unknown.
+    counter=15
+    while [ "$JAVASTATUS" = "Unknown" -a $counter -gt 0 -a -n "$JAVASTATUS" ] ; do
+        echo $ECHOOPT"."
+        sleep 1
+        getstatus
+        counter=`expr $counter - 1`
+    done
+    
+    if [ -n "$WAIT_FOR_STARTED_TIMEOUT" ] ; then 
+        counter=$WAIT_FOR_STARTED_TIMEOUT
+    else
+        counter=120
+    fi
+    while [ "$JAVASTATUS" != "STARTED" -a "$JAVASTATUS" != "Unknown" -a $counter -gt 0 -a -n "$JAVASTATUS" ] ; do
+        echo $ECHOOPT"."
+        sleep 1
+        getstatus
+        counter=`expr $counter - 1`
+    done
+    if [ "X$ECHOOPT" != "X" ] ; then
+        echo ""
+    fi
+    echo "$APP_LONG_NAME started."
+}
  
+startwait() {
+    if [ $WAIT_FOR_STARTED_STATUS = true ]
+    then
+        waitforjavastartup
+    fi
+    # Sleep for a few seconds to allow for intialization if required 
+    #  then test to make sure we're still running.
+    #
+    i=0
+    while [ $i -lt $WAIT_AFTER_STARTUP ]
+    do
+        sleep 1
+        echo $ECHOOPT"."
+        i=`expr $i + 1`
+    done
+    if [ $WAIT_AFTER_STARTUP -gt 0 ]
+    then
+        getpid
+        if [ "X$pid" = "X" ]
+        then
+            echo " WARNING: $APP_LONG_NAME may have failed to start."
+            exit 1
+        else
+            echo " running ($pid)."
+        fi
+    else 
+        echo ""
+    fi
+}
+
+macosxstart() {
+    # The daemon has been installed.
+    echo "Starting $APP_LONG_NAME.  Detected Mac OSX and installed launchd daemon."
+    if [ `id | sed 's/^uid=//;s/(.*$//'` != "0" ] ; then       
+        echo "Must be root to perform this action."
+        exit 1
+    fi
+    
+    getpid
+    if [ "X$pid" != "X" ] ; then
+        echo "$APP_LONG_NAME is already running."
+        exit 1
+    fi
+    
+    # If the daemon was just installed, it may not be loaded.
+    LOADED_PLIST=`launchctl list | grep ${APP_PLIST_BASE}`
+    if [ "X${LOADED_PLIST}" = "X" ] ; then
+        launchctl load /Library/LaunchDaemons/${APP_PLIST}
+    fi
+    # If launchd is set to run the daemon already at Load, we don't need to call start
+    getpid
+    if [ "X$pid" == "X" ] ; then
+        launchctl start ${APP_PLIST_BASE}
+    fi
+    
+    startwait
+}
+
 start() {
-    echo "Starting $APP_LONG_NAME..."
+    echo $ECHOOPT"Starting $APP_LONG_NAME..."
     getpid
     if [ "X$pid" = "X" ]
     then
         # The string passed to eval must handles spaces in paths correctly.
-        COMMAND_LINE="$CMDNICE \"$WRAPPER_CMD\" \"$WRAPPER_CONF\" wrapper.syslog.ident=$APP_NAME wrapper.pidfile=\"$PIDFILE\" wrapper.daemonize=TRUE $ANCHORPROP $IGNOREPROP $LOCKPROP"
+        COMMAND_LINE="$CMDNICE \"$WRAPPER_CMD\" \"$WRAPPER_CONF\" wrapper.syslog.ident=\"$APP_NAME\" wrapper.pidfile=\"$PIDFILE\" wrapper.name=\"$APP_NAME\" wrapper.displayname=\"$APP_LONG_NAME\" wrapper.daemonize=TRUE $ANCHORPROP $IGNOREPROP $STATUSPROP $LOCKPROP"
         eval $COMMAND_LINE
     else
         echo "$APP_LONG_NAME is already running."
         exit 1
     fi
+    
+    startwait
 }
  
 stopit() {
+    # $1 exit if down flag
+    
     echo "Stopping $APP_LONG_NAME..."
     getpid
     if [ "X$pid" = "X" ]
     then
         echo "$APP_LONG_NAME was not running."
+        if [ "X$1" = "X1" ]
+        then
+            exit 1
+        fi
     else
         if [ "X$IGNORE_SIGNALS" = "X" ]
         then
@@ -482,8 +810,322 @@ status() {
         echo "$APP_LONG_NAME is not running."
         exit 1
     else
-        echo "$APP_LONG_NAME is running ($pid)."
+        if [ "X$DETAIL_STATUS" = "X" ]
+        then
+            echo "$APP_LONG_NAME is running (PID:$pid)."
+        else
+            getstatus
+            echo "$APP_LONG_NAME is running (PID:$pid, Wrapper:$STATUS, Java:$JAVASTATUS)"
+        fi
         exit 0
+    fi
+}
+
+installdaemon() {
+    if [ `id | sed 's/^uid=//;s/(.*$//'` != "0" ] ; then       
+        echo "Must be root to perform this action."
+        exit 1
+    else 
+        if [ "$DIST_OS" = "solaris" ] ; then
+            echo "Detected Solaris:"
+            if [ -f /etc/init.d/$APP_NAME ] ; then
+                echo " The $APP_LONG_NAME daemon is already installed."
+                exit 1
+            else
+                echo " Installing the $APP_LONG_NAME daemon.."
+                ln -s $REALPATH /etc/init.d/$APP_NAME
+                ln -s /etc/init.d/$APP_NAME /etc/rc3.d/K20$APP_NAME
+                ln -s /etc/init.d/$APP_NAME /etc/rc3.d/S20$APP_NAME
+            fi
+        elif [ "$DIST_OS" = "linux" ] ; then
+            if [ -f /etc/redhat-release -o -f /etc/redhat_version -o -f /etc/fedora-release ]  ; then
+                echo "Detected RHEL or Fedora:"                     
+                if [ -f /etc/init.d/$APP_NAME ] ; then
+                    echo " The $APP_LONG_NAME daemon is already installed."
+                    exit 1
+                else
+                    echo " Installing the $APP_LONG_NAME daemon.."
+                    ln -s $REALPATH /etc/init.d/$APP_NAME
+                    /sbin/chkconfig --add $APP_NAME
+                    /sbin/chkconfig $APP_NAME on
+                fi
+            elif [ -f /etc/SuSE-release ] ; then
+                echo "Detected SuSE or SLES:"
+                if [ -f /etc/init.d/$APP_NAME ] ; then
+                    echo " The $APP_LONG_NAME daemon is already installed."
+                    exit 1
+                else
+                    echo " Installing the $APP_LONG_NAME daemon.."
+                    ln -s $REALPATH /etc/init.d/$APP_NAME
+                    insserv /etc/init.d/$APP_NAME
+                fi
+            elif [ -f /etc/lsb-release ] ; then
+                echo "Detected Ubuntu:"
+                if [ -f /etc/init.d/$APP_NAME ] ; then
+                    echo " The $APP_LONG_NAME daemon is already installed."
+                    exit 1
+                else
+                    echo " Installing the $APP_LONG_NAME daemon.."
+                    ln -s $REALPATH /etc/init.d/$APP_NAME
+                    update-rc.d $APP_NAME defaults
+                fi
+            else
+                echo "Detected Linux:"                    
+                if [ -f /etc/init.d/$APP_NAME ] ; then
+                    echo " The $APP_LONG_NAME daemon is already installed."
+                    exit 1
+                else
+                    echo " Installing the $APP_LONG_NAME daemon.."
+                    ln -s $REALPATH /etc/init.d/$APP_NAME
+                    ln -s /etc/init.d/$APP_NAME /etc/rc3.d/K20$APP_NAME 
+                    ln -s /etc/init.d/$APP_NAME /etc/rc3.d/S20$APP_NAME
+                    ln -s /etc/init.d/$APP_NAME /etc/rc5.d/S20$APP_NAME
+                    ln -s /etc/init.d/$APP_NAME /etc/rc5.d/K20$APP_NAME
+                fi
+            fi
+        elif [ "$DIST_OS" = "hpux" ] ; then     
+            echo "Detected HP-UX:"                 
+            if [ -f /sbin/init.d/$APP_NAME ] ; then
+                echo " The $APP_LONG_NAME daemon is already installed."
+                exit 1
+            else
+                echo " Installing the $APP_LONG_NAME daemon.."
+                ln -s $REALPATH /sbin/init.d/$APP_NAME
+                ln -s /sbin/init.d/$APP_NAME /sbin/rc3.d/K20$APP_NAME
+                ln -s /sbin/init.d/$APP_NAME /sbin/rc3.d/S20$APP_NAME
+            fi
+        elif [ "$DIST_OS" = "aix" ] ; then
+            echo "Detected AIX:"
+            if [ -f /etc/rc.d/init.d/$APP_NAME ] ; then
+                echo " The $APP_LONG_NAME daemon is already installed."
+                exit 1
+            else 
+                echo " Installing the $APP_LONG_NAME daemon.."
+                ln -s $REALPATH /etc/rc.d/init.d/$APP_NAME
+                ln -s /etc/rc.d/init.d/$APP_NAME /etc/rc.d/rc2.d/S20$APP_NAME
+                ln -s /etc/rc.d/init.d/$APP_NAME /etc/rc.d/rc2.d/K20$APP_NAME
+            fi
+        elif [ "$DIST_OS" = "freebsd" ] ; then
+            echo "Detected FreeBSD:"                 
+            if [ -f /etc/rc.d/$APP_NAME ] ; then
+                echo " The $APP_LONG_NAME daemon is already installed."
+                exit 1
+            else
+                echo " Installing the $APP_LONG_NAME daemon.."
+                sed -i .bak "/${APP_NAME}_enable=\"YES\"/d" /etc/rc.conf
+                if [ -f ${REALDIR}/${APP_NAME}.install ] ; then
+                    ln -s ${REALDIR}/${APP_NAME}.install /etc/rc.d/$APP_NAME
+                else
+                    echo '#!/bin/sh' > /etc/rc.d/$APP_NAME
+                    echo "#" >> /etc/rc.d/$APP_NAME
+                    echo "# PROVIDE: $APP_NAME" >> /etc/rc.d/$APP_NAME
+                    echo "# REQUIRE: NETWORKING" >> /etc/rc.d/$APP_NAME
+                    echo "# KEYWORD: shutdown" >> /etc/rc.d/$APP_NAME
+                    echo ". /etc/rc.subr" >> /etc/rc.d/$APP_NAME
+                    echo "name=\"$APP_NAME\"" >> /etc/rc.d/$APP_NAME
+                    echo "rcvar=\`set_rcvar\`" >> /etc/rc.d/$APP_NAME
+                    echo "command=\"${REALDIR}/${APP_NAME}\"" >> /etc/rc.d/$APP_NAME
+                    echo 'start_cmd="${name}_start"' >> /etc/rc.d/$APP_NAME
+                    echo 'load_rc_config $name' >> /etc/rc.d/$APP_NAME
+                    echo 'status_cmd="${name}_status"' >> /etc/rc.d/$APP_NAME
+                    echo 'stop_cmd="${name}_stop"' >> /etc/rc.d/$APP_NAME
+                    echo "${APP_NAME}_status() {" >> /etc/rc.d/$APP_NAME
+                    echo '${command} status' >> /etc/rc.d/$APP_NAME
+                    echo '}' >> /etc/rc.d/$APP_NAME
+                    echo "${APP_NAME}_stop() {" >> /etc/rc.d/$APP_NAME
+                    echo '${command} stop' >> /etc/rc.d/$APP_NAME
+                    echo '}' >> /etc/rc.d/$APP_NAME
+                    echo "${APP_NAME}_start() {" >> /etc/rc.d/$APP_NAME
+                    echo '${command} start' >> /etc/rc.d/$APP_NAME
+                    echo '}' >> /etc/rc.d/$APP_NAME
+                    echo 'run_rc_command "$1"' >> /etc/rc.d/$APP_NAME                     
+                fi
+                echo "${APP_NAME}_enable=\"YES\"" >> /etc/rc.conf
+                chmod 555 /etc/rc.d/$APP_NAME
+            fi
+        elif [ "$DIST_OS" = "macosx" ] ; then
+            echo "Detected Mac OSX:"
+            if [ -f /Library/LaunchDaemons/${APP_PLIST} ] ; then
+                echo " The $APP_LONG_NAME daemon is already installed."
+                exit 1
+            else
+                echo " Installing the $APP_LONG_NAME daemon.."
+                if [ -f ${REALDIR}/${APP_PLIST} ] ; then
+                    ln -s ${REALDIR}/${APP_PLIST} /Library/LaunchDaemons/${APP_PLIST}
+                else
+                    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > /Library/LaunchDaemons/${APP_PLIST}
+                    echo "<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\"" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "<plist version=\"1.0\">" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "    <dict>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        <key>Label</key>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        <string>${APP_PLIST_BASE}</string>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        <key>ProgramArguments</key>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        <array>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "            <string>${REALDIR}/${APP_NAME}</string>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "            <string>launchdinternal</string>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        </array>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        <key>OnDemand</key>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        <true/>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        <key>RunAtLoad</key>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "        <true/>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    if [ "X$RUN_AS_USER" != "X" ] ; then
+                        echo "        <key>UserName</key>" >> /Library/LaunchDaemons/${APP_PLIST}
+                        echo "        <string>${RUN_AS_USER}</string>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    fi
+                    echo "    </dict>" >> /Library/LaunchDaemons/${APP_PLIST}
+                    echo "</plist>" >> /Library/LaunchDaemons/${APP_PLIST}
+                fi
+                chmod 555 /Library/LaunchDaemons/${APP_PLIST}
+            fi
+        elif [ "$DIST_OS" = "zos" ] ; then
+            echo "Detected z/OS:"
+            if [ -f /etc/rc.bak ] ; then
+                echo " The $APP_LONG_NAME daemon is already installed."
+                exit 1
+            else
+                echo " Installing the $APP_LONG_NAME daemon.."
+                cp /etc/rc /etc/rc.bak
+                sed  "s:echo /etc/rc script executed, \`date\`::g" /etc/rc.bak > /etc/rc
+                echo "_BPX_JOBNAME='${APP_NAME}' ${REALDIR}/${APP_NAME} start" >>/etc/rc
+                echo '/etc/rc script executed, `date`' >>/etc/rc
+            fi
+        else
+            echo "Install not currently supported for $DIST_OS"
+            exit 1
+        fi
+    fi
+}
+
+removedaemon() {
+    if [ `id | sed 's/^uid=//;s/(.*$//'` != "0" ] ; then       
+        echo "Must be root to perform this action."
+        exit 1
+    else
+        stopit "0"
+        if [ "$DIST_OS" = "solaris" ] ; then
+            echo "Detected Solaris:"
+            if [ -f /etc/init.d/$APP_NAME ] ; then
+                echo " Removing $APP_LONG_NAME daemon..."
+                for i in /etc/rc3.d/S20$APP_NAME /etc/rc3.d/K20$APP_NAME /etc/init.d/$APP_NAME
+                do
+                    rm -f $i
+                done
+            else
+                echo " The $APP_LONG_NAME daemon is not currently installed."
+                exit 1
+            fi
+        elif [ "$DIST_OS" = "linux" ] ; then
+            if [ -f /etc/redhat-release -o -f /etc/redhat_version -o -f /etc/fedora-release ] ; then
+                echo "Detected RHEL or Fedora:"
+                if [ -f /etc/init.d/$APP_NAME ] ; then
+                    echo " Removing $APP_LONG_NAME daemon..."
+                    /sbin/chkconfig $APP_NAME off
+                    /sbin/chkconfig --del $APP_NAME
+                    rm -f /etc/init.d/$APP_NAME
+                else
+                    echo " The $APP_LONG_NAME daemon is not currently installed."
+                    exit 1
+                fi
+            elif [ -f /etc/SuSE-release ] ; then
+                echo "Detected SuSE or SLES:"
+                if [ -f /etc/init.d/$APP_NAME ] ; then
+                    echo " Removing $APP_LONG_NAME daemon..."
+                    insserv -r /etc/init.d/$APP_NAME
+                    rm -f /etc/init.d/$APP_NAME
+                else
+                    echo " The $APP_LONG_NAME daemon is not currently installed."
+                    exit 1
+                fi
+            elif [ -f /etc/lsb-release ] ; then
+                echo "Detected Ubuntu:"
+                if [ -f /etc/init.d/$APP_NAME ] ; then
+                    echo " Removing $APP_LONG_NAME daemon..."
+                    update-rc.d -f $APP_NAME remove
+                    rm -f /etc/init.d/$APP_NAME
+                else
+                    echo " The $APP_LONG_NAME daemon is not currently installed."
+                    exit 1
+                fi
+            else
+                echo "Detected Linux:"
+                if [ -f /etc/init.d/$APP_NAME ] ; then
+                    echo " Removing $APP_LONG_NAME daemon..."
+                    for i in /etc/rc3.d/K20$APP_NAME /etc/rc5.d/K20$APP_NAME /etc/rc3.d/S20$APP_NAME /etc/init.d/$APP_NAME /etc/rc5.d/S20$APP_NAME
+                    do
+                        rm -f $i
+                    done
+                else
+                    echo " The $APP_LONG_NAME daemon is not currently installed."
+                    exit 1
+                fi
+            fi
+        elif [ "$DIST_OS" = "hpux" ] ; then
+            echo "Detected HP-UX:"
+            if [ -f /sbin/init.d/$APP_NAME ] ; then
+                echo " Removing $APP_LONG_NAME daemon..."
+                for i in /sbin/rc3.d/K20$APP_NAME /sbin/rc3.d/S20$APP_NAME /sbin/init.d/$APP_NAME
+                do
+                    rm -f $i
+                done
+            else
+                echo " The $APP_LONG_NAME daemon is not currently installed."
+                exit 1
+            fi
+        elif [ "$DIST_OS" = "aix" ] ; then
+            echo "Detected AIX:"
+            if [ -f /etc/rc.d/init.d/$APP_NAME ] ; then
+                echo " Removing $APP_LONG_NAME daemon..."
+                for i in /etc/rc.d/rc2.d/S20$APP_NAME /etc/rc.d/rc2.d/K20$APP_NAME /etc/rc.d/init.d/$APP_NAME
+                do
+                    rm -f $i
+                done
+            else
+                echo " The $APP_LONG_NAME daemon is not currently installed."
+                exit 1
+            fi
+        elif [ "$DIST_OS" = "freebsd" ] ; then
+            echo "Detected FreeBSD:"
+            if [ -f /etc/rc.d/$APP_NAME ] ; then
+                echo " Removing $APP_LONG_NAME daemon..."
+                for i in /etc/rc.d/$APP_NAME
+                do
+                    rm -f $i
+                done
+                sed -i .bak "/${APP_NAME}_enable=\"YES\"/d" /etc/rc.conf
+            else
+                echo " The $APP_LONG_NAME daemon is not currently installed."
+                exit 1
+            fi
+        elif [ "$DIST_OS" = "macosx" ] ; then
+            echo "Detected Mac OSX:"
+            if [ -f "/Library/LaunchDaemons/${APP_PLIST}" ] ; then
+                echo " Removing $APP_LONG_NAME daemon..."
+                # Make sure the plist is installed
+                LOADED_PLIST=`launchctl list | grep ${APP_PLIST_BASE}`
+                if [ "X${LOADED_PLIST}" != "X" ] ; then
+                    launchctl unload /Library/LaunchDaemons/${APP_PLIST}
+                fi
+                rm -f /Library/LaunchDaemons/${APP_PLIST}
+            else
+                echo " The $APP_LONG_NAME daemon is not currently installed."
+                exit 1
+            fi
+        elif [ "$DIST_OS" = "zos" ] ; then
+            echo "Detected z/OS:"
+            if [ -f /etc/rc.bak ] ; then
+                echo " Removing $APP_LONG_NAME daemon..."
+                cp /etc/rc /etc/rc.bak
+                sed  "s/_BPX_JOBNAME=\'APP_NAME\'.*//g" /etc/rc.bak > /etc/rc
+                rm /etc/rc.bak
+            else
+                echo " The $APP_LONG_NAME daemon is not currently installed."
+                exit 1
+            fi
+        else
+            echo "Remove not currently supported for $DIST_OS"
+            exit 1
+        fi
     fi
 }
 
@@ -493,7 +1135,6 @@ dump() {
     if [ "X$pid" = "X" ]
     then
         echo "$APP_LONG_NAME was not running."
-
     else
         kill -3 $pid
 
@@ -507,6 +1148,40 @@ dump() {
     fi
 }
 
+# Used by HP-UX init scripts.
+startmsg() {
+    getpid
+    if [ "X$pid" = "X" ]
+    then
+        echo "Starting $APP_LONG_NAME... (Wrapper:Stopped)"
+    else
+        if [ "X$DETAIL_STATUS" = "X" ]
+        then
+            echo "Starting $APP_LONG_NAME... (Wrapper:Running)"
+        else
+            getstatus
+            echo "Starting $APP_LONG_NAME... (Wrapper:$STATUS, Java:$JAVASTATUS)"
+        fi
+    fi
+}
+
+# Used by HP-UX init scripts.
+stopmsg() {
+    getpid
+    if [ "X$pid" = "X" ]
+    then
+        echo "Stopping $APP_LONG_NAME... (Wrapper:Stopped)"
+    else
+        if [ "X$DETAIL_STATUS" = "X" ]
+        then
+            echo "Stopping $APP_LONG_NAME... (Wrapper:Running)"
+        else
+            getstatus
+            echo "Stopping $APP_LONG_NAME... (Wrapper:$STATUS, Java:$JAVASTATUS)"
+        fi
+    fi
+}
+
 case "$1" in
 
     'console')
@@ -515,18 +1190,28 @@ case "$1" in
         ;;
 
     'start')
-        checkUser touchlock $1
-        start
+        if [ "$DIST_OS" = "macosx" -a -f "/Library/LaunchDaemons/${APP_PLIST}" ] ; then
+            macosxstart
+        else
+            checkUser touchlock $1
+            start
+        fi
         ;;
 
     'stop')
         checkUser "" $1
-        stopit
+        stopit "0"
         ;;
 
     'restart')
         checkUser touchlock $1
-        stopit
+        stopit "0"
+        start
+        ;;
+
+    'condrestart')
+        checkUser touchlock $1
+        stopit "1"
         start
         ;;
 
@@ -535,13 +1220,39 @@ case "$1" in
         status
         ;;
 
+    'install')
+        installdaemon
+        ;;
+
+    'remove')
+        removedaemon
+        ;;
+
     'dump')
         checkUser "" $1
         dump
         ;;
 
+    'start_msg')
+        # Internal command called by launchd on HP-UX.
+        checkUser "" $1
+        startmsg
+        ;;
+
+    'stop_msg')
+        # Internal command called by launchd on HP-UX.
+        checkUser "" $1
+        stopmsg
+        ;;
+
+    'launchdinternal')
+        # Internal command called by launchd on Max OSX.
+        # We do not want to call checkUser here as it is handled in the launchd plist file.  Doing it here would confuse launchd.
+        launchdinternal
+        ;;
+
     *)
-        echo "Usage: $0 { console | start | stop | restart | status | dump }"
+        echo "Usage: $0 { console | start | stop | restart | condrestart | status | install | remove | dump }"
         exit 1
         ;;
 esac

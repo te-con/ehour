@@ -32,6 +32,13 @@ div.SidePanelLoc {
 	float: left;
 }
 
+div.AdminSidePanelLocation {
+	width: 100px;
+	margin: 0 0 0 5px;
+	padding: 0;
+	float: left;
+}
+
 div.ContentPanelLoc {
 	margin: 0;
 	padding: 0;
@@ -482,33 +489,12 @@ div.NavHeader div.Logo {
 
 div.NavHeader div.Navigation {
 	position: absolute;
-	bottom: 2px;
+	bottom: 0px;
 	left: 250px;
 	font: 1.4em Geneva, Arial, Helvetica, sans-serif;
 	color: white;
 }
 
-div.NavHeader div.Navigation a:link {
-	color: white;
-	font-weight: normal;
-	text-decoration: none;
-}
-
-div.NavHeader div.Navigation a:visited {
-	color: white;
-	font-weight: normal;
-	text-decoration: none;
-}
-
-div.NavHeader div.Navigation a:hover {
-	color: #ffb100;
-	text-decoration: none;
-}
-
-div.NavHeader div.Navigation a:active {
-	color: #ef842d;
-	text-decoration: none
-}
 
 div.NavHeader div.LoadingSpinner {
 	float: right;
@@ -531,7 +517,7 @@ div.LoggedInAs a:link,div.LoggedInAs a:visited {
 
 .navColumn {
 	float: left;
-	width: 250px;
+	width: 150px;
 	margin-left: 5px;
 }
 
@@ -619,7 +605,7 @@ a.bluebutton:active span {
 /* Fading Tooltips By Dustin Diaz*/
 body div#toolTip {
 	position: absolute;
-	z-index: 1000;
+	-index: 1000;
 	width: 220px;
 	background: #acc9e6;
 	border: 2px double #edf5fc;

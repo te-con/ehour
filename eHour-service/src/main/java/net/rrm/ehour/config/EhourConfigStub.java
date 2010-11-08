@@ -18,7 +18,9 @@ package net.rrm.ehour.config;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.TimeZone;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.AuditType;
 
 import org.apache.commons.lang.StringUtils;
@@ -27,7 +29,7 @@ import org.apache.commons.lang.StringUtils;
  * Stub for config 
  **/
 
-public class EhourConfigStub implements EhourConfig, Serializable
+public class EhourConfigStub  implements EhourConfig, Serializable
 {
 	/**
 	 * 
@@ -50,6 +52,11 @@ public class EhourConfigStub implements EhourConfig, Serializable
 	private String		smtpPort = "25";
 	private int			firstDayOfWeek = 1;
 	private AuditType	auditType;
+	
+	public TimeZone getTzAsTimeZone()
+	{
+		return EhourConfigUtil.getTzAsTimeZone(this);
+	}
 	
 	/**
 	 * @return the availableTranslations

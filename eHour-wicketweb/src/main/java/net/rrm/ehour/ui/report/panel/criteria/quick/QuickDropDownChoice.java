@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.report.panel.criteria.quick;
 
 import java.util.List;
 
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxUtil;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -30,15 +30,11 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
  * Dropdown choice which generates an event when the dropdown was changed 
  **/
 
-public class QuickDropDownChoice extends DropDownChoice
+public class QuickDropDownChoice<T extends QuickPeriod> extends DropDownChoice<T>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
-	@SuppressWarnings("unchecked")
-	public QuickDropDownChoice(final String id, final List data, final IChoiceRenderer renderer)
+	public QuickDropDownChoice(final String id, final List<T> data, final IChoiceRenderer<T> renderer)
 	{
 		super(id, data, renderer);
 
@@ -51,7 +47,7 @@ public class QuickDropDownChoice extends DropDownChoice
 			{
 				AjaxEvent event = new AjaxEvent(QuickDateAjaxEventType.ADMIN_QUICK_DATE_CHANGED);
 				
-				AjaxUtil.publishAjaxEvent(QuickDropDownChoice.this, event);
+				EventPublisher.publishAjaxEvent(QuickDropDownChoice.this, event);
 			}
 		});
 	}

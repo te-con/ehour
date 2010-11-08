@@ -1,0 +1,117 @@
+
+# /
+/.metadata
+/target
+/.mylar
+
+# /eHour-audit/
+/eHour-audit/target
+/eHour-audit/.classpath
+/eHour-audit/.project
+/eHour-audit/.settings
+/eHour-audit/eHour-audit.iml
+/eHour-audit/.springBeans
+
+# /eHour-common/
+/eHour-common/target
+/eHour-common/.settings
+/eHour-common/.classpath
+/eHour-common/.project
+
+# /eHour-persistence/
+/eHour-persistence/target
+/eHour-persistence/.classpath
+/eHour-persistence/.project
+/eHour-persistence/.settings
+/eHour-persistence/ehourDb
+
+# /eHour-persistence-derby/
+/eHour-persistence-derby/target
+/eHour-persistence-derby/.settings
+/eHour-persistence-derby/.classpath
+/eHour-persistence-derby/.project
+
+# /eHour-persistence-mysql/
+/eHour-persistence-mysql/.settings
+/eHour-persistence-mysql/target
+/eHour-persistence-mysql/.classpath
+/eHour-persistence-mysql/.project
+
+# /eHour-persistence-postgresql/
+/eHour-persistence-postgresql/.settings
+/eHour-persistence-postgresql/target
+/eHour-persistence-postgresql/.classpath
+/eHour-persistence-postgresql/.project
+
+# /eHour-service/
+/eHour-service/.clover
+/eHour-service/target
+/eHour-service/ehourDb
+/eHour-service/ehour
+/eHour-service/.classpath
+/eHour-service/.djunitplugin
+/eHour-service/.packaging
+/eHour-service/.project
+/eHour-service/.settings
+/eHour-service/.springBeans
+/eHour-service/derby.log
+/eHour-service/ehour_full.sql
+/eHour-service/eHour-service.iml
+
+# /eHour-standalone/
+/eHour-standalone/ehourDb
+/eHour-standalone/target
+/eHour-standalone/bin
+/eHour-standalone/.classpath
+/eHour-standalone/.project
+/eHour-standalone/.settings
+/eHour-standalone/derby.log
+/eHour-standalone/ehour
+/eHour-standalone/eHour-standalone.iml
+
+# /eHour-web/
+/eHour-web/target
+/eHour-web/work
+/eHour-web/.classpath
+/eHour-web/.settings
+/eHour-web/.project
+/eHour-web/.tomcatplugin
+/eHour-web/eHour-web.iml
+
+# /eHour-web/src/main/webapp/img/
+/eHour-web/src/main/webapp/img/Thumbs.db
+
+# /eHour-web/src/main/webapp/img/assignment/
+/eHour-web/src/main/webapp/img/assignment/Thumbs.db
+
+# /eHour-web/src/main/webapp/img/bg_blue_grey/
+/eHour-web/src/main/webapp/img/bg_blue_grey/Thumbs.db
+
+# /eHour-web/src/main/webapp/img/comment/
+/eHour-web/src/main/webapp/img/comment/Thumbs.db
+
+# /eHour-web/src/main/webapp/img/grey_frame/
+/eHour-web/src/main/webapp/img/grey_frame/Thumbs.db
+
+# /eHour-web/src/main/webapp/img/icons/
+/eHour-web/src/main/webapp/img/icons/Thumbs.db
+
+# /eHour-web/src/main/webapp/img/print/
+/eHour-web/src/main/webapp/img/print/Thumbs.db
+
+# /eHour-web/src/main/webapp/img/tabs/
+/eHour-web/src/main/webapp/img/tabs/Thumbs.db
+
+# /eHour-wicketweb/
+/eHour-wicketweb/target
+/eHour-wicketweb/work
+/eHour-wicketweb/.settings
+/eHour-wicketweb/.checkstyle
+/eHour-wicketweb/.classpath
+/eHour-wicketweb/.project
+/eHour-wicketweb/.wicketprops
+/eHour-wicketweb/.springBeans
+/eHour-wicketweb/.tomcatplugin
+/eHour-wicketweb/.clover
+/eHour-wicketweb/eHour-wicketweb.iml
+/RemoteSystemsTempFiles/

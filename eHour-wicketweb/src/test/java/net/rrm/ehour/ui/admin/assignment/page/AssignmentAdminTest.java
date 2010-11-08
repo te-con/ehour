@@ -33,14 +33,9 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.junit.Test;
 
-
-/**
- * TODO 
- **/
 
 public class AssignmentAdminTest extends AbstractSpringWebAppTester
 {
@@ -81,7 +76,7 @@ public class AssignmentAdminTest extends AbstractSpringWebAppTester
 		
 		replay(customerService);
 		
-		expect(userService.getUsers(new UserRole(EhourConstants.ROLE_CONSULTANT)))
+		expect(userService.getUsers(UserRole.CONSULTANT))
 				.andReturn(new ArrayList<User>());
 
 		replay(userService);

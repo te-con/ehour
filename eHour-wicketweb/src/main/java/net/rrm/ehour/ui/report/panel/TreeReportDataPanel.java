@@ -17,18 +17,16 @@
 package net.rrm.ehour.ui.report.panel;
 
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.common.component.ConverterLabel;
+import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
-import net.rrm.ehour.ui.common.model.CurrencyModel;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.report.ReportColumn;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -97,7 +95,7 @@ public class TreeReportDataPanel extends Panel
 			ResourceReference excelResource = new ResourceReference(excelResourceName);
 			ValueMap params = new ValueMap();
 			params.add("reportId", reportId);
-			ResourceLink excelLink = new ResourceLink("excelLink", excelResource, params);
+			ResourceLink<Void> excelLink = new ResourceLink<Void>("excelLink", excelResource, params);
 			header.add(excelLink);
 
 			EhourConfig config = EhourWebSession.getSession().getEhourConfig();
@@ -145,8 +143,6 @@ public class TreeReportDataPanel extends Panel
 		int				id = 0;
 		boolean			totalLabelAdded = false;
 
-		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-		
 		// add cells
 		for (int column = 0; column < reportConfig.getReportColumns().length; column++, id++)
 		{
@@ -156,11 +152,11 @@ public class TreeReportDataPanel extends Panel
 				
 				if (reportConfig.getReportColumns()[column].getColumnType() == ReportColumn.ColumnType.HOUR)
 				{
-					label = new Label(Integer.toString(id), new FloatModel(report.getTotalHours() , config));
+					label = new Label(Integer.toString(id), new Model<Float>(report.getTotalHours()));
 				}
 				else if (reportConfig.getReportColumns()[column].getColumnType() == ReportColumn.ColumnType.TURNOVER)
 				{
-					label = new Label(Integer.toString(id), new CurrencyModel(report.getTotalTurnover(), config));
+					label = new CurrencyLabel(Integer.toString(id), report.getTotalTurnover());
 					label.setEscapeModelStrings(false);
 				}
 				else if (!totalLabelAdded)
@@ -191,70 +187,12 @@ public class TreeReportDataPanel extends Panel
 	{
 		List<TreeReportElement> elements = (List<TreeReportElement>)report.getReportData().getReportElements();
 		
-		DataView dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
+		DataView<TreeReportElement> dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
 		dataView.setOutputMarkupId(true);
 		dataView.setItemsPerPage(20);
 		
 		parent.add(new HoverPagingNavigator("navigator", dataView));
 		parent.add(dataView);
-	}
-
-	/**
-	 * Get a model instance based on the ReportColumn arguments
-	 * @param columnHeader
-	 * @return
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 */
-	@SuppressWarnings("unchecked")
-	private IModel getModelInstance(ReportColumn columnHeader) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
-	{
-		IModel model = null;
-		
-		if (columnHeader.getConversionModelConstructorParams() == null)
-		{
-			model = columnHeader.getConversionModel().newInstance();
-		}
-		else
-		{
-			Constructor[]	constructors = columnHeader.getConversionModel().getConstructors();
-			
-			for (Constructor constructor : constructors)
-			{
-				// when no parameter type classes are defined, match only on parameter length,
-				// otherwise check the supplied parameter types against the constructor's types
-				if (constructor.getParameterTypes().length == columnHeader.getConversionModelConstructorParams().length
-						&& (columnHeader.getConversionModelConstructorParamTypes() == null || 
-								matchConstructorParamTypes(constructor.getParameterTypes(), columnHeader.getConversionModelConstructorParamTypes())))
-				{
-					model = (IModel)constructor.newInstance(columnHeader.getConversionModelConstructorParams());
-					break;
-				}
-			}
-		}
-		
-		return model;
-	}
-
-	/**
-	 * Check if the constructor parameters match the defined parameters
-	 * @param constructParamTypes
-	 * @param definedParams
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	private boolean matchConstructorParamTypes(Class[] constructParamTypes, Class[] definedParams)
-	{
-		boolean match = true;
-		
-		for (int i = 0; i < constructParamTypes.length; i++)
-		{
-			match &= definedParams[i].getName().equals(constructParamTypes[i].getName());
-		}
-		
-		return match;
 	}
 	
 	
@@ -318,19 +256,14 @@ public class TreeReportDataPanel extends Panel
 		}
 	}
 
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class TreeReportDataView extends DataView
+	private class TreeReportDataView extends DataView<TreeReportElement>
 	{
 		private static final long serialVersionUID = 1L;
 		
 		private int previousForPage = -1;
 		private List<Serializable> previousCellValues;
 		
-		public TreeReportDataView(String id, IDataProvider dataProvider)
+		public TreeReportDataView(String id, IDataProvider<TreeReportElement> dataProvider)
 		{
 			super(id, dataProvider);
 		}	
@@ -340,7 +273,7 @@ public class TreeReportDataPanel extends Panel
 		 * @see org.apache.wicket.markup.repeater.RefreshingView#populateItem(org.apache.wicket.markup.repeater.Item)
 		 */
 		@Override
-		protected void populateItem(Item item)
+		protected void populateItem(Item<TreeReportElement> item)
 		{
 			RepeatingView cells = new RepeatingView("cell");
 			TreeReportElement row = (TreeReportElement)item.getModelObject();
@@ -354,8 +287,6 @@ public class TreeReportDataPanel extends Panel
 			for (Serializable cellValue : row.getRow())
 			{
 				thisCellValues.add(cellValue);
-				
-				
 
 				if (reportConfig.getReportColumns()[i].isVisible())
 				{
@@ -363,29 +294,20 @@ public class TreeReportDataPanel extends Panel
 					
 					if (isDuplicate(i, cellValue) && !newValueInPreviousColumn)
 					{
-						cellLabel = new Label(Integer.toString(i), new Model(""));
+						cellLabel = new Label(Integer.toString(i), new Model<String>(""));
 						newValueInPreviousColumn = false;
 					}
-					else if (reportConfig.getReportColumns()[i].getConversionModel() == null)
+					else if (reportConfig.getReportColumns()[i].getConverter()  != null)
 					{
-						cellLabel = new Label(Integer.toString(i), new Model(cellValue));
+						cellLabel = new ConverterLabel(Integer.toString(i), new Model<Serializable>(cellValue), reportConfig.getReportColumns()[i].getConverter());
+						
 						newValueInPreviousColumn = true;
 					}
 					else
 					{
 						newValueInPreviousColumn = true;
 						
-						IModel model;
-
-						try
-						{
-							model = getModelInstance(reportConfig.getReportColumns()[i]);
-							model.setObject(cellValue);
-						} catch (Exception e)
-						{
-							logger.warn("Could not instantiate model for " + reportConfig.getReportColumns()[i], e);
-							model = new Model(cellValue);
-						}
+						IModel<Serializable> model = new Model<Serializable>(cellValue);
 						
 						cellLabel = new Label(Integer.toString(i), model);
 						addColumnTypeStyling(reportConfig.getReportColumns()[i].getColumnType(), cellLabel);
@@ -408,7 +330,7 @@ public class TreeReportDataPanel extends Panel
 		 * Set css style
 		 * @param item
 		 */
-		private void setCssStyle(Item item)
+		private void setCssStyle(Item<?> item)
 		{
 			if (item.getIndex() % 2 == 1)
 			{

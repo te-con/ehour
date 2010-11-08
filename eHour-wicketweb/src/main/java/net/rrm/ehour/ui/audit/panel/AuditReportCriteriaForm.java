@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -16,13 +16,16 @@
 
 package net.rrm.ehour.ui.audit.panel;
 
+import java.util.Date;
+
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.AuditConstants;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
-import net.rrm.ehour.ui.common.ajax.AjaxUtil;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
 
@@ -41,11 +44,11 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
- * 
+ *
  * @author thies
- * 
+ *
  */
-public class AuditReportCriteriaForm extends Form
+public class AuditReportCriteriaForm extends Form<ReportCriteria>
 {
 	private static final long serialVersionUID = -4033279032707727816L;
 
@@ -54,7 +57,7 @@ public class AuditReportCriteriaForm extends Form
 		FORM_SUBMIT;
 	}
 
-	public AuditReportCriteriaForm(String id, IModel model)
+	public AuditReportCriteriaForm(String id, IModel<ReportCriteria> model)
 	{
 		super(id, model);
 
@@ -65,37 +68,37 @@ public class AuditReportCriteriaForm extends Form
 			private static final long serialVersionUID = -627058322154455051L;
 
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form)
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form)
 			{
 				AjaxEvent event = new AjaxEvent(Events.FORM_SUBMIT);
-				AjaxUtil.publishAjaxEvent(AuditReportCriteriaForm.this, event);
+				EventPublisher.publishAjaxEvent(AuditReportCriteriaForm.this, event);
 			}
 		};
 
 		add(submitButton);
 
-		TextField nameField = new TextField(AuditConstants.PATH_FORM_NAME, new PropertyModel(getModel(), "userCriteria.name"));
+		TextField<String> nameField = new TextField<String>(AuditConstants.PATH_FORM_NAME, new PropertyModel<String>(getModel(), "userCriteria.name"));
 		add(nameField);
 
-		TextField actionField = new TextField(AuditConstants.PATH_FORM_ACTION, new PropertyModel(getModel(), "userCriteria.action"));
+		TextField<String> actionField = new TextField<String>(AuditConstants.PATH_FORM_ACTION, new PropertyModel<String>(getModel(), "userCriteria.action"));
 		add(actionField);
 	}
 
 	/**
 	 * Add start & end dates
-	 * 
+	 *
 	 * @param form
 	 * @param model
 	 */
-	private void addDates(final IModel model)
+	private void addDates(final IModel<ReportCriteria> model)
 	{
-		PropertyModel infiniteStartDateModel = new PropertyModel(model, "userCriteria.infiniteStartDate");
-		PropertyModel infiniteEndDateModel = new PropertyModel(model, "userCriteria.infiniteEndDate");
+		PropertyModel<Boolean> infiniteStartDateModel = new PropertyModel<Boolean>(model, "userCriteria.infiniteStartDate");
+		PropertyModel<Boolean> infiniteEndDateModel = new PropertyModel<Boolean>(model, "userCriteria.infiniteEndDate");
 
 		// start date
-		DateTextField dateStart = new DateTextField("dateStart", new PropertyModel(model, "userCriteria.reportRange.dateStart"), new StyleDateConverter("S-", true));
+		DateTextField dateStart = new DateTextField("dateStart", new PropertyModel<Date>(model, "userCriteria.reportRange.dateStart"), new StyleDateConverter("S-", true));
 
-		dateStart.add(new ConditionalRequiredValidator(infiniteStartDateModel));
+		dateStart.add(new ConditionalRequiredValidator<Date>(infiniteStartDateModel));
 		dateStart.add(new ValidatingFormComponentAjaxBehavior());
 		dateStart.setLabel(new ResourceModel("admin.assignment.dateStart"));
 		dateStart.add(new DatePicker());
@@ -111,7 +114,7 @@ public class AuditReportCriteriaForm extends Form
 		WebMarkupContainer innerStartDateHider = new WebMarkupContainer("innerStartDateHider");
 		innerStartDateHider.setOutputMarkupId(true);
 		innerStartDateHider.add(dateStart);
-		innerStartDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteStartDateModel, true));
+		innerStartDateHider.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), infiniteStartDateModel, true));
 
 		startDateHider.add(innerStartDateHider);
 
@@ -132,12 +135,12 @@ public class AuditReportCriteriaForm extends Form
 		startDateHider.add(infiniteStart);
 
 		// end date
-		DateTextField dateEnd = new DateTextField("dateEnd", new PropertyModel(model, "userCriteria.reportRange.dateEnd"), new StyleDateConverter("S-", false));
+		DateTextField dateEnd = new DateTextField("dateEnd", new PropertyModel<Date>(model, "userCriteria.reportRange.dateEnd"), new StyleDateConverter("S-", false));
 		dateEnd.add(new DatePicker());
 		// container for hiding
 
 		dateEnd.add(new ValidatingFormComponentAjaxBehavior());
-		dateEnd.add(new ConditionalRequiredValidator(infiniteEndDateModel));
+		dateEnd.add(new ConditionalRequiredValidator<Date>(infiniteEndDateModel));
 		dateEnd.setLabel(new ResourceModel("admin.assignment.dateEnd"));
 
 		WebMarkupContainer endDateHider = new WebMarkupContainer(AuditConstants.PATH_FORM_END_DATE_HIDER);
@@ -150,7 +153,7 @@ public class AuditReportCriteriaForm extends Form
 		WebMarkupContainer innerEndDateHider = new WebMarkupContainer("innerEndDateHider");
 		innerEndDateHider.setOutputMarkupId(true);
 		innerEndDateHider.add(dateEnd);
-		innerEndDateHider.add(new DynamicAttributeModifier("style", true, new Model("display: none;"), infiniteEndDateModel, true));
+		innerEndDateHider.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), infiniteEndDateModel, true));
 		endDateHider.add(innerEndDateHider);
 		add(endDateHider);
 
@@ -168,6 +171,6 @@ public class AuditReportCriteriaForm extends Form
 
 		endDateHider.add(infiniteEnd);
 
-		add(new DateOverlapValidator(dateStart, dateEnd));
+		add(new DateOverlapValidator("auditStartEndDate", dateStart, dateEnd));
 	}
 }

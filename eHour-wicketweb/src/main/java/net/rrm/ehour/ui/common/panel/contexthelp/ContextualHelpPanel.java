@@ -16,7 +16,12 @@
 
 package net.rrm.ehour.ui.common.panel.contexthelp;
 
+import net.rrm.ehour.ui.EhourWebApplication;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.pages.RedirectPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -28,11 +33,12 @@ public class ContextualHelpPanel extends Panel
 {
 	private static final long serialVersionUID = 8054029544833333835L;
 	
-	/**
-	 * 
-	 * @param id
-	 */
 	public ContextualHelpPanel(String id, String headerResourceId, String bodyResourceId)
+	{
+		this(id, headerResourceId, bodyResourceId, null);
+	}
+	
+	public ContextualHelpPanel(String id, String headerResourceId, String bodyResourceId, String wikiPageTitle)
 	{
 		super(id);
 		
@@ -40,7 +46,33 @@ public class ContextualHelpPanel extends Panel
 		Label body = new Label("body", new ResourceModel(bodyResourceId));
 		body.setEscapeModelStrings(false);
 		add(body);
+		add(createReadMoreLink(wikiPageTitle));
 		setOutputMarkupId(true);
+	}
+	
+	@SuppressWarnings("serial")
+	private Link<Void> createReadMoreLink(final String pageTitle)
+	{
+		Link<Void> readMoreLink = new Link<Void>("readMoreLink")
+		{
+			@Override
+			public void onClick()
+			{
+				StringBuilder url = new StringBuilder(EhourWebApplication.get().getWikiBaseUrl());
+				url.append("/");
+				
+				if (!StringUtils.isBlank(pageTitle))
+				{
+					url.append(pageTitle);
+				}
+				
+				setResponsePage(new RedirectPage(url.toString()));
+			}
+		};
+		
+		readMoreLink.setVisible(!StringUtils.isBlank(pageTitle));
+		
+		return readMoreLink;
 	}
 
 }

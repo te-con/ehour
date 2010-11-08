@@ -19,12 +19,13 @@ package net.rrm.ehour.ui.login.page;
 import java.io.Serializable;
 
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.admin.config.page.MainConfig;
+import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.strategies.role.Roles;
@@ -43,7 +44,6 @@ import org.apache.wicket.model.ResourceModel;
  * Login page 
  **/
 
-@SuppressWarnings("unchecked")
 public class Login extends WebPage
 {
 	private static final long serialVersionUID = -134022212692477120L;
@@ -96,7 +96,7 @@ public class Login extends WebPage
 	 * {@link Form} class that attempts to authenticate the login request using
 	 * Wicket auth (which again delegates to Acegi Security).
 	 */
-	public final class SignInForm extends Form
+	public final class SignInForm extends Form<SimpleUser>
 	{
 		private static final long serialVersionUID = -4355842488508724254L;
 
@@ -107,13 +107,13 @@ public class Login extends WebPage
 		 */
 		public SignInForm(String id, SimpleUser model)
 		{
-			super(id, new CompoundPropertyModel(model));
+			super(id, new CompoundPropertyModel<SimpleUser>(model));
 
 			FeedbackPanel	feedback = new LoginFeedbackPanel("feedback");
 			feedback.setMaxMessages(1);
 			
 			add(feedback);
-			TextField usernameInput = new RequiredTextField("username");
+			TextField<String> usernameInput = new RequiredTextField<String>("username");
 			usernameInput.setPersistent(true);
 			add(usernameInput);
 			add(new PasswordTextField("password").setResetPassword(true));
@@ -149,7 +149,7 @@ public class Login extends WebPage
 				// When authenticated decide the redirect
 				if (session.signIn(username, password))
 				{
-					Class<? extends WebPage> homepage = getHomepageForRole(session.getRoles());
+					Class<? extends Page> homepage = getHomepageForRole(session.getRoles());
 					
 					if (logger.isDebugEnabled())
 					{
@@ -175,13 +175,13 @@ public class Login extends WebPage
 	 * @param roles
 	 * @return
 	 */
-	protected Class<? extends WebPage> getHomepageForRole(Roles roles)
+	private Class<? extends Page> getHomepageForRole(Roles roles)
 	{
-		Class<? extends WebPage>	homepage;
+		Class<? extends Page>	homepage;
 		
 		if (roles.contains(CommonWebUtil.ROLE_ADMIN))
 		{
-			homepage = MainConfig.class;
+			homepage = MainConfigPage.class;
 		}
 		else if (roles.contains(CommonWebUtil.ROLE_REPORT))
 		{

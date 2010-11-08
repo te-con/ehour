@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.rrm.ehour.value.ImageLogo;
+import net.rrm.ehour.persistence.value.ImageLogo;
 
 import org.apache.log4j.Logger;
 import org.apache.sanselan.ImageReadException;
@@ -39,14 +39,14 @@ import org.apache.wicket.model.IModel;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public abstract class ImageUploadForm extends Form
+public abstract class ImageUploadForm<T> extends Form<T>
 {
 	private static final long serialVersionUID = 808442352504816831L;
 	private FileUploadField fileUploadField;
 	
 	private static final Logger LOGGER = Logger.getLogger(ImageUploadForm.class);
 
-    public ImageUploadForm(String id, IModel model)
+    public ImageUploadForm(String id, IModel<T> model)
     {
         super(id, model);
 

@@ -20,33 +20,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.cache.CachableObject;
-import net.rrm.ehour.ui.common.component.SWFObject;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
-import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
-import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
-import net.rrm.ehour.ui.report.panel.aggregate.AggregateReportPanel;
-import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportPanel;
-import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportPanel;
-import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanel;
+import net.rrm.ehour.ui.report.page.command.DefaultGlobalReportPageAggregateCommand;
+import net.rrm.ehour.ui.report.page.command.DefaultGlobalReportPageDetailedCommand;
+import net.rrm.ehour.ui.report.page.command.GlobalReportPageAggregateCommand;
+import net.rrm.ehour.ui.report.page.command.GlobalReportPageDetailedCommand;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
-import net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel;
-import net.rrm.ehour.ui.report.trend.DetailedReport;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -56,31 +45,41 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @AuthorizeInstantiation("ROLE_REPORT")
-public class GlobalReportPage extends AbstractReportPage implements IHeaderContributor
+public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean>
 {
 	private static final long serialVersionUID = 6614404841734599622L;
 	
-	private ReportTabbedPanel	tabPanel;
-	private static final CompressedResourceReference SWFOBJECT_JS = new CompressedResourceReference(SWFObject.class, "js/swfobject.js");
+	private ReportTabbedPanel tabPanel;
+	private GlobalReportPageAggregateCommand aggregateCommand;
+	private GlobalReportPageDetailedCommand detailedCommand;
 	
 	public GlobalReportPage()
 	{
+		this(new DefaultGlobalReportPageAggregateCommand(), new DefaultGlobalReportPageDetailedCommand());
+	}
+	
+	public GlobalReportPage(GlobalReportPageAggregateCommand aggregateCommand, GlobalReportPageDetailedCommand detailedCommand)
+	{
 		super(new ResourceModel("report.global.title"));
+
+		this.aggregateCommand = aggregateCommand;
+		this.detailedCommand = detailedCommand;
 		
 		final ReportCriteria reportCriteria = getReportCriteria(false);
-		final IModel model = new CompoundPropertyModel(new ReportCriteriaBackingBean(reportCriteria));
-		setModel(model);		
+		final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<ReportCriteriaBackingBean>(new ReportCriteriaBackingBean(reportCriteria));
+		setDefaultModel(model);		
 		
-		List<AbstractTab> tabList = new ArrayList<AbstractTab>();
+		List<ITab> tabList = new ArrayList<ITab>();
 		
 		tabList.add(new AbstractTab(new KeyResourceModel("report.criteria.title"))
 		{
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new ReportCriteriaPanel(panelId, getModel());
+				return new ReportCriteriaPanel(panelId, (IModel<ReportCriteriaBackingBean>)getDefaultModel());
 			}
 		});
 		
@@ -90,14 +89,14 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED)
 		{
-			ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getModel().getObject();
+			ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getDefaultModelObject();
 	
 			clearTabs();
 			
@@ -120,10 +119,9 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	/**
 	 * Clear tabs except for the first one
 	 */
-	@SuppressWarnings("unchecked")
 	private void clearTabs()
 	{
-		List<AbstractTab> tabs = tabPanel.getTabs();
+		List<ITab> tabs = tabPanel.getTabs();
 		
 		while (tabs.size() > 1)
 		{
@@ -132,49 +130,23 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	}
 	
 	/**
-	 * Get the report panel
+	 * Get the aggregate report panel
 	 */
 	private void addAggregateReportPanelTabs(ReportCriteriaBackingBean backingBean)
 	{
-		final ReportCriteria criteria = backingBean.getReportCriteria();
-		
-		ITab	customerTab = new AbstractTab(new KeyResourceModel("report.title.customer"))
-		{
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getCustomerReportPanel(panelId, criteria);
-			}
-		};		
-		tabPanel.addTab(customerTab);
-		
-		ITab	projectTab = new AbstractTab(new KeyResourceModel("report.title.project"))
-		{
-			private static final long serialVersionUID = 1L;
+		List<ITab> tabs = aggregateCommand.createAggregateReportTabs(backingBean);
 
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getProjectReportPanel(panelId, criteria);
-			}
-		};		
-		tabPanel.addTab(projectTab);	
-		
-		ITab	employeeTab = new AbstractTab(new KeyResourceModel("report.title.employee"))
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getUserReportPanel(panelId, criteria);
-			}
-		};	
-		tabPanel.addTab(employeeTab);
+		addTabs(tabs);
 		
 		tabPanel.setSelectedTab(1);
+	}
+
+	private void addTabs(List<ITab> tabs)
+	{
+		for (ITab iTab : tabs)
+		{
+			tabPanel.addTab(iTab);
+		}
 	}
 	
 	/**
@@ -182,98 +154,10 @@ public class GlobalReportPage extends AbstractReportPage implements IHeaderContr
 	 */
 	private void addDetailedReportPanelTabs(ReportCriteriaBackingBean backingBean)
 	{
-		final ReportCriteria criteria = backingBean.getReportCriteria();
+		List<ITab> tabs = detailedCommand.createDetailedReportTabs(backingBean);
 		
-		ITab	detailedTab = new AbstractTab(new KeyResourceModel("report.title.detailed"))
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return getDetailedReportPanel(panelId, criteria);
-			}
-		};			
-		tabPanel.addTab(detailedTab);	
-	}
-
-	
-	
-	/**
-	 * Get customer report panel
-	 * @param id
-	 * @param reportData
-	 * @return
-	 */
-	private Panel getCustomerReportPanel(String id, ReportCriteria reportCriteria)
-	{
-		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportCriteria);
-		storeInCache(customerAggregateReport);
-		AggregateReportPanel panel = new CustomerReportPanel(id, customerAggregateReport);
+		addTabs(tabs);
 		
-		return panel;
-	}
-	
-	/**
-	 * Get project report panel
-	 * @param id
-	 * @param reportData
-	 * @return
-	 */
-	private Panel getProjectReportPanel(String id, ReportCriteria reportCriteria)
-	{
-		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportCriteria);
-		storeInCache(aggregateReport);
-		AggregateReportPanel panel = new ProjectReportPanel(id, aggregateReport);
-		
-		return panel;
-	}	
-	
-	/**
-	 * Get user report panel
-	 * 
-	 * @param id
-	 * @param reportData
-	 * @return
-	 */
-	private Panel getUserReportPanel(String id, ReportCriteria reportCriteria)
-	{
-		UserAggregateReport	aggregateReport = new UserAggregateReport(reportCriteria);
-		storeInCache(aggregateReport);
-		AggregateReportPanel panel = new EmployeeReportPanel(id, aggregateReport);
-		
-		return panel;
-	}
-	
-	/**
-	 * Get detailed report panel
-	 * @param id
-	 * @param reportData
-	 * @return
-	 */
-	private Panel getDetailedReportPanel(String id, ReportCriteria reportCriteria)
-	{
-		DetailedReport detailedReport = new DetailedReport(reportCriteria, this.getConfig().getLocale());
-		storeInCache(detailedReport);
-		DetailedReportPanel panel = new DetailedReportPanel(id, detailedReport);
-		
-		return panel;
-	}	
-
-	/**
-	 * keep the report available for excel reporting in a later request
-	 * @param report
-	 */
-	private void storeInCache(CachableObject report)
-	{
-		EhourWebSession.getSession().getObjectCache().addObjectToCache(report);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.IHeaderContributor#renderHead(org.apache.wicket.markup.html.IHeaderResponse)
-	 */
-	public void renderHead(IHeaderResponse response)
-	{
-		response.renderJavascriptReference(SWFOBJECT_JS);
+		tabPanel.setSelectedTab(1);	
 	}
 }

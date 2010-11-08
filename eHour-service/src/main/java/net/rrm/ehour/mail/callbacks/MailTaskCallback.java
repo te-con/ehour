@@ -19,18 +19,21 @@ package net.rrm.ehour.mail.callbacks;
 import java.util.Date;
 
 import net.rrm.ehour.domain.MailLog;
-import net.rrm.ehour.mail.dao.MailLogDAO;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
+import net.rrm.ehour.persistence.mail.dao.MailLogDao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
+import org.springframework.stereotype.Component;
 
 /**
  * Mail task callback
  **/
-
+@Component
 public abstract class MailTaskCallback
 {
-	protected MailLogDAO	mailLogDAO;
+	@Autowired
+	protected MailLogDao	mailLogDAO;
 	
 	/**
 	 * Handle success
@@ -47,7 +50,7 @@ public abstract class MailTaskCallback
 	/**
 	 * @param mailLogDAO the mailLogDAO to set
 	 */
-	public void setMailLogDAO(MailLogDAO mailLogDAO)
+	public void setMailLogDAO(MailLogDao mailLogDAO)
 	{
 		this.mailLogDAO = mailLogDAO;
 	}

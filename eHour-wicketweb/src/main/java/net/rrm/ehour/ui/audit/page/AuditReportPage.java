@@ -16,15 +16,15 @@
 
 package net.rrm.ehour.ui.audit.page;
 
-import net.rrm.ehour.audit.service.dto.AuditReportRequest;
+import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.admin.BaseAdminPage;
+import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaForm;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
 import net.rrm.ehour.ui.audit.panel.AuditReportDataPanel;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -35,35 +35,37 @@ import org.apache.wicket.model.ResourceModel;
  * @author thies
  *
  */
-public class AuditReportPage extends BaseAdminPage 
+public class AuditReportPage extends AbstractAdminPage<String> 
 {
 	
 	public AuditReportPage()
 	{
-		super(new ResourceModel("audit.report.title"), new Model(), "audit.help.header", "audit.help.body");
-		setModel(getReportCriteriaModel());
+		super(new ResourceModel("audit.report.title"), new Model<String>(), "audit.help.header", "audit.help.body");
+		
+		IModel<ReportCriteria> criteriaModel = getReportCriteriaModel();
+		setDefaultModel(criteriaModel);
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder(AuditConstants.PATH_FRAME, new ResourceModel("audit.report.title"));
 		add(greyBorder);
 		
-		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(AuditConstants.PATH_CRITERIA, getModel());
+		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(AuditConstants.PATH_CRITERIA, criteriaModel);
 		greyBorder.add(criteriaPanel);
 		
-		AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, getModel());
+		AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, criteriaModel);
 		greyBorder.add(dataPanel);
 	}
 	
-	private IModel getReportCriteriaModel()
+	private IModel<ReportCriteria> getReportCriteriaModel()
 	{
 		AuditReportRequest auditReportRequest = new AuditReportRequest();
 		ReportCriteria criteria = new ReportCriteria(auditReportRequest);
 		
-		return new CompoundPropertyModel(criteria);
+		return new CompoundPropertyModel<ReportCriteria>(criteria);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)

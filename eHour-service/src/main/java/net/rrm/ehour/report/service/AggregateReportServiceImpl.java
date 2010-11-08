@@ -28,9 +28,9 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
 import net.rrm.ehour.report.reports.ProjectManagerDashboard;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
@@ -38,28 +38,35 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides reporting services on timesheets. 
  * @author Thies
  *
  */
-
+@Service("aggregateReportService")
 public class AggregateReportServiceImpl extends AbstractReportServiceImpl<AssignmentAggregateReportElement> 
 										implements AggregateReportService 
 {
-	private	ReportAggregatedDAO	reportAggregatedDAO;
+	@Autowired
+	private	ReportAggregatedDao	reportAggregatedDAO;
+
+	@Autowired
 	private	MailService			mailService;
+
+	@Autowired
 	private	ProjectAssignmentService	projectAssignmentService;
 	
-	private	Logger				logger = Logger.getLogger(this.getClass());
+	private	static final Logger LOGGER = Logger.getLogger(AggregateReportServiceImpl.class);
 	
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
+	 * @see net.rrm.ehour.persistence.persistence.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
 	 */
-	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Serializable> projectAssignmentIds)
+	public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds)
 	{
 		return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
 	}
@@ -84,7 +91,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.AggregateReportService#getAggregateReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.persistence.persistence.report.service.AggregateReportService#getAggregateReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
 	 */
 	public ReportData getAggregateReportData(ReportCriteria criteria)
 	{
@@ -93,7 +100,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	@Override
 	protected List<AssignmentAggregateReportElement> getReportElements(List<User> users,
@@ -131,42 +138,9 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		return aggregates;
 	}
 	
-	
-	/**
-	 * Get weekly project report
-	 * @param 
-	 * @return
-	 */
-//	private List<FlatProjectAssignmentAggregate> getWeeklyReportData(List<User> users,
-//																	 List<Project> projects,
-//																		DateRange reportRange)
-//	{
-//		List<FlatProjectAssignmentAggregate> aggregates = null;
-//
-//		if (users == null && projects == null)
-//		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignment(reportRange);
-//		}
-//		else if (projects == null && users != null)
-//		{		
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(EhourUtil.getPKsFromDomainObjects(users), reportRange);
-//		}
-//		else if (projects != null && users == null)
-//		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForProjects(EhourUtil.getPKsFromDomainObjects(projects), reportRange);
-//		}
-//		else
-//		{
-//			aggregates = reportPerMonthDAO.getHoursPerMonthPerAssignmentForUsers(EhourUtil.getPKsFromDomainObjects(users),
-//																					EhourUtil.getPKsFromDomainObjects(projects), reportRange);
-//		}	
-//		
-//		return aggregates;
-//	}	
-
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.ReportService#getProjectManagerReport(net.rrm.ehour.data.DateRange, java.lang.Integer)
+	 * @see net.rrm.ehour.persistence.persistence.report.service.ReportService#getProjectManagerReport(net.rrm.ehour.persistence.persistence.data.DateRange, java.lang.Integer)
 	 */
 	public ProjectManagerReport getProjectManagerDetailedReport(DateRange reportRange, Integer projectId)
 	{
@@ -181,7 +155,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		// get the project
 		project = getProjectDAO().findById(projectId);
 		report.setProject(project);
-		logger.debug("PM report for project " + project.getName());
+		LOGGER.debug("PM report for project " + project.getName());
 		
 		// get a proper report range
 		reportRange = getReportRangeForProject(reportRange, project);
@@ -252,7 +226,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 			}
 		}
 		
-		logger.debug("Used date range for pm report: " + reportRange + " on report " + project);
+		LOGGER.debug("Used date range for pm report: " + reportRange + " on report " + project);
 		
 		return reportRange;
 	}
@@ -262,7 +236,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 	 *  
 	 *
 	 */
-	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
+	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
@@ -285,7 +259,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.report.service.AggregateReportService#getProjectManagerDashboard(net.rrm.ehour.domain.User)
+	 * @see net.rrm.ehour.persistence.persistence.report.service.AggregateReportService#getProjectManagerDashboard(net.rrm.ehour.persistence.persistence.domain.User)
 	 */
 	public ProjectManagerDashboard getProjectManagerDashboard(User user)
 	{

@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.timesheet.export.excel.part;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.persistence.value.ImageLogo;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
@@ -26,7 +27,6 @@ import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
-import net.rrm.ehour.value.ImageLogo;
 
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
@@ -56,7 +56,7 @@ public class ExportReportHeader extends AbstractExportReportPart
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.timesheet.export.excel.part.AbstractExportReportPart#createPart(int)
+	 * @see net.rrm.ehour.persistence.persistence.ui.timesheet.export.excel.part.AbstractExportReportPart#createPart(int)
 	 */
 	@Override
 	public int createPart(int rowNumber)
@@ -86,14 +86,12 @@ public class ExportReportHeader extends AbstractExportReportPart
 	
 		int index = getWorkbook().addPicture(image, PoiUtil.getImageType(excelLogo.getImageType()));
 		
-		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 1, (short)8, 8);
+		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 0, (short)8, 7);
 //														(short)++col,++row);
 		
 		HSSFPatriarch patriarch=getSheet().createDrawingPatriarch();
 		patriarch.createPicture(anchor,index);
 		anchor.setAnchorType(0); // 0 = Move and size with Cells, 2 = Move but don't size with cells, 3 = Don't move or size with cells.
-
-
 		
 		return rowNumber;
 	}
@@ -109,12 +107,12 @@ public class ExportReportHeader extends AbstractExportReportPart
 		return rowNumber;
 	}
 	
-	private IModel getExcelReportName(DateRange dateRange)
+	private IModel<String> getExcelReportName(DateRange dateRange)
 	{
 		EhourWebSession session = EhourWebSession.getSession();
 		EhourConfig config = session.getEhourConfig();
 		
-		IModel title = new StringResourceModel("excelMonth.reportName",
+		IModel<String> title = new StringResourceModel("excelMonth.reportName",
 				null,
 				new Object[]{session.getUser().getUser().getFullName(),
 							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});

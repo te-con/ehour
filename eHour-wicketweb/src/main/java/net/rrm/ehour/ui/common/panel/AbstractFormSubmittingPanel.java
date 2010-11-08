@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.common.panel;
 
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
-import net.rrm.ehour.ui.common.ajax.GenericAjaxEventType;
-import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.event.CommonAjaxEventType;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 
 import org.apache.log4j.Logger;
@@ -31,7 +31,7 @@ import org.apache.wicket.model.IModel;
  * ajax request
  **/
 
-public abstract class AbstractFormSubmittingPanel extends AbstractAjaxPanel
+public abstract class AbstractFormSubmittingPanel<T> extends AbstractAjaxPanel<T>
 {
 	private static final long serialVersionUID = 1L;
 	private	static final Logger	logger = Logger.getLogger(AbstractFormSubmittingPanel.class);
@@ -42,20 +42,20 @@ public abstract class AbstractFormSubmittingPanel extends AbstractAjaxPanel
 		super(id);
 	}	
 	
-	public AbstractFormSubmittingPanel(String id, IModel model)
+	public AbstractFormSubmittingPanel(String id, IModel<T> model)
 	{
 		super(id, model);
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
-		if (ajaxEvent.getEventType() == GenericAjaxEventType.SUBMIT_ERROR)
+		if (ajaxEvent.getEventType() == CommonAjaxEventType.SUBMIT_ERROR)
 		{
 			return processFormSubmitError(ajaxEvent.getTarget());
 		}

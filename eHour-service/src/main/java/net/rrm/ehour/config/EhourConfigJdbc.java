@@ -17,18 +17,22 @@
 package net.rrm.ehour.config;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.sql.DataSource;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.AuditType;
 
 import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Config from database
  **/
-
+@Service("eHourConfig")
 public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfig
 {
 	private	Logger	logger = Logger.getLogger(this.getClass());
@@ -38,11 +42,17 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	private Boolean		initialized;
 	private	AuditType	auditType;
 	
-	public EhourConfigJdbc(DataSource datasource, String table, String keyColumn, String valueColumn)
+	@Autowired 
+	public EhourConfigJdbc(DataSource datasource)
 	{
-		super(datasource, table, keyColumn, valueColumn);
+		super(datasource, "CONFIGURATION", "config_key", "config_value");
 	
 		logger.info("Configuration loaded from database");
+	}
+	
+	public TimeZone getTzAsTimeZone()
+	{
+		return EhourConfigUtil.getTzAsTimeZone(this);
 	}
 	
 	public float getCompleteDayHours()
@@ -123,7 +133,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.EhourConfig#getSmtpPassword()
+	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpPassword()
 	 */
 	public String getSmtpPassword() {
 		return this.getString("smtpUsername");
@@ -131,7 +141,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.EhourConfig#getSmtpUsername()
+	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpUsername()
 	 */
 	public String getSmtpUsername() {
 		return this.getString("smtpPassword");
@@ -146,7 +156,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.EhourConfig#getFirstDayOfWeek()
+	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getFirstDayOfWeek()
 	 */
 	public int getFirstDayOfWeek()
 	{
@@ -155,7 +165,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.config.EhourConfig#getAuditType()
+	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getAuditType()
 	 */
 	public AuditType getAuditType()
 	{

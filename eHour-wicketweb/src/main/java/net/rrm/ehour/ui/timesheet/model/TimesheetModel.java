@@ -39,7 +39,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Model that holds the timesheet
  **/
 
-public class TimesheetModel implements IModel
+public class TimesheetModel implements IModel<Timesheet>
 {
 	private static final long serialVersionUID = 4134613450587087107L;
 
@@ -122,14 +122,14 @@ public class TimesheetModel implements IModel
 	}
 
 
-	public Object getObject()
+	public Timesheet getObject()
 	{
 		return timesheet;
 	}
 
-	public void setObject(Object object)
+	public void setObject(Timesheet sheet)
 	{
-		this.timesheet = (Timesheet)object;
+		this.timesheet = sheet;
 		
 	}
 

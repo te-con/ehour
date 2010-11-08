@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import junit.framework.TestCase;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.project.dao.ProjectDAO;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
 
@@ -37,7 +37,7 @@ import net.rrm.ehour.user.service.UserService;
 public class ProjectServiceTest extends TestCase
 {
 	private	ProjectService	projectService;
-	private	ProjectDAO				projectDAO;
+	private	ProjectDao				projectDAO;
 	private ProjectAssignmentService	projectAssignmentService;
 	private UserService		userService;
 	private AggregateReportService aggregateReportService;
@@ -48,7 +48,7 @@ public class ProjectServiceTest extends TestCase
 	{
 		projectService = new ProjectServiceImpl();
 
-		projectDAO = createMock(ProjectDAO.class);
+		projectDAO = createMock(ProjectDao.class);
 		((ProjectServiceImpl)projectService).setProjectDAO(projectDAO);
 		
 		projectAssignmentService = createMock(ProjectAssignmentService.class);

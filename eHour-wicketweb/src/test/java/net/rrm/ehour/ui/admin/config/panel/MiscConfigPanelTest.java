@@ -31,6 +31,7 @@ import org.junit.Test;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
+@SuppressWarnings("serial")
 public class MiscConfigPanelTest extends AbstractMainConfigTest
 {
 	@Test

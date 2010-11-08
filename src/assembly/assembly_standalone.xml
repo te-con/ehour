@@ -1,23 +1,12 @@
-<assembly>
-	<id>standalone</id>
-	<formats>
-		<format>tar.gz</format>
-		<format>zip</format>
-	</formats>
-	<baseDirectory>ehour-${pom.version}</baseDirectory>
-	<includeBaseDirectory>true</includeBaseDirectory>
-	<moduleSets>
-		<moduleSet>
-			<includes>
-				<include>net.rrm.ehour:eHour-web</include>
-			</includes>
-			<binaries>
-				<outputDirectory>/app</outputDirectory>
-				<unpack>true</unpack>
-				<includeDependencies>false</includeDependencies>
-			<outputFileNameMapping>eHour-web</outputFileNameMapping>
-			</binaries>
-		</moduleSet>
+<assembly> 
+	<id>standalone</id> 
+	<formats> 
+		<format>tar.gz</format> 
+		<format>zip</format> 
+	</formats> 
+	<baseDirectory>ehour-${pom.version}</baseDirectory> 
+	<includeBaseDirectory>true</includeBaseDirectory> 
+	<moduleSets> 
 <!--
 		<moduleSet>
 			<includes>
@@ -37,65 +26,65 @@
 				</excludes>
 			</binaries>
 		</moduleSet>
--->
-		<moduleSet>
-			<includes>
-				<include>net.rrm.ehour:eHour-standalone</include>
-			</includes>
-			<binaries>
-				<outputDirectory>/lib</outputDirectory>
-				<includeDependencies>true</includeDependencies>
-				<unpack>false</unpack>
-				<excludes>
-					<exclude>tomcat:jasper-compiler</exclude>
-					<exclude>javax.servlet:servlet-api</exclude>
-					<exclude>javax.servlet:jsp-api</exclude>
-					<exclude>javax.servlet:jsp-api</exclude>
-					<exclude>junit:junit</exclude>
-					<exclude>xerces:xercesImpl</exclude>
-					<exclude>tomcat:jasper-runtime</exclude>
-					<exclude>tomcat:jasper-compiler-jdt</exclude>
-					<exclude>geronimo-spec:geronimo-spec-jta</exclude>
-				</excludes>
-			</binaries>
-		</moduleSet>
-	</moduleSets>
-	<fileSets>
-		<fileSet>
-			<directory>eHour-standalone/src/assembly/bin</directory>
-			<outputDirectory>/bin</outputDirectory>
-			<fileMode>750</fileMode>
-		</fileSet>
-		<fileSet>
-			<directory>eHour-standalone/src/assembly/lib</directory>
-			<outputDirectory>/lib</outputDirectory>
-		</fileSet>
-		<fileSet>
-			<directory>eHour-service/src/main/resources/img</directory>
-			<outputDirectory>/app/WEB-INF/classes</outputDirectory>
-		</fileSet>
-		<fileSet>
-			<directory>eHour-standalone/src/assembly/conf</directory>
-			<outputDirectory>/conf</outputDirectory>
-		</fileSet>
-		<fileSet>
-			<directory>eHour-standalone/src/main/profiles/prod</directory>
-			<outputDirectory>/conf</outputDirectory>
-			<fileMode>750</fileMode>
-		</fileSet>
-		<fileSet>
-			<directory>src/assembly/txt/common</directory>
-			<outputDirectory>/</outputDirectory>
-			<includes>
-				<include>*.txt</include>
-			</includes>
+--> 
+		<moduleSet> 
+			<includes> 
+				<include>net.rrm.ehour:eHour-standalone</include> 
+			</includes> 
+			<binaries> 
+				<outputDirectory>/lib</outputDirectory> 
+				<includeDependencies>true</includeDependencies> 
+				<unpack>false</unpack> 
+				<excludes> 
+					<exclude>tomcat:jasper-compiler</exclude> 
+					<exclude>javax.servlet:servlet-api</exclude> 
+					<exclude>javax.servlet:jsp-api</exclude> 
+					<exclude>javax.servlet:jsp-api</exclude> 
+					<exclude>junit:junit</exclude> 
+					<exclude>xerces:xercesImpl</exclude> 
+					<exclude>tomcat:jasper-runtime</exclude> 
+					<exclude>tomcat:jasper-compiler-jdt</exclude> 
+					<exclude>geronimo-spec:geronimo-spec-jta</exclude> 
+				</excludes> 
+			</binaries> 
+		</moduleSet> 
+	</moduleSets> 
+	<fileSets> 
+		<fileSet> 
+			<directory>eHour-standalone/src/assembly/bin</directory> 
+			<outputDirectory>/bin</outputDirectory> 
+			<fileMode>750</fileMode> 
+		</fileSet> 
+		<fileSet> 
+			<directory>eHour-standalone/src/assembly/lib</directory> 
+			<outputDirectory>/lib</outputDirectory> 
+		</fileSet> 
+		<fileSet> 
+			<directory>eHour-service/src/main/resources/img</directory> 
+			<outputDirectory>/app/WEB-INF/classes</outputDirectory> 
+		</fileSet> 
+		<fileSet> 
+			<directory>eHour-standalone/src/assembly/conf</directory> 
+			<outputDirectory>/conf</outputDirectory> 
+		</fileSet> 
+		<fileSet> 
+			<directory>eHour-standalone/src/main/profiles/prod</directory> 
+			<outputDirectory>/conf</outputDirectory> 
+			<fileMode>750</fileMode> 
+		</fileSet> 
+		<fileSet> 
+			<directory>src/assembly/txt/common</directory> 
+			<outputDirectory>/</outputDirectory> 
+			<includes> 
+				<include>*.txt</include> 
+			</includes> 
 		</fileSet>		
-		<fileSet>
-			<directory>src/assembly/txt/standalone</directory>
-			<outputDirectory>/</outputDirectory>
-			<includes>
-				<include>*.txt</include>
-			</includes>
+		<fileSet> 
+			<directory>src/assembly/txt/standalone</directory> 
+			<outputDirectory>/</outputDirectory> 
+			<includes> 
+				<include>*.txt</include> 
+			</includes> 
 		</fileSet>		
-	</fileSets>
-</assembly>
+	</fileSets> 
+</assembly> 

@@ -32,7 +32,7 @@ import org.apache.wicket.util.value.ValueMap;
 public abstract class AbstractExcelResource extends DynamicWebResource
 {
 	private static final long serialVersionUID = -9078717513448771202L;
-	private final static Logger logger = Logger.getLogger(AbstractExcelResource.class);
+	private final static Logger LOGGER = Logger.getLogger(AbstractExcelResource.class);
 	
 	/*
 	 * (non-Javadoc)
@@ -56,13 +56,12 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 			} catch (Exception e)
 			{
 				// FIXME handle better
-				e.printStackTrace();
-				logger.error("While creating excel report", e);
+				LOGGER.error("While creating excel report", e);
 			}
 		}
 		else
 		{
-			logger.error("No valid report id provided");
+			LOGGER.error("No valid report id provided");
 		}
 		
 		return state;
@@ -71,8 +70,7 @@ public abstract class AbstractExcelResource extends DynamicWebResource
 	private Report getReport(ValueMap params)
 	{
 		String reportId = params.getString("reportId");
-		Report report = (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
-		return report;
+		return (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
 	}
 	
 	/**

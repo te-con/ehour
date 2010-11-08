@@ -102,13 +102,13 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	 * Get report name for the filename
 	 * @return
 	 */
-	protected abstract IModel getExcelReportName();
+	protected abstract IModel<String> getExcelReportName();
 	
 	/**
 	 * Get report header
 	 * @return
 	 */
-	protected abstract IModel getHeaderReportName();
+	protected abstract IModel<String> getHeaderReportName();
 
 	
 	/**
@@ -121,7 +121,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	{
 		HSSFRow		row;
 		int			cellNumber = 0;
-		IModel		headerModel;
+		IModel<String> headerModel;
 		
 		row = sheet.createRow(rowNumber++);
 		
@@ -169,24 +169,31 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 		// add cells for a row
 		for (Serializable cellValue : element.getRow())
 		{
-			if (columnHeaders[i].isVisible() && cellValue != null)
+			if (columnHeaders[i].isVisible())
 			{
-				if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.HOUR)
+				if (cellValue != null)
 				{
-					CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DIGIT);
-				}
-				else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.TURNOVER
-						 || columnHeaders[i].getColumnType() == ReportColumn.ColumnType.RATE)
-				{
-					CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.CURRENCY);
-				}
-				else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.DATE)
-				{
-					CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DATE);
+					if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.HOUR)
+					{
+						CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DIGIT);
+					}
+					else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.TURNOVER
+							 || columnHeaders[i].getColumnType() == ReportColumn.ColumnType.RATE)
+					{
+						CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.CURRENCY);
+					}
+					else if (columnHeaders[i].getColumnType() == ReportColumn.ColumnType.DATE)
+					{
+						CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DATE);
+					}
+					else
+					{
+						CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.NORMAL);
+					}
 				}
 				else
 				{
-					CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.NORMAL);
+					cellNumber++;
 				}
 			}
 			
@@ -196,7 +203,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.component.AbstractExcelReport#getFilename()
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.component.AbstractExcelReport#getFilename()
 	 */
 	@Override
 	protected String getFilename()

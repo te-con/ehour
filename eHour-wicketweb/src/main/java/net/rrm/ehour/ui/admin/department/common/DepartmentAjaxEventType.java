@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.admin.department.common;
 
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
 
 /**
  * TODO 

@@ -20,18 +20,17 @@ import java.util.List;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.admin.BaseAdminPage;
+import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.assignment.panel.AssignmentPanel;
 import net.rrm.ehour.ui.admin.assignment.panel.NoUserSelectedPanel;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -51,16 +50,16 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentAdmin extends BaseAdminPage
+public class AssignmentAdmin extends AbstractAdminPage<Void>
 {
 	private static final long serialVersionUID = 566527529422873370L;
-	private final String			USER_SELECTOR_ID = "userSelector";
+	private static final String			USER_SELECTOR_ID = "userSelector";
 	
 	@SpringBean
 	private	UserService					userService;
 	private EntrySelectorFilter			currentFilter;
-	private	final static Logger			logger = Logger.getLogger(AssignmentAdmin.class);
-	private ListView					userListView;
+	private	final static Logger			LOGGER = Logger.getLogger(AssignmentAdmin.class);
+	private ListView<User>				userListView;
 	private	Panel						assignmentPanel;		
 	
 	/**
@@ -93,7 +92,7 @@ public class AssignmentAdmin extends BaseAdminPage
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
@@ -120,14 +119,14 @@ public class AssignmentAdmin extends BaseAdminPage
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
 		
-		userListView = new ListView("itemList", users)
+		userListView = new ListView<User>("itemList", users)
 		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<User> item)
 			{
-				final User		user = (User)item.getModelObject();
+				final User user = item.getModelObject();
 				
-				AjaxLink	link = new AjaxLink("itemLink")
+				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)
@@ -172,16 +171,16 @@ public class AssignmentAdmin extends BaseAdminPage
 		
 		if (currentFilter == null)
 		{
-			users = userService.getUsers(new UserRole(EhourConstants.ROLE_CONSULTANT));
+			users = userService.getUsers(UserRole.CONSULTANT);
 		}
 		else
 		{
-			if (logger.isDebugEnabled())
+			if (LOGGER.isDebugEnabled())
 			{
-				logger.debug("Filtering on " + currentFilter.getCleanFilterInput());
+				LOGGER.debug("Filtering on " + currentFilter.getCleanFilterInput());
 			}
 			
-			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, new UserRole(EhourConstants.ROLE_CONSULTANT));
+			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, UserRole.CONSULTANT);
 		}
 		
 		return users;

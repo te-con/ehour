@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<artifactId>eHour</artifactId>
 		<groupId>net.rrm.ehour</groupId>
-		<version>0.8.4</version>
+		<version>0.9.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
@@ -12,19 +12,7 @@
 	<packaging>jar</packaging>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
 		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -40,6 +28,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+
 	</build>
 
 	<profiles>
@@ -68,10 +63,7 @@
 		<profile>
 			<id>dev</id>
 			<activation>
-				<property>
-					<name>env</name>
-					<value>dev-derby</value>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<resources>
@@ -85,64 +77,76 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>10.4.2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty</artifactId>
-			<version>${jetty.version}</version>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-naming</artifactId>
-			<version>${jetty.version}</version>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jndi</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
+			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-plus</artifactId>
-			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-deploy</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.0</version>
-			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>tomcat</groupId>
 			<artifactId>jasper-compiler</artifactId>
-			<version>5.5.23</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>tomcat</groupId>
 			<artifactId>jasper-runtime</artifactId>
-			<version>5.5.9</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>tomcat</groupId>
 			<artifactId>jasper-compiler-jdt</artifactId>
-			<version>5.5.23</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>tanukisoft</groupId>
 			<artifactId>wrapper</artifactId>
-			<version>3.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-wicketweb</artifactId>
-			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-persistence-derby</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-persistence-mysql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-persistence-postgresql</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-audit</artifactId>
-			<version>${pom.version}</version>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.rrm.ehour</groupId>
+			<artifactId>eHour-common</artifactId>
+		</dependency>
 	</dependencies>
 </project>

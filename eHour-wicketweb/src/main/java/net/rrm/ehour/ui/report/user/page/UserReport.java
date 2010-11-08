@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.report.user.page;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
@@ -36,7 +36,7 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class UserReport extends AbstractReportPage
+public class UserReport extends AbstractReportPage<ReportCriteria>
 {
 	private static final long serialVersionUID = -8867366237264687482L;
 
@@ -47,8 +47,8 @@ public class UserReport extends AbstractReportPage
 		super(new ResourceModel("userreport.title"));
 		
 		ReportCriteria reportCriteria = getReportCriteria(true);
-		IModel	model = new CompoundPropertyModel(reportCriteria);
-		setModel(model);
+		IModel<ReportCriteria>	model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
+		setDefaultModel(model);
 
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model));
@@ -60,7 +60,7 @@ public class UserReport extends AbstractReportPage
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
@@ -78,7 +78,7 @@ public class UserReport extends AbstractReportPage
 	
 	private WebMarkupContainer getReport()
 	{
-		ReportCriteria criteria = (ReportCriteria)getModelObject();
+		ReportCriteria criteria = (ReportCriteria)getDefaultModelObject();
 		
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(criteria);
 		EhourWebSession.getSession().getObjectCache().addObjectToCache(customerAggregateReport);

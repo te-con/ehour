@@ -28,7 +28,6 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.trend.PrintReport;
@@ -44,6 +43,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
 /**
@@ -70,7 +70,7 @@ public class PrintMonth extends WebPage
 		
 		PrintReport printReport = new PrintReport(reportCriteria);
 
-		IModel printTitle = new StringResourceModel("printMonth.printHeader",
+		IModel<String> printTitle = new StringResourceModel("printMonth.printHeader",
 				this,
 				null,
 				new Object[]{session.getUser().getUser().getFullName(),
@@ -125,7 +125,7 @@ public class PrintMonth extends WebPage
 	 */
 	private void addGrandTotal(PrintReport report, final List<Date> days)
 	{
-		Label label = new Label("grandTotal", new FloatModel(report.getGrandTotalHours(), config));
+		Label label = new Label("grandTotal", new Model<Float>(report.getGrandTotalHours()));
 		label.add(new SimpleAttributeModifier("colspan", Integer.toString(days.size() + 2)));
 		add(label);
 	}
@@ -136,12 +136,12 @@ public class PrintMonth extends WebPage
 	 */
 	private void addProjects(final PrintReport report, final List<Date> days)
 	{
-		ListView reports = new ListView("projects", new ArrayList<ProjectAssignment>(report.getValues().keySet()))
+		ListView<ProjectAssignment> reports = new ListView<ProjectAssignment>("projects", new ArrayList<ProjectAssignment>(report.getValues().keySet()))
 		{
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<ProjectAssignment> item)
 			{
 				addProjectRow(item, days, report);
 			}
@@ -156,7 +156,7 @@ public class PrintMonth extends WebPage
 	 * @param days
 	 * @param report
 	 */
-	private void addProjectRow(ListItem item, List<Date> days, PrintReport report)
+	private void addProjectRow(ListItem<ProjectAssignment> item, List<Date> days, PrintReport report)
 	{
 		ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
 
@@ -182,7 +182,7 @@ public class PrintMonth extends WebPage
 				
 				if (aggregate.getTotalHours() != null && aggregate.getTotalHours().floatValue() > 0)
 				{
-					label = new Label(dateLabels.newChildId(), new FloatModel(aggregate.getTotalHours(), config));
+					label = new Label(dateLabels.newChildId(), new Model<Float>(aggregate.getTotalHours().floatValue()));
 					
 					total += aggregate.getTotalHours().floatValue();
 				}
@@ -198,7 +198,7 @@ public class PrintMonth extends WebPage
 		
 		item.add(dateLabels);
 		
-		item.add(new Label("total", new FloatModel(total, config)));
+		item.add(new Label("total", new Model<Float>(total)));
 	}
 	
 	

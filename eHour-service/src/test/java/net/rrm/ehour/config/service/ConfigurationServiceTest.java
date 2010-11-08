@@ -27,25 +27,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.dao.BinaryConfigurationDAO;
-import net.rrm.ehour.config.dao.ConfigurationDAO;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
-import net.rrm.ehour.value.ImageLogo;
+import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
+import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
+import net.rrm.ehour.persistence.value.ImageLogo;
 
 import org.junit.Before;
 import org.junit.Test;
-
-/**
- * TODO 
- **/
 
 public class ConfigurationServiceTest
 {
 	private ConfigurationService configurationService;
 
-	private ConfigurationDAO configDAO;
-	private BinaryConfigurationDAO binaryConfigDao;
+	private ConfigurationDao configDAO;
+	private BinaryConfigurationDao binaryConfigDao;
 
 	/**
 	 * @throws java.lang.Exception
@@ -55,10 +51,10 @@ public class ConfigurationServiceTest
 	{
 		configurationService = new ConfigurationServiceImpl();
 
-		configDAO = createMock(ConfigurationDAO.class);
+		configDAO = createMock(ConfigurationDao.class);
 		((ConfigurationServiceImpl) configurationService).setConfigDAO(configDAO);
 
-		binaryConfigDao = createMock(BinaryConfigurationDAO.class);
+		binaryConfigDao = createMock(BinaryConfigurationDao.class);
 		((ConfigurationServiceImpl) configurationService).setBinConfigDAO(binaryConfigDao);
 
 	}
@@ -80,10 +76,10 @@ public class ConfigurationServiceTest
 	}
 	
 	/**
-	 * Test method for {@link net.rrm.ehour.config.service.ConfigurationServiceImpl#getConfiguration()}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.config.service.ConfigurationServiceImpl#getConfiguration()}.
 	 */
 	@Test
-	public void testGetConfiguration()
+	public void shouldGetConfiguration()
 	{
 		List<Configuration> configs = new ArrayList<Configuration>();
 		configs.add(new Configuration("availableTranslations", "en,nl"));
@@ -107,10 +103,10 @@ public class ConfigurationServiceTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.config.service.ConfigurationServiceImpl#persistConfiguration(net.rrm.ehour.config.EhourConfig)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.config.service.ConfigurationServiceImpl#persistConfiguration(net.rrm.ehour.persistence.persistence.config.EhourConfig)}.
 	 */
 	@Test
-	public void testPersistConfiguration()
+	public void shouldPersistConfiguration()
 	{
 
 		EhourConfigStub stub = new EhourConfigStub();

@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -20,11 +20,11 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBeanImpl;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
-import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
+import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 
@@ -39,17 +39,17 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentPanel extends AbstractFormSubmittingPanel
+public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
 {
 	private static final long serialVersionUID = -3721224427697057895L;
 	private	final static Logger	logger = Logger.getLogger(AssignmentPanel.class);
 	@SpringBean
 	private	ProjectAssignmentService	assignmentService;
-	private AddEditTabbedPanel			tabbedPanel;
+	private AddEditTabbedPanel<AssignmentAdminBackingBean> tabbedPanel;
 	private	AssignmentListPanel			listPanel;
-	
+
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @param model
 	 */
@@ -57,13 +57,13 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 							final User user)
 	{
 		super(id);
-		
+
 		setOutputMarkupId(true);
 
 		listPanel = new AssignmentListPanel("assignmentList", user);
 		add(listPanel);
-		
-		tabbedPanel = new AddEditTabbedPanel("assignmentTabs",
+
+		tabbedPanel = new AddEditTabbedPanel<AssignmentAdminBackingBean>("assignmentTabs",
 												new ResourceModel("admin.assignment.newAssignment"),
 												new ResourceModel("admin.assignment.editAssignment"),
 												new ResourceModel("admin.assignment.noEditEntrySelected"))
@@ -73,53 +73,51 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 			protected Panel getAddPanel(String panelId)
 			{
 				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel(getAddBackingBean()));
+												new CompoundPropertyModel<AssignmentAdminBackingBean>(getAddBackingBean()));
 			}
 
 			@Override
 			protected Panel getEditPanel(String panelId)
 			{
 				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel(getEditBackingBean()));
+												new CompoundPropertyModel<AssignmentAdminBackingBean>(getEditBackingBean()));
 			}
 
 			@Override
-			protected AdminBackingBean getNewAddBackingBean()
+			protected AssignmentAdminBackingBean createAddBackingBean()
 			{
-				return AssignmentAdminBackingBeanImpl.createAssignmentAdminBackingBean(user);
+				return AssignmentAdminBackingBean.createAssignmentAdminBackingBean(user);
 			}
 
 			@Override
-			protected AdminBackingBean getNewEditBackingBean()
+			protected AssignmentAdminBackingBean createEditBackingBean()
 			{
-				return AssignmentAdminBackingBeanImpl.createAssignmentAdminBackingBean(user);
+				return AssignmentAdminBackingBean.createAssignmentAdminBackingBean(user);
 			}
 		};
-		
-//		tabbedPanel.setVisible(user.getUserId() != null)
-		
+
 		add(tabbedPanel);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		AjaxEventType type = ajaxEvent.getEventType();
-		
+
 		if (type == AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE)
 		{
 			try
 			{
 				ProjectAssignment assignment = ((PayloadAjaxEvent<ProjectAssignment>)ajaxEvent).getPayload();
 				assignment = assignmentService.getProjectAssignment(assignment.getAssignmentId());
-				
+
 				tabbedPanel.setEditBackingBean(
-								new AssignmentAdminBackingBeanImpl(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
+								new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
 				tabbedPanel.switchTabOnAjaxTarget(ajaxEvent.getTarget(), 1);
 			} catch (ObjectNotFoundException e)
 			{
@@ -127,18 +125,18 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel
 				return false;
 			}
 		}
-		
+
 		if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED
 				|| type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
 		{
-			AssignmentAdminBackingBeanImpl	backingBean = (AssignmentAdminBackingBeanImpl)((PayloadAjaxEvent<AdminBackingBean>)ajaxEvent).getPayload();
+			AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((PayloadAjaxEvent<AdminBackingBean>)ajaxEvent).getPayload();
 			ProjectAssignment assignment = backingBean.getProjectAssignmentForSave();
 
 			listPanel.updateList(ajaxEvent.getTarget(), assignment.getUser());
-				
+
 			tabbedPanel.succesfulSave(ajaxEvent.getTarget());
 		}
-		
+
 		return true;
 	}
 }

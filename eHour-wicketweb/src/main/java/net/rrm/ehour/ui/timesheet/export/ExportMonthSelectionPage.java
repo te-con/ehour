@@ -21,13 +21,14 @@ import java.util.Calendar;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.ajax.AjaxAwareContainer;
-import net.rrm.ehour.ui.common.ajax.AjaxEvent;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
+import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
@@ -45,7 +46,7 @@ import org.apache.wicket.model.StringResourceModel;
  * Print month page
  **/
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class ExportMonthSelectionPage extends AbstractReportPage implements AjaxAwareContainer
+public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria> implements AjaxEventListener
 {
 	private static final long serialVersionUID = 1891959724639181159L;
 	
@@ -75,6 +76,8 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 		titleLabel = getTitleLabel(forMonth);
 		titleLabel.setOutputMarkupId(true);
 		
+		add(new ContextualHelpPanel("contextHelp", "printMonth.help.header", "printMonth.help.body", "Export+month"));
+		
 		CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_FRAME, titleLabel);
 		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder(ID_BLUE_BORDER);
 		greyBorder.add(blueBorder);
@@ -83,9 +86,10 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 		blueBorder.add(createExportCriteriaPanel(ID_SELECTION_FORM));
 	}
 	
+	@SuppressWarnings("unchecked")
 	private ExportCriteriaPanel createExportCriteriaPanel(String id)
 	{
-		ExportCriteriaPanel criteriaPanel = new ExportCriteriaPanel(id, getModel());
+		ExportCriteriaPanel criteriaPanel = new ExportCriteriaPanel(id, (IModel<ReportCriteria>)getDefaultModel());
 		
 		return criteriaPanel;
 	}
@@ -110,13 +114,13 @@ public class ExportMonthSelectionPage extends AbstractReportPage implements Ajax
 			reportCriteria.getUserCriteria().setProjects(new ArrayList<Project>());
 		}
 		
-		IModel	model = new CompoundPropertyModel(reportCriteria);
-		setModel(model);
+		IModel<ReportCriteria> model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
+		setDefaultModel(model);
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.ui.common.ajax.AjaxEvent)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
 	 */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

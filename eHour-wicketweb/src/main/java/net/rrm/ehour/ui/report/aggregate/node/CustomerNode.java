@@ -42,7 +42,7 @@ public class CustomerNode extends ReportNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.aggregate.value.ReportNode#getElementId(net.rrm.ehour.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.aggregate.value.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
 	 */
 	@Override
     protected Serializable getElementId(ReportElement element)
@@ -55,7 +55,7 @@ public class CustomerNode extends ReportNode
 		}
 		else
 		{
-			return new Integer(1);
+			return Integer.valueOf(1);
 		}
     }
 }

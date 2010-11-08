@@ -56,7 +56,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 * @param height
 	 */
 	public AbstractReportChartImage(String id, 
-								IModel dataModel,
+								IModel<ReportData> dataModel,
 								int width,
 								int height)
 	{
@@ -69,7 +69,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	 */
 	protected JFreeChart generateChart()
 	{
-		ReportData report = (ReportData)getModelObject();
+		ReportData report = (ReportData)getDefaultModelObject();
 		return getChart(report);
 	}
 	
@@ -114,7 +114,7 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 		chart.setTitle(title);
 		
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
-		Font rendererTitleFont = new Font("SansSerif", Font.PLAIN, 10);
+		Font rendererTitleFont = new Font("SansSerif", Font.PLAIN, 8);
 		renderer.setBaseItemLabelFont(rendererTitleFont);
 		renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
 	

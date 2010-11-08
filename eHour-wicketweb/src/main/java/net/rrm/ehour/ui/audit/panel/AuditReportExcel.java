@@ -37,7 +37,7 @@ public class AuditReportExcel extends AbstractExcelReport
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.component.AbstractExcelResource#getFilename()
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.component.AbstractExcelResource#getFilename()
 	 */
 	@Override
 	protected String getFilename()
@@ -47,14 +47,14 @@ public class AuditReportExcel extends AbstractExcelReport
 
 
 	@Override
-	protected IModel getExcelReportName()
+	protected IModel<String> getExcelReportName()
 	{
 		return new ResourceModel("audit.report.title");
 	}
 
 
 	@Override
-	protected IModel getHeaderReportName()
+	protected IModel<String> getHeaderReportName()
 	{
 		return new ResourceModel("audit.report.title");
 	}

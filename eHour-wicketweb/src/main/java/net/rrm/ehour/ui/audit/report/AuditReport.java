@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.audit.service.AuditService;
-import net.rrm.ehour.audit.service.dto.AuditReportRequest;
+import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -52,7 +52,7 @@ public class AuditReport extends AbstractCachableReportModel
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected ReportData getReportData(ReportCriteria reportCriteria)

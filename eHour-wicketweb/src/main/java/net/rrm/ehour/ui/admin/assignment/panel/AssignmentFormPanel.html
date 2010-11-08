@@ -7,74 +7,32 @@
 
 <body>
 <wicket:panel>
-		<div wicket:id="border">
-			<form wicket:id="assignmentForm" style="margin: 0; padding: 0">
-			<table class="contentTable" style="padding: 0 10px 0 0;">
-					<tr>
-						<td width="40%" valign="top"><wicket:message key="admin.assignment.customer" />:</td>
-						<td><select class="textInputSmall" style="width: 15em" wicket:id="customer"></select>
-							<span wicket:id="customerValidationError"></span>
-						</td>
-					</tr>
-
-					<tr>
-						<td valign="top"><wicket:message key="admin.assignment.project" />:</td>
-						<td><select class="textInputSmall" style="width: 15em" wicket:id="projectAssignment.project"></select>
-							<span wicket:id="projectValidationError"></span>
-						</td>
-					</tr>
-
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>
-
-					<span wicket:id="assignmentType"></span>					
-					
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>					
-					
-					<span wicket:id="rateRole"></span>					
-
-					<tr>
-						<td colspan="2">
-							<br />
-						</td>
-					</tr>	
-
-					<tr>
-						<td valign="top"><wicket:message key="admin.assignment.active" />:</td>
-						<td><input type="checkbox" wicket:id="projectAssignment.active" /></td>
-					</tr>					
-
-					
-					<tr>
-						<td colspan="2">
-							<br />
-							<span wicket:id="serverMessage"></span>
-						</td>
-					</tr>
-				
-					<tr>
-						<td>
-							<a class="button" wicket:id="deleteButton">
-								<span><wicket:message key="general.delete" /></span>
-							</a>
-						</td>
-						<td style="text-align: right">
-							<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
-								<span><wicket:message key="general.save" /></span></a>
-						</td>
-					</tr>
-					
-				</table>
-			</form>		
-		</div>
-
+	<div wicket:id="border">
+		<form wicket:id="assignmentForm" style="margin: 0; padding: 0">
+			<wicket:container wicket:id="formComponents" />
+			
+			<table class="contentTable" style="padding: 0 10px 0 0;">					
+				<tr>
+					<td colspan="2">
+						<br />
+						<span wicket:id="serverMessage"></span>
+					</td>
+				</tr>
+			
+				<tr>
+					<td>
+						<a class="button" wicket:id="deleteButton">
+							<span><wicket:message key="general.delete" /></span>
+						</a>
+					</td>
+					<td style="text-align: right">
+						<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+							<span><wicket:message key="general.save" /></span></a>
+					</td>
+				</tr>
+			</table>		
+		</form>		
+	</div>
 </wicket:panel>
 
 </body>

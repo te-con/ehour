@@ -34,7 +34,7 @@ public class UserRowKey extends ChartRowKey
 	}
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.charts.rowkey.ChartRowKey#getName()
+	 * @see net.rrm.ehour.persistence.persistence.web.report.charts.rowkey.ChartRowKey#getName()
 	 */
 	public String getName()
 	{

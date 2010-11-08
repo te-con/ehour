@@ -3,50 +3,60 @@
 	<parent>
 		<groupId>net.rrm.ehour</groupId>
 		<artifactId>eHour</artifactId>
-		<version>0.8.4</version>
+		<version>0.9.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.rrm.ehour</groupId>
 	<artifactId>eHour-audit</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour audit interceptor</name>
-	<version>${applicationVersion}</version>
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources/spring</directory>
-			</resource>
-		</resources>
-	</build>
 
+	<build>
+                <testResources>
+                        <testResource>
+                                <filtering>false</filtering>
+                                <directory>src/test/java</directory>
+                                <includes>
+                                        <include>**</include>
+                                </includes>
+                                <excludes>
+                                        <exclude>**/*.java</exclude>
+                                </excludes>
+                        </testResource>
+                        <testResource>
+                                <filtering>false</filtering>
+                                <directory>src/test/resources</directory>
+                                <includes>
+                                        <include>**</include>
+                                </includes>
+                                <excludes>
+                                        <exclude>**/*.java</exclude>
+                                </excludes>
+                        </testResource>
+                </testResources>
+</build>
 	<dependencies>
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-persistence-domain</artifactId>
-			<version>${pom.version}</version>
+			<artifactId>eHour-common</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-service</artifactId>
-			<version>${pom.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.rrm.ehour</groupId>
 			<artifactId>eHour-wicketweb</artifactId>
-			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-test</artifactId>
-		    <version>${spring.version}</version>
-		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

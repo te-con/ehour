@@ -21,30 +21,39 @@ import java.util.Locale;
 import net.rrm.ehour.ui.test.StrictWicketTester;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.IFormSubmittingComponent;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.settings.Settings;
-import org.apache.wicket.util.tester.FormTester;
-import org.apache.wicket.util.tester.WicketTester;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.junit.Before;
 
 /**
  * Base class for wicket unit tests 
  **/
-@SuppressWarnings("unchecked")
 public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 {
-	private WicketTester tester;
-	private TestEhourWebApplication webApp;
+	protected StrictWicketTester tester;
+	protected TestEhourWebApplication webApp;
 	
+	@SuppressWarnings("serial")
 	@Before
-	public void setUp() throws Exception
+	public final void setUp() throws Exception
 	{
-		super.springContextSetup();
-		webApp =  new TestEhourWebApplication(getMockContext());
+		webApp =  new TestEhourWebApplication()
+		{
+			@Override
+			protected void springInjection()
+			{
+				addComponentInstantiationListener(new SpringComponentInjector(this, getMockContext(), true));
+			}
+		};
+		
 		tester = new StrictWicketTester(webApp);
 		
+		bypassStringResourceLoading();
+	}
+
+	private void bypassStringResourceLoading()
+	{
 		((Settings)webApp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader()
 		{
 
@@ -53,7 +62,7 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 				return key;
 			}
 
-			public String loadStringResource(Class clazz, String key, Locale locale, String style)
+			public String loadStringResource(Class<?> clazz, String key, Locale locale, String style)
 			{
 				return key;
 			}
@@ -61,36 +70,12 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 		});
 	}
 	
-	protected void setFormValue(FormTester formTester, String path, String value)
-	{
-		Component comp = formTester.getForm().get(path);
-		
-		if (comp != null && (comp instanceof IFormSubmittingComponent || comp instanceof FormComponent))
-		{
-			formTester.setValue(path, value);
-		}
-		else if (comp == null)
-		{
-			throw new IllegalArgumentException(path + " component not found");
-		}
-		else
-		{
-			throw new IllegalArgumentException(path + " not a formcomponent");
-		}
-	}
-	
-	/**
-	 * @return the tester
-	 */
-	public WicketTester getTester()
+	protected StrictWicketTester getTester()
 	{
 		return tester;
 	}
 	
-	/**
-	 * @return the webapp
-	 */
-	public TestEhourWebApplication getWebApp()
+	protected TestEhourWebApplication getWebApp()
 	{
 		return webApp;
 	};

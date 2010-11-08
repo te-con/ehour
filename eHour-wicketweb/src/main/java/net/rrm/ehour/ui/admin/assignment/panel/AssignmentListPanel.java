@@ -25,11 +25,10 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.ui.common.ajax.AjaxUtil;
-import net.rrm.ehour.ui.common.ajax.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.event.EventPublisher;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.model.FloatModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
@@ -54,7 +53,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  **/
 
 @SuppressWarnings("serial")
-public class AssignmentListPanel extends AbstractBasePanel
+public class AssignmentListPanel extends AbstractBasePanel<Void>
 {
 	private static final long serialVersionUID = -8798859357268916546L;
 
@@ -62,7 +61,7 @@ public class AssignmentListPanel extends AbstractBasePanel
 	private ProjectAssignmentService projectAssignmentService;
 	private	EhourConfig		config;
 	private	Border			greyBorder;
-	private ListView 		assignmentListView;
+	private ListView<ProjectAssignment> assignmentListView;
 	private User			user;
 	
 	/**
@@ -73,13 +72,13 @@ public class AssignmentListPanel extends AbstractBasePanel
 	{
 		super(id);
 		
-		config = ((EhourWebSession)getSession()).getEhourConfig();
+		config = EhourWebSession.getSession().getEhourConfig();
 	
 		setOutputMarkupId(true);
 	
 		greyBorder = new GreyRoundedBorder("border",
 				 							new StringResourceModel("admin.assignment.assignmentsFor", 
-				 											this, null, new Object[]{new Model(user.getFullName())}),
+				 											this, null, new Object[]{new Model<String>(user.getFullName())}),
 											WebGeo.W_CONTENT_SMALL);
 		add(greyBorder);
 		greyBorder.add(getProjectAssignmentLists(user));
@@ -104,7 +103,7 @@ public class AssignmentListPanel extends AbstractBasePanel
 	 */
 	private AjaxCheckBox getActivateCheckbox()
 	{
-		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new Model(getEhourWebSession().getHideInactiveSelections().toString()))
+		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new Model<Boolean>(getEhourWebSession().getHideInactiveSelections()))
 		{
 			private static final long serialVersionUID = 2585047163449150793L;
 
@@ -124,33 +123,33 @@ public class AssignmentListPanel extends AbstractBasePanel
 	 * @param user
 	 * @return
 	 */
-	private ListView getProjectAssignmentLists(User user)
+	private ListView<ProjectAssignment> getProjectAssignmentLists(User user)
 	{
 		this.user = user;
 		
-		assignmentListView = new ListView("assignments", getProjectAssignments(user))
+		assignmentListView = new ListView<ProjectAssignment>("assignments", getProjectAssignments(user))
 		{
 			@Override
-			protected void populateItem(ListItem item)
+			protected void populateItem(ListItem<ProjectAssignment> item)
 			{
-				final ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
+				final ProjectAssignment assignment = item.getModelObject();
 				
-				AjaxLink	link = new AjaxLink("itemLink")
+				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+						EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
 																													assignment));
 					}
 				};
 
-				AjaxLink	imgLink = new AjaxLink("imgLink")
+				AjaxLink<Void> imgLink = new AjaxLink<Void>("imgLink")
 				{
 					@Override
 					public void onClick(AjaxRequestTarget target)
 					{
-						AjaxUtil.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+						EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
 																													assignment));
 					}
 				};
@@ -177,7 +176,7 @@ public class AssignmentListPanel extends AbstractBasePanel
 										: assignment.getRole()));
 				
 				item.add(new Label("currency",  Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
-				item.add(new Label("rate", new FloatModel(assignment.getHourlyRate(), config)));
+				item.add(new Label("rate", new Model<Float>(assignment.getHourlyRate())));
 
 			}
 		};

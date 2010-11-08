@@ -21,25 +21,29 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.report.dao.ReportAggregatedDAO;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.timesheet.dao.TimesheetDAO;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConstants;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Time allotted util class
  **/
-
+@Service("projectAssignmentStatusService")
 public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStatusService
 {
-	private	ReportAggregatedDAO	reportAggregatedDAO;
-	private TimesheetDAO		timesheetDAO;
-	
+	@Autowired
+	private	ReportAggregatedDao	reportAggregatedDAO;
+	@Autowired
+	private TimesheetDao		timesheetDAO;
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.domain.ProjectAssignment, net.rrm.ehour.data.DateRange)
+	 * @see net.rrm.ehour.persistence.persistence.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.persistence.persistence.domain.ProjectAssignment, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment, DateRange period)
 	{
@@ -52,7 +56,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.domain.ProjectAssignment)
+	 * @see net.rrm.ehour.persistence.persistence.project.status.ProjectAssignmentStatusService#getAssignmentStatus(net.rrm.ehour.persistence.persistence.domain.ProjectAssignment)
 	 */
 	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment)
 	{
@@ -74,6 +78,13 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
 		status.setAggregate(aggregate);
 
+		addStatusForAssignmentType(assignment, status);
+		
+		return status;
+	}
+
+	private void addStatusForAssignmentType(ProjectAssignment assignment, ProjectAssignmentStatus status)
+	{
 		int assignmentTypeId = assignment.getAssignmentType().getAssignmentTypeId().intValue();
 		
 		if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
@@ -84,8 +95,6 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 		{
 			addFlexAssignmentStatus(assignment, status);
 		}
-		
-		return status;
 	}
 
 	/**
@@ -152,7 +161,8 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	}	
 	
 	/**
-	 * Get the status for a fixed assignment
+	 * Get the status for a fixed assignment.
+	 * 
 	 * @param assignment
 	 * @return
 	 */
@@ -170,8 +180,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 			else
 			{
 				compared = new Float(0).compareTo(statusAggregateHours);
-			};
-			
+			}
 			
 			if (compared <= 0)
 			{
@@ -231,7 +240,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	/**
 	 * @param reportAggregatedDAO the reportAggregatedDAO to set
 	 */
-	public void setReportAggregatedDAO(ReportAggregatedDAO reportAggregatedDAO)
+	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
@@ -239,7 +248,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	/**
 	 * @param timesheetDAO the timesheetDAO to set
 	 */
-	public void setTimesheetDAO(TimesheetDAO timesheetDAO)
+	public void setTimesheetDAO(TimesheetDao timesheetDAO)
 	{
 		this.timesheetDAO = timesheetDAO;
 	}

@@ -23,18 +23,16 @@ import net.rrm.ehour.ui.common.util.CommonWebUtil;
  * ProjectAssignment renderer
  **/
 
-public class ProjectAssignmentTypeRenderer extends LocalizedResourceRenderer
+public class ProjectAssignmentTypeRenderer extends LocalizedResourceRenderer<ProjectAssignmentType>
 {
 	private static final long serialVersionUID = -4020935210828625185L;
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer#getResourceKey(java.lang.Object)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.renderers.LocalizedResourceRenderer#getResourceKey(java.lang.Object)
 	 */
 	@Override
-	protected String getResourceKey(Object o)
+	protected String getResourceKey(ProjectAssignmentType pat)
 	{
-		ProjectAssignmentType	pat = (ProjectAssignmentType)o;
-		
 		return CommonWebUtil.getResourceKeyForProjectAssignmentType(pat);
 	}
 

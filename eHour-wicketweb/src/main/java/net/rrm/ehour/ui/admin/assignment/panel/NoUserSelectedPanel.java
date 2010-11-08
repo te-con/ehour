@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.admin.assignment.panel;
 
+import java.util.Date;
+
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.util.WebGeo;
 
@@ -51,7 +53,7 @@ public class NoUserSelectedPanel extends Panel
 		greyBorder.add(new Label("noEntry", new ResourceModel(resourceId)));
 
 		// this is what we call a hack sir
-        final DateTextField dateStart = new DateTextField("dummyDate", new Model(), new StyleDateConverter("S-", true));
+        final DateTextField dateStart = new DateTextField("dummyDate", new Model<Date>(), new StyleDateConverter("S-", true));
         dateStart.add(new DatePicker());		
 		greyBorder.add(dateStart);
 		

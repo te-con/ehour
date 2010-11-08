@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.report.chart.trend;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,20 +42,13 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 	private static final long serialVersionUID = 1L;
 	private AbstractTrendChartImage<RE>	img;
 	
-
-	/**
-	 * 
-	 * @param id
-	 * @param config
-	 * @param targetImage
-	 */
 	public SeriesChartSelector(String id, ReportConfig config, final AbstractTrendChartImage<RE> targetImage, final TrendChartImageFactory<RE> imgFactory)
 	{
 		super(id);
 		
 		this.img = targetImage;
 		
-		List<Serializable> columns = new ArrayList<Serializable>();
+		List<ReportColumn> columns = new ArrayList<ReportColumn>();
 		
 		for (ReportColumn column : config.getReportColumns())
 		{
@@ -66,14 +58,15 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 			}
 		}
 		
-		final IModel model = new Model();
+		final IModel<ReportColumn> model = new Model<ReportColumn>();
 		
-		final DropDownChoice columnSelection = new DropDownChoice("serieChartSelector", model, columns, new TreeReportColumnRenderer());
+		final DropDownChoice<ReportColumn> columnSelection = new DropDownChoice<ReportColumn>("serieChartSelector", model, columns, new TreeReportColumnRenderer());
 
 		columnSelection.add(new AjaxFormComponentUpdatingBehavior("onchange")
 		{
 			private static final long serialVersionUID = 507045565542332885L;
 
+			@SuppressWarnings("unchecked")
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
@@ -86,7 +79,7 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 				
 				if (selectedColumn != null)
 				{
-					AbstractTrendChartImage<RE> newImg = imgFactory.getTrendChartImage(selectedColumn, targetImage.getModel());
+					AbstractTrendChartImage<RE> newImg = imgFactory.getTrendChartImage(selectedColumn, (IModel<RE>) targetImage.getDefaultModel());
 					
 					img.replaceWith(newImg);
 					target.addComponent(newImg);
@@ -99,23 +92,16 @@ public class SeriesChartSelector<RE extends ReportElement> extends Panel
 		add(columnSelection);
 	}
 
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class TreeReportColumnRenderer implements IChoiceRenderer
+	private class TreeReportColumnRenderer implements IChoiceRenderer<ReportColumn>
 	{
 		private static final long serialVersionUID = 1L;
 
-		public Object getDisplayValue(Object object)
+		public Object getDisplayValue(ReportColumn col)
 		{
-			ReportColumn col = (ReportColumn)object;
-			
 			return (new ResourceModel(col.getColumnHeaderResourceKey())).getObject();
 		}
 
-		public String getIdValue(Object object, int index)
+		public String getIdValue(ReportColumn object, int index)
 		{
 			return Integer.toString(index);
 		}

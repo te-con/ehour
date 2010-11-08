@@ -75,7 +75,7 @@ public class CommonWebUtil
 	{
 		final List<CO> components = new ArrayList<CO>();
 		
-		parent.visitChildren(new Component.IVisitor()
+		parent.visitChildren(new Component.IVisitor<Component>()
 		{
 
 			@SuppressWarnings("unchecked")
@@ -99,9 +99,9 @@ public class CommonWebUtil
 	 * @param model
 	 * @return
 	 */
-	public static String getResourceModelString(IModel model)
+	public static String getResourceModelString(IModel<String> model)
 	{
-		return (String)model.getObject();
+		return model.getObject();
 	}
 	
 	/**
@@ -140,19 +140,19 @@ public class CommonWebUtil
 	{
 		String key = null;
 		
-		if (role.getRole().equals(EhourConstants.ROLE_CONSULTANT))
+		if (role.getRole().equals(UserRole.ROLE_CONSULTANT))
 		{
 			key = "role.ROLE_CONSULTANT";
 		} 
-		else if (role.getRole().equals(EhourConstants.ROLE_REPORT))
+		else if (role.getRole().equals(UserRole.ROLE_REPORT))
 		{
 			key = "role.ROLE_REPORT";
 		}
-		else if (role.getRole().equals(EhourConstants.ROLE_PROJECTMANAGER))
+		else if (role.getRole().equals(UserRole.ROLE_PROJECTMANAGER))
 		{
 			key = "role.ROLE_PROJECTMANAGER";
 		}
-		else if (role.getRole().equals(EhourConstants.ROLE_ADMIN))
+		else if (role.getRole().equals(UserRole.ROLE_ADMIN))
 		{
 			key = "role.ROLE_ADMIN";
 		}

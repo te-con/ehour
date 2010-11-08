@@ -25,12 +25,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.customer.dao.CustomerDAO;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.persistence.customer.dao.CustomerDao;
 
 /**
  * TODO 
@@ -39,7 +39,7 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 public class CustomerServiceTest extends TestCase
 {
 	private	CustomerService	customerService;
-	private	CustomerDAO		customerDAO;
+	private	CustomerDao		customerDAO;
 	
 	/**
 	 * 
@@ -48,7 +48,7 @@ public class CustomerServiceTest extends TestCase
 	{
 		customerService = new CustomerServiceImpl();
 
-		customerDAO = createMock(CustomerDAO.class);
+		customerDAO = createMock(CustomerDao.class);
 		((CustomerServiceImpl)customerService).setCustomerDAO(customerDAO);
 	}
 

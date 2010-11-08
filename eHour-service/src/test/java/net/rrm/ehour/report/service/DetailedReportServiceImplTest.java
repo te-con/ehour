@@ -28,9 +28,9 @@ import java.util.List;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
-import net.rrm.ehour.report.dao.DetailedReportDAO;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 
 import org.junit.Before;
@@ -42,7 +42,7 @@ import org.junit.Test;
 @SuppressWarnings({"unchecked"})
 public class DetailedReportServiceImplTest
 {
-	private	DetailedReportDAO		detailedReportDAO;
+	private	DetailedReportDao		detailedReportDAO;
 	private	DetailedReportService	detailedReportService;
 	private	ReportCriteria			rc;
 	private UserCriteria 			uc;
@@ -56,7 +56,7 @@ public class DetailedReportServiceImplTest
 	{
 		detailedReportService = new DetailedReportServiceImpl();
 
-		detailedReportDAO = createMock(DetailedReportDAO.class);
+		detailedReportDAO = createMock(DetailedReportDao.class);
 		((DetailedReportServiceImpl)detailedReportService).setDetailedReportDAO(detailedReportDAO);
 
 		dr = new DateRange();
@@ -66,7 +66,7 @@ public class DetailedReportServiceImplTest
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.report.service.DetailedReportServiceImpl#getDetailedReportData(net.rrm.ehour.report.criteria.ReportCriteria)}.
+	 * Test method for {@link net.rrm.ehour.persistence.persistence.report.service.DetailedReportServiceImpl#getDetailedReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)}.
 	 */
 	@Test
 	public void testGetDetailedReportAll()

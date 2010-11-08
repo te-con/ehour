@@ -42,7 +42,7 @@ public class UserAggregateReport extends AbstractAggregateReport
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.aggregate.AggregateReport#getReportNodeFactory()
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.aggregate.AggregateReport#getReportNodeFactory()
 	 */
 	@Override
 	public ReportNodeFactory getReportNodeFactory()
@@ -81,12 +81,7 @@ public class UserAggregateReport extends AbstractAggregateReport
 	    };
 	}
 
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class UserNode extends ReportNode
+	private final class UserNode extends ReportNode
 	{
 		private static final long serialVersionUID = 8534482324216994500L;
 
@@ -107,12 +102,7 @@ public class UserAggregateReport extends AbstractAggregateReport
 		}
 	}
 	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class ProjectEndNode extends ReportNode
+	private final class ProjectEndNode extends ReportNode
 	{
 		private static final long serialVersionUID = 1L;
 		

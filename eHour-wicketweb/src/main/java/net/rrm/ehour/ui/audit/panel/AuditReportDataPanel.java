@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.audit.panel;
 
 import java.util.Date;
 
-import net.rrm.ehour.audit.service.dto.AuditReportRequest;
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -46,11 +47,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.value.ValueMap;
 
-public class AuditReportDataPanel extends AbstractAjaxPanel
+public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
 {
 	private static final long serialVersionUID = -2380789244030608920L;
 
-	public AuditReportDataPanel(String id, IModel model)
+	public AuditReportDataPanel(String id, IModel<ReportCriteria> model)
 	{
 		super(id, model);
 
@@ -62,7 +63,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 	/**
 	 * Add components to the page
 	 */
-	private void addComponents(IModel model)
+	private void addComponents(IModel<ReportCriteria> model)
 	{
 		Border greyBorder = new GreyBlueRoundedBorder("border");
 		add(greyBorder);
@@ -79,14 +80,13 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 		ResourceReference excelResource = new ResourceReference("auditReportExcel");
 		ValueMap params = new ValueMap();
 		
-		ReportCriteria criteria = (ReportCriteria)AuditReportDataPanel.this.getModelObject();
+		ReportCriteria criteria = (ReportCriteria)AuditReportDataPanel.this.getDefaultModelObject();
 		
 		AuditReport auditReport = new AuditReport(criteria);
 		final String reportId = getEhourWebSession().getObjectCache().addObjectToCache(auditReport);
 		params.add("reportId", reportId);
 		
-		Link excelLink = new ResourceLink("excelLink", excelResource, params);
-		
+		Link<?> excelLink = new ResourceLink<Void>("excelLink", excelResource, params);
 		add(excelLink);
 	}
 	
@@ -95,37 +95,38 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 	 * @param model
 	 * @return
 	 */
-	private WebMarkupContainer getPagingDataView(IModel model)
+	@SuppressWarnings("unchecked")
+	private WebMarkupContainer getPagingDataView(IModel<ReportCriteria> model)
 	{
 		final WebMarkupContainer dataContainer = new WebMarkupContainer("dataContainer");
 		dataContainer.setOutputMarkupId(true);
 		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
         
-		IColumn[] columns = new IColumn[4];
+		IColumn<Audit>[] columns = new IColumn[4];
         columns[0] = new DateColumn(new ResourceModel("audit.report.column.date"), config);
-        columns[1] = new PropertyColumn(new ResourceModel("audit.report.column.lastName"), "userFullName");
-        columns[2] = new PropertyColumn(new ResourceModel("audit.report.column.action"), "action");
-        columns[3] = new PropertyColumn(new ResourceModel("audit.report.column.type"), "auditActionType.value");
+        columns[1] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.lastName"), "userFullName");
+        columns[2] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.action"), "action");
+        columns[3] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
-        AjaxDataTable table = new AjaxDataTable("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
+        AjaxDataTable<Audit> table = new AjaxDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
 		dataContainer.add(table);
 		
 		return dataContainer;
 	}
 	
-	private AuditReportRequest getReportRequest(IModel model)
+	private AuditReportRequest getReportRequest(IModel<ReportCriteria> model)
 	{
-		ReportCriteria criteria = (ReportCriteria) model.getObject();
+		ReportCriteria criteria = model.getObject();
 		
 		return (AuditReportRequest)criteria.getUserCriteria();
 	}
 	
-	private class DateColumn extends AbstractColumn
+	private class DateColumn extends AbstractColumn<Audit>
 	{
 		private static final long serialVersionUID = -5517077439980001335L;
 		private EhourConfig config;
 		
-		public DateColumn(IModel displayModel, EhourConfig config)
+		public DateColumn(IModel<String> displayModel, EhourConfig config)
 		{
 			super(displayModel);
 				
@@ -136,9 +137,9 @@ public class AuditReportDataPanel extends AbstractAjaxPanel
 		 * (non-Javadoc)
 		 * @see org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator#populateItem(org.apache.wicket.markup.repeater.Item, java.lang.String, org.apache.wicket.model.IModel)
 		 */
-		public void populateItem(Item item, String componentId, IModel model)
+		public void populateItem(Item<ICellPopulator<Audit>> item, String componentId, IModel<Audit> model)
 		{
-			Date date = ((Audit)model.getObject()).getDate();
+			Date date = model.getObject().getDate();
 			item.add(new Label(componentId, new DateModel(date, config, DateModel.DATESTYLE_DATE_TIME)));
 		}
 	}

@@ -48,7 +48,7 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	private static final long serialVersionUID = 6099016674849151669L;
 	
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.web.report.reports.TimelineReport#getRowKey(net.rrm.ehour.report.reports.FlatProjectAssignmentAggregate)
+	 * @see net.rrm.ehour.persistence.persistence.web.report.reports.TimelineReport#getRowKey(net.rrm.ehour.persistence.persistence.report.reports.FlatProjectAssignmentAggregate)
 	 */
 	@Override
 	protected ProjectAssignment getRowKey(FlatReportElement aggregate)
@@ -87,7 +87,7 @@ public class PrintReport extends TrendReport<ProjectAssignment>
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.ui.report.trend.TrendReport#fetchReportData(net.rrm.ehour.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.trend.TrendReport#fetchReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected ReportData fetchReportData(ReportCriteria reportCriteria)

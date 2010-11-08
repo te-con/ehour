@@ -16,30 +16,21 @@
 
 package net.rrm.ehour.ui.common.renderers;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.domain.DomainObject;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
-/**
- * TODO 
- **/
-
-public abstract class LocalizedResourceRenderer implements IChoiceRenderer
+public abstract class LocalizedResourceRenderer<T extends DomainObject<?, ?>> implements IChoiceRenderer<T>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3533972441275552509L;
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
 	 */
-	public Object getDisplayValue(Object obj)
+	public Object getDisplayValue(T obj)
 	{
 		String key = getResourceKey(obj);
 			
@@ -53,15 +44,14 @@ public abstract class LocalizedResourceRenderer implements IChoiceRenderer
 	 * @param o
 	 * @return
 	 */
-	protected abstract String getResourceKey(Object o);
+	protected abstract String getResourceKey(T o);
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object, int)
 	 */
-	@SuppressWarnings("unchecked")
-	public String getIdValue(Object object, int index)
+	public String getIdValue(T domainObject, int index)
 	{
-		return ((DomainObject<Serializable, Serializable>)object).getPK().toString();
+		return domainObject.getPK().toString();
 	}
 }

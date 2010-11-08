@@ -29,22 +29,15 @@ import org.apache.wicket.model.IModel;
 
 public abstract class SidePanel extends Panel
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4573739445050690761L;
 
 
-	/**
-	 * 
-	 * @param id
-	 */
 	public SidePanel(String id)
 	{
 		this(id, null);
 	}
 
-	public SidePanel(String id, IModel model)
+	public SidePanel(String id, IModel<?> model)
 	{
 		super(id, model);
 		add(new StyleSheetReference("navSidePanelStyle", navSidePanelStyle()));

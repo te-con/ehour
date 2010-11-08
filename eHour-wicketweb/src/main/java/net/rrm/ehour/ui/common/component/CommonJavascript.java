@@ -18,8 +18,9 @@ package net.rrm.ehour.ui.common.component;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -33,6 +34,8 @@ import org.apache.wicket.model.Model;
  */
 public class CommonJavascript 
 {
+	private static final ResourceReference JS_MOUSE_OVER = new ResourceReference(CommonJavascript.class, "js/ImageMouseOver.js");
+	
 	/**
 	 * Add mouse over on element 
 	 * @param imgComponent the element which has the mouse over effect
@@ -42,10 +45,10 @@ public class CommonJavascript
 	 */
 	public static void addMouseOver(Component imgComponent, Component parent, String imageUriOn, String imageUriOff, String id)
 	{
-		parent.add(HeaderContributor.forJavaScript(CommonJavascript.class, "js/ImageMouseOver.js"));
+		parent.add(JavascriptPackageResource.getHeaderContribution(JS_MOUSE_OVER));
 		
-		imgComponent.add(new OnMouseOnLoad("onmouseover", true, new Model("onMouseOver(this, '" + imageUriOn + "', '" + id + "');")));
-		imgComponent.add(new AttributeModifier("onmouseout", true, new Model("onMouseOut(this, '" + imageUriOff + "', '" + id + "');")));
+		imgComponent.add(new OnMouseOnLoad("onmouseover", true, new Model<String>("onMouseOver(this, '" + imageUriOn + "', '" + id + "');")));
+		imgComponent.add(new AttributeModifier("onmouseout", true, new Model<String>("onMouseOut(this, '" + imageUriOff + "', '" + id + "');")));
 	}
 	
 	/**
@@ -57,7 +60,7 @@ public class CommonJavascript
 	@SuppressWarnings("serial")
 	private static class OnMouseOnLoad extends AttributeModifier
 	{
-		OnMouseOnLoad(String attribute, boolean addAttributeIfNotPresent, IModel replaceModel)
+		OnMouseOnLoad(String attribute, boolean addAttributeIfNotPresent, IModel<String> replaceModel)
 		{
 			super(attribute, addAttributeIfNotPresent, replaceModel);
 		}

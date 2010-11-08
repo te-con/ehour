@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel.part;
 
+import static net.rrm.ehour.ui.common.report.excel.CellStyle.BORDER_NORTH;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
@@ -49,19 +50,22 @@ public class ExportReportTotal extends AbstractExportReportPart
 
 		float total = getTotal();
 		addTotalValue(total, row);
+
+		createEmptyCells(row, BORDER_NORTH);
+		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER.getColumn(), getWorkbook(), BORDER_NORTH);
+		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), getWorkbook(), BORDER_NORTH);
 		
 		return rowNumber;
 	}
 
 	private void addTotalValue(float total, HSSFRow row)
 	{
-		CellFactory.createCell(row, getCellMargin() + 6, total, getWorkbook(), CellStyle.DIGIT);
+		CellFactory.createCell(row, getCellMargin() + 6, total, getWorkbook(), CellStyle.DIGIT, CellStyle.BOLD, CellStyle.BORDER_NORTH);
 	}
-
 	
 	private void addTotalLabel(HSSFRow row)
 	{
-		CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.total"), getWorkbook(), CellStyle.BOLD);
+		CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.total"), getWorkbook(), CellStyle.BOLD, CellStyle.BORDER_NORTH);
 	}
 	
 	private float getTotal()
@@ -82,6 +86,4 @@ public class ExportReportTotal extends AbstractExportReportPart
 		
 		return total;
 	}
-	
-	
 }

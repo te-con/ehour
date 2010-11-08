@@ -23,18 +23,17 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
-import net.rrm.ehour.ui.common.ajax.AjaxEventType;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourConstants;
 
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -56,7 +55,7 @@ import org.apache.wicket.validation.validator.StringValidator;
  * User Form Panel for admin
  **/
 
-public class UserAdminFormPanel extends AbstractFormSubmittingPanel
+public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingBean>
 {
 	private static final long serialVersionUID = -7427807216389657732L;
 
@@ -72,7 +71,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 	 * @param departments
 	 */
 	public UserAdminFormPanel(String id,
-							CompoundPropertyModel userModel,
+							CompoundPropertyModel<UserBackingBean> userModel,
 							List<UserRole> roles,
 							List<UserDepartment> departments)
 	{
@@ -83,13 +82,13 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		
 		setOutputMarkupId(true);
 		
-		final Form form = new Form("userForm");
+		final Form<Void> form = new Form<Void>("userForm");
 
 		// password inputs
 		form.add(new PasswordInputSnippet("password", form));
 		
 		// username
-		RequiredTextField	usernameField = new RequiredTextField("user.username");
+		RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
 		form.add(usernameField);
 		usernameField.add(new StringValidator.MaximumLengthValidator(32));
 		usernameField.add(new DuplicateUsernameValidator());
@@ -98,10 +97,10 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
 		
 		// first & last name
-		TextField	firstNameField = new TextField("user.firstName");
+		TextField<String> firstNameField = new TextField<String>("user.firstName");
 		form.add(firstNameField);
 
-		TextField	lastNameField = new RequiredTextField("user.lastName");
+		TextField<String> lastNameField = new RequiredTextField<String>("user.lastName");
 		form.add(lastNameField);
 		lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
 		lastNameField.add(new ValidatingFormComponentAjaxBehavior());
@@ -111,7 +110,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		form.add(new EmailInputSnippet("email"));
 		
 		// department
-		DropDownChoice userDepartment = new DropDownChoice("user.userDepartment", departments, new ChoiceRenderer("name"));
+		DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", departments, new ChoiceRenderer<UserDepartment>("name"));
 		userDepartment.setRequired(true);
 		userDepartment.setLabel(new ResourceModel("admin.user.department"));
 		userDepartment.add(new ValidatingFormComponentAjaxBehavior());
@@ -119,7 +118,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
 		
 		// user roles
-		ListMultipleChoice userRoles = new ListMultipleChoice("user.userRoles", roles, new UserRoleRenderer());
+		ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", roles, new UserRoleRenderer());
 		userRoles.setMaxRows(4);
 		userRoles.setLabel(new ResourceModel("admin.user.roles"));
 		userRoles.setRequired(true);
@@ -146,7 +145,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.ui.common.model.AdminBackingBean, int)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
 	 */
 	@Override
 	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
@@ -174,7 +173,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 		if (userBackingBean.isPm())
 		{
 			logger.debug("Re-adding PM role after edit");
-			userBackingBean.getUser().addUserRole(userService.getUserRole(EhourConstants.ROLE_PROJECTMANAGER));
+			userBackingBean.getUser().addUserRole(UserRole.PROJECTMANAGER);
 		}
 		
 		userService.persistUser(userBackingBean.getUser());
@@ -194,15 +193,15 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel
 	 * @author Thies
 	 *
 	 */
-	private class DuplicateUsernameValidator extends AbstractValidator
+	private class DuplicateUsernameValidator extends AbstractValidator<String>
 	{
 		private static final long serialVersionUID = 542950054849279025L;
 
 		@Override
-		protected void onValidate(IValidatable validatable)
+		protected void onValidate(IValidatable<String> validatable)
 		{
-			String username = (String)validatable.getValue();
-			String orgUsername = ((UserBackingBean)((CompoundPropertyModel)getModel()).getObject()).getOriginalUsername();
+			String username = validatable.getValue();
+			String orgUsername = ((UserBackingBean)getDefaultModelObject()).getOriginalUsername();
 
 			if (orgUsername != null && orgUsername.length() > 0 && username.equalsIgnoreCase(orgUsername))
 			{
