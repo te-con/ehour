@@ -43,6 +43,5 @@ public class AdminNavPanel extends Panel
 		add(new BookmarkablePageLink<CustomerAdmin>("customerAdmin", CustomerAdmin.class));
 		add(new BookmarkablePageLink<ProjectAdmin>("projectAdmin", ProjectAdmin.class));
 		add(new BookmarkablePageLink<AssignmentAdmin>("assignmentAdmin", AssignmentAdmin.class));
-		add(new BookmarkablePageLink<AuditReportPage>("auditReport", AuditReportPage.class));
 	}
 }
