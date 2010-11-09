@@ -29,6 +29,7 @@ import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.common.component.header.menu.MenuItem;
 import net.rrm.ehour.ui.common.component.header.menu.SlideMenu;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
@@ -55,6 +56,8 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 	public HeaderPanel(String id)
 	{
 		super(id);
+
+		add(new BookmarkablePageLink<Void>("homeLink", AuthUtil.getHomepageForRole(EhourWebSession.getSession().getRoles())));
 
 		add(createNav("nav"));
 
