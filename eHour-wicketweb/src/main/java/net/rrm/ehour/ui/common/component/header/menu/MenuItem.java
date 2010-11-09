@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.rrm.ehour.ui.common.util.AuthUtil;
 
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 
 public class MenuItem implements Serializable
@@ -13,9 +14,11 @@ public class MenuItem implements Serializable
 	private static final long serialVersionUID = -706357123349443669L;
 
 	private Class<? extends WebPage> responsePageClass;
+	private PageParameters pageParameters;
+
 	private List<MenuItem> subMenus = new ArrayList<MenuItem>();
 	private String titleId;
-	
+
 	public MenuItem(String titleId)
 	{
 		this.titleId = titleId;
@@ -23,30 +26,36 @@ public class MenuItem implements Serializable
 
 	public MenuItem(String title, Class<? extends WebPage> destinationPage)
 	{
-		this(title);
-		
-		this.responsePageClass = destinationPage;
+		this(title, destinationPage, null);
 	}
-	
+
+	public MenuItem(String title, Class<? extends WebPage> destinationPage, PageParameters pageParameters)
+	{
+		this(title);
+
+		this.responsePageClass = destinationPage;
+		this.pageParameters = pageParameters;
+	}
+
 	public boolean isVisibleForLoggedInUser()
 	{
 		boolean visible = true;
-		
-		visible = isLink() ? AuthUtil.userAuthorizedForPage(responsePageClass) : false;
-		
+
+		visible = isLink() ? AuthUtil.isUserAuthorizedForPage(responsePageClass) : false;
+
 		for (MenuItem menu : subMenus)
 		{
 			visible |= menu.isVisibleForLoggedInUser();
 		}
-		
+
 		return visible;
 	}
-	
+
 	public boolean isLink()
 	{
 		return responsePageClass != null;
 	}
-	
+
 	public void addSubMenu(MenuItem subMenuItem)
 	{
 		subMenus.add(subMenuItem);
@@ -61,7 +70,12 @@ public class MenuItem implements Serializable
 	{
 		return responsePageClass;
 	}
-	
+
+	public PageParameters getPageParameters()
+	{
+		return pageParameters;
+	}
+
 	public String getTitleId()
 	{
 		return titleId;

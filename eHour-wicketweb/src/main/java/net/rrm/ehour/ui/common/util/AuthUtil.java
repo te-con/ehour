@@ -74,7 +74,7 @@ public class AuthUtil
 	 * @param pageClass
 	 * @return
 	 */
-	public static boolean userAuthorizedForPage(Class<? extends WebPage> pageClass)
+	public static boolean isUserAuthorizedForPage(Class<? extends WebPage> pageClass)
 	{
 		AuthorizeInstantiation	authorizeAnnotation;
 		Roles					userRoles;

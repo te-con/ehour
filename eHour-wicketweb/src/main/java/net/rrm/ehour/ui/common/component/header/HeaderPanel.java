@@ -17,7 +17,9 @@
 package net.rrm.ehour.ui.common.component.header;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
@@ -40,6 +42,7 @@ import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -71,7 +74,11 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 
 		{
 			MenuItem item = new MenuItem("nav.hours.yourHours");
-			item.addSubMenu(new MenuItem("nav.hours.enter", MonthOverviewPage.class));
+
+			Map<String,Object> map = new HashMap<String, Object>();
+			map.put(MonthOverviewPage.PARAM_OPEN, MonthOverviewPage.OpenPanel.TIMESHEET);
+
+			item.addSubMenu(new MenuItem("nav.hours.enter", MonthOverviewPage.class, new PageParameters(map)));
 			item.addSubMenu(new MenuItem("nav.hours.overview", MonthOverviewPage.class));
 			item.addSubMenu(new MenuItem("nav.hours.export", ExportMonthSelectionPage.class));
 			items.add(item);

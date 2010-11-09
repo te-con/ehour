@@ -173,7 +173,6 @@ public class EhourWebSession extends AuthenticatedWebSession
 		String u = username == null ? "" : username;
 		String p = password == null ? "" : password;
 
-		// Create an Acegi authentication request.
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
 
 		// Attempt authentication.

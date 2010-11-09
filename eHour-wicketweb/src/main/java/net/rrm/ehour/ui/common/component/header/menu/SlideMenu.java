@@ -84,7 +84,13 @@ public class SlideMenu extends Panel
 
 							if (object != null)
 							{
-								setResponsePage(object.getResponsePageClass());
+								if (object.getPageParameters() != null)
+								{
+									setResponsePage(object.getResponsePageClass(), object.getPageParameters());
+								} else {
+									setResponsePage(object.getResponsePageClass());
+								}
+
 							}
 						}
 					};

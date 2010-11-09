@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.timesheet.panel.OverviewPanel;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -43,11 +44,13 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 	private static final long serialVersionUID = -6873845464139697303L;
 
 	public enum OpenPanel { OVERVIEW, TIMESHEET };
-	
+
+	public static final String PARAM_OPEN = "openPanel";
+
 	private	WebMarkupContainer	contentContainer; // yeah yeah, bad name
 	private CalendarPanel		calendarPanel;
 	private ContextualHelpPanel	helpPanel;
-	
+
 	/**
 	 * Setup the page
 	 *
@@ -56,27 +59,32 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 	{
 		this(OpenPanel.OVERVIEW);
 	}
-	
+
+	public MonthOverviewPage(PageParameters parameters)
+	{
+		this(parameters.getAsEnum(PARAM_OPEN, OpenPanel.class));
+	}
+
 	/**
-	 * 
+	 *
 	 * @param panelToOpen
 	 */
 	public MonthOverviewPage(OpenPanel panelToOpen)
 	{
 		super(new ResourceModel("overview.title"), null);
-		
+
 		// add calendar panel
 		calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
 		add(calendarPanel);
-		
+
 		if (panelToOpen == OpenPanel.OVERVIEW)
 		{
 			// contextual help
 			helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body", "Month+overview");
-			
+
 			// content
 			contentContainer = new OverviewPanel("contentContainer");
-			
+
 		}
 		else
 		{
@@ -86,8 +94,8 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 
 		add(helpPanel);
 		add(contentContainer);
-	}	
-	
+	}
+
 	/**
 	 * Handle Ajax request
 	 * @param target
@@ -97,12 +105,12 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 	{
 		AjaxEventType type = ajaxEvent.getEventType();
 		AjaxRequestTarget target = ajaxEvent.getTarget();
-		
+
 		if (type == CalendarAjaxEventType.MONTH_CHANGE)
 		{
 			calendarChanged(target);
 		}
-		else if (type == CalendarAjaxEventType.WEEK_CLICK 
+		else if (type == CalendarAjaxEventType.WEEK_CLICK
 					|| type == TimesheetAjaxEventType.WEEK_NAV)
 		{
 			calendarWeekClicked(target);
@@ -113,10 +121,10 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 		{
 			calendarPanel.refreshCalendar(target);
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Calendar week clicked
 	 * @param target
@@ -124,19 +132,19 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 	private void calendarWeekClicked(AjaxRequestTarget target)
 	{
 		TimesheetPanel	panel = getTimesheetPanel();
-		
+
 		contentContainer.replaceWith(panel);
 		contentContainer = panel;
 
 		target.addComponent(panel);
-		
+
 		ContextualHelpPanel replacementHelp = getTimesheetHelpPanel();
 		helpPanel.replaceWith(replacementHelp);
 		helpPanel = replacementHelp;
 		target.addComponent(replacementHelp);
-		
+
 	}
-	
+
 	/**
 	 * Calendar changed, update panels
 	 * @param target
@@ -144,7 +152,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 	private void calendarChanged(AjaxRequestTarget target)
 	{
 		WebMarkupContainer	replacementPanel;
-		
+
 		if (this.get("contentContainer") instanceof TimesheetPanel)
 		{
 			replacementPanel = getTimesheetPanel();
@@ -153,7 +161,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 		{
 			replacementPanel = new OverviewPanel("contentContainer");
 		}
-		
+
 		contentContainer.replaceWith(replacementPanel);
 		contentContainer = replacementPanel;
 		target.addComponent(replacementPanel);
@@ -165,25 +173,25 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 	 */
 	private TimesheetPanel getTimesheetPanel()
 	{
-		return new TimesheetPanel("contentContainer", 
-					getEhourWebSession().getUser().getUser(), 
+		return new TimesheetPanel("contentContainer",
+					getEhourWebSession().getUser().getUser(),
 					getEhourWebSession().getNavCalendar());
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	private ContextualHelpPanel getTimesheetHelpPanel()
 	{
-		ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp", 
+		ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp",
 				"timesheet.help.header",
 				"timesheet.help.body",
 				"Entering+hours");
-		
+
 		helpPanel.setOutputMarkupId(true);
-		
+
 		return helpPanel;
-		
+
 	}
 }
