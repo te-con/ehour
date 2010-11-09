@@ -183,7 +183,8 @@ div.GreyNavFrame h3 {
 	margin: 0;
 	font: bold 1.1em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
 	color: #536e87;
-	text-align: center;
+	text-align: left;
+	text-indent: 16px;
 }
 
 div.GreyNavBody {
