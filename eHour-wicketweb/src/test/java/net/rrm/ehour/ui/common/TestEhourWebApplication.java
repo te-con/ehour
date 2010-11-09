@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -48,6 +48,8 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 {
 	private static final long serialVersionUID = -7336200909844170964L;
 	private EhourWebSession session;
+	private Roles authorizedRoles;
+	private User authenticatedUser;
 
 	/**
 	 * When not authorized, just let it pass
@@ -69,7 +71,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.rrm.ehour.persistence.persistence.ui.EhourWebApplication#newRequestCycleProcessor()
 	 */
 	@Override
@@ -80,7 +82,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.apache.wicket.authentication.AuthenticatedWebApplication#newSession
 	 * (org.apache.wicket.Request, org.apache.wicket.Response)
@@ -93,30 +95,16 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 		{
 			public AuthUser getUser()
 			{
-				User user = new User(1);
-				user.setUsername("thies");
-				user.setPassword("secret");
+				User user = createAuthenticatedUser();
 
-				Set<UserRole> userRoles = new HashSet<UserRole>();
-				userRoles.add(new UserRole(CommonWebUtil.ROLE_CONSULTANT));
-				userRoles.add(new UserRole(CommonWebUtil.ROLE_ADMIN));
-				userRoles.add(new UserRole(CommonWebUtil.ROLE_REPORT));
-				userRoles.add(new UserRole(CommonWebUtil.ROLE_PM));
-				user.setUserRoles(userRoles);
-
-				AuthUser authUser = new AuthUser(user);
-				return authUser;
+				return new AuthUser(user);
 			}
+
+
 
 			public Roles getRoles()
 			{
-				Roles roles = new Roles();
-				roles.add(CommonWebUtil.ROLE_PM);
-				roles.add(CommonWebUtil.ROLE_CONSULTANT);
-				roles.add(CommonWebUtil.ROLE_ADMIN);
-				roles.add(CommonWebUtil.ROLE_REPORT);
-
-				return roles;
+				return createAuthorizedRoles();
 			}
 
 			@Override
@@ -127,6 +115,52 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 		};
 
 		return session;
+	}
+
+	protected Roles createAuthorizedRoles()
+	{
+		if (authorizedRoles == null)
+		{
+			authorizedRoles = new Roles();
+			authorizedRoles.add(CommonWebUtil.ROLE_PM);
+			authorizedRoles.add(CommonWebUtil.ROLE_CONSULTANT);
+			authorizedRoles.add(CommonWebUtil.ROLE_ADMIN);
+			authorizedRoles.add(CommonWebUtil.ROLE_REPORT);
+		}
+
+		return authorizedRoles;
+	}
+
+	protected User createAuthenticatedUser()
+	{
+		if (authenticatedUser == null)
+		{
+			User user = new User(1);
+			user.setUsername("thies");
+			user.setPassword("secret");
+
+			Set<UserRole> userRoles = new HashSet<UserRole>();
+			userRoles.add(new UserRole(CommonWebUtil.ROLE_CONSULTANT));
+			userRoles.add(new UserRole(CommonWebUtil.ROLE_ADMIN));
+			userRoles.add(new UserRole(CommonWebUtil.ROLE_REPORT));
+			userRoles.add(new UserRole(CommonWebUtil.ROLE_PM));
+			user.setUserRoles(userRoles);
+
+			authenticatedUser = user;
+		}
+
+
+		return authenticatedUser;
+	}
+
+	public void setAuthenticatedUser(User authenticatedUser)
+	{
+		this.authenticatedUser = authenticatedUser;
+	}
+
+	public void setAuthorizedRoles(Roles authorizedRoles)
+	{
+		this.authorizedRoles = authorizedRoles;
 	}
 
 	public EhourWebSession getSession()
