@@ -53,9 +53,16 @@ public abstract class AbstractAnnotationDaoTest
 	{
 	}
 
-	public AbstractAnnotationDaoTest(String... dataSetFileNames) {
+	public AbstractAnnotationDaoTest(String... dataSetFileNames)
+	{
 		this.additionalDataSetFileNames = dataSetFileNames;
 	}
+
+	protected void setAdditionalDataSetFileNames(String... additionalDataSetFileNames)
+	{
+		this.additionalDataSetFileNames = additionalDataSetFileNames;
+	}
+
 
 	@Before
 	public final void setUpDatabase() throws Exception

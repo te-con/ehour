@@ -9,6 +9,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import net.rrm.ehour.persistence.export.dao.ExportDao;
 
 import org.apache.log4j.Logger;
@@ -27,6 +28,9 @@ public class ExportServiceImpl implements ExportService
 
 	@Autowired
 	private ExportDao exportDao;
+
+	@Autowired
+	private ConfigurationDao configurationDao;
 
 	/*
 	 * (non-Javadoc)
@@ -61,7 +65,15 @@ public class ExportServiceImpl implements ExportService
 	{
 		writer.writeStartDocument();
 
+//		configurationDao.findAll();
+
+//		List<Map<String, Object>> config = exportDao.findConfig();
+
+		writer.writeStartElement("EHOUR");
+
 		writeTimesheetEntries(writer);
+
+		writer.writeEndElement();
 
 		writer.writeEndDocument();
 	}
@@ -90,5 +102,10 @@ public class ExportServiceImpl implements ExportService
 	public void setExportDao(ExportDao exportDao)
 	{
 		this.exportDao = exportDao;
+	}
+
+	public void setConfigurationDao(ConfigurationDao configurationDao)
+	{
+		this.configurationDao = configurationDao;
 	}
 }

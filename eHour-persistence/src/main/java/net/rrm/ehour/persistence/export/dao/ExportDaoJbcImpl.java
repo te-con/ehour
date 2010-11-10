@@ -13,6 +13,14 @@ public class ExportDaoJbcImpl implements ExportDao
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	public List<Map<String, Object>> findConfig()
+	{
+		String sql = "SELECT * CONFIGURATION";
+
+		return jdbcTemplate.queryForList(sql);
+
+	}
+
 	public List<Map<String, Object>> findAllTimesheetEntries()
 	{
 		String sql = "SELECT * FROM TIMESHEET_ENTRY";
