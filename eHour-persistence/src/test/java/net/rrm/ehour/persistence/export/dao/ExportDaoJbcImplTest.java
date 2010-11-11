@@ -19,14 +19,13 @@ public class ExportDaoJbcImplTest extends AbstractAnnotationDaoTest
 
 	public ExportDaoJbcImplTest()
 	{
-		super();
+		super("dataset-timesheet.xml");
 	}
 
 	@Test
 	@Ignore
 	public void shouldFindConfig()
 	{
-		setAdditionalDataSetFileNames("dataset-timesheet.xml");
 		List<Map<String, Object>> list = exportDao.findAllTimesheetEntries();
 
 		assertEquals(12, list.size());
@@ -35,7 +34,6 @@ public class ExportDaoJbcImplTest extends AbstractAnnotationDaoTest
 	@Test
 	public void shouldFindAllTimesheetEntries()
 	{
-		setAdditionalDataSetFileNames("dataset-timesheet.xml");
 		List<Map<String, Object>> list = exportDao.findAllTimesheetEntries();
 
 		assertEquals(12, list.size());
