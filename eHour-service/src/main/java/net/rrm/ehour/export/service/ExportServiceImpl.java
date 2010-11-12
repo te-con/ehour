@@ -1,117 +1,131 @@
 package net.rrm.ehour.export.service;
 
+import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.domain.Configuration;
+import net.rrm.ehour.persistence.export.dao.ExportDao;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.service.ConfigurationService;
-import net.rrm.ehour.domain.Configuration;
-import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
-import net.rrm.ehour.persistence.export.dao.ExportDao;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 /**
- *
  * @author thies
- *
  */
 @Service("exportService")
 public class ExportServiceImpl implements ExportService
 {
-	private static final Logger LOGGER = Logger.getLogger(ExportServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(ExportServiceImpl.class);
 
-	@Autowired
-	private ExportDao exportDao;
+    @Autowired
+    private ExportDao exportDao;
 
-	@Autowired
-	private ConfigurationService configurationService;
+    @Autowired
+    private ConfigurationService configurationService;
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.export.service.ExportService#exportDatabase()
-	 */
-	@Override
-	public String exportDatabase()
-	{
-		String xmlDocument = null;
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.export.service.ExportService#exportDatabase()
+      */
 
-		StringWriter stringWriter = new StringWriter();
-		XMLOutputFactory factory = XMLOutputFactory.newInstance();
+    @Override
+    public String exportDatabase()
+    {
+        String xmlDocument = null;
 
-		try
-		{
-			XMLStreamWriter writer = factory.createXMLStreamWriter(stringWriter);
+        StringWriter stringWriter = new StringWriter();
+        XMLOutputFactory factory = XMLOutputFactory.newInstance();
 
-			exportDatabase(writer);
+        try
+        {
+            XMLStreamWriter writer = factory.createXMLStreamWriter(stringWriter);
 
-			xmlDocument = stringWriter.toString();
+            exportDatabase(writer);
 
-		} catch (XMLStreamException e)
-		{
+            xmlDocument = stringWriter.toString();
 
-			LOGGER.error(e);
-		}
+        } catch (XMLStreamException e)
+        {
 
-		return xmlDocument;
-	}
+            LOGGER.error(e);
+        }
 
-	private void exportDatabase(XMLStreamWriter writer) throws XMLStreamException
-	{
-		writer.writeStartDocument();
+        return xmlDocument;
+    }
 
-		EhourConfigStub stub = configurationService.getConfiguration();
+    private void exportDatabase(XMLStreamWriter writer) throws XMLStreamException
+    {
+        writer.writeStartDocument();
 
-		double version = stub.getVersion();
+        EhourConfigStub stub = configurationService.getConfiguration();
 
-		writer.writeStartElement("EHOUR");
-		writer.writeAttribute("DB_VERSION", Double.toString(version));
+        double version = stub.getVersion();
 
-		writeTimesheetEntries(writer);
+        writer.writeStartElement("EHOUR");
+        writer.writeAttribute("DB_VERSION", Double.toString(version));
 
-		writer.writeEndElement();
+        writeConfigEntries(writer);
+        writeTimesheetEntries(writer);
 
-		writer.writeEndDocument();
-	}
+        writer.writeEndElement();
 
-	private void writeTimesheetEntries(XMLStreamWriter writer) throws XMLStreamException
-	{
-		writer.writeStartElement("TIMESHEET_ENTRIES");
+        writer.writeEndDocument();
+    }
 
-		List<Map<String, Object>> rows = exportDao.findAllTimesheetEntries();
+    private void writeConfigEntries(XMLStreamWriter writer) throws XMLStreamException
+    {
+        writer.writeStartElement("CONFIGURATION");
 
-		for (Map<String, Object> rowMap : rows)
-		{
-			writer.writeStartElement("TIMESHEET_ENTRY");
+        List<Configuration> configurationList = configurationService.findAllConfiguration();
 
-			for (Entry<String, Object> columns : rowMap.entrySet())
-			{
-				writer.writeStartElement(columns.getKey());
-				writer.writeCharacters(columns.getValue().toString());
-				writer.writeEndElement();
-			}
+        for (Configuration configuration : configurationList)
+        {
+            writer.writeStartElement("CONFIG");
+            writer.writeAttribute("KEY", configuration.getConfigKey());
+            writer.writeCharacters(configuration.getConfigValue());
+            writer.writeEndElement();
+        }
 
-			writer.writeEndElement();
-		}
-	}
+        writer.writeEndElement();
+    }
 
-	public void setExportDao(ExportDao exportDao)
-	{
-		this.exportDao = exportDao;
-	}
+    private void writeTimesheetEntries(XMLStreamWriter writer) throws XMLStreamException
+    {
+        writer.writeStartElement("TIMESHEET_ENTRIES");
 
-	public void setConfigurationService(ConfigurationService configurationService)
-	{
-		this.configurationService = configurationService;
-	}
+        List<Map<String, Object>> rows = exportDao.findAllTimesheetEntries();
+
+        for (Map<String, Object> rowMap : rows)
+        {
+            writer.writeStartElement("TIMESHEET_ENTRY");
+
+            for (Entry<String, Object> columns : rowMap.entrySet())
+            {
+                writer.writeStartElement(columns.getKey());
+                writer.writeCharacters(columns.getValue().toString());
+                writer.writeEndElement();
+            }
+
+            writer.writeEndElement();
+        }
+    }
+
+    public void setExportDao(ExportDao exportDao)
+    {
+        this.exportDao = exportDao;
+    }
+
+    public void setConfigurationService(ConfigurationService configurationService)
+    {
+        this.configurationService = configurationService;
+    }
 
 
 }

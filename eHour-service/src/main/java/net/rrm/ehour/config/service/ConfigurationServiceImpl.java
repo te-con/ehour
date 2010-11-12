@@ -16,13 +16,6 @@
 
 package net.rrm.ehour.config.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
-import java.util.Locale;
-
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.ConfigurationItem;
@@ -35,12 +28,18 @@ import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import net.rrm.ehour.persistence.value.ImageLogo;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Configuration service
@@ -286,9 +285,18 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		return config;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#persistConfiguration(java.util.List)
-	 */
+    /**
+     *
+     * @return
+     */
+    @Override
+    public List<Configuration> findAllConfiguration() {
+        return configDAO.findAll();
+    }
+
+    /* (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#persistConfiguration(java.util.List)
+      */
 	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)
 	public void persistConfiguration(EhourConfig config)

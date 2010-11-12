@@ -21,9 +21,11 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.AuditType;
+import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.value.ImageLogo;
-
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component("configurationService")
 @NonAuditable
@@ -39,10 +41,16 @@ public class MockConfigService implements ConfigurationService
 		return config;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#persistConfiguration(net.rrm.ehour.persistence.persistence.config.EhourConfig)
-	 */
+    @Override
+    public List<Configuration> findAllConfiguration()
+    {
+        return null;
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#persistConfiguration(net.rrm.ehour.persistence.persistence.config.EhourConfig)
+      */
 	public void persistConfiguration(EhourConfig config)
 	{
 		

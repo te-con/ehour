@@ -19,7 +19,10 @@ package net.rrm.ehour.config.service;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.value.ImageLogo;
+
+import java.util.List;
 
 /**
  * Service for modifying the configuration
@@ -32,6 +35,12 @@ public interface ConfigurationService
 	 * @return
 	 */
 	public EhourConfigStub getConfiguration();
+
+    /**
+     * Get all configuration items as a list
+     * @return
+     */
+    public List<Configuration> findAllConfiguration();
 	
 	/**
 	 * Persist all configuration items
