@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -25,6 +25,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.sql.DataSource;
+
+import net.rrm.ehour.config.ConfigurationItem;
 
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.ddlutils.DdlUtilsException;
@@ -46,42 +48,42 @@ public class DerbyDbValidator
 {
 	private static final String DDL_FILE = "ddl/ddl-ehour-%s.xml";
 	private static final String DML_FILE = "ddl/dml-ehour-%s.xml";
-	
+
 	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
-	
+
 	private static final Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
-	
+
 	private EmbeddedDataSource dataSource;
 	private String requiredDbVersion;
-	
-	
+
+
 	public DerbyDbValidator(String requiredDbVersion, DataSource dataSource)
 	{
 		this.requiredDbVersion = requiredDbVersion;
 		this.dataSource = (EmbeddedDataSource)dataSource;
 	}
-	
-	
+
+
 	public void checkDatabaseState()
 	{
 		boolean databaseInState = false;
 		String 	currentVersion = null;
 		DdlType ddlType = DdlType.CREATE_TABLE;
-		
+
 		LOGGER.info("Verifying datamodel version. Minimum version: " + requiredDbVersion);
 
 		Connection connection = null;
-		
+
 		try
 		{
 			dataSource.setCreateDatabase("create");
 
 			connection = dataSource.getConnection();
-			
+
 			currentVersion = getCurrentVersion(connection);
-			
+
 			databaseInState = (currentVersion != null) ? currentVersion.equalsIgnoreCase(requiredDbVersion) : false;
-			
+
 			if (databaseInState)
 			{
 				ddlType = DdlType.NONE;
@@ -93,8 +95,8 @@ public class DerbyDbValidator
 
 				ddlType = DdlType.ALTER_TABLE;
 			}
-			
-			
+
+
 		} catch (SQLException e)
 		{
 			ddlType = DdlType.CREATE_TABLE;
@@ -103,7 +105,7 @@ public class DerbyDbValidator
 		finally
 		{
 			((EmbeddedDataSource)dataSource).setCreateDatabase("");
-			
+
 			try
 			{
 				if (connection != null)
@@ -115,7 +117,7 @@ public class DerbyDbValidator
 				LOGGER.error("Failed to close connection", e);
 			}
 		}
-		
+
 		if (ddlType != DdlType.NONE)
 		{
 			try
@@ -130,21 +132,21 @@ public class DerbyDbValidator
 
 	/**
 	 * Create datamodel and fill with initial data
-	 * @throws IOException 
-	 * @throws DdlUtilsException 
+	 * @throws IOException
+	 * @throws DdlUtilsException
 	 */
 	private void createOrAlterDatamodel(DataSource dataSource, DdlType ddlType) throws DdlUtilsException, IOException
 	{
 		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
-		
+
 		Resource resource = new ClassPathResource(getDdlFilename());
 
 		DatabaseIO reader = new DatabaseIO();
 		reader.setValidateXml(false);
-		reader.setUseInternalDtd(true); 
-		
+		reader.setUseInternalDtd(true);
+
 		Database ddlModel = reader.read(new InputStreamReader(resource.getInputStream()));
-		
+
 		if (ddlType == DdlType.CREATE_TABLE)
 		{
 			platform.createTables(ddlModel, false, false);
@@ -161,25 +163,25 @@ public class DerbyDbValidator
 	 * Insert data
 	 * @param platform
 	 * @param model
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 * @throws DdlUtilsException 
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws DdlUtilsException
 	 */
 	private void insertData(Platform platform, Database model, String dmlFile) throws DdlUtilsException, IOException
 	{
 		DatabaseDataIO	dataIO = new DatabaseDataIO();
-		
+
 		DataReader dataReader = dataIO.getConfiguredDataReader(platform, model);
-		
+
         dataReader.getSink().start();
-        
+
         Resource resource = new ClassPathResource(getDmlFilename());
-        
+
         dataIO.writeDataToDatabase(dataReader, new InputStreamReader(resource.getInputStream()));
-        
+
         LOGGER.info("Data inserted");
 	}
-	
+
 	/**
 	 * Get current version of database state
 	 * @param connection
@@ -191,12 +193,12 @@ public class DerbyDbValidator
 		String version = null;
 		Statement stmt = null;
 		ResultSet results = null;
-		
+
 		try
 		{
 			stmt = connection.createStatement();
-			results = stmt.executeQuery("SELECT config_value FROM CONFIGURATION WHERE config_key = 'version'");
-			
+			results = stmt.executeQuery("SELECT config_value FROM CONFIGURATION WHERE config_key = '"+ ConfigurationItem.VERSION.getDbField() + "'");
+
 			if (results.next())
 			{
 				version = results.getString("config_value");
@@ -207,17 +209,17 @@ public class DerbyDbValidator
 			if (results != null) {
 				results.close();
 			}
-			
+
 			if (stmt != null) {
 				stmt.close();
 			}
 		}
-		
+
 		return version;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param dataSource
 	 * @param database
 	 * @param platform
@@ -237,7 +239,7 @@ public class DerbyDbValidator
 	{
 		return String.format(DDL_FILE, requiredDbVersion);
 	}
-	
+
 	private String getDmlFilename()
 	{
 		return String.format(DML_FILE, requiredDbVersion);

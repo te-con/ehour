@@ -1,12 +1,11 @@
 package net.rrm.ehour.export.service;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+
+import net.rrm.ehour.config.EhourConfigStub
+import net.rrm.ehour.config.service.ConfigurationService
 
 import net.rrm.ehour.persistence.export.dao.ExportDao;
 
@@ -14,13 +13,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.*;
 
 class ExportServiceImplTest {
 	@Mock
 	private ExportDao exportDao;
+
+	@Mock
+	private ConfigurationService configurationService
 
 	private ExportServiceImpl service;
 
@@ -29,8 +31,7 @@ class ExportServiceImplTest {
 	{
 		MockitoAnnotations.initMocks(this);
 
-		service = new ExportServiceImpl();
-		service.setExportDao(exportDao);
+		service = new ExportServiceImpl(exportDao: exportDao, configurationService: configurationService);
 	}
 
 	@Test
@@ -40,9 +41,12 @@ class ExportServiceImplTest {
 
 		when(exportDao.findAllTimesheetEntries()).thenReturn(rows);
 
-		String xml = service.exportDatabase();
-		System.out.println(xml);
-		assertTrue(xml.startsWith("<?xml version="));
+		def configuration = new EhourConfigStub(version:0.9)
 
+		when(configurationService.getConfiguration()).thenReturn(configuration);
+
+		String xml = service.exportDatabase()
+
+		assertTrue(xml.startsWith("<?xml version="));
 	}
 }

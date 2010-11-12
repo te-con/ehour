@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.audit.annot.NonAuditable;
+import net.rrm.ehour.config.ConfigurationItem;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.AuditActionType;
@@ -53,10 +54,10 @@ public class ConfigurationServiceImpl implements ConfigurationService
 
 	@Autowired
 	private ConfigurationDao	configDAO;
-	
+
 	@Autowired
 	private BinaryConfigurationDao binConfigDAO;
-	
+
 	private	static final Logger	LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
 
 
@@ -69,24 +70,24 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	{
 		persistLogo("excelHeader", logo);
 	}
-	
+
 	private void persistLogo(String prefix, ImageLogo logo)
 	{
 		BinaryConfiguration logoDomObj = new BinaryConfiguration();
 		logoDomObj.setConfigValue(logo.getImageData());
 		logoDomObj.setConfigKey(prefix + "Logo");
 		binConfigDAO.persist(logoDomObj);
-		
+
 		Configuration logoType = new Configuration(prefix + "LogoType", logo.getImageType());
 		Configuration logoWidth = new Configuration(prefix + "LogoWidth", Integer.toString(logo.getWidth()));
 		Configuration logoHeight = new Configuration(prefix + "LogoHeight", Integer.toString(logo.getHeight()));
-		
+
 		configDAO.persist(logoType);
 		configDAO.persist(logoWidth);
 		configDAO.persist(logoHeight);
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#getLogo()
 	 */
@@ -101,20 +102,20 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			LOGGER.debug("No logo found in database, using default logo.");
 			logo = getDefaultExcelLogo();
 		}
-		
+
 		return logo;
 	}
-	
+
 	private ImageLogo getPersistedLogo(String prefix)
 	{
 		BinaryConfiguration logoDomObj = binConfigDAO.findById(prefix + "Logo");
 		ImageLogo logo = null;
-		
+
 		if (isLogoNotEmpty(logoDomObj))
 		{
 			logo = new ImageLogo();
 			logo.setImageData(logoDomObj.getConfigValue());
-			
+
 			Configuration logoType = configDAO.findById(prefix + "LogoType");
 			logo.setImageType(logoType.getConfigValue());
 
@@ -142,28 +143,28 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		logo.setImageType("png");
 		logo.setWidth(499);
 		logo.setHeight(120);
-		
+
         return logo;
 	}
 
 	private byte[] getDefaultExcelLogoBytes()
 	{
 		byte[] bytes;
-		
+
 		try
 		{
 			ClassPathResource rsrc = new ClassPathResource(EXCEL_DEFAULT_LOGO);
 			URL url = rsrc.getURL();
-			
+
 			File file = new ClassPathResource(EXCEL_DEFAULT_LOGO).getFile();
-			
+
 			if (!file.exists())
 			{
 				LOGGER.error("default logo not found");
 			}
-			
+
 			InputStream is;
-			
+
 			is = url.openStream();
 
 			bytes = new byte[(int) file.length()];
@@ -179,11 +180,11 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			LOGGER.error("Could not fetch default logo", e);
 			bytes = new byte[1];
 		}
-		
+
 		return bytes;
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#getConfiguration()
 	 */
@@ -194,25 +195,25 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		List<Configuration> configs = configDAO.findAll();
 		EhourConfigStub		config = new EhourConfigStub();
 		String				key, value;
-	
+
 		// spaghetti, anyone?
 		for (Configuration configuration : configs)
 		{
 			key = configuration.getConfigKey();
 			value = configuration.getConfigValue();
-			
-			if (key.equalsIgnoreCase("availableTranslations"))
+
+			if (key.equalsIgnoreCase(ConfigurationItem.AVAILABLE_TRANSLATIONS.getDbField()))
 			{
 				config.setAvailableTranslations(value.split(","));
 			}
-			else if (key.equalsIgnoreCase("completeDayHours"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.COMPLETE_DAY_HOURS.getDbField()))
 			{
 				config.setCompleteDayHours(Float.parseFloat(value));
 			}
-			else if (key.equalsIgnoreCase("localeCurrency"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_CURRENCY.getDbField()))
 			{
 				Locale locale;
-				
+
 				if (value != null && value.contains("_"))
 				{
 					String[] split = value.split("_");
@@ -222,63 +223,66 @@ public class ConfigurationServiceImpl implements ConfigurationService
 				{
 					locale = new Locale("nl", "NL");
 				}
-				
+
 				config.setCurrency(locale);
 			}
-			else if (key.equalsIgnoreCase("localeLanguage"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_LANGUAGE.getDbField()))
 			{
 				config.setLocaleLanguage(value);
 			}
-			else if (key.equalsIgnoreCase("localeCountry"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_COUNTRY.getDbField()))
 			{
 				config.setLocaleCountry(value);
 			}
-			else if (key.equalsIgnoreCase("showTurnOver"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.SHOW_TURNOVER.getDbField()))
 			{
 				config.setShowTurnover(Boolean.parseBoolean(value));
 			}
-			else if (key.equalsIgnoreCase("timeZone"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.TIMEZONE.getDbField()))
 			{
 				config.setTimeZone(value);
 			}
-			else if (key.equalsIgnoreCase("mailFrom"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.MAIL_FROM.getDbField()))
 			{
 				config.setMailFrom(value);
 			}
-			else if (key.equalsIgnoreCase("mailSmtp"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.MAIL_SMTP.getDbField()))
 			{
 				config.setMailSmtp(value);
 			}
-			else if (key.equalsIgnoreCase("smtpUsername"))
+			else if (key.equalsIgnoreCase(ConfigurationItem.MAIL_SMTP_USERNAME.getDbField()))
 			{
 				config.setSmtpUsername(value);
-			}			
-			else if (key.equalsIgnoreCase("smtpPassword"))
+			}
+			else if (key.equalsIgnoreCase(ConfigurationItem.MAIL_SMTP_PASSWORD.getDbField()))
 			{
 				config.setSmtpPassword(value);
-			}			
-			else if (key.equalsIgnoreCase("smtpPort"))
+			}
+			else if (key.equalsIgnoreCase(ConfigurationItem.MAIL_SMTP_PORT.getDbField()))
 			{
 				config.setSmtpPort(value);
-			}			
-			else if (key.equalsIgnoreCase("demoMode"))
+			}
+			else if (key.equalsIgnoreCase(ConfigurationItem.DEMO_MODE.getDbField()))
 			{
 				config.setDemoMode(Boolean.parseBoolean(value));
 			}
-			else if (key.equalsIgnoreCase("initialized"))
+			else if (key.equalsIgnoreCase((ConfigurationItem.INITIALIZED.getDbField())))
 			{
 				config.setInitialized(Boolean.parseBoolean(value));
 			}
-			else if (key.equalsIgnoreCase("firstDayOfWeek"))
+			else if (key.equalsIgnoreCase((ConfigurationItem.FIRST_DAY_OF_WEEK.getDbField())))
 			{
 				config.setFirstDayOfWeek( (int)(Float.parseFloat(value)));
 			}
-			else if (key.equalsIgnoreCase("auditType"))
+			else if (key.equalsIgnoreCase((ConfigurationItem.AUDIT_TYPE.getDbField())))
 			{
 				config.setAuditType(AuditType.fromString(value));
+			} else if (key.equalsIgnoreCase((ConfigurationItem.VERSION.getDbField())))
+			{
+				config.setVersion(Double.parseDouble(value));
 			}
 		}
-		
+
 		return config;
 	}
 
@@ -290,27 +294,27 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	public void persistConfiguration(EhourConfig config)
 	{
 		LOGGER.debug("Persisting config");
-		persistConfig("localeCurrency", config.getCurrency().getLanguage() + "_" + config.getCurrency().getCountry());
-		
+		persistConfig(ConfigurationItem.LOCALE_CURRENCY.getDbField(), config.getCurrency().getLanguage() + "_" + config.getCurrency().getCountry());
+
 		if (config.getCompleteDayHours() != 0)
 		{
-			persistConfig("completeDayHours", config.getCompleteDayHours());
+			persistConfig(ConfigurationItem.COMPLETE_DAY_HOURS.getDbField(), config.getCompleteDayHours());
 		}
-		
-		persistConfig("localeCountry", config.getLocale().getCountry());
-		persistConfig("localeLanguage", config.getLocale().getLanguage());
-		persistConfig("dontForceLanguage", config.isDontForceLanguage());
-		persistConfig("showTurnOver", config.isShowTurnover());
-		persistConfig("mailFrom", config.getMailFrom());
-		persistConfig("mailSmtp", config.getMailSmtp());
-		persistConfig("smtpUsername", config.getSmtpUsername());
-		persistConfig("smtpPassword", config.getSmtpPassword());
-		persistConfig("smtpPort", config.getSmtpPort());
-		persistConfig("initialized", config.isInitialized());
-		persistConfig("firstDayOfWeek", config.getFirstDayOfWeek());
-		persistConfig("auditType", getAuditType(config).getValue());
+
+		persistConfig(ConfigurationItem.LOCALE_COUNTRY.getDbField(), config.getLocale().getCountry());
+		persistConfig(ConfigurationItem.LOCALE_LANGUAGE.getDbField(), config.getLocale().getLanguage());
+		persistConfig(ConfigurationItem.DONT_FORCE_LANGUAGE.getDbField(), config.isDontForceLanguage());
+		persistConfig(ConfigurationItem.SHOW_TURNOVER.getDbField(), config.isShowTurnover());
+		persistConfig(ConfigurationItem.MAIL_FROM.getDbField(), config.getMailFrom());
+		persistConfig(ConfigurationItem.MAIL_SMTP.getDbField(), config.getMailSmtp());
+		persistConfig(ConfigurationItem.MAIL_SMTP_USERNAME.getDbField(), config.getSmtpUsername());
+		persistConfig(ConfigurationItem.MAIL_SMTP_PASSWORD.getDbField(), config.getSmtpPassword());
+		persistConfig(ConfigurationItem.MAIL_SMTP_PORT.getDbField(), config.getSmtpPort());
+		persistConfig(ConfigurationItem.INITIALIZED.getDbField(), config.isInitialized());
+		persistConfig(ConfigurationItem.FIRST_DAY_OF_WEEK.getDbField(), config.getFirstDayOfWeek());
+		persistConfig(ConfigurationItem.AUDIT_TYPE.getDbField(), getAuditType(config).getValue());
 	}
-	
+
 	private AuditType getAuditType(EhourConfig config)
 	{
 		if (config.getAuditType() == null)
@@ -319,28 +323,28 @@ public class ConfigurationServiceImpl implements ConfigurationService
 		}
 		else
 		{
-			return config.getAuditType(); 
+			return config.getAuditType();
 		}
 	}
-	
+
 	private void persistConfig(String key, String value)
 	{
 		Configuration config = new Configuration();
 		config.setConfigKey(key);
 		config.setConfigValue(value == null ? "" : value);
-		
+
 		configDAO.persist(config);
 	}
 
 	private void persistConfig(String key, boolean value)
 	{
 		persistConfig(key, Boolean.toString(value));
-	}	
+	}
 
 	private void persistConfig(String key, float value)
 	{
 		persistConfig(key, Float.toString(value));
-	}	
+	}
 
 	/**
 	 * @param configDAO the configDAO to set
@@ -349,7 +353,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 	{
 		this.configDAO = configDAO;
 	}
-	
+
 	/**
 	 * @param binConfigDAO the binConfigDAO to set
 	 */

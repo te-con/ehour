@@ -9,6 +9,9 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import net.rrm.ehour.persistence.export.dao.ExportDao;
 
@@ -30,7 +33,7 @@ public class ExportServiceImpl implements ExportService
 	private ExportDao exportDao;
 
 	@Autowired
-	private ConfigurationDao configurationDao;
+	private ConfigurationService configurationService;
 
 	/*
 	 * (non-Javadoc)
@@ -65,11 +68,12 @@ public class ExportServiceImpl implements ExportService
 	{
 		writer.writeStartDocument();
 
-//		configurationDao.findAll();
+		EhourConfigStub stub = configurationService.getConfiguration();
 
-//		List<Map<String, Object>> config = exportDao.findConfig();
+		double version = stub.getVersion();
 
 		writer.writeStartElement("EHOUR");
+		writer.writeAttribute("DB_VERSION", Double.toString(version));
 
 		writeTimesheetEntries(writer);
 
@@ -104,8 +108,10 @@ public class ExportServiceImpl implements ExportService
 		this.exportDao = exportDao;
 	}
 
-	public void setConfigurationDao(ConfigurationDao configurationDao)
+	public void setConfigurationService(ConfigurationService configurationService)
 	{
-		this.configurationDao = configurationDao;
+		this.configurationService = configurationService;
 	}
+
+
 }
