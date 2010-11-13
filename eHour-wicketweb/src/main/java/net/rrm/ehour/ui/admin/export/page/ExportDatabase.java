@@ -3,10 +3,14 @@ package net.rrm.ehour.ui.admin.export.page;
 import net.rrm.ehour.export.service.ExportService;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import org.apache.wicket.markup.html.DynamicWebResource;
+import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Time;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -15,6 +19,9 @@ import java.io.UnsupportedEncodingException;
 public class ExportDatabase extends DynamicWebResource
 {
     public static final String ID_EXPORT_DB = "exportDb";
+
+    private static final DateFormat FORMATTER = new SimpleDateFormat("yyyyMMdd");
+    
 
     @SpringBean(name = "exportService")
     private ExportService exportService;
@@ -40,6 +47,13 @@ public class ExportDatabase extends DynamicWebResource
 
         return state;
     }
+
+    	protected void setHeaders(WebResponse response)
+	{
+//		response.setHeader("Cache-Control", "no-cache, must-revalidate");
+
+		response.setAttachmentHeader("eHour-xml-backup-" + FORMATTER.format(new Date()) + ".xml");
+	}
 
     private class ExportResourceState extends ResourceState
     {

@@ -12,6 +12,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -46,8 +47,14 @@ public class ExportServiceImpl implements ExportService
         try
         {
             XMLStreamWriter writer = factory.createXMLStreamWriter(stringWriter);
+            PrettyPrintHandler handler = new PrettyPrintHandler(writer);
 
-            exportDatabase(writer);
+            XMLStreamWriter prettyPrintWriter = (XMLStreamWriter) Proxy.newProxyInstance(
+                    XMLStreamWriter.class.getClassLoader(),
+                    new Class[]{XMLStreamWriter.class},
+                    handler);
+            
+            exportDatabase(prettyPrintWriter);
 
             xmlDocument = stringWriter.toString();
 
