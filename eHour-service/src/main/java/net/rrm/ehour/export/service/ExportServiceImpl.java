@@ -66,10 +66,8 @@ public class ExportServiceImpl implements ExportService
 
         EhourConfigStub stub = configurationService.getConfiguration();
 
-        double version = stub.getVersion();
-
         writer.writeStartElement("EHOUR");
-        writer.writeAttribute("DB_VERSION", Double.toString(version));
+        writer.writeAttribute("DB_VERSION", stub.getVersion());
 
         writeConfigEntries(writer);
         writeTimesheetEntries(writer);
@@ -108,9 +106,12 @@ public class ExportServiceImpl implements ExportService
 
             for (Entry<String, Object> columns : rowMap.entrySet())
             {
-                writer.writeStartElement(columns.getKey());
-                writer.writeCharacters(columns.getValue().toString());
-                writer.writeEndElement();
+                if (columns.getValue() != null)
+                {
+                    writer.writeStartElement(columns.getKey());
+                    writer.writeCharacters(columns.getValue().toString());
+                    writer.writeEndElement();
+                }
             }
 
             writer.writeEndElement();

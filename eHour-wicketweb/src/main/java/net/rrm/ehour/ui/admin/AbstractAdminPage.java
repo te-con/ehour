@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.admin;
 
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
-
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -32,11 +31,20 @@ public abstract class AbstractAdminPage<T> extends AbstractBasePage<T>
 {
 	private static final long serialVersionUID = -1388562551962543722L;
 
-	public AbstractAdminPage(ResourceModel pageTitle, IModel<T> model, String headerResourceId, String bodyResourceId)
+	public AbstractAdminPage(ResourceModel pageTitle, String headerResourceId, String bodyResourceId)
 	{
-		super(pageTitle, model);
+		super(pageTitle);
 
 		// contextual help
 		add(new ContextualHelpPanel("contextHelp", headerResourceId, bodyResourceId));
 	}
+
+    public AbstractAdminPage(ResourceModel pageTitle, IModel<T> model, String headerResourceId, String bodyResourceId)
+    {
+        super(pageTitle, model);
+
+        // contextual help
+        add(new ContextualHelpPanel("contextHelp", headerResourceId, bodyResourceId));
+    }
+
 }

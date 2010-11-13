@@ -278,7 +278,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 				config.setAuditType(AuditType.fromString(value));
 			} else if (key.equalsIgnoreCase((ConfigurationItem.VERSION.getDbField())))
 			{
-				config.setVersion(Double.parseDouble(value));
+				config.setVersion(value);
 			}
 		}
 

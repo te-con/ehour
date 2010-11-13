@@ -16,15 +16,11 @@
 
 package net.rrm.ehour.ui.common.component.header;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
 import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
+import net.rrm.ehour.ui.admin.export.page.ExportPage;
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
@@ -40,13 +36,17 @@ import net.rrm.ehour.ui.report.user.page.UserReport;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Main navigation panel
@@ -112,6 +112,7 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 			MenuItem item = new MenuItem("nav.admin");
 			item.addSubMenu(new MenuItem("nav.admin.config", MainConfigPage.class));
 			item.addSubMenu(new MenuItem("nav.admin.audit", AuditReportPage.class));
+            item.addSubMenu(new MenuItem("nav.admin.export", ExportPage.class));
 			items.add(item);
 		}
 
