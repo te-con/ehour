@@ -1,15 +1,13 @@
 package net.rrm.ehour.persistence.export.dao;
 
-import static org.junit.Assert.assertEquals;
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
 
-import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertEquals;
 
 
 public class ExportDaoJbcImplTest extends AbstractAnnotationDaoTest
@@ -23,18 +21,9 @@ public class ExportDaoJbcImplTest extends AbstractAnnotationDaoTest
 	}
 
 	@Test
-	@Ignore
-	public void shouldFindConfig()
-	{
-		List<Map<String, Object>> list = exportDao.findAllTimesheetEntries();
-
-		assertEquals(12, list.size());
-	}
-
-	@Test
 	public void shouldFindAllTimesheetEntries()
 	{
-		List<Map<String, Object>> list = exportDao.findAllTimesheetEntries();
+		List<Map<String, Object>> list = exportDao.findForType(ExportType.TIMESHEET_ENTRY);
 
 		assertEquals(12, list.size());
 	}

@@ -4,6 +4,8 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.export.dao.ExportDao;
+import net.rrm.ehour.persistence.export.dao.ExportType;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,12 +79,13 @@ public class ExportServiceImpl implements ExportService
         writer.writeAttribute("DB_VERSION", stub.getVersion());
 
         writeConfigEntries(writer);
-        writeTimesheetEntries(writer);
+        writeEntries(writer);
 
         writer.writeEndElement();
 
         writer.writeEndDocument();
     }
+
 
     private void writeConfigEntries(XMLStreamWriter writer) throws XMLStreamException
     {
@@ -101,19 +104,28 @@ public class ExportServiceImpl implements ExportService
         writer.writeEndElement();
     }
 
-    private void writeTimesheetEntries(XMLStreamWriter writer) throws XMLStreamException
+    private void writeEntries(XMLStreamWriter writer) throws XMLStreamException
     {
-        writer.writeStartElement("TIMESHEET_ENTRIES");
+        for (ExportType type : ExportType.values())
+        {
+            writeTypeEntries(type, writer);
+        }
+    }
 
-        List<Map<String, Object>> rows = exportDao.findAllTimesheetEntries();
+
+    private void writeTypeEntries(ExportType type, XMLStreamWriter writer) throws XMLStreamException
+    {
+        writer.writeStartElement(type.getParentName());
+
+        List<Map<String, Object>> rows = exportDao.findForType(type);
 
         for (Map<String, Object> rowMap : rows)
         {
-            writer.writeStartElement("TIMESHEET_ENTRY");
+            writer.writeStartElement(type.name());
 
             for (Entry<String, Object> columns : rowMap.entrySet())
             {
-                if (columns.getValue() != null)
+                if (StringUtils.isNotBlank(columns.getKey()) && columns.getValue() != null)
                 {
                     writer.writeStartElement(columns.getKey());
                     writer.writeCharacters(columns.getValue().toString());
@@ -123,6 +135,8 @@ public class ExportServiceImpl implements ExportService
 
             writer.writeEndElement();
         }
+
+        writer.writeEndElement();
     }
 
     public void setExportDao(ExportDao exportDao)

@@ -6,6 +6,7 @@ import net.rrm.ehour.config.EhourConfigStub
 import net.rrm.ehour.config.service.ConfigurationService
 import net.rrm.ehour.domain.Configuration
 import net.rrm.ehour.persistence.export.dao.ExportDao
+import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -35,7 +36,7 @@ class ExportServiceImplTest {
 		def map = ["ASSIGNMENT_ID":1, "ENTRY_DATE":new Date()]
 		def rows = [map]
 
-		when(exportDao.findAllTimesheetEntries()).thenReturn(rows);
+		when(exportDao.findForType(ExportType.TIMESHEET_ENTRY)).thenReturn(rows);
 
 		def configuration = new EhourConfigStub(version:0.9)
 		when(configurationService.getConfiguration()).thenReturn(configuration);
