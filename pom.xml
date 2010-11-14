@@ -553,6 +553,14 @@
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
+                <artifactId>eHour-common</artifactId>
+                <version>${applicationVersion}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-service</artifactId>
                 <version>${applicationVersion}</version>
             </dependency>

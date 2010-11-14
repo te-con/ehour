@@ -21,7 +21,9 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,37 +31,62 @@ import java.util.Set;
 /**
  * @author Thies
  */
+@Entity
+@Table(name = "USERS")
 public class User extends DomainObject<Integer, User>
 {
     private static final long serialVersionUID = 2546435367535412269L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "USER_ID")
     private Integer userId;
 
     @NotNull
+    @Column(name = "USERNAME")
     private String username;
 
     @NotNull
+    @Column(name = "PASSWORD")
     private String password;
 
+    @Column(name = "FIRST_NAME")
     private String firstName;
 
+    @Column(name = "LAST_NAME")
     private String lastName;
 
+    @Column(name = "EMAIL")
     private String email;
 
+    @Column(name = "ACTIVE")
+    @Type(type = "yes_no")
     private boolean active;
 
+    @Column(name = "SALT")
     private Integer salt;
 
+    @Transient
     private String updatedPassword;
 
+    @ManyToMany(targetEntity = UserRole.class,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "USER_TO_USERROLE",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE"))
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
+    @ManyToOne
+    @NotNull
     private UserDepartment userDepartment;
 
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "USER_ID")
     private Set<ProjectAssignment> projectAssignments;
+
+    @Transient
     private Set<ProjectAssignment> inactiveProjectAssignments;
 
+    @Transient
     private boolean deletable;
 
     // Constructors
