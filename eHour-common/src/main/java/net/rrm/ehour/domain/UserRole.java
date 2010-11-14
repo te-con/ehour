@@ -18,8 +18,9 @@ package net.rrm.ehour.domain;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import org.springframework.security.core.GrantedAuthority;
+
+import javax.validation.constraints.NotNull;
 
 public class UserRole extends DomainObject<String, UserRole> implements GrantedAuthority
 {
@@ -35,8 +36,11 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 	public static final UserRole PROJECTMANAGER = new UserRole(ROLE_PROJECTMANAGER);
 	public static final UserRole ADMIN = new UserRole(ROLE_ADMIN);
 	
-	
+
+    @NotNull
 	private String 	role;
+
+    @NotNull
 	private String	roleName;
 
 	public UserRole()

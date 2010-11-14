@@ -16,371 +16,377 @@
 
 package net.rrm.ehour.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * @author  Thies
+ * @author Thies
  */
 public class User extends DomainObject<Integer, User>
 {
+    private static final long serialVersionUID = 2546435367535412269L;
 
-	// Fields    
+    private Integer userId;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2546435367535412269L;
+    @NotNull
+    private String username;
 
-	private Integer userId;
+    @NotNull
+    private String password;
 
-	private String username;
+    private String firstName;
 
-	private String password;
+    private String lastName;
 
-	private String firstName;
+    private String email;
 
-	private String lastName;
+    private boolean active;
 
-	private String email;
-	
-	private	boolean	active;
-	
-	private Integer salt;
-	
-	private String updatedPassword;
+    private Integer salt;
 
-	private Set<UserRole> userRoles = new HashSet<UserRole>();
+    private String updatedPassword;
 
-	private UserDepartment userDepartment;
-	
-	private	Set<ProjectAssignment>	projectAssignments;
-	private	Set<ProjectAssignment>	inactiveProjectAssignments;
-	
-	private boolean	deletable;
+    private Set<UserRole> userRoles = new HashSet<UserRole>();
 
-	// Constructors
+    private UserDepartment userDepartment;
 
-	/** default constructor */
-	public User()
-	{
-	}
+    private Set<ProjectAssignment> projectAssignments;
+    private Set<ProjectAssignment> inactiveProjectAssignments;
 
-	/** minimal constructors */
-	public User(UserDepartment userDepartment)
-	{
-		this.userDepartment = userDepartment;
-	}
-	
-	public User(Integer userId)
-	{
-		this.userId = userId;
-	}
+    private boolean deletable;
 
-	public User(String username, String password)
-	{
-		this.username = username;
-		this.password = password;
-	}
-	
-	public User(Integer userId, String firstName, String lastName)
-	{
-		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-	}
-	
-	/** full constructor */
-	public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment)
-	{
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.active = active;
-		this.userRoles = userRoles;
-		this.userDepartment = userDepartment;
-	}
+    // Constructors
 
-	public void addUserRole(UserRole role)
-	{
-		if (userRoles == null)
-		{
-			userRoles = new HashSet<UserRole>();
-		}
-		userRoles.add(role);
-	}
-	
-	/**
-	 * Get fullname
-	 * @return
-	 */
-	public String getFullName()
-	{
-		StringBuffer fullName = new StringBuffer();
-		
-		if (!StringUtils.isBlank(lastName))
-		{
-			fullName.append(lastName);
-			
-			if (!StringUtils.isBlank(firstName))
-			{
-				fullName.append(", ");
-			}
-		}
-		
-		if (!StringUtils.isBlank(firstName))
-		{
-			fullName.append(firstName);
-		}
-		
-		return fullName.toString();
-	}
-	
-	// Property accessors
-	public Integer getUserId()
-	{
-		return this.userId;
-	}
+    /**
+     * default constructor
+     */
+    public User()
+    {
+    }
 
-	public void setUserId(Integer userId)
-	{
-		this.userId = userId;
-	}
+    /**
+     * minimal constructors
+     */
+    public User(UserDepartment userDepartment)
+    {
+        this.userDepartment = userDepartment;
+    }
 
-	public String getUsername()
-	{
-		return this.username;
-	}
+    public User(Integer userId)
+    {
+        this.userId = userId;
+    }
 
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
+    public User(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+    }
 
-	public String getPassword()
-	{
-		return this.password;
-	}
+    public User(Integer userId, String firstName, String lastName)
+    {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
-	public void setPassword(String password)
-	{
-		this.password = password;
-	}
+    /**
+     * full constructor
+     */
+    public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment)
+    {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.active = active;
+        this.userRoles = userRoles;
+        this.userDepartment = userDepartment;
+    }
 
-	public String getFirstName()
-	{
-		return this.firstName;
-	}
+    public void addUserRole(UserRole role)
+    {
+        if (userRoles == null)
+        {
+            userRoles = new HashSet<UserRole>();
+        }
+        userRoles.add(role);
+    }
 
-	public void setFirstName(String firstName)
-	{
-		this.firstName = firstName;
-	}
+    /**
+     * Get fullname
+     *
+     * @return
+     */
+    public String getFullName()
+    {
+        StringBuffer fullName = new StringBuffer();
 
-	public String getLastName()
-	{
-		return this.lastName;
-	}
+        if (!StringUtils.isBlank(lastName))
+        {
+            fullName.append(lastName);
 
-	public void setLastName(String lastName)
-	{
-		this.lastName = lastName;
-	}
+            if (!StringUtils.isBlank(firstName))
+            {
+                fullName.append(", ");
+            }
+        }
 
-	public String getEmail()
-	{
-		return this.email;
-	}
+        if (!StringUtils.isBlank(firstName))
+        {
+            fullName.append(firstName);
+        }
 
-	public void setEmail(String email)
-	{
-		this.email = email;
-	}
+        return fullName.toString();
+    }
 
-	public Set<UserRole> getUserRoles()
-	{
-		return this.userRoles;
-	}
+    // Property accessors
 
-	public void setUserRoles(Set<UserRole> userRoles)
-	{
-		this.userRoles = userRoles;
-	}
+    public Integer getUserId()
+    {
+        return this.userId;
+    }
 
+    public void setUserId(Integer userId)
+    {
+        this.userId = userId;
+    }
 
-	/**
-	 * @return the active
-	 */
-	public boolean isActive()
-	{
-		return active;
-	}
+    public String getUsername()
+    {
+        return this.username;
+    }
 
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active)
-	{
-		this.active = active;
-	}
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
 
-	/**
-	 * @return the userDepartment
-	 */
-	public UserDepartment getUserDepartment()
-	{
-		return userDepartment;
-	}
+    public String getPassword()
+    {
+        return this.password;
+    }
 
-	/**
-	 * @param userDepartment the userDepartment to set
-	 */
-	public void setUserDepartment(UserDepartment userDepartment)
-	{
-		this.userDepartment = userDepartment;
-	}
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
 
-	/**
-	 * @return the projectAssignments
-	 */
-	public Set<ProjectAssignment> getProjectAssignments()
-	{
-		return projectAssignments;
-	}
+    public String getFirstName()
+    {
+        return this.firstName;
+    }
 
-	/**
-	 * @param projectAssignments the projectAssignments to set
-	 */
-	public void setProjectAssignments(Set<ProjectAssignment> projectAssignments)
-	{
-		this.projectAssignments = projectAssignments;
-	}
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
 
-	/**
-	 * @return the inactiveProjectAssignments
-	 */
-	public Set<ProjectAssignment> getInactiveProjectAssignments()
-	{
-		return inactiveProjectAssignments;
-	}
-	
-	public void addProjectAssignment(ProjectAssignment projectAssignment)
-	{
-		if (projectAssignments == null)
-		{
-			projectAssignments = new HashSet<ProjectAssignment>();
-		}
-		
-		projectAssignments.add(projectAssignment);
-	}
+    public String getLastName()
+    {
+        return this.lastName;
+    }
 
-	/**
-	 * @param inactiveProjectAssignments the inactiveProjectAssignments to set
-	 */
-	public void setInactiveProjectAssignments(Set<ProjectAssignment> inactiveProjectAssignments)
-	{
-		this.inactiveProjectAssignments = inactiveProjectAssignments;
-	}
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+    public String getEmail()
+    {
+        return this.email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    public Set<UserRole> getUserRoles()
+    {
+        return this.userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles)
+    {
+        this.userRoles = userRoles;
+    }
 
 
+    /**
+     * @return the active
+     */
+    public boolean isActive()
+    {
+        return active;
+    }
 
-	@Override
-	public Integer getPK()
-	{
-		return userId;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return new ToStringBuilder(this).append("userId", getUserId())
-						.append("username", getUsername())
-						.append("lastName", getLastName())
-						.append("firstName", getFirstName())
-						.toString();
-	}
+    /**
+     * @param active the active to set
+     */
+    public void setActive(boolean active)
+    {
+        this.active = active;
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(User object)
-	{
-		return new CompareToBuilder()
-			.append(this.getLastName(), object.getLastName())
-			.append(this.getFirstName(), object.getFirstName())
-			.append(this.getUserDepartment(), object.getUserDepartment())
-			.append(this.getUserId(), object.getUserId())
-			.toComparison();
-	}
+    /**
+     * @return the userDepartment
+     */
+    public UserDepartment getUserDepartment()
+    {
+        return userDepartment;
+    }
 
-	/**
-	 * @return the deletable
-	 */
-	public boolean isDeletable()
-	{
-		return deletable;
-	}
+    /**
+     * @param userDepartment the userDepartment to set
+     */
+    public void setUserDepartment(UserDepartment userDepartment)
+    {
+        this.userDepartment = userDepartment;
+    }
 
-	/**
-	 * @param deletable the deletable to set
-	 */
-	public void setDeletable(boolean deletable)
-	{
-		this.deletable = deletable;
-	}
+    /**
+     * @return the projectAssignments
+     */
+    public Set<ProjectAssignment> getProjectAssignments()
+    {
+        return projectAssignments;
+    }
 
-	/**
-	 * @return the salt
-	 */
-	public Integer getSalt()
-	{
-		return salt;
-	}
+    /**
+     * @param projectAssignments the projectAssignments to set
+     */
+    public void setProjectAssignments(Set<ProjectAssignment> projectAssignments)
+    {
+        this.projectAssignments = projectAssignments;
+    }
 
-	/**
-	 * @param salt the salt to set
-	 */
-	public void setSalt(Integer salt)
-	{
-		this.salt = salt;
-	}
+    /**
+     * @return the inactiveProjectAssignments
+     */
+    public Set<ProjectAssignment> getInactiveProjectAssignments()
+    {
+        return inactiveProjectAssignments;
+    }
 
-	/**
-	 * @return the updatedPassword
-	 */
-	public String getUpdatedPassword()
-	{
-		return updatedPassword;
-	}
+    public void addProjectAssignment(ProjectAssignment projectAssignment)
+    {
+        if (projectAssignments == null)
+        {
+            projectAssignments = new HashSet<ProjectAssignment>();
+        }
 
-	/**
-	 * @param updatedPassword the updatedPassword to set
-	 */
-	public void setUpdatedPassword(String updatedPassword)
-	{
-		this.updatedPassword = updatedPassword;
-	}
+        projectAssignments.add(projectAssignment);
+    }
 
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof User))
-			return false;
-		User castOther = (User) other;
-		return new EqualsBuilder().append(username, castOther.username).append(firstName, castOther.firstName).append(lastName, castOther.lastName).append(email, castOther.email).append(active, castOther.active).isEquals();
-	}
+    /**
+     * @param inactiveProjectAssignments the inactiveProjectAssignments to set
+     */
+    public void setInactiveProjectAssignments(Set<ProjectAssignment> inactiveProjectAssignments)
+    {
+        this.inactiveProjectAssignments = inactiveProjectAssignments;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(username).append(firstName).append(lastName).append(email).append(active).toHashCode();
-	}
+
+    @Override
+    public Integer getPK()
+    {
+        return userId;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new ToStringBuilder(this).append("userId", getUserId())
+                .append("username", getUsername())
+                .append("lastName", getLastName())
+                .append("firstName", getFirstName())
+                .toString();
+    }
+
+    /**
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public int compareTo(User object)
+    {
+        return new CompareToBuilder()
+                .append(this.getLastName(), object.getLastName())
+                .append(this.getFirstName(), object.getFirstName())
+                .append(this.getUserDepartment(), object.getUserDepartment())
+                .append(this.getUserId(), object.getUserId())
+                .toComparison();
+    }
+
+    /**
+     * @return the deletable
+     */
+    public boolean isDeletable()
+    {
+        return deletable;
+    }
+
+    /**
+     * @param deletable the deletable to set
+     */
+    public void setDeletable(boolean deletable)
+    {
+        this.deletable = deletable;
+    }
+
+    /**
+     * @return the salt
+     */
+    public Integer getSalt()
+    {
+        return salt;
+    }
+
+    /**
+     * @param salt the salt to set
+     */
+    public void setSalt(Integer salt)
+    {
+        this.salt = salt;
+    }
+
+    /**
+     * @return the updatedPassword
+     */
+    public String getUpdatedPassword()
+    {
+        return updatedPassword;
+    }
+
+    /**
+     * @param updatedPassword the updatedPassword to set
+     */
+    public void setUpdatedPassword(String updatedPassword)
+    {
+        this.updatedPassword = updatedPassword;
+    }
+
+    @Override
+    public boolean equals(final Object other)
+    {
+        if (!(other instanceof User))
+        {
+            return false;
+        }
+        User castOther = (User) other;
+        return new EqualsBuilder().append(username, castOther.username).append(firstName, castOther.firstName).append(lastName, castOther.lastName).append(email, castOther.email).append(active, castOther.active).isEquals();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return new HashCodeBuilder().append(username).append(firstName).append(lastName).append(email).append(active).toHashCode();
+    }
 }

@@ -16,18 +16,17 @@
 
 package net.rrm.ehour.persistence.audit.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("auditDao")
 public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit, Number>  implements AuditDao
@@ -62,7 +61,7 @@ public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit
 		Criteria criteria = buildCriteria(request, false);
 		criteria.setProjection(Projections.rowCount());
 
-		return (Integer)criteria.uniqueResult();
+		return (Number)criteria.uniqueResult();
 	}
 	
 	/**

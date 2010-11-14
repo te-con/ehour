@@ -23,9 +23,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class TimesheetComment extends DomainObject<TimesheetCommentId, TimesheetComment>
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7067367393719500506L;
 	private TimesheetCommentId	commentId;
 	private	String				comment;

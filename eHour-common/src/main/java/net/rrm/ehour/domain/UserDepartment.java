@@ -16,11 +16,12 @@
 
 package net.rrm.ehour.domain;
 
-import java.util.Set;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 // Generated Sep 26, 2006 11:58:17 PM by Hibernate Tools 3.2.0.beta7
 
@@ -30,31 +31,19 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public class UserDepartment extends DomainObject<Integer, UserDepartment>
 {
-
-	// Fields    
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7802944013593352L;
 
 
 	private boolean deletable;
-	
-	/**
-	 * @uml.property  name="departmentId"
-	 */
+
+    @NotNull
 	private Integer departmentId;
 
-	/**
-	 * @uml.property  name="name"
-	 */
+    @NotNull
 	private String name;
 
-	/**
-	 * @uml.property  name="code"
-	 */
-	private String code;
+    @NotNull
+    private String code;
 	
 	private Set<User>		users;
 

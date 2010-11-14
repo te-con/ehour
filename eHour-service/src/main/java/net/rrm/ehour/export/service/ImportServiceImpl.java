@@ -13,6 +13,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.StringReader;
+import java.lang.reflect.Method;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -29,7 +30,7 @@ public class ImportServiceImpl implements ImportService
     {
         try
         {
-            parseXml(xmlData);
+            validateXml(xmlData);
         } catch (XMLStreamException e)
         {
             throw new ImportException("import.error.failedToParse", e);
@@ -38,7 +39,7 @@ public class ImportServiceImpl implements ImportService
         return true;
     }
 
-    private void parseXml(String xmlData) throws XMLStreamException, ImportException
+    private void validateXml(String xmlData) throws XMLStreamException, ImportException
     {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
@@ -53,32 +54,87 @@ public class ImportServiceImpl implements ImportService
 
                 String startName = startElement.getName().getLocalPart();
 
-                if (startName.equalsIgnoreCase(ExportElements.EHOUR.name()))
+                ExportElements element = ExportElements.valueOf(startName);
+
+                switch (element)
                 {
-                    checkDatabaseVersion(startElement);
+                    case EHOUR:
+                        checkDatabaseVersion(startElement);
+                        break;
+                    case CONFIGURATION:
+                        parseConfiguration(startElement, eventReader);
+                        break;
+
                 }
             }
         }
     }
 
-    private void checkDatabaseVersion(StartElement startElement) throws ImportException
+    private void parseConfiguration(StartElement element, XMLEventReader eventReader) throws XMLStreamException
     {
-        Attribute attribute = startElement.getAttributeByName(new QName(ExportElements.DB_VERSION.name()));
+        EhourConfigStub config = new EhourConfigStub();
+
+        while (eventReader.hasNext())
+        {
+            XMLEvent event = eventReader.nextEvent();
+
+            if (event.isStartElement())
+            {
+                parseConfigElement(eventReader, event);
+            } else if (event.isEndElement())
+                {
+                    return;
+                }
+            }
+        }
+
+    private void parseConfigElement(XMLEventReader eventReader, XMLEvent event)
+            throws XMLStreamException
+    {
+        String key = null;
+        String value = null;
+
+        StartElement startElement = event.asStartElement();
+        key = startElement.getAttributeByName(new QName(ExportElements.KEY.name())).getValue();
+
+        while (eventReader.hasNext())
+        {
+            event = eventReader.nextEvent();
+
+            if (event.isCharacters())
+            {
+                value = event.asCharacters().getData();
+            } else if (event.isEndElement())
+            {
+                break;
+            }
+        }
+    }
+
+    private void checkDatabaseVersion(StartElement element) throws ImportException
+    {
+        Attribute attribute = element.getAttributeByName(new QName(ExportElements.DB_VERSION.name()));
         String dbVersion = attribute.getValue();
 
         EhourConfigStub configuration = configurationService.getConfiguration();
 
         if (!configuration.getVersion().equalsIgnoreCase(dbVersion))
         {
-             throw new ImportException("import.error.invalidDatabaseVersion");
+            throw new ImportException("import.error.invalidDatabaseVersion");
         }
-
-
     }
 
-    private void startDocument(XMLEventReader eventReader, XMLEvent event)
+    private void fillConfiguration(EhourConfigStub targetObject, StartElement element)
     {
-        
+        Class<? extends Object> targetClass = targetObject.getClass();
+        Method[] methods = targetClass.getDeclaredMethods();
+
+        for (Method method : methods)
+        {
+            Class<?>[] parameters = method.getParameterTypes();
+
+        }
+
     }
 
     public void setConfigurationService(ConfigurationService configurationService)

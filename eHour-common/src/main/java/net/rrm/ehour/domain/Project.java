@@ -16,14 +16,15 @@
 
 package net.rrm.ehour.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Project extends DomainObject<Integer, Project>
 {
@@ -31,12 +32,14 @@ public class Project extends DomainObject<Integer, Project>
 
 	private Integer projectId;
 
+    @NotNull
 	private String projectCode;
 
 	private String contact;
 
 	private String description;
 
+    @NotNull       
 	private String name;
 
 	private boolean defaultProject;

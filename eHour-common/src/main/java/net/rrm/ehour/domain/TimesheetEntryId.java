@@ -16,26 +16,23 @@
 
 package net.rrm.ehour.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
+
 public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntryId>
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6439918043325585774L;
 
-	/** identifier field */
+    @NotNull
 	private Date entryDate;
 
-	/** identifier field */
+    @NotNull
 	private ProjectAssignment projectAssignment;
 
 	/** full constructor */

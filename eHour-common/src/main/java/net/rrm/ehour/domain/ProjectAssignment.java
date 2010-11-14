@@ -16,29 +16,25 @@
 
 package net.rrm.ehour.domain;
 
-import java.util.Date;
-
 import net.rrm.ehour.util.EhourConstants;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+
 public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 {
-
-	// Fields    
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2396783805401137165L;
 
 	private Integer assignmentId;
 
+    @NotNull       
 	private User user;
 
+    @NotNull
 	private Project project;
 
 	private Float hourlyRate;

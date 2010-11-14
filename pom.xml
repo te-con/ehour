@@ -63,12 +63,15 @@
         <spring.version>3.0.3.RELEASE</spring.version>
         <wicket.version>1.4.13</wicket.version>
         <jetty.version>7.1.6.v20100715</jetty.version>
-        <derbydb.version>10.6.1.0</derbydb.version>
+        <derbydb.version>10.6.2.1</derbydb.version>
         <aspectj.version>1.6.6</aspectj.version>
-        <hibernate.version>3.3.2.GA</hibernate.version>
         <clover.version>3.0.1</clover.version>
         <gmaven.version>1.3</gmaven.version>
         <groovy.version>1.7.2</groovy.version>
+        <slf4j.version>1.5.11</slf4j.version>
+        <hibernate.version>3.3.2.GA</hibernate.version>
+        <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
+        <hibernate.annotations.version>3.4.0.GA</hibernate.annotations.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -135,17 +138,17 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.5.2</version>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>1.5.2</version>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.5.2</version>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>jfree</groupId>
@@ -266,6 +269,23 @@
 
             <dependency>
                 <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
                 <exclusions>
@@ -283,6 +303,13 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-annotations</artifactId>
+                <version>${hibernate.annotations.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.dbunit</groupId>
                 <artifactId>dbunit</artifactId>
@@ -733,7 +760,6 @@
 
     </build>
     <profiles>
-
         <!--
             activated by default to allow release plugin to run without profile
         -->
@@ -799,4 +825,21 @@
             </build>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>

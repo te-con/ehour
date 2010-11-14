@@ -17,19 +17,22 @@
 package net.rrm.ehour.domain;
 
 
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+
 public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntry>
 {
 	private static final long serialVersionUID = 3258176976827482751L;
 
 	/** identifier field */
+    @Valid
 	private TimesheetEntryId entryId;
 
 	/** nullable persistent field */
@@ -37,6 +40,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	
 	private String comment;
 
+    @NotNull
 	private Date updateDate;
 	
 	/** full constructor */

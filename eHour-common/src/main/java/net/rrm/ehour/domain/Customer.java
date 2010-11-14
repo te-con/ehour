@@ -16,13 +16,14 @@
 
 package net.rrm.ehour.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Customer extends DomainObject<Integer, Customer>
 {
@@ -31,8 +32,10 @@ public class Customer extends DomainObject<Integer, Customer>
 
 	private Integer customerId;
 
+    @NotNull
 	private String code;
 
+    @NotNull       
 	private String name;
 
 	private String description;
