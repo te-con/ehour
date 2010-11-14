@@ -19,12 +19,9 @@ class UserDepartmentDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldDelete()
   {
+    userDepartmentDao.delete(2);
+
     def dept = userDepartmentDao.findById(2);
-    assertNotNull(dept);
-
-    userDepartmentDao.delete(dept);
-
-    dept = userDepartmentDao.findById(2);
     assertNull(dept);
   }
 
