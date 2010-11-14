@@ -12,7 +12,7 @@ import net.rrm.ehour.domain.*
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 14, 2010 - 10:41:38 PM
  */
-class UserDaoImplTest extends AbstractAnnotationDaoTest
+class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
   @Autowired
   private UserDao userDAO;
@@ -66,7 +66,7 @@ class UserDaoImplTest extends AbstractAnnotationDaoTest
   }
 
   @Test
-  public void shouldPersist()
+  void shouldPersist()
   {
     def org = UserDepartmentMother.createUserDepartment()
 
@@ -85,18 +85,17 @@ class UserDaoImplTest extends AbstractAnnotationDaoTest
   }
 
   @Test
-  public void shouldFindUsersForDepartments()
+  void shouldFindUsersForDepartments()
   {
-    List<UserDepartment> ids = new ArrayList<UserDepartment>();
-    ids.add(new UserDepartment(1));
+    def ids = [new UserDepartment(1)]
 
-    List<User> results = userDAO.findUsersForDepartments("in", ids, false);
+    def results = userDAO.findUsersForDepartments("in", ids, false);
 
     assertEquals(2, results.size());
   }
 
   @Test
-  public void shouldFindAllActiveUsersWithEmailSet()
+  void shouldFindAllActiveUsersWithEmailSet()
   {
     List<User> results = userDAO.findAllActiveUsersWithEmailSet();
 
@@ -104,8 +103,12 @@ class UserDaoImplTest extends AbstractAnnotationDaoTest
   }
 
   @Test
-  public void shouldDeletePmWithoutProject()
+  void shouldDeletePmWithoutProject()
   {
     userDAO.deletePmWithoutProject();
+
+    def user = userDAO.findById(2)
+
+    user.userRoles.each {if (it.role == "PROJECT_MANAGER") fail}
   }
 }
