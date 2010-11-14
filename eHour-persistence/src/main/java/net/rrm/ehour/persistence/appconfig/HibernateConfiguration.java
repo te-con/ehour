@@ -1,15 +1,7 @@
 package net.rrm.ehour.persistence.appconfig;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import net.rrm.ehour.appconfig.ConfigPropertiesLoader;
-
+import net.rrm.ehour.domain.User;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +14,14 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 
 @Configuration
 public class HibernateConfiguration
@@ -43,11 +42,12 @@ public class HibernateConfiguration
 
 		LOGGER.info("Using database type: " + databaseName);
 
-		LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+        AnnotationSessionFactoryBean factoryBean = new AnnotationSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
 
 		List<Resource> resources = getMappingResources(configProperties);
 		factoryBean.setMappingLocations(resources.toArray(new Resource[resources.size()]));
+        factoryBean.setAnnotatedClasses(new Class[]{User.class});
 
 		Properties hibernateProperties = new Properties();
 		hibernateProperties.put("hibernate.dialect", configProperties.get("hibernate.dialect"));
@@ -62,7 +62,8 @@ public class HibernateConfiguration
 		factoryBean.setHibernateProperties(hibernateProperties);
 		factoryBean.afterPropertiesSet();
 
-		return factoryBean.getObject();
+
+        return factoryBean.getObject();
 	}
 
 	private List<Resource> getMappingResources(Properties configProperties) throws IOException

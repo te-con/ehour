@@ -1,14 +1,7 @@
 package net.rrm.ehour.persistence.dao;
 
-import java.io.File;
-import java.sql.Connection;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import net.rrm.ehour.appconfig.ConfigPropertiesLoader;
 import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
-
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -22,6 +15,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.sql.DataSource;
+import java.io.File;
+import java.sql.Connection;
+import java.util.Properties;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,12 +51,12 @@ public abstract class AbstractAnnotationDaoTest
 	{
 	}
 
-	public AbstractAnnotationDaoTest(String... dataSetFileNames)
+	public AbstractAnnotationDaoTest(String[] dataSetFileNames)
 	{
 		this.additionalDataSetFileNames = dataSetFileNames;
 	}
 
-	protected void setAdditionalDataSetFileNames(String... additionalDataSetFileNames)
+	protected void setAdditionalDataSetFileNames(String[] additionalDataSetFileNames)
 	{
 		this.additionalDataSetFileNames = additionalDataSetFileNames;
 	}

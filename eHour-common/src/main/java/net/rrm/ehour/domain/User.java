@@ -77,10 +77,11 @@ public class User extends DomainObject<Integer, User>
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
     @ManyToOne
+    @JoinColumn(name = "DEPARTMENT_ID")
     @NotNull
     private UserDepartment userDepartment;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "USER_ID")
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
     private Set<ProjectAssignment> projectAssignments;
 
     @Transient

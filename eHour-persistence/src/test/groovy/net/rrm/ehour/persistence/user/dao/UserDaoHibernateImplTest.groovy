@@ -15,29 +15,29 @@ import net.rrm.ehour.domain.*
 class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
   @Autowired
-  private UserDao userDAO;
+  private UserDao userDao;
 
   @Test
   void shouldFindUsersByPattern()
   {
     def results;
 
-    results = userDAO.findUsersByNameMatch("thies", true);
+    results = userDao.findUsersByNameMatch("thies", true);
     assertEquals(1, results.size());
 
-    results = userDAO.findUsersByNameMatch("ede", true);
+    results = userDao.findUsersByNameMatch("ede", true);
     assertEquals(2, results.size());
 
-    results = userDAO.findUsersByNameMatch("zed", false);
+    results = userDao.findUsersByNameMatch("zed", false);
     assertEquals(3, results.size());
 
-    results = userDAO.findUsersByNameMatch("in", false);
+    results = userDao.findUsersByNameMatch("in", false);
     assertEquals(2, results.size());
 
-    results = userDAO.findUsersByNameMatch("zed", true);
+    results = userDao.findUsersByNameMatch("zed", true);
     assertEquals(2, results.size());
 
-    results = userDAO.findUsersByNameMatch(null, true);
+    results = userDao.findUsersByNameMatch(null, true);
     assertEquals(4, results.size());
 
   }
@@ -45,14 +45,14 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldFindUsers()
   {
-    def results = userDAO.findAllActiveUsers();
+    def results = userDao.findAllActiveUsers();
     assertEquals(4, results.size());
   }
 
   @Test
   void shouldFindById()
   {
-    def user = userDAO.findById(1);
+    def user = userDao.findById(1);
 
     assertEquals("thies", user.username)
   }
@@ -60,7 +60,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldFindByUsername()
   {
-    def user = userDAO.findByUsername("thies")
+    def user = userDao.findByUsername("thies")
 
     assertEquals("thies", user.username)
   }
@@ -79,7 +79,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
 
     user.setUserDepartment(org)
     user.setProjectAssignments(assignments)
-    userDAO.persist(user)
+    userDao.persist(user)
 
     assertNotNull(user.userId)
   }
@@ -89,15 +89,23 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   {
     def ids = [new UserDepartment(1)]
 
-    def results = userDAO.findUsersForDepartments("in", ids, false);
+    def results = userDao.findUsersForDepartments("in", ids, false);
 
     assertEquals(2, results.size());
   }
 
   @Test
+  void shouldFindAllActiveUsers()
+  {
+    def results = userDao.findAllActiveUsers();
+
+    assertEquals(4, results.size());
+  }
+
+  @Test
   void shouldFindAllActiveUsersWithEmailSet()
   {
-    List<User> results = userDAO.findAllActiveUsersWithEmailSet();
+    def results = userDao.findAllActiveUsersWithEmailSet();
 
     assertEquals(2, results.size());
   }
@@ -105,10 +113,11 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldDeletePmWithoutProject()
   {
-    userDAO.deletePmWithoutProject();
+    userDao.deletePmWithoutProject();
 
-    def user = userDAO.findById(2)
+    def user = userDao.findById(2)
 
     user.userRoles.each {if (it.role == "PROJECT_MANAGER") fail}
   }
 }
+
