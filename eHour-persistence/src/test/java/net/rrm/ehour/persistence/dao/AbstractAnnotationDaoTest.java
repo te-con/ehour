@@ -51,7 +51,7 @@ public abstract class AbstractAnnotationDaoTest
 	{
 	}
 
-	public AbstractAnnotationDaoTest(String[] dataSetFileNames)
+	public AbstractAnnotationDaoTest(String... dataSetFileNames)
 	{
 		this.additionalDataSetFileNames = dataSetFileNames;
 	}

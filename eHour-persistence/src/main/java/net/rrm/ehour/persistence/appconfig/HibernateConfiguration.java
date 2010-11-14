@@ -2,6 +2,7 @@ package net.rrm.ehour.persistence.appconfig;
 
 import net.rrm.ehour.appconfig.ConfigPropertiesLoader;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class HibernateConfiguration
 
 		List<Resource> resources = getMappingResources(configProperties);
 		factoryBean.setMappingLocations(resources.toArray(new Resource[resources.size()]));
-        factoryBean.setAnnotatedClasses(new Class[]{User.class});
+        factoryBean.setAnnotatedClasses(new Class[]{User.class, UserDepartment.class});
 
 		Properties hibernateProperties = new Properties();
 		hibernateProperties.put("hibernate.dialect", configProperties.get("hibernate.dialect"));
