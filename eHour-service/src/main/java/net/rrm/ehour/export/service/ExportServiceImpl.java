@@ -75,8 +75,8 @@ public class ExportServiceImpl implements ExportService
 
         EhourConfigStub stub = configurationService.getConfiguration();
 
-        writer.writeStartElement("EHOUR");
-        writer.writeAttribute("DB_VERSION", stub.getVersion());
+        writer.writeStartElement(ExportElements.EHOUR.name());
+        writer.writeAttribute(ExportElements.DB_VERSION.name(), stub.getVersion());
 
         writeConfigEntries(writer);
         writeEntries(writer);
@@ -89,14 +89,14 @@ public class ExportServiceImpl implements ExportService
 
     private void writeConfigEntries(XMLStreamWriter writer) throws XMLStreamException
     {
-        writer.writeStartElement("CONFIGURATION");
+        writer.writeStartElement(ExportElements.CONFIGURATION.name());
 
         List<Configuration> configurationList = configurationService.findAllConfiguration();
 
         for (Configuration configuration : configurationList)
         {
-            writer.writeStartElement("CONFIG");
-            writer.writeAttribute("KEY", configuration.getConfigKey());
+            writer.writeStartElement(ExportElements.CONFIG.name());
+            writer.writeAttribute(ExportElements.KEY.name(), configuration.getConfigKey());
             writer.writeCharacters(configuration.getConfigValue());
             writer.writeEndElement();
         }
