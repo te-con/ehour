@@ -21,6 +21,8 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -33,6 +35,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "USERS")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User extends DomainObject<Integer, User>
 {
     private static final long serialVersionUID = 2546435367535412269L;
@@ -43,20 +46,20 @@ public class User extends DomainObject<Integer, User>
     private Integer userId;
 
     @NotNull
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME", length = 64)
     private String username;
 
     @NotNull
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false, length = 128)
     private String password;
 
-    @Column(name = "FIRST_NAME")
+    @Column(name = "FIRST_NAME",  length = 64)
     private String firstName;
 
-    @Column(name = "LAST_NAME")
+    @Column(name = "LAST_NAME", nullable = false, length = 64)
     private String lastName;
 
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", length = 128)
     private String email;
 
     @Column(name = "ACTIVE")

@@ -19,6 +19,8 @@ package net.rrm.ehour.domain;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,6 +30,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "USER_DEPARTMENT")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserDepartment extends DomainObject<Integer, UserDepartment>
 {
 	private static final long serialVersionUID = 7802944013593352L;
@@ -41,11 +44,11 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 	private Integer departmentId;
 
     @NotNull
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false, length = 512)
 	private String name;
 
     @NotNull
-    @Column(name = "CODE")
+    @Column(name = "CODE", nullable = false, length = 64)
     private String code;
 
     @OneToMany(mappedBy = "userDepartment")
@@ -58,10 +61,6 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 	{
 	}
 	
-	/**
-	 * id only constructor
-	 * @param departmentId
-	 */
 	public UserDepartment(Integer departmentId)
 	{
 		this.departmentId = departmentId;	
@@ -84,20 +83,11 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment>
 		this.users = users;
 	}
 
-	// Property accessors
-	/**
-	 * @return  the departmentId
-	 * @uml.property  name="departmentId"
-	 */
 	public Integer getDepartmentId()
 	{
 		return this.departmentId;
 	}
 
-	/**
-	 * @param departmentId  the departmentId to set
-	 * @uml.property  name="departmentId"
-	 */
 	public void setDepartmentId(Integer departmentId)
 	{
 		this.departmentId = departmentId;

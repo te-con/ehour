@@ -1,8 +1,7 @@
 package net.rrm.ehour.persistence.appconfig;
 
 import net.rrm.ehour.appconfig.ConfigPropertiesLoader;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.DomainObjects;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class HibernateConfiguration
 
 		List<Resource> resources = getMappingResources(configProperties);
 		factoryBean.setMappingLocations(resources.toArray(new Resource[resources.size()]));
-        factoryBean.setAnnotatedClasses(new Class[]{User.class, UserDepartment.class});
+        factoryBean.setAnnotatedClasses(DomainObjects.DOMAIN_OBJECTS);
 
 		Properties hibernateProperties = new Properties();
 		hibernateProperties.put("hibernate.dialect", configProperties.get("hibernate.dialect"));
@@ -62,7 +61,6 @@ public class HibernateConfiguration
 
 		factoryBean.setHibernateProperties(hibernateProperties);
 		factoryBean.afterPropertiesSet();
-
 
         return factoryBean.getObject();
 	}
@@ -85,9 +83,7 @@ public class HibernateConfiguration
 	@Bean(name="transactionManager")
 	public  HibernateTransactionManager getTransactionManager() throws Exception
 	{
-		HibernateTransactionManager manager = new HibernateTransactionManager(getSessionFactory());
-
-		return manager;
+		return new HibernateTransactionManager(getSessionFactory());
 	}
 
 	public @Bean HibernateTemplate getHibernateTemplate() throws Exception

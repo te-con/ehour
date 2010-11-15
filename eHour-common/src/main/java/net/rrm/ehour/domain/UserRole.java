@@ -18,10 +18,19 @@ package net.rrm.ehour.domain;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "USER_ROLE")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class UserRole extends DomainObject<String, UserRole> implements GrantedAuthority
 {
 	private static final long serialVersionUID = 3806904191272349157L;
@@ -37,11 +46,15 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 	public static final UserRole ADMIN = new UserRole(ROLE_ADMIN);
 	
 
+    @Id
+    @Column(name = "ROLE", length = 128)
     @NotNull
 	private String 	role;
 
+
     @NotNull
-	private String	roleName;
+    @Column(name = "NAME", length = 128, nullable = false)
+    private String	roleName;
 
 	public UserRole()
 	{
