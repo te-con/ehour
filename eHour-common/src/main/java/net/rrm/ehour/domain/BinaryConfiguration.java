@@ -16,16 +16,14 @@
 
 package net.rrm.ehour.domain;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
-import java.sql.SQLException;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.Hibernate;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Configuration domain object specifically for binary values (images and stuff)
@@ -34,27 +32,23 @@ import org.hibernate.Hibernate;
  * @author Thies Edeling (thies@te-con.nl)
  * 
  */
+@Entity
+@Table(name = "CONFIGURATION_BIN")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+
 public class BinaryConfiguration extends DomainObject<String, BinaryConfiguration>
 {
 	private static final long serialVersionUID = -2162032227850306610L;
-
+                                                                                                                                               
+    @Id
+    @Column(name = "CONFIG_KEY", length = 255)
+    @NotNull
 	private String configKey;
+
+    @Lob
+    @Column(name = "CONFIG_VALUE")
 	private byte[] configValue;
-	private String metadata;
 	
-	
-	/** Don't invoke this. Used by Hibernate only. */
-	public void setValueBlob(Blob imageBlob)
-	{
-		this.configValue = this.toByteArray(imageBlob);
-	}
-
-	/** Don't invoke this. Used by Hibernate only. */
-	public Blob getValueBlob()
-	{
-		return Hibernate.createBlob(this.getConfigValue());
-	}
-
 	/**
 	 * @param configKey
 	 *            the configKey to set
@@ -89,60 +83,7 @@ public class BinaryConfiguration extends DomainObject<String, BinaryConfiguratio
 		return configValue;
 	}
 
-	private byte[] toByteArray(Blob fromBlob)
-	{
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try
-		{
-			return toByteArrayImpl(fromBlob, baos);
-		} catch (SQLException e)
-		{
-			throw new RuntimeException(e);
-		} catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		} finally
-		{
-			if (baos != null)
-			{
-				try
-				{
-					baos.close();
-				} catch (IOException ex)
-				{
-				}
-			}
-		}
-	}
 
-	private byte[] toByteArrayImpl(Blob fromBlob, ByteArrayOutputStream baos) throws SQLException, IOException
-	{
-		byte[] buf = new byte[4000];
-		InputStream is = fromBlob.getBinaryStream();
-		try
-		{
-			for (;;)
-			{
-				int dataSize = is.read(buf);
-
-				if (dataSize == -1)
-					break;
-				baos.write(buf, 0, dataSize);
-			}
-		} finally
-		{
-			if (is != null)
-			{
-				try
-				{
-					is.close();
-				} catch (IOException ex)
-				{
-				}
-			}
-		}
-		return baos.toByteArray();
-	}
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.domain.DomainObject#equals(java.lang.Object)
@@ -189,19 +130,5 @@ public class BinaryConfiguration extends DomainObject<String, BinaryConfiguratio
 				.append(this.getConfigKey(), object.getConfigKey()).toComparison();
 	}
 
-	/**
-	 * @param metadata the metadata to set
-	 */
-	public void setMetadata(String metadata)
-	{
-		this.metadata = metadata;
-	}
 
-	/**
-	 * @return the metadata
-	 */
-	public String getMetadata()
-	{
-		return metadata;
-	}
 }
