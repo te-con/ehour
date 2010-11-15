@@ -20,16 +20,32 @@ package net.rrm.ehour.domain;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Configuration domain object
  **/
-
+@Entity
+@Table(name = "CONFIGURATION")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Configuration extends DomainObject<String, Configuration>
 {
 	private static final long serialVersionUID = -5457250186090868408L;
 
+    @Id
+    @Column(name = "config_key", nullable = false, length = 255)
+    @NotNull
 	private	String	configKey;
+
+    @Column(name = "config_value", nullable = false, length = 255)
+    @NotNull
 	private	String	configValue;
 	
 	public Configuration()
