@@ -16,19 +16,28 @@
 
 package net.rrm.ehour.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
+
+@Embeddable
 public class TimesheetCommentId implements Serializable, Comparable<TimesheetCommentId>
 {
 	private static final long serialVersionUID = 1L;
 
+    @Column(name = "USER_ID", nullable = false)
+    @NotNull
 	private	Integer	userId;
+
+    @Column(name = "COMMENT_DATE", nullable = false)
+    @NotNull
 	private	Date	commentDate;
 	
 	public TimesheetCommentId()

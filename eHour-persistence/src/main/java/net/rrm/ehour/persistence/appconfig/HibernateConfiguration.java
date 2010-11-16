@@ -69,9 +69,6 @@ public class HibernateConfiguration
 	{
 		List<Resource> resources = new ArrayList<Resource>();
 
-		Resource[] mappingResources = resolver.getResources("classpath:mapping/*.hbm.xml");
-		resources.addAll(Arrays.asList(mappingResources));
-
 		Resource[] queryResources = resolver.getResources("classpath:query/common/*.hbm.xml");
 		resources.addAll(Arrays.asList(queryResources));
 

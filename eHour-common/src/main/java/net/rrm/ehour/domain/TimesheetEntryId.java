@@ -21,87 +21,101 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+@Embeddable
 public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntryId>
 {
-	private static final long serialVersionUID = 6439918043325585774L;
+    private static final long serialVersionUID = 6439918043325585774L;
 
+    @Column(name = "ENTRY_DATE", nullable = false)
     @NotNull
-	private Date entryDate;
+    private Date entryDate;
 
+    @ManyToOne
+    @JoinColumn(name = "ASSIGNMENT_ID", nullable = false)
+    @Basic(fetch = FetchType.LAZY)
     @NotNull
-	private ProjectAssignment projectAssignment;
+    private ProjectAssignment projectAssignment;
 
-	/** full constructor */
-	public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment)
-	{
-		this.entryDate = entryDate;
-		this.projectAssignment = projectAssignment;
-	}
+    /**
+     * full constructor
+     */
+    public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment)
+    {
+        this.entryDate = entryDate;
+        this.projectAssignment = projectAssignment;
+    }
 
-	/** default constructor */
-	public TimesheetEntryId()
-	{
-	}
+    /**
+     * default constructor
+     */
+    public TimesheetEntryId()
+    {
+    }
 
-	public Date getEntryDate()
-	{
-		return this.entryDate;
-	}
+    public Date getEntryDate()
+    {
+        return this.entryDate;
+    }
 
-	public void setEntryDate(Date entryDate)
-	{
-		this.entryDate = entryDate;
-	}
+    public void setEntryDate(Date entryDate)
+    {
+        this.entryDate = entryDate;
+    }
 
-	@Override
-	public String toString()
-	{
-		return new ToStringBuilder(this).append("entryDate", getEntryDate())
-															.append("assignment", getProjectAssignment())
-															.toString();
-	}
+    @Override
+    public String toString()
+    {
+        return new ToStringBuilder(this).append("entryDate", getEntryDate())
+                .append("assignment", getProjectAssignment())
+                .toString();
+    }
 
-	@Override
-	public boolean equals(Object other)
-	{
-		if ((this == other))
-			return true;
-		if (!(other instanceof TimesheetEntryId))
-			return false;
-		TimesheetEntryId castOther = (TimesheetEntryId) other;
-		return new EqualsBuilder().append(this.getEntryDate(), castOther.getEntryDate())
-								  .append(this.getProjectAssignment(), castOther.getProjectAssignment()).isEquals();
-	}
+    @Override
+    public boolean equals(Object other)
+    {
+        if ((this == other))
+        {
+            return true;
+        }
+        if (!(other instanceof TimesheetEntryId))
+        {
+            return false;
+        }
+        TimesheetEntryId castOther = (TimesheetEntryId) other;
+        return new EqualsBuilder().append(this.getEntryDate(), castOther.getEntryDate())
+                .append(this.getProjectAssignment(), castOther.getProjectAssignment()).isEquals();
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(getEntryDate())
-									.append(getProjectAssignment()).toHashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return new HashCodeBuilder().append(getEntryDate())
+                .append(getProjectAssignment()).toHashCode();
+    }
 
-	public ProjectAssignment getProjectAssignment()
-	{
-		return projectAssignment;
-	}
+    public ProjectAssignment getProjectAssignment()
+    {
+        return projectAssignment;
+    }
 
-	public void setProjectAssignment(ProjectAssignment projectAssignment)
-	{
-		this.projectAssignment = projectAssignment;
-	}
+    public void setProjectAssignment(ProjectAssignment projectAssignment)
+    {
+        this.projectAssignment = projectAssignment;
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(TimesheetEntryId object)
-	{
-		return new CompareToBuilder()
-			.append(this.getProjectAssignment(), object.getProjectAssignment())
-			.append(this.getEntryDate(), object.getEntryDate())
-			.toComparison();
-	}
+    /**
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public int compareTo(TimesheetEntryId object)
+    {
+        return new CompareToBuilder()
+                .append(this.getProjectAssignment(), object.getProjectAssignment())
+                .append(this.getEntryDate(), object.getEntryDate())
+                .toComparison();
+    }
 }

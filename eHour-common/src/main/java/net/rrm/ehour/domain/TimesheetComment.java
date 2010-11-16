@@ -20,13 +20,28 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import javax.validation.Valid;
+
+@Entity
+@Table(name = "TIMESHEET_COMMENT")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TimesheetComment extends DomainObject<TimesheetCommentId, TimesheetComment>
 {
 	private static final long serialVersionUID = 7067367393719500506L;
+
+    @Id
+    @Valid
 	private TimesheetCommentId	commentId;
+
+    @Column(name = "COMMENT", length = 2048)
 	private	String				comment;
-	private Boolean				newComment = Boolean.FALSE; // not persisted
+
+    @Transient
+	private Boolean				newComment = Boolean.FALSE;
 	
 	/**
 	 * @return the newComment

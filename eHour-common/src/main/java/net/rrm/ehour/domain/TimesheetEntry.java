@@ -22,24 +22,35 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Entity
+@Table(name = "TIMESHEET_ENTRY")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntry>
 {
 	private static final long serialVersionUID = 3258176976827482751L;
 
-	/** identifier field */
+    @Id
     @Valid
 	private TimesheetEntryId entryId;
 
-	/** nullable persistent field */
+	@Column(name = "HOURS")
 	private Float hours;
-	
+
+    @Column(name = "COMMENT", length = 2048)
 	private String comment;
 
+    @Column(name = "UPDATE_DATE", nullable = false)
     @NotNull
 	private Date updateDate;
 	
