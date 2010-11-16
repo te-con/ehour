@@ -58,11 +58,11 @@ public class Project extends DomainObject<Integer, Project>
 
     @Column(name = "DEFAULT_PROJECT")
     @Type(type = "yes_no")
-	private Boolean defaultProject;
+	private Boolean defaultProject = Boolean.FALSE;
 
     @Column(name = "ACTIVE")
     @Type(type = "yes_no")
-	private Boolean active;
+	private Boolean active = Boolean.TRUE;
 
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID", nullable = true)
@@ -83,7 +83,7 @@ public class Project extends DomainObject<Integer, Project>
 
     @Column(name = "BILLABLE")
     @Type(type = "yes_no")
-	private Boolean billable;
+	private Boolean billable = Boolean.TRUE;
 	
 	// Constructors
 

@@ -55,7 +55,7 @@ public class Audit extends DomainObject<Number, Audit>
 
     @Column(name = "SUCCESS")
     @Type(type = "yes_no")
-	private Boolean	success;
+	private Boolean	success = Boolean.TRUE;
 
     @Column(name = "USER_FULLNAME", length = 256)
 	private String	userFullName;
