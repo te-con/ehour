@@ -35,277 +35,281 @@ import java.util.Set;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Project extends DomainObject<Integer, Project>
 {
-	private static final long serialVersionUID = 6553709211219335091L;
+    private static final long serialVersionUID = 6553709211219335091L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PROJECT_ID")
-	private Integer projectId;
+    private Integer projectId;
 
     @Column(name = "PROJECT_CODE", length = 32, nullable = false)
     @NotNull
-	private String projectCode;
+    private String projectCode;
 
     @Column(name = "CONTACT", length = 255)
-	private String contact;
+    private String contact;
 
     @Column(name = "DESCRIPTION", length = 1024)
-	private String description;
+    private String description;
 
     @Column(name = "NAME", length = 255, nullable = false)
-    @NotNull       
-	private String name;
+    @NotNull
+    private String name;
 
     @Column(name = "DEFAULT_PROJECT")
     @Type(type = "yes_no")
-	private Boolean defaultProject = Boolean.FALSE;
+    private Boolean defaultProject = Boolean.FALSE;
 
     @Column(name = "ACTIVE")
     @Type(type = "yes_no")
-	private Boolean active = Boolean.TRUE;
+    private Boolean active = Boolean.TRUE;
 
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID", nullable = true)
     @NotNull
-	private Customer customer;
+    private Customer customer;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "project")
     @Basic(fetch = FetchType.LAZY)
-	private	Set<ProjectAssignment>		projectAssignments;
-
+    private Set<ProjectAssignment> projectAssignments;
 
     @ManyToOne
     @JoinColumn(name = "PROJECT_MANAGER", nullable = true)
-	private User	projectManager;
+    private User projectManager;
 
     @Transient
-	private boolean	deletable;
+    private boolean deletable;
 
     @Column(name = "BILLABLE")
     @Type(type = "yes_no")
-	private Boolean billable = Boolean.TRUE;
-	
-	// Constructors
+    private Boolean billable = Boolean.TRUE;
 
-	public boolean isBillable()
-	{
-		return billable;
-	}
+    // Constructors
 
-	public void setBillable(boolean billable)
-	{
-		this.billable = billable;
-	}
+    public boolean isBillable()
+    {
+        return billable;
+    }
 
-	/** default constructor */
-	public Project()
-	{
-	}
+    public void setBillable(boolean billable)
+    {
+        this.billable = billable;
+    }
 
-	public Project(Integer projectId)
-	{
-		this.projectId = projectId;
-	}
-	
-	public String getFullName()
-	{
-		return (StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name; 
-	}	
-	
-	/**
-	 * Get primary key
-	 */
-	public Integer getPK()
-	{
-		return projectId;
-	}
-	
-	// Property accessors
-	public Integer getProjectId()
-	{
-		return this.projectId;
-	}
+    /**
+     * default constructor
+     */
+    public Project()
+    {
+    }
 
-	public void setProjectId(Integer projectId)
-	{
-		this.projectId = projectId;
-	}
+    public Project(Integer projectId)
+    {
+        this.projectId = projectId;
+    }
 
-	public String getProjectCode()
-	{
-		return this.projectCode;
-	}
-	
-	public void setProjectCode(String projectCode)
-	{
-		this.projectCode = projectCode;
-	}
+    public String getFullName()
+    {
+        return (StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name;
+    }
 
-	public String getContact()
-	{
-		return this.contact;
-	}
+    /**
+     * Get primary key
+     */
+    public Integer getPK()
+    {
+        return projectId;
+    }
 
-	public void setContact(String contact)
-	{
-		this.contact = contact;
-	}
+    // Property accessors
 
-	public String getDescription()
-	{
-		return this.description;
-	}
+    public Integer getProjectId()
+    {
+        return this.projectId;
+    }
 
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
+    public void setProjectId(Integer projectId)
+    {
+        this.projectId = projectId;
+    }
 
-	public String getName()
-	{
-		return this.name;
-	}
+    public String getProjectCode()
+    {
+        return this.projectCode;
+    }
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    public void setProjectCode(String projectCode)
+    {
+        this.projectCode = projectCode;
+    }
 
-	public boolean isDefaultProject()
-	{
-		return this.defaultProject;
-	}
+    public String getContact()
+    {
+        return this.contact;
+    }
 
-	public void setDefaultProject(boolean defaultProject)
-	{
-		this.defaultProject = defaultProject;
-	}
+    public void setContact(String contact)
+    {
+        this.contact = contact;
+    }
 
-	public Customer getCustomer()
-	{
-		return this.customer;
-	}
+    public String getDescription()
+    {
+        return this.description;
+    }
 
-	public void setCustomer(Customer customer)
-	{
-		this.customer = customer;
-	}
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-	/**
-	 * @return the active
-	 */
-	public boolean isActive()
-	{
-		return active;
-	}
+    public String getName()
+    {
+        return this.name;
+    }
 
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active)
-	{
-		this.active = active;
-	}
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
-	/**
-	 * @return the projectAssignments
-	 */
-	public Set<ProjectAssignment> getProjectAssignments()
-	{
-		return projectAssignments;
-	}
+    public boolean isDefaultProject()
+    {
+        return this.defaultProject;
+    }
 
-	/**
-	 * @param projectAssignments the projectAssignments to set
-	 */
-	public void setProjectAssignments(Set<ProjectAssignment> projectAssignments)
-	{
-		this.projectAssignments = projectAssignments;
-	}
+    public void setDefaultProject(boolean defaultProject)
+    {
+        this.defaultProject = defaultProject;
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(Project object)
-	{
-		return new CompareToBuilder()
-			.append(this.getName(), object.getName())
-			.append(this.getProjectCode(), object.getProjectCode())
-			.append(this.getProjectId(), object.getProjectId())
-			.append(this.getCustomer(), object.getCustomer()).toComparison();
-	}
+    public Customer getCustomer()
+    {
+        return this.customer;
+    }
 
-	/**
-	 * @return the projectManager
-	 */
-	public User getProjectManager()
-	{
-		return projectManager;
-	}
+    public void setCustomer(Customer customer)
+    {
+        this.customer = customer;
+    }
 
-	/**
-	 * @param projectManager the projectManager to set
-	 */
-	public void setProjectManager(User projectManager)
-	{
-		this.projectManager = projectManager;
-	}
+    /**
+     * @return the active
+     */
+    public boolean isActive()
+    {
+        return active;
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString()
-	{
-		return new ToStringBuilder(this).append("active", this.active)
-				.append("PK", this.getPK())
-				.append("defaultProject", this.defaultProject)
-				.append("fullname", this.getFullName())
-				.append("projectCode", this.getProjectCode())
-				.append("name", this.getName())
-				.append("projectId", this.getProjectId())
-				.toString();
-	}
+    /**
+     * @param active the active to set
+     */
+    public void setActive(boolean active)
+    {
+        this.active = active;
+    }
 
-	/**
-	 * @return the deletable
-	 */
-	public boolean isDeletable()
-	{
-		return deletable;
-	}
+    /**
+     * @return the projectAssignments
+     */
+    public Set<ProjectAssignment> getProjectAssignments()
+    {
+        return projectAssignments;
+    }
 
-	/**
-	 * @param deletable the deletable to set
-	 */
-	public void setDeletable(boolean deletable)
-	{
-		this.deletable = deletable;
-	}	
+    /**
+     * @param projectAssignments the projectAssignments to set
+     */
+    public void setProjectAssignments(Set<ProjectAssignment> projectAssignments)
+    {
+        this.projectAssignments = projectAssignments;
+    }
 
-	public void addProjectAssignment(ProjectAssignment assignment)
-	{
-		if (projectAssignments == null)
-		{
-			projectAssignments = new HashSet<ProjectAssignment>();
-		}
-		
-		projectAssignments.add(assignment);
-	}
+    /**
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public int compareTo(Project object)
+    {
+        return new CompareToBuilder()
+                .append(this.getName(), object.getName())
+                .append(this.getProjectCode(), object.getProjectCode())
+                .append(this.getProjectId(), object.getProjectId())
+                .append(this.getCustomer(), object.getCustomer()).toComparison();
+    }
 
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof Project))
-			return false;
-		Project castOther = (Project) other;
-		return new EqualsBuilder().append(projectCode, castOther.projectCode).append(contact, castOther.contact).append(description, castOther.description).append(name, castOther.name).append(defaultProject, castOther.defaultProject).append(active, castOther.active).append(
-				customer, castOther.customer).append(billable, castOther.billable).isEquals();
-	}
+    /**
+     * @return the projectManager
+     */
+    public User getProjectManager()
+    {
+        return projectManager;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(projectCode).append(contact).append(description).append(name).append(defaultProject).append(active).append(customer).append(billable).toHashCode();
-	}
-	
+    /**
+     * @param projectManager the projectManager to set
+     */
+    public void setProjectManager(User projectManager)
+    {
+        this.projectManager = projectManager;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return new ToStringBuilder(this).append("active", this.active)
+                .append("PK", this.getPK())
+                .append("defaultProject", this.defaultProject)
+                .append("fullname", this.getFullName())
+                .append("projectCode", this.getProjectCode())
+                .append("name", this.getName())
+                .append("projectId", this.getProjectId())
+                .toString();
+    }
+
+    /**
+     * @return the deletable
+     */
+    public boolean isDeletable()
+    {
+        return deletable;
+    }
+
+    /**
+     * @param deletable the deletable to set
+     */
+    public void setDeletable(boolean deletable)
+    {
+        this.deletable = deletable;
+    }
+
+    public void addProjectAssignment(ProjectAssignment assignment)
+    {
+        if (projectAssignments == null)
+        {
+            projectAssignments = new HashSet<ProjectAssignment>();
+        }
+
+        projectAssignments.add(assignment);
+    }
+
+    @Override
+    public boolean equals(final Object other)
+    {
+        if (!(other instanceof Project))
+        {
+            return false;
+        }
+        Project castOther = (Project) other;
+        return new EqualsBuilder().append(projectCode, castOther.projectCode).append(contact, castOther.contact).append(description, castOther.description).append(name, castOther.name).append(defaultProject, castOther.defaultProject).append(active, castOther.active).append(
+                customer, castOther.customer).append(billable, castOther.billable).isEquals();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return new HashCodeBuilder().append(projectCode).append(contact).append(description).append(name).append(defaultProject).append(active).append(customer).append(billable).toHashCode();
+    }
+
 }

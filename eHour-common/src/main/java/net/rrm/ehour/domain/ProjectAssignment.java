@@ -34,353 +34,365 @@ import java.util.Date;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 {
-	private static final long serialVersionUID = -2396783805401137165L;
+    private static final long serialVersionUID = -2396783805401137165L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ASSIGNMENT_ID")
-	private Integer assignmentId;
+    private Integer assignmentId;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     @NotNull
-	private User user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "PROJECT_ID")
     @NotNull
-	private Project project;
+    private Project project;
 
     @Column(name = "HOURLY_RATE")
-	private Float hourlyRate;
+    private Float hourlyRate;
 
     @Column(name = "DATE_START")
-	private Date dateStart;
+    private Date dateStart;
 
     @Column(name = "DATE_END")
-	private Date dateEnd;
+    private Date dateEnd;
 
     @Column(name = "role", length = 255)
-	private String role;
+    private String role;
 
     @ManyToOne
     @JoinColumn(name = "ASSIGNMENT_TYPE_ID")
     @NotNull
-	private	ProjectAssignmentType assignmentType;
+    private ProjectAssignmentType assignmentType;
 
     @Column(name = "ALLOTTED_HOURS")
-	private	Float	allottedHours;
-	
+    private Float allottedHours;
+
     @Column(name = "ALLOTTED_HOURS_OVERRUN")
-	private Float 	allowedOverrun;
+    private Float allowedOverrun;
 
     @Column(name = "NOTIFY_PM_ON_OVERRUN")
     @Type(type = "yes_no")
-	private Boolean notifyPm = Boolean.FALSE;
+    private Boolean notifyPm = Boolean.FALSE;
 
     @Column(name = "ACTIVE", nullable = false)
     @Type(type = "yes_no")
-	private boolean active;
-	
-	@Transient
-	private	boolean deletable;
+    private boolean active;
 
-	// Constructors
+    @Transient
+    private boolean deletable;
 
-	/** default constructor */
-	public ProjectAssignment()
-	{
-	}
+    // Constructors
 
-	public ProjectAssignment(Integer assignmentId)
-	{
-		this.assignmentId = assignmentId;
-	}
-	
-	/** minimal constructor */
-	public ProjectAssignment(User user, Project project)
-	{
-		this.user = user;
-		this.project = project;
-	}
-	
-	
-	/** minimal constructor */
-	public ProjectAssignment(User user, Project project, Date dateStart, Date dateEnd)
-	{
-		this.user = user;
-		this.project = project;
-		this.dateStart = dateStart;
-		this.dateEnd = dateEnd;
-	}
-	
-	/** full constructor */
-	public ProjectAssignment(User user, Project project, Float hourlyRate, Date dateStart, Date dateEnd, String description)
-	{
-		this.user = user;
-		this.project = project;
-		this.hourlyRate = hourlyRate;
-		this.dateStart = dateStart;
-		this.dateEnd = dateEnd;
-		this.role = description;
-	}
-	
-	
-	/**
-	 * Create a project assignment with default values (date assignment, no start/end date, active)s
-	 * @param project
-	 * @param user
-	 * @return
-	 */
-	public static ProjectAssignment createProjectAssignment(Project project, User user)
-	{
-		ProjectAssignment assignment = new ProjectAssignment();
-		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
-		assignment.setProject(project);
-		assignment.setUser(user);
-		assignment.setActive(true);
-		
-		return assignment;
-		
-	}
+    /**
+     * default constructor
+     */
+    public ProjectAssignment()
+    {
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.domain.DomainObject#getFullName()
-	 */
-	@Override
-	public String getFullName()
-	{
-		return getProject().getFullName();
-	}
-	
-	// Property accessors
-	public Integer getAssignmentId()
-	{
-		return this.assignmentId;
-	}
+    public ProjectAssignment(Integer assignmentId)
+    {
+        this.assignmentId = assignmentId;
+    }
 
-	public void setAssignmentId(Integer assignmentId)
-	{
-		this.assignmentId = assignmentId;
-	}
-
-	public User getUser()
-	{
-		return this.user;
-	}
-
-	public void setUser(User user)
-	{
-		this.user = user;
-	}
-
-	public Project getProject()
-	{
-		return this.project;
-	}
-
-	public void setProject(Project project)
-	{
-		this.project = project;
-	}
-
-	public Float getHourlyRate()
-	{
-		return this.hourlyRate;
-	}
-
-	public void setHourlyRate(Float hourlyRate)
-	{
-		this.hourlyRate = hourlyRate;
-	}
-	
-	public Date getDateStart()
-	{
-		return this.dateStart;
-	}
-	
-
-	public void setDateStart(Date dateStart)
-	{
-		this.dateStart = dateStart;
-	}
-
-	public Date getDateEnd()
-	{
-		return this.dateEnd;
-	}
+    /**
+     * minimal constructor
+     */
+    public ProjectAssignment(User user, Project project)
+    {
+        this.user = user;
+        this.project = project;
+    }
 
 
-	public void setDateEnd(Date dateEnd)
-	{
-		this.dateEnd = dateEnd;
-	}
+    /**
+     * minimal constructor
+     */
+    public ProjectAssignment(User user, Project project, Date dateStart, Date dateEnd)
+    {
+        this.user = user;
+        this.project = project;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+    }
 
-	public String getRole()
-	{
-		return this.role;
-	}
+    /**
+     * full constructor
+     */
+    public ProjectAssignment(User user, Project project, Float hourlyRate, Date dateStart, Date dateEnd, String description)
+    {
+        this.user = user;
+        this.project = project;
+        this.hourlyRate = hourlyRate;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.role = description;
+    }
 
-	public void setRole(String description)
-	{
-		this.role = description;
-	}
+
+    /**
+     * Create a project assignment with default values (date assignment, no start/end date, active)s
+     *
+     * @param project
+     * @param user
+     * @return
+     */
+    public static ProjectAssignment createProjectAssignment(Project project, User user)
+    {
+        ProjectAssignment assignment = new ProjectAssignment();
+        assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
+        assignment.setProject(project);
+        assignment.setUser(user);
+        assignment.setActive(true);
+
+        return assignment;
+
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.domain.DomainObject#getFullName()
+      */
+
+    @Override
+    public String getFullName()
+    {
+        return getProject().getFullName();
+    }
+
+    // Property accessors
+
+    public Integer getAssignmentId()
+    {
+        return this.assignmentId;
+    }
+
+    public void setAssignmentId(Integer assignmentId)
+    {
+        this.assignmentId = assignmentId;
+    }
+
+    public User getUser()
+    {
+        return this.user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
+
+    public Project getProject()
+    {
+        return this.project;
+    }
+
+    public void setProject(Project project)
+    {
+        this.project = project;
+    }
+
+    public Float getHourlyRate()
+    {
+        return this.hourlyRate;
+    }
+
+    public void setHourlyRate(Float hourlyRate)
+    {
+        this.hourlyRate = hourlyRate;
+    }
+
+    public Date getDateStart()
+    {
+        return this.dateStart;
+    }
 
 
-	public String toString()
-	{
-		return new ToStringBuilder(this).append("assignmentId", getAssignmentId())
-										.append("active", isActive())
-										.append("project", getProject())
-										.append("user", getUser())
+    public void setDateStart(Date dateStart)
+    {
+        this.dateStart = dateStart;
+    }
+
+    public Date getDateEnd()
+    {
+        return this.dateEnd;
+    }
+
+
+    public void setDateEnd(Date dateEnd)
+    {
+        this.dateEnd = dateEnd;
+    }
+
+    public String getRole()
+    {
+        return this.role;
+    }
+
+    public void setRole(String description)
+    {
+        this.role = description;
+    }
+
+
+    public String toString()
+    {
+        return new ToStringBuilder(this).append("assignmentId", getAssignmentId())
+                .append("active", isActive())
+                .append("project", getProject())
+                .append("user", getUser())
 //										.append("type", getAssignmentType())		
-										.append("dateStart", getDateStart())
-										.append("dateEnd", getDateEnd())
-										.toString();
-	}	
+                .append("dateStart", getDateStart())
+                .append("dateEnd", getDateEnd())
+                .toString();
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(ProjectAssignment object)
-	{
-		return new CompareToBuilder()
-			.append(this.getProject(), object.getProject())
-			.append(this.getDateEnd(), object.getDateEnd())
-			.append(this.getDateStart(), object.getDateStart())
-			.append(this.getUser(), object.getUser())
-			.append(this.getAssignmentId(), object.getAssignmentId())
-			.toComparison();
-	}
-	
-
-	
-	public boolean equalsIgnoringUser(ProjectAssignment assignment)
-	{
-		return new EqualsBuilder()
-			.append(this.getAllottedHours(), assignment.getAllottedHours())
-			.append(this.getAllowedOverrun(), assignment.getAllowedOverrun())
-			.append(this.getAssignmentType(), assignment.getAssignmentType())
-			.append(this.getDateEnd(), assignment.getDateEnd())
-			.append(this.getDateStart(), assignment.getDateStart())
-			.append(this.getFullName(), assignment.getFullName())
-			.append(this.getHourlyRate(), assignment.getHourlyRate())
-			.append(this.getProject(), assignment.getProject())
-			.isEquals();
-	}
+    /**
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public int compareTo(ProjectAssignment object)
+    {
+        return new CompareToBuilder()
+                .append(this.getProject(), object.getProject())
+                .append(this.getDateEnd(), object.getDateEnd())
+                .append(this.getDateStart(), object.getDateStart())
+                .append(this.getUser(), object.getUser())
+                .append(this.getAssignmentId(), object.getAssignmentId())
+                .toComparison();
+    }
 
 
-	public boolean isDeletable()
-	{
-		return deletable;
-	}
+    public boolean equalsIgnoringUser(ProjectAssignment assignment)
+    {
+        return new EqualsBuilder()
+                .append(this.getAllottedHours(), assignment.getAllottedHours())
+                .append(this.getAllowedOverrun(), assignment.getAllowedOverrun())
+                .append(this.getAssignmentType(), assignment.getAssignmentType())
+                .append(this.getDateEnd(), assignment.getDateEnd())
+                .append(this.getDateStart(), assignment.getDateStart())
+                .append(this.getFullName(), assignment.getFullName())
+                .append(this.getHourlyRate(), assignment.getHourlyRate())
+                .append(this.getProject(), assignment.getProject())
+                .isEquals();
+    }
 
-	public void setDeletable(boolean deletable)
-	{
-		this.deletable = deletable;
-	}
 
-	/**
-	 * @return the active
-	 */
-	public boolean isActive()
-	{
-		return active;
-	}
+    public boolean isDeletable()
+    {
+        return deletable;
+    }
 
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active)
-	{
-		this.active = active;
-	}
+    public void setDeletable(boolean deletable)
+    {
+        this.deletable = deletable;
+    }
 
-	@Override
-	public Integer getPK()
-	{
-		return assignmentId;
-	}
+    /**
+     * @return the active
+     */
+    public boolean isActive()
+    {
+        return active;
+    }
 
-	/**
-	 * @return the allottedHours
-	 */
-	public Float getAllottedHours()
-	{
-		return allottedHours;
-	}
+    /**
+     * @param active the active to set
+     */
+    public void setActive(boolean active)
+    {
+        this.active = active;
+    }
 
-	/**
-	 * @param allottedHours the allottedHours to set
-	 */
-	public void setAllottedHours(Float allottedHours)
-	{
-		this.allottedHours = allottedHours;
-	}
+    @Override
+    public Integer getPK()
+    {
+        return assignmentId;
+    }
 
-	/**
-	 * @return the assignmentType
-	 */
-	public ProjectAssignmentType getAssignmentType()
-	{
-		return assignmentType;
-	}
+    /**
+     * @return the allottedHours
+     */
+    public Float getAllottedHours()
+    {
+        return allottedHours;
+    }
 
-	/**
-	 * @param assignmentType the assignmentType to set
-	 */
-	public void setAssignmentType(ProjectAssignmentType assignmentType)
-	{
-		this.assignmentType = assignmentType;
-	}
+    /**
+     * @param allottedHours the allottedHours to set
+     */
+    public void setAllottedHours(Float allottedHours)
+    {
+        this.allottedHours = allottedHours;
+    }
 
-	/**
-	 * @return the allowedOverrun
-	 */
-	public Float getAllowedOverrun()
-	{
-		return allowedOverrun;
-	}
+    /**
+     * @return the assignmentType
+     */
+    public ProjectAssignmentType getAssignmentType()
+    {
+        return assignmentType;
+    }
 
-	/**
-	 * @param allowedOverrun the allowedOverrun to set
-	 */
-	public void setAllowedOverrun(Float allowedOverrun)
-	{
-		this.allowedOverrun = allowedOverrun;
-	}
+    /**
+     * @param assignmentType the assignmentType to set
+     */
+    public void setAssignmentType(ProjectAssignmentType assignmentType)
+    {
+        this.assignmentType = assignmentType;
+    }
 
-	/**
-	 * @return the notifyPm
-	 */
-	public boolean isNotifyPm()
-	{
-		return notifyPm;
-	}
+    /**
+     * @return the allowedOverrun
+     */
+    public Float getAllowedOverrun()
+    {
+        return allowedOverrun;
+    }
 
-	/**
-	 * @param notifyPm the notifyPm to set
-	 */
-	public void setNotifyPm(boolean notifyPm)
-	{
-		this.notifyPm = notifyPm;
-	}
+    /**
+     * @param allowedOverrun the allowedOverrun to set
+     */
+    public void setAllowedOverrun(Float allowedOverrun)
+    {
+        this.allowedOverrun = allowedOverrun;
+    }
 
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof ProjectAssignment))
-			return false;
-		ProjectAssignment castOther = (ProjectAssignment) other;
-		return new EqualsBuilder().append(user, castOther.user).append(project, castOther.project).append(hourlyRate, castOther.hourlyRate).append(dateStart, castOther.dateStart).append(dateEnd, castOther.dateEnd).append(role, castOther.role).append(assignmentType,
-				castOther.assignmentType).append(allottedHours, castOther.allottedHours).append(allowedOverrun, castOther.allowedOverrun).append(active, castOther.active).isEquals();
-	}
+    /**
+     * @return the notifyPm
+     */
+    public boolean isNotifyPm()
+    {
+        return notifyPm;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(user).append(project).append(hourlyRate).append(dateStart).append(dateEnd).append(role).append(assignmentType).append(allottedHours).append(allowedOverrun).append(active).toHashCode();
-	}
+    /**
+     * @param notifyPm the notifyPm to set
+     */
+    public void setNotifyPm(boolean notifyPm)
+    {
+        this.notifyPm = notifyPm;
+    }
+
+    @Override
+    public boolean equals(final Object other)
+    {
+        if (!(other instanceof ProjectAssignment))
+        {
+            return false;
+        }
+        ProjectAssignment castOther = (ProjectAssignment) other;
+        return new EqualsBuilder().append(user, castOther.user).append(project, castOther.project).append(hourlyRate, castOther.hourlyRate).append(dateStart, castOther.dateStart).append(dateEnd, castOther.dateEnd).append(role, castOther.role).append(assignmentType,
+                castOther.assignmentType).append(allottedHours, castOther.allottedHours).append(allowedOverrun, castOther.allowedOverrun).append(active, castOther.active).isEquals();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return new HashCodeBuilder().append(user).append(project).append(hourlyRate).append(dateStart).append(dateEnd).append(role).append(assignmentType).append(allottedHours).append(allowedOverrun).append(active).toHashCode();
+    }
 
 }
