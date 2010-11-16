@@ -25,6 +25,7 @@ public class ImportServiceImpl implements ImportService
     @Autowired
     private ConfigurationService configurationService;
 
+
     @Override
     public boolean prepareImportDatabase(String xmlData) throws ImportException
     {
@@ -64,10 +65,22 @@ public class ImportServiceImpl implements ImportService
                     case CONFIGURATION:
                         parseConfiguration(startElement, eventReader);
                         break;
-
+                    default:
+                        parseElement(startElement, eventReader);
+                        break;
                 }
             }
         }
+    }
+
+    private void parseElement(StartElement startElement, XMLEventReader reader)
+    {
+        String startName = startElement.getName().getLocalPart();
+
+//        Class<? extends DomainObject<?, ?>> domainObjectClass = CLASS_MAP.get(startName);
+
+//        if (ExportType.valueOf()
+
     }
 
     private void parseConfiguration(StartElement element, XMLEventReader eventReader) throws XMLStreamException
@@ -82,11 +95,11 @@ public class ImportServiceImpl implements ImportService
             {
                 parseConfigElement(eventReader, event);
             } else if (event.isEndElement())
-                {
-                    return;
-                }
+            {
+                return;
             }
         }
+    }
 
     private void parseConfigElement(XMLEventReader eventReader, XMLEvent event)
             throws XMLStreamException
