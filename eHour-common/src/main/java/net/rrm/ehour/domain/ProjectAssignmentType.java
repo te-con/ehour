@@ -20,18 +20,31 @@ import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Project Assignment type
  *
  * TODO this can as well be an enum
  **/
-
+@Entity
+@Table(name = "PROJECT_ASSIGNMENT_TYPE")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignmentType>
 {
 	private static final long serialVersionUID = -4306635642163206242L;
-	
+
+    @Id
+    @Column(name = "ASSIGNMENT_TYPE_ID")
 	private	Integer	assignmentTypeId;
+
+    @Column(name = "ASSIGNMENT_TYPE", length = 64)
 	private	String	assignmentType;
 	
 	public ProjectAssignmentType()
