@@ -64,7 +64,7 @@ public class User extends DomainObject<Integer, User>
 
     @Column(name = "ACTIVE")
     @Type(type = "yes_no")
-    private boolean active;
+    private Boolean active;
 
     @Column(name = "SALT")
     private Integer salt;

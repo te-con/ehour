@@ -54,7 +54,7 @@ public class Customer extends DomainObject<Integer, Customer>
 
     @Column(name = "ACTIVE")
     @Type(type = "yes_no")
-	private	boolean	active;
+	private Boolean active;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "customer")
 	private	Set<Project>		projects;

@@ -21,35 +21,69 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "PROJECT")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Project extends DomainObject<Integer, Project>
 {
 	private static final long serialVersionUID = 6553709211219335091L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "PROJECT_ID")
 	private Integer projectId;
 
+    @Column(name = "PROJECT_CODE", length = 32, nullable = false)
     @NotNull
 	private String projectCode;
 
+    @Column(name = "CONTACT", length = 255)
 	private String contact;
 
+    @Column(name = "DESCRIPTION", length = 1024)
 	private String description;
 
+    @Column(name = "NAME", length = 255, nullable = false)
     @NotNull       
 	private String name;
 
-	private boolean defaultProject;
-	private	boolean	active;
+    @Column(name = "DEFAULT_PROJECT")
+    @Type(type = "yes_no")
+	private Boolean defaultProject;
+
+    @Column(name = "ACTIVE")
+    @Type(type = "yes_no")
+	private Boolean active;
+
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID", nullable = true)
+    @NotNull
 	private Customer customer;
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "project")
+    @Basic(fetch = FetchType.LAZY)
 	private	Set<ProjectAssignment>		projectAssignments;
+
+
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_MANAGER", nullable = true)
 	private User	projectManager;
+
+    @Transient
 	private boolean	deletable;
-	
-	private boolean billable;
+
+    @Column(name = "BILLABLE")
+    @Type(type = "yes_no")
+	private Boolean billable;
 	
 	// Constructors
 

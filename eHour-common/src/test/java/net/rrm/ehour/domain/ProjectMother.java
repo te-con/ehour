@@ -35,6 +35,7 @@ public class ProjectMother
 		project.setProjectCode("aa" + id);
 		project.setName("aa" + id);
 		project.setCustomer(customer);
+        customer.addProject(project);
 		return project;
 	}
 }
