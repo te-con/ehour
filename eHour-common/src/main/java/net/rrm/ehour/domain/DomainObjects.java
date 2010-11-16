@@ -6,5 +6,5 @@ package net.rrm.ehour.domain;
  */
 public class DomainObjects
 {
-    public static final Class[] DOMAIN_OBJECTS = new Class[]{User.class, UserDepartment.class, UserRole.class, Configuration.class, BinaryConfiguration.class};
+    public static final Class[] DOMAIN_OBJECTS = new Class[]{User.class, UserDepartment.class, UserRole.class, Configuration.class, BinaryConfiguration.class, Audit.class};
 }

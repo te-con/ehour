@@ -16,26 +16,56 @@
 
 package net.rrm.ehour.domain;
 
-import java.util.Date;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "AUDIT")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 
 public class Audit extends DomainObject<Number, Audit>
 {
 	private static final long serialVersionUID = -5025801585806813596L;
-	
-	private Number	auditId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "AUDIT_ID")
+	private Integer	auditId;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    @Basic(fetch = FetchType.LAZY)
 	private User 	user;
+
+    @Column(name = "AUDIT_DATE")
 	private Date 	date;
+
+    @Column(name = "ACTION", length = 256)
 	private String 	action;
+
+    @Column(name = "PARAMETERS", length = 1024)
 	private String	parameters;
+
+    @Column(name = "SUCCESS")
+    @Type(type = "yes_no")
 	private Boolean	success;
+
+    @Column(name = "USER_FULLNAME", length = 256)
 	private String	userFullName;
+
+    @Column(name = "PAGE", length = 256)
 	private String	page;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "AUDIT_ACTION_TYPE", length = 32)
 	private AuditActionType auditActionType;
 	
 	public String toString()
@@ -191,7 +221,7 @@ public class Audit extends DomainObject<Number, Audit>
 	/**
 	 * @return the auditId
 	 */
-	public Number getAuditId()
+	public Integer getAuditId()
 	{
 		return auditId;
 	}
@@ -199,7 +229,7 @@ public class Audit extends DomainObject<Number, Audit>
 	/**
 	 * @param auditId the auditId to set
 	 */
-	public void setAuditId(Number auditId)
+	public void setAuditId(Integer auditId)
 	{
 		this.auditId = auditId;
 	}
