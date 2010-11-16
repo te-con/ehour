@@ -20,30 +20,46 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "CUSTOMER")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Customer extends DomainObject<Integer, Customer>
 {
-
 	private static final long serialVersionUID = 7179070624535327915L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "CUSTOMER_ID")
 	private Integer customerId;
 
+    @Column(name = "CODE", nullable = false, length = 32)
     @NotNull
 	private String code;
 
+    @Column(name = "NAME", nullable = false, length = 255)
     @NotNull       
 	private String name;
 
+    @Column(name = "DESCRIPTION", length = 1024)
 	private String description;
-	
+
+    @Column(name = "ACTIVE")
+    @Type(type = "yes_no")
 	private	boolean	active;
 
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "customer")
 	private	Set<Project>		projects;
-	
+
+    @Transient
 	private boolean deletable;
 	
 	// Constructors
