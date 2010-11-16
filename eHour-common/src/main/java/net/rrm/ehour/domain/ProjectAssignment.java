@@ -21,41 +21,68 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Entity
+@Table(name = "PROJECT_ASSIGNMENT")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 {
 	private static final long serialVersionUID = -2396783805401137165L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ASSIGNMENT_ID")
 	private Integer assignmentId;
 
-    @NotNull       
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    @NotNull
 	private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_ID")
     @NotNull
 	private Project project;
 
+    @Column(name = "HOURLY_RATE")
 	private Float hourlyRate;
 
+    @Column(name = "DATE_START")
 	private Date dateStart;
 
+    @Column(name = "DATE_END")
 	private Date dateEnd;
 
+    @Column(name = "role", length = 255)
 	private String role;
-	
+
+    @ManyToOne
+    @JoinColumn(name = "ASSIGNMENT_TYPE_ID")
+    @NotNull
 	private	ProjectAssignmentType assignmentType;
-	
+
+    @Column(name = "ALLOTTED_HOURS")
 	private	Float	allottedHours;
 	
+    @Column(name = "ALLOTTED_HOURS_OVERRUN")
 	private Float 	allowedOverrun;
-	
-	private boolean	notifyPm = false;
-	
+
+    @Column(name = "NOTIFY_PM_ON_OVERRUN")
+    @Type(type = "yes_no")
+	private Boolean notifyPm = Boolean.FALSE;
+
+    @Column(name = "ACTIVE", nullable = false)
+    @Type(type = "yes_no")
 	private boolean active;
 	
-	// @todo move to a VO - someday..
+	@Transient
 	private	boolean deletable;
 
 	// Constructors

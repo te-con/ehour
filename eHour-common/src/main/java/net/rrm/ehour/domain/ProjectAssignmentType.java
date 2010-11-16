@@ -16,25 +16,19 @@
 
 package net.rrm.ehour.domain;
 
+import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Project Assignment type
+ *
+ * TODO this can as well be an enum
  **/
 
 public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignmentType>
 {
-	// BAD BAD BAD! Copy of EHourConstants. Share it as soon as a util prj exists..
-	private final static int ASSIGNMENT_DATE = 0;
-	private final static int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
-	private final static int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
-
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4306635642163206242L;
 	
 	private	Integer	assignmentTypeId;
@@ -52,17 +46,17 @@ public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignme
 	
 	public boolean isDateType()
 	{
-		return assignmentTypeId.intValue() == ASSIGNMENT_DATE;
+		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_DATE;
 	}
 
 	public boolean isFixedAllottedType()
 	{
-		return assignmentTypeId.intValue() == ASSIGNMENT_TIME_ALLOTTED_FIXED;
+		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED;
 	}
 
 	public boolean isFlexAllottedType()
 	{
-		return assignmentTypeId.intValue() == ASSIGNMENT_TIME_ALLOTTED_FLEX;
+		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX;
 	}
 	
 	public boolean isAllottedType()
