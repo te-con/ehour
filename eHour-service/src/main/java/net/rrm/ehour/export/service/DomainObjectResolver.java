@@ -15,12 +15,10 @@ public class DomainObjectResolver
     {
         T domainObject = clazz.newInstance();
 
-        Field[] fields = clazz.getFields();
+        Field[] fields = clazz.getDeclaredFields();
 
-        System.out.println("fields:" + fields.length);
         for (Field field : fields)
         {
-            System.out.println(field.getName());
             if (field.isAnnotationPresent(Column.class))
             {
                 Column column = field.getAnnotation(Column.class);
