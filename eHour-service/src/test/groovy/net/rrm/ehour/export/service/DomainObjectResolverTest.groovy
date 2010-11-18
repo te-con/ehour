@@ -2,6 +2,7 @@ package net.rrm.ehour.export.service
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
+import net.rrm.ehour.domain.TimesheetEntry
 import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Test
 
@@ -31,6 +32,8 @@ class DomainObjectResolverTest {
 
     def event = eventReader.nextEvent();
 
-    resolver.parse(type, type.getDomainObjectClass(), event, eventReader);
+    def result = (TimesheetEntry) resolver.parse(type, type.getDomainObjectClass(), event, eventReader);
+
+//    println result.
   }
 }
