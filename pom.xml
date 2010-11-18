@@ -60,7 +60,7 @@
     </developers>
     <properties>
         <applicationVersion>0.9.0-SNAPSHOT</applicationVersion>
-        <spring.version>3.0.3.RELEASE</spring.version>
+        <spring.version>3.0.4.RELEASE</spring.version>
         <wicket.version>1.4.13</wicket.version>
         <jetty.version>7.1.6.v20100715</jetty.version>
         <derbydb.version>10.6.2.1</derbydb.version>
