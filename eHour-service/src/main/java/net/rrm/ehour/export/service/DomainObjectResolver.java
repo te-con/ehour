@@ -11,7 +11,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,27 +23,72 @@ import java.util.Map;
 public class DomainObjectResolver
 {
     private ImportDao importDao;
+    private XMLEventReader reader;
+    private PrimaryKeyCache keyCache;
 
-    public <T> T parse(ExportType type, Class<T> clazz, XMLEvent event, XMLEventReader reader) throws IllegalAccessException, InstantiationException, XMLStreamException
+    public DomainObjectResolver(XMLEventReader reader, ImportDao importDao)
     {
-        T domainObject = clazz.newInstance();
+        this.importDao = importDao;
+        this.reader = reader;
 
-        Map<String, Field> fieldMap = createFieldMap(clazz);
-
-        for (Map.Entry<String, Field> entry : fieldMap.entrySet())
-        {
-            System.out.println(entry.getValue());
-        }
-
-        recursiveFillObject(domainObject, fieldMap, reader.nextEvent(), reader);
-
-        return domainObject;
+        keyCache = new PrimaryKeyCache();
     }
 
-    private <T> void recursiveFillObject(T domainObject, Map<String, Field> fieldMap, XMLEvent event, XMLEventReader reader) throws XMLStreamException, IllegalAccessException
+    /**
+     * @param type
+     * @param clazz
+     * @param event
+     * @param <T>
+     * @return
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws XMLStreamException
+     */
+    public <T> List<T> parse(ExportType type, Class<T> clazz, XMLEvent event) throws IllegalAccessException, InstantiationException, XMLStreamException
     {
-        if (event.isStartElement())
+        Map<String, Field> fieldMap = createFieldMap(clazz);
+
+        return parseDomainObject(clazz, fieldMap);
+    }
+
+    private <T> List<T> parseDomainObject(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
+    {
+        List<T> domainObjects = new ArrayList<T>();
+
+        while (reader.hasNext())
         {
+            XMLEvent event = reader.nextEvent();
+
+            if (event.isStartElement())
+            {
+                // skip the characters
+                reader.nextEvent();
+
+                T domainObject = clazz.newInstance();
+
+                parseDomainObjectAttributes(domainObject, fieldMap);
+
+                domainObjects.add(domainObject);
+            } else if (event.isEndElement())
+            {
+                break;
+            }
+        }
+
+        return domainObjects;
+    }
+
+    private <T> void parseDomainObjectAttributes(T domainObject, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException
+    {
+        while (reader.hasNext())
+        {
+            XMLEvent event = reader.nextEvent();
+
+            if (event.isEndElement())
+            {
+                return;
+            }
+
             StartElement startElement = event.asStartElement();
             String dbField = startElement.getName().getLocalPart();
 
@@ -55,32 +102,24 @@ public class DomainObjectResolver
             if (charEvent.isCharacters())
             {
                 data = charEvent.asCharacters().getData();
-            } else {
-                return;
+
+                Class<?> type = field.getType();
+
+    /*            if (type.isAnnotationPresent(Entity.class))
+                {
+                    // we're dealing with a ManyToOne, resolve the thing
+                    Object o = importDao.find(1, type);
+                    field.set(domainObject, o);
+                }
+                else */
+                if (type == String.class)
+                {
+                    field.set(domainObject, data);
+                }
             }
 
-            Class<?> type = field.getType();
-
-/*            if (type.isAnnotationPresent(Entity.class))
-            {
-                // we're dealing with a ManyToOne, resolve the thing
-                Object o = importDao.find(1, type);
-                field.set(domainObject, o);
-            }
-            else */if (type == String.class)
-            {
-                field.set(domainObject, data);
-            }
-
-        } else if (event.isEndElement())
-        {
-            return;
-        } else if (event.isCharacters())
-        {
-            recursiveFillObject(domainObject, fieldMap, reader.nextEvent(), reader);
+            reader.nextEvent();
         }
-
-
     }
 
     private <T> Map<String, Field> createFieldMap(Class<T> clazz)
@@ -97,15 +136,13 @@ public class DomainObjectResolver
                 String columnName = column.name();
 
                 fieldMap.put(columnName, field);
-            }
-            else if (field.isAnnotationPresent(JoinColumn.class))
+            } else if (field.isAnnotationPresent(JoinColumn.class))
             {
                 JoinColumn column = field.getAnnotation(JoinColumn.class);
                 String columnName = column.name();
 
                 fieldMap.put(columnName, field);
-            }
-            else
+            } else
             {
                 Class<?> fieldType = field.getType();
 

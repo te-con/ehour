@@ -4,7 +4,11 @@ import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
 import net.rrm.ehour.domain.TimesheetEntry
 import net.rrm.ehour.persistence.export.dao.ExportType
+import net.rrm.ehour.persistence.export.dao.ImportDao
+import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -12,18 +16,37 @@ import org.junit.Test
  */
 class DomainObjectResolverTest {
 
-  @Test
-  void displayAnnotations()
-  {
-    XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader("""<TIMESHEET_ENTRY>
-   <ASSIGNMENT_ID>5</ASSIGNMENT_ID>
-   <ENTRY_DATE>2008-10-29</ENTRY_DATE>
-   <HOURS>2.0</HOURS>
-   <UPDATE_DATE>2008-11-03 23:20:42.0</UPDATE_DATE>
-  </TIMESHEET_ENTRY>"""));
+  @Mock
+  private ImportDao importDao;
 
-    def resolver = new DomainObjectResolver();
+  private PrimaryKeyCache keyCache
+
+  @Before
+  void setUp() {
+    MockitoAnnotations.initMocks this
+
+    keyCache = new PrimaryKeyCache()
+  }
+
+
+  @Test
+  void displayAnnotations() {
+    XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader("""<TIMESHEET_ENTRIES>
+  <TIMESHEET_ENTRY>
+   <ASSIGNMENT_ID>1</ASSIGNMENT_ID>
+   <ENTRY_DATE>2007-03-26</ENTRY_DATE>
+   <HOURS>8.0</HOURS>
+  </TIMESHEET_ENTRY>
+  <TIMESHEET_ENTRY>
+   <ASSIGNMENT_ID>2</ASSIGNMENT_ID>
+   <ENTRY_DATE>2007-03-26</ENTRY_DATE>
+   <HOURS>0.0</HOURS>
+  </TIMESHEET_ENTRY>
+  </TIMESHEET_ENTRIES>
+"""));
+
+    def resolver = new DomainObjectResolver(eventReader, importDao);
 
     def type = ExportType.TIMESHEET_ENTRY;
 
@@ -32,8 +55,8 @@ class DomainObjectResolverTest {
 
     def event = eventReader.nextEvent();
 
-    def result = (TimesheetEntry) resolver.parse(type, type.getDomainObjectClass(), event, eventReader);
+    def result = (TimesheetEntry) resolver.parse(type, type.getDomainObjectClass(), event);
 
-//    println result.
+//    Assert.assertEquals()
   }
 }
