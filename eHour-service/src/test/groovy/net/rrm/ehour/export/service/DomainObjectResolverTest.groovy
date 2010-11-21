@@ -55,7 +55,7 @@ class DomainObjectResolverTest {
 
     def event = eventReader.nextEvent();
 
-    def result = (TimesheetEntry) resolver.parse(type, type.getDomainObjectClass(), event);
+//    def result = (TimesheetEntry) resolver.parse(type, type.getDomainObjectClass(), event);
 
 //    Assert.assertEquals()
   }

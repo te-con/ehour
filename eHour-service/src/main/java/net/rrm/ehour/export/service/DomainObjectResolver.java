@@ -34,19 +34,13 @@ public class DomainObjectResolver
         keyCache = new PrimaryKeyCache();
     }
 
-    /**
-     * @param type
-     * @param clazz
-     * @param event
-     * @param <T>
-     * @return
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws XMLStreamException
-     */
     public <T> List<T> parse(ExportType type, Class<T> clazz, XMLEvent event) throws IllegalAccessException, InstantiationException, XMLStreamException
     {
         Map<String, Field> fieldMap = createFieldMap(clazz);
+
+        XMLEvent event1 = reader.nextEvent();
+        System.out.println(event1);
+
 
         return parseDomainObject(clazz, fieldMap);
     }
