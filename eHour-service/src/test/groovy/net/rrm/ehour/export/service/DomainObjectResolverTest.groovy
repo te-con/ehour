@@ -1,5 +1,6 @@
 package net.rrm.ehour.export.service
 
+import static org.mockito.Mockito.any
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
 import net.rrm.ehour.domain.ProjectAssignment
