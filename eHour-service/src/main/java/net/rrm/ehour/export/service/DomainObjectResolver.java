@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
@@ -54,13 +55,13 @@ public class DomainObjectResolver
         // skip the collection tag
         reader.nextTag();
 
-        return parseDomainObject(clazz, fieldMap);
+        return parseDomainObjects(clazz, fieldMap);
     }
 
     /**
      * Parse domain object with reader pointing on the table name tag
      */
-    private <T> List<T> parseDomainObject(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
+    private <T> List<T> parseDomainObjects(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
     {
         List<T> domainObjects = new ArrayList<T>();
 
@@ -71,7 +72,7 @@ public class DomainObjectResolver
 
             if (event.isStartElement())
             {
-                T domainObject = parseDomainObjectAttributes(clazz, fieldMap);
+                T domainObject = parseDomainObject(clazz, fieldMap);
 
                 domainObjects.add(domainObject);
             } else if (event.isEndElement())
@@ -83,7 +84,7 @@ public class DomainObjectResolver
         return domainObjects;
     }
 
-    private <T> T parseDomainObjectAttributes(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
+    private <T> T parseDomainObject(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
     {
         T domainObject = clazz.newInstance();
 
@@ -111,58 +112,43 @@ public class DomainObjectResolver
             {
                 data = charEvent.asCharacters().getData();
 
-                Class<?> type = field.getType();
+                Object transformedValue = parseValue(domainObject, field, data);
 
-                /*            if (type.isAnnotationPresent(Entity.class))
-               {
-                   // we're dealing with a ManyToOne, resolve the thing
-                   Object o = importDao.find(1, type);
-                   field.set(domainObject, o);
-               }
-               else */
-                if (type == String.class)
+                if (transformedValue != null)
                 {
-                    field.set(domainObject, data);
-                } else
-                {
-                    Object transformedValue = null;
-
-                    if (transformerMap.containsKey(type))
+                    if (field.getDeclaringClass() != domainObject.getClass())
                     {
-                        transformedValue = transformerMap.get(type).transform(data);
+                        Object embeddable;
+
+                        if (!embeddables.containsKey(field.getDeclaringClass()))
+                        {
+                            embeddable = field.getDeclaringClass().newInstance();
+                            embeddables.put(field.getDeclaringClass(), embeddable);
+                        } else
+                        {
+                            embeddable = embeddables.get(field.getDeclaringClass());
+                        }
+
+                        field.set(embeddable, transformedValue);
                     } else
                     {
-                        LOG.error("no transformer for type " + type);
-                    }
-
-
-                    if (transformedValue != null)
-                    {
-
-                        if (field.getDeclaringClass() != domainObject.getClass()) {
-                            Object embeddable;
-
-                            if (!embeddables.containsKey(field.getDeclaringClass()))
-                            {
-                                embeddable = field.getDeclaringClass().newInstance();
-                                embeddables.put(field.getDeclaringClass(), embeddable);
-                            } else {
-                                embeddable = embeddables.get(field.getDeclaringClass());
-                            }
-
-                            field.set(embeddable, transformedValue);
-                        }
-                        else
-                        {
-                            field.set(domainObject, transformedValue);
-                        }
+                        field.set(domainObject, transformedValue);
                     }
                 }
+
             }
 
             reader.nextEvent();
         }
 
+        setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);
+
+        return domainObject;
+    }
+
+    private <T> void setEmbeddablesInDomainObject(Map<String, Field> fieldMap, T domainObject, Map<Class<?>, Object> embeddables)
+            throws IllegalAccessException
+    {
         for (Field field : fieldMap.values())
         {
             Class<?> fieldType = field.getType();
@@ -172,10 +158,34 @@ public class DomainObjectResolver
                 field.set(domainObject, embeddables.get(fieldType));
             }
         }
+    }
 
+    private <T> Object parseValue(T domainObject, Field field, String data)
+            throws IllegalAccessException
+    {
+        Class<?> type = field.getType();
+        Object transformedValue = null;
 
+        if (type.isAnnotationPresent(Entity.class))
+        {
+            // we're dealing with a ManyToOne, resolve the thing
+            transformedValue = importDao.find(1, type);
+        } else if (type == String.class)
+        {
+            transformedValue = data;
 
-        return domainObject;
+            field.set(domainObject, data);
+        } else
+        {
+            if (transformerMap.containsKey(type))
+            {
+                transformedValue = transformerMap.get(type).transform(data);
+            } else
+            {
+                LOG.error("no transformer for type " + type);
+            }
+        }
+        return transformedValue;
     }
 
     private <T> Map<String, Field> createFieldMap(Class<T> clazz)

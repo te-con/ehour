@@ -2,13 +2,19 @@ package net.rrm.ehour.export.service
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
+import net.rrm.ehour.domain.ProjectAssignment
+import net.rrm.ehour.domain.ProjectAssignmentMother
+import net.rrm.ehour.domain.TimesheetEntry
 import net.rrm.ehour.persistence.export.dao.ExportType
 import net.rrm.ehour.persistence.export.dao.ImportDao
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
+import static org.mockito.Mockito.when
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -54,10 +60,15 @@ class DomainObjectResolverTest {
     // skip the startdoc
     eventReader.nextEvent();
 
-    def result = resolver.parse(type, type.getDomainObjectClass());
+    when(importDao.find(Mockito.any(Integer.class), any(ProjectAssignment.class))).thenReturn(ProjectAssignmentMother.createProjectAssignment(1));
 
-    Assert.assertEquals (2, result.size())
+    List<TimesheetEntry> result = resolver.parse(type, type.getDomainObjectClass());
 
-    println result[0];
+    assertEquals 2, result.size()
+
+    assertNotNull result[0].entryId.entryDate
+    assertNotNull result[0].entryId.projectAssignment
+    assertEquals 8.0, result[0].hours, 0
+    assertEquals "jaja", result[0].comment
   }
 }
