@@ -1,7 +1,5 @@
 package net.rrm.ehour.export.service
 
-import static org.mockito.Mockito.any
-
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
 import net.rrm.ehour.persistence.export.dao.ExportType
@@ -114,7 +112,7 @@ class DomainObjectResolverTest
     def department = UserDepartmentMother.createUserDepartment()
 
     when(importDao.find(Mockito.any(Integer.class), Mockito.any(UserDepartment.class))).thenReturn(department)
-    when(importDao.persist(any(User.class))).thenReturn(5);
+    when(importDao.persist(Mockito.any(User.class))).thenReturn(5);
 
     List<User> result = resolver.parse(type, type.getDomainObjectClass());
 
@@ -128,7 +126,10 @@ class DomainObjectResolverTest
     assertEquals department, result[0].userDepartment
     assertEquals "t@t.net", result[0].email
     assertTrue result[0].active
+    assertFalse resolver.keyCache.isEmpty()
 
-
+    def userPk = resolver.keyCache.getKey(User.class, 2)
+    assertNotNull userPk
+    assertEquals  5, userPk
   }
 }

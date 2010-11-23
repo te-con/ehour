@@ -16,18 +16,11 @@
 
 package net.rrm.ehour.user.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
@@ -41,13 +34,14 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 /**
  * 
@@ -75,12 +69,7 @@ public class UserServiceImpl implements UserService
 	@Autowired
 	private MessageDigestPasswordEncoder	passwordEncoder;
 
-	/**
-	 * Get user by userId 
-	 * @param userID
-	 * @return
-	 * @throws NoResultsException
-	 */	
+
 	public User getUser(Integer userId) throws ObjectNotFoundException
 	{
 		User 					user = userDAO.findById(userId);
@@ -253,6 +242,7 @@ public class UserServiceImpl implements UserService
 	{
 		return userDAO.findAllActiveUsers();
 	}
+
 
 	/**
 	 * 

@@ -106,7 +106,7 @@ public class ExportServiceImpl implements ExportService
 
     private void writeEntries(XMLStreamWriter writer) throws XMLStreamException
     {
-        for (ExportType type : ExportType.values())
+        for (ExportType type : ExportType.orderedValues())
         {
             writeTypeEntries(type, writer);
         }
@@ -148,6 +148,4 @@ public class ExportServiceImpl implements ExportService
     {
         this.configurationService = configurationService;
     }
-
-
 }
