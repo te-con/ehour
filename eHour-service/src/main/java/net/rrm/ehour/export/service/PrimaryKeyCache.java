@@ -1,7 +1,5 @@
 package net.rrm.ehour.export.service;
 
-import net.rrm.ehour.domain.DomainObject;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,18 +10,18 @@ import java.util.Map;
  */
 public class PrimaryKeyCache
 {
-    Map<Class<? extends DomainObject<?, ?>>, Map<?, ?>> keyMap = new HashMap<Class<? extends DomainObject<?, ?>>, Map<?, ?>>();
+    Map<Class<?>, Map<Serializable, Serializable>> keyMap = new HashMap<Class<?>, Map<Serializable, Serializable>>();
 
-    public <PK extends Serializable> void putKey(Class<? extends DomainObject<PK, ?>> domainObjectClass, PK oldKey, PK newKey)
+    public void putKey(Class<?> domainObjectClass, Serializable oldKey, Serializable newKey)
     {
-        Map<PK, PK> oldNewKeyMap;
+        Map<Serializable, Serializable> oldNewKeyMap;
 
         if (keyMap.containsKey(domainObjectClass))
         {
-            oldNewKeyMap = (Map<PK, PK>) keyMap.get(domainObjectClass);
+            oldNewKeyMap = (Map<Serializable, Serializable>) keyMap.get(domainObjectClass);
         } else
         {
-            oldNewKeyMap = new HashMap<PK, PK>();
+            oldNewKeyMap = new HashMap<Serializable, Serializable>();
         }
 
         oldNewKeyMap.put(oldKey, newKey);
@@ -31,14 +29,19 @@ public class PrimaryKeyCache
         keyMap.put(domainObjectClass, oldNewKeyMap);
     }
 
-    public <PK extends Serializable> PK getKey(Class<? extends DomainObject<PK, ?>> domainObjectClass, PK oldKey)
+    public Serializable getKey(Class<?> domainObjectClass, Serializable oldKey)
     {
         if (keyMap.containsKey(domainObjectClass))
         {
-            return (PK) keyMap.get(domainObjectClass).get(oldKey);
+            return keyMap.get(domainObjectClass).get(oldKey);
 
         }
 
         return null;
+    }
+
+    boolean isEmpty()
+    {
+        return keyMap.isEmpty();
     }
 }

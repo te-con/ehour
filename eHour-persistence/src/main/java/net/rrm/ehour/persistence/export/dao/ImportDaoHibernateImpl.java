@@ -1,5 +1,6 @@
 package net.rrm.ehour.persistence.export.dao;
 
+import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernateImpl;
 import org.springframework.stereotype.Repository;
 
@@ -13,9 +14,11 @@ import java.io.Serializable;
 public class ImportDaoHibernateImpl extends AbstractAnnotationDaoHibernateImpl implements ImportDao
 {
     @Override
-    public <T> void persist(T object)
+    public <T extends DomainObject<?, ?>> Serializable persist(T object)
     {
         getHibernateTemplate().saveOrUpdate(object);
+
+        return object.getPK();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package net.rrm.ehour.persistence.export.dao;
 
+import net.rrm.ehour.domain.DomainObject;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +10,7 @@ import java.io.Serializable;
  */
 public interface ImportDao
 {
-    public <T> void persist(T object);
+    public <T extends DomainObject<?, ?>> Serializable persist(T object);
 
     public <T, PK extends Serializable> T find(PK primaryKey, Class<T> type);
 }

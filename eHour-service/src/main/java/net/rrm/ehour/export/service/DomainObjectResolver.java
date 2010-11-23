@@ -1,5 +1,6 @@
 package net.rrm.ehour.export.service;
 
+import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.persistence.export.dao.ExportType;
 import net.rrm.ehour.persistence.export.dao.ImportDao;
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,6 +39,7 @@ public class DomainObjectResolver
         transformerMap.put(Integer.class, new IntegerTransformer());
         transformerMap.put(Float.class, new FloatTransformer());
         transformerMap.put(Date.class, new DateTransformer());
+        transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
 
@@ -48,7 +51,7 @@ public class DomainObjectResolver
         keyCache = new PrimaryKeyCache();
     }
 
-    public <T> List<T> parse(ExportType type, Class<T> clazz) throws IllegalAccessException, InstantiationException, XMLStreamException
+    public <T extends DomainObject<?, ?>> List<T> parse(ExportType type, Class<T> clazz) throws IllegalAccessException, InstantiationException, XMLStreamException
     {
         Map<String, Field> fieldMap = createFieldMap(clazz);
 
@@ -61,7 +64,7 @@ public class DomainObjectResolver
     /**
      * Parse domain object with reader pointing on the table name tag
      */
-    private <T> List<T> parseDomainObjects(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
+    private <T extends DomainObject<?, ?>> List<T> parseDomainObjects(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
     {
         List<T> domainObjects = new ArrayList<T>();
 
@@ -84,7 +87,7 @@ public class DomainObjectResolver
         return domainObjects;
     }
 
-    private <T> T parseDomainObject(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
+    private <T extends DomainObject<?, ?>> T parseDomainObject(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
     {
         T domainObject = clazz.newInstance();
 
@@ -112,10 +115,11 @@ public class DomainObjectResolver
             {
                 data = charEvent.asCharacters().getData();
 
-                Object transformedValue = parseValue(domainObject, field, data);
+                Object parsedValue = parseValue(domainObject, field, data);
 
-                if (transformedValue != null)
+                if (parsedValue != null)
                 {
+                    // check whether the field is part of a composite pk (ie. a different class)
                     if (field.getDeclaringClass() != domainObject.getClass())
                     {
                         Object embeddable;
@@ -129,10 +133,10 @@ public class DomainObjectResolver
                             embeddable = embeddables.get(field.getDeclaringClass());
                         }
 
-                        field.set(embeddable, transformedValue);
+                        field.set(embeddable, parsedValue);
                     } else
                     {
-                        field.set(domainObject, transformedValue);
+                        field.set(domainObject, parsedValue);
                     }
                 }
 
@@ -141,14 +145,23 @@ public class DomainObjectResolver
             reader.nextEvent();
         }
 
-        setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);
+        boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);
+
+        Serializable primaryKey = importDao.persist(domainObject);
+
+        if (!hasCompositeKey)
+        {
+            keyCache.putKey(domainObject.getClass(), domainObject.getPK(), primaryKey);
+        }
 
         return domainObject;
     }
 
-    private <T> void setEmbeddablesInDomainObject(Map<String, Field> fieldMap, T domainObject, Map<Class<?>, Object> embeddables)
+    private <T> boolean setEmbeddablesInDomainObject(Map<String, Field> fieldMap, T domainObject, Map<Class<?>, Object> embeddables)
             throws IllegalAccessException
     {
+        boolean hasCompositeKey = false;
+
         for (Field field : fieldMap.values())
         {
             Class<?> fieldType = field.getType();
@@ -156,8 +169,12 @@ public class DomainObjectResolver
             if (fieldType.isAnnotationPresent(Embeddable.class))
             {
                 field.set(domainObject, embeddables.get(fieldType));
+
+                hasCompositeKey = true;
             }
         }
+
+        return hasCompositeKey;
     }
 
     private <T> Object parseValue(T domainObject, Field field, String data)
@@ -230,6 +247,11 @@ public class DomainObjectResolver
         return fieldMap;
     }
 
+    PrimaryKeyCache getKeyCache()
+    {
+        return keyCache;
+    }
+
     private interface TypeTransformer<T>
     {
         T transform(String value);
@@ -241,6 +263,15 @@ public class DomainObjectResolver
         public Integer transform(String value)
         {
             return Integer.parseInt(value);
+        }
+    }
+
+    private static class BooleanTransformer implements TypeTransformer<Boolean>
+    {
+        @Override
+        public Boolean transform(String value)
+        {
+            return "y".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value) || "1".equals(value);
         }
     }
 
