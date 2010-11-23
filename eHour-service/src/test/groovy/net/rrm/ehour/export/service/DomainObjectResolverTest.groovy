@@ -2,9 +2,9 @@ package net.rrm.ehour.export.service
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
-import net.rrm.ehour.domain.TimesheetEntry
 import net.rrm.ehour.persistence.export.dao.ExportType
 import net.rrm.ehour.persistence.export.dao.ImportDao
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -37,6 +37,7 @@ class DomainObjectResolverTest {
    <ASSIGNMENT_ID>1</ASSIGNMENT_ID>
    <ENTRY_DATE>2007-03-26</ENTRY_DATE>
    <HOURS>8.0</HOURS>
+   <COMMENT>jaja</COMMENT>
   </TIMESHEET_ENTRY>
   <TIMESHEET_ENTRY>
    <ASSIGNMENT_ID>2</ASSIGNMENT_ID>
@@ -53,10 +54,10 @@ class DomainObjectResolverTest {
     // skip the startdoc
     eventReader.nextEvent();
 
-    def event = eventReader.nextEvent();
+    def result = resolver.parse(type, type.getDomainObjectClass());
 
-//    def result = (TimesheetEntry) resolver.parse(type, type.getDomainObjectClass(), event);
+    Assert.assertEquals (2, result.size())
 
-//    Assert.assertEquals()
+    println result[0];
   }
 }
