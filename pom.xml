@@ -788,6 +788,11 @@
         </profile>
 
         <profile>
+            <id>jetty</id>
+            <!-- placeholder profile to allow IntelliJ to use this profile, actual profile is in web prj -->
+        </profile>
+
+        <profile>
             <id>standalone</id>
 
             <activation>
