@@ -55,7 +55,7 @@ public class ExportServiceImpl implements ExportService
                     XMLStreamWriter.class.getClassLoader(),
                     new Class[]{XMLStreamWriter.class},
                     handler);
-            
+
             exportDatabase(prettyPrintWriter);
 
             xmlDocument = stringWriter.toString();
@@ -116,6 +116,11 @@ public class ExportServiceImpl implements ExportService
     private void writeTypeEntries(ExportType type, XMLStreamWriter writer) throws XMLStreamException
     {
         writer.writeStartElement(type.getParentName());
+
+        if (type.getDomainObjectClass() != null)
+        {
+            writer.writeAttribute("CLASS", type.getDomainObjectClass().getName());
+        }
 
         List<Map<String, Object>> rows = exportDao.findForType(type);
 

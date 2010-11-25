@@ -38,7 +38,7 @@ class DomainObjectResolverTest
   void shouldParseTwoTimesheetEntries()
   {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader("""<TIMESHEET_ENTRIES>
+    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader("""<TIMESHEET_ENTRIES CLASS="net.rrm.ehour.domain.TimesheetEntry">
   <TIMESHEET_ENTRY>
    <ASSIGNMENT_ID>1</ASSIGNMENT_ID>
    <ENTRY_DATE>2007-03-26</ENTRY_DATE>
@@ -58,11 +58,11 @@ class DomainObjectResolverTest
     def type = ExportType.TIMESHEET_ENTRY;
 
     // skip the startdoc
-    eventReader.nextEvent();
+    eventReader.nextTag()
 
     when(importDao.find(Mockito.any(Integer.class), Mockito.any(ProjectAssignment.class))).thenReturn(ProjectAssignmentMother.createProjectAssignment(1));
 
-    List<TimesheetEntry> result = resolver.parse(type, type.getDomainObjectClass());
+    List<TimesheetEntry> result = resolver.parse(type.getDomainObjectClass());
 
     assertEquals 2, result.size()
 
@@ -107,14 +107,14 @@ class DomainObjectResolverTest
     def type = ExportType.USERS
 
     // skip the startdoc
-    eventReader.nextEvent();
+    def event = eventReader.nextTag()
 
     def department = UserDepartmentMother.createUserDepartment()
 
     when(importDao.find(Mockito.any(Integer.class), Mockito.any(UserDepartment.class))).thenReturn(department)
     when(importDao.persist(Mockito.any(User.class))).thenReturn(5);
 
-    List<User> result = resolver.parse(type, type.getDomainObjectClass());
+    List<User> result = resolver.parse(type.getDomainObjectClass());
 
     assertEquals 2, result.size()
 

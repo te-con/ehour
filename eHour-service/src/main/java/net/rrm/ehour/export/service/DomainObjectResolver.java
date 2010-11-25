@@ -1,7 +1,6 @@
 package net.rrm.ehour.export.service;
 
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.persistence.export.dao.ExportType;
 import net.rrm.ehour.persistence.export.dao.ImportDao;
 import org.apache.log4j.Logger;
 
@@ -51,12 +50,9 @@ public class DomainObjectResolver
         keyCache = new PrimaryKeyCache();
     }
 
-    public <T extends DomainObject<?, ?>> List<T> parse(ExportType type, Class<T> clazz) throws IllegalAccessException, InstantiationException, XMLStreamException
+    public <T extends DomainObject<?, ?>> List<T> parse(Class<T> clazz) throws IllegalAccessException, InstantiationException, XMLStreamException
     {
         Map<String, Field> fieldMap = createFieldMap(clazz);
-
-        // skip the collection tag
-        reader.nextTag();
 
         return parseDomainObjects(clazz, fieldMap);
     }
@@ -70,7 +66,6 @@ public class DomainObjectResolver
 
         while (reader.hasNext())
         {
-            //  domain object tag
             XMLEvent event = reader.nextTag();
 
             if (event.isStartElement())
@@ -106,7 +101,6 @@ public class DomainObjectResolver
             String dbField = startElement.getName().getLocalPart();
 
             Field field = fieldMap.get(dbField);
-
             XMLEvent charEvent = reader.nextEvent();
 
             String data;
@@ -142,7 +136,8 @@ public class DomainObjectResolver
 
             }
 
-            reader.nextEvent();
+            // skip the end element of the attribute
+            reader.nextTag();
         }
 
         boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);

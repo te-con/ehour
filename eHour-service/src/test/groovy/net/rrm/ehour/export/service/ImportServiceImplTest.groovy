@@ -3,6 +3,7 @@ package net.rrm.ehour.export.service
 import net.rrm.ehour.config.EhourConfigStub
 import net.rrm.ehour.config.service.ConfigurationService
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -48,6 +49,19 @@ class ImportServiceImplTest
     when(configurationService.configuration).thenReturn configuration
 
     def file = "src/test/resources/import/import_data.xml"
+    def xml = new File(file).text
+    importService.prepareImportDatabase(xml)
+  }
+
+  @Test
+  @Ignore
+  void shouldImport()
+  {
+    def configuration = new EhourConfigStub(version: '0.8.3')
+
+    when(configurationService.configuration).thenReturn configuration
+
+    def file = "src/test/resources/import/full_data.xml"
     def xml = new File(file).text
     importService.prepareImportDatabase(xml)
   }

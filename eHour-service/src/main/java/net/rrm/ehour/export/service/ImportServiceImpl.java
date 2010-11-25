@@ -2,6 +2,7 @@ package net.rrm.ehour.export.service;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.persistence.export.dao.ImportDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,8 @@ public class ImportServiceImpl implements ImportService
     @Autowired
     private ConfigurationService configurationService;
 
+    @Autowired
+    private ImportDao importDao;
 
     @Override
     public boolean prepareImportDatabase(String xmlData) throws ImportException
@@ -32,18 +35,22 @@ public class ImportServiceImpl implements ImportService
         try
         {
             validateXml(xmlData);
-        } catch (XMLStreamException e)
+        } catch (Exception e)
         {
+            System.err.println(e);
+            e.printStackTrace();
             throw new ImportException("import.error.failedToParse", e);
         }
 
         return true;
     }
 
-    private void validateXml(String xmlData) throws XMLStreamException, ImportException
+    private void validateXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException
     {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
+
+        DomainObjectResolver resolver = new DomainObjectResolver(eventReader, importDao);
 
         while (eventReader.hasNext())
         {
@@ -55,7 +62,7 @@ public class ImportServiceImpl implements ImportService
 
                 String startName = startElement.getName().getLocalPart();
 
-                ExportElements element = ExportElements.valueOf(startName);
+                ExportElements element = safelyGetExportElements(startName);
 
                 switch (element)
                 {
@@ -65,17 +72,48 @@ public class ImportServiceImpl implements ImportService
                     case CONFIGURATION:
                         parseConfiguration(startElement, eventReader);
                         break;
+                    case USER_TO_USERROLE:
+                        // TODO
+                        break;
+                    case OTHER:
                     default:
-                        parseElement(startElement, eventReader);
+                        parseElement(event, eventReader, resolver);
                         break;
                 }
+            } else if (event.isEndDocument()) {
+                break;
             }
         }
     }
 
-    private void parseElement(StartElement startElement, XMLEventReader reader)
+    private ExportElements safelyGetExportElements(String name)
     {
-        String startName = startElement.getName().getLocalPart();
+        ExportElements element;
+
+        try
+        {
+            element = ExportElements.valueOf(name);
+        } catch (IllegalArgumentException iae)
+        {
+            element = ExportElements.OTHER;
+        }
+
+        return element;
+
+
+    }
+
+    private void parseElement(XMLEvent event, XMLEventReader reader, DomainObjectResolver resolver) throws XMLStreamException, InstantiationException, IllegalAccessException
+    {
+        StartElement element = event.asStartElement();
+        String aClass = element.getAttributeByName(new QName("CLASS")).asCharacters().getData();
+
+//        ExportType type = ExportType.valueOf(startName);
+//
+//        resolver.parse(type.getDomainObjectClass());
+//        System.out.println(startName);
+
+
 
 //        Class<? extends DomainObject<?, ?>> domainObjectClass = CLASS_MAP.get(startName);
 

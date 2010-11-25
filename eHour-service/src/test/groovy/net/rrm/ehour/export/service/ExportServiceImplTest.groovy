@@ -44,13 +44,14 @@ class ExportServiceImplTest {
         def configurationList = [new Configuration(ConfigurationItem.AVAILABLE_TRANSLATIONS.dbField, "nl")]
         when(configurationService.findAllConfiguration()).thenReturn(configurationList)
 
-
 		String xml = service.exportDatabase()
 
         assertTrue xml.contains("0.9")
         assertTrue xml.contains("TIMESHEET_ENTRY")
         assertTrue xml.contains("CONFIG")
 
-		assertTrue(xml.startsWith("<?xml version="));
+		assertTrue(xml.startsWith("<?xml version="))
+
+      System.out.println(xml);
 	}
 }

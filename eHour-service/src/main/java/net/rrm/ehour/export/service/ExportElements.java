@@ -12,5 +12,7 @@ public enum ExportElements
     DB_VERSION,
     CONFIGURATION,
     CONFIG,
-    KEY
+    KEY,
+    USER_TO_USERROLE,
+    OTHER
 }
