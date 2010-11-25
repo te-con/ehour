@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.common.component.datatable;
 
-import java.util.List;
-
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackHeadersToolbar;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxNavigationToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -28,6 +26,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.OddEvenItem;
 import org.apache.wicket.model.IModel;
 
+import java.util.List;
+
 public class AjaxDataTable<T> extends DataTable<T>
 {
 	private static final long serialVersionUID = -667262986972743788L;
@@ -35,7 +35,7 @@ public class AjaxDataTable<T> extends DataTable<T>
 	@SuppressWarnings("unchecked")
 	public AjaxDataTable(String id, final List<IColumn<T>> columns, ISortableDataProvider<T> dataProvider, int rowsPerPage)
 	{
-		this(id, (IColumn<T>[]) columns.toArray(), dataProvider, rowsPerPage);
+		this(id, (IColumn<T>[]) columns.toArray(new IColumn[columns.size()]), dataProvider, rowsPerPage);
 	}
 
 
