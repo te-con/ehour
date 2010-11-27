@@ -63,8 +63,6 @@ public class ImportServiceImpl implements ImportService
 
                 String startName = startElement.getName().getLocalPart();
 
-                System.out.println(startName);
-
                 ExportElements element = safelyGetExportElements(startName);
 
                 switch (element)
@@ -85,7 +83,7 @@ public class ImportServiceImpl implements ImportService
                         parseElement(startElement, eventReader, resolver);
                         break;
                 }
-            } else if (event.isEndDocument())
+            } else if (event.isEndDocument() || event.isEndElement())
             {
                 break;
             }
@@ -111,7 +109,7 @@ public class ImportServiceImpl implements ImportService
     {
         String aClass = element.getAttributeByName(new QName("CLASS")).getValue();
 
-        Class<? extends DomainObject> doClass = (Class<? extends DomainObject>)Class.forName(aClass);
+        Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
 
         resolver.parse(doClass);
     }
@@ -172,7 +170,7 @@ public class ImportServiceImpl implements ImportService
 
     private void fillConfiguration(EhourConfigStub targetObject, StartElement element)
     {
-        Class<? extends Object> targetClass = targetObject.getClass();
+        Class<?> targetClass = targetObject.getClass();
         Method[] methods = targetClass.getDeclaredMethods();
 
         for (Method method : methods)
