@@ -2,6 +2,7 @@ package net.rrm.ehour.export.service;
 
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.persistence.export.dao.ImportDao;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.persistence.Column;
@@ -99,45 +100,42 @@ public class DomainObjectResolver
 
             StartElement startElement = event.asStartElement();
             String dbField = startElement.getName().getLocalPart();
-
             Field field = fieldMap.get(dbField);
-            XMLEvent charEvent = reader.nextEvent();
 
-            String data;
+            XMLEvent charEvent;
 
-            if (charEvent.isCharacters())
+            // no chars can only mean an end element
+            StringBuffer data = new StringBuffer();
+
+            while ((charEvent = reader.nextEvent()).isCharacters())
             {
-                data = charEvent.asCharacters().getData();
-
-                Object parsedValue = parseValue(domainObject, field, data);
-
-                if (parsedValue != null)
-                {
-                    // check whether the field is part of a composite pk (ie. a different class)
-                    if (field.getDeclaringClass() != domainObject.getClass())
-                    {
-                        Object embeddable;
-
-                        if (!embeddables.containsKey(field.getDeclaringClass()))
-                        {
-                            embeddable = field.getDeclaringClass().newInstance();
-                            embeddables.put(field.getDeclaringClass(), embeddable);
-                        } else
-                        {
-                            embeddable = embeddables.get(field.getDeclaringClass());
-                        }
-
-                        field.set(embeddable, parsedValue);
-                    } else
-                    {
-                        field.set(domainObject, parsedValue);
-                    }
-                }
-
+                data.append(charEvent.asCharacters().getData());
             }
 
-            // skip the end element of the attribute
-            reader.nextTag();
+            Object parsedValue = parseValue(domainObject, field, data.toString());
+
+            if (parsedValue != null)
+            {
+                // check whether the field is part of a composite pk (ie. a different class)
+                if (field.getDeclaringClass() != domainObject.getClass())
+                {
+                    Object embeddable;
+
+                    if (!embeddables.containsKey(field.getDeclaringClass()))
+                    {
+                        embeddable = field.getDeclaringClass().newInstance();
+                        embeddables.put(field.getDeclaringClass(), embeddable);
+                    } else
+                    {
+                        embeddable = embeddables.get(field.getDeclaringClass());
+                    }
+
+                    field.set(embeddable, parsedValue);
+                } else
+                {
+                    field.set(domainObject, parsedValue);
+                }
+            }
         }
 
         boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);
@@ -145,6 +143,7 @@ public class DomainObjectResolver
         Serializable primaryKey = importDao.persist(domainObject);
 
         if (!hasCompositeKey)
+
         {
             keyCache.putKey(domainObject.getClass(), domainObject.getPK(), primaryKey);
         }
@@ -187,12 +186,15 @@ public class DomainObjectResolver
             transformedValue = data;
 
             field.set(domainObject, data);
+        } else if (type.isEnum())
+        {
+            // TODO
         } else
         {
             if (transformerMap.containsKey(type))
             {
                 transformedValue = transformerMap.get(type).transform(data);
-            } else
+            } else if (type.isPrimitive())
             {
                 LOG.error("no transformer for type " + type);
             }
@@ -226,11 +228,12 @@ public class DomainObjectResolver
             } else
             {
                 Class<?> fieldType = field.getType();
-                fieldMap.put(Integer.toString(seq++), field);
 
                 // do we need to go a level deeper with composite primary keys marked as Embeddable?
                 if (fieldType.isAnnotationPresent(Embeddable.class))
                 {
+                    fieldMap.put(Integer.toString(seq++), field);
+
                     Map<String, Field> embeddableFieldMap = createFieldMap(fieldType);
 
                     fieldMap.putAll(embeddableFieldMap);
@@ -257,7 +260,7 @@ public class DomainObjectResolver
         @Override
         public Integer transform(String value)
         {
-            return Integer.parseInt(value);
+            return StringUtils.isNotBlank(value) ? Integer.parseInt(value) : null;
         }
     }
 
@@ -275,7 +278,7 @@ public class DomainObjectResolver
         @Override
         public Float transform(String value)
         {
-            return Float.parseFloat(value);
+            return StringUtils.isNotBlank(value) ? Float.parseFloat(value) : null;
         }
     }
 

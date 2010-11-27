@@ -2,6 +2,7 @@ package net.rrm.ehour.export.service;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.persistence.export.dao.ImportDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class ImportServiceImpl implements ImportService
         return true;
     }
 
-    private void validateXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException
+    private void validateXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException, ClassNotFoundException
     {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
@@ -54,13 +55,15 @@ public class ImportServiceImpl implements ImportService
 
         while (eventReader.hasNext())
         {
-            XMLEvent event = eventReader.nextEvent();
+            XMLEvent event = eventReader.nextTag();
 
             if (event.isStartElement())
             {
                 StartElement startElement = event.asStartElement();
 
                 String startName = startElement.getName().getLocalPart();
+
+                System.out.println(startName);
 
                 ExportElements element = safelyGetExportElements(startName);
 
@@ -72,15 +75,18 @@ public class ImportServiceImpl implements ImportService
                     case CONFIGURATION:
                         parseConfiguration(startElement, eventReader);
                         break;
-                    case USER_TO_USERROLE:
+                    case USER_TO_USERROLES:
+                        eventReader.nextTag();
                         // TODO
-                        break;
+                        return;
+//                                      break;
                     case OTHER:
                     default:
-                        parseElement(event, eventReader, resolver);
+                        parseElement(startElement, eventReader, resolver);
                         break;
                 }
-            } else if (event.isEndDocument()) {
+            } else if (event.isEndDocument())
+            {
                 break;
             }
         }
@@ -99,26 +105,15 @@ public class ImportServiceImpl implements ImportService
         }
 
         return element;
-
-
     }
 
-    private void parseElement(XMLEvent event, XMLEventReader reader, DomainObjectResolver resolver) throws XMLStreamException, InstantiationException, IllegalAccessException
+    private void parseElement(StartElement element, XMLEventReader reader, DomainObjectResolver resolver) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException
     {
-        StartElement element = event.asStartElement();
-        String aClass = element.getAttributeByName(new QName("CLASS")).asCharacters().getData();
+        String aClass = element.getAttributeByName(new QName("CLASS")).getValue();
 
-//        ExportType type = ExportType.valueOf(startName);
-//
-//        resolver.parse(type.getDomainObjectClass());
-//        System.out.println(startName);
+        Class<? extends DomainObject> doClass = (Class<? extends DomainObject>)Class.forName(aClass);
 
-
-
-//        Class<? extends DomainObject<?, ?>> domainObjectClass = CLASS_MAP.get(startName);
-
-//        if (ExportType.valueOf()
-
+        resolver.parse(doClass);
     }
 
     private void parseConfiguration(StartElement element, XMLEventReader eventReader) throws XMLStreamException
@@ -191,5 +186,10 @@ public class ImportServiceImpl implements ImportService
     public void setConfigurationService(ConfigurationService configurationService)
     {
         this.configurationService = configurationService;
+    }
+
+    public void setImportDao(ImportDao importDao)
+    {
+        this.importDao = importDao;
     }
 }

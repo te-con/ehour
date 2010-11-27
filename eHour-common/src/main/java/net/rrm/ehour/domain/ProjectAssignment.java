@@ -80,7 +80,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
 
     @Column(name = "ACTIVE", nullable = false)
     @Type(type = "yes_no")
-    private boolean active;
+    private Boolean active;
 
     @Transient
     private boolean deletable;
