@@ -34,11 +34,21 @@ class DomainObjectResolverTest
   }
 
 
+  private DomainObjectResolver createResolver(String xmlData)
+  {
+    XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
+
+    // skip the startdoc
+    def event = eventReader.nextTag()
+
+    return new DomainObjectResolver(eventReader, importDao);
+  }
+
   @Test
   void shouldParseTwoTimesheetEntries()
   {
-    XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader("""<TIMESHEET_ENTRIES CLASS="net.rrm.ehour.domain.TimesheetEntry">
+    def resolver = createResolver("""<TIMESHEET_ENTRIES CLASS="net.rrm.ehour.domain.TimesheetEntry">
   <TIMESHEET_ENTRY>
    <ASSIGNMENT_ID>1</ASSIGNMENT_ID>
    <ENTRY_DATE>2007-03-26</ENTRY_DATE>
@@ -51,14 +61,9 @@ class DomainObjectResolverTest
    <HOURS>0.0</HOURS>
   </TIMESHEET_ENTRY>
   </TIMESHEET_ENTRIES>
-"""));
-
-    def resolver = new DomainObjectResolver(eventReader, importDao);
+""")
 
     def type = ExportType.TIMESHEET_ENTRY;
-
-    // skip the startdoc
-    eventReader.nextTag()
 
     when(importDao.find(Mockito.any(Integer.class), Mockito.any(ProjectAssignment.class))).thenReturn(ProjectAssignmentMother.createProjectAssignment(1));
 
@@ -76,8 +81,7 @@ class DomainObjectResolverTest
   @Test
   void shouldParseUserAndStoreNewKeyInCacheMap()
   {
-    XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(""" <USERLIST>
+    def resolver = createResolver("""<USERLIST>
   <USERS>
    <USER_ID>1</USER_ID>
    <USERNAME>admin</USERNAME>
@@ -100,14 +104,9 @@ class DomainObjectResolverTest
    <SALT>6367</SALT>
   </USERS>
   </USERLIST>
-"""));
-
-    def resolver = new DomainObjectResolver(eventReader, importDao)
+""")
 
     def type = ExportType.USERS
-
-    // skip the startdoc
-    def event = eventReader.nextTag()
 
     def department = UserDepartmentMother.createUserDepartment()
 
@@ -130,6 +129,35 @@ class DomainObjectResolverTest
 
     def userPk = resolver.keyCache.getKey(User.class, 2)
     assertNotNull userPk
-    assertEquals  5, userPk
+    assertEquals 5, userPk
   }
+
+  @Test
+  void shouldParseEnum()
+  {
+    def resolver = createResolver(""" <AUDITS CLASS="net.rrm.ehour.domain.Audit"><AUDIT>
+   <AUDIT_ID>173</AUDIT_ID>
+   <USER_ID>2</USER_ID>
+   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>
+   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>
+   <SUCCESS>Y</SUCCESS>
+   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>
+  </AUDIT></AUDITS>
+""")
+
+    def type = ExportType.AUDIT
+
+    def department = UserDepartmentMother.createUserDepartment()
+
+    when(importDao.find(Mockito.any(Integer.class), Mockito.any(User.class))).thenReturn(UserMother.createUser())
+    when(importDao.persist(Mockito.any(User.class))).thenReturn(5);
+
+    List<Audit> result = resolver.parse(type.getDomainObjectClass());
+
+    assertEquals 1, result.size()
+
+    assertEquals AuditActionType.LOGIN, result[0].auditActionType
+
+  }
+
 }

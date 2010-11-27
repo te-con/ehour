@@ -171,35 +171,35 @@ public class DomainObjectResolver
         return hasCompositeKey;
     }
 
-    private <T> Object parseValue(T domainObject, Field field, String data)
-            throws IllegalAccessException
+    private <T> Object parseValue(T domainObject, Field field, String value)
+            throws IllegalAccessException, InstantiationException
     {
         Class<?> type = field.getType();
-        Object transformedValue = null;
+        Object parsedValue = null;
 
         if (type.isAnnotationPresent(Entity.class))
         {
             // we're dealing with a ManyToOne, resolve the thing
-            transformedValue = importDao.find(1, type);
+            parsedValue = importDao.find(1, type);
         } else if (type == String.class)
         {
-            transformedValue = data;
+            parsedValue = value;
 
-            field.set(domainObject, data);
+            field.set(domainObject, value);
         } else if (type.isEnum())
         {
-            // TODO
+            parsedValue = Enum.valueOf((Class<Enum>) type, value);
         } else
         {
             if (transformerMap.containsKey(type))
             {
-                transformedValue = transformerMap.get(type).transform(data);
+                parsedValue = transformerMap.get(type).transform(value);
             } else if (type.isPrimitive())
             {
                 LOG.error("no transformer for type " + type);
             }
         }
-        return transformedValue;
+        return parsedValue;
     }
 
     private <T> Map<String, Field> createFieldMap(Class<T> clazz)
