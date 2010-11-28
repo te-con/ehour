@@ -16,6 +16,6 @@ public interface DomainObjectParserDao
 {
     public <T extends DomainObject<?, ?>> Serializable persist(T object);
 
-    public <T> T find(Serializable primaryKey, Class<T> type);
+    public <T extends Serializable> T find(Serializable primaryKey, Class<T> type);
 
 }

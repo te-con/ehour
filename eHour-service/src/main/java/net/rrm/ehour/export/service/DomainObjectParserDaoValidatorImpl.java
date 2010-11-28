@@ -23,8 +23,6 @@ public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao
         initialize();
     }
 
-    // because this class is partially mocked by Mockito in junit tests, the constructor is not called
-    // this method provides a way to initialize the object
     public boolean initialize() {
         this.id = 1;
         this.persistCount = new HashMap<Class<?>, Integer>();
@@ -47,7 +45,7 @@ public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao
     }
 
     @Override
-    public <T> T find(Serializable primaryKey, Class<T> type)
+    public <T extends Serializable> T find(Serializable primaryKey, Class<T> type)
     {
         try
         {
@@ -62,10 +60,9 @@ public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao
     int getTotalPersistCount()
     {
         int totalCount = 0;
-        System.out.println(persistCount);
+
         for (Integer count : persistCount.values())
         {
-
             totalCount += count;
 
         }

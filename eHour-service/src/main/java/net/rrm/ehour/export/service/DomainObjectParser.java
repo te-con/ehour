@@ -4,10 +4,7 @@ import net.rrm.ehour.domain.DomainObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -104,7 +101,8 @@ public class DomainObjectParser
 
             String data = ParserUtil.parseNextEventAsCharacters(reader);
 
-            Object parsedValue = parseValue(domainObject, field, data);
+            Class<? extends Serializable> type = (Class<? extends Serializable>) field.getType();
+            Object parsedValue = parseValue(type, data);
 
             if (parsedValue != null)
             {
@@ -163,21 +161,19 @@ public class DomainObjectParser
         return hasCompositeKey;
     }
 
-    private <T> Object parseValue(T domainObject, Field field, String value)
+    private Serializable parseValue(Class<? extends Serializable> type, String value)
             throws IllegalAccessException, InstantiationException
     {
-        Class<?> type = field.getType();
-        Object parsedValue = null;
+        Serializable parsedValue = null;
 
         if (type.isAnnotationPresent(Entity.class))
         {
+            Serializable castToFk = castToFkType(type, value);
             // we're dealing with a ManyToOne, resolve the thing
-           parsedValue = parserDao.find(value, type);
+            parsedValue = parserDao.find(castToFk, type);
         } else if (type == String.class)
         {
             parsedValue = value;
-
-            field.set(domainObject, value);
         } else if (type.isEnum())
         {
             parsedValue = Enum.valueOf((Class<Enum>) type, value);
@@ -186,12 +182,27 @@ public class DomainObjectParser
             if (transformerMap.containsKey(type))
             {
                 parsedValue = transformerMap.get(type).transform(value);
-            } else if (type.isPrimitive())
+            } else
             {
                 LOG.error("no transformer for type " + type);
             }
         }
         return parsedValue;
+    }
+
+    private Serializable castToFkType(Class<?> fkObjectType, String value) throws InstantiationException, IllegalAccessException
+    {
+        Field[] fields = fkObjectType.getDeclaredFields();
+
+        for (Field field : fields)
+        {
+            if (field.isAnnotationPresent(Id.class))
+            {
+                return parseValue((Class<? extends Serializable>) field.getType(), value);
+            }
+        }
+
+        return value;
     }
 
     private <T> Map<String, Field> createFieldMap(Class<T> clazz)
@@ -242,7 +253,7 @@ public class DomainObjectParser
         return keyCache;
     }
 
-    private interface TypeTransformer<T>
+    private interface TypeTransformer<T extends Serializable>
     {
         T transform(String value);
     }

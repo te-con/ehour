@@ -59,7 +59,7 @@ class DomainObjectParserTest
    <HOURS>0.0</HOURS>
   </TIMESHEET_ENTRY>
   </TIMESHEET_ENTRIES>
-""", ProjectAssignmentMother.createProjectAssignment(1), "1")
+""", ProjectAssignmentMother.createProjectAssignment(1), 1)
 
     def type = ExportType.TIMESHEET_ENTRY;
 
@@ -103,7 +103,7 @@ class DomainObjectParserTest
    <SALT>6367</SALT>
   </USERS>
   </USERLIST>
-""", department, "1")
+""", department, 1)
 
     def type = ExportType.USERS
 
@@ -137,7 +137,7 @@ class DomainObjectParserTest
    <SUCCESS>Y</SUCCESS>
    <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>
   </AUDIT></AUDITS>
-""", UserMother.createUser(), "2")
+""", UserMother.createUser(), 2)
 
     def type = ExportType.AUDIT
 
@@ -163,7 +163,7 @@ class DomainObjectParserTest
    <SUCCESS>Y</SUCCESS>
    <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>
   </AUDIT></AUDITS>
-""", user, "2")
+""", user, 2)
 
     def type = ExportType.AUDIT
 
