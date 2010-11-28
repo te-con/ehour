@@ -3,46 +3,44 @@ package net.rrm.ehour.export.service
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
 import net.rrm.ehour.persistence.export.dao.ExportType
-import net.rrm.ehour.persistence.export.dao.ImportDao
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import net.rrm.ehour.domain.*
 import static org.junit.Assert.*
-import static org.mockito.Mockito.when
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 16, 2010 - 11:54:54 PM
  */
-class DomainObjectResolverTest
+class DomainObjectParserTest
 {
-
-  @Mock
-  private ImportDao importDao;
-
+  private DomainObjectParserDaoTestValidator daoValidator;
   private PrimaryKeyCache keyCache
 
   @Before
   void setUp()
   {
-    MockitoAnnotations.initMocks this
-
     keyCache = new PrimaryKeyCache()
   }
 
 
-  private DomainObjectResolver createResolver(String xmlData)
+  private DomainObjectParser createResolver(String xmlData)
+  {
+    return createResolver(xmlData, null, null)
+  }
+
+  private DomainObjectParser createResolver(String xmlData, def returnOnFind, def onFind)
   {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
     // skip the startdoc
-    def event = eventReader.nextTag()
+    eventReader.nextTag()
 
-    return new DomainObjectResolver(eventReader, importDao);
+    daoValidator = (returnOnFind == null) ? new DomainObjectParserDaoValidatorImpl()  : new DomainObjectParserDaoTestValidator(returnOnFind, onFind)
+
+    return new DomainObjectParser(eventReader, daoValidator);
+
   }
 
   @Test
@@ -61,11 +59,9 @@ class DomainObjectResolverTest
    <HOURS>0.0</HOURS>
   </TIMESHEET_ENTRY>
   </TIMESHEET_ENTRIES>
-""")
+""", ProjectAssignmentMother.createProjectAssignment(1), "1")
 
     def type = ExportType.TIMESHEET_ENTRY;
-
-    when(importDao.find(Mockito.any(Integer.class), Mockito.any(ProjectAssignment.class))).thenReturn(ProjectAssignmentMother.createProjectAssignment(1));
 
     List<TimesheetEntry> result = resolver.parse(type.getDomainObjectClass());
 
@@ -76,11 +72,14 @@ class DomainObjectResolverTest
     assertEquals 8.0, result[0].hours, 0
     assertEquals "jaja", result[0].comment
     assertTrue resolver.keyCache.isEmpty()
+    assertEquals 2, daoValidator.totalPersistCount
   }
 
   @Test
   void shouldParseUserAndStoreNewKeyInCacheMap()
   {
+    def department = UserDepartmentMother.createUserDepartment()
+
     def resolver = createResolver("""<USERLIST>
   <USERS>
    <USER_ID>1</USER_ID>
@@ -93,7 +92,7 @@ class DomainObjectResolverTest
    <ACTIVE>Y</ACTIVE>
   </USERS>
   <USERS>
-   <USER_ID>2</USER_ID>
+   <USER_ID>3</USER_ID>
    <USERNAME>thies</USERNAME>
    <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>
    <FIRST_NAME>Thies</FIRST_NAME>
@@ -104,14 +103,9 @@ class DomainObjectResolverTest
    <SALT>6367</SALT>
   </USERS>
   </USERLIST>
-""")
+""", department, "1")
 
     def type = ExportType.USERS
-
-    def department = UserDepartmentMother.createUserDepartment()
-
-    when(importDao.find(Mockito.any(Integer.class), Mockito.any(UserDepartment.class))).thenReturn(department)
-    when(importDao.persist(Mockito.any(User.class))).thenReturn(5);
 
     List<User> result = resolver.parse(type.getDomainObjectClass());
 
@@ -127,9 +121,9 @@ class DomainObjectResolverTest
     assertTrue result[0].active
     assertFalse resolver.keyCache.isEmpty()
 
-    def userPk = resolver.keyCache.getKey(User.class, 2)
+    def userPk = resolver.keyCache.getKey(User.class, 3)
     assertNotNull userPk
-    assertEquals 5, userPk
+    assertEquals "2", userPk
   }
 
   @Test
@@ -143,21 +137,60 @@ class DomainObjectResolverTest
    <SUCCESS>Y</SUCCESS>
    <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>
   </AUDIT></AUDITS>
-""")
+""", UserMother.createUser(), "2")
 
     def type = ExportType.AUDIT
 
     def department = UserDepartmentMother.createUserDepartment()
-
-    when(importDao.find(Mockito.any(Integer.class), Mockito.any(User.class))).thenReturn(UserMother.createUser())
-    when(importDao.persist(Mockito.any(User.class))).thenReturn(5);
 
     List<Audit> result = resolver.parse(type.getDomainObjectClass());
 
     assertEquals 1, result.size()
 
     assertEquals AuditActionType.LOGIN, result[0].auditActionType
-
   }
 
+  @Test
+  void shouldRetrieveManyToOne()
+  {
+    def user = UserMother.createUser()
+
+    def resolver = createResolver(""" <AUDITS CLASS="net.rrm.ehour.domain.Audit"><AUDIT>
+   <AUDIT_ID>173</AUDIT_ID>
+   <USER_ID>2</USER_ID>
+   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>
+   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>
+   <SUCCESS>Y</SUCCESS>
+   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>
+  </AUDIT></AUDITS>
+""", user, "2")
+
+    def type = ExportType.AUDIT
+
+    List<Audit> result = resolver.parse(type.getDomainObjectClass());
+
+    assertEquals 1, result.size()
+
+    assertEquals AuditActionType.LOGIN, result[0].auditActionType
+    assertEquals 1, daoValidator.totalPersistCount
+    assertEquals user, result[0].user
+  }
+
+    private class DomainObjectParserDaoTestValidator<T> extends DomainObjectParserDaoValidatorImpl
+  {
+    private T returnObject;
+    private Serializable primaryKey;
+
+    DomainObjectParserDaoTestValidator(T returnObject, Serializable primaryKey)
+    {
+      this.primaryKey = primaryKey;
+      this.returnObject = returnObject;
+    }
+
+    @Override
+    <T> T find(Serializable pk, Class<T> type)
+    {
+      return pk.equals(this.primaryKey) ? returnObject : null
+    }
+  };
 }

@@ -1,7 +1,6 @@
 package net.rrm.ehour.export.service;
 
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.persistence.export.dao.ImportDao;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -24,13 +23,14 @@ import java.util.*;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: Nov 16, 2010 - 11:18:59 PM
  */
-public class DomainObjectResolver
+public class DomainObjectParser
 {
-    private ImportDao importDao;
+    private DomainObjectParserDao parserDao;
+
     private XMLEventReader reader;
     private PrimaryKeyCache keyCache;
 
-    private static final Logger LOG = Logger.getLogger(DomainObjectResolver.class);
+    private static final Logger LOG = Logger.getLogger(DomainObjectParser.class);
 
     private static final Map<Class<?>, TypeTransformer<?>> transformerMap = new HashMap<Class<?>, TypeTransformer<?>>();
 
@@ -43,9 +43,9 @@ public class DomainObjectResolver
     }
 
 
-    public DomainObjectResolver(XMLEventReader reader, ImportDao importDao)
+    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao)
     {
-        this.importDao = importDao;
+        this.parserDao = parserDao;
         this.reader = reader;
 
         keyCache = new PrimaryKeyCache();
@@ -102,17 +102,9 @@ public class DomainObjectResolver
             String dbField = startElement.getName().getLocalPart();
             Field field = fieldMap.get(dbField);
 
-            XMLEvent charEvent;
+            String data = ParserUtil.parseNextEventAsCharacters(reader);
 
-            // no chars can only mean an end element
-            StringBuffer data = new StringBuffer();
-
-            while ((charEvent = reader.nextEvent()).isCharacters())
-            {
-                data.append(charEvent.asCharacters().getData());
-            }
-
-            Object parsedValue = parseValue(domainObject, field, data.toString());
+            Object parsedValue = parseValue(domainObject, field, data);
 
             if (parsedValue != null)
             {
@@ -140,7 +132,7 @@ public class DomainObjectResolver
 
         boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);
 
-        Serializable primaryKey = importDao.persist(domainObject);
+        Serializable primaryKey = parserDao.persist(domainObject);
 
         if (!hasCompositeKey)
 
@@ -180,7 +172,7 @@ public class DomainObjectResolver
         if (type.isAnnotationPresent(Entity.class))
         {
             // we're dealing with a ManyToOne, resolve the thing
-            parsedValue = importDao.find(1, type);
+           parsedValue = parserDao.find(value, type);
         } else if (type == String.class)
         {
             parsedValue = value;

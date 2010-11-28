@@ -1,8 +1,7 @@
 package net.rrm.ehour.export.service
 
-import net.rrm.ehour.config.EhourConfigStub
-import net.rrm.ehour.config.service.ConfigurationService
-import net.rrm.ehour.persistence.export.dao.ImportDao
+import net.rrm.ehour.domain.Configuration
+import net.rrm.ehour.persistence.config.dao.ConfigurationDao
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -18,10 +17,8 @@ class ImportServiceImplTest
   ImportServiceImpl importService
 
   @Mock
-  ConfigurationService configurationService
+  ConfigurationDao configurationDao
 
-  @Mock
-  ImportDao importDao
 
   @Before
   void setUp()
@@ -29,16 +26,15 @@ class ImportServiceImplTest
     MockitoAnnotations.initMocks this
 
     importService = new ImportServiceImpl()
-    importService.setConfigurationService configurationService
-    importService.setImportDao importDao
+    importService.setConfigurationDao configurationDao
   }
 
   @Test
   void shouldPrepareImport()
   {
-    def configuration = new EhourConfigStub(version: '0.8.3')
+    def configuration = new Configuration("version", "0.8.3")
 
-    when(configurationService.configuration).thenReturn configuration
+    when(configurationDao.findById("version")).thenReturn(configuration)
 
     def file = "src/test/resources/import/import_data.xml"
     def xml = new File(file).text
@@ -48,9 +44,9 @@ class ImportServiceImplTest
   @Test(expected = ImportException)
   void shouldFailOnPrepareImportForWrongDb()
   {
-    def configuration = new EhourConfigStub(version: '0.8.2')
+    def configuration = new Configuration("version", "0.8.2")
 
-    when(configurationService.configuration).thenReturn configuration
+    when(configurationDao.findById("version")).thenReturn(configuration)
 
     def file = "src/test/resources/import/import_data.xml"
     def xml = new File(file).text
@@ -58,11 +54,11 @@ class ImportServiceImplTest
   }
 
   @Test
-  void shouldImport()
+  void shouldValidateImport()
   {
-    def configuration = new EhourConfigStub(version: '0.8.3')
+    def configuration = new Configuration("version", "0.8.3")
 
-    when(configurationService.configuration).thenReturn configuration
+    when(configurationDao.findById("version")).thenReturn(configuration)
 
     def file = "src/test/resources/import/import_data_full.xml"
     def xml = new File(file).text

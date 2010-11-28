@@ -1,9 +1,10 @@
 package net.rrm.ehour.export.service;
 
-import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.config.ConfigurationItem;
+import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.persistence.export.dao.ImportDao;
+import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,6 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.StringReader;
-import java.lang.reflect.Method;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -24,11 +24,10 @@ import java.lang.reflect.Method;
 @Service("importService")
 public class ImportServiceImpl implements ImportService
 {
-    @Autowired
-    private ConfigurationService configurationService;
+    private static final Logger LOG = Logger.getLogger(ImportServiceImpl.class);
 
     @Autowired
-    private ImportDao importDao;
+    private ConfigurationDao configurationDao;
 
     @Override
     public boolean prepareImportDatabase(String xmlData) throws ImportException
@@ -38,8 +37,7 @@ public class ImportServiceImpl implements ImportService
             validateXml(xmlData);
         } catch (Exception e)
         {
-            System.err.println(e);
-            e.printStackTrace();
+            LOG.error(e);
             throw new ImportException("import.error.failedToParse", e);
         }
 
@@ -51,7 +49,11 @@ public class ImportServiceImpl implements ImportService
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
-        DomainObjectResolver resolver = new DomainObjectResolver(eventReader, importDao);
+        DomainObjectParserDaoValidatorImpl daoValidator = new DomainObjectParserDaoValidatorImpl();
+        DomainObjectParser parser = new DomainObjectParser(eventReader, daoValidator);
+
+        ConfigurationDaoWrapperValidatorImpl configValidator = new ConfigurationDaoWrapperValidatorImpl();
+        ConfigurationParser configurationParser = new ConfigurationParser(configValidator);
 
         while (eventReader.hasNext())
         {
@@ -71,7 +73,7 @@ public class ImportServiceImpl implements ImportService
                         checkDatabaseVersion(startElement);
                         break;
                     case CONFIGURATION:
-                        parseConfiguration(startElement, eventReader);
+                        configurationParser.parseConfiguration(startElement, eventReader);
                         break;
                     case USER_TO_USERROLES:
                         eventReader.nextTag();
@@ -80,7 +82,7 @@ public class ImportServiceImpl implements ImportService
 //                                      break;
                     case OTHER:
                     default:
-                        parseElement(startElement, eventReader, resolver);
+                        parseElement(startElement, parser);
                         break;
                 }
             } else if (event.isEndDocument() || event.isEndElement())
@@ -105,54 +107,14 @@ public class ImportServiceImpl implements ImportService
         return element;
     }
 
-    private void parseElement(StartElement element, XMLEventReader reader, DomainObjectResolver resolver) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException
+    @SuppressWarnings("unchecked")
+    private void parseElement(StartElement element, DomainObjectParser parser) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException
     {
         String aClass = element.getAttributeByName(new QName("CLASS")).getValue();
 
         Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
 
-        resolver.parse(doClass);
-    }
-
-    private void parseConfiguration(StartElement element, XMLEventReader eventReader) throws XMLStreamException
-    {
-        EhourConfigStub config = new EhourConfigStub();
-
-        while (eventReader.hasNext())
-        {
-            XMLEvent event = eventReader.nextEvent();
-
-            if (event.isStartElement())
-            {
-                parseConfigElement(eventReader, event);
-            } else if (event.isEndElement())
-            {
-                return;
-            }
-        }
-    }
-
-    private void parseConfigElement(XMLEventReader eventReader, XMLEvent event)
-            throws XMLStreamException
-    {
-        String key = null;
-        String value = null;
-
-        StartElement startElement = event.asStartElement();
-        key = startElement.getAttributeByName(new QName(ExportElements.KEY.name())).getValue();
-
-        while (eventReader.hasNext())
-        {
-            event = eventReader.nextEvent();
-
-            if (event.isCharacters())
-            {
-                value = event.asCharacters().getData();
-            } else if (event.isEndElement())
-            {
-                break;
-            }
-        }
+        parser.parse(doClass);
     }
 
     private void checkDatabaseVersion(StartElement element) throws ImportException
@@ -160,34 +122,16 @@ public class ImportServiceImpl implements ImportService
         Attribute attribute = element.getAttributeByName(new QName(ExportElements.DB_VERSION.name()));
         String dbVersion = attribute.getValue();
 
-        EhourConfigStub configuration = configurationService.getConfiguration();
+        Configuration version = configurationDao.findById(ConfigurationItem.VERSION.getDbField());
 
-        if (!configuration.getVersion().equalsIgnoreCase(dbVersion))
+        if (version == null || !version.getConfigValue().equalsIgnoreCase(dbVersion))
         {
             throw new ImportException("import.error.invalidDatabaseVersion");
         }
     }
 
-    private void fillConfiguration(EhourConfigStub targetObject, StartElement element)
+    public void setConfigurationDao(ConfigurationDao configurationDao)
     {
-        Class<?> targetClass = targetObject.getClass();
-        Method[] methods = targetClass.getDeclaredMethods();
-
-        for (Method method : methods)
-        {
-            Class<?>[] parameters = method.getParameterTypes();
-
-        }
-
-    }
-
-    public void setConfigurationService(ConfigurationService configurationService)
-    {
-        this.configurationService = configurationService;
-    }
-
-    public void setImportDao(ImportDao importDao)
-    {
-        this.importDao = importDao;
+        this.configurationDao = configurationDao;
     }
 }
