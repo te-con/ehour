@@ -1,117 +1,72 @@
 <ehcache>
 
-    <diskStore path="java.io.tmpdir"/>
-
-    <defaultCache
-        maxElementsInMemory="1000"
-        eternal="false"
-        timeToIdleSeconds="120"
-        timeToLiveSeconds="3600"
-        overflowToDisk="false"
-        diskPersistent="false"
-        diskExpiryThreadIntervalSeconds="120"
+    <defaultCache maxElementsInMemory="5000"
+		eternal="false"
+		timeToIdleSeconds="120"
+		timeToLiveSeconds="3600"
+		overflowToDisk="false"
+		diskPersistent="false"
         />
 
-	<cache
-	    name="net.rrm.ehour.domain.UserRole"
+	<cache name="net.rrm.ehour.domain.UserRole"
 	    maxElementsInMemory="50"
 	    eternal="true"
 	    overflowToDisk="false"
 	/>
 	
-	<cache
-	    name="net.rrm.ehour.config.domain.Configuration"
+	<cache name="net.rrm.ehour.config.domain.Configuration"
 	    maxElementsInMemory="50"
-        timeToIdleSeconds="6000"
-        timeToLiveSeconds="36000"
+		timeToIdleSeconds="600"
+		timeToLiveSeconds="1200"
 	    overflowToDisk="false"
 	/>	
 	
-	<cache
-	    name="net.rrm.ehour.domain.User"
-	    maxElementsInMemory="100"
-        timeToIdleSeconds="600"
-        timeToLiveSeconds="3600"
-        overflowToDisk="true"
-	/>
-	
-	<cache
-	    name="net.rrm.ehour.domain.Project"
-	    maxElementsInMemory="50"
-        timeToIdleSeconds="600"
-        timeToLiveSeconds="3600"
-        overflowToDisk="true"
-	/>	
-
-	<cache
-	    name="net.rrm.ehour.domain.Customer"
-	    maxElementsInMemory="50"
-        timeToIdleSeconds="600"
-        timeToLiveSeconds="3600"
-        overflowToDisk="true"
-	/>	
-
-	<cache
-	    name="net.rrm.ehour.domain.ProjectAssignmentType"
+	<cache name="net.rrm.ehour.domain.ProjectAssignmentType"
 	    maxElementsInMemory="50"
 	    eternal="true"
 	    overflowToDisk="false"
 	/>
 	
-	<cache
-	    name="org.hibernate.cache.StandardQueryCache"
+	<cache name="org.hibernate.cache.StandardQueryCache"
 	    maxElementsInMemory="20"
 	    eternal="false"
 	    timeToLiveSeconds="3600"
-	    overflowToDisk="true"
+	    overflowToDisk="false"
 	/>
 	
-	<cache
-		name="query.ProjectAssignment"
+	<cache name="query.ProjectAssignment"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="3600"
-	    overflowToDisk="true"
+	    timeToLiveSeconds="600"
+	    overflowToDisk="false"
 	/>
 		
-	<cache
-		name="query.User"
+	<cache name="query.User"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="3600"
-	    overflowToDisk="true"
+	    timeToLiveSeconds="600"
+	    overflowToDisk="false"
 	/>	
 	
-	<cache
-		name="query.Department"
+	<cache name="query.Department"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="3600"
-	    overflowToDisk="true"
+	    timeToLiveSeconds="600"
+	    overflowToDisk="false"
 	/>	
 	
-	<cache
-		name="query.CustomerFoldPreference"
+	<cache name="query.Customer"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="3600"
-	    overflowToDisk="true"
-	/>	
-	
-	<cache
-		name="query.Customer"
-	    maxElementsInMemory="20"
-	    eternal="false"
-	    timeToLiveSeconds="3600"
-	    overflowToDisk="true"
+	    timeToLiveSeconds="600"
+	    overflowToDisk="false"
 	/>
 	
-	<cache
-		name="query.Project"
+	<cache name="query.Project"
 	    maxElementsInMemory="20"
 	    eternal="false"
-	    timeToLiveSeconds="3600"
-	    overflowToDisk="true"
+	    timeToLiveSeconds="600"
+	    overflowToDisk="false"
 	/>	
 		
 </ehcache>
