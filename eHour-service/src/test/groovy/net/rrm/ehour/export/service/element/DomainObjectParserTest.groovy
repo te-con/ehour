@@ -1,7 +1,8 @@
-package net.rrm.ehour.export.service
+package net.rrm.ehour.export.service.element
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
+import net.rrm.ehour.export.service.PrimaryKeyCache
 import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Before
 import org.junit.Test
@@ -40,7 +41,6 @@ class DomainObjectParserTest
     daoValidator = (returnOnFind == null) ? new DomainObjectParserDaoValidatorImpl()  : new DomainObjectParserDaoTestValidator(returnOnFind, onFind)
 
     return new DomainObjectParser(eventReader, daoValidator);
-
   }
 
   @Test

@@ -3,6 +3,10 @@ package net.rrm.ehour.export.service;
 import net.rrm.ehour.config.ConfigurationItem;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.export.service.element.ConfigurationDaoWrapperValidatorImpl;
+import net.rrm.ehour.export.service.element.ConfigurationParser;
+import net.rrm.ehour.export.service.element.DomainObjectParser;
+import net.rrm.ehour.export.service.element.DomainObjectParserDaoValidatorImpl;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +77,7 @@ public class ImportServiceImpl implements ImportService
                         checkDatabaseVersion(startElement);
                         break;
                     case CONFIGURATION:
-                        configurationParser.parseConfiguration(startElement, eventReader);
+                        configurationParser.parseConfiguration(eventReader);
                         break;
                     case USER_TO_USERROLES:
                         eventReader.nextTag();
@@ -81,8 +85,9 @@ public class ImportServiceImpl implements ImportService
                         return;
 //                                      break;
                     case OTHER:
-                    default:
                         parseElement(startElement, parser);
+                        break;
+                    default:
                         break;
                 }
             } else if (event.isEndDocument() || event.isEndElement())

@@ -1,7 +1,8 @@
-package net.rrm.ehour.export.service;
+package net.rrm.ehour.export.service.element;
 
-import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.Configuration;
+import net.rrm.ehour.export.service.ExportElements;
+import net.rrm.ehour.export.service.ParserUtil;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -22,17 +23,15 @@ public class ConfigurationParser
         this.daoWrapper = daoWrapper;
     }
 
-    void parseConfiguration(StartElement element, XMLEventReader eventReader) throws XMLStreamException
+    public void parseConfiguration(XMLEventReader eventReader) throws XMLStreamException
     {
-        EhourConfigStub config = new EhourConfigStub();
-
         while (eventReader.hasNext())
         {
             XMLEvent event = eventReader.nextTag();
 
             if (event.isStartElement())
             {
-                Configuration configuration = parseConfigElement(eventReader, event, config);
+                Configuration configuration = parseConfigElement(eventReader, event);
                 daoWrapper.persist(configuration);
             } else if (event.isEndElement())
             {
@@ -41,7 +40,7 @@ public class ConfigurationParser
         }
     }
 
-    private Configuration parseConfigElement(XMLEventReader eventReader, XMLEvent event, EhourConfigStub config)
+    private Configuration parseConfigElement(XMLEventReader eventReader, XMLEvent event)
             throws XMLStreamException
     {
         StartElement startElement = event.asStartElement();
