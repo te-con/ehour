@@ -18,6 +18,11 @@ public class ParseStatus
 
     public void addError(ExportType type, String error)
     {
+        if (type == null)
+        {
+            return;
+        }
+
         List<String> errorsForType;
 
         if (errors.containsKey(type))
@@ -58,5 +63,10 @@ public class ParseStatus
     public Map<ExportType, List<String>> getErrors()
     {
         return errors;
+    }
+
+    public boolean hasErrors()
+    {
+        return !errors.isEmpty();
     }
 }

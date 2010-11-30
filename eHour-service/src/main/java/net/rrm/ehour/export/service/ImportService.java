@@ -8,7 +8,8 @@ public interface ImportService
 {
     /**
      * Import XML database
+     *
      * @param xmlData
      */
-    public boolean prepareImportDatabase(String xmlData) throws ImportException;
+    public ParseStatus prepareImportDatabase(String xmlData) throws ImportException;
 }

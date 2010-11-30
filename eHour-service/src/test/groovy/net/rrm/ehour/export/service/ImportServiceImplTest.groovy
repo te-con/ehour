@@ -6,6 +6,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import static org.junit.Assert.assertFalse
 import static org.mockito.Mockito.when
 
 /**
@@ -62,6 +63,8 @@ class ImportServiceImplTest
 
     def file = "src/test/resources/import/import_data_full.xml"
     def xml = new File(file).text
-    importService.prepareImportDatabase(xml)
+    def status = importService.prepareImportDatabase(xml)
+    assertFalse status.hasErrors()
+
   }
 }

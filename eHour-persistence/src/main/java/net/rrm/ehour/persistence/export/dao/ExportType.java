@@ -33,7 +33,7 @@ public enum ExportType
     {
         this(null, order);
     }
-    
+
     private ExportType(Class<? extends DomainObject<?, ?>> domainObjectClass, int order)
     {
         this.domainObjectClass = domainObjectClass;
@@ -61,6 +61,19 @@ public enum ExportType
     public int getOrder()
     {
         return order;
+    }
+
+    public static ExportType getForClass(Class clazz)
+    {
+        for (ExportType type : values())
+        {
+            if (type.getDomainObjectClass() == clazz)
+            {
+                return type;
+            }
+        }
+
+        return null;
     }
 
     public static List<ExportType> orderedValues()

@@ -7,6 +7,8 @@ import net.rrm.ehour.export.service.element.ConfigurationDaoWrapperValidatorImpl
 import net.rrm.ehour.export.service.element.ConfigurationParser;
 import net.rrm.ehour.export.service.element.DomainObjectParser;
 import net.rrm.ehour.export.service.element.DomainObjectParserDaoValidatorImpl;
+import net.rrm.ehour.export.service.element.UserRoleParser;
+import net.rrm.ehour.export.service.element.UserRoleParserDaoValidatorImpl;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,30 +36,33 @@ public class ImportServiceImpl implements ImportService
     private ConfigurationDao configurationDao;
 
     @Override
-    public boolean prepareImportDatabase(String xmlData) throws ImportException
+    public ParseStatus prepareImportDatabase(String xmlData) throws ImportException
     {
         try
         {
-            validateXml(xmlData);
+            return validateXml(xmlData);
         } catch (Exception e)
         {
             LOG.error(e);
             throw new ImportException("import.error.failedToParse", e);
         }
-
-        return true;
     }
 
-    private void validateXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException, ClassNotFoundException
+    private ParseStatus validateXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException, ClassNotFoundException
     {
+        ParseStatus status = new ParseStatus();
+
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
         DomainObjectParserDaoValidatorImpl daoValidator = new DomainObjectParserDaoValidatorImpl();
-        DomainObjectParser parser = new DomainObjectParser(eventReader, daoValidator);
+        DomainObjectParser parser = new DomainObjectParser(eventReader, daoValidator, status);
 
         ConfigurationDaoWrapperValidatorImpl configValidator = new ConfigurationDaoWrapperValidatorImpl();
         ConfigurationParser configurationParser = new ConfigurationParser(configValidator);
+
+        UserRoleParserDaoValidatorImpl userRoleValidator = new UserRoleParserDaoValidatorImpl();
+        UserRoleParser userRoleParser = new UserRoleParser(userRoleValidator);
 
         while (eventReader.hasNext())
         {
@@ -80,10 +85,8 @@ public class ImportServiceImpl implements ImportService
                         configurationParser.parseConfiguration(eventReader);
                         break;
                     case USER_TO_USERROLES:
-                        eventReader.nextTag();
-                        // TODO
-                        return;
-//                                      break;
+                        userRoleParser.parseUserRoles(eventReader, status);
+                        break;
                     case OTHER:
                         parseElement(startElement, parser);
                         break;
@@ -95,6 +98,8 @@ public class ImportServiceImpl implements ImportService
                 break;
             }
         }
+
+        return status;
     }
 
     private ExportElements safelyGetExportElements(String name)

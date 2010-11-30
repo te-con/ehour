@@ -1,5 +1,6 @@
 package net.rrm.ehour.persistence.export.dao
 
+import net.rrm.ehour.domain.UserDepartment
 import org.junit.Assert
 import org.junit.Test
 
@@ -21,8 +22,12 @@ class ExportTypeTest
     Assert.assertEquals 0, values[0].order
     Assert.assertEquals 1, values[1].order
     Assert.assertEquals 2, values[2].order
+  }
 
-
+  @Test
+  void shouldFetchForClazz()
+  {
+    Assert.assertEquals ExportType.USER_DEPARTMENT, UserDepartment.class
   }
 
 }

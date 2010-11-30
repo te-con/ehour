@@ -1,12 +1,18 @@
 package net.rrm.ehour.export.service.element;
 
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.export.service.ParseStatus;
 import net.rrm.ehour.export.service.ParserUtil;
 import net.rrm.ehour.export.service.PrimaryKeyCache;
+import net.rrm.ehour.persistence.export.dao.ExportType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -16,7 +22,11 @@ import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -32,6 +42,7 @@ public class DomainObjectParser
     private static final Logger LOG = Logger.getLogger(DomainObjectParser.class);
 
     private static final Map<Class<?>, TypeTransformer<?>> transformerMap = new HashMap<Class<?>, TypeTransformer<?>>();
+    private ParseStatus status;
 
     static
     {
@@ -41,11 +52,11 @@ public class DomainObjectParser
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
-
-    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao)
+    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, ParseStatus status)
     {
         this.parserDao = parserDao;
         this.reader = reader;
+        this.status = status;
 
         keyCache = new PrimaryKeyCache();
     }
@@ -54,13 +65,13 @@ public class DomainObjectParser
     {
         Map<String, Field> fieldMap = createFieldMap(clazz);
 
-        return parseDomainObjects(clazz, fieldMap);
+        return parseDomainObjects(clazz, fieldMap, status);
     }
 
     /**
      * Parse domain object with reader pointing on the table name tag
      */
-    private <T extends DomainObject<?, ?>> List<T> parseDomainObjects(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
+    private <T extends DomainObject<?, ?>> List<T> parseDomainObjects(Class<T> clazz, Map<String, Field> fieldMap, ParseStatus status) throws XMLStreamException, IllegalAccessException, InstantiationException
     {
         List<T> domainObjects = new ArrayList<T>();
 
@@ -73,6 +84,8 @@ public class DomainObjectParser
                 T domainObject = parseDomainObject(clazz, fieldMap);
 
                 domainObjects.add(domainObject);
+
+                status.addInsertion(ExportType.getForClass(clazz));
             } else if (event.isEndElement())
             {
                 break;
@@ -82,6 +95,7 @@ public class DomainObjectParser
         return domainObjects;
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends DomainObject<?, ?>> T parseDomainObject(Class<T> clazz, Map<String, Field> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException
     {
         T domainObject = clazz.newInstance();
@@ -135,7 +149,6 @@ public class DomainObjectParser
         Serializable primaryKey = parserDao.persist(domainObject);
 
         if (!hasCompositeKey)
-
         {
             keyCache.putKey(domainObject.getClass(), domainObject.getPK(), primaryKey);
         }
@@ -163,6 +176,7 @@ public class DomainObjectParser
         return hasCompositeKey;
     }
 
+    @SuppressWarnings("unchecked")
     private Serializable parseValue(Class<? extends Serializable> type, String value)
             throws IllegalAccessException, InstantiationException
     {
@@ -171,8 +185,12 @@ public class DomainObjectParser
         if (type.isAnnotationPresent(Entity.class))
         {
             Serializable castToFk = castToFkType(type, value);
-            // we're dealing with a ManyToOne, resolve the thing
             parsedValue = parserDao.find(castToFk, type);
+
+            if (parsedValue == null)
+            {
+                status.addError(ExportType.getForClass(type), "ManyToOne relation not resolved");
+            }
         } else if (type == String.class)
         {
             parsedValue = value;
@@ -186,12 +204,14 @@ public class DomainObjectParser
                 parsedValue = transformerMap.get(type).transform(value);
             } else
             {
+                status.addError(ExportType.getForClass(type), "unknown type: " + type);
                 LOG.error("no transformer for type " + type);
             }
         }
         return parsedValue;
     }
 
+    @SuppressWarnings("unchecked")
     private Serializable castToFkType(Class<?> fkObjectType, String value) throws InstantiationException, IllegalAccessException
     {
         Field[] fields = fkObjectType.getDeclaredFields();
