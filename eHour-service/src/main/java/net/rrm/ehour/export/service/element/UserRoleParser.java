@@ -2,7 +2,9 @@ package net.rrm.ehour.export.service.element;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.export.service.ParseStatus;
 import net.rrm.ehour.export.service.ParserUtil;
+import net.rrm.ehour.persistence.export.dao.ExportType;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
@@ -23,17 +25,17 @@ public class UserRoleParser
         this.dao = dao;
     }
 
-    public void parseUserRoles(XMLEventReader reader) throws XMLStreamException
+    public void parseUserRoles(XMLEventReader reader, ParseStatus status) throws XMLStreamException
     {
         XMLEvent event;
 
         while ((event = reader.nextTag()).isStartElement())
         {
-            parseUserRole(reader);
+            parseUserRole(reader, status);
         }
     }
 
-    private void parseUserRole(XMLEventReader reader) throws XMLStreamException
+    private void parseUserRole(XMLEventReader reader, ParseStatus status) throws XMLStreamException
     {
         XMLEvent event;
         String role = null;
@@ -54,12 +56,18 @@ public class UserRoleParser
             }
         }
 
-        if (userId != null && role != null) {
+        if (userId != null && role != null)
+        {
             User user = dao.findUser(Integer.parseInt(userId));
             UserRole userRole = dao.findUserRole(role);
 
             user.addUserRole(userRole);
             dao.persistUser(user);
+
+            status.addInsertion(ExportType.USER_ROLE);
+        } else
+        {
+            status.addError(ExportType.USER_ROLE, "No userID (" + userId + ") or role (" + role + ") found");
         }
 
     }
