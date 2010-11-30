@@ -85,7 +85,7 @@ public class DomainObjectParser
 
                 domainObjects.add(domainObject);
 
-                status.addInsertion(ExportType.getForClass(clazz));
+                status.addInsertion(ExportType.forClass(clazz));
             } else if (event.isEndElement())
             {
                 break;
@@ -189,7 +189,7 @@ public class DomainObjectParser
 
             if (parsedValue == null)
             {
-                status.addError(ExportType.getForClass(type), "ManyToOne relation not resolved");
+                status.addError(ExportType.forClass(type), "ManyToOne relation not resolved");
             }
         } else if (type == String.class)
         {
@@ -204,7 +204,7 @@ public class DomainObjectParser
                 parsedValue = transformerMap.get(type).transform(value);
             } else
             {
-                status.addError(ExportType.getForClass(type), "unknown type: " + type);
+                status.addError(ExportType.forClass(type), "unknown type: " + type);
                 LOG.error("no transformer for type " + type);
             }
         }

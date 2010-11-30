@@ -27,7 +27,7 @@ class ExportTypeTest
   @Test
   void shouldFetchForClazz()
   {
-    Assert.assertEquals ExportType.USER_DEPARTMENT, UserDepartment.class
+    Assert.assertEquals ExportType.USER_DEPARTMENT, ExportType.forClass(UserDepartment.class)
   }
 
 }

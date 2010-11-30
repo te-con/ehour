@@ -63,7 +63,7 @@ public enum ExportType
         return order;
     }
 
-    public static ExportType getForClass(Class clazz)
+    public static ExportType forClass(Class clazz)
     {
         for (ExportType type : values())
         {
