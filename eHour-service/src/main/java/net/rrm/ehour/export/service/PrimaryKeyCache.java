@@ -40,7 +40,7 @@ public class PrimaryKeyCache
         return null;
     }
 
-    boolean isEmpty()
+    public boolean isEmpty()
     {
         return keyMap.isEmpty();
     }

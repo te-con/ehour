@@ -2,12 +2,22 @@ package net.rrm.ehour.export.service.element
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
+import net.rrm.ehour.domain.Audit
+import net.rrm.ehour.domain.AuditActionType
+import net.rrm.ehour.domain.ProjectAssignmentMother
+import net.rrm.ehour.domain.TimesheetEntry
+import net.rrm.ehour.domain.User
+import net.rrm.ehour.domain.UserDepartmentMother
+import net.rrm.ehour.domain.UserMother
+import net.rrm.ehour.export.service.ParseStatus
 import net.rrm.ehour.export.service.PrimaryKeyCache
 import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Before
 import org.junit.Test
-import net.rrm.ehour.domain.*
-import static org.junit.Assert.*
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.assertTrue
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -17,11 +27,13 @@ class DomainObjectParserTest
 {
   private DomainObjectParserDaoTestValidator daoValidator;
   private PrimaryKeyCache keyCache
+  ParseStatus status
 
   @Before
   void setUp()
   {
     keyCache = new PrimaryKeyCache()
+    status = new ParseStatus()
   }
 
 
@@ -38,9 +50,9 @@ class DomainObjectParserTest
     // skip the startdoc
     eventReader.nextTag()
 
-    daoValidator = (returnOnFind == null) ? new DomainObjectParserDaoValidatorImpl()  : new DomainObjectParserDaoTestValidator(returnOnFind, onFind)
+    daoValidator = (returnOnFind == null) ? new DomainObjectParserDaoValidatorImpl() : new DomainObjectParserDaoTestValidator(returnOnFind, onFind)
 
-    return new DomainObjectParser(eventReader, daoValidator);
+    return new DomainObjectParser(eventReader, daoValidator, status);
   }
 
   @Test
@@ -176,7 +188,7 @@ class DomainObjectParserTest
     assertEquals user, result[0].user
   }
 
-    private class DomainObjectParserDaoTestValidator<T> extends DomainObjectParserDaoValidatorImpl
+  private class DomainObjectParserDaoTestValidator<T> extends DomainObjectParserDaoValidatorImpl
   {
     private T returnObject;
     private Serializable primaryKey;
@@ -187,8 +199,7 @@ class DomainObjectParserTest
       this.returnObject = returnObject;
     }
 
-    @Override
-    <T> T find(Serializable pk, Class<T> type)
+    public <T> T find(Serializable pk, Class<T> type)
     {
       return pk.equals(this.primaryKey) ? returnObject : null
     }
