@@ -16,18 +16,7 @@
 
 package net.rrm.ehour.persistence.dbvalidator;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.sql.DataSource;
-
 import net.rrm.ehour.config.ConfigurationItem;
-
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.ddlutils.DdlUtilsException;
 import org.apache.ddlutils.Platform;
@@ -41,6 +30,15 @@ import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import javax.sql.DataSource;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Derby database accessor methods
  **/
@@ -49,7 +47,7 @@ public class DerbyDbValidator
 	private static final String DDL_FILE = "ddl/ddl-ehour-%s.xml";
 	private static final String DML_FILE = "ddl/dml-ehour-%s.xml";
 
-	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE};
+	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE}
 
 	private static final Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
 
@@ -66,9 +64,9 @@ public class DerbyDbValidator
 
 	public void checkDatabaseState()
 	{
-		boolean databaseInState = false;
-		String 	currentVersion = null;
-		DdlType ddlType = DdlType.CREATE_TABLE;
+		boolean databaseInState;
+		String 	currentVersion;
+		DdlType ddlType;
 
 		LOGGER.info("Verifying datamodel version. Minimum version: " + requiredDbVersion);
 
@@ -82,7 +80,7 @@ public class DerbyDbValidator
 
 			currentVersion = getCurrentVersion(connection);
 
-			databaseInState = (currentVersion != null) ? currentVersion.equalsIgnoreCase(requiredDbVersion) : false;
+			databaseInState = (currentVersion != null) && currentVersion.equalsIgnoreCase(requiredDbVersion);
 
 			if (databaseInState)
 			{
@@ -104,7 +102,7 @@ public class DerbyDbValidator
 		}
 		finally
 		{
-			((EmbeddedDataSource)dataSource).setCreateDatabase("");
+			dataSource.setCreateDatabase("");
 
 			try
 			{

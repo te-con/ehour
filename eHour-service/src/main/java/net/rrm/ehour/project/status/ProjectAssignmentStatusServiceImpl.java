@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.project.status;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
@@ -26,9 +24,10 @@ import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConstants;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Time allotted util class
@@ -85,7 +84,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 
 	private void addStatusForAssignmentType(ProjectAssignment assignment, ProjectAssignmentStatus status)
 	{
-		int assignmentTypeId = assignment.getAssignmentType().getAssignmentTypeId().intValue();
+		int assignmentTypeId = assignment.getAssignmentType().getAssignmentTypeId();
 		
 		if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
 		{
@@ -218,13 +217,14 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 				status.addStatus(ProjectAssignmentStatus.Status.IN_ALLOTTED);
 
 			}
-			else if (statusAggregateHours  >= (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue()))
+			else if (statusAggregateHours  >= (assignment.getAllottedHours() + assignment.getAllowedOverrun()))
 			{
 				status.addStatus(ProjectAssignmentStatus.Status.OVER_OVERRUN);
-	
+
+                float totalAllowed = assignment.getAllottedHours() + assignment.getAllowedOverrun();
+
 				// it's still valid when it's right on the mark
-				status.setValid(!status.isValid() ||  
-							(statusAggregateHours  == (assignment.getAllottedHours().floatValue() + assignment.getAllowedOverrun().floatValue())));
+				status.setValid(!status.isValid() || Math.abs(statusAggregateHours - totalAllowed) < 0.0001);
 			}
 			else
 			{

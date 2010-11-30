@@ -16,17 +16,13 @@
 
 package net.rrm.ehour.ui.common.cache;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.log4j.Logger;
 import org.springframework.security.core.codec.Hex;
 import org.springframework.util.DigestUtils;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Simple object cache that holds an object for a specified time in memory (INVALID_AFTER)
@@ -45,7 +41,6 @@ public class ObjectCache implements Serializable
 	
 	/**
 	 * Add report to cache
-	 * @param report
 	 * @return
 	 */
 	public String addObjectToCache(CachableObject cacheObject)
@@ -73,7 +68,6 @@ public class ObjectCache implements Serializable
 
 	/**
 	 * Check cache for stale entries
-	 * TODO add Spring timer
 	 */
 	public void checkCache()
 	{
@@ -85,7 +79,7 @@ public class ObjectCache implements Serializable
 			{
 				CacheEntry cacheEntry = cache.get(id);
 				
-				if (cacheEntry.addedTimstamp < expireBefore)
+				if (cacheEntry.addedTimestamp < expireBefore)
 				{
 					LOGGER.info("Removing id " + id + " from cache");
 					cache.remove(id);
@@ -117,7 +111,6 @@ public class ObjectCache implements Serializable
 	
 	/**
 	 * Get report from cache
-	 * @param id
 	 * @return
 	 */
 	public CachableObject getObjectFromCache(String cacheId)
@@ -164,19 +157,19 @@ public class ObjectCache implements Serializable
 	private class CacheEntry implements Comparable<CacheEntry>, Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		private long		addedTimstamp;
+		private long addedTimestamp;
 		private CachableObject cachedObject;
 		
 		CacheEntry(CachableObject cachedObject)
 		{
 			this.cachedObject = cachedObject;
-			this.addedTimstamp = new Date().getTime();
+			this.addedTimestamp = new Date().getTime();
 			
 		}
 		
 		public int compareTo(CacheEntry o)
 		{
-			return (int)(addedTimstamp - o.addedTimstamp);
+			return (int)(addedTimestamp - o.addedTimestamp);
 		}
 	}
 }

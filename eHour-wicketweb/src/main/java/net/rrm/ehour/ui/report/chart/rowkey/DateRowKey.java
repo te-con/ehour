@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.report.chart.rowkey;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -27,13 +26,12 @@ import java.util.Locale;
 
 public class DateRowKey extends ChartRowKey
 {
-	private static final DateFormat format = new SimpleDateFormat("yyyyMMdd");
 	private Integer id;
 	private Date name;
 	
 	public DateRowKey(Date date, Locale locale)
 	{
-		id = Integer.parseInt(format.format(date));
+		id = Integer.parseInt(new SimpleDateFormat("yyyyMMdd").format(date));
 		name = date;
 	}
 

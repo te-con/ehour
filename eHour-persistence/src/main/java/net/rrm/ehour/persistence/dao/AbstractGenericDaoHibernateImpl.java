@@ -16,15 +16,14 @@
 
 package net.rrm.ehour.persistence.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
 import net.rrm.ehour.domain.DomainObject;
-
 import org.hibernate.Hibernate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * GenericDAO interface for CRUD on domain objects
@@ -84,8 +83,6 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?,
 												final String cachingRegion)
 					throws DataAccessException 
 	{
-		isCaching = false;
-		
 		if (!isCaching)
 		{
 			return (List<T>)getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, paramNames, values);

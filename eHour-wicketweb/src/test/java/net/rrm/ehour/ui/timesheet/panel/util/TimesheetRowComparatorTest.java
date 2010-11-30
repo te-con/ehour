@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.ui.timesheet.panel.util;
 
-import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentMother;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author thies
@@ -31,10 +31,6 @@ import org.junit.Test;
  */
 public class TimesheetRowComparatorTest
 {
-
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.timesheet.util.TimesheetRowComparator#compare(net.rrm.ehour.persistence.persistence.ui.timesheet.dto.TimesheetRow, net.rrm.ehour.persistence.persistence.ui.timesheet.dto.TimesheetRow)}.
-	 */
 	@Test
 	public void testCompare()
 	{
@@ -48,7 +44,7 @@ public class TimesheetRowComparatorTest
 		TimesheetRow rowB = new TimesheetRow(new EhourConfigStub());
 		rowB.setProjectAssignment(pB);
 		
-		assertEquals(-1, new TimesheetRowComparator().compare(rowA, rowB));
+		assertEquals(-1, TimesheetRowComparator.INSTANCE.compare(rowA, rowB));
 	}
 
 }

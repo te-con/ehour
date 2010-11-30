@@ -16,17 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.util;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
@@ -37,6 +26,9 @@ import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetCell;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.util.DateUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Generates the timesheet backing object
@@ -67,7 +59,7 @@ public class TimesheetAssembler
 	{
 		Map<ProjectAssignment, Map<String, TimesheetEntry>>	assignmentMap;
 		List<Date>	 										dateSequence;
-		List<TimesheetRow>									timesheetRows = null;
+		List<TimesheetRow>									timesheetRows;
 		Timesheet											timesheet;
 		SortedMap<Customer, List<TimesheetRow>>				customerMap;
 		
@@ -86,7 +78,7 @@ public class TimesheetAssembler
 		sortCustomerMap(customerMap);
 		
 		timesheet.setCustomers(customerMap);
-		timesheet.setDateSequence((Date[])dateSequence.toArray(new Date[7]));
+		timesheet.setDateSequence(dateSequence.toArray(new Date[7]));
 		timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());		
 		timesheet.setWeekEnd(weekOverview.getWeekRange().getDateEnd());
 	
@@ -102,9 +94,9 @@ public class TimesheetAssembler
 	 */
 	protected void sortCustomerMap(SortedMap<Customer, List<TimesheetRow>> customerMap)
 	{
-		for (Customer customer : customerMap.keySet())
-		{
-			Collections.sort(customerMap.get(customer), new TimesheetRowComparator());
+        for (Map.Entry<Customer, List<TimesheetRow>> entry : customerMap.entrySet())
+        {
+            Collections.sort(entry.getValue(), TimesheetRowComparator.INSTANCE);
 		}
 	}
 	
@@ -214,11 +206,9 @@ public class TimesheetAssembler
 								List<ProjectAssignment> validProjectAssignments,
 								Date date)
 	{
-		boolean isValid = false;
-		
 		// first check if it's in valid project assignments (time allotted can have values
 		// but not be valid anymore)
-		isValid = validProjectAssignments.contains(assignment);
+		boolean isValid = validProjectAssignments.contains(assignment);
 		
 		DateRange dateRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
 		
@@ -230,7 +220,6 @@ public class TimesheetAssembler
 	/**
 	 * Merge unused project assignments into the week overview
 	 * @param weekOverview
-	 * @return
 	 */
 	protected void mergeUnbookedAssignments(WeekOverview weekOverview,
 											Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap)

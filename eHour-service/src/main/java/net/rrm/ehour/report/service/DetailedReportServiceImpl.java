@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.report.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -27,9 +24,10 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.util.EhourUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Report service for detailed reports implementation
@@ -59,7 +57,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 														List<Project >projects,
 														DateRange reportRange)
 	{
-		List<FlatReportElement>	elements = new ArrayList<FlatReportElement>();
+		List<FlatReportElement>	elements;
 		
 		if (users == null && projects == null)
 		{

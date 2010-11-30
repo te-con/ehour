@@ -38,8 +38,7 @@ public class ServerPropertiesConfigurator
             try
             {
                 port = Integer.valueOf(serverPort);
-            }
-            catch (NumberFormatException nfe)
+            } catch (NumberFormatException nfe)
             {
                 LOGGER.warn("Invalid port " + serverPort + ", using default port");
             }
@@ -47,35 +46,47 @@ public class ServerPropertiesConfigurator
         return port;
     }
 
-    private Properties loadProperties(String filename) throws FileNotFoundException, IOException
+    private Properties loadProperties(String filename) throws IOException
     {
         Properties props = new Properties();
 
         File file = new File(filename);
+        InputStream inputStream = null;
 
-        if (file.exists())
+        try
         {
-            props.load(new FileInputStream(file));
-        } else
-        {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
-
-            if (inputStream == null)
+            if (file.exists())
             {
-                LOGGER.debug("property file '" + filename + "' not found in the classpath, using it as absolute path");
+                inputStream = new FileInputStream(file);
+
+                props.load(inputStream);
+            } else
+            {
+                inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
+
+                if (inputStream == null)
+                {
+                    LOGGER.debug("property file '" + filename + "' not found in the classpath, using it as absolute path");
 
 
-                try
-                {
-                    inputStream = new FileInputStream(filename);
-                } catch (FileNotFoundException e)
-                {
-                    throw new FileNotFoundException("property field " + filename + " not found in classpath or as absolute path");
+                    try
+                    {
+                        inputStream = new FileInputStream(filename);
+                    } catch (FileNotFoundException e)
+                    {
+                        throw new FileNotFoundException("property field " + filename + " not found in classpath or as absolute path");
+                    }
                 }
+
+                props.load(inputStream);
+
             }
-
-            props.load(inputStream);
-
+        } finally
+        {
+            if (inputStream != null)
+            {
+                inputStream.close();
+            }
         }
         return props;
     }

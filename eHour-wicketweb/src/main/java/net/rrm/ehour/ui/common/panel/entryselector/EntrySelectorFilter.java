@@ -16,9 +16,9 @@
 
 package net.rrm.ehour.ui.common.panel.entryselector;
 
-import java.io.Serializable;
-
 import org.apache.wicket.model.StringResourceModel;
+
+import java.io.Serializable;
 
 /**
  * Value object for entry selection
@@ -47,7 +47,7 @@ public class EntrySelectorFilter implements Serializable
 	public String getCleanFilterInput()
 	{
 		return (filterInput != null 
-					&& filterInput.equals(defaultFilterInputText)) ? "" : filterInput;
+					&& filterInput.equals(defaultFilterInputText.getString())) ? "" : filterInput;
 	}
 	
 	/**

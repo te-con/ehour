@@ -16,9 +16,9 @@
 
 package net.rrm.ehour.ui.timesheet.util;
 
-import java.util.Comparator;
-
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
+
+import java.util.Comparator;
 
 
 /**
@@ -27,6 +27,12 @@ import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 
 public class TimesheetRowComparator implements Comparator<TimesheetRow>
 {
+    public static final TimesheetRowComparator INSTANCE = new TimesheetRowComparator();
+
+    private TimesheetRowComparator()
+    {
+
+    }
 
 	public int compare(TimesheetRow o1, TimesheetRow o2)
 	{

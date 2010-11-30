@@ -16,17 +16,9 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -45,7 +37,6 @@ import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -66,6 +57,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * The main panel - timesheet form
@@ -91,7 +89,7 @@ public class TimesheetPanel extends Panel implements Serializable
 		super(id);
 
 		EhourWebSession session = (EhourWebSession) getSession();
-		GrandTotal grandTotals = new GrandTotal();
+		GrandTotal grandTotals;
 
 		config = session.getEhourConfig();
 
@@ -142,7 +140,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	/**
 	 * Add week navigation to title
 	 * 
-	 * @param parent
 	 * @param forWeek
 	 */
 	@SuppressWarnings("serial")
@@ -187,7 +184,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * Create comments input
 	 * 
 	 * @param parent
-	 * @param timesheet
 	 */
 	private MarkupContainer createCommentsInput(WebMarkupContainer parent)
 	{
@@ -234,7 +230,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * Set submit actions for form
 	 * 
 	 * @param form
-	 * @param timesheet
 	 */
 	private void setSubmitActions(Form<?> form, MarkupContainer parent)
 	{
@@ -320,9 +315,6 @@ public class TimesheetPanel extends Panel implements Serializable
 
 	/**
 	 * Set message that the hours are saved
-	 * 
-	 * @param timesheet
-	 * @param target
 	 */
 	private Label updatePostPersistMessage()
 	{
@@ -396,9 +388,6 @@ public class TimesheetPanel extends Panel implements Serializable
 
 	/**
 	 * Persist timesheet entries
-	 * 
-	 * @param timesheet
-	 * @throws OverBudgetException
 	 */
 	private List<ProjectAssignmentStatus> persistTimesheetEntries()
 	{
@@ -409,7 +398,6 @@ public class TimesheetPanel extends Panel implements Serializable
 	 * Build form
 	 * 
 	 * @param parent
-	 * @param timesheet
 	 */
 	private GrandTotal buildForm(final Form<?> form, WebMarkupContainer parent)
 	{

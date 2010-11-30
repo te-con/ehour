@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -31,6 +27,10 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Displays error indicator when indicated field does not validate
@@ -68,10 +68,10 @@ public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedba
 		
 		this.indicatorFor = indicatorFor;
 		
-		indicatorFor.setOutputMarkupId(true);
-		
 		if (indicatorFor != null)
 		{
+            indicatorFor.setOutputMarkupId(true);
+
 			filter = new ComponentFeedbackMessageFilter(indicatorFor);
 		}
 		

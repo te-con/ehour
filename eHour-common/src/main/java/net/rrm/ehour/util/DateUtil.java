@@ -16,19 +16,13 @@
 
 package net.rrm.ehour.util;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+
+import java.text.DateFormat;
+import java.util.*;
 
 /**
  * Various static methods for date manipulation
@@ -102,7 +96,6 @@ public class DateUtil
 
 	/**
 	 * Converts a calendar to a range covering that month
-	 * @param date
 	 * @return first Calendar object is start of the month, last Calendar object is end of the month
 	 */
 	public static DateRange calendarToMonthRange(Calendar calendar)
@@ -124,8 +117,6 @@ public class DateUtil
 
 	/**
 	 * Check whether a date is within range
-	 * @param the date
-	 * @param the range the date must be in
 	 * @return
 	 */
 
@@ -273,7 +264,7 @@ public class DateUtil
 	 */
 	public static DateRange getDateRangeForQuarter(Calendar calendar)
 	{
-		DateRange	quarterRange = new DateRange();
+		DateRange	quarterRange;
 		Calendar	startMonth, endMonth;
 
 		int month = calendar.get(Calendar.MONTH);
@@ -352,7 +343,6 @@ public class DateUtil
 
 	/**
 	 * Set the time of a date to 23:59:59.999
-	 * @param cal
 	 */
 	public static Date maximizeTime(Date date)
 	{
@@ -366,7 +356,6 @@ public class DateUtil
 	/**
 	 * Create a sequence of dates from the date range
 	 * 
-	 * @param weekOverview
 	 * @return
 	 */
 	public static List<Date> createDateSequence(DateRange range, EhourConfig config)
