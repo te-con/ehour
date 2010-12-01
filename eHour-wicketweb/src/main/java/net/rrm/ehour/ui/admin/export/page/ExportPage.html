@@ -9,7 +9,15 @@
 <wicket:extend>
     <div style="width: 700px">
         <a wicket:id="exportLink">Backup to XML</a>
+        <br/><br/>
+
+        <form wicket:id="form">
+            Import file: <input wicket:id="file" type="file"/> <br/><br/>
+            <input wicket:id="ajaxSubmit" type="button" value="Import"/>
+        </form>
     </div>
+
+
 </wicket:extend>
 </body>
 </html>
