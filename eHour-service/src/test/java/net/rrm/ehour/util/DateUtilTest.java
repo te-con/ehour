@@ -21,18 +21,18 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import static org.junit.Assert.*;
 
 import junit.framework.TestCase;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
-
-import org.joda.time.DateTime;
 import org.junit.Test;
+import org.joda.time.DateTime;
 
 @SuppressWarnings("deprecation")
-public class DateUtilTest extends TestCase
+public class DateUtilTest
 {
-
+	@Test
 	public void testCalendarToMonthRange()
 	{
 		Calendar cal = new GregorianCalendar(2006, 11 -1 , 4);
@@ -50,6 +50,7 @@ public class DateUtilTest extends TestCase
 		assertEquals(4, cal.get(Calendar.DATE));
 	}
 	
+	@Test
 	public void testGetDaysInMonth()
 	{
 		Calendar cal = new GregorianCalendar(2006, 11 -1 , 4);
@@ -59,6 +60,7 @@ public class DateUtilTest extends TestCase
 		assertEquals(28, DateUtil.getDaysInMonth(cal));
 	}
 	
+	@Test
 	public void testGetDaysInMonthJoda()
 	{
 		DateTime date = new DateTime(2006, 11 , 4, 0, 0, 0, 0);
@@ -68,6 +70,7 @@ public class DateUtilTest extends TestCase
 		assertEquals(28, DateUtil.getDaysInMonth(date));
 	}	
 
+	@Test
 	public void testIsDateWithinRange()
 	{
 		boolean	inRange;
@@ -100,6 +103,7 @@ public class DateUtilTest extends TestCase
 		
 	}
 	
+	@Test
 	public void testIsDateRangeOverlaps()
 	{
 		DateRange rangeA = new DateRange(new GregorianCalendar(2006, 5, 5).getTime(),
@@ -142,6 +146,7 @@ public class DateUtilTest extends TestCase
 		assertTrue(DateUtil.isDateRangeOverlaps(rangeB, rangeA));
 	}
 	
+	@Test
 	public void testIsDateRangeOverlapsNull()
 	{
 		DateRange rangeA = new DateRange(null,
@@ -183,6 +188,7 @@ public class DateUtilTest extends TestCase
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetDateRangeForWeek()
 	{
 		Calendar cal = new GregorianCalendar(2007, 1 - 1, 1);
@@ -201,6 +207,7 @@ public class DateUtilTest extends TestCase
 	 * 
 	 *
 	 */
+	@Test
 	public void testNullifyTime()
 	{
 		Calendar cal = new GregorianCalendar();
@@ -211,6 +218,7 @@ public class DateUtilTest extends TestCase
 		assertEquals(0, cal.get(Calendar.HOUR_OF_DAY));
 	}
 	
+	@Test
 	public void testMaximizeTime()
 	{
 		Calendar cal = new GregorianCalendar();
@@ -225,6 +233,7 @@ public class DateUtilTest extends TestCase
 	 * 
 	 *
 	 */
+	@Test
 	public void testGetDateRangeForMonth()
 	{
 		Calendar cal = new GregorianCalendar(2006, 12 - 1, 5);

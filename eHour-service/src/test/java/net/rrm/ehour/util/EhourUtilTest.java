@@ -18,26 +18,22 @@ package net.rrm.ehour.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import static org.junit.Assert.*;
 import junit.framework.TestCase;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 
 import org.junit.Test;
+import org.junit.Before;
 
 /**
  * TODO 
  **/
 
-public class EhourUtilTest extends TestCase
+public class EhourUtilTest
 {
-
-	protected void setUp() throws Exception
-	{
-		super.setUp();
-	}
-
+	@Test
 	public void testGetPKsFromDomainObjects()
 	{
 		List<Project>	projectIds = new ArrayList<Project>();
