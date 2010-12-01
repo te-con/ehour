@@ -16,16 +16,13 @@
 
 package net.rrm.ehour.util;
 
+import net.rrm.ehour.domain.Project;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.Assert.*;
-import junit.framework.TestCase;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.reports.util.ReportUtil;
 
-import org.junit.Test;
-import org.junit.Before;
+import static org.junit.Assert.assertEquals;
 
 /**
  * TODO 
@@ -47,21 +44,6 @@ public class EhourUtilTest
 		
 		assertEquals(4, ints.size());
 	}
-	
-	@Test
-	public void testIsEmptyAggregateList()
-	{
-		List<AssignmentAggregateReportElement> aggs = new ArrayList<AssignmentAggregateReportElement>();
-		
-		AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
-		agg.setHours(0);
-		aggs.add(agg);
-		
-		agg = new AssignmentAggregateReportElement();
-		aggs.add(agg);
-		
-		assertTrue(ReportUtil.isEmptyAggregateList(aggs));
-		
-	}	
+
 
 }

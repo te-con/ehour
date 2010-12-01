@@ -16,18 +16,17 @@
 
 package net.rrm.ehour.util;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-import static org.junit.Assert.*;
-
-import junit.framework.TestCase;
-import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import org.junit.Test;
 import org.joda.time.DateTime;
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 
 @SuppressWarnings("deprecation")
 public class DateUtilTest
@@ -252,7 +251,12 @@ public class DateUtilTest
 	@Test
 	public void testCreateCalendarSequence()
 	{
-		List<Date> res = DateUtil.createDateSequence(new DateRange(new Date(2007 - 1900, 5 - 1, 2),new Date(2007 - 1900, 5 - 1, 8)), new EhourConfigStub());
+        EhourConfig config = mock(EhourConfig.class);
+
+        when(config.getFirstDayOfWeek()).thenReturn(1);
+        when(config.getTzAsTimeZone()).thenReturn(TimeZone.getDefault());
+
+        List<Date> res = DateUtil.createDateSequence(new DateRange(new Date(2007 - 1900, 5 - 1, 2), new Date(2007 - 1900, 5 - 1, 8)), config);
 		
 		assertEquals(7, res.size());
 	}	
