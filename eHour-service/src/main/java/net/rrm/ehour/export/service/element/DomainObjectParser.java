@@ -3,16 +3,11 @@ package net.rrm.ehour.export.service.element;
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.export.service.ParseStatus;
 import net.rrm.ehour.export.service.ParserUtil;
-import net.rrm.ehour.export.service.PrimaryKeyCache;
 import net.rrm.ehour.persistence.export.dao.ExportType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -22,11 +17,7 @@ import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)

@@ -2,22 +2,12 @@ package net.rrm.ehour.export.service.element
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
-import net.rrm.ehour.domain.Audit
-import net.rrm.ehour.domain.AuditActionType
-import net.rrm.ehour.domain.ProjectAssignmentMother
-import net.rrm.ehour.domain.TimesheetEntry
-import net.rrm.ehour.domain.User
-import net.rrm.ehour.domain.UserDepartmentMother
-import net.rrm.ehour.domain.UserMother
 import net.rrm.ehour.export.service.ParseStatus
-import net.rrm.ehour.export.service.PrimaryKeyCache
 import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Before
 import org.junit.Test
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
+import net.rrm.ehour.domain.*
+import static org.junit.Assert.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
