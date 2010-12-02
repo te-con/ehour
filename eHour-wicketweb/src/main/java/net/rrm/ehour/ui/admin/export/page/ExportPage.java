@@ -2,18 +2,17 @@ package net.rrm.ehour.ui.admin.export.page;
 
 import net.rrm.ehour.export.service.ImportException;
 import net.rrm.ehour.export.service.ImportService;
+import net.rrm.ehour.export.service.ParseStatus;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.lang.Bytes;
 
 /**
  * User: thies
@@ -45,28 +44,13 @@ public class ExportPage extends AbstractAdminPage<Void>
             }
         });
 
-        add(addUploadForm());
+        add(addUploadForm("form"));
     }
 
-    private Form<?> addUploadForm()
+    private Form<?> addUploadForm(String id)
     {
-        Form<?> form = new Form<Void>("form")
-        {
-            @Override
-            protected void onSubmit()
-            {
-                // display uploaded info
-                FileUpload upload = file.getFileUpload();
-                if (upload == null)
-                {
-                    info("No file uploaded");
-                } else
-                {
-                    info("File-Name: " + upload.getClientFileName() + " File-Size: " +
-                            Bytes.bytes(upload.getSize()).toString());
-                }
-            }
-        };
+        Form<?> form = new Form<Void>(id);
+        form.setMultiPart(true);
 
         add(form);
 
@@ -79,15 +63,20 @@ public class ExportPage extends AbstractAdminPage<Void>
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form)
             {
-                byte[] bytes = file.getFileUpload().getBytes();
-                String xmlData = new String(bytes);
+                String contentType = file.getFileUpload().getContentType();
 
-                try
+                if (contentType.contains("text"))
                 {
-                    importService.prepareImportDatabase(xmlData);
-                } catch (ImportException e)
-                {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    byte[] bytes = file.getFileUpload().getBytes();
+                    String xmlData = new String(bytes);
+
+                    try
+                    {
+                        ParseStatus status = importService.prepareImportDatabase(xmlData);
+                    } catch (ImportException e)
+                    {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
             }
 
@@ -95,7 +84,6 @@ public class ExportPage extends AbstractAdminPage<Void>
 
         return form;
     }
-
 
 
 }
