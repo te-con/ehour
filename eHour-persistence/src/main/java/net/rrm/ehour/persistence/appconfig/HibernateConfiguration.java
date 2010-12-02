@@ -53,7 +53,7 @@ public class HibernateConfiguration
 		hibernateProperties.put("hibernate.dialect", configProperties.get("hibernate.dialect"));
 		hibernateProperties.put("show_sql", "false");
 		hibernateProperties.put("use_outer_join", "true");
-		hibernateProperties.put("hibernate.cache.provider_class", "org.hibernate.cache.EhCacheProvider");
+		hibernateProperties.put("hibernate.cache.region.factory_class", "net.sf.ehcache.hibernate.EhCacheRegionFactory");
 		hibernateProperties.put("hibernate.cache.use_second_level_cache", "true");
 		hibernateProperties.put("net.sf.ehcache.configurationResourceName", "ehcache.xml");
 		hibernateProperties.put("hibernate.cache.use_query_cache", "true");
