@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.common.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
@@ -48,6 +47,13 @@ public abstract class AbstractBasePanel<T> extends Panel
 	{
 		return ((EhourWebSession)this.getSession());
 	}
+
+    @SuppressWarnings("unchecked")
+    protected final IModel<T> getPanelModel() {
+        return (IModel<T>)super.getDefaultModel();
+    }
+
+
 	
 	/**
 	 * Get this user's config

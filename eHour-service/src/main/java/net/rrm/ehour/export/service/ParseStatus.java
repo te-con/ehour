@@ -2,6 +2,7 @@ package net.rrm.ehour.export.service;
 
 import net.rrm.ehour.persistence.export.dao.ExportType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author thies (thies@te-con.nl)
  *         Date: 11/30/10 12:57 AM
  */
-public class ParseStatus
+public class ParseStatus implements Serializable
 {
     public Map<ExportType, Integer> insertions = new HashMap<ExportType, Integer>();
     public Map<ExportType, List<String>> errors = new HashMap<ExportType, List<String>>();

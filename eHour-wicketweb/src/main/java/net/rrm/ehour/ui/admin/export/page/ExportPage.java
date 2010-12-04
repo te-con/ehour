@@ -4,12 +4,16 @@ import net.rrm.ehour.export.service.ImportException;
 import net.rrm.ehour.export.service.ImportService;
 import net.rrm.ehour.export.service.ParseStatus;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
+import net.rrm.ehour.ui.admin.export.panel.ParseStatusPanel;
+import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -21,10 +25,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class ExportPage extends AbstractAdminPage<Void>
 {
+    private static final String ID_PARSE_STATUS = "parseStatus";
     @SpringBean(name = "importService")
     private ImportService importService;
-
-    private FileUploadField file;
 
     public ExportPage()
     {
@@ -45,17 +48,23 @@ public class ExportPage extends AbstractAdminPage<Void>
         });
 
         add(addUploadForm("form"));
+
+        final WebMarkupContainer parseStatus = new WebMarkupContainer(ID_PARSE_STATUS);
+        parseStatus.setOutputMarkupId(true);
+        add(parseStatus);
+
     }
 
     private Form<?> addUploadForm(String id)
     {
-        Form<?> form = new Form<Void>(id);
+        final Form<?> form = new Form<Void>(id);
         form.setMultiPart(true);
 
         add(form);
 
-        // create the file upload field
-        form.add(file = new FileUploadField("file"));
+        final FileUploadField file = new FileUploadField("file");
+        form.add(file);
+
 
         // create the ajax button used to submit the form
         form.add(new AjaxButton("ajaxSubmit")
@@ -73,9 +82,17 @@ public class ExportPage extends AbstractAdminPage<Void>
                     try
                     {
                         ParseStatus status = importService.prepareImportDatabase(xmlData);
+                        Component component = ExportPage.this.get(ID_PARSE_STATUS);
+                        ParseStatusPanel statusPanel = new ParseStatusPanel(ID_PARSE_STATUS, new Model<ParseStatus>(status));
+                        statusPanel.setOutputMarkupId(true);
+                        component.replaceWith(statusPanel);
+                        target.addComponent(statusPanel);
+
+
                     } catch (ImportException e)
                     {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        // TODO
+                        e.printStackTrace();
                     }
                 }
             }
