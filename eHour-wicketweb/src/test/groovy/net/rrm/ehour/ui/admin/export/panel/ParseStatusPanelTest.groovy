@@ -30,8 +30,6 @@ class ParseStatusPanelTest extends AbstractSpringWebAppTester
     tester.assertComponent "panel:errors:0:msgs", ListView.class
     def msg = tester.getComponentFromLastRenderedPage("panel:errors:0:msgs:0:msg")
     assertEquals "failed", msg.defaultModelObject
-
-
   }
 
   private void startPanel(final ParseStatus status)
