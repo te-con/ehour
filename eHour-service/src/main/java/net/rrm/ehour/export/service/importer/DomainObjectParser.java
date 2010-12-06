@@ -1,7 +1,7 @@
-package net.rrm.ehour.export.service.element;
+package net.rrm.ehour.export.service.importer;
 
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.export.service.ParseStatus;
+import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.export.service.ParserUtil;
 import net.rrm.ehour.persistence.export.dao.ExportType;
 import org.apache.commons.lang.StringUtils;
@@ -33,7 +33,7 @@ public class DomainObjectParser
     private static final Logger LOG = Logger.getLogger(DomainObjectParser.class);
 
     private static final Map<Class<?>, TypeTransformer<?>> transformerMap = new HashMap<Class<?>, TypeTransformer<?>>();
-    private ParseStatus status;
+    private ParseSession status;
 
     static
     {
@@ -43,7 +43,7 @@ public class DomainObjectParser
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
-    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, ParseStatus status)
+    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, ParseSession status)
     {
         this.parserDao = parserDao;
         this.reader = reader;
@@ -62,7 +62,7 @@ public class DomainObjectParser
     /**
      * Parse domain object with reader pointing on the table name tag
      */
-    private <T extends DomainObject<?, ?>> List<T> parseDomainObjects(Class<T> clazz, Map<String, Field> fieldMap, ParseStatus status) throws XMLStreamException, IllegalAccessException, InstantiationException
+    private <T extends DomainObject<?, ?>> List<T> parseDomainObjects(Class<T> clazz, Map<String, Field> fieldMap, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException
     {
         List<T> domainObjects = new ArrayList<T>();
 

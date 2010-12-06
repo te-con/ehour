@@ -16,19 +16,9 @@
 
 package net.rrm.ehour.ui.report.chart;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GradientPaint;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.model.IModel;
 import org.jfree.chart.ChartFactory;
@@ -38,6 +28,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * Base class for image (jfreechart) based charts
@@ -194,14 +188,14 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
 	protected abstract String getValueAxisLabelKey();
 	
 	/**
-	 * Get row key from report element
+	 * Get row key from report importer
 	 * @param aggregate
 	 * @return
 	 */
 	protected abstract ChartRowKey getRowKey(EL element);
 
 	/**
-	 * Get column value from report element
+	 * Get column value from report importer
 	 * @param aggregate
 	 * @return
 	 */

@@ -1,4 +1,4 @@
-package net.rrm.ehour.export.service.element;
+package net.rrm.ehour.export.service.importer;
 
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;

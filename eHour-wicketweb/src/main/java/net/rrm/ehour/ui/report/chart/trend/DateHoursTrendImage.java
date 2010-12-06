@@ -16,15 +16,14 @@
 
 package net.rrm.ehour.ui.report.chart.trend;
 
-import java.util.Locale;
-
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
 import net.rrm.ehour.ui.report.chart.rowkey.DateRowKey;
-
 import org.apache.wicket.model.IModel;
+
+import java.util.Locale;
 
 /**
  * Hours per date chart
@@ -43,7 +42,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getColumnValue(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getColumnValue(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
 	protected Number getColumnValue(FlatReportElement element)
@@ -61,7 +60,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getRowKey(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getRowKey(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
 	protected ChartRowKey getRowKey(FlatReportElement element)
@@ -80,7 +79,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.trend.AbstractTrendChartImage#getSeriesKey(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.trend.AbstractTrendChartImage#getSeriesKey(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
 	protected Object getSeriesKey(FlatReportElement element)
@@ -101,7 +100,7 @@ public class DateHoursTrendImage extends AbstractTrendChartImage<FlatReportEleme
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.trend.AbstractTrendChartImage#getSeriesName(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.trend.AbstractTrendChartImage#getSeriesName(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
 	protected Comparable<?> getSeriesName(FlatReportElement element)

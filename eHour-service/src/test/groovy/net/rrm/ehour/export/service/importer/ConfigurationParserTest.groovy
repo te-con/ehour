@@ -1,4 +1,4 @@
-package net.rrm.ehour.export.service.element
+package net.rrm.ehour.export.service.importer
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory

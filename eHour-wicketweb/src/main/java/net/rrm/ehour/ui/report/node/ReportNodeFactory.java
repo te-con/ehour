@@ -16,9 +16,9 @@
 
 package net.rrm.ehour.ui.report.node;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.report.reports.element.ReportElement;
+
+import java.io.Serializable;
 
 /**
  * Factory for report nodes
@@ -35,7 +35,7 @@ public abstract class ReportNodeFactory
     public abstract ReportNode createReportNode(ReportElement aggregate, int hierarchyLevel);
 
     /**
-     * Get the id of a report element
+     * Get the id of a report importer
      * @param aggregate
      * @return
      */

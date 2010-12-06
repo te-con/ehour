@@ -16,11 +16,11 @@
 
 package net.rrm.ehour.ui.report.trend.node;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.node.ReportNode;
+
+import java.io.Serializable;
 
 /**
  * User node
@@ -44,7 +44,7 @@ public class FlatUserNode extends ReportNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
 	protected Serializable getElementId(ReportElement element)

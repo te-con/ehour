@@ -1,8 +1,8 @@
-package net.rrm.ehour.export.service.element
+package net.rrm.ehour.export.service.importer
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
-import net.rrm.ehour.export.service.ParseStatus
+import net.rrm.ehour.export.service.ParseSession
 import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Before
 import org.junit.Test
@@ -17,7 +17,7 @@ class UserRoleParserTest {
   UserRoleParserDaoValidatorImpl daoValidator
   XMLEventReader eventReader
   UserRoleParser parser
-  ParseStatus status
+  ParseSession status
 
   @Before
   void setUp()
@@ -54,7 +54,7 @@ class UserRoleParserTest {
     eventReader.nextTag()
 
     daoValidator = new UserRoleParserDaoValidatorImpl()
-    status = new ParseStatus()
+    status = new ParseSession()
 
     parser = new UserRoleParser(daoValidator)
   }

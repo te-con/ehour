@@ -12,7 +12,7 @@ public class ParserUtil
 {
     public static String parseNextEventAsCharacters(XMLEventReader eventReader) throws XMLStreamException
     {
-        // no chars can only mean an end element
+        // no chars can only mean an end importer
         StringBuffer data = new StringBuffer();
         XMLEvent charEvent;
 

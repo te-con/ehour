@@ -1,4 +1,4 @@
-package net.rrm.ehour.export.service.element;
+package net.rrm.ehour.export.service.importer;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;

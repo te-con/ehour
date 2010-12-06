@@ -16,16 +16,15 @@
 
 package net.rrm.ehour.ui.report;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
-
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * ReportBuilder
@@ -67,7 +66,7 @@ public class ReportBuilder
     }
 
     /**
-     * Process report element 
+     * Process report importer
      * @param element
      * @param factory
      * @return

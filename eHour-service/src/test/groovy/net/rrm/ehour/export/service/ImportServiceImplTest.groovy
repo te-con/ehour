@@ -39,8 +39,10 @@ class ImportServiceImplTest
 
     def file = "src/test/resources/import/import_data.xml"
     def xml = new File(file).text
-    importService.prepareImportDatabase(xml)
+    def status = importService.prepareImportDatabase(xml)
+    status.deleteFile()
   }
+
 
   @Test(expected = ImportException)
   void shouldFailOnPrepareImportForWrongDb()
@@ -66,5 +68,6 @@ class ImportServiceImplTest
     def status = importService.prepareImportDatabase(xml)
     assertFalse status.hasErrors()
 
+    status.deleteFile()
   }
 }

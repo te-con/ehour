@@ -19,7 +19,7 @@ package net.rrm.ehour.report.reports.element;
 import java.io.Serializable;
 
 /**
- * Report element, represent a actual cell in the report
+ * Report importer, represent a actual cell in the report
  **/
 
 public interface ReportElement extends Serializable

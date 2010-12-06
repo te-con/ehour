@@ -1,8 +1,8 @@
-package net.rrm.ehour.export.service.element;
+package net.rrm.ehour.export.service.importer;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.export.service.ParseStatus;
+import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.export.service.ParserUtil;
 import net.rrm.ehour.persistence.export.dao.ExportType;
 
@@ -25,7 +25,7 @@ public class UserRoleParser
         this.dao = dao;
     }
 
-    public void parseUserRoles(XMLEventReader reader, ParseStatus status) throws XMLStreamException
+    public void parseUserRoles(XMLEventReader reader, ParseSession status) throws XMLStreamException
     {
         XMLEvent event;
 
@@ -35,7 +35,7 @@ public class UserRoleParser
         }
     }
 
-    private void parseUserRole(XMLEventReader reader, ParseStatus status) throws XMLStreamException
+    private void parseUserRole(XMLEventReader reader, ParseSession status) throws XMLStreamException
     {
         XMLEvent event;
         String role = null;

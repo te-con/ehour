@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.admin.export.page;
 
 import net.rrm.ehour.export.service.ImportException;
 import net.rrm.ehour.export.service.ImportService;
-import net.rrm.ehour.export.service.ParseStatus;
+import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.export.panel.ParseStatusPanel;
 import org.apache.wicket.Component;
@@ -81,14 +81,12 @@ public class ExportPage extends AbstractAdminPage<Void>
 
                     try
                     {
-                        ParseStatus status = importService.prepareImportDatabase(xmlData);
+                        ParseSession status = importService.prepareImportDatabase(xmlData);
                         Component component = ExportPage.this.get(ID_PARSE_STATUS);
-                        ParseStatusPanel statusPanel = new ParseStatusPanel(ID_PARSE_STATUS, new Model<ParseStatus>(status));
+                        ParseStatusPanel statusPanel = new ParseStatusPanel(ID_PARSE_STATUS, new Model<ParseSession>(status));
                         statusPanel.setOutputMarkupId(true);
                         component.replaceWith(statusPanel);
                         target.addComponent(statusPanel);
-
-
                     } catch (ImportException e)
                     {
                         // TODO

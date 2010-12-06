@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.ui.report.node;
 
+import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.report.TreeReportElement;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.TreeReportElement;
 
 /**
  * Tree structure of abstract nodes for reporting purposes.
@@ -162,7 +162,7 @@ public abstract class ReportNode implements Serializable
     }
 
     /**
-     * Get id for element
+     * Get id for importer
      * @param element
      * @return
      */

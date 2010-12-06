@@ -16,11 +16,11 @@
 
 package net.rrm.ehour.ui.report.aggregate.node;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.node.ReportNode;
+
+import java.io.Serializable;
 
 /**
  * Customer node in report
@@ -42,7 +42,7 @@ public class CustomerNode extends ReportNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.aggregate.value.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.aggregate.value.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
     protected Serializable getElementId(ReportElement element)

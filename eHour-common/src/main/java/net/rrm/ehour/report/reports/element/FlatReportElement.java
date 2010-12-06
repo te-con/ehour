@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.report.reports.element;
 
-import java.util.Date;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.Date;
+
 /**
- * Report element for trend reports (more data so each element is flattened)
+ * Report importer for trend reports (more data so each importer is flattened)
  **/
 
 public class FlatReportElement implements ReportElement

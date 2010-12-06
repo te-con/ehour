@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.export.panel;
 
-import net.rrm.ehour.export.service.ParseStatus;
+import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.persistence.export.dao.ExportType;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.markup.html.basic.Label;
@@ -16,9 +16,9 @@ import java.util.Map;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 12/3/10 - 5:30 PM
  */
-public class ParseStatusPanel extends AbstractBasePanel<ParseStatus>
+public class ParseStatusPanel extends AbstractBasePanel<ParseSession>
 {
-    public ParseStatusPanel(String id, IModel<ParseStatus> model)
+    public ParseStatusPanel(String id, IModel<ParseSession> model)
     {
         super(id, model);
 
@@ -27,7 +27,7 @@ public class ParseStatusPanel extends AbstractBasePanel<ParseStatus>
 
     private void initPanel()
     {
-        ParseStatus parseStatus = getPanelModel().getObject();
+        ParseSession parseStatus = getPanelModel().getObject();
 
         Map<ExportType, List<String>> errors = parseStatus.getErrors();
 

@@ -7,9 +7,16 @@ package net.rrm.ehour.export.service;
 public interface ImportService
 {
     /**
-     * Import XML database
+     * Repare import XML database
      *
      * @param xmlData
      */
-    public ParseStatus prepareImportDatabase(String xmlData) throws ImportException;
+    public ParseSession prepareImportDatabase(String xmlData) throws ImportException;
+
+    /**
+     * Import database
+     * @param session
+     * @throws ImportException
+     */
+    public void importDatabase(ParseSession session) throws ImportException;
 }

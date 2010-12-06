@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.export.panel
 
-import net.rrm.ehour.export.service.ParseStatus
+import net.rrm.ehour.export.service.ParseSession
 import net.rrm.ehour.persistence.export.dao.ExportType
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import org.apache.wicket.markup.html.list.ListView
@@ -19,7 +19,7 @@ class ParseStatusPanelTest extends AbstractSpringWebAppTester
   @Test
   public void shouldDisplayErrors()
   {
-    ParseStatus status = new ParseStatus()
+    ParseSession status = new ParseSession()
     status.addError ExportType.USERS, "failed"
     status.addError ExportType.USERS, "failed again"
 
@@ -35,7 +35,7 @@ class ParseStatusPanelTest extends AbstractSpringWebAppTester
   @Test
   public void shouldDisplayInsertions()
   {
-    ParseStatus status = new ParseStatus()
+    ParseSession status = new ParseSession()
     status.addInsertion ExportType.USERS
     status.addInsertion ExportType.USERS
 
@@ -50,14 +50,14 @@ class ParseStatusPanelTest extends AbstractSpringWebAppTester
   }
 
 
-  private void startPanel(final ParseStatus status)
+  private void startPanel(final ParseSession status)
   {
     tester.startPanel(new TestPanelSource()
     {
       @Override
       Panel getTestPanel(String panelId)
       {
-        return new ParseStatusPanel(panelId, new Model<ParseStatus>(status))
+        return new ParseStatusPanel(panelId, new Model<ParseSession>(status))
       }
     })
   }

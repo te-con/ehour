@@ -3,12 +3,7 @@ package net.rrm.ehour.export.service;
 import net.rrm.ehour.config.ConfigurationItem;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.export.service.element.ConfigurationDaoWrapperValidatorImpl;
-import net.rrm.ehour.export.service.element.ConfigurationParser;
-import net.rrm.ehour.export.service.element.DomainObjectParser;
-import net.rrm.ehour.export.service.element.DomainObjectParserDaoValidatorImpl;
-import net.rrm.ehour.export.service.element.UserRoleParser;
-import net.rrm.ehour.export.service.element.UserRoleParserDaoValidatorImpl;
+import net.rrm.ehour.export.service.importer.*;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +16,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringReader;
 
 /**
@@ -36,11 +34,20 @@ public class ImportServiceImpl implements ImportService
     private ConfigurationDao configurationDao;
 
     @Override
-    public ParseStatus prepareImportDatabase(String xmlData) throws ImportException
+    public void importDatabase(ParseSession session) throws ImportException
+    {
+
+    }
+
+    @Override
+    public ParseSession prepareImportDatabase(String xmlData) throws ImportException
     {
         try
         {
-            return validateXml(xmlData);
+            String tempFilename = writeToTempFile(xmlData);
+            ParseSession status = validateXml(xmlData);
+            status.setFilename(tempFilename);
+            return status;
         } catch (Exception e)
         {
             LOG.error(e);
@@ -48,9 +55,34 @@ public class ImportServiceImpl implements ImportService
         }
     }
 
-    private ParseStatus validateXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException, ClassNotFoundException
+    private String writeToTempFile(String xmlData) throws IOException
     {
-        ParseStatus status = new ParseStatus();
+        FileWriter writer = null;
+        File file;
+
+        try
+        {
+            file = File.createTempFile("import", "xml");
+            file.deleteOnExit();
+
+            writer = new FileWriter(file);
+            writer.write(xmlData);
+        } finally
+        {
+            if (writer != null)
+            {
+                writer.close();
+            }
+        }
+
+        return file.getAbsolutePath();
+
+    }
+
+
+    private ParseSession validateXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException, ClassNotFoundException
+    {
+        ParseSession status = new ParseSession();
 
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));

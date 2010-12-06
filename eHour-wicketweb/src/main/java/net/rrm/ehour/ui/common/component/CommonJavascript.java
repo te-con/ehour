@@ -37,8 +37,8 @@ public class CommonJavascript
 	private static final ResourceReference JS_MOUSE_OVER = new ResourceReference(CommonJavascript.class, "js/ImageMouseOver.js");
 	
 	/**
-	 * Add mouse over on element 
-	 * @param imgComponent the element which has the mouse over effect
+	 * Add mouse over on importer
+	 * @param imgComponent the importer which has the mouse over effect
 	 * @param parent the parent component (panel/page) of the imgComponent
 	 * @param imageUriOn image URI as text of the mouse over image
 	 * @param imageUriOff image URI as text of the mouse out image

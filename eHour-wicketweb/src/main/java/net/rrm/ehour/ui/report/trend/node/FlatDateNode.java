@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.ui.report.trend.node;
 
+import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.report.node.ReportNode;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.node.ReportNode;
 
 /**
  * Day date node 
@@ -48,7 +48,7 @@ public class FlatDateNode extends ReportNode
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
 	protected Serializable getElementId(ReportElement element)

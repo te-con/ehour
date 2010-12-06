@@ -21,7 +21,6 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.report.chart.AbstractReportChartImage;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
 import net.rrm.ehour.ui.report.chart.rowkey.ChartRowKey;
-
 import org.apache.wicket.model.IModel;
 
 /**
@@ -42,7 +41,7 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getColumnValue(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getColumnValue(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
 	protected Number getColumnValue(AssignmentAggregateReportElement element)
@@ -60,7 +59,7 @@ public class AggregateChartImage extends AbstractReportChartImage<AssignmentAggr
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getRowKey(net.rrm.ehour.persistence.persistence.report.reports.element.ReportElement)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.chart.AbstractReportChartImage#getRowKey(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
 	 */
 	@Override
 	protected ChartRowKey getRowKey(AssignmentAggregateReportElement element)
