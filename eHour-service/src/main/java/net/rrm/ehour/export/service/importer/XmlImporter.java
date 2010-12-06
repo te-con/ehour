@@ -61,7 +61,7 @@ public class XmlImporter
                         userRoleParser.parseUserRoles(eventReader, status);
                         break;
                     case OTHER:
-                        parseElement(startElement, domainObjectParser);
+                        parseElement(startElement, domainObjectParser, status);
                         break;
                     default:
                         break;
@@ -89,13 +89,13 @@ public class XmlImporter
     }
 
     @SuppressWarnings("unchecked")
-    private void parseElement(StartElement element, DomainObjectParser parser) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException
+    private void parseElement(StartElement element, DomainObjectParser parser, ParseSession status) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException
     {
         String aClass = element.getAttributeByName(new QName("CLASS")).getValue();
 
         Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
 
-        parser.parse(doClass);
+        parser.parse(doClass, status);
     }
 
     private void checkDatabaseVersion(StartElement element) throws ImportException

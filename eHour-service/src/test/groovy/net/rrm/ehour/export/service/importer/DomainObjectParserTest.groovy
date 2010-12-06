@@ -42,7 +42,7 @@ class DomainObjectParserTest
 
     daoValidator = (returnOnFind == null) ? new DomainObjectParserDaoValidatorImpl() : new DomainObjectParserDaoTestValidator(returnOnFind, onFind)
 
-    return new DomainObjectParser(eventReader, daoValidator, status);
+    return new DomainObjectParser(eventReader, daoValidator);
   }
 
   @Test
@@ -65,7 +65,7 @@ class DomainObjectParserTest
 
     def type = ExportType.TIMESHEET_ENTRY;
 
-    List<TimesheetEntry> result = resolver.parse(type.getDomainObjectClass());
+    List<TimesheetEntry> result = resolver.parse(type.getDomainObjectClass(), status);
 
     assertEquals 2, result.size()
 
@@ -109,7 +109,7 @@ class DomainObjectParserTest
 
     def type = ExportType.USERS
 
-    List<User> result = resolver.parse(type.getDomainObjectClass());
+    List<User> result = resolver.parse(type.getDomainObjectClass(), status);
 
     assertEquals 2, result.size()
 
@@ -145,7 +145,7 @@ class DomainObjectParserTest
 
     def department = UserDepartmentMother.createUserDepartment()
 
-    List<Audit> result = resolver.parse(type.getDomainObjectClass());
+    List<Audit> result = resolver.parse(type.getDomainObjectClass(), status);
 
     assertEquals 1, result.size()
 
@@ -169,7 +169,7 @@ class DomainObjectParserTest
 
     def type = ExportType.AUDIT
 
-    List<Audit> result = resolver.parse(type.getDomainObjectClass());
+    List<Audit> result = resolver.parse(type.getDomainObjectClass(), status);
 
     assertEquals 1, result.size()
 

@@ -9,9 +9,14 @@ import org.springframework.stereotype.Service;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 
 /**
@@ -32,10 +37,89 @@ public class ImportServiceImpl implements ImportService
     @Autowired
     private DomainObjectParserDao domainObjectParserDao;
 
+    @Autowired
+    private UserRoleParserDao userRoleParserDao;
+
     @Override
     public void importDatabase(ParseSession session) throws ImportException
     {
+        try
+        {
+            String xmlDataFromFile = getXmlDataFromFile(session.getFilename());
+            XMLEventReader eventReader = createXmlReader(xmlDataFromFile);
+            XmlImporter importer = new XmlImporterBuilder()
+                    .setConfigurationDao(configurationDao)
+                    .setConfigurationParserDao(configurationParserDao)
+                    .setDomainObjectParserDao(domainObjectParserDao)
+                    .setUserRoleParserDao(userRoleParserDao)
+                    .build();
 
+            importer.importXml(session, eventReader);
+
+            session.deleteFile();
+        } catch (Exception e)
+        {
+            LOG.error(e);
+            throw new ImportException("Failed to import", e);
+        } finally
+        {
+            session.deleteFile();
+        }
+
+
+    }
+
+    private ParseSession inputXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException, ClassNotFoundException
+    {
+        ParseSession session = new ParseSession();
+
+        XMLEventReader eventReader = createXmlReader(xmlData);
+
+        XmlImporter importer = new XmlImporterBuilder()
+                .setConfigurationDao(configurationDao)
+                .setConfigurationParserDao(configurationParserDao)
+                .setDomainObjectParserDao(domainObjectParserDao)
+                .setUserRoleParserDao(userRoleParserDao)
+                .setXmlReader(eventReader)
+                .build();
+
+        importer.importXml(session, eventReader);
+
+        return session;
+    }
+
+    private XMLEventReader createXmlReader(String xmlData)
+            throws XMLStreamException
+    {
+        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+        return inputFactory.createXMLEventReader(new StringReader(xmlData));
+    }
+
+    private String getXmlDataFromFile(String filename) throws IOException
+    {
+        FileReader reader = null;
+        BufferedReader bufferedReader = null;
+
+        try
+        {
+            File file = new File(filename);
+            reader = new FileReader(file);
+            bufferedReader = new BufferedReader(reader);
+
+            String line;
+            StringBuffer xmlData = new StringBuffer();
+
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                xmlData.append(line);
+            }
+
+            return xmlData.toString();
+        } finally
+        {
+            closeCloseable(bufferedReader);
+            closeCloseable(reader);
+        }
     }
 
     @Override
@@ -68,10 +152,7 @@ public class ImportServiceImpl implements ImportService
             writer.write(xmlData);
         } finally
         {
-            if (writer != null)
-            {
-                writer.close();
-            }
+            closeCloseable(writer);
         }
 
         return file.getAbsolutePath();
@@ -81,19 +162,19 @@ public class ImportServiceImpl implements ImportService
     {
         ParseSession status = new ParseSession();
 
-        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
+        XMLEventReader eventReader = createXmlReader(xmlData);
 
-        DomainObjectParserDaoValidatorImpl daoValidator = new DomainObjectParserDaoValidatorImpl();
-        DomainObjectParser parser = new DomainObjectParser(eventReader, daoValidator, status);
+        DomainObjectParserDaoValidatorImpl domainObjectParserDaoValidator = new DomainObjectParserDaoValidatorImpl();
+        ConfigurationParserDaoValidatorImpl configurationParserDaoValidator = new ConfigurationParserDaoValidatorImpl();
+        UserRoleParserDaoValidatorImpl userRoleParserDaoValidator = new UserRoleParserDaoValidatorImpl();
 
-        ConfigurationParserDaoValidatorImpl configValidator = new ConfigurationParserDaoValidatorImpl();
-        ConfigurationParser configurationParser = new ConfigurationParser(configValidator);
-
-        UserRoleParserDaoValidatorImpl userRoleValidator = new UserRoleParserDaoValidatorImpl();
-        UserRoleParser userRoleParser = new UserRoleParser(userRoleValidator);
-
-        XmlImporter importer = new XmlImporter(configurationDao, parser, configurationParser, userRoleParser);
+        XmlImporter importer = new XmlImporterBuilder()
+                .setConfigurationDao(configurationDao)
+                .setConfigurationParserDao(configurationParserDaoValidator)
+                .setDomainObjectParserDao(domainObjectParserDaoValidator)
+                .setUserRoleParserDao(userRoleParserDaoValidator)
+                .setXmlReader(eventReader)
+                .build();
 
         importer.importXml(status, eventReader);
 
@@ -103,5 +184,19 @@ public class ImportServiceImpl implements ImportService
     public void setConfigurationDao(ConfigurationDao configurationDao)
     {
         this.configurationDao = configurationDao;
+    }
+
+    private void closeCloseable(Closeable closeable)
+    {
+        if (closeable != null)
+        {
+            try
+            {
+                closeable.close();
+            } catch (IOException e)
+            {
+
+            }
+        }
     }
 }

@@ -19,11 +19,19 @@ public class ParseSession implements Serializable
     private Map<ExportType, List<String>> errors = new HashMap<ExportType, List<String>>();
     private String filename;
 
-    public void deleteFile() {
-        if (filename != null) {
+    public void deleteFile()
+    {
+        if (filename != null)
+        {
             File file = new File(filename);
             file.delete();
         }
+    }
+
+    public void clearSession()
+    {
+        insertions.clear();
+        errors.clear();
     }
 
 

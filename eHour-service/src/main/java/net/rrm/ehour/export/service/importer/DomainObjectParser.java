@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
+ * Not thread safe
+ *
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: Nov 16, 2010 - 11:18:59 PM
  */
@@ -43,18 +45,18 @@ public class DomainObjectParser
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
-    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, ParseSession status)
+    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao)
     {
         this.parserDao = parserDao;
         this.reader = reader;
-        this.status = status;
 
         keyCache = new PrimaryKeyCache();
     }
 
-    public <T extends DomainObject<?, ?>> List<T> parse(Class<T> clazz) throws IllegalAccessException, InstantiationException, XMLStreamException
+    public <T extends DomainObject<?, ?>> List<T> parse(Class<T> clazz, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException
     {
         Map<String, Field> fieldMap = createFieldMap(clazz);
+        this.status = status;
 
         return parseDomainObjects(clazz, fieldMap, status);
     }
