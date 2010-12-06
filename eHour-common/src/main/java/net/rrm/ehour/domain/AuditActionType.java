@@ -44,28 +44,6 @@ public enum AuditActionType
 	}
 
 	/**
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public static AuditActionType fromString(String value)
-	{
-		if (CREATE.getValue().equalsIgnoreCase(value))
-		{
-			return CREATE;
-		} else if (READ.getValue().equalsIgnoreCase(value))
-		{
-			return READ;
-		} else if (UPDATE.getValue().equalsIgnoreCase(value))
-		{
-			return UPDATE;
-		} else
-		{
-			return DELETE;
-		}
-	}
-
-	/**
 	 * @return the auditType
 	 */
 	public AuditType getAuditType()
