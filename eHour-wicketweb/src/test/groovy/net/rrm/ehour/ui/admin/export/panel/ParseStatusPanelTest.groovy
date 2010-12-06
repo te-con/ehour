@@ -32,6 +32,24 @@ class ParseStatusPanelTest extends AbstractSpringWebAppTester
     assertEquals "failed", msg.defaultModelObject
   }
 
+  @Test
+  public void shouldDisplayInsertions()
+  {
+    ParseStatus status = new ParseStatus()
+    status.addInsertion ExportType.USERS
+    status.addInsertion ExportType.USERS
+
+    startPanel status
+
+    tester.assertNoErrorMessage()
+    tester.assertNoInfoMessage()
+    tester.assertComponent "panel:insertions", ListView.class
+    tester.assertModelValue "panel:insertions:0:insertions", "2"
+    tester.assertModelValue "panel:insertions:0:key", "USERS"
+
+  }
+
+
   private void startPanel(final ParseStatus status)
   {
     tester.startPanel(new TestPanelSource()
