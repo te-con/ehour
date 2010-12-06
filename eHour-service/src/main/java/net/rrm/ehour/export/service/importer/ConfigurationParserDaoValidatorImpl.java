@@ -6,7 +6,7 @@ import net.rrm.ehour.domain.Configuration;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 11/28/10 - 1:27 AM
  */
-public class ConfigurationDaoWrapperValidatorImpl implements ConfigurationDaoWrapper
+public class ConfigurationParserDaoValidatorImpl implements ConfigurationParserDao
 {
     private int count;
 

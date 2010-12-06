@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 11/28/10 - 1:32 AM
  */
-@Component("configurationDaoWrapperPersist")
-public class ConfigurationDaoWrapperPersistImpl implements ConfigurationDaoWrapper
+@Component("configurationParserDao")
+public class ConfigurationParserDaoPersistImpl implements ConfigurationParserDao
 {
     @Autowired
     private ConfigurationDao configurationDao;

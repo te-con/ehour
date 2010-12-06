@@ -16,11 +16,11 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class ConfigurationParser
 {
-    private ConfigurationDaoWrapper daoWrapper;
+    private ConfigurationParserDao parserDao;
 
-    public ConfigurationParser(ConfigurationDaoWrapper daoWrapper)
+    public ConfigurationParser(ConfigurationParserDao parserDao)
     {
-        this.daoWrapper = daoWrapper;
+        this.parserDao = parserDao;
     }
 
     public void parseConfiguration(XMLEventReader eventReader) throws XMLStreamException
@@ -32,7 +32,7 @@ public class ConfigurationParser
             if (event.isStartElement())
             {
                 Configuration configuration = parseConfigElement(eventReader, event);
-                daoWrapper.persist(configuration);
+                parserDao.persist(configuration);
             } else if (event.isEndElement())
             {
                 return;

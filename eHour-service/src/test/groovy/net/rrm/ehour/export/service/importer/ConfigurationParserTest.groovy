@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals
  */
 class ConfigurationParserTest
 {
-  private ConfigurationDaoWrapperValidatorImpl daoValidator;
+  private ConfigurationParserDaoValidatorImpl daoValidator;
 
   ConfigurationParser parser
   XMLEventReader eventReader
@@ -37,7 +37,7 @@ class ConfigurationParserTest
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
-    daoValidator = new ConfigurationDaoWrapperValidatorImpl()
+    daoValidator = new ConfigurationParserDaoValidatorImpl()
 
     parser = new ConfigurationParser(daoValidator);
   }
