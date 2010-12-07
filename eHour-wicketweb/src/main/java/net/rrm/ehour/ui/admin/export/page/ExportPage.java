@@ -1,10 +1,8 @@
 package net.rrm.ehour.ui.admin.export.page;
 
-import net.rrm.ehour.export.service.ImportException;
 import net.rrm.ehour.export.service.ImportService;
-import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
-import net.rrm.ehour.ui.admin.export.panel.ParseStatusPanel;
+import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,7 +11,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -79,19 +76,11 @@ public class ExportPage extends AbstractAdminPage<Void>
                     byte[] bytes = file.getFileUpload().getBytes();
                     String xmlData = new String(bytes);
 
-                    try
-                    {
-                        ParseSession status = importService.prepareImportDatabase(xmlData);
-                        Component component = ExportPage.this.get(ID_PARSE_STATUS);
-                        ParseStatusPanel statusPanel = new ParseStatusPanel(ID_PARSE_STATUS, new Model<ParseSession>(status));
-                        statusPanel.setOutputMarkupId(true);
-                        component.replaceWith(statusPanel);
-                        target.addComponent(statusPanel);
-                    } catch (ImportException e)
-                    {
-                        // TODO
-                        e.printStackTrace();
-                    }
+                    Component component = ExportPage.this.get(ID_PARSE_STATUS);
+                    ValidateImportPanel statusPanel = new ValidateImportPanel(ID_PARSE_STATUS, xmlData);
+                    statusPanel.setOutputMarkupId(true);
+                    component.replaceWith(statusPanel);
+                    target.addComponent(statusPanel);
                 }
             }
 

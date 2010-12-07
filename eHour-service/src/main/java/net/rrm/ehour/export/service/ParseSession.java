@@ -17,7 +17,9 @@ public class ParseSession implements Serializable
 {
     private Map<ExportType, Integer> insertions = new HashMap<ExportType, Integer>();
     private Map<ExportType, List<String>> errors = new HashMap<ExportType, List<String>>();
+
     private String filename;
+    private boolean imported;
 
     public void deleteFile()
     {
@@ -97,5 +99,15 @@ public class ParseSession implements Serializable
     public void setFilename(String filename)
     {
         this.filename = filename;
+    }
+
+    public boolean isImported()
+    {
+        return imported;
+    }
+
+    public void setImported(boolean imported)
+    {
+        this.imported = imported;
     }
 }
