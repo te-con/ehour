@@ -18,6 +18,6 @@ public class ConfigurationParserDaoPersistImpl implements ConfigurationParserDao
     @Override
     public void persist(Configuration config)
     {
-        configurationDao.persist(config);
+        configurationDao.merge(config);
     }
 }

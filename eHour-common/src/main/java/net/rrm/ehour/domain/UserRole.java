@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "USER_ROLE")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserRole extends DomainObject<String, UserRole> implements GrantedAuthority
 {
 	private static final long serialVersionUID = 3806904191272349157L;

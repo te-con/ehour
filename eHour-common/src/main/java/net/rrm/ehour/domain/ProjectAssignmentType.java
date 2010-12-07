@@ -35,7 +35,7 @@ import javax.persistence.Table;
  **/
 @Entity
 @Table(name = "PROJECT_ASSIGNMENT_TYPE")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignmentType>
 {
 	private static final long serialVersionUID = -4306635642163206242L;

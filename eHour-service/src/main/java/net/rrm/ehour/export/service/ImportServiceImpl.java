@@ -5,19 +5,12 @@ import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -41,6 +34,7 @@ public class ImportServiceImpl implements ImportService
     private UserRoleParserDao userRoleParserDao;
 
     @Override
+    @Transactional
     public void importDatabase(ParseSession session) throws ImportException
     {
         try
@@ -52,6 +46,7 @@ public class ImportServiceImpl implements ImportService
                     .setConfigurationParserDao(configurationParserDao)
                     .setDomainObjectParserDao(domainObjectParserDao)
                     .setUserRoleParserDao(userRoleParserDao)
+                    .setXmlReader(eventReader)
                     .build();
 
             importer.importXml(session, eventReader);
@@ -65,28 +60,8 @@ public class ImportServiceImpl implements ImportService
         {
             session.deleteFile();
         }
-
-
     }
 
-    private ParseSession inputXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException, ClassNotFoundException
-    {
-        ParseSession session = new ParseSession();
-
-        XMLEventReader eventReader = createXmlReader(xmlData);
-
-        XmlImporter importer = new XmlImporterBuilder()
-                .setConfigurationDao(configurationDao)
-                .setConfigurationParserDao(configurationParserDao)
-                .setDomainObjectParserDao(domainObjectParserDao)
-                .setUserRoleParserDao(userRoleParserDao)
-                .setXmlReader(eventReader)
-                .build();
-
-        importer.importXml(session, eventReader);
-
-        return session;
-    }
 
     private XMLEventReader createXmlReader(String xmlData)
             throws XMLStreamException
