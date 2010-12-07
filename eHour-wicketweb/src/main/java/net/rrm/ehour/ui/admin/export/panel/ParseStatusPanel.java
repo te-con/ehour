@@ -36,34 +36,34 @@ public class ParseStatusPanel extends AbstractBasePanel<ParseSession>
     }
 
 
-    private ListView<Map.Entry<ExportType, Integer>> createInsertionsList(String id, Map<ExportType, Integer> insertions)
+    private ListView<ExportType> createInsertionsList(String id, final Map<ExportType, Integer> insertions)
     {
-        return new ListView<Map.Entry<ExportType, Integer>>(id, new ArrayList<Map.Entry<ExportType, Integer>>(insertions.entrySet()))
+        return new ListView<ExportType>(id, new ArrayList<ExportType>(insertions.keySet()))
         {
             @Override
-            protected void populateItem(ListItem<Map.Entry<ExportType, Integer>> entryListItem)
+            protected void populateItem(ListItem<ExportType> entryListItem)
             {
-                Map.Entry<ExportType, Integer> entry = entryListItem.getModelObject();
+                ExportType type = entryListItem.getModelObject();
 
-                entryListItem.add(new Label("key", entry.getKey().name()));
-                entryListItem.add(new Label("insertions", entry.getValue().toString()));
+                entryListItem.add(new Label("key", type.name()));
+                entryListItem.add(new Label("insertions", insertions.get(type).toString()));
             }
         };
 
     }
 
-    private ListView<Map.Entry<ExportType, List<String>>> createErrorsList(String id, final Map<ExportType, List<String>> errors)
+    private ListView<ExportType> createErrorsList(String id, final Map<ExportType, List<String>> errors)
     {
-        return new ListView<Map.Entry<ExportType, List<String>>>(id, new ArrayList<Map.Entry<ExportType, List<String>>>(errors.entrySet()))
+        return new ListView<ExportType>(id, new ArrayList<ExportType>(errors.keySet()))
         {
             @Override
-            protected void populateItem(ListItem<Map.Entry<ExportType, List<String>>> entryListItem)
+            protected void populateItem(ListItem<ExportType> entryListItem)
             {
-                Map.Entry<ExportType, List<String>> entry = entryListItem.getModelObject();
+                ExportType entry = entryListItem.getModelObject();
 
-                entryListItem.add(new Label("key", entry.getKey().name()));
+                entryListItem.add(new Label("key", entry.name()));
 
-                ListView<String> msgsList = new ListView<String>("msgs", entry.getValue())
+                ListView<String> msgsList = new ListView<String>("msgs", errors.get(entry))
                 {
                     @Override
                     protected void populateItem(ListItem<String> item)
