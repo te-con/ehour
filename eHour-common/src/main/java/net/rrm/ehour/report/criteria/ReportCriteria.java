@@ -16,119 +16,106 @@
 
 package net.rrm.ehour.report.criteria;
 
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.util.DateUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.util.DateUtil;
-
-import org.apache.log4j.Logger;
-
 /**
- * Container for the report criteria, available and user selected 
- **/
+ * Container for the report criteria, available and user selected
+ */
 
 public class ReportCriteria implements Serializable
 {
-	private static final long serialVersionUID = 7406265452950554098L;
-	private	final static Logger	logger = Logger.getLogger(ReportCriteria.class);
-	private	AvailableCriteria	availableCriteria;
-	private	UserCriteria		userCriteria;
-	
-	/**
-	 * Default constructor
-	 *
-	 */
-	public ReportCriteria()
-	{
-		this(new AvailableCriteria(), new UserCriteria());
-	}
+    private static final long serialVersionUID = 7406265452950554098L;
+    private AvailableCriteria availableCriteria;
+    private UserCriteria userCriteria;
 
-	public ReportCriteria(AvailableCriteria availableCriteria)
-	{
-		this(availableCriteria, new UserCriteria());
-	}
-	
-	public ReportCriteria(UserCriteria userCriteria)
-	{
-		this(new AvailableCriteria(), userCriteria);
-	}	
+    /**
+     * Default constructor
+     */
+    public ReportCriteria()
+    {
+        this(new AvailableCriteria(), new UserCriteria());
+    }
 
-	public ReportCriteria(AvailableCriteria availableCriteria, UserCriteria userCriteria)
-	{
-		this.availableCriteria = availableCriteria;
-		this.userCriteria = userCriteria;
-	}
+    public ReportCriteria(AvailableCriteria availableCriteria)
+    {
+        this(availableCriteria, new UserCriteria());
+    }
 
-	/**
-	 * Get report range, use the available criteria if the user didn't supply any (yet)
-	 * @return
-	 */
-	// TODO reduce complexity of method 
-	public DateRange getReportRange()
-	{
-		DateRange	reportRange;
-		
-		if (userCriteria.getReportRange() == null)
-		{
-			reportRange = availableCriteria.getReportRange();
-		}
-		else
-		{
-			reportRange = userCriteria.getReportRange();
-			
-			if (reportRange.getDateStart() == null || userCriteria.isInfiniteStartDate())
-			{
-				if (availableCriteria == null || availableCriteria.getReportRange() == null)
-				{
-					reportRange.setDateStart(new Date());
-				}
-				else
-				{
-					reportRange.setDateStart(availableCriteria.getReportRange().getDateStart());
-				}
-			}
-			
-			if (reportRange.getDateEnd() == null || userCriteria.isInfiniteEndDate())
-			{
-				if (availableCriteria == null || availableCriteria.getReportRange() == null)
-				{
-					reportRange.setDateEnd(new Date());
-				}
-				else
-				{
-					reportRange.setDateEnd(availableCriteria.getReportRange().getDateEnd());
-				}
-			}
-		}
+    public ReportCriteria(UserCriteria userCriteria)
+    {
+        this(new AvailableCriteria(), userCriteria);
+    }
 
-		userCriteria.setReportRange(reportRange);
+    public ReportCriteria(AvailableCriteria availableCriteria, UserCriteria userCriteria)
+    {
+        this.availableCriteria = availableCriteria;
+        this.userCriteria = userCriteria;
+    }
 
-		// if no timesheets were specified, use the current month as the range
-		if (reportRange == null || reportRange.isEmpty())
-		{
-			reportRange = DateUtil.calendarToMonthRange(new GregorianCalendar());
-		}
-		
-		logger.debug("Using report range " + reportRange);
-		
-		return reportRange;
-	}
+    /**
+     * Get report range, use the available criteria if the user didn't supply any (yet)
+     *
+     * @return
+     */
+    // TODO reduce complexity of method
+    public DateRange getReportRange()
+    {
+        DateRange reportRange;
 
-	/**
-	 * @return the userCriteria
-	 */
-	public UserCriteria getUserCriteria()
-	{
-		return userCriteria;
-	}
+        reportRange = userCriteria.getReportRange();
 
-	/**
-	 * @return the availableCriteria
-	 */
-	public AvailableCriteria getAvailableCriteria()
-	{
-		return availableCriteria;
-	}
+        if (reportRange.getDateStart() == null || userCriteria.isInfiniteStartDate())
+        {
+            if (availableCriteria == null || availableCriteria.getReportRange() == null)
+            {
+                reportRange.setDateStart(new Date());
+            } else
+            {
+                reportRange.setDateStart(availableCriteria.getReportRange().getDateStart());
+            }
+        }
+
+        if (reportRange.getDateEnd() == null || userCriteria.isInfiniteEndDate())
+        {
+            if (availableCriteria == null || availableCriteria.getReportRange() == null)
+            {
+                reportRange.setDateEnd(new Date());
+            } else
+            {
+                reportRange.setDateEnd(availableCriteria.getReportRange().getDateEnd());
+            }
+        }
+
+
+        userCriteria.setReportRange(reportRange);
+
+        // if no timesheets were specified, use the current month as the range
+        if (reportRange == null || reportRange.isEmpty())
+        {
+            reportRange = DateUtil.calendarToMonthRange(new GregorianCalendar());
+        }
+
+        return reportRange;
+    }
+
+    /**
+     * @return the userCriteria
+     */
+    public UserCriteria getUserCriteria()
+    {
+        return userCriteria;
+    }
+
+    /**
+     * @return the availableCriteria
+     */
+    public AvailableCriteria getAvailableCriteria()
+    {
+        return availableCriteria;
+    }
 }
