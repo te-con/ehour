@@ -20,13 +20,20 @@ public class ParseSession implements Serializable
 
     private String filename;
     private boolean imported;
+    private boolean canBeImported = true;
 
     public void deleteFile()
     {
-        if (filename != null)
+        try
         {
-            File file = new File(filename);
-            file.delete();
+            if (filename != null)
+            {
+                File file = new File(filename);
+                file.delete();
+            }
+        } finally
+        {
+            canBeImported = false;
         }
     }
 
@@ -109,5 +116,10 @@ public class ParseSession implements Serializable
     public void setImported(boolean imported)
     {
         this.imported = imported;
+    }
+
+    public boolean isCanBeImported()
+    {
+        return !imported && canBeImported && !hasErrors();
     }
 }

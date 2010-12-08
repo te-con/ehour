@@ -1,6 +1,13 @@
 package net.rrm.ehour.export.service;
 
-import net.rrm.ehour.export.service.importer.*;
+import net.rrm.ehour.export.service.importer.ConfigurationParserDao;
+import net.rrm.ehour.export.service.importer.ConfigurationParserDaoValidatorImpl;
+import net.rrm.ehour.export.service.importer.DomainObjectParserDao;
+import net.rrm.ehour.export.service.importer.DomainObjectParserDaoValidatorImpl;
+import net.rrm.ehour.export.service.importer.UserRoleParserDao;
+import net.rrm.ehour.export.service.importer.UserRoleParserDaoValidatorImpl;
+import net.rrm.ehour.export.service.importer.XmlImporter;
+import net.rrm.ehour.export.service.importer.XmlImporterBuilder;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -50,8 +63,6 @@ public class ImportServiceImpl implements ImportService
                     .build();
 
             importer.importXml(session, eventReader);
-
-            session.deleteFile();
         } catch (Exception e)
         {
             LOG.error(e);

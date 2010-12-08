@@ -8,6 +8,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -18,10 +19,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
 {
+    static final String ID_STATUS = "status";
+    static final String ID_IMPORT_LINK = "importLink";
+
     @SpringBean
     private ImportService importService;
-
-    private static final String ID_IMPORT_LINK = "importLink";
 
 
     public ValidateImportPanel(String id, String xmlData)
@@ -33,13 +35,13 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
         try
         {
             session = importService.prepareImportDatabase(xmlData);
+            setDefaultModel(new Model<ParseSession>(session));
+            initPanel();
         } catch (ImportException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            handleImportException(e);
+            add(createDummyLink());
         }
-
-        setDefaultModel(new Model<ParseSession>(session));
-        initPanel();
     }
 
     public ValidateImportPanel(String id, IModel<ParseSession> model)
@@ -53,40 +55,66 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
     {
         IModel<ParseSession> model = getPanelModel();
 
-        ParseStatusPanel status = new ParseStatusPanel("status", model);
+        ParseStatusPanel status = new ParseStatusPanel(ID_STATUS, model);
         add(status);
 
         Component link;
 
-        if (!model.getObject().isImported() && !model.getObject().hasErrors())
+        if (model.getObject().isCanBeImported())
         {
             link = new AjaxLink<Void>(ID_IMPORT_LINK)
             {
                 @Override
                 public void onClick(AjaxRequestTarget target)
                 {
-                    importXml();
+                    try
+                    {
+                        importXml();
+                    } catch (ImportException e)
+                    {
+                        Component linkComponent = ValidateImportPanel.this.get(ID_IMPORT_LINK);
+                        linkComponent.setVisible(false);
+                        target.addComponent(linkComponent);
+
+                        Component exceptionPanel = handleImportException(e);
+                        target.addComponent(exceptionPanel);
+
+                    }
                 }
             };
         } else
         {
-            link = new WebMarkupContainer(ID_IMPORT_LINK);
-            link.setVisible(false);
+            link = createDummyLink();
         }
 
         add(link);
     }
 
-    private void importXml()
+    private Component createDummyLink()
     {
-        try
-        {
-            ParseSession session = getPanelModel().getObject();
-            importService.importDatabase(session);
-            session.setImported(true);
-        } catch (ImportException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        Component link;
+        link = new WebMarkupContainer(ID_IMPORT_LINK);
+        link.setVisible(false);
+        return link;
+    }
+
+    private void updateStatus(Component statusComponent)
+    {
+        statusComponent.setOutputMarkupId(true);
+        addOrReplace(statusComponent);
+    }
+
+    private Component handleImportException(ImportException e)
+    {
+        Label errorMessage = new Label(ID_STATUS, "Failed to parse: " + e.getMessage());
+        updateStatus(errorMessage);
+        return errorMessage;
+    }
+
+    private void importXml() throws ImportException
+    {
+        ParseSession session = getPanelModel().getObject();
+        importService.importDatabase(session);
+        session.setImported(true);
     }
 }
