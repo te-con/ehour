@@ -3,8 +3,10 @@ package net.rrm.ehour.ui.admin.export.page
 import net.rrm.ehour.export.service.ExportService
 import net.rrm.ehour.export.service.ImportService
 import net.rrm.ehour.export.service.ParseSession
+import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import org.apache.wicket.Page
+import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.protocol.http.MockHttpServletRequest
 import org.apache.wicket.util.file.File
 import org.apache.wicket.util.tester.FormTester
@@ -71,5 +73,23 @@ class ExportPageTest extends AbstractSpringWebAppTester
 
     formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "text/xml"
     tester.executeAjaxEvent "form:ajaxSubmit", "onclick"
+    tester.assertComponent "parseStatus", ValidateImportPanel.class
+  }
+
+  @Test
+  void shouldFailForWrongContentType()
+  {
+    startPage()
+
+    FormTester formTester = tester.newFormTester("form")
+    MockHttpServletRequest request = tester.getServletRequest()
+    request.setUseMultiPartContentType true
+
+
+    when(importService.prepareImportDatabase(Mockito.any())).thenReturn(new ParseSession());
+
+    formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "application/zip"
+    tester.executeAjaxEvent "form:ajaxSubmit", "onclick"
+    tester.assertComponent "parseStatus", Label.class
   }
 }

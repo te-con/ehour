@@ -8,6 +8,7 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
@@ -71,19 +72,23 @@ public class ExportPage extends AbstractAdminPage<Void>
             {
                 String contentType = file.getFileUpload().getContentType();
 
+                Component replacementPanel;
+
                 if (contentType.contains("text"))
                 {
                     byte[] bytes = file.getFileUpload().getBytes();
                     String xmlData = new String(bytes);
 
-                    Component component = ExportPage.this.get(ID_PARSE_STATUS);
-                    ValidateImportPanel statusPanel = new ValidateImportPanel(ID_PARSE_STATUS, xmlData);
-                    statusPanel.setOutputMarkupId(true);
-                    component.replaceWith(statusPanel);
-                    target.addComponent(statusPanel);
+                    replacementPanel = new ValidateImportPanel(ID_PARSE_STATUS, xmlData);
+                } else
+                {
+                    replacementPanel = new Label(ID_PARSE_STATUS, "Invalid content type, are you sure this is the right file ? Content-type: " + contentType);
                 }
-            }
 
+                replacementPanel.setOutputMarkupId(true);
+                ExportPage.this.addOrReplace(replacementPanel);
+                target.addComponent(replacementPanel);
+            }
         });
 
         return form;
