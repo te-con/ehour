@@ -3,6 +3,7 @@ package net.rrm.ehour.ui.admin.export.panel;
 import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.persistence.export.dao.ExportType;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -27,12 +28,19 @@ public class ParseStatusPanel extends AbstractBasePanel<ParseSession>
 
     private void initPanel()
     {
-        ParseSession parseStatus = getPanelModel().getObject();
+        ParseSession session = getPanelModel().getObject();
 
-        Map<ExportType, List<String>> errors = parseStatus.getErrors();
+        Map<ExportType, List<String>> errors = session.getErrors();
 
+        add(createGlobalErrors("globalError", session));
         add(createErrorsList("errors", errors));
-        add(createInsertionsList("insertions", parseStatus.getInsertions()));
+        add(createInsertionsList("insertions", session.getInsertions()));
+    }
+
+    private Component createGlobalErrors(String id, ParseSession session) {
+        Label label = new Label(id, session.getGlobalErrorMessage());
+        label.setVisible(session.isGlobalError());
+        return label;
     }
 
 

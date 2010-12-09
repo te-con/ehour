@@ -11,7 +11,7 @@ public interface ImportService
      *
      * @param xmlData
      */
-    public ParseSession prepareImportDatabase(String xmlData) throws ImportException;
+    public ParseSession prepareImportDatabase(String xmlData);
 
     /**
      * Import database

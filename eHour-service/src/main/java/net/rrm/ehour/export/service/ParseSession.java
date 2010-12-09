@@ -20,20 +20,15 @@ public class ParseSession implements Serializable
 
     private String filename;
     private boolean imported;
-    private boolean canBeImported = true;
+    private boolean globalError;
+    private String globalErrorMessage;
 
     public void deleteFile()
     {
-        try
+        if (filename != null)
         {
-            if (filename != null)
-            {
-                File file = new File(filename);
-                file.delete();
-            }
-        } finally
-        {
-            canBeImported = false;
+            File file = new File(filename);
+            file.delete();
         }
     }
 
@@ -41,6 +36,10 @@ public class ParseSession implements Serializable
     {
         insertions.clear();
         errors.clear();
+    }
+
+    public boolean isImportable() {
+        return !imported && !globalError && !hasErrors();
     }
 
 
@@ -118,8 +117,23 @@ public class ParseSession implements Serializable
         this.imported = imported;
     }
 
-    public boolean isCanBeImported()
+    public boolean isGlobalError()
     {
-        return !imported && canBeImported && !hasErrors();
+        return globalError;
+    }
+
+    public void setGlobalError(boolean globalError)
+    {
+        this.globalError = globalError;
+    }
+
+    public String getGlobalErrorMessage()
+    {
+        return globalErrorMessage;
+    }
+
+    public void setGlobalErrorMessage(String globalErrorMessage)
+    {
+        this.globalErrorMessage = globalErrorMessage;
     }
 }

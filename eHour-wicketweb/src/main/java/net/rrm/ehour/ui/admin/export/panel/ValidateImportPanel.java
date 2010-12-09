@@ -3,12 +3,13 @@ package net.rrm.ehour.ui.admin.export.panel;
 import net.rrm.ehour.export.service.ImportException;
 import net.rrm.ehour.export.service.ImportService;
 import net.rrm.ehour.export.service.ParseSession;
+import net.rrm.ehour.ui.admin.export.ExportAjaxEventType;
+import net.rrm.ehour.ui.common.event.EventPublisher;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -30,24 +31,9 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
     {
         super(id);
 
-        ParseSession session = null;
+        ParseSession session = importService.prepareImportDatabase(xmlData);
 
-        try
-        {
-            session = importService.prepareImportDatabase(xmlData);
-            setDefaultModel(new Model<ParseSession>(session));
-            initPanel();
-        } catch (ImportException e)
-        {
-            handleImportException(e);
-            add(createDummyLink());
-        }
-    }
-
-    public ValidateImportPanel(String id, IModel<ParseSession> model)
-    {
-        super(id, model);
-
+        setDefaultModel(new Model<ParseSession>(session));
         initPanel();
     }
 
@@ -60,55 +46,22 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
 
         Component link;
 
-        if (model.getObject().isCanBeImported())
+        link = new AjaxLink<Void>(ID_IMPORT_LINK)
         {
-            link = new AjaxLink<Void>(ID_IMPORT_LINK)
+            @Override
+            public void onClick(AjaxRequestTarget target)
             {
-                @Override
-                public void onClick(AjaxRequestTarget target)
-                {
-                    try
-                    {
-                        importXml();
-                    } catch (ImportException e)
-                    {
-                        Component linkComponent = ValidateImportPanel.this.get(ID_IMPORT_LINK);
-                        linkComponent.setVisible(false);
-                        target.addComponent(linkComponent);
+                PayloadAjaxEvent<ParseSession> event = new PayloadAjaxEvent<ParseSession>(ExportAjaxEventType.VALIDATED,
+                                                                                            ValidateImportPanel.this.getPanelModel().getObject(),
+                                                                                            target);
 
-                        Component exceptionPanel = handleImportException(e);
-                        target.addComponent(exceptionPanel);
+                EventPublisher.publishAjaxEvent(ValidateImportPanel.this, event);
+            }
+        };
 
-                    }
-                }
-            };
-        } else
-        {
-            link = createDummyLink();
-        }
+        link.setVisible(model.getObject().isImportable());
 
         add(link);
-    }
-
-    private Component createDummyLink()
-    {
-        Component link;
-        link = new WebMarkupContainer(ID_IMPORT_LINK);
-        link.setVisible(false);
-        return link;
-    }
-
-    private void updateStatus(Component statusComponent)
-    {
-        statusComponent.setOutputMarkupId(true);
-        addOrReplace(statusComponent);
-    }
-
-    private Component handleImportException(ImportException e)
-    {
-        Label errorMessage = new Label(ID_STATUS, "Failed to parse: " + e.getMessage());
-        updateStatus(errorMessage);
-        return errorMessage;
     }
 
     private void importXml() throws ImportException

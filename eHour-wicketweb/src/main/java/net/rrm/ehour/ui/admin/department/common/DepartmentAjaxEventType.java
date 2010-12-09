@@ -18,10 +18,6 @@ package net.rrm.ehour.ui.admin.department.common;
 
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 
-/**
- * TODO 
- **/
-
 public enum DepartmentAjaxEventType  implements AjaxEventType
 {
 	DEPARTMENT_UPDATED,

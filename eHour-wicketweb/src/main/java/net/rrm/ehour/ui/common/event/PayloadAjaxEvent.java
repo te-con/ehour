@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.common.event;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
 /**
  * AjaxEvent with payload
  **/
@@ -23,15 +25,20 @@ package net.rrm.ehour.ui.common.event;
 public class PayloadAjaxEvent<PL> extends AjaxEvent
 {
 	private static final long serialVersionUID = 4671730483379447278L;
-	private PL payload;
+	private final PL payload;
 
 
 	public PayloadAjaxEvent(AjaxEventType eventType, PL payload)
 	{
-		super(eventType);
-		
-		this.payload = payload;
+        this(eventType, payload, null);
 	}
+
+    public PayloadAjaxEvent(AjaxEventType eventType, PL payload, AjaxRequestTarget target)
+    {
+        super(eventType, target);
+
+        this.payload = payload;
+    }
 
 	/**
 	 * @return the payload
@@ -39,13 +46,5 @@ public class PayloadAjaxEvent<PL> extends AjaxEvent
 	public PL getPayload()
 	{
 		return payload;
-	}
-
-	/**
-	 * @param payload the payload to set
-	 */
-	public void setPayload(PL payload)
-	{
-		this.payload = payload;
 	}
 }

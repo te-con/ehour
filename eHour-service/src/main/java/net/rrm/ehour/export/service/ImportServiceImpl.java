@@ -1,13 +1,6 @@
 package net.rrm.ehour.export.service;
 
-import net.rrm.ehour.export.service.importer.ConfigurationParserDao;
-import net.rrm.ehour.export.service.importer.ConfigurationParserDaoValidatorImpl;
-import net.rrm.ehour.export.service.importer.DomainObjectParserDao;
-import net.rrm.ehour.export.service.importer.DomainObjectParserDaoValidatorImpl;
-import net.rrm.ehour.export.service.importer.UserRoleParserDao;
-import net.rrm.ehour.export.service.importer.UserRoleParserDaoValidatorImpl;
-import net.rrm.ehour.export.service.importer.XmlImporter;
-import net.rrm.ehour.export.service.importer.XmlImporterBuilder;
+import net.rrm.ehour.export.service.importer.*;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -109,19 +96,25 @@ public class ImportServiceImpl implements ImportService
     }
 
     @Override
-    public ParseSession prepareImportDatabase(String xmlData) throws ImportException
+    public ParseSession prepareImportDatabase(String xmlData)
     {
+        ParseSession session;
+
         try
         {
             String tempFilename = writeToTempFile(xmlData);
-            ParseSession status = validateXml(xmlData);
-            status.setFilename(tempFilename);
-            return status;
+            session = validateXml(xmlData);
+            session.setFilename(tempFilename);
         } catch (Exception e)
         {
+            session = new ParseSession();
+            session.setGlobalError(true);
+            session.setGlobalErrorMessage(e.getMessage());
+
             LOG.error(e);
-            throw new ImportException("import.error.failedToParse", e);
         }
+
+        return session;
     }
 
     private String writeToTempFile(String xmlData) throws IOException

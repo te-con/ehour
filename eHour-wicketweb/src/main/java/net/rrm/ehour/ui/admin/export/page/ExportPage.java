@@ -1,8 +1,14 @@
 package net.rrm.ehour.ui.admin.export.page;
 
 import net.rrm.ehour.export.service.ImportService;
+import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
+import net.rrm.ehour.ui.admin.export.ExportAjaxEventType;
+import net.rrm.ehour.ui.admin.export.panel.ImportPanel;
 import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventListener;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -21,7 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * Date: Nov 12, 2010
  * Time: 10:54:38 PM
  */
-public class ExportPage extends AbstractAdminPage<Void>
+public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventListener
 {
     private static final String ID_PARSE_STATUS = "parseStatus";
     @SpringBean(name = "importService")
@@ -50,7 +56,6 @@ public class ExportPage extends AbstractAdminPage<Void>
         final WebMarkupContainer parseStatus = new WebMarkupContainer(ID_PARSE_STATUS);
         parseStatus.setOutputMarkupId(true);
         add(parseStatus);
-
     }
 
     private Form<?> addUploadForm(String id)
@@ -85,14 +90,38 @@ public class ExportPage extends AbstractAdminPage<Void>
                     replacementPanel = new Label(ID_PARSE_STATUS, "Invalid content type, are you sure this is the right file ? Content-type: " + contentType);
                 }
 
-                replacementPanel.setOutputMarkupId(true);
-                ExportPage.this.addOrReplace(replacementPanel);
-                target.addComponent(replacementPanel);
+                replaceStatusPanel(replacementPanel, target);
             }
         });
 
         return form;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+    {
+        boolean continueWithPropagating = true;
 
+        if (ajaxEvent.getEventType() == ExportAjaxEventType.VALIDATED)
+        {
+            PayloadAjaxEvent<ParseSession> event = (PayloadAjaxEvent<ParseSession>) ajaxEvent;
+            ParseSession session = event.getPayload();
+
+            ImportPanel replacement = new ImportPanel(ID_PARSE_STATUS, session);
+            AjaxRequestTarget target = event.getTarget();
+
+            replaceStatusPanel(replacement, target);
+            continueWithPropagating = false;
+        }
+
+        return continueWithPropagating;
+    }
+
+    private void replaceStatusPanel(Component replacement, AjaxRequestTarget target)
+    {
+        replacement.setOutputMarkupId(true);
+        ExportPage.this.addOrReplace(replacement);
+        target.addComponent(replacement);
+    }
 }
