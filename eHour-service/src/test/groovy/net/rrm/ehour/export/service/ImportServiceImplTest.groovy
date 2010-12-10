@@ -6,6 +6,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
 import static org.mockito.Mockito.when
 
@@ -44,7 +45,7 @@ class ImportServiceImplTest
   }
 
 
-  @Test(expected = ImportException)
+  @Test
   void shouldFailOnPrepareImportForWrongDb()
   {
     def configuration = new Configuration("version", "0.8.2")
@@ -53,7 +54,9 @@ class ImportServiceImplTest
 
     def file = "src/test/resources/import/import_data.xml"
     def xml = new File(file).text
-    importService.prepareImportDatabase(xml)
+    def session = importService.prepareImportDatabase(xml)
+    assertFalse session.importable
+    assertEquals "import.error.invalidDatabaseVersion", session.globalErrorMessage
   }
 
   @Test
