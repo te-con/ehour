@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: 12/7/10 - 2:12 AM
  */
-class ValidateImportPanelTest extends AbstractSpringWebAppTester
+abstract class ValidateImportPanelTest extends AbstractSpringWebAppTester
 {
   @Mock
   private ImportService importService
