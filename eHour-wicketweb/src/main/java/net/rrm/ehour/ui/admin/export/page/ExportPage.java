@@ -9,14 +9,18 @@ import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
@@ -76,11 +80,9 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form)
             {
-                String contentType = file.getFileUpload().getContentType();
-
                 Component replacementPanel;
 
-                if (contentType.contains("text"))
+                if (isValidUpload(file))
                 {
                     byte[] bytes = file.getFileUpload().getBytes();
                     final String xmlData = new String(bytes);
@@ -95,7 +97,7 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
                     };
                 } else
                 {
-                    replacementPanel = new Label(ID_PARSE_STATUS, "Invalid content type, are you sure this is the right file ? Content-type: " + contentType);
+                    replacementPanel = new Label(ID_PARSE_STATUS, "Invalid content type, are you sure this is the right file ?");
                 }
 
                 replaceStatusPanel(replacementPanel, target);
@@ -105,9 +107,36 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
         return form;
     }
 
+    private boolean isValidUpload(FileUploadField field)
+    {
+        boolean valid = false;
+
+        if (field.getFileUpload() != null)
+        {
+            FileUpload upload = field.getFileUpload();
+
+            if (upload.getContentType() == null || !upload.getContentType().toLowerCase().contains("text"))
+            {
+                valid = false;
+            } else if (StringUtils.isBlank(upload.getClientFileName()))
+            {
+                valid = false;
+            } else if (upload.getBytes() == null || upload.getBytes().length == 0 || upload.getSize() == 0)
+            {
+                valid = false;
+            } else {
+                valid = true;
+            }
+        }
+
+        return valid;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+    public boolean ajaxEventReceived
+            (AjaxEvent
+                     ajaxEvent)
     {
         boolean continueWithPropagating = true;
 
@@ -123,6 +152,12 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
                 {
                     return new ImportPanel(markupId, session);
                 }
+
+                public Component getLoadingComponent(final String markupId)
+                {
+                    return new Label(markupId, "Importing...<br /><img alt=\"Loading...\" src=\"" +
+                            RequestCycle.get().urlFor(AbstractDefaultAjaxBehavior.INDICATOR) + "\"/>").setEscapeModelStrings(false);
+                }
             };
 
             AjaxRequestTarget target = event.getTarget();
@@ -134,7 +169,10 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
         return continueWithPropagating;
     }
 
-    private void replaceStatusPanel(Component replacement, AjaxRequestTarget target)
+    private void replaceStatusPanel
+            (Component
+                     replacement, AjaxRequestTarget
+                    target)
     {
         replacement.setOutputMarkupId(true);
         ExportPage.this.addOrReplace(replacement);
