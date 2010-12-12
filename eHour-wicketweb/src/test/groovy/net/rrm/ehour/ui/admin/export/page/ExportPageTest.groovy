@@ -3,9 +3,9 @@ package net.rrm.ehour.ui.admin.export.page
 import net.rrm.ehour.export.service.ExportService
 import net.rrm.ehour.export.service.ImportService
 import net.rrm.ehour.export.service.ParseSession
-import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import org.apache.wicket.Page
+import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.protocol.http.MockHttpServletRequest
 import org.apache.wicket.util.file.File
@@ -73,7 +73,7 @@ class ExportPageTest extends AbstractSpringWebAppTester
 
     formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "text/xml"
     tester.executeAjaxEvent "form:ajaxSubmit", "onclick"
-    tester.assertComponent "parseStatus", ValidateImportPanel.class
+    tester.assertComponent "parseStatus", AjaxLazyLoadPanel.class
   }
 
   @Test

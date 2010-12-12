@@ -13,6 +13,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -82,9 +83,16 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
                 if (contentType.contains("text"))
                 {
                     byte[] bytes = file.getFileUpload().getBytes();
-                    String xmlData = new String(bytes);
+                    final String xmlData = new String(bytes);
 
-                    replacementPanel = new ValidateImportPanel(ID_PARSE_STATUS, xmlData);
+                    replacementPanel = new AjaxLazyLoadPanel(ID_PARSE_STATUS)
+                    {
+                        @Override
+                        public Component getLazyLoadComponent(String markupId)
+                        {
+                            return new ValidateImportPanel(markupId, xmlData);
+                        }
+                    };
                 } else
                 {
                     replacementPanel = new Label(ID_PARSE_STATUS, "Invalid content type, are you sure this is the right file ? Content-type: " + contentType);
@@ -106,9 +114,17 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
         if (ajaxEvent.getEventType() == ExportAjaxEventType.VALIDATED)
         {
             PayloadAjaxEvent<ParseSession> event = (PayloadAjaxEvent<ParseSession>) ajaxEvent;
-            ParseSession session = event.getPayload();
+            final ParseSession session = event.getPayload();
 
-            ImportPanel replacement = new ImportPanel(ID_PARSE_STATUS, session);
+            Component replacement = new AjaxLazyLoadPanel(ID_PARSE_STATUS)
+            {
+                @Override
+                public Component getLazyLoadComponent(String markupId)
+                {
+                    return new ImportPanel(markupId, session);
+                }
+            };
+
             AjaxRequestTarget target = event.getTarget();
 
             replaceStatusPanel(replacement, target);
