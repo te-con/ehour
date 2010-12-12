@@ -1,15 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:wicket="http://wicket.sourceforge.net/">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
 <body>
 <wicket:extend>
-    <div style="width: 700px">
-        <a wicket:id="exportLink">Backup to XML</a>
-        <br/><br/>
+    <div wicket:id="backupBorder">
+        Backup your existing database to a portable file.<br/>
+        <a class="button" onclick="this.blur();" wicket:id="exportLink">
+            <span><wicket:message key="admin.export.button"/></span></a>
+    </div>
+
+    <br/><br/>
+
+    <div wicket:id="restoreBorder">
 
         <form wicket:id="form">
             Import file: <input wicket:id="file" type="file"/> <br/><br/>
@@ -19,7 +24,6 @@
         <div wicket:id="parseStatus"></div>
 
     </div>
-
 
 </wicket:extend>
 </body>

@@ -6,11 +6,14 @@ import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.export.ExportAjaxEventType;
 import net.rrm.ehour.ui.admin.export.panel.ImportPanel;
 import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel;
+import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -23,6 +26,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -35,6 +39,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventListener
 {
     private static final String ID_PARSE_STATUS = "parseStatus";
+    private static final String ID_RESTORE_BORDER = "restoreBorder";
     @SpringBean(name = "importService")
     private ImportService importService;
 
@@ -42,7 +47,10 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
     {
         super(new ResourceModel("admin.export.title"), "admin.export.help.header", "admin.export.help.body");
 
-        add(new Link<Void>("exportLink")
+        GreyRoundedBorder backupBorder = new GreyRoundedBorder("backupBorder", new Model<String>("Backup eHour database"), WebGeo.W_CONTENT_MEDIUM);
+        add(backupBorder);
+
+        backupBorder.add(new Link<Void>("exportLink")
         {
             @Override
             public void onClick()
@@ -56,11 +64,13 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
             }
         });
 
-        add(addUploadForm("form"));
+        GreyRoundedBorder restoreBorder = new GreyRoundedBorder(ID_RESTORE_BORDER, new Model<String>("Restore eHour database"), WebGeo.W_CONTENT_MEDIUM);
+        add(restoreBorder);
+        restoreBorder.add(addUploadForm("form"));
 
         final WebMarkupContainer parseStatus = new WebMarkupContainer(ID_PARSE_STATUS);
         parseStatus.setOutputMarkupId(true);
-        add(parseStatus);
+        restoreBorder.add(parseStatus);
     }
 
     private Form<?> addUploadForm(String id)
@@ -126,10 +136,12 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
             } else if (upload.getBytes() == null || upload.getBytes().length == 0 || upload.getSize() == 0)
             {
                 errorMessage = "Empty file";
-            } else {
+            } else
+            {
                 errorMessage = null;
             }
-        } else {
+        } else
+        {
             errorMessage = "Empty file";
         }
 
@@ -173,13 +185,10 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
         return continueWithPropagating;
     }
 
-    private void replaceStatusPanel
-            (Component
-                     replacement, AjaxRequestTarget
-                    target)
+    private void replaceStatusPanel(Component replacement, AjaxRequestTarget target)
     {
         replacement.setOutputMarkupId(true);
-        ExportPage.this.addOrReplace(replacement);
+        ((MarkupContainer)ExportPage.this.get(ID_RESTORE_BORDER)).addOrReplace(replacement);
         target.addComponent(replacement);
     }
 }

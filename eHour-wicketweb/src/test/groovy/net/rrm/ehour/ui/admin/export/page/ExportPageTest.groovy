@@ -15,6 +15,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import static org.mockito.Mockito.verifyZeroInteractions
 import static org.mockito.Mockito.when
 
 /**
@@ -47,7 +48,13 @@ class ExportPageTest extends AbstractSpringWebAppTester
 
   private Page startPage()
   {
-    return getTester().startPage(ExportPage)
+
+    def page = getTester().startPage(ExportPage)
+
+    MockHttpServletRequest request = tester.getServletRequest()
+    request.setUseMultiPartContentType true
+
+    return page
   }
 
   @Test
@@ -56,24 +63,22 @@ class ExportPageTest extends AbstractSpringWebAppTester
     when(exportService.exportDatabase()).thenReturn("this should be xml");
 
     startPage()
-    tester.clickLink "exportLink"
+    tester.clickLink "backupBorder:exportLink"
+    tester.assertRenderedPage ExportPage.class
   }
 
   @Test
-  void shouldUploadXMl()
+  void shouldUploadXML()
   {
     startPage()
 
-    FormTester formTester = tester.newFormTester("form")
-    MockHttpServletRequest request = tester.getServletRequest()
-    request.setUseMultiPartContentType true
-
+    FormTester formTester = tester.newFormTester("restoreBorder:form")
 
     when(importService.prepareImportDatabase(Mockito.any())).thenReturn(new ParseSession());
 
     formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "text/xml"
-    tester.executeAjaxEvent "form:ajaxSubmit", "onclick"
-    tester.assertComponent "parseStatus", AjaxLazyLoadPanel.class
+    tester.executeAjaxEvent "restoreBorder:form:ajaxSubmit", "onclick"
+    tester.assertComponent "restoreBorder:parseStatus", AjaxLazyLoadPanel.class
   }
 
   @Test
@@ -81,15 +86,23 @@ class ExportPageTest extends AbstractSpringWebAppTester
   {
     startPage()
 
-    FormTester formTester = tester.newFormTester("form")
-    MockHttpServletRequest request = tester.getServletRequest()
-    request.setUseMultiPartContentType true
-
-
-    when(importService.prepareImportDatabase(Mockito.any())).thenReturn(new ParseSession());
-
+    FormTester formTester = tester.newFormTester("restoreBorder:form")
     formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "application/zip"
-    tester.executeAjaxEvent "form:ajaxSubmit", "onclick"
-    tester.assertComponent "parseStatus", Label.class
+
+    tester.executeAjaxEvent "restoreBorder:form:ajaxSubmit", "onclick"
+    tester.assertComponent "restoreBorder:parseStatus", Label.class
+
+    verifyZeroInteractions(importService)
+  }
+
+  @Test
+  void shouldFailForNoFile()
+  {
+    startPage()
+
+    tester.executeAjaxEvent "restoreBorder:form:ajaxSubmit", "onclick"
+    tester.assertComponent "restoreBorder:parseStatus", Label.class
+
+    verifyZeroInteractions(importService)
   }
 }
