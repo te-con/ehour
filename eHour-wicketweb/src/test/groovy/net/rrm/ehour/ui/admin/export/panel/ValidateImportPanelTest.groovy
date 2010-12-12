@@ -1,21 +1,22 @@
 package net.rrm.ehour.ui.admin.export.panel
 
-import net.rrm.ehour.export.service.ImportException
 import net.rrm.ehour.export.service.ImportService
 import net.rrm.ehour.export.service.ParseSession
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
+import net.rrm.ehour.ui.common.event.AjaxEventHook
+import net.rrm.ehour.ui.common.event.EventPublisher
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.Model
 import org.apache.wicket.util.tester.TestPanelSource
 import org.junit.Before
 import org.junit.Test
-import org.junit.Ignore
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertTrue
 import static org.mockito.Mockito.when
 
 /**
@@ -37,60 +38,41 @@ class ValidateImportPanelTest extends AbstractSpringWebAppTester
   @Test
   public void shouldDisplayValidateAndClickImport()
   {
-    ParseSession status = new ParseSession(imported: false)
+    ParseSession session = new ParseSession(imported: false)
 
-    when(importService.prepareImportDatabase(Mockito.anyString())).thenReturn(status)
+    when(importService.prepareImportDatabase(Mockito.anyString())).thenReturn(session)
 
     startPanel "fefe"
 
     tester.assertNoErrorMessage()
     tester.assertComponent "panel:${ValidateImportPanel.ID_STATUS}", ParseStatusPanel.class
 
+    def hook = new AjaxEventHook()
+    EventPublisher.listenerHook = hook
+
     tester.executeAjaxEvent "panel:${ValidateImportPanel.ID_IMPORT_LINK}", "onclick"
+
+    assertEquals 1, hook.events.size()
+    def event = hook.events[0] as PayloadAjaxEvent
+    assertEquals(session, event.payload)
+
   }
 
   @Test
   public void shouldDisplayValidateWithFailingImport()
   {
-    ParseSession status = new ParseSession(imported: false)
+    ParseSession status = new ParseSession(globalError: true, globalErrorMessage: "n/a")
 
     when(importService.prepareImportDatabase(Mockito.anyString())).thenReturn(status)
-    when(importService.importDatabase(status)).thenThrow new ImportException("fe")
 
     startPanel "fefe"
 
     tester.assertNoErrorMessage()
     tester.assertComponent "panel:${ValidateImportPanel.ID_STATUS}", ParseStatusPanel.class
+    tester.assertComponent "panel:${ValidateImportPanel.ID_STATUS}:globalError", Label.class
+    tester.assertModelValue "panel:${ValidateImportPanel.ID_STATUS}:globalError", "n/a"
 
-    tester.executeAjaxEvent "panel:${ValidateImportPanel.ID_IMPORT_LINK}", "onclick"
-    assertFalse status.imported
-  //  tester.assertInvisible "panel:${ValidateImportPanel.ID_IMPORT_LINK}"
-  }
-
-	@Ignore
-  @Test
-  public void shouldDisplayExceptionMessageForValidate()
-  {
-    when(importService.prepareImportDatabase(Mockito.anyString())).thenThrow(new ImportException(("fefe")))
-
-    startPanel "fefe"
-
-    tester.assertComponent "panel:${ValidateImportPanel.ID_STATUS}", Label.class
-  }
-
-@Ignore
-  @Test
-  public void shouldDisplayAfterImport()
-  {
-    ParseSession status = new ParseSession(imported: true)
-
-    when(importService.prepareImportDatabase(Mockito.anyString())).thenReturn(status)
-
-    startPanel status
-
-    tester.assertNoErrorMessage()
-    tester.assertComponent "panel:${ValidateImportPanel.ID_STATUS}", ParseStatusPanel.class
-    tester.assertInvisible "panel:${ValidateImportPanel.ID_IMPORT_LINK}"
+    assertFalse status.importable
   }
 
 

@@ -15,8 +15,9 @@ public interface ImportService
 
     /**
      * Import database
+     *
      * @param session
      * @throws ImportException
      */
-    public void importDatabase(ParseSession session) throws ImportException;
+    public ParseSession importDatabase(ParseSession session);
 }

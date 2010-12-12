@@ -19,9 +19,9 @@ public class ParseSession implements Serializable
     private Map<ExportType, List<String>> errors = new HashMap<ExportType, List<String>>();
 
     private String filename;
-    private boolean imported;
     private boolean globalError;
     private String globalErrorMessage;
+    private boolean imported = false;
 
     public void deleteFile()
     {
@@ -29,6 +29,7 @@ public class ParseSession implements Serializable
         {
             File file = new File(filename);
             file.delete();
+            imported = true;
         }
     }
 
@@ -39,7 +40,7 @@ public class ParseSession implements Serializable
     }
 
     public boolean isImportable() {
-        return !imported && !globalError && !hasErrors();
+        return !(imported || globalError || hasErrors());
     }
 
 
@@ -107,16 +108,6 @@ public class ParseSession implements Serializable
         this.filename = filename;
     }
 
-    public boolean isImported()
-    {
-        return imported;
-    }
-
-    public void setImported(boolean imported)
-    {
-        this.imported = imported;
-    }
-
     public boolean isGlobalError()
     {
         return globalError;
@@ -135,5 +126,10 @@ public class ParseSession implements Serializable
     public void setGlobalErrorMessage(String globalErrorMessage)
     {
         this.globalErrorMessage = globalErrorMessage;
+    }
+
+    public void setImported(boolean i)
+    {
+        this.imported = i;
     }
 }

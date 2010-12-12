@@ -1,8 +1,10 @@
 package net.rrm.ehour.ui.admin.export.panel;
 
+import net.rrm.ehour.export.service.ImportService;
 import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -10,10 +12,17 @@ import org.apache.wicket.model.Model;
  */
 public class ImportPanel extends AbstractBasePanel<ParseSession>
 {
+    @SpringBean
+    private ImportService importService;
+
     public ImportPanel(String id, ParseSession session)
     {
         super(id, new Model<ParseSession>(session));
 
-//        initPanel();
+        importService.importDatabase(session);
+
+        ParseStatusPanel status = new ParseStatusPanel("status", getPanelModel());
+        add(status);
     }
+
 }

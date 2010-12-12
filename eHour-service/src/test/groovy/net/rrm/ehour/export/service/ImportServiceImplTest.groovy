@@ -2,12 +2,12 @@ package net.rrm.ehour.export.service
 
 import net.rrm.ehour.domain.Configuration
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao
+import org.apache.commons.io.FileUtils
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
+import static org.junit.Assert.*
 import static org.mockito.Mockito.when
 
 /**
@@ -40,8 +40,9 @@ class ImportServiceImplTest
 
     def file = "src/test/resources/import/import_data.xml"
     def xml = new File(file).text
-    def status = importService.prepareImportDatabase(xml)
-    status.deleteFile()
+    ParseSession status = importService.prepareImportDatabase(xml)
+
+    assertTrue status.importable
   }
 
 
@@ -55,22 +56,30 @@ class ImportServiceImplTest
     def file = "src/test/resources/import/import_data.xml"
     def xml = new File(file).text
     def session = importService.prepareImportDatabase(xml)
+
     assertFalse session.importable
     assertEquals "import.error.invalidDatabaseVersion", session.globalErrorMessage
   }
 
   @Test
-  void shouldValidateImport()
+  void shouldImport()
   {
     def configuration = new Configuration("version", "0.8.3")
 
     when(configurationDao.findById("version")).thenReturn(configuration)
 
-    def file = "src/test/resources/import/import_data_full.xml"
-    def xml = new File(file).text
-    def status = importService.prepareImportDatabase(xml)
-    assertFalse status.hasErrors()
+    def file = new File("src/test/resources/import/import_data_full.xml");
+    def tempPath = FileUtils.getTempDirectoryPath()
+    def destFile = new File(tempPath + "/tmp.xml");
+    FileUtils.copyFile(file, destFile)
 
-    status.deleteFile()
+    ParseSession session = new ParseSession(filename: destFile.getAbsolutePath())
+
+    def status = importService.importDatabase(session)
+
+    assertFalse status.hasErrors()
+    assertFalse status.importable
+
+    assertFalse destFile.exists()
   }
 }

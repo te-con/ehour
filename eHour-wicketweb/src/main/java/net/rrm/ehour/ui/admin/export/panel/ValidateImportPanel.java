@@ -1,6 +1,5 @@
 package net.rrm.ehour.ui.admin.export.panel;
 
-import net.rrm.ehour.export.service.ImportException;
 import net.rrm.ehour.export.service.ImportService;
 import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.ui.admin.export.ExportAjaxEventType;
@@ -25,7 +24,6 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
 
     @SpringBean
     private ImportService importService;
-
 
     public ValidateImportPanel(String id, String xmlData)
     {
@@ -64,10 +62,4 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
         add(link);
     }
 
-    private void importXml() throws ImportException
-    {
-        ParseSession session = getPanelModel().getObject();
-        importService.importDatabase(session);
-        session.setImported(true);
-    }
 }

@@ -35,10 +35,11 @@ public class ImportServiceImpl implements ImportService
 
     @Override
     @Transactional
-    public void importDatabase(ParseSession session) throws ImportException
+    public ParseSession importDatabase(ParseSession session)
     {
         try
         {
+            session.clearSession();
             String xmlDataFromFile = getXmlDataFromFile(session.getFilename());
             XMLEventReader eventReader = createXmlReader(xmlDataFromFile);
             XmlImporter importer = new XmlImporterBuilder()
@@ -52,12 +53,17 @@ public class ImportServiceImpl implements ImportService
             importer.importXml(session, eventReader);
         } catch (Exception e)
         {
+            session.setGlobalError(true);
+            session.setGlobalErrorMessage(e.getMessage());
+
             LOG.error(e);
-            throw new ImportException("Failed to import", e);
         } finally
         {
             session.deleteFile();
+            session.setImported(true);
         }
+
+        return session;
     }
 
 
@@ -137,7 +143,7 @@ public class ImportServiceImpl implements ImportService
         return file.getAbsolutePath();
     }
 
-    private ParseSession validateXml(String xmlData) throws XMLStreamException, ImportException, IllegalAccessException, InstantiationException, ClassNotFoundException
+    private ParseSession validateXml(String xmlData) throws XMLStreamException, IllegalAccessException, InstantiationException, ClassNotFoundException, ImportException
     {
         ParseSession status = new ParseSession();
 
