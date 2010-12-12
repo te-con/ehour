@@ -82,7 +82,9 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
             {
                 Component replacementPanel;
 
-                if (isValidUpload(file))
+                String errorMessage;
+
+                if ((errorMessage = isValidUpload(file)) == null)
                 {
                     byte[] bytes = file.getFileUpload().getBytes();
                     final String xmlData = new String(bytes);
@@ -97,7 +99,7 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
                     };
                 } else
                 {
-                    replacementPanel = new Label(ID_PARSE_STATUS, "Invalid content type, are you sure this is the right file ?");
+                    replacementPanel = new Label(ID_PARSE_STATUS, "Invalid file uploaded: " + errorMessage);
                 }
 
                 replaceStatusPanel(replacementPanel, target);
@@ -107,9 +109,9 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
         return form;
     }
 
-    private boolean isValidUpload(FileUploadField field)
+    private String isValidUpload(FileUploadField field)
     {
-        boolean valid = false;
+        String errorMessage = null;
 
         if (field.getFileUpload() != null)
         {
@@ -117,19 +119,21 @@ public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventList
 
             if (upload.getContentType() == null || !upload.getContentType().toLowerCase().contains("text"))
             {
-                valid = false;
+                errorMessage = "Invalid content type";
             } else if (StringUtils.isBlank(upload.getClientFileName()))
             {
-                valid = false;
+                errorMessage = "Empty file";
             } else if (upload.getBytes() == null || upload.getBytes().length == 0 || upload.getSize() == 0)
             {
-                valid = false;
+                errorMessage = "Empty file";
             } else {
-                valid = true;
+                errorMessage = null;
             }
+        } else {
+            errorMessage = "Empty file";
         }
 
-        return valid;
+        return errorMessage;
     }
 
     @SuppressWarnings("unchecked")
