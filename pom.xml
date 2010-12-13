@@ -146,11 +146,6 @@
                 <version>${slf4j.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>jfree</groupId>
                 <artifactId>jfreechart</artifactId>
                 <version>1.0.12</version>

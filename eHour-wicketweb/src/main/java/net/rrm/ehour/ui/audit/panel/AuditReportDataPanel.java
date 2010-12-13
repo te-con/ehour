@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.audit.panel;
 
-import java.util.Date;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
@@ -25,12 +23,11 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
 import net.rrm.ehour.ui.audit.report.AuditReport;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.component.datatable.AjaxDataTable;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -46,6 +43,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.value.ValueMap;
+
+import java.util.Date;
 
 public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
 {
@@ -108,7 +107,9 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
         columns[2] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.action"), "action");
         columns[3] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
-        AjaxDataTable<Audit> table = new AjaxDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
+        AjaxFallbackDefaultDataTable<Audit> table = new AjaxFallbackDefaultDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
+
+//        AjaxDataTable<Audit> table = new AjaxDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
 		dataContainer.add(table);
 		
 		return dataContainer;
