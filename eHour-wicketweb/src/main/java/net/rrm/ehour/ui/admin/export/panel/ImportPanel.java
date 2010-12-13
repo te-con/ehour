@@ -12,6 +12,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class ImportPanel extends AbstractBasePanel<ParseSession>
 {
+    private static final long serialVersionUID = 5207207571905588721L;
+    
     @SpringBean
     private ImportService importService;
 

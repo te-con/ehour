@@ -19,6 +19,8 @@ import java.util.Map;
  */
 public class ParseStatusPanel extends AbstractBasePanel<ParseSession>
 {
+    private static final long serialVersionUID = 5985903285180288975L;
+
     public ParseStatusPanel(String id, IModel<ParseSession> model)
     {
         super(id, model);
@@ -76,11 +78,9 @@ public class ParseStatusPanel extends AbstractBasePanel<ParseSession>
                     @Override
                     protected void populateItem(ListItem<String> item)
                     {
-                        String modelObject = item.getModelObject();
                         item.add(new Label("msg", item.getModel()));
                     }
                 };
-
 
                 entryListItem.add(msgsList);
             }

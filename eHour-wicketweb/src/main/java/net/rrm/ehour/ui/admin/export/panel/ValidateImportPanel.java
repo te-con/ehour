@@ -21,6 +21,7 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
 {
     static final String ID_STATUS = "status";
     static final String ID_IMPORT_LINK = "importLink";
+    private static final long serialVersionUID = -505699078695316620L;
 
     @SpringBean
     private ImportService importService;

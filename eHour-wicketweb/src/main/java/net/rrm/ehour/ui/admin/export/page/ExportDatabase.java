@@ -8,7 +8,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Time;
 
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,8 +19,8 @@ public class ExportDatabase extends DynamicWebResource
 {
     public static final String ID_EXPORT_DB = "exportDb";
 
-    private static final DateFormat FORMATTER = new SimpleDateFormat("yyyyMMdd");
-    
+    private static final long serialVersionUID = 8027677671905365904L;
+
 
     @SpringBean(name = "exportService")
     private ExportService exportService;
@@ -50,9 +49,8 @@ public class ExportDatabase extends DynamicWebResource
 
     	protected void setHeaders(WebResponse response)
 	{
-//		response.setHeader("Cache-Control", "no-cache, must-revalidate");
-
-		response.setAttachmentHeader("eHour-xml-backup-" + FORMATTER.format(new Date()) + ".xml");
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        response.setAttachmentHeader("eHour-xml-backup-" + format.format(new Date()) + ".xml");
 	}
 
     private class ExportResourceState extends ResourceState

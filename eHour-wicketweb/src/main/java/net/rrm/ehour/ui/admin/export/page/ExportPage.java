@@ -1,6 +1,5 @@
 package net.rrm.ehour.ui.admin.export.page;
 
-import net.rrm.ehour.export.service.ImportService;
 import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.export.ExportAjaxEventType;
@@ -8,7 +7,6 @@ import net.rrm.ehour.ui.admin.export.panel.ImportPanel;
 import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.commons.lang.StringUtils;
@@ -29,19 +27,18 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * User: thies
  * Date: Nov 12, 2010
  * Time: 10:54:38 PM
  */
-public class ExportPage extends AbstractAdminPage<Void> implements AjaxEventListener
+public class ExportPage extends AbstractAdminPage<Void>
 {
     private static final String ID_PARSE_STATUS = "parseStatus";
     private static final String ID_RESTORE_BORDER = "restoreBorder";
-    @SpringBean(name = "importService")
-    private ImportService importService;
+
+    private static final long serialVersionUID = 821234996218723175L;
 
     public ExportPage()
     {
