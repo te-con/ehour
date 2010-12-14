@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
+import net.rrm.ehour.ui.common.formguard.GuardDirtyFormBehavior;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
@@ -107,6 +108,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
 		// add form
 		timesheetForm = new Form<TimesheetModel>("timesheetForm");
+        timesheetForm.add(new GuardDirtyFormBehavior());
 		timesheetForm.setOutputMarkupId(true);
 		greyBorder.add(timesheetForm);
 
