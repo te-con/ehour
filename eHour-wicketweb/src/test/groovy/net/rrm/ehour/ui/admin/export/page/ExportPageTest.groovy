@@ -63,7 +63,7 @@ class ExportPageTest extends AbstractSpringWebAppTester
     when(exportService.exportDatabase()).thenReturn("this should be xml");
 
     startPage()
-    tester.clickLink "backupBorder:exportLink"
+    tester.clickLink "frame:backupBorder:exportLink"
     tester.assertRenderedPage ExportPage.class
   }
 
@@ -72,13 +72,13 @@ class ExportPageTest extends AbstractSpringWebAppTester
   {
     startPage()
 
-    FormTester formTester = tester.newFormTester("restoreBorder:form")
+    FormTester formTester = tester.newFormTester("frame:restoreBorder:form")
 
     when(importService.prepareImportDatabase(Mockito.any())).thenReturn(new ParseSession());
 
     formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "text/xml"
-    tester.executeAjaxEvent "restoreBorder:form:ajaxSubmit", "onclick"
-    tester.assertComponent "restoreBorder:parseStatus", AjaxLazyLoadPanel.class
+    tester.executeAjaxEvent "frame:restoreBorder:form:ajaxSubmit", "onclick"
+    tester.assertComponent "frame:restoreBorder:form:parseStatus", AjaxLazyLoadPanel.class
   }
 
   @Test
@@ -86,11 +86,11 @@ class ExportPageTest extends AbstractSpringWebAppTester
   {
     startPage()
 
-    FormTester formTester = tester.newFormTester("restoreBorder:form")
+    FormTester formTester = tester.newFormTester("frame:restoreBorder:form")
     formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "application/zip"
 
-    tester.executeAjaxEvent "restoreBorder:form:ajaxSubmit", "onclick"
-    tester.assertComponent "restoreBorder:parseStatus", Label.class
+    tester.executeAjaxEvent "frame:restoreBorder:form:ajaxSubmit", "onclick"
+    tester.assertComponent "frame:restoreBorder:form:parseStatus", Label.class
 
     verifyZeroInteractions(importService)
   }
@@ -100,8 +100,8 @@ class ExportPageTest extends AbstractSpringWebAppTester
   {
     startPage()
 
-    tester.executeAjaxEvent "restoreBorder:form:ajaxSubmit", "onclick"
-    tester.assertComponent "restoreBorder:parseStatus", Label.class
+    tester.executeAjaxEvent "frame:restoreBorder:form:ajaxSubmit", "onclick"
+    tester.assertComponent "frame:restoreBorder:form:parseStatus", Label.class
 
     verifyZeroInteractions(importService)
   }

@@ -5,18 +5,17 @@ import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.export.ExportAjaxEventType;
 import net.rrm.ehour.ui.admin.export.panel.ImportPanel;
 import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel;
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -24,7 +23,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 
@@ -39,13 +37,17 @@ public class ExportPage extends AbstractAdminPage<Void>
     private static final String ID_RESTORE_BORDER = "restoreBorder";
 
     private static final long serialVersionUID = 821234996218723175L;
+    private Form<Void> form;
 
     public ExportPage()
     {
         super(new ResourceModel("admin.export.title"), "admin.export.help.header", "admin.export.help.body");
 
-        GreyRoundedBorder backupBorder = new GreyRoundedBorder("backupBorder", new Model<String>("Backup eHour database"), WebGeo.W_CONTENT_MEDIUM);
-        add(backupBorder);
+        GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("audit.report.title"));
+        add(frame);
+
+        GreyBlueRoundedBorder backupBorder = new GreyBlueRoundedBorder("backupBorder");
+        frame.add(backupBorder);
 
         backupBorder.add(new Link<Void>("exportLink")
         {
@@ -61,18 +63,21 @@ public class ExportPage extends AbstractAdminPage<Void>
             }
         });
 
-        GreyRoundedBorder restoreBorder = new GreyRoundedBorder(ID_RESTORE_BORDER, new Model<String>("Restore eHour database"), WebGeo.W_CONTENT_MEDIUM);
-        add(restoreBorder);
-        restoreBorder.add(addUploadForm("form"));
+        GreyBlueRoundedBorder restoreBorder = new GreyBlueRoundedBorder(ID_RESTORE_BORDER);
+        frame.add(restoreBorder);
+        form = addUploadForm("form");
+
+        restoreBorder.add(form);
 
         final WebMarkupContainer parseStatus = new WebMarkupContainer(ID_PARSE_STATUS);
         parseStatus.setOutputMarkupId(true);
-        restoreBorder.add(parseStatus);
+        form.add(parseStatus);
+
     }
 
-    private Form<?> addUploadForm(String id)
+    private Form<Void> addUploadForm(String id)
     {
-        final Form<?> form = new Form<Void>(id);
+        Form<Void> form = new Form<Void>(id);
         form.setMultiPart(true);
 
         add(form);
@@ -82,7 +87,7 @@ public class ExportPage extends AbstractAdminPage<Void>
 
 
         // create the ajax button used to submit the form
-        form.add(new AjaxButton("ajaxSubmit")
+        form.add(new AjaxSubmitLink("ajaxSubmit")
         {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form)
@@ -185,7 +190,7 @@ public class ExportPage extends AbstractAdminPage<Void>
     private void replaceStatusPanel(Component replacement, AjaxRequestTarget target)
     {
         replacement.setOutputMarkupId(true);
-        ((MarkupContainer)ExportPage.this.get(ID_RESTORE_BORDER)).addOrReplace(replacement);
+        form.addOrReplace(replacement);
         target.addComponent(replacement);
     }
 }

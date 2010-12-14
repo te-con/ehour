@@ -6,25 +6,60 @@
 
 <body>
 <wicket:extend>
-    <div wicket:id="backupBorder">
-        Backup your existing database to a portable file.<br/>
-        <a class="button" onclick="this.blur();" wicket:id="exportLink">
-            <span><wicket:message key="admin.export.button"/></span></a>
+    <div wicket:id="frame">
+
+        <div wicket:id="backupBorder">
+            <table class="contentTable" width="95%">
+                <tr>
+                    <td>
+                        Backup your existing database to a portable file.<br/> You can use the backup for a restore or
+                        for data migration between the standalone and the WAR version.<br/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <br/>
+                        <a class="bluebutton" onclick="this.blur();" wicket:id="exportLink">
+                            <span><wicket:message key="admin.export.button"/></span></a>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+
+        <br/><br/>
+
+        <div wicket:id="restoreBorder">
+
+            <form wicket:id="form">
+                <table class="contentTable" width="95%">
+                    <tr>
+                        <td>Import file:</td>
+                        <td><input wicket:id="file" type="file" class="textInputSmall"/></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"><br/>
+                            <a class="bluebutton" onclick="this.blur();" wicket:id="ajaxSubmit">
+                                <span>Import</span></a>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                            <span wicket:id="parseStatus"></span>
+                        </td>
+                    </tr>
+                </table>
+
+            </form>
+
+
+        </div>
     </div>
-
-    <br/><br/>
-
-    <div wicket:id="restoreBorder">
-
-        <form wicket:id="form">
-            Import file: <input wicket:id="file" type="file"/> <br/><br/>
-            <input wicket:id="ajaxSubmit" type="button" value="Import"/>
-        </form>
-
-        <div wicket:id="parseStatus"></div>
-
-    </div>
-
 </wicket:extend>
 </body>
 </html>

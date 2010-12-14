@@ -21,6 +21,7 @@ import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
 import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin;
 import net.rrm.ehour.ui.admin.export.page.ExportDatabase;
+import net.rrm.ehour.ui.admin.export.page.ExportPage;
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
@@ -158,6 +159,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 		mount(new HybridUrlCodingStrategy("/pm", ProjectManagement.class));
 
 		mount(new HybridUrlCodingStrategy("/prefs", UserPreferencePage.class));
+
+        mount(new HybridUrlCodingStrategy("/backup", ExportPage.class));
 	}
 
 	protected void springInjection()
