@@ -7,31 +7,42 @@
 
 <wicket:panel>
 
-    Errors:
+    <wicket:enclosure child="globalError">
 
-    <span wicket:id="globalError" />
+        Errors:
 
-    <table>
-        <tr wicket:id="errors">>
-            <td valign="top" wicket:id="key"></td>
-            <td>
-                <span wicket:id="msgs">
-                    <span wicket:id="msg" /><br/>
-                   </span>
-            </td>
-        </tr>
-    </table>
+        <span wicket:id="globalError"/>
+        <br/>
 
-    <br />
-    Insertions:
+    </wicket:enclosure>
 
-    <table>
-        <tr wicket:id="insertions">
-            <td valign="top" wicket:id="key"></td>
-            <td valign="top" wicket:id="insertions"></td>
-        </tr>
-    </table>
+    <wicket:enclosure child="errors">
+        Errors per entity:
 
+        <table>
+            <tr wicket:id="errors">>
+                <td valign="top" wicket:id="key"></td>
+                <td>
+                    <span wicket:id="msgs">
+                        <span wicket:id="msg"/><br/>
+                       </span>
+                </td>
+            </tr>
+
+        </table>
+        <br/>
+    </wicket:enclosure>
+
+    <wicket:enclosure child="insertions">
+        Valid entities:
+
+        <table>
+            <tr wicket:id="insertions">
+                <td valign="top" wicket:id="key"></td>
+                <td valign="top" wicket:id="insertions"></td>
+            </tr>
+        </table>
+    </wicket:enclosure>
 
 </wicket:panel>
 

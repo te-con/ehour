@@ -40,7 +40,7 @@ public class ParseSession implements Serializable
     }
 
     public boolean isImportable() {
-        return !(imported || globalError || hasErrors());
+        return !(imported || hasErrors());
     }
 
 
@@ -95,7 +95,7 @@ public class ParseSession implements Serializable
 
     public boolean hasErrors()
     {
-        return !errors.isEmpty();
+        return !errors.isEmpty() || globalError;
     }
 
     public String getFilename()

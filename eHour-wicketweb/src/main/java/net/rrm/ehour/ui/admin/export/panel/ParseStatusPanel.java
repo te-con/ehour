@@ -35,8 +35,15 @@ public class ParseStatusPanel extends AbstractBasePanel<ParseSession>
         Map<ExportType, List<String>> errors = session.getErrors();
 
         add(createGlobalErrors("globalError", session));
-        add(createErrorsList("errors", errors));
-        add(createInsertionsList("insertions", session.getInsertions()));
+
+        ListView<ExportType> errorsView = createErrorsList("errors", errors);
+        errorsView.setVisible(!errors.isEmpty());
+        add(errorsView);
+
+
+        ListView<ExportType> insertionsView = createInsertionsList("insertions", session.getInsertions());
+        insertionsView.setVisible(!session.getInsertions().isEmpty());
+        add(insertionsView);
     }
 
     private Component createGlobalErrors(String id, ParseSession session) {

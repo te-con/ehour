@@ -3,6 +3,7 @@ package net.rrm.ehour.ui.admin.export.panel;
 import net.rrm.ehour.export.service.ImportService;
 import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -25,6 +26,8 @@ public class ImportPanel extends AbstractBasePanel<ParseSession>
 
         ParseStatusPanel status = new ParseStatusPanel("status", getPanelModel());
         add(status);
+
+        add(new Label("statusMessage", session.hasErrors() ? "Failed to restore" : "Restore successful"));
     }
 
 }

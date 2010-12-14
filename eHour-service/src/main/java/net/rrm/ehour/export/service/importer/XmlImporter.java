@@ -89,13 +89,21 @@ public class XmlImporter
     }
 
     @SuppressWarnings("unchecked")
-    private void parseElement(StartElement element, DomainObjectParser parser, ParseSession status) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException
+    private void parseElement(StartElement element, DomainObjectParser parser, ParseSession status) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException, ImportException
     {
-        String aClass = element.getAttributeByName(new QName("CLASS")).getValue();
+        Attribute attribute = element.getAttributeByName(new QName("CLASS"));
 
-        Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
+        if (attribute != null)
+        {
+            String aClass = attribute.getValue();
 
-        parser.parse(doClass, status);
+            Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
+
+            parser.parse(doClass, status);
+        } else
+        {
+            throw new ImportException("Invalid XML, no attribute found for element: " + element.getName().getLocalPart());
+        }
     }
 
     private void checkDatabaseVersion(StartElement element) throws ImportException
@@ -107,7 +115,7 @@ public class XmlImporter
 
         if (version == null || !version.getConfigValue().equalsIgnoreCase(dbVersion))
         {
-            throw new ImportException("import.error.invalidDatabaseVersion");
+            throw new ImportException("Invalid database version specified in file, target database should match backup database version.");
         }
     }
 }

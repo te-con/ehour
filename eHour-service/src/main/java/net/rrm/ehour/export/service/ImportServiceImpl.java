@@ -116,7 +116,6 @@ public class ImportServiceImpl implements ImportService
             session = new ParseSession();
             session.setGlobalError(true);
             session.setGlobalErrorMessage(e.getMessage());
-
             LOG.error(e);
         }
 

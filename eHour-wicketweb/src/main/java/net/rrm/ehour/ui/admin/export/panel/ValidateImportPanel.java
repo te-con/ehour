@@ -9,6 +9,7 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -31,7 +32,7 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
         super(id);
 
         ParseSession session = importService.prepareImportDatabase(xmlData);
-
+        add(new Label("statusMessage", session.hasErrors() ? "Failed to validate" : "Validation succesful"));
         setDefaultModel(new Model<ParseSession>(session));
         initPanel();
     }
@@ -51,8 +52,8 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
             public void onClick(AjaxRequestTarget target)
             {
                 PayloadAjaxEvent<ParseSession> event = new PayloadAjaxEvent<ParseSession>(ExportAjaxEventType.VALIDATED,
-                                                                                            ValidateImportPanel.this.getPanelModel().getObject(),
-                                                                                            target);
+                        ValidateImportPanel.this.getPanelModel().getObject(),
+                        target);
 
                 EventPublisher.publishAjaxEvent(ValidateImportPanel.this, event);
             }

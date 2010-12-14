@@ -11,9 +11,7 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
@@ -106,7 +104,15 @@ public class ExportPage extends AbstractAdminPage<Void>
                         @Override
                         public Component getLazyLoadComponent(String markupId)
                         {
+                            AjaxRequestTarget.get().appendJavascript("showHideSpinner(false);");
                             return new ValidateImportPanel(markupId, xmlData);
+                        }
+
+                        @Override
+                        public Component getLoadingComponent(String markupId)
+                        {
+                            AjaxRequestTarget.get().appendJavascript("showHideSpinner(true);");
+                            return new Label(markupId, "Validating");
                         }
                     };
                 } else
@@ -152,9 +158,7 @@ public class ExportPage extends AbstractAdminPage<Void>
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean ajaxEventReceived
-            (AjaxEvent
-                     ajaxEvent)
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
     {
         boolean continueWithPropagating = true;
 
@@ -168,13 +172,15 @@ public class ExportPage extends AbstractAdminPage<Void>
                 @Override
                 public Component getLazyLoadComponent(String markupId)
                 {
+                    AjaxRequestTarget.get().appendJavascript("showHideSpinner(false);");
                     return new ImportPanel(markupId, session);
                 }
 
-                public Component getLoadingComponent(final String markupId)
+                @Override
+                public Component getLoadingComponent(String markupId)
                 {
-                    return new Label(markupId, "Importing...<br /><img alt=\"Loading...\" src=\"" +
-                            RequestCycle.get().urlFor(AbstractDefaultAjaxBehavior.INDICATOR) + "\"/>").setEscapeModelStrings(false);
+                    AjaxRequestTarget.get().appendJavascript("showHideSpinner(true);");
+                    return new Label(markupId, "Restoring");
                 }
             };
 

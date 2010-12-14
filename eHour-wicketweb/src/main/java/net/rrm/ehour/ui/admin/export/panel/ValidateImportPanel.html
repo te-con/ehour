@@ -5,7 +5,8 @@
 <body>
 
 <wicket:panel>
-    Validated import
+    <b wicket:id="statusMessage">Succes</b>
+    <br />
 
     <br />
     <span wicket:id="status" />
@@ -13,7 +14,8 @@
     <br />
 
     <wicket:enclosure child="importLink">
-        <a wicket:id="importLink">ok, import</a>
+        <a class="bluebutton" onclick="this.blur();" wicket:id="importLink">
+            <span>Restore database</span></a>
     </wicket:enclosure>
 
 </wicket:panel>
