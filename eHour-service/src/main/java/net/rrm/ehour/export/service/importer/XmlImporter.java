@@ -117,7 +117,7 @@ public class XmlImporter
         {
             String foundVersion = version != null ? version.getConfigValue() : "n/a";
 
-            throw new ImportException("Invalid database version (" + foundVersion + ") specified in file, target database should match backup database version (" + dbVersion + ")");
+            throw new ImportException("Invalid database version (" + dbVersion + ") specified in file, target database should match backup database version (" + foundVersion + ")");
         }
     }
 }
