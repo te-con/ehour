@@ -7,7 +7,8 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import static org.junit.Assert.*
+import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertTrue
 import static org.mockito.Mockito.when
 
 /**
@@ -58,7 +59,7 @@ class ImportServiceImplTest
     def session = importService.prepareImportDatabase(xml)
 
     assertFalse session.importable
-    assertEquals "import.error.invalidDatabaseVersion", session.globalErrorMessage
+    assertTrue session.globalErrorMessage.contains("version")
   }
 
   @Test
@@ -77,7 +78,6 @@ class ImportServiceImplTest
 
     def status = importService.importDatabase(session)
 
-    assertFalse status.hasErrors()
     assertFalse status.importable
 
     assertFalse destFile.exists()

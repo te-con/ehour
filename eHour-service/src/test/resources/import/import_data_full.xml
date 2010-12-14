@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<EHOUR DB_VERSION="0.8.3">
+<EHOUR DB_VERSION="0.8.1">
  <CONFIGURATION>
   <CONFIG KEY="completeDayHours">8</CONFIG>
   <CONFIG KEY="showTurnOver">true</CONFIG>
