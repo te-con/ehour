@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
@@ -33,7 +30,6 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.ui.timesheet.export.criteria.ExportCriteriaPanel;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
@@ -41,6 +37,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Print month page
@@ -89,18 +88,12 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 	@SuppressWarnings("unchecked")
 	private ExportCriteriaPanel createExportCriteriaPanel(String id)
 	{
-		ExportCriteriaPanel criteriaPanel = new ExportCriteriaPanel(id, (IModel<ReportCriteria>)getDefaultModel());
-		
-		return criteriaPanel;
+		return new ExportCriteriaPanel(id, (IModel<ReportCriteria>)getDefaultModel());
 	}
 	
 	private CalendarPanel createCalendarPanel(String id)
 	{
-		CalendarPanel calendarPanel = new CalendarPanel(id, 
-														getEhourWebSession().getUser().getUser(), 
-														false);
-		
-		return calendarPanel;
+		return new CalendarPanel(id, getEhourWebSession().getUser().getUser(), false);
 	}
 
 	private void setCriteriaModel(Calendar forMonth)

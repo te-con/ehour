@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
-
 import org.apache.wicket.Page;
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -53,7 +52,7 @@ public class AuthUtil
 	{
 		Roles roles = getRoles();
 
-		return (roles != null) ? roles.contains(role) : false;
+		return (roles != null) && roles.contains(role);
 	}
 
 	/**
@@ -64,9 +63,7 @@ public class AuthUtil
 	{
 		EhourWebSession session = EhourWebSession.getSession();
 
-		Roles roles = session.getRoles();
-
-		return roles;
+		return session.getRoles();
 	}
 
 	/**

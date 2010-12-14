@@ -27,12 +27,7 @@ import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
-
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -40,16 +35,16 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Created on Mar 25, 2009, 6:37:20 AM
- * 
+ *
  * @author Thies Edeling (thies@te-con.nl)
- * 
+ *
  */
 public class ExportReportHeader extends AbstractExportReportPart
 {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	
-	
+
+
 	public ExportReportHeader(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
 	{
 		super(cellMargin, sheet, report, workbook);
@@ -72,7 +67,7 @@ public class ExportReportHeader extends AbstractExportReportPart
 	private int addTitleRow(int rowNumber)
 	{
 		HSSFRow row = getSheet().createRow(rowNumber++);
-		
+
 		CellFactory.createCell(row, getCellMargin(), getExcelReportName(getReport().getReportRange()), getWorkbook(), CellStyle.BOLD);
 //		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 0));
 		return rowNumber;
@@ -81,52 +76,50 @@ public class ExportReportHeader extends AbstractExportReportPart
 	private int addLogo(int rowNumber)
 	{
 		ImageLogo excelLogo = getConfigurationService().getExcelLogo();
-		
+
 		byte[] image = excelLogo.getImageData();
-	
+
 		int index = getWorkbook().addPicture(image, PoiUtil.getImageType(excelLogo.getImageType()));
-		
+
 		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short)1, 0, (short)8, 7);
 //														(short)++col,++row);
-		
+
 		HSSFPatriarch patriarch=getSheet().createDrawingPatriarch();
 		patriarch.createPicture(anchor,index);
 		anchor.setAnchorType(0); // 0 = Move and size with Cells, 2 = Move but don't size with cells, 3 = Don't move or size with cells.
-		
+
 		return rowNumber;
 	}
-	
-	
+
+
 	private int addTitleDateRow(int rowNumber)
 	{
 		HSSFRow row = getSheet().createRow(rowNumber++);
-		
+
 		CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.date"), getWorkbook(), CellStyle.NORMAL);
 		CellFactory.createCell(row, getCellMargin() + 2, CommonWebUtil.formatDate("MMMM yyyy", getReport().getReportRange().getDateStart()), getWorkbook(), CellStyle.NORMAL);
 
 		return rowNumber;
 	}
-	
+
 	private IModel<String> getExcelReportName(DateRange dateRange)
 	{
 		EhourWebSession session = EhourWebSession.getSession();
 		EhourConfig config = session.getEhourConfig();
-		
-		IModel<String> title = new StringResourceModel("excelMonth.reportName",
+
+		return new StringResourceModel("excelMonth.reportName",
 				null,
 				new Object[]{session.getUser().getUser().getFullName(),
 							 new DateModel(dateRange.getDateStart() , config, DateModel.DATESTYLE_MONTHONLY)});
-		
-		return title;
 	}
-	
+
 	private ConfigurationService getConfigurationService()
 	{
 		if (configurationService == null)
 		{
 			CommonWebUtil.springInjection(this);
 		}
-		
+
 		return configurationService;
 	}
 }

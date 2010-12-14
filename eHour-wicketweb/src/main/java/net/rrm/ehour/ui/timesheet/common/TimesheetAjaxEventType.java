@@ -25,5 +25,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 public enum TimesheetAjaxEventType implements AjaxEventType
 {
 	WEEK_NAV,
-	TIMESHEET_SUBMIT;
+	TIMESHEET_SUBMIT
 }

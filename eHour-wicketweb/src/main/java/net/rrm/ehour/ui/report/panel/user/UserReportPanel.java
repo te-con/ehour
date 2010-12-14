@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.report.panel.user;
 
-import java.util.Arrays;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
@@ -29,15 +26,10 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.report.TreeReportData;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.chart.AggregateChartDataConverter;
-import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerHoursAggregateChartDataConverter;
-import net.rrm.ehour.ui.report.chart.aggregate.CustomerTurnoverAggregateChartDataConverter;
-import net.rrm.ehour.ui.report.chart.aggregate.ProjectHoursAggregateChartDataConverter;
-import net.rrm.ehour.ui.report.chart.aggregate.ProjectTurnoverAggregateChartDataConverter;
+import net.rrm.ehour.ui.report.chart.aggregate.*;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import net.rrm.ehour.ui.report.user.page.UserReportPrint;
-
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -49,6 +41,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.value.ValueMap;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Report table
  **/
@@ -57,8 +52,8 @@ public class UserReportPanel extends AbstractReportPanel
 {
 	public enum Option
 	{
-		INCLUDE_LINKS;
-	}
+		INCLUDE_LINKS
+    }
 	
 	private static final String PROJECT_TURNOVER_CHART_ID = "projectTurnoverChart";
 	private static final String CUSTOMER_TURNOVER_CHART_ID = "customerTurnoverChart";

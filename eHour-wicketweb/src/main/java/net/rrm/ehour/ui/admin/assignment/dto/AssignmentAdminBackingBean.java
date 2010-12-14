@@ -16,14 +16,10 @@
 
 package net.rrm.ehour.ui.admin.assignment.dto;
 
-import java.util.List;
-
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
+
+import java.util.List;
 
 /**
  * Backing bean for project assignments
@@ -87,9 +83,7 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl
 	 */
 	public boolean isNotifyPmEnabled()
 	{
-		return (projectAssignment.getProject() != null)
-				? projectAssignment.getProject().getProjectManager() != null
-				: false;
+		return (projectAssignment.getProject() != null) && projectAssignment.getProject().getProjectManager() != null;
 	}
 
 	/* (non-Javadoc)
@@ -97,9 +91,7 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl
 	 */
 	public boolean isShowOverrunHours()
 	{
-		return (projectAssignment.getAssignmentType() != null)
-					? projectAssignment.getAssignmentType().isFlexAllottedType()
-					: false;
+		return (projectAssignment.getAssignmentType() != null) && projectAssignment.getAssignmentType().isFlexAllottedType();
 	}
 
 	/* (non-Javadoc)

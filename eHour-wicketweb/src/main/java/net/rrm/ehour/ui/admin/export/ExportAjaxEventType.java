@@ -8,5 +8,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
  */
 public enum ExportAjaxEventType implements AjaxEventType
 {
-    VALIDATED;
+    VALIDATED
 }

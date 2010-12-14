@@ -1,11 +1,8 @@
 package net.rrm.ehour.ui.admin.project.panel.addusers;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.form.CheckGroup;
@@ -13,6 +10,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 public class ListUsersPanel extends Panel
 {
@@ -36,7 +35,7 @@ public class ListUsersPanel extends Panel
 	@SuppressWarnings("serial")
 	private ListView<User> createUserList(List<User> users)
 	{
-		ListView<User> listView = new ListView<User>("users",users)
+		return new ListView<User>("users",users)
 		{
 			@Override
 			protected void populateItem(ListItem<User> item)
@@ -47,6 +46,5 @@ public class ListUsersPanel extends Panel
 				item.add(new Label("name", user.getFullName()));
 			}
 		};
-		return listView;
 	}
 }

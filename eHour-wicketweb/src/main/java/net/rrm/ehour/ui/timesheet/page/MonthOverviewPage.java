@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.panel.OverviewPanel;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -43,9 +42,9 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 {
 	private static final long serialVersionUID = -6873845464139697303L;
 
-	public enum OpenPanel { OVERVIEW, TIMESHEET };
+	public enum OpenPanel { OVERVIEW, TIMESHEET }
 
-	public static final String PARAM_OPEN = "openPanel";
+    public static final String PARAM_OPEN = "openPanel";
 
 	private	WebMarkupContainer	contentContainer; // yeah yeah, bad name
 	private CalendarPanel		calendarPanel;

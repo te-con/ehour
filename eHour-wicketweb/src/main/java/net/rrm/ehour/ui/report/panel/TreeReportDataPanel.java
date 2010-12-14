@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.ui.report.panel;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -34,7 +30,6 @@ import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
 import net.rrm.ehour.ui.report.TreeReportElement;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -53,6 +48,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.value.ValueMap;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Aggregate report data panel
@@ -352,5 +351,5 @@ public class TreeReportDataPanel extends Panel
 					&& previousCellValues.get(i) != null
 					&& previousCellValues.get(i).equals(cellValue));			
 		}
-	};		
+	}
 }

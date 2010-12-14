@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.report.service;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -27,9 +25,10 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * Abstract report service provides utility methods for dealing
@@ -89,9 +88,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 			projects = getProjects(userCriteria);
 		}		
 		
-		ReportData reportData = new ReportData(getReportElements(users, projects, reportRange), reportRange);
-		
-		return reportData;
+		return new ReportData(getReportElements(users, projects, reportRange), reportRange);
 	}
 
 	/**

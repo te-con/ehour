@@ -54,7 +54,7 @@ public class PrettyPrintHandler implements InvocationHandler
         {
             depth--;
 
-            if( hasChildElement.get( depth) == true )
+            if(hasChildElement.get(depth))
             {
                 target.writeCharacters( LINEFEED_CHAR );
                 target.writeCharacters( repeat( depth, INDENT_CHAR ));

@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.ui.audit.report;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
@@ -29,8 +25,11 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.TreeReportElement;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Audit report
@@ -63,9 +62,7 @@ public class AuditReport extends AbstractCachableReportModel
 		
 		List<Audit> audit = auditService.getAuditAll((AuditReportRequest) userCriteria);
 		
-		ReportData reportData = new ReportData(convert(audit), reportCriteria.getReportRange());
-
-		return reportData;
+		return new ReportData(convert(audit), reportCriteria.getReportRange());
 	}
 	
 	

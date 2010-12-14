@@ -16,17 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import net.rrm.ehour.domain.ProjectMother;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -38,10 +27,16 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
-
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -119,13 +114,9 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 	
 	private ReportCriteria createReportCriteria()
 	{
-		
-
 		AvailableCriteria availableCriteria = new AvailableCriteria();
 		availableCriteria.setProjects(ProjectMother.createProjects(5));
 		
-		ReportCriteria criteria = new ReportCriteria(availableCriteria);
-		
-		return criteria;
+		return new ReportCriteria(availableCriteria);
 	}
 }

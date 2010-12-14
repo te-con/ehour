@@ -1,9 +1,5 @@
 package net.rrm.ehour.ui.admin.assignment.panel.form;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -15,7 +11,6 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -27,6 +22,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class AssignmentProjectSelectionPanel extends Panel
 {
 	private static final long serialVersionUID = 5513770467507708949L;
@@ -35,7 +34,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 
 	public enum EntrySelectorAjaxEventType implements AjaxEventType
 	{
-		PROJECT_CHANGE;
+		PROJECT_CHANGE
 	}
 
 	@SpringBean

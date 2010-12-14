@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.panel.monthoverview;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
@@ -33,7 +29,6 @@ import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -47,6 +42,10 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * Month overview panel for consultants
@@ -261,11 +260,7 @@ public class MonthOverviewPanel extends Panel
 		
 		String projectCode = entry.getEntryId().getProjectAssignment().getProject().getProjectCode();
 
-		TooltipLabel projectCodeLabel = new TooltipLabel("projectCode", projectCode,
-				tooltipText.toString(), false);
-		
-		return projectCodeLabel;
-	}
+		return new TooltipLabel("projectCode", projectCode, tooltipText.toString(), false); }
 	
 	/**
 	 * Add row with day numbers

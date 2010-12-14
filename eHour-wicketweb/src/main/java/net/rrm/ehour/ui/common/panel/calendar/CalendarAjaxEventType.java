@@ -21,5 +21,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 public enum CalendarAjaxEventType implements AjaxEventType
 {
 	MONTH_CHANGE,
-	WEEK_CLICK;
+	WEEK_CLICK
 }

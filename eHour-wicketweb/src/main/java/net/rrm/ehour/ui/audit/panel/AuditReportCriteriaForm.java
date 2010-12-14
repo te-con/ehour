@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.audit.panel;
 
-import java.util.Date;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
@@ -28,7 +26,6 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
@@ -43,6 +40,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 
+import java.util.Date;
+
 /**
  *
  * @author thies
@@ -54,8 +53,8 @@ public class AuditReportCriteriaForm extends Form<ReportCriteria>
 
 	public enum Events implements AjaxEventType
 	{
-		FORM_SUBMIT;
-	}
+		FORM_SUBMIT
+    }
 
 	public AuditReportCriteriaForm(String id, IModel<ReportCriteria> model)
 	{

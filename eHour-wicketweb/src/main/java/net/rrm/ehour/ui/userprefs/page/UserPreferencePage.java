@@ -25,7 +25,6 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.panel.UserPasswordChangePanel;
-
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.ResourceModel;
 
@@ -35,16 +34,13 @@ import org.apache.wicket.model.ResourceModel;
 @AuthorizeInstantiation({"ROLE_CONSULTANT", "ROLE_ADMIN", "ROLE_REPORT"})
 public class UserPreferencePage extends AbstractBasePage<Void>
 {
-	private CalendarPanel		calendarPanel;
-	
 	public UserPreferencePage() throws ObjectNotFoundException
 	{
 		super(new ResourceModel("userprefs.title"));
 		
 		// add calendar panel
-		calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
-		add(calendarPanel);
-		
+		add(new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser()));
+
 		// add 
 		add(new UserPasswordChangePanel("preferenceForm", getEhourWebSession().getUser().getUser()));
 	}

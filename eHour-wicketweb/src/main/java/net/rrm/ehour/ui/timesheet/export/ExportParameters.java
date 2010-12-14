@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.ProjectAssignment;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
 
 /**
  * Created on Feb 2, 2009, 7:00:14 PM
@@ -35,8 +35,8 @@ public class ExportParameters implements Serializable
 	public enum Action
 	{
 		PRINT,
-		EXCEL;
-	}
+		EXCEL
+    }
 	
 	private Collection<ProjectAssignment> assignments;
 	private DateRange exportRange;

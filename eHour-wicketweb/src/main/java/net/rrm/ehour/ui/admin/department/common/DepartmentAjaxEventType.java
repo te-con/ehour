@@ -21,5 +21,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 public enum DepartmentAjaxEventType  implements AjaxEventType
 {
 	DEPARTMENT_UPDATED,
-	DEPARTMENT_DELETED;
+	DEPARTMENT_DELETED
 }

@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import java.util.Calendar;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.component.CommonJavascript;
@@ -32,7 +29,6 @@ import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -54,6 +50,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.validation.validator.MinimumValidator;
+
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Representation of a timesheet row
@@ -155,12 +154,11 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 
 	private TooltipLabel createProjectLabel(final TimesheetRow row)
 	{
-		TooltipLabel projectLabel = new TooltipLabel("project", 
+		return new TooltipLabel("project",
 														new Model<String>(row.getProjectAssignment().getProject().getName()),  
 														new Model<String>(row.getProjectAssignment().getProject().getDescription()),
 														true,
 														true);
-		return projectLabel;
 	}
 
 	private Label createStatusLabel(ListItem<TimesheetRow> item)

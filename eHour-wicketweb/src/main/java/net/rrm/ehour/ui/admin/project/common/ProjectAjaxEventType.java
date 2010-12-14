@@ -25,5 +25,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 public enum ProjectAjaxEventType implements AjaxEventType
 {
 	PROJECT_UPDATED,
-	PROJECT_DELETED;
+	PROJECT_DELETED
 }

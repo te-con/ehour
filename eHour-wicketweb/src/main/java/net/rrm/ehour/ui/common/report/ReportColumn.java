@@ -16,11 +16,11 @@
 
 package net.rrm.ehour.ui.common.report;
 
+import org.apache.wicket.util.convert.IConverter;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.wicket.util.convert.IConverter;
 
 /**
  * Report column
@@ -33,10 +33,11 @@ import org.apache.wicket.util.convert.IConverter;
 
 public class ReportColumn implements Serializable
 {
-	public static enum ColumnType { OTHER, DATE, RATE, HOUR, TURNOVER, COMMENT };
-	public static enum DisplayType {VISIBLE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN };
-	
-	private static final long serialVersionUID = -6736366461333244457L;
+	public static enum ColumnType { OTHER, DATE, RATE, HOUR, TURNOVER, COMMENT }
+
+    public static enum DisplayType {VISIBLE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN }
+
+    private static final long serialVersionUID = -6736366461333244457L;
 	
 	private List<DisplayType> displayTypes;
 	private	String		columnHeaderResourceKey;

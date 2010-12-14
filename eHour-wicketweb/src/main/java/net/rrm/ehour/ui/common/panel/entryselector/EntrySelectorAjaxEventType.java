@@ -24,5 +24,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 
 public enum EntrySelectorAjaxEventType implements AjaxEventType
 {
-	FILTER_CHANGE;
+	FILTER_CHANGE
 }

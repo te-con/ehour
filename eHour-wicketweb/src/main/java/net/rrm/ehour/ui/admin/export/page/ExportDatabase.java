@@ -36,8 +36,7 @@ public class ExportDatabase extends DynamicWebResource
 
         try
         {
-            byte[] bytes = xmlExport.getBytes("UTF-8");
-            state.data = bytes;
+            state.data = xmlExport.getBytes("UTF-8");
 
         } catch (UnsupportedEncodingException e)
         {

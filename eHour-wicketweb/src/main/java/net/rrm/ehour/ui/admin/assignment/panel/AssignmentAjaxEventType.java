@@ -26,5 +26,5 @@ public enum AssignmentAjaxEventType implements AjaxEventType
 {
 	ASSIGNMENT_UPDATED,
 	ASSIGNMENT_DELETED,
-	ASSIGNMENT_LIST_CHANGE;
+	ASSIGNMENT_LIST_CHANGE
 }

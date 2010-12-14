@@ -16,15 +16,14 @@
 
 package net.rrm.ehour.project.status;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ProjectAssignment status
@@ -53,8 +52,8 @@ public class ProjectAssignmentStatus implements Serializable
 		OVER_OVERRUN,
 		BEFORE_START,
 		RUNNING,
-		AFTER_DEADLINE;
-	}
+		AFTER_DEADLINE
+    }
 	
 	private AssignmentAggregateReportElement	aggregate;
 	private List<Status> statusses;

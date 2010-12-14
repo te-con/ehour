@@ -137,10 +137,8 @@ public class UserServiceImpl implements UserService
 	 */
 	public User getUser(String username) 
 	{
-		User user = userDAO.findByUsername(username);
-		
-		return user;
-	}	
+		return userDAO.findByUsername(username);
+	}
 
 	public List<UserDepartment> getUserDepartments()
 	{

@@ -1,13 +1,12 @@
 package net.rrm.ehour.ui.common.component.header.menu;
 
+import net.rrm.ehour.ui.common.util.AuthUtil;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.WebPage;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.rrm.ehour.ui.common.util.AuthUtil;
-
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.WebPage;
 
 public class MenuItem implements Serializable
 {
@@ -41,7 +40,7 @@ public class MenuItem implements Serializable
 	{
 		boolean visible = true;
 
-		visible = isLink() ? AuthUtil.isUserAuthorizedForPage(responsePageClass) : false;
+		visible = isLink() && AuthUtil.isUserAuthorizedForPage(responsePageClass);
 
 		for (MenuItem menu : subMenus)
 		{

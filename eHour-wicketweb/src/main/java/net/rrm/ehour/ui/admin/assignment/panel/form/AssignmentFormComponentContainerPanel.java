@@ -17,20 +17,19 @@
 package net.rrm.ehour.ui.admin.assignment.panel.form;
 
 
-import java.util.Arrays;
-import java.util.List;
-
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Assignment form
@@ -45,7 +44,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 		HIDE_SAVE_BUTTON,
 		SHOW_SAVE_BUTTON,
 		HIDE_DELETE_BUTTON,
-		SHOW_DELETE_BUTTON;
+		SHOW_DELETE_BUTTON
 	}
 
 	private static final long serialVersionUID = -85486044225123470L;

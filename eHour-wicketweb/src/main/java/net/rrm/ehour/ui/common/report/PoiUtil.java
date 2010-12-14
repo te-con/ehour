@@ -17,10 +17,10 @@
 
 package net.rrm.ehour.ui.common.report;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class PoiUtil
 {
@@ -29,9 +29,7 @@ public class PoiUtil
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		workbook.write(output);
 		
-		byte[] excelData = output.toByteArray();
-		
-		return excelData;
+		return output.toByteArray();
 	}
 	
 	public static int getImageType(String type)

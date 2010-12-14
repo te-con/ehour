@@ -1,8 +1,5 @@
 package net.rrm.ehour.ui.report.page.command;
 
-import java.util.Collections;
-import java.util.List;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -10,10 +7,12 @@ import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
 import net.rrm.ehour.ui.report.util.ReportUtil;
-
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
+
+import java.util.Collections;
+import java.util.List;
 
 public class DefaultGlobalReportPageDetailedCommand implements GlobalReportPageDetailedCommand
 {
@@ -52,8 +51,6 @@ public class DefaultGlobalReportPageDetailedCommand implements GlobalReportPageD
 	{
 		DetailedReport detailedReport = new DetailedReport(reportCriteria, EhourWebSession.getSession().getEhourConfig().getLocale());
 		ReportUtil.storeInCache(detailedReport);
-		DetailedReportPanel panel = new DetailedReportPanel(id, detailedReport);
-		
-		return panel;
-	}	
+		return new DetailedReportPanel(id, detailedReport);
+	}
 }

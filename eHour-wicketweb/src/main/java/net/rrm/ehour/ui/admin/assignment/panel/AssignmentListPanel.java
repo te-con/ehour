@@ -16,11 +16,6 @@
 
 package net.rrm.ehour.ui.admin.assignment.panel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Currency;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
@@ -34,7 +29,6 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -48,6 +42,11 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Currency;
+import java.util.List;
+
 /**
  * List of existing assignments 
  **/
@@ -60,7 +59,6 @@ public class AssignmentListPanel extends AbstractBasePanel<Void>
 	@SpringBean
 	private ProjectAssignmentService projectAssignmentService;
 	private	EhourConfig		config;
-	private	Border			greyBorder;
 	private ListView<ProjectAssignment> assignmentListView;
 	private User			user;
 	
@@ -76,7 +74,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void>
 	
 		setOutputMarkupId(true);
 	
-		greyBorder = new GreyRoundedBorder("border",
+		Border greyBorder = new GreyRoundedBorder("border",
 				 							new StringResourceModel("admin.assignment.assignmentsFor", 
 				 											this, null, new Object[]{new Model<String>(user.getFullName())}),
 											WebGeo.W_CONTENT_SMALL);
@@ -103,7 +101,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void>
 	 */
 	private AjaxCheckBox getActivateCheckbox()
 	{
-		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new Model<Boolean>(getEhourWebSession().getHideInactiveSelections()))
+		return new AjaxCheckBox("filterToggle", new Model<Boolean>(getEhourWebSession().getHideInactiveSelections()))
 		{
 			private static final long serialVersionUID = 2585047163449150793L;
 
@@ -114,8 +112,6 @@ public class AssignmentListPanel extends AbstractBasePanel<Void>
             	updateList(target, user);
 			}
 		};
-		
-		return deactivateBox;
 	}
 	
 	/**

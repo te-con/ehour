@@ -16,18 +16,15 @@
 
 package net.rrm.ehour.config;
 
-import java.util.Locale;
-import java.util.TimeZone;
-
-import javax.sql.DataSource;
-
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.AuditType;
-
 import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.sql.DataSource;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Config from database
@@ -35,7 +32,7 @@ import org.springframework.stereotype.Service;
 @Service("eHourConfig")
 public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfig
 {
-	private	Logger	logger = Logger.getLogger(this.getClass());
+	private	static final Logger LOG = Logger.getLogger(EhourConfigJdbc.class);
 	
 	private Boolean 	demoMode;
 	private String[]	availableTranslations;
@@ -47,7 +44,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	{
 		super(datasource, "CONFIGURATION", "config_key", "config_value");
 	
-		logger.info("Configuration loaded from database");
+		LOG.info("Configuration loaded from database");
 	}
 	
 	public TimeZone getTzAsTimeZone()

@@ -16,15 +16,14 @@
 
 package net.rrm.ehour.ui.common;
 
-import java.util.Locale;
-
 import net.rrm.ehour.ui.test.StrictWicketTester;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.settings.Settings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.junit.Before;
+
+import java.util.Locale;
 
 /**
  * Base class for wicket unit tests 
@@ -78,5 +77,5 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 	protected TestEhourWebApplication getWebApp()
 	{
 		return webApp;
-	};
+	}
 }

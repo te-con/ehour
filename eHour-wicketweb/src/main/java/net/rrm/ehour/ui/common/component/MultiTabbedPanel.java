@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import java.util.ArrayList;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+
+import java.util.ArrayList;
 
 /**
  * Multi tabbed
@@ -115,8 +115,8 @@ public class MultiTabbedPanel extends AbstractTabbedPanel
 	{
 		if (getTabs().size() >= index + 1)
 		{
-			getTabs().remove(index);;
-		}
+			getTabs().remove(index);
+        }
 	}	
 	
 	/*

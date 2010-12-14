@@ -1,23 +1,21 @@
 package net.rrm.ehour.ui.report.page.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
 import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
-import net.rrm.ehour.ui.report.panel.aggregate.AggregateReportPanel;
 import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportPanel;
 import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportPanel;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.util.ReportUtil;
-
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DefaultGlobalReportPageAggregateCommand implements GlobalReportPageAggregateCommand
 {
@@ -78,10 +76,8 @@ public class DefaultGlobalReportPageAggregateCommand implements GlobalReportPage
 	{
 		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportCriteria);
 		ReportUtil.storeInCache(customerAggregateReport);
-		AggregateReportPanel panel = new CustomerReportPanel(id, customerAggregateReport);
-		
-		return panel;
-	}	
+		return new CustomerReportPanel(id, customerAggregateReport);
+	}
 	
 	/**
 	 * Get project report panel
@@ -93,10 +89,8 @@ public class DefaultGlobalReportPageAggregateCommand implements GlobalReportPage
 	{
 		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportCriteria);
 		ReportUtil.storeInCache(aggregateReport);
-		AggregateReportPanel panel = new ProjectReportPanel(id, aggregateReport);
-		
-		return panel;
-	}	
+		return new ProjectReportPanel(id, aggregateReport);
+	}
 	
 	/**
 	 * Get user report panel
@@ -109,9 +103,7 @@ public class DefaultGlobalReportPageAggregateCommand implements GlobalReportPage
 	{
 		UserAggregateReport	aggregateReport = new UserAggregateReport(reportCriteria);
 		ReportUtil.storeInCache(aggregateReport);
-		AggregateReportPanel panel = new EmployeeReportPanel(id, aggregateReport);
-		
-		return panel;
+		return new EmployeeReportPanel(id, aggregateReport);
 	}
 	
 }

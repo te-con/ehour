@@ -26,5 +26,5 @@ public enum CustomerAjaxEventType implements AjaxEventType
 {
 	CUSTOMER_NEW_PANEL_REQUEST,
 	CUSTOMER_UPDATED,
-	CUSTOMER_DELETED;
+	CUSTOMER_DELETED
 }

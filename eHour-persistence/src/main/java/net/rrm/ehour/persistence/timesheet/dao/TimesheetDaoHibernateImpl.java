@@ -16,22 +16,21 @@
 
 package net.rrm.ehour.persistence.timesheet.dao;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.timesheet.dto.BookedDay;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Repository("timesheetDAO")
 public class TimesheetDaoHibernateImpl 
@@ -134,9 +133,7 @@ public class TimesheetDaoHibernateImpl
 		Query	query = session.getNamedQuery("Timesheet.deleteOnAssignmentIds");
 		query.setParameterList("assignmentIds", assignmentIds);
 		
-		int rowCount = query.executeUpdate();
-		
-		return rowCount;
+		return query.executeUpdate();
 	}
 
 	/*

@@ -17,17 +17,17 @@
 package net.rrm.ehour.ui.report;
 
 
-import static org.springframework.util.Assert.notNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.util.Assert.notNull;
 
 public abstract class TreeReport extends AbstractCachableReportModel
 {
@@ -64,10 +64,7 @@ public abstract class TreeReport extends AbstractCachableReportModel
         List<TreeReportElement> matrix = createMatrix(rootNodes, reportConfig.getReportColumns().length);
         calcTotals(rootNodes);
         
-        ReportData wrappedReportData = new TreeReportData(matrix, reportCriteria.getReportRange(), reportData);
-        
-        return wrappedReportData;
-        
+        return new TreeReportData(matrix, reportCriteria.getReportRange(), reportData);
     }
     
 	private ReportData getValidReportData(ReportCriteria reportCriteria)

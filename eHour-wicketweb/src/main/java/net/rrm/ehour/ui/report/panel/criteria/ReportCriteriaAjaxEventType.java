@@ -24,5 +24,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 
 public enum ReportCriteriaAjaxEventType implements AjaxEventType
 {
-	CRITERIA_UPDATED;
+	CRITERIA_UPDATED
 }

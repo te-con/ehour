@@ -18,24 +18,20 @@
 package net.rrm.ehour.ui.report.panel.user;
 
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
 import net.rrm.ehour.ui.report.page.BaseTestReport;
-
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created on Jun 16, 2009, 11:41:44 AM
@@ -67,15 +63,13 @@ public class UserReportPanelTest extends BaseTestReport
 
 		final CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportCriteria);
 		
-		Panel startPanel = getTester().startPanelWithHead(new TestPanelSource()
+		return getTester().startPanelWithHead(new TestPanelSource()
 		{
 			public Panel getTestPanel(String panelId)
 			{
 				return new UserReportPanel(panelId, customerAggregateReport, UserReportPanel.Option.INCLUDE_LINKS);
 			}
 		});
-		
-		return startPanel;
 	}
 
 }

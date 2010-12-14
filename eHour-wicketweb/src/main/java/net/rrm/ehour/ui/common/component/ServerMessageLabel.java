@@ -60,6 +60,6 @@ public class ServerMessageLabel extends Label
 
 	public boolean isVisible()
 	{
-		return overrideVisibility ? false : getDefaultModel() != null && getDefaultModelObject()!= null;
+		return !overrideVisibility && getDefaultModel() != null && getDefaultModelObject() != null;
 	}		
 }

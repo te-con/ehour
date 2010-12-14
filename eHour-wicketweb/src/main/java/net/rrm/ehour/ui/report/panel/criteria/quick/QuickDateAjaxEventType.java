@@ -24,5 +24,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 
 public enum QuickDateAjaxEventType implements AjaxEventType
 {
-	ADMIN_QUICK_DATE_CHANGED;
+	ADMIN_QUICK_DATE_CHANGED
 }

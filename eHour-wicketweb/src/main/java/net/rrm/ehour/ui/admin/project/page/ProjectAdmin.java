@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.admin.project.page;
 
-import java.util.Collections;
-import java.util.List;
-
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
@@ -37,7 +34,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import net.rrm.ehour.ui.common.util.WebGeo;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -51,6 +47,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Project admin page
@@ -221,9 +220,9 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 	 */
 	private List<Project> getProjects()
 	{
-		List<Project> projects;;
+		List<Project> projects;
 
-		if (currentFilter == null)
+        if (currentFilter == null)
 		{
 			projects = projectService.getAllProjects(true);
 		}

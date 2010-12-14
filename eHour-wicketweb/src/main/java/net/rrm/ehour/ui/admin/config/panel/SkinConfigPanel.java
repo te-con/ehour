@@ -29,7 +29,6 @@ import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportDummyCreater;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
-
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -83,7 +82,7 @@ public class SkinConfigPanel extends AbstractConfigPanel
 	@Override
 	protected Form<MainConfigBackingBean> createForm(String id, IModel<MainConfigBackingBean> model)
 	{
-		ImageUploadForm<MainConfigBackingBean> uploadForm = new ImageUploadForm<MainConfigBackingBean>(id, model)
+		return new ImageUploadForm<MainConfigBackingBean>(id, model)
 		{
 			@Override
 			protected void uploadImage(ImageLogo logo)
@@ -105,8 +104,6 @@ public class SkinConfigPanel extends AbstractConfigPanel
 				replaceFeedbackMessage(new ResourceModel("general.image.invalid"));
 			}
 		};
-
-		return uploadForm;
 	}
 	
 	private void updatePreviewImage()

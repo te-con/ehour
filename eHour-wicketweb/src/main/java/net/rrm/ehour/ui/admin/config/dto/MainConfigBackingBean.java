@@ -16,28 +16,15 @@
 
 package net.rrm.ehour.ui.admin.config.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Currency;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.common.sort.LocaleComparator;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Configuration backing bean
@@ -168,9 +155,7 @@ public class MainConfigBackingBean implements Serializable
 			}
 		}
 
-		List<Locale> locList = new ArrayList<Locale>(currencyLocales);
-		
-		return locList;
+		return new ArrayList<Locale>(currencyLocales);
 	}
 	/**
 	 * @return the localeLanguage

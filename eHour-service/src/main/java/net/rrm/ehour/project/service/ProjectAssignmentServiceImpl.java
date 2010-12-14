@@ -16,11 +16,6 @@
 
 package net.rrm.ehour.project.service;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -32,9 +27,13 @@ import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service("projectAssignmentService")
 public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
@@ -67,7 +66,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
 			if (projectAssignmentStatusService.getAssignmentStatus(assignment, dateRange).isAssignmentBookable())
 			{
 				validAssignments.add(assignment);
-				continue;
 			}
 		}
 		

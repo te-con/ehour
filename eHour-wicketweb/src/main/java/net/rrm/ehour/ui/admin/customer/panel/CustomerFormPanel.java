@@ -32,14 +32,9 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -92,8 +87,8 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 		
 		// description
 		TextArea<String> textArea = new KeepAliveTextArea("customer.description");
-		textArea.setLabel(new ResourceModel("admin.customer.description"));;
-		form.add(textArea);
+		textArea.setLabel(new ResourceModel("admin.customer.description"));
+        form.add(textArea);
 			
 		// active
 		form.add(new CheckBox("customer.active"));

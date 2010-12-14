@@ -10,5 +10,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
  */
 public enum TreeNodeEventType implements AjaxEventType
 {
-	NODE_SELECTED;
+	NODE_SELECTED
 }

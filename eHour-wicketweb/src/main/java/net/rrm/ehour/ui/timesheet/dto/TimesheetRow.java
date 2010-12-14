@@ -16,20 +16,19 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.Model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Representation of a row in the timesheet form
@@ -199,9 +198,9 @@ public class TimesheetRow implements Serializable
 	 */
 	public List<TimesheetEntry> getTimesheetEntries()
 	{
-		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();;
-		
-		if (timesheetCells != null)
+		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
+
+        if (timesheetCells != null)
 		{
 			for (int i =0; i < timesheetCells.length; i++)
 			{

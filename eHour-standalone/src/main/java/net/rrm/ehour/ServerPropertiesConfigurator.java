@@ -14,7 +14,7 @@ public class ServerPropertiesConfigurator
     {
         Properties props = loadProperties(filename);
 
-        ServerConfig builder = new ServerConfig()
+        return new ServerConfig()
                 .setDataBase(props.getProperty("ehour.database"))
                 .setDataBaseDriver(props.getProperty("ehour.database.driver"))
                 .setDataBaseURL(props.getProperty("ehour.database.url"))
@@ -22,9 +22,6 @@ public class ServerPropertiesConfigurator
                 .setDataBasePassword(props.getProperty("ehour.database.password"))
                 .setPort(parseServerPort(props))
                 .setDefaultConfigFileName(props.getProperty("jetty.config.location"));
-
-        return builder;
-
     }
 
     private Integer parseServerPort(Properties props)

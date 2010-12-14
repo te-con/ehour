@@ -95,7 +95,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	{
 		String key = ExportCriteriaParameter.INCL_SIGN_OFF.name();
 		Object object = report.getReportCriteria().getUserCriteria().getCustomParameters().get(key);
-		return (object == null) ? false : ((Boolean)object).booleanValue();
+		return (object != null) && ((Boolean) object).booleanValue();
 	}
 
 

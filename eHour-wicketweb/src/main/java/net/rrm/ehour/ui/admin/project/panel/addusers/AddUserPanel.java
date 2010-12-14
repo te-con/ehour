@@ -1,8 +1,5 @@
 package net.rrm.ehour.ui.admin.project.panel.addusers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
@@ -10,11 +7,13 @@ import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel;
 import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel.DisplayOption;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddUserPanel extends AbstractBasePanel<Void>
 {
@@ -44,7 +43,7 @@ public class AddUserPanel extends AbstractBasePanel<Void>
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form)
 			{
 				System.out.println(users);
-				System.out.println(bBean.getProjectAssignmentForSave());;
+				System.out.println(bBean.getProjectAssignmentForSave());
 			}
 		};
 

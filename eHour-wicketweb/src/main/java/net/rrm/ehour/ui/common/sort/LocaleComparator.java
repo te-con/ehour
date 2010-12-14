@@ -25,9 +25,9 @@ import java.util.Locale;
 
 public class LocaleComparator implements Comparator<Locale>
 {
-	public enum CompareType { COUNTRY, LANGUAGE };
+	public enum CompareType { COUNTRY, LANGUAGE }
 
-	private CompareType selectedCompareType;
+    private CompareType selectedCompareType;
 	
 	public LocaleComparator(CompareType compareType)
 	{

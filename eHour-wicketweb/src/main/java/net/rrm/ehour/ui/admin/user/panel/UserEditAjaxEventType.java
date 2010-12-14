@@ -25,5 +25,5 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 public enum UserEditAjaxEventType  implements AjaxEventType
 {
 	USER_UPDATED,
-	USER_DELETED;
+	USER_DELETED
 }

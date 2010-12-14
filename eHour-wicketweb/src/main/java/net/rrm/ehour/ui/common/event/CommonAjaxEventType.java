@@ -22,5 +22,5 @@ package net.rrm.ehour.ui.common.event;
 
 public enum  CommonAjaxEventType implements AjaxEventType
 {
-	SUBMIT_ERROR;
+	SUBMIT_ERROR
 }

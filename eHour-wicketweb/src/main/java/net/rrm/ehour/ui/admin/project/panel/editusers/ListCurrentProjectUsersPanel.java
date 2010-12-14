@@ -1,11 +1,5 @@
 package net.rrm.ehour.ui.admin.project.panel.editusers;
 
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-
-import javax.management.relation.Role;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
@@ -13,7 +7,6 @@ import net.rrm.ehour.ui.common.converter.RoleConverter;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
@@ -30,6 +23,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.validator.MinimumValidator;
+
+import javax.management.relation.Role;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
 
 public class ListCurrentProjectUsersPanel extends AbstractBasePanel<Void>
 {
@@ -78,7 +76,7 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel<Void>
 	@SuppressWarnings("serial")
 	private AjaxEditableLabel<Float> addRate(String id, IModel<Float> model)
 	{
-		AjaxEditableLabel<Float> editableLabel = new AjaxEditableLabel<Float>("rate", model)
+		return new AjaxEditableLabel<Float>("rate", model)
 		{
 			@Override
 			protected FormComponent<Float> newEditor(MarkupContainer parent, String componentId, IModel<Float> model)
@@ -93,15 +91,13 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel<Void>
 				return editor;
 			}
 		};
-		
-		return editableLabel;
 	}
 
 
 	@SuppressWarnings("serial")
 	private AjaxEditableLabel<Date> addDate(String id, IModel<Date> model)
 	{
-		AjaxEditableLabel<Date> label = new AjaxEditableLabel<Date>(id, model)
+		return new AjaxEditableLabel<Date>(id, model)
 		{
 			@Override
 			protected WebComponent newLabel(MarkupContainer parent, String componentId, IModel<Date> model)
@@ -114,14 +110,12 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel<Void>
 				return dateStart;
 			}
 		};
-		
-		return label;
 	}
 	
 	@SuppressWarnings("serial")
 	private AjaxEditableLabel<Role> addRole(String id, IModel<Role> model)
 	{
-		AjaxEditableLabel<Role> label = new AjaxEditableLabel<Role>(id, model)
+		return new AjaxEditableLabel<Role>(id, model)
 		{
 			@Override
 			public IConverter getConverter(Class<?> type)
@@ -129,7 +123,5 @@ public class ListCurrentProjectUsersPanel extends AbstractBasePanel<Void>
 				return new RoleConverter();
 			}
 		};
-
-		return label;
 	}
 }

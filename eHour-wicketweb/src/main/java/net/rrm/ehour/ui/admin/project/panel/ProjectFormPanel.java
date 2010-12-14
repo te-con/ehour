@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.ui.admin.project.panel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
@@ -41,21 +37,18 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.UserComparator;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Project admin form
@@ -164,8 +157,8 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 	{
 		// description
 		TextArea<String> textArea = new KeepAliveTextArea("project.description");
-		textArea.setLabel(new ResourceModel("admin.project.description"));;
-		parent.add(textArea);
+		textArea.setLabel(new ResourceModel("admin.project.description"));
+        parent.add(textArea);
 
 		// contact
 		TextField<String> contactField = new TextField<String>("project.contact");

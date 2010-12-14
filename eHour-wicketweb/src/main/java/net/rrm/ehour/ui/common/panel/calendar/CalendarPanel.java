@@ -16,11 +16,6 @@
 
 package net.rrm.ehour.ui.common.panel.calendar;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.User;
@@ -36,7 +31,6 @@ import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -51,6 +45,11 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * Navigation Calendar
@@ -196,9 +195,9 @@ public class CalendarPanel extends SidePanel
 					item.add(label);
 					
 					renderDate.add(Calendar.DATE, 1);
-				};
+				}
 
-		        item.setOutputMarkupId(true);
+                item.setOutputMarkupId(true);
 
 		        if (fireWeekClicks)
 		        {

@@ -16,12 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.print;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -33,7 +27,6 @@ import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -45,6 +38,8 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+
+import java.util.*;
 
 /**
  * Print month page
@@ -115,7 +110,7 @@ public class PrintMonth extends WebPage
 	{
 		Boolean signOff = (Boolean)reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name());
 
-		return (signOff == null) ? false : signOff.booleanValue();
+		return (signOff != null) && signOff.booleanValue();
 	}
 	
 	/**

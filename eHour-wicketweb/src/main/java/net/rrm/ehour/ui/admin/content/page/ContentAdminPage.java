@@ -12,7 +12,6 @@ import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.ResourceModel;
@@ -31,7 +30,6 @@ public class ContentAdminPage extends AbstractBasePage<Void>
 	private static final String ID_ASSIGNABLES = "assignables";
 	private static final String ID_ASSIGNEES = "assignees";
 
-	private AssignablesPanel assignablesPanel;
 	private AssigneesPanel assigneesPanel;
 	private Component managementPanel;
 
@@ -50,9 +48,8 @@ public class ContentAdminPage extends AbstractBasePage<Void>
 		assigneesPanel = new AssigneesPanel(ID_ASSIGNEES);
 		add(assigneesPanel);
 
-		assignablesPanel = new AssignablesPanel(ID_ASSIGNABLES);
-		add(assignablesPanel);
-		
+		add(new AssignablesPanel(ID_ASSIGNABLES));
+
 		managementPanel = new PlaceholderPanel(ID_ASSIGNMENT_MANAGEMENT);
 		add(managementPanel);
 	}

@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.criteria;
 
-import java.util.Collection;
-import java.util.List;
-
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -27,14 +24,9 @@ import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
-
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Check;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.CheckGroup;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.SubmitLink;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -42,6 +34,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.util.value.ValueMap;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * ExportCriteriaPanel holding the form for month based exports for consultants
@@ -54,8 +49,8 @@ public class ExportCriteriaPanel extends Panel
 	private enum ExportType
 	{
 		EXCEL,
-		PRINT;
-	}
+		PRINT
+    }
 	
 	public ExportCriteriaPanel(String id, IModel<ReportCriteria> model)
 	{
@@ -87,7 +82,7 @@ public class ExportCriteriaPanel extends Panel
 	@SuppressWarnings("serial")
 	private SubmitLink createSubmitButton(String id, SelectionForm form, final ExportType type)
 	{
-		SubmitLink link = new SubmitLink(id, form)
+		return new SubmitLink(id, form)
 		{
 			@Override
 			public void onSubmit()
@@ -97,8 +92,6 @@ public class ExportCriteriaPanel extends Panel
 				criteria.getUserCriteria().getCustomParameters().put(ExportCriteriaParameter.EXPORT_TYPE, type);
 			}
 		};
-		
-		return link;
 	}
 	
 	private CheckBox createSignOffCheck(String id)
@@ -126,7 +119,7 @@ public class ExportCriteriaPanel extends Panel
 	@SuppressWarnings("serial")
 	private ListView<Project> getAssignmentCheckboxesForProjects(String id, List<Project> projects)
 	{
-		ListView<Project> projectsListView = new ListView<Project>(id, projects)
+		return new ListView<Project>(id, projects)
 		{
 			@Override
 			protected void populateItem(ListItem<Project> item)
@@ -135,7 +128,6 @@ public class ExportCriteriaPanel extends Panel
 				item.add(new Label("project", new PropertyModel<String>(item.getModel(), "fullName")));
 			}
 		};
-		return projectsListView;
 	}
 
 	/**

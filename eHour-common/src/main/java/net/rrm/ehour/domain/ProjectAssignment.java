@@ -296,7 +296,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
      */
     public boolean isActive()
     {
-        return active == null ? false : active.booleanValue();
+        return active != null && active.booleanValue();
     }
 
     /**

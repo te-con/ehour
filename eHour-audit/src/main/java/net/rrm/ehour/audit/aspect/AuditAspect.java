@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.audit.aspect;
 
-import java.lang.annotation.Annotation;
-import java.util.Calendar;
-import java.util.Date;
-
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.audit.service.AuditService;
@@ -30,7 +26,6 @@ import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.wicket.RequestCycle;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -38,6 +33,10 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.lang.annotation.Annotation;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Auditable Aspect
@@ -189,14 +188,10 @@ public class AuditAspect
 		{
 			return true;
 		}
-		
-		if (config.getAuditType() == AuditType.ALL)
-		{
-			return true;
-		}
-				
-		return false;
-	}
+
+        return config.getAuditType() == AuditType.ALL;
+
+    }
 	
 	/**
 	 * Check if type is annotated with NonAuditable annotation
@@ -261,7 +256,7 @@ public class AuditAspect
 			page = RequestCycle.get().getResponsePage().getClass().getCanonicalName();
 		}
 		
-		Audit audit = new Audit()
+		return new Audit()
 				.setUser(user)
 				.setUserFullName(user != null ? user.getFullName() : null)
 				.setDate(new Date())
@@ -271,10 +266,6 @@ public class AuditAspect
 				.setParameters(parameters)
 				.setPage(page)
 				;
-		
-
-
-		return audit;
 	}
 	
 	/**
