@@ -12,8 +12,8 @@
             <table class="contentTable" width="95%">
                 <tr>
                     <td>
-                        Backup your existing database to a portable file.<br/> You can use the backup for a restore or
-                        for data migration between the standalone and the WAR version.<br/>
+                        <wicket:message key="admin.export.content.export.header" /><br />
+                        <wicket:message key="admin.export.content.export.body" /><br />
                     </td>
                 </tr>
 
@@ -35,14 +35,14 @@
             <form wicket:id="form">
                 <table class="contentTable" width="95%">
                     <tr>
-                        <td>Backup file:</td>
+                        <td><wicket:message key="admin.import.label.backupFile" />:</td>
                         <td><input wicket:id="file" type="file" class="textInputSmall"/></td>
                     </tr>
 
                     <tr>
                         <td colspan="2"><br/>
                             <a class="bluebutton" onclick="this.blur();" wicket:id="ajaxSubmit">
-                                <span>Validate backup file</span></a>
+                                <span><wicket:message key="admin.import.button.validate" /></span></a>
                         </td>
 
                     </tr>

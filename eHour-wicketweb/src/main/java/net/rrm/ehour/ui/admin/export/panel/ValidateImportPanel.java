@@ -12,6 +12,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -32,7 +33,7 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession>
         super(id);
 
         ParseSession session = importService.prepareImportDatabase(xmlData);
-        add(new Label("statusMessage", session.hasErrors() ? "Failed to validate" : "Validation succesful"));
+        add(new Label("statusMessage", new ResourceModel(session.hasErrors() ? "admin.import.error.validateFailed" : "admin.import.error.validateSuccess")));
         setDefaultModel(new Model<ParseSession>(session));
         initPanel();
     }

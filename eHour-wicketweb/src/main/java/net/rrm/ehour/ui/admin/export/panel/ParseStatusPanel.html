@@ -9,7 +9,7 @@
 
     <wicket:enclosure child="globalError">
 
-        Errors:
+        <wicket:message key="admin.import.status.label.errors" />:
 
         <span wicket:id="globalError"/>
         <br/>
@@ -17,7 +17,7 @@
     </wicket:enclosure>
 
     <wicket:enclosure child="errors">
-        Errors per entity:
+        <wicket:message key="admin.import.status.label.entityErrors" />:
 
         <table>
             <tr wicket:id="errors">>
@@ -34,7 +34,7 @@
     </wicket:enclosure>
 
     <wicket:enclosure child="insertions">
-        Valid entities:
+        <wicket:message key="admin.import.status.label.entityValid" />:
 
         <table>
             <tr wicket:id="insertions">

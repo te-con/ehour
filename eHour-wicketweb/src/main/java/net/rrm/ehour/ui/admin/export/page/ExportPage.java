@@ -22,6 +22,7 @@ import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 
 /**
@@ -83,8 +84,6 @@ public class ExportPage extends AbstractAdminPage<Void>
         final FileUploadField file = new FileUploadField("file");
         form.add(file);
 
-
-        // create the ajax button used to submit the form
         form.add(new AjaxSubmitLink("ajaxSubmit")
         {
             @Override
@@ -112,12 +111,14 @@ public class ExportPage extends AbstractAdminPage<Void>
                         public Component getLoadingComponent(String markupId)
                         {
                             AjaxRequestTarget.get().appendJavascript("showHideSpinner(true);");
-                            return new Label(markupId, "Validating");
+                            return new Label(markupId, new ResourceModel("admin.import.label.validating"));
                         }
                     };
                 } else
                 {
-                    replacementPanel = new Label(ID_PARSE_STATUS, "Invalid file uploaded: " + errorMessage);
+                    StringResourceModel resourceModel = new StringResourceModel("admin.import.error.invalidFile", this, null, new Object[]{errorMessage});
+
+                    replacementPanel = new Label(ID_PARSE_STATUS, resourceModel);
                 }
 
                 replaceStatusPanel(replacementPanel, target);
@@ -180,7 +181,7 @@ public class ExportPage extends AbstractAdminPage<Void>
                 public Component getLoadingComponent(String markupId)
                 {
                     AjaxRequestTarget.get().appendJavascript("showHideSpinner(true);");
-                    return new Label(markupId, "Restoring");
+                    return new Label(markupId, new ResourceModel("admin.import.label.restoring"));
                 }
             };
 
