@@ -5,7 +5,6 @@ import java.sql.DatabaseMetaData
 import javax.sql.DataSource
 import org.hibernate.SessionFactory
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -40,20 +39,6 @@ class HibernateConfigurationTest
   void createSessionFactoryForDerby() throws Exception
   {
     assertNotNull(createSessionFactoryForDb("derby"));
-  }
-
-  @Test
-  @Ignore
-  void createSessionFactoryForMySQL() throws Exception
-  {
-    assertNotNull(createSessionFactoryForDb("mysql"));
-  }
-
-  @Test
-  @Ignore
-  void createSessionFactoryForPostgres() throws Exception
-  {
-    assertNotNull(createSessionFactoryForDb("postgresql"));
   }
 
   @Test(expected = IllegalArgumentException)
