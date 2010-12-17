@@ -63,11 +63,11 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 		{
 			elements = detailedReportDAO.getHoursPerDay(reportRange);
 		}
-		else if (projects == null && users != null)
+		else if (projects == null)
 		{
 			elements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getIdsFromDomainObjects(users), reportRange);
 		}
-		else if (projects != null && users == null)
+		else if (users == null)
 		{
 			elements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getIdsFromDomainObjects(projects), reportRange);
 		}

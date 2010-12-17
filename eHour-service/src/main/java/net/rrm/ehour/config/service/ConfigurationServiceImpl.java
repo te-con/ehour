@@ -169,7 +169,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 			bytes = new byte[(int) file.length()];
 
 			int offset = 0;
-			int numRead = 0;
+			int numRead;
 			while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0)
 			{
 				offset += numRead;

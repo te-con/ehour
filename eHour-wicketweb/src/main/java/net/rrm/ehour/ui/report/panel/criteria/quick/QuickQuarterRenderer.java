@@ -37,7 +37,7 @@ public class QuickQuarterRenderer extends QuickRenderer<QuickQuarter>
 	 */
 	public Object getDisplayValue(QuickQuarter quickQuarter)
 	{
-		String	label = null;
+		String	label;
 		
 		int quarter = quickQuarter.getPeriodIndex();
 		

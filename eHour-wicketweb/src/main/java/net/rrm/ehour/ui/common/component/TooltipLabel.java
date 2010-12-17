@@ -75,7 +75,7 @@ public class TooltipLabel extends Panel
 		add(new JavaScriptReference("addEventJs", new ResourceReference(TooltipLabel.class, "js/addEvent.js")));
 		add(new JavaScriptReference("sweetTitlesJs", new ResourceReference(TooltipLabel.class, "js/sweetTitles.js")));
 		
-		Boolean showTooltip = StringUtils.isBlank((String)tooltipText.getObject()) ? Boolean.FALSE : Boolean.TRUE;
+		Boolean showTooltip = StringUtils.isBlank(tooltipText.getObject()) ? Boolean.FALSE : Boolean.TRUE;
 		
 		add(new AttributeModifier("showtooltip", true, new Model<String>(showTooltip.toString())));
 		add(new AttributeModifier("title", true, tooltipText));

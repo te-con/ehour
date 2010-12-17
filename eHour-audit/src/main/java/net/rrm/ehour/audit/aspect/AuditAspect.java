@@ -134,13 +134,8 @@ public class AuditAspect
 	{
 		Object returnObject;
 		
-		boolean isAuditable = isAuditable(pjp);
+		boolean isAuditable = isAuditable(pjp) && isAuditEnabled(auditActionType);
 
-		if (isAuditable)
-		{
-			isAuditable &= isAuditEnabled(auditActionType);
-		}
-		
 		User user = getUser();
 		
 //		LOGGER.debug("auditable: " + isAuditable);

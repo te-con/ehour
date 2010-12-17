@@ -151,7 +151,7 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?,
 	 */
 	public T findById(PK id)
 	{
-		return (T)getHibernateTemplate().get(type, id);
+		return getHibernateTemplate().get(type, id);
 	}	
 	
 	/**
@@ -160,7 +160,7 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?,
 	 */
 	public T merge(T domobj)
 	{
-		return (T)getHibernateTemplate().merge(domobj);
+		return getHibernateTemplate().merge(domobj);
 	}
 	
 	/**

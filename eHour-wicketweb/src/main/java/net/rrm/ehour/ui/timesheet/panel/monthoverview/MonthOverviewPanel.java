@@ -60,7 +60,6 @@ public class MonthOverviewPanel extends Panel
 	private	final int				thisMonth;
 	private	final int				thisYear;
 	private final Calendar			overviewFor;
-	private final EhourConfig		config;
 
 	public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, final Calendar overviewForMonth)
 	{
@@ -69,7 +68,7 @@ public class MonthOverviewPanel extends Panel
 		setOutputMarkupId(true);
 		
 		EhourWebSession session = (EhourWebSession)getSession();
-		config = session.getEhourConfig();
+		EhourConfig config = session.getEhourConfig();
 		
 		this.timesheetOverview = timesheetOverview;
 	    thisMonth = overviewForMonth.get(Calendar.MONTH);

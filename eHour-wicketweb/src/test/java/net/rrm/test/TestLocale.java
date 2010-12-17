@@ -33,19 +33,17 @@ public class TestLocale
 	public static void main(String[] argv)
 	{
 		Locale[] locales = Locale.getAvailableLocales();
-		for (int i = 0; i < locales.length; i++)
-		{
-			if (locales[i].getCountry() != null && locales[i].getCountry().length() == 2)
-			{
-				System.out.println(locales[i].toString() + "="+  locales[i].getDisplayCountry() + "." 
-							+ locales[i].getVariant()
-							+ locales[i].getDisplayLanguage());
-				
-				Currency c = Currency.getInstance(locales[i]);
-				System.out.println(c.getSymbol(locales[i]) + "-" + c.getCurrencyCode());
-				System.out.println("--");
-			}
-		}
+        for (Locale locale1 : locales) {
+            if (locale1.getCountry() != null && locale1.getCountry().length() == 2) {
+                System.out.println(locale1.toString() + "=" + locale1.getDisplayCountry() + "."
+                        + locale1.getVariant()
+                        + locale1.getDisplayLanguage());
+
+                Currency c = Currency.getInstance(locale1);
+                System.out.println(c.getSymbol(locale1) + "-" + c.getCurrencyCode());
+                System.out.println("--");
+            }
+        }
 		
 //		Locale locale = new Locale("nl_NL");
 		

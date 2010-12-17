@@ -89,7 +89,7 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 		
 		getTester().assertRenderedPage(PrintMonth.class);
 		getTester().assertNoErrorMessage();
-		assertEquals(Boolean.TRUE, (Boolean) reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name()));
+		assertEquals(Boolean.TRUE, reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name()));
 		
 		assertEquals(2, reportCriteria.getUserCriteria().getProjects().size());
 		

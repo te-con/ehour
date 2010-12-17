@@ -27,9 +27,7 @@ public class UserRoleParser
 
     public void parseUserRoles(XMLEventReader reader, ParseSession status) throws XMLStreamException
     {
-        XMLEvent event;
-
-        while ((event = reader.nextTag()).isStartElement())
+        while (reader.nextTag().isStartElement())
         {
             parseUserRole(reader, status);
         }

@@ -202,30 +202,25 @@ public class TimesheetRow implements Serializable
 
         if (timesheetCells != null)
 		{
-			for (int i =0; i < timesheetCells.length; i++)
-			{
-				// as timesheet entry is lazy fetched in a subsequent http requests, assignment is not set
-				if (timesheetCells[i] != null
-						&& timesheetCells[i].getTimesheetEntry() != null) 
-				{
-					// new entries got empty entry id
-					if (timesheetCells[i].getTimesheetEntry().getEntryId() == null)
-					{
-						TimesheetEntryId id = new TimesheetEntryId();
-						
-						id.setProjectAssignment(getProjectAssignment());
-						id.setEntryDate(timesheetCells[i].getDate());
-						
-						timesheetCells[i].getTimesheetEntry().setEntryId(id);
-					}
-					else
-					{
-						timesheetCells[i].getTimesheetEntry().getEntryId().setProjectAssignment(getProjectAssignment());
-					}
-					
-					entries.add(timesheetCells[i].getTimesheetEntry());
-				}
-			}
+            for (TimesheetCell timesheetCell : timesheetCells) {
+                // as timesheet entry is lazy fetched in a subsequent http requests, assignment is not set
+                if (timesheetCell != null
+                        && timesheetCell.getTimesheetEntry() != null) {
+                    // new entries got empty entry id
+                    if (timesheetCell.getTimesheetEntry().getEntryId() == null) {
+                        TimesheetEntryId id = new TimesheetEntryId();
+
+                        id.setProjectAssignment(getProjectAssignment());
+                        id.setEntryDate(timesheetCell.getDate());
+
+                        timesheetCell.getTimesheetEntry().setEntryId(id);
+                    } else {
+                        timesheetCell.getTimesheetEntry().getEntryId().setProjectAssignment(getProjectAssignment());
+                    }
+
+                    entries.add(timesheetCell.getTimesheetEntry());
+                }
+            }
 		}
 		
 		return entries;

@@ -96,20 +96,17 @@ public class TimesheetServiceImpl implements TimesheetService
 	 */	
 	public TimesheetOverview getTimesheetOverview(User user, Calendar requestedMonth) 
 	{
-		TimesheetOverview	overview = new TimesheetOverview();
-		DateRange			monthRange;
-		List<TimesheetEntry> timesheetEntries = null;
-		Map<Integer, List<TimesheetEntry>>	calendarMap = null;
-		
-		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
+		TimesheetOverview overview = new TimesheetOverview();
+
+		DateRange monthRange = DateUtil.calendarToMonthRange(requestedMonth);
 		LOGGER.debug("Getting timesheet overview for userId " + user.getUserId() + " in range " + monthRange);
 		
 		overview.setProjectStatus(getProjectStatus(user.getUserId(), monthRange));
 		
-		timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), monthRange);
+		List<TimesheetEntry> timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), monthRange);
 		LOGGER.debug("Timesheet entries found for userId " + user.getUserId() + " in range " + monthRange + ": " + timesheetEntries.size());
 
-		calendarMap = entriesToCalendarMap(timesheetEntries);
+		Map<Integer, List<TimesheetEntry>> calendarMap = entriesToCalendarMap(timesheetEntries);
 		overview.setTimesheetEntries(calendarMap);
 		
 		return overview;

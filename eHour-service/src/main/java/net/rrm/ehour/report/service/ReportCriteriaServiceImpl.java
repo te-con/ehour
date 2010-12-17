@@ -268,7 +268,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	 */
 	private void syncCriteriaForSingleUser(ReportCriteria reportCriteria)
 	{
-		List<ProjectAssignment>	assignments = null;
 		Set<Customer>			customers = new HashSet<Customer>();
 		Set<Project>			projects = new HashSet<Project>();
 		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
@@ -276,7 +275,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		
 		user = reportCriteria.getUserCriteria().getUsers().get(0);
 		
-		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId(), reportCriteria.getUserCriteria().getReportRange());
+		List<ProjectAssignment>	assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId(), reportCriteria.getUserCriteria().getReportRange());
 		
 		for (ProjectAssignment assignment : assignments)
 		{

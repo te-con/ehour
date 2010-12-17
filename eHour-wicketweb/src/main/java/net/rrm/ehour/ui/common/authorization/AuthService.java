@@ -44,10 +44,9 @@ public class AuthService implements UserDetailsService
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
 	{
-		User		user = null;
 		AuthUser	authUser;
 		
-		user = userService.getUser(username);
+		User user = userService.getUser(username);
 		
 		if (user == null || !user.isActive())
 		{

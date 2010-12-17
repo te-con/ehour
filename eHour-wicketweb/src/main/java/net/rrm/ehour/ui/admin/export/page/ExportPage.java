@@ -130,7 +130,7 @@ public class ExportPage extends AbstractAdminPage<Void>
 
     private String isValidUpload(FileUploadField field)
     {
-        String errorMessage = null;
+        String errorMessage;
 
         if (field.getFileUpload() != null)
         {

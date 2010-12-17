@@ -44,7 +44,7 @@ public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
 	 */
 	public Object getDisplayValue(QuickMonth object)
 	{
-		String	value = null;
+		String	value;
 		
 		QuickMonth quickMonth = (QuickMonth)object;
 		

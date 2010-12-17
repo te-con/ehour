@@ -70,7 +70,7 @@ public class TimesheetModel implements IModel<Timesheet>
 	{
 		CommonWebUtil.springInjection(this);
 		
-		Timesheet timesheet = (Timesheet)getObject();
+		Timesheet timesheet = getObject();
 		
 		return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(), 
 												timesheet.getCommentForPersist(),
@@ -83,7 +83,7 @@ public class TimesheetModel implements IModel<Timesheet>
 	 */
 	public Date getWeekStart()
 	{
-		return ((Timesheet)getObject()).getWeekStart();
+		return getObject().getWeekStart();
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class TimesheetModel implements IModel<Timesheet>
 	 */
 	public Date getWeekEnd()
 	{
-		return ((Timesheet)getObject()).getWeekEnd();
+		return getObject().getWeekEnd();
 	}
 
 	/**

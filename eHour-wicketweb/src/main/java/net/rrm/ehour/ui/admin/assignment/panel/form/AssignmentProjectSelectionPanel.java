@@ -63,7 +63,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 			public List<Project> getObject()
 			{
 				// need to re-get it, project set is lazy
-				Customer selectedCustomer = ((AssignmentAdminBackingBean) model.getObject()).getCustomer();
+				Customer selectedCustomer = model.getObject().getCustomer();
 				Customer customer = null;
 
 				if (selectedCustomer != null)

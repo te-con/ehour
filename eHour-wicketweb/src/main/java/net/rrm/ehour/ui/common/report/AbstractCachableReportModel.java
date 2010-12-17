@@ -79,7 +79,7 @@ public abstract class AbstractCachableReportModel extends LoadableDetachableMode
 	
 	public final ReportData getReportData()
 	{
-		return (ReportData)getObject();
+		return getObject();
 	}
 	
 	/**

@@ -75,7 +75,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	protected HSSFWorkbook createWorkbook(Report treeReport)
 	{
 		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFSheet 	sheet = wb.createSheet((String)getExcelReportName().getObject());
+		HSSFSheet 	sheet = wb.createSheet(getExcelReportName().getObject());
 		int			rowNumber = 0;
 		short		column;
 		
@@ -208,7 +208,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 	@Override
 	protected String getFilename()
 	{
-		return ((String)(getExcelReportName().getObject())).toLowerCase().replace(' ', '_') + ".xls";
+		return getExcelReportName().getObject().toLowerCase().replace(' ', '_') + ".xls";
 	}
 	
 	

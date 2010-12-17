@@ -84,8 +84,7 @@ public class ExportReportExcel extends AbstractExcelResource
 
 		if (isInclSignOff(report))
 		{
-			rowNumber++;
-			rowNumber = new ExportReportSignOff(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
+			new ExportReportSignOff(CELL_BORDER, sheet, report, workbook).createPart(rowNumber + 1);
 		}
 
 		return workbook;

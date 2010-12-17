@@ -82,7 +82,7 @@ public class QuickWeekRenderer extends QuickRenderer<QuickWeek>
 	{
 		Localizer localizer = getLocalizer();
 		
-		String value = "unknown";
+		String value;
 		
 		if (quickWeek.getPeriodStart().before(previousWeekStart)
 				|| quickWeek.getPeriodStart().after(nextWeekEnd))

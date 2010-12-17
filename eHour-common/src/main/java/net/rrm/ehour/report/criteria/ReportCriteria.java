@@ -95,7 +95,7 @@ public class ReportCriteria implements Serializable
         userCriteria.setReportRange(reportRange);
 
         // if no timesheets were specified, use the current month as the range
-        if (reportRange == null || reportRange.isEmpty())
+        if (reportRange.isEmpty())
         {
             reportRange = DateUtil.calendarToMonthRange(new GregorianCalendar());
         }

@@ -126,11 +126,10 @@ public class GrandTotal implements Serializable
 	{
 		float[]	values = getValues();
 		float	val = 0;
-		
-		for (int i = 0; i < values.length; i++)
-		{
-			val += values[i];
-		}
+
+        for (float value : values) {
+            val += value;
+        }
 		
 		return val;
 	}

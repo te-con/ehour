@@ -38,9 +38,7 @@ public class MenuItem implements Serializable
 
 	public boolean isVisibleForLoggedInUser()
 	{
-		boolean visible = true;
-
-		visible = isLink() && AuthUtil.isUserAuthorizedForPage(responsePageClass);
+		boolean visible = isLink() && AuthUtil.isUserAuthorizedForPage(responsePageClass);
 
 		for (MenuItem menu : subMenus)
 		{

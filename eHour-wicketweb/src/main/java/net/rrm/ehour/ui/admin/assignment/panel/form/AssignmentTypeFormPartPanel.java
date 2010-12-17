@@ -103,7 +103,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		allottedHours.add(new MinimumValidator<Float>(0f));
 		allottedHours.setOutputMarkupId(true);
 		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
-		allottedHours.setEnabled(((Boolean)showAllottedHoursModel.getObject()).booleanValue());
+		allottedHours.setEnabled(showAllottedHoursModel.getObject().booleanValue());
 
 		// allotted hours row
 		final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
@@ -120,7 +120,7 @@ public class AssignmentTypeFormPartPanel extends Panel
 		overrunHours.add(new ValidatingFormComponentAjaxBehavior());
 		overrunHours.add(new MinimumValidator<Float>(0f));
 		overrunHours.setOutputMarkupId(true);
-		overrunHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
+		overrunHours.setEnabled(showOverrunHoursModel.getObject().booleanValue());
 		overrunHours.setLabel(new ResourceModel("admin.assignment.allowedOverrun"));
 
 		// overrun hours row
@@ -156,8 +156,8 @@ public class AssignmentTypeFormPartPanel extends Panel
 			protected void onUpdate(AjaxRequestTarget target)
             {
 				// to disable the required validation
-				allottedHours.setEnabled(((Boolean)showAllottedHoursModel.getObject()).booleanValue());
-				overrunHours.setEnabled(((Boolean)showOverrunHoursModel.getObject()).booleanValue());
+				allottedHours.setEnabled(showAllottedHoursModel.getObject().booleanValue());
+				overrunHours.setEnabled(showOverrunHoursModel.getObject().booleanValue());
 				target.addComponent(allottedHours);
 				target.addComponent(overrunHours);
 

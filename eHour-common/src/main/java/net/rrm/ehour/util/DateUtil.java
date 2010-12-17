@@ -161,7 +161,7 @@ public class DateUtil
 	 */
 	public static boolean isDateRangeOverlaps(DateRange rangeA, DateRange rangeB)
 	{
-		boolean	overlaps = false;
+		boolean	overlaps;
 
 		boolean includeStart;
 		boolean includeEnd;
@@ -452,25 +452,19 @@ public class DateUtil
 
 		StringBuilder pattern = new StringBuilder();
 
-		for (int j = 0; j < parts.length; j++)
-		{
-			int i = Integer.parseInt(parts[j]);
+        for (String part : parts) {
+            int i = Integer.parseInt(part);
 
-			if (i == cal.get(Calendar.DAY_OF_MONTH))
-			{
-				pattern.append("dd");
-			}
-			else if (i == 1 + cal.get(Calendar.MONTH))
-			{
-				pattern.append("MM");
-			}
-			else
-			{
-				pattern.append("yyyy");
-			}
+            if (i == cal.get(Calendar.DAY_OF_MONTH)) {
+                pattern.append("dd");
+            } else if (i == 1 + cal.get(Calendar.MONTH)) {
+                pattern.append("MM");
+            } else {
+                pattern.append("yyyy");
+            }
 
-			pattern.append(separator);
-		}
+            pattern.append(separator);
+        }
 
 		pattern.deleteCharAt(pattern.length() - 1);
 
