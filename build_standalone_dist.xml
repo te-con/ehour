@@ -1,0 +1,58 @@
+<project xmlns:artifact="antlib:org.apache.maven.artifact.ant" 
+	name="eHourStandaloneDist" default="dist" basedir=".">
+	<description>
+		Builds eHour standalone dist file (don't mention Maven's assembly plugin..)
+	</description>
+
+	<property name="dist" location="dist" />
+	<property name="lib" location="${dist}/lib" />
+	<property name="app" location="${dist}/app" />
+	<property name="bin" location="${dist}/bin" />
+	<property name="conf" location="${dist}/conf" />
+
+	<path id="maven-ant-tasks.classpath" path="lib/maven-ant-tasks-2.1.1.jar" />
+	<typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+			uri="antlib:org.apache.maven.artifact.ant"
+		   	classpathref="maven-ant-tasks.classpath" />
+
+	<target name="init" depends="clean">
+		<mkdir dir="${dist}" />
+		<mkdir dir="${lib}" />
+		<mkdir dir="${app}" />
+		<mkdir dir="${bin}" />
+		<mkdir dir="${conf}" />
+		<mkdir dir="${dist}/log" />
+	</target>
+	
+	<target name="dist" depends="init">
+		<artifact:dependencies filesetId="dependency.fileset" useScope="runtime">
+			<dependency groupId="net.rrm.ehour" artifactId="eHour-standalone" version="0.9.0-SNAPSHOT"/>
+		</artifact:dependencies>
+
+		<copy todir="${lib}">
+			 <fileset refid="dependency.fileset" />
+			 <mapper type="flatten" />
+		</copy>
+
+		<copy todir="${app}">
+			 <fileset dir="eHour-web/src/main/webapp" excludes=".svn"/>
+		</copy>
+
+		<copy todir="${bin}">
+			 <fileset dir="eHour-standalone/src/dist/prod/bin" excludes=".svn"/>
+		</copy>
+
+		<chmod dir="${bin}/" includes="**/*.sh" perm="ugo+rx" />
+		<chmod dir="${bin}/" includes="**/wrapper" perm="ugo+rx" />
+
+		<copy todir="${conf}">
+			<fileset dir="eHour-standalone/src/dist/prod/conf" excludes=".svn" />
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="${dist}"  />
+	</target>
+
+</project>
+
