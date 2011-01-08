@@ -14,15 +14,19 @@ rem Java Service Wrapper general startup script.
 
 rem -----------------------------------------------------------------------------
 rem These settings can be modified to fit the needs of your application
-rem Optimized for use with version 3.5.1 of the Wrapper.
+rem Optimized for use with version 3.5.7 of the Wrapper.
 
 rem The base name for the Wrapper binary.
-set _WRAPPER_BASE=wrapper
+set _WRAPPER_BASE=..\bin\wrapper
 
 rem The name and location of the Wrapper configuration file.   This will be used
 rem  if the user does not specify a configuration file as the first argument to
 rem  this script.
-set _WRAPPER_CONF_DEFAULT=../../conf/wrapper.conf
+set _WRAPPER_CONF_DEFAULT=../conf/demoapp.conf
+
+rem _PASS_THROUGH tells the script to pass all arguments through to the JVM
+rem  as is.
+rem set _PASS_THROUGH=true
 
 rem Do not modify anything beyond this point
 rem -----------------------------------------------------------------------------
@@ -71,15 +75,29 @@ rem
 rem Find the wrapper.conf
 rem
 :conf
-set _WRAPPER_CONF="%~f1"
-if not %_WRAPPER_CONF%=="" goto startup
+set _WRAPPER_CONF=""
+if not [%_WRAPPER_CONF%]==[""] (
+    shift
+    goto :startup
+)
 set _WRAPPER_CONF="%_WRAPPER_CONF_DEFAULT%"
 
 rem
 rem Start the Wrapper
 rem
 :startup
-"%_WRAPPER_EXE%" -c %_WRAPPER_CONF%
+
+rem Collect an parameters
+:parameters
+set _PARAMETERS=%_PARAMETERS% %1
+shift
+if not [%1]==[] goto :parameters
+
+if [%_PASS_THROUGH%]==[] (
+    "%_WRAPPER_EXE%" -c %_WRAPPER_CONF%
+) else (
+    "%_WRAPPER_EXE%" -c %_WRAPPER_CONF% -- %_PARAMETERS%
+)
 if not errorlevel 1 goto :eof
 pause
 

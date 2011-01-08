@@ -20,7 +20,7 @@
 
 # Application
 APP_NAME="eHour"
-APP_LONG_NAME="eHour - http://www.ehour.nl/"
+APP_LONG_NAME="eHour timesheet management"
 
 # Wrapper
 WRAPPER_CMD="./wrapper"
@@ -88,7 +88,7 @@ WAIT_FOR_STARTED_TIMEOUT=120
 USE_UPSTART=
 # When installing on On Mac OSX platforms, the following domain will be used to
 #  prefix the plist file name.
-PLIST_DOMAIN=nl.tecon.ehour
+PLIST_DOMAIN=nl.ehour
 
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
