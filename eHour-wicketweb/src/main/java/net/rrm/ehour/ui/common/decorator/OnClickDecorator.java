@@ -52,7 +52,7 @@ public class OnClickDecorator  implements IAjaxCallDecorator
 	 */
 	public OnClickDecorator(String preAjaxMethod, String[] arguments, String postSuccesMethod, String postFailMethod)
 	{
-		this.arguments = arguments;
+		this.arguments = arguments.clone();
 		this.preAjaxMethod = preAjaxMethod;
 		this.succesMethod = postSuccesMethod;
 		this.failMethod = postFailMethod;

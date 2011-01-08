@@ -16,26 +16,20 @@
 
 package net.rrm.ehour.ui.report.trend;
 
-import java.io.Serializable;
-import java.util.Locale;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
-import net.rrm.ehour.ui.report.trend.node.FlatCustomerNode;
-import net.rrm.ehour.ui.report.trend.node.FlatDateNode;
-import net.rrm.ehour.ui.report.trend.node.FlatEntryEndNode;
-import net.rrm.ehour.ui.report.trend.node.FlatProjectNode;
-import net.rrm.ehour.ui.report.trend.node.FlatUserNode;
-
+import net.rrm.ehour.ui.report.trend.node.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * Detailed report
@@ -82,15 +76,13 @@ public class DetailedReport extends TreeReport
 	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#getReportNodeFactory()
 	 */
 	@Override
-	public ReportNodeFactory getReportNodeFactory()
+	public ReportNodeFactory<FlatReportElement> getReportNodeFactory()
 	{
-    	return new ReportNodeFactory()
+    	return new ReportNodeFactory<FlatReportElement>()
 	    {
 	        @Override
-	        public ReportNode createReportNode(ReportElement element, int hierarchyLevel)
+	        public ReportNode createReportNode(FlatReportElement flatElement, int hierarchyLevel)
 	        {
-	        	FlatReportElement flatElement = (FlatReportElement)element;
-	        	
 	        	// TODO make this a bit more understandable
 	            switch (hierarchyLevel)
 	            {
@@ -114,9 +106,8 @@ public class DetailedReport extends TreeReport
 	         * @param aggregate
 	         * @return
 	         */
-	        public Serializable getElementId(ReportElement element)
+	        public Serializable getElementId(FlatReportElement flatElement)
 	        {
-	        	FlatReportElement flatElement = (FlatReportElement)element;
 	            return flatElement.getCustomerId();
 	        }
 	    };	

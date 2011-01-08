@@ -26,7 +26,6 @@ import net.rrm.ehour.ui.common.decorator.DemoDecorator;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -110,7 +109,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 						configService.persistConfiguration(getConfigStub());
 						msgModel = new ResourceModel("general.dataSaved");
 					}
-					catch (Throwable t)
+					catch (Exception t)
 					{
 						LOGGER.error("While saving config", t);
 						msgModel = new ResourceModel("general.saveError");

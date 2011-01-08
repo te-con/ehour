@@ -144,7 +144,7 @@ public class AuditAspect
 		{
 			returnObject = pjp.proceed();
 		}
-		catch (Throwable t)
+		catch (Exception t)
 		{
 			if (isAuditable)
 			{
@@ -224,7 +224,7 @@ public class AuditAspect
 		{
 			user = EhourWebSession.getSession().getUser().getUser();
 		}
-		catch (Throwable t)
+		catch (Exception t)
 		{
 			user = null;
 		}

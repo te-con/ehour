@@ -16,19 +16,11 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.SortedMap;
-
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.TimesheetComment;
-import net.rrm.ehour.domain.TimesheetCommentId;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Representation of a timesheet
@@ -259,7 +251,7 @@ public class Timesheet implements Serializable
 	 */
 	public void setDateSequence(Date[] dateSequence)
 	{
-		this.dateSequence = dateSequence;
+		this.dateSequence = dateSequence.clone();
 	}
 
 	/**

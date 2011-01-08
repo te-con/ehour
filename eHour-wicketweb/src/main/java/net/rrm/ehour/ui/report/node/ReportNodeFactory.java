@@ -25,19 +25,19 @@ import java.io.Serializable;
  * @author Thies
  *
  */
-public abstract class ReportNodeFactory
+public abstract class ReportNodeFactory<T extends ReportElement>
 {
     /**
      * Create report node for hierarchy level
      * @param hierarchyLevel
      * @return
      */
-    public abstract ReportNode createReportNode(ReportElement aggregate, int hierarchyLevel);
+    public abstract ReportNode createReportNode(T aggregate, int hierarchyLevel);
 
     /**
      * Get the id of a report importer
      * @param aggregate
      * @return
      */
-    public abstract Serializable getElementId(ReportElement aggregate);
+    public abstract Serializable getElementId(T aggregate);
 }

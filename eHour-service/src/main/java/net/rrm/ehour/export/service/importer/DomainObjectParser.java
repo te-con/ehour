@@ -14,7 +14,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -302,14 +301,12 @@ public class DomainObjectParser
 
     private static class DateTransformer implements TypeTransformer<Date>
     {
-        private static final DateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
-
         @Override
         public Date transform(String value)
         {
             try
             {
-                return FORMATTER.parse(value);
+                return new SimpleDateFormat("yyyy-MM-dd").parse(value);
             } catch (ParseException e)
             {
                 LOG.error("Failed to parse date: " + value);

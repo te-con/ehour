@@ -75,7 +75,7 @@ public class ExportDatabase extends DynamicWebResource
 
         void setData(byte[] data)
         {
-            this.data = data;
+            this.data = data.clone();
         }
 
         @Override

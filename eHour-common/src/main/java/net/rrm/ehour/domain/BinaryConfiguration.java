@@ -72,7 +72,7 @@ public class BinaryConfiguration extends DomainObject<String, BinaryConfiguratio
 	 */
 	public void setConfigValue(byte[] configValue)
 	{
-		this.configValue = configValue;
+		this.configValue = configValue.clone();
 	}
 
 	/**

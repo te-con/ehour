@@ -17,12 +17,11 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import java.awt.image.BufferedImage;
-
 import net.rrm.ehour.persistence.value.ImageLogo;
-
 import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.protocol.http.WebResponse;
+
+import java.awt.image.BufferedImage;
 
 /**
  * Created on Apr 22, 2009, 6:14:07 PM
@@ -42,7 +41,7 @@ public class ImageResource extends DynamicImageResource
 	 */
 	public ImageResource(byte[] image, String format)
 	{
-		this.image = image;
+		this.image = image.clone();
 		setFormat(format);
 	}
 

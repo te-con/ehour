@@ -16,25 +16,9 @@
 
 package net.rrm.ehour.timesheet.service;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.TimesheetComment;
-import net.rrm.ehour.domain.TimesheetCommentId;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
@@ -49,12 +33,14 @@ import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Provides services for displaying and manipulating timesheets.
@@ -291,11 +277,11 @@ public class TimesheetServiceImpl implements TimesheetService
 
 		List<ProjectAssignmentStatus> errorStatusses = new ArrayList<ProjectAssignmentStatus>();
 		
-		for (ProjectAssignment assignment : timesheetRows.keySet())
+		for (Map.Entry<ProjectAssignment, List<TimesheetEntry>> entry : timesheetRows.entrySet())
 		{
 			try
 			{
-				timesheetPersister.validateAndPersist(assignment, timesheetRows.get(assignment), weekRange);
+				timesheetPersister.validateAndPersist(entry.getKey(), entry.getValue(), weekRange);
 			} catch (OverBudgetException e)
 			{
 				errorStatusses.add( e.getStatus());

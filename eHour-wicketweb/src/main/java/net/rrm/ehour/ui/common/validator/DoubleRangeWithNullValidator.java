@@ -50,7 +50,7 @@ public class DoubleRangeWithNullValidator extends AbstractValidator<Number> impl
 				error(validatable);
 			}
 		}
-		catch (Throwable t)
+		catch (Exception t)
 		{
 			error(validatable);
 		}

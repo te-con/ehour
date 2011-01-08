@@ -17,14 +17,7 @@
 
 package net.rrm.ehour.ui.common.form;
 
-import java.awt.Dimension;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import net.rrm.ehour.persistence.value.ImageLogo;
-
 import org.apache.log4j.Logger;
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.Sanselan;
@@ -34,17 +27,23 @@ import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.IModel;
 
+import java.awt.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Created on Apr 22, 2009, 7:02:12 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
 public abstract class ImageUploadForm<T> extends Form<T>
 {
-	private static final long serialVersionUID = 808442352504816831L;
-	private FileUploadField fileUploadField;
-	
-	private static final Logger LOGGER = Logger.getLogger(ImageUploadForm.class);
+    private static final long serialVersionUID = 808442352504816831L;
+    private FileUploadField fileUploadField;
+
+    private static final Logger LOGGER = Logger.getLogger(ImageUploadForm.class);
 
     public ImageUploadForm(String id, IModel<T> model)
     {
@@ -52,7 +51,7 @@ public abstract class ImageUploadForm<T> extends Form<T>
 
         setMultiPart(true);
         add(fileUploadField = new FileUploadField("fileInput"));
-        
+
         add(new SubmitLink("uploadSubmit"));
     }
 
@@ -63,54 +62,64 @@ public abstract class ImageUploadForm<T> extends Form<T>
     protected void onSubmit()
     {
         final FileUpload upload = fileUploadField.getFileUpload();
-        
+
         if (upload != null)
         {
-        	try
-			{
-				ImageLogo logo = parseImageLogo(upload);
-				
-				uploadImage(logo);
-			} catch (Exception e)
-			{
-				LOGGER.warn("While uploading new image: " + e.getMessage());
-				uploadImageError();
-			}
+            try
+            {
+                ImageLogo logo = parseImageLogo(upload);
+
+                uploadImage(logo);
+            } catch (Exception e)
+            {
+                LOGGER.warn("While uploading new image: " + e.getMessage());
+                uploadImageError();
+            }
         }
     }
 
     protected abstract void uploadImage(ImageLogo logo);
-    
-    protected abstract void uploadImageError();  
-    
-    
+
+    protected abstract void uploadImageError();
+
+
     private ImageLogo parseImageLogo(FileUpload upload) throws IOException, ImageReadException
     {
-    	byte[] bytes = getBytes(upload);
-    	
-    	ImageLogo logo = new ImageLogo();
-    	logo.setImageData(bytes);
-    	
-    	Dimension imageSize = Sanselan.getImageSize(bytes);
+        byte[] bytes = getBytes(upload);
 
-    	logo.setWidth((int)	imageSize.getWidth());
-    	logo.setHeight((int)imageSize.getHeight());
-    	logo.setImageType(upload.getClientFileName().substring(upload.getClientFileName().lastIndexOf(".") + 1));
+        ImageLogo logo = new ImageLogo();
+        logo.setImageData(bytes);
 
-    	return logo;
+        Dimension imageSize = Sanselan.getImageSize(bytes);
+
+        logo.setWidth((int) imageSize.getWidth());
+        logo.setHeight((int) imageSize.getHeight());
+        logo.setImageType(upload.getClientFileName().substring(upload.getClientFileName().lastIndexOf(".") + 1));
+
+        return logo;
     }
-    
+
     private byte[] getBytes(FileUpload upload) throws IOException
     {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		InputStream in = new BufferedInputStream(upload.getInputStream());
-		int b;
-		
-		while ((b = in.read()) != -1)
-		{
-			bout.write(b);
-		}
-		
-		return bout.toByteArray();
+        InputStream in = new BufferedInputStream(upload.getInputStream());
+
+        try
+        {
+            int b;
+
+            while ((b = in.read()) != -1)
+            {
+                bout.write(b);
+            }
+
+            return bout.toByteArray();
+        } finally
+        {
+            if (in != null)
+            {
+                in.close();
+            }
+        }
     }
 }	
