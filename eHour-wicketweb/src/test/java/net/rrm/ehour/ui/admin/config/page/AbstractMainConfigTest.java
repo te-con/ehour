@@ -16,20 +16,19 @@
 
 package net.rrm.ehour.ui.admin.config.page;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.verify;
-
-import java.io.Serializable;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-
 import org.junit.After;
 import org.junit.Before;
+
+import java.io.Serializable;
+
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.verify;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester implements Serializable
@@ -42,15 +41,15 @@ public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester 
 	public void before() throws Exception
 	{
 //		configService = createMock(ConfigurationService.class);
-		configService = createMock(ConfigurationServiceImpl.class, 
-				ConfigurationServiceImpl.class.getMethod("getConfiguration", null),
-				ConfigurationServiceImpl.class.getMethod("persistConfiguration", EhourConfig.class));
+		configService = createMock(ConfigurationServiceImpl.class,
+                ConfigurationServiceImpl.class.getMethod("getConfiguration", null),
+                ConfigurationServiceImpl.class.getMethod("persistConfiguration", EhourConfig.class));
 		getMockContext().putBean("configService", configService);
+        configService.seteHourHome("/");
 
 		mailService = createMock(MailService.class);
 		getMockContext().putBean("mailService", mailService);	
 
-		
 		
 		config = new EhourConfigStub();
 		expect(configService.getConfiguration())

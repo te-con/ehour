@@ -17,21 +17,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -44,9 +29,20 @@ import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.util.DateUtil;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created on Apr 10, 2009, 2:05:13 PM
@@ -67,6 +63,7 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester
 		getMockContext().putBean("detailedReportService", detailedReportService);
 		
 		configService = new ConfigurationServiceImpl();
+        configService.seteHourHome("/");
 		getMockContext().putBean("configurationService", configService);
 		
 		BinaryConfigurationDao binConfigfDao = createMock(BinaryConfigurationDao.class);
