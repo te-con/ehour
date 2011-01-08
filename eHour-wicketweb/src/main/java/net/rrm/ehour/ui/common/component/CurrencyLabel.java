@@ -1,22 +1,29 @@
 package net.rrm.ehour.ui.common.component;
 
 import net.rrm.ehour.ui.common.converter.CurrencyConverter;
-
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.convert.IConverter;
 
-public class CurrencyLabel extends ConverterLabel
+public class CurrencyLabel extends Label
 {
 	private static final long serialVersionUID = -8777767390766813803L;
 
 	public CurrencyLabel(String id, IModel<?> model)
 	{
-		super(id, model, CurrencyConverter.getInstance());
+        super(id, model);
 	}
 
-	public CurrencyLabel(String id, Number currency)
-	{
-		
-		this(id, new Model<Float>(currency.floatValue()));
-	}
+    public CurrencyLabel(String id, Float value)
+    {
+        super(id, new Model<Float>(value));
+    }
+
+
+    @Override
+    public final IConverter getConverter(Class<?> type)
+    {
+        return CurrencyConverter.getInstance();
+    }
 }

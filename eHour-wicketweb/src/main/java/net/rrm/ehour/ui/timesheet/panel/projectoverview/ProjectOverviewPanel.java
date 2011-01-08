@@ -16,25 +16,17 @@
 
 package net.rrm.ehour.ui.timesheet.panel.projectoverview;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.CommonJavascript;
-import net.rrm.ehour.ui.common.component.ConverterLabel;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.component.TooltipLabel;
-import net.rrm.ehour.ui.common.converter.CurrencyConverter;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -48,6 +40,11 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Panel showing overview
@@ -109,7 +106,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 		
 		container.add(new Label("grandTotalHours", new Model<Float>(totalHours)));
 		
-		label = new ConverterLabel("grandTotalTurnover", new Model<Float>(totalTurnover), CurrencyConverter.getInstance());
+		label = new CurrencyLabel("grandTotalTurnover", new Model<Float>(totalTurnover));
 		
 		label.setVisible(config.isShowTurnover());
 		label.setEscapeModelStrings(false);

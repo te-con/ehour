@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.report.panel;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.component.ConverterLabel;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -47,6 +46,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.value.ValueMap;
 
 import java.io.Serializable;
@@ -298,7 +298,16 @@ public class TreeReportDataPanel extends Panel
 					}
 					else if (reportConfig.getReportColumns()[i].getConverter()  != null)
 					{
-						cellLabel = new ConverterLabel(Integer.toString(i), new Model<Serializable>(cellValue), reportConfig.getReportColumns()[i].getConverter());
+                        final IConverter converter = reportConfig.getReportColumns()[i].getConverter();
+
+                        cellLabel = new Label(Integer.toString(i), new Model<Serializable>(cellValue))
+                        {
+                            @Override
+                            public IConverter getConverter(Class<?> type)
+                            {
+                                return converter;
+                            }
+                        };
 						
 						newValueInPreviousColumn = true;
 					}
