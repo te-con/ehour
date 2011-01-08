@@ -16,26 +16,21 @@
 
 package net.rrm.ehour.ui.login.page;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
+
+import java.io.Serializable;
 
 /**
  * Login page
@@ -119,9 +114,11 @@ public class Login extends WebPage
 			// TODO layout is off when feedback panel uses its space
 			Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
 			add(demoMode);
-			demoMode.setVisible(((EhourWebSession)getSession()).getEhourConfig().isInDemoMode());
+			demoMode.setVisible(EhourWebSession.getSession().getEhourConfig().isInDemoMode());
 
-			add(new Label("version", ((EhourWebApplication)this.getApplication()).getVersion()));
+
+
+			add(new Label("version", ((EhourWebApplication) this.getApplication()).getVersion()));
 		}
 
 		/**
