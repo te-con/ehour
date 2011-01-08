@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.config.service;
 
+import net.rrm.ehour.appconfig.ConfigUtil;
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.ConfigurationItem;
@@ -157,7 +158,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
 
         try
         {
-            File file = new File(eHourHome + System.getProperty("file.separator") + EXCEL_DEFAULT_LOGO);
+            File file = new File(ConfigUtil.getConfDir(eHourHome) + EXCEL_DEFAULT_LOGO);
 
             if (!file.exists())
             {

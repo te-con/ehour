@@ -1,6 +1,6 @@
 package net.rrm.ehour.persistence.dao;
 
-import net.rrm.ehour.appconfig.ConfigPropertiesLoader;
+import net.rrm.ehour.appconfig.ConfigUtil;
 import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -71,7 +71,7 @@ public abstract class AbstractAnnotationDaoTest
     @Before
     public final void setUpDatabase() throws Exception
     {
-        Properties properties = ConfigPropertiesLoader.loadDatabaseProperties("derby");
+        Properties properties = ConfigUtil.loadDatabaseProperties("derby");
 
         DerbyDbValidator validator = new DerbyDbValidator(properties.getProperty("ehour.db.version"), eHourDataSource);
         validator.checkDatabaseState();

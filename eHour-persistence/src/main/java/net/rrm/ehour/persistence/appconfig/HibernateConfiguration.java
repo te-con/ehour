@@ -1,6 +1,6 @@
 package net.rrm.ehour.persistence.appconfig;
 
-import net.rrm.ehour.appconfig.ConfigPropertiesLoader;
+import net.rrm.ehour.appconfig.ConfigUtil;
 import net.rrm.ehour.domain.DomainObjects;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -38,7 +38,7 @@ public class HibernateConfiguration
 	@Bean(name="sessionFactory")
 	public SessionFactory getSessionFactory() throws Exception
 	{
-		Properties configProperties = ConfigPropertiesLoader.loadDatabaseProperties(databaseName);
+		Properties configProperties = ConfigUtil.loadDatabaseProperties(databaseName);
 
 		LOGGER.info("Using database type: " + databaseName);
 
