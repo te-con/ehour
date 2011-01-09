@@ -46,7 +46,12 @@ import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import org.apache.log4j.Logger;
-import org.apache.wicket.*;
+import org.apache.wicket.Application;
+import org.apache.wicket.Component;
+import org.apache.wicket.IConverterLocator;
+import org.apache.wicket.Page;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
@@ -65,6 +70,8 @@ import org.apache.wicket.util.lang.PackageName;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
+import java.util.List;
+
 /**
  * Base config for wicket eHour webapp
  **/
@@ -82,6 +89,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	@Value("${ehour.configurationType}")
 	private String configurationType;
 
+    @Value("${ehour.translations}")
+    private String translationsDir;
+
 	public void init()
 	{
 		if (!initialized)
@@ -95,18 +105,24 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 			setupSecurity();
 			registerSharedResources();
 
-            IPropertiesFactory propertiesFactory = getResourceSettings().getPropertiesFactory();
-
-            if (propertiesFactory instanceof PropertiesFactory) {
-                ((PropertiesFactory)propertiesFactory).getPropertiesLoaders().add(new EhourHomeResourceLoader(this));
-            }
-
+            registerStringLoader();
 
             initialized = true;
 		}
 	}
 
-	private void registerSharedResources()
+    private void registerStringLoader()
+    {
+        IPropertiesFactory propertiesFactory = getResourceSettings().getPropertiesFactory();
+
+        if (propertiesFactory instanceof PropertiesFactory) {
+            List<PropertiesFactory.IPropertiesLoader> loaders = ((PropertiesFactory) propertiesFactory).getPropertiesLoaders();
+            loaders.clear();;
+            loaders.add(new EhourHomeResourceLoader(this, translationsDir));
+        }
+    }
+
+    private void registerSharedResources()
 	{
 		mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
 		mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
@@ -118,7 +134,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
         getSharedResources().add(ExportDatabase.ID_EXPORT_DB, new ExportDatabase());
         mountSharedResource("/exportDb", new ResourceReference(ExportDatabase.ID_EXPORT_DB).getSharedResourceKey());
-
 	}
 
 	private void mountExcelReport(AbstractExcelResource excelReport, String id)

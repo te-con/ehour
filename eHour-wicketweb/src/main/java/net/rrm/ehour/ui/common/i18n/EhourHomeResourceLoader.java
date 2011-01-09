@@ -23,17 +23,13 @@ public class EhourHomeResourceLoader implements PropertiesFactory.IPropertiesLoa
 {
     private static final Logger LOG = LoggerFactory.getLogger(PropertiesFactory.class);
 
-    // %ehour_home%/resources/i18n path
-    private final String EHOUR_HOME = System.getenv("ehour.home") + System.getenv("file.separator")
-            + "resources" + System.getenv("file.separator")
-            + "i18n" + System.getenv("file.separator");
-
     private Application application;
+    private String translationsDir;
 
-
-    public EhourHomeResourceLoader(Application application)
+    public EhourHomeResourceLoader(Application application, String translationsDir)
     {
         this.application = application;
+        this.translationsDir = translationsDir + System.getProperty("file.separator");
     }
 
     @Override
@@ -41,11 +37,11 @@ public class EhourHomeResourceLoader implements PropertiesFactory.IPropertiesLoa
     {
         String propertyName = path.substring(path.lastIndexOf("/") + 1) + "properties";
 
-
-        final File file = new File(EHOUR_HOME + propertyName);
+        final File file = new File(translationsDir + propertyName);
 
         if (file.exists())
         {
+            LOG.debug("Loading properties from " + file.getAbsolutePath());
             FileInputStream stream = null;
 
             try
