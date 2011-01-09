@@ -15,7 +15,7 @@ wicket.guardform.formId = "";
 wicket.guardform.init = function(id)
 {
     wicket.guardform.formId = id;
-    wicket.guardform.serializedForm = Wicket.Form.serialize(document.getElementById(id));
+    wicket.guardform.clean();
 
     window.onbeforeunload = function()
     {
@@ -23,7 +23,7 @@ wicket.guardform.init = function(id)
         {
             return decodeURIComponent(wicket.guardform.prompt);
         } else {
-            return "";
+            return;
         }
     }
 
@@ -44,5 +44,10 @@ wicket.guardform.isDirty = function()
     var postClick = Wicket.Form.serialize(document.getElementById(wicket.guardform.formId));
 
     return postClick != wicket.guardform.serializedForm;
+}
+
+wicket.guardform.clean = function()
+{
+    wicket.guardform.serializedForm = Wicket.Form.serialize(document.getElementById(wicket.guardform.formId));
 }
 

@@ -260,6 +260,8 @@ public class TimesheetPanel extends Panel implements Serializable
                 addFailedProjectMessages(failedProjects, target);
 
                 EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
+
+                target.appendJavascript("wicket.guardform.clean();");
             }
 
             @Override
