@@ -16,16 +16,33 @@ wicket.guardform.init = function(id)
 {
     wicket.guardform.formId = id;
     wicket.guardform.serializedForm = Wicket.Form.serialize(document.getElementById(id));
+
+    window.onbeforeunload = function()
+    {
+        if (wicket.guardform.isDirty())
+        {
+            return decodeURIComponent(wicket.guardform.prompt);
+        } else {
+            return "";
+        }
+    }
+
 };
 
 wicket.guardform.promptForDirtyForm = function()
 {
-    var postClick = Wicket.Form.serialize(document.getElementById(wicket.guardform.formId));
-
-    if (postClick != wicket.guardform.serializedForm) {
+    if (wicket.guardform.isDirty())
+    {
         return confirm(decodeURIComponent(wicket.guardform.prompt));
     }
 
     return true;
+}
+
+wicket.guardform.isDirty = function()
+{
+    var postClick = Wicket.Form.serialize(document.getElementById(wicket.guardform.formId));
+
+    return postClick != wicket.guardform.serializedForm;
 }
 
