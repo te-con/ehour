@@ -54,7 +54,7 @@ import java.util.List;
 public class MonthOverviewPanel extends Panel
 {
 	private static final long serialVersionUID = -8977205040520638758L;
-	private static final Logger	logger = Logger.getLogger(MonthOverviewPanel.class);
+	private static final Logger LOG = Logger.getLogger(MonthOverviewPanel.class);
 	
 	private final TimesheetOverview timesheetOverview;
 	private	final int				thisMonth;
@@ -111,7 +111,7 @@ public class MonthOverviewPanel extends Panel
 	 */
 	private void createMonthCalendar(WebMarkupContainer parent)
 	{
-	    logger.debug("Creating month overview calendar for " + overviewFor.getTime().toString());
+	    LOG.debug("Creating month overview calendar for " + overviewFor.getTime().toString());
 	    
 	    RepeatingView	calendarView = new RepeatingView("calendarView");
 	    

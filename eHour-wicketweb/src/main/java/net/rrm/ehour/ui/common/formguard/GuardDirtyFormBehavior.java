@@ -6,7 +6,7 @@ import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 
@@ -54,15 +54,18 @@ public class GuardDirtyFormBehavior extends AbstractBehavior
     @Override
     public void renderHead(final IHeaderResponse response)
     {
-        response.renderJavascriptReference(new JavascriptResourceReference("GuardDirtyFormBehavior.js"));
-        if (this.promptModel != null)
-        {
-            final String prompt = this.promptModel.getObject();
-            response.renderJavascript("wicket.behaviors.guardform.prompt='"
-                    + prompt + "';", "wicket.behaviors.guardform.prompt");
-        }
-        response.renderOnDomReadyJavascript("wicket.behaviors.guardform.init('"
-                + this.component.getMarkupId() + "');");
+        response.renderJavascriptReference(new CompressedResourceReference(GuardDirtyFormBehavior.class, "GuardDirtyFormBehavior.js"));
+
+//        if (this.promptModel != null)
+//        {
+//            final String prompt = this.promptModel.getObject();
+//            response.renderJavascript("wicket.behaviors.guardform.prompt='"
+//                    + prompt + "';", "wicket.behaviors.guardform.prompt");
+//        }
+
+
+
+        response.renderOnDomReadyJavascript("wicket.guardform.init('" + this.component.getMarkupId() + "');");
     }
 
 }

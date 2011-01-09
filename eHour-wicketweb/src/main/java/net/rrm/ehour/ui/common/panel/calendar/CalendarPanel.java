@@ -450,7 +450,7 @@ public class CalendarPanel extends SidePanel
 		@Override
 		protected void onEvent(AjaxRequestTarget target)
 		{
-			EhourWebSession 	session = (EhourWebSession)getSession();
+			EhourWebSession session = EhourWebSession.getSession();
 			Calendar cal = DateUtil.getCalendar(session.getEhourConfig());
 
 			cal.set(Calendar.YEAR, year);
@@ -463,7 +463,17 @@ public class CalendarPanel extends SidePanel
 			EventPublisher.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
 		}
 
-		@Override
+        @Override
+        protected CharSequence getEventHandler()
+        {
+            CharSequence handler = super.getEventHandler();
+
+            String js = "var k=true;if (wicket.guardform) { k=wicket.guardform.promptForDirtyForm(); };if (k) { " + handler + " };";
+
+            return js;
+        }
+
+        @Override
 		protected IAjaxCallDecorator getAjaxCallDecorator()
 		{
 			return new LoadingSpinnerDecorator();

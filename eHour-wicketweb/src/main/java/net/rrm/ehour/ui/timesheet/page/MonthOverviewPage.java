@@ -40,157 +40,160 @@ import org.apache.wicket.model.ResourceModel;
 @AuthorizeInstantiation("ROLE_CONSULTANT")
 public class MonthOverviewPage extends AbstractBasePage<Void>
 {
-	private static final long serialVersionUID = -6873845464139697303L;
+    private static final long serialVersionUID = -6873845464139697303L;
+    private static final String ID_CONTENT_CONTAINER = "contentContainer";
 
-	public enum OpenPanel { OVERVIEW, TIMESHEET }
+    public enum OpenPanel
+    {
+        OVERVIEW, TIMESHEET
+    }
 
     public static final String PARAM_OPEN = "openPanel";
 
-	private	WebMarkupContainer	contentContainer; // yeah yeah, bad name
-	private CalendarPanel		calendarPanel;
-	private ContextualHelpPanel	helpPanel;
+    private CalendarPanel calendarPanel;
+    private ContextualHelpPanel helpPanel;
 
-	/**
-	 * Setup the page
-	 *
-	 */
-	public MonthOverviewPage()
-	{
-		this(OpenPanel.OVERVIEW);
-	}
+    /**
+     * Setup the page
+     */
+    public MonthOverviewPage()
+    {
+        this(OpenPanel.OVERVIEW);
+    }
 
-	public MonthOverviewPage(PageParameters parameters)
-	{
-		this(parameters.getAsEnum(PARAM_OPEN, OpenPanel.class));
-	}
+    public MonthOverviewPage(PageParameters parameters)
+    {
+        this(parameters.getAsEnum(PARAM_OPEN, OpenPanel.class));
+    }
 
-	/**
-	 *
-	 * @param panelToOpen
-	 */
-	public MonthOverviewPage(OpenPanel panelToOpen)
-	{
-		super(new ResourceModel("overview.title"), null);
+    /**
+     * @param panelToOpen
+     */
+    public MonthOverviewPage(OpenPanel panelToOpen)
+    {
+        super(new ResourceModel("overview.title"), null);
 
-		// add calendar panel
-		calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
-		add(calendarPanel);
+        // add calendar panel
+        calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
+        add(calendarPanel);
 
-		if (panelToOpen == OpenPanel.OVERVIEW)
-		{
-			// contextual help
-			helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body", "Month+overview");
+        WebMarkupContainer contentContainer;
 
-			// content
-			contentContainer = new OverviewPanel("contentContainer");
+        if (panelToOpen == OpenPanel.OVERVIEW)
+        {
+            helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body", "Month+overview");
+            contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);
+        } else
+        {
+            helpPanel = getTimesheetHelpPanel();
+            contentContainer = getTimesheetPanel();
+        }
 
-		}
-		else
-		{
-			helpPanel = getTimesheetHelpPanel();
-			contentContainer = getTimesheetPanel();
-		}
+        add(helpPanel);
+        addOrReplaceContentContainer(contentContainer);
+    }
 
-		add(helpPanel);
-		add(contentContainer);
-	}
+    /**
+     * Handle Ajax request
+     *
+     * @param target
+     */
+    @Override
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+    {
+        AjaxEventType type = ajaxEvent.getEventType();
+        AjaxRequestTarget target = ajaxEvent.getTarget();
 
-	/**
-	 * Handle Ajax request
-	 * @param target
-	 */
-	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		AjaxEventType type = ajaxEvent.getEventType();
-		AjaxRequestTarget target = ajaxEvent.getTarget();
+        if (type == CalendarAjaxEventType.MONTH_CHANGE)
+        {
+            calendarChanged(target);
+        } else if (type == CalendarAjaxEventType.WEEK_CLICK
+                || type == TimesheetAjaxEventType.WEEK_NAV)
+        {
+            calendarWeekClicked(target);
+            calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
+            calendarPanel.refreshCalendar(target);
+        } else if (type == TimesheetAjaxEventType.TIMESHEET_SUBMIT)
+        {
+            calendarPanel.refreshCalendar(target);
+        }
 
-		if (type == CalendarAjaxEventType.MONTH_CHANGE)
-		{
-			calendarChanged(target);
-		}
-		else if (type == CalendarAjaxEventType.WEEK_CLICK
-					|| type == TimesheetAjaxEventType.WEEK_NAV)
-		{
-			calendarWeekClicked(target);
-			calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
-			calendarPanel.refreshCalendar(target);
-		}
-		else if (type == TimesheetAjaxEventType.TIMESHEET_SUBMIT)
-		{
-			calendarPanel.refreshCalendar(target);
-		}
+        return false;
+    }
 
-		return false;
-	}
+    /**
+     * Calendar week clicked
+     *
+     * @param target
+     */
+    private void calendarWeekClicked(AjaxRequestTarget target)
+    {
+        TimesheetPanel panel = getTimesheetPanel();
+        addOrReplaceContentContainer(panel, target);
 
-	/**
-	 * Calendar week clicked
-	 * @param target
-	 */
-	private void calendarWeekClicked(AjaxRequestTarget target)
-	{
-		TimesheetPanel	panel = getTimesheetPanel();
+        ContextualHelpPanel replacementHelp = getTimesheetHelpPanel();
+        helpPanel.replaceWith(replacementHelp);
+        helpPanel = replacementHelp;
+        target.addComponent(replacementHelp);
 
-		contentContainer.replaceWith(panel);
-		contentContainer = panel;
+    }
 
-		target.addComponent(panel);
+    /**
+     * Calendar changed, update panels
+     *
+     * @param target
+     */
+    private void calendarChanged(AjaxRequestTarget target)
+    {
+        WebMarkupContainer replacementPanel;
 
-		ContextualHelpPanel replacementHelp = getTimesheetHelpPanel();
-		helpPanel.replaceWith(replacementHelp);
-		helpPanel = replacementHelp;
-		target.addComponent(replacementHelp);
+        if (this.get(ID_CONTENT_CONTAINER) instanceof TimesheetPanel)
+        {
+            replacementPanel = getTimesheetPanel();
+        } else
+        {
+            replacementPanel = new OverviewPanel(ID_CONTENT_CONTAINER);
+        }
 
-	}
+        addOrReplaceContentContainer(replacementPanel, target);
+    }
 
-	/**
-	 * Calendar changed, update panels
-	 * @param target
-	 */
-	private void calendarChanged(AjaxRequestTarget target)
-	{
-		WebMarkupContainer	replacementPanel;
+    private void addOrReplaceContentContainer(WebMarkupContainer contentContainer)
+    {
+        contentContainer.setOutputMarkupId(true);
+        addOrReplace(contentContainer);
+    }
 
-		if (this.get("contentContainer") instanceof TimesheetPanel)
-		{
-			replacementPanel = getTimesheetPanel();
-		}
-		else
-		{
-			replacementPanel = new OverviewPanel("contentContainer");
-		}
+    private void addOrReplaceContentContainer(WebMarkupContainer contentContainer, AjaxRequestTarget target)
+    {
+        addOrReplaceContentContainer(contentContainer);
+        AjaxRequestTarget.get().addComponent(contentContainer);
+    }
 
-		contentContainer.replaceWith(replacementPanel);
-		contentContainer = replacementPanel;
-		target.addComponent(replacementPanel);
-	}
+    /**
+     * Get timesheet panel for current user & current month
+     *
+     * @return
+     */
+    private TimesheetPanel getTimesheetPanel()
+    {
+        return new TimesheetPanel(ID_CONTENT_CONTAINER,
+                getEhourWebSession().getUser().getUser(),
+                getEhourWebSession().getNavCalendar());
+    }
 
-	/**
-	 * Get timesheet panel for current user & current month
-	 * @return
-	 */
-	private TimesheetPanel getTimesheetPanel()
-	{
-		return new TimesheetPanel("contentContainer",
-					getEhourWebSession().getUser().getUser(),
-					getEhourWebSession().getNavCalendar());
-	}
+    /**
+     * @return
+     */
+    private ContextualHelpPanel getTimesheetHelpPanel()
+    {
+        ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp",
+                "timesheet.help.header",
+                "timesheet.help.body",
+                "Entering+hours");
 
-	/**
-	 *
-	 * @return
-	 */
-	private ContextualHelpPanel getTimesheetHelpPanel()
-	{
-		ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp",
-				"timesheet.help.header",
-				"timesheet.help.body",
-				"Entering+hours");
+        helpPanel.setOutputMarkupId(true);
 
-		helpPanel.setOutputMarkupId(true);
-
-		return helpPanel;
-
-	}
+        return helpPanel;
+    }
 }
