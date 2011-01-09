@@ -79,11 +79,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 	@Value("${ehour.configurationType}")
 	private String configurationType;
 
-    public EhourWebApplication()
-	{
-
-	}
-
 	public void init()
 	{
 		if (!initialized)
