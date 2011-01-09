@@ -18,6 +18,7 @@
 package net.rrm.ehour.ui.common.form;
 
 import net.rrm.ehour.persistence.value.ImageLogo;
+import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.Sanselan;
@@ -116,10 +117,7 @@ public abstract class ImageUploadForm<T> extends Form<T>
             return bout.toByteArray();
         } finally
         {
-            if (in != null)
-            {
-                in.close();
-            }
+            IoUtil.close(in);
         }
     }
 }	

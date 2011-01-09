@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.audit.panel.AuditReportExcel;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
+import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
@@ -56,6 +57,8 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.request.urlcompressing.UrlCompressingWebRequestProcessor;
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
+import org.apache.wicket.resource.IPropertiesFactory;
+import org.apache.wicket.resource.PropertiesFactory;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.ConverterLocator;
 import org.apache.wicket.util.lang.PackageName;
@@ -92,7 +95,14 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 			setupSecurity();
 			registerSharedResources();
 
-			initialized = true;
+            IPropertiesFactory propertiesFactory = getResourceSettings().getPropertiesFactory();
+
+            if (propertiesFactory instanceof PropertiesFactory) {
+                ((PropertiesFactory)propertiesFactory).getPropertiesLoaders().add(new EhourHomeResourceLoader(this));
+            }
+
+
+            initialized = true;
 		}
 	}
 

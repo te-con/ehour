@@ -29,6 +29,7 @@ import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import net.rrm.ehour.persistence.value.ImageLogo;
+import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -181,16 +182,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
             bytes = new byte[0];
         } finally
         {
-            if (is != null)
-            {
-                try
-                {
-                    is.close();
-                } catch (IOException e)
-                {
-
-                }
-            }
+            IoUtil.close(is);
         }
 
         return bytes;

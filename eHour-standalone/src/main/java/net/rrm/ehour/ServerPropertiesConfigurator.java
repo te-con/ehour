@@ -1,5 +1,6 @@
 package net.rrm.ehour;
 
+import net.rrm.ehour.util.IoUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -80,10 +81,7 @@ public class ServerPropertiesConfigurator
             }
         } finally
         {
-            if (inputStream != null)
-            {
-                inputStream.close();
-            }
+            IoUtil.close(inputStream);
         }
         return props;
     }

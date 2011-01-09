@@ -2,6 +2,7 @@ package net.rrm.ehour.export.service;
 
 import net.rrm.ehour.export.service.importer.*;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
+import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,8 +97,8 @@ public class ImportServiceImpl implements ImportService
             return xmlData.toString();
         } finally
         {
-            closeCloseable(bufferedReader);
-            closeCloseable(reader);
+            IoUtil.close(bufferedReader);
+            IoUtil.close(reader);
         }
     }
 
@@ -136,7 +137,7 @@ public class ImportServiceImpl implements ImportService
             writer.write(xmlData);
         } finally
         {
-            closeCloseable(writer);
+            IoUtil.close(writer);
         }
 
         return file.getAbsolutePath();
@@ -170,17 +171,4 @@ public class ImportServiceImpl implements ImportService
         this.configurationDao = configurationDao;
     }
 
-    private void closeCloseable(Closeable closeable)
-    {
-        if (closeable != null)
-        {
-            try
-            {
-                closeable.close();
-            } catch (IOException e)
-            {
-
-            }
-        }
-    }
 }
