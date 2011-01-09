@@ -16,10 +16,18 @@ import org.apache.wicket.model.IModel;
  */
 public class GuardDirtyFormBehavior extends AbstractBehavior
 {
-
     private Component component;
+    private IModel<String> promptModel;
 
-    private IModel<String> promptModel = null;
+    public GuardDirtyFormBehavior()
+    {
+        this(null);
+    }
+
+    public GuardDirtyFormBehavior(IModel<String> promptModel)
+    {
+        this.promptModel = promptModel;
+    }
 
     public GuardDirtyFormBehavior setPromptModel(final IModel<String> promptModel)
     {
@@ -34,11 +42,13 @@ public class GuardDirtyFormBehavior extends AbstractBehavior
         {
             throw new WicketRuntimeException("Behavior must be attached to a form");
         }
+
         // if the model needs component wrapping, wrap it here
         if (promptModel instanceof IComponentAssignedModel<?>)
         {
             promptModel = ((IComponentAssignedModel<String>) promptModel).wrapOnAssignment(component);
         }
+
         this.component = component.setOutputMarkupId(true);
     }
 
@@ -56,14 +66,11 @@ public class GuardDirtyFormBehavior extends AbstractBehavior
     {
         response.renderJavascriptReference(new CompressedResourceReference(GuardDirtyFormBehavior.class, "GuardDirtyFormBehavior.js"));
 
-//        if (this.promptModel != null)
-//        {
-//            final String prompt = this.promptModel.getObject();
-//            response.renderJavascript("wicket.behaviors.guardform.prompt='"
-//                    + prompt + "';", "wicket.behaviors.guardform.prompt");
-//        }
-
-
+        if (this.promptModel != null)
+        {
+            final String prompt = this.promptModel.getObject();
+            response.renderJavascript("wicket.guardform.prompt='" + prompt + "';", "wicket.guardform.prompt");
+        }
 
         response.renderOnDomReadyJavascript("wicket.guardform.init('" + this.component.getMarkupId() + "');");
     }

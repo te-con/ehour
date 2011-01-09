@@ -26,6 +26,7 @@ import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.formguard.GuardDirtyFormUtil;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -63,6 +64,7 @@ public class CalendarPanel extends SidePanel
 
 	@SpringBean
 	private TimesheetService 	timesheetService;
+
 	private WebMarkupContainer	calendarFrame;
 	private	User				user;
 	private boolean				fireWeekClicks;
@@ -96,7 +98,6 @@ public class CalendarPanel extends SidePanel
 		this.user = user;
 		fireWeekClicks = allowWeekClicks;
 
-		//
 		calendarFrame = getFrame();
 		add(calendarFrame);
 
@@ -467,10 +468,7 @@ public class CalendarPanel extends SidePanel
         protected CharSequence getEventHandler()
         {
             CharSequence handler = super.getEventHandler();
-
-            String js = "var k=true;if (wicket.guardform) { k=wicket.guardform.promptForDirtyForm(); };if (k) { " + handler + " };";
-
-            return js;
+            return GuardDirtyFormUtil.getEventHandler(handler);
         }
 
         @Override
@@ -478,11 +476,6 @@ public class CalendarPanel extends SidePanel
 		{
 			return new LoadingSpinnerDecorator();
 		}
-	}
-
-	public DateRange getHighlightWeekStartingAt()
-	{
-		return highlightWeekStartingAt;
 	}
 
 	public void setHighlightWeekStartingAt(DateRange highlightWeekStartingAt)
