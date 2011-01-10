@@ -120,8 +120,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
             if (propertiesFactory instanceof PropertiesFactory)
             {
                 List<PropertiesFactory.IPropertiesLoader> loaders = ((PropertiesFactory) propertiesFactory).getPropertiesLoaders();
-                loaders.clear();
-                loaders.add(new EhourHomeResourceLoader(this, absoluteTranslationsPath));
+                loaders.add(0, new EhourHomeResourceLoader(this, absoluteTranslationsPath));
             }
         }
     }
