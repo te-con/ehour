@@ -37,15 +37,10 @@
 		</artifact:pom>
 		
 		<artifact:dependencies filesetid="dependency.fileset" pomRefid="pom" scopes="compile, runtime" />
-<!--
-		<artifact:dependencies filesetId="dependency.fileset" scopes="compile,runtime">
-			<dependency groupId="net.rrm.ehour" artifactId="eHour-standalone" version="${version}" scope="compile" />
-			<pom file="eHour-standalone/pom.xml" scope="compile" />
-		</artifact:dependencies>
--->
 
 		<copy todir="${lib}">
 			 <fileset refid="dependency.fileset" />
+			 <fileset file="eHour-standalone/target/eHour-standalone-${version}.jar" />
 			 <mapper type="flatten" />
 		</copy>
 
