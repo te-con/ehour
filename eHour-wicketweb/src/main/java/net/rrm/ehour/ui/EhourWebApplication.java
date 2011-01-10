@@ -46,12 +46,7 @@ import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import org.apache.log4j.Logger;
-import org.apache.wicket.Application;
-import org.apache.wicket.Component;
-import org.apache.wicket.IConverterLocator;
-import org.apache.wicket.Page;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.*;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
@@ -89,6 +84,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     @Value("${ehour.configurationType}")
     private String configurationType;
 
+    @Value("${ehour.home}")
+    private String eHourHome;
+
     @Value("${ehour.translations}")
     private String translationsDir;
 
@@ -115,11 +113,13 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     {
         IPropertiesFactory propertiesFactory = getResourceSettings().getPropertiesFactory();
 
+        String absoluteTranslationsPath = translationsDir.replace("%ehour.home%", (eHourHome != null) ? eHourHome : "");
+
         if (propertiesFactory instanceof PropertiesFactory)
         {
             List<PropertiesFactory.IPropertiesLoader> loaders = ((PropertiesFactory) propertiesFactory).getPropertiesLoaders();
             loaders.clear();
-            loaders.add(new EhourHomeResourceLoader(this, translationsDir));
+            loaders.add(new EhourHomeResourceLoader(this, absoluteTranslationsPath));
         }
     }
 
@@ -217,7 +217,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
         converterLocator.set(Float.class, new FloatConverter());
         return converterLocator;
     }
-
 
     /**
      * Set the homepage
