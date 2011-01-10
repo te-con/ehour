@@ -74,231 +74,232 @@ import java.util.List;
 
 /**
  * Base config for wicket eHour webapp
- **/
+ */
 
 public class EhourWebApplication extends AuthenticatedWebApplication
 {
-	private static final Logger LOGGER = Logger.getLogger(EhourWebApplication.class);
+    private static final Logger LOGGER = Logger.getLogger(EhourWebApplication.class);
 
-	private AuthenticationManager authenticationManager;
-	protected Class<? extends WebPage>	login = Login.class;
-	private String version;
-	private String wikiBaseUrl;
-	private boolean initialized;
+    private AuthenticationManager authenticationManager;
+    protected Class<? extends WebPage> login = Login.class;
+    private String version;
+    private String wikiBaseUrl;
+    private boolean initialized;
 
-	@Value("${ehour.configurationType}")
-	private String configurationType;
+    @Value("${ehour.configurationType}")
+    private String configurationType;
 
     @Value("${ehour.translations}")
     private String translationsDir;
 
-	public void init()
-	{
-		if (!initialized)
-		{
-			super.init();
-			springInjection();
+    public void init()
+    {
+        if (!initialized)
+        {
+            super.init();
+            springInjection();
 
-			getMarkupSettings().setStripWicketTags(true);
-			mountPages();
-			getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
-			setupSecurity();
-			registerSharedResources();
+            getMarkupSettings().setStripWicketTags(true);
+            mountPages();
+            getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
+            setupSecurity();
+            registerSharedResources();
 
             registerStringLoader();
 
             initialized = true;
-		}
-	}
+        }
+    }
 
     private void registerStringLoader()
     {
         IPropertiesFactory propertiesFactory = getResourceSettings().getPropertiesFactory();
 
-        if (propertiesFactory instanceof PropertiesFactory) {
+        if (propertiesFactory instanceof PropertiesFactory)
+        {
             List<PropertiesFactory.IPropertiesLoader> loaders = ((PropertiesFactory) propertiesFactory).getPropertiesLoaders();
-            loaders.clear();;
+            loaders.clear();
             loaders.add(new EhourHomeResourceLoader(this, translationsDir));
         }
     }
 
     private void registerSharedResources()
-	{
-		mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
-		mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
-		mountExcelReport(new EmployeeReportExcel(), EmployeeReportExcel.getId());
-		mountExcelReport(new ProjectReportExcel(), ProjectReportExcel.getId());
-		mountExcelReport(new DetailedReportExcel(), DetailedReportExcel.getId());
-		mountExcelReport(new AuditReportExcel(), AuditReportExcel.getId());
-		mountExcelReport(new ExportReportExcel(), ExportReportExcel.getId());
+    {
+        mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
+        mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
+        mountExcelReport(new EmployeeReportExcel(), EmployeeReportExcel.getId());
+        mountExcelReport(new ProjectReportExcel(), ProjectReportExcel.getId());
+        mountExcelReport(new DetailedReportExcel(), DetailedReportExcel.getId());
+        mountExcelReport(new AuditReportExcel(), AuditReportExcel.getId());
+        mountExcelReport(new ExportReportExcel(), ExportReportExcel.getId());
 
         getSharedResources().add(ExportDatabase.ID_EXPORT_DB, new ExportDatabase());
         mountSharedResource("/exportDb", new ResourceReference(ExportDatabase.ID_EXPORT_DB).getSharedResourceKey());
-	}
+    }
 
-	private void mountExcelReport(AbstractExcelResource excelReport, String id)
-	{
-		getSharedResources().add(id, excelReport);
-		mountSharedResource("/" + id, new ResourceReference(id).getSharedResourceKey());
-	}
+    private void mountExcelReport(AbstractExcelResource excelReport, String id)
+    {
+        getSharedResources().add(id, excelReport);
+        mountSharedResource("/" + id, new ResourceReference(id).getSharedResourceKey());
+    }
 
-	@Override
-	public String getConfigurationType()
-	{
-		if (configurationType == null || (!configurationType.equalsIgnoreCase(Application.DEPLOYMENT) &&
-				!configurationType.equalsIgnoreCase(Application.DEVELOPMENT)))
-		{
-			LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + Application.DEPLOYMENT + " or " + Application.DEVELOPMENT);
-			return Application.DEVELOPMENT;
-		}
+    @Override
+    public String getConfigurationType()
+    {
+        if (configurationType == null || (!configurationType.equalsIgnoreCase(Application.DEPLOYMENT) &&
+                !configurationType.equalsIgnoreCase(Application.DEVELOPMENT)))
+        {
+            LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + Application.DEPLOYMENT + " or " + Application.DEVELOPMENT);
+            return Application.DEVELOPMENT;
+        }
 
-		return configurationType;
-	}
+        return configurationType;
+    }
 
-	private void mountPages()
-	{
-		mount("/login", PackageName.forClass(login));
+    private void mountPages()
+    {
+        mount("/login", PackageName.forClass(login));
 
-		mount(new HybridUrlCodingStrategy("/admin", MainConfigPage.class));
-		mount(new HybridUrlCodingStrategy("/admin/employee", UserAdmin.class));
-		mount(new HybridUrlCodingStrategy("/admin/department", DepartmentAdmin.class));
-		mount(new HybridUrlCodingStrategy("/admin/customer", CustomerAdmin.class));
-		mount(new HybridUrlCodingStrategy("/admin/project", ProjectAdmin.class));
-		mount(new HybridUrlCodingStrategy("/admin/assignment", AssignmentAdmin.class));
+        mount(new HybridUrlCodingStrategy("/admin", MainConfigPage.class));
+        mount(new HybridUrlCodingStrategy("/admin/employee", UserAdmin.class));
+        mount(new HybridUrlCodingStrategy("/admin/department", DepartmentAdmin.class));
+        mount(new HybridUrlCodingStrategy("/admin/customer", CustomerAdmin.class));
+        mount(new HybridUrlCodingStrategy("/admin/project", ProjectAdmin.class));
+        mount(new HybridUrlCodingStrategy("/admin/assignment", AssignmentAdmin.class));
 
-		mount(new HybridUrlCodingStrategy("/consultant/overview", MonthOverviewPage.class));
-		mount(new HybridUrlCodingStrategy("/consultant/report", UserReport.class));
+        mount(new HybridUrlCodingStrategy("/consultant/overview", MonthOverviewPage.class));
+        mount(new HybridUrlCodingStrategy("/consultant/report", UserReport.class));
 
-		mount(new HybridUrlCodingStrategy("/consultant/exportmonth", ExportMonthSelectionPage.class));
-		mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));
+        mount(new HybridUrlCodingStrategy("/consultant/exportmonth", ExportMonthSelectionPage.class));
+        mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));
 
-		mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));
+        mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));
 
-		mount(new HybridUrlCodingStrategy("/audit", AuditReportPage.class));
+        mount(new HybridUrlCodingStrategy("/audit", AuditReportPage.class));
 
-		mount(new HybridUrlCodingStrategy("/pm", ProjectManagement.class));
+        mount(new HybridUrlCodingStrategy("/pm", ProjectManagement.class));
 
-		mount(new HybridUrlCodingStrategy("/prefs", UserPreferencePage.class));
+        mount(new HybridUrlCodingStrategy("/prefs", UserPreferencePage.class));
 
         mount(new HybridUrlCodingStrategy("/backup", ExportPage.class));
-	}
+    }
 
-	protected void springInjection()
-	{
-		addComponentInstantiationListener(new SpringComponentInjector(this));
-	}
+    protected void springInjection()
+    {
+        addComponentInstantiationListener(new SpringComponentInjector(this));
+    }
 
-	protected void setupSecurity()
-	{
-		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
+    protected void setupSecurity()
+    {
+        getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 
-		getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
+        getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
 
-		getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
-		{
-			public void onUnauthorizedInstantiation(final Component component)
-			{
-				if (component instanceof Page)
-				{
-					throw new RestartResponseAtInterceptPageException(login);
-				} else
-				{
-					throw new UnauthorizedInstantiationException(component.getClass());
-				}
-			}
-		});
-	}
+        getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
+        {
+            public void onUnauthorizedInstantiation(final Component component)
+            {
+                if (component instanceof Page)
+                {
+                    throw new RestartResponseAtInterceptPageException(login);
+                } else
+                {
+                    throw new UnauthorizedInstantiationException(component.getClass());
+                }
+            }
+        });
+    }
 
-	@Override
-	protected IConverterLocator newConverterLocator()
-	{
-		ConverterLocator converterLocator = new ConverterLocator();
-		converterLocator.set(Float.class, new FloatConverter());
-		return converterLocator;
-	}
+    @Override
+    protected IConverterLocator newConverterLocator()
+    {
+        ConverterLocator converterLocator = new ConverterLocator();
+        converterLocator.set(Float.class, new FloatConverter());
+        return converterLocator;
+    }
 
 
-	/**
-	 * Set the homepage
-	 */
-	@Override
-	public Class<? extends WebPage> getHomePage()
-	{
-		return MonthOverviewPage.class;
-	}
+    /**
+     * Set the homepage
+     */
+    @Override
+    public Class<? extends WebPage> getHomePage()
+    {
+        return MonthOverviewPage.class;
+    }
 
-	/**
-	 * The login page for unauthenticated clients
-	 */
-	protected Class<? extends WebPage> getSignInPageClass()
-	{
-		return login;
-	}
+    /**
+     * The login page for unauthenticated clients
+     */
+    protected Class<? extends WebPage> getSignInPageClass()
+    {
+        return login;
+    }
 
-	/*
-	 *
-	 */
-	public AuthenticationManager getAuthenticationManager()
-	{
-		return authenticationManager;
-	}
+    /*
+      *
+      */
+    public AuthenticationManager getAuthenticationManager()
+    {
+        return authenticationManager;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.authentication.AuthenticatedWebApplication#getWebSessionClass()
-	 */
-	@Override
-	protected Class<? extends AuthenticatedWebSession> getWebSessionClass()
-	{
-		return EhourWebSession.class;
-	}
+    /*
+      * (non-Javadoc)
+      * @see org.apache.wicket.authentication.AuthenticatedWebApplication#getWebSessionClass()
+      */
+    @Override
+    protected Class<? extends AuthenticatedWebSession> getWebSessionClass()
+    {
+        return EhourWebSession.class;
+    }
 
-	/**
-	 * @param authenticationManager the authenticationManager to set
-	 */
-	public void setAuthenticationManager(AuthenticationManager authenticationManager)
-	{
-		this.authenticationManager = authenticationManager;
-	}
+    /**
+     * @param authenticationManager the authenticationManager to set
+     */
+    public void setAuthenticationManager(AuthenticationManager authenticationManager)
+    {
+        this.authenticationManager = authenticationManager;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.protocol.http.WebApplication#newRequestCycleProcessor()
-	 */
-	@Override
-	protected IRequestCycleProcessor newRequestCycleProcessor()
-	{
-	    return new UrlCompressingWebRequestProcessor();
-	}
+    /*
+      * (non-Javadoc)
+      * @see org.apache.wicket.protocol.http.WebApplication#newRequestCycleProcessor()
+      */
+    @Override
+    protected IRequestCycleProcessor newRequestCycleProcessor()
+    {
+        return new UrlCompressingWebRequestProcessor();
+    }
 
-	public static EhourWebApplication get()
-	{
-		return (EhourWebApplication) WebApplication.get();
-	}
+    public static EhourWebApplication get()
+    {
+        return (EhourWebApplication) WebApplication.get();
+    }
 
-	/**
-	 * @return the version
-	 */
-	public String getVersion()
-	{
-		return version;
-	}
+    /**
+     * @return the version
+     */
+    public String getVersion()
+    {
+        return version;
+    }
 
-	/**
-	 * @param version the version to set
-	 */
-	public void setVersion(String version)
-	{
-		this.version = version;
-	}
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(String version)
+    {
+        this.version = version;
+    }
 
-	public String getWikiBaseUrl()
-	{
-		return wikiBaseUrl;
-	}
+    public String getWikiBaseUrl()
+    {
+        return wikiBaseUrl;
+    }
 
-	public void setWikiBaseUrl(String wikiBaseUrl)
-	{
-		this.wikiBaseUrl = wikiBaseUrl;
-	}
+    public void setWikiBaseUrl(String wikiBaseUrl)
+    {
+        this.wikiBaseUrl = wikiBaseUrl;
+    }
 }
