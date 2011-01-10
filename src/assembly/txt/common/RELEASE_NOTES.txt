@@ -1,3 +1,59 @@
+eHour 0.9 release notes (xx January 2011)
+
+Bug
+[EHO-3] - ehcache cache timeout too small
+[EHO-12] - Reporting: no "select all" option
+[EHO-67] - Not compatible with MySQL 5.1 connector
+[EHO-85] - Wrong currency symbol in XLS exports
+[EHO-92] - eHour is not compatible with MySQL 5.1
+[EHO-122] - Some Tomcat installations require a security policy
+[EHO-131] - 2010 problem
+[EHO-138] - Project list background does not repeat when list is very long
+[EHO-141] - Can't remove project manager role
+[EHO-155] - Excel export of current month doesn't fit on A4
+[EHO-164] - Hours/Turnover in wrong column of XLS export of detailed report
+[EHO-166] - Hour data entry window becomes unresponsive
+[EHO-170] - Locale.setDefault shouldn't be changed in EhourWebSession
+[EHO-172] - When exporting to Excel columns sometimes get mixed up
+[EHO-189] - Remove references to swfobject.js
+
+Improvement
+[EHO-168] - Move to Wicket 1.4
+[EHO-186] - The User password is overwritten when Administrator wants to edit an existing user.
+[EHO-204] - Allow backup, restore and port with external file
+
+New Feature
+[EHO-150] - Add MySQL/PostgreSQL support to the standalone version
+[EHO-157] - Update help texts in app and provide link backs to Wiki
+[EHO-159] - Load translations from external files
+
+Task
+[EHO-200] - Warning when navigating away from an unsaved timesheet
+
+Sub-task
+[EHO-191] - Switch to Spring Security
+[EHO-192] - Reorganize context files to support conditional loading of context definitions
+[EHO-193] - Change deployment to simplify editing of config files
+[EHO-202] - Add export to external file
+[EHO-203] - Add import from external file
+
+
+eHour 0.8.4 release notes (16 September 2009)
+---------------------------------------------
+0.8.4 supports PostgreSQL as the backend database and adds a billable marker to project. Layout issues with Firefox 3.5 and the Google Chrome browser were fixed and some additional user interface changes were done to the timesheet screen.
+
+New features:
+(149) Add billable mark to projects
+(142 )PostgreSQL support
+
+Fixed bugs:
+(153) Projects with 0 hours booked appear in print sheet and generate a NullPointerException
+(148) Chrome layout issues fixed
+(147) Firefox 3.5 layout issues fixed
+(154) Timesheet UI changes
+(144) Inactive projects now shown in export month selection
+(152) Logo can't be changed in demo mode
+
 eHour 0.8.3 release notes - 20 July 2009
 ----------------------------------------
 0.8.3 - the Revival release - adds an excel export of the current month with customizable logo, 

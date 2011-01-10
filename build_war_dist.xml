@@ -61,6 +61,9 @@
                 <copy todir="${dist}">
                         <fileset dir="src/assembly/txt/common" excludes=".svn" />
                         <fileset dir="src/assembly/txt/war" excludes=".svn" />
+			<filterset>
+				<filter token="VERSION" value="${version}" />
+			</filterset>
                 </copy>
 	</target>
 
