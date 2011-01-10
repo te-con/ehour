@@ -113,13 +113,16 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     {
         IPropertiesFactory propertiesFactory = getResourceSettings().getPropertiesFactory();
 
-        String absoluteTranslationsPath = translationsDir.replace("%ehour.home%", (eHourHome != null) ? eHourHome : "");
-
-        if (propertiesFactory instanceof PropertiesFactory)
+        if (translationsDir != null)
         {
-            List<PropertiesFactory.IPropertiesLoader> loaders = ((PropertiesFactory) propertiesFactory).getPropertiesLoaders();
-            loaders.clear();
-            loaders.add(new EhourHomeResourceLoader(this, absoluteTranslationsPath));
+            String absoluteTranslationsPath = translationsDir.replace("%ehour.home%", (eHourHome != null) ? eHourHome : "");
+
+            if (propertiesFactory instanceof PropertiesFactory)
+            {
+                List<PropertiesFactory.IPropertiesLoader> loaders = ((PropertiesFactory) propertiesFactory).getPropertiesLoaders();
+                loaders.clear();
+                loaders.add(new EhourHomeResourceLoader(this, absoluteTranslationsPath));
+            }
         }
     }
 
