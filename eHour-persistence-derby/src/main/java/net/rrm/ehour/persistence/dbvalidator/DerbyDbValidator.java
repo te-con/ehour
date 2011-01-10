@@ -47,7 +47,7 @@ public class DerbyDbValidator
 	private static final String DDL_FILE = "ddl/ddl-ehour-%s.xml";
 	private static final String DML_FILE = "ddl/dml-ehour-%s.xml";
 
-	private enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE}
+	enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE}
 
 	private static final Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
 
@@ -61,8 +61,7 @@ public class DerbyDbValidator
 		this.dataSource = (EmbeddedDataSource)dataSource;
 	}
 
-
-	public void checkDatabaseState()
+	public DdlType checkDatabaseState()
 	{
 		boolean databaseInState;
 		String 	currentVersion;
@@ -126,6 +125,8 @@ public class DerbyDbValidator
 				LOGGER.error("Failed to create or upgrade datamodel", e);
 			}
 		}
+
+        return ddlType;
 	}
 
 	/**
