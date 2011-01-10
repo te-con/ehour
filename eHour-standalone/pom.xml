@@ -87,13 +87,10 @@
             <artifactId>jetty-deploy</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jsp-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
         </dependency>
+	<!--
         <dependency>
             <groupId>tomcat</groupId>
             <artifactId>jasper-compiler</artifactId>
@@ -106,6 +103,7 @@
             <groupId>tomcat</groupId>
             <artifactId>jasper-compiler-jdt</artifactId>
         </dependency>
+-->
         <dependency>
             <groupId>tanukisoft</groupId>
             <artifactId>wrapper</artifactId>
