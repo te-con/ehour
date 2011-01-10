@@ -51,6 +51,13 @@
 		    <fileset dir="eHour-persistence-postgresql/src/sql" excludes=".svn" />
 		</copy>
 
+		<copy todir="${tomcat}">
+		    <fileset dir="src/assembly/tomcat" excludes=".svn" />
+			<filterset>
+				<filter token="VERSION" value="${version}" />
+			</filterset>
+		</copy>
+
                 <copy todir="${dist}">
                         <fileset dir="src/assembly/txt/common" excludes=".svn" />
                         <fileset dir="src/assembly/txt/war" excludes=".svn" />
