@@ -40,20 +40,9 @@
     <profiles>
         <profile>
             <id>prod</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <inherited>true</inherited>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <debug>false</debug>
-                            <optimize>true</optimize>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <!-- placeholder profile to prevent the dev profile from always be activated -->
         </profile>
+
         <profile>
             <id>dev</id>
             <activation>
