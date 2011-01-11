@@ -32,13 +32,6 @@ public abstract class AbstractChartImage extends NonCachingImage
 	private static final long serialVersionUID = 2926007592965711057L;
 	private int		width;
 	private int		height;
-	
-	public AbstractChartImage(String id, 
-								int width,
-								int height)
-	{
-		this(id, null, width, height);
-	}
 
 	public AbstractChartImage(String id, 
 								IModel<?> dataModel,
