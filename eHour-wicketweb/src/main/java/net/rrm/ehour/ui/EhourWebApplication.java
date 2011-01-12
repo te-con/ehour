@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui;
 
+import net.rrm.ehour.appconfig.ConfigUtil;
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
@@ -115,7 +116,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
         if (translationsDir != null)
         {
-            String absoluteTranslationsPath = translationsDir.replace("%ehour.home%", (eHourHome != null) ? eHourHome : "");
+            String absoluteTranslationsPath = ConfigUtil.getTranslationsDir(eHourHome, translationsDir);
 
             if (propertiesFactory instanceof PropertiesFactory)
             {

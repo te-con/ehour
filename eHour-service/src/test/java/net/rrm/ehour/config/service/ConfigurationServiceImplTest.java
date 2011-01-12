@@ -16,7 +16,9 @@
 
 package net.rrm.ehour.config.service;
 
+import com.sun.org.apache.xalan.internal.xsltc.Translet;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.TranslationDiscovery;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
@@ -54,6 +56,7 @@ public class ConfigurationServiceImplTest
         configurationService.setBinConfigDAO(binaryConfigDao);
 
         configurationService.seteHourHome("src/test/resources");
+        configurationService.setTranslationDiscovery(new TranslationDiscovery());
 
     }
 

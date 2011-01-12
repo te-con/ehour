@@ -29,7 +29,7 @@ public class EhourHomeResourceLoader implements PropertiesFactory.IPropertiesLoa
     public EhourHomeResourceLoader(Application application, String translationsDir)
     {
         this.application = application;
-        this.translationsDir = translationsDir + System.getProperty("file.separator");
+        this.translationsDir = translationsDir;
     }
 
     @Override

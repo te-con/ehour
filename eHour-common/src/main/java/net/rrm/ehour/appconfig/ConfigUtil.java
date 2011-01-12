@@ -25,6 +25,12 @@ public final class ConfigUtil
         return buffer.toString();
     }
 
+    public static String getTranslationsDir(String eHourHome, String translationsDir)
+    {
+        String absoluteTranslationsPath = translationsDir.replace("%ehour.home%", (eHourHome != null) ? eHourHome : "");
+        return absoluteTranslationsPath  + System.getProperty("file.separator");
+    }
+
     public static Properties loadDatabaseProperties(String databaseName)
     {
         String filename = "hibernate_" + databaseName.toLowerCase() + ".properties";
