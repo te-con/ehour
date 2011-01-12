@@ -21,8 +21,8 @@ class TranslationDiscoveryTest {
   @Test
   void shouldDiscoverLanguages() {
     discovery.scanTranslations()
-    def translations =  discovery.translations.sort{ it.size() }
+    def translations =  discovery.translations.sort()
 
-    assert translations == ["en", "de", "el", "es", "fr", "it", "ja", "nl", "pl", "pt", "sv", "unknown"].sort{ it.size() }
+    assert translations == ["de", "en", "el", "es", "fr", "it", "ja", "nl", "pl", "pt", "sv", "unknown"].sort()
   }
 }
