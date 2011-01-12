@@ -194,7 +194,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         if (translations != null)
         {
-            config.setAvailableTranslations((String[])translations.toArray());
+            config.setAvailableTranslations(translations.toArray(new String[translations.size()]));
         }
 
         // spaghetti, anyone?
