@@ -149,7 +149,7 @@
             <dependency>
                 <groupId>jfree</groupId>
                 <artifactId>jfreechart</artifactId>
-                <version>1.0.13</version>
+                <version>1.0.9</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -172,11 +172,6 @@
                 <artifactId>sanselan</artifactId>
                 <version>0.97-incubator</version>
             </dependency>
-            <!--
-                   <dependency> <groupId>org.odlabs.wiquery</groupId>
-                   <artifactId>wiquery</artifactId> <version>1.0</version>
-                   </dependency>
-               -->
             <dependency>
                 <groupId>org.apache.derby</groupId>
                 <artifactId>derby</artifactId>

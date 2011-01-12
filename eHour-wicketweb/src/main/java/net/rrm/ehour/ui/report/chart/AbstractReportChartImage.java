@@ -111,7 +111,6 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
         Font rendererTitleFont = new Font("SansSerif", Font.PLAIN, 8);
         renderer.setBaseItemLabelFont(rendererTitleFont);
         renderer.setBaseItemLabelPaint(new Color(0xf9f9f9));
-        renderer.setShadowVisible(false);
         renderer.setDrawBarOutline(false);
         renderer.setItemMargin(1.0);
 
