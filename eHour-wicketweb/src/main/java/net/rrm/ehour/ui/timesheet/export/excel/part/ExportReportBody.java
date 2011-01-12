@@ -16,14 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel.part;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
@@ -31,21 +23,17 @@ import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+
+import java.util.*;
 
 /**
  * Created on Mar 25, 2009, 6:35:04 AM
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-@SuppressWarnings("deprecation")
 public class ExportReportBody extends AbstractExportReportPart
 {
 	public ExportReportBody(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)

@@ -16,23 +16,22 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel.part;
 
-import static net.rrm.ehour.ui.common.report.excel.CellStyle.BOLD;
-import static net.rrm.ehour.ui.common.report.excel.CellStyle.BORDER_SOUTH;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
-
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.wicket.model.ResourceModel;
+
+import static net.rrm.ehour.ui.common.report.excel.CellStyle.BOLD;
+import static net.rrm.ehour.ui.common.report.excel.CellStyle.BORDER_SOUTH;
 
 /**
  * Created on Mar 25, 2009, 7:16:55 AM
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-@SuppressWarnings("deprecation")
 public class ExportReportBodyHeader extends AbstractExportReportPart
 {
 	public ExportReportBodyHeader(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)

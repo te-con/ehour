@@ -14,7 +14,7 @@ public class EhourServerRunner
 
 	public static void main(String[] args)
 	{
-		String filename = args != null && args.length >= 1 ? args[0] : "${ehour.home}/conf/ehour.properties";
+		String filename = args != null && args.length >= 1 ? args[0] : "${EHOUR_HOME}/conf/ehour.properties";
 
 		ServerPropertiesConfigurator configuration = new ServerPropertiesConfigurator();
 		
@@ -30,12 +30,12 @@ public class EhourServerRunner
 
 	private static String replaceSystemEnv(String filename)
 	{
-		String ehourHome = System.getenv("ehour.home");
+		String ehourHome = System.getenv("EHOUR_HOME");
 		
 		if (StringUtils.isBlank(ehourHome)) {
-			throw new IllegalArgumentException("ehour.home is not defined as a environment variable");
+			throw new IllegalArgumentException("EHOUR_HOME is not defined as a environment variable");
 		}
 		
-		return filename.replace("${ehour.home}", ehourHome);
+		return filename.replace("${EHOUR_HOME}", ehourHome);
 	}
 }

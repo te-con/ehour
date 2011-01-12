@@ -58,7 +58,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Autowired
     private BinaryConfigurationDao binConfigDAO;
 
-    @Value("${ehour.home}")
+    @Value("${EHOUR_HOME}")
     private String eHourHome;
 
     @Autowired

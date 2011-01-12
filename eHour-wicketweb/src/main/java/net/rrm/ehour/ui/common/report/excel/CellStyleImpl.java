@@ -54,7 +54,7 @@ public class CellStyleImpl
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
-			cellStyle.setDataFormat((short)0x7);
+			cellStyle.setDataFormat((short)0x8);
 		}
 	}
 

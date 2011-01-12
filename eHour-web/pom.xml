@@ -29,13 +29,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<build>
-				<resources>
-					<resource>
-						<directory>${project.basedir}/src/main/profiles/dev</directory>
-					</resource>
-				</resources>
-			</build>
 		</profile>
 		<profile>
 			<id>standalone</id>

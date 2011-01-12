@@ -20,11 +20,10 @@ package net.rrm.ehour.ui.timesheet.export.excel.part;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -34,7 +33,6 @@ import org.apache.wicket.model.StringResourceModel;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-@SuppressWarnings("deprecation")
 public class ExportReportSignOff extends AbstractExportReportPart
 {
 	public ExportReportSignOff(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)

@@ -85,7 +85,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     @Value("${ehour.configurationType}")
     private String configurationType;
 
-    @Value("${ehour.home}")
+    @Value("${EHOUR_HOME}")
     private String eHourHome;
 
     @Value("${ehour.translations}")

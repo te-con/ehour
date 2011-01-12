@@ -18,7 +18,8 @@ public class TranslationDiscovery {
     private static final String FILE_PREFIX = "EhourWebApplication";
     private static final Logger LOG = Logger.getLogger(TranslationDiscovery.class);
     private static final Map<String, Locale> LOCALE_MAP = createLocaleMap();
-    @Value("${ehour.home}")
+
+    @Value("${EHOUR_HOME}")
     private String eHourHome;
 
     @Value("${ehour.translations}")
@@ -31,6 +32,8 @@ public class TranslationDiscovery {
         String absoluteTranslationsPath = ConfigUtil.getTranslationsDir(eHourHome, translationsDir);
 
         File transDir = new File(absoluteTranslationsPath);
+
+        LOG.info("Looking for translations in " + transDir.getAbsolutePath());
 
         if (transDir.exists()) {
             translations = scanTranslations(transDir);

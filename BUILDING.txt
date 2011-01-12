@@ -1,7 +1,7 @@
 Building eHour
 ---------------------------------------
 
-To start eHour from your IDE, create an environment variable ehour.home and point it to
+To start eHour from your IDE, create an environment variable EHOUR_HOME and point it to
 eHour-standalone/src/test/resources
 Now run the EhourServerRunner (in the eHour-standalone module) to start your server.
 

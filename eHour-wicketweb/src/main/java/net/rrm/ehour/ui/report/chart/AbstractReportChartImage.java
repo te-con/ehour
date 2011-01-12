@@ -91,6 +91,9 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
                 false // URLs?
         );
 
+        chart.setBackgroundPaint(new Color(0xf9f9f9));
+        chart.setAntiAlias(true);
+
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
         plot.setRangeGridlinePaint(new Color(0, 0, 0, 50));
         plot.setBackgroundPaint(new Color(0xf9f9f9));
@@ -98,8 +101,6 @@ public abstract class AbstractReportChartImage<EL extends ReportElement> extends
         TextTitle title;
         Font chartTitleFont = new Font("SansSerif", Font.BOLD, 12);
 
-        chart.setBackgroundPaint(new Color(0xf9f9f9));
-        chart.setAntiAlias(true);
         title = chart.getTitle();
         title.setFont(chartTitleFont);
         title.setPaint(new Color(0x536e87));
