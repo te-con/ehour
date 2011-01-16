@@ -35,7 +35,7 @@ class DomainObjectParserTest
   private DomainObjectParser createResolver(String xmlData, def returnOnFind, def onFind)
   {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
+    XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData))
 
     // skip the startdoc
     eventReader.nextTag()

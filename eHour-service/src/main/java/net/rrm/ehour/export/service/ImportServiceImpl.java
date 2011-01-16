@@ -56,6 +56,8 @@ public class ImportServiceImpl implements ImportService
         {
             session.setGlobalError(true);
             session.setGlobalErrorMessage(e.getMessage());
+            LOG.error(e);
+            e.printStackTrace();
 
             LOG.error(e);
         } finally

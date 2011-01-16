@@ -19,15 +19,13 @@ import javax.xml.stream.events.XMLEvent;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 12/6/10 - 3:40 PM
  */
-public class XmlImporter
-{
+public class XmlImporter {
     private ConfigurationDao configurationDao;
     private DomainObjectParser domainObjectParser;
     private ConfigurationParser configurationParser;
     private UserRoleParser userRoleParser;
 
-    public XmlImporter(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser)
-    {
+    public XmlImporter(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser) {
         this.configurationDao = configurationDao;
         this.domainObjectParser = domainObjectParser;
         this.configurationParser = configurationParser;
@@ -35,22 +33,18 @@ public class XmlImporter
     }
 
     public void importXml(ParseSession status, XMLEventReader eventReader)
-            throws XMLStreamException, ImportException, InstantiationException, IllegalAccessException, ClassNotFoundException
-    {
-        while (eventReader.hasNext())
-        {
+            throws XMLStreamException, ImportException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        while (eventReader.hasNext()) {
             XMLEvent event = eventReader.nextTag();
 
-            if (event.isStartElement())
-            {
+            if (event.isStartElement()) {
                 StartElement startElement = event.asStartElement();
 
                 String startName = startElement.getName().getLocalPart();
 
                 ExportElements element = safelyGetExportElements(startName);
 
-                switch (element)
-                {
+                switch (element) {
                     case EHOUR:
                         checkDatabaseVersion(startElement);
                         break;
@@ -66,22 +60,18 @@ public class XmlImporter
                     default:
                         break;
                 }
-            } else if (event.isEndDocument() || event.isEndElement())
-            {
+            } else if (event.isEndDocument() || event.isEndElement()) {
                 break;
             }
         }
     }
 
-    private ExportElements safelyGetExportElements(String name)
-    {
+    private ExportElements safelyGetExportElements(String name) {
         ExportElements element;
 
-        try
-        {
+        try {
             element = ExportElements.valueOf(name);
-        } catch (IllegalArgumentException iae)
-        {
+        } catch (IllegalArgumentException iae) {
             element = ExportElements.OTHER;
         }
 
@@ -89,33 +79,35 @@ public class XmlImporter
     }
 
     @SuppressWarnings("unchecked")
-    private void parseElement(StartElement element, DomainObjectParser parser, ParseSession status) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException, ImportException
-    {
+    private void parseElement(StartElement element, DomainObjectParser parser, ParseSession status) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException, ImportException {
         Attribute attribute = element.getAttributeByName(new QName("CLASS"));
 
-        if (attribute != null)
-        {
+        if (attribute != null) {
             String aClass = attribute.getValue();
 
             Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
 
             parser.parse(doClass, status);
-        } else
-        {
+        } else {
             throw new ImportException("Invalid XML, no attribute found for element: " + element.getName().getLocalPart());
         }
     }
 
-    private void checkDatabaseVersion(StartElement element) throws ImportException
-    {
+    private void checkDatabaseVersion(StartElement element) throws ImportException {
         Attribute attribute = element.getAttributeByName(new QName(ExportElements.DB_VERSION.name()));
         String dbVersion = attribute.getValue();
 
         Configuration version = configurationDao.findById(ConfigurationItem.VERSION.getDbField());
 
-        if (version == null || !version.getConfigValue().equalsIgnoreCase(dbVersion))
-        {
-            String foundVersion = version != null ? version.getConfigValue() : "n/a";
+        isDatabaseCompatible(version.getConfigValue(), dbVersion);
+    }
+
+    private void isDatabaseCompatible(String version, String dbVersion) throws ImportException {
+        dbVersion = dbVersion != null && dbVersion.equalsIgnoreCase("0.8.3") ? "0.8.4" : dbVersion;
+        version = version != null && version.equalsIgnoreCase("0.8.3") ? "0.8.4" : version;
+
+        if (version == null || !version.equalsIgnoreCase(dbVersion)) {
+            String foundVersion = version != null ? version : "n/a";
 
             throw new ImportException("Invalid database version (" + dbVersion + ") specified in file, target database should match backup database version (" + foundVersion + ")");
         }
