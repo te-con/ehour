@@ -50,7 +50,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     @Column(name = "COMMENT", length = 2048)
 	private String comment;
 
-    @Column(name = "UPDATE_DATE", nullable = false)
+    @Column(name = "UPDATE_DATE")
     @NotNull
 	private Date updateDate;
 	
