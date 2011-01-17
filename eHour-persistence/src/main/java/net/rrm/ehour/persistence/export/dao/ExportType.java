@@ -20,7 +20,7 @@ public enum ExportType
     PROJECT(Project.class, 4),
     PROJECT_ASSIGNMENT_TYPE(ProjectAssignmentType.class, 5),
     PROJECT_ASSIGNMENT(ProjectAssignment.class, 6),
-    TIMESHEET_ENTRY(TimesheetEntry.class, "TIMESHEET_ENTRIES", 7),
+    TIMESHEET_ENTRY(TimesheetEntry.class, "TIMESHEET_ENTRIES", 7, new TimesheetEntryRowProcessor()),
     TIMESHEET_COMMENT(TimesheetComment.class, 8),
     AUDIT(Audit.class, 9),
     USER_TO_USERROLE(10);
@@ -28,6 +28,7 @@ public enum ExportType
     private String parentName;
     private Class<? extends DomainObject<?, ?>> domainObjectClass;
     private int order;
+    private ExportRowProcessor processor;
 
     private ExportType(int order)
     {
@@ -46,6 +47,17 @@ public enum ExportType
         this.domainObjectClass = domainObjectClass;
         this.parentName = parentName;
         this.order = order;
+    }
+
+    private ExportType(Class<? extends DomainObject<?, ?>> domainObjectClass, String parentName, int order, ExportRowProcessor processor)
+    {
+        this(domainObjectClass, parentName, order);
+        this.processor = processor;
+    }
+
+    public ExportRowProcessor getProcessor()
+    {
+        return processor;
     }
 
     public String getParentName()

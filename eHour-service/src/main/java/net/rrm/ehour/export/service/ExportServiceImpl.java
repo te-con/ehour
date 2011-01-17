@@ -124,6 +124,12 @@ public class ExportServiceImpl implements ExportService
 
         List<Map<String, Object>> rows = exportDao.findForType(type);
 
+        if (type.getProcessor() != null)
+        {
+            rows = type.getProcessor().processRows(rows);
+        }
+
+
         for (Map<String, Object> rowMap : rows)
         {
             writer.writeStartElement(type.name());
