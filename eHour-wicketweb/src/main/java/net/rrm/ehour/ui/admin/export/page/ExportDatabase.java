@@ -1,7 +1,12 @@
 package net.rrm.ehour.ui.admin.export.page;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.export.service.ExportService;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.DynamicWebResource;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -21,36 +26,59 @@ public class ExportDatabase extends DynamicWebResource
 
     private static final long serialVersionUID = 8027677671905365904L;
 
-
     @SpringBean(name = "exportService")
     private ExportService exportService;
 
     @Override
     protected ResourceState getResourceState()
     {
-        CommonWebUtil.springInjection(this);
-                
-        String xmlExport = exportService.exportDatabase();
-
+        boolean authorized = checkAuthorization();
         ExportResourceState state = new ExportResourceState();
 
-        try
+        if (authorized)
         {
-            state.data = xmlExport.getBytes("UTF-8");
+            CommonWebUtil.springInjection(this);
 
-        } catch (UnsupportedEncodingException e)
-        {
-            // won't happen as UTF-8 is required by all java impls
+            String xmlExport = exportService.exportDatabase();
+
+            try
+            {
+                state.data = xmlExport.getBytes("UTF-8");
+
+            } catch (UnsupportedEncodingException e)
+            {
+                // won't happen as UTF-8 is required by all java impls
+            }
         }
 
         return state;
     }
 
-    	protected void setHeaders(WebResponse response)
-	{
+    private boolean checkAuthorization()
+    {
+        boolean isAuthorized = false;
+
+        if (!AuthUtil.hasRole(UserRole.ROLE_ADMIN))
+        {
+            invalidate();
+            EhourWebSession.getSession().signOut();
+            final RequestCycle cycle = RequestCycle.get();
+            cycle.setResponsePage(MonthOverviewPage.class);
+        } else
+        {
+            isAuthorized = true;
+        }
+
+        return isAuthorized;
+
+    }
+
+
+    protected void setHeaders(WebResponse response)
+    {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         response.setAttachmentHeader("eHour-xml-backup-" + format.format(new Date()) + ".xml");
-	}
+    }
 
     private class ExportResourceState extends ResourceState
     {
