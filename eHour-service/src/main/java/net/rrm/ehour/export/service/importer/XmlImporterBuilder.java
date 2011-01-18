@@ -1,13 +1,11 @@
 package net.rrm.ehour.export.service.importer;
 
-import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
 
 import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import java.io.StringReader;
 
 /**
  * @author thies (thies@te-con.nl)
@@ -20,6 +18,7 @@ public class XmlImporterBuilder
     private ConfigurationParserDao configurationParserDao;
     private DomainObjectParserDao domainObjectParserDao;
     private UserRoleParserDao userRoleParserDao;
+    private TransactionTemplate txTemplate;
 
     public XmlImporter build() throws XMLStreamException
     {
@@ -32,7 +31,7 @@ public class XmlImporterBuilder
         ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
         UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao);
 
-        return new XmlImporter(configurationDao, parser, configurationParser, userRoleParser);
+        return new XmlImporter(configurationDao, parser, configurationParser, userRoleParser, txTemplate);
     }
 
 
@@ -63,6 +62,11 @@ public class XmlImporterBuilder
     public XmlImporterBuilder setUserRoleParserDao(UserRoleParserDao userRoleParserDao)
     {
         this.userRoleParserDao = userRoleParserDao;
+        return this;
+    }
+
+    public XmlImporterBuilder setTxTemplate(TransactionTemplate txTemplate) {
+        this.txTemplate = txTemplate;
         return this;
     }
 }

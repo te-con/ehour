@@ -2,16 +2,21 @@ package net.rrm.ehour.export.service;
 
 import net.rrm.ehour.export.service.importer.*;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
+import net.rrm.ehour.persistence.export.dao.ExportDao;
+import net.rrm.ehour.persistence.export.dao.ExportType;
 import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
+import java.util.List;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -34,12 +39,20 @@ public class ImportServiceImpl implements ImportService
     @Autowired
     private UserRoleParserDao userRoleParserDao;
 
+    @Autowired
+    private PlatformTransactionManager txManager;
+
+    @Autowired
+    private ExportDao exportDao;
+
     @Override
     @Transactional
     public ParseSession importDatabase(ParseSession session)
     {
         try
         {
+            clearDatabase();
+
             session.clearSession();
             String xmlDataFromFile = getXmlDataFromFile(session.getFilename());
             XMLEventReader eventReader = createXmlReader(xmlDataFromFile);
@@ -49,6 +62,7 @@ public class ImportServiceImpl implements ImportService
                     .setDomainObjectParserDao(domainObjectParserDao)
                     .setUserRoleParserDao(userRoleParserDao)
                     .setXmlReader(eventReader)
+                    .setTxTemplate(new TransactionTemplate(txManager))
                     .build();
 
             importer.importXml(session, eventReader);
@@ -67,6 +81,17 @@ public class ImportServiceImpl implements ImportService
         }
 
         return session;
+    }
+
+    private void clearDatabase()
+    {
+        List<ExportType> types = ExportType.reverseOrderedValues();
+
+        for (ExportType type : types)
+        {
+            exportDao.deleteType(type);
+        }
+
     }
 
 
@@ -145,7 +170,7 @@ public class ImportServiceImpl implements ImportService
         return file.getAbsolutePath();
     }
 
-    private ParseSession validateXml(String xmlData) throws XMLStreamException, IllegalAccessException, InstantiationException, ClassNotFoundException, ImportException
+    private ParseSession validateXml(String xmlData) throws Exception
     {
         ParseSession status = new ParseSession();
 
@@ -173,4 +198,8 @@ public class ImportServiceImpl implements ImportService
         this.configurationDao = configurationDao;
     }
 
+    public void setExportDao(ExportDao exportDao)
+    {
+        this.exportDao = exportDao;
+    }
 }

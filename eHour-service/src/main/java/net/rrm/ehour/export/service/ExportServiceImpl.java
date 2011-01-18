@@ -129,7 +129,6 @@ public class ExportServiceImpl implements ExportService
             rows = type.getProcessor().processRows(rows);
         }
 
-
         for (Map<String, Object> rowMap : rows)
         {
             writer.writeStartElement(type.name());

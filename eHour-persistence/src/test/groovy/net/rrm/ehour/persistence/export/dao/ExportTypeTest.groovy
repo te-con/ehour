@@ -25,6 +25,16 @@ class ExportTypeTest
   }
 
   @Test
+  void shouldReturnReverserOrderedTypes()
+  {
+    def values = ExportType.reverseOrderedValues();
+
+
+    assert 10 == values[0].order
+    assert 9 == values[1].order
+  }
+
+  @Test
   void shouldFetchForClazz()
   {
     Assert.assertEquals ExportType.USER_DEPARTMENT, ExportType.forClass(UserDepartment.class)

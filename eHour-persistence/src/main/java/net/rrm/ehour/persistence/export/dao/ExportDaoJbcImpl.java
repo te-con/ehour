@@ -23,4 +23,10 @@ public class ExportDaoJbcImpl implements ExportDao
     {
         return jdbcTemplate.queryForList(sql);
     }
+
+    @Override
+    public void deleteType(ExportType type)
+    {
+        jdbcTemplate.execute("DELETE FROM " + type.name());
+    }
 }

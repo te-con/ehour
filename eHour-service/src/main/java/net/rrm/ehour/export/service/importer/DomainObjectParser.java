@@ -1,6 +1,7 @@
 package net.rrm.ehour.export.service.importer;
 
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.export.service.ParserUtil;
 import net.rrm.ehour.persistence.export.dao.ExportType;
@@ -143,6 +144,13 @@ public class DomainObjectParser
         if (!hasCompositeKey)
         {
             keyCache.putKey(domainObject.getClass(), domainObject.getPK(), primaryKey);
+        }
+
+        if (clazz == TimesheetEntry.class)
+        {
+            TimesheetEntry timesheetEntry = (TimesheetEntry) domainObject;
+            System.out.println(timesheetEntry.getEntryId().getProjectAssignment());
+
         }
 
         return domainObject;

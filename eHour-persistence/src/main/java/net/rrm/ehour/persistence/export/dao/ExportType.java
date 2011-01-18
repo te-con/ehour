@@ -103,4 +103,20 @@ public enum ExportType
 
         return types;
     }
+
+    public static List<ExportType> reverseOrderedValues()
+    {
+        List<ExportType> types = Arrays.asList(ExportType.values());
+
+        Collections.sort(types, new Comparator<ExportType>()
+        {
+            @Override
+            public int compare(ExportType o1, ExportType o2)
+            {
+                return o2.order - o1.order;
+            }
+        });
+
+        return types;
+    }
 }

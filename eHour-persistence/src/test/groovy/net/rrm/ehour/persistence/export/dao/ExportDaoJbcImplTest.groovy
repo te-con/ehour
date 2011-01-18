@@ -9,21 +9,31 @@ import static junit.framework.Assert.assertEquals
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 16, 2010 - 4:47:00 PM
  */
-class ExportDaoJbcImplTest  extends AbstractAnnotationDaoTest
+class ExportDaoJbcImplTest extends AbstractAnnotationDaoTest
 {
-	@Autowired
-	private	ExportDao exportDao;
+  @Autowired
+  private ExportDao exportDao;
 
-	ExportDaoJbcImplTest()
-	{
-		super("dataset-timesheet.xml")
-	}
+  ExportDaoJbcImplTest()
+  {
+    super("dataset-timesheet.xml")
+  }
 
-	@Test
-	void shouldFindAllTimesheetEntries()
-	{
-		def list = exportDao.findForType(ExportType.TIMESHEET_ENTRY)
+  @Test
+  void shouldFindAllTimesheetEntries()
+  {
+    def list = exportDao.findForType(ExportType.TIMESHEET_ENTRY)
 
-		assertEquals(12, list.size())
-	}
+    assertEquals(12, list.size())
+  }
+
+  @Test
+  void shouldDeleteAll()
+  {
+    def values = ExportType.reverseOrderedValues()
+
+    def delete = { exportDao.deleteType it }
+    values.each (delete)
+  }
+
 }
