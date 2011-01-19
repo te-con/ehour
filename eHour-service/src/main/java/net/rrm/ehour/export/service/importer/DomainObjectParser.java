@@ -1,7 +1,6 @@
 package net.rrm.ehour.export.service.importer;
 
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.export.service.ParserUtil;
 import net.rrm.ehour.persistence.export.dao.ExportType;
@@ -118,16 +117,7 @@ public class DomainObjectParser
                 // check whether the field is part of a composite pk (ie. a different class)
                 if (field.getDeclaringClass() != domainObject.getClass())
                 {
-                    Object embeddable;
-
-                    if (!embeddables.containsKey(field.getDeclaringClass()))
-                    {
-                        embeddable = field.getDeclaringClass().newInstance();
-                        embeddables.put(field.getDeclaringClass(), embeddable);
-                    } else
-                    {
-                        embeddable = embeddables.get(field.getDeclaringClass());
-                    }
+                    Object embeddable = resolveEmbeddable(embeddables, field);
 
                     field.set(embeddable, parsedValue);
                 } else
@@ -150,14 +140,23 @@ public class DomainObjectParser
             keyCache.putKey(domainObject.getClass(), originalKey, primaryKey);
         }
 
-        if (clazz == TimesheetEntry.class)
-        {
-            TimesheetEntry timesheetEntry = (TimesheetEntry) domainObject;
-            System.out.println(timesheetEntry.getEntryId().getProjectAssignment());
-        }
-
-
         return domainObject;
+    }
+
+    private Object resolveEmbeddable(Map<Class<?>, Object> embeddables, Field field)
+            throws InstantiationException, IllegalAccessException
+    {
+        Object embeddable;
+
+        if (!embeddables.containsKey(field.getDeclaringClass()))
+        {
+            embeddable = field.getDeclaringClass().newInstance();
+            embeddables.put(field.getDeclaringClass(), embeddable);
+        } else
+        {
+            embeddable = embeddables.get(field.getDeclaringClass());
+        }
+        return embeddable;
     }
 
     private <T> void resetId(Map<String, Field> fieldMap, T domainObject) throws IllegalAccessException
