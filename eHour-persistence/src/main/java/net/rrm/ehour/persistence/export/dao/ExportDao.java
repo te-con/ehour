@@ -11,6 +11,4 @@ import java.util.Map;
 public interface ExportDao
 {
 	public List<Map<String, Object>> findForType(ExportType type);
-
-    public void deleteType(ExportType type);
 }

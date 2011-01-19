@@ -1,7 +1,7 @@
 package net.rrm.ehour.persistence.export.dao
 
 import net.rrm.ehour.domain.User
-import net.rrm.ehour.domain.UserMother
+import net.rrm.ehour.domain.UserDepartmentMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,12 +19,12 @@ class ImportDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldPersist()
   {
-    def user = UserMother.createUser();
-    user.userId = null
+    def userDep = UserDepartmentMother.createUserDepartment()
+    userDep.departmentId = null
 
-    importDao.persist user
+    importDao.persist userDep
 
-    assertNotNull user.userId
+    assertNotNull userDep.departmentId
   }
 
   @Test
@@ -33,6 +33,15 @@ class ImportDaoHibernateImplTest extends AbstractAnnotationDaoTest
     def user = importDao.find(3, User.class)
 
     assertNotNull user
+  }
+
+  @Test
+  void shouldDelete()
+  {
+    def values = ExportType.reverseOrderedValues()
+
+    def delete = { if (it.domainObjectClass != null) { importDao.delete it.domainObjectClass }}
+    values.each(delete)
   }
 
 }

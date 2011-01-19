@@ -1,7 +1,9 @@
 package net.rrm.ehour.persistence.export.dao;
 
 import net.rrm.ehour.domain.DomainObject;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernateImpl;
+import org.hibernate.classic.Session;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -16,7 +18,9 @@ public class ImportDaoHibernateImpl extends AbstractAnnotationDaoHibernateImpl i
     @Override
     public <T extends DomainObject<?, ?>> Serializable persist(T object)
     {
-        getHibernateTemplate().saveOrUpdate(object);
+//        getHibernateTemplate().evict(object);
+
+        getHibernateTemplate().persist(object);
 
         return object.getPK();
     }
@@ -25,5 +29,22 @@ public class ImportDaoHibernateImpl extends AbstractAnnotationDaoHibernateImpl i
     public <T, PK extends Serializable> T find(PK primaryKey, Class<T> type)
     {
         return (T)getHibernateTemplate().get(type, primaryKey);
+    }
+
+    public void flush() {
+        Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+        session.flush();
+        session.clear();
+    }
+
+    @Override
+    public <T> void delete(Class<T> type)
+    {
+        if (type == User.class)
+        {
+            getSession().createSQLQuery("DELETE FROM USER_TO_USERROLE").executeUpdate();
+        }
+
+        getSession().createQuery("DELETE FROM " + type.getName()).executeUpdate();
     }
 }

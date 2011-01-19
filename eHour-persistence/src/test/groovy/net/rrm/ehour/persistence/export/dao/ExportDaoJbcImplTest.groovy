@@ -26,14 +26,4 @@ class ExportDaoJbcImplTest extends AbstractAnnotationDaoTest
 
     assertEquals(12, list.size())
   }
-
-  @Test
-  void shouldDeleteAll()
-  {
-    def values = ExportType.reverseOrderedValues()
-
-    def delete = { exportDao.deleteType it }
-    values.each (delete)
-  }
-
 }

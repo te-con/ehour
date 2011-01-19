@@ -20,6 +20,7 @@ public class XmlImporterBuilder
     private UserRoleParserDao userRoleParserDao;
     private TransactionTemplate txTemplate;
 
+
     public XmlImporter build() throws XMLStreamException
     {
         Assert.notNull(xmlReader);
@@ -27,9 +28,11 @@ public class XmlImporterBuilder
         Assert.notNull(domainObjectParserDao);
         Assert.notNull(userRoleParserDao);
 
-        DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao);
+        PrimaryKeyCache keyCache = new PrimaryKeyCache();
+
+        DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache);
         ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
-        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao);
+        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache);
 
         return new XmlImporter(configurationDao, parser, configurationParser, userRoleParser, txTemplate);
     }

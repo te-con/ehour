@@ -10,6 +10,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.io.Serializable;
 
 /**
  * User: thies
@@ -19,10 +20,12 @@ import javax.xml.stream.events.XMLEvent;
 public class UserRoleParser
 {
     private UserRoleParserDao dao;
+    private PrimaryKeyCache keyCache;
 
-    public UserRoleParser(UserRoleParserDao dao)
+    public UserRoleParser(UserRoleParserDao dao, PrimaryKeyCache keyCache)
     {
         this.dao = dao;
+        this.keyCache = keyCache;
     }
 
     public void parseUserRoles(XMLEventReader reader, ParseSession status) throws XMLStreamException
@@ -56,7 +59,12 @@ public class UserRoleParser
 
         if (userId != null && role != null)
         {
-            User user = dao.findUser(Integer.parseInt(userId));
+            Serializable newUserId = keyCache.getKey(User.class, Integer.parseInt(userId));
+
+            // validate = string, actual import = integer
+            Integer castedUserId = newUserId instanceof String ? Integer.parseInt((String)newUserId) : (Integer)newUserId;
+
+            User user = dao.findUser(castedUserId);
             UserRole userRole = dao.findUserRole(role);
 
             user.addUserRole(userRole);

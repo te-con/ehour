@@ -2,6 +2,7 @@ package net.rrm.ehour.export.service.importer
 
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
+import net.rrm.ehour.domain.User
 import net.rrm.ehour.export.service.ParseSession
 import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Before
@@ -56,7 +57,11 @@ class UserRoleParserTest {
     daoValidator = new UserRoleParserDaoValidatorImpl()
     status = new ParseSession()
 
-    parser = new UserRoleParser(daoValidator)
+    def cache = new PrimaryKeyCache()
+    cache.putKey(User.class, 1, 1)
+    cache.putKey(User.class, 2, 2)
+
+    parser = new UserRoleParser(daoValidator, cache)
   }
 
   @Test

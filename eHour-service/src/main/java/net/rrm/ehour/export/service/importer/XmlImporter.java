@@ -35,6 +35,8 @@ public class XmlImporter
 
     private TransactionTemplate txTemplate;
 
+    private boolean skipValidation;
+
     public XmlImporter(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser)
     {
         this(configurationDao, domainObjectParser, configurationParser, userRoleParser, null);
@@ -51,6 +53,7 @@ public class XmlImporter
         if (txTemplate != null)
         {
             txTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+            skipValidation = true;
         }
     }
 
@@ -121,7 +124,10 @@ public class XmlImporter
         switch (element)
         {
             case EHOUR:
-                checkDatabaseVersion(startElement);
+                if (!skipValidation)
+                {
+                    checkDatabaseVersion(startElement);
+                }
                 break;
             case CONFIGURATION:
                 configurationParser.parseConfiguration(eventReader);

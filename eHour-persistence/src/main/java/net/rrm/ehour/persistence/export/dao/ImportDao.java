@@ -10,7 +10,11 @@ import java.io.Serializable;
  */
 public interface ImportDao
 {
-    public <T extends DomainObject<?, ?>> Serializable persist(T object);
+    <T extends DomainObject<?, ?>> Serializable persist(T object);
 
-    public <T, PK extends Serializable> T find(PK primaryKey, Class<T> type);
+    <T, PK extends Serializable> T find(PK primaryKey, Class<T> type);
+
+    void flush();
+
+    <T> void delete(Class<T> type);
 }

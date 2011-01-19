@@ -6,6 +6,8 @@ import net.rrm.ehour.export.service.ParseSession
 import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import net.rrm.ehour.domain.*
 import static org.junit.Assert.*
 
@@ -15,17 +17,21 @@ import static org.junit.Assert.*
  */
 class DomainObjectParserTest
 {
-  private DomainObjectParserDaoTestValidator daoValidator;
-  private PrimaryKeyCache keyCache
+  DomainObjectParserDaoTestValidator daoValidator;
+  PrimaryKeyCache keyCache
   ParseSession status
+
+  @Mock
+  DomainObjectParserDao parserDao
 
   @Before
   void setUp()
   {
     keyCache = new PrimaryKeyCache()
     status = new ParseSession()
-  }
 
+    MockitoAnnotations.initMocks this
+  }
 
   private DomainObjectParser createResolver(String xmlData)
   {
@@ -42,7 +48,7 @@ class DomainObjectParserTest
 
     daoValidator = (returnOnFind == null) ? new DomainObjectParserDaoValidatorImpl() : new DomainObjectParserDaoTestValidator(returnOnFind, onFind)
 
-    return new DomainObjectParser(eventReader, daoValidator);
+    return new DomainObjectParser(eventReader, daoValidator, keyCache);
   }
 
   @Test
@@ -65,6 +71,9 @@ class DomainObjectParserTest
 
     def type = ExportType.TIMESHEET_ENTRY;
 
+    keyCache.putKey(ProjectAssignment.class, 1, 1)
+    keyCache.putKey(ProjectAssignment.class, 2, 2)
+
     List<TimesheetEntry> result = resolver.parse(type.getDomainObjectClass(), status);
 
     assertEquals 2, result.size()
@@ -73,7 +82,6 @@ class DomainObjectParserTest
     assertNotNull result[0].entryId.projectAssignment
     assertEquals 8.0, result[0].hours, 0
     assertEquals "jaja", result[0].comment
-    assertTrue resolver.keyCache.isEmpty()
     assertEquals 2, daoValidator.totalPersistCount
   }
 
@@ -109,11 +117,12 @@ class DomainObjectParserTest
 
     def type = ExportType.USERS
 
+    keyCache.putKey(UserDepartment.class, 1, 1)
+
     List<User> result = resolver.parse(type.getDomainObjectClass(), status);
 
     assertEquals 2, result.size()
 
-    assertNotNull result[0].userId
     assertEquals "admin", result[0].username
     assertEquals "1d798ca9dba7df61bf399a02695f9f50034bad66", result[0].password
     assertEquals "eHour", result[0].firstName
@@ -143,8 +152,6 @@ class DomainObjectParserTest
 
     def type = ExportType.AUDIT
 
-    def department = UserDepartmentMother.createUserDepartment()
-
     List<Audit> result = resolver.parse(type.getDomainObjectClass(), status);
 
     assertEquals 1, result.size()
@@ -168,6 +175,8 @@ class DomainObjectParserTest
 """, user, 2)
 
     def type = ExportType.AUDIT
+
+    keyCache.putKey(User.class, 2, 2)
 
     List<Audit> result = resolver.parse(type.getDomainObjectClass(), status);
 

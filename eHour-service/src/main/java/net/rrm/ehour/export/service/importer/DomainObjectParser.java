@@ -30,12 +30,13 @@ public class DomainObjectParser
     private DomainObjectParserDao parserDao;
 
     private XMLEventReader reader;
-    private PrimaryKeyCache keyCache;
 
     private static final Logger LOG = Logger.getLogger(DomainObjectParser.class);
 
     private static final Map<Class<?>, TypeTransformer<?>> transformerMap = new HashMap<Class<?>, TypeTransformer<?>>();
     private ParseSession status;
+
+    private PrimaryKeyCache keyCache;
 
     static
     {
@@ -45,12 +46,11 @@ public class DomainObjectParser
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
-    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao)
+    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, PrimaryKeyCache keyCache)
     {
         this.parserDao = parserDao;
         this.reader = reader;
-
-        keyCache = new PrimaryKeyCache();
+        this.keyCache = keyCache;
     }
 
     public <T extends DomainObject<?, ?>> List<T> parse(Class<T> clazz, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException
@@ -139,21 +139,36 @@ public class DomainObjectParser
 
         boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);
 
+        Serializable originalKey = domainObject.getPK();
+
+        resetId(fieldMap, domainObject);
+
         Serializable primaryKey = parserDao.persist(domainObject);
 
         if (!hasCompositeKey)
         {
-            keyCache.putKey(domainObject.getClass(), domainObject.getPK(), primaryKey);
+            keyCache.putKey(domainObject.getClass(), originalKey, primaryKey);
         }
 
         if (clazz == TimesheetEntry.class)
         {
             TimesheetEntry timesheetEntry = (TimesheetEntry) domainObject;
             System.out.println(timesheetEntry.getEntryId().getProjectAssignment());
-
         }
 
+
         return domainObject;
+    }
+
+    private <T> void resetId(Map<String, Field> fieldMap, T domainObject) throws IllegalAccessException
+    {
+        for (Field field : fieldMap.values())
+        {
+            if (field.isAnnotationPresent(Id.class) && field.isAnnotationPresent(GeneratedValue.class))
+            {
+                field.set(domainObject, null);
+            }
+        }
     }
 
     private <T> boolean setEmbeddablesInDomainObject(Map<String, Field> fieldMap, T domainObject, Map<Class<?>, Object> embeddables)
@@ -185,7 +200,8 @@ public class DomainObjectParser
         if (type.isAnnotationPresent(Entity.class))
         {
             Serializable castToFk = castToFkType(type, value);
-            parsedValue = parserDao.find(castToFk, type);
+            Serializable persistedKey = keyCache.getKey(type, castToFk);
+            parsedValue = parserDao.find(persistedKey, type);
 
             if (parsedValue == null)
             {

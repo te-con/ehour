@@ -2,7 +2,7 @@ package net.rrm.ehour.export.service
 
 import net.rrm.ehour.domain.Configuration
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao
-import net.rrm.ehour.persistence.export.dao.ExportDao
+import net.rrm.ehour.persistence.export.dao.ImportDao
 import org.apache.commons.io.FileUtils
 import org.junit.Before
 import org.junit.Test
@@ -24,7 +24,7 @@ class ImportServiceImplTest
   ConfigurationDao configurationDao
 
   @Mock
-  ExportDao exportDao
+  ImportDao importDao
 
   @Before
   void setUp()
@@ -32,8 +32,8 @@ class ImportServiceImplTest
     MockitoAnnotations.initMocks this
 
     importService = new ImportServiceImpl()
-    importService.configurationDao=configurationDao
-    importService.exportDao=exportDao
+    importService.configurationDao = configurationDao
+    importService.importDao = importDao
   }
 
   @Test
