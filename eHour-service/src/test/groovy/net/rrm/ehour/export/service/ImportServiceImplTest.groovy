@@ -1,8 +1,10 @@
 package net.rrm.ehour.export.service
 
 import net.rrm.ehour.domain.Configuration
+import net.rrm.ehour.export.service.importer.ConfigurationParserDao
+import net.rrm.ehour.export.service.importer.DomainObjectParserDaoValidatorImpl
+import net.rrm.ehour.export.service.importer.UserRoleParserDaoValidatorImpl
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao
-import net.rrm.ehour.persistence.export.dao.ImportDao
 import org.apache.commons.io.FileUtils
 import org.junit.Before
 import org.junit.Test
@@ -24,7 +26,10 @@ class ImportServiceImplTest
   ConfigurationDao configurationDao
 
   @Mock
-  ImportDao importDao
+  DatabaseTruncater truncater
+
+  @Mock
+  ConfigurationParserDao configurationParserDao
 
   @Before
   void setUp()
@@ -33,7 +38,7 @@ class ImportServiceImplTest
 
     importService = new ImportServiceImpl()
     importService.configurationDao = configurationDao
-    importService.importDao = importDao
+    importService.databaseTruncater = truncater
   }
 
   @Test
@@ -80,10 +85,17 @@ class ImportServiceImplTest
 
     ParseSession session = new ParseSession(filename: destFile.getAbsolutePath())
 
+    def userVal = new UserRoleParserDaoValidatorImpl()
+
+    importService.domainObjectParserDao = new DomainObjectParserDaoValidatorImpl()
+    importService.userRoleParserDao = userVal
+    importService.configurationParserDao = configurationParserDao
+
     def status = importService.importDatabase(session)
 
     assertFalse status.importable
 
     assertFalse destFile.exists()
+    assert userVal.findUserCount == 6
   }
 }

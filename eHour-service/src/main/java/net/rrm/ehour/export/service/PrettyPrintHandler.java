@@ -27,7 +27,7 @@ public class PrettyPrintHandler implements InvocationHandler
         this.target = target;
     }
 
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Exception {
 
         String m = method.getName();
 
