@@ -1,17 +1,16 @@
 package net.rrm.ehour.export.service.importer
 
 import javax.xml.stream.XMLEventReader
-import net.rrm.ehour.export.service.ParseSession
-import org.junit.Before
 import javax.xml.stream.XMLInputFactory
-import org.junit.Test
-import net.rrm.ehour.persistence.config.dao.ConfigurationDao
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 import net.rrm.ehour.config.ConfigurationItem
-import static org.mockito.Mockito.when
 import net.rrm.ehour.domain.Configuration
 import net.rrm.ehour.export.service.ImportException
+import net.rrm.ehour.export.service.ParseSession
+import net.rrm.ehour.persistence.config.dao.ConfigurationDao
+import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import static org.mockito.Mockito.when
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,7 +42,7 @@ class XmlImporterTest {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance()
     eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData))
 
-    def importer = new XmlImporter(configurationDao, null, null, null)
+    def importer = new XmlImporter(configurationDao, null, null, null, false)
     importer.importXml(null, eventReader)
   }
 
@@ -61,7 +60,7 @@ class XmlImporterTest {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance()
     eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData))
 
-    def importer = new XmlImporter(configurationDao, null, null, null)
+    def importer = new XmlImporter(configurationDao, null, null, null, false)
     importer.importXml(null, eventReader)
   }
 

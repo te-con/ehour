@@ -8,10 +8,6 @@ import net.rrm.ehour.export.service.ImportException;
 import net.rrm.ehour.export.service.ParseSession;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -33,28 +29,16 @@ public class XmlImporter
     private ConfigurationParser configurationParser;
     private UserRoleParser userRoleParser;
 
-    private TransactionTemplate txTemplate;
-
     private boolean skipValidation;
 
-    public XmlImporter(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser)
-    {
-        this(configurationDao, domainObjectParser, configurationParser, userRoleParser, null);
-    }
-
-    public XmlImporter(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser, TransactionTemplate txTemplate)
+    public XmlImporter(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser, boolean skipValidation)
     {
         this.configurationDao = configurationDao;
         this.domainObjectParser = domainObjectParser;
         this.configurationParser = configurationParser;
         this.userRoleParser = userRoleParser;
-        this.txTemplate = txTemplate;
 
-        if (txTemplate != null)
-        {
-            txTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-            skipValidation = true;
-        }
+        this.skipValidation = skipValidation;
     }
 
     public void importXml(final ParseSession status, final XMLEventReader eventReader) throws Exception
@@ -65,48 +49,12 @@ public class XmlImporter
 
             if (event.isStartElement())
             {
-                if (txTemplate != null)
-                {
-                    runInTx(status, eventReader, event);
-                } else
-                {
-                    parseEvent(status, eventReader, event);
-                }
-
+                parseEvent(status, eventReader, event);
 
             } else if (event.isEndDocument() || event.isEndElement())
             {
                 break;
             }
-        }
-    }
-
-    private void runInTx(final ParseSession status, final XMLEventReader eventReader, final XMLEvent event) throws Exception
-    {
-        Exception exception = txTemplate.execute(new TransactionCallback<Exception>()
-        {
-            @Override
-            public Exception doInTransaction(TransactionStatus txStatus)
-            {
-                Exception thrownException = null;
-
-                try
-                {
-                    parseEvent(status, eventReader, event);
-                } catch (Exception e)
-                {
-                    txStatus.setRollbackOnly();
-
-                    thrownException = e;
-                }
-
-                return thrownException;
-            }
-        });
-
-        if (exception != null)
-        {
-            throw exception;
         }
     }
 

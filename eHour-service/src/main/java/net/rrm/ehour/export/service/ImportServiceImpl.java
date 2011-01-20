@@ -7,8 +7,7 @@ import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -37,15 +36,13 @@ public class ImportServiceImpl implements ImportService
     private UserRoleParserDao userRoleParserDao;
 
     @Autowired
-    private PlatformTransactionManager txManager;
-
-    @Autowired
     private DatabaseTruncater databaseTruncater;
 
     @Autowired
     private ImportDao importDao;
 
     @Override
+    @Transactional
     public ParseSession importDatabase(ParseSession session)
     {
         try
@@ -61,7 +58,7 @@ public class ImportServiceImpl implements ImportService
                     .setDomainObjectParserDao(domainObjectParserDao)
                     .setUserRoleParserDao(userRoleParserDao)
                     .setXmlReader(eventReader)
-                    .setTxTemplate(new TransactionTemplate(txManager))
+                    .setSkipValidation(true)
                     .build();
 
             importer.importXml(session, eventReader);
