@@ -59,6 +59,8 @@ class MailServiceImplTest
     assert task.javaMailSender.port == 25
     assert task.javaMailSender.username == "thies"
     assert task.javaMailSender.password == "rosalie"
+
+    assert task.mailTaskMessage.mailMessage.subject == "eHour test message"
   }
 
   @Test
@@ -71,8 +73,10 @@ class MailServiceImplTest
 
     when(configurationService.getConfiguration()).thenReturn stub
 
-
     mailService.mailPMFixedAllottedReached(aggregate, new Date(), UserMother.createUser())
+
+    MailTask task = (MailTask)taskExecutor.task
+    assert task.mailTaskMessage.mailMessage.subject == "eHour: All allotted hours used for project aa10 - aa10 by Dummy TestUser"
   }
 
   class ExecutorStub implements TaskExecutor
