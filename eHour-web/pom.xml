@@ -13,17 +13,10 @@
 	<name>eHour web UI</name>
 
 	<profiles>
-		<profile>
-			<id>prod</id>
-			<build>
-				<resources>
-					<resource>
-						<directory>${project.basedir}/src/main/profiles/prod</directory>
-					</resource>
-				</resources>
-
-			</build>
-		</profile>
+        <profile>
+            <id>war</id>
+            <!-- just to get rid of standalone profile -->
+        </profile>
 
 		<profile>
 			<id>standalone</id>
