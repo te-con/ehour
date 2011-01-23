@@ -58,7 +58,7 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>net.rrm.ehour.ui.listener.EnvInitListener</listener-class>
+        <listener-class>listener.EnvInitListener</listener-class>
     </listener>
 
     <listener>
