@@ -2,6 +2,7 @@
 	name="eHourStandaloneDist" default="archive" basedir=".">
 	<description>
 		Builds eHour WAR dist file (don't mention Maven's assembly plugin..)
+		Before running this script eHour must be compiled with mvn clean install -Pprod -Pwar
 	</description>
 
     <path id="maven-ant-tasks.classpath" path="lib/maven-ant-tasks-2.1.1.jar"/>
