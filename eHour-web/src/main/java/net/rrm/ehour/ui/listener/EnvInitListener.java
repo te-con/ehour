@@ -19,11 +19,11 @@ public class EnvInitListener implements ServletContextListener
     @Override
     public void contextInitialized(ServletContextEvent sce)
     {
-        String home = System.getenv("EHOUR_HOME");
+        String home = getEhourHomePath(sce);
 
         if (StringUtils.isBlank(home))
         {
-            throw new IllegalArgumentException("EHOUR_HOME environment variable not defined - exiting");
+            throw new IllegalArgumentException("EHOUR_HOME environment variable or context parameter not defined - exiting");
         }
 
         System.getProperties().put("EHOUR_HOME", home);
@@ -31,6 +31,18 @@ public class EnvInitListener implements ServletContextListener
         configureLog4j(home);
 
         LOG.warn("EHOUR_HOME set to " + home);
+    }
+
+    private String getEhourHomePath(ServletContextEvent sce)
+    {
+        String home = System.getenv("EHOUR_HOME");
+
+        if (StringUtils.isBlank(home))
+        {
+            home = sce.getServletContext().getInitParameter("EHOUR_HOME");
+        }
+
+        return home;
     }
 
     private void configureLog4j(String eHourHome)
