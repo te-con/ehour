@@ -1,5 +1,6 @@
 package net.rrm.ehour;
 
+import net.rrm.ehour.appconfig.ConfigUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -30,7 +31,7 @@ public class EhourServerRunner
 
 	private static String replaceSystemEnv(String filename)
 	{
-		String ehourHome = System.getenv("EHOUR_HOME");
+		String ehourHome = ConfigUtil.getEhourHome();
 		
 		if (StringUtils.isBlank(ehourHome)) {
 			throw new IllegalArgumentException("EHOUR_HOME is not defined as a environment variable");

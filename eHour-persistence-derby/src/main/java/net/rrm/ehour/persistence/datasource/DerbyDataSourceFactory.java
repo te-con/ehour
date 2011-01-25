@@ -5,30 +5,35 @@ import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 
 import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
- * 
  * @author thies
- * 
  */
 public class DerbyDataSourceFactory
 {
-	/**
-	 * Create datasource and validate database
-	 * @param databaseName
-	 * @return
-	 */
-	public DataSource createDataSource(String databaseName)
-	{
-		EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
-		dataSource.setDatabaseName(databaseName);
-		
-		Properties properties = ConfigUtil.loadDatabaseProperties("derby");
-		
-		DerbyDbValidator validator = new DerbyDbValidator(properties.getProperty("ehour.db.version"), dataSource);
-		validator.checkDatabaseState();
-		
-		return dataSource;
-	}
+    /**
+     * Create datasource and validate database
+     *
+     * @param databaseName
+     * @return
+     */
+    public DataSource createDataSource(String databaseName) throws IOException
+    {
+        EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
+        dataSource.setDatabaseName(databaseName);
+
+        String ehourHome = ConfigUtil.getEhourHome();
+        File ehourPropertiesFile = ConfigUtil.getEhourPropertiesFile(ehourHome);
+
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(ehourPropertiesFile));
+        DerbyDbValidator validator = new DerbyDbValidator(properties.getProperty("ehour.db.version"), dataSource);
+        validator.checkDatabaseState();
+
+        return dataSource;
+    }
 }

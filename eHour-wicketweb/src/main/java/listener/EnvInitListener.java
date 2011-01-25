@@ -1,5 +1,6 @@
 package listener;
 
+import net.rrm.ehour.appconfig.ConfigUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -15,7 +16,6 @@ public class EnvInitListener implements ServletContextListener
 {
     private static final Logger LOG = Logger.getLogger(EnvInitListener.class);
 
-
     @Override
     public void contextInitialized(ServletContextEvent sce)
     {
@@ -26,7 +26,7 @@ public class EnvInitListener implements ServletContextListener
             throw new IllegalArgumentException("EHOUR_HOME environment variable or context parameter not defined - exiting");
         }
 
-        System.getProperties().put("EHOUR_HOME", home);
+        System.getProperties().put(ConfigUtil.EHOUR_HOME, home);
 
         configureLog4j(home);
 
@@ -35,11 +35,11 @@ public class EnvInitListener implements ServletContextListener
 
     private String getEhourHomePath(ServletContextEvent sce)
     {
-        String home = System.getenv("EHOUR_HOME");
+        String home = ConfigUtil.getEhourHome();
 
         if (StringUtils.isBlank(home))
         {
-            home = sce.getServletContext().getInitParameter("EHOUR_HOME");
+            home = sce.getServletContext().getInitParameter(ConfigUtil.EHOUR_HOME);
         }
 
         return home;
