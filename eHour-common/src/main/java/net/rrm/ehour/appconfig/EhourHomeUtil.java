@@ -8,12 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-public final class ConfigUtil
+public final class EhourHomeUtil
 {
     public static final String EHOUR_HOME = "EHOUR_HOME";
     public static final String EHOUR_PROPERTIES_FILENAME = "ehour.properties";
 
-    private ConfigUtil()
+    private EhourHomeUtil()
     {
     }
 

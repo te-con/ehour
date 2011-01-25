@@ -1,6 +1,6 @@
 package net.rrm.ehour.persistence.datasource;
 
-import net.rrm.ehour.appconfig.ConfigUtil;
+import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 
@@ -26,8 +26,8 @@ public class DerbyDataSourceFactory
         EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
         dataSource.setDatabaseName(databaseName);
 
-        String ehourHome = ConfigUtil.getEhourHome();
-        File ehourPropertiesFile = ConfigUtil.getEhourPropertiesFile(ehourHome);
+        String ehourHome = EhourHomeUtil.getEhourHome();
+        File ehourPropertiesFile = EhourHomeUtil.getEhourPropertiesFile(ehourHome);
 
         Properties properties = new Properties();
         properties.load(new FileInputStream(ehourPropertiesFile));

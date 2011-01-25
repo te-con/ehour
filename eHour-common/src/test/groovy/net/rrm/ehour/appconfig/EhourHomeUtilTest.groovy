@@ -6,12 +6,12 @@ import org.junit.Test
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: 1/8/11 - 3:19 PM
  */
-class ConfigUtilTest
+class EhourHomeUtilTest
 {
   @Test
   void shouldConstructConfDir()
   {
-    def dir = ConfigUtil.getConfDir("a")
+    def dir = EhourHomeUtil.getConfDir("a")
 
     def sep = System.getProperty("file.separator");
 

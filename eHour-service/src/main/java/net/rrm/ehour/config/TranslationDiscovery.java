@@ -1,6 +1,6 @@
 package net.rrm.ehour.config;
 
-import net.rrm.ehour.appconfig.ConfigUtil;
+import net.rrm.ehour.appconfig.EhourHomeUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class TranslationDiscovery {
 
     @PostConstruct
     public void scanTranslations() {
-        String absoluteTranslationsPath = ConfigUtil.getTranslationsDir(eHourHome, translationsDir);
+        String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(eHourHome, translationsDir);
 
         File transDir = new File(absoluteTranslationsPath);
 
