@@ -20,9 +20,8 @@ package net.rrm.ehour.ui.admin.assignment.panel.form;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
@@ -48,8 +47,6 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 	}
 
 	private static final long serialVersionUID = -85486044225123470L;
-
-	private AssignmentTypeFormPartPanel typeFormPartPanel;
 
 	public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions)
 	{
@@ -93,21 +90,11 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 	{
 		if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE)
 		{
-			updateNotifiableComponents(ajaxEvent.getTarget());
+            EventPublisher.publishAjaxEventToParentChildren(this, ajaxEvent);
 
 			return false;
 		}
 
-		return super.ajaxEventReceived(ajaxEvent);
-	}
-
-	private void updateNotifiableComponents(AjaxRequestTarget target)
-	{
-		Component[] components = typeFormPartPanel.getNotifiableComponents();
-
-		for (Component component : components)
-		{
-			target.addComponent(component);
-		}
+		return true;
 	}
 }

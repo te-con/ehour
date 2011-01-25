@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.admin.assignment.panel.form;
 
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.admin.assignment.component.EditDatePanel;
@@ -26,19 +23,16 @@ import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -47,18 +41,20 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.MinimumValidator;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Assignment type part of form
  **/
 
-public class AssignmentTypeFormPartPanel extends Panel
+public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListener
 {
 	private static final long serialVersionUID = 1L;
 	private Component[] notifiableComponents;
 
-
 	@SpringBean
-	private ProjectAssignmentService	projectAssignmentService;
+	private ProjectAssignmentService projectAssignmentService;
 
 	public AssignmentTypeFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model, Form<AssignmentAdminBackingBean> form)
 	{
@@ -66,12 +62,6 @@ public class AssignmentTypeFormPartPanel extends Panel
 
 		addAssignmentType(model);
 		addDates(form, model);
-	}
-
-
-	public Component[] getNotifiableComponents()
-	{
-		return notifiableComponents;
 	}
 
 	/**
@@ -186,4 +176,20 @@ public class AssignmentTypeFormPartPanel extends Panel
 
 		form.add(new DateOverlapValidator("dateStartDateEnd", dateStart.getDateInputFormComponent(), dateEnd.getDateInputFormComponent()));
 	}
+
+    @Override
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+    {
+        if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE)
+        {
+            AjaxRequestTarget target = ajaxEvent.getTarget();
+
+            for (Component notifiableComponent : notifiableComponents)
+            {
+                target.addComponent(notifiableComponent);
+            }
+        }
+
+        return true;
+    }
 }
