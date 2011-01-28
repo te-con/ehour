@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
+
 
 public class ServerPropertiesConfiguratorTest
 {
@@ -11,7 +13,7 @@ public class ServerPropertiesConfiguratorTest
 	public void shouldLoadDefaultConfig() throws IOException
 	{
 		ServerPropertiesConfigurator configurator = new ServerPropertiesConfigurator();
-		ServeKrConfig config = configurator.configureFromProperties("conf/ehour.properties");
+		ServerConfig config = configurator.configureFromProperties("conf/ehour.properties");
 		
 		assertEquals(8000, config.getPort());
 //		assertEquals("derby", config.getDataBase());
