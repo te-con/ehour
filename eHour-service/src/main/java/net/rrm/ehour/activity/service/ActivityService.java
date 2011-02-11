@@ -5,6 +5,7 @@ import java.util.List;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 
 /**
  * 
@@ -12,6 +13,14 @@ import net.rrm.ehour.domain.User;
  */
 public interface ActivityService {
 
+	/**
+	 * Returns an Activity with passed activityId
+	 * @param activityid
+	 * @return
+	 * @throws ObjectNotFoundException
+	 */
+	Activity getActivity(Integer activityid) throws ObjectNotFoundException;
+	
 	/**
 	 * Saves or Updates an already persisted {@link Activity} in underlying data-storage
 	 * @param activity

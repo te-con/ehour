@@ -6,18 +6,27 @@ import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.activity.dto.ActivityBackingBean;
 import net.rrm.ehour.ui.admin.activity.panel.ActivityAdminFormPanel;
+import net.rrm.ehour.ui.admin.activity.panel.ActivityEditAjaxEventType;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -42,8 +51,6 @@ public class ActivityAdmin extends AbstractTabbedAdminPage<ActivityBackingBean> 
 
 	private ListView<Activity> activityListView;
 
-	private EntrySelectorFilter currentFilter;
-
 	private EntrySelectorPanel selectorPanel;
 
 	public ActivityAdmin() {
@@ -54,10 +61,49 @@ public class ActivityAdmin extends AbstractTabbedAdminPage<ActivityBackingBean> 
 		List<Activity> activities;
 		activities = getActivities();
 
+		Fragment activityListHolder = getActivityListHolder(activities);
+
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.activity.title"),
 				WebGeo.W_ENTRY_SELECTOR);
 		add(greyBorder);
 
+		selectorPanel = new EntrySelectorPanel("activitySelector", activityListHolder);
+
+		greyBorder.add(selectorPanel);
+	}
+
+	private Fragment getActivityListHolder(List<Activity> activities) {
+		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ActivityAdmin.this);
+
+		activityListView = new ListView<Activity>("itemList", activities) {
+			private static final long serialVersionUID = 5334338761736798802L;
+
+			@Override
+			protected void populateItem(ListItem<Activity> item) {
+				final Activity activity = item.getModelObject();
+				final Integer activityid = activity.getId();
+
+				AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
+					private static final long serialVersionUID = -3898942767521616039L;
+
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						try {
+							getTabbedPanel().setEditBackingBean(new ActivityBackingBean(activityService.getActivity(activityid)));
+							getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+						} catch (ObjectNotFoundException exc) {
+							logger.error(exc.getMessage());
+						}
+					}
+				};
+				item.add(link);
+				link.add(new Label("linkLabel", activity.getFullName() + (activity.getActive() ? "" : "*")));
+			}
+		};
+
+		fragment.add(activityListView);
+
+		return fragment;
 	}
 
 	private List<Activity> getActivities() {
@@ -90,6 +136,21 @@ public class ActivityAdmin extends AbstractTabbedAdminPage<ActivityBackingBean> 
 		return activityAdminFormPanel;
 	}
 
+	@Override
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+		AjaxEventType eventType = ajaxEvent.getEventType();
+
+		if (ActivityEditAjaxEventType.ACTIVITY_DELETED.equals(eventType) || ActivityEditAjaxEventType.ACTIVITY_UPDATED.equals(eventType)) {
+
+			activityListView.setList(activityService.getActivities());
+			
+			((EntrySelectorPanel) ((MarkupContainer) get("entrySelectorFrame")).get("activitySelector")).refreshList(ajaxEvent.getTarget());
+
+			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
+		}
+		return true;
+	}
+
 	public List<Project> getProjects() {
 		if (projects == null) {
 			projects = projectService.getAllProjects(true);
@@ -102,7 +163,6 @@ public class ActivityAdmin extends AbstractTabbedAdminPage<ActivityBackingBean> 
 		if (users == null) {
 			users = userService.getUsers();
 		}
-
 		return users;
 	}
 

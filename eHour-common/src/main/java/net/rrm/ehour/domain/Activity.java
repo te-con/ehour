@@ -129,6 +129,11 @@ public class Activity extends DomainObject<Integer, Activity> {
 	}
 
 	@Override
+	public String getFullName() {
+		return getName();
+	}
+	
+	@Override
 	public Integer getPK() {
 		return id;
 	}

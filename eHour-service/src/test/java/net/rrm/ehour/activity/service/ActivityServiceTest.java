@@ -11,6 +11,7 @@ import java.util.List;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.activity.dao.ActivityDao;
 
 import org.junit.Assert;
@@ -34,7 +35,32 @@ public class ActivityServiceTest {
 		activityDao = createMock(ActivityDao.class);
 		ReflectionTestUtils.setField(activityService, "activityDao", activityDao);
 	}
+
+	@Test
+	public void shouldReturnAnAlreadyExistingActivity() throws ObjectNotFoundException {
+		expect(activityDao.findById(1)).andReturn(new Activity());
+		
+		replay(activityDao);
+		
+		Activity activity = activityService.getActivity(1);
+		
+		verify(activityDao);
+		
+		Assert.assertNotNull(activity);
+	}
 	
+	@Test(expected=ObjectNotFoundException.class)
+	public void shouldThrowAnExceptionWhenInValidActivityIdIsPassed() throws ObjectNotFoundException{
+		int invalidActivityId = 99999;
+		
+		expect(activityDao.findById(invalidActivityId)).andReturn(null);
+		
+		replay(activityDao);
+		
+		activityService.getActivity(invalidActivityId);
+		
+		verify(activityDao);		
+	}
 	@Test
 	public void shouldPersistActivity() {
 		Activity activity = new Activity();

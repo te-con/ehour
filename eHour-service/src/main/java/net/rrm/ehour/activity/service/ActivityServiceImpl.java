@@ -5,6 +5,7 @@ import java.util.List;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.activity.dao.ActivityDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("activityService")
 public class ActivityServiceImpl implements ActivityService {
- 
+
 	@Autowired
 	private ActivityDao activityDao;
+
+	@Override
+	public Activity getActivity(Integer activityid) throws ObjectNotFoundException {
+		Activity result = activityDao.findById(activityid);
+		if (result == null) {
+			throw new ObjectNotFoundException("No Activity found for id : " + activityid);
+		}
+		return result;
+	}
 
 	@Override
 	@Transactional
