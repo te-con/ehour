@@ -9,19 +9,22 @@ import net.rrm.ehour.persistence.activity.dao.ActivityDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("activityService")
 public class ActivityServiceImpl implements ActivityService {
-
+ 
 	@Autowired
 	private ActivityDao activityDao;
 
 	@Override
+	@Transactional
 	public Activity persistActivity(Activity activity) {
 		return activityDao.persist(activity);
 	}
 
 	@Override
+	@Transactional
 	public void deleteActivity(Integer activityId) {
 		Activity retrievedActivity = activityDao.findById(activityId);
 		retrievedActivity.setActive(Boolean.FALSE);

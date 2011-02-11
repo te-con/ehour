@@ -1,35 +1,97 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    
-<html 
-	xmlns="http://www.w3.org/1999/xhtml" 
+
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
 <body>
 <wicket:panel>
 	<div wicket:id="border">
-	
-		<form wicket:id="activityForm" style="margin: 0; padding: 0">
-			<table class="contentTable" style="padding: 0 10px 0 0">
-				<tr>
-					<td valign="top"><wicket:message key="admin.activity.name" />:</td>
-					<td><input class="textInputSmall" wicket:id="activity.name" style="width: 15em" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a class="button" wicket:id="deleteButton">
-							<span><wicket:message key="general.delete" /></span>
-						</a>
-					</td>
-					<td style="text-align: right">
-						<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
-							<span><wicket:message key="general.save" /></span></a>
-					</td>
-				</tr>	
+
+	<form wicket:id="activityForm" style="margin: 0; padding: 0">
+	<table class="contentTable" style="padding: 0 10px 0 0">
+		<tr>
+			<td valign="top"><wicket:message key="admin.activity.name" />:</td>
+			<td><input class="textInputSmall" wicket:id="activity.name"
+				style="width: 15em" /></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><br />
+			</td>
+		</tr>
+
+		<tr>
+			<td valign="top"><wicket:message key="admin.activity.user" />:</td>
+			<td><select class="textInputSmall" wicket:id="activity.assignedUser"
+				style="width: 15em" /></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><br />
+			</td>
+		</tr>
+
+		<tr>
+			<td valign="top"><wicket:message key="admin.activity.project" />:</td>
+			<td><select class="textInputSmall" wicket:id="activity.project"
+				style="width: 15em" /></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><br />
+			</td>
+		</tr>
 				
-			</table>
-		</form>		
+		<tr>
+			<td valign="top"><wicket:message key="admin.activity.dateStart" />:</td>
+			<td><input class="textInputSmall" wicket:id="activity.dateStart"
+				style="width: 5em" /></td>
+		</tr>
+
+		<tr>
+			<td valign="top"><wicket:message key="admin.activity.dateEnd" />:</td>
+			<td><input class="textInputSmall" wicket:id="activity.dateEnd"
+				style="width: 5em" /></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><br />
+			</td>
+		</tr>
+
+		<tr>
+			<td valign="top"><wicket:message
+				key="admin.activity.allottedHours" />:</td>
+			<td><input class="textInputSmall"
+				wicket:id="activity.allottedHours" style="width: 5em" /></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><br />
+			</td>
+		</tr>
+
+		<tr>
+			<td valign="top"><wicket:message key="admin.activity.active" />:</td>
+			<td><input type="checkbox" wicket:id="activity.active" /></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><br />
+			</td>
+		</tr>
+		
+		<tr>
+			<td><a class="button" wicket:id="deleteButton"> <span><wicket:message
+				key="general.delete" /></span> </a></td>
+			<td style="text-align: right"><a class="button"
+				style="float: right" onclick="this.blur();" wicket:id="submitButton">
+			<span><wicket:message key="general.save" /></span></a></td>
+		</tr>
+
+	</table>
+	</form>
 	</div>
 </wicket:panel>
 </body>

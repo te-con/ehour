@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.admin.activity.panel;
 
+import java.util.Date;
 import java.util.List;
 
 import net.rrm.ehour.activity.service.ActivityService;
@@ -13,17 +14,21 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<ActivityBackingBean> {
+
 	private static final long serialVersionUID = 4748507989744436489L;
-	private final static Logger logger = Logger.getLogger(ActivityAdminFormPanel.class);
-	
+
 	@SpringBean
 	private ActivityService	activityService;
 
@@ -40,6 +45,29 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 		TextField<String> nameField = new TextField<String>("activity.name");
 		form.add(nameField);
 
+		TextField<Date> startDateField = new TextField<Date>("activity.dateStart");
+		startDateField.add(new DatePicker());
+		form.add(startDateField);
+
+		TextField<Date> endDateField = new TextField<Date>("activity.dateEnd");
+		endDateField.add(new DatePicker());
+		form.add(endDateField);
+
+		TextField<Float> allottedHoursField = new TextField<Float>("activity.allottedHours");
+		form.add(allottedHoursField);
+
+		DropDownChoice<User> usersDropDownList = new DropDownChoice<User>("activity.assignedUser", users, new ChoiceRenderer<User>("fullName"));
+		usersDropDownList.setRequired(true);
+		usersDropDownList.setLabel(new ResourceModel("admin.activity.user"));
+		form.add(usersDropDownList);
+
+		DropDownChoice<Project> projectsDropDownList = new DropDownChoice<Project>("activity.project", projects, new ChoiceRenderer<Project>("fullName"));
+		projectsDropDownList.setRequired(true);
+		projectsDropDownList.setLabel(new ResourceModel("admin.activity.project"));
+		form.add(projectsDropDownList);
+		
+		form.add(new CheckBox("activity.active"));
+		
 		FormUtil.setSubmitActions(form, true, this, ActivityEditAjaxEventType.ACTIVITY_UPDATED, ActivityEditAjaxEventType.ACTIVITY_DELETED,
 				((EhourWebSession) getSession()).getEhourConfig());
 
@@ -59,14 +87,11 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 	}
 
 	private void removeActivity(ActivityBackingBean activityBackingBean) {
-		logger.info("Removing Activity " + activityBackingBean.getActivity().getName());
 		activityService.deleteActivity(activityBackingBean.getActivity().getId());
 	}
 
 	private void persistActivity(ActivityBackingBean activityBackingBean) {
-		logger.info("Persisting Activity " + activityBackingBean.getActivity().getName());
 		activityService.persistActivity(activityBackingBean.getActivity());
-		
 	}
 
 }
