@@ -71,22 +71,11 @@ public class CalendarPanel extends SidePanel
 	private	DateRange			highlightWeekStartingAt;
 	private EhourConfig			config;
 
-
-	/**
-	 * Calendar firing off week clicks as well
-	 * @param id
-	 */
 	public CalendarPanel(String id, User user)
 	{
 		this(id, user, true);
 	}
 
-	/**
-	 * Calendar with optional week click events
-	 * @param id
-	 * @param user
-	 * @param allowWeekClicks
-	 */
 	public CalendarPanel(String id, User user, boolean allowWeekClicks)
 	{
 		super(id);
@@ -104,10 +93,6 @@ public class CalendarPanel extends SidePanel
 		buildCalendar(calendarFrame);
 	}
 
-	/**
-	 * Refresh calendar
-	 * @param target
-	 */
 	public void refreshCalendar(AjaxRequestTarget target)
 	{
 		WebMarkupContainer replacementFrame = getFrame();
@@ -118,10 +103,6 @@ public class CalendarPanel extends SidePanel
 		target.addComponent(replacementFrame);
 	}
 
-	/**
-	 * Get frame
-	 * @return
-	 */
 	private WebMarkupContainer getFrame()
 	{
 		WebMarkupContainer calendarFrame = new WebMarkupContainer("calendarFrame");
@@ -130,11 +111,6 @@ public class CalendarPanel extends SidePanel
 		return calendarFrame;
 	}
 
-	/**
-	 * Build calendar
-	 * @param parent
-	 * @param user
-	 */
 	private void buildCalendar(WebMarkupContainer parent)
 	{
 		// first get the data
@@ -170,11 +146,6 @@ public class CalendarPanel extends SidePanel
 		return previousMonthLink;
 	}
 
-	/**
-	 * Add the calendar weeks
-	 * @param container
-	 * @param weeks
-	 */
 	@SuppressWarnings("serial")
 	private void addCalendarWeeks(WebMarkupContainer container, List<CalendarWeek> weeks)
 	{
@@ -221,13 +192,6 @@ public class CalendarPanel extends SidePanel
 				}
 			}
 
-			/**
-			 *
-			 * @param id
-			 * @param week
-			 * @param dayInWeek
-			 * @return
-			 */
 			private Label getLabel(int i, CalendarWeek week, CalendarDay day, boolean weekend)
 			{
 				Label 	label;
@@ -278,16 +242,9 @@ public class CalendarPanel extends SidePanel
 			}
 		};
 
-
 		container.add(view);
 	}
 
-	/**
-	 * Create CalendarWeek objects
-	 *
-	 * @param userId
-	 * @param dateIterator
-	 */
 	private List<CalendarWeek> createWeeks(Integer userId, Calendar dateIterator)
 	{
 		List<CalendarWeek> calendarWeeks = new ArrayList<CalendarWeek>();
@@ -355,14 +312,6 @@ public class CalendarPanel extends SidePanel
 		return calendarWeeks;
 	}
 
-	/**
-	 * Get the month overview for the nav calendar
-	 * @param userId
-	 * @param requestedMonth
-	 * @return array of booleans each representing a day in the month.
-	 * true = booked, false = not everything booked
-	 */
-
 	private boolean[] getMonthNavCalendar(Integer userId, Calendar requestedMonth)
 	{
 		List<BookedDay> bookedDays;
@@ -415,7 +364,7 @@ public class CalendarPanel extends SidePanel
 			month.set(Calendar.DAY_OF_MONTH, 1);
 			session.setNavCalendar(month);
 
-			// do it before it gets replaced, otherwise getPage is  null due to new instantiation of links
+			// do it before it gets replaced, otherwise getPage is null due to new instantiation of links
 			EventPublisher.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(CalendarAjaxEventType.MONTH_CHANGE));
 
 			refreshCalendar(target);
@@ -430,11 +379,6 @@ public class CalendarPanel extends SidePanel
 		}
 	}
 
-	/**
-	 *
-	 * @author Thies
-	 *
-	 */
 	private class WeekClick extends AjaxEventBehavior
 	{
 		private static final long serialVersionUID = 9164386260367481606L;

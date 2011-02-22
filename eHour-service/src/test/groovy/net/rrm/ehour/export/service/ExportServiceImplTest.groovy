@@ -26,7 +26,7 @@ class ExportServiceImplTest {
 	@Before
 	void setUp()
 	{
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.initMocks(this)
 
 		service = new ExportServiceImpl(exportDao: exportDao, configurationService: configurationService);
 	}

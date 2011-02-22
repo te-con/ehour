@@ -11,6 +11,6 @@ public final class GuardDirtyFormUtil
     }
 
     public static String getEventHandler(CharSequence originalEventHandler) {
-        return "var k=true;if (wicket.guardform) { k=wicket.guardform.promptForDirtyForm(); };if (k) { " + originalEventHandler + " };";
+        return "var k=true;if (window.wicket && wicket.guardform) { k=wicket.guardform.promptForDirtyForm(); };if (k) { " + originalEventHandler + " };";
     }
 }
