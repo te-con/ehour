@@ -6,6 +6,6 @@
       
 	<bean id="eHourDataSource"
 		class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource"
-		p:databaseName="ehourDb"
+		p:databaseName="memory:ehourDb"
 		p:createDatabase="create" />
 </beans>
