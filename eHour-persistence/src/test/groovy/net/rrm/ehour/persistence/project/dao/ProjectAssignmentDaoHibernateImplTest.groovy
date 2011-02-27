@@ -61,11 +61,12 @@ class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDaoTest
     Calendar cal = new GregorianCalendar();
     cal.add(Calendar.MONTH, 1);
 
-    def assignment = ProjectAssignmentMother.createProjectAssignment(new User(2), new Project(1))
+    def assignment = ProjectAssignmentMother.createProjectAssignment(new User(5), new Project(1))
     assignment.dateStart = new Date()
     assignment.dateEnd = cal.getTime()
     assignment.assignmentType = new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE)
-    assignment.assignmentId = null
+    assignment.assignmentId = 25
+
 
     projectAssignmentDAO.persist(assignment)
 

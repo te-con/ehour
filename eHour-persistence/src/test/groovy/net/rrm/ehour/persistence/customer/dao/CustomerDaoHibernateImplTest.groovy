@@ -4,7 +4,6 @@ import net.rrm.ehour.domain.CustomerMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import static junit.framework.Assert.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -13,58 +12,60 @@ import static junit.framework.Assert.*
 class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
-	private	CustomerDao	customerDao;
+	private	CustomerDao	customerDao
 
-	public CustomerDaoHibernateImplTest()
+	CustomerDaoHibernateImplTest()
 	{
-		super("dataset-customer.xml");
+		super("dataset-customer.xml")
 	}
 
 	@Test
-	void shouldDeleteCustomerOnId()
+	void "should delete customer on id"()
 	{
 		customerDao.delete 2
 
-		def customer = customerDao.findById(2)
-		assertNull(customer);
+		customerDao.findById(2) == null
+
 	}
 
 	@Test
-	void shouldFindAll()
+	void "should find all customers"()
 	{
 		def customers = customerDao.findAll()
-		assertEquals(4, customers.size())
+		assert 4 == customers.size()
 	}
 
 	@Test
-	void shouldFindAllActive()
+	void "should find all active customers"()
 	{
-		def customers = customerDao.findAllActive();
-		assertEquals(3, customers.size());
+		def customers = customerDao.findAllActive()
+		assert 3 == customers.size()
 	}
 
 	@Test
-	void shouldFindOnId()
+	void "should find on id"()
 	{
-		def customer = customerDao.findById(2);
-		assertEquals("Tester", customer.name);
+		def customer = customerDao.findById(2)
+		assert "Tester" == customer.name
 	}
 
 	@Test
-	void shouldPersist()
+	void "should persist customer"()
 	{
 		def customer = CustomerMother.createCustomer()
         customer.customerId = null
 
+        println customer.customerId
+
 		customerDao.persist(customer)
 
-		assertNotNull(customer.customerId)
+        assert customer.customerId != null
 	}
 
 	@Test
-	void shouldFindOnNameAndCode()
+	void "should find on name and code"()
 	{
-		assertEquals("TEC", customerDao.findOnNameAndCode("te-con", "TEC").code)
+		assert "TEC" == customerDao.findOnNameAndCode("te-con", "TEC").code
 	}
 
 }
