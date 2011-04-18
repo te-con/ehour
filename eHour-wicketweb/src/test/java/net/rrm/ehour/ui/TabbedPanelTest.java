@@ -1,19 +1,19 @@
 package net.rrm.ehour.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.ITestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO once this junit test fails remove the AbstractTabbedPanel class
@@ -106,7 +106,7 @@ public class TabbedPanelTest
 	
 	private void startPanel(WicketTester tester)
 	{
-		tester.startPanel(new TestPanelSource()
+		tester.startPanel(new ITestPanelSource()
 		{
 			public Panel getTestPanel(String panelId)
 			{

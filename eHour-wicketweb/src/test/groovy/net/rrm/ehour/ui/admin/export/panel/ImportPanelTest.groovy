@@ -4,7 +4,7 @@ import net.rrm.ehour.export.service.ImportService
 import net.rrm.ehour.export.service.ParseSession
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import org.apache.wicket.markup.html.panel.Panel
-import org.apache.wicket.util.tester.TestPanelSource
+import org.apache.wicket.util.tester.ITestPanelSource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -42,7 +42,7 @@ class ImportPanelTest extends AbstractSpringWebAppTester
 
   private void startPanel(final ParseSession session)
   {
-    tester.startPanel(new TestPanelSource()
+    tester.startPanel(new ITestPanelSource()
     {
       @Override
       Panel getTestPanel(String panelId)

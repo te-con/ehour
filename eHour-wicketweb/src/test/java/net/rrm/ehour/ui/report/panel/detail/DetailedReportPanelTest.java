@@ -16,24 +16,19 @@
 
 package net.rrm.ehour.ui.report.panel.detail;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.Locale;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 import net.rrm.ehour.ui.report.trend.DetailedReport;
-
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Locale;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * Detailed report panel test
@@ -64,7 +59,7 @@ public class DetailedReportPanelTest extends AbstractSpringWebAppTester
 		
 		final DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
 		
-		getTester().startPanel(new TestPanelSource(){
+		getTester().startPanel(new ITestPanelSource(){
 
 			public Panel getTestPanel(String panelId)
 			{

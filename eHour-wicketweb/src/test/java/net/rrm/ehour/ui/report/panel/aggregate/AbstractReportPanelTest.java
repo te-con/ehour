@@ -16,21 +16,17 @@
 
 package net.rrm.ehour.ui.report.panel.aggregate;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.TreeReport;
 import net.rrm.ehour.ui.report.panel.ReportTestUtil;
-
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * Created on Mar 17, 2009, 6:39:39 AM
@@ -76,7 +72,7 @@ public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester
 	@SuppressWarnings("serial")
 	protected Panel startReportPanel()
 	{
-		return getTester().startPanel(new TestPanelSource(){
+		return getTester().startPanel(new ITestPanelSource(){
 	
 			public Panel getTestPanel(String panelId)
 			{

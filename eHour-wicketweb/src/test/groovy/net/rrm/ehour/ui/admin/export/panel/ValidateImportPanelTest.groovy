@@ -9,7 +9,7 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.Model
-import org.apache.wicket.util.tester.TestPanelSource
+import org.apache.wicket.util.tester.ITestPanelSource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -78,7 +78,7 @@ class ValidateImportPanelTest extends AbstractSpringWebAppTester
 
   private void startPanel(final String constructParameter)
   {
-    tester.startPanel(new TestPanelSource()
+    tester.startPanel(new ITestPanelSource()
     {
       @Override
       Panel getTestPanel(String panelId)
@@ -90,7 +90,7 @@ class ValidateImportPanelTest extends AbstractSpringWebAppTester
 
   private void startPanel(final ParseSession constructParameter)
   {
-    tester.startPanel(new TestPanelSource()
+    tester.startPanel(new ITestPanelSource()
     {
       @Override
       Panel getTestPanel(String panelId)

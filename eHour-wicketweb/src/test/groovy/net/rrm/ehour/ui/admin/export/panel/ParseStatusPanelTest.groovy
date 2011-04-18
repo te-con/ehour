@@ -6,7 +6,7 @@ import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.Model
-import org.apache.wicket.util.tester.TestPanelSource
+import org.apache.wicket.util.tester.ITestPanelSource
 import org.junit.Test
 import static org.junit.Assert.assertEquals
 
@@ -52,7 +52,7 @@ class ParseStatusPanelTest extends AbstractSpringWebAppTester
 
   private void startPanel(final ParseSession status)
   {
-    tester.startPanel(new TestPanelSource()
+    tester.startPanel(new ITestPanelSource()
     {
       @Override
       Panel getTestPanel(String panelId)

@@ -1,13 +1,5 @@
 package net.rrm.ehour.ui.admin.assignment.panel;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
@@ -15,12 +7,17 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.*;
 
 
 public class AssignmentFormPanelTest extends AbstractSpringWebAppTester
@@ -70,7 +67,7 @@ public class AssignmentFormPanelTest extends AbstractSpringWebAppTester
 	@SuppressWarnings("serial")
 	private void startPanel()
 	{
-		tester.startPanel(new TestPanelSource()
+		tester.startPanel(new ITestPanelSource()
 		{
 
 			public Panel getTestPanel(String panelId)

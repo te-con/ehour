@@ -1,14 +1,5 @@
 package net.rrm.ehour.ui.admin.project.panel.addusers;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
@@ -18,11 +9,16 @@ import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 
 public class AddUserPanelTest extends AbstractSpringWebAppTester
@@ -70,7 +66,7 @@ public class AddUserPanelTest extends AbstractSpringWebAppTester
 	@SuppressWarnings("serial")
 	private void startPanel(final Project project)
 	{
-		tester.startPanel(new TestPanelSource()
+		tester.startPanel(new ITestPanelSource()
 		{
 			public Panel getTestPanel(String panelId)
 			{

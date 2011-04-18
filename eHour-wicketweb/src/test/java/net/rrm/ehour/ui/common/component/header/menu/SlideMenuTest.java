@@ -1,15 +1,12 @@
 package net.rrm.ehour.ui.common.component.header.menu;
 
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.util.tester.ITestPanelSource;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.common.component.header.menu.MenuItem;
-import net.rrm.ehour.ui.common.component.header.menu.SlideMenu;
-
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
-import org.junit.Test;
 
 
 public class SlideMenuTest extends AbstractSpringWebAppTester
@@ -29,7 +26,7 @@ public class SlideMenuTest extends AbstractSpringWebAppTester
 	@SuppressWarnings("serial")
 	private void startPanel(final List<MenuItem> items)
 	{
-		tester.startPanel(new TestPanelSource()
+		tester.startPanel(new ITestPanelSource()
 		{
 			
 			public Panel getTestPanel(String panelId)
