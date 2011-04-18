@@ -59,10 +59,10 @@
         </copy>
 
         <chmod type="file" perm="ugo+rx">
-        	<fileset dir="${bin}/">
-        		<include name="**/*.sh" />
-        		<include name="**/wrapper" />
-        	</fileset>
+            <fileset dir="${bin}/">
+                <include name="**/*.sh"/>
+                <include name="**/wrapper"/>
+            </fileset>
         </chmod>
 
         <!-- Construct conf dir -->
@@ -90,13 +90,14 @@
     </target>
 
     <target name="archive" depends="dist">
-  		<exec executable="zip" dir="${dist}/..">
-    		<arg value="-qR"/>
-    		<arg value="${base}/ehour-${version}-standalone.zip"/>
-    		<arg value="*"/>
-  		</exec>
+        <!-- to preserve file permissions, use native zip -->
+        <echo>Building zip: ${base}/ehour-${version}-standalone.zip</echo>
 
-<!--        <zip destfile="${base}/ehour-${version}-standalone.zip" basedir="${dist}/.."/>-->
+        <exec executable="zip" dir="${dist}/..">
+            <arg value="-qR"/>
+            <arg value="${base}/ehour-${version}-standalone.zip"/>
+            <arg value="*"/>
+        </exec>
     </target>
 
     <target name="clean">
