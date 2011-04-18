@@ -17,7 +17,6 @@
 package net.rrm.ehour.domain;
 
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -74,8 +73,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
 	public boolean isEmptyEntry()
 	{
-		return StringUtils.isBlank(getComment())
-				&& (getHours() == null || getHours().equals(0f));
+		return getHours() == null || getHours().equals(0f);
 	}
 	
 	public TimesheetEntryId getEntryId()
