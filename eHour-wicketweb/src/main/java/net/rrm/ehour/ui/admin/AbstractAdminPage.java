@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.admin;
 
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
+import net.rrm.ehour.ui.common.panel.nav.admin.AdminNavPanel;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -33,18 +34,28 @@ public abstract class AbstractAdminPage<T> extends AbstractBasePage<T>
 
 	public AbstractAdminPage(ResourceModel pageTitle, String headerResourceId, String bodyResourceId)
 	{
-		super(pageTitle);
+        this(pageTitle, null, headerResourceId, bodyResourceId);
+    }
 
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp", headerResourceId, bodyResourceId));
-	}
+    public AbstractAdminPage(ResourceModel pageTitle, String headerResourceId, String bodyResourceId, boolean withAdminNav)
+    {
+        this(pageTitle, null, headerResourceId, bodyResourceId, withAdminNav);
+    }
 
     public AbstractAdminPage(ResourceModel pageTitle, IModel<T> model, String headerResourceId, String bodyResourceId)
     {
+        this(pageTitle, model, headerResourceId, bodyResourceId, false);
+    }
+
+    public AbstractAdminPage(ResourceModel pageTitle, IModel<T> model, String headerResourceId, String bodyResourceId, boolean withAdminNav)
+    {
         super(pageTitle, model);
 
-        // contextual help
         add(new ContextualHelpPanel("contextHelp", headerResourceId, bodyResourceId));
+
+        AdminNavPanel adminNav = new AdminNavPanel("adminNav");
+        adminNav.setVisible(withAdminNav);
+        add(adminNav);
     }
 
 }

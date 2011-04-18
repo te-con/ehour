@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.admin.assignment.page;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
@@ -31,7 +29,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -44,6 +41,8 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.List;
+
 
 /**
  * Project assignments page
@@ -54,39 +53,40 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 {
 	private static final long serialVersionUID = 566527529422873370L;
 	private static final String			USER_SELECTOR_ID = "userSelector";
-	
+
 	@SpringBean
 	private	UserService					userService;
 	private EntrySelectorFilter			currentFilter;
 	private	final static Logger			LOGGER = Logger.getLogger(AssignmentAdmin.class);
 	private ListView<User>				userListView;
-	private	Panel						assignmentPanel;		
-	
+	private	Panel						assignmentPanel;
+
 	/**
 	 * Default constructor
 	 */
 	public AssignmentAdmin()
 	{
-		super(new ResourceModel("admin.assignment.title"), null, 
+		super(new ResourceModel("admin.assignment.title"),
 				"admin.assignment.help.header",
-				"admin.assignment.help.body");
-		
+				"admin.assignment.help.body",
+                true);
+
 		List<User>	users;
 		users = getUsers();
-		
+
 		Fragment userListHolder = getUserListHolder(users);
-		
-		GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame", 
-																new ResourceModel("admin.assignment.title"), 
+
+		GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame",
+																new ResourceModel("admin.assignment.title"),
 																WebGeo.W_ENTRY_SELECTOR);
 		add(grey);
 
 		grey.add(new EntrySelectorPanel(USER_SELECTOR_ID,
 										userListHolder,
 										new StringResourceModel("admin.assignment.filter", this, null)));
-		
+
 		assignmentPanel = new NoUserSelectedPanel("assignmentPanel", "admin.assignment.noEditEntrySelected");
-		
+
 		add(assignmentPanel);
 	}
 
@@ -101,15 +101,15 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 		{
 			PayloadAjaxEvent<EntrySelectorFilter> payload = (PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent;
 			currentFilter = payload.getPayload();
-			
+
 			List<User> users = getUsers();
 			userListView.setList(users);
-			
+
 		}
-		
+
 		return false;
-	}	
-	
+	}
+
 	/**
 	 * Get a the userListHolder fragment containing the listView
 	 * @param users
@@ -118,14 +118,14 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 	private Fragment getUserListHolder(List<User> users)
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
-		
+
 		userListView = new ListView<User>("itemList", users)
 		{
 			@Override
 			protected void populateItem(ListItem<User> item)
 			{
 				final User user = item.getModelObject();
-				
+
 				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
@@ -134,17 +134,17 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 						replaceAssignmentPanel(target, user);
 					}
 				};
-				
+
 				item.add(link);
-				link.add(new Label("linkLabel", user.getFullName()));				
+				link.add(new Label("linkLabel", user.getFullName()));
 			}
 		};
-		
+
 		fragment.add(userListView);
-		
+
 		return fragment;
-	}	
-	
+	}
+
 	/**
 	 * Set assignment panel for particular user after selection in userList panel
 	 * @param target
@@ -154,13 +154,13 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 	{
 		AssignmentPanel	newAssignmentPanel = new AssignmentPanel("assignmentPanel",
 																user);
-		
+
 		assignmentPanel.replaceWith(newAssignmentPanel);
 		target.addComponent(newAssignmentPanel);
-		
+
 		assignmentPanel = newAssignmentPanel;
 	}
-	
+
 	/**
 	 * Get the users from the backend
 	 * @return
@@ -168,7 +168,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 	private List<User> getUsers()
 	{
 		List<User>	users;
-		
+
 		if (currentFilter == null)
 		{
 			users = userService.getUsers(UserRole.CONSULTANT);
@@ -179,10 +179,10 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 			{
 				LOGGER.debug("Filtering on " + currentFilter.getCleanFilterInput());
 			}
-			
+
 			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, UserRole.CONSULTANT);
 		}
-		
+
 		return users;
-	}	
+	}
 }

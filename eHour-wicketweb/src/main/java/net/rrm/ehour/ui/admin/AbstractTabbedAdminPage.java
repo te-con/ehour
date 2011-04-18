@@ -18,9 +18,6 @@ package net.rrm.ehour.ui.admin;
 
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
-import net.rrm.ehour.ui.common.page.AbstractBasePage;
-import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.common.panel.nav.admin.AdminNavPanel;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
@@ -32,7 +29,7 @@ import org.apache.wicket.model.ResourceModel;
 
 @SuppressWarnings("serial")
 @AuthorizeInstantiation("ROLE_ADMIN")
-public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractBasePage<BB>
+public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractAdminPage<BB>
 {
 	private	AddEditTabbedPanel<BB>	tabbedPanel;
 
@@ -44,13 +41,7 @@ public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> exten
 								String bodyResourceId
 								)
 	{
-		super(pageTitle);
-
-		add(new AdminNavPanel("adminNav"));
-
-		// contextual help
-		add(new ContextualHelpPanel("contextHelp", headerResourceId, bodyResourceId));
-
+		super(pageTitle, headerResourceId, bodyResourceId, true);
 
 		tabbedPanel = new AddEditTabbedPanel<BB>("tabs", addTabTitle, editTabTitle, noEntrySelectedText)
 		{
