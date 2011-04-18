@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import java.awt.*;
 import java.io.BufferedInputStream;
@@ -51,7 +52,7 @@ public abstract class ImageUploadForm<T> extends Form<T>
         super(id, model);
 
         setMultiPart(true);
-        add(fileUploadField = new FileUploadField("fileInput"));
+        add(fileUploadField = new FileUploadField("fileInput", new Model<FileUpload>()));
 
         add(new SubmitLink("uploadSubmit"));
     }
