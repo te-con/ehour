@@ -1,11 +1,11 @@
 package net.rrm.ehour.ui.test;
 
 import org.apache.wicket.util.tester.DummyPanelPage;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.ITestPanelSource;
 
 public class DummyHeadPanelPage extends DummyPanelPage
 {
-	public DummyHeadPanelPage(TestPanelSource testPanelSource)
+	public DummyHeadPanelPage(ITestPanelSource testPanelSource)
 	{
 		super(testPanelSource);
 	}

@@ -59,8 +59,8 @@
     </developers>
     <properties>
         <spring.version>3.0.5.RELEASE</spring.version>
-        <wicket.version>1.4.16</wicket.version>
-        <jetty.version>7.1.6.v20100715</jetty.version>
+        <wicket.version>1.4.17</wicket.version>
+        <jetty.version>7.3.1.v20110307</jetty.version>
         <derbydb.version>10.6.2.1</derbydb.version>
         <aspectj.version>1.6.6</aspectj.version>
         <clover.version>3.0.1</clover.version>
@@ -229,7 +229,7 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.12</version>
+                <version>5.1.14</version>
             </dependency>
 
             <dependency>
@@ -690,6 +690,8 @@
                     <downloadSources>true</downloadSources>
                 </configuration>
             </plugin>
+
+
         </plugins>
 
         <pluginManagement>

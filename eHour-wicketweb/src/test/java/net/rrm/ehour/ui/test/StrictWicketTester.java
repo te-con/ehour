@@ -22,7 +22,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.ITestPageSource;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.ITestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 
 /**
@@ -38,7 +38,7 @@ public class StrictWicketTester extends WicketTester
 		super(webApplication);
 	}
 	
-	public final Panel startPanelWithHead(final TestPanelSource testPanelSource)
+	public final Panel startPanelWithHead(final ITestPanelSource testPanelSource)
 	{
 		return (Panel)startPage(new ITestPageSource()
 		{

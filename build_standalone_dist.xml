@@ -58,8 +58,12 @@
             <fileset dir="assembly/standalone/bin" excludes=".svn"/>
         </copy>
 
-        <chmod dir="${bin}/" includes="**/*.sh" perm="ugo+rx"/>
-        <chmod dir="${bin}/" includes="**/wrapper" perm="ugo+rx"/>
+        <chmod type="file" perm="ugo+rx">
+        	<fileset dir="${bin}/">
+        		<include name="**/*.sh" />
+        		<include name="**/wrapper" />
+        	</fileset>
+        </chmod>
 
         <!-- Construct conf dir -->
         <copy todir="${conf}">
@@ -86,7 +90,13 @@
     </target>
 
     <target name="archive" depends="dist">
-        <zip destfile="${base}/ehour-${version}-standalone.zip" basedir="${dist}/.."/>
+  		<exec executable="zip" dir="${dist}/..">
+    		<arg value="-qR"/>
+    		<arg value="${base}/ehour-${version}-standalone.zip"/>
+    		<arg value="*"/>
+  		</exec>
+
+<!--        <zip destfile="${base}/ehour-${version}-standalone.zip" basedir="${dist}/.."/>-->
     </target>
 
     <target name="clean">

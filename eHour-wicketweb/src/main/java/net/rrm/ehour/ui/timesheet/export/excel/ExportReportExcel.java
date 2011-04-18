@@ -22,7 +22,6 @@ import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.part.*;
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -36,7 +35,6 @@ import java.io.IOException;
 public class ExportReportExcel extends AbstractExcelResource
 {
 	private static final long serialVersionUID = -4841781257347819473L;
-	private final static Logger LOGGER = Logger.getLogger(ExportReportExcel.class);
 
 	private static final int CELL_BORDER = 1;
 
@@ -51,14 +49,11 @@ public class ExportReportExcel extends AbstractExcelResource
 	@Override
 	public byte[] getExcelData(Report report) throws IOException
 	{
-		LOGGER.trace("Creating excel report");
 		HSSFWorkbook workbook = createWorkbook(report);
 
 		return PoiUtil.getWorkbookAsBytes(workbook);
 	}
 
-
-    
 	/**
 	 * @param report
 	 * @return
@@ -67,7 +62,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	{
 		HSSFWorkbook workbook = new HSSFWorkbook();
 
-		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.formatDate("MMMM", report.getReportRange().getDateStart()));
+		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.formatDate("MMMM yyyy", report.getReportRange().getDateStart()));
 
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.DATE.getColumn()));
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.PROJECT.getColumn()));

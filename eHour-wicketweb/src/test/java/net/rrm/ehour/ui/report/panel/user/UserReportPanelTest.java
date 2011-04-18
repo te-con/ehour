@@ -25,7 +25,7 @@ import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
 import net.rrm.ehour.ui.report.chart.aggregate.AggregateChartImage;
 import net.rrm.ehour.ui.report.page.BaseTestReport;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Test;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class UserReportPanelTest extends BaseTestReport
 
 		final CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportCriteria);
 		
-		return getTester().startPanelWithHead(new TestPanelSource()
+		return getTester().startPanelWithHead(new ITestPanelSource()
 		{
 			public Panel getTestPanel(String panelId)
 			{
