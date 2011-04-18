@@ -67,7 +67,7 @@
         <gmaven.version>1.3</gmaven.version>
         <groovy.version>1.7.2</groovy.version>
         <slf4j.version>1.5.11</slf4j.version>
-        <hibernate.version>3.3.2.GA</hibernate.version>
+        <hibernate.version>3.6.3.Final</hibernate.version>
         <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
         <hibernate.annotations.version>3.4.0.GA</hibernate.annotations.version>
 
@@ -229,13 +229,13 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.14</version>
+                <version>5.1.15</version>
             </dependency>
 
             <dependency>
                 <groupId>postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>8.3-603.jdbc4</version>
+                <version>8.4-702.jdbc4</version>
             </dependency>
 
             <dependency>
