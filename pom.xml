@@ -69,7 +69,6 @@
         <slf4j.version>1.5.11</slf4j.version>
         <hibernate.version>3.6.3.Final</hibernate.version>
         <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
-        <hibernate.annotations.version>3.4.0.GA</hibernate.annotations.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -273,12 +272,6 @@
                         <groupId>cglib</groupId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-annotations</artifactId>
-                <version>${hibernate.annotations.version}</version>
             </dependency>
 
             <dependency>

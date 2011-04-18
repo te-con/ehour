@@ -24,9 +24,9 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldDelete()
   {
-    projectDAO.delete 2
+    projectDAO.delete 20
 
-    def project = projectDAO.findById(2);
+    def project = projectDAO.findById(20);
     assertNull(project);
   }
 
@@ -49,7 +49,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldFindById()
   {
-    def prj = projectDAO.findById(1)
+    def prj = projectDAO.findById(10)
     assertEquals("eHour", prj.name)
   }
 
@@ -57,6 +57,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   void shouldPersist()
   {
     def customer = CustomerMother.createCustomer()
+    customer.customerId = 10
     customer.projects.clear()
 
     def project = ProjectMother.createProject(null, customer)
@@ -83,7 +84,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldFindProjectForCustomersAll()
   {
-    def ids = [new Customer(3), new Customer(1)]
+    def ids = [new Customer(30), new Customer(10)]
     List<Project> r = projectDAO.findProjectForCustomers(ids, false)
 
     assertEquals(3, r.size())
@@ -92,7 +93,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   public void shouldFindProjectForCustomersOnlyActive()
   {
-    def ids = [new Customer(3), new Customer(1)]
+    def ids = [new Customer(30), new Customer(10)]
     List<Project> r = projectDAO.findProjectForCustomers(ids, true)
 
     assertEquals(2, r.size())
@@ -102,6 +103,6 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   public void shouldFindActiveProjectsWhereUserIsPM()
   {
     def res = projectDAO.findActiveProjectsWhereUserIsPM(new User(1))
-    assertEquals(1, res.iterator().next().getPK())
+    assertEquals(10, res.iterator().next().getPK())
   }
 }

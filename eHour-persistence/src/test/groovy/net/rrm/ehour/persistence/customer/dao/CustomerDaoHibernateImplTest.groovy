@@ -53,11 +53,11 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	void "should persist customer"()
 	{
 		def customer = CustomerMother.createCustomer()
+        customer.name = "aa"
+        customer.code = "bb"
         customer.customerId = null
 
-        println customer.customerId
-
-		customerDao.persist(customer)
+        customerDao.persist(customer)
 
         assert customer.customerId != null
 	}

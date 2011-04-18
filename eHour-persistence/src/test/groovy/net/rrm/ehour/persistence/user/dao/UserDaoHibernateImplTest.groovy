@@ -71,7 +71,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
     def org = UserDepartmentMother.createUserDepartment()
 
     User user = UserMother.createUser()
-    user.setUserId null
+    user.setUserId 5
 
     ProjectAssignment pa = new ProjectAssignment(user: user, assignmentId: 1, project: new Project(1), assignmentType: new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE))
 
@@ -87,7 +87,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldFindUsersForDepartments()
   {
-    def ids = [new UserDepartment(1)]
+    def ids = [new UserDepartment(10)]
 
     def results = userDao.findUsersForDepartments("in", ids, false);
 
