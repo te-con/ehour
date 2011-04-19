@@ -1,5 +1,0 @@
-Upgrade instructions from previous version to @VERSION@
----------------------------------------------------
-Unpack the @VERSION@ archive in a new directory. Copy the ehourDb directory from the root of your previous eHour installation to the root of the directory where you unpacked @VERSION@. That's it, start eHour as explained in the installation instructions above.
-
-When you're running eHour as a service, make sure you run the uninstallservice.bat first on the old version. Otherwise the old version keeps starting up.
