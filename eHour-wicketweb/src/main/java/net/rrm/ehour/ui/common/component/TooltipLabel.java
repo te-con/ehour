@@ -17,14 +17,10 @@
 package net.rrm.ehour.ui.common.component;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.JavaScriptReference;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 /**
  * Tooltip label with info image next to it.
@@ -39,49 +35,17 @@ public class TooltipLabel extends Panel
 {
 	private static final long serialVersionUID = -2407607082770130038L;
 
-	/**
-	 * Includes info img
-	 * @param id
-	 * @param label 
-	 * @param tooltipText
-	 */
 	public TooltipLabel(final String id, String label, String tooltipText)
 	{
-		this(id, label, tooltipText, true);
-	}
-	
-	/**
-	 * 
-	 * @param id
-	 * @param label
-	 * @param tooltipText
-	 * @param showInfoImg
-	 */
-	public TooltipLabel(final String id, String label, String tooltipText, boolean showInfoImg)
-	{
-		this(id, new Model<String>(label), new Model<String>(tooltipText), showInfoImg, false);
-	}
-	
-	/**
-	 * @param id
-	 * @param label
-	 */
-	public TooltipLabel(String id, IModel<String> label, IModel<String> tooltipText, boolean showInfoImg, boolean showBlue)
-	{
-		super(id);
-		
-		add(new Label("content", label));
-		
-		add(new JavaScriptReference("addEventJs", new ResourceReference(TooltipLabel.class, "js/addEvent.js")));
-		add(new JavaScriptReference("sweetTitlesJs", new ResourceReference(TooltipLabel.class, "js/sweetTitles.js")));
-		
-		Boolean showTooltip = StringUtils.isBlank(tooltipText.getObject()) ? Boolean.FALSE : Boolean.TRUE;
-		
-		add(new AttributeModifier("showtooltip", true, new Model<String>(showTooltip.toString())));
-		add(new AttributeModifier("title", true, tooltipText));
-		
-		ContextImage img = new ContextImage("infoImg", new Model<String>( ((showBlue) ? "img/info_blue.png" : "img/info.gif" )));
-		img.setVisible(showInfoImg && showTooltip.booleanValue());
-		add(img);
+        super(id);
+
+        WebMarkupContainer title = new WebMarkupContainer("title");
+
+        if (StringUtils.isNotBlank(tooltipText)) {
+            title.add(new SimpleAttributeModifier("title", tooltipText));
+        }
+
+        add(title);
+        title.add(new Label("content", label));
 	}
 }

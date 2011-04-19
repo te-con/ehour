@@ -154,14 +154,10 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 
 	private TooltipLabel createProjectLabel(final TimesheetRow row)
 	{
-		return new TooltipLabel("project",
-														new Model<String>(row.getProjectAssignment().getProject().getName()),  
-														new Model<String>(row.getProjectAssignment().getProject().getDescription()),
-														true,
-														true);
-	}
+		return new TooltipLabel("project", row.getProjectAssignment().getProject().getName(), row.getProjectAssignment().getProject().getDescription());
+    }
 
-	private Label createStatusLabel(ListItem<TimesheetRow> item)
+    private Label createStatusLabel(ListItem<TimesheetRow> item)
 	{
 		Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status"));
 		label.setEscapeModelStrings(false);
