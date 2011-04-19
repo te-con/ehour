@@ -53,9 +53,6 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
     private CalendarPanel calendarPanel;
     private ContextualHelpPanel helpPanel;
 
-    /**
-     * Setup the page
-     */
     public MonthOverviewPage()
     {
         this(OpenPanel.OVERVIEW);
@@ -85,6 +82,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
             contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);
         } else
         {
+            calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
             helpPanel = getTimesheetHelpPanel();
             contentContainer = getTimesheetPanel();
         }
