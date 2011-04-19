@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<body>
+
+	<wicket:panel>
+
+		<div class="NavHeader">
+			<div class="Logo">
+				<a wicket:id="homeLink"><img src="img/ehour.gif" width="80" height="28" border="0" /></a>
+			</div>
+
+			<div class="LoadingSpinner" id="LoadingSpinner">
+				<img src="img/loading.gif" />
+			</div>
+
+			<div class="Navigation">
+				<wicket:component wicket:id="nav"></wicket:component>
+			</div>
+		</div>
+
+		<div class="LoggedInAs">
+		  <wicket:message key="nav.loggedinas" />
+		  <a wicket:id="prefsLink"><span wicket:id="loggedInUser">Thies Edeling</span></a>
+		  &nbsp;-&nbsp;
+		  <a wicket:id="logoffLink"><wicket:message key="nav.logoff" /></a>
+		</div>
+
+	</wicket:panel>
+</body>
+</html>

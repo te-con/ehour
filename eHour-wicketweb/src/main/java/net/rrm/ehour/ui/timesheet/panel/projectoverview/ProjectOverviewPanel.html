@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<body onload="init()">
+
+<wicket:panel>
+	<span wicket:id="greyBorder" >
+		<div class="MonthAggregateTable">
+
+			<div class="AggregateHeader">
+				<div class="foldCell">&nbsp;</div>
+				<div class="textCell" style="width: 17%;margin-top:0;" wicket:id="customerLabel">Customer</div>
+				<div class="textCell" style="margin-top:0"><wicket:message key="overview.projectCode" /></div>
+				<div class="textCell" style="width: 19%;margin-top:0;" wicket:id="projectLabel">Project</div>
+				<div class="numbCell" style="margin-top:0" wicket:id="rateLabel">Rate</div>
+				<div class="numbCell" style="margin-top:0" wicket:id="bookedHoursLabel">Hours</div>
+				<div class="numbCell" style="width: 19%;margin-top:0;" wicket:id="turnoverLabel">Turnover</div>
+			</div>
+
+			<wicket:container wicket:id="projectStatus">
+				<div class="AggregateRow">
+					<div class="foldCell"><a href="#" wicket:id="foldLink"><img border="0"  src="img/icon_up_off.gif" wicket:id="foldImg" /></a></div>
+					<div class="textCell" style="width: 17%" wicket:id="customerName">[customerName]</div>
+					<div class="textCell" wicket:id="projectCode">[projectCode]</div>
+					<div class="textCell" style="width: 19%;overflow:hidden;cursor:pointer" wicket:id="projectName"></div>
+					<div class="numbCell" wicket:id="rate"></div>
+					<div class="numbCell" wicket:id="monthHours">24.50</div>
+					<div class="numbCell" style="width: 19%" wicket:id="turnover">&euro; 16.000</div>
+				</div>
+	
+				<span wicket:id="summaryRow"></span>
+			</wicket:container>
+			
+			<div class="TotalRow">
+				<div class="foldCell">&nbsp;</div>
+				<div class="textCell" style="width: 17%" wicket:id="grandCustomer">&nbsp;</div>
+				<div class="textCell" style="width: 19%" wicket:id="grandProject">&nbsp;</div>
+				<div class="textCell">&nbsp;</div>
+				<div class="numbCell" wicket:id="grandRate">&nbsp;</div>
+				<div class="numbCell" style="margin-top:2px" wicket:id="grandTotalHours"></div>
+				<div class="numbCell" style="margin-top:2px;width: 19%" wicket:id="grandTotalTurnover"></div>
+			</div>
+		</div>
+	</span>
+	
+	<wicket:fragment wicket:id="summaryRowFragment">
+		<div class="SummaryRow">
+			<div class="foldCell">&nbsp;</div>
+			<wicket:container wicket:id="overview.validity"></wicket:container>. 
+			<wicket:container wicket:id="remainingHoursLabel">
+				<wicket:container wicket:id="overview.totalbooked"></wicket:container>
+				<wicket:container wicket:id="overview.remainingfixed"></wicket:container>
+				<wicket:container wicket:id="overview.remainingflex"></wicket:container>
+			</wicket:container>
+		</div>
+	</wicket:fragment>
+	
+</wicket:panel>
+
+</body>
+
+</html>

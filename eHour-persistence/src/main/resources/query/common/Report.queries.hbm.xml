@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <query name="Report.getCumulatedHoursPerAssignmentOnDateForUsers">
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+                FROM TimesheetEntry entry
+                WHERE entry.entryId.entryDate >= :dateStart AND
+                      entry.entryId.entryDate <= :dateEnd AND
+                      entry.entryId.projectAssignment.user IN (:users)
+                GROUP BY entry.entryId.projectAssignment.assignmentId
+        ]]></query>
+
+    <query name="Report.getCumulatedHoursPerAssignmentForUsers">
+        SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+        FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.user IN (:users)
+        GROUP BY entry.entryId.projectAssignment.assignmentId
+	</query>
+
+    <query name="Report.getCumulatedHoursPerAssignmentForAssignmentIds">
+        SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+        FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.assignmentId IN (:assignmentIds)
+        GROUP BY entry.entryId.projectAssignment.assignmentId
+	</query>
+
+    <query name="Report.getCumulatedHoursPerAssignmentForUsersAndProjects">
+		SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+        FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.user IN (:users) AND
+        	  entry.entryId.projectAssignment.project IN (:projects)
+        GROUP BY entry.entryId.projectAssignment.assignmentId
+	</query>
+
+    <query name="Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects">
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+                FROM TimesheetEntry entry
+                WHERE entry.entryId.entryDate >= :dateStart AND
+                      entry.entryId.entryDate <= :dateEnd AND
+                      entry.entryId.projectAssignment.user IN (:users) AND
+                	  entry.entryId.projectAssignment.project IN (:projects)
+                GROUP BY entry.entryId.projectAssignment.assignmentId
+        ]]></query>
+        
+    <query name="Report.getCumulatedHoursPerAssignment">
+        <![CDATA[
+        SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+        FROM TimesheetEntry entry
+        WHERE entry.entryId.entryDate >= :dateStart AND
+              entry.entryId.entryDate <= :dateEnd 
+        GROUP BY entry.entryId.projectAssignment.assignmentId
+        ]]>
+	</query>        
+        
+    <query name="Report.getCumulatedHoursPerAssignmentOnDateForProjects">
+         <![CDATA[SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+                FROM TimesheetEntry entry
+                WHERE entry.entryId.entryDate >= :dateStart AND
+                      entry.entryId.entryDate <= :dateEnd AND
+                	  entry.entryId.projectAssignment.project IN (:projects)
+                GROUP BY entry.entryId.projectAssignment.assignmentId
+        ]]>
+	</query>
+    
+    <query name="Report.getCumulatedHoursForAssignment">
+         <![CDATA[
+         SELECT new net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement(entry.entryId.projectAssignment, SUM(entry.hours))
+                FROM TimesheetEntry entry
+                WHERE entry.entryId.projectAssignment = :assignment
+                GROUP BY entry.entryId.projectAssignment.assignmentId                
+        ]]>
+	</query>
+                       
+        
+    <query name="Report.getMinMaxTimesheetEntryDate">
+        SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
+		FROM TimesheetEntry entry
+	</query>     
+
+    <query name="Report.getMinMaxTimesheetEntryDateForUser">
+        SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
+		FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.user = :user
+	</query> 
+
+    <query name="Report.getMinMaxTimesheetEntryDateForProject">
+        SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
+		FROM TimesheetEntry entry
+        WHERE entry.entryId.projectAssignment.project = :project
+	</query> 
+</hibernate-mapping>

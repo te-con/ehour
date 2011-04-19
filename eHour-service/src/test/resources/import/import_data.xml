@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<EHOUR DB_VERSION="0.8.3">
+ <CONFIGURATION>
+  <CONFIG KEY="completeDayHours">8</CONFIG>
+  <CONFIG KEY="showTurnOver">true</CONFIG>
+  <CONFIG KEY="localeLanguage">en</CONFIG>
+  <CONFIG KEY="currency">Euro</CONFIG>
+  <CONFIG KEY="localeCountry"></CONFIG>
+  <CONFIG KEY="availableTranslations">en,nl,fr,it</CONFIG>
+  <CONFIG KEY="mailFrom">noreply@localhost.net</CONFIG>
+  <CONFIG KEY="mailSmtp">127.0.0.1</CONFIG>
+  <CONFIG KEY="demoMode">false</CONFIG>
+  <CONFIG KEY="version">0.8.3</CONFIG>
+  <CONFIG KEY="smtpPort">25</CONFIG>
+ </CONFIGURATION>
+</EHOUR>

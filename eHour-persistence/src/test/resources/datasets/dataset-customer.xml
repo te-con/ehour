@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <CUSTOMER CUSTOMER_ID="5" NAME="Te-con" DESCRIPTION="Java contractor" CODE="TEC" ACTIVE="Y"/>
+  <CUSTOMER CUSTOMER_ID="2" NAME="Tester" DESCRIPTION="Test customer" CODE="TEST" ACTIVE="Y"/>  
+  <CUSTOMER CUSTOMER_ID="3" NAME="Inactive" DESCRIPTION="Test customer" CODE="TEST" ACTIVE="N"/>    
+  <CUSTOMER CUSTOMER_ID="4" NAME="Another" DESCRIPTION="Test customer" CODE="TEST" ACTIVE="Y"/>  
+</dataset>
+ 

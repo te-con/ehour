@@ -1,0 +1,55 @@
+<Context path="/ehour" reloadable="false" cookies="true" docBase="${EHOUR_HOME}/app/ehour-@VERSION@.war">
+    <Resource name="jdbc/eHourDS"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxActive="100"
+              maxIdle="30"
+              maxWait="10000"
+              username="%ehour.db.username%"
+              password="%ehour.db.password%"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/%ehour.db.name%"/>
+
+    <!-- Rather than defining an environment variable you can also specify the EHOUR_HOME here
+         Remove the comment tags and set the absolute path to your eHour home dir as the value.
+         Please use forward slashes (/) in the path rather than backslashes (\) as is standard on Windows -->
+
+    <!--<Parameter name="EHOUR_HOME" value="" override="true" />-->
+
+    <ResourceParams name="jdbc/eHourDS">
+        <parameter>
+            <name>validationQuery</name>
+            <value>SELECT 1</value>
+        </parameter>
+
+        <parameter>
+            <name>testOnBorrow</name>
+            <value>true</value>
+        </parameter>
+
+        <parameter>
+            <name>zeroDateTimeBehavior</name>
+            <value>convertToNull</value>
+        </parameter>
+
+        <parameter>
+            <name>autoReconnect</name>
+            <value>true</value>
+        </parameter>
+
+        <parameter>
+            <name>timeBetweenEvictionRunsMillis</name>
+            <value>10000</value>
+        </parameter>
+
+        <parameter>
+            <name>testWhileIdle</name>
+            <value>true</value>
+        </parameter>
+
+        <parameter>
+            <name>minEvictableIdleTimeMillis</name>
+            <value>60000</value>
+        </parameter>
+    </ResourceParams>
+</Context>			

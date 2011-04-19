@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<wicket:panel>
+
+	<div wicket:id="greyFrame">
+		<div wicket:id="blueFrame">
+			<table cellpadding="0" cellspacing="0" class="MonthOverviewIEWorkAround">
+				<tr>
+					<td>
+						<table class="MonthOverviewMonthTable" cellpadding="0" cellspacing="0">
+							<tr class="weekColumnRow">
+								<td class="weekNumber">&nbsp;</td>
+								<td wicket:id="day1"></td>
+								<td wicket:id="day2"></td>							
+								<td wicket:id="day3"></td>
+								<td wicket:id="day4"></td>
+								<td wicket:id="day5"></td>
+								<td wicket:id="day6"></td>
+								<td class="lastChild" wicket:id="day7"></td>							
+							</tr>
+							
+							<wicket:container wicket:id="calendarView">
+								<tr class="dateRow">
+									<td class="weekNumber">&nbsp;</td>
+									<td wicket:id="day1"></td>
+									<td wicket:id="day2"></td>							
+									<td wicket:id="day3"></td>
+									<td wicket:id="day4"></td>
+									<td wicket:id="day5"></td>
+									<td wicket:id="day6"></td>
+									<td class="lastChild" wicket:id="day7"></td>							
+								</tr>
+								
+								<tr class='hourRow'>
+									<td class="weekNumber">
+										<wicket:message key="general.week" />&nbsp;<span wicket:id="weekNumber"></span>
+									</td>
+									<td wicket:id="day1Value"></td>
+									<td wicket:id="day2Value"></td>
+									<td wicket:id="day3Value"></td>
+									<td wicket:id="day4Value"></td>
+									<td wicket:id="day5Value"></td>
+									<td wicket:id="day6Value"></td>
+									<td class="lastChild" wicket:id="day7Value"></td>							
+								</tr>
+							</wicket:container>								
+						</table>
+					</td>
+					<td width="5">&nbsp;</td>
+				</tr>
+			</table>		
+		</div>
+	</div>
+
+	<wicket:fragment wicket:id="showProjects">
+		<div class="bookedHours" wicket:id="projects">
+			<div style="float:left" wicket:id="projectCode"></div>
+			<div class="bookedHourValue" wicket:id="hours" />
+			<br clear="both"/>
+		</div>
+	</wicket:fragment>
+
+	<wicket:fragment wicket:id="noProjects">
+		&nbsp;
+	</wicket:fragment>
+</wicket:panel>
+
+</html>

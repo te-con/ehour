@@ -1,0 +1,13 @@
+Building eHour
+---------------------------------------
+
+To start eHour from your IDE, create an environment variable EHOUR_HOME and point it to
+eHour-standalone/src/test/resources
+Now run the EhourServerRunner (in the eHour-standalone module) to start your server.
+
+Fisheye and Continuous integration
+---------------------------------------
+There's an instance of Fisheye installed at http://dev.ehour.nl/fisheye/
+Continuous Integration is done with Bamboo at http://dev.ehour.nl/bamboo/
+Sonar is available at http://dev.ehour.nl/sonar/
+

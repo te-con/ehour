@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+
+<body>
+
+<wicket:panel>
+	<form wicket:id="criteriaForm" target="_blank">
+	    <table class="contentTable">
+	        <tr>
+	            <td style="border: 0;padding-right: 20px" valign="top">
+	                <nobr><wicket:message key="printMonth.selectProjects" />:</nobr>
+	            </td>
+	
+	            <td style="padding-left: 5px">
+	            	<strong><wicket:message key="printMonth.billable" /></strong><br />
+	                <wicket:container wicket:id="projectGroup">
+
+					<p style="border-top: solid 1px white;margin:0 0 5px 0;padding:0">
+	                    <wicket:container wicket:id="billableProjects">
+	                        <input type="checkbox" wicket:id="check" />
+	                        <wicket:container wicket:id="project"></wicket:container>
+	                        
+	                        <br />
+	                    </wicket:container>
+		            </p>
+					<br />
+	            	<strong><wicket:message key="printMonth.unbillable" /></strong>
+	            	<p style="border-top: solid 1px white;margin:0 0 5px 0;padding:0">
+	                    <wicket:container wicket:id="unbillableProjects" >
+	                        <input type="checkbox" wicket:id="check" />
+	                        <wicket:container wicket:id="project"></wicket:container>
+	                        
+	                        <br />
+	                    </wicket:container>
+	                </p>
+	                </wicket:container>
+
+	            </td>
+	        </tr>
+	
+	        <tr>
+	            <td colspan="2" style="border: 0">
+	                <br />
+	            </td>
+	        </tr>
+	
+	        <tr>
+	            <td style="border: 0;padding-right: 20px">
+	                <nobr><wicket:message key="printMonth.inclSignatureSpace" /></nobr>
+	            </td>
+	            
+	            <td style="padding-left: 5px">
+	                <input type="checkbox" wicket:id="signOff" />
+	            </td>
+	        </tr>
+	        
+	        <tr>
+	            <td style="border: 0" colspan="2" align="right">
+                    <a class="bluebutton" style="float:right" wicket:id="printButton">
+                        <span><wicket:message key="general.print" /></span>
+                    </a>
+                    <a class="bluebutton" style="float:right" wicket:id="excelButton" >
+                        <span><wicket:message key="general.excel" /></span>
+                    </a>	             
+	            </td>
+	        </tr>
+	    </table>        
+	</form>
+</wicket:panel>
+
+</body>
+</html>                    

@@ -1,0 +1,8 @@
+<database name="ehour-0.7">
+    <table name="configuration">
+        <column name="config_key" primaryKey="true" required="true"
+                type="VARCHAR" size="255" autoIncrement="false"/>
+        <column name="config_value" primaryKey="false" required="false"
+                type="VARCHAR" size="255" autoIncrement="false"/>
+    </table>
+</database>

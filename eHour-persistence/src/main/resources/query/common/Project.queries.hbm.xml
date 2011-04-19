@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<query name="Customer.findAllWithActive">
+		FROM Customer customer
+	    WHERE active = :active
+	</query>
+	
+	<query name="Customer.findByNameAndCode">
+		FROM Customer customer
+	    WHERE lower(name) = :name AND lower(code) = :code
+	</query>	
+	
+	<query name="Project.findAllActive">
+		FROM Project project
+		WHERE project.active is true AND
+			  project.customer.active is true
+	    ORDER BY name
+	</query>	
+	
+	<query name="Project.findByNamePattern"> 
+		SELECT project
+		FROM Project as project
+	    WHERE lower(name) like  :pattern
+	    ORDER BY name
+	</query>
+	
+	<query name="Project.findActiveByNamePattern"> 
+		SELECT project
+		FROM Project as project
+	    WHERE lcase(name) like  :pattern AND active = true
+	    ORDER BY name    
+	</query>	
+	
+	<query name="Project.findAllActiveDefault">
+		FROM Project project
+	    WHERE project.active is true AND 
+	    	  project.customer.active is true AND 
+	    	  project.defaultProject is true
+	</query>	
+
+	<query name="Project.findAllProjectsForCustomers">
+		FROM Project prj
+		WHERE prj.customer IN (:customers)
+		ORDER BY prj.name
+	</query>	
+
+	<query name="Project.findActiveProjectsForCustomers">
+		FROM Project prj
+		WHERE prj.customer IN (:customers) AND
+			  prj.active is true
+		ORDER BY prj.name			  
+	</query>	
+
+	<query name="Project.findActiveProjectsWhereUserIsPM">
+		FROM Project prj
+		WHERE prj.projectManager = :user AND
+			  prj.active is true AND
+			  prj.customer.active is true
+	</query>	
+
+
+</hibernate-mapping>

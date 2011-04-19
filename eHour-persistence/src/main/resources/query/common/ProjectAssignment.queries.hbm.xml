@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<query name="ProjectAssignment.findProjectAssignmentsForUserForProject">
+		FROM ProjectAssignment pa
+		WHERE pa.project.active is true AND
+			  pa.project.projectId = :projectId AND
+			  pa.user.userId = :userId
+	</query>	
+
+	<query name="ProjectAssignment.findProjectAssignmentsForUser">
+		FROM ProjectAssignment pa
+		WHERE pa.project.active is true AND
+			  pa.project.customer.active is true AND 
+			  pa.user = :user
+		ORDER BY pa.dateStart, pa.project.name
+	</query>	
+
+	<query name="ProjectAssignment.findProjectsForUserForType">
+		FROM ProjectAssignment pa
+		WHERE pa.project.active is true AND
+			  pa.project.customer.active is true AND 
+			  pa.user.userId = :userId AND
+			  pa.assignmentType.assignmentTypeId = :type
+		ORDER BY pa.dateStart, pa.project.name
+	</query>	
+
+	<query name="ProjectAssignment.findProjectAssignmentsForUserInRange">
+    <![CDATA[	
+		FROM ProjectAssignment pa
+		WHERE pa.active is true AND 
+			  pa.project.active is true AND
+			  pa.project.customer.active is true AND 
+			  pa.user.userId = :userId AND
+			  (pa.dateStart IS NULL OR pa.dateStart <= :dateEnd) AND
+			  (pa.dateEnd IS NULL or pa.dateEnd >= :dateStart)
+    		 ]]>
+	</query>
+
+	<query name="ProjectAssignment.findProjectAssignmentsForProjectInRange">
+    <![CDATA[	
+		FROM ProjectAssignment pa
+		WHERE pa.active is true AND 
+			  pa.project.active is true AND
+			  pa.project.customer.active is true AND 
+			  pa.project = :project AND
+			  (pa.dateStart IS NULL OR pa.dateStart < :dateEnd) AND
+			  (pa.dateEnd IS NULL or pa.dateEnd > :dateStart)
+    		 ]]>
+	</query>
+	
+	<query name="ProjectAssignment.findProjectAssignmentsForCustomerInRange">
+    <![CDATA[	
+		FROM ProjectAssignment pa
+		WHERE pa.project.customer is :customer AND
+			  (pa.dateStart IS NULL OR pa.dateStart < :dateEnd) AND
+			  (pa.dateEnd IS NULL or pa.dateEnd > :dateStart)
+    		 ]]>
+	</query>	
+</hibernate-mapping>

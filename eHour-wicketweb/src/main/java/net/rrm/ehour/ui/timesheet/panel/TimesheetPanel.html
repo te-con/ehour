@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/">
+
+<wicket:head>
+	<link wicket:id="timesheetStyle" rel="stylesheet" type="text/css" href="style/timesheetForm.css" />
+</wicket:head>
+
+<body>
+<wicket:panel>
+
+	<div wicket:id="timesheetFrame">
+		<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
+		
+		<div wicket:id="blueFrame">
+			<div class="timesheet">
+				<table class="timesheetTable" cellpadding="0" cellspacing="0">
+					<tr class="weekColumnRow">
+						<td class="borderless" style="width: 16px">&nbsp;</td>
+						<td class="projectCode">&nbsp;</td>
+						<td class="project">&nbsp;</td>
+						<td class="spacer">&nbsp;</td>
+						
+						<td wicket:id="day1Label">Sunday</td>
+						<td wicket:id="day2Label">Monday</td>
+						<td wicket:id="day3Label">Tueday</td>
+						<td wicket:id="day4Label">Wednesday</td>
+						<td wicket:id="day5Label">Thursay</td>
+						<td wicket:id="day6Label">Friday</td>
+						<td class="borderless" wicket:id="day7Label">Saturday</td>
+						<td class="borderless" >&nbsp;</td>
+					</tr>
+					
+					<wicket:container wicket:id="customers">
+						<tr class="customerRow">
+							<td class="customerCell" colspan="5"><strong><wicket:container  wicket:id="customer" /></strong></td>
+							<td class="weekday">&nbsp;</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="weekday">&nbsp;</td>
+							<td class="saturday">&nbsp;</td>
+							<td class="saturday">&nbsp;</td>
+						</tr>
+						
+						<wicket:container wicket:id="rows">
+							<tr class="projectRow">
+								<td class="fold"><a wicket:id="bookWholeWeek"><img wicket:id="bookImg" src="img/check_all_off.png" border="0" /></a></td>
+								<td class="projectCode" wicket:id="projectCode">projectCode</td>
+								<td class="project"><span wicket:id="project"></span>
+									<wicket:enclosure>
+										<br clear="both"/>
+											<span style="clear:both;padding: 1px 0 0 0;color:red;font-size:0.8em" wicket:id="status"></span>
+										<br />
+									</wicket:enclosure>
+								</td>
+								<td class="spacer">&nbsp;</td>
+								
+								<td class="sunday" wicket:id="day1"></td>
+								<td class="weekday" wicket:id="day2"></td>
+								<td class="weekday" wicket:id="day3"></td>
+								<td class="weekday" wicket:id="day4"></td>
+								<td class="weekday" wicket:id="day5"></td>
+								<td class="weekday" wicket:id="day6"></td>
+								<td class="saturday" wicket:id="day7"></td>
+								<td class="total" style="text-align: right;padding-right: 10px" wicket:id="total"></td>
+							</tr>
+						</wicket:container>
+					</wicket:container>
+					
+					<tr class="totalRow">
+						<td colspan="4" style="border: 0" >&nbsp;</td>
+						
+						<td wicket:id="day1Total"></td>
+						<td wicket:id="day2Total"></td>
+						<td wicket:id="day3Total"></td>
+						<td wicket:id="day4Total"></td>
+						<td wicket:id="day5Total"></td>
+						<td wicket:id="day6Total"></td>
+						<td style="border: 0" wicket:id="day7Total"></td>
+						<td style="border: 0;padding-right: 10px" wicket:id="grandTotal"></td>
+					</tr>
+					
+				</table>
+			</div>
+		</div>
+		
+		<br />
+
+		<div wicket:id="commentsFrame">
+			<div class="timesheet">
+				<table class="timesheetCommentsTable" style="margin:0 padding:0" cellpadding="0" cellspacing="0">
+	
+				<tr>
+					<td valign="top">
+						<wicket:message key="timesheet.comments" />:
+					</td>
+					
+					<td align="right" colspan="2">
+						<textarea name="comment" wicket:id="commentsArea"
+									rows="3" style="width: 400px" class="timesheetTextarea"
+									wrap="virtual"></textarea>
+					</td>
+				</tr>
+				
+				</table>
+				
+				<table class="timesheetCommentsTable" style="margin:0 padding:0" cellpadding="0" cellspacing="0">
+	
+				<tr>
+					<td width="20%">
+						<a class="bluebutton" onclick="this.blur();" wicket:id="resetButton" >
+							<span><wicket:message key="timesheet.reset" /></span>
+						</a>
+					</td>				
+					<td style="text-align: center"><span wicket:id="serverMessage"></span></td>
+					<td  width="20%" align="right">
+						<a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+							<span><wicket:message key="timesheet.store" /></span>
+						</a>
+					</td>
+				</tr>
+	
+				</table>
+			</div>
+		</div>
+		</form>
+	</div>
+	
+   	<wicket:fragment wicket:id="title">
+   		<h1>
+	   		<a wicket:id="previousWeek"><img src="img/icon_left.gif" border="0" /></a>
+	   		<wicket:container wicket:id="titleLabel"></wicket:container>
+	   		<a wicket:id="nextWeek"><img src="img/icon_right.gif" border="0" /></a>
+   		</h1>
+	</wicket:fragment>
+
+   	<wicket:fragment wicket:id="dayInput">
+   		<input wicket:id="day" size="2" /><a wicket:id="dayLink"><img src="img/comment/comment_blue_on.gif"  wicket:id="commentLinkImg" border="0" /></a>
+   		<div wicket:id="dayWin"></div>
+	</wicket:fragment>
+
+   	<wicket:fragment wicket:id="dayInputHidden">
+   		&nbsp;
+	</wicket:fragment>
+</wicket:panel>
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns:wicket>
+
+	<head>
+		<wicket:head>
+		        <style>
+		        	.hoverNavigator
+		        	{
+						border-style: solid;
+						border-width: 1px;
+						border-color: #f1f1f1;
+						background-color:  #c5ddfa;
+						margin: 0;
+						padding: 0;
+						width: 2em;
+						text-align: center;
+						padding-right: 2px;
+						font-size: 10px;
+					}
+					
+		        	.hoverNavigator:hover
+		        	{
+						background-color:  #d2ebff;
+					}
+					
+					.hoverNavigator em
+		        	{
+		        		color: white;
+		        	}
+		        </style>
+		</wicket:head>
+    </head>
+
+	<body>
+	  <wicket:panel>
+	  	
+	  	<table cellpadding="0" cellspacing="1">
+	  	
+	  		<tr>
+	  			<td style="font-size: 10px"><wicket:message key="general.page" />:</td>
+	  			<td style="font-size: 10px"><a wicket:id="first">&lt;&lt;</a>&nbsp;<a wicket:id="prev">&lt;</a>&nbsp;</td>
+		    
+		    	<td wicket:id="navigation" class="hoverNavigator">
+				  <a wicket:id="pageLink" href="#"><span wicket:id="pageNumber">5</span></a>
+		    	</td>
+		    	
+		    	<td style="font-size: 10px">&nbsp;<a wicket:id="next">&gt;</a>&nbsp;<a wicket:id="last">&gt;&gt;</a></td>
+		    </tr>
+		  </table>
+		    	
+	  </wicket:panel>
+	</body>
+</html>
