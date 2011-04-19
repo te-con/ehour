@@ -213,20 +213,14 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 
                 item.add(rateLabel);
 
-                Label hoursLabel = new Label("monthHours", new Model<Float>(projectStatus.getHours().floatValue()));
+                Number hours = projectStatus.getHours();
+
+                Label hoursLabel = new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f));
                 item.add(hoursLabel);
 
                 Label turnOverLabel;
 
-                if (projectStatus.getProjectAssignment().
-
-                        getProject()
-
-                        .
-
-                                isBillable()
-
-                        )
+                if (projectStatus.getProjectAssignment().getProject().isBillable())
 
                 {
                     turnOverLabel = new CurrencyLabel("turnover", projectStatus.getTurnOver().floatValue());
