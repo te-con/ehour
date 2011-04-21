@@ -1,42 +1,39 @@
-eHour 0.9 release notes (xx January 2011)
+eHour 0.9.1 release notes (23 April 2011)
+-----------------------------------------
+eHour 0.9.1 adds MySQL and PostgreSQL support to the standalone version, enabling the standalone version to run in a production environment.
+
+The concept of the eHour home directory is introduced. The home directory holds the log files and translations files are loaded from there. This allows you to improve or add translations in an easy fashion.
+
+From the web UI, eHour's database can now be imported/exported from/to an external file. This export can be used as a backup file or to migrate between servers. The export file is database independent so an export from the 0.8.4 standalone database can be imported in a MySQL or PostgreSQL database. The export requires at least Java 1.6.0_19.
+
+A number of improvements were done on the UI. When there are unsaved hours in a timesheet and the user navigates away, a warning message will be shown. The main navigation is also improved.
+
+The full list of JIRA issues (http://dev.ehour.nl/jira/) that are resolved:
+
+New Feature
+[EHO-159] - Load translations from external files
+[EHO-157] - Update help texts in app and provide link backs to Wiki
+[EHO-150] - Add MySQL/PostgreSQL support to the standalone version
+[EHO-200] - Warning when navigating away from an unsaved timesheet
+[EHO-204] - Allow backup, restore and port with external file
 
 Bug
 [EHO-3] - ehcache cache timeout too small
-[EHO-12] - Reporting: no "select all" option
 [EHO-67] - Not compatible with MySQL 5.1 connector
-[EHO-85] - Wrong currency symbol in XLS exports
-[EHO-92] - eHour is not compatible with MySQL 5.1
-[EHO-122] - Some Tomcat installations require a security policy
-[EHO-131] - 2010 problem
-[EHO-138] - Project list background does not repeat when list is very long
-[EHO-141] - Can't remove project manager role
 [EHO-155] - Excel export of current month doesn't fit on A4
-[EHO-164] - Hours/Turnover in wrong column of XLS export of detailed report
-[EHO-166] - Hour data entry window becomes unresponsive
 [EHO-170] - Locale.setDefault shouldn't be changed in EhourWebSession
-[EHO-172] - When exporting to Excel columns sometimes get mixed up
 [EHO-189] - Remove references to swfobject.js
-
-Improvement
-[EHO-168] - Move to Wicket 1.4
+[EHO-164] - Hours/Turnover in wrong column of XLS export of detailed report
+[EHO-174] - Printing throws Internal Error
+[EHO-229] - User can't log in - internal error, and can't change login names.
 [EHO-186] - The User password is overwritten when Administrator wants to edit an existing user.
-[EHO-204] - Allow backup, restore and port with external file
 
-New Feature
-[EHO-150] - Add MySQL/PostgreSQL support to the standalone version
-[EHO-157] - Update help texts in app and provide link backs to Wiki
-[EHO-159] - Load translations from external files
+Misc
+[EHO-168] - Move to Wicket 1.4
 
-Task
-[EHO-200] - Warning when navigating away from an unsaved timesheet
-
-Sub-task
-[EHO-191] - Switch to Spring Security
-[EHO-192] - Reorganize context files to support conditional loading of context definitions
-[EHO-193] - Change deployment to simplify editing of config files
-[EHO-202] - Add export to external file
-[EHO-203] - Add import from external file
-
+eHour 0.9 release notes
+-----------------------
+eHour 0.9 was an internal release
 
 eHour 0.8.4 release notes (16 September 2009)
 ---------------------------------------------

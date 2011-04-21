@@ -36,6 +36,7 @@
         <mkdir dir="${conf}"/>
         <mkdir dir="${dist}/log"/>
         <mkdir dir="${i18n}"/>
+	<mkdir dir="${dist}/db"/>
     </target>
 
     <target name="dist" depends="init">
