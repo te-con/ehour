@@ -1,4 +1,4 @@
-eHour 0.9.1 release notes (xx April 2011)
+eHour 0.9.1 release notes (23 April 2011)
 -----------------------------------------
 eHour 0.9.1 adds MySQL and PostgreSQL support to the standalone version, enabling the standalone version to run in a production environment.
 
