@@ -17,13 +17,13 @@ the WAR version under Tomcat.
 
 Starting eHour on Linux
 -----------------------
-Change directory to either linux-x86-32 (32 bit) or linux-x86-64 (64-bit)
-Execute "ehour.sh start" to start eHour. To stop eHour, execute "ehour.sh stop"
+Change directory to either bin/linux-x86-32 (32 bit) or bin/linux-x86-64 (64-bit)
+Run "ehour.sh start" to start eHour. To stop eHour, run "ehour.sh stop"
 
 Starting eHour on OS/X
 ----------------------
-Navigate to either the macosx-32 (32-bit) or macosx-64 (64-bit) directory. 
-Execute "ehour.sh start" to start eHour. To stop eHour, execute "ehour.sh stop"
+Navigate to either the bin/macosx-32 (32-bit) or bin/macosx-64 (64-bit) directory. 
+Run "ehour.sh start" to start eHour. To stop eHour, run "ehour.sh stop"
 
 Using eHour
 -----------
