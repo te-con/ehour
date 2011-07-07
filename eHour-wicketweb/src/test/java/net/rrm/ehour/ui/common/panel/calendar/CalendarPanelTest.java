@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -54,6 +55,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 	
 	@SuppressWarnings("unchecked")
 	@Test
+    @Ignore
 	public void reproduceIssueEHO131()
 	{
 		AjaxEventHook hook = new AjaxEventHook();
