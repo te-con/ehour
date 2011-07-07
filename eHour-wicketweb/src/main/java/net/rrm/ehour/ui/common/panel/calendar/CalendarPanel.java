@@ -54,376 +54,337 @@ import java.util.List;
 
 /**
  * Navigation Calendar
- **/
+ */
 
-public class CalendarPanel extends SidePanel
-{
-	private static final long serialVersionUID = -7777893083323915299L;
+public class CalendarPanel extends SidePanel {
+    private static final long serialVersionUID = -7777893083323915299L;
 
-	private final static Logger LOGGER = Logger.getLogger(CalendarPanel.class);
+    private final static Logger LOGGER = Logger.getLogger(CalendarPanel.class);
 
-	@SpringBean
-	private TimesheetService 	timesheetService;
+    @SpringBean
+    private TimesheetService timesheetService;
 
-	private WebMarkupContainer	calendarFrame;
-	private	User				user;
-	private boolean				fireWeekClicks;
-	private	DateRange			highlightWeekStartingAt;
-	private EhourConfig			config;
+    private WebMarkupContainer calendarFrame;
+    private User user;
+    private boolean fireWeekClicks;
+    private DateRange highlightWeekStartingAt;
+    private EhourConfig config;
 
-	public CalendarPanel(String id, User user)
-	{
-		this(id, user, true);
-	}
+    public CalendarPanel(String id, User user) {
+        this(id, user, true);
+    }
 
-	public CalendarPanel(String id, User user, boolean allowWeekClicks)
-	{
-		super(id);
+    public CalendarPanel(String id, User user, boolean allowWeekClicks) {
+        super(id);
 
-		setOutputMarkupId(true);
+        setOutputMarkupId(true);
 
-		config = EhourWebSession.getSession().getEhourConfig();
+        config = EhourWebSession.getSession().getEhourConfig();
 
-		this.user = user;
-		fireWeekClicks = allowWeekClicks;
+        this.user = user;
+        fireWeekClicks = allowWeekClicks;
 
-		calendarFrame = getFrame();
-		add(calendarFrame);
+        calendarFrame = getFrame();
+        add(calendarFrame);
 
-		buildCalendar(calendarFrame);
-	}
+        buildCalendar(calendarFrame);
+    }
 
-	public void refreshCalendar(AjaxRequestTarget target)
-	{
-		WebMarkupContainer replacementFrame = getFrame();
-		buildCalendar(replacementFrame);
+    public void refreshCalendar(AjaxRequestTarget target) {
+        WebMarkupContainer replacementFrame = getFrame();
+        buildCalendar(replacementFrame);
 
-		calendarFrame.replaceWith(replacementFrame);
-		calendarFrame = replacementFrame;
-		target.addComponent(replacementFrame);
-	}
+        calendarFrame.replaceWith(replacementFrame);
+        calendarFrame = replacementFrame;
+        target.addComponent(replacementFrame);
+    }
 
-	private WebMarkupContainer getFrame()
-	{
-		WebMarkupContainer calendarFrame = new WebMarkupContainer("calendarFrame");
-		calendarFrame.setOutputMarkupId(true);
+    private WebMarkupContainer getFrame() {
+        WebMarkupContainer calendarFrame = new WebMarkupContainer("calendarFrame");
+        calendarFrame.setOutputMarkupId(true);
 
-		return calendarFrame;
-	}
+        return calendarFrame;
+    }
 
-	private void buildCalendar(WebMarkupContainer parent)
-	{
-		// first get the data
-		Calendar month = EhourWebSession.getSession().getNavCalendar();
-		List<CalendarWeek>	weeks;
+    private void buildCalendar(WebMarkupContainer parent) {
+        // first get the data
+        Calendar month = EhourWebSession.getSession().getNavCalendar();
+        List<CalendarWeek> weeks;
 
-		LOGGER.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
-		weeks = createWeeks(user.getUserId(), ((GregorianCalendar)month.clone()));
+        LOGGER.debug("Constructing navCalendar for userId: " + user.getUserId() + " and month " + month.getTime().toString());
+        weeks = createWeeks(user.getUserId(), ((GregorianCalendar) month.clone()));
 
-		// set month label
-		parent.add(new Label("currentMonth", new DateModel(month, ((EhourWebSession)getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
+        // set month label
+        parent.add(new Label("currentMonth", new DateModel(month, ((EhourWebSession) getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
 
-		// previous & next month links
-		parent.add(createPreviousMonthLink("previousMonthLink"));
+        // previous & next month links
+        parent.add(createPreviousMonthLink("previousMonthLink"));
 
-		parent.add(createNextMonthLink("nextMonthLink"));
+        parent.add(createNextMonthLink("nextMonthLink"));
 
-		// content
-		addCalendarWeeks(parent, weeks);
-	}
+        // content
+        addCalendarWeeks(parent, weeks);
+    }
 
-	private AjaxLink<Void> createNextMonthLink(String id)
-	{
-		AjaxLink<Void> nextMonthLink = new ChangeMonthLink(id, 1);
-		nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
-		return nextMonthLink;
-	}
+    private AjaxLink<Void> createNextMonthLink(String id) {
+        AjaxLink<Void> nextMonthLink = new ChangeMonthLink(id, 1);
+        nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
+        return nextMonthLink;
+    }
 
-	private AjaxLink<Void> createPreviousMonthLink(String id)
-	{
-		AjaxLink<Void> previousMonthLink = new ChangeMonthLink(id, -1);
-		previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
-		return previousMonthLink;
-	}
+    private AjaxLink<Void> createPreviousMonthLink(String id) {
+        AjaxLink<Void> previousMonthLink = new ChangeMonthLink(id, -1);
+        previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
+        return previousMonthLink;
+    }
 
-	@SuppressWarnings("serial")
-	private void addCalendarWeeks(WebMarkupContainer container, List<CalendarWeek> weeks)
-	{
-		ListView<CalendarWeek> view = new ListView<CalendarWeek>("weeks", weeks)
-		{
-			public void populateItem(final ListItem<CalendarWeek> item)
-			{
-				CalendarWeek week = item.getModelObject();
-				Calendar renderDate = (Calendar)week.getWeekStart().clone();
+    @SuppressWarnings("serial")
+    private void addCalendarWeeks(WebMarkupContainer container, List<CalendarWeek> weeks) {
+        ListView<CalendarWeek> view = new ListView<CalendarWeek>("weeks", weeks) {
+            public void populateItem(final ListItem<CalendarWeek> item) {
+                CalendarWeek week = item.getModelObject();
+                Calendar renderDate = (Calendar) week.getWeekStart().clone();
 
-				for (int i = 1; i <= 7; i++)
-				{
-					boolean weekend = DateUtil.isWeekend(renderDate);
+                for (int i = 1; i <= 7; i++) {
+                    boolean weekend = DateUtil.isWeekend(renderDate);
 
-					int currentDay = renderDate.get(Calendar.DAY_OF_WEEK);
-					CalendarDay day = week.getDay(currentDay);
-					
-					Label label = getLabel(i, week, day, weekend);
-					item.add(label);
-					
-					renderDate.add(Calendar.DATE, 1);
-				}
+                    int currentDay = renderDate.get(Calendar.DAY_OF_WEEK);
+                    CalendarDay day = week.getDay(currentDay);
+
+                    Label label = getLabel(i, week, day, weekend);
+                    item.add(label);
+
+                    renderDate.add(Calendar.DATE, 1);
+                }
 
                 item.setOutputMarkupId(true);
 
-		        if (fireWeekClicks)
-		        {
-		        	fireWeekClicks(item, week);
-		        }
-		        else
-		        {
-		        	item.add(new SimpleAttributeModifier("style", "cursor:default"));
-		        }
-			}
+                if (fireWeekClicks) {
+                    fireWeekClicks(item, week);
+                } else {
+                    item.add(new SimpleAttributeModifier("style", "cursor:default"));
+                }
+            }
 
-			private void fireWeekClicks(final ListItem<CalendarWeek> item, CalendarWeek week)
-			{
-				if (highlightWeekStartingAt == null ||
-						!DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
-				{
-					item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
-					item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
-					item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
-				}
-			}
+            private void fireWeekClicks(final ListItem<CalendarWeek> item, CalendarWeek week) {
+                if (highlightWeekStartingAt == null ||
+                        !DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt)) {
+                    item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
+                    item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
+                    item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
+                }
+            }
 
-			private Label getLabel(int i, CalendarWeek week, CalendarDay day, boolean weekend)
-			{
-				Label 	label;
-				String	id = "day" + i;
+            private Label getLabel(int i, CalendarWeek week, CalendarDay day, boolean weekend) {
+                Label label;
+                String id = "day" + i;
 
-				// when day is null the date is in the next/previous month
-				if (day == null)
-				{
-					label = HtmlUtil.getNbspLabel(id);
-				}
-				else
-				{
-					label = new Label(id, new PropertyModel<Integer>(day, "monthDay"));
-				}
+                // when day is null the date is in the next/previous month
+                if (day == null) {
+                    label = HtmlUtil.getNbspLabel(id);
+                } else {
+                    label = new Label(id, new PropertyModel<Integer>(day, "monthDay"));
+                }
 
-				// determine css class
-				String cssClass = weekend ? "WeekendDay" : "WeekDay";
-				label.add(new SimpleAttributeModifier("class", cssClass));
-				
-				// determine custom css properties
-				StringBuilder style = new StringBuilder();
+                // determine css class
+                String cssClass = weekend ? "WeekendDay" : "WeekDay";
+                label.add(new SimpleAttributeModifier("class", cssClass));
 
-				// booked days are bold
-				if (day != null && day.isBooked())
-				{
-					style.append("font-weight: bold;");
-				}
-				
-				// first day doesn't have margin-left 
-				if (i > 1)
-				{
-					style.append("margin-left: 1px;");
-				}
+                // determine custom css properties
+                StringBuilder style = new StringBuilder();
 
-				// selected weeks have a more dark background
-	        	if (highlightWeekStartingAt != null &&
-	        			DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt))
-    			{
-	        		style.append("background-color: #edf5fe;");
-    			}
+                // booked days are bold
+                if (day != null && day.isBooked()) {
+                    style.append("font-weight: bold;");
+                }
 
-	        	if (style.length() > 0)
-	        	{
-	        		label.add(new SimpleAttributeModifier("style", style.toString()));
-	        	}
+                // first day doesn't have margin-left
+                if (i > 1) {
+                    style.append("margin-left: 1px;");
+                }
 
-				return label;
-			}
-		};
+                // selected weeks have a more dark background
+                if (highlightWeekStartingAt != null &&
+                        DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt)) {
+                    style.append("background-color: #edf5fe;");
+                }
 
-		container.add(view);
-	}
+                if (style.length() > 0) {
+                    label.add(new SimpleAttributeModifier("style", style.toString()));
+                }
 
-	private List<CalendarWeek> createWeeks(Integer userId, Calendar dateIterator)
-	{
-		List<CalendarWeek> calendarWeeks = new ArrayList<CalendarWeek>();
-		boolean[] bookedDays;
-		CalendarWeek week;
+                return label;
+            }
+        };
 
-		// grab date
-		bookedDays = getMonthNavCalendar(userId, dateIterator);
+        container.add(view);
+    }
 
-		dateIterator.set(Calendar.DAY_OF_MONTH, 1);
-		int currentMonth = dateIterator.get(Calendar.MONTH);
-		
-		week = new CalendarWeek();
-		week.setWeek(dateIterator.get(Calendar.WEEK_OF_YEAR));
-		week.setYear(dateIterator.get(Calendar.YEAR));
-		week.setWeekStart((Calendar)dateIterator.clone());
-		
-		DateUtil.dayOfWeekFix(week.getWeekStart());
-		week.getWeekStart().set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
-		
-		int previousWeek = -1;
+    private List<CalendarWeek> createWeeks(Integer userId, Calendar dateIterator) {
+        List<CalendarWeek> calendarWeeks = new ArrayList<CalendarWeek>();
+        boolean[] bookedDays;
+        CalendarWeek week;
 
-		do
-		{
-			int dayInMonth = dateIterator.get(Calendar.DAY_OF_MONTH);
-			int dayInWeek = dateIterator.get(Calendar.DAY_OF_WEEK);
-			boolean inWeekend = (dayInWeek == Calendar.SUNDAY || dayInWeek == Calendar.SATURDAY); 
-			
-			CalendarDay day = new CalendarDay(dayInMonth, bookedDays[dayInMonth - 1], inWeekend);
-			
-			week.addDayInWeek(dayInWeek, day);
+        // grab date
+        bookedDays = getMonthNavCalendar(userId, dateIterator);
 
-			dateIterator.add(Calendar.DAY_OF_MONTH, 1);
+        dateIterator.set(Calendar.DAY_OF_MONTH, 1);
+        int currentMonth = dateIterator.get(Calendar.MONTH);
 
-			// next week? add current week and create a new one
-			if (dateIterator.get(Calendar.DAY_OF_WEEK) == config.getFirstDayOfWeek())
-			{
-				calendarWeeks.add(week);
+        week = new CalendarWeek();
+        int weekOfYear = dateIterator.get(Calendar.WEEK_OF_YEAR);
+        week.setWeek(weekOfYear);
 
-				week = new CalendarWeek();
-				week.setWeek(dateIterator.get(Calendar.WEEK_OF_YEAR));
-				week.setWeekStart((Calendar)dateIterator.clone());
+        if (weekOfYear > 51 && currentMonth == Calendar.JANUARY) {
+            week.setYear(dateIterator.get(Calendar.YEAR) - 1);
+        } else {
+            week.setYear(dateIterator.get(Calendar.YEAR));
+        }
+        week.setWeekStart((Calendar) dateIterator.clone());
 
-				// fix that the year is still the old year but the week is already in the next year
-				if (previousWeek != -1 && previousWeek > dateIterator.get(Calendar.WEEK_OF_YEAR))
-				{
-					week.setYear(dateIterator.get(Calendar.YEAR) + 1);
-				}
-				else
-				{
-					week.setYear(dateIterator.get(Calendar.YEAR));
-				}
+        DateUtil.dayOfWeekFix(week.getWeekStart());
+        week.getWeekStart().set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 
-				previousWeek = dateIterator.get(Calendar.WEEK_OF_YEAR);
-			}
+        int previousWeek = -1;
 
-		} while (dateIterator.get(Calendar.MONTH) == currentMonth);
+        do {
+            int dayInMonth = dateIterator.get(Calendar.DAY_OF_MONTH);
+            int dayInWeek = dateIterator.get(Calendar.DAY_OF_WEEK);
+            boolean inWeekend = (dayInWeek == Calendar.SUNDAY || dayInWeek == Calendar.SATURDAY);
 
-		// first day of week is already stored
-		if (dateIterator.get(Calendar.DAY_OF_WEEK) != config.getFirstDayOfWeek())
-		{
-			calendarWeeks.add(week);
-		}
+            CalendarDay day = new CalendarDay(dayInMonth, bookedDays[dayInMonth - 1], inWeekend);
 
-		return calendarWeeks;
-	}
+            week.addDayInWeek(dayInWeek, day);
 
-	private boolean[] getMonthNavCalendar(Integer userId, Calendar requestedMonth)
-	{
-		List<BookedDay> bookedDays;
-		boolean[] monthOverview;
-		Calendar cal;
+            dateIterator.add(Calendar.DAY_OF_MONTH, 1);
 
-		bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
+            // next week? add current week and create a new one
+            if (dateIterator.get(Calendar.DAY_OF_WEEK) == config.getFirstDayOfWeek()) {
+                calendarWeeks.add(week);
 
-		monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
+                week = new CalendarWeek();
+                week.setWeek(dateIterator.get(Calendar.WEEK_OF_YEAR));
+                week.setWeekStart((Calendar) dateIterator.clone());
 
-		for (BookedDay day : bookedDays)
-		{
-			cal = new GregorianCalendar();
-			cal.setTime(day.getDate());
+                // fix that the year is still the old year but the week is already in the next year
+                if (previousWeek != -1 && previousWeek > dateIterator.get(Calendar.WEEK_OF_YEAR)) {
+                    week.setYear(dateIterator.get(Calendar.YEAR) + 1);
+                } else {
+                    week.setYear(dateIterator.get(Calendar.YEAR));
+                }
 
-			// just in case.. it shouldn't happen that the returned month
-			// is longer than the reserved space for this month
-			if (cal.get(Calendar.DAY_OF_MONTH) <= monthOverview.length)
-			{
-				monthOverview[cal.get(Calendar.DAY_OF_MONTH) - 1] = true;
-			}
-		}
+                previousWeek = dateIterator.get(Calendar.WEEK_OF_YEAR);
+            }
 
-		return monthOverview;
-	}
+        } while (dateIterator.get(Calendar.MONTH) == currentMonth);
 
-	/**
-	 * Changes the month
-	 * @author Thies
-	 *
-	 */
-	private class ChangeMonthLink extends DisablingAjaxLink
-	{
-		private static final long serialVersionUID = 1L;
-		private	int monthChange;
-
-		public ChangeMonthLink(String id, int monthChange)
-		{
-			super(id);
-
-			this.monthChange = monthChange;
-		}
-
-		@Override
-		public void onClick(AjaxRequestTarget target)
-        {
-			EhourWebSession session = EhourWebSession.getSession();
-			Calendar month = session.getNavCalendar();
-			month.add(Calendar.MONTH, monthChange);
-			month.set(Calendar.DAY_OF_MONTH, 1);
-			session.setNavCalendar(month);
-
-			// do it before it gets replaced, otherwise getPage is null due to new instantiation of links
-			EventPublisher.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(CalendarAjaxEventType.MONTH_CHANGE));
-
-			refreshCalendar(target);
-
-			this.setEnabled(false);
+        // first day of week is already stored
+        if (dateIterator.get(Calendar.DAY_OF_WEEK) != config.getFirstDayOfWeek()) {
+            calendarWeeks.add(week);
         }
 
-		@Override
-		protected IAjaxCallDecorator getAjaxCallDecorator()
-		{
-			return new LoadingSpinnerDecorator();
-		}
-	}
+        return calendarWeeks;
+    }
 
-	private class WeekClick extends AjaxEventBehavior
-	{
-		private static final long serialVersionUID = 9164386260367481606L;
+    private boolean[] getMonthNavCalendar(Integer userId, Calendar requestedMonth) {
+        List<BookedDay> bookedDays;
+        boolean[] monthOverview;
+        Calendar cal;
 
-		private int week, year;
+        bookedDays = timesheetService.getBookedDaysMonthOverview(userId, requestedMonth);
 
-		public WeekClick(String id, int week, int year)
-		{
-			super(id);
-			this.week = week;
-			this.year = year;
-		}
+        monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
 
-		@Override
-		protected void onEvent(AjaxRequestTarget target)
-		{
-			EhourWebSession session = EhourWebSession.getSession();
-			Calendar cal = DateUtil.getCalendar(session.getEhourConfig());
+        for (BookedDay day : bookedDays) {
+            cal = new GregorianCalendar();
+            cal.setTime(day.getDate());
 
-			cal.set(Calendar.YEAR, year);
-			cal.set(Calendar.WEEK_OF_YEAR, week);
-			DateUtil.dayOfWeekFix(cal);
-			cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+            // just in case.. it shouldn't happen that the returned month
+            // is longer than the reserved space for this month
+            if (cal.get(Calendar.DAY_OF_MONTH) <= monthOverview.length) {
+                monthOverview[cal.get(Calendar.DAY_OF_MONTH) - 1] = true;
+            }
+        }
 
-			session.setNavCalendar(cal);
+        return monthOverview;
+    }
 
-			EventPublisher.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
-		}
+    /**
+     * Changes the month
+     *
+     * @author Thies
+     */
+    private class ChangeMonthLink extends DisablingAjaxLink {
+        private static final long serialVersionUID = 1L;
+        private int monthChange;
+
+        public ChangeMonthLink(String id, int monthChange) {
+            super(id);
+
+            this.monthChange = monthChange;
+        }
 
         @Override
-        protected CharSequence getEventHandler()
-        {
+        public void onClick(AjaxRequestTarget target) {
+            EhourWebSession session = EhourWebSession.getSession();
+            Calendar month = session.getNavCalendar();
+            month.add(Calendar.MONTH, monthChange);
+            month.set(Calendar.DAY_OF_MONTH, 1);
+            session.setNavCalendar(month);
+
+            // do it before it gets replaced, otherwise getPage is null due to new instantiation of links
+            EventPublisher.publishAjaxEvent(ChangeMonthLink.this, new AjaxEvent(CalendarAjaxEventType.MONTH_CHANGE));
+
+            refreshCalendar(target);
+
+            this.setEnabled(false);
+        }
+
+        @Override
+        protected IAjaxCallDecorator getAjaxCallDecorator() {
+            return new LoadingSpinnerDecorator();
+        }
+    }
+
+    private class WeekClick extends AjaxEventBehavior {
+        private static final long serialVersionUID = 9164386260367481606L;
+
+        private int week, year;
+
+        public WeekClick(String id, int week, int year) {
+            super(id);
+            this.week = week;
+            this.year = year;
+        }
+
+        @Override
+        protected void onEvent(AjaxRequestTarget target) {
+            EhourWebSession session = EhourWebSession.getSession();
+            Calendar cal = DateUtil.getCalendar(session.getEhourConfig());
+
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.WEEK_OF_YEAR, week);
+            DateUtil.dayOfWeekFix(cal);
+            cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+
+            session.setNavCalendar(cal);
+
+            EventPublisher.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
+        }
+
+        @Override
+        protected CharSequence getEventHandler() {
             CharSequence handler = super.getEventHandler();
             return GuardDirtyFormUtil.getEventHandler(handler);
         }
 
         @Override
-		protected IAjaxCallDecorator getAjaxCallDecorator()
-		{
-			return new LoadingSpinnerDecorator();
-		}
-	}
+        protected IAjaxCallDecorator getAjaxCallDecorator() {
+            return new LoadingSpinnerDecorator();
+        }
+    }
 
-	public void setHighlightWeekStartingAt(DateRange highlightWeekStartingAt)
-	{
-		this.highlightWeekStartingAt = highlightWeekStartingAt;
-	}
+    public void setHighlightWeekStartingAt(DateRange highlightWeekStartingAt) {
+        this.highlightWeekStartingAt = highlightWeekStartingAt;
+    }
 }
