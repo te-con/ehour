@@ -16,31 +16,22 @@
 
 package net.rrm.ehour.ui.common.sort;
 
-import static org.junit.Assert.assertTrue;
+import net.rrm.ehour.ui.common.sort.LocaleComparator.CompareType;
+import org.junit.Test;
 
 import java.util.Locale;
 
-import net.rrm.ehour.ui.common.sort.LocaleComparator.CompareType;
-
-import org.junit.Test;
-
-/**
- * TODO 
- **/
+import static org.junit.Assert.assertTrue;
 
 public class LocaleComparatorTest
 {
-
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.sort.LocaleComparator#compare(java.util.Locale, java.util.Locale)}.
-	 */
 	@Test
 	public void testCompareCountry()
 	{
 		Locale l1 = Locale.CANADA;
 		Locale l2 = Locale.JAPAN;
 		
-		assertTrue(new LocaleComparator(CompareType.COUNTRY).compare(l1, l2) < 0);
+		assertTrue(new LocaleComparator(CompareType.COUNTRY).compare(l1, l2) != 0);
 	}
 
 	@Test
@@ -49,7 +40,7 @@ public class LocaleComparatorTest
 		Locale l1 = Locale.FRANCE;
 		Locale l2 = Locale.ENGLISH;
 		
-		assertTrue(new LocaleComparator(CompareType.LANGUAGE).compare(l1, l2) > 0);
+		assertTrue(new LocaleComparator(CompareType.LANGUAGE).compare(l1, l2) != 0);
 	}
 
 }

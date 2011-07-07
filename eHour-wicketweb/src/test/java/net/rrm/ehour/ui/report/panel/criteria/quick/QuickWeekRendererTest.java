@@ -16,23 +16,19 @@
 
 package net.rrm.ehour.ui.report.panel.criteria.quick;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
+import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import org.apache.wicket.Localizer;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
-import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-
-import org.apache.wicket.Localizer;
-import org.junit.Before;
-import org.junit.Test;
-/**
- * TODO 
- **/
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.*;
 
 public class QuickWeekRendererTest extends AbstractSpringWebAppTester
 {
@@ -59,15 +55,14 @@ public class QuickWeekRendererTest extends AbstractSpringWebAppTester
 	}
 
 	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.report.panel.criteria.quick.QuickWeekRenderer#getDisplayValue(java.lang.Object)}.
+	 * Test method for {@link net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeekRenderer#getDisplayValue(java.lang.Object)}.
 	 */
 	@Test
 	public void testGetDisplayValueCurrent()
 	{
 		QuickWeek week = new QuickWeek(Calendar.getInstance(), new EhourConfigStub());
 		
-		expect(localizer.getString("report.criteria.currentWeek", null))
-			.andReturn(new String());
+		expect(localizer.getString("report.criteria.currentWeek", null)).andReturn("");
 		replay(localizer);
 		
 		renderer.getDisplayValue(week);
@@ -84,7 +79,7 @@ public class QuickWeekRendererTest extends AbstractSpringWebAppTester
 		QuickWeek week = new QuickWeek(c, new EhourConfigStub());
 		
 		expect(localizer.getString("report.criteria.previousWeek", null))
-					.andReturn(new String());
+					.andReturn("");
 		replay(localizer);		
 		
 		renderer.getDisplayValue(week);
@@ -102,11 +97,71 @@ public class QuickWeekRendererTest extends AbstractSpringWebAppTester
 		QuickWeek week = new QuickWeek(c, new EhourConfigStub());
 		
 		expect(localizer.getString("report.criteria.nextWeek", null))
-			.andReturn(new String());
+			.andReturn("");
 		replay(localizer);		
 		
 		renderer.getDisplayValue(week);
 		
 		verify(localizer);
 	}
+
+	@Test
+	public void testPayAttentionToFirstDayOfWeek() {
+		Locale.setDefault(Locale.ITALIAN);
+		Calendar c = new GregorianCalendar(2011, 7 -1, 5); //Tuesday
+		Assert.assertEquals(Calendar.MONDAY, c.getFirstDayOfWeek());
+		c.add(Calendar.WEEK_OF_YEAR, -1);
+
+		Calendar c2 = (Calendar)c.clone();
+		Assert.assertEquals(c.get(Calendar.WEEK_OF_YEAR), c2.get(Calendar.WEEK_OF_YEAR));
+
+		c2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		Assert.assertEquals(c.get(Calendar.WEEK_OF_YEAR), c2.get(Calendar.WEEK_OF_YEAR));
+
+		//the next step will change week of year
+		c2.setFirstDayOfWeek(Calendar.SUNDAY);
+		Assert.assertFalse(c.get(Calendar.WEEK_OF_YEAR) == c2.get(Calendar.WEEK_OF_YEAR));
+
+		//reversing the operation works as expected
+		Assert.assertEquals(Calendar.MONDAY, c.getFirstDayOfWeek());
+		c.add(Calendar.WEEK_OF_YEAR, -1);
+
+		c2 = (Calendar)c.clone();
+		Assert.assertEquals(c.get(Calendar.WEEK_OF_YEAR), c2.get(Calendar.WEEK_OF_YEAR));
+
+		c2.setFirstDayOfWeek(Calendar.SUNDAY);
+		Assert.assertEquals(c.get(Calendar.WEEK_OF_YEAR), c2.get(Calendar.WEEK_OF_YEAR));
+
+		c2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		Assert.assertTrue(c.get(Calendar.WEEK_OF_YEAR) == c2.get(Calendar.WEEK_OF_YEAR));
+
+		// Executing the same test moving First day of week forward works always as expected
+		c = new GregorianCalendar(2011, 7 -1, 5); //Tuesday
+		Assert.assertEquals(Calendar.MONDAY, c.getFirstDayOfWeek());
+		c.add(Calendar.WEEK_OF_YEAR, -1);
+
+		c2 = (Calendar)c.clone();
+		Assert.assertEquals(c.get(Calendar.WEEK_OF_YEAR), c2.get(Calendar.WEEK_OF_YEAR));
+
+		c2.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+		Assert.assertEquals(c.get(Calendar.WEEK_OF_YEAR), c2.get(Calendar.WEEK_OF_YEAR));
+
+		//the next step will NOT change week of year
+		c2.setFirstDayOfWeek(Calendar.SUNDAY);
+		Assert.assertTrue(c.get(Calendar.WEEK_OF_YEAR) == c2.get(Calendar.WEEK_OF_YEAR));
+
+		//reversing the operation works as expected
+		Assert.assertEquals(Calendar.MONDAY, c.getFirstDayOfWeek());
+		c.add(Calendar.WEEK_OF_YEAR, -1);
+
+		c2 = (Calendar)c.clone();
+		Assert.assertEquals(c.get(Calendar.WEEK_OF_YEAR), c2.get(Calendar.WEEK_OF_YEAR));
+
+		c2.setFirstDayOfWeek(Calendar.WEDNESDAY);
+		Assert.assertEquals(c.get(Calendar.WEEK_OF_YEAR), c2.get(Calendar.WEEK_OF_YEAR));
+
+		c2.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+		Assert.assertTrue(c.get(Calendar.WEEK_OF_YEAR) == c2.get(Calendar.WEEK_OF_YEAR));
+
+}
 }

@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.report.panel.criteria.quick;
 
-import java.util.Calendar;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.util.DateUtil;
+
+import java.util.Calendar;
 
 /**
  * Quick week value object
@@ -33,6 +33,7 @@ public class QuickWeek extends QuickPeriod
 	{
 		Calendar cal = (Calendar)calendarOrig.clone();
 		DateUtil.dayOfWeekFix(cal);
+		cal.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 		setPeriodStart(cal.getTime());
 		
