@@ -100,9 +100,7 @@ public class TreeReportDataPanel extends Panel
 			EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 			
 			header.add(getReportHeaderLabel("reportHeader", report.getReportRange(), config));
-		}
-		else
-		{
+		} else {
 			header.add(HtmlUtil.getInvisibleLink("excelLink"));
 			header.add(HtmlUtil.getInvisibleLabel("reportHeader"));
 		}
@@ -228,7 +226,7 @@ public class TreeReportDataPanel extends Panel
 		
 		if (label != null)
 		{
-			if (columnType != ReportColumn.ColumnType.OTHER)
+			if (columnType != ReportColumn.ColumnType.STRING)
 			{
 				style.append("text-align: right;");
 			}
@@ -275,7 +273,7 @@ public class TreeReportDataPanel extends Panel
 		protected void populateItem(Item<TreeReportElement> item)
 		{
 			RepeatingView cells = new RepeatingView("cell");
-			TreeReportElement row = (TreeReportElement)item.getModelObject();
+			TreeReportElement row = item.getModelObject();
 			int i = 0;
 			
 			List<Serializable> thisCellValues = new ArrayList<Serializable>();

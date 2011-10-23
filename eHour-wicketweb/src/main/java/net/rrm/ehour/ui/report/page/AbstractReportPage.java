@@ -24,7 +24,6 @@ import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -40,20 +39,11 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 
 	protected final static Logger logger = Logger.getLogger(AbstractReportPage.class);
 
-	/**
-	 * 
-	 * @param pageTitle
-	 * @param model
-	 */
 	public AbstractReportPage(ResourceModel pageTitle)
 	{
 		super(pageTitle, null);
 	}
 
-	/**
-	 * Get report criteria
-	 * @return
-	 */
 	protected ReportCriteria getReportCriteria(boolean singleUser)
 	{
 		UserCriteria userCriteria = EhourWebSession.getSession().getUserCriteria();
@@ -68,7 +58,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 			setSingleUserCriteria(singleUser, userCriteria);
 		}
 		
-		AvailableCriteria availableCriteria = getAvailableCriteria();
+		AvailableCriteria availableCriteria = newAvailableCriteria();
 
 		ReportCriteria criteria = new ReportCriteria(availableCriteria, userCriteria);
 		
@@ -79,7 +69,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 	 * Get a fresh new shiny AvailableCriteria obj
 	 * @return
 	 */
-	protected AvailableCriteria getAvailableCriteria()
+	protected AvailableCriteria newAvailableCriteria()
 	{
 		return new AvailableCriteria();
 	}
@@ -98,10 +88,6 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 		return userCriteria;
 	}
 
-	/**
-	 * @param singleUser
-	 * @param userCriteria
-	 */
 	private void setSingleUserCriteria(boolean singleUser, UserCriteria userCriteria)
 	{
 		userCriteria.setSingleUser(singleUser);

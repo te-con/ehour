@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.common.component.header.HeaderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
 import org.apache.wicket.devutils.debugbar.DebugBar;
@@ -108,4 +107,14 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
 	{
 		return getEhourWebSession().getEhourConfig();
 	}
+
+    @SuppressWarnings({"unchecked"})
+    public T getPageModelObject() {
+        return (T)getDefaultModelObject();
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public IModel<T> getPageModel() {
+        return (IModel<T>) getDefaultModel();
+    }
 }

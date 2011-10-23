@@ -16,13 +16,13 @@
 
 package net.rrm.ehour.ui.common.report;
 
-import static net.rrm.ehour.ui.common.converter.DateConverter.DateStyle.FULL_SHORT;
-import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.ALLOW_DUPLICATES;
-import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.VISIBLE;
 import net.rrm.ehour.ui.common.converter.CurrencyConverter;
 import net.rrm.ehour.ui.common.converter.DateConverter;
 import net.rrm.ehour.ui.common.report.ReportColumn.ColumnType;
 import net.rrm.ehour.ui.report.panel.user.TurnoverTreeReportColumn;
+
+import static net.rrm.ehour.ui.common.converter.DateConverter.DateStyle.FULL_SHORT;
+import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.*;
 
 /**
  * All report definitions
@@ -68,8 +68,8 @@ public enum ReportConfig
 	AGGREGATE_CUSTOMER_SINGLE_USER (new ReportColumn("userReport.report.customer"),
 									new ReportColumn("userReport.report.project"),
 									new ReportColumn("userReport.report.projectCode"),
-									new ReportColumn("userReport.report.rate"),
-									new ReportColumn("userReport.report.rate"),
+                                    new ReportColumn("userReport.report.user", ColumnType.STRING, HIDE),
+									new TurnoverTreeReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES),
 									new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
 									new TurnoverTreeReportColumn("userReport.report.turnover", CurrencyConverter.getInstance())),
 
@@ -81,21 +81,11 @@ public enum ReportConfig
 	private ReportColumn[] 	reportColumns;
 	private int groupByColumn;
 	
-	/**
-	 * 
-	 * @param reportColumns
-	 */
-	
 	private ReportConfig(ReportColumn... reportColumns)
 	{
 		this(-1, reportColumns);
 	}
 	
-	/**
-	 * 
-	 * @param reportColumns
-	 * @param groupByColumn
-	 */
 	private ReportConfig(int groupByColumn, ReportColumn... reportColumns)
 	{
 		this.reportColumns = reportColumns;

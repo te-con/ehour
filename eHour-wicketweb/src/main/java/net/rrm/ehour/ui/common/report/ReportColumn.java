@@ -33,9 +33,9 @@ import java.util.List;
 
 public class ReportColumn implements Serializable
 {
-	public static enum ColumnType { OTHER, DATE, RATE, HOUR, TURNOVER, COMMENT }
+	public static enum ColumnType {STRING, DATE, RATE, HOUR, TURNOVER, COMMENT }
 
-    public static enum DisplayType {VISIBLE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN }
+    public static enum DisplayType {VISIBLE, HIDE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN }
 
     private static final long serialVersionUID = -6736366461333244457L;
 	
@@ -43,31 +43,24 @@ public class ReportColumn implements Serializable
 	private	String		columnHeaderResourceKey;
 	private IConverter	converter;
 	
-	private ColumnType	columnType = ColumnType.OTHER;
+	private ColumnType	columnType = ColumnType.STRING;
 	
 	public ReportColumn(String columnHeaderResourceKey)
 	{
-		this(columnHeaderResourceKey, DisplayType.VISIBLE, DisplayType.ALLOW_DUPLICATES, DisplayType.CHART_SERIES_COLUMN);
+		this(columnHeaderResourceKey, ColumnType.STRING, DisplayType.VISIBLE, DisplayType.ALLOW_DUPLICATES, DisplayType.CHART_SERIES_COLUMN);
 	}
 
-	public ReportColumn(String columnHeaderResourceKey, DisplayType...displayTypes)
-	{
-		this(columnHeaderResourceKey, ColumnType.OTHER, displayTypes);
-	}
-	
 	public ReportColumn(String columnHeaderResourceKey, ColumnType columnType, DisplayType...displayTypes)
 	{
-		this(columnHeaderResourceKey, columnType, null, displayTypes);
+        this.columnHeaderResourceKey = columnHeaderResourceKey;
+        this.displayTypes = Arrays.asList(displayTypes);
+        this.columnType = columnType;
 	}
 
-	public ReportColumn(String columnHeaderResourceKey, ColumnType columnType, IConverter converter, DisplayType...displayTypes)
-	{
-
-		this.columnHeaderResourceKey = columnHeaderResourceKey;
-		this.converter = converter;
-		this.displayTypes = Arrays.asList(displayTypes);
-		this.columnType = columnType;
-	}
+	public ReportColumn(String columnHeaderResourceKey, ColumnType columnType, IConverter converter, DisplayType...displayTypes) {
+        this(columnHeaderResourceKey, columnType, displayTypes);
+        this.converter = converter;
+    }
 	
 	/**
 	 * @return the visible

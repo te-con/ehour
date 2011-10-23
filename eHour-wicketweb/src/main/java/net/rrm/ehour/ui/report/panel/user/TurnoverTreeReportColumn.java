@@ -18,26 +18,26 @@ package net.rrm.ehour.ui.report.panel.user;
 
 import net.rrm.ehour.ui.common.report.ReportColumn;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.wicket.util.convert.IConverter;
 
 /**
- * ReportColumn with visibility depending on whether to show turnover or not 
- **/
+ * ReportColumn with visibility depending on whether to show turnover or not
+ */
 
-public class TurnoverTreeReportColumn extends ReportColumn
-{
-	private static final long serialVersionUID = 1L;
+public class TurnoverTreeReportColumn extends ReportColumn {
+    private static final long serialVersionUID = 1L;
 
-	public TurnoverTreeReportColumn(String columnHeaderResourceKey, 
-									IConverter converter)
-	{
-		super(columnHeaderResourceKey, ColumnType.TURNOVER, converter, DisplayType.VISIBLE, DisplayType.ALLOW_DUPLICATES);
-	}
-	
-	@Override
-	public boolean isVisible()
-	{
-		return EhourWebSession.getSession().getEhourConfig().isShowTurnover();
-	}	
+    public TurnoverTreeReportColumn(String columnHeaderResourceKey,
+                                    IConverter converter) {
+        super(columnHeaderResourceKey, ColumnType.TURNOVER, converter, DisplayType.VISIBLE, DisplayType.ALLOW_DUPLICATES);
+    }
+
+    public TurnoverTreeReportColumn(String columnHeaderResourceKey, ColumnType columnType, IConverter converter, DisplayType... displayTypes) {
+        super(columnHeaderResourceKey, columnType, converter, displayTypes);
+    }
+
+    @Override
+    public boolean isVisible() {
+        return EhourWebSession.getSession().getEhourConfig().isShowTurnover();
+    }
 }

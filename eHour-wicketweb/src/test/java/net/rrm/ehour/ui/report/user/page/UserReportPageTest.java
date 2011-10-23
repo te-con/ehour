@@ -16,22 +16,18 @@
 
 package net.rrm.ehour.ui.report.user.page;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.ui.report.page.BaseTestReport;
-
 import org.junit.Test;
 
+import static org.easymock.EasyMock.*;
+
 @SuppressWarnings("serial")
-public class UserReportTest extends BaseTestReport
+public class UserReportPageTest extends BaseTestReport
 {
 	@Test
-	public void testUserReportPageRender()
+	public void shouldRenderPage()
 	{
 		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdateType.UPDATE_ALL)))
 		.andReturn(reportCriteria);	
@@ -42,9 +38,9 @@ public class UserReportTest extends BaseTestReport
 		replay(reportCriteriaService);
 		replay(aggregateReportService);
 		
-		getTester().startPage(UserReport.class);
-		getTester().assertRenderedPage(UserReport.class);
-		getTester().assertNoErrorMessage();
+		tester.startPage(UserReportPage.class);
+		tester.assertRenderedPage(UserReportPage.class);
+		tester.assertNoErrorMessage();
 		
 		verify(reportCriteriaService);
 		verify(aggregateReportService);

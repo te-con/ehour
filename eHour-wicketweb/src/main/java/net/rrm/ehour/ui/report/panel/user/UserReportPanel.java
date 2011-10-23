@@ -37,6 +37,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.value.ValueMap;
@@ -58,23 +59,13 @@ public class UserReportPanel extends AbstractReportPanel
 	private static final String PROJECT_TURNOVER_CHART_ID = "projectTurnoverChart";
 	private static final String CUSTOMER_TURNOVER_CHART_ID = "customerTurnoverChart";
 	private static final long serialVersionUID = -2660092982421858132L;
-	
-	/**
-	 * 
-	 * @param id
-	 * @param reportData
-	 */
+
 	public UserReportPanel(String id, CustomerAggregateReport aggregateReport, Option... options)
 	{
 		super(id, WebGeo.NOT_DEFINED, WebGeo.W_CONTENT_MEDIUM);
 		add(getReportPanel(aggregateReport, options));
 	}
 	
-	/**
-	 * Get report panel
-	 * @param customerAggregateReport
-	 * @return
-	 */
 	private WebMarkupContainer getReportPanel(CustomerAggregateReport customerAggregateReport, Option... options)
 	{
 		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
@@ -104,7 +95,6 @@ public class UserReportPanel extends AbstractReportPanel
 			};
 			
 			printLink.add(new SimpleAttributeModifier("target", "_print"));
-			
 		}
 
 		// Report model
@@ -115,7 +105,7 @@ public class UserReportPanel extends AbstractReportPanel
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, printLink, excelLink, WebGeo.W_CONTENT_MEDIUM);
 
-		greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportConfig.AGGREGATE_CUSTOMER_SINGLE_USER, null, getReportWidth().getValue() - 30));
+        greyBorder.add(new TreeReportDataPanel("reportTable", customerAggregateReport, ReportConfig.AGGREGATE_CUSTOMER_SINGLE_USER, null, getReportWidth().getValue() - 30));
 		
 		Fragment frag = new Fragment("charts", "image", this);
 		greyBorder.add(frag);
@@ -124,20 +114,15 @@ public class UserReportPanel extends AbstractReportPanel
 		
 		return greyBorder;
 	}
-	
-	/**
-	 * Add jfree charts
-	 * @param reportCriteria
-	 * @return
-	 */
+
 	private void addImageCharts(ReportData data, WebMarkupContainer parent)
 	{
 		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 		
 		ReportData rawData = ((TreeReportData)data).getRawReportData();
-		
-		Model<ReportData> dataModel = new Model<ReportData>(rawData);
-		
+
+        IModel<ReportData> dataModel = new Model<ReportData>(rawData);
+
 		// hours per customer
 		parent.add(createCustomerHoursChart(dataModel));
 
@@ -158,26 +143,26 @@ public class UserReportPanel extends AbstractReportPanel
 		return img;
 	}
 
-	private Image createProjectHoursChart(Model<ReportData> dataModel)
+	private Image createProjectHoursChart(IModel<ReportData> dataModel)
 	{
 		AggregateChartDataConverter hourConverter = new ProjectHoursAggregateChartDataConverter();
 		return new AggregateChartImage("projectHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);
 	}	
 
-	private Image createProjectTurnOverChart(Model<ReportData> dataModel)
+	private Image createProjectTurnOverChart(IModel<ReportData> dataModel)
 	{
 		AggregateChartDataConverter turnoverConverter = new ProjectTurnoverAggregateChartDataConverter();
 		return new AggregateChartImage(PROJECT_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
 	}
 
 	
-	private Image createCustomerTurnOverChart(Model<ReportData> dataModel)
+	private Image createCustomerTurnOverChart(IModel<ReportData> dataModel)
 	{
 		AggregateChartDataConverter turnoverConverter = new CustomerTurnoverAggregateChartDataConverter();
 		return new AggregateChartImage(CUSTOMER_TURNOVER_CHART_ID, dataModel, getChartWidth().getValue(), getChartHeight().getValue(), turnoverConverter);
 	}
 
-	private Image createCustomerHoursChart(Model<ReportData> dataModel)
+	private Image createCustomerHoursChart(IModel<ReportData> dataModel)
 	{
 		AggregateChartDataConverter hourConverter = new CustomerHoursAggregateChartDataConverter();
 		return new AggregateChartImage("customerHoursChart", dataModel, getChartWidth().getValue(), getChartHeight().getValue(), hourConverter);

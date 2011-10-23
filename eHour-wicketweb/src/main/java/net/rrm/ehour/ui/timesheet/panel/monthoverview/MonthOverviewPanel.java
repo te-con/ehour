@@ -128,11 +128,6 @@ public class MonthOverviewPanel extends Panel
         parent.add(calendarView);
     }
 
-    /**
-     * @param calendar
-     * @param calendarView
-     * @return
-     */
     private void createWeek(WebMarkupContainer row)
     {
         row.add(new Label("weekNumber", Integer.toString(overviewFor.get(Calendar.WEEK_OF_YEAR))));
@@ -141,11 +136,6 @@ public class MonthOverviewPanel extends Panel
         addDayValuesToWeek(row);
     }
 
-    /**
-     * Add all the day values to the week
-     *
-     * @param row
-     */
     private void addDayValuesToWeek(WebMarkupContainer row)
     {
         for (int i = 1; i <= 7; i++, overviewFor.add(Calendar.DATE, 1))
@@ -162,10 +152,6 @@ public class MonthOverviewPanel extends Panel
         }
     }
 
-    /**
-     * @param dayId
-     * @return
-     */
     private Fragment createDay(String dayId)
     {
         Fragment fragment;
@@ -296,12 +282,6 @@ public class MonthOverviewPanel extends Panel
         overviewFor.add(Calendar.DATE, -7);
     }
 
-    /**
-     * @param calendar
-     * @param thisMonth
-     * @param thisYear
-     * @return
-     */
     private boolean monthIsBeforeCurrent(Calendar calendar, int thisMonth, int thisYear)
     {
         int year = calendar.get(Calendar.YEAR);
