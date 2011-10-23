@@ -27,6 +27,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "USER_ROLE")
@@ -40,17 +42,24 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 	public final static String	ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
 	public final static String	ROLE_ADMIN = "ROLE_ADMIN";
 
-	public static final UserRole CONSULTANT = new UserRole(ROLE_CONSULTANT);
-	public static final UserRole REPORT = new UserRole(ROLE_REPORT);
-	public static final UserRole PROJECTMANAGER = new UserRole(ROLE_PROJECTMANAGER);
-	public static final UserRole ADMIN = new UserRole(ROLE_ADMIN);
-	
+	public static final UserRole CONSULTANT = new UserRole(ROLE_CONSULTANT, "Consultant");
+	public static final UserRole REPORT = new UserRole(ROLE_REPORT, "Report Role");
+	public static final UserRole PROJECTMANAGER = new UserRole(ROLE_PROJECTMANAGER, "PM");
+	public static final UserRole ADMIN = new UserRole(ROLE_ADMIN, "Administrator");
+
+    public static final Map<String, UserRole> ROLES = new HashMap<String, UserRole>();
+
+    static {
+        ROLES.put(ROLE_CONSULTANT, CONSULTANT);
+        ROLES.put(ROLE_REPORT, REPORT);
+        ROLES.put(ROLE_PROJECTMANAGER, PROJECTMANAGER);
+        ROLES.put(ROLE_ADMIN, ADMIN);
+    }
 
     @Id
     @Column(name = "ROLE", length = 128)
     @NotNull
 	private String 	role;
-
 
     @NotNull
     @Column(name = "NAME", length = 128, nullable = false)
@@ -58,11 +67,6 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 
 	public UserRole()
 	{
-	}
-	
-	public UserRole(String role)
-	{
-		this.role = role;
 	}
 
 	public UserRole(String role, String roleName)
@@ -77,19 +81,9 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 		return roleName;
 	}
 
-	public void setRoleName(String roleName)
-	{
-		this.roleName = roleName;
-	}
-
 	public String getRole()
 	{
 		return role;
-	}
-
-	public void setRole(String role)
-	{
-		this.role = role;
 	}
 
 	public String getAuthority()

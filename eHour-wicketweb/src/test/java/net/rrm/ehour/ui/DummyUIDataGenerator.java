@@ -1,22 +1,13 @@
 package net.rrm.ehour.ui;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.TimesheetEntryId;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class DummyUIDataGenerator
 {
@@ -137,9 +128,7 @@ public class DummyUIDataGenerator
 		
 		user.setUserDepartment(new UserDepartment(1));
 		
-		Set<UserRole> roles = new HashSet<UserRole>();
-		roles.add(new UserRole("ROLE_ADMIN"));
-		user.setUserRoles(roles);
+		user.setUserRoles(Arrays.asList(UserRole.ADMIN));
 		
 		return user;
 	}

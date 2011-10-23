@@ -42,7 +42,7 @@ public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester 
 	{
 //		configService = createMock(ConfigurationService.class);
 		configService = createMock(ConfigurationServiceImpl.class,
-                ConfigurationServiceImpl.class.getMethod("getConfiguration", null),
+                ConfigurationServiceImpl.class.getMethod("getConfiguration"),
                 ConfigurationServiceImpl.class.getMethod("persistConfiguration", EhourConfig.class));
 		getMockContext().putBean("configService", configService);
         configService.seteHourHome("/");

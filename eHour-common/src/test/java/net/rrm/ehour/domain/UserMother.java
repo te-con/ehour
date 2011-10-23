@@ -1,8 +1,7 @@
 package net.rrm.ehour.domain;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created on Feb 7, 2010 2:25:08 PM
@@ -29,10 +28,7 @@ public class UserMother
 		user.setPassword("abc");
 		
 		user.setUserDepartment(department);
-		
-		Set<UserRole> roles = new HashSet<UserRole>();
-		roles.add(UserRoleMother.createUserRole());
-		user.setUserRoles(roles);
+		user.setUserRoles(Arrays.asList(UserRole.ADMIN));
 		
 		return user;
 	}

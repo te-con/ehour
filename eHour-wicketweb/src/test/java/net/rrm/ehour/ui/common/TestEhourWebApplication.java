@@ -16,25 +16,13 @@
 
 package net.rrm.ehour.ui.common;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
-
-import org.apache.wicket.Application;
-import org.apache.wicket.Component;
-import org.apache.wicket.Request;
-import org.apache.wicket.Response;
-import org.apache.wicket.Session;
+import org.apache.wicket.*;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
 import org.apache.wicket.authorization.strategies.role.Roles;
@@ -43,6 +31,9 @@ import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.session.ISessionStore;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 
 public class TestEhourWebApplication extends EhourWebApplication implements Serializable
 {
@@ -122,10 +113,10 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 		if (authorizedRoles == null)
 		{
 			authorizedRoles = new Roles();
-			authorizedRoles.add(CommonWebUtil.ROLE_PM);
-			authorizedRoles.add(CommonWebUtil.ROLE_CONSULTANT);
-			authorizedRoles.add(CommonWebUtil.ROLE_ADMIN);
-			authorizedRoles.add(CommonWebUtil.ROLE_REPORT);
+			authorizedRoles.add(UserRole.ROLE_PROJECTMANAGER);
+			authorizedRoles.add(UserRole.ROLE_CONSULTANT);
+			authorizedRoles.add(UserRole.ROLE_ADMIN);
+			authorizedRoles.add(UserRole.ROLE_REPORT);
 		}
 
 		return authorizedRoles;
@@ -139,12 +130,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 			user.setUsername("thies");
 			user.setPassword("secret");
 
-			Set<UserRole> userRoles = new HashSet<UserRole>();
-			userRoles.add(new UserRole(CommonWebUtil.ROLE_CONSULTANT));
-			userRoles.add(new UserRole(CommonWebUtil.ROLE_ADMIN));
-			userRoles.add(new UserRole(CommonWebUtil.ROLE_REPORT));
-			userRoles.add(new UserRole(CommonWebUtil.ROLE_PM));
-			user.setUserRoles(userRoles);
+			user.setUserRoles(UserRole.ROLES.values());
 
 			authenticatedUser = user;
 		}

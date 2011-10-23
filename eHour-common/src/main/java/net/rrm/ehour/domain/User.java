@@ -27,6 +27,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -77,7 +78,7 @@ public class User extends DomainObject<Integer, User>
     @JoinTable(name = "USER_TO_USERROLE",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE"))
-    private Set<UserRole> userRoles = new HashSet<UserRole>();
+    private Collection<UserRole> userRoles = new HashSet<UserRole>();
 
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID")
@@ -102,9 +103,6 @@ public class User extends DomainObject<Integer, User>
     {
     }
 
-    /**
-     * minimal constructors
-     */
     public User(UserDepartment userDepartment)
     {
         this.userDepartment = userDepartment;
@@ -128,9 +126,6 @@ public class User extends DomainObject<Integer, User>
         this.lastName = lastName;
     }
 
-    /**
-     * full constructor
-     */
     public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment)
     {
         this.username = username;
@@ -152,14 +147,9 @@ public class User extends DomainObject<Integer, User>
         userRoles.add(role);
     }
 
-    /**
-     * Get fullname
-     *
-     * @return
-     */
     public String getFullName()
     {
-        StringBuffer fullName = new StringBuffer();
+        StringBuilder fullName = new StringBuilder();
 
         if (!StringUtils.isBlank(lastName))
         {
@@ -241,12 +231,12 @@ public class User extends DomainObject<Integer, User>
         this.email = email;
     }
 
-    public Set<UserRole> getUserRoles()
+    public Collection<UserRole> getUserRoles()
     {
         return this.userRoles;
     }
 
-    public void setUserRoles(Set<UserRole> userRoles)
+    public void setUserRoles(Collection<UserRole> userRoles)
     {
         this.userRoles = userRoles;
     }

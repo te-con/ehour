@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.admin.user.dto;
 
-import java.util.ArrayList;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
@@ -44,8 +42,7 @@ public class UserBackingBean extends AdminBackingBeanImpl
 			this.originalUsername = user.getUsername();
 			this.originalPassword = user.getPassword();
 			
-			// barfff
-			isPm = new ArrayList<UserRole>(user.getUserRoles()).contains(UserRole.PROJECTMANAGER);
+			isPm = user.getUserRoles().contains(UserRole.PROJECTMANAGER);
 		}
 	}
 

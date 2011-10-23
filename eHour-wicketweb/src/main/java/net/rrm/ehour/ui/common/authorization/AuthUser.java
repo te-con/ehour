@@ -16,29 +16,18 @@
 
 package net.rrm.ehour.ui.common.authorization;
 
+import net.rrm.ehour.domain.User;
+import org.springframework.security.core.GrantedAuthority;
+
 import java.util.Arrays;
 import java.util.Collection;
-
-import net.rrm.ehour.domain.User;
-
-import org.springframework.security.core.GrantedAuthority;
 
 public class AuthUser extends org.springframework.security.core.userdetails.User
 {
 	private	User		user;
 	private static final long serialVersionUID = -9086733140310198830L;
 
-	/**
-	 * 
-	 * @param username
-	 * @param password
-	 * @param enabled
-	 * @param accountNonExpired
-	 * @param credentialsNonExpired
-	 * @param accountNonLocked
-	 * @param authorities
-	 * @throws IllegalArgumentException
-	 */
+
 	public AuthUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<GrantedAuthority> authorities) throws IllegalArgumentException
 	{
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
@@ -52,19 +41,11 @@ public class AuthUser extends org.springframework.security.core.userdetails.User
 		this.user = user;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public User getUser()
 	{
 		return user;
 	}
 
-	/**
-	 * 
-	 * @param user
-	 */
 	public void setUser(User user)
 	{
 		this.user = user;

@@ -16,32 +16,19 @@
 
 package net.rrm.ehour.user.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
-
 import junit.framework.TestCase;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
-
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+
+import java.util.*;
+
+import static org.easymock.EasyMock.*;
 
 
 /**
@@ -88,10 +75,7 @@ public class UserServiceTest extends TestCase
 		
 		verify(userDAO);
 	}
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.user.service.UserServiceImpl#getUser(java.lang.Integer)}.
-	 * @throws ObjectNotFoundException 
-	 */
+
 	public void testGetUser() throws ObjectNotFoundException
 	{
 		User				user;
@@ -138,7 +122,7 @@ public class UserServiceTest extends TestCase
 		
 		replay(userDAO);
 		
-		user = userService.getUser(new Integer(1));
+		user = userService.getUser(1);
 		
 		verify(userDAO);
 		
@@ -147,21 +131,16 @@ public class UserServiceTest extends TestCase
 		assertEquals(1, user.getInactiveProjectAssignments().size());
 	}
 	
-	/**
-	 * @throws ObjectNotFoundException 
-	 * 
-	 *
-	 */
 	public void testGetUserDepartment() throws ObjectNotFoundException
 	{
 		UserDepartment ud;
 
 		expect(userDepartmentDAO.findById(1))
-				.andReturn(new UserDepartment(new Integer(1), "bla", "ble"));
+				.andReturn(new UserDepartment(1, "bla", "ble"));
 		
 		replay(userDepartmentDAO);
 		
-		ud = userService.getUserDepartment(new Integer(1));
+		ud = userService.getUserDepartment(1);
 		
 		verify(userDepartmentDAO);
 		
@@ -170,17 +149,16 @@ public class UserServiceTest extends TestCase
 	
 	public void testGetUserRole()
 	{
-		String	role = "ROLE_CONSULTANT";
-		expect(userRoleDAO.findById(role))
-			.andReturn(new UserRole(role));
+		expect(userRoleDAO.findById(UserRole.ROLE_CONSULTANT))
+			.andReturn(UserRole.CONSULTANT);
 		
 		replay(userRoleDAO);
 		
-		UserRole ur = userService.getUserRole(role);
+		UserRole ur = userService.getUserRole(UserRole.ROLE_CONSULTANT);
 		
 		verify(userRoleDAO);
 		
-		assertEquals(role, ur.getRole());
+		assertEquals(UserRole.ROLE_CONSULTANT, ur.getRole());
 	}
 	
 	public void testGetUserRoles()
@@ -199,10 +177,10 @@ public class UserServiceTest extends TestCase
 	{
 		User user = new User(1);
 		user.setPassword("aa");
-		user.setSalt(new Integer(2));
+		user.setSalt(2);
 		user.setUsername("user");
 		
-		expect(userDAO.findById(new Integer(1)))
+		expect(userDAO.findById(1))
 			.andReturn(user);
 		
 		expect(userDAO.persist(user))
@@ -212,7 +190,7 @@ public class UserServiceTest extends TestCase
 		
 		replay(userDAO);
 		
-		userService.addAndcheckProjectManagementRoles(new Integer(1));
+		userService.addAndcheckProjectManagementRoles(1);
 		
 		verify(userDAO);
 		
@@ -223,7 +201,7 @@ public class UserServiceTest extends TestCase
 	{
 		User user = new User(1);
 		user.setPassword("aa");
-		user.setSalt(new Integer(2));
+		user.setSalt(2);
 		user.setUsername("user");
 		user.setUpdatedPassword("fefe");
 		

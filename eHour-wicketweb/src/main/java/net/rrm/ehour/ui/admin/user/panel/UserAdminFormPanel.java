@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.admin.user.panel;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
@@ -34,22 +32,17 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.StringValidator;
+
+import java.util.List;
 
 /**
  * User Form Panel for admin
@@ -162,12 +155,6 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 		}		
 	}		
 	
-	/**
-	 * Persist user
-	 * @param userBackingBean
-	 * @throws ObjectNotUniqueException 
-	 * @throws PasswordEmptyException 
-	 */
 	private void persistUser(UserBackingBean userBackingBean) throws PasswordEmptyException, ObjectNotUniqueException
 	{
 		if (userBackingBean.isPm())
@@ -179,10 +166,6 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 		userService.persistUser(userBackingBean.getUser());
 	}
 	
-	/**
-	 * 
-	 * @param userBackingBean
-	 */
 	private void deleteUser(UserBackingBean userBackingBean)
 	{
 		userService.deleteUser(userBackingBean.getUser().getUserId());

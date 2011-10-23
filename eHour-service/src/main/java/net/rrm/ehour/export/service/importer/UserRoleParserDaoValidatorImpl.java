@@ -13,9 +13,8 @@ public class UserRoleParserDaoValidatorImpl implements UserRoleParserDao
     private int persistCount = 0;
 
     @Override
-    public UserRole findUserRole(String role)
-    {
-        return new UserRole(role);
+    public UserRole findUserRole(String role) {
+        return UserRole.ROLES.get(role);
     }
 
     @Override
